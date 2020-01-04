@@ -119,8 +119,13 @@
 
 <script>
 import moment from 'moment';
+import CreateActivity from './CreateActivity.vue';
 
 export default {
+  components: {
+    CreateActivity
+  },
+
   filters: {
     moment: function (date) {
       return moment.utc(date).format('LL');

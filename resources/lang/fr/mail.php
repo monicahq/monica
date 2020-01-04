@@ -11,8 +11,8 @@ return [
     'footer_contact_info2' => 'Voir le profil de :name',
     'footer_contact_info2_link' => 'Voir le profil de :name : :url',
 
-    'notification_subject_line' => 'Vous avez un événement à venir',
-    'notification_description' => 'Dans :count jours (le :date), l’événement suivant se produira :',
+    'notification_subject_line' => 'Vous avez un évènement à venir',
+    'notification_description' => 'Dans :count jours (le :date), l’évènement suivant se produira :',
 
     'stay_in_touch_subject_line' => 'Rester en contact avec :name',
     'stay_in_touch_subject_description' => 'Vous avez demandé à être rappelé de rester en contact avec :name tous les :frequency jour.|Vous avez demandé à être rappelé de rester en contact avec :name tous les :frequency jours.',

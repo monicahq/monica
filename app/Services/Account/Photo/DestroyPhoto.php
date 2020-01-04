@@ -27,7 +27,7 @@ class DestroyPhoto extends BaseService
      * @param array $data
      * @return bool
      */
-    public function execute(array $data) : bool
+    public function execute(array $data): bool
     {
         $this->validate($data);
 

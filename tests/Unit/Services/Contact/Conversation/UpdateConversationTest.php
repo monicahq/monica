@@ -16,7 +16,8 @@ class UpdateConversationTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_a_conversation()
+    /** @test */
+    public function it_updates_a_conversation()
     {
         $conversation = factory(Conversation::class)->create([
             'happened_at' => '2008-01-01',
@@ -46,7 +47,8 @@ class UpdateConversationTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -60,7 +62,8 @@ class UpdateConversationTest extends TestCase
         app(UpdateConversation::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_conversation_doesnt_exist()
+    /** @test */
+    public function it_throws_an_exception_if_conversation_doesnt_exist()
     {
         $account = factory(Account::class)->create();
         $conversation = factory(Conversation::class)->create([]);

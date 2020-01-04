@@ -13,12 +13,12 @@ return [
     |
     */
 
-    'password' => 'Adgangskoden skal være på mindst seks tegn og matche bekræftelsen.',
     'reset' => 'Din adgangskode er blevet nulstillet!',
     'sent' => 'Hvis din e-mail adresse eksisterer i systemet, vil du modtage en e-mail til nulstilling af din adgangskode.',
     'token' => 'Nulstillingsnøglen til denne adgangskode er ugyldig.',
     'user' => 'Hvis din e-mail adresse eksisterer i systemet, vil du modtage en e-mail til nulstilling af din adgangskode.',
     'changed' => 'Adgangskoden er ændret.',
     'invalid' => 'Adgangskode er forkert.',
+    'throttled' => 'Please wait before retrying.',
 
 ];

@@ -88,9 +88,9 @@ class ApiLifeEventController extends ApiController
                 $request->except(['account_id', 'life_event_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'life_event_id' => $lifeEventId,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                        'life_event_id' => $lifeEventId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

@@ -11,28 +11,32 @@ class LifeEventTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $lifeEvent = factory(LifeEvent::class)->create([]);
 
         $this->assertTrue($lifeEvent->account()->exists());
     }
 
-    public function test_it_belongs_to_a_contact()
+    /** @test */
+    public function it_belongs_to_a_contact()
     {
         $lifeEvent = factory(LifeEvent::class)->create([]);
 
         $this->assertTrue($lifeEvent->contact()->exists());
     }
 
-    public function test_it_belongs_to_a_type()
+    /** @test */
+    public function it_belongs_to_a_type()
     {
         $lifeEvent = factory(LifeEvent::class)->create([]);
 
         $this->assertTrue($lifeEvent->lifeEventType()->exists());
     }
 
-    public function test_it_has_a_reminder()
+    /** @test */
+    public function it_has_a_reminder()
     {
         $lifeEvent = factory(LifeEvent::class)->create([]);
         $reminder = factory(Reminder::class)->create([
@@ -44,7 +48,8 @@ class LifeEventTest extends TestCase
         $this->assertTrue($lifeEvent->reminder()->exists());
     }
 
-    public function test_it_gets_the_name_attribute()
+    /** @test */
+    public function it_gets_the_name_attribute()
     {
         $lifeEvent = factory(LifeEvent::class)->create([
             'name' => 'Fake name',
@@ -56,7 +61,8 @@ class LifeEventTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_note_attribute()
+    /** @test */
+    public function it_gets_the_note_attribute()
     {
         $lifeEvent = factory(LifeEvent::class)->create([
             'note' => 'Fake note',

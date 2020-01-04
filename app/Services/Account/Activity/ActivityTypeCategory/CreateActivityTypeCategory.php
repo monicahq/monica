@@ -27,7 +27,7 @@ class CreateActivityTypeCategory extends BaseService
      * @param array $data
      * @return ActivityTypeCategory
      */
-    public function execute(array $data) : ActivityTypeCategory
+    public function execute(array $data): ActivityTypeCategory
     {
         $this->validate($data);
 

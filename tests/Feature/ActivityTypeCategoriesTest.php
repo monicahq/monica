@@ -35,8 +35,8 @@ class ActivityTypeCategoriesTest extends FeatureTestCase
         $user = $this->signin();
 
         $response = $this->json('POST', '/settings/personalization/activitytypecategories', [
-                            'name' => 'Movies',
-                        ]);
+            'name' => 'Movies',
+        ]);
 
         $response->assertStatus(200);
 

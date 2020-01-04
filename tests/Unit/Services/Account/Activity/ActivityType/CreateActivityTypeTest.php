@@ -15,7 +15,8 @@ class CreateActivityTypeTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_stores_an_activity_type()
+    /** @test */
+    public function it_stores_an_activity_type()
     {
         $account = factory(Account::class)->create([]);
         $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
@@ -45,7 +46,8 @@ class CreateActivityTypeTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [
             'name' => '199 Lafayette Street',
@@ -55,7 +57,8 @@ class CreateActivityTypeTest extends TestCase
         app(CreateActivityType::class)->execute($request);
     }
 
-    public function test_it_fails_if_activity_type_category_is_not_linked_to_account()
+    /** @test */
+    public function it_fails_if_activity_type_category_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create([]);
         $activityTypeCategory = factory(ActivityTypeCategory::class)->create([]);

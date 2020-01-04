@@ -67,8 +67,8 @@ class ApiPlaceController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -96,9 +96,9 @@ class ApiPlaceController extends ApiController
                 $request->except(['account_id', 'place_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'place_id' => $placeId,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                        'place_id' => $placeId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

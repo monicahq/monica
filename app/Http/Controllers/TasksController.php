@@ -30,7 +30,7 @@ class TasksController extends Controller
      * @param Request $request
      * @return Task
      */
-    public function store(Request $request) : Task
+    public function store(Request $request): Task
     {
         return app(CreateTask::class)->execute([
             'account_id' => auth()->user()->account->id,
@@ -47,7 +47,7 @@ class TasksController extends Controller
      * @param Task $task
      * @return Task
      */
-    public function update(Request $request, Task $task) : Task
+    public function update(Request $request, Task $task): Task
     {
         return app(UpdateTask::class)->execute([
             'account_id' => auth()->user()->account->id,

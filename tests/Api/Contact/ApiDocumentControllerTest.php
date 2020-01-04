@@ -34,7 +34,7 @@ class ApiDocumentControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    private function createDocument(User $user) : Document
+    private function createDocument(User $user): Document
     {
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
@@ -48,7 +48,8 @@ class ApiDocumentControllerTest extends ApiTestCase
         return $document;
     }
 
-    public function test_it_gets_a_list_of_documents()
+    /** @test */
+    public function it_gets_a_list_of_documents()
     {
         $user = $this->signin();
 
@@ -77,7 +78,8 @@ class ApiDocumentControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_applies_the_limit_parameter_in_search()
+    /** @test */
+    public function it_applies_the_limit_parameter_in_search()
     {
         $user = $this->signin();
 
@@ -104,7 +106,8 @@ class ApiDocumentControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_a_document()
+    /** @test */
+    public function it_gets_a_document()
     {
         $user = $this->signin();
 
@@ -119,7 +122,8 @@ class ApiDocumentControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_document_show_gets_an_error_if_document_is_not_linked_to_account()
+    /** @test */
+    public function document_show_gets_an_error_if_document_is_not_linked_to_account()
     {
         $user = $this->signin();
 
@@ -134,7 +138,8 @@ class ApiDocumentControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_gets_a_document_for_a_specific_contact()
+    /** @test */
+    public function it_gets_a_document_for_a_specific_contact()
     {
         $user = $this->signin();
 
@@ -158,7 +163,8 @@ class ApiDocumentControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_store_a_document_for_a_specific_contact()
+    /** @test */
+    public function it_store_a_document_for_a_specific_contact()
     {
         Storage::fake();
 
@@ -187,7 +193,8 @@ class ApiDocumentControllerTest extends ApiTestCase
         Storage::disk('public')->assertExists($response->json('data.new_filename'));
     }
 
-    public function test_document_store_gets_an_error_if_fields_are_missing()
+    /** @test */
+    public function document_store_gets_an_error_if_fields_are_missing()
     {
         $user = $this->signin();
 
@@ -199,7 +206,8 @@ class ApiDocumentControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_document_store_gets_an_error_if_contact_is_not_linked_to_user()
+    /** @test */
+    public function document_store_gets_an_error_if_contact_is_not_linked_to_user()
     {
         $user = $this->signin();
 
@@ -213,7 +221,8 @@ class ApiDocumentControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_destroy_a_document()
+    /** @test */
+    public function it_destroy_a_document()
     {
         $user = $this->signin();
 
@@ -229,7 +238,8 @@ class ApiDocumentControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_document_destroy_gets_an_error_if_document_is_not_linked_to_user()
+    /** @test */
+    public function document_destroy_gets_an_error_if_document_is_not_linked_to_user()
     {
         $user = $this->signin();
 

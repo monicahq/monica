@@ -165,7 +165,7 @@ class UploadPhoto extends BaseService
      * @param string $filename
      * @return string|null
      */
-    private function storeImage(string $disk, $image, string $filename) : ? string
+    private function storeImage(string $disk, $image, string $filename): ?string
     {
         $result = Storage::disk($disk)
             ->put($path = $filename, (string) $image->stream(), 'public');
@@ -179,7 +179,7 @@ class UploadPhoto extends BaseService
      * @param string $data
      * @return bool
      */
-    private function isValidPhoto(string $data) : bool
+    private function isValidPhoto(string $data): bool
     {
         return $this->isBinary($data) || $this->isDataUrl($data) || $this->isBase64($data);
     }
@@ -190,7 +190,7 @@ class UploadPhoto extends BaseService
      * @param string $data
      * @return bool
      */
-    private function isBinary(string $data) : bool
+    private function isBinary(string $data): bool
     {
         if (is_string($data)) {
             $mime = finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $data);
@@ -207,7 +207,7 @@ class UploadPhoto extends BaseService
      * @param string $data
      * @return bool
      */
-    private function isDataUrl(string $data) : bool
+    private function isDataUrl(string $data): bool
     {
         if (! is_string($data)) {
             return false;
@@ -229,7 +229,7 @@ class UploadPhoto extends BaseService
      * @param string $data
      * @return bool
      */
-    private function isBase64(string $data) : bool
+    private function isBase64(string $data): bool
     {
         if (! is_string($data)) {
             return false;

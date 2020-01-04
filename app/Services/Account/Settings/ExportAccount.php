@@ -35,7 +35,7 @@ class ExportAccount extends BaseService
      * @param array $data
      * @return string
      */
-    public function execute(array $data) : string
+    public function execute(array $data): string
     {
         $this->validate($data);
 
@@ -676,16 +676,12 @@ SET FOREIGN_KEY_CHECKS=0;
             'id',
             'account_id',
             'contact_id',
-            'is_for',
             'name',
             'comment',
             'url',
             'value',
-            'is_an_idea',
-            'has_been_offered',
-            'has_been_received',
-            'offered_at',
-            'received_at',
+            'status',
+            'date',
             'created_at',
             'updated_at',
         ];

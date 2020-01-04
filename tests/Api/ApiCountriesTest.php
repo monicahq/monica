@@ -5,18 +5,19 @@ namespace Tests\Api;
 use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ApiMiscTest extends ApiTestCase
+class ApiCountriesTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
     protected $jsonCountries = [
-            'id',
-            'iso',
-            'name',
-            'object',
+        'id',
+        'iso',
+        'name',
+        'object',
     ];
 
-    public function test_misc_get()
+    /** @test */
+    public function it_gets_the_list_of_countries()
     {
         $user = $this->signin();
 
@@ -36,7 +37,8 @@ class ApiMiscTest extends ApiTestCase
         ]);
     }
 
-    public function test_misc_get_fr()
+    /** @test */
+    public function it_gets_a_specific_country_in_a_specific_country()
     {
         $user = $this->signin();
         $user->locale = 'fr';
