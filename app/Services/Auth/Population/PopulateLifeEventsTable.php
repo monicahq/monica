@@ -43,7 +43,7 @@ class PopulateLifeEventsTable extends BaseService
      * @param array $givenData
      * @return bool
      */
-    public function execute(array $givenData) : bool
+    public function execute(array $givenData): bool
     {
         $this->data = $givenData;
 

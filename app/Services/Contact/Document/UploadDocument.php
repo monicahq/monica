@@ -28,7 +28,7 @@ class UploadDocument extends BaseService
      * @param array $data
      * @return Document
      */
-    public function execute(array $data) : Document
+    public function execute(array $data): Document
     {
         $this->validate($data);
 

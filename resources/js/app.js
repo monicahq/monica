@@ -159,7 +159,7 @@ Vue.component(
 
 Vue.component(
   'contact-gift',
-  require('./components/people/Gifts.vue').default
+  require('./components/people/gifts/Gifts.vue').default
 );
 
 Vue.component(

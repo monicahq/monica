@@ -68,7 +68,7 @@ class UpdateActivity extends BaseService
      * @param array $data
      * @return Activity
      */
-    public function execute(array $data) : Activity
+    public function execute(array $data): Activity
     {
         $this->validate($data);
 

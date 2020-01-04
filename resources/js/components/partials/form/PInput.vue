@@ -13,9 +13,11 @@
         :color="inputColor"
         :value="value"
         :disabled="disabled"
+        :required="required"
         @change="event => { $emit('change', event) }"
       >
         <slot></slot>
+        <slot slot="extra" name="inputextra"></slot>
       </p-input>
     </div>
     <div class="pointer" @click="select()">
@@ -58,6 +60,10 @@ export default {
       type: [String, Array],
       default: ''
     },
+    fullClass: {
+      type: [String, Array],
+      default: ''
+    },
     dclass: {
       type: [String, Array],
       default: ''
@@ -67,6 +73,10 @@ export default {
       default: ''
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    required: {
       type: Boolean,
       default: false
     }
@@ -80,7 +90,7 @@ export default {
       return 'input';
     },
     inputClass() {
-      return [this.iclass, 'p-default', this.$options.input_iclass];
+      return this.fullClass != '' ? this.fullClass : [this.iclass, 'p-default', this.$options.input_iclass];
     },
     inputColor() {
       return this.color != '' ? this.color : 'primary-o';

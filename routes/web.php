@@ -147,10 +147,6 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
             'index', 'store', 'update', 'destroy',
         ]);
 
-        // Gifts
-        Route::resource('people/{contact}/gifts', 'Contacts\\GiftsController')->except(['show']);
-        Route::post('/people/{contact}/gifts/{gift}/toggle', 'Contacts\\GiftsController@toggle');
-
         // Debt
         Route::resource('people/{contact}/debts', 'Contacts\\DebtController')->except(['index', 'show']);
 
