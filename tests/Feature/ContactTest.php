@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
+use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use App\Models\Contact\Gift;
 use App\Helpers\StringHelper;
@@ -280,7 +281,7 @@ class ContactTest extends FeatureTestCase
 
         $reminder = [
             'title' => $this->faker->sentence('5'),
-            'initial_date' => $this->faker->dateTimeBetween('now', '+2 years')->format('Y-m-d'),
+            'initial_date' => DateHelper::getDate($this->faker->dateTimeBetween('now', '+2 years')),
             'frequency_type' => 'one_time',
             'description' => $this->faker->sentence(),
         ];
