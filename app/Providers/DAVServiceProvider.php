@@ -38,7 +38,7 @@ class DAVServiceProvider extends ServiceProvider
         LaravelSabre::plugins(function () {
             return $this->plugins();
         });
-        LaravelSabre::auth(function (\Illuminate\Http\Request $request) : bool {
+        LaravelSabre::auth(function (\Illuminate\Http\Request $request): bool {
             if ($request->user()->admin ||
                 config('laravelsabre.users') == null) {
                 return true;
@@ -56,7 +56,7 @@ class DAVServiceProvider extends ServiceProvider
     /**
      * List of nodes for DAV Collection.
      */
-    private function nodes() : array
+    private function nodes(): array
     {
         // Initiate custom backends for link between Sabre and Monica
         $principalBackend = new PrincipalBackend();   // User rights

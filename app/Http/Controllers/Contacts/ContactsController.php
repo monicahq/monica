@@ -58,6 +58,7 @@ class ContactsController extends Controller
             'totalRecords' => $contacts->count(),
             'contacts' => ContactResource::collection($contacts),
         ];
+
         return view('people.index')
             ->withTotalRecords($contacts->count())
             ->withContacts(ContactResource::collection($contacts));

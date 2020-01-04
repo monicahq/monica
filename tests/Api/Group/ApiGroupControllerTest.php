@@ -23,7 +23,7 @@ class ApiGroupControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    private function createGroup(User $user) : Group
+    private function createGroup(User $user): Group
     {
         factory(Contact::class)->create([
             'account_id' => $user->account_id,

@@ -35,7 +35,7 @@ class ExportAccount extends BaseService
      * @param array $data
      * @return string
      */
-    public function execute(array $data) : string
+    public function execute(array $data): string
     {
         $this->validate($data);
 

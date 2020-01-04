@@ -26,7 +26,7 @@ class CreateGroup extends BaseService
      * @param array $data
      * @return Group
      */
-    public function execute(array $data) : Group
+    public function execute(array $data): Group
     {
         $this->validate($data);
 

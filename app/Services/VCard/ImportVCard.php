@@ -113,7 +113,7 @@ class ImportVCard extends BaseService
      * @param array $data
      * @return array
      */
-    public function execute(array $data) : array
+    public function execute(array $data): array
     {
         $this->validate($data);
 
@@ -142,7 +142,7 @@ class ImportVCard extends BaseService
      * @param array $data
      * @return array
      */
-    private function process(array $data) : array
+    private function process(array $data): array
     {
         if ($this->accountId !== $data['account_id']) {
             $this->clear();
@@ -170,7 +170,7 @@ class ImportVCard extends BaseService
      * @param VCard $entry
      * @return array
      */
-    private function processEntry(array $data, VCard $entry) : array
+    private function processEntry(array $data, VCard $entry): array
     {
         if (! $this->canImportCurrentEntry($entry)) {
             return [
@@ -194,7 +194,7 @@ class ImportVCard extends BaseService
      * @param Contact|null $contact
      * @return array
      */
-    private function processEntryContact(array $data, VCard $entry, $contact) : array
+    private function processEntryContact(array $data, VCard $entry, $contact): array
     {
         $behaviour = $data['behaviour'] ?: self::BEHAVIOUR_ADD;
         if ($contact && $behaviour === self::BEHAVIOUR_ADD) {
@@ -242,7 +242,7 @@ class ImportVCard extends BaseService
      * @param  string  $genderCode
      * @return Gender
      */
-    private function getGender($genderCode) : Gender
+    private function getGender($genderCode): Gender
     {
         if (! Arr::has($this->genders, $genderCode)) {
             $gender = $this->getGenderByType($genderCode);
@@ -309,7 +309,7 @@ class ImportVCard extends BaseService
      * @param VCard $entry
      * @return bool
      */
-    private function canImportCurrentEntry(VCard $entry) : bool
+    private function canImportCurrentEntry(VCard $entry): bool
     {
         return
             $this->hasFirstnameInN($entry) ||
@@ -321,7 +321,7 @@ class ImportVCard extends BaseService
      * @param  VCard $entry
      * @return bool
      */
-    private function hasFirstnameInN(VCard $entry) : bool
+    private function hasFirstnameInN(VCard $entry): bool
     {
         return $entry->N !== null && ! empty(Arr::get($entry->N->getParts(), '1'));
     }
@@ -330,7 +330,7 @@ class ImportVCard extends BaseService
      * @param  VCard $entry
      * @return bool
      */
-    private function hasNICKNAME(VCard $entry) : bool
+    private function hasNICKNAME(VCard $entry): bool
     {
         return ! empty((string) $entry->NICKNAME);
     }
@@ -349,7 +349,7 @@ class ImportVCard extends BaseService
      *
      * @param string $email
      */
-    private function isValidEmail(string $email) : bool
+    private function isValidEmail(string $email): bool
     {
         return (bool) filter_var($email, FILTER_VALIDATE_EMAIL);
     }
@@ -762,7 +762,7 @@ class ImportVCard extends BaseService
             app(DestroyAddress::class)->execute([
                 'account_id' => $contact->account_id,
                 'address_id' => $address->id,
-                ]);
+            ]);
         }
     }
 

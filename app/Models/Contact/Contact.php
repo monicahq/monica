@@ -815,7 +815,7 @@ class Contact extends Model
                     'name' => $relationship->relationshipType->name,
                 ],
                 'contact' => new ContactShortResource($contact),
-                ]);
+            ]);
         }
 
         return $contacts;
