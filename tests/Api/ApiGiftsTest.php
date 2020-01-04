@@ -454,7 +454,8 @@ class ApiGiftsTest extends ApiTestCase
         $response->assertStatus(422);
     }
 
-    public function test_gifts_delete_wrong_account()
+    /** @test */
+    public function gifts_delete_wrong_account()
     {
         $user = $this->signin();
         $gift = factory(Gift::class)->create();

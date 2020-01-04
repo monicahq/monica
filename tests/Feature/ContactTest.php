@@ -632,7 +632,8 @@ class ContactTest extends FeatureTestCase
         ]);
     }
 
-    public function test_it_gets_the_value()
+    /** @test */
+    public function it_gets_the_value()
     {
         $user = $this->signin();
         $currency = factory(Currency::class)->create([
