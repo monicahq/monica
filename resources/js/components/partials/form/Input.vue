@@ -26,6 +26,7 @@ input:focus {
       autofocus
       :required="required"
       :name="id"
+      :placeholder="placeholder"
       :class="inputClass"
       :style="inputStyle"
       :value="value"
@@ -49,6 +50,10 @@ export default {
       default: '',
     },
     id: {
+      type: String,
+      default: '',
+    },
+    placeholder: {
       type: String,
       default: '',
     },

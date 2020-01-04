@@ -32,8 +32,8 @@
     <div>
       <ul class="mb3">
         <li class="di">
-          <p class="di pointer" :class="[activeTab == 'ideas' ? 'b' : 'black-50', dirltr ? 'mr3' : 'ml3']"
-             @click.prevent="setActiveTab('ideas')"
+          <p class="di pointer" :class="[activeTab == 'idea' ? 'b' : 'black-50', dirltr ? 'mr3' : 'ml3']"
+             @click.prevent="setActiveTab('idea')"
           >
             {{ $t('people.gifts_ideas') }} ({{ ideas.length }})
           </p>
@@ -54,57 +54,32 @@
         </li>
       </ul>
 
-      <template v-if="activeTab == 'ideas'">
-        <div v-for="gift in ideas" :key="gift.id" class="ba b--gray-monica mb3 br2" :cy-name="'gift-idea-item-' + gift.id">
+        <div v-for="gift in filteredGifts" :key="gift.id" class="ba b--gray-monica mb3 br2" :cy-name="'gift-item-' + gift.id">
           <gift v-if="!gift.edit"
                 :gift="gift"
                 @update="($event) => { updateList($event) }"
           >
-            <a :class="dirltr ? 'mr1' : 'ml1'" href="" @click.prevent="toggle(gift)">
-              {{ $t('people.gifts_mark_offered') }}
-            </a>
-            <a :class="dirltr ? 'mr1' : 'ml1'" href="" :cy-name="'edit-gift-button-' + gift.id"
-               @click.prevent="$set(gift, 'edit', true)"
-            >
-              {{ $t('app.edit') }}
-            </a>
-            <a :class="dirltr ? 'mr1' : 'ml1'" :cy-name="'delete-gift-button-' + gift.id" href=""
-               @click.prevent="showDeleteModal(gift)"
-            >
-              {{ $t('app.delete') }}
-            </a>
-          </gift>
-          <create-gift
-            v-else
-            :gift="gift"
-            :contact-id="contactId"
-            :family-contacts="familyContacts"
-            :reach-limit="reachLimit"
-            @update="updateGift(gift, $event)"
-            @cancel="$set(gift, 'edit', false)"
-          />
-        </div>
-      </template>
+            <div :class="dirltr ? 'fl' : 'fr'">
+              <a v-if="gift.status == 'idea'" class="di" href="" @click.prevent="toggle(gift)">
+                {{ $t('people.gifts_mark_offered') }}
+              </a>
+              <a v-if="gift.status == 'offered'" class="di" href="" @click.prevent="toggle(gift)">
+                {{ $t('people.gifts_offered_as_an_idea') }}
+              </a>
+            </div>
 
-      <template v-else-if="activeTab == 'offered'">
-        <div v-for="gift in offered" :key="gift.id" class="ba b--gray-monica mb3 br2">
-          <gift v-if="!gift.edit"
-                :gift="gift"
-                @update="($event) => { updateList($event) }"
-          >
-            <a :class="dirltr ? 'mr1' : 'ml1'" href="" @click.prevent="toggle(gift)">
-              {{ $t('people.gifts_offered_as_an_idea') }}
-            </a>
-            <a :class="dirltr ? 'mr1' : 'ml1'" href="" :cy-name="'edit-gift-button-' + gift.id"
-               @click.prevent="$set(gift, 'edit', true)"
-            >
-              {{ $t('app.edit') }}
-            </a>
-            <a :class="dirltr ? 'mr1' : 'ml1'" :cy-name="'delete-gift-button-' + gift.id" href=""
-               @click.prevent="showDeleteModal(gift)"
-            >
-              {{ $t('app.delete') }}
-            </a>
+            <div :class="dirltr ? 'fr' : 'fl'">
+              <a :class="dirltr ? 'mr1' : 'ml1'" class="di" href="" :cy-name="'edit-gift-button-' + gift.id"
+                @click.prevent="$set(gift, 'edit', true)"
+              >
+                {{ $t('app.edit') }}
+              </a>
+              <a :class="dirltr ? 'mr1' : 'ml1'" class="di" href="" :cy-name="'delete-gift-button-' + gift.id"
+                @click.prevent="showDeleteModal(gift)"
+              >
+                {{ $t('app.delete') }}
+              </a>
+            </div>
           </gift>
           <create-gift
             v-else
@@ -116,36 +91,6 @@
             @cancel="$set(gift, 'edit', false)"
           />
         </div>
-      </template>
-
-      <template v-else-if="activeTab == 'received'">
-        <div v-for="gift in received" :key="gift.id" class="ba b--gray-monica mb3 br2">
-          <gift v-if="!gift.edit"
-                :gift="gift"
-                @update="($event) => { updateList($event) }"
-          >
-            <a :class="dirltr ? 'mr1' : 'ml1'" href="" :cy-name="'edit-gift-button-' + gift.id"
-               @click.prevent="$set(gift, 'edit', true)"
-            >
-              {{ $t('app.edit') }}
-            </a>
-            <a :class="dirltr ? 'mr1' : 'ml1'" href=""
-               @click.prevent="showDeleteModal(gift)"
-            >
-              {{ $t('app.delete') }}
-            </a>
-          </gift>
-          <create-gift
-            v-else
-            :gift="gift"
-            :contact-id="contactId"
-            :family-contacts="familyContacts"
-            :reach-limit="reachLimit"
-            @update="updateGift(gift, $event)"
-            @cancel="$set(gift, 'edit', false)"
-          />
-        </div>
-      </template>
     </div>
 
     <sweet-modal ref="modal" overlay-theme="dark" :title="$t('people.gifts_delete_title')">
@@ -171,14 +116,15 @@
 import { SweetModal } from 'sweet-modal-vue';
 import Gift from './Gift.vue';
 import CreateGift from './CreateGift.vue';
-import { now } from 'moment';
+import moment from 'moment';
 
 export default {
 
   components: {
     Gift,
     CreateGift,
-    SweetModal
+    SweetModal,
+    moment
   },
 
   props: {
@@ -192,7 +138,7 @@ export default {
     },
     giftsActiveTab: {
       type: String,
-      default: 'ideas',
+      default: 'idea',
     },
     familyContacts: {
       type: Array,
@@ -218,22 +164,21 @@ export default {
       return this.$root.htmldir == 'ltr';
     },
 
-    ideas: function () {
-      return this.gifts.filter(function (gift) {
-        return gift.status == 'idea';
-      });
+    ideas() {
+      return this.gifts.filter(gift => gift.status == 'idea');
     },
 
-    offered: function () {
-      return this.gifts.filter(function (gift) {
-        return gift.status == 'offered';
-      });
+    offered() {
+      return this.gifts.filter(gift => gift.status == 'offered');
     },
 
-    received: function () {
-      return this.gifts.filter(function (gift) {
-        return gift.status == 'received';
-      });
+    received() {
+      return this.gifts.filter(gift => gift.status == 'received');
+    },
+
+    filteredGifts() {
+      let vm = this;
+      return this.gifts.filter(gift => gift.status == vm.activeTab);
     },
   },
 
@@ -248,7 +193,7 @@ export default {
     },
 
     setActiveTab(view) {
-      this.activeTab = view;
+      this.activeTab = view === 'ideas' ? 'idea' : view;
     },
 
     getGifts() {
@@ -261,7 +206,7 @@ export default {
     toggle(gift) {
       if (gift.status == 'idea') {
         gift.status = 'offered';
-        gift.date = now;
+        gift.date = moment().format('YYYY-MM-DD');
       } else {
         gift.status = 'idea';
         gift.date = null;

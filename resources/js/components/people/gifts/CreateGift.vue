@@ -63,7 +63,7 @@
         </div>
 
         <!-- ADDITIONAL FIELDS -->
-        <div v-show="!displayComment || !displayUrl || !displayAmount || !(displayRecipient && familyContacts.length == 0) || !(displayUpload && reachLimit)" class="bb b--gray-monica pv3 mb3">
+        <div v-show="displayMenu" class="bb b--gray-monica pv3 mb3">
           <ul class="list">
             <li v-show="!displayComment" class="di pointer" :class="dirltr ? 'mr3' : 'ml3'">
               <a href="" @click.prevent="displayComment = true">{{ $t('people.gifts_add_comment') }}</a>
@@ -103,7 +103,7 @@
             :input-type="'text'"
             :class="'dtc pr2'"
             :title="$t('people.gifts_add_link')"
-            placeholder="https://"
+            :placeholder="'https://'"
             @submit="store"
           />
         </div>
@@ -116,6 +116,7 @@
             :input-type="'number'"
             :class="'dtc pr2'"
             :title="$t('people.gifts_add_value')"
+            :required="displayAmount"
             @submit="store"
           />
         </div>
@@ -260,6 +261,14 @@ export default {
 
     dirltr() {
       return this.$root.htmldir == 'ltr';
+    },
+
+    displayMenu() {
+      return !this.displayComment ||
+        !this.displayUrl ||
+        !this.displayAmount ||
+        !(this.displayRecipient || this.familyContacts.length == 0) ||
+        !(this.displayUpload || this.reachLimit);
     }
   },
 

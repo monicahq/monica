@@ -296,7 +296,7 @@ return [
     'gifts_delete_confirmation' => 'Are you sure you want to delete this gift?',
     'gifts_add_gift' => 'Add a gift',
     'gifts_link' => 'Link',
-    'gifts_for' => 'For:',
+    'gifts_for' => 'For: {name}',
     'gifts_delete_cta' => 'Delete',
     'gifts_add_title' => 'Gift management for :name',
     'gifts_add_gift_idea' => 'Gift idea',
