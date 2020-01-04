@@ -54,43 +54,43 @@
         </li>
       </ul>
 
-        <div v-for="gift in filteredGifts" :key="gift.id" class="ba b--gray-monica mb3 br2" :cy-name="'gift-item-' + gift.id">
-          <gift v-if="!gift.edit"
-                :gift="gift"
-                @update="($event) => { updateList($event) }"
-          >
-            <div :class="dirltr ? 'fl' : 'fr'">
-              <a v-if="gift.status == 'idea'" class="di" href="" @click.prevent="toggle(gift)">
-                {{ $t('people.gifts_mark_offered') }}
-              </a>
-              <a v-if="gift.status == 'offered'" class="di" href="" @click.prevent="toggle(gift)">
-                {{ $t('people.gifts_offered_as_an_idea') }}
-              </a>
-            </div>
+      <div v-for="gift in filteredGifts" :key="gift.id" class="ba b--gray-monica mb3 br2" :cy-name="'gift-item-' + gift.id">
+        <gift v-if="!gift.edit"
+              :gift="gift"
+              @update="($event) => { updateList($event) }"
+        >
+          <div :class="dirltr ? 'fl' : 'fr'">
+            <a v-if="gift.status == 'idea'" class="di" href="" @click.prevent="toggle(gift)">
+              {{ $t('people.gifts_mark_offered') }}
+            </a>
+            <a v-if="gift.status == 'offered'" class="di" href="" @click.prevent="toggle(gift)">
+              {{ $t('people.gifts_offered_as_an_idea') }}
+            </a>
+          </div>
 
-            <div :class="dirltr ? 'fr' : 'fl'">
-              <a :class="dirltr ? 'mr1' : 'ml1'" class="di" href="" :cy-name="'edit-gift-button-' + gift.id"
-                @click.prevent="$set(gift, 'edit', true)"
-              >
-                {{ $t('app.edit') }}
-              </a>
-              <a :class="dirltr ? 'mr1' : 'ml1'" class="di" href="" :cy-name="'delete-gift-button-' + gift.id"
-                @click.prevent="showDeleteModal(gift)"
-              >
-                {{ $t('app.delete') }}
-              </a>
-            </div>
-          </gift>
-          <create-gift
-            v-else
-            :gift="gift"
-            :contact-id="contactId"
-            :family-contacts="familyContacts"
-            :reach-limit="reachLimit"
-            @update="updateGift(gift, $event)"
-            @cancel="$set(gift, 'edit', false)"
-          />
-        </div>
+          <div :class="dirltr ? 'fr' : 'fl'">
+            <a :class="dirltr ? 'mr1' : 'ml1'" class="di" href="" :cy-name="'edit-gift-button-' + gift.id"
+               @click.prevent="$set(gift, 'edit', true)"
+            >
+              {{ $t('app.edit') }}
+            </a>
+            <a :class="dirltr ? 'mr1' : 'ml1'" class="di" href="" :cy-name="'delete-gift-button-' + gift.id"
+               @click.prevent="showDeleteModal(gift)"
+            >
+              {{ $t('app.delete') }}
+            </a>
+          </div>
+        </gift>
+        <create-gift
+          v-else
+          :gift="gift"
+          :contact-id="contactId"
+          :family-contacts="familyContacts"
+          :reach-limit="reachLimit"
+          @update="updateGift(gift, $event)"
+          @cancel="$set(gift, 'edit', false)"
+        />
+      </div>
     </div>
 
     <sweet-modal ref="modal" overlay-theme="dark" :title="$t('people.gifts_delete_title')">
@@ -124,7 +124,6 @@ export default {
     Gift,
     CreateGift,
     SweetModal,
-    moment
   },
 
   props: {

@@ -9,16 +9,16 @@
       </ul>
     </template>
     <template v-else>
-    <p v-if="errors[0] != 'The given data was invalid.'">
-      {{ errors[0] }}
-    </p>
-    <template v-if="display(errors[1])">
-      <ul v-for="errorsList in errors[1]" :key="errorsList.id">
-        <li v-for="error in errorsList" :key="error.id">
-          ▪️ {{ error }}
-        </li>
-      </ul>
-    </template>
+      <p v-if="errors[0] != 'The given data was invalid.'">
+        {{ errors[0] }}
+      </p>
+      <template v-if="display(errors[1])">
+        <ul v-for="errorsList in errors[1]" :key="errorsList.id">
+          <li v-for="error in errorsList" :key="error.id">
+            ▪️ {{ error }}
+          </li>
+        </ul>
+      </template>
     </template>
   </div>
 </template>
