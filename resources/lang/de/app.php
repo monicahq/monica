@@ -37,6 +37,7 @@ return [
     'retry' => 'Wiederholen',
     'filter' => 'Filter the list',
     'go_back' => 'Zurück',
+    'file_selected' => '1 file selected...|{count} files selected...',
 
     'application_title' => 'Monica – persönlicher Beziehungsmanager',
     'application_description' => 'Monica ist ein Werkzeug, um Ihre Interaktionen mit Ihren Lieben, Freunden und Familie zu verwalten.',
