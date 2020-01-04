@@ -66,11 +66,11 @@ return [
     'locale_it' => '意大利文',
     'locale_nl' => '荷兰文',
     'locale_pt' => '葡萄牙文',
-    'locale_pt-BR' => 'Português (Brazil)',
+    'locale_pt-BR' => '葡萄牙语 (巴西)',
     'locale_ru' => '俄文',
     'locale_zh' => '简体中文',
     'locale_tr' => '土耳其文',
-    'locale_en-GB' => 'English (United Kingdom)',
+    'locale_en-GB' => '英语 (英国)',
 
     'security_title' => '安全',
     'security_help' => '更改您的帐户的安全选项。',
@@ -311,7 +311,7 @@ return [
 
     'api_oauth_clients' => '您的 Oauth 客户端',
     'api_oauth_clients_desc' => '您可以注册自己的 OAuth 客户端。',
-    'api_oauth_clients_desc2' => 'Use this client id to request a new token, and convert authorization codes to access tokens. See <a href="{url}">Laravel Passport documentation</a> for more information.',
+    'api_oauth_clients_desc2' => '使用此客户端ID请求一个新的Token，并将授权码转换为Token。请参阅 <a href="{url}">Laravel Passport文档</a> 获取更多信息。',
     'api_oauth_title' => 'OAuth 客户端',
     'api_oauth_create_new' => '创建新的客户端',
     'api_oauth_edit' => '编辑客户端',
@@ -325,7 +325,7 @@ return [
     'api_oauth_redirecturl_help' => '应用程序的授权回调 URL。',
 
     'api_authorized_clients' => '授权客户端列表',
-    'api_authorized_clients_desc' => 'This section lists all the clients you’ve authorized to access your application data. You can revoke this authorization at anytime.',
+    'api_authorized_clients_desc' => '本节列出了您授权访问应用程序的所有客户端，您可以随时撤销此授权。',
     'api_authorized_clients_title' => '已授权的应用',
     'api_authorized_clients_none' => '尚无授权客户端',
     'api_authorized_clients_name' => '名称',
