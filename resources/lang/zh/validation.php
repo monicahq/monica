@@ -67,6 +67,7 @@ return [
     'not_in'               => '选择的 :attribute 无效',
     'not_regex'            => ':attribute 格式无效',
     'numeric'              => ':attribute 必须是数字。',
+    'password' => '密码错误',
     'present'              => ':attribute 为必填项。',
     'regex'                => ':attribute 格式不对',
     'required'             => ':attribute 字段必填',

@@ -28,9 +28,9 @@ return [
     '2fa_otp_help' => 'Open je tweestapsverificatiecode-app en kopieer de code',
     'u2f_otp_extension' => 'U2F wordt alleen ondersteund door Chrome, <a href="{urlquantum}" lang="en">Firefox</a> en Opera. Voor oudere Firefox installaties, installeer de <a href="{urlext}">U2F Support Extensie</a>.',
 
-    'login_to_account' => 'Aanmelden op uw account',
+    'login_to_account' => 'Inloggen op je account',
     'login_with_recovery' => 'Inloggen met een herstelcode',
-    'login_again' => 'Gelieve nogmaals in te loggen op uw account',
+    'login_again' => 'Gelieve nogmaals in te loggen op je account',
     'email' => 'E-mail',
     'password' => 'Wachtwoord',
     'recovery' => 'Herstelcode',
@@ -53,7 +53,7 @@ return [
     'password_reset_action' => 'Wachtwoord resetten',
     'password_reset_email_content' => 'Klik hier om je wachtwoord te resetten:',
 
-    'register_title_welcome' => 'Welkom bij je nieuwe Monica installatie',
+    'register_title_welcome' => 'Welkom bij je nieuwe Monica-installatie',
     'register_create_account' => 'Je moet een account aanmaken om Monica te kunnen gebruiken',
     'register_title_create' => 'Maak jouw Monica account aan',
     'register_login' => '<a href=":url">Inloggen</a> als je al een account hebt.',

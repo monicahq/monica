@@ -8,6 +8,24 @@
   }
 }
 
+.contact-list-page {
+    .dtc {
+        border-color: #eaecef;
+    }
+
+    .avatar {
+        width: 40px;
+
+        img {
+            max-width: none;
+        }
+    }
+
+    .names {
+        top: -3px;
+    }
+}
+
 .people-list {
   .breadcrumb {
     border-bottom: 1px solid #eee;

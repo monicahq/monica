@@ -6,7 +6,7 @@ return [
     'journal_description' => '注意: 记录里列出了全部手动记录的条目, 以及您与您的联系人进行的活动等自动条目。虽然可以手动删除记录条目, 但必须直接在 "联系人" 页上进行删除。',
     'journal_add' => '添加日记条目',
     'journal_edit' => '编辑日记条目',
-    'journal_empty' => 'Empty journal',
+    'journal_empty' => '暂无日记',
     'journal_created_automatically' => '自动创建',
     'journal_entry_type_journal' => '记录条目',
     'journal_entry_type_activity' => '活动',

@@ -36,7 +36,31 @@ class ContactsController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->contacts($request, true);
+        $user = auth()->user();
+        $contacts = $user->account->contacts()->real()->get();
+
+        $returnedContacts = collect([]);
+
+        foreach ($contacts as $contact) {
+            $contactItem = [
+                'id' => $contact->id,
+                'name' => $contact->name,
+                'route' => route('people.show', $contact),
+                'avatar' => $contact->getAvatarUrl(),
+                'description' => $contact->description,
+                'job' => $contact->job,
+                'company' => $contact->company,
+            ];
+            $returnedContacts->push($contactItem);
+        }
+
+        return [
+            'totalRecords' => $contacts->count(),
+            'contacts' => ContactResource::collection($contacts),
+        ];
+        return view('people.index')
+            ->withTotalRecords($contacts->count())
+            ->withContacts(ContactResource::collection($contacts));
     }
 
     /**
@@ -115,6 +139,25 @@ class ContactsController extends Controller
             $contactsCount += $deceasedCount;
         }
 
+        $accountId = auth()->user()->account_id;
+
+        $user = $request->user();
+        $sort = $request->input('sort') ?? $user->contacts_sort_order;
+
+        if ($user->contacts_sort_order !== $sort) {
+            $user->updateContactViewPreference($sort);
+        }
+
+        $tags = null;
+        $url = '';
+        $count = 1;
+
+        $contacts = $user->account->contacts()->real()->get();
+        // return [
+        //     'totalRecords' => $contacts->total(),
+        //     'contacts' => ContactResource::collection($contacts),
+        // ];
+        //dd(ContactResource::collection($contacts));
         return view('people.index')
             ->with('hidingDeceased', $showDeceased != 'true')
             ->with('deceasedCount', $deceasedCount)
@@ -126,7 +169,9 @@ class ContactsController extends Controller
             ->withTagsCount(Tag::contactsCount())
             ->withUrl($url)
             ->withTagCount($count)
-            ->withTagLess($request->input('no_tag') ?? false);
+            ->withTagLess($request->input('no_tag') ?? false)
+            ->withTotalRecords($contacts->count())
+            ->withContacts(ContactResource::collection($contacts));
     }
 
     /**

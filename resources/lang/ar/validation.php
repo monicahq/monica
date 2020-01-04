@@ -67,6 +67,7 @@ return [
     'not_in'               => ':attribute موجود',
     'not_regex'            => 'صيغة :attribute غير صحيحة.',
     'numeric'              => 'يجب أن يكون :attribute رقماً.',
+    'password' => 'The password is incorrect.',
     'present'              => 'يجب تقديم :attribute',
     'regex'                => 'صيغة :attribute .غير صحيحة',
     'required'             => ':attribute مطلوب.',
