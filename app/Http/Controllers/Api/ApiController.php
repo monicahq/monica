@@ -93,7 +93,6 @@ class ApiController extends Controller
                 'message' => 'Welcome to Monica',
             ],
             'links' => [
-                'activities_url' => route('api.activities'),
                 'addresses_url' => route('api.addresses'),
                 'calls_url' => route('api.calls'),
                 'contacts_url' => route('api.contacts'),
