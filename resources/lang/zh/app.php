@@ -37,6 +37,7 @@ return [
     'retry' => '重试',
     'filter' => '过滤列表',
     'go_back' => '后退',
+    'file_selected' => '1 file selected...|{count} files selected...',
 
     'application_title' => 'Monica – 您的私人社交关系管家',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
