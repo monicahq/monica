@@ -37,6 +37,7 @@ return [
     'retry' => 'Réessayer',
     'filter' => 'Filtrer la liste',
     'go_back' => 'Revenir en arrière',
+    'file_selected' => '1 file selected...|{count} files selected...',
 
     'application_title' => 'Monica – gestionnaire de relations personnelles',
     'application_description' => 'Monica est un outil pour gérer vos interactions avec vos proches, vos amis et votre famille.',
