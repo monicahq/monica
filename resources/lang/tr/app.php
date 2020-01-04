@@ -37,7 +37,7 @@ return [
     'retry' => 'Tekrar dene',
     'filter' => 'Listeyi filtrele',
     'go_back' => 'Geri dön',
-    'file_selected' => '1 file selected...|{count} files selected...',
+    'file_selected' => '{count} dosya seçildi...',
 
     'application_title' => 'Monica - kişisel ilişki yöneticisi',
     'application_description' => 'Monica sevdiklerinizle, arkadaşlarınızla ve ailenizle etkileşimlerinizi yönetebileceğiniz bir araçtır.',
