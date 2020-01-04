@@ -168,7 +168,7 @@ Vue.component(
 
 Vue.component(
   'contact-gift',
-  require('./components/people/Gifts.vue').default
+  require('./components/people/gifts/Gifts.vue').default
 );
 
 Vue.component(
@@ -204,16 +204,6 @@ Vue.component(
 Vue.component(
   'activity-list',
   require('./components/people/activity/ActivityList.vue').default
-);
-
-Vue.component(
-  'create-activity',
-  require('./components/people/activity/CreateActivity.vue').default
-);
-
-Vue.component(
-  'activity-type-list',
-  require('./components/people/activity/ActivityTypeList.vue').default
 );
 
 Vue.component(

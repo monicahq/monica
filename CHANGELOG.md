@@ -2,11 +2,11 @@
 
 ### New features:
 
-*
+* Associate a photo to a gift
 
 ### Enhancements:
 
-*
+* Gift are now added and updated inline
 
 ### Fixes:
 
