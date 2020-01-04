@@ -26,7 +26,7 @@ class DestroyActivity extends BaseService
      * @param array $data
      * @return bool
      */
-    public function validate(array $data) : bool
+    public function validate(array $data): bool
     {
         parent::validate($data);
 

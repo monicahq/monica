@@ -35,7 +35,7 @@ class CreateActivity extends BaseService
      * @param array $data
      * @return bool
      */
-    public function validate(array $data) : bool
+    public function validate(array $data): bool
     {
         parent::validate($data);
 
@@ -91,7 +91,7 @@ class CreateActivity extends BaseService
      * @param array $data
      * @return Activity
      */
-    private function create(array $data) : Activity
+    private function create(array $data): Activity
     {
         $activity = Activity::create([
             'account_id' => $data['account_id'],
