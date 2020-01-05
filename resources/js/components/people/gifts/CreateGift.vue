@@ -1,7 +1,7 @@
 <style scoped>
-    .photo {
-        height: 200px;
-    }
+  .photo {
+      height: 200px;
+  }
 </style>
 
 <template>
@@ -58,6 +58,7 @@
             :required="true"
             :class="'dtc pr2'"
             :title="$t('people.gifts_add_gift_name')"
+            :validator="$v.newGift.name"
             @submit="store"
           />
         </div>
@@ -126,14 +127,16 @@
           <form-checkbox
             v-model="hasRecipient"
             :name="'has_recipient'"
-            @change="() => { this.$refs.recipient.focus() }"
+            @change="(val) => { if (val) { $refs.recipient.focus() } }"
           >
             {{ $t('people.gifts_add_someone', {name: ''}) }}
           </form-checkbox>
           <form-select
             ref="recipient"
+            :name="$t('people.gifts_add_recipient_field')"
             v-model="newGift.recipient_id"
             :options="familyContacts"
+            :validator="$v.newGift.recipient_id"
             @input="hasRecipient = true"
           />
         </div>
@@ -205,6 +208,8 @@
 
 import Error from '../../partials/Error.vue';
 import PhotoUpload from '../photo/PhotoUpload.vue';
+import { validationMixin } from 'vuelidate';
+import { required, maxLength } from 'vuelidate/lib/validators';
 
 export default {
   components: {
@@ -252,6 +257,29 @@ export default {
       hasRecipient: false,
       errors: [],
     };
+  },
+
+  mixins: [validationMixin],
+
+  validations() {
+    var v = {
+      newGift: {
+        name: {
+          required,
+          maxLength: maxLength(255),
+        },
+      }
+    };
+
+    if (this.hasRecipient) {
+      v.newGift = Object.assign(v.newGift, {
+          recipient_id: {
+            required,
+          }
+      });
+    }
+
+    return v;
   },
 
   computed: {
@@ -307,6 +335,7 @@ export default {
       this.displayUpload= this.gift ? this.gift.photos.length > 0 : false;
 
       this.errors = [];
+      this.$v.$reset();
     },
 
     close() {
@@ -317,6 +346,12 @@ export default {
     store() {
       if (! this.hasRecipient) {
         this.newGift.recipient_id = null;
+      }
+
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
+        return;
       }
 
       let method = this.gift ? 'put' : 'post';

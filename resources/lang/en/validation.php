@@ -120,4 +120,11 @@ return [
 
     'attributes' => [],
 
+    'vue' => [
+        'required' => '{field} is required.',
+        'max'                  => [
+            'numeric' => '{field} may not be greater than {max}.',
+            'string'  => '{field} may not be greater than {max} characters.',
+        ],
+    ]
 ];

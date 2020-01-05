@@ -308,6 +308,7 @@ return [
     'gifts_add_value' => 'Value (optional)',
     'gifts_add_comment' => 'Comment (optional)',
     'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
     'gifts_add_photo' => 'Photo (optional)',
     'gifts_add_photo_title' => 'Add a photo for this gift',
     'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
