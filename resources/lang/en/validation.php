@@ -126,5 +126,5 @@ return [
             'numeric' => '{field} may not be greater than {max}.',
             'string'  => '{field} may not be greater than {max} characters.',
         ],
-    ]
+    ],
 ];
