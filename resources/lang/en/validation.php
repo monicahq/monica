@@ -122,7 +122,7 @@ return [
 
     'vue' => [
         'required' => '{field} is required.',
-        'max'                  => [
+        'max' => [
             'numeric' => '{field} may not be greater than {max}.',
             'string'  => '{field} may not be greater than {max} characters.',
         ],

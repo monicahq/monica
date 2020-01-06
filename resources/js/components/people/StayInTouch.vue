@@ -277,15 +277,6 @@ export default {
 
       this.$v.$touch();
 
-      // make sure we can't press update if the frequency is invalid
-      // and if the feature is activated
-      /*
-      if ((this.frequencyInput == '' || this.frequencyInput < 1) && this.stateInput) {
-        this.errorMessage = this.$t('people.stay_in_touch_invalid');
-        return;
-      }
-      */
-
       if (this.$v.$invalid) {
         return;
       }
@@ -311,7 +302,6 @@ export default {
 
     onInput(value) {
       this.stateInput = value > 0;
-      this.$v.frequencyInput.$touch();
     }
   }
 };

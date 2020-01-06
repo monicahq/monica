@@ -133,7 +133,7 @@
           </form-checkbox>
           <form-select
             ref="recipient"
-            :name="$t('people.gifts_add_recipient_field')"
+            :label="$t('people.gifts_add_recipient_field')"
             v-model="newGift.recipient_id"
             :options="familyContacts"
             :validator="$v.newGift.recipient_id"

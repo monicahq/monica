@@ -1,45 +1,13 @@
 <style scoped>
-select {
+.select {
   height: 34px;
   transition: all;
   transition-duration: 0.2s;
   border: 1px solid #c4cdd5;
 }
-select:focus {
+.select:focus {
   border: 1px solid #5c6ac4;
 }
-
-.error {
-  color:#f57f6c;
-}
-
-select.error {
-  border-color: #f79483;
-}
-
-.form-group-error {
-  color:#f57f6c;
-
-  animation-name: shake;
-  animation-fill-mode: forwards;
-  animation-duration: .6s;
-  animation-timing-function: ease-in-out;
-}
-
-@keyframes shake {
-  0%, 100% {
-    transform: translateX(0);
-  }
-
-  15%, 45%, 75% {
-    transform: translateX(0.375rem);
-  }
-
-  30%, 60%, 90% {
-    transform: translateX(-0.375rem);
-  }
-}
-
 </style>
 
 <template>
@@ -48,7 +16,7 @@ select.error {
       v-if="title"
       :for="realid"
       class="mb2"
-      :class="{ b: required }"
+      :class="{ b: required, error: validator && validator.$error }"
     >
       {{ title }}
     </label>
@@ -86,7 +54,7 @@ select.error {
         </optgroup>
       </template>
     </select>
-    <small v-if="validator && (validator.$error && !validator.required)">
+    <small class="error" v-if="validator && (validator.$error && validator.required !== undefined && !validator.required)">
       {{ requiredMessage }}
     </small>
   </div>
@@ -108,7 +76,7 @@ export default {
       type: String,
       default: '',
     },
-    name: {
+    label: {
       type: String,
       default: null,
     },
@@ -147,15 +115,16 @@ export default {
     selectClass() {
       var c = [this.iclass != '' ? this.iclass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0'];
       if (this.validator) {
-        c.push({ 'error': this.validator.$error });
+        c.push({ error: this.validator.$error });
       }
+      c.push('select');
       return c;
     },
-    fieldName() {
-      return this.name && this.name.length > 0 ? this.name : this.title;
+    field() {
+      return this.label && this.label.length > 0 ? this.label : this.title;
     },
     requiredMessage() {
-      return this.$t('validation.vue.required', { field: this.fieldName })
+      return this.$t('validation.vue.required', { field: this.field })
     },
   },
 

@@ -6,7 +6,7 @@
     <div>
       <p-input
         ref="input"
-        v-model.lazy="modelValue"
+        v-model.lazy="prop"
         :name="name"
         :type="_type"
         :class="inputClass"
@@ -14,7 +14,7 @@
         :value="value"
         :disabled="disabled"
         :required="required"
-        @change="event => { $emit('change', event) }"
+        @change="$emit('change', $event)"
       >
         <slot></slot>
         <slot slot="extra" name="inputextra"></slot>
@@ -80,6 +80,22 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+
+  data() {
+    return {
+      prop: null
+    };
+  },
+
+  watch: {
+    modelValue(val) {
+      this.prop = val;
+    },
+  },
+
+  mounted() {
+    this.prop = this.modelValue;
   },
 
   computed: {
