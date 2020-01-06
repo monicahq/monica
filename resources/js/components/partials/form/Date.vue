@@ -20,10 +20,10 @@
       @clearDate="onSelected('')"
     />
     <input :name="id" type="hidden" :value="exchange" />
-    <small class="error" v-if="validator && (validator.$error && validator.required !== undefined && !validator.required)">
+    <small v-if="validator && (validator.$error && validator.required !== undefined && !validator.required)" class="error">
       {{ requiredMessage }}
     </small>
-    <small class="error" v-if="validator && (validator.$error && validator.before !== undefined && !validator.before)">
+    <small v-if="validator && (validator.$error && validator.before !== undefined && !validator.before)" class="error">
       {{ beforeMessage }}
     </small>
   </div>

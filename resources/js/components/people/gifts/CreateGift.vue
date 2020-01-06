@@ -133,8 +133,8 @@
           </form-checkbox>
           <form-select
             ref="recipient"
-            :label="$t('people.gifts_add_recipient_field')"
             v-model="newGift.recipient_id"
+            :label="$t('people.gifts_add_recipient_field')"
             :options="familyContacts"
             :validator="$v.newGift.recipient_id"
             @input="hasRecipient = true"
@@ -217,6 +217,8 @@ export default {
     PhotoUpload
   },
 
+  mixins: [validationMixin],
+
   props: {
     contactId: {
       type: Number,
@@ -259,8 +261,6 @@ export default {
     };
   },
 
-  mixins: [validationMixin],
-
   validations() {
     var v = {
       newGift: {
@@ -273,9 +273,9 @@ export default {
 
     if (this.hasRecipient) {
       v.newGift = Object.assign(v.newGift, {
-          recipient_id: {
-            required,
-          }
+        recipient_id: {
+          required,
+        }
       });
     }
 

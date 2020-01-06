@@ -197,6 +197,8 @@ export default {
     StayInTouchLabel,
   },
 
+  mixins: [validationMixin],
+
   props: {
     hash: {
       type: String,
@@ -211,8 +213,6 @@ export default {
       default: false,
     },
   },
-
-  mixins: [validationMixin],
 
   validations: {
     frequencyInput: {

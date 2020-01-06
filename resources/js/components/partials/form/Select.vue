@@ -54,7 +54,7 @@
         </optgroup>
       </template>
     </select>
-    <small class="error" v-if="validator && (validator.$error && validator.required !== undefined && !validator.required)">
+    <small v-if="validator && (validator.$error && validator.required !== undefined && !validator.required)" class="error">
       {{ requiredMessage }}
     </small>
   </div>
@@ -124,7 +124,7 @@ export default {
       return this.label && this.label.length > 0 ? this.label : this.title;
     },
     requiredMessage() {
-      return this.$t('validation.vue.required', { field: this.field })
+      return this.$t('validation.vue.required', { field: this.field });
     },
   },
 

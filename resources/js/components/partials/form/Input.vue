@@ -35,10 +35,10 @@
       @input="onInput($event)"
       @keyup.enter="onSubmit($event)"
     />
-    <small class="error" v-if="validator && (validator.$error && validator.required !== undefined && !validator.required)">
+    <small v-if="validator && (validator.$error && validator.required !== undefined && !validator.required)" class="error">
       {{ requiredMessage }}
     </small>
-    <small class="error" v-if="validator && (validator.$error && validator.maxLength !== undefined && !validator.maxLength)">
+    <small v-if="validator && (validator.$error && validator.maxLength !== undefined && !validator.maxLength)" class="error">
       {{ maxLengthMessage }}
     </small>
   </div>
@@ -114,14 +114,14 @@ export default {
       return this.label && this.label.length > 0 ? this.label : this.title;
     },
     requiredMessage() {
-      return this.$t('validation.vue.required', { field: this.field })
+      return this.$t('validation.vue.required', { field: this.field });
     },
     maxLengthMessage() {
       var type = 'string';
       switch (this.inputType) {
-        case 'number':
-          type = 'numeric';
-          break;
+      case 'number':
+        type = 'numeric';
+        break;
       }
       return this.$t('validation.vue.max.'.type, {
         field: this.field,
@@ -151,9 +151,9 @@ export default {
 
     _parseInput(value) {
       switch (this.inputType) {
-        case 'number':
-          return parseInt(value);
-          break;
+      case 'number':
+        return parseInt(value);
+        break;
       }
       return value;
     }

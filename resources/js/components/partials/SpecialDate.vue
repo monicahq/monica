@@ -127,6 +127,8 @@ const before = (param) =>
 
 export default {
 
+  mixins: [validationMixin],
+
   props: {
     value: {
       type: String,
@@ -174,28 +176,35 @@ export default {
     };
   },
 
-  mixins: [validationMixin],
-
   validations() {
     switch (this.selectedOption) {
-      case 'approximate':
-        return {
-          selectedAge: {
-            required,
-            numeric,
-          }
-        };
-        break;
-      case 'exact':
-        return {
-          selectedDate: {
-            required,
-            before: before(moment())
-          }
-        };
-        break;
+    case 'approximate':
+      return {
+        selectedAge: {
+          required,
+          numeric,
+        }
+      };
+      break;
+    case 'exact':
+      return {
+        selectedDate: {
+          required,
+          before: before(moment())
+        }
+      };
+      break;
     }
     return null;
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    },
+    locale() {
+      return this.$root.locale;
+    }
   },
 
   watch: {
@@ -210,15 +219,6 @@ export default {
     age(val) {
       this.selectedAge = val;
     },
-  },
-
-  computed: {
-    dirltr() {
-      return this.$root.htmldir == 'ltr';
-    },
-    locale() {
-      return this.$root.locale;
-    }
   },
 
   mounted() {

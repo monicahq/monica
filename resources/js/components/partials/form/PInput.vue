@@ -88,16 +88,6 @@ export default {
     };
   },
 
-  watch: {
-    modelValue(val) {
-      this.prop = val;
-    },
-  },
-
-  mounted() {
-    this.prop = this.modelValue;
-  },
-
   computed: {
     _type() {
       if (this.$options.input_type) {
@@ -111,6 +101,16 @@ export default {
     inputColor() {
       return this.color != '' ? this.color : 'primary-o';
     },
+  },
+
+  watch: {
+    modelValue(val) {
+      this.prop = val;
+    },
+  },
+
+  mounted() {
+    this.prop = this.modelValue;
   },
 
   methods: {

@@ -65,6 +65,8 @@ const before = (param) =>
 
 export default {
 
+  mixins: [validationMixin],
+
   props: {
     value: {
       type: Boolean,
@@ -88,12 +90,19 @@ export default {
     };
   },
 
-  mixins: [validationMixin],
-
   validations: {
     selectedDate: {
       required,
       before: before(moment())
+    }
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    },
+    locale() {
+      return this.$root.locale;
     }
   },
 
@@ -105,15 +114,6 @@ export default {
     date(val) {
       this.selectedDate = val;
     },
-  },
-
-  computed: {
-    dirltr() {
-      return this.$root.htmldir == 'ltr';
-    },
-    locale() {
-      return this.$root.locale;
-    }
   },
 
   mounted() {
