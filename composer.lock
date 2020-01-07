@@ -2236,16 +2236,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v10.5.1",
+            "version": "v10.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "3daaa4ea38ba8e256e6df97e40937dada073ff45"
+                "reference": "31c8ade4d2eead6c8f44f76025ac23bdcaaa144b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/3daaa4ea38ba8e256e6df97e40937dada073ff45",
-                "reference": "3daaa4ea38ba8e256e6df97e40937dada073ff45",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/31c8ade4d2eead6c8f44f76025ac23bdcaaa144b",
+                "reference": "31c8ade4d2eead6c8f44f76025ac23bdcaaa144b",
                 "shasum": ""
             },
             "require": {
@@ -2306,7 +2306,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2019-11-26T16:57:09+00:00"
+            "time": "2020-01-07T17:45:45+00:00"
         },
         {
             "name": "laravel/framework",
@@ -7308,16 +7308,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v7.14.2",
+            "version": "v7.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "d7d11658defa08ca8f6fc6668c745aaa67f56bdf"
+                "reference": "7f6e7edfc8a2641da714ce122efbb730a22b4ddb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/d7d11658defa08ca8f6fc6668c745aaa67f56bdf",
-                "reference": "d7d11658defa08ca8f6fc6668c745aaa67f56bdf",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/7f6e7edfc8a2641da714ce122efbb730a22b4ddb",
+                "reference": "7f6e7edfc8a2641da714ce122efbb730a22b4ddb",
                 "shasum": ""
             },
             "require": {
@@ -7361,7 +7361,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2019-12-04T17:47:17+00:00"
+            "time": "2020-01-07T02:09:57+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -7990,7 +7990,7 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v5.0.1",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
