@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use DateTime;
 use Carbon\Carbon;
 use Jenssegers\Date\Date;
 use function Safe\strtotime;
@@ -113,7 +114,7 @@ class DateHelper
     /**
      * Return date timestamp format.
      *
-     * @param Carbon|\App\Models\Instance\SpecialDate|string|null $date
+     * @param Carbon|DateTime|\App\Models\Instance\SpecialDate|string|null $date
      * @return string|null
      */
     public static function getDate($date)
