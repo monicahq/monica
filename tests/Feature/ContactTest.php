@@ -281,7 +281,7 @@ class ContactTest extends FeatureTestCase
 
         $reminder = [
             'title' => $this->faker->sentence('5'),
-            'initial_date' => DateHelper::getDate($this->faker->dateTimeBetween('now', '+2 years')),
+            'initial_date' => DateHelper::getDate(DateHelper::parseDateTime($this->faker->dateTimeBetween('now', '+2 years'))),
             'frequency_type' => 'one_time',
             'description' => $this->faker->sentence(),
         ];
