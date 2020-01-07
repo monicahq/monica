@@ -7,7 +7,7 @@
 ### Enhancements:
 
 * Gift are now added and updated inline
-
+* Add new name order \<nickname> (\<First name> \<Last name>)
 ### Fixes:
 
 *
