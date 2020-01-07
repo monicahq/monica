@@ -217,8 +217,6 @@ export default {
     PhotoUpload
   },
 
-  mixins: [validationMixin],
-
   props: {
     contactId: {
       type: Number,
@@ -260,6 +258,8 @@ export default {
       errors: [],
     };
   },
+
+  mixins: [validationMixin],
 
   validations() {
     var v = {

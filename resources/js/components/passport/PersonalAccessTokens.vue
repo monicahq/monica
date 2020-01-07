@@ -69,7 +69,7 @@
       <error :errors="form.errors" />
 
       <!-- Create Token Form -->
-      <form class="form-horizontal" role="form" @submit.prevent="store">
+      <form class="form-horizontal" role="form" ref="form" @submit.prevent="store">
         <!-- Name -->
         <div class="col-md-auto">
           <form-input
@@ -80,6 +80,7 @@
             :iclass="'br2 f5 w-50 ba b--black-40 pa2 outline-0'"
             :required="true"
             :title="$t('settings.api_token_name')"
+            :validator="$v.form.name"
           />
         </div>
 
@@ -141,6 +142,8 @@
 <script>
 import Error from '../partials/Error.vue';
 import { SweetModal } from 'sweet-modal-vue';
+import { validationMixin } from 'vuelidate';
+import { required } from 'vuelidate/lib/validators';
 
 export default {
 
@@ -163,6 +166,16 @@ export default {
         errors: []
       },
     };
+  },
+
+  mixins: [validationMixin],
+
+  validations: {
+    form: {
+      name: {
+        required,
+      }
+    }
   },
 
   computed: {
@@ -207,6 +220,8 @@ export default {
      * Close all modals.
      */
     closeModal() {
+      this.$refs.form.reset();
+      this.$v.$reset();
       this.$refs.modalCreateToken.close();
       this.$refs.modalAccessToken.close();
     },
@@ -232,6 +247,12 @@ export default {
      * Create a new personal access token.
      */
     store() {
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
+        return;
+      }
+
       this.accessToken = null;
 
       this.form.errors = [];

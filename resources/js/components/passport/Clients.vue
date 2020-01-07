@@ -80,25 +80,27 @@
     </div>
 
     <!-- Create Client Modal -->
-    <sweet-modal ref="modalCreateClient" overlay-theme="dark" tabindex="-1" role="dialog"
-                 :title="$t('settings.api_oauth_create')" @open="_focusCreateInput"
+    <sweet-modal ref="modalClient" overlay-theme="dark" tabindex="-1" role="dialog"
+                 :title="form.id ? $t('settings.api_oauth_edit') : $t('settings.api_oauth_create')"
+                 @open="_focusInput"
     >
       <!-- Form Errors -->
-      <error :errors="createForm.errors" />
+      <error :errors="form.errors" />
 
       <!-- Create Client Form -->
-      <form class="form-horizontal" role="form">
+      <form class="form-horizontal" role="form" ref="form">
         <!-- Name -->
         <div class="form-group">
           <div class="col-md-auto">
             <form-input
-              :id="'create-client-name'"
-              ref="createClientName"
-              v-model="createForm.name"
+              :id="'client-name'"
+              ref="clientName"
+              v-model="form.name"
               :iclass="'br2 f5 w-50 ba b--black-40 pa2 outline-0'"
               :required="true"
               :title="$t('settings.api_oauth_name')"
               @submit="store"
+              :validator="$v.form.name"
             />
 
             <span class="help-block">
@@ -111,12 +113,13 @@
         <div class="form-group">
           <div class="col-md-auto">
             <form-input
-              :id="'create-redirect-url'"
-              v-model="createForm.redirect"
+              :id="'redirect-url'"
+              v-model="form.redirect"
               :iclass="'br2 f5 w-50 ba b--black-40 pa2 outline-0'"
               :required="true"
               :title="$t('settings.api_oauth_redirecturl')"
               @submit="store"
+              :validator="$v.form.redirect"
             />
 
             <span class="help-block">
@@ -132,74 +135,19 @@
           {{ $t('app.close') }}
         </a>
         <a class="btn btn-primary" href="" @click.prevent="store">
-          {{ $t('app.create') }}
+          {{ form.id ? $t('app.save') : $t('app.create') }}
         </a>
       </div>
     </sweet-modal>
 
-    <!-- Edit Client Modal -->
-    <sweet-modal ref="modalEditClient" overlay-theme="dark" tabindex="-1" role="dialog"
-                 :title="$t('settings.api_oauth_edit')" @open="_focusEditInput"
-    >
-      <!-- Form Errors -->
-      <error :errors="editForm.errors" />
-
-      <!-- Edit Client Form -->
-      <form class="form-horizontal" role="form">
-        <!-- Name -->
-        <div class="form-group">
-          <div class="col-md-auto">
-            <form-input
-              :id="'edit-client-name'"
-              ref="editClientName"
-              v-model="editForm.name"
-              :iclass="'br2 f5 w-50 ba b--black-40 pa2 outline-0'"
-              :required="true"
-              :title="$t('settings.api_oauth_name')"
-              @submit="update"
-            />
-
-            <small class="form-text text-muted">
-              {{ $t('settings.api_oauth_name_help') }}
-            </small>
-          </div>
-        </div>
-
-        <!-- Redirect URL -->
-        <div class="form-group">
-          <div class="col-md-auto">
-            <form-input
-              :id="'edit-redirect-url'"
-              v-model="editForm.redirect"
-              :iclass="'br2 f5 w-50 ba b--black-40 pa2 outline-0'"
-              :required="true"
-              :title="$t('settings.api_oauth_redirecturl')"
-              @submit="update"
-            />
-
-            <small class="form-text text-muted">
-              {{ $t('settings.api_oauth_redirecturl_help') }}
-            </small>
-          </div>
-        </div>
-      </form>
-
-      <!-- Modal Actions -->
-      <div slot="button">
-        <a class="btn" href="" @click.prevent="closeModal">
-          {{ $t('app.close') }}
-        </a>
-        <a class="btn btn-primary" href="" @click.prevent="update">
-          {{ $t('app.save') }}
-        </a>
-      </div>
-    </sweet-modal>
   </div>
 </template>
 
 <script>
 import Error from '../partials/Error.vue';
 import { SweetModal } from 'sweet-modal-vue';
+import { validationMixin } from 'vuelidate';
+import { required, url } from 'vuelidate/lib/validators';
 
 export default {
 
@@ -212,18 +160,26 @@ export default {
     return {
       clients: [],
 
-      createForm: {
-        errors: [],
-        name: '',
-        redirect: ''
-      },
-
-      editForm: {
+      form: {
         errors: [],
         name: '',
         redirect: ''
       },
     };
+  },
+
+  mixins: [validationMixin],
+
+  validations: {
+    form: {
+      name: {
+        required,
+      },
+      redirect: {
+        required,
+        url,
+      }
+    }
   },
 
   computed: {
@@ -244,26 +200,16 @@ export default {
     /**
      * Focus on modal open.
      */
-    _focusCreateInput() {
+    _focusInput() {
       let vm = this;
       setTimeout(function() {
-        vm.$refs.createClientName.focus();
+        vm.$refs.clientName.focus();
       }, 10);
     },
 
     /**
-     * Focus on modal open.
+     * Get all of the OAuth clients for the user.
      */
-    _focusEditInput() {
-      let vm = this;
-      setTimeout(function() {
-        vm.$refs.editClientName.focus();
-      }, 10);
-    },
-
-    /**
-      * Get all of the OAuth clients for the user.
-      */
     getClients() {
       axios.get('oauth/clients')
         .then(response => {
@@ -272,56 +218,47 @@ export default {
     },
 
     /**
-      * Show the form for creating new clients.
-      */
+     * Show the form for creating new clients.
+     */
     showCreateClientForm() {
-      this.$refs.modalCreateClient.open();
+      this.resetField();
+      this.$refs.modalClient.open();
     },
 
     /**
-      * Create a new OAuth client for the user.
-      */
+     * Create a new OAuth client for the user.
+     */
     store() {
-      this.persistClient(
-        'post', 'oauth/clients',
-        this.createForm
-      );
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
+        return;
+      }
+
+      let method = this.form.id ? 'put' : 'post';
+      let url = this.form.id ? 'oauth/clients/' + this.form.id : 'oauth/clients';
+
+      this.persistClient(method, url, this.form);
     },
 
     /**
-      * Edit the given client.
-      */
+     * Edit the given client.
+     */
     edit(client) {
-      this.editForm.id = client.id;
-      this.editForm.name = client.name;
-      this.editForm.redirect = client.redirect;
+      this.form = Object.assign({errors:[]}, client);
 
-      this.$refs.modalEditClient.open();
+      this.$refs.modalClient.open();
     },
 
     /**
-      * Update the client being edited.
-      */
-    update() {
-      this.persistClient(
-        'put', 'oauth/clients/' + this.editForm.id,
-        this.editForm
-      );
-    },
-
-    /**
-      * Persist the client to storage using the given form.
-      */
+     * Persist the client to storage using the given form.
+     */
     persistClient(method, uri, form) {
       form.errors = [];
 
       axios[method](uri, form)
         .then(response => {
           this.getClients();
-
-          form.name = '';
-          form.redirect = '';
-          form.errors = [];
 
           this.closeModal();
         })
@@ -335,8 +272,8 @@ export default {
     },
 
     /**
-      * Destroy the given client.
-      */
+     * Destroy the given client.
+     */
     destroy(client) {
       axios.delete('oauth/clients/' + client.id)
         .then(response => {
@@ -345,8 +282,19 @@ export default {
     },
 
     closeModal() {
-      this.$refs.modalCreateClient.close();
-      this.$refs.modalEditClient.close();
+      this.resetField();
+      this.$v.$reset();
+      this.$refs.form.reset();
+      this.$refs.modalClient.close();
+    },
+
+    resetField() {
+      this.form = {
+        id: '',
+        errors:[],
+        name: '',
+        redirect: '',
+      };
     },
 
     /**

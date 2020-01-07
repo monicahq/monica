@@ -33,6 +33,8 @@
       :value="value"
       :maxlength="maxlength"
       @input="onInput($event)"
+      @blur="onBlur($event)"
+      @change="onChange($event)"
       @keyup.enter="onSubmit($event)"
     />
     <small v-if="validator && (validator.$error && validator.required !== undefined && !validator.required)" class="error">
@@ -40,6 +42,9 @@
     </small>
     <small v-if="validator && (validator.$error && validator.maxLength !== undefined && !validator.maxLength)" class="error">
       {{ maxLengthMessage }}
+    </small>
+    <small v-if="validator && (validator.$error && validator.url !== undefined && !validator.url)" class="error">
+      {{ urlMessage }}
     </small>
   </div>
 </template>
@@ -116,6 +121,9 @@ export default {
     requiredMessage() {
       return this.$t('validation.vue.required', { field: this.field });
     },
+    urlMessage() {
+      return this.$t('validation.vue.url', { field: this.field });
+    },
     maxLengthMessage() {
       var type = 'string';
       switch (this.inputType) {
@@ -136,27 +144,32 @@ export default {
     },
 
     onInput(event) {
-      if (this.validator) {
-        this.validator.$touch();
+      if (this.validator && event.data !== undefined) {
+        this.validator.$reset();
       }
-      this.$emit('input', this._parseInput(event.target.value));
+      this.$emit('input', event.target.value);
     },
 
     onSubmit(event) {
       if (this.validator) {
         this.validator.$touch();
       }
-      this.$emit('submit', this._parseInput(event.target.value));
+      this.$emit('submit', event.target.value);
     },
 
-    _parseInput(value) {
-      switch (this.inputType) {
-      case 'number':
-        return parseInt(value);
-        break;
+    onBlur(event) {
+      if (this.validator && event.target.value !== '') {
+        this.validator.$touch();
       }
-      return value;
-    }
+      this.$emit('blur', event.target.value);
+    },
+
+    onChange(event) {
+      if (this.validator) {
+        this.validator.$touch();
+      }
+      this.$emit('change', event.target.value);
+    },
   },
 
 };

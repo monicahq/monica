@@ -131,7 +131,7 @@
                 <div class="dib">
                   <form-input
                     :id="'frequency'"
-                    v-model="frequencyInput"
+                    v-model.number="frequencyInput"
                     :input-type="'number'"
                     :width="60"
                     :required="true"
