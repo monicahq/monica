@@ -26,7 +26,7 @@ class Gift extends Resource
             'amount' => $this->value,
             'amount_with_currency' => $this->amount,
             'status' => $this->status,
-            'date' => $this->date ? $this->date->format('Y-m-d') : null,
+            'date' => DateHelper::getDate($this->date),
             'recipient' => new ContactShortResource($this->recipient),
             'photos' => PhotoResource::collection($this->photos),
             'contact' => new ContactShortResource($this->contact),

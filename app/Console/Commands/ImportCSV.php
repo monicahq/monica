@@ -204,7 +204,7 @@ class ImportCSV extends Command
             app(CreateReminder::class)->execute([
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
-                'initial_date' => $specialDate->date->toDateString(),
+                'initial_date' => DateHelper::getDate($specialDate),
                 'frequency_type' => 'year',
                 'frequency_number' => 1,
                 'title' => trans(

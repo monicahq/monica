@@ -5,6 +5,7 @@ namespace Tests\Unit\Models;
 use Carbon\Carbon;
 use App\Models\User\User;
 use Tests\FeatureTestCase;
+use App\Helpers\DateHelper;
 use App\Models\Contact\Debt;
 use App\Models\Account\Photo;
 use App\Models\Contact\Gender;
@@ -388,7 +389,7 @@ class ContactTest extends FeatureTestCase
 
         $this->assertEquals(
             '2015-10-29',
-            $contact->getLastActivityDate()->format('Y-m-d')
+            DateHelper::getDate($contact->getLastActivityDate())
         );
     }
 
@@ -405,7 +406,7 @@ class ContactTest extends FeatureTestCase
 
         $this->assertEquals(
             '2015-10-29',
-            $contact->getLastActivityDate()->format('Y-m-d')
+            DateHelper::getDate($contact->getLastActivityDate())
         );
     }
 

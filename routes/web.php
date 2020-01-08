@@ -176,7 +176,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
 
         // Activities
         Route::get('/activityCategories', 'Contacts\\ActivitiesController@categories')->name('activities.categories');
-        Route::resource('people/{contact}/activities', 'Contacts\\ActivitiesController')->only(['index', 'store', 'destroy']);
+        Route::resource('people/{contact}/activities', 'Contacts\\ActivitiesController')->only(['index']);
         Route::get('/people/{contact}/activities/contacts', 'Contacts\\ActivitiesController@contacts')->name('activities.contacts');
         Route::get('/people/{contact}/activities/summary', 'Contacts\\ActivitiesController@summary')->name('activities.summary');
         Route::get('/people/{contact}/activities/{year}', 'Contacts\\ActivitiesController@year')->name('activities.year');
