@@ -64,6 +64,7 @@ ifeq ($(BUILD),)
     BUILD := $(BRANCH)
   endif
 endif
+$(info ##vso[task.setvariable variable=MONICA_VERSION]$(BUILD))
 
 DESTDIR := monica-$(BUILD)
 ASSETS := monica-assets-$(BUILD)

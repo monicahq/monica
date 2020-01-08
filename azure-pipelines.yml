@@ -34,6 +34,8 @@ stages:
   - template: .azure/job-reporting.yml
   - template: .azure/job-test-migrations.yml
 
+
+
 - stage: deployx
   displayName: 'Deployx'
   dependsOn: build
@@ -49,15 +51,20 @@ stages:
           steps:
           - download: none
           - checkout: self
-          - template: .azure/step-prepare-environment.yml
           - template: .azure/step-composer-install.yml
             parameters:
               no_dev: 'true'
           - script: make dist
-          - script: make push_bintray_dist
-            env:
-              BINTRAY_USER: $(BINTRAY_USER)
-              BINTRAY_APIKEY: $(BINTRAY_APIKEY)
+          - task: UniversalPackages@0
+            displayName: Universal Publish
+            inputs:
+              command: publish
+              publishDirectory: '$(System.DefaultWorkingDirectory)/results'
+              vstsFeedPublish: 'monica'
+              versionOption: custom
+              versionPublish: $(MONICA_VERSION)
+              vstsFeedPackagePublish: 'monica'
+              packagePublishDescription: 'Monica assets'
 
 
 - stage: deploy
@@ -81,10 +88,14 @@ stages:
             parameters:
               no_dev: 'true'
           - script: make dist
-          - script: make push_bintray_dist
-            env:
-              BINTRAY_USER: $(BINTRAY_USER)
-              BINTRAY_APIKEY: $(BINTRAY_APIKEY)
+          - task: UniversalPackages@0
+            displayName: Universal Publish
+            inputs:
+              command: publish
+              publishDirectory: '$(System.DefaultWorkingDirectory)/results'
+              vstsFeedPublish: 'monica'
+              vstsFeedPackagePublish: 'monica'
+              packagePublishDescription: 'Monica assets'
 
   - deployment: deploy_docker_master
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
