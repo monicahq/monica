@@ -45,16 +45,15 @@ stages:
     environment: 'monica'
     strategy:
       runOnce:
-        preDeploy:
+        deploy:
           steps:
+          - download: none
           - checkout: self
           - template: .azure/step-prepare-environment.yml
           - template: .azure/step-composer-install.yml
             parameters:
               no_dev: 'true'
           - script: make dist
-        deploy:
-          steps:
           - script: make push_bintray_dist
             env:
               BINTRAY_USER: $(BINTRAY_USER)
@@ -74,14 +73,14 @@ stages:
     environment: 'monica'
     strategy:
       runOnce:
-        preDeploy:
+        deploy:
           steps:
+          - download: none
+          - checkout: self
           - template: .azure/step-composer-install.yml
             parameters:
               no_dev: 'true'
           - script: make dist
-        deploy:
-          steps:
           - script: make push_bintray_dist
             env:
               BINTRAY_USER: $(BINTRAY_USER)
@@ -94,12 +93,12 @@ stages:
     environment: 'monica'
     strategy:
       runOnce:
-        preDeploy:
-          steps:
-          - template: .azure/step-prepare-environment.yml
-          - template: .azure/step-docker-build.yml
         deploy:
           steps:
+          - download: none
+          - checkout: self
+          - template: .azure/step-prepare-environment.yml
+          - template: .azure/step-docker-build.yml
           - template: .azure/step-docker-push-github.yml
 
   - deployment: deploy_docker
@@ -109,11 +108,11 @@ stages:
     environment: 'monica'
     strategy:
       runOnce:
-        preDeploy:
-          steps:
-          - template: .azure/step-prepare-environment.yml
-          - template: .azure/step-docker-build.yml
         deploy:
           steps:
+          - download: none
+          - checkout: self
+          - template: .azure/step-prepare-environment.yml
+          - template: .azure/step-docker-build.yml
           - template: .azure/step-docker-push-github.yml
           - template: .azure/step-docker-push.yml
