@@ -42,6 +42,7 @@ stages:
   - deployment: deploy_distx
     pool:
       vmImage: 'ubuntu-latest'
+    environment: 'monica'
     strategy:
       runOnce:
         preDeploy:
@@ -68,6 +69,7 @@ stages:
     condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
     pool:
       vmImage: 'ubuntu-latest'
+    environment: 'monica'
     strategy:
       runOnce:
         preDeploy:
@@ -87,6 +89,7 @@ stages:
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     pool:
       vmImage: 'ubuntu-latest'
+    environment: 'monica'
     strategy:
       runOnce:
         preDeploy:
@@ -101,6 +104,7 @@ stages:
     condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
     pool:
       vmImage: 'ubuntu-latest'
+    environment: 'monica'
     strategy:
       runOnce:
         preDeploy:
