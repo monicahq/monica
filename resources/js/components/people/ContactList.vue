@@ -180,8 +180,8 @@ export default {
     onRowClick(params) {
       params.event.preventDefault();
       if (params.event.ctrlKey) {
-          window.open(params.row.route, '_blank');
-          return;
+        window.open(params.row.route, '_blank');
+        return;
       }
       window.location.href = params.row.route;
     },
