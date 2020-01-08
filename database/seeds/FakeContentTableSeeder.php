@@ -2,12 +2,14 @@
 
 use Carbon\Carbon;
 use App\Models\User\User;
+use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Gift\CreateGift;
 use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\WithFaker;
 use App\Services\Contact\Address\CreateAddress;
@@ -276,7 +278,7 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 13); $j++) {
-                $date = Carbon::instance($this->faker->dateTimeThisYear($max = 'now'))->format('Y-m-d');
+                $date = DateHelper::getDate(Carbon::instance($this->faker->dateTimeThisYear($max = 'now')));
 
                 $request = [
                     'account_id' => $this->contact->account_id,
@@ -325,7 +327,7 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 6); $j++) {
-                $debt = $this->contact->debts()->create([
+                $this->contact->debts()->create([
                     'in_debt' => (rand(1, 2) == 1 ? 'yes' : 'no'),
                     'amount' => rand(321, 39391),
                     'reason' => $this->faker->realText(rand(100, 1000)),
@@ -340,15 +342,14 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 31); $j++) {
-                $gift = $this->contact->gifts()->create([
-
+                app(CreateGift::class)->execute([
+                    'account_id' => $this->contact->account_id,
+                    'contact_id' => $this->contact->id,
+                    'status' => (rand(1, 3) == 1 ? 'offered' : 'idea'),
                     'name' => $this->faker->realText(rand(10, 100)),
                     'comment' => $this->faker->realText(rand(1000, 5000)),
                     'url' => $this->faker->url,
-                    'value' => rand(12, 120),
-                    'account_id' => $this->contact->account_id,
-                    'is_an_idea' => true,
-                    'has_been_offered' => false,
+                    'amount' => rand(12, 120),
                 ]);
             }
         }
