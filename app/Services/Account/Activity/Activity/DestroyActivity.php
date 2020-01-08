@@ -21,6 +21,22 @@ class DestroyActivity extends BaseService
     }
 
     /**
+     * Validate all datas to execute the service.
+     *
+     * @param array $data
+     * @return bool
+     */
+    public function validate(array $data): bool
+    {
+        parent::validate($data);
+
+        Activity::where('account_id', $data['account_id'])
+            ->findOrFail($data['activity_id']);
+
+        return true;
+    }
+
+    /**
      * Destroy an activity.
      *
      * @param array $data
@@ -30,8 +46,7 @@ class DestroyActivity extends BaseService
     {
         $this->validate($data);
 
-        $activity = Activity::where('account_id', $data['account_id'])
-            ->findOrFail($data['activity_id']);
+        $activity = Activity::find($data['activity_id']);
 
         $activity->deleteJournalEntry();
 

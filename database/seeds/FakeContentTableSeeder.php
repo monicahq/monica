@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use App\Models\User\User;
+use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
@@ -277,7 +278,7 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 13); $j++) {
-                $date = Carbon::instance($this->faker->dateTimeThisYear($max = 'now'))->format('Y-m-d');
+                $date = DateHelper::getDate(Carbon::instance($this->faker->dateTimeThisYear($max = 'now')));
 
                 $request = [
                     'account_id' => $this->contact->account_id,
