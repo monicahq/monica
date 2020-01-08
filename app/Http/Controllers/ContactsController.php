@@ -253,7 +253,7 @@ class ContactsController extends Controller
         foreach ($reminders as $reminder) {
             $next_expected_date = $reminder->calculateNextExpectedDateOnTimezone();
             $reminder->next_expected_date_human_readable = DateHelper::getShortDate($next_expected_date);
-            $reminder->next_expected_date = $next_expected_date->format('Y-m-d');
+            $reminder->next_expected_date = DateHelper::getDate($next_expected_date);
         }
         $reminders = $reminders->sortBy('next_expected_date');
 

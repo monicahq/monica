@@ -100,7 +100,7 @@
           <label class="b">
             {{ $t('people.modal_call_emotion') }}
           </label>
-          <emotion class="pv2" @updateEmotionsList="updateEmotionsList" />
+          <emotion class="pv2" @update="updateEmotionsList" />
         </div>
 
         <!-- ACTIONS -->
@@ -174,7 +174,7 @@
             <label class="b">
               {{ $t('people.modal_call_emotion') }}
             </label>
-            <emotion class="pv2" :initial-emotions="call.emotions" @updateEmotionsList="updateEmotionsList" />
+            <emotion class="pv2" :initial-emotions="call.emotions" @update="updateEmotionsList" />
           </div>
 
           <!-- ACTIONS -->
@@ -245,8 +245,12 @@
 
 <script>
 import moment from 'moment';
+import Emotion from '../Emotion.vue';
 
 export default {
+  components: {
+    Emotion,
+  },
 
   filters: {
     moment: function (date) {
