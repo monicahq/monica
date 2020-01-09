@@ -27,79 +27,17 @@ stages:
   displayName: 'Build'
   condition: not(startsWith(variables['System.PullRequest.SourceBranch'], 'l10n_master'))
   jobs:
-#  - template: .azure/job-build.yml
-#  - template: .azure/job-tests.yml
+  - template: .azure/job-build.yml
+  - template: .azure/job-tests.yml
   - template: .azure/job-analyzers.yml
-#  - template: .azure/job-test-browser.yml
-#  - template: .azure/job-reporting.yml
-#  - template: .azure/job-test-migrations.yml
-
-
-
-- stage: deployx
-  displayName: 'Deployx'
-
-  jobs:
-  - deployment: deploy_distx
-    pool:
-      vmImage: 'ubuntu-latest'
-    environment: 'monica'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: none
-          - checkout: self
-          - template: .azure/step-composer-install.yml
-            parameters:
-              no_dev: 'true'
-          - script: make dist
-          - bash: |
-              VERSION=$(php artisan monica:getversion)
-              echo "Monica version: $VERSION"
-              echo "##vso[task.setvariable variable=MONICA_VERSION]$VERSION"
-            displayName: Set Monica version
-
-          - task: CopyFiles@2
-            displayName: Copy monica assets
-            inputs:
-              sourceFolder: $(System.DefaultWorkingDirectory)/results
-              contents: monica-assets-*.*
-              targetFolder: $(System.ArtifactStagingDirectory)/assets
-          - task: UniversalPackages@0
-            displayName: Universal Publish
-            inputs:
-              command: publish
-              publishDirectory: '$(System.ArtifactStagingDirectory)/assets'
-              vstsFeedPublish: 'monica'
-              versionOption: custom
-              versionPublish: $(MONICA_VERSION)
-              vstsFeedPackagePublish: 'monica-assets'
-              packagePublishDescription: 'Monica assets'
-
-          - task: CopyFiles@2
-            displayName: Copy monica release
-            inputs:
-              sourceFolder: $(System.DefaultWorkingDirectory)/results
-              contents: |
-                monica-*.*
-                !monica-assets-*.*
-              targetFolder: $(System.ArtifactStagingDirectory)/release
-          - task: UniversalPackages@0
-            displayName: Universal Publish
-            inputs:
-              command: publish
-              publishDirectory: '$(System.ArtifactStagingDirectory)/release'
-              vstsFeedPublish: 'monica'
-              versionOption: custom
-              versionPublish: $(MONICA_VERSION)
-              vstsFeedPackagePublish: 'monica'
-              packagePublishDescription: 'Monica release'
+  - template: .azure/job-test-browser.yml
+  - template: .azure/job-reporting.yml
+  - template: .azure/job-test-migrations.yml
 
 
 - stage: deploy
   displayName: 'Deploy'
-#  dependsOn: build
+  dependsOn: build
   condition: in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI')
 
   jobs:
@@ -114,19 +52,10 @@ stages:
           steps:
           - download: none
           - checkout: self
-          - template: .azure/step-prepare-environment.yml
           - template: .azure/step-composer-install.yml
             parameters:
               no_dev: 'true'
-          - script: make dist
-          - task: UniversalPackages@0
-            displayName: Universal Publish
-            inputs:
-              command: publish
-              publishDirectory: '$(System.DefaultWorkingDirectory)/results'
-              vstsFeedPublish: 'monica'
-              vstsFeedPackagePublish: 'monica'
-              packagePublishDescription: 'Monica assets'
+          - template: .azure/step-deploy-dist.yml
 
   - deployment: deploy_docker_master
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
@@ -139,7 +68,6 @@ stages:
           steps:
           - download: none
           - checkout: self
-          - template: .azure/step-prepare-environment.yml
           - template: .azure/step-docker-build.yml
           - template: .azure/step-docker-push-github.yml
 
@@ -154,7 +82,6 @@ stages:
           steps:
           - download: none
           - checkout: self
-          - template: .azure/step-prepare-environment.yml
           - template: .azure/step-docker-build.yml
           - template: .azure/step-docker-push-github.yml
           - template: .azure/step-docker-push.yml
