@@ -38,7 +38,6 @@ stages:
 
 - stage: deployx
   displayName: 'Deployx'
-  dependsOn: build
 
   jobs:
   - deployment: deploy_distx
@@ -51,7 +50,6 @@ stages:
           steps:
           - download: none
           - checkout: self
-          - template: .azure/step-prepare-environment.yml
           - template: .azure/step-composer-install.yml
             parameters:
               no_dev: 'true'
@@ -61,16 +59,42 @@ stages:
               echo "Monica version: $VERSION"
               echo "##vso[task.setvariable variable=MONICA_VERSION]$VERSION"
             displayName: Set Monica version
+
+          - task: CopyFiles@2
+            displayName: Copy monica assets
+            inputs:
+              sourceFolder: $(System.DefaultWorkingDirectory)/results
+              contents: monica-assets-*.*
+              targetFolder: $(System.ArtifactStagingDirectory)/assets
           - task: UniversalPackages@0
             displayName: Universal Publish
             inputs:
               command: publish
-              publishDirectory: '$(System.DefaultWorkingDirectory)/results'
+              publishDirectory: '$(System.ArtifactStagingDirectory)/assets'
+              vstsFeedPublish: 'monica'
+              versionOption: custom
+              versionPublish: $(MONICA_VERSION)
+              vstsFeedPackagePublish: 'monica-assets'
+              packagePublishDescription: 'Monica assets'
+
+          - task: CopyFiles@2
+            displayName: Copy monica release
+            inputs:
+              sourceFolder: $(System.DefaultWorkingDirectory)/results
+              contents: |
+                monica-*.*
+                !monica-assets-*.*
+              targetFolder: $(System.ArtifactStagingDirectory)/release
+          - task: UniversalPackages@0
+            displayName: Universal Publish
+            inputs:
+              command: publish
+              publishDirectory: '$(System.ArtifactStagingDirectory)/release'
               vstsFeedPublish: 'monica'
               versionOption: custom
               versionPublish: $(MONICA_VERSION)
               vstsFeedPackagePublish: 'monica'
-              packagePublishDescription: 'Monica assets'
+              packagePublishDescription: 'Monica release'
 
 
 - stage: deploy
