@@ -99,7 +99,7 @@ stages:
 
 - stage: deploy
   displayName: 'Deploy'
-  dependsOn: build
+#  dependsOn: build
   condition: in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI')
 
   jobs:
