@@ -56,8 +56,11 @@ stages:
             parameters:
               no_dev: 'true'
           - script: make dist
-          - script: |
-              echo ##vso[task.setvariable variable=MONICA_VERSION]$(php artisan monica:getversion)
+          - bash: |
+              VERSION=$(php artisan monica:getversion)
+              echo "Monica version: $VERSION"
+              echo "##vso[task.setvariable variable=MONICA_VERSION]$VERSION"
+            displayName: Set Monica version
           - task: UniversalPackages@0
             displayName: Universal Publish
             inputs:
