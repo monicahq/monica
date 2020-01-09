@@ -23,13 +23,13 @@ variables:
   YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
 
 stages:
-#- stage: build
-#  displayName: 'Build'
-#  condition: not(startsWith(variables['System.PullRequest.SourceBranch'], 'l10n_master'))
-#  jobs:
+- stage: build
+  displayName: 'Build'
+  condition: not(startsWith(variables['System.PullRequest.SourceBranch'], 'l10n_master'))
+  jobs:
 #  - template: .azure/job-build.yml
 #  - template: .azure/job-tests.yml
-#  - template: .azure/job-analyzers.yml
+  - template: .azure/job-analyzers.yml
 #  - template: .azure/job-test-browser.yml
 #  - template: .azure/job-reporting.yml
 #  - template: .azure/job-test-migrations.yml
