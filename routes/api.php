@@ -83,9 +83,9 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('/contacts/{contact}/conversations', 'Contact\\ApiConversationController@conversations');
 
         // Activities
-        Route::apiResource('activities', 'ApiActivityController')
+        Route::apiResource('activities', 'ApiActivitiesController')
             ->names(['index' => 'activities', 'show' => 'activity']);
-        Route::get('/contacts/{contact}/activities', 'ApiActivityController@activities');
+        Route::get('/contacts/{contact}/activities', 'ApiActivitiesController@activities');
 
         // Reminders
         Route::apiResource('reminders', 'ApiReminderController');
@@ -98,6 +98,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         // Gifts
         Route::apiResource('gifts', 'ApiGiftController');
         Route::get('/contacts/{contact}/gifts', 'ApiGiftController@gifts');
+        Route::put('/gifts/{gift}/photo/{photo}', 'ApiGiftController@associate');
 
         // Debts
         Route::apiResource('debts', 'ApiDebtController');

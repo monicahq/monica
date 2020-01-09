@@ -23,6 +23,27 @@ class AttachContactToActivity extends BaseService
     }
 
     /**
+     * Validate all datas to execute the service.
+     *
+     * @param array $data
+     * @return bool
+     */
+    public function validate(array $data): bool
+    {
+        parent::validate($data);
+
+        Activity::where('account_id', $data['account_id'])
+            ->findOrFail($data['activity_id']);
+
+        foreach ($data['contacts'] as $contactId) {
+            Contact::where('account_id', $data['account_id'])
+                ->findOrFail($contactId);
+        }
+
+        return true;
+    }
+
+    /**
      * Attach contacts to an activity.
      *
      * @param array $data
@@ -32,8 +53,7 @@ class AttachContactToActivity extends BaseService
     {
         $this->validate($data);
 
-        $activity = Activity::where('account_id', $data['account_id'])
-            ->findOrFail($data['activity_id']);
+        $activity = Activity::find($data['activity_id']);
 
         $this->attach($data, $activity);
 
@@ -49,18 +69,19 @@ class AttachContactToActivity extends BaseService
      */
     private function attach(array $data, Activity $activity)
     {
-        // reset current associations
-        $activity->contacts()->sync([]);
+        $attendees = [];
+        foreach ($data['contacts'] as $contact) {
+            $attendees[$contact] = ['account_id' => $activity->account_id];
+        }
 
-        foreach ($data['contacts'] as $contactId) {
-            $contact = Contact::where('account_id', $data['account_id'])
-                ->findOrFail($contactId);
+        // sync attendees: old contacts will be detached automatically
+        $changes = $activity->contacts()->sync($attendees);
 
-            $activity->contacts()->syncWithoutDetaching([$contactId => [
-                'account_id' => $activity->account_id,
-            ]]);
-
-            $contact->calculateActivitiesStatistics();
+        foreach ($changes as $change) {
+            // detached, attached, and updated attendees
+            foreach ($change as $contactId) {
+                Contact::find($contactId)->calculateActivitiesStatistics();
+            }
         }
     }
 }

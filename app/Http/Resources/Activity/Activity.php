@@ -22,7 +22,7 @@ class Activity extends Resource
             'object' => 'activity',
             'summary' => $this->summary,
             'description' => $this->description,
-            'happened_at' => DateHelper::getTimestamp($this->happened_at),
+            'happened_at' => DateHelper::getDate($this->happened_at),
             'activity_type' => new ActivityTypeResource($this->type),
             'attendees' => [
                 'total' => $this->contacts()->count(),
