@@ -11,7 +11,7 @@
 
 ### Fixes:
 
-*
+* Fix contacts list UX with 2 tabs opened
 
 # RELEASED VERSIONS:
 
