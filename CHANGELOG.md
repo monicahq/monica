@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Add ability to edit activities
 * Associate a photo to a gift
 
 ### Enhancements:
