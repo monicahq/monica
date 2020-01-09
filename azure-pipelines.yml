@@ -34,50 +34,54 @@ stages:
   - template: .azure/job-reporting.yml
   - template: .azure/job-test-migrations.yml
 
+
 - stage: deploy
   displayName: 'Deploy'
   dependsOn: build
   condition: in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI')
-  jobs:
-  - job: deployAssets
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps:
-    - script: make assets
-    - script: make push_bintray_assets
-      env:
-        BINTRAY_USER: $(BINTRAY_USER)
-        BINTRAY_APIKEY: $(BINTRAY_APIKEY)
 
-  - job: deploy_dist
+  jobs:
+  - deployment: deploy_dist
     condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
     pool:
       vmImage: 'ubuntu-latest'
-    steps:
-    - template: .azure/step-composer-install.yml
-      parameters:
-        no_dev: 'true'
-    - script: make dist
-    - script: make push_bintray_dist
-      env:
-        BINTRAY_USER: $(BINTRAY_USER)
-        BINTRAY_APIKEY: $(BINTRAY_APIKEY)
+    environment: 'monica'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: none
+          - checkout: self
+          - template: .azure/step-composer-install.yml
+            parameters:
+              no_dev: 'true'
+          - template: .azure/step-deploy-dist.yml
 
-  - job: deploy_docker_master
+  - deployment: deploy_docker_master
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     pool:
       vmImage: 'ubuntu-latest'
-    steps:
-    - template: .azure/step-prepare-environment.yml
-    - template: .azure/step-docker-build.yml
-    - template: .azure/step-docker-push-github.yml
+    environment: 'monica'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: none
+          - checkout: self
+          - template: .azure/step-docker-build.yml
+          - template: .azure/step-docker-push-github.yml
 
-  - job: deploy_docker
+  - deployment: deploy_docker
     condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
     pool:
       vmImage: 'ubuntu-latest'
-    steps:
-    - template: .azure/step-prepare-environment.yml
-    - template: .azure/step-docker-build.yml
-    - template: .azure/step-docker-push-github.yml
-    - template: .azure/step-docker-push.yml
+    environment: 'monica'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: none
+          - checkout: self
+          - template: .azure/step-docker-build.yml
+          - template: .azure/step-docker-push-github.yml
+          - template: .azure/step-docker-push.yml
