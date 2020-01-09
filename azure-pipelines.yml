@@ -56,6 +56,8 @@ stages:
             parameters:
               no_dev: 'true'
           - script: make dist
+          - script: |
+              echo ##vso[task.setvariable variable=MONICA_VERSION]$(php artisan monica:getversion)
           - task: UniversalPackages@0
             displayName: Universal Publish
             inputs:
