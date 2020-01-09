@@ -51,6 +51,7 @@ stages:
           steps:
           - download: none
           - checkout: self
+          - template: .azure/step-prepare-environment.yml
           - template: .azure/step-composer-install.yml
             parameters:
               no_dev: 'true'
@@ -84,6 +85,7 @@ stages:
           steps:
           - download: none
           - checkout: self
+          - template: .azure/step-prepare-environment.yml
           - template: .azure/step-composer-install.yml
             parameters:
               no_dev: 'true'
