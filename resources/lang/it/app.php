@@ -37,7 +37,7 @@ return [
     'retry' => 'Riprova',
     'filter' => 'Filtra la lista',
     'go_back' => 'Torna indietro',
-    'file_selected' => '1 file selected...|{count} files selected...',
+    'file_selected' => '1 file selezionato...|{count} files selezionati...',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica è uno strumento per gestire le interazioni con i vostri cari, amici e familiari.',
