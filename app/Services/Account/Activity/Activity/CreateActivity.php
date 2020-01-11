@@ -22,7 +22,7 @@ class CreateActivity extends BaseService
             'account_id' => 'required|integer|exists:accounts,id',
             'activity_type_id' => 'nullable|integer|exists:activity_types,id',
             'summary' => 'required|string:255',
-            'description' => 'nullable|string:65535',
+            'description' => 'nullable|string:1000000',
             'happened_at' => 'required|date|date_format:Y-m-d',
             'emotions' => 'nullable|array',
             'contacts' => 'required|array',
