@@ -1,9 +1,7 @@
 <?php
 
-use App\Models\Contact\Contact;
 use Illuminate\Database\Migrations\Migration;
-use App\Services\Contact\Avatar\GenerateDefaultAvatar;
-use App\Services\Contact\Avatar\GetAvatarsFromInternet;
+use App\Jobs\Avatars\CreateAvatarsForExistingContacts as CreateAvatarsForExistingContactsJob;
 
 /**
  * This creates all the avatars (default, adorable and gravatars) for existing
@@ -18,15 +16,6 @@ class CreateAvatarsForExistingContacts extends Migration
      */
     public function up()
     {
-        Contact::chunk(200, function ($contacts) {
-            foreach ($contacts as $contact) {
-                $request = [
-                    'contact_id' => $contact->id,
-                ];
-
-                app(GetAvatarsFromInternet::class)->execute($request);
-                app(GenerateDefaultAvatar::class)->execute($request);
-            }
-        });
+        CreateAvatarsForExistingContactsJob::dispatch();
     }
 }

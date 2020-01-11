@@ -86,7 +86,7 @@
         <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
           <form-select
             :options="{{ $genders }}"
-            :required="true"
+            :required="false"
             value="{{ $partner->gender_id }}"
             :title="'{{ trans('people.people_add_gender') }}'"
             :id="'gender_id'">
@@ -106,10 +106,13 @@
         ></form-specialdate>
 
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
+          {{-- Real or partial contact (false in this case) --}}
           <form-checkbox
             :name="'realContact'"
             :iclass="'pa0 ma0 lh-copy'"
             :dclass="'mb3 mb0-ns flex'"
+            value="1"
+            :model-value="false"
           >
             <template slot="label">
               {{ trans('people.relationship_form_also_create_contact') }}

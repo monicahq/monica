@@ -14,7 +14,8 @@ class ConversationTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
         $conversation = factory(Conversation::class)->create([
@@ -24,7 +25,8 @@ class ConversationTest extends TestCase
         $this->assertTrue($conversation->account()->exists());
     }
 
-    public function test_it_belongs_to_a_contact()
+    /** @test */
+    public function it_belongs_to_a_contact()
     {
         $contact = factory(Contact::class)->create();
         $conversation = factory(Conversation::class)->create([
@@ -34,7 +36,8 @@ class ConversationTest extends TestCase
         $this->assertTrue($conversation->contact()->exists());
     }
 
-    public function test_it_belongs_to_a_contact_field_type()
+    /** @test */
+    public function it_belongs_to_a_contact_field_type()
     {
         $account = factory(Account::class)->create([]);
         $contactFieldType = factory(ContactFieldType::class)->create([
@@ -48,7 +51,8 @@ class ConversationTest extends TestCase
         $this->assertTrue($conversation->contactFieldType()->exists());
     }
 
-    public function test_it_has_many_messages()
+    /** @test */
+    public function it_has_many_messages()
     {
         $conversation = factory(Conversation::class)->create();
         $message = factory(Message::class)->create([

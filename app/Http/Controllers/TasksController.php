@@ -30,13 +30,13 @@ class TasksController extends Controller
      * @param Request $request
      * @return Task
      */
-    public function store(Request $request) : Task
+    public function store(Request $request): Task
     {
         return app(CreateTask::class)->execute([
             'account_id' => auth()->user()->account->id,
-            'contact_id' => ($request->get('contact_id') == '' ? null : $request->get('contact_id')),
-            'title' => $request->get('title'),
-            'description' => ($request->get('description') == '' ? null : $request->get('description')),
+            'contact_id' => ($request->input('contact_id') == '' ? null : $request->input('contact_id')),
+            'title' => $request->input('title'),
+            'description' => ($request->input('description') == '' ? null : $request->input('description')),
         ]);
     }
 
@@ -47,15 +47,15 @@ class TasksController extends Controller
      * @param Task $task
      * @return Task
      */
-    public function update(Request $request, Task $task) : Task
+    public function update(Request $request, Task $task): Task
     {
         return app(UpdateTask::class)->execute([
             'account_id' => auth()->user()->account->id,
             'task_id' => $task->id,
-            'contact_id' => ($request->get('contact_id') == '' ? null : $request->get('contact_id')),
-            'title' => $request->get('title'),
-            'description' => ($request->get('description') == '' ? null : $request->get('description')),
-            'completed' => $request->get('completed'),
+            'contact_id' => ($request->input('contact_id') == '' ? null : $request->input('contact_id')),
+            'title' => $request->input('title'),
+            'description' => ($request->input('description') == '' ? null : $request->input('description')),
+            'completed' => $request->input('completed'),
         ]);
     }
 

@@ -15,7 +15,7 @@ return [
     'notification_description' => '在:count天后(:date),将有以下事件发生：',
 
     'stay_in_touch_subject_line' => '您的『常联系』提醒 :name',
-    'stay_in_touch_subject_description' => '您的常联系提醒： 每 :frequency 天 与 :name 联系.|您的常联系提醒： 每 :frequency 天 与 :name 联系.',
+    'stay_in_touch_subject_description' => '您的常联系提醒： 每 :frequency 天 与 :name 联系.',
 
     'notifications_whoops' => '糟了!',
     'notifications_hello' => '您好！',
@@ -26,4 +26,17 @@ return [
     'confirmation_email_title' => 'Monica – Email 认证',
     'confirmation_email_intro'=> '请点击以下按钮来完成Email认证',
     'confirmation_email_button' => 'Email 认证',
+    'confirmation_email_bottom' => '如果不是您本人进行的创建帐户操作，请忽略这封邮件。',
+
+    'password_reset_title' => 'Monica — 重置密码通知',
+    'password_reset_intro' => '您收到此邮件是因为我们收到了您的密码重置请求',
+    'password_reset_button' => '重置密码',
+    'password_reset_expiration' => '此密码重置链接将在 :count 分钟后过期',
+    'password_reset_bottom' => '如果您没有请求重置密码，请忽略这封邮件。',
+
+    'invitation_title' => 'Monica — 您收到 :name 的邀请',
+    'invitation_intro' => '您已被:name (:email)邀请使用 Monica, 个人社交关系管理工具。',
+    'invitation_link' => '要接受邀请，请点击下面的链接：',
+    'invitation_button' => '接受邀请',
+    'invitation_expiration' => '此链接将在 :count 天后过期',
 ];

@@ -66,7 +66,7 @@ class ApiPetController extends ApiController
 
         try {
             $pet = Pet::create(
-                $request->all()
+                $request->except(['account_id'])
                 + ['account_id' => auth()->user()->account_id]
             );
         } catch (QueryException $e) {
@@ -100,7 +100,7 @@ class ApiPetController extends ApiController
         }
 
         try {
-            $pet->update($request->all());
+            $pet->update($request->only(['pet_category_id', 'contact_id', 'name']));
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }

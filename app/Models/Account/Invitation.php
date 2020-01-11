@@ -4,6 +4,7 @@ namespace App\Models\Account;
 
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Invitation extends Model
 {
+    use Notifiable;
+
     /**
      * The attributes that aren't mass assignable.
      *

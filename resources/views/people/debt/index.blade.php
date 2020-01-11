@@ -55,8 +55,8 @@
         </div>
 
         <form method="POST" action="{{ route('people.debts.destroy', [$contact, $debt]) }}" class="entry-delete-form hidden">
-          {{ method_field('DELETE') }}
-          {{ csrf_field() }}
+          @method('DELETE')
+          @csrf
         </form>
       </li>
       @endforeach

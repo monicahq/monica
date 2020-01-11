@@ -39,7 +39,7 @@ class GenerateDefaultAvatar extends BaseService
         $contact = $this->generateContactUUID($contact);
 
         // delete existing default avatar
-        $this->deleteExistingDefaultAvatar($contact);
+        $contact = $this->deleteExistingDefaultAvatar($contact);
 
         // create new avatar
         $filename = $this->createNewAvatar($contact);
@@ -82,7 +82,8 @@ class GenerateDefaultAvatar extends BaseService
                 ->encode('jpg');
 
             $filename = 'avatars/'.$contact->uuid.'.jpg';
-            Storage::disk(config('filesystems.default'))->put($filename, $img, 'public');
+            Storage::disk(config('filesystems.default'))
+                ->put($filename, $img, 'public');
 
             // This will force the browser to reload the new avatar
             return $filename.'?'.now()->format('U');
@@ -97,16 +98,18 @@ class GenerateDefaultAvatar extends BaseService
      * Delete the existing default avatar.
      *
      * @param Contact  $contact
-     * @return void
+     * @return Contact
      */
     private function deleteExistingDefaultAvatar(Contact $contact)
     {
         try {
-            Storage::delete($contact->avatar_default_url);
+            Storage::disk(config('filesystems.default'))
+                ->delete($contact->avatar_default_url);
             $contact->avatar_default_url = null;
-            $contact->save();
         } catch (FileNotFoundException $e) {
-            return;
+            // ignore
         }
+
+        return $contact;
     }
 }

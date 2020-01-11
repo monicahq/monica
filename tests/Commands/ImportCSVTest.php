@@ -13,7 +13,8 @@ class ImportCSVTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_csv_import_contacts()
+    /** @test */
+    public function csv_import_contacts()
     {
         $this->withoutMockingConsoleOutput();
         Storage::fake('public');
@@ -48,7 +49,8 @@ class ImportCSVTest extends TestCase
         $this->assertEquals(0, $exitCode);
     }
 
-    public function test_csv_import_validates_user()
+    /** @test */
+    public function csv_import_validates_user()
     {
         $this->withoutMockingConsoleOutput();
 
@@ -65,7 +67,8 @@ class ImportCSVTest extends TestCase
         $this->assertEquals(-1, $exitCode);
     }
 
-    public function test_csv_import_validates_file()
+    /** @test */
+    public function csv_import_validates_file()
     {
         $this->withoutMockingConsoleOutput();
 

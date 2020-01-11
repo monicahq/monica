@@ -25,7 +25,8 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_contact_field_type_get_one()
+    /** @test */
+    public function contact_field_type_get_one()
     {
         $user = $this->signin();
         $contactFieldType1 = factory(ContactFieldType::class)->create([
@@ -51,7 +52,8 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_field_type_get_one_error()
+    /** @test */
+    public function contact_field_type_get_one_error()
     {
         $user = $this->signin();
 
@@ -60,7 +62,8 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_contact_field_type_create()
+    /** @test */
+    public function contact_field_type_create()
     {
         $user = $this->signin();
 
@@ -90,7 +93,8 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_field_type_create_error()
+    /** @test */
+    public function contact_field_type_create_error()
     {
         $user = $this->signin();
 
@@ -102,7 +106,8 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_field_type_update()
+    /** @test */
+    public function contact_field_type_update()
     {
         $user = $this->signin();
         $contactFieldType = factory(ContactFieldType::class)->create([
@@ -136,7 +141,8 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_field_type_update_error()
+    /** @test */
+    public function contact_field_type_update_error()
     {
         $user = $this->signin();
         $contactFieldType = factory(ContactFieldType::class)->create([
@@ -150,7 +156,8 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_field_type_update_error_bad_account()
+    /** @test */
+    public function contact_field_type_update_error_bad_account()
     {
         $user = $this->signin();
 
@@ -168,7 +175,8 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_contact_field_type_delete()
+    /** @test */
+    public function contact_field_type_delete()
     {
         $user = $this->signin();
         $contactFieldType = factory(ContactFieldType::class)->create([
@@ -188,7 +196,8 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_field_type_delete_error()
+    /** @test */
+    public function contact_field_type_delete_error()
     {
         $user = $this->signin();
 
@@ -197,7 +206,8 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_contact_field_type_delete_bad_account()
+    /** @test */
+    public function contact_field_type_delete_bad_account()
     {
         $user = $this->signin();
 

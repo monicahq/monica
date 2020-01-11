@@ -76,6 +76,11 @@ function installSonar {
       rm sonar-scanner-cli-$sonarversion-linux.zip
       mv sonar-scanner-$sonarversion-linux sonar-scanner-$sonarversion
     fi
+  else
+    pushd sonar-scanner-$sonarversion > /dev/null
+    chmod a+x bin/sonar-scanner
+    test -f jre/bin/java && chmod a+x jre/bin/java
+    popd > /dev/null
   fi
   export SONAR_SCANNER_HOME=$HOME/sonarscanner/sonar-scanner-$sonarversion
   export PATH=$SONAR_SCANNER_HOME/bin:$PATH

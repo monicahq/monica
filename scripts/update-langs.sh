@@ -14,8 +14,8 @@ git branch -D $origin/$newbranch || true
 
 # Create new branch
 git fetch $origin
-git checkout $origin/$l10nbranch
-git branch --set-upstream-to=$newbranch $newbranch
+git checkout --track $origin/$l10nbranch
+git checkout -b $newbranch
 
 # Merge from master
 git merge $origin/master

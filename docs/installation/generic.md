@@ -5,14 +5,14 @@
 If you don't want to use Docker, the best way to setup the project is to use the same configuration that [Homestead](https://laravel.com/docs/homestead) uses. Basically, Monica depends on the following:
 
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-* PHP 7.3+
+* PHP 7.2+
 * [Composer](https://getcomposer.org/)
 * [MySQL](https://www.mysql.com/)
 * Optional: Redis or Beanstalk
 
 **Git:** Git should come pre-installed with your server. If it doesn't - use the installation instructions in the link.
 
-**PHP 7.3+:** Install php7.3 minimum, with these extensions:
+**PHP:** Install php7.2 minimum, with these extensions:
 
 - json
 - iconv
@@ -27,6 +27,7 @@ If you don't want to use Docker, the best way to setup the project is to use the
 - gmp
 - zip
 - gd
+- sodium
 
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager. It is not enough to just install Composer, you also need to make sure it is installed globally for Monica's installation to run smoothly:
 
@@ -67,7 +68,7 @@ git checkout tags/v2.2.1
 
 Log in with the root account to configure the database.
 ```sh
-mysql -uroot -p
+mysql -u root -p
 ```
 
 Create a database called 'monica'.
@@ -96,7 +97,7 @@ exit
 `cd /var/www/monica` then run these steps:
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
-1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
+1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind. You'll need to configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
 1. Run `composer install --no-interaction --no-suggest --no-dev` to install all packages.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
@@ -174,7 +175,7 @@ Monica can work with a queue mechanism to handle different events, so we don't b
 
 We recommend that you do not use a queue mechanism as it complexifies the overall system and can make debugging harder when things go wrong.
 
-This is why we suggest to use `QUEUE_DRIVER=sync` in your .env file. This will bypass the queues entirely and will process requests as they come. In practice, unless you have thousands of users, you don't need to use an asynchronous queue.
+This is why we suggest to use `QUEUE_CONNECTION=sync` in your .env file. This will bypass the queues entirely and will process requests as they come. In practice, unless you have thousands of users, you don't need to use an asynchronous queue.
 
 That being said, if you still want to make your life more complicated, here is what you can do.
 
@@ -184,7 +185,7 @@ There are several choices for the queue mechanism:
 * Beanstalk
 * Amazon SQS
 
-The simplest queue is the database driver. To set it up, simply change in your `.env` file the following `QUEUE_DRIVER=sync` by `QUEUE_DRIVER=database`.
+The simplest queue is the database driver. To set it up, simply change in your `.env` file the following `QUEUE_CONNECTION=sync` by `QUEUE_CONNECTION=database`.
 
 To configure the other queues, refer to the [official Laravel documentation](https://laravel.com/docs/master/queues#driver-prerequisites) on the topic.
 
@@ -219,15 +220,16 @@ Instead of keeping the encryption keys as files, you can add them as environment
 * Output the private key:
 
 ```sh
-sed ':a;N;$!ba;s/\n/\\n/g' storage/oauth-private.key
+sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' storage/oauth-private.key
 ```
-   Copy the output to an environment variable called `PASSPORT_PRIVATE_KEY` in your `.env` file
+   Copy the output to an environment variable called `PASSPORT_PRIVATE_KEY` in your `.env` file.
 
 * Do the same thing with the contents of the public key:
+
 ```sh
-sed ':a;N;$!ba;s/\n/\\n/g' storage/oauth-public.key
+sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' storage/oauth-public.key
 ```
-   Copy ths output to an environment variable called `PASSPORT_PUBLIC_KEY` in your `.env` file
+   Copy the output to an environment variable called `PASSPORT_PUBLIC_KEY` in your `.env` file.
 
 
 #### Optional: Generate a Password grant client

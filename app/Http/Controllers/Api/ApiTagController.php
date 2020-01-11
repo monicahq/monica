@@ -65,11 +65,11 @@ class ApiTagController extends ApiController
     {
         try {
             $tag = app(CreateTag::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -91,12 +91,12 @@ class ApiTagController extends ApiController
     {
         try {
             $tag = app(UpdateTag::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'tag_id'])
                     +
                     [
-                    'tag_id' => $id,
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'tag_id' => $id,
+                        'account_id' => auth()->user()->account->id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

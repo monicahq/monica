@@ -68,6 +68,7 @@ endif
 DESTDIR := monica-$(BUILD)
 ASSETS := monica-assets-$(BUILD)
 DOCKER_IMAGE := monicahq/monicahq
+BUILD_DATE := $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 default: build
 
@@ -81,11 +82,12 @@ docker:
 	$(MAKE) docker_tag
 	$(MAKE) docker_push
 
-docker_build: docker_build_apache docker_build_fpm
+docker_build: docker_build_apache docker_build_fpm docker_build_php_apache
+docker_build_master: docker_build_apache docker_build_fpm
 
 docker_build_apache:
 	docker build \
-		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		--build-arg VCS_REF=$(GIT_REF) \
 		--build-arg COMMIT=$(GIT_COMMIT) \
 		--build-arg VERSION=$(BUILD) \
@@ -93,9 +95,19 @@ docker_build_apache:
 		-t $(DOCKER_IMAGE) .
 	docker images
 
+docker_build_php_apache:
+	docker build \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
+		--build-arg VCS_REF=$(GIT_REF) \
+		--build-arg COMMIT=$(GIT_COMMIT) \
+		--build-arg VERSION=$(BUILD) \
+		-f scripts/docker/php-apache/Dockerfile \
+		-t $(DOCKER_IMAGE):php-apache .
+	docker images
+
 docker_build_fpm:
 	docker build \
-		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		--build-arg VCS_REF=$(GIT_REF) \
 		--build-arg COMMIT=$(GIT_COMMIT) \
 		--build-arg VERSION=$(BUILD) \
@@ -116,24 +128,54 @@ docker_squash:
 docker_tag:
 	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)
 	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):apache
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):alpine
 	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)-apache
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)-alpine
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)-alpine-apache
 	docker tag $(DOCKER_IMAGE):fpm $(DOCKER_IMAGE):$(BUILD)-fpm
+	docker tag $(DOCKER_IMAGE):fpm $(DOCKER_IMAGE):$(BUILD)-alpine-fpm
+	docker tag $(DOCKER_IMAGE):php-apache $(DOCKER_IMAGE):$(BUILD)-php-apache
 	docker images
 
 docker_push: docker_tag
-	docker push $(DOCKER_IMAGE):$(BUILD)
-	docker push $(DOCKER_IMAGE):$(BUILD)-apache
-	docker push $(DOCKER_IMAGE):apache
-	docker push $(DOCKER_IMAGE):$(BUILD)-fpm
-	docker push $(DOCKER_IMAGE):fpm
 	docker push $(DOCKER_IMAGE):latest
+	docker push $(DOCKER_IMAGE):fpm
+	docker push $(DOCKER_IMAGE):php-apache
+	docker push $(DOCKER_IMAGE):$(BUILD)
+	docker push $(DOCKER_IMAGE):apache
+	docker push $(DOCKER_IMAGE):alpine
+	docker push $(DOCKER_IMAGE):$(BUILD)-apache
+	docker push $(DOCKER_IMAGE):$(BUILD)-alpine
+	docker push $(DOCKER_IMAGE):$(BUILD)-alpine-apache
+	docker push $(DOCKER_IMAGE):$(BUILD)-fpm
+	docker push $(DOCKER_IMAGE):$(BUILD)-alpine-fpm
+	docker push $(DOCKER_IMAGE):$(BUILD)-php-apache
 
-docker_push_bintray: .deploy.json
+docker_push_bintray: docker_push_bintray_apache docker_push_bintray_fpm
+
+docker_push_bintray_apache: .deploy.json
 	docker tag $(DOCKER_IMAGE) monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
 	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
-	BUILD=$(BUILD) scripts/tests/fix-bintray.sh
+	BUILD=$(BUILD) scripts/ci/fix-bintray.sh
 
-.PHONY: docker docker_build docker_build_apache docker_build_fpm docker_tag docker_push docker_push_bintray
+docker_push_bintray_fpm: .deploy.json
+	docker tag $(DOCKER_IMAGE):fpm monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)-fpm
+	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)-fpm
+	BUILD=$(BUILD)-fpm scripts/ci/fix-bintray.sh
+
+docker_push_github: docker_push_github_apache docker_push_github_fpm
+
+docker_push_github_apache:
+	docker tag $(DOCKER_IMAGE) docker.pkg.github.com/monicahq/monica/monica:$(BUILD)
+	docker push docker.pkg.github.com/monicahq/monica/monica:$(BUILD)
+
+docker_push_github_fpm:
+	docker tag $(DOCKER_IMAGE):fpm docker.pkg.github.com/monicahq/monica/monica:$(BUILD)-fpm
+	docker push docker.pkg.github.com/monicahq/monica/monica:$(BUILD)-fpm
+
+.PHONY: docker docker_build docker_build_master docker_build_apache docker_build_fpm docker_build_php_apache docker_tag
+.PHONY: docker_push docker_push_bintray docker_push_bintray_apache docker_push_bintray_fpm
+.PHONY: docker_push_github docker_push_github_apache docker_push_github_fpm
 
 build:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs
@@ -207,7 +249,7 @@ assets: results/$(ASSETS).tar.bz2
 DESCRIPTION := $(shell echo "$(COMMIT_MESSAGE)" | sed -s 's/"/\\\\\\\\\\"/g' | sed -s 's/(/\\(/g' | sed -s 's/)/\\)/g' | sed -s 's%/%\\/%g')
 
 ifeq (,$(DEPLOY_TEMPLATE))
-DEPLOY_TEMPLATE := scripts/tests/.deploy.json.in
+DEPLOY_TEMPLATE := scripts/ci/.deploy.json.in
 endif
 
 .deploy.json: $(DEPLOY_TEMPLATE)
@@ -256,8 +298,8 @@ vagrant_build:
 	make -C scripts/vagrant/build package
 
 push_bintray_assets: results/$(ASSETS).tar.bz2 .deploy.json
-	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/tests/bintray-upload.sh
+	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/ci/bintray-upload.sh
 
 push_bintray_dist: results/$(DESTDIR).tar.bz2 results/$(ASSETS).tar.bz2 .deploy.json
-	INPUT=results/$(DESTDIR).tar.bz2 FILE=$(DESTDIR).tar.bz2 scripts/tests/bintray-upload.sh
-	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/tests/bintray-upload.sh
+	INPUT=results/$(DESTDIR).tar.bz2 FILE=$(DESTDIR).tar.bz2 scripts/ci/bintray-upload.sh
+	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/ci/bintray-upload.sh

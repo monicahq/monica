@@ -42,10 +42,9 @@ class PhotosController extends Controller
     {
         $photo = app(UploadPhoto::class)->execute([
             'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
             'photo' => $request->photo,
         ]);
-
-        $contact->photos()->syncWithoutDetaching([$photo->id]);
 
         return new PhotoResource($photo);
     }

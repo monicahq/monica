@@ -3,7 +3,7 @@
 return [
 
     //index
-    'people_not_found' => 'Contact not found',
+    'people_not_found' => 'Contacto no encontrado',
     'people_list_number_kids' => '1 niño|:count niños',
     'people_list_last_updated' => 'Última consulta:',
     'people_list_number_reminders' => '1 recordatorio|:count recordatorios',
@@ -24,7 +24,13 @@ return [
     'people_list_hide_dead' => 'Ocultar fallecidos (:count)',
     'people_search' => 'Buscar en tus contactos...',
     'people_search_no_results' => 'No results found',
-    'people_add_new' => 'Add new person',
+    'people_search_next' => 'Next',
+    'people_search_prev' => 'Prev',
+    'people_search_rows_per_page' => 'Rows per page:',
+    'people_search_of' => 'of',
+    'people_search_page' => 'Page',
+    'people_search_all' => 'All',
+    'people_add_new' => 'Añadir a una nueva persona',
     'people_list_account_usage' => 'Es uso de tu cuenta: :current/:limit contactos',
     'people_list_account_upgrade_title' => 'Actualiza tu cuenta para desbloquear todo su potencial.',
     'people_list_account_upgrade_cta' => 'Actualizar ahora',
@@ -79,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'Necesitas actualizar tu cuenta para hacer uso de esta característica',
     'stay_in_touch_modal_title' => 'Mantenerse en contacto',
     'stay_in_touch_modal_desc' => 'Podemos recordarte que te mantengas en contacto con {firstname} regularmente por correo electrónico.',
-    'stay_in_touch_modal_label' => 'Envíame un correo electrónico cada...',
+    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
 
     // Calls
     'modal_call_title' => 'Registrar una llamada',
@@ -178,6 +184,7 @@ return [
     'reminders_create_success' => 'El recordatorio ha sido añadido exitosamente',
     'reminders_delete_success' => 'El recordatorio ha sido eliminado exitosamente',
     'reminders_update_success' => 'El recordatorio ha sido actualizado exitosamente',
+    'reminders_add_optional_comment' => 'Optional comment',
 
     'reminder_frequency_day' => 'cada día|cada :number días',
     'reminder_frequency_week' => 'cada semana|cada :number semanas',
@@ -215,6 +222,7 @@ return [
     'relationship_form_deletion_success' => 'La relación ha sido eliminada.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'Aún no tienes tareas.',
     'tasks_form_title' => 'Título',
     'tasks_form_description' => 'Descripción (opcional)',
@@ -235,24 +243,25 @@ return [
     'activity_type_ate_at_his_place' => 'comimos en su casa',
     'activity_type_went_bar' => 'fuimos al bar',
     'activity_type_ate_at_home' => 'comimos en casa',
-    'activity_type_picknicked' => 'fuimos de picknick',
+    'activity_type_picnicked' => 'picnicked',
     'activity_type_ate_restaurant' => 'comimos en un restaurante',
     'activity_type_went_theater' => 'fuimos al teatro',
     'activity_type_went_concert' => 'fuimos a un concierto',
     'activity_type_went_play' => 'fuimos a jugar',
     'activity_type_went_museum' => 'fuimos al museo',
     'activities_add_activity' => 'Añadir actividad',
-    'activities_more_details' => 'Más detalles',
-    'activities_hide_details' => 'Ocultar detalles',
-    'activities_delete_confirmation' => '¿Está seguro que desea eliminar esta actividad?',
+    'activities_add_more_details' => 'Add more details',
+    'activities_add_emotions' => 'Add emotions',
+    'activities_add_category' => 'Indicate a category',
+    'activities_add_participants_cta' => 'Add participants',
     'activities_item_information' => ':Activity. Sucedió el :date',
-    'activities_add_title' => '¿Qué hiciste con :name?',
+    'activities_add_title' => '¿Qué hiciste con {name}?',
     'activities_summary' => 'Describe lo que hiciste',
     'activities_add_pick_activity' => '(Opcional) ¿Te gustaría categorizar esta actividad? No tienes que hacerlo, pero esto te dará estadísticas en el futuro',
-    'activities_add_date_occured' => 'Date this activity occurred',
-    'activities_add_optional_comment' => 'Comentario opcional',
-    'activities_add_cta' => 'Registra actividad',
-    'activities_blank_title' => 'Dale seguimiento a lo que has hecho con :name en el pasado, y de que han hablado',
+    'activities_add_date_occured' => 'The activity happened on...',
+    'activities_add_participants' => 'Who, apart from {name}, participated in this activity? (optional)',
+    'activities_add_emotions_title' => 'Do you want to log how you felt during this activity? (optional)',
+    'activities_blank_title' => 'Dale seguimiento a lo que has hecho con {name} en el pasado, y de que han hablado',
     'activities_blank_add_activity' => 'Añadir una actividad',
     'activities_add_success' => 'La actividad ha sido añadida exitosamente',
     'activities_add_error' => 'Ocurrió un error al añadir la actividad',
@@ -266,6 +275,10 @@ return [
     'activities_profile_year_summary_activity_types' => 'Aquí tienes un desglose del tipo de actvidades que han tenido juntos en :year',
     'activities_profile_year_summary' => 'Aquí tienes lo que han hecho en :year',
     'activities_profile_number_occurences' => ':value actividad|:value actividades',
+    'activities_list_participants' => 'Participants:',
+    'activities_list_emotions' => 'Emotions felt:',
+    'activities_list_date' => 'Happened on',
+    'activities_list_category' => 'Category:',
 
     // notes
     'notes_create_success' => 'La nota ha sido creada exitosamente',
@@ -459,11 +472,12 @@ return [
     'document_upload_zone_error' => 'Se produjo un error al subir el archivo. Por favor inténtelo de nuevo.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Fotos relacionadas',
     'photo_list_cta' => 'Subir foto',
     'photo_list_blank_desc' => 'Puede almacenar imágenes acerca de este contacto. ¡Suba una ahora!',
     'photo_upload_zone_cta' => 'Carga una foto',
-    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_current_profile_pic' => 'Foto de perfil actual',
     'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Eliminar foto',
 

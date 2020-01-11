@@ -1,15 +1,15 @@
 <?php
 
 use Carbon\Carbon;
-use GuzzleHttp\Client;
 use App\Models\User\User;
-use function Safe\json_decode;
+use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Gift\CreateGift;
 use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\WithFaker;
 use App\Services\Contact\Address\CreateAddress;
@@ -20,9 +20,11 @@ use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Relationship\CreateRelationship;
+use App\Services\Account\Activity\Activity\CreateActivity;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 use App\Services\Contact\Contact\UpdateDeceasedInformation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
+use App\Services\Account\Activity\Activity\AttachContactToActivity;
 
 class FakeContentTableSeeder extends Seeder
 {
@@ -47,7 +49,7 @@ class FakeContentTableSeeder extends Seeder
             $userId = User::where('email', 'admin@admin.com')->value('id');
             $this->account = Account::where('id', $userId)->first();
         } else {
-            $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
+            $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin0');
 
             // set default admin account to confirmed
             $adminUser = $this->account->users()->first();
@@ -61,11 +63,6 @@ class FakeContentTableSeeder extends Seeder
         $output = new ConsoleOutput();
         $progress = new ProgressBar($output, $this->numberOfContacts);
         $progress->start();
-
-        // fetching avatars
-        $client = new Client();
-        $res = $client->request('GET', 'https://randomuser.me/api/?results='.$this->numberOfContacts.'&inc=picture');
-        $arrayPictures = json_decode($res->getBody());
 
         for ($i = 0; $i < $this->numberOfContacts; $i++) {
             $gender = (rand(1, 2) == 1) ? 'male' : 'female';
@@ -111,7 +108,7 @@ class FakeContentTableSeeder extends Seeder
 
         // create the second test, blank account
         if (! User::where('email', 'blank@blank.com')->exists()) {
-            $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
+            $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank0');
             $blankUser = $blankAccount->users()->first();
             $this->confirmUser($blankUser);
         }
@@ -281,15 +278,25 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 13); $j++) {
-                $date = Carbon::instance($this->faker->dateTimeThisYear($max = 'now'))->toDateString();
+                $date = DateHelper::getDate(Carbon::instance($this->faker->dateTimeThisYear($max = 'now')));
 
-                $activity = $this->contact->activities()->create([
-                    'summary' => $this->faker->realText(rand(40, 100)),
-                    'date_it_happened' => $date,
-                    'activity_type_id' => rand(1, 13),
-                    'description' => (rand(1, 2) == 1 ? $this->faker->realText(rand(100, 1000)) : null),
+                $request = [
                     'account_id' => $this->contact->account_id,
-                ], ['account_id' => $this->contact->account_id]);
+                    'activity_type_id' => rand(1, 13),
+                    'summary' => $this->faker->realText(rand(40, 100)),
+                    'description' => (rand(1, 2) == 1 ? $this->faker->realText(rand(100, 1000)) : null),
+                    'date' => $date,
+                ];
+
+                $activity = app(CreateActivity::class)->execute($request);
+
+                $request = [
+                    'account_id' => $this->contact->account_id,
+                    'activity_id' => $activity->id,
+                    'contacts' => [$this->contact->id],
+                ];
+
+                app(AttachContactToActivity::class)->execute($request);
 
                 DB::table('journal_entries')->insertGetId([
                     'account_id' => $this->account->id,
@@ -320,7 +327,7 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 6); $j++) {
-                $debt = $this->contact->debts()->create([
+                $this->contact->debts()->create([
                     'in_debt' => (rand(1, 2) == 1 ? 'yes' : 'no'),
                     'amount' => rand(321, 39391),
                     'reason' => $this->faker->realText(rand(100, 1000)),
@@ -335,15 +342,14 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 31); $j++) {
-                $gift = $this->contact->gifts()->create([
-
+                app(CreateGift::class)->execute([
+                    'account_id' => $this->contact->account_id,
+                    'contact_id' => $this->contact->id,
+                    'status' => (rand(1, 3) == 1 ? 'offered' : 'idea'),
                     'name' => $this->faker->realText(rand(10, 100)),
                     'comment' => $this->faker->realText(rand(1000, 5000)),
                     'url' => $this->faker->url,
-                    'value' => rand(12, 120),
-                    'account_id' => $this->contact->account_id,
-                    'is_an_idea' => true,
-                    'has_been_offered' => false,
+                    'amount' => rand(12, 120),
                 ]);
             }
         }

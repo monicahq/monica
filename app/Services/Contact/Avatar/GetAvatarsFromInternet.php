@@ -3,8 +3,11 @@
 namespace App\Services\Contact\Avatar;
 
 use Illuminate\Support\Str;
+use App\Helpers\StringHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class GetAvatarsFromInternet extends BaseService
@@ -40,8 +43,9 @@ class GetAvatarsFromInternet extends BaseService
         $contact = Contact::findOrFail($data['contact_id']);
 
         $contact = $this->generateUUID($contact);
-        $this->getAdorable($contact);
-        $this->getGravatar($contact);
+        $contact = $this->getAdorable($contact);
+        $contact = $this->getGravatar($contact);
+        $contact->save();
 
         return $contact;
     }
@@ -66,7 +70,7 @@ class GetAvatarsFromInternet extends BaseService
      * Get the adorable avatar.
      *
      * @param Contact  $contact
-     * @return void
+     * @return Contact
      */
     private function getAdorable(Contact $contact)
     {
@@ -74,7 +78,8 @@ class GetAvatarsFromInternet extends BaseService
             'uuid' => $contact->avatar_adorable_uuid,
             'size' => 200,
         ]);
-        $contact->save();
+
+        return $contact;
     }
 
     /**
@@ -90,9 +95,16 @@ class GetAvatarsFromInternet extends BaseService
                                     ->email()
                                     ->first();
 
-            return $contactField ? $contactField->data : null;
+            $email = $contactField ? $contactField->data : null;
+
+            Validator::make(['email' => $email], ['email' => 'email'])
+                ->validate();
+
+            return $email;
         } catch (ModelNotFoundException $e) {
             // Not found
+        } catch (ValidationException $e) {
+            // Not an email
         }
     }
 
@@ -100,13 +112,13 @@ class GetAvatarsFromInternet extends BaseService
      * Query Gravatar (if it exists) for the contact's email address.
      *
      * @param Contact  $contact
-     * @return void
+     * @return Contact
      */
     private function getGravatar(Contact $contact)
     {
         $email = $this->getEmail($contact);
 
-        if ($email) {
+        if (! StringHelper::isNullOrWhitespace($email)) {
             $contact->avatar_gravatar_url = app(GetGravatarURL::class)->execute([
                 'email' => $email,
                 'size' => config('monica.avatar_size'),
@@ -120,6 +132,6 @@ class GetAvatarsFromInternet extends BaseService
             }
         }
 
-        $contact->save();
+        return $contact;
     }
 }

@@ -6,8 +6,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use App\Services\Contact\Avatar\GenerateDefaultAvatar;
-use App\Services\Contact\Avatar\GetAvatarsFromInternet;
+use App\Jobs\Avatars\GenerateDefaultAvatar;
+use App\Jobs\Avatars\GetAvatarsFromInternet;
 
 class CreateContact extends BaseService
 {
@@ -49,7 +49,7 @@ class CreateContact extends BaseService
      * @param array $data
      * @return Contact
      */
-    public function execute(array $data) : Contact
+    public function execute(array $data): Contact
     {
         $this->validate($data);
         // filter out the data that shall not be updated here
@@ -113,14 +113,10 @@ class CreateContact extends BaseService
         $contact->save();
 
         // populate the avatar from Adorable and grab the Gravatar
-        app(GetAvatarsFromInternet::class)->execute([
-            'contact_id' => $contact->id,
-        ]);
+        GetAvatarsFromInternet::dispatch($contact);
 
         // also generate the default avatar
-        app(GenerateDefaultAvatar::class)->execute([
-            'contact_id' => $contact->id,
-        ]);
+        GenerateDefaultAvatar::dispatch($contact);
     }
 
     /**

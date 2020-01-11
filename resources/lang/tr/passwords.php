@@ -13,12 +13,12 @@ return [
     |
     */
 
-    'password' => 'Şifreniz en az altı karakterden oluşmalı ve şifre doğrulaması ile eşleşmelidir.',
     'reset' => 'Şifreniz sıfırlandı!',
     'sent' => 'Eğer girdiğiniz e-posta adresi kayıtlarımızda varsa, şifre yenileme linki gönderilecektir.',
     'token' => 'Bu şifre sıfırlama güvenlik anahtarı geçersiz.',
     'user' => 'Eğer girdiğiniz e-posta adresi kayıtlarımızda varsa, şifre yenileme linki gönderilecektir.',
-    'changed' => 'Password changed successfully.',
+    'changed' => 'Parola başarıyla değiştirildi.',
     'invalid' => 'Girdiğiniz güncel şifreniz doğru değil.',
+    'throttled' => 'Lütfen tekrar denemeden önce bekleyin.',
 
 ];

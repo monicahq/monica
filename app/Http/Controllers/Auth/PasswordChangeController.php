@@ -85,10 +85,6 @@ class PasswordChangeController extends Controller
             return 'passwords.invalid';
         }
 
-        if (! Password::broker()->validateNewPassword($credentials)) {
-            return 'passwords.password';
-        }
-
         return $user;
     }
 
@@ -105,9 +101,9 @@ class PasswordChangeController extends Controller
 
         // Using current email from user, and current password sent with the request to authenticate the user
         if (! Auth::attempt([
-                'email' => $user->getEmailForPasswordReset(),
-                'password' => $credentials['password_current'],
-            ])) {
+            'email' => $user->getEmailForPasswordReset(),
+            'password' => $credentials['password_current'],
+        ])) {
             // authentication fails
             return;
         }

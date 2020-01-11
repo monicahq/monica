@@ -5,7 +5,7 @@ namespace App\Services\Contact\Contact;
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use App\Services\Contact\Avatar\GenerateDefaultAvatar;
+use App\Jobs\Avatars\GenerateDefaultAvatar;
 
 class UpdateContact extends BaseService
 {
@@ -48,7 +48,7 @@ class UpdateContact extends BaseService
      * @param array $data
      * @return Contact
      */
-    public function execute(array $data) : Contact
+    public function execute(array $data): Contact
     {
         $this->validate($data);
 
@@ -102,21 +102,8 @@ class UpdateContact extends BaseService
 
         // only update the avatar if the name has changed
         if ($oldName != $contact->name) {
-            $this->updateDefaultAvatar($contact);
+            GenerateDefaultAvatar::dispatch($contact);
         }
-    }
-
-    /**
-     * Update the default avatar.
-     *
-     * @param Contact $contact
-     * @return void
-     */
-    private function updateDefaultAvatar(Contact $contact)
-    {
-        app(GenerateDefaultAvatar::class)->execute([
-            'contact_id' => $contact->id,
-        ]);
     }
 
     /**

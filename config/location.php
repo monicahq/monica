@@ -34,9 +34,9 @@ return [
     |
     */
     'fallbacks' => [
-         Stevebauman\Location\Drivers\IpInfo::class,
-         Stevebauman\Location\Drivers\GeoPlugin::class,
-         Stevebauman\Location\Drivers\MaxMind::class,
+        Stevebauman\Location\Drivers\IpInfo::class,
+        Stevebauman\Location\Drivers\GeoPlugin::class,
+        Stevebauman\Location\Drivers\MaxMind::class,
     ],
 
     /*
@@ -78,7 +78,7 @@ return [
     |
     */
     'testing' => [
-        'enabled' => true,
+        'enabled' => false,
         'ip' => '66.102.0.0',
     ],
 

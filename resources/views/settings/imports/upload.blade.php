@@ -42,7 +42,10 @@
                 <ul>
                     <li>{!! trans('settings.import_upload_rule_format') !!}</li>
                     <li>{{ trans('settings.import_upload_rule_vcard') }}</li>
-                    <li>{!! trans('settings.import_upload_rule_instructions') !!}</li>
+                    <li>{!! trans('settings.import_upload_rule_instructions', [
+                      'url1' => 'http://osxdaily.com/2015/07/14/export-contacts-mac-os-x/',
+                      'url2' => 'http://www.akruto.com/backup-phone-contacts-calendar/how-to-export-google-contacts-to-csv-or-vcard/'
+                    ]) !!}</li>
                     <li>{{ trans('settings.import_upload_rule_multiple') }}</li>
                     <li>{{ trans('settings.import_upload_rule_limit') }}</li>
                     <li>{{ trans('settings.import_upload_rule_time') }}</li>
@@ -53,7 +56,7 @@
               @include('partials.errors')
 
               <form action="{{ route('settings.storeImport') }}" method="POST" enctype="multipart/form-data">
-                {{ csrf_field() }}
+                @csrf
 
                   <div class="form-group">
                       <label for="vcard">{!! trans('settings.import_upload_form_file') !!}</label>

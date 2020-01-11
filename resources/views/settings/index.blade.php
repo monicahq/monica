@@ -40,7 +40,7 @@
             @endif
 
             <form action="{{ route('settings.save') }}" method="POST">
-              {{ csrf_field() }}
+              @csrf
 
               {{-- id --}}
               <input type="hidden" name="id" value="{{ auth()->user()->id }}" />
@@ -68,9 +68,15 @@
                 <label for="locale">{{ trans('settings.locale') }}</label>
                 <select class="form-control" name="locale" id="locale">
                   @foreach($locales as $locale)
-                    <option value="{{ $locale['lang'] }}" {{ (auth()->user()->locale == $locale['lang'])?'selected':'' }}>{{ $locale['name'] }}</option>
+                    <option value="{{ $locale['lang'] }}" {{ (auth()->user()->locale === $locale['lang'])?'selected':'' }}>
+                      {{ $locale['name-orig'] }}
+                      @if (auth()->user()->locale !== $locale['lang'] && $locale['name-orig'] !== $locale['name'])
+                        — {{ $locale['name'] }}
+                      @endif
+                    </option>
                   @endforeach
                 </select>
+                <small class="form-text text-muted">{!! trans('settings.locale_help', ['url' => 'https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md']) !!}</small>
               </div>
 
               {{-- currency for user --}}
@@ -123,7 +129,7 @@
         </div>
 
         <form method="POST" action="{{ route('settings.reset') }}" class="settings-reset bg-white" onsubmit="return confirm('{{ trans('settings.reset_notice') }}')">
-          {{ csrf_field() }}
+          @csrf
 
           <h2>{{ trans('settings.reset_title') }}</h2>
           <p>{{ trans('settings.reset_desc') }}</p>
@@ -131,7 +137,7 @@
         </form>
 
         <form method="POST" action="{{ route('settings.delete') }}" class="settings-delete bg-white" onsubmit="return confirm('{{ trans('settings.delete_notice') }}')">
-          {{ csrf_field() }}
+          @csrf
 
           <h2>{{ trans('settings.delete_title') }}</h2>
           <p>{{ trans('settings.delete_desc') }}</p>

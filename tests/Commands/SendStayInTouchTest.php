@@ -15,7 +15,8 @@ class SendStayInTouchTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_schedules_a_stay_in_touch_job()
+    /** @test */
+    public function it_schedules_a_stay_in_touch_job()
     {
         Bus::fake();
 
@@ -25,6 +26,7 @@ class SendStayInTouchTest extends TestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
             'stay_in_touch_trigger_date' => '2017-01-01 07:00:00',
+            'stay_in_touch_frequency' => 30,
         ]);
 
         $exitCode = Artisan::call('send:stay_in_touch', []);
@@ -32,7 +34,8 @@ class SendStayInTouchTest extends TestCase
         Bus::assertDispatched(ScheduleStayInTouch::class);
     }
 
-    public function test_it_doesnt_schedule_stay_in_touch_jobs_if_no_date_is_found()
+    /** @test */
+    public function it_doesnt_schedule_stay_in_touch_jobs_if_no_date_is_found()
     {
         Bus::fake();
 
@@ -42,6 +45,7 @@ class SendStayInTouchTest extends TestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
             'stay_in_touch_trigger_date' => '2017-03-01 07:00:00',
+            'stay_in_touch_frequency' => 30,
         ]);
 
         $exitCode = Artisan::call('send:stay_in_touch', []);

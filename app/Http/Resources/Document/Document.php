@@ -26,6 +26,7 @@ class Document extends Resource
             'mime_type' => $this->mime_type,
             'number_of_downloads' => $this->number_of_downloads,
             'link' => $this->getDownloadLink(),
+            'url' => route('api.document', $this->id),
             'account' => [
                 'id' => $this->account->id,
             ],

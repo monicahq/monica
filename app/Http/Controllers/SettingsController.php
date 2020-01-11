@@ -2,84 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
-use App\Helpers\RequestHelper;
-use App\Jobs\SendNewUserAlert;
 use App\Helpers\TimezoneHelper;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
-use App\Jobs\SendInvitationEmail;
 use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
-use Illuminate\Support\Facades\DB;
 use App\Exceptions\StripeException;
 use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
+use App\Notifications\InvitationMail;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
 use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
-use App\Services\Account\DestroyAllDocuments;
+use App\Services\Account\Settings\ResetAccount;
+use App\Services\Account\Settings\DestroyAccount;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
 
 class SettingsController
 {
-    protected $ignoredTables = [
-        'accounts',
-        'activity_type_activities',
-        'activity_types',
-        'api_usage',
-        'cache',
-        'countries',
-        'contact_photo',
-        'crons',
-        'currencies',
-        'contact_photo',
-        'default_activity_types',
-        'default_activity_type_categories',
-        'default_contact_field_types',
-        'default_contact_modules',
-        'default_life_event_categories',
-        'default_life_event_types',
-        'default_relationship_type_groups',
-        'default_relationship_types',
-        'emotions',
-        'emotions_primary',
-        'emotions_secondary',
-        'failed_jobs',
-        'instances',
-        'jobs',
-        'migrations',
-        'oauth_access_tokens',
-        'oauth_auth_codes',
-        'oauth_clients',
-        'oauth_personal_access_clients',
-        'oauth_refresh_tokens',
-        'password_resets',
-        'pet_categories',
-        'sessions',
-        'statistics',
-        'subscriptions',
-        'telescope_entries',
-        'telescope_entries_tags',
-        'telescope_monitoring',
-        'terms',
-        'u2f_key',
-        'users',
-        'webauthn_keys',
-    ];
-
     /**
      * Display a listing of the resource.
      *
@@ -100,7 +52,7 @@ class SettingsController
 
         return view('settings.index')
                 ->withNamesOrder($namesOrder)
-                ->withLocales(LocaleHelper::getLocaleList())
+                ->withLocales(LocaleHelper::getLocaleList()->sortByCollator('name-orig'))
                 ->withHours(DateHelper::getListOfHours())
                 ->withSelectedTimezone(TimezoneHelper::adjustEquivalentTimezone(DateHelper::getTimezone()))
                 ->withTimezones(collect(TimezoneHelper::getListOfTimezones())->map(function ($timezone) {
@@ -128,20 +80,20 @@ class SettingsController
                 'currency_id',
                 'name_order',
             ]) + [
-                'fluid_container' => $request->get('layout'),
-                'temperature_scale' => $request->get('temperature_scale'),
+                'fluid_container' => $request->input('layout'),
+                'temperature_scale' => $request->input('temperature_scale'),
             ]
         );
 
-        if ($user->email != $request->get('email')) {
+        if ($user->email != $request->input('email')) {
             app(EmailChange::class)->execute([
                 'account_id' => $user->account_id,
-                'email' => $request->get('email'),
+                'email' => $request->input('email'),
                 'user_id' => $user->id,
             ]);
         }
 
-        $user->account->default_time_reminder_is_sent = $request->get('reminder_time');
+        $user->account->default_time_reminder_is_sent = $request->input('reminder_time');
         $user->account->save();
 
         return redirect()->route('settings.index')
@@ -157,40 +109,18 @@ class SettingsController
      */
     public function delete(Request $request)
     {
-        $user = $request->user();
-        $account = $user->account;
-
-        app(DestroyAllDocuments::class)->execute([
-            'account_id' => $account->id,
-        ]);
-
-        $tables = DBHelper::getTables();
-
-        // Looping over the tables
-        foreach ($tables as $table) {
-            $tableName = $table->table_name;
-
-            if (in_array($tableName, $this->ignoredTables)) {
-                continue;
-            }
-
-            DB::table($tableName)->where('account_id', $account->id)->delete();
-        }
-
         $account = auth()->user()->account;
 
-        if ($account->isSubscribed() && ! $account->has_access_to_paid_version_for_free) {
-            try {
-                $account->subscriptionCancel();
-            } catch (StripeException $e) {
-                return redirect()->route('settings.index')
-                    ->withErrors($e->getMessage());
-            }
+        try {
+            app(DestroyAccount::class)->execute([
+                'account_id' => $account->id,
+            ]);
+        } catch (StripeException $e) {
+            return redirect()->route('settings.index')
+                ->withErrors($e->getMessage());
         }
 
-        DB::table('accounts')->where('id', $account->id)->delete();
         auth()->logout();
-        $user->delete();
 
         return redirect()->route('login');
     }
@@ -207,26 +137,9 @@ class SettingsController
         $user = $request->user();
         $account = $user->account;
 
-        app(DestroyAllDocuments::class)->execute([
+        app(ResetAccount::class)->execute([
             'account_id' => $account->id,
         ]);
-
-        $tables = DBHelper::getTables();
-
-        // TODO(tom@tomrochette.com): We cannot simply iterate over tables to reset an account
-        // as this will not work with foreign key constraints
-        // Looping over the tables
-        foreach ($tables as $table) {
-            $tableName = $table->table_name;
-
-            if (in_array($tableName, $this->ignoredTables)) {
-                continue;
-            }
-
-            DB::table($tableName)->where('account_id', $account->id)->delete();
-        }
-
-        $account->populateDefaultFields();
 
         return redirect()->route('settings.index')
                     ->with('status', trans('settings.reset_success'));
@@ -296,7 +209,7 @@ class SettingsController
             'filename' => $filename,
         ]);
 
-        dispatch(new AddContactFromVCard($importJob, $request->get('behaviour')));
+        dispatch(new AddContactFromVCard($importJob, $request->input('behaviour')));
 
         return redirect()->route('settings.import');
     }
@@ -354,7 +267,7 @@ class SettingsController
     public function inviteUser(InvitationRequest $request)
     {
         // Make sure the confirmation to invite has not been bypassed
-        if (! $request->get('confirmation')) {
+        if (! $request->input('confirmation')) {
             return redirect()->back()->withErrors(trans('settings.users_error_please_confirm'))->withInput();
         }
 
@@ -364,7 +277,7 @@ class SettingsController
             return redirect()->back()->withErrors(trans('settings.users_error_email_already_taken'))->withInput();
         }
 
-        // Has this user been invited already?
+        // Has this user already been invited?
         $invitations = Invitation::where('email', $request->only(['email']))->count();
         if ($invitations > 0) {
             return redirect()->back()->withErrors(trans('settings.users_error_already_invited'))->withInput();
@@ -381,7 +294,7 @@ class SettingsController
             ]
         );
 
-        dispatch(new SendInvitationEmail($invitation));
+        $invitation->notify((new InvitationMail())->locale(auth()->user()->locale));
 
         auth()->user()->account->update([
             'number_of_invitations_sent' => auth()->user()->account->number_of_invitations_sent + 1,
@@ -404,64 +317,6 @@ class SettingsController
 
         return redirect()->route('settings.users.index')
             ->with('success', trans('settings.users_invitation_deleted_confirmation_message'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param string $key
-     *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
-     */
-    public function acceptInvitation($key)
-    {
-        if (Auth::check()) {
-            return redirect()->route('login');
-        }
-
-        Invitation::where('invitation_key', $key)
-            ->firstOrFail();
-
-        return view('settings.users.accept', compact('key'));
-    }
-
-    /**
-     * Store the specified resource.
-     *
-     * @param Request $request
-     * @param string $key
-     *
-     * @return null|\Illuminate\Http\RedirectResponse
-     */
-    public function storeAcceptedInvitation(Request $request, $key)
-    {
-        $invitation = Invitation::where('invitation_key', $key)
-                                    ->firstOrFail();
-
-        // as a security measure, make sure that the new user provides the email
-        // of the person who has invited him/her.
-        if ($request->input('email_security') != $invitation->invitedBy->email) {
-            return redirect()->back()->withErrors(trans('settings.users_error_email_not_similar'))->withInput();
-        }
-
-        $user = User::createDefault($invitation->account_id,
-                    $request->input('first_name'),
-                    $request->input('last_name'),
-                    $request->input('email'),
-                    $request->input('password'),
-                    RequestHelper::ip()
-                );
-        $user->invited_by_user_id = $invitation->invited_by_user_id;
-        $user->save();
-
-        $invitation->delete();
-
-        // send me an alert
-        dispatch(new SendNewUserAlert($user));
-
-        if (Auth::attempt(['email' => $user->email, 'password' => $request->input('password')])) {
-            return redirect()->route('dashboard.index');
-        }
     }
 
     /**
@@ -555,7 +410,8 @@ class SettingsController
     public function updateDefaultProfileView(Request $request)
     {
         $allowedValues = ['life-events', 'notes', 'photos'];
-        $view = $request->get('name');
+        /** @var string */
+        $view = $request->input('name');
 
         if (! in_array($view, $allowedValues)) {
             return 'not allowed';

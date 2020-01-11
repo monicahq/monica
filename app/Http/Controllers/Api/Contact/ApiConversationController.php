@@ -91,7 +91,7 @@ class ApiConversationController extends ApiController
     {
         try {
             $conversation = app(CreateConversation::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                 +
                 [
                     'account_id' => auth()->user()->account->id,
@@ -120,7 +120,7 @@ class ApiConversationController extends ApiController
     {
         try {
             $conversation = app(UpdateConversation::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'conversation_id'])
                 +
                 [
                     'account_id' => auth()->user()->account->id,

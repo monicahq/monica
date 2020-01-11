@@ -19,8 +19,8 @@ Route::get('/', 'Auth\LoginController@showLoginOrRegister')->name('login');
 
 Auth::routes(['verify' => true]);
 
-Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
-Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation')->name('invitations.accept');
+Route::get('/invitations/accept/{key}', 'Auth\InvitationController@show')->name('invitations.accept');
+Route::post('/invitations/accept/{key}', 'Auth\InvitationController@store')->name('invitations.send');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');
@@ -147,10 +147,6 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
             'index', 'store', 'update', 'destroy',
         ]);
 
-        // Gifts
-        Route::resource('people/{contact}/gifts', 'Contacts\\GiftsController')->except(['show']);
-        Route::post('/people/{contact}/gifts/{gift}/toggle', 'Contacts\\GiftsController@toggle');
-
         // Debt
         Route::resource('people/{contact}/debts', 'Contacts\\DebtController')->except(['index', 'show']);
 
@@ -179,17 +175,11 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::put('/people/{contact}/archive', 'ContactsController@archive');
 
         // Activities
-        Route::get('/people/{contact}/activities', 'Contacts\\ActivitiesController@index')->name('activities.index');
+        Route::get('/activityCategories', 'Contacts\\ActivitiesController@categories')->name('activities.categories');
+        Route::resource('people/{contact}/activities', 'Contacts\\ActivitiesController')->only(['index']);
+        Route::get('/people/{contact}/activities/contacts', 'Contacts\\ActivitiesController@contacts')->name('activities.contacts');
+        Route::get('/people/{contact}/activities/summary', 'Contacts\\ActivitiesController@summary')->name('activities.summary');
         Route::get('/people/{contact}/activities/{year}', 'Contacts\\ActivitiesController@year')->name('activities.year');
-    });
-
-    // Activities
-    Route::name('activities.')->group(function () {
-        Route::get('/activities/add/{contact}', 'ActivitiesController@create')->name('add');
-        Route::post('/activities/store/{contact}', 'ActivitiesController@store')->name('store');
-        Route::get('/activities/{activity}/edit/{contact}', 'ActivitiesController@edit')->name('edit');
-        Route::put('/activities/{activity}/{contact}', 'ActivitiesController@update')->name('update');
-        Route::delete('/activities/{activity}/{contact}', 'ActivitiesController@destroy')->name('delete');
     });
 
     Route::name('journal.')->group(function () {

@@ -14,7 +14,8 @@ class JournalEntryTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
         $task = factory(JournalEntry::class)->create([
@@ -24,7 +25,8 @@ class JournalEntryTest extends TestCase
         $this->assertTrue($task->account()->exists());
     }
 
-    public function test_it_has_polymorphic_relations()
+    /** @test */
+    public function it_has_polymorphic_relations()
     {
         $activity = factory(Activity::class)->create();
         $journalEntry = JournalEntry::add($activity);
@@ -36,7 +38,8 @@ class JournalEntryTest extends TestCase
         $this->assertEquals($journalEntry->id, $activity->journalEntry->id);
     }
 
-    public function test_it_has_polymorphic_relations2()
+    /** @test */
+    public function it_has_polymorphic_relations2()
     {
         $entry = factory(Entry::class)->create();
         $entry->date = '2018-01-01';
@@ -49,10 +52,11 @@ class JournalEntryTest extends TestCase
         $this->assertEquals($journalEntry->id, $entry->journalEntry->id);
     }
 
-    public function test_get_add_adds_data_of_the_right_type()
+    /** @test */
+    public function get_add_adds_data_of_the_right_type()
     {
         $activity = factory(Activity::class)->create();
-        $date = $activity->date_it_happened;
+        $date = $activity->happened_at;
 
         $journalEntry = JournalEntry::add($activity);
 
@@ -64,7 +68,8 @@ class JournalEntryTest extends TestCase
         ]);
     }
 
-    public function test_get_object_data_returns_an_object()
+    /** @test */
+    public function get_object_data_returns_an_object()
     {
         $activity = factory(Activity::class)->create();
 
@@ -76,11 +81,11 @@ class JournalEntryTest extends TestCase
             'activity_type' => (! is_null($activity->type) ? $activity->type->name : null),
             'summary' => $activity->summary,
             'description' => $activity->description,
-            'day' => $activity->date_it_happened->day,
-            'day_name' => $activity->date_it_happened->format('D'),
-            'month' => $activity->date_it_happened->month,
-            'month_name' => strtoupper($activity->date_it_happened->format('M')),
-            'year' => $activity->date_it_happened->year,
+            'day' => $activity->happened_at->day,
+            'day_name' => $activity->happened_at->format('D'),
+            'month' => $activity->happened_at->month,
+            'month_name' => strtoupper($activity->happened_at->format('M')),
+            'year' => $activity->happened_at->year,
             'attendees' => $activity->getContactsForAPI(),
         ];
 
@@ -90,7 +95,8 @@ class JournalEntryTest extends TestCase
         );
     }
 
-    public function test_get_edit_journal_entry()
+    /** @test */
+    public function get_edit_journal_entry()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 0, 0, 0));
 

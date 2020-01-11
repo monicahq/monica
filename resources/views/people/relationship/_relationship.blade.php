@@ -28,8 +28,8 @@
     </a>
 
     <form method="POST" action="{{ route('people.relationships.destroy', [$contact, $relationship]) }}" class="entry-delete-form hidden">
-      {{ method_field('DELETE') }}
-      {{ csrf_field() }}
+      @method('DELETE')
+      @csrf
     </form>
   </div>
   <div class="cb"></div>

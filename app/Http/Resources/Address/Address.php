@@ -28,6 +28,7 @@ class Address extends Resource
             'latitude' => $this->place->latitude,
             'longitude' => $this->place->longitude,
             'country' => new CountryResource($this->place->country),
+            'url' => route('api.address', $this->id),
             'account' => [
                 'id' => $this->account_id,
             ],

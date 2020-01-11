@@ -66,7 +66,7 @@ class SentryRelease extends Command
     public function __construct()
     {
         $this->commandExecutor = new CommandExecutor($this);
-        $this->install_dir = getenv('HOME').'/.local/bin';
+        $this->install_dir = env('SENTRY_ROOT', getenv('HOME').'/.local/bin');
         parent::__construct();
     }
 
@@ -104,7 +104,7 @@ class SentryRelease extends Command
         }
     }
 
-    private function check() : bool
+    private function check(): bool
     {
         $check = true;
         if (empty(config('sentry-release.auth_token'))) {

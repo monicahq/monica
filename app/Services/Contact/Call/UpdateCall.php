@@ -31,7 +31,7 @@ class UpdateCall extends BaseService
      * @param array $data
      * @return Call
      */
-    public function execute(array $data) : Call
+    public function execute(array $data): Call
     {
         $this->validate($data);
 

@@ -74,9 +74,7 @@ class MoveAvatarsToPhotosDirectory extends Command
                     ->delay($delay);
             }
         } catch (FileNotFoundException $e) {
-            if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $this->warn('  ! File not found: '.$e->fileName);
-            }
+            $this->warn('  ! File not found: '.$e->fileName, OutputInterface::VERBOSITY_VERBOSE);
         }
     }
 

@@ -8,6 +8,7 @@ Route::middleware('oauth')->group(function () {
 
     Route::middleware(['auth', 'mfa'])->group(function () {
         Route::post('/verified', 'Auth\\OAuthController@verify')->name('oauth.verify');
+        Route::get('/verified', 'Auth\\OAuthController@verify');
     });
 
     Route::middleware(['auth', '2fa'])->group(function () {

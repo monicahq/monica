@@ -27,7 +27,7 @@ After deployment, the configuration of your app should look like this:
 
 ![Picture Of Configuration](https://user-images.githubusercontent.com/25419741/45253146-9f904800-b362-11e8-916b-8980fc2a83d8.png)
 
-Note that when you deploy with the "Deploy to Heroku" purple button, only 1 dyno ("web") is activated while the "queue" one is not. That is OK - the "queue" dyno is only helpful if you set `QUEUE_DRIVER=database` (default is 'sync').
+Note that when you deploy with the "Deploy to Heroku" purple button, only 1 dyno ("web") is activated while the "queue" one is not. That is OK - the "queue" dyno is only helpful if you set `QUEUE_CONNECTION=database` (default is 'sync').
 
 
 ### Optional: Setup the access tokens to use the API
@@ -50,13 +50,13 @@ The two keys `oauth-private.key` and `oauth-public.key` cannot be backup and rec
 
 * Still in the Heroku CLI, run this command to output the private key:
 ```sh
-sed ':a;N;$!ba;s/\n/\\n/g' ~/storage/oauth-private.key
+sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' ~/storage/oauth-private.key
 ```
   Copy the output to a new Heroku environment variable called `PASSPORT_PRIVATE_KEY`
 
 * Do the same thing with the contents of the public key:
 ```sh
-sed ':a;N;$!ba;s/\n/\\n/g' ~/storage/oauth-public.key
+sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' ~/storage/oauth-public.key
 ```
   Copy its contents to a new Heroku environment variable called `PASSPORT_PUBLIC_KEY`
 
@@ -94,7 +94,7 @@ Client secret: zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq
 ## Limitations
 
 * No upload of photos for your contacts. Heroku doesn't support storage.
-* No email by default - email configuration isn't required to use Monica on Heroku, but it's recommended. The easiest way to go about this is to use Mailgun's [free email add-on on Heroku](https://elements.heroku.com/addons/mailgun):
+* No email by default - email configuration isn't required to use Monica on Heroku, but it's recommended.  You can configure your own [mailserver](/docs/installation/mail.md), though the easiest way to go about this is to use Mailgun's [free email add-on on Heroku](https://elements.heroku.com/addons/mailgun):
   * [Sign up for Mailgun](https://signup.mailgun.com/new/signup) (the [free plan](https://www.mailgun.com/pricing) should be sufficient)
   * Add a custom domain in mailgun.
   * Add the "To" and "From" e-mail addresses you're going to use as verified e-mail addresses on mailgun, and then actually verifying them.

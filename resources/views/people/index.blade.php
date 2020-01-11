@@ -2,7 +2,7 @@
 
 @section('content')
   <div class="people-list">
-    {{ csrf_field() }}
+    @csrf
 
     {{-- Breadcrumb --}}
     <div class="breadcrumb">

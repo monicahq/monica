@@ -22,6 +22,7 @@ use App\Models\Contact\Message;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
+use App\Services\User\CreateUser;
 use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ContactField;
@@ -751,7 +752,15 @@ class Account extends Model
 
         try {
             // create the first user for this account
-            User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress, $lang);
+            $user = app(CreateUser::class)->execute([
+                'account_id' => $account->id,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'email' => $email,
+                'password' => $password,
+                'locale' => $lang,
+                'ip_address' => $ipAddress,
+            ]);
         } catch (\Exception $e) {
             $account->delete();
             throw $e;
@@ -794,7 +803,7 @@ class Account extends Model
      * Gets the RelationshipType object matching the given type.
      *
      * @param  string $relationshipTypeName
-     * @return RelationshipType
+     * @return RelationshipType|null
      */
     public function getRelationshipTypeByType(string $relationshipTypeName)
     {
@@ -855,12 +864,12 @@ class Account extends Model
     public function getYearlyActivitiesStatistics()
     {
         $activitiesStatistics = collect([]);
-        $activities = $this->activities()->latest('date_it_happened')->get();
+        $activities = $this->activities()->latest('happened_at')->get();
         $years = [];
 
         // Create a table that contains the combo year/number of
         foreach ($activities as $call) {
-            $yearStatistic = $call->date_it_happened->format('Y');
+            $yearStatistic = $call->happened_at->format('Y');
             $foundInYear = false;
 
             foreach ($years as $year => $number) {

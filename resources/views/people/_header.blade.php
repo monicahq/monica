@@ -12,7 +12,7 @@
         <div class="relative hide-child">
           <div class="image-header top-0 left-0">
             <img class="cover br3 bb b--gray-monica"
-                 alt={{ $contact->initials }}
+                 alt="{{ $contact->initials }}"
                  src="{{ $contact->getAvatarURL() }}"
                  style="height: 115px; width: 115px;"
                  v-on:error="fixAvatarDisplay"
@@ -39,6 +39,13 @@
       <h1 class="tc mb2 mt4">
         <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
         <contact-favorite hash="{{ $contact->hashID() }}" :starred="{{ \Safe\json_encode($contact->is_starred) }}"></contact-favorite>
+        @if ($contact->job)
+        <span class="db f5 normal">{{ $contact->job }}
+          @if ($contact->company)
+            ({{ $contact->company }})
+          @endif
+        </span>
+        @endif
       </h1>
 
       <ul class="tc-ns mb3 {{ htmldir() == 'ltr' ? 'tl' : 'tr' }}">
@@ -46,14 +53,20 @@
         {{-- AGE --}}
         <li class="mb2 mb0-ns di-ns db tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
           @if ($contact->birthdate && !($contact->is_dead))
-            @if ($contact->birthdate->getAge())
+            @if ($contact->getBirthdayState() !== 'unknown')
               <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">@include('partials.icons.header_birthday')</span>
-              <span>{{$contact->birthdate->toShortString()}} ({{ $contact->birthdate->getAge() }})</span>
+              @if($contact->getBirthdayState() === 'approximate')
+                <span>{{ trans('people.age_approximate_in_years', ['age' => $contact->birthdate->getAge()]) }}</span>
+              @elseif($contact->getBirthdayState() === 'almost')
+                <span>{{$contact->birthdate->toShortString()}}</span>
+              @else
+                <span>{{$contact->birthdate->toShortString()}} ({{ $contact->birthdate->getAge() }})</span>
+              @endif
             @endif
           @elseif ($contact->is_dead)
               @if (! is_null($contact->deceasedDate))
                 {{ trans('people.deceased_label_with_date', ['date' => $contact->deceasedDate->toShortString()]) }}
-                @if ($contact->deceasedDate->is_year_unknown == 0)
+                @if ($contact->deceasedDate->is_year_unknown == 0 && $contact->getBirthdayState() !== 'almost')
                   <span>({{ trans('people.deceased_age') }} {{ $contact->getAgeAtDeath() }})</span>
                 @endif
               @else
@@ -78,10 +91,10 @@
         @if (! $contact->isMe())
         <li class="mb2 mb0-ns dn di-ns tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
           <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">@include('partials.icons.header_call')</span>
-          @if (is_null($contact->getLastCalled()))
+          @if (is_null($contact->last_talked_to))
             {{ trans('people.last_called_empty') }}
           @else
-            {{ trans('people.last_called', ['date' => \App\Helpers\DateHelper::getShortDate($contact->getLastCalled())]) }}
+            {{ trans('people.last_called', ['date' => \App\Helpers\DateHelper::getShortDate($contact->last_talked_to)]) }}
           @endif
         </li>
         @endif

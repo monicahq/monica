@@ -2,15 +2,98 @@
 
 ### New features:
 
+* Add ability to edit activities
+* Associate a photo to a gift
+
+### Enhancements:
+
+* Gift are now added and updated inline
+
+### Fixes:
+
+* Fix contacts list UX with 2 tabs opened
+
+# RELEASED VERSIONS:
+
+## v2.16.0 - 2019-12-31
+
+### New features:
+
+* Save contact tags in vCard 'CATEGORIES' field
+
+### Enhancements:
+
+* Activities are now added inline
+* Improve modals bottom buttons display
+* Add foreign keys to all tables
+* Add English (UK) locale
+* Add API methods to destroy and store documents
+* Add API methods to manage photos and avatars
+* Add emotions and participants to activities
+* Enable API web navigation
+* Enhance UI of API's Settings to add comprehension and documentation
+* Improve trim string middleware to not trim password text
+* Upgrade to Laravel 6.x
+* Enhance user invitation mail
+* Add job information next to the contact name on profile page
+* Use supervisor in docker images
+* Use JawsDB by default on heroku instances
+* Add pluralization forms for non-english-like-plural languages, for vue.js translations
+* Upload master docker image to GitHub packages
+
+### Fixes:
+
+* Fix contact list cells link
+* Fix birthdate selection UX
+* Fix OAuth login process with WebAuthn activated
+* Fix journal entry edit
+* Fix register in case country is not detected from ip address
+* Fix Photo->contact relation
+* Fix subscription page
+* Fix relationship create and destroy with partial contact
+* Fix 2fa route on webauthn page
+* Fix tooltip on favorite icon
+* Fix icons disappeared on contact information
+* Fix CSV uploads with weird photo files
+* Ensure disable_signup is checked on form register validation
+* Fix password resetting page
+* Fix email verification sending on test environments
+* Fix contact export
+* Fix currencies seeder by accounting for defaults
+* Fix search when prefix table is used
+* Fix storage page not being displayed if a contact does not exist anymore
+* Fix API requests for Reminders failing with internal server error
+
+## v2.15.2 - 2019-09-26
+
+### Enhancements:
+
+* Revert depends on php7.2+
+
+
+## v2.15.1 - 2019-09-24
+
+### Fixes:
+
+* Fix people header file
+* Fix query and scope searches with table prefix
+* Remove monica:clean command confirmation
+
+
+## v2.15.0 - 2019-09-22
+
+### New features:
+
 * Paginate the Contacts page and improve database performance
 * Add ability to edit a Journal entry
 * Add vcard photo/avatar import
 * Add ability to change the avatar of your contacts
-* Add the ablity to set a 'me' contact (only API for now)
+* Add the ability to set a 'me' contact (only API for now)
 * Add stepparent/stepchild relationship
 
 ### Enhancements:
 
+* Docker image: create passport keys for OAuth access
 * Reduce a lot of queries
 * Update to laravel cashier 10.0, and get ready with SCA/PSD2
 * Add stripe webhook
@@ -20,6 +103,13 @@
 
 ### Fixes:
 
+* Fix query and scope search
+* Reschedule missed stay-in-touch
+* Fix tasks 'mark as done' UX
+* Fix tattoo or piercing activity locale title
+* Fix getting infos about country without providing ip
+* Fix migration and contact delete in case a DB prefix is used
+* Fix partial/real contact edit on relationship
 * Fix same contact selection in multi-search
 * Fix conversation creation
 * Fix phone call update
@@ -35,8 +125,6 @@
 * Fix stripe payment UI
 * Fix datepicker for locale usage
 
-
-# RELEASED VERSIONS:
 
 ## v2.14.0 - 2019-05-16
 
