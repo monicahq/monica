@@ -11,7 +11,8 @@ class RelationshipTypeGroupTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
         $relationshipType = factory(RelationshipType::class)->create([

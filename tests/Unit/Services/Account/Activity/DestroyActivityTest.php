@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\Account\Activity;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use App\Models\Account\ActivityType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -14,7 +15,8 @@ class DestroyActivityTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_a_activity()
+    /** @test */
+    public function it_destroys_a_activity()
     {
         $activity = factory(Activity::class)->create([]);
 
@@ -34,10 +36,14 @@ class DestroyActivityTest extends TestCase
         ]);
     }
 
-    public function test_it_removes_the_journal_entry_when_destroying_the_activity()
+    /** @test */
+    public function it_removes_the_journal_entry_when_destroying_the_activity()
     {
         $account = factory(Account::class)->create([]);
         $activityType = factory(ActivityType::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
         ]);
 
@@ -46,10 +52,25 @@ class DestroyActivityTest extends TestCase
             'activity_type_id' => $activityType->id,
             'summary' => 'we went to central perk',
             'description' => 'it was awesome',
-            'date' => '2009-09-09',
+            'happened_at' => '2009-09-09',
+            'contacts' => [$contact->id],
         ];
 
         $activity = app(CreateActivity::class)->execute($request);
+
+        $this->assertDatabaseHas('activities', [
+            'id' => $activity->id,
+        ]);
+        $this->assertDatabaseHas('activity_contact', [
+            'activity_id' => $activity->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertDatabaseHas('journal_entries', [
+            'account_id' => $account->id,
+            'journalable_id' => $activity->id,
+            'journalable_type' => get_class($activity),
+        ]);
 
         $request = [
             'account_id' => $activity->account_id,
@@ -59,6 +80,9 @@ class DestroyActivityTest extends TestCase
 
         $this->assertDatabaseMissing('activities', [
             'id' => $activity->id,
+        ]);
+        $this->assertDatabaseMissing('activity_contact', [
+            'activity_id' => $activity->id,
         ]);
 
         $this->assertDatabaseMissing('journal_entries', [

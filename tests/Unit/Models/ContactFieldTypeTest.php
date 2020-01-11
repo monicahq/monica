@@ -12,7 +12,8 @@ class ContactFieldTypeTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_has_many_conversations()
+    /** @test */
+    public function it_has_many_conversations()
     {
         $contactFieldType = factory(ContactFieldType::class)->create([]);
         $conversation = factory(Conversation::class, 3)->create([
@@ -23,7 +24,8 @@ class ContactFieldTypeTest extends FeatureTestCase
         $this->assertTrue($contactFieldType->conversations()->exists());
     }
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
         $contactFieldType = factory(ContactFieldType::class)->create([]);

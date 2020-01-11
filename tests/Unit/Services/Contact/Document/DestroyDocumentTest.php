@@ -17,7 +17,8 @@ class DestroyDocumentTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_a_document()
+    /** @test */
+    public function it_destroys_a_document()
     {
         Storage::fake();
 
@@ -42,7 +43,8 @@ class DestroyDocumentTest extends TestCase
         Storage::disk('public')->assertMissing($document->new_filename);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [
             'document_id' => 2,
@@ -53,7 +55,8 @@ class DestroyDocumentTest extends TestCase
         app(DestroyDocument::class)->execute($request);
     }
 
-    public function test_it_throws_a_document_doesnt_exist()
+    /** @test */
+    public function it_throws_a_document_doesnt_exist()
     {
         $document = factory(Document::class)->create([]);
 

@@ -11,7 +11,8 @@ class GetGravatarTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_returns_an_url()
+    /** @test */
+    public function it_returns_an_url()
     {
         $request = [
             'email' => 'matt@wordpress.com',
@@ -26,7 +27,8 @@ class GetGravatarTest extends TestCase
         );
     }
 
-    public function test_it_returns_an_url_with_a_small_avatar_size()
+    /** @test */
+    public function it_returns_an_url_with_a_small_avatar_size()
     {
         $request = [
             'email' => 'matt@wordpress.com',
@@ -41,7 +43,8 @@ class GetGravatarTest extends TestCase
         );
     }
 
-    public function test_it_returns_an_url_with_a_default_avatar_size()
+    /** @test */
+    public function it_returns_an_url_with_a_default_avatar_size()
     {
         $request = [
             'email' => 'matt@wordpress.com',
@@ -56,7 +59,8 @@ class GetGravatarTest extends TestCase
         );
     }
 
-    public function test_it_returns_null_if_no_avatar_is_found()
+    /** @test */
+    public function it_returns_null_if_no_avatar_is_found()
     {
         $request = [
             'email' => 'jlskjdfl@dskfjlsd.com',
@@ -68,7 +72,8 @@ class GetGravatarTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [
             'size' => 200,

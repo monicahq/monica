@@ -13,7 +13,7 @@ class TimezoneHelper
      *
      * @return array
      */
-    public static function getListOfTimezones() : array
+    public static function getListOfTimezones(): array
     {
         $list = [];
         $timezones = DateTimeZone::listIdentifiers();
@@ -50,7 +50,7 @@ class TimezoneHelper
      * @param string $timezone
      * @return array int value of the offset, string formatted timezone
      */
-    private static function formatTimezone($timezone) : array
+    private static function formatTimezone($timezone): array
     {
         $dtimezone = new DateTimeZone($timezone);
         $time = now($timezone);
@@ -113,7 +113,7 @@ class TimezoneHelper
      * @param string $timezone
      * @return string
      */
-    public static function adjustEquivalentTimezone($timezone) : string
+    public static function adjustEquivalentTimezone($timezone): string
     {
         if (array_key_exists($timezone, self::$equivalentTimezone)) {
             return self::$equivalentTimezone[$timezone];

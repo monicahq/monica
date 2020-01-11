@@ -10,19 +10,22 @@ class ReminderSentTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $reminderSent = factory(ReminderSent::class)->create([]);
         $this->assertTrue($reminderSent->account()->exists());
     }
 
-    public function test_it_belongs_to_a_reminder()
+    /** @test */
+    public function it_belongs_to_a_reminder()
     {
         $reminderSent = factory(ReminderSent::class)->create([]);
         $this->assertTrue($reminderSent->reminder()->exists());
     }
 
-    public function test_it_belongs_to_a_user()
+    /** @test */
+    public function it_belongs_to_a_user()
     {
         $reminderSent = factory(ReminderSent::class)->create([]);
         $this->assertTrue($reminderSent->user()->exists());

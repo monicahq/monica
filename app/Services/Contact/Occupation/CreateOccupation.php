@@ -38,7 +38,7 @@ class CreateOccupation extends BaseService
      * @param array $data
      * @return Occupation
      */
-    public function execute(array $data) : Occupation
+    public function execute(array $data): Occupation
     {
         $this->validate($data);
 

@@ -93,9 +93,9 @@ class ApiTaskController extends ApiController
                 $request->except(['account_id', 'task_id'])
                     +
                     [
-                    'task_id' => $taskId,
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'task_id' => $taskId,
+                        'account_id' => auth()->user()->account->id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

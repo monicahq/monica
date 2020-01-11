@@ -14,7 +14,8 @@ class UpdateDeceasedInformationTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_sets_contact_as_not_deceased()
+    /** @test */
+    public function it_sets_contact_as_not_deceased()
     {
         // first we are going to update a contact and set it as deceased,
         // then we are going to update it again and set it as non deceased
@@ -56,7 +57,8 @@ class UpdateDeceasedInformationTest extends TestCase
         ]);
     }
 
-    public function test_it_sets_a_complete_date()
+    /** @test */
+    public function it_sets_a_complete_date()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -89,7 +91,8 @@ class UpdateDeceasedInformationTest extends TestCase
         ]);
     }
 
-    public function test_it_sets_a_complete_date_with_unknown_year()
+    /** @test */
+    public function it_sets_a_complete_date_with_unknown_year()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -122,7 +125,8 @@ class UpdateDeceasedInformationTest extends TestCase
         ]);
     }
 
-    public function test_it_sets_a_complete_date_and_sets_a_reminder()
+    /** @test */
+    public function it_sets_a_complete_date_and_sets_a_reminder()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -150,7 +154,8 @@ class UpdateDeceasedInformationTest extends TestCase
         ]);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -168,7 +173,8 @@ class UpdateDeceasedInformationTest extends TestCase
         app(UpdateDeceasedInformation::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_contact_and_account_are_not_linked()
+    /** @test */
+    public function it_throws_an_exception_if_contact_and_account_are_not_linked()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -187,7 +193,8 @@ class UpdateDeceasedInformationTest extends TestCase
         app(UpdateDeceasedInformation::class)->execute($request);
     }
 
-    public function test_it_removes_deceased_reminder()
+    /** @test */
+    public function it_removes_deceased_reminder()
     {
         $reminder = factory(Reminder::class)->create([]);
         $contact = factory(Contact::class)->create([
@@ -213,7 +220,8 @@ class UpdateDeceasedInformationTest extends TestCase
         ]);
     }
 
-    public function test_it_removes_deceased_special_date()
+    /** @test */
+    public function it_removes_deceased_special_date()
     {
         $special_date = factory(SpecialDate::class)->create();
         $contact = factory(Contact::class)->create([

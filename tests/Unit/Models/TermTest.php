@@ -12,7 +12,8 @@ class TermTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_many_users()
+    /** @test */
+    public function it_belongs_to_many_users()
     {
         $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create(['account_id' => $account->id]);

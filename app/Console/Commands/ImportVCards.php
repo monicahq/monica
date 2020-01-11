@@ -71,7 +71,7 @@ class ImportVCards extends Command
         return $this->report($importJob);
     }
 
-    private function acceptedExtensions(Filesystem $filesystem, string $path) : bool
+    private function acceptedExtensions(Filesystem $filesystem, string $path): bool
     {
         switch ($filesystem->extension($path)) {
             case 'vcf':

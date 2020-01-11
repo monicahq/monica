@@ -12,7 +12,8 @@ class PasswordResetTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_send_password_reset_email()
+    /** @test */
+    public function it_sends_password_reset_email()
     {
         NotificationFacade::fake();
 
