@@ -18,6 +18,7 @@ return [
     'create' => 'Create',
     'remove' => 'Remove',
     'revoke' => 'Revoke',
+    'validate' => 'Validate',
     'done' => 'Done',
     'back' => 'Back',
     'verify' => 'Verify',
@@ -38,6 +39,7 @@ return [
     'filter' => 'Filter the list',
     'go_back' => 'Go back',
     'file_selected' => '1 file selected...|{count} files selected...',
+    'no_entry_found' => 'No entry found.',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',

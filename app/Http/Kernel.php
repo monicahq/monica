@@ -79,6 +79,7 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'checkadmin' => \App\Http\Middleware\CheckAdmin::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'limitations' => \App\Http\Middleware\CheckAccountLimitations::class,
         'locale' => \App\Http\Middleware\CheckLocale::class,

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User\User;
+use App\Jobs\SendMailTest;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Helpers\StringHelper;
 use App\Models\Account\Account;
+use App\Http\Middleware\CheckAdmin;
 use App\Http\Resources\Account\User\UserShort as UserResource;
 use App\Http\Resources\Account\User\Account as AccountResource;
 
@@ -19,13 +21,7 @@ class AdminController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(function ($request, $next) {
-            if (! $request->user()->admin) {
-                return redirect(null, 403)->route('login');
-            }
-
-            return $next($request);
-        });
+        $this->middleware('checkadmin');
     }
 
     /**
@@ -61,6 +57,7 @@ class AdminController extends Controller
         $users->orderByRaw('created_at asc');
         $users = $users->paginate($perPage);
 
+        /*
         $userList = collect();
         foreach ($users as $user) {
             $userList->push([
@@ -72,12 +69,14 @@ class AdminController extends Controller
                 'is_policy_compliant' => $user->isPolicyCompliant(),
                 'account' => [
                     'id' => $user->account->id,
-                    'has_access_to_paid_version_for_free' => $user->account->has_access_to_paid_version_for_free,
+                    'status' => $user->account->isSubscribed() ? 'subscribed' :
+                        $user->account->has_access_to_paid_version_for_free ? 'free' : 'standard',
                 ],
                 'created_at' => DateHelper::getTimestamp($user->created_at),
                 'updated_at' => DateHelper::getTimestamp($user->updated_at),
             ]);
         }
+        */
 
         return [
             'total' => $users->total(),
@@ -130,5 +129,16 @@ class AdminController extends Controller
         return [
             'entry' => new AccountResource($account),
         ];
+    }
+
+    /**
+     * Test email sending.
+     *
+     * @param  Request $request
+     */
+    public function email(Request $request)
+    {
+        dispatch(new SendMailTest($request->input('email')));
+        return ['true'];
     }
 }

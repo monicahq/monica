@@ -2,8 +2,8 @@
 </style>
 
 <template>
-  <div>
-    <list-screen ref="list" title="Users" resource="users" v-slot:default="slotProps">
+  <sidebar>
+    <list-screen ref="list" :title="$t('settings.admin_users_title')" resource="users" v-slot:default="slotProps">
       <vue-good-table
         mode="remote"
         :columns="columns"
@@ -39,32 +39,30 @@
         @on-row-click="onRowClick"
       >
         <template v-slot:emptystate>
-          <div class="vgt-center-align vgt-text-disabled h3">
-            No user found
-          </div>
-        </template >
+          <div class="vgt-center-align vgt-text-disabled h3">{{ $t('app.no_entry_found' )}}</div>
+        </template>
       </vue-good-table>
     </list-screen>
-
-  </div>
+  </sidebar>
 </template>
 
 <script>
-import { SweetModal } from 'sweet-modal-vue';
-import ListScreen from './../ListScreen.vue';
+import { SweetModal } from "sweet-modal-vue";
+import ListScreen from "./../ListScreen.vue";
+import Sidebar from "../Sidebar.vue";
 
 export default {
-
   components: {
     SweetModal,
     ListScreen,
+    Sidebar,
   },
 
   props: {
-    wait : {
+    wait: {
       type: Number,
-      default: 200,
-    },
+      default: 200
+    }
   },
 
   data() {
@@ -75,27 +73,27 @@ export default {
       totalRecords: 0,
 
       serverParams: {
-        search: '',
+        search: "",
         page: 1,
         perPage: 30
-      },
+      }
     };
   },
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir == "ltr";
     },
 
     toggleOptions() {
       return {
-        checked: this.$t('app.yes'),
-        unchecked: this.$t('app.no')
+        checked: this.$t("app.yes"),
+        unchecked: this.$t("app.no")
       };
     },
 
     getRowStyleClass() {
-      return 'bg-white';
+      return "bg-white";
     },
 
     perPageDropdown() {
@@ -105,84 +103,68 @@ export default {
     columns() {
       return [
         {
-          label: this.$t('settings.firstname'),
-          field: 'first_name',
+          label: this.$t("settings.firstname"),
+          field: "first_name"
         },
         {
-          label: this.$t('settings.lastname'),
-          field: 'last_name',
+          label: this.$t("settings.lastname"),
+          field: "last_name"
         },
         {
-          label: this.$t('settings.email'),
-          field: 'email',
+          label: this.$t("settings.email"),
+          field: "email"
         },
         {
-          label: this.$t('settings.admin_users_free_account'),
-          field: 'account.has_access_to_paid_version_for_free',
-          formatFn: this.formatBoolean,
+          label: this.$t("settings.admin_users_status"),
+          field: "account.status",
+          formatFn: this.formatStatus
         },
         {
-          label: this.$t('settings.admin_users_admin'),
-          field: 'is_admin',
-          formatFn: this.formatBoolean,
+          label: this.$t("settings.admin_users_admin"),
+          field: "is_admin",
+          formatFn: this.formatBoolean
         }
       ];
     }
   },
 
   mounted() {
-    /*
-    this.loadItems();
-    this.callUserSearch = _.debounce((text) => {
-      this.loadItems();
-    }, this.wait);
-    */
   },
 
   methods: {
     formatBoolean(value) {
-      return value ? this.$t('app.yes') : this.$t('app.no');
+      return value ? this.$t("app.yes") : this.$t("app.no");
     },
-/*
-    updateParams(newProps) {
-      this.serverParams = Object.assign({}, this.serverParams, newProps);
+
+    formatStatus(value) {
+      switch (value) {
+        case 'subscribed':
+          return this.$t("settings.admin_users_status_payed");
+        case 'free':
+          return this.$t("settings.admin_users_status_free");
+        default:
+          return this.$t("settings.admin_users_status_standard");
+      }
     },
-*/
+
     onRowClick(params) {
-      this.$router.push({name: 'user', params: {id: params.row.id}});
+      this.$router.push({ name: "user", params: { id: params.row.id } });
     },
 
     onPageChange(params) {
-      this.$refs.list.updateParams({page: params.currentPage});
+      this.$refs.list.updateParams({ page: params.currentPage });
       this.$refs.list.search();
     },
 
     onPerPageChange(params) {
-      this.$refs.list.updateParams({perPage: params.currentPerPage, page: 1});
+      this.$refs.list.updateParams({ perPage: params.currentPerPage, page: 1 });
       this.$refs.list.search();
     },
 
     onSearch(params) {
-      this.$refs.list.updateParams({search: params.searchTerm});
+      this.$refs.list.updateParams({ search: params.searchTerm });
       this.$refs.list.search();
-    },
-/*
-    onSearch(params) {
-      this.$refs.list.updateParams({search: params.searchTerm});
-      this.callUserSearch();
-    },
-
-    loadItems() {
-      return axios.post('admin/users', {
-        page: this.serverParams.page,
-        perPage: this.serverParams.perPage,
-        search: this.serverParams.search,
-      }).then(response => {
-        this.users = response.data.users;
-        this.totalRecords = response.data.totalRecords;
-      });
-    },
-    */
+    }
   }
 };
 </script>

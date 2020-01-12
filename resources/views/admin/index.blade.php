@@ -14,6 +14,9 @@
               <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li>
+              <a href="{{ route('settings.index') }}">{{ trans('app.breadcrumb_settings') }}</a>
+            </li>
+            <li>
               {{ trans('app.breadcrumb_admin') }}
             </li>
           </ul>
@@ -23,27 +26,19 @@
   </div>
 
   <div class="{{ auth()->user()->getFluidLayout() }} mb4">
-    <div class="row">
 
-      <div class="col-12 col-md-9">
-        <div class="br3 ba b--gray-monica bg-white mb4">
-          <div class="pa3 bb b--gray-monica">
+    @include('partials.errors')
 
-            @include('partials.errors')
-
-            @if (session('status'))
-              <div class="alert alert-success">
-                  {{ session('status') }}
-              </div>
-            @endif
-
-            <router-view></router-view>
-          
-          </div>
-        </div>
-
+    @if (session('status'))
+      <div class="alert alert-success">
+          {{ session('status') }}
       </div>
-    </div>
+    @endif
+
+    <transition name="fade">
+    <router-view></router-view>
+    </transition>
+
   </div>
 </div>
 

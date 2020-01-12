@@ -2,39 +2,25 @@
 </style>
 
 <template>
-  <div>
+  <sidebar>
     <notifications group="main" position="top middle" width="400" />
-    <item-screen title="User" resource="user" :id="id" v-slot:default="slotProps">
+    <item-screen :title="$t('app.admin_user_title')" resource="user" :id="id" v-slot:default="slotProps">
       <div class="dt">
         <div class="dt-row h2">
-          <div class="dtc">
-            {{ $t('settings.firstname') }}
-          </div>
-          <div class="dtc">
-            {{ slotProps.entry.first_name }}
-          </div>
+          <div class="dtc ph2 b">{{ $t('settings.firstname') }}</div>
+          <div class="dtc ph2">{{ slotProps.entry.first_name }}</div>
         </div>
         <div class="dt-row h2">
-          <div class="dtc">
-            {{ $t('settings.lastname') }}
-          </div>
-          <div class="dtc">
-            {{ slotProps.entry.last_name }}
-          </div>
+          <div class="dtc ph2 b">{{ $t('settings.lastname') }}</div>
+          <div class="dtc ph2">{{ slotProps.entry.last_name }}</div>
         </div>
         <div class="dt-row h2">
-          <div class="dtc">
-            {{ $t('settings.email') }}
-          </div>
-          <div class="dtc">
-            {{ slotProps.entry.email }}
-          </div>
+          <div class="dtc ph2 b">{{ $t('settings.email') }}</div>
+          <div class="dtc ph2">{{ slotProps.entry.email }}</div>
         </div>
         <div class="dt-row h2">
-          <div class="dtc">
-            {{ $t('settings.admin_users_admin') }}
-          </div>
-          <div class="dtc">
+          <div class="dtc ph2 b">{{ $t('settings.admin_users_admin') }}</div>
+          <div class="dtc ph2">
             <form-toggle
               :id="''"
               v-model="slotProps.entry.is_admin"
@@ -45,10 +31,8 @@
           </div>
         </div>
         <div class="dt-row h2">
-          <div class="dtc">
-            Account has access to free version
-          </div>
-          <div class="dtc">
+          <div class="dtc ph2 b">{{ $t("settings.admin_users_status_free") }}</div>
+          <div class="dtc ph2">
             <form-toggle
               :id="''"
               v-model="slotProps.entry.account.has_access_to_paid_version_for_free"
@@ -59,38 +43,35 @@
           </div>
         </div>
         <div class="dt-row h2">
-          <div class="dtc">
-            Payed account
-          </div>
-          <div class="dtc">
-            {{ slotProps.entry.account.stripe_id ? $t('app.yes') : $t('app.no') }}
-          </div>
+          <div class="dtc ph2 b">{{ $t("settings.admin_users_status_payed") }}</div>
+          <div class="dtc ph2">{{ slotProps.entry.account.stripe_id ? $t('app.yes') : $t('app.no') }}</div>
         </div>
       </div>
     </item-screen>
 
-    <router-link :to="{ name: 'users' }">
-      {{ $t('app.back') }}
-    </router-link>
-  </div>
+    <div class="pt3">
+      <router-link class="btn btn-primary" :to="{ name: 'users' }">{{ $t('app.back') }}</router-link>
+    </div>
+  </sidebar>
 </template>
 
 <script>
-import { SweetModal } from 'sweet-modal-vue';
-import ItemScreen from './../ItemScreen.vue';
+import { SweetModal } from "sweet-modal-vue";
+import ItemScreen from "./../ItemScreen.vue";
+import Sidebar from "../Sidebar.vue";
 
 export default {
-
   components: {
     SweetModal,
     ItemScreen,
+    Sidebar,
   },
 
   props: {
     id: {
       type: Number,
-      default: 0,
-    },
+      default: 0
+    }
   },
 
   data() {
@@ -101,45 +82,53 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir == "ltr";
     },
 
     toggleOptions() {
       return {
-        checked: this.$t('app.yes'),
-        unchecked: this.$t('app.no')
+        checked: this.$t("app.yes"),
+        unchecked: this.$t("app.no")
       };
-    },
-
+    }
   },
 
-  mounted() {
-  },
+  mounted() {},
 
   methods: {
-
     switchAdmin(value) {
-      this._switchToggle(value, 'admin-api/user/'+this.id+'/adminToggle', this.entry, 'is_admin');
+      this._switchToggle(
+        value,
+        "admin-api/user/" + this.id + "/adminToggle",
+        this.entry,
+        "is_admin"
+      );
     },
 
     switchPremium(value) {
-      this._switchToggle(value, 'admin-api/account/'+this.entry.account.id+'/premiumToggle', this.entry.account, 'has_access_to_paid_version_for_free');
+      this._switchToggle(
+        value,
+        "admin-api/account/" + this.entry.account.id + "/premiumToggle",
+        this.entry.account,
+        "has_access_to_paid_version_for_free"
+      );
     },
 
     _switchToggle(value, backendUrl, element, child) {
-      axios.put(backendUrl, { value: value })
-        .then(response => {
+      axios.put(backendUrl, { value: value }).then(
+        response => {
           Vue.set(element, child, value);
-        }, error => {
+        },
+        error => {
           Vue.set(element, child, !value);
           this.$notify({
-            group: 'main',
-            title: this.$t('app.default_save_error'),
-            text: '',
-            type: 'error'
+            group: "main",
+            title: this.$t("app.default_save_error"),
+            text: "",
+            type: "error"
           });
-
-        });
+        }
+      );
     }
   }
 };

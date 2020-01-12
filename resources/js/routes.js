@@ -14,4 +14,9 @@ export default [
     component: require('./components/admin/users/User').default,
     props: true
   },
+  {
+    path: '/config',
+    name: 'config',
+    component: require('./components/admin/configs/ConfigsList').default
+  },
 ];

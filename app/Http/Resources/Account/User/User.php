@@ -29,9 +29,7 @@ class User extends Resource
             'currency' => new CurrencyResource($this->currency),
             'locale' => $this->locale,
             'is_policy_compliant' => $this->isPolicyCompliant(),
-            'account' => [
-                'id' => $this->account->id,
-            ],
+            'account' => new Account($this->account),
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];
