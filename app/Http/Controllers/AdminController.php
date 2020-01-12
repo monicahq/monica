@@ -8,7 +8,6 @@ use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Helpers\StringHelper;
 use App\Models\Account\Account;
-use App\Http\Middleware\CheckAdmin;
 use App\Http\Resources\Account\User\UserShort as UserResource;
 use App\Http\Resources\Account\User\Account as AccountResource;
 
@@ -139,6 +138,7 @@ class AdminController extends Controller
     public function email(Request $request)
     {
         dispatch(new SendMailTest($request->input('email')));
+
         return ['true'];
     }
 }
