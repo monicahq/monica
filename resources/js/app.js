@@ -24,9 +24,9 @@ import Tooltip from 'vue-directive-tooltip';
 Vue.use(Tooltip, { delay: 0 });
 
 // VueRouter
-import VueRouter from 'vue-router'
+import VueRouter from 'vue-router';
 import Routes from './routes';
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 // Select used on list items to display edit and delete buttons
 //import vSelectMenu from 'v-selectmenu';

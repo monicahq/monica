@@ -1,24 +1,24 @@
 <template>
   <div>
-    <h2>{{ this.title }}</h2>
+    <h2>{{ title }}</h2>
 
-      <div
-        v-if="!ready"
-        class="d-flex align-items-center justify-content-center p-5 bottom-radius"
-      >
-        <span>{{ $t('app.loading') }}</span>
-      </div>
+    <div
+      v-if="!ready"
+      class="d-flex align-items-center justify-content-center p-5 bottom-radius"
+    >
+      <span>{{ $t('app.loading') }}</span>
+    </div>
 
-      <div
-        v-if="ready && !entry"
-        class="d-flex align-items-center justify-content-center p-5 bottom-radius"
-      >
-        <span>{{ $t('app.no_entry_found' )}}</span>
-      </div>
+    <div
+      v-if="ready && !entry"
+      class="d-flex align-items-center justify-content-center p-5 bottom-radius"
+    >
+      <span>{{ $t('app.no_entry_found' ) }}</span>
+    </div>
 
-      <div v-if="ready && entry">
-        <slot :entry="entry"></slot>
-      </div>
+    <div v-if="ready && entry">
+      <slot :entry="entry"></slot>
+    </div>
   </div>
 </template>
 
@@ -28,12 +28,12 @@ export default {
     resource: {
       required: true,
       type: String,
-      default: ""
+      default: ''
     },
     title: {
       required: true,
       type: String,
-      default: ""
+      default: ''
     },
     id: {
       required: true,
@@ -67,7 +67,7 @@ export default {
 
   methods: {
     prepareEntry() {
-      document.title = this.title + " - Admin";
+      document.title = this.title + ' - Admin';
       this.ready = false;
 
       this.loadEntry(response => {
@@ -83,7 +83,7 @@ export default {
 
     loadEntry(after) {
       axios
-        .get("/admin-api/" + this.resource + "/" + this.id)
+        .get('/admin-api/' + this.resource + '/' + this.id)
         .then(response => {
           if (_.isFunction(after)) {
             after(response);

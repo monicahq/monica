@@ -3,7 +3,7 @@
 
 <template>
   <sidebar>
-    <list-screen ref="list" :title="$t('settings.admin_users_title')" resource="users" v-slot:default="slotProps">
+    <list-screen ref="list" v-slot:default="slotProps" :title="$t('settings.admin_users_title')" resource="users">
       <vue-good-table
         mode="remote"
         :columns="columns"
@@ -39,7 +39,9 @@
         @on-row-click="onRowClick"
       >
         <template v-slot:emptystate>
-          <div class="vgt-center-align vgt-text-disabled h3">{{ $t('app.no_entry_found' )}}</div>
+          <div class="vgt-center-align vgt-text-disabled h3">
+            {{ $t('app.no_entry_found' ) }}
+          </div>
         </template>
       </vue-good-table>
     </list-screen>
@@ -47,13 +49,11 @@
 </template>
 
 <script>
-import { SweetModal } from "sweet-modal-vue";
-import ListScreen from "./../ListScreen.vue";
-import Sidebar from "../Sidebar.vue";
+import ListScreen from './../ListScreen.vue';
+import Sidebar from '../Sidebar.vue';
 
 export default {
   components: {
-    SweetModal,
     ListScreen,
     Sidebar,
   },
@@ -73,7 +73,7 @@ export default {
       totalRecords: 0,
 
       serverParams: {
-        search: "",
+        search: '',
         page: 1,
         perPage: 30
       }
@@ -82,18 +82,18 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == "ltr";
+      return this.$root.htmldir == 'ltr';
     },
 
     toggleOptions() {
       return {
-        checked: this.$t("app.yes"),
-        unchecked: this.$t("app.no")
+        checked: this.$t('app.yes'),
+        unchecked: this.$t('app.no')
       };
     },
 
     getRowStyleClass() {
-      return "bg-white";
+      return 'bg-white';
     },
 
     perPageDropdown() {
@@ -103,25 +103,25 @@ export default {
     columns() {
       return [
         {
-          label: this.$t("settings.firstname"),
-          field: "first_name"
+          label: this.$t('settings.firstname'),
+          field: 'first_name'
         },
         {
-          label: this.$t("settings.lastname"),
-          field: "last_name"
+          label: this.$t('settings.lastname'),
+          field: 'last_name'
         },
         {
-          label: this.$t("settings.email"),
-          field: "email"
+          label: this.$t('settings.email'),
+          field: 'email'
         },
         {
-          label: this.$t("settings.admin_users_status"),
-          field: "account.status",
+          label: this.$t('settings.admin_users_status'),
+          field: 'account.status',
           formatFn: this.formatStatus
         },
         {
-          label: this.$t("settings.admin_users_admin"),
-          field: "is_admin",
+          label: this.$t('settings.admin_users_admin'),
+          field: 'is_admin',
           formatFn: this.formatBoolean
         }
       ];
@@ -133,22 +133,22 @@ export default {
 
   methods: {
     formatBoolean(value) {
-      return value ? this.$t("app.yes") : this.$t("app.no");
+      return value ? this.$t('app.yes') : this.$t('app.no');
     },
 
     formatStatus(value) {
       switch (value) {
-        case 'subscribed':
-          return this.$t("settings.admin_users_status_payed");
-        case 'free':
-          return this.$t("settings.admin_users_status_free");
-        default:
-          return this.$t("settings.admin_users_status_standard");
+      case 'subscribed':
+        return this.$t('settings.admin_users_status_payed');
+      case 'free':
+        return this.$t('settings.admin_users_status_free');
+      default:
+        return this.$t('settings.admin_users_status_standard');
       }
     },
 
     onRowClick(params) {
-      this.$router.push({ name: "user", params: { id: params.row.id } });
+      this.$router.push({ name: 'user', params: { id: params.row.id } });
     },
 
     onPageChange(params) {

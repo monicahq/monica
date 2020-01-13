@@ -5,7 +5,9 @@
         <li v-for="link in links" :key="link.title" :class="[current(link) ? 'selected' : 'bg-white']">
           <i :class="link.class" aria-hidden="true"></i>
           <strong v-if="current(link)">{{ link.title }}</strong>
-          <a v-else href="" @click.prevent="onClick(link)">{{ link.title }}</a>
+          <router-link v-else :to="link.name" replace>
+            {{ link.title }}
+          </router-link>
         </li>
       </ul>
     </div>
@@ -13,9 +15,7 @@
     <div class="col-12 col-md-9">
       <div class="br3 ba b--gray-monica bg-white mb4">
         <div class="pa3 bb b--gray-monica">
-
           <slot></slot>
-
         </div>
       </div>
     </div>
@@ -38,7 +38,7 @@ export default {
           name: 'config',
           class: 'fa fa-cog'
         }
-      ]
+      ];
     },
   },
 
@@ -49,9 +49,6 @@ export default {
     current(link) {
       return this.$route.name == link.name;
     },
-    onClick(link) {
-      this.$router.push({ name: link.name });
-    },
   }
-}
+};
 </script>

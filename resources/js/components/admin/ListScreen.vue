@@ -1,8 +1,8 @@
 <template>
   <div>
-      <h2>{{ this.title }}</h2>
+    <h2>{{ title }}</h2>
 
-      <!--
+    <!--
             <input type="text" class="form-control w-25"
                    v-if="tag || entries.length > 0"
                    id="searchInput"
@@ -48,7 +48,7 @@ export default {
       total: 0,
       ready: false,
       serverParams: {
-        search: "",
+        search: '',
         page: 1,
         perPage: 30
       },
@@ -60,7 +60,7 @@ export default {
    * Prepare the component.
    */
   mounted() {
-    document.title = this.title + " - Admin";
+    document.title = this.title + ' - Admin';
 
     this._focusOnSearch();
 
@@ -85,7 +85,7 @@ export default {
 
     _loadEntries(after) {
       axios
-        .post("/admin-api/" + this.resource, this.serverParams)
+        .post('/admin-api/' + this.resource, this.serverParams)
         .then(response => {
           if (_.isFunction(after)) {
             after(
@@ -117,7 +117,7 @@ export default {
     _focusOnSearch() {
       document.onkeyup = event => {
         if (event.which === 191 || event.keyCode === 191) {
-          let searchInput = document.getElementById("searchInput");
+          let searchInput = document.getElementById('searchInput');
 
           if (searchInput) {
             searchInput.focus();

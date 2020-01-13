@@ -30,19 +30,15 @@
         <small>{{ $t('settings.admin_config_email_help') }}</small>
       </form>
     </div>
-
-
   </sidebar>
 </template>
 
 <script>
-import { SweetModal } from "sweet-modal-vue";
-import Sidebar from "../Sidebar.vue";
+import Sidebar from '../Sidebar.vue';
 import { stringify } from 'querystring';
 
 export default {
   components: {
-    SweetModal,
     Sidebar,
   },
 
@@ -57,7 +53,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == "ltr";
+      return this.$root.htmldir == 'ltr';
     },
 
   },

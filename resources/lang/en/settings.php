@@ -488,7 +488,7 @@ return [
     'dav_caldav_tasks_export' => 'Export all tasks in one file',
 
     'admin_user_title' => 'User',
-    'admin_users_title' => 'Users list',
+    'admin_users_title' => 'List of users',
     'admin_users_admin' => 'Admin',
     'admin_users_status' => 'Status',
     'admin_users_status_standard' => 'Standard account',
