@@ -22,7 +22,9 @@ class UserShort extends Resource
             'last_name' => $this->last_name,
             'email' => $this->email,
             'is_admin' => (bool) $this->admin,
-            'account' => new Account($this->account),
+            'account' => [
+                'id' => $this->account_id,
+            ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];

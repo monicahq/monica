@@ -27,6 +27,7 @@ class Account extends Resource
             'statistics' => [
                 'nb_contacts' => $this->contacts()->count(),
             ],
+            'users' => UserShort::collection($this->users),
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];

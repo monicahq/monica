@@ -148,7 +148,7 @@ export default {
     },
 
     onRowClick(params) {
-      this.$router.push({ name: 'user', params: { id: params.row.id } });
+      this.$router.push({ name: 'user', params: { id: parseInt(params.row.id) } });
     },
 
     onPageChange(params) {

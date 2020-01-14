@@ -5,7 +5,7 @@
         <li v-for="link in links" :key="link.title" :class="[current(link) ? 'selected' : 'bg-white']">
           <i :class="link.class" aria-hidden="true"></i>
           <strong v-if="current(link)">{{ link.title }}</strong>
-          <router-link v-else :to="link.name" replace>
+          <router-link v-else :to="{ name: link.name }" replace>
             {{ link.title }}
           </router-link>
         </li>

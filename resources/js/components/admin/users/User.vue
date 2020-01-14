@@ -44,6 +44,11 @@
             />
           </div>
         </div>
+      </div>
+
+      <br />
+      <h3>{{ $t("settings.admin_users_account") }}</h3>
+      <div class="dt">
         <div class="dt-row h2">
           <div class="dtc ph2 b">
             {{ $t("settings.admin_users_status_free") }}
@@ -63,10 +68,41 @@
             {{ $t("settings.admin_users_status_payed") }}
           </div>
           <div class="dtc ph2">
-            {{ slotProps.entry.account.stripe_id ? $t('app.yes') : $t('app.no') }}
+            <a v-if="slotProps.entry.account.stripe_id"
+               :href="'https://dashboard.stripe.com/customers/'.slotProps.entry.account.stripe_id"
+               target="_blank"
+               rel="noopener noreferrer"
+            >
+              {{ $t('app.yes') }}
+            </a>
+            <template v-else>
+              {{ $t('app.no') }}
+            </template>
+          </div>
+        </div>
+        <div class="dt-row h2">
+          <div class="dtc ph2 b">
+            {{ $t("settings.admin_users_nb_contacts") }}
+          </div>
+          <div class="dtc ph2">
+            {{ slotProps.entry.account.statistics.nb_contacts }}
           </div>
         </div>
       </div>
+
+      <template v-if="filterUsers(slotProps.entry.account.users).length > 0">
+        <br />
+        <h3>{{ $t('settings.admin_users_other') }}</h3>
+        <div class="dt">
+          <div v-for="user in filterUsers(slotProps.entry.account.users)" :key="user.id" class="dt-row h2">
+            <div class="dtc ph2">
+              <router-link :to="{ name: 'user', params: { id: user.id } }" replace>
+                {{ user.first_name }} {{ user.last_name }} ({{ user.email }})
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </template>
     </item-screen>
 
     <div class="pt3">
@@ -149,7 +185,12 @@ export default {
           });
         }
       );
-    }
+    },
+
+    filterUsers(users) {
+      let id = this.id;
+      return users.filter((user) => user.id !== id);
+    },
   }
 };
 </script>
