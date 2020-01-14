@@ -14448,22 +14448,27 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.7.2",
+            "version": "3.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "d9cae720c1af31db9ba27c2bc1fcf9b0dd092fb0"
+                "reference": "90d6b73fd8062432030ef39b7b6694b3902daa31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/d9cae720c1af31db9ba27c2bc1fcf9b0dd092fb0",
-                "reference": "d9cae720c1af31db9ba27c2bc1fcf9b0dd092fb0",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/90d6b73fd8062432030ef39b7b6694b3902daa31",
+                "reference": "90d6b73fd8062432030ef39b7b6694b3902daa31",
                 "shasum": ""
             },
             "require": {
                 "amphp/amp": "^2.1",
                 "amphp/byte-stream": "^1.5",
                 "composer/xdebug-handler": "^1.1",
+                "ext-dom": "*",
+                "ext-json": "*",
+                "ext-libxml": "*",
+                "ext-simplexml": "*",
+                "ext-tokenizer": "*",
                 "felixfbecker/advanced-json-rpc": "^3.0.3",
                 "felixfbecker/language-server-protocol": "^1.4",
                 "netresearch/jsonmapper": "^1.0",
@@ -14484,6 +14489,7 @@
                 "ext-curl": "*",
                 "friendsofphp/php-cs-fixer": "^2.15",
                 "phpmyadmin/sql-parser": "^5.0",
+                "phpspec/prophecy": ">=1.9.0",
                 "phpunit/phpunit": "^7.5 || ^8.0",
                 "psalm/plugin-phpunit": "^0.6",
                 "slevomat/coding-standard": "^5.0",
@@ -14514,7 +14520,8 @@
                     "Psalm\\": "src/Psalm"
                 },
                 "files": [
-                    "src/functions.php"
+                    "src/functions.php",
+                    "src/spl_object_id.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -14532,7 +14539,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2019-12-03T13:33:31+00:00"
+            "time": "2020-01-07T13:50:31+00:00"
         },
         {
             "name": "webmozart/assert",
