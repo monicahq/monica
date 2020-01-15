@@ -47,25 +47,25 @@
 
               {{-- names --}}
               <div class="form-group">
-                <label for="first_name">{{ trans('settings.firstname') }}</label>
+                <label for="first_name" class="mb2 b">{{ trans('settings.firstname') }}</label>
                 <input type="text" class="form-control" name="first_name" id="first_name" required value="{{ auth()->user()->first_name }}">
               </div>
 
               <div class="form-group">
-                <label for="last_name">{{ trans('settings.lastname') }}</label>
+                <label for="last_name" class="mb2 b">{{ trans('settings.lastname') }}</label>
                 <input type="text" class="form-control" name="last_name" id="last_name" required value="{{ auth()->user()->last_name }}">
               </div>
 
               {{-- email address --}}
               <div class="form-group">
-                <label for="email">{{ trans('settings.email') }}</label>
+                <label for="email" class="mb2 b">{{ trans('settings.email') }}</label>
                 <input type="email" class="form-control" name="email" id="email" placeholder="{{ trans('settings.email_placeholder') }}" required value="{{ auth()->user()->email }}">
                 <small id="emailHelp" class="form-text text-muted">{{ trans('settings.email_help') }}</small>
               </div>
 
               {{-- Locale --}}
               <div class="form-group">
-                <label for="locale">{{ trans('settings.locale') }}</label>
+                <label for="locale" class="mb2 b">{{ trans('settings.locale') }}</label>
                 <select class="form-control" name="locale" id="locale">
                   @foreach($locales as $locale)
                     <option value="{{ $locale['lang'] }}" {{ (auth()->user()->locale === $locale['lang'])?'selected':'' }}>
@@ -81,13 +81,13 @@
 
               {{-- currency for user --}}
               <div class="form-group">
-                <label for="currency_id">{{ trans('settings.currency') }}</label>
+                <label for="currency_id" class="mb2 b">{{ trans('settings.currency') }}</label>
                 @include('partials.components.currency-select', ['selectionID' => auth()->user()->currency_id ])
               </div>
 
               {{-- Way of displaying names --}}
               <div class="form-group">
-                <label for="name_order">{{ trans('settings.name_order') }}</label>
+                <label for="name_order" class="mb2 b">{{ trans('settings.name_order') }}</label>
                 <select id="name_order" name="name_order" class="form-control">
                   @foreach ($namesOrder as $nameOrder)
                   <option value="{{ $nameOrder }}" {{ (auth()->user()->name_order == $nameOrder) ? 'selected':'' }}>{{ trans('settings.name_order_'.$nameOrder) }}</option>
@@ -97,7 +97,7 @@
 
               {{-- Layout --}}
               <div class="form-group">
-                <label for="layout">{{ trans('settings.layout') }}</label>
+                <label for="layout" class="mb2 b">{{ trans('settings.layout') }}</label>
                 <select class="form-control" name="layout" id="layout">
                   <option value='false' {{ (auth()->user()->fluid_container == 'false')?'selected':'' }}>{{ trans('settings.layout_small') }}</option>
                   <option value='true' {{ (auth()->user()->fluid_container == 'true')?'selected':'' }}>{{ trans('settings.layout_big') }}</option>
@@ -106,7 +106,7 @@
 
               {{-- Temperature scale --}}
               <div class="form-group">
-                <label for="temperature_scale">{{ trans('settings.temperature_scale') }}</label>
+                <label for="temperature_scale" class="mb2 b">{{ trans('settings.temperature_scale') }}</label>
                 <select class="form-control" name="temperature_scale" id="temperature_scale">
                   <option value="fahrenheit" {{ (auth()->user()->temperature_scale == 'fahrenheit')?'selected':'' }}>{{ trans('settings.temperature_scale_fahrenheit') }}</option>
                   <option value="celsius" {{ (auth()->user()->temperature_scale == 'celsius')?'selected':'' }}>{{ trans('settings.temperature_scale_celsius') }}</option>

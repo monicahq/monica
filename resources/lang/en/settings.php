@@ -362,7 +362,7 @@ return [
     'personalization_genders_modal_name_help' => 'The name used to display the gender on a contact page.',
     'personalization_genders_modal_sex' => 'Sex',
     'personalization_genders_modal_sex_help' => 'Used to define the relationships, and during the VCard import/export process.',
-    'personalization_genders_modal_default' => 'Is this the default gender for a new contact?',
+    'personalization_genders_modal_default' => 'Select the default gender for a new contact',
     'personalization_genders_modal_delete' => 'Delete gender type',
     'personalization_genders_modal_delete_desc' => 'Are you sure you want to delete {name}?',
     'personalization_genders_modal_delete_question' => 'You currently have {count} contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have {count} contacts that have this gender. If you delete this gender, what gender should these contacts have?',
