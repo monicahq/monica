@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'This person is probably...',
     'information_edit_not_year' => 'Jeg kender dag og måned på denne person\'s fødselsdag, men ikke året…',
     'information_edit_exact' => 'Jeg kender den præcise fødselsdag på denne person...',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => 'hos :company',
     'work_add_cta' => 'Opdatér arbejdsoplysninger',
@@ -308,6 +309,7 @@ return [
     'gifts_add_value' => 'Værdi (valgfri)',
     'gifts_add_comment' => 'Kommentar (valgfri)',
     'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
     'gifts_add_photo' => 'Photo (optional)',
     'gifts_add_photo_title' => 'Add a photo for this gift',
     'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
@@ -366,6 +368,7 @@ return [
     'deceased_know_date' => 'Jeg kender dagen, hvor denne person døde',
     'deceased_add_reminder' => 'Tilføj en påmindelse for denne dag',
     'deceased_label' => 'Afdød',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => 'Døde den :date',
     'deceased_age' => 'Age at death',
 
