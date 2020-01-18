@@ -7,6 +7,7 @@ return [
     'save' => 'Gem',
     'add' => 'Tilføj',
     'cancel' => 'Annullér',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'Sikker?',
     'delete' => 'Slet',
     'edit' => 'Redigér',
