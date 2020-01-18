@@ -129,7 +129,6 @@
           :birthdate="'{{ $birthdate }}'"
           :reminder="{{ \Safe\json_encode($hasBirthdayReminder) }}"
           :value="'{{ $birthdayState }}'"
-          :name="'Birthdate'"
         ></form-specialdate>
 
         {{-- Is the contact deceased? --}}
