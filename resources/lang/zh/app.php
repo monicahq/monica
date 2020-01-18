@@ -7,6 +7,7 @@ return [
     'save' => '保存',
     'add' => '添加',
     'cancel' => '取消',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'Sure?',
     'delete' => '删除',
     'edit' => '编辑',
