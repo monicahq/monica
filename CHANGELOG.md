@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Add ability to edit activities
 * Associate a photo to a gift
 
 ### Enhancements:
@@ -10,7 +11,7 @@
 
 ### Fixes:
 
-*
+* Fix contacts list UX with 2 tabs opened
 
 # RELEASED VERSIONS:
 

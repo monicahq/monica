@@ -88,7 +88,7 @@
       <error :errors="form.errors" />
 
       <!-- Create Client Form -->
-      <form class="form-horizontal" role="form" ref="form">
+      <form ref="form" class="form-horizontal" role="form">
         <!-- Name -->
         <div class="form-group">
           <div class="col-md-auto">
@@ -99,8 +99,8 @@
               :iclass="'br2 f5 w-50 ba b--black-40 pa2 outline-0'"
               :required="true"
               :title="$t('settings.api_oauth_name')"
-              @submit="store"
               :validator="$v.form.name"
+              @submit="store"
             />
 
             <span class="help-block">
@@ -118,8 +118,8 @@
               :iclass="'br2 f5 w-50 ba b--black-40 pa2 outline-0'"
               :required="true"
               :title="$t('settings.api_oauth_redirecturl')"
-              @submit="store"
               :validator="$v.form.redirect"
+              @submit="store"
             />
 
             <span class="help-block">
@@ -139,7 +139,6 @@
         </a>
       </div>
     </sweet-modal>
-
   </div>
 </template>
 
@@ -156,6 +155,8 @@ export default {
     Error
   },
 
+  mixins: [validationMixin],
+
   data() {
     return {
       clients: [],
@@ -167,8 +168,6 @@ export default {
       },
     };
   },
-
-  mixins: [validationMixin],
 
   validations: {
     form: {

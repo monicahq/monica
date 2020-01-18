@@ -111,6 +111,27 @@ class DateHelper
     }
 
     /**
+     * Return date timestamp format.
+     *
+     * @param Carbon|\App\Models\Instance\SpecialDate|string|null $date
+     * @return string|null
+     */
+    public static function getDate($date)
+    {
+        if (is_null($date)) {
+            return;
+        }
+        if ($date instanceof \App\Models\Instance\SpecialDate) {
+            $date = $date->date;
+        }
+        if (! $date instanceof Carbon) {
+            $date = Carbon::create($date);
+        }
+
+        return $date->format(config('api.date_timestamp_format'));
+    }
+
+    /**
      * Get timezone of the current user, or null.
      *
      * @return string|null

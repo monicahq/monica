@@ -122,20 +122,15 @@ export default {
     },
   },
 
+  watch: {
+    value: function (newValue) {
+      this.updateExchange(newValue);
+    }
+  },
+
   mounted() {
-    this.exchange = this.value;
-    if (this.exchange === '') {
-      this.exchange = this.defaultDate;
-    }
-    if (this.exchange !== '') {
-      var mdate = moment(this.exchange, this.exchangeFormat);
-      if (! mdate.isValid()) {
-        mdate = moment();
-      }
-      this.selectedDate = mdate.toDate();
-    }
+    this.updateExchange(this.value === '' ? this.defaultDate : this.value);
     this.mondayFirst = moment.localeData().firstDayOfWeek() == 1;
-    this.update(this.selectedDate);
   },
 
   methods: {
@@ -171,6 +166,18 @@ export default {
         }
         this.exchange = mdate.format(this.exchangeFormat);
       }
+    },
+
+    updateExchange(date) {
+      this.exchange = date;
+      if (this.exchange !== '') {
+        var mdate = moment(this.exchange, this.exchangeFormat);
+        if (! mdate.isValid()) {
+          mdate = moment();
+        }
+        this.selectedDate = mdate.toDate();
+      }
+      this.update(this.selectedDate);
     },
 
     /**

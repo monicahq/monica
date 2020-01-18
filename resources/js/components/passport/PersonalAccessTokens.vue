@@ -69,7 +69,7 @@
       <error :errors="form.errors" />
 
       <!-- Create Token Form -->
-      <form class="form-horizontal" role="form" ref="form" @submit.prevent="store">
+      <form ref="form" class="form-horizontal" role="form" @submit.prevent="store">
         <!-- Name -->
         <div class="col-md-auto">
           <form-input
@@ -152,6 +152,8 @@ export default {
     Error
   },
 
+  mixins: [validationMixin],
+
   data() {
     return {
       endpoint: '',
@@ -167,8 +169,6 @@ export default {
       },
     };
   },
-
-  mixins: [validationMixin],
 
   validations: {
     form: {

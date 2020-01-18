@@ -181,12 +181,12 @@ export default {
       this.menu = false;
       this.chosenEmotions.push(emotion);
       this.emotionsMenu = 'primary';
-      this.$emit('updateEmotionsList', this.chosenEmotions);
+      this.$emit('update', this.chosenEmotions);
     },
 
     removeEmotion(emotion) {
       this.chosenEmotions.splice(emotion, 1);
-      this.$emit('updateEmotionsList', this.chosenEmotions);
+      this.$emit('update', this.chosenEmotions);
     }
   }
 };
