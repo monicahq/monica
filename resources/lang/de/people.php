@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'Diese Person ist wahrscheinlich',
     'information_edit_not_year' => 'Ich weiß den Tag und Monat des Geburtsdatums dieser Person, aber nicht das Jahr…',
     'information_edit_exact' => 'Ich kenne den Geburtstag der Person...',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'keine Arbeitsplatz-Informationen angegeben',
     'information_work_at' => 'bei :company',
     'work_add_cta' => 'Ändere Arbeitsplatz-Informationen',
@@ -308,6 +309,7 @@ return [
     'gifts_add_value' => 'Wert (optional)',
     'gifts_add_comment' => 'Kommentar (optional)',
     'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
     'gifts_add_photo' => 'Photo (optional)',
     'gifts_add_photo_title' => 'Add a photo for this gift',
     'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
@@ -366,6 +368,7 @@ return [
     'deceased_know_date' => 'Ich weiß das Datum an dem diese Person verstarb',
     'deceased_add_reminder' => 'Erstelle eine Erinnerung für den Todestag',
     'deceased_label' => 'Verstorben',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => 'Verstorben am :date',
     'deceased_age' => 'Todesalter',
 
