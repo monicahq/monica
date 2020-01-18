@@ -27,22 +27,11 @@ abstract class DuskTestCase extends BaseTestCase
     }
 
     /**
-     * Register the base URL and some macro with Dusk.
-     *
-     * @return void
-     *
-     * @psalm-suppress UndefinedThisPropertyFetch
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    /**
      * Create the RemoteWebDriver instance.
      *
      * @return \Facebook\WebDriver\Remote\RemoteWebDriver
      */
+    /*
     protected function driver()
     {
         $options = (new ChromeOptions)->addArguments(explode(' ', env('CHROME_DRIVER_OPTS', '')));
@@ -62,6 +51,7 @@ abstract class DuskTestCase extends BaseTestCase
             );
         }
     }
+    */
 
     public function hasDivAlert(Browser $browser)
     {
