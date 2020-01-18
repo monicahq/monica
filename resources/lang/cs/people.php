@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'Tato osoba je přibližně',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Vím přesné datum narození této osoby, které je',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'Žádné informace o práci',
     'information_work_at' => 'v :company',
     'work_add_cta' => 'Aktualizovat informace o práci',
@@ -308,6 +309,7 @@ return [
     'gifts_add_value' => 'Hodnota (volitelné)',
     'gifts_add_comment' => 'Komentář (volitelné)',
     'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
     'gifts_add_photo' => 'Photo (optional)',
     'gifts_add_photo_title' => 'Add a photo for this gift',
     'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
@@ -366,6 +368,7 @@ return [
     'deceased_know_date' => 'I know the date this person died',
     'deceased_add_reminder' => 'Add a reminder for this date',
     'deceased_label' => 'Deceased',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => 'Deceased on :date',
     'deceased_age' => 'Age at death',
 
