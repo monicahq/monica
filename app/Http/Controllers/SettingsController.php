@@ -59,8 +59,8 @@ class SettingsController
             $filter = 'AND `id` != '.$meContact->id;
         }
 
-        $search = auth()->user()->first_name . ' ' .
-            auth()->user()->last_name . ' ' .
+        $search = auth()->user()->first_name.' '.
+            auth()->user()->last_name.' '.
             auth()->user()->email;
         $existingContacts = Contact::search($search, auth()->user()->account_id, 20, 'id', $filter);
 
