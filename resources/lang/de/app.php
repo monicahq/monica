@@ -7,6 +7,7 @@ return [
     'save' => 'Speichern',
     'add' => 'Hinzufügen',
     'cancel' => 'Abbrechen',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'Sicher?',
     'delete' => 'Löschen',
     'edit' => 'Bearbeiten',
