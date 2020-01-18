@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => '此人可能是...',
     'information_edit_not_year' => '我知道这个人的生日的日期和月份, 但不知道哪一年。',
     'information_edit_exact' => '我知道这个人的确切出生日期...',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => '未定义工作信息',
     'information_work_at' => '在 :company工作',
     'work_add_cta' => '更新工作信息',
@@ -308,6 +309,7 @@ return [
     'gifts_add_value' => '值 (可选)',
     'gifts_add_comment' => '备注 (可选)',
     'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
     'gifts_add_photo' => 'Photo (optional)',
     'gifts_add_photo_title' => 'Add a photo for this gift',
     'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
@@ -366,6 +368,7 @@ return [
     'deceased_know_date' => '我知道这个人去世日期',
     'deceased_add_reminder' => '为此日期添加提醒',
     'deceased_label' => '逝者',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => '在:date去世',
     'deceased_age' => '享年',
 
