@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'Esta persona probablemente tiene...',
     'information_edit_not_year' => 'Sé el día y mes de la fecha de nacimiento de esta persona, pero no el año…',
     'information_edit_exact' => 'Sé la fecha exacta de nacimiento de esta persona...',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'Información de trabajo no definida',
     'information_work_at' => 'en: company',
     'work_add_cta' => 'Actualizar la información de trabajo',
@@ -308,6 +309,7 @@ return [
     'gifts_add_value' => 'Valor (opcional)',
     'gifts_add_comment' => 'Comentario (opcional)',
     'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
     'gifts_add_photo' => 'Photo (optional)',
     'gifts_add_photo_title' => 'Add a photo for this gift',
     'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
@@ -366,6 +368,7 @@ return [
     'deceased_know_date' => 'Conozco la fecha que esta persona falleció',
     'deceased_add_reminder' => 'Añadir un recordatorio para esta fecha',
     'deceased_label' => 'Fallecido',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => 'Fallecido el',
     'deceased_age' => 'Edad al momento del fallecimiento',
 
