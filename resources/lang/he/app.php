@@ -7,6 +7,7 @@ return [
     'save' => 'שמירה',
     'add' => 'הוספה',
     'cancel' => 'ביטול',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'להמשיך?',
     'delete' => 'מחיקה',
     'edit' => 'עריכה',
