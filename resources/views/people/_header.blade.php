@@ -108,7 +108,7 @@
         @endif
 
         {{-- STAY IN TOUCH --}}
-        @if(!$contact->is_dead)
+        @if(!$contact->is_dead && ! $contact->isMe())
           <li class="mb2 mb0-ns di-ns db tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
             @include('partials.icons.header_stayintouch')
             <stay-in-touch :contact="{{ $contact }}" hash="{{ $contact->hashID() }}" :limited="{{ \Safe\json_encode(auth()->user()->account->hasLimitations()) }}"></stay-in-touch>

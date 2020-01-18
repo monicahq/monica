@@ -60,7 +60,7 @@
       <div v-else-if="activeTab == 'notes'">
         <template v-if="notes.length != 0">
           <div v-for="note in notes" :key="note.id" class="pb3 cf">
-            <div class="fl w-10 avatars">
+            <div class="fl w-10">
               <avatar :contact="note.contact" :clickable="true" />
             </div>
             <div class="pl3 fl w-90">
@@ -281,7 +281,13 @@
 </template>
 
 <script>
+import Avatar from '../partials/Avatar.vue';
+
 export default {
+
+  components: {
+    Avatar,
+  },
 
   props: {
     defaultActiveTab: {

@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\TimezoneHelper;
+use App\Models\Contact\Contact;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
 use App\Models\Account\ImportJob;
@@ -27,6 +28,7 @@ use App\Services\Contact\Tag\DestroyTag;
 use App\Services\Account\Settings\ResetAccount;
 use App\Services\Account\Settings\DestroyAccount;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
+use App\Http\Resources\Contact\ContactShort as ContactResource;
 use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
 
@@ -50,7 +52,25 @@ class SettingsController
             'nickname',
         ];
 
+        $filter = null;
+        $meContact = null;
+        if (auth()->user()->me_contact_id) {
+            $meContact = Contact::where('account_id', auth()->user()->account_id)->find(auth()->user()->me_contact_id);
+            $filter = 'AND `id` != '.$meContact->id;
+        }
+
+        $search = auth()->user()->first_name . ' ' .
+            auth()->user()->last_name . ' ' .
+            auth()->user()->email;
+        $existingContacts = Contact::search($search, auth()->user()->account_id, 20, 'id', $filter);
+
+        if ($meContact) {
+            $existingContacts->prepend($meContact);
+        }
+
         return view('settings.index')
+                ->withMeContact($meContact ? new ContactResource($meContact) : null)
+                ->withExistingContacts(ContactResource::collection($existingContacts))
                 ->withNamesOrder($namesOrder)
                 ->withLocales(LocaleHelper::getLocaleList()->sortByCollator('name-orig'))
                 ->withHours(DateHelper::getListOfHours())
@@ -91,6 +111,11 @@ class SettingsController
                 'email' => $request->input('email'),
                 'user_id' => $user->id,
             ]);
+        }
+
+        if (! $user->account->hasLimitations() && $request->input('me_contact_id')) {
+            $user->me_contact_id = $request->input('me_contact_id');
+            $user->save();
         }
 
         $user->account->default_time_reminder_is_sent = $request->input('reminder_time');
