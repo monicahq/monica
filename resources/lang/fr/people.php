@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'Cette personne a probablement …',
     'information_edit_not_year' => 'Je connais le jour et le mois de sa naissance, mais pas l’année…',
     'information_edit_exact' => 'Je connais la date de naissance précise, qui est …',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'Aucune information professionnelle définie',
     'information_work_at' => 'chez :company',
     'work_add_cta' => 'Mettre à jour les informations professionnelles',
@@ -308,6 +309,7 @@ return [
     'gifts_add_value' => 'Valeur (optionnel)',
     'gifts_add_comment' => 'Commentaire (optionnel)',
     'gifts_add_recipient' => 'Destinataire (optionnel)',
+    'gifts_add_recipient_field' => 'Recipient',
     'gifts_add_photo' => 'Photo (optionnelle)',
     'gifts_add_photo_title' => 'Ajouter une photo pour ce cadeau',
     'gifts_add_someone' => 'Ce cadeau est destiné à quelqu’un de la famille de {name} en particulier',
@@ -366,6 +368,7 @@ return [
     'deceased_know_date' => 'Je connais la date de décès de cette personne',
     'deceased_add_reminder' => 'Ajouter un rappel pour cette date',
     'deceased_label' => 'Décédé',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => 'Décédé le :date',
     'deceased_age' => 'Age au moment du décès',
 
