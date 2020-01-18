@@ -23,10 +23,6 @@ Vue.use(Notifications);
 import Tooltip from 'vue-directive-tooltip';
 Vue.use(Tooltip, { delay: 0 });
 
-// Select used on list items to display edit and delete buttons
-//import vSelectMenu from 'v-selectmenu';
-//Vue.use(vSelectMenu);
-
 // Copy text from clipboard
 import VueClipboard from 'vue-clipboard2';
 VueClipboard.config.autoSetContainer = true;
@@ -66,6 +62,10 @@ Vue.component(
 Vue.component(
   'avatar',
   require('./components/partials/Avatar.vue').default
+);
+Vue.component(
+  'confirm',
+  require('./components/partials/Confirm.vue').default
 );
 
 // Form elements
@@ -315,25 +315,9 @@ common.loadLanguage(window.Laravel.locale, true).then((i18n) => {
       global_relationship_form_new_contact: true,
       global_profile_default_view: window.Laravel.profileDefaultView,
     },
-    mounted: function() {
 
-      // required modules
-      require('./contacts');
-
-    },
-    methods: {
-      updateDefaultProfileView(view) {
-        axios.post('settings/updateDefaultProfileView', { name: view })
-          .then(response => {
-            this.global_profile_default_view = view;
-          });
-      },
-
-      fixAvatarDisplay(event) {
-        event.srcElement.classList = ['hidden'];
-        event.srcElement.nextElementSibling.classList.remove('hidden');
-      },
-    }
+    // global methods
+    methods: require('./methods').default
   }).$mount('#app');
 
   return app;

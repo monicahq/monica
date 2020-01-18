@@ -68,10 +68,12 @@
                 <contact-archive hash="{{ $contact->hashID() }}" :active="{{ \Safe\json_encode($contact->is_active) }}"></contact-archive>
               </li>
               <li>
-                <a id="link-delete-contact" class="pointer" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;" href="">{{ trans('people.people_delete_message') }}</a>
-                <form method="POST" action="{{ route('people.destroy', $contact) }}" id="contact-delete-form" class="hidden">
+                <form method="POST" action="{{ route('people.destroy', $contact) }}">
                   @method('DELETE')
                   @csrf
+                  <confirm message="{{ trans('people.people_delete_confirmation') }}">
+                    {{ trans('people.people_delete_message') }}
+                  </confirm>
                 </form>
               </li>
             </ul>

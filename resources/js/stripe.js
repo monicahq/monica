@@ -50,6 +50,3 @@ common.loadLanguage(window.Laravel.locale, true).then((i18n) => {
 
   return app;
 });
-
-$(document).ready(function() {
-});
