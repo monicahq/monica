@@ -7,6 +7,7 @@ return [
     'save' => 'Kaydet',
     'add' => 'Ekle',
     'cancel' => 'Vazgeç',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'Emin misiniz?',
     'delete' => 'Sil',
     'edit' => 'Düzenle',
