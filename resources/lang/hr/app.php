@@ -7,6 +7,7 @@ return [
     'save' => 'Spremi',
     'add' => 'Dodaj',
     'cancel' => 'Poništi',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'Sure?',
     'delete' => 'Obriši',
     'edit' => 'Uredi',
