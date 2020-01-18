@@ -7,6 +7,7 @@ return [
     'save' => 'Uložit',
     'add' => 'Přidat',
     'cancel' => 'Zrušit',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'Sure?',
     'delete' => 'Smazat',
     'edit' => 'Upravit',
