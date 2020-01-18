@@ -31,7 +31,6 @@ abstract class DuskTestCase extends BaseTestCase
      *
      * @return \Facebook\WebDriver\Remote\RemoteWebDriver
      */
-    /*
     protected function driver()
     {
         $options = (new ChromeOptions)->addArguments(explode(' ', env('CHROME_DRIVER_OPTS', '')));
@@ -51,7 +50,6 @@ abstract class DuskTestCase extends BaseTestCase
             );
         }
     }
-    */
 
     public function hasDivAlert(Browser $browser)
     {
