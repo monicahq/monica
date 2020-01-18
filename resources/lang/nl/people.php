@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'Deze persoon is waarschijnlijk...',
     'information_edit_not_year' => 'Ik weet de dag en de maand van de geboortedatum van deze persoon, maar niet het jaar…',
     'information_edit_exact' => 'Ik weet de exacte geboortedatum van deze persoon...',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'Geen werkgegevens gedefinieerd',
     'information_work_at' => 'bij :company',
     'work_add_cta' => 'Werk informatie bijwerken',
@@ -308,6 +309,7 @@ return [
     'gifts_add_value' => 'Waarde (optioneel)',
     'gifts_add_comment' => 'Opmerking (optioneel)',
     'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
     'gifts_add_photo' => 'Photo (optional)',
     'gifts_add_photo_title' => 'Add a photo for this gift',
     'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
@@ -366,6 +368,7 @@ return [
     'deceased_know_date' => 'Ik weet de datum waarop dit persoon is overleden',
     'deceased_add_reminder' => 'Stel een herinnering in voor de sterfdag',
     'deceased_label' => 'Overleden',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => 'Overleden op :date',
     'deceased_age' => 'Leeftijd bij overlijden',
 
