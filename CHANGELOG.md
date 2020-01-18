@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Add ability to set 'me' contact
 * Add ability to edit activities
 * Associate a photo to a gift
 
