@@ -7,6 +7,7 @@ return [
     'save' => 'Opslaan',
     'add' => 'Toevoegen',
     'cancel' => 'Annuleren',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'Weet je het zeker?',
     'delete' => 'Verwijderen',
     'edit' => 'Bewerken',
