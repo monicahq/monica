@@ -7,6 +7,7 @@ return [
     'save' => 'Сохранить',
     'add' => 'Добавить',
     'cancel' => 'Отмена',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'Уверены?',
     'delete' => 'Удалить',
     'edit' => 'Редактировать',
