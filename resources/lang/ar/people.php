@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'هذا الشخص قد يكون...',
     'information_edit_not_year' => 'أعرف اليوم والشهر لتاريخ الميلاد لهذا الشخص، ولكن ليس العام...',
     'information_edit_exact' => 'أنا أعرف تاريخ ميلاد هذا الشخص بدقة...',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'لا توجد معلومات العمل',
     'information_work_at' => 'لدى :company',
     'work_add_cta' => 'تحديث معلومات العمل',
@@ -308,6 +309,7 @@ return [
     'gifts_add_value' => 'القيمة (اختياري)',
     'gifts_add_comment' => 'تعليق (اختياري)',
     'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
     'gifts_add_photo' => 'Photo (optional)',
     'gifts_add_photo_title' => 'Add a photo for this gift',
     'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
@@ -366,6 +368,7 @@ return [
     'deceased_know_date' => 'أنا أعرف تاريخ وفاة هذا الشخص',
     'deceased_add_reminder' => 'إضافة تذكير لهذا التاريخ',
     'deceased_label' => 'متوفى',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => 'توفي بتاريخ :date',
     'deceased_age' => 'العمر عند الوفاة',
 
