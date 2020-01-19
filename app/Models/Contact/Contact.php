@@ -833,27 +833,6 @@ class Contact extends Model
     }
 
     /**
-     * Set the name of the contact.
-     *
-     * @param  string $firstName
-     * @param  string $middleName
-     * @param  string $lastName
-     * @return bool
-     */
-    public function setName(string $firstName, string $lastName = null, string $middleName = null)
-    {
-        if ($firstName === '') {
-            return false;
-        }
-
-        $this->first_name = $firstName;
-        $this->middle_name = $middleName;
-        $this->last_name = $lastName;
-
-        return true;
-    }
-
-    /**
      * Returns the state of the birthday.
      * As it's a Special Date, the date can have several states. We need this
      * info when we populate the Edit contact sheet.

@@ -656,31 +656,6 @@ class ContactTest extends FeatureTestCase
     }
 
     /** @test */
-    public function set_name_returns_false_if_given_an_empty_firstname()
-    {
-        $contact = factory(Contact::class)->create();
-
-        $this->assertFalse($contact->setName('', 'Test', 'Test'));
-    }
-
-    /** @test */
-    public function set_name_returns_true()
-    {
-        $contact = factory(Contact::class)->create();
-        $this->assertTrue($contact->setName('John', 'Doe', 'Jr'));
-        $contact->save();
-
-        $this->assertDatabaseHas(
-            'contacts',
-            [
-                'first_name' => 'John',
-                'last_name' => 'Doe',
-                'middle_name' => 'Jr',
-            ]
-        );
-    }
-
-    /** @test */
     public function it_gets_related_relationships_of_a_certain_relationshiptype_group_name()
     {
         $account = factory(Account::class)->create([]);
