@@ -912,63 +912,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the default avatar URL.
-     *
-     * @return string
-     */
-    public function getAvatarDefaultURL()
-    {
-        if (empty($this->avatar_default_url)) {
-            return '';
-        }
-
-        try {
-            $matches = preg_split('/\?/', $this->avatar_default_url);
-            $url = asset(Storage::disk(config('filesystems.default'))->url($matches[0]));
-            if (count($matches) > 1) {
-                $url .= '?'.$matches[1];
-            }
-
-            return $url;
-        } catch (\Exception $e) {
-            return '';
-        }
-    }
-
-    /**
-     * Returns the URL of the avatar, properly sized.
-     * The avatar can come from 4 sources:
-     *  - default,
-     *  - Adorable avatar,
-     *  - Gravatar
-     *  - or a photo that has been uploaded.
-     *
-     * @return string|null
-     */
-    public function getAvatarURL()
-    {
-        $avatarURL = '';
-
-        switch ($this->avatar_source) {
-            case 'adorable':
-                $avatarURL = $this->avatar_adorable_url;
-                break;
-            case 'gravatar':
-                $avatarURL = $this->avatar_gravatar_url;
-                break;
-            case 'photo':
-                $avatarURL = $this->avatarPhoto()->get()->first()->url();
-                break;
-            case 'default':
-            default:
-                $avatarURL = $this->getAvatarDefaultURL();
-                break;
-        }
-
-        return $avatarURL;
-    }
-
-    /**
      * Delete avatars files.
      * This does not touch avatar_location or avatar_file_name properties of the contact.
      */
