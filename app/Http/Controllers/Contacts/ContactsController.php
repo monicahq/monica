@@ -53,7 +53,7 @@ class ContactsController extends Controller
             ];
             $returnedContacts->push($contactItem);
         }
-dd($returnedContacts);
+        dd($returnedContacts);
         // return [
         //     'totalRecords' => $contacts->count(),
         //     'contacts' => ContactResource::collection($contacts),
