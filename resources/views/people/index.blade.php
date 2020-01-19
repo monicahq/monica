@@ -48,8 +48,8 @@
             <!-- name -->
             <div class="dtc bt bg-white pl-2 pr-0 pt-2 w-100 v-mid br">
               <div class="names relative">
-                <a href="{{ $contact['route']}}" class="v-top">{{ $contact->name }}</a>
-                <span class="db">{{ $contact->description }} | {{ $contact['career.job'] }}</span>
+                <a href="{{ $contact['route']}}" class="v-top">{{ $contact['name'] }}</a>
+                <span class="db">{{ $contact['description'] }} | {{ $contact['job'] }}</span>
               </div>
             </div>
           </li>

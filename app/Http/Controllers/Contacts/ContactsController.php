@@ -53,15 +53,15 @@ class ContactsController extends Controller
             ];
             $returnedContacts->push($contactItem);
         }
-
-        return [
-            'totalRecords' => $contacts->count(),
-            'contacts' => ContactResource::collection($contacts),
-        ];
+dd($returnedContacts);
+        // return [
+        //     'totalRecords' => $contacts->count(),
+        //     'contacts' => ContactResource::collection($contacts),
+        // ];
 
         return view('people.index')
             ->withTotalRecords($contacts->count())
-            ->withContacts(ContactResource::collection($contacts));
+            ->withContacts($returnedContacts);
     }
 
     /**

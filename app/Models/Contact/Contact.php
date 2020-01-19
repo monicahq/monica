@@ -948,7 +948,7 @@ class Contact extends Model
      *
      * @return string
      */
-    public function getAvatarDefaultURL()
+    public function getAvatarDefaultURL(): string
     {
         if (empty($this->avatar_default_url)) {
             return '';
