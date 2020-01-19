@@ -3,9 +3,7 @@
 namespace Tests\Unit\Helpers;
 
 use Tests\FeatureTestCase;
-use App\Helpers\AvatarHelper;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\App;
 
 class AvatarHelperTest extends FeatureTestCase
 {
