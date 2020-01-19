@@ -3,8 +3,6 @@
 namespace App\Helpers;
 
 use App\Models\Contact\Contact;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 class AvatarHelper
@@ -52,7 +50,7 @@ class AvatarHelper
             $matches = preg_split('/\?/', $contact->avatar_default_url);
             $url = asset(Storage::disk(config('filesystems.default'))->url($matches[0]));
             if (count($matches) > 1) {
-                $url .= '?' . $matches[1];
+                $url .= '?'.$matches[1];
             }
 
             return $url;
