@@ -124,7 +124,7 @@ class DateHelper
         if ($date instanceof \App\Models\Instance\SpecialDate) {
             $date = $date->date;
         }
-        if (!$date instanceof Carbon) {
+        if (! $date instanceof Carbon) {
             $date = Carbon::create($date);
         }
 

@@ -2,15 +2,17 @@
 
 ### New features:
 
-*
+* Add vue data validations
+* Add ability to edit activities
+* Associate a photo to a gift
 
 ### Enhancements:
 
-*
+* Gift are now added and updated inline
 
 ### Fixes:
 
-*
+* Fix contacts list UX with 2 tabs opened
 
 # RELEASED VERSIONS:
 
