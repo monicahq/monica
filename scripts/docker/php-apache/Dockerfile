@@ -19,7 +19,7 @@ RUN apt-get update && \
     apt-get -y --no-install-recommends install \
       git cron netcat apt apt-transport-https \
       locales sudo openssh-client ca-certificates \
-      curl unzip zip tar bzip2 supervisor && \
+      curl unzip zip tar bzip2 supervisor rsync && \
     mkdir /var/log/supervisord /var/run/supervisord && \
     rm -rf /var/lib/apt/lists/*
 
@@ -68,14 +68,15 @@ RUN apt-get update && \
 
 # Create a user to own all the code and assets and give them a working
 # directory
-RUN mkdir -p /var/www/monica && \
+RUN mkdir -p /usr/src/monica && \
     addgroup --gid 1001 monica && \
-    adduser --uid 1001 --ingroup monica --home /var/www/monica --shell /bin/bash --no-create-home monica && \
+    adduser --uid 1001 --ingroup monica --home /usr/src/monica --shell /bin/bash --no-create-home monica && \
     adduser monica www-data && \
-    chown -R monica:www-data /var/www/monica && \
+    chown -R monica:www-data /usr/src/monica && \
     echo 'monica ALL=NOPASSWD: ALL' >> /etc/sudoers.d/50-monica && \
     echo 'Defaults    env_keep += "DEBIAN_FRONTEND"' >> /etc/sudoers.d/env_keep
-WORKDIR /var/www/monica
+WORKDIR /usr/src/monica
+VOLUME /var/www/monica
 
 
 # Copy the local (outside Docker) source into the working directory,
@@ -129,7 +130,9 @@ RUN composer global require hirak/prestissimo; \
     composer global remove hirak/prestissimo; \
     composer clear-cache; \
     rm -rf .composer
+
 USER root
+WORKDIR /var/www/monica
 
 # Set crontab for schedules
 RUN set -ex && \
@@ -140,6 +143,8 @@ RUN set -ex && \
 	} | tee monica && \
 	chmod a+x monica
 
+COPY scripts/docker/upgrade.exclude \
+    /usr/local/share/
 COPY scripts/docker/entrypoint.sh \
     scripts/docker/php-apache/cron.sh \
     scripts/docker/queue.sh \
