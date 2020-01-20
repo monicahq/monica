@@ -24,7 +24,7 @@ services:
     image: monicahq/monicahq:fpm
     env_file: .env
     volumes:
-      - storage:/var/www/monica/storage
+      - data:/var/www/monica/storage
       - www:/var/www/monica
     restart: always
     depends_on:
@@ -114,8 +114,8 @@ services:
       - proxy
 
 volumes:
-  storage:
-    name: storage
+  data:
+    name: data
   www:
     name: www
   mysql:
