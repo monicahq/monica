@@ -92,9 +92,8 @@ class GetGPSCoordinate extends BaseService
 
         try {
             $response = $this->client->request('GET', $query);
-        } catch (ClientException $e) {
+        } catch (\Exception $e) {
             Log::error('Error making the call: '.$e);
-
             return;
         }
 

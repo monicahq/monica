@@ -11,9 +11,9 @@ use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
 use App\Helpers\GendersHelper;
 use App\Models\Contact\Contact;
+use App\Http\Controllers\Controller;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
@@ -36,32 +36,7 @@ class ContactsController extends Controller
      */
     public function index(Request $request)
     {
-        $user = auth()->user();
-        $contacts = $user->account->contacts()->real()->get();
-
-        $returnedContacts = collect([]);
-
-        foreach ($contacts as $contact) {
-            $contactItem = [
-                'id' => $contact->id,
-                'name' => $contact->name,
-                'route' => route('people.show', $contact),
-                'avatar' => $contact->getAvatarUrl(),
-                'description' => $contact->description,
-                'job' => $contact->job,
-                'company' => $contact->company,
-            ];
-            $returnedContacts->push($contactItem);
-        }
-dd($returnedContacts);
-        // return [
-        //     'totalRecords' => $contacts->count(),
-        //     'contacts' => ContactResource::collection($contacts),
-        // ];
-
-        return view('people.index')
-            ->withTotalRecords($contacts->count())
-            ->withContacts($returnedContacts);
+        return $this->contacts($request, true);
     }
 
     /**
@@ -140,25 +115,6 @@ dd($returnedContacts);
             $contactsCount += $deceasedCount;
         }
 
-        $accountId = auth()->user()->account_id;
-
-        $user = $request->user();
-        $sort = $request->input('sort') ?? $user->contacts_sort_order;
-
-        if ($user->contacts_sort_order !== $sort) {
-            $user->updateContactViewPreference($sort);
-        }
-
-        $tags = null;
-        $url = '';
-        $count = 1;
-
-        $contacts = $user->account->contacts()->real()->get();
-        // return [
-        //     'totalRecords' => $contacts->total(),
-        //     'contacts' => ContactResource::collection($contacts),
-        // ];
-        //dd(ContactResource::collection($contacts));
         return view('people.index')
             ->with('hidingDeceased', $showDeceased != 'true')
             ->with('deceasedCount', $deceasedCount)
@@ -170,9 +126,7 @@ dd($returnedContacts);
             ->withTagsCount(Tag::contactsCount())
             ->withUrl($url)
             ->withTagCount($count)
-            ->withTagLess($request->input('no_tag') ?? false)
-            ->withTotalRecords($contacts->count())
-            ->withContacts(ContactResource::collection($contacts));
+            ->withTagLess($request->input('no_tag') ?? false);
     }
 
     /**
@@ -300,7 +254,7 @@ dd($returnedContacts);
         foreach ($reminders as $reminder) {
             $next_expected_date = $reminder->calculateNextExpectedDateOnTimezone();
             $reminder->next_expected_date_human_readable = DateHelper::getShortDate($next_expected_date);
-            $reminder->next_expected_date = $next_expected_date->format('Y-m-d');
+            $reminder->next_expected_date = DateHelper::getDate($next_expected_date);
         }
         $reminders = $reminders->sortBy('next_expected_date');
 
