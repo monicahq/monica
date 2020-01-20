@@ -122,10 +122,10 @@ return [
 
     'vue' => [
         'max' => [
-            'numeric' => '{field} may not be greater than {max}.',
-            'string'  => '{field} may not be greater than {max} characters.',
+            'numeric' => '{field} לא יכול להיות גדול מהערך {max}.',
+            'string'  => '{field} לא יכול לחרוג מעבר ל־{max} תווים.',
         ],
-        'required' => '{field} is required.',
-        'url' => '{field} is not a valid URL.',
+        'required' => '{field} הוא שדה חובה.',
+        'url' => '{field} אינה כתובת אתר תקנית.',
     ],
 ];
