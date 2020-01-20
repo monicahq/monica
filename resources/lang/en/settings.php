@@ -18,7 +18,7 @@ return [
     'title_layout' => 'Layout',
 
     'me_title' => 'My contact',
-    'me_help' => 'This is the contact that represent <em>you</em> in Monica',
+    'me_help' => 'This is the contact that represents <em>you</em> in Monica',
     'me_select' => 'Select a contact',
     'me_no_contact' => 'No contact selected yet.',
     'me_select_click' => 'Click here to select a contact.',
