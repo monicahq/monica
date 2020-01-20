@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# return true if specified directory is empty
+directory_empty() {
+    [ -z "$(ls -A "$1/")" ]
+}
+
+# wait for the database to start
 waitfordb() {
     HOST=${DB_HOST:-mysql}
     PORT=${DB_PORT:-3306}
@@ -25,8 +31,25 @@ waitfordb() {
 
 if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
 
+    MONICASRC=/usr/src/monica
     MONICADIR=/var/www/monica
     ARTISAN="php ${MONICADIR}/artisan"
+
+    # Update application sources
+    echo "Syncing sources..."
+    if [ "$(id -u)" = 0 ]; then
+        rsync_options="-rlDog --chown monica:monica"
+    else
+        rsync_options="-rlD"
+    fi
+    rsync $rsync_options --delete --exclude-from=/usr/local/share/upgrade.exclude $MONICASRC /var/www
+
+    for dir in storage; do
+        if [ ! -d "$MONICADIR/$dir" ] || directory_empty "$MONICADIR/$dir"; then
+            rsync $rsync_options --include "/$dir/" --exclude '/*' $MONICASRC /var/www
+        fi
+    done
+    echo "...done!"
 
     # Ensure storage directories are present
     STORAGE=${MONICADIR}/storage
@@ -58,7 +81,7 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
         echo "Passport keys creation ..."
         ${ARTISAN} passport:keys
         ${ARTISAN} passport:client --personal --no-interaction
-        echo "! Please be careful to backup /var/www/monica/storage/oauth-public.key and /var/www/monica/storage/oauth-private.key files !"
+        echo "! Please be careful to backup $MONICADIR/storage/oauth-public.key and $MONICADIR/storage/oauth-private.key files !"
     fi
 
     # Run cron
