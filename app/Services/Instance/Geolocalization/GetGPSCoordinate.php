@@ -8,7 +8,6 @@ use App\Services\BaseService;
 use function Safe\json_decode;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\ClientException;
 
 class GetGPSCoordinate extends BaseService
 {
@@ -94,6 +93,7 @@ class GetGPSCoordinate extends BaseService
             $response = $this->client->request('GET', $query);
         } catch (\Exception $e) {
             Log::error('Error making the call: '.$e);
+
             return;
         }
 
