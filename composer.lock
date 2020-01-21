@@ -3983,16 +3983,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.28.0",
+            "version": "2.29.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "e2bcbcd43e67ee6101d321d5de916251d2870ca8"
+                "reference": "e509be5bf2d703390e69e14496d9a1168452b0a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/e2bcbcd43e67ee6101d321d5de916251d2870ca8",
-                "reference": "e2bcbcd43e67ee6101d321d5de916251d2870ca8",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/e509be5bf2d703390e69e14496d9a1168452b0a2",
+                "reference": "e509be5bf2d703390e69e14496d9a1168452b0a2",
                 "shasum": ""
             },
             "require": {
@@ -4003,7 +4003,7 @@
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.14 || ^3.0",
                 "kylekatarnls/multi-tester": "^1.1",
-                "phpmd/phpmd": "dev-php-7.1-compatibility",
+                "phpmd/phpmd": "^2.8",
                 "phpstan/phpstan": "^0.11",
                 "phpunit/phpunit": "^7.5 || ^8.0",
                 "squizlabs/php_codesniffer": "^3.4"
@@ -4049,7 +4049,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2019-12-16T16:30:25+00:00"
+            "time": "2020-01-21T09:36:43+00:00"
         },
         {
             "name": "nette/caching",
@@ -7564,16 +7564,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.4.2",
+            "version": "v4.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "82437719dab1e6bdd28726af14cb345c2ec816d0"
+                "reference": "e9ee09d087e2c88eaf6e5fc0f5c574f64d100e4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/82437719dab1e6bdd28726af14cb345c2ec816d0",
-                "reference": "82437719dab1e6bdd28726af14cb345c2ec816d0",
+                "url": "https://api.github.com/repos/symfony/console/zipball/e9ee09d087e2c88eaf6e5fc0f5c574f64d100e4f",
+                "reference": "e9ee09d087e2c88eaf6e5fc0f5c574f64d100e4f",
                 "shasum": ""
             },
             "require": {
@@ -7636,7 +7636,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2019-12-17T10:32:23+00:00"
+            "time": "2020-01-10T21:54:01+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -7933,16 +7933,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.4.2",
+            "version": "v4.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "ce8743441da64c41e2a667b8eb66070444ed911e"
+                "reference": "3a50be43515590faf812fbd7708200aabc327ec3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/ce8743441da64c41e2a667b8eb66070444ed911e",
-                "reference": "ce8743441da64c41e2a667b8eb66070444ed911e",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/3a50be43515590faf812fbd7708200aabc327ec3",
+                "reference": "3a50be43515590faf812fbd7708200aabc327ec3",
                 "shasum": ""
             },
             "require": {
@@ -7978,7 +7978,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2019-11-17T21:56:56+00:00"
+            "time": "2020-01-04T13:00:46+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -8835,16 +8835,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.4.2",
+            "version": "v4.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "b84501ad50adb72a94fb460a5b5c91f693e99c9b"
+                "reference": "f5697ab4cb14a5deed7473819e63141bf5352c36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/b84501ad50adb72a94fb460a5b5c91f693e99c9b",
-                "reference": "b84501ad50adb72a94fb460a5b5c91f693e99c9b",
+                "url": "https://api.github.com/repos/symfony/process/zipball/f5697ab4cb14a5deed7473819e63141bf5352c36",
+                "reference": "f5697ab4cb14a5deed7473819e63141bf5352c36",
                 "shasum": ""
             },
             "require": {
@@ -8880,7 +8880,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2019-12-06T10:06:46+00:00"
+            "time": "2020-01-09T09:50:08+00:00"
         },
         {
             "name": "symfony/psr-http-message-bridge",
@@ -10990,66 +10990,6 @@
             "time": "2019-10-21T16:45:58+00:00"
         },
         {
-            "name": "facebook/webdriver",
-            "version": "1.7.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/facebook/php-webdriver.git",
-                "reference": "e43de70f3c7166169d0f14a374505392734160e5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/e43de70f3c7166169d0f14a374505392734160e5",
-                "reference": "e43de70f3c7166169d0f14a374505392734160e5",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "ext-zip": "*",
-                "php": "^5.6 || ~7.0",
-                "symfony/process": "^2.8 || ^3.1 || ^4.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.0",
-                "jakub-onderka/php-parallel-lint": "^0.9.2",
-                "php-coveralls/php-coveralls": "^2.0",
-                "php-mock/php-mock-phpunit": "^1.1",
-                "phpunit/phpunit": "^5.7",
-                "sebastian/environment": "^1.3.4 || ^2.0 || ^3.0",
-                "squizlabs/php_codesniffer": "^2.6",
-                "symfony/var-dumper": "^3.3 || ^4.0"
-            },
-            "suggest": {
-                "ext-SimpleXML": "For Firefox profile creation"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-community": "1.5-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Facebook\\WebDriver\\": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "A PHP client for Selenium WebDriver",
-            "homepage": "https://github.com/facebook/php-webdriver",
-            "keywords": [
-                "facebook",
-                "php",
-                "selenium",
-                "webdriver"
-            ],
-            "time": "2019-06-13T08:02:18+00:00"
-        },
-        {
             "name": "felixfbecker/advanced-json-rpc",
             "version": "v3.0.4",
             "source": {
@@ -11414,26 +11354,26 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v5.8.1",
+            "version": "v5.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "d67fe1d0797fc2886d9229f011be9af8ee069750"
+                "reference": "c95d70b5fff000c54a9186c2011b236592fcf948"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/d67fe1d0797fc2886d9229f011be9af8ee069750",
-                "reference": "d67fe1d0797fc2886d9229f011be9af8ee069750",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/c95d70b5fff000c54a9186c2011b236592fcf948",
+                "reference": "c95d70b5fff000c54a9186c2011b236592fcf948",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-zip": "*",
-                "facebook/webdriver": "^1.7",
                 "illuminate/console": "~5.7.0|~5.8.0|^6.0|^7.0",
                 "illuminate/support": "~5.7.0|~5.8.0|^6.0|^7.0",
                 "nesbot/carbon": "^1.20|^2.0",
                 "php": ">=7.1.0",
+                "php-webdriver/webdriver": "^1.7",
                 "symfony/console": "^4.0|^5.0",
                 "symfony/finder": "^4.0|^5.0",
                 "symfony/process": "^4.0|^5.0",
@@ -11478,7 +11418,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2020-01-07T18:54:17+00:00"
+            "time": "2020-01-21T20:57:39+00:00"
         },
         {
             "name": "matthiasnoback/live-code-coverage",
@@ -12470,6 +12410,66 @@
             "time": "2018-07-08T19:19:57+00:00"
         },
         {
+            "name": "php-webdriver/webdriver",
+            "version": "1.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-webdriver/php-webdriver.git",
+                "reference": "e43de70f3c7166169d0f14a374505392734160e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-webdriver/php-webdriver/zipball/e43de70f3c7166169d0f14a374505392734160e5",
+                "reference": "e43de70f3c7166169d0f14a374505392734160e5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-zip": "*",
+                "php": "^5.6 || ~7.0",
+                "symfony/process": "^2.8 || ^3.1 || ^4.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.0",
+                "jakub-onderka/php-parallel-lint": "^0.9.2",
+                "php-coveralls/php-coveralls": "^2.0",
+                "php-mock/php-mock-phpunit": "^1.1",
+                "phpunit/phpunit": "^5.7",
+                "sebastian/environment": "^1.3.4 || ^2.0 || ^3.0",
+                "squizlabs/php_codesniffer": "^2.6",
+                "symfony/var-dumper": "^3.3 || ^4.0"
+            },
+            "suggest": {
+                "ext-SimpleXML": "For Firefox profile creation"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-community": "1.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Facebook\\WebDriver\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "A PHP client for Selenium WebDriver",
+            "homepage": "https://github.com/facebook/php-webdriver",
+            "keywords": [
+                "facebook",
+                "php",
+                "selenium",
+                "webdriver"
+            ],
+            "time": "2019-06-13T08:02:18+00:00"
+        },
+        {
             "name": "phpdocumentor/reflection-common",
             "version": "2.0.0",
             "source": {
@@ -13241,12 +13241,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "67ac6ea8f4a078c3c9b7aec5d7ae70f098c37389"
+                "reference": "5e2ebc8340c8b7dcdc3f938dcbb9e2b99b72fd8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/67ac6ea8f4a078c3c9b7aec5d7ae70f098c37389",
-                "reference": "67ac6ea8f4a078c3c9b7aec5d7ae70f098c37389",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/5e2ebc8340c8b7dcdc3f938dcbb9e2b99b72fd8e",
+                "reference": "5e2ebc8340c8b7dcdc3f938dcbb9e2b99b72fd8e",
                 "shasum": ""
             },
             "conflict": {
@@ -13359,7 +13359,7 @@
                 "spoonity/tcpdf": "<6.2.22",
                 "squizlabs/php_codesniffer": ">=1,<2.8.1|>=3,<3.0.1",
                 "stormpath/sdk": ">=0,<9.9.99",
-                "studio-42/elfinder": "<2.1.48",
+                "studio-42/elfinder": "<2.1.49",
                 "swiftmailer/swiftmailer": ">=4,<5.4.5",
                 "sylius/admin-bundle": ">=1,<1.0.17|>=1.1,<1.1.9|>=1.2,<1.2.2",
                 "sylius/grid": ">=1,<1.1.19|>=1.2,<1.2.18|>=1.3,<1.3.13|>=1.4,<1.4.5|>=1.5,<1.5.1",
@@ -13453,7 +13453,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2020-01-06T19:16:46+00:00"
+            "time": "2020-01-20T14:23:18+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
