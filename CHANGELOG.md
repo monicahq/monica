@@ -13,6 +13,7 @@
 ### Fixes:
 
 * Fix contacts list UX with 2 tabs opened
+* Fix ordering of contact tags to be alphabetical
 
 # RELEASED VERSIONS:
 
@@ -64,7 +65,6 @@
 * Fix search when prefix table is used
 * Fix storage page not being displayed if a contact does not exist anymore
 * Fix API requests for Reminders failing with internal server error
-* Fix ordering of contact tags to be alphabetical
 
 ## v2.15.2 - 2019-09-26
 
