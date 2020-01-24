@@ -14,7 +14,7 @@
 
     <notifications group="dav" position="top middle" :duration="5000" width="400" />
 
-    
+
     <div class="form-group">
       <label for="dav_url_base">
         {{ $t('settings.dav_url_base') }}
@@ -65,6 +65,14 @@
         <a :href="calDavBirthdaysRoute+'?export'">
           {{ $t('settings.dav_caldav_birthdays_export') }}
         </a>
+
+        <a v-if="icsBirthdaysRoute == ''" href="" class="btn btn-primary" @click.prevent="getToken">Get unique url</a>
+        <template v-else>
+          <input :value="icsBirthdaysRoute" class="url form-control" type="text" readonly />
+          <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" href="" @click.prevent="copyIntoClipboard(icsBirthdaysRoute)">
+            {{ $t('app.copy') }}
+          </a>
+        </template>
       </div>
       <div class="form-group">
         <label for="dav_url_caldav_tasks">
@@ -106,12 +114,26 @@ export default {
     },
   },
 
+  data() {
+    return {
+      icsBirthdaysRoute: ''
+    };
+  },
+
   methods: {
 
     copyIntoClipboard(text) {
       this.$copyText(text)
         .then(response => {
           this.notify(this.$t('settings.dav_clipboard_copied'), true);
+        });
+    },
+
+    getToken() {
+      let resource = _.join(_.slice(_.split(this.calDavBirthdaysRoute, '/'), 3), '/');
+      axios.post('settings/token', {resource: resource })
+        .then(response => {
+          this.icsBirthdaysRoute = this.calDavBirthdaysRoute + '?export&api_token=' + response.data.token;
         });
     },
 

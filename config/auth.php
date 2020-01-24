@@ -45,6 +45,12 @@ return [
             'driver' => 'passport',
             'provider' => 'users',
         ],
+
+        'token' => [
+            'driver' => 'token',
+            'provider' => 'usertokens',
+            'hash' => true,
+        ],
     ],
 
     /*
@@ -70,10 +76,10 @@ return [
             'model' => App\Models\User\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'usertokens' => [
+            'driver' => 'usertokens',
+            'table' => 'usertokens',
+        ],
     ],
 
     /*

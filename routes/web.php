@@ -267,6 +267,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
 
         Route::get('/settings/api', 'SettingsController@api')->name('api');
         Route::get('/settings/dav', 'SettingsController@dav')->name('dav');
+        Route::post('/settings/token', 'Settings\\TokensController@create');
 
         Route::post('/settings/updateDefaultProfileView', 'SettingsController@updateDefaultProfileView');
 

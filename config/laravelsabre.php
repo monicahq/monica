@@ -54,6 +54,7 @@ return [
     'middleware' => [
         'api',
         'auth.tokenonbasic',
+        'auth.token',
         'limitations',
         Authorize::class,
     ],
