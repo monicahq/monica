@@ -13,7 +13,8 @@ class ExportAccountTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_exports_account_information()
+    /** @test */
+    public function it_exports_account_information()
     {
         Storage::fake('local');
 
@@ -31,7 +32,8 @@ class ExportAccountTest extends TestCase
         Storage::disk('local')->assertExists($filename);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [];
 

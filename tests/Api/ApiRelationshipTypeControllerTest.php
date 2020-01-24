@@ -11,11 +11,12 @@ class ApiRelationshipTypeControllerTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_gets_the_right_number_of_relationship_types()
+    /** @test */
+    public function it_gets_the_right_number_of_relationship_types()
     {
         $user = $this->signin();
 
-        $relationshipType = factory(RelationshipType::class, 10)->create([
+        factory(RelationshipType::class, 10)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -30,7 +31,8 @@ class ApiRelationshipTypeControllerTest extends ApiTestCase
         );
     }
 
-    public function test_it_gets_the_list_of_relationship_types()
+    /** @test */
+    public function it_gets_the_list_of_relationship_types()
     {
         $user = $this->signin();
 
@@ -38,7 +40,7 @@ class ApiRelationshipTypeControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $relationshipType = factory(RelationshipType::class)->create([
+        factory(RelationshipType::class)->create([
             'account_id' => $user->account_id,
             'name' => 'father',
             'name_reverse_relationship' => 'son',
@@ -65,7 +67,8 @@ class ApiRelationshipTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_a_specific_relationship_type_group()
+    /** @test */
+    public function it_gets_a_specific_relationship_type_group()
     {
         $user = $this->signin();
 

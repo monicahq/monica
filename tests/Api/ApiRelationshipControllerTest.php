@@ -12,7 +12,8 @@ class ApiRelationshipControllerTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_rejects_the_api_call_if_parameters_are_not_right()
+    /** @test */
+    public function it_rejects_the_api_call_if_parameters_are_not_right()
     {
         $user = $this->signin();
         $contactA = factory(Contact::class)->create([
@@ -27,33 +28,34 @@ class ApiRelationshipControllerTest extends ApiTestCase
 
         // make sure contact_is is an integer
         $response = $this->json('POST', '/api/relationships', [
-                            'contact_is' => 'a',
-                            'relationship_type_id' => $relationshipType->id,
-                            'of_contact' => $contactB->id,
-                        ]);
+            'contact_is' => 'a',
+            'relationship_type_id' => $relationshipType->id,
+            'of_contact' => $contactB->id,
+        ]);
 
         $this->expectDataError($response, ['The contact is must be an integer.']);
 
         // make sure relationship type id is an integer
         $response = $this->json('POST', '/api/relationships', [
-                            'contact_is' => $contactA->id,
-                            'relationship_type_id' => 'a',
-                            'of_contact' => $contactB->id,
-                        ]);
+            'contact_is' => $contactA->id,
+            'relationship_type_id' => 'a',
+            'of_contact' => $contactB->id,
+        ]);
 
         $this->expectDataError($response, ['The relationship type id must be an integer.']);
 
         // make sure of_contact is an integer
         $response = $this->json('POST', '/api/relationships', [
-                            'contact_is' => $contactA->id,
-                            'relationship_type_id' => $relationshipType->id,
-                            'of_contact' => 'a',
-                        ]);
+            'contact_is' => $contactA->id,
+            'relationship_type_id' => $relationshipType->id,
+            'of_contact' => 'a',
+        ]);
 
         $this->expectDataError($response, ['The of contact must be an integer.']);
     }
 
-    public function test_it_fails_if_relationship_type_id_is_invalid()
+    /** @test */
+    public function it_fails_if_relationship_type_id_is_invalid()
     {
         $user = $this->signin();
         $contactA = factory(Contact::class)->create([
@@ -65,15 +67,16 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $relationshipType = factory(RelationshipType::class)->create();
 
         $response = $this->json('POST', '/api/relationships', [
-                            'contact_is' => $contactA->id,
-                            'relationship_type_id' => $relationshipType->id,
-                            'of_contact' => $contactB->id,
-                        ]);
+            'contact_is' => $contactA->id,
+            'relationship_type_id' => $relationshipType->id,
+            'of_contact' => $contactB->id,
+        ]);
 
         $this->expectNotFound($response);
     }
 
-    public function test_it_fails_if_contact_is_id_is_invalid()
+    /** @test */
+    public function it_fails_if_contact_is_id_is_invalid()
     {
         $user = $this->signin();
         $contactA = factory(Contact::class)->create();
@@ -85,15 +88,16 @@ class ApiRelationshipControllerTest extends ApiTestCase
         ]);
 
         $response = $this->json('POST', '/api/relationships', [
-                            'contact_is' => $contactA->id,
-                            'relationship_type_id' => $relationshipType->id,
-                            'of_contact' => $contactB->id,
-                        ]);
+            'contact_is' => $contactA->id,
+            'relationship_type_id' => $relationshipType->id,
+            'of_contact' => $contactB->id,
+        ]);
 
         $this->expectNotFound($response);
     }
 
-    public function test_it_fails_if_of_contact_id_is_invalid()
+    /** @test */
+    public function it_fails_if_of_contact_id_is_invalid()
     {
         $user = $this->signin();
         $contactA = factory(Contact::class)->create([
@@ -105,15 +109,16 @@ class ApiRelationshipControllerTest extends ApiTestCase
         ]);
 
         $response = $this->json('POST', '/api/relationships', [
-                            'contact_is' => $contactA->id,
-                            'relationship_type_id' => $relationshipType->id,
-                            'of_contact' => $contactB->id,
-                        ]);
+            'contact_is' => $contactA->id,
+            'relationship_type_id' => $relationshipType->id,
+            'of_contact' => $contactB->id,
+        ]);
 
         $this->expectNotFound($response);
     }
 
-    public function test_it_creates_a_new_resource()
+    /** @test */
+    public function it_creates_a_new_resource()
     {
         $user = $this->signin();
         $contactA = factory(Contact::class)->create(['account_id' => $user->account->id]);
@@ -131,10 +136,10 @@ class ApiRelationshipControllerTest extends ApiTestCase
         ]);
 
         $response = $this->json('POST', '/api/relationships', [
-                            'contact_is' => $contactA->id,
-                            'relationship_type_id' => $relationshipType->id,
-                            'of_contact' => $contactB->id,
-                        ]);
+            'contact_is' => $contactA->id,
+            'relationship_type_id' => $relationshipType->id,
+            'of_contact' => $contactB->id,
+        ]);
 
         $response->assertStatus(201);
 
@@ -153,7 +158,8 @@ class ApiRelationshipControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_displays_a_relationship()
+    /** @test */
+    public function it_displays_a_relationship()
     {
         $user = $this->signin();
         $contactA = factory(Contact::class)->create(['account_id' => $user->account->id]);
@@ -186,7 +192,8 @@ class ApiRelationshipControllerTest extends ApiTestCase
                     ]);
     }
 
-    public function test_it_deletes_a_relationship()
+    /** @test */
+    public function it_deletes_a_relationship()
     {
         $user = $this->signin();
         $contactA = factory(Contact::class)->create(['account_id' => $user->account->id]);
@@ -234,7 +241,8 @@ class ApiRelationshipControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_rejects_the_delete_api_call_if_parameters_are_not_right()
+    /** @test */
+    public function it_rejects_the_delete_api_call_if_parameters_are_not_right()
     {
         $user = $this->signin();
 
@@ -252,7 +260,8 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_rejects_the_update_api_call_if_parameters_are_not_right()
+    /** @test */
+    public function it_rejects_the_update_api_call_if_parameters_are_not_right()
     {
         $user = $this->signin();
         $relationship = factory(Relationship::class)->create([
@@ -262,13 +271,14 @@ class ApiRelationshipControllerTest extends ApiTestCase
 
         // make sure relationship type id is an integer
         $response = $this->json('PUT', '/api/relationships/'.$relationship->id, [
-                            'relationship_type_id' => $relationshipType->id,
-                        ]);
+            'relationship_type_id' => $relationshipType->id,
+        ]);
 
         $this->expectNotFound($response);
     }
 
-    public function test_it_rejects_the_update_api_call_if_parameters_are_not_right2()
+    /** @test */
+    public function it_rejects_the_update_api_call_if_parameters_are_not_right2()
     {
         $user = $this->signin();
         $relationship = factory(Relationship::class)->create([
@@ -277,13 +287,14 @@ class ApiRelationshipControllerTest extends ApiTestCase
 
         // make sure relationship type id is an integer
         $response = $this->json('PUT', '/api/relationships/'.$relationship->id, [
-                            'relationship_type_id' => 'a',
-                        ]);
+            'relationship_type_id' => 'a',
+        ]);
 
         $this->expectDataError($response, ['The relationship type id must be an integer.']);
     }
 
-    public function test_it_fails_the_update_if_relationship_type_id_is_invalid()
+    /** @test */
+    public function it_fails_the_update_if_relationship_type_id_is_invalid()
     {
         $user = $this->signin();
         $relationship = factory(Relationship::class)->create([
@@ -292,13 +303,14 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $relationshipType = factory(RelationshipType::class)->create();
 
         $response = $this->json('PUT', '/api/relationships/'.$relationship->id, [
-                            'relationship_type_id' => $relationshipType->id,
-                        ]);
+            'relationship_type_id' => $relationshipType->id,
+        ]);
 
         $this->expectNotFound($response);
     }
 
-    public function test_it_updates_a_relationship()
+    /** @test */
+    public function it_updates_a_relationship()
     {
         $user = $this->signin();
         $contactA = factory(Contact::class)->create(['account_id' => $user->account->id]);
@@ -338,7 +350,8 @@ class ApiRelationshipControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_displays_all_relationships_of_a_contact()
+    /** @test */
+    public function it_displays_all_relationships_of_a_contact()
     {
         $user = $this->signin();
         $contactA = factory(Contact::class)->create(['account_id' => $user->account->id]);

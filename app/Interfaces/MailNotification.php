@@ -13,5 +13,5 @@ interface MailNotification
      * @param  User $user
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail(User $user) : MailMessage;
+    public function toMail(User $user): MailMessage;
 }

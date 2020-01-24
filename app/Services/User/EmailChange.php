@@ -27,7 +27,7 @@ class EmailChange extends BaseService
      * @param array $data
      * @return User
      */
-    public function execute(array $data) : User
+    public function execute(array $data): User
     {
         $this->validate($data);
 

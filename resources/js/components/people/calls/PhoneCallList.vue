@@ -100,7 +100,7 @@
           <label class="b">
             {{ $t('people.modal_call_emotion') }}
           </label>
-          <emotion class="pv2" @updateEmotionsList="updateEmotionsList" />
+          <emotion class="pv2" @update="updateEmotionsList" />
         </div>
 
         <!-- ACTIONS -->
@@ -127,7 +127,7 @@
         <span v-if="!call.content">
           {{ $t('people.call_blank_desc', { name: call.contact.first_name }) }}
         </span>
-        <span v-if="call.content" v-html="compiledMarkdown(call.content)"></span>
+        <span v-if="call.content" dir="auto" v-html="compiledMarkdown(call.content)"></span>
       </div>
 
       <!-- INLINE UPDATE DIV -->
@@ -174,7 +174,7 @@
             <label class="b">
               {{ $t('people.modal_call_emotion') }}
             </label>
-            <emotion class="pv2" :initial-emotions="call.emotions" @updateEmotionsList="updateEmotionsList" />
+            <emotion class="pv2" :initial-emotions="call.emotions" @update="updateEmotionsList" />
           </div>
 
           <!-- ACTIONS -->
@@ -204,6 +204,8 @@
           <span :class="[ dirltr ? 'mr3' : 'ml3' ]">
             {{ call.contact_called ? $t('people.call_he_called', { name : name }) : $t('people.call_you_called') }}
           </span>
+
+          <!-- EMOTION LIST -->
           <span v-if="call.emotions.length != 0">
             <span :class="[ dirltr ? 'mr2' : 'ml2' ]">
               {{ $t('people.call_emotions') }}
@@ -243,8 +245,12 @@
 
 <script>
 import moment from 'moment';
+import Emotion from '../Emotion.vue';
 
 export default {
+  components: {
+    Emotion,
+  },
 
   filters: {
     moment: function (date) {

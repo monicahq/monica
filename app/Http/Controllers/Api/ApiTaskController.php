@@ -65,9 +65,9 @@ class ApiTaskController extends ApiController
         try {
             $task = app(CreateTask::class)->execute([
                 'account_id' => auth()->user()->account->id,
-                'contact_id' => ($request->get('contact_id') == '' ? null : $request->get('contact_id')),
-                'title' => $request->get('title'),
-                'description' => ($request->get('description') == '' ? null : $request->get('description')),
+                'contact_id' => ($request->input('contact_id') == '' ? null : $request->input('contact_id')),
+                'title' => $request->input('title'),
+                'description' => ($request->input('description') == '' ? null : $request->input('description')),
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -90,12 +90,12 @@ class ApiTaskController extends ApiController
     {
         try {
             $task = app(UpdateTask::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'task_id'])
                     +
                     [
-                    'task_id' => $taskId,
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'task_id' => $taskId,
+                        'account_id' => auth()->user()->account->id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

@@ -22,14 +22,15 @@ class ApiJournalTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_journal_get_all_journal()
+    /** @test */
+    public function it_gets_all_the_journal_entries()
     {
         $user = $this->signin();
-        $entry1 = factory(Entry::class)->create([
-            'account_id' => $user->account->id,
+        $firstEntry = factory(Entry::class)->create([
+            'account_id' => $user->account_id,
         ]);
-        $entry2 = factory(Entry::class)->create([
-            'account_id' => $user->account->id,
+        $secondEntry = factory(Entry::class)->create([
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/journal');
@@ -40,25 +41,26 @@ class ApiJournalTest extends ApiTestCase
         ]);
         $response->assertJsonFragment([
             'object' => 'entry',
-            'id' => $entry1->id,
+            'id' => $firstEntry->id,
         ]);
         $response->assertJsonFragment([
             'object' => 'entry',
-            'id' => $entry2->id,
+            'id' => $secondEntry->id,
         ]);
     }
 
-    public function test_journal_get_one_journal()
+    /** @test */
+    public function it_gets_one_journal_entry()
     {
         $user = $this->signin();
-        $entry1 = factory(Entry::class)->create([
-            'account_id' => $user->account->id,
+        $firstEntry = factory(Entry::class)->create([
+            'account_id' => $user->account_id,
         ]);
-        $entry2 = factory(Entry::class)->create([
-            'account_id' => $user->account->id,
+        $secondEntry = factory(Entry::class)->create([
+            'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('GET', '/api/journal/'.$entry1->id);
+        $response = $this->json('GET', '/api/journal/'.$firstEntry->id);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -66,15 +68,16 @@ class ApiJournalTest extends ApiTestCase
         ]);
         $response->assertJsonFragment([
             'object' => 'entry',
-            'id' => $entry1->id,
+            'id' => $firstEntry->id,
         ]);
         $response->assertJsonMissingExact([
             'object' => 'entry',
-            'id' => $entry2->id,
+            'id' => $secondEntry->id,
         ]);
     }
 
-    public function test_journal_get_one_journal_error()
+    /** @test */
+    public function it_cant_get_a_journal_entry_with_an_invalid_id()
     {
         $user = $this->signin();
 
@@ -83,7 +86,8 @@ class ApiJournalTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_journal_create_journal()
+    /** @test */
+    public function it_creates_a_journal_entry()
     {
         $user = $this->signin();
 
@@ -96,24 +100,25 @@ class ApiJournalTest extends ApiTestCase
         $response->assertJsonStructure([
             'data' => $this->jsonJournal,
         ]);
-        $entry_id = $response->json('data.id');
+        $entryId = $response->json('data.id');
         $response->assertJsonFragment([
             'object' => 'entry',
-            'id' => $entry_id,
+            'id' => $entryId,
             'title' => 'my title',
             'post' => '<p>content post</p>',
         ]);
 
-        $this->assertGreaterThan(0, $entry_id);
+        $this->assertGreaterThan(0, $entryId);
         $this->assertDatabaseHas('entries', [
-            'account_id' => $user->account->id,
-            'id' => $entry_id,
+            'account_id' => $user->account_id,
+            'id' => $entryId,
             'title' => 'my title',
             'post' => 'content post',
         ]);
     }
 
-    public function test_journal_create_journal_error()
+    /** @test */
+    public function it_cant_create_a_journal_entry_with_missing_parameters()
     {
         $user = $this->signin();
 
@@ -125,11 +130,12 @@ class ApiJournalTest extends ApiTestCase
         ]);
     }
 
-    public function test_journal_update_journal()
+    /** @test */
+    public function it_updates_a_journal_entry()
     {
         $user = $this->signin();
         $entry = factory(Entry::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'title' => 'xxx',
         ]);
 
@@ -142,29 +148,30 @@ class ApiJournalTest extends ApiTestCase
         $response->assertJsonStructure([
             'data' => $this->jsonJournal,
         ]);
-        $entry_id = $response->json('data.id');
-        $this->assertEquals($entry->id, $entry_id);
+        $entryId = $response->json('data.id');
+        $this->assertEquals($entry->id, $entryId);
         $response->assertJsonFragment([
             'object' => 'entry',
-            'id' => $entry_id,
+            'id' => $entryId,
             'title' => 'my title',
             'post' => '<p>content post</p>',
         ]);
 
-        $this->assertGreaterThan(0, $entry_id);
+        $this->assertGreaterThan(0, $entryId);
         $this->assertDatabaseHas('entries', [
-            'account_id' => $user->account->id,
-            'id' => $entry_id,
+            'account_id' => $user->account_id,
+            'id' => $entryId,
             'title' => 'my title',
             'post' => 'content post',
         ]);
     }
 
-    public function test_journal_update_error()
+    /** @test */
+    public function it_cant_update_a_journal_entry_with_missing_parameters()
     {
         $user = $this->signin();
         $entry = factory(Entry::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/journal/'.$entry->id, []);
@@ -175,30 +182,15 @@ class ApiJournalTest extends ApiTestCase
         ]);
     }
 
-    public function test_journal_update_error2()
+    /** @test */
+    public function it_deletes_a_journal_entry()
     {
         $user = $this->signin();
         $entry = factory(Entry::class)->create([
-            'account_id' => $user->account->id,
-            'title' => 'xxx',
-        ]);
-
-        $response = $this->json('PUT', '/api/journal/'.$entry->id, []);
-
-        $this->expectDataError($response, [
-            'The title field is required.',
-            'The post field is required.',
-        ]);
-    }
-
-    public function test_journal_delete_journal()
-    {
-        $user = $this->signin();
-        $entry = factory(Entry::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $this->assertDatabaseHas('entries', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $entry->id,
         ]);
 
@@ -206,12 +198,13 @@ class ApiJournalTest extends ApiTestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('entries', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $entry->id,
         ]);
     }
 
-    public function test_journal_delete_error()
+    /** @test */
+    public function it_cant_delete_a_journal_entry_with_an_invalid_id()
     {
         $user = $this->signin();
 

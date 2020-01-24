@@ -41,11 +41,11 @@
             @change="toggleComplete(task)"
           >
             {{ task.title }}
-            <span v-if="task.description" class="silver ml3">
+            <span v-if="task.description" class="silver ml3" dir="auto">
               {{ task.description }}
             </span>
           </form-checkbox>
-          
+
           <div v-if="editMode" class="di">
             <em class="fa fa-pencil-square-o pointer pr2 ml3 dark-blue" @click="toggleEditMode(task)"></em>
             <em class="fa fa-trash-o pointer pr2 dark-blue" :cy-name="'task-delete-button-' + task.id" @click="trash(task)"></em>
@@ -131,10 +131,10 @@
             <span class="light-silver mr1">
               {{ task.completed_at }}
             </span>
-            <span class="moon-gray">
+            <span class="moon-gray" dir="auto">
               {{ task.title }}
             </span>
-            <span v-if="task.description" class="silver ml3">
+            <span v-if="task.description" class="silver ml3" dir="auto">
               {{ task.description }}
             </span>
           </form-checkbox>

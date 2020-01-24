@@ -19,9 +19,9 @@ class ActivityStatisticService
     public function activitiesWithContactInTimeRange(Contact $contact, Carbon $startDate, Carbon $endDate)
     {
         return $contact->activities()
-                            ->where('date_it_happened', '>=', $startDate)
-                            ->where('date_it_happened', '<=', $endDate)
-                            ->orderBy('date_it_happened', 'desc')
+                            ->where('happened_at', '>=', $startDate)
+                            ->where('happened_at', '<=', $endDate)
+                            ->orderBy('happened_at', 'desc')
                             ->get();
     }
 
@@ -56,7 +56,7 @@ class ActivityStatisticService
             $activitiesInMonth = collect([]);
 
             foreach ($activities as $activity) {
-                if ($activity->date_it_happened->month === $month) {
+                if ($activity->happened_at->month === $month) {
                     $activitiesInMonth->push($activity);
                 }
             }

@@ -27,6 +27,7 @@ If you don't want to use Docker, the best way to setup the project is to use the
 - gmp
 - zip
 - gd
+- sodium
 
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager. It is not enough to just install Composer, you also need to make sure it is installed globally for Monica's installation to run smoothly:
 
@@ -219,15 +220,16 @@ Instead of keeping the encryption keys as files, you can add them as environment
 * Output the private key:
 
 ```sh
-sed ':a;N;$!ba;s/\n/\\n/g' storage/oauth-private.key
+sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' storage/oauth-private.key
 ```
-   Copy the output to an environment variable called `PASSPORT_PRIVATE_KEY` in your `.env` file
+   Copy the output to an environment variable called `PASSPORT_PRIVATE_KEY` in your `.env` file.
 
 * Do the same thing with the contents of the public key:
+
 ```sh
-sed ':a;N;$!ba;s/\n/\\n/g' storage/oauth-public.key
+sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' storage/oauth-public.key
 ```
-   Copy ths output to an environment variable called `PASSPORT_PUBLIC_KEY` in your `.env` file
+   Copy the output to an environment variable called `PASSPORT_PUBLIC_KEY` in your `.env` file.
 
 
 #### Optional: Generate a Password grant client

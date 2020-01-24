@@ -80,7 +80,7 @@ class ApiUserController extends ApiController
 
         // Create the contact
         try {
-            $term = auth()->user()->acceptPolicy($request->get('ip_address'));
+            $term = auth()->user()->acceptPolicy($request->input('ip_address'));
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }

@@ -14,7 +14,8 @@ class DestroyReminderTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_a_reminder()
+    /** @test */
+    public function it_destroys_a_reminder()
     {
         $reminder = factory(Reminder::class)->create([
             'initial_date' => '2017-02-02',
@@ -40,7 +41,8 @@ class DestroyReminderTest extends TestCase
         ]);
     }
 
-    public function test_it_destroys_scheduled_reminders()
+    /** @test */
+    public function it_destroys_scheduled_reminders()
     {
         // prepare a reminder and schedule some notifications
         Carbon::setTestNow(Carbon::create(2017, 2, 1));

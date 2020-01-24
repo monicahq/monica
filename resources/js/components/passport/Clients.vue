@@ -1,253 +1,184 @@
 <style scoped>
-
-    .m-b-none {
-        margin-bottom: 0;
-    }
 </style>
 
 <template>
   <div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span>
-            {{ $t('settings.api_oauth_title') }}
-          </span>
+    <notifications group="passport-clients" position="top middle" :duration="5000" width="400" />
 
-          <a class="btn" href="" @click.prevent="showCreateClientForm">
-            {{ $t('settings.api_oauth_create_new') }}
-          </a>
+    <h3 class="mb3">
+      {{ $t('settings.api_oauth_clients') }}
+      <a class="btn nt2" :class="[ dirltr ? 'fr' : 'fl' ]" href="" @click.prevent="showCreateClientForm">
+        {{ $t('settings.api_oauth_create_new') }}
+      </a>
+    </h3>
+    <p>{{ $t('settings.api_oauth_clients_desc') }}</p>
+    <p v-html="$t('settings.api_oauth_clients_desc2', { url: 'https://laravel.com/docs/master/passport#requesting-tokens' })"></p>
+
+    <!-- Current Clients -->
+    <p v-if="clients.length === 0" class="mb0">
+      {{ $t('settings.api_oauth_not_created') }}
+    </p>
+
+    <div v-else class="dt w-100 collapse br--top br--bottom">
+      <em>{{ $t('settings.api_oauth_title') }}</em>
+      <div class="dt-row">
+        <div class="dtc w-20">
+          <div class="pa2 b">
+            {{ $t('settings.api_oauth_clientid') }}
+          </div>
+        </div>
+        <div class="dtc w-20">
+          <div class="pa2 b">
+            {{ $t('settings.api_oauth_name') }}
+          </div>
+        </div>
+        <div class="dtc">
+          <div class="pa2 b">
+            {{ $t('settings.api_oauth_secret') }}
+          </div>
+        </div>
+        <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
+          <div class="pa2 b">
+            {{ $t('settings.personalization_contact_field_type_table_actions') }}
+          </div>
         </div>
       </div>
 
-      <div class="panel-body">
-        <!-- Current Clients -->
-        <p v-if="clients.length === 0" class="m-b-none">
-          {{ $t('settings.api_oauth_not_created') }}
-        </p>
+      <div v-for="client in clients" :key="client.id" class="dt-row bb b--light-gray">
+        <!-- ID -->
+        <div class="dtc">
+          <div class="pa2">
+            {{ client.id }}
+          </div>
+        </div>
 
-        <table v-else class="table table-borderless m-b-none">
-          <thead>
-            <tr>
-              <th scope="col">
-                {{ $t('settings.api_oauth_clientid') }}
-              </th>
-              <th scope="col">
-                {{ $t('settings.api_oauth_name') }}
-              </th>
-              <th scope="col">
-                {{ $t('settings.api_oauth_secret') }}
-              </th>
-              <th scope="col"></th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
+        <!-- Name -->
+        <div class="dtc">
+          <div class="pa2">
+            {{ client.name }}
+          </div>
+        </div>
 
-          <tbody>
-            <tr v-for="client in clients" :key="client.id">
-              <!-- ID -->
-              <td style="vertical-align: middle;">
-                {{ client.id }}
-              </td>
+        <!-- Secret -->
+        <div class="dtc">
+          <div class="pa2 flex flex-auto">
+            <code dir="ltr">{{ client.secret }}</code>
+            <em class="fa fa-clipboard pointer" :class="[ dirltr ? 'ml2' : 'mr2' ]"
+                :title="$t('settings.dav_copy_help')"
+                @click="copyIntoClipboard(client.secret)"
+            ></em>
+          </div>
+        </div>
 
-              <!-- Name -->
-              <td style="vertical-align: middle;">
-                {{ client.name }}
-              </td>
-
-              <!-- Secret -->
-              <td style="vertical-align: middle;">
-                <code dir="ltr">
-                  {{ client.secret }}
-                </code>
-              </td>
-
-              <!-- Edit Button -->
-              <td style="vertical-align: middle;">
-                <a class="action-link" href="" @click.prevent="edit(client)">
-                  {{ $t('app.edit') }}
-                </a>
-              </td>
-
-              <!-- Delete Button -->
-              <td style="vertical-align: middle;">
-                <a class="action-link text-danger" href="" @click.prevent="destroy(client)">
-                  {{ $t('app.delete') }}
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
+          <div class="pa2">
+            <em class="fa fa-pencil-square-o pointer pr2" @click="edit(client)"></em>
+            <em class="fa fa-trash-o pointer" @click="destroy(client)"></em>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Create Client Modal -->
-    <div id="modal-create-client" class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">
-              &times;
-            </button>
+    <sweet-modal ref="modalClient" overlay-theme="dark" tabindex="-1" role="dialog"
+                 :title="form.id ? $t('settings.api_oauth_edit') : $t('settings.api_oauth_create')"
+                 @open="_focusInput"
+    >
+      <!-- Form Errors -->
+      <error :errors="form.errors" />
 
-            <h4 class="modal-title">
-              {{ $t('settings.api_oauth_create') }}
-            </h4>
-          </div>
+      <!-- Create Client Form -->
+      <form ref="form" class="form-horizontal" role="form">
+        <!-- Name -->
+        <div class="form-group">
+          <div class="col-md-auto">
+            <form-input
+              :id="'client-name'"
+              ref="clientName"
+              v-model="form.name"
+              :iclass="'br2 f5 w-50 ba b--black-40 pa2 outline-0'"
+              :required="true"
+              :title="$t('settings.api_oauth_name')"
+              :validator="$v.form.name"
+              @submit="store"
+            />
 
-          <div class="modal-body">
-            <!-- Form Errors -->
-            <error :errors="createForm.errors" />
-
-            <!-- Create Client Form -->
-            <form class="form-horizontal" role="form">
-              <!-- Name -->
-              <div class="form-group">
-                <label for="create-client-name" class="col-md-3 col-form-label">
-                  {{ $t('settings.api_oauth_name') }}
-                </label>
-
-                <div class="col-md-7">
-                  <input id="create-client-name" v-model="createForm.name" type="text"
-                         class="form-control" @keyup.enter="store"
-                  />
-
-                  <span class="help-block">
-                    {{ $t('settings.api_oauth_name_help') }}
-                  </span>
-                </div>
-              </div>
-
-              <!-- Redirect URL -->
-              <div class="form-group">
-                <label for="create-redirect-url" class="col-md-3 col-form-label">
-                  {{ $t('settings.api_oauth_redirecturl') }}
-                </label>
-
-                <div class="col-md-7">
-                  <input id="create-redirect-url" v-model="createForm.redirect" type="text" class="form-control"
-                         name="redirect" @keyup.enter="store"
-                  />
-
-                  <span class="help-block">
-                    {{ $t('settings.api_oauth_redirecturl_help') }}
-                  </span>
-                </div>
-              </div>
-            </form>
-          </div>
-
-          <!-- Modal Actions -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
-              {{ $t('app.close') }}
-            </button>
-
-            <button type="button" class="btn btn-primary" @click="store">
-              {{ $t('app.create') }}
-            </button>
+            <span class="help-block">
+              {{ $t('settings.api_oauth_name_help') }}
+            </span>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Edit Client Modal -->
-    <div id="modal-edit-client" class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">
-              &times;
-            </button>
+        <!-- Redirect URL -->
+        <div class="form-group">
+          <div class="col-md-auto">
+            <form-input
+              :id="'redirect-url'"
+              v-model="form.redirect"
+              :iclass="'br2 f5 w-50 ba b--black-40 pa2 outline-0'"
+              :required="true"
+              :title="$t('settings.api_oauth_redirecturl')"
+              :validator="$v.form.redirect"
+              @submit="store"
+            />
 
-            <h4 class="modal-title">
-              {{ $t('settings.api_oauth_edit') }}
-            </h4>
-          </div>
-
-          <div class="modal-body">
-            <!-- Form Errors -->
-            <error :errors="editForm.errors" />
-
-            <!-- Edit Client Form -->
-            <form class="form-horizontal" role="form">
-              <!-- Name -->
-              <div class="form-group">
-                <label for="edit-client-name" class="col-md-3 col-form-label">
-                  {{ $t('settings.api_oauth_name') }}
-                </label>
-
-                <div class="col-md-7">
-                  <input id="edit-client-name" v-model="editForm.name" type="text"
-                         class="form-control" @keyup.enter="update"
-                  />
-
-                  <span class="help-block">
-                    {{ $t('settings.api_oauth_name_help') }}
-                  </span>
-                </div>
-              </div>
-
-              <!-- Redirect URL -->
-              <div class="form-group">
-                <label for="edit-redirect-url" class="col-md-3 col-form-label">
-                  {{ $t('settings.api_oauth_redirecturl') }}
-                </label>
-
-                <div class="col-md-7">
-                  <input id="edit-redirect-url" v-model="editForm.redirect" type="text" class="form-control"
-                         name="redirect" @keyup.enter="update"
-                  />
-
-                  <span class="help-block">
-                    {{ $t('settings.api_oauth_redirecturl_help') }}
-                  </span>
-                </div>
-              </div>
-            </form>
-          </div>
-
-          <!-- Modal Actions -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
-              {{ $t('app.close') }}
-            </button>
-
-            <button type="button" class="btn btn-primary" @click="update">
-              {{ $t('app.save') }}
-            </button>
+            <span class="help-block">
+              {{ $t('settings.api_oauth_redirecturl_help') }}
+            </span>
           </div>
         </div>
+      </form>
+
+      <!-- Modal Actions -->
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeModal">
+          {{ $t('app.close') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="store">
+          {{ form.id ? $t('app.save') : $t('app.create') }}
+        </a>
       </div>
-    </div>
+    </sweet-modal>
   </div>
 </template>
 
 <script>
 import Error from '../partials/Error.vue';
+import { SweetModal } from 'sweet-modal-vue';
+import { validationMixin } from 'vuelidate';
+import { required, url } from 'vuelidate/lib/validators';
 
 export default {
 
   components: {
+    SweetModal,
     Error
   },
+
+  mixins: [validationMixin],
 
   data() {
     return {
       clients: [],
 
-      createForm: {
-        errors: [],
-        name: '',
-        redirect: ''
-      },
-
-      editForm: {
+      form: {
         errors: [],
         name: '',
         redirect: ''
       },
     };
+  },
+
+  validations: {
+    form: {
+      name: {
+        required,
+      },
+      redirect: {
+        required,
+        url,
+      }
+    }
   },
 
   computed: {
@@ -263,19 +194,21 @@ export default {
   methods: {
     prepareComponent() {
       this.getClients();
-
-      $('#modal-create-client').on('shown.bs.modal', () => {
-        $('#create-client-name').focus();
-      });
-
-      $('#modal-edit-client').on('shown.bs.modal', () => {
-        $('#edit-client-name').focus();
-      });
     },
 
     /**
-      * Get all of the OAuth clients for the user.
-      */
+     * Focus on modal open.
+     */
+    _focusInput() {
+      let vm = this;
+      setTimeout(function() {
+        vm.$refs.clientName.focus();
+      }, 10);
+    },
+
+    /**
+     * Get all of the OAuth clients for the user.
+     */
     getClients() {
       axios.get('oauth/clients')
         .then(response => {
@@ -284,58 +217,49 @@ export default {
     },
 
     /**
-      * Show the form for creating new clients.
-      */
+     * Show the form for creating new clients.
+     */
     showCreateClientForm() {
-      $('#modal-create-client').modal('show');
+      this.resetField();
+      this.$refs.modalClient.open();
     },
 
     /**
-      * Create a new OAuth client for the user.
-      */
+     * Create a new OAuth client for the user.
+     */
     store() {
-      this.persistClient(
-        'post', 'oauth/clients',
-        this.createForm, '#modal-create-client'
-      );
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
+        return;
+      }
+
+      let method = this.form.id ? 'put' : 'post';
+      let url = this.form.id ? 'oauth/clients/' + this.form.id : 'oauth/clients';
+
+      this.persistClient(method, url, this.form);
     },
 
     /**
-      * Edit the given client.
-      */
+     * Edit the given client.
+     */
     edit(client) {
-      this.editForm.id = client.id;
-      this.editForm.name = client.name;
-      this.editForm.redirect = client.redirect;
+      this.form = Object.assign({errors:[]}, client);
 
-      $('#modal-edit-client').modal('show');
+      this.$refs.modalClient.open();
     },
 
     /**
-      * Update the client being edited.
-      */
-    update() {
-      this.persistClient(
-        'put', 'oauth/clients/' + this.editForm.id,
-        this.editForm, '#modal-edit-client'
-      );
-    },
-
-    /**
-      * Persist the client to storage using the given form.
-      */
-    persistClient(method, uri, form, modal) {
+     * Persist the client to storage using the given form.
+     */
+    persistClient(method, uri, form) {
       form.errors = [];
 
       axios[method](uri, form)
         .then(response => {
           this.getClients();
 
-          form.name = '';
-          form.redirect = '';
-          form.errors = [];
-
-          $(modal).modal('hide');
+          this.closeModal();
         })
         .catch(error => {
           if (typeof error.response.data === 'object') {
@@ -347,13 +271,48 @@ export default {
     },
 
     /**
-      * Destroy the given client.
-      */
+     * Destroy the given client.
+     */
     destroy(client) {
       axios.delete('oauth/clients/' + client.id)
         .then(response => {
           this.getClients();
         });
+    },
+
+    closeModal() {
+      this.resetField();
+      this.$v.$reset();
+      this.$refs.form.reset();
+      this.$refs.modalClient.close();
+    },
+
+    resetField() {
+      this.form = {
+        id: '',
+        errors:[],
+        name: '',
+        redirect: '',
+      };
+    },
+
+    /**
+     * Copy text into clipboard
+     */
+    copyIntoClipboard(text) {
+      this.$copyText(text)
+        .then(response => {
+          this.notify(this.$t('settings.dav_clipboard_copied'), true);
+        });
+    },
+
+    notify(text, success) {
+      this.$notify({
+        group: 'passport-clients',
+        title: text,
+        text: '',
+        type: success ? 'success' : 'error'
+      });
     }
   }
 };

@@ -11,7 +11,8 @@ class WeatherTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
         $weather = factory(Weather::class)->create([
@@ -20,13 +21,15 @@ class WeatherTest extends TestCase
         $this->assertTrue($weather->account()->exists());
     }
 
-    public function test_it_belongs_to_a_place()
+    /** @test */
+    public function it_belongs_to_a_place()
     {
         $weather = factory(Weather::class)->create([]);
         $this->assertTrue($weather->place()->exists());
     }
 
-    public function test_it_gets_current_temperature()
+    /** @test */
+    public function it_gets_current_temperature()
     {
         $weather = factory(Weather::class)->create();
 
@@ -36,7 +39,8 @@ class WeatherTest extends TestCase
         );
     }
 
-    public function test_it_gets_current_temperature_in_celsius()
+    /** @test */
+    public function it_gets_current_temperature_in_celsius()
     {
         $weather = factory(Weather::class)->create();
 
@@ -46,7 +50,8 @@ class WeatherTest extends TestCase
         );
     }
 
-    public function test_it_gets_current_temperature_in_fahrenheit()
+    /** @test */
+    public function it_gets_current_temperature_in_fahrenheit()
     {
         $weather = factory(Weather::class)->create();
 
@@ -56,7 +61,8 @@ class WeatherTest extends TestCase
         );
     }
 
-    public function test_it_gets_current_summary()
+    /** @test */
+    public function it_gets_current_summary()
     {
         $weather = factory(Weather::class)->create();
 
@@ -66,7 +72,8 @@ class WeatherTest extends TestCase
         );
     }
 
-    public function test_it_gets_current_icon()
+    /** @test */
+    public function it_gets_current_icon()
     {
         $weather = factory(Weather::class)->create();
 
@@ -76,7 +83,8 @@ class WeatherTest extends TestCase
         );
     }
 
-    public function test_it_gets_weather_emoji()
+    /** @test */
+    public function it_gets_weather_emoji()
     {
         $weather = factory(Weather::class)->create();
 

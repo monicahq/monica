@@ -11,7 +11,8 @@ class SearchHelperTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
-    public function test_searching_for_contacts_returns_a_collection_with_pagination()
+    /** @test */
+    public function searching_for_contacts_returns_a_collection_with_pagination()
     {
         $user = $this->signin();
 
@@ -25,7 +26,8 @@ class SearchHelperTest extends FeatureTestCase
         $this->assertCount(1, $searchResults);
     }
 
-    public function test_searching_with_wrong_search_field()
+    /** @test */
+    public function searching_with_wrong_search_field()
     {
         $user = $this->signin();
 

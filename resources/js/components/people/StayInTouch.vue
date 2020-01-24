@@ -1,4 +1,15 @@
 <style scoped>
+  .error {
+    animation-name: shakeError;
+    animation-fill-mode: forwards;
+    animation-duration: .6s;
+    animation-timing-function: ease-in-out;
+  }
+
+  .form-group-error {
+    display: block;
+    color:#f57f6c;
+  }
 </style>
 
 <template>
@@ -111,22 +122,24 @@
             {{ $t('people.stay_in_touch_modal_desc', { firstname: contact.first_name }) }}
           </p>
           <div class="mb2">
-            <toggle-button class="mr2" :sync="true" :labels="true" :value="isActive" @change="isActive = !isActive" />
+            <toggle-button class="mr2" :sync="true" :labels="true" :value="stateInput" @change="stateInput = !stateInput" />
             <div class="dib relative" style="top: -2px;">
-              <span>
-                {{ $t('people.stay_in_touch_modal_label') }}
-              </span>
-              <div class="dib">
-                <form-input
-                  :id="'frequency'"
-                  v-model="frequency"
-                  :value="frequency"
-                  :input-type="'number'"
-                  :width="50"
-                  :required="true"
-                />
-              </div>
-              <span>{{ $tc('app.days', frequency) }}</span>
+              <stay-in-touch-label
+                v-model="frequencyInput"
+                :class="{ 'form-group-error': $v.frequencyInput.$error }"
+              >
+                <div class="dib">
+                  <form-input
+                    :id="'frequency'"
+                    v-model.number="frequencyInput"
+                    :input-type="'number'"
+                    :width="60"
+                    :required="true"
+                    :validator="$v.frequencyInput"
+                    @input="onInput($event)"
+                  />
+                </div>
+              </stay-in-touch-label>
             </div>
           </div>
 
@@ -139,15 +152,13 @@
           </div>
         </div>
       </form>
-      <div class="relative">
-        <span class="fr-ns tc">
-          <a class="btn" href="" @click.prevent="closeModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="update()">
-            {{ $t('app.save') }}
-          </a>
-        </span>
+      <div slot="button" class="tc">
+        <a class="btn" href="" @click.prevent="closeModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="update()">
+          {{ $t('app.save') }}
+        </a>
       </div>
     </sweet-modal>
   </div>
@@ -156,13 +167,37 @@
 <script>
 import { SweetModal } from 'sweet-modal-vue';
 import { ToggleButton } from 'vue-js-toggle-button';
+import { validationMixin } from 'vuelidate';
+import { required, numeric } from 'vuelidate/lib/validators';
+
+let StayInTouchLabel = Vue.component('stay-in-touch-label', {
+
+  props: {
+    value: {
+      type: Number,
+      default: 0,
+    },
+  },
+  render(createElement) {
+    let text = this.$tc('people.stay_in_touch_modal_label', this.value, {count: '[slot]'});
+    let texts = _.split(text, '[slot]');
+    return createElement('div', [
+      createElement('span', texts[0]),
+      this.$slots.default,
+      createElement('span', texts[1]),
+    ]);
+  },
+});
 
 export default {
 
   components: {
     SweetModal,
     ToggleButton,
+    StayInTouchLabel,
   },
+
+  mixins: [validationMixin],
 
   props: {
     hash: {
@@ -179,13 +214,20 @@ export default {
     },
   },
 
+  validations: {
+    frequencyInput: {
+      required,
+      numeric,
+    },
+  },
+
   data() {
     return {
-      frequency: '0',
+      frequency: 0,
       isActive: false,
       errorMessage: '',
-      initialFrequency: 0,
-      initialState: false,
+      frequencyInput: 0,
+      stateInput: false,
     };
   },
 
@@ -202,17 +244,17 @@ export default {
   methods: {
     prepareComponent() {
       if (this.contact.stay_in_touch_frequency == null) {
-        this.frequency = '0';
+        this.frequency = 0;
       } else {
-        this.frequency = this.contact.stay_in_touch_frequency.toString();
+        this.frequency = parseInt(this.contact.stay_in_touch_frequency);
       }
       this.isActive = (this.frequency > 0);
 
       // record initial values when the component loads so we can
       // put those values back if user puts wrong values when updating
       // the counter
-      this.initialState = this.isActive;
-      this.initialFrequency = this.frequency;
+      this.stateInput = this.isActive;
+      this.frequencyInput = this.frequency;
     },
 
     showUpdate() {
@@ -221,8 +263,6 @@ export default {
     },
 
     closeModal() {
-      this.frequency = this.initialFrequency;
-      this.isActive = this.initialState;
       this.$refs.updateModal.close();
     },
 
@@ -232,25 +272,20 @@ export default {
       // check if you need a subscription to access this feature
       if (this.limited) {
         this.errorMessage = this.$t('people.stay_in_touch_premium');
-        this.frequency = this.initialFrequency;
-        this.isActive = this.initialState;
         return;
       }
 
-      // make sure we can't press update if the frequency is invalid
-      // and if the feature is activated
-      if ((this.frequency == '' || this.frequency < 1) && this.isActive) {
-        this.errorMessage = this.$t('people.stay_in_touch_invalid');
-        this.frequency = this.initialFrequency;
-        this.isActive = this.initialState;
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
         return;
       }
 
-      axios.post('people/' + this.hash + '/stayintouch',   {'frequency': this.frequency, 'state': this.isActive})
+      axios.post('people/' + this.hash + '/stayintouch',   {frequency: this.frequencyInput, state: this.stateInput})
         .then(response => {
           this.$refs.updateModal.close();
-          this.initialState = this.isActive;
-          this.initialFrequency = this.frequency;
+          this.isActive = this.stateInput;
+          this.frequency = this.frequencyInput;
 
           this.$notify({
             group: 'main',
@@ -264,6 +299,10 @@ export default {
           this.errorMessage = this.$t('app.error_save');
         });
     },
+
+    onInput(value) {
+      this.stateInput = value > 0;
+    }
   }
 };
 </script>

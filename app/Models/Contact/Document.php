@@ -24,6 +24,15 @@ class Document extends Model
     protected $guarded = ['id'];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'number_of_downloads' => 'number',
+    ];
+
+    /**
      * Get the account record associated with the document.
      *
      * @return BelongsTo
@@ -48,7 +57,7 @@ class Document extends Model
      *
      * @return string
      */
-    public function getDownloadLink() : string
+    public function getDownloadLink(): string
     {
         $url = $this->new_filename;
 

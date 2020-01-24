@@ -28,7 +28,7 @@ return [
     'statistics_activities' => 'Activités',
     'statistics_gifts' => 'Cadeaux',
 
-    'reminders_next_months' => 'Événements dans les 3 prochains mois',
+    'reminders_next_months' => 'Évènements dans les 3 prochains mois',
     'reminders_none' => 'Aucun rappel pour ce mois-ci',
 
     'product_changes' => 'Évolutions du produit',

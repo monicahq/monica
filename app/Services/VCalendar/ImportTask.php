@@ -36,7 +36,7 @@ class ImportTask extends BaseService
      * @param array $data
      * @return array
      */
-    public function execute(array $data) : array
+    public function execute(array $data): array
     {
         $this->validate($data);
 
@@ -57,7 +57,7 @@ class ImportTask extends BaseService
      * @param Task $task
      * @return array
      */
-    private function process(array $data, Task $task) : array
+    private function process(array $data, Task $task): array
     {
         $entry = $this->getEntry($data);
 
@@ -87,7 +87,7 @@ class ImportTask extends BaseService
      * @param VCalendar $entry
      * @return bool
      */
-    private function canImportCurrentEntry(VCalendar $entry) : bool
+    private function canImportCurrentEntry(VCalendar $entry): bool
     {
         return ! is_null($entry->VTODO);
     }
