@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\Contact;
 
+use App\Helpers\DateHelper;
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
@@ -66,7 +67,7 @@ class UpdateContactIntroductions extends BaseService
      * @param array $data
      * @return Contact
      */
-    public function execute(array $data) : Contact
+    public function execute(array $data): Contact
     {
         $this->data = $data;
         $this->validate($data);
@@ -192,7 +193,7 @@ class UpdateContactIntroductions extends BaseService
             $reminder = app(CreateReminder::class)->execute([
                 'account_id' => $data['account_id'],
                 'contact_id' => $data['contact_id'],
-                'initial_date' => $specialDate->date->toDateString(),
+                'initial_date' => DateHelper::getDate($specialDate),
                 'frequency_type' => 'year',
                 'frequency_number' => 1,
                 'title' => trans(

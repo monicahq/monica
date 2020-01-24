@@ -131,6 +131,7 @@ $factory->define(App\Models\Contact\Gift::class, function (Faker\Generator $fake
                 'account_id' => $data['account_id'],
             ])->id;
         },
+        'status' => 'idea',
         'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });

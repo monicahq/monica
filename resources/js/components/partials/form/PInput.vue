@@ -6,16 +6,18 @@
     <div>
       <p-input
         ref="input"
-        v-model.lazy="modelValue"
+        v-model.lazy="prop"
         :name="name"
         :type="_type"
         :class="inputClass"
         :color="inputColor"
         :value="value"
         :disabled="disabled"
-        @change="event => { $emit('change', event) }"
+        :required="required"
+        @change="$emit('change', $event)"
       >
         <slot></slot>
+        <slot slot="extra" name="inputextra"></slot>
       </p-input>
     </div>
     <div class="pointer" @click="select()">
@@ -58,6 +60,10 @@ export default {
       type: [String, Array],
       default: ''
     },
+    fullClass: {
+      type: [String, Array],
+      default: ''
+    },
     dclass: {
       type: [String, Array],
       default: ''
@@ -69,7 +75,17 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    required: {
+      type: Boolean,
+      default: false
     }
+  },
+
+  data() {
+    return {
+      prop: null
+    };
   },
 
   computed: {
@@ -80,11 +96,21 @@ export default {
       return 'input';
     },
     inputClass() {
-      return [this.iclass, 'p-default', this.$options.input_iclass];
+      return this.fullClass != '' ? this.fullClass : [this.iclass, 'p-default', this.$options.input_iclass];
     },
     inputColor() {
       return this.color != '' ? this.color : 'primary-o';
     },
+  },
+
+  watch: {
+    modelValue(val) {
+      this.prop = val;
+    },
+  },
+
+  mounted() {
+    this.prop = this.modelValue;
   },
 
   methods: {

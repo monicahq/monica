@@ -3,6 +3,24 @@
 ### New features:
 
 * Add middle name field to new contact and edit contact
+* Add vue data validations
+* Add ability to edit activities
+* Associate a photo to a gift
+
+### Enhancements:
+
+* Gift are now added and updated inline
+
+### Fixes:
+
+* Fix contacts list UX with 2 tabs opened
+
+# RELEASED VERSIONS:
+
+## v2.16.0 - 2019-12-31
+
+### New features:
+
 * Save contact tags in vCard 'CATEGORIES' field
 
 ### Enhancements:
