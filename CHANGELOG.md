@@ -13,6 +13,7 @@
 ### Fixes:
 
 * Fix contacts list UX with 2 tabs opened
+* Fix activity mock data seeder
 * Fix ordering of contact tags to be alphabetical
 
 # RELEASED VERSIONS:
