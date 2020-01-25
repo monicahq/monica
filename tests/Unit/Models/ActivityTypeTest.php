@@ -12,21 +12,24 @@ class ActivityTypeTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $activityType = factory(ActivityType::class)->create([]);
 
         $this->assertTrue($activityType->account()->exists());
     }
 
-    public function test_it_belongs_to_a_category()
+    /** @test */
+    public function it_belongs_to_a_category()
     {
         $activityType = factory(ActivityType::class)->create([]);
 
         $this->assertTrue($activityType->category()->exists());
     }
 
-    public function test_it_has_many_activities()
+    /** @test */
+    public function it_has_many_activities()
     {
         $account = factory(Account::class)->create();
         $activityType = factory(ActivityType::class)->create([
@@ -40,7 +43,8 @@ class ActivityTypeTest extends TestCase
         $this->assertTrue($account->activities()->exists());
     }
 
-    public function test_it_gets_the_name_attribute()
+    /** @test */
+    public function it_gets_the_name_attribute()
     {
         $activityType = factory(ActivityType::class)->create([
             'translation_key' => 'awesome_key',
@@ -63,7 +67,8 @@ class ActivityTypeTest extends TestCase
         );
     }
 
-    public function test_it_resets_the_associated_activities()
+    /** @test */
+    public function it_resets_the_associated_activities()
     {
         $activityType = factory(ActivityType::class)->create([]);
         $activity = factory(Activity::class, 10)->create([

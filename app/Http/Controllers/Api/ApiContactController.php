@@ -12,8 +12,11 @@ use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
+use App\Services\Contact\Contact\UpdateContactWork;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
+use App\Services\Contact\Contact\UpdateContactIntroductions;
+use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
 
 class ApiContactController extends ApiController
@@ -38,8 +41,8 @@ class ApiContactController extends ApiController
      */
     public function index(Request $request)
     {
-        if ($request->get('query')) {
-            $needle = rawurldecode($request->get('query'));
+        if ($request->input('query')) {
+            $needle = rawurldecode($request->input('query'));
 
             try {
                 $contacts = SearchHelper::searchContacts(
@@ -110,11 +113,11 @@ class ApiContactController extends ApiController
     {
         try {
             $contact = app(CreateContact::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -138,12 +141,12 @@ class ApiContactController extends ApiController
     {
         try {
             $contact = app(UpdateContact::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'contact_id'])
                     +
                     [
-                    'contact_id' => $contactId,
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'contact_id' => $contactId,
+                        'account_id' => auth()->user()->account->id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -207,5 +210,92 @@ class ApiContactController extends ApiController
         app(SetMeContact::class)->execute($data);
 
         return $this->respond(['true']);
+    }
+
+    /**
+     * Set the contact career.
+     *
+     * @param Request $request
+     * @param int $contactId
+     *
+     * @return ContactResource|\Illuminate\Http\JsonResponse
+     */
+    public function updateWork(Request $request, $contactId)
+    {
+        try {
+            $contact = app(UpdateContactWork::class)->execute(
+                $request->except(['account_id', 'contact_id'])
+                + [
+                    'contact_id' => $contactId,
+                    'account_id' => auth()->user()->account->id,
+                ]
+            );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return new ContactResource($contact);
+    }
+
+    /**
+     * Set the contact food preferences.
+     *
+     * @param Request $request
+     * @param int $contactId
+     *
+     * @return ContactResource|\Illuminate\Http\JsonResponse
+     */
+    public function updateFoodPreferences(Request $request, $contactId)
+    {
+        try {
+            $contact = app(UpdateContactFoodPreferences::class)->execute(
+                $request->except(['account_id', 'contact_id'])
+                + [
+                    'contact_id' => $contactId,
+                    'account_id' => auth()->user()->account->id,
+                ]
+            );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return new ContactResource($contact);
+    }
+
+    /**
+     * Set how you met the contact.
+     *
+     * @param Request $request
+     * @param int $contactId
+     *
+     * @return ContactResource|\Illuminate\Http\JsonResponse
+     */
+    public function updateIntroduction(Request $request, $contactId)
+    {
+        try {
+            $contact = app(UpdateContactIntroductions::class)->execute(
+                $request->except(['account_id', 'contact_id'])
+                + [
+                    'contact_id' => $contactId,
+                    'account_id' => auth()->user()->account->id,
+                ]
+            );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return new ContactResource($contact);
     }
 }

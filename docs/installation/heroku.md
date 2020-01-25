@@ -50,13 +50,13 @@ The two keys `oauth-private.key` and `oauth-public.key` cannot be backup and rec
 
 * Still in the Heroku CLI, run this command to output the private key:
 ```sh
-sed ':a;N;$!ba;s/\n/\\n/g' ~/storage/oauth-private.key
+sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' ~/storage/oauth-private.key
 ```
   Copy the output to a new Heroku environment variable called `PASSPORT_PRIVATE_KEY`
 
 * Do the same thing with the contents of the public key:
 ```sh
-sed ':a;N;$!ba;s/\n/\\n/g' ~/storage/oauth-public.key
+sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' ~/storage/oauth-public.key
 ```
   Copy its contents to a new Heroku environment variable called `PASSPORT_PUBLIC_KEY`
 

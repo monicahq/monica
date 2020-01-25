@@ -11,19 +11,22 @@ class PlaceTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $place = factory(Place::class)->create([]);
         $this->assertTrue($place->account()->exists());
     }
 
-    public function test_it_has_many_weathers()
+    /** @test */
+    public function it_has_many_weathers()
     {
         $weather = factory(Weather::class)->create([]);
         $this->assertTrue($weather->place->weathers()->exists());
     }
 
-    public function test_it_returns_the_full_address_as_a_string()
+    /** @test */
+    public function it_returns_the_full_address_as_a_string()
     {
         $place = factory(Place::class)->create([]);
         $this->assertEquals(
@@ -32,7 +35,8 @@ class PlaceTest extends TestCase
         );
     }
 
-    public function test_it_returns_country_name()
+    /** @test */
+    public function it_returns_country_name()
     {
         $place = factory(Place::class)->create([]);
         $this->assertEquals(
@@ -41,7 +45,8 @@ class PlaceTest extends TestCase
         );
     }
 
-    public function test_it_returns_a_link_to_google_maps()
+    /** @test */
+    public function it_returns_a_link_to_google_maps()
     {
         $place = factory(Place::class)->create([]);
 
@@ -51,7 +56,8 @@ class PlaceTest extends TestCase
         );
     }
 
-    public function test_it_returns_a_google_map_url_with_latitude_longitude()
+    /** @test */
+    public function it_returns_a_google_map_url_with_latitude_longitude()
     {
         $place = new Place;
         $place->latitude = 24.197611;

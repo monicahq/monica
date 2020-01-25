@@ -65,11 +65,11 @@ class ApiActivityTypeCategoryController extends ApiController
     {
         try {
             $activityTypeCategory = app(CreateActivityTypeCategory::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -94,12 +94,12 @@ class ApiActivityTypeCategoryController extends ApiController
     {
         try {
             $activityTypeCategory = app(UpdateActivityTypeCategory::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'activity_type_category_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'activity_type_category_id' => $activityTypeCategoryId,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                        'activity_type_category_id' => $activityTypeCategoryId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

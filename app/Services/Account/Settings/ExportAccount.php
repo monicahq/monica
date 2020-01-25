@@ -35,7 +35,7 @@ class ExportAccount extends BaseService
      * @param array $data
      * @return string
      */
-    public function execute(array $data) : string
+    public function execute(array $data): string
     {
         $this->validate($data);
 
@@ -101,7 +101,6 @@ SET FOREIGN_KEY_CHECKS=0;
         $this->exportMetaDataLoveRelationship($data);
         $this->exportModule($data);
         $this->exportNote($data);
-        $this->exportNotification($data);
         $this->exportOccupation($data);
         $this->exportPet($data);
         $this->exportPhoto($data);
@@ -223,7 +222,7 @@ SET FOREIGN_KEY_CHECKS=0;
             'activity_type_id',
             'summary',
             'description',
-            'date_it_happened',
+            'happened_at',
             'created_at',
             'updated_at',
         ];
@@ -677,16 +676,12 @@ SET FOREIGN_KEY_CHECKS=0;
             'id',
             'account_id',
             'contact_id',
-            'is_for',
             'name',
             'comment',
             'url',
             'value',
-            'is_an_idea',
-            'has_been_offered',
-            'has_been_received',
-            'offered_at',
-            'received_at',
+            'status',
+            'date',
             'created_at',
             'updated_at',
         ];
@@ -908,31 +903,6 @@ SET FOREIGN_KEY_CHECKS=0;
         $foreignKey = 'account_id';
 
         $this->buildInsertSQLQuery('notes', $foreignKey, $columns, $data);
-    }
-
-    /**
-     * Export the Notification table.
-     *
-     * @param array $data
-     */
-    private function exportNotification(array $data)
-    {
-        $columns = [
-            'id',
-            'account_id',
-            'contact_id',
-            'reminder_id',
-            'delete_after_number_of_emails_sent',
-            'number_of_emails_sent',
-            'trigger_date',
-            'scheduled_number_days_before',
-            'created_at',
-            'updated_at',
-        ];
-
-        $foreignKey = 'account_id';
-
-        $this->buildInsertSQLQuery('notifications', $foreignKey, $columns, $data);
     }
 
     /**

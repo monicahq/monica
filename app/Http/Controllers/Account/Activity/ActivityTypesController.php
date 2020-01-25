@@ -24,9 +24,9 @@ class ActivityTypesController extends Controller
     {
         $type = app(CreateActivityType::class)->execute([
             'account_id' => auth()->user()->account->id,
-            'activity_type_category_id' => $request->get('activity_type_category_id'),
-            'name' => $request->get('name'),
-            'translation_key' => $request->get('translation_key'),
+            'activity_type_category_id' => $request->input('activity_type_category_id'),
+            'name' => $request->input('name'),
+            'translation_key' => $request->input('translation_key'),
         ]);
 
         return new ActivityTypeResource($type);
@@ -44,9 +44,9 @@ class ActivityTypesController extends Controller
         $data = [
             'account_id' => auth()->user()->account->id,
             'activity_type_id' => $activityTypeId,
-            'activity_type_category_id' => $request->get('activity_type_category_id'),
-            'name' => $request->get('name'),
-            'translation_key' => $request->get('translation_key'),
+            'activity_type_category_id' => $request->input('activity_type_category_id'),
+            'name' => $request->input('name'),
+            'translation_key' => $request->input('translation_key'),
         ];
 
         $type = app(UpdateActivityType::class)->execute($data);

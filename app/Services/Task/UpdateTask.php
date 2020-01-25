@@ -25,12 +25,12 @@ class UpdateTask extends BaseService
     }
 
     /**
-     * Create a task.
+     * Update a task.
      *
      * @param array $data
      * @return Task
      */
-    public function execute(array $data) : Task
+    public function execute(array $data): Task
     {
         $this->validate($data);
 

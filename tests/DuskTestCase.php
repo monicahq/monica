@@ -27,31 +27,6 @@ abstract class DuskTestCase extends BaseTestCase
     }
 
     /**
-     * Register the base URL and some macro with Dusk.
-     *
-     * @return void
-     *
-     * @psalm-suppress UndefinedThisPropertyFetch
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        /*
-         * Macro scrollTo to scroll down/up, until the selector is visible
-         */
-        Browser::macro('scrollTo', function ($selector) {
-            //$element = $this->element($selector);
-            //$this->driver->executeScript("arguments[0].scrollIntoView(true);",[$element]);
-
-            $selectorby = $this->resolver->format($selector);
-            $this->driver->executeScript("$(\"html, body\").animate({scrollTop: $(\"$selectorby\").offset().top}, 0);");
-
-            return $this;
-        });
-    }
-
-    /**
      * Create the RemoteWebDriver instance.
      *
      * @return \Facebook\WebDriver\Remote\RemoteWebDriver

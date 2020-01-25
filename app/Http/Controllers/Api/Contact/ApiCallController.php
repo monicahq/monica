@@ -67,11 +67,11 @@ class ApiCallController extends ApiController
     {
         try {
             $call = app(CreateCall::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -96,12 +96,12 @@ class ApiCallController extends ApiController
     {
         try {
             $call = app(UpdateCall::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'call_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'call_id' => $callId,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                        'call_id' => $callId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

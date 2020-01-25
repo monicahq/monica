@@ -1,22 +1,22 @@
 <style scoped>
-select {
+.select {
   height: 34px;
   transition: all;
   transition-duration: 0.2s;
   border: 1px solid #c4cdd5;
 }
-select:focus {
+.select:focus {
   border: 1px solid #5c6ac4;
 }
 </style>
 
 <template>
-  <div>
+  <div :class="{ 'form-group-error': validator && validator.$error }">
     <label
       v-if="title"
       :for="realid"
       class="mb2"
-      :class="{ b: required }"
+      :class="{ b: required, error: validator && validator.$error }"
     >
       {{ title }}
     </label>
@@ -27,7 +27,7 @@ select:focus {
       :name="id"
       :required="required"
       :class="selectClass"
-      @input="event => { $emit('input', event.target.value) }"
+      @input="onInput"
     >
       <template v-if="Array.isArray(options)">
         <option
@@ -54,6 +54,9 @@ select:focus {
         </optgroup>
       </template>
     </select>
+    <small v-if="validator && (validator.$error && validator.required !== undefined && !validator.required)" class="error">
+      {{ requiredMessage }}
+    </small>
   </div>
 </template>
 
@@ -73,6 +76,10 @@ export default {
       type: String,
       default: '',
     },
+    label: {
+      type: String,
+      default: null,
+    },
     id: {
       type: String,
       default: '',
@@ -89,6 +96,10 @@ export default {
       type: String,
       default: '',
     },
+    validator: {
+      type: Object,
+      default: null,
+    }
   },
 
   data() {
@@ -102,8 +113,19 @@ export default {
       return this.id + this._uid;
     },
     selectClass() {
-      return this.iclass != '' ? this.iclass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0';
-    }
+      var c = [this.iclass != '' ? this.iclass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0'];
+      if (this.validator) {
+        c.push({ error: this.validator.$error });
+      }
+      c.push('select');
+      return c;
+    },
+    field() {
+      return this.label && this.label.length > 0 ? this.label : this.title;
+    },
+    requiredMessage() {
+      return this.$t('validation.vue.required', { field: this.field });
+    },
   },
 
   watch: {
@@ -129,7 +151,14 @@ export default {
 
     focus() {
       this.$refs.select.focus();
-    }
+    },
+
+    onInput(event) {
+      if (this.validator) {
+        this.validator.$touch();
+      }
+      this.$emit('input', event.target.value);
+    },
   },
 };
 </script>

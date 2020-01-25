@@ -2,21 +2,58 @@
 
 ### New features:
 
+* Add vue data validations
+* Add ability to edit activities
+* Associate a photo to a gift
+
+### Enhancements:
+
+* Gift are now added and updated inline
+* Add console command to test email delivery
+
+### Fixes:
+
+* Fix contacts list UX with 2 tabs opened
+
+# RELEASED VERSIONS:
+
+## v2.16.0 - 2019-12-31
+
+### New features:
+
 * Save contact tags in vCard 'CATEGORIES' field
 
 ### Enhancements:
 
+* Activities are now added inline
+* Improve modals bottom buttons display
+* Add foreign keys to all tables
+* Add English (UK) locale
+* Add API methods to destroy and store documents
+* Add API methods to manage photos and avatars
+* Add emotions and participants to activities
+* Enable API web navigation
+* Enhance UI of API's Settings to add comprehension and documentation
 * Improve trim string middleware to not trim password text
-* Upgrade to Laravel 6.5
+* Upgrade to Laravel 6.x
 * Enhance user invitation mail
 * Add job information next to the contact name on profile page
 * Use supervisor in docker images
 * Use JawsDB by default on heroku instances
 * Add pluralization forms for non-english-like-plural languages, for vue.js translations
-* Add console command to test email delivery
+* Upload master docker image to GitHub packages
 
 ### Fixes:
 
+* Fix contact list cells link
+* Fix birthdate selection UX
+* Fix OAuth login process with WebAuthn activated
+* Fix journal entry edit
+* Fix register in case country is not detected from ip address
+* Fix Photo->contact relation
+* Fix subscription page
+* Fix relationship create and destroy with partial contact
+* Fix 2fa route on webauthn page
 * Fix tooltip on favorite icon
 * Fix icons disappeared on contact information
 * Fix CSV uploads with weird photo files
@@ -28,9 +65,6 @@
 * Fix search when prefix table is used
 * Fix storage page not being displayed if a contact does not exist anymore
 * Fix API requests for Reminders failing with internal server error
-
-
-# RELEASED VERSIONS:
 
 ## v2.15.2 - 2019-09-26
 

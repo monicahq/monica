@@ -16,7 +16,8 @@ class UpdateMessageTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_a_conversation()
+    /** @test */
+    public function it_updates_a_conversation()
     {
         $conversation = factory(Conversation::class)->create([]);
 
@@ -56,7 +57,8 @@ class UpdateMessageTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [
             'account_id' => 1,
@@ -72,7 +74,8 @@ class UpdateMessageTest extends TestCase
         app(UpdateMessage::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_message_does_not_exist()
+    /** @test */
+    public function it_throws_an_exception_if_message_does_not_exist()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([

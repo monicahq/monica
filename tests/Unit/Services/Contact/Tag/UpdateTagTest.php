@@ -14,7 +14,8 @@ class UpdateTagTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_a_tag()
+    /** @test */
+    public function it_updates_a_tag()
     {
         $tag = factory(Tag::class)->create([]);
 
@@ -38,7 +39,8 @@ class UpdateTagTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [
             'account_id' => 1,
@@ -50,7 +52,8 @@ class UpdateTagTest extends TestCase
         app(UpdateTag::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_tag_does_not_exist()
+    /** @test */
+    public function it_throws_an_exception_if_tag_does_not_exist()
     {
         $account = factory(Account::class)->create();
 
