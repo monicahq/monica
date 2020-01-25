@@ -285,7 +285,8 @@ class FakeContentTableSeeder extends Seeder
                     'activity_type_id' => rand(1, 13),
                     'summary' => $this->faker->realText(rand(40, 100)),
                     'description' => (rand(1, 2) == 1 ? $this->faker->realText(rand(100, 1000)) : null),
-                    'date' => $date,
+                    'happened_at' => $date,
+                    'contacts' => [$this->contact->id],
                 ];
 
                 $activity = app(CreateActivity::class)->execute($request);
