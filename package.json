@@ -48,7 +48,7 @@
     "marked": "^0.8.0",
     "moment": "^2.22.1",
     "moment-timezone": "^0.5.21",
-    "popper.js": "^1.15.0",
+    "popper.js": "^1.16.1",
     "pretty-checkbox-vue": "^1.1.8",
     "sass": "^1.25.0",
     "snyk": "^1.274.0",
