@@ -4,6 +4,7 @@ namespace App\Http\Resources\Contact;
 
 use App\Helpers\DateHelper;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
+use App\Http\Resources\Note\Note as NoteResource;
 
 class ContactWithContactFields extends Contact
 {
@@ -96,6 +97,7 @@ class ContactWithContactFields extends Contact
                 'number_of_debts' => $this->debts->count(),
             ]),
             'contactFields' => $this->when(! $this->is_partial, $this->getContactFieldsForAPI()),
+            'notes' => $this->when(! $this->is_partial, NoteResource::collection($this->notes()->latest()->limit(3)->get())),
             'url' => $this->when(! $this->is_partial, route('api.contact', $this->id)),
             'account' => [
                 'id' => $this->account->id,
