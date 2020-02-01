@@ -13,6 +13,7 @@ use App\Services\Contact\Tag\UpdateTag;
 use Illuminate\Database\QueryException;
 use App\Services\Contact\Tag\DestroyTag;
 use App\Http\Resources\Tag\Tag as TagResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -23,7 +24,7 @@ class ApiTagController extends ApiController
      * We will only retrieve the contacts that are "real", not the partials
      * ones.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|JsonResponse
+     * @return AnonymousResourceCollection|JsonResponse
      */
     public function index(Request $request)
     {
@@ -88,7 +89,7 @@ class ApiTagController extends ApiController
      * Update the tag.
      *
      * @param Request $request
-     *
+     * @param $id
      * @return TagResource|JsonResponse
      */
     public function update(Request $request, $id)
@@ -139,7 +140,7 @@ class ApiTagController extends ApiController
      *
      * @param Request $request
      * @param int $tagId
-     * @return JsonResponse
+     * @return JsonResponse|AnonymousResourceCollection
      */
     public function contacts(Request $request, int $tagId)
     {
