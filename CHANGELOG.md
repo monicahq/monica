@@ -5,6 +5,7 @@
 * Add vue data validations
 * Add ability to edit activities
 * Associate a photo to a gift
+* New API method: get all the contacts for a given tag 
 
 ### Enhancements:
 
