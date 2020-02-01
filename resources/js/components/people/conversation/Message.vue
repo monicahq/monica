@@ -60,7 +60,6 @@
       :no-label="true"
       :rows="4"
       :placeholder="$t('people.conversation_add_content')"
-      @contentChange="updateContent($event)"
     />
   </div>
 </template>
@@ -69,6 +68,10 @@
 export default {
 
   props: {
+    value: {
+      type: String,
+      default: '',
+    },
     uid: {
       type: Number,
       default: 0,
@@ -93,10 +96,6 @@ export default {
       type: Boolean,
       default: true,
     },
-    content: {
-      type: String,
-      default: '',
-    },
     displayTrash: {
       type: Boolean,
       default: true,
@@ -105,7 +104,7 @@ export default {
 
   data() {
     return {
-      buffer: this.content,
+      buffer: '',
       updatedAuthor: this.author,
     };
   },
@@ -116,12 +115,17 @@ export default {
     }
   },
 
-  methods: {
-    updateContent(updatedContent) {
-      this.buffer = updatedContent;
-      this.$emit('contentChange', this.buffer);
-    },
+  watch: {
+    value(newValue) {
+      this.buffer = newValue;
+    }
+  },
 
+  mounted() {
+    this.buffer = this.value;
+  },
+
+  methods: {
     deleteMessage() {
       this.$emit('deleteMessage', this.uid);
     },
