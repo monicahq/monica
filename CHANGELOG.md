@@ -9,11 +9,13 @@
 
 ### Enhancements:
 
+* Contacts displayed in the activity list are now clickable again
 * Gift are now added and updated inline
 
 ### Fixes:
 
 * Fix display of the toggle buttons in the Settings page
+* Markdown is now properly applied for a phone call description
 * Fix contacts list UX with 2 tabs opened
 * Fix activity mock data seeder
 
