@@ -135,6 +135,7 @@ class UpdateContactIntroduction extends BaseService
     {
         if (! $data['is_date_known']) {
             $contact->firstMetDate()->delete();
+
             return;
         }
 
