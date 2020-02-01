@@ -1280,7 +1280,7 @@ class Contact extends Model
         } elseif (! empty($tags)) {
             // gets users who have all the tags
             foreach ($tags as $tag) {
-                $query = $query->whereHas('tags', function ($query) use ($tag) {
+                $query = $query->whereHas('tags', function (Builder $query) use ($tag) {
                     $query->where('id', $tag->id);
                 });
             }
