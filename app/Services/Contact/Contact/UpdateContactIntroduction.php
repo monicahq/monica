@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
 
-class UpdateContactIntroductions extends BaseService
+class UpdateContactIntroduction extends BaseService
 {
     /**
      * @var array
@@ -66,6 +66,7 @@ class UpdateContactIntroductions extends BaseService
      *
      * @param array $data
      * @return Contact
+     * @throws ValidationException
      */
     public function execute(array $data): Contact
     {
@@ -133,6 +134,7 @@ class UpdateContactIntroductions extends BaseService
     private function manageDate(array $data, Contact $contact): void
     {
         if (! $data['is_date_known']) {
+            $contact->firstMetDate()->delete();
             return;
         }
 
