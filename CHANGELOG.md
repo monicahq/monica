@@ -5,10 +5,11 @@
 * Add vue data validations
 * Add ability to edit activities
 * Associate a photo to a gift
-* New API method: get all the contacts for a given tag 
+* New API method: get all the contacts for a given tag
 
 ### Enhancements:
 
+* Contacts displayed in the activity list are now clickable again
 * Gift are now added and updated inline
 
 ### Fixes:
