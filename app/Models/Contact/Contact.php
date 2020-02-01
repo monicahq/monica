@@ -464,6 +464,7 @@ class Contact extends Model
             case 'lastactivitydateNewtoOld':
                 $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
                 $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
+                $builder->groupBy('contacts.id');
                 $builder->orderBy('activities.happened_at', 'desc');
                 $builder->select(['*', 'contacts.id as id']);
 
@@ -471,6 +472,7 @@ class Contact extends Model
             case 'lastactivitydateOldtoNew':
                 $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
                 $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
+                $builder->groupBy('contacts.id');
                 $builder->orderBy('activities.happened_at', 'asc');
                 $builder->select(['*', 'contacts.id as id']);
 

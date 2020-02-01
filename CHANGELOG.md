@@ -9,6 +9,7 @@
 
 ### Enhancements:
 
+* Contacts displayed in the activity list are now clickable again
 * Gift are now added and updated inline
 
 ### Fixes:
