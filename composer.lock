@@ -1413,16 +1413,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.11.2",
+            "version": "8.11.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "1ec1059b56b40cc1b6b02b438711e4a90ba4bbc7"
+                "reference": "0329cf6a6ede750a78e7165b61fcc83cd72e9768"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/1ec1059b56b40cc1b6b02b438711e4a90ba4bbc7",
-                "reference": "1ec1059b56b40cc1b6b02b438711e4a90ba4bbc7",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/0329cf6a6ede750a78e7165b61fcc83cd72e9768",
+                "reference": "0329cf6a6ede750a78e7165b61fcc83cd72e9768",
                 "shasum": ""
             },
             "require": {
@@ -1477,7 +1477,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2020-01-15T09:35:09+00:00"
+            "time": "2020-01-28T11:48:03+00:00"
         },
         {
             "name": "giggsey/locale",
@@ -2594,16 +2594,16 @@
         },
         {
             "name": "laravel/passport",
-            "version": "v8.2.0",
+            "version": "v8.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "4c163b7821d29b6166fc2e93ad7649428b51c6db"
+                "reference": "98456cb16efd2ef7b41797e0a8559c9d8b4112f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/4c163b7821d29b6166fc2e93ad7649428b51c6db",
-                "reference": "4c163b7821d29b6166fc2e93ad7649428b51c6db",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/98456cb16efd2ef7b41797e0a8559c9d8b4112f8",
+                "reference": "98456cb16efd2ef7b41797e0a8559c9d8b4112f8",
                 "shasum": ""
             },
             "require": {
@@ -2662,7 +2662,7 @@
                 "oauth",
                 "passport"
             ],
-            "time": "2020-01-07T19:25:00+00:00"
+            "time": "2020-01-29T13:25:24+00:00"
         },
         {
             "name": "laravel/socialite",
@@ -7982,16 +7982,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v4.4.3",
+            "version": "v4.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "c33998709f3fe9b8e27e0277535b07fbf6fde37a"
+                "reference": "491a20dfa87e0b3990170593bc2de0bb34d828a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/c33998709f3fe9b8e27e0277535b07fbf6fde37a",
-                "reference": "c33998709f3fe9b8e27e0277535b07fbf6fde37a",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/491a20dfa87e0b3990170593bc2de0bb34d828a5",
+                "reference": "491a20dfa87e0b3990170593bc2de0bb34d828a5",
                 "shasum": ""
             },
             "require": {
@@ -8033,7 +8033,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2020-01-04T13:00:46+00:00"
+            "time": "2020-01-31T09:11:17+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -8202,7 +8202,7 @@
         },
         {
             "name": "symfony/mime",
-            "version": "v5.0.3",
+            "version": "v5.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mime.git",
@@ -11413,16 +11413,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v5.8.2",
+            "version": "v5.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "c95d70b5fff000c54a9186c2011b236592fcf948"
+                "reference": "3e54875a69d2cb7136a56d9889c11eb2988c8eb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/c95d70b5fff000c54a9186c2011b236592fcf948",
-                "reference": "c95d70b5fff000c54a9186c2011b236592fcf948",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/3e54875a69d2cb7136a56d9889c11eb2988c8eb4",
+                "reference": "3e54875a69d2cb7136a56d9889c11eb2988c8eb4",
                 "shasum": ""
             },
             "require": {
@@ -11477,7 +11477,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2020-01-21T20:57:39+00:00"
+            "time": "2020-01-28T20:55:30+00:00"
         },
         {
             "name": "matthiasnoback/live-code-coverage",
@@ -13300,12 +13300,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "5e2ebc8340c8b7dcdc3f938dcbb9e2b99b72fd8e"
+                "reference": "666ba252853924887ac57dc9f66e6b6af78d5a76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/5e2ebc8340c8b7dcdc3f938dcbb9e2b99b72fd8e",
-                "reference": "5e2ebc8340c8b7dcdc3f938dcbb9e2b99b72fd8e",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/666ba252853924887ac57dc9f66e6b6af78d5a76",
+                "reference": "666ba252853924887ac57dc9f66e6b6af78d5a76",
                 "shasum": ""
             },
             "conflict": {
@@ -13423,7 +13423,8 @@
                 "sylius/admin-bundle": ">=1,<1.0.17|>=1.1,<1.1.9|>=1.2,<1.2.2",
                 "sylius/grid": ">=1,<1.1.19|>=1.2,<1.2.18|>=1.3,<1.3.13|>=1.4,<1.4.5|>=1.5,<1.5.1",
                 "sylius/grid-bundle": ">=1,<1.1.19|>=1.2,<1.2.18|>=1.3,<1.3.13|>=1.4,<1.4.5|>=1.5,<1.5.1",
-                "sylius/sylius": ">=1,<1.1.18|>=1.2,<1.2.17|>=1.3,<1.3.12|>=1.4,<1.4.4",
+                "sylius/resource-bundle": ">=1,<1.3.13|>=1.4,<1.4.6|>=1.5,<1.5.1|>=1.6,<1.6.3",
+                "sylius/sylius": ">=1,<1.3.12|>=1.4,<1.4.4",
                 "symfony/cache": ">=3.1,<3.4.35|>=4,<4.2.12|>=4.3,<4.3.8",
                 "symfony/dependency-injection": ">=2,<2.0.17|>=2.7,<2.7.51|>=2.8,<2.8.50|>=3,<3.4.26|>=4,<4.1.12|>=4.2,<4.2.7",
                 "symfony/form": ">=2.3,<2.3.35|>=2.4,<2.6.12|>=2.7,<2.7.50|>=2.8,<2.8.49|>=3,<3.4.20|>=4,<4.0.15|>=4.1,<4.1.9|>=4.2,<4.2.1",
@@ -13509,10 +13510,15 @@
                     "name": "Marco Pivetta",
                     "email": "ocramius@gmail.com",
                     "role": "maintainer"
+                },
+                {
+                    "name": "Ilya Tribusean",
+                    "email": "slash3b@gmail.com",
+                    "role": "maintainer"
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2020-01-20T14:23:18+00:00"
+            "time": "2020-01-28T17:25:41+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

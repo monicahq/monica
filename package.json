@@ -16,7 +16,7 @@
     "prepublish": "yarn run snyk-protect"
   },
   "devDependencies": {
-    "cross-env": "^6.0.3",
+    "cross-env": "^7.0.0",
     "cypress": "3.8.2",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.0.0",
@@ -51,7 +51,7 @@
     "popper.js": "^1.16.1",
     "pretty-checkbox-vue": "^1.1.8",
     "sass": "^1.25.0",
-    "snyk": "^1.274.0",
+    "snyk": "^1.290.1",
     "sweet-modal-vue": "^2.0.0",
     "tachyons": "^4.9.1",
     "vue": "^2.5.21",

@@ -486,8 +486,8 @@ class Contact extends Model
      * Scope a query to only include contacts who are not only a kid or a
      * significant other without being a contact.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeReal($query)
     {
@@ -497,8 +497,8 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are active.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeActive($query)
     {
@@ -508,8 +508,8 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are alive.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeAlive($query)
     {
@@ -519,8 +519,8 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are dead.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeDead($query)
     {
@@ -530,8 +530,8 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are not active.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeNotActive($query)
     {
@@ -1301,9 +1301,9 @@ class Contact extends Model
     /**
      * Get the contacts that have all the provided $tags
      * or if $tags is NONE get contacts that have no tags.
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param Builder $query
      * @param mixed $tags string or Tag
-     * @return \Illuminate\Database\Eloquent\Builder $query
+     * @return Builder $query
      */
     public function scopeTags($query, $tags)
     {
@@ -1313,7 +1313,7 @@ class Contact extends Model
         } elseif (! empty($tags)) {
             // gets users who have all the tags
             foreach ($tags as $tag) {
-                $query = $query->whereHas('tags', function ($query) use ($tag) {
+                $query = $query->whereHas('tags', function (Builder $query) use ($tag) {
                     $query->where('id', $tag->id);
                 });
             }
