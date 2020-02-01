@@ -88,10 +88,10 @@ class ApiTagController extends ApiController
      * Update the tag.
      *
      * @param Request $request
-     * @param $id
+     * @param int $id
      * @return TagResource|JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         try {
             $tag = app(UpdateTag::class)->execute(
