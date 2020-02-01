@@ -9,6 +9,7 @@
 ### Enhancements:
 
 * Gift are now added and updated inline
+* Add a link in the downgrade process to archive all contacts in the account
 
 ### Fixes:
 
