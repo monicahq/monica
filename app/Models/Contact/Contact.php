@@ -3,7 +3,6 @@
 namespace App\Models\Contact;
 
 use Carbon\Carbon;
-use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
@@ -17,10 +16,8 @@ use App\Models\Account\Weather;
 use App\Models\Account\Activity;
 use function Safe\preg_match_all;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
