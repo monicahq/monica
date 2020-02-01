@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\SearchHelper;
+use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
 use App\Models\Contact\Tag;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Services\Contact\Tag\CreateTag;
 use App\Services\Contact\Tag\UpdateTag;
@@ -19,7 +23,7 @@ class ApiTagController extends ApiController
      * We will only retrieve the contacts that are "real", not the partials
      * ones.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|JsonResponse
      */
     public function index(Request $request)
     {
@@ -39,7 +43,7 @@ class ApiTagController extends ApiController
      *
      * @param Request $request
      *
-     * @return TagResource|\Illuminate\Http\JsonResponse
+     * @return TagResource|JsonResponse
      */
     public function show(Request $request, $id)
     {
@@ -59,7 +63,7 @@ class ApiTagController extends ApiController
      *
      * @param Request $request
      *
-     * @return TagResource|\Illuminate\Http\JsonResponse
+     * @return TagResource|JsonResponse
      */
     public function store(Request $request)
     {
@@ -85,7 +89,7 @@ class ApiTagController extends ApiController
      *
      * @param Request $request
      *
-     * @return TagResource|\Illuminate\Http\JsonResponse
+     * @return TagResource|JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -112,7 +116,7 @@ class ApiTagController extends ApiController
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function destroy(Request $request, $id)
     {
@@ -128,5 +132,29 @@ class ApiTagController extends ApiController
         }
 
         return $this->respondObjectDeleted($id);
+    }
+
+    /**
+     * Show all the contacts for a given tag.
+     *
+     * @param Request $request
+     * @param int $tagId
+     * @return JsonResponse
+     */
+    public function contacts(Request $request, int $tagId)
+    {
+        try {
+            $contacts = auth()->user()->account->contacts()
+                ->real()
+                ->active()
+                ->whereHas('tags', function (Builder $query) use ($tagId) {
+                    $query->where('id', $tagId);
+                })
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return ContactWithContactFieldsResource::collection($contacts);
     }
 }

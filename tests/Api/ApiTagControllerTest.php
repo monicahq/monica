@@ -23,6 +23,118 @@ class ApiTagControllerTest extends ApiTestCase
         'updated_at',
     ];
 
+    protected $jsonStructureContactWithContactFields = [
+        'id',
+        'object',
+        'hash_id',
+        'first_name',
+        'last_name',
+        'gender',
+        'gender_type',
+        'is_starred',
+        'is_partial',
+        'is_dead',
+        'last_called',
+        'last_activity_together',
+        'stay_in_touch_frequency',
+        'stay_in_touch_trigger_date',
+        'information' => [
+            'relationships' => [
+                'love' => [
+                    'total',
+                    'contacts',
+                ],
+                'family' => [
+                    'total',
+                    'contacts',
+                ],
+                'friend' => [
+                    'total',
+                    'contacts',
+                ],
+                'work' => [
+                    'total',
+                    'contacts',
+                ],
+            ],
+            'dates' => [
+                'birthdate' => [
+                    'is_age_based',
+                    'is_year_unknown',
+                    'date',
+                ],
+                'deceased_date' => [
+                    'is_age_based',
+                    'is_year_unknown',
+                    'date',
+                ],
+            ],
+            'career' => [
+                'job',
+                'company',
+            ],
+            'avatar' => [
+                'url',
+                'source',
+                'default_avatar_color',
+            ],
+            'food_preferences',
+            'how_you_met' => [
+                'general_information',
+                'first_met_date' => [
+                    'is_age_based',
+                    'is_year_unknown',
+                    'date',
+                ],
+                'first_met_through_contact',
+            ],
+        ],
+        'addresses' => [],
+        'tags' => [],
+        'statistics' => [
+            'number_of_calls',
+            'number_of_notes',
+            'number_of_activities',
+            'number_of_reminders',
+            'number_of_tasks',
+            'number_of_gifts',
+            'number_of_debts',
+        ],
+        'contactFields' => [
+            '*' => [
+                'id',
+                'object',
+                'content',
+                'contact_field_type' => [
+                    'id',
+                    'object',
+                    'name',
+                    'fontawesome_icon',
+                    'protocol',
+                    'delible',
+                    'type',
+                    'account' => [
+                        'id',
+                    ],
+                    'created_at',
+                    'updated_at',
+                ],
+                'account' => [
+                    'id',
+                ],
+                'contact' => [],
+                'created_at',
+                'updated_at',
+            ],
+        ],
+        'notes' => [],
+        'account' => [
+            'id',
+        ],
+        'created_at',
+        'updated_at',
+    ];
+
     /** @test */
     public function it_get_all_tags()
     {
@@ -215,6 +327,80 @@ class ApiTagControllerTest extends ApiTestCase
         $this->assertDatabaseMissing('tags', [
             'account_id' => $user->account->id,
             'id' => $tag->id,
+        ]);
+    }
+
+    /** @test */
+    public function it_gets_all_the_contacts_for_a_given_tag()
+    {
+        $user = $this->signin();
+
+        $tag = factory(Tag::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        factory(Contact::class, 10)->create([
+            'account_id' => $user->account_id,
+        ]);
+        for ($i = 0; $i < 3; $i++) {
+            $contact = factory(Contact::class)->create([
+                'account_id' => $user->account_id,
+            ]);
+
+            $contact->tags()->sync([
+                $tag->id => [
+                    'account_id' => $user->account_id,
+                ],
+            ]);
+        }
+
+        $response = $this->json('GET', '/api/tags/'.$tag->id.'/contacts');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => ['*' => $this->jsonStructureContactWithContactFields],
+        ]);
+
+        $this->assertCount(
+            3,
+            $response->decodeResponseJson()['data']
+        );
+    }
+
+    /** @test */
+    public function it_gets_all_the_contacts_for_a_given_tag_and_applies_pagination()
+    {
+        $user = $this->signin();
+
+        $tag = factory(Tag::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        factory(Contact::class, 10)->create([
+            'account_id' => $user->account_id,
+        ]);
+        for ($i = 0; $i < 3; $i++) {
+            $contact = factory(Contact::class)->create([
+                'account_id' => $user->account_id,
+            ]);
+
+            $contact->tags()->sync([
+                $tag->id => [
+                    'account_id' => $user->account_id,
+                ],
+            ]);
+        }
+
+        $response = $this->json('GET', '/api/tags/'.$tag->id.'/contacts?limit=1');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => ['*' => $this->jsonStructureContactWithContactFields],
+        ]);
+
+        $response->assertJsonFragment([
+            'total' => 3,
+            'current_page' => 1,
+            'per_page' => '1',
+            'last_page' => 3,
         ]);
     }
 }
