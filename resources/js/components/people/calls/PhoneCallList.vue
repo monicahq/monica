@@ -127,7 +127,7 @@
         <span v-if="!call.content">
           {{ $t('people.call_blank_desc', { name: call.contact.first_name }) }}
         </span>
-        <span v-if="call.content" dir="auto" v-html="compiledMarkdown(call.content)"></span>
+        <span v-if="call.content" dir="auto" class="markdown" v-html="compiledMarkdown(call.content)"></span>
       </div>
 
       <!-- INLINE UPDATE DIV -->
