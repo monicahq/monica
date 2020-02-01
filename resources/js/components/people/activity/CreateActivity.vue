@@ -64,6 +64,7 @@
             :rows="4"
             :title="$t('people.activities_summary')"
             :placeholder="$t('people.conversation_add_content')"
+            @contentChange="updateDescription($event)"
           />
           <p class="f6">
             {{ $t('app.markdown_description') }} <a href="https://guides.github.com/features/mastering-markdown/" rel="noopener noreferrer" target="_blank">
@@ -210,6 +211,10 @@ export default {
     prepareComponent() {
       this.todayDate = moment().format('YYYY-MM-DD');
       this.resetFields();
+    },
+
+    updateDescription(updatedDescription) {
+      this.newActivity.description = updatedDescription;
     },
 
     resetFields() {
