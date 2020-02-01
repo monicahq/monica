@@ -83,10 +83,10 @@ class ApiContactController extends ApiController
      * Get the detail of a given contact.
      *
      * @param Request $request
-     * @param $id
+     * @param int $id
      * @return ContactResource|JsonResponse|ContactWithContactFieldsResource
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, int $id)
     {
         try {
             $contact = Contact::where('account_id', auth()->user()->account_id)
