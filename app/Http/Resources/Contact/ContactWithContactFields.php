@@ -3,8 +3,8 @@
 namespace App\Http\Resources\Contact;
 
 use App\Helpers\DateHelper;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\Note\Note as NoteResource;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class ContactWithContactFields extends Contact
 {
