@@ -5,9 +5,9 @@ namespace Tests\Unit\Services\Account;
 use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Contact\Contact;
-use App\Services\Account\Settings\ArchiveAllContacts;
 use Illuminate\Validation\ValidationException;
 use App\Services\Account\Settings\DestroyAccount;
+use App\Services\Account\Settings\ArchiveAllContacts;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ArchiveAllContactsTest extends TestCase

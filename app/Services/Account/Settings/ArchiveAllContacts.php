@@ -4,9 +4,8 @@ namespace App\Services\Account\Settings;
 
 use App\Services\BaseService;
 use App\Models\Account\Account;
-use App\Exceptions\StripeException;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 
 class ArchiveAllContacts extends BaseService
 {
