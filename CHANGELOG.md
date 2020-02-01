@@ -5,11 +5,12 @@
 * Add vue data validations
 * Add ability to edit activities
 * Associate a photo to a gift
-* New API method: get all the contacts for a given tag 
+* New API method: get all the contacts for a given tag
 
 ### Enhancements:
 
 * Gift are now added and updated inline
+* Markdown is now properly applied for a phone call description
 
 ### Fixes:
 
