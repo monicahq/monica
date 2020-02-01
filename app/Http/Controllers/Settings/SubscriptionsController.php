@@ -150,11 +150,9 @@ class SubscriptionsController extends Controller
      */
     public function processArchive()
     {
-        $process = app(ArchiveAllContacts::class)->execute([
+        app(ArchiveAllContacts::class)->execute([
             'account_id' => auth()->user()->account_id,
         ]);
-
-        //if ($result)
 
         return redirect()->route('settings.subscriptions.downgrade');
     }
