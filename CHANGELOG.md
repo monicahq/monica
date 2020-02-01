@@ -5,7 +5,7 @@
 * Add vue data validations
 * Add ability to edit activities
 * Associate a photo to a gift
-* New API method: get all the contacts for a given tag 
+* New API method: get all the contacts for a given tag
 
 ### Enhancements:
 
@@ -13,6 +13,7 @@
 
 ### Fixes:
 
+* Fix display of the toggle buttons in the Settings page
 * Fix contacts list UX with 2 tabs opened
 * Fix activity mock data seeder
 

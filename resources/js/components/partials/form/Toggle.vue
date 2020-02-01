@@ -5,14 +5,14 @@
   <div>
     <label
       v-if="title"
-      :for="realid"
+      :for="realId"
       class="mb2"
       :class="{ b: required }"
     >
       {{ title }}
     </label>
     <toggle-button
-      :id="realid"
+      :id="realId"
       :name="id"
       :class="inputClass"
       :sync="true"
@@ -66,7 +66,7 @@ export default {
   },
 
   computed: {
-    realid() {
+    realId() {
       return this.id + this._uid;
     },
     inputClass() {
