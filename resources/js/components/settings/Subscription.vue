@@ -113,6 +113,10 @@ export default {
       type: String,
       default: '',
     },
+    token: {
+      type: String,
+      default: '',
+    },
     confirm: {
       type: Boolean,
       default: false,
@@ -135,14 +139,12 @@ export default {
       successMessage: '',
       cardElement: null,
       paymentMethod: '',
-      token: '',
       paymentProcessing: false,
       paymentProcessed: false,
     };
   },
 
   mounted() {
-    this.token = document.head.querySelector('meta[name="csrf-token"]').content;
     if (this.paymentSucceeded || this.paymentCancelled) {
       this.paymentProcessed = true;
     }

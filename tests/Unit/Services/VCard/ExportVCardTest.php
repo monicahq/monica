@@ -351,6 +351,49 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('EMAIL:john@doe.com', $vCard->serialize());
     }
 
+    /**
+     * @test
+     * @dataProvider socialProfileProvider
+     */
+    public function vcard_add_social_profile($name, $type, $data, $result)
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $vCard = new VCard();
+
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $account->id,
+            'name' => $name,
+            'type' => $type,
+        ]);
+        factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $account->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => $data,
+        ]);
+
+        $exportVCard = app(ExportVCard::class);
+        $this->invokePrivateMethod($exportVCard, 'exportContactFields', [$contact, $vCard]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+        $this->assertStringContainsString($result, $vCard->serialize());
+    }
+
+    public function socialProfileProvider()
+    {
+        return [
+            ['Facebook', 'Facebook', 'test', 'SOCIALPROFILE;TYPE=facebook:https://www.facebook.com/test'],
+            ['Twitter', 'Twitter', 'test', 'SOCIALPROFILE;TYPE=twitter:https://twitter.com/test'],
+            ['Whatsapp', 'Whatsapp', 'test', 'SOCIALPROFILE;TYPE=whatsapp:https://wa.me/test'],
+            ['Telegram', 'Telegram', 'test', 'SOCIALPROFILE;TYPE=telegram:http://t.me/test'],
+            ['LinkedIn', 'LinkedIn', 'test', 'SOCIALPROFILE;TYPE=linkedin:http://www.linkedin.com/in/test'],
+        ];
+    }
+
     /** @test */
     public function vcard_add_addresses_empty()
     {

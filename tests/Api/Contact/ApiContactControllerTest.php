@@ -182,6 +182,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'updated_at',
             ],
         ],
+        'notes' => [],
         'account' => [
             'id',
         ],
