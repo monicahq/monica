@@ -49,8 +49,12 @@
         </div>
         <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2">
-            <toggle-button :class="'module-'" :value="module.active" :disabled="limited" :sync="true" :labels="true"
-                           @change="toggle(module)"
+            <form-toggle
+              :iclass="'module-'"
+              v-model="module.active"
+              :disabled="limited"
+              :labels="true"
+              @change="toggle(module, $event)"
             />
           </div>
         </div>
@@ -111,10 +115,11 @@ export default {
         .then(response => {
           this.$notify({
             group: 'main',
-            title: response.data,
+            title: this.$t('settings.personalization_module_save'),
             text: '',
             type: 'success'
           });
+          this.$set(module, 'active', response.data.data.active);
         });
     }
   }

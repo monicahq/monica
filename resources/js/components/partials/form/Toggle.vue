@@ -17,8 +17,10 @@
       :class="inputClass"
       :sync="true"
       :labels="labels"
+      :disabled="disabled"
       :value="selectedOption"
-      @input="event => { $emit('input', event) }"
+      @input="$emit('input', $event)"
+      @change="$emit('change', $event)"
     />
   </div>
 </template>
@@ -52,6 +54,10 @@ export default {
     required: {
       type: Boolean,
       default: true,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
     iclass: {
       type: String,
