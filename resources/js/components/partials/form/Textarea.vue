@@ -29,7 +29,7 @@ textarea:focus {
       :rows="rows"
       class="br2 f5 w-100 ba b--black-40 pa2 outline-0"
       :style="textareaStyle"
-      @input="$emit('contentChange', buffer)"
+      @input="$emit('input', buffer)"
     ></textarea>
   </div>
 </template>

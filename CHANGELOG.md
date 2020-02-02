@@ -5,13 +5,17 @@
 * Add vue data validations
 * Add ability to edit activities
 * Associate a photo to a gift
+* New API method: get all the contacts for a given tag
 
 ### Enhancements:
 
+* Contacts displayed in the activity list are now clickable again
 * Gift are now added and updated inline
 
 ### Fixes:
 
+* Fix description not being saved when creating/editing activity
+* Markdown is now properly applied for a phone call description
 * Fix contacts list UX with 2 tabs opened
 * Fix activity mock data seeder
 * Fix ordering of contact tags to be alphabetical

@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         // Tags
         Route::apiResource('tags', 'ApiTagController');
+        Route::get('/tags/{tag}/contacts', 'ApiTagController@contacts');
 
         // Companies
         Route::apiResource('companies', 'Account\\ApiCompanyController');
