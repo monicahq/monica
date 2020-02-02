@@ -114,13 +114,15 @@
           </div>
         </div>
       </template>
+
+      <!-- EDIT THE CURRENT ACTIVITY -->
       <create-activity v-else
-                       :hash="hash"
-                       :name="name"
-                       :activity="activity"
-                       :contact-id="contactId"
-                       @update="updateList($event)"
-                       @cancel="$set(activity, 'edit', false); displayLogActivity = false"
+        :hash="hash"
+        :name="name"
+        :activity="activity"
+        :contact-id="contactId"
+        @update="updateList($event)"
+        @cancel="$set(activity, 'edit', false); displayLogActivity = false"
       />
     </div>
 
