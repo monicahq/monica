@@ -138,8 +138,6 @@ class SubscriptionsController extends Controller
      */
     public function archive()
     {
-        $contacts = auth()->user()->account->contacts();
-
         return view('settings.subscriptions.archive');
     }
 

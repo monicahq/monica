@@ -31,21 +31,23 @@
         <div class="col-12 col-sm-6 offset-sm-3 offset-sm-3-right downgrade">
           @include('partials.errors')
 
-          <h2>{{ trans('settings.archive_title') }}</h2>
+          <div class="br3 ba b--gray-monica bg-white mb4">
+            <div class="pa3 bb b--gray-monica">
+              <h2>{{ trans('settings.archive_title') }}</h2>
 
-          <p>{{ trans('settings.archive_desc') }}</p>
+              <p class="tc">{{ trans('settings.archive_desc') }}</p>
 
-          <form method="POST" action="{{ route('settings.subscriptions.archive') }}">
-            @csrf
+              <form method="POST" action="{{ route('settings.subscriptions.archive') }}">
+                @csrf
 
-            <p class="mb4"><button type="submit" href="" class="btn btn-primary">{{ trans('settings.archive_cta') }}</button></p>
+                <p class="mb4 tc"><button type="submit" class="btn btn-primary">{{ trans('settings.archive_cta') }}</button></p>
 
-          </form>
+              </form>
 
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-@endsection
+    @endsection
