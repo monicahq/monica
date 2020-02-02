@@ -3,7 +3,6 @@
 namespace App\Models\Contact;
 
 use Carbon\Carbon;
-use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
@@ -17,10 +16,8 @@ use App\Models\Account\Weather;
 use App\Models\Account\Activity;
 use function Safe\preg_match_all;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
@@ -1205,34 +1202,6 @@ class Contact extends Model
         $this->save();
 
         return $specialDate;
-    }
-
-    /**
-     * Delete all related objects.
-     *
-     * @return bool
-     */
-    public function deleteEverything()
-    {
-        // I know: this is a really brutal way of deleting objects. I'm doing
-        // this because I'll add more objects related to contacts in the future
-        // and I don't want to have to think of deleting a row that matches a
-        // contact.
-        //
-        $tables = DBHelper::getTables();
-        foreach ($tables as $table) {
-            $tableName = $table->table_name;
-
-            try {
-                DB::table($tableName)->where('contact_id', $this->id)->delete();
-            } catch (QueryException $e) {
-                continue;
-            }
-        }
-
-        $this->delete();
-
-        return true;
     }
 
     /**
