@@ -45,7 +45,7 @@ return [
     'save' => 'עדכון העדפות',
     'delete_title' => 'מחיקת החשבון שלך',
     'delete_desc' => 'האם רצונך הוא לסגור את החשבון? אזהרה: מחיקה היא לצמיתות וכל הנתונים שלך יימחקו לצמיתות. המינויים שלך (אם יש לך כאלה) יבוטלו באופן מיידי גם כן.',
-    'delete_other_desc' => 'Just to be clear: your data in the main database will be deleted immediately. However, as described in our privacy policy, we do daily backups of the database in case of failure and this backup is kept for 30 days – then it’s completely deleted. It’s unrealistic to imagine that we can go in all the backups to delete your specific data. By the way, this data is encrypted on very secure Amazon servers and no one has the encryption key except us. Therefore, your data will completely disappear in 30 days from all the backups, and no one will know this data ever existed in the first place.',
+    'delete_other_desc' => 'לצורך הבהרה: הנתונים במסד הנתונים הראשי יימחקו מיד. עם זאת, כפי שצוין במדיניות הפרטיות שלנו, אנו עורכים גיבויים יומיים של מסד הנתונים למקרה של תקלה ומסד נתונים זה נשמר למשך 30 יום - לאחר מכן הנתונים שלך יימחקו לגמרי. מחיקת הנתונים שלך באופן נקודתי מכל אחד ואחד מהגיבויים היא בגדר הזיה. דרך אגב, נתונים אלו מוצפנים בשרת מאובטח מאוד שמתאחסן בשרתים של Amazon ולאף אחד אין את מפתח ההפצנה חוץ מאתנו. לכן, הנתונים שלך יימחקו לגמרי תוך 30 יום מכל הגיבויים ואף אחד לא יוכל לדעת שהנתונים האלו אי פעם היו קיימים מלכתחילה.',
     'reset_desc' => 'לאפס את החשבון שלך? פעולה זו תסיר את כל אנשי הקשר שלך ואת כל המידע המשויך להם. החשבון שלך לא יימחק.',
     'reset_title' => 'איפוס החשבון שלך',
     'reset_cta' => 'איפוס חשבון',
