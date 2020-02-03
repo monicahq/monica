@@ -44,7 +44,8 @@ return [
     'layout_big' => 'العرض الكامل للمستعرض',
     'save' => 'تحديث التفضيلات',
     'delete_title' => 'احذف حسابك',
-    'delete_desc' => 'Do you wish to delete your account? Warning: deletion is permanent and all your data will be erased permanently.',
+    'delete_desc' => 'Do you wish to delete your account? Warning: deletion is permanent and all your data will be erased permanently. Your subscription (if you have any) will also be immediately cancelled.',
+    'delete_other_desc' => 'Just to be clear: your data in the main database will be deleted immediately. However, as described in our privacy policy, we do daily backups of the database in case of failure and this backup is kept for 30 days – then it’s completely deleted. It’s unrealistic to imagine that we can go in all the backups to delete your specific data. By the way, this data is encrypted on very secure Amazon servers and no one has the encryption key except us. Therefore, your data will completely disappear in 30 days from all the backups, and no one will know this data ever existed in the first place.',
     'reset_desc' => 'هل ترغب في إعادة تعيين حسابك؟ هذا سيؤدي إلى إزالة جهات إتصالك، و جميع بيانتهم. حسابك لن يتم حذفه.',
     'reset_title' => 'أعد تعيين حسابك',
     'reset_cta' => 'إعادة تعيين الحساب',
@@ -189,7 +190,7 @@ return [
     'subscriptions_downgrade_rule_users_constraint' => 'حالياً لديك <a href=":url">مستخدم واحد</a> في حسابك. | لديك حالياً <a href=":url">:count مستخدمين</a> في حسابك.',
     'subscriptions_downgrade_rule_invitations' => 'يجب ألا يكون لديك دعوات معلقة',
     'subscriptions_downgrade_rule_invitations_constraint' => 'لديك حالياً <a href=":url">دعوة 1 معلقة</a> قد أُرسلت.| لديك حالياً <a href=":url">:count دعوات معلقة</a> قد أُرسلت.',
-    'subscriptions_downgrade_rule_contacts' => 'يجب ألا يكون لديك أكثر من :number جهات اتصال',
+    'subscriptions_downgrade_rule_contacts' => 'You must not have more than :number active contacts',
     'subscriptions_downgrade_rule_contacts_constraint' => 'لديك حالياً <a href=":url"> جهة اتصال واحدة</a>.| لديك حالياً <a href=":url">:count جهات اتصال</a>.',
     'subscriptions_downgrade_cta' => 'خفض المرتبة',
     'subscriptions_downgrade_success' => 'لقد عدتَ للخطة المجانية!',
@@ -485,4 +486,8 @@ return [
     'dav_carddav_export' => 'Export all contacts in one file',
     'dav_caldav_birthdays_export' => 'Export all birthdays in one file',
     'dav_caldav_tasks_export' => 'Export all tasks in one file',
+
+    'archive_title' => 'Archive all your contacts in your account',
+    'archive_desc' => 'This will archive all the contacts in your account.',
+    'archive_cta' => 'Archive all your contacts',
 ];
