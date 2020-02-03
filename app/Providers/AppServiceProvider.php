@@ -112,7 +112,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Contact\Contact\UpdateBirthdayInformation::class => \App\Services\Contact\Contact\UpdateBirthdayInformation::class,
         \App\Services\Contact\Contact\UpdateContact::class => \App\Services\Contact\Contact\UpdateContact::class,
         \App\Services\Contact\Contact\UpdateContactFoodPreferences::class => \App\Services\Contact\Contact\UpdateContactFoodPreferences::class,
-        \App\Services\Contact\Contact\UpdateContactIntroductions::class => \App\Services\Contact\Contact\UpdateContactIntroductions::class,
+        \App\Services\Contact\Contact\UpdateContactIntroduction::class => \App\Services\Contact\Contact\UpdateContactIntroduction::class,
         \App\Services\Contact\Contact\UpdateContactWork::class => \App\Services\Contact\Contact\UpdateContactWork::class,
         \App\Services\Contact\Contact\UpdateDeceasedInformation::class => \App\Services\Contact\Contact\UpdateDeceasedInformation::class,
         \App\Services\Contact\Conversation\AddMessageToConversation::class => \App\Services\Contact\Conversation\AddMessageToConversation::class,

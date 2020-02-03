@@ -17,7 +17,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Services\Contact\Contact\UpdateContactWork;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
-use App\Services\Contact\Contact\UpdateContactIntroductions;
+use App\Services\Contact\Contact\UpdateContactIntroduction;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
 
@@ -284,7 +284,7 @@ class ApiContactController extends ApiController
     public function updateIntroduction(Request $request, $contactId)
     {
         try {
-            $contact = app(UpdateContactIntroductions::class)->execute(
+            $contact = app(UpdateContactIntroduction::class)->execute(
                 $request->except(['account_id', 'contact_id'])
                 + [
                     'contact_id' => $contactId,
