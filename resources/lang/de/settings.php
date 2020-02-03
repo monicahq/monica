@@ -44,7 +44,8 @@ return [
     'layout_big' => 'Gesamte Breite des Browsers',
     'save' => 'Einstellungen speichern',
     'delete_title' => 'Konto löschen',
-    'delete_desc' => 'Willst du dein Konto löschen? Warnung: das Löschen ist permanent und alle deine Daten werden für immer weg sein.',
+    'delete_desc' => 'Do you wish to delete your account? Warning: deletion is permanent and all your data will be erased permanently. Your subscription (if you have any) will also be immediately cancelled.',
+    'delete_other_desc' => 'Just to be clear: your data in the main database will be deleted immediately. However, as described in our privacy policy, we do daily backups of the database in case of failure and this backup is kept for 30 days – then it’s completely deleted. It’s unrealistic to imagine that we can go in all the backups to delete your specific data. By the way, this data is encrypted on very secure Amazon servers and no one has the encryption key except us. Therefore, your data will completely disappear in 30 days from all the backups, and no one will know this data ever existed in the first place.',
     'reset_desc' => 'Möchtest du dein Konto zurücksetzen? Dies entfernt alle deine Kontakte und die zugehörigen Daten. Dein Konto bleibt erhalten.',
     'reset_title' => 'Konto zurücksetzen',
     'reset_cta' => 'Konto zurücksetzen',
@@ -189,7 +190,7 @@ return [
     'subscriptions_downgrade_rule_users_constraint' => 'Du hast derzeit <a href=":url">1 Benutzer</a> in deinem Konto. | Du hast derzeit <a href=":url">:count Benutzer</a> in deinem Konto.',
     'subscriptions_downgrade_rule_invitations' => 'Du darfst keine ausstehenden Einladungen haben',
     'subscriptions_downgrade_rule_invitations_constraint' => 'Du hast aktuell <a href=":url">eine ausstehende Einladung</a> verschickt.|Du hast aktuell <a href=":url">:count ausstehende Einladungen</a> verschickt.',
-    'subscriptions_downgrade_rule_contacts' => 'Sie dürfen nicht mehr als :number Kontakte haben',
+    'subscriptions_downgrade_rule_contacts' => 'You must not have more than :number active contacts',
     'subscriptions_downgrade_rule_contacts_constraint' => 'You currently have <a href=":url">1 contact</a>.|You currently have <a href=":url">:count contacts</a>.',
     'subscriptions_downgrade_cta' => 'Zurückstufen',
     'subscriptions_downgrade_success' => 'Du hast das kostenlose Abonnement!',
@@ -485,4 +486,8 @@ return [
     'dav_carddav_export' => 'Export all contacts in one file',
     'dav_caldav_birthdays_export' => 'Export all birthdays in one file',
     'dav_caldav_tasks_export' => 'Export all tasks in one file',
+
+    'archive_title' => 'Archive all your contacts in your account',
+    'archive_desc' => 'This will archive all the contacts in your account.',
+    'archive_cta' => 'Archive all your contacts',
 ];
