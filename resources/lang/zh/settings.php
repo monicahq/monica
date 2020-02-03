@@ -44,7 +44,8 @@ return [
     'layout_big' => '浏览器的全宽度',
     'save' => '更新偏好',
     'delete_title' => '删除您的帐户',
-    'delete_desc' => '是否要删除您的帐户？警告: 删除是永久性的, 您的所有数据将永久的删除',
+    'delete_desc' => 'Do you wish to delete your account? Warning: deletion is permanent and all your data will be erased permanently. Your subscription (if you have any) will also be immediately cancelled.',
+    'delete_other_desc' => 'Just to be clear: your data in the main database will be deleted immediately. However, as described in our privacy policy, we do daily backups of the database in case of failure and this backup is kept for 30 days – then it’s completely deleted. It’s unrealistic to imagine that we can go in all the backups to delete your specific data. By the way, this data is encrypted on very secure Amazon servers and no one has the encryption key except us. Therefore, your data will completely disappear in 30 days from all the backups, and no one will know this data ever existed in the first place.',
     'reset_desc' => '您想重置您的帐户吗？这将删除所有联系人以及与之关联的数据。您的帐户将不会被删除。',
     'reset_title' => '删除您的帐户',
     'reset_cta' => '重置帐户',
@@ -189,7 +190,7 @@ return [
     'subscriptions_downgrade_rule_users_constraint' => '您的帐户中当前有 <a href=":url">:count 个用户</a>。',
     'subscriptions_downgrade_rule_invitations' => '您不能有未接受的邀请',
     'subscriptions_downgrade_rule_invitations_constraint' => '您的帐户中当前有 <a href=":url">:count 个未确认邀请</a>。',
-    'subscriptions_downgrade_rule_contacts' => '您不能拥有超过:number个联系人',
+    'subscriptions_downgrade_rule_contacts' => 'You must not have more than :number active contacts',
     'subscriptions_downgrade_rule_contacts_constraint' => '当前有 <a href=":url">:count 位联系人</a>。',
     'subscriptions_downgrade_cta' => '降级',
     'subscriptions_downgrade_success' => '您已降级到免费版！',
@@ -485,4 +486,8 @@ return [
     'dav_carddav_export' => '导出一个文件中的所有联系人',
     'dav_caldav_birthdays_export' => '在一个文件中导出所有生日',
     'dav_caldav_tasks_export' => '导出一个文件中的所有任务',
+
+    'archive_title' => 'Archive all your contacts in your account',
+    'archive_desc' => 'This will archive all the contacts in your account.',
+    'archive_cta' => 'Archive all your contacts',
 ];
