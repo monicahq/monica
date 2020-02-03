@@ -44,7 +44,7 @@ return [
     'layout_big' => 'הרוחב המלא של הדפדפן',
     'save' => 'עדכון העדפות',
     'delete_title' => 'מחיקת החשבון שלך',
-    'delete_desc' => 'Do you wish to delete your account? Warning: deletion is permanent and all your data will be erased permanently. Your subscription (if you have any) will also be immediately cancelled.',
+    'delete_desc' => 'האם רצונך הוא לסגור את החשבון? אזהרה: מחיקה היא לצמיתות וכל הנתונים שלך יימחקו לצמיתות. המינויים שלך (אם יש לך כאלה) יבוטלו באופן מיידי גם כן.',
     'delete_other_desc' => 'Just to be clear: your data in the main database will be deleted immediately. However, as described in our privacy policy, we do daily backups of the database in case of failure and this backup is kept for 30 days – then it’s completely deleted. It’s unrealistic to imagine that we can go in all the backups to delete your specific data. By the way, this data is encrypted on very secure Amazon servers and no one has the encryption key except us. Therefore, your data will completely disappear in 30 days from all the backups, and no one will know this data ever existed in the first place.',
     'reset_desc' => 'לאפס את החשבון שלך? פעולה זו תסיר את כל אנשי הקשר שלך ואת כל המידע המשויך להם. החשבון שלך לא יימחק.',
     'reset_title' => 'איפוס החשבון שלך',
@@ -190,7 +190,7 @@ return [
     'subscriptions_downgrade_rule_users_constraint' => 'יש לך <a href=":url">משתמש אחד</a> בחשבון כרגע.|יש לך <a href=":url">:count משתמשים</a> בחשבון כרגע.',
     'subscriptions_downgrade_rule_invitations' => 'אסור שתהיינה לך הזמנות ממתינות',
     'subscriptions_downgrade_rule_invitations_constraint' => 'יש לך כרגע <a href=":url">הזמנה אחת בהמתנה</a> שנשלחה למישהו.|יש לך כרגע <a href=":url">:count הזמנות בהמתנה</a> שנשלחו לאנשים.',
-    'subscriptions_downgrade_rule_contacts' => 'You must not have more than :number active contacts',
+    'subscriptions_downgrade_rule_contacts' => 'לא יכולים להיות לך יותר מ־:number אנשי קשר פעילים',
     'subscriptions_downgrade_rule_contacts_constraint' => 'כרגע יש לך <a href=":url">איש קשר יחיד</a>.|כרגע יש לך <a href=":url">:count אנשי קשר</a>.',
     'subscriptions_downgrade_cta' => 'שנמוך',
     'subscriptions_downgrade_success' => 'חזרת לתכנית החינמית!',
@@ -487,7 +487,7 @@ return [
     'dav_caldav_birthdays_export' => 'ייצוא כל ימי ההולדת בקובץ אחד',
     'dav_caldav_tasks_export' => 'ייצוא כל המשימות בקובץ אחד',
 
-    'archive_title' => 'Archive all your contacts in your account',
-    'archive_desc' => 'This will archive all the contacts in your account.',
-    'archive_cta' => 'Archive all your contacts',
+    'archive_title' => 'העברת כל אנשי הקשר בחשבון שלך לארכיון',
+    'archive_desc' => 'פעולה זו תעביר את כל אנשי הקשר בחשבון שלך לארכיון.',
+    'archive_cta' => 'העברת כל אנשי הקשר לארכיון',
 ];
