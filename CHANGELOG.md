@@ -15,6 +15,7 @@
 
 ### Fixes:
 
+* Fix display of the toggle buttons in the Settings page
 * Fix how you met date not being deleted upon save
 * Fix description not being saved when creating/editing activity
 * Markdown is now properly applied for a phone call description
