@@ -2,15 +2,13 @@
 
 namespace Tests\Unit\Services;
 
-use App\Models\User\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
+use App\Models\User\User;
 use App\Services\BaseService;
-use App\Exceptions\NotEnoughPermissionException;
+use Illuminate\Support\Facades\Queue;
 use App\Jobs\AuditLog\LogAccountAudit;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class BaseServiceTest extends TestCase
 {

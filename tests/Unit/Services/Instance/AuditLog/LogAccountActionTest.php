@@ -4,12 +4,10 @@ namespace Tests\Unit\Services\Instance\AuditLog;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Company\Company;
-use App\Models\Instance\AuditLog;
-use App\Models\Company\Employee;
 use App\Models\User\User;
-use App\Services\Instance\AuditLog\LogAccountAction;
+use App\Models\Instance\AuditLog;
 use Illuminate\Validation\ValidationException;
+use App\Services\Instance\AuditLog\LogAccountAction;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class LogAccountActionTest extends TestCase

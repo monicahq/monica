@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Jobs\AuditLog\LogAccountAudit;
-use App\Models\User\User;
 use Carbon\Carbon;
+use App\Models\User\User;
 use Illuminate\Support\Arr;
+use App\Jobs\AuditLog\LogAccountAudit;
 use Illuminate\Support\Facades\Validator;
 
 abstract class BaseService

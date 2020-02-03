@@ -2,13 +2,13 @@
 
 namespace App\Services\Contact\Contact;
 
+use App\Models\User\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Jobs\Avatars\GetAvatarsFromInternet;
-use App\Models\User\User;
 
 class CreateContact extends BaseService
 {

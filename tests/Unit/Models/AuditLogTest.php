@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Instance\AuditLog;
 use Tests\ApiTestCase;
+use App\Models\Instance\AuditLog;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AuditLogTest extends ApiTestCase
