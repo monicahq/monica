@@ -14,6 +14,7 @@
 
 ### Fixes:
 
+* Fix how you met date not being deleted upon save
 * Fix description not being saved when creating/editing activity
 * Markdown is now properly applied for a phone call description
 * Fix contacts list UX with 2 tabs opened
