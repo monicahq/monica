@@ -8,6 +8,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Jobs\Avatars\GetAvatarsFromInternet;
+use App\Models\User\User;
 
 class CreateContact extends BaseService
 {
@@ -20,6 +21,7 @@ class CreateContact extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
+            'author_id' => 'required|integer|exists:users,id',
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
@@ -52,6 +54,7 @@ class CreateContact extends BaseService
     public function execute(array $data): Contact
     {
         $this->validate($data);
+
         // filter out the data that shall not be updated here
         $dataOnly = Arr::except(
             $data,
@@ -81,6 +84,15 @@ class CreateContact extends BaseService
         $this->generateUUID($contact);
 
         $this->addAvatars($contact);
+
+        $this->writeAuditLog(
+            User::findOrFail($data['author_id']),
+            'contact_created',
+            [
+                'contact_name' => $contact->name,
+                'contact_id' => $contact->id,
+            ]
+        );
 
         // we query the DB again to fill the object with all the new properties
         $contact->refresh();

@@ -454,4 +454,7 @@ return [
     'dav_birthdays_description' => ':name’s contact’s birthdays',
     'dav_tasks' => 'Tasks',
     'dav_tasks_description' => ':name’s tasks',
+
+    // audit log
+    'log_contact_created' => 'Added a contact.',
 ];

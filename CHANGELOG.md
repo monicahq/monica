@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Add audit logs in the Settings page
 * Add vue data validations
 * Add ability to edit activities
 * Associate a photo to a gift

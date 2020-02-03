@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Jobs\AuditLog\LogAccountAudit;
+use App\Models\User\User;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
@@ -39,7 +41,7 @@ abstract class BaseService
      * @param mixed $index
      * @return mixed
      */
-    protected function nullOrValue($data, $index)
+    public function nullOrValue($data, $index)
     {
         $value = Arr::get($data, $index, null);
 
@@ -53,10 +55,31 @@ abstract class BaseService
      * @param mixed $index
      * @return mixed
      */
-    protected function nullOrDate($data, $index)
+    public function nullOrDate($data, $index)
     {
         $value = Arr::get($data, $index, null);
 
         return is_null($value) || $value === '' ? null : Carbon::parse($value);
+    }
+
+    /**
+     * Add an audit log for the given action.
+     * This triggers a job, that triggers the actual service to write the log.
+     *
+     * @param User $author
+     * @param string $action
+     * @param array $objects
+     * @return void
+     */
+    public function writeAuditLog(User $author, string $action, array $objects): void
+    {
+        LogAccountAudit::dispatch([
+            'action' => $action,
+            'account_id' => $author->account_id,
+            'author_id' => $author->id,
+            'author_name' => $author->name,
+            'audited_at' => Carbon::now(),
+            'objects' => json_encode($objects),
+        ]);
     }
 }

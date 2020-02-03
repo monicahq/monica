@@ -180,6 +180,7 @@ class ContactsController extends Controller
         try {
             $contact = app(CreateContact::class)->execute([
                 'account_id' => auth()->user()->account->id,
+                'author_id' => auth()->user()->id,
                 'first_name' => $request->input('first_name'),
                 'last_name' => $request->input('last_name', null),
                 'nickname' => $request->input('nickname', null),

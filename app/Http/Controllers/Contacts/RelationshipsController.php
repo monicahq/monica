@@ -193,6 +193,7 @@ class RelationshipsController extends Controller
 
         return [
             'account_id' => auth()->user()->account_id,
+            'author_id' => auth()->user()->id,
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'gender_id' => $request->input('gender_id'),
