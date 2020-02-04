@@ -11,9 +11,12 @@
 
 * Contacts displayed in the activity list are now clickable again
 * Gift are now added and updated inline
+* Add a link in the downgrade process to archive all contacts in the account
 
 ### Fixes:
 
+* Fix display of the toggle buttons in the Settings page
+* Fix how you met date not being deleted upon save
 * Fix description not being saved when creating/editing activity
 * Markdown is now properly applied for a phone call description
 * Fix contacts list UX with 2 tabs opened

@@ -2,23 +2,29 @@
 
 namespace App\Http\Controllers\Settings;
 
+use Illuminate\View\View;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use Laravel\Cashier\Cashier;
 use Laravel\Cashier\Payment;
+use Illuminate\Http\Response;
 use App\Helpers\InstanceHelper;
 use App\Exceptions\StripeException;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\Factory;
+use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent as StripePaymentIntent;
 use Laravel\Cashier\Exceptions\IncompletePayment;
+use App\Services\Account\Settings\ArchiveAllContacts;
 
 class SubscriptionsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @return View|Factory|RedirectResponse
      */
     public function index()
     {
@@ -58,7 +64,8 @@ class SubscriptionsController extends Controller
     /**
      * Display the upgrade view page.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return View|Factory|RedirectResponse
      */
     public function upgrade(Request $request)
     {
@@ -82,7 +89,8 @@ class SubscriptionsController extends Controller
     /**
      * Display the confirm view page.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @return View|Factory|RedirectResponse
+     * @throws ApiErrorException
      */
     public function confirmPayment($id)
     {
@@ -97,9 +105,9 @@ class SubscriptionsController extends Controller
     /**
      * Display the upgrade success page.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @return View|Factory|RedirectResponse
      */
-    public function upgradeSuccess(Request $request)
+    public function upgradeSuccess()
     {
         if (! config('monica.requires_subscription')) {
             return redirect()->route('settings.index');
@@ -111,7 +119,8 @@ class SubscriptionsController extends Controller
     /**
      * Display the downgrade success page.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return View|Factory|RedirectResponse
      */
     public function downgradeSuccess(Request $request)
     {
@@ -123,12 +132,38 @@ class SubscriptionsController extends Controller
     }
 
     /**
+     * Display the archive all your contacts page.
+     *
+     * @return View|Factory|RedirectResponse
+     */
+    public function archive()
+    {
+        return view('settings.subscriptions.archive');
+    }
+
+    /**
+     * Process the Archive process.
+     *
+     * @return RedirectResponse
+     */
+    public function processArchive()
+    {
+        app(ArchiveAllContacts::class)->execute([
+            'account_id' => auth()->user()->account_id,
+        ]);
+
+        return redirect()->route('settings.subscriptions.downgrade');
+    }
+
+    /**
      * Display the downgrade view page.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @return View|Factory|RedirectResponse
      */
     public function downgrade()
     {
+        $account = auth()->user()->account;
+
         if (! config('monica.requires_subscription')) {
             return redirect()->route('settings.index');
         }
@@ -138,13 +173,16 @@ class SubscriptionsController extends Controller
             return redirect()->route('settings.index');
         }
 
-        return view('settings.subscriptions.downgrade-checklist');
+        return view('settings.subscriptions.downgrade-checklist')
+            ->with('numberOfActiveContacts', $account->contacts()->active()->count())
+            ->with('numberOfPendingInvitations', $account->invitations()->count())
+            ->with('numberOfUsers', $account->users()->count());
     }
 
     /**
      * Process the downgrade process.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function processDowngrade()
     {
@@ -171,7 +209,8 @@ class SubscriptionsController extends Controller
     /**
      * Process the upgrade payment.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function processPayment(Request $request)
     {
@@ -199,9 +238,10 @@ class SubscriptionsController extends Controller
     /**
      * Download the invoice as PDF.
      *
-     * @return \Illuminate\Http\Response
+     * @param int $invoiceId
+     * @return Response
      */
-    public function downloadInvoice(Request $request, $invoiceId)
+    public function downloadInvoice(int $invoiceId)
     {
         return auth()->user()->account->downloadInvoice($invoiceId, [
             'vendor'  => 'Monica',
@@ -212,8 +252,8 @@ class SubscriptionsController extends Controller
     /**
      * Download the invoice as PDF.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function forceCompletePaymentOnTesting(Request $request)
     {
