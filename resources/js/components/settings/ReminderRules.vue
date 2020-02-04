@@ -94,7 +94,7 @@ export default {
             type: 'success'
           });
           this.$set(reminderRule, 'active', response.data.data.active)
-        })
+        });
     }
   }
 };
