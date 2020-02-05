@@ -32,6 +32,7 @@ class ContactAuditLogController extends Controller
 
         return view('people.auditlogs.index')
             ->withContact($contact)
-            ->withLogs($logsCollection);
+            ->withLogs($logsCollection)
+            ->withLogsPagination($logs);
     }
 }

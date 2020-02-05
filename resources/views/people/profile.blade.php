@@ -62,7 +62,7 @@
 
           <ul class="mb2">
             <li>
-              <a href="{{ route('people.auditlogs', $contact) }}">{{ trans('people.people_auditlogs') }}</a>
+              <a href="{{ route('people.auditlogs', $contact) }}">{{ trans('people.auditlogs_link') }}</a>
             </li>
             <li>
               <a href="{{ route('people.vcard', $contact) }}">{{ trans('people.people_export') }}</a>

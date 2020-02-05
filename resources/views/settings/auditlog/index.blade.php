@@ -34,9 +34,8 @@
 
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
-            <h3 class="with-actions">
-              {{ trans('settings.users_list_title') }}
-              <a href="{{ route('settings.users.create') }}" class="btn">{{ trans('settings.users_list_add_user') }}</a>
+            <h3>
+              {{ trans('settings.logs_title') }}
             </h3>
             <ul class="mb3">
               @foreach ($logsCollection as $log)
@@ -44,7 +43,7 @@
                 {!! $log['description'] !!}
               </li>
               <li class="bb b--gray-monica pb2 f6">
-                By {{ $log['author_name'] }} on {{ $log['audited_at'] }}
+                {{ trans('settings.logs_author', ['name' => $log['author_name'], 'date' => $log['audited_at']]) }}
               </li>
               @endforeach
             </ul>
