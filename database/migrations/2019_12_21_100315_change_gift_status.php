@@ -16,6 +16,10 @@ class ChangeGiftStatus extends Migration
      */
     public function up()
     {
+        Schema::table('gifts', function (Blueprint $table) {
+            $table->dropColumn(['status', 'date']);
+        });
+
         Gift::chunk(500, function ($gifts) {
             foreach ($gifts as $gift) {
                 try {
@@ -44,11 +48,13 @@ class ChangeGiftStatus extends Migration
         });
 
         Schema::table('gifts', function (Blueprint $table) {
-            $table->dropColumn('is_an_idea');
-            $table->dropColumn('has_been_offered');
-            $table->dropColumn('has_been_received');
-            $table->dropColumn('offered_at');
-            $table->dropColumn('received_at');
+            $table->dropColumn([
+                'is_an_idea',
+                'has_been_offered',
+                'has_been_received',
+                'offered_at',
+                'received_at'
+            ]);
         });
     }
 }
