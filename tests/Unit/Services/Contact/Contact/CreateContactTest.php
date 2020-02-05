@@ -96,6 +96,8 @@ class CreateContactTest extends TestCase
         Queue::assertPushed(LogAccountAudit::class, function ($job) use ($contact, $user) {
             return $job->auditLog['action'] === 'contact_created' &&
                 $job->auditLog['author_id'] === $user->id &&
+                $job->auditLog['about_contact_id'] === $contact->id &&
+                $job->auditLog['should_appear_on_dashboard'] === true &&
                 $job->auditLog['objects'] === json_encode([
                     'contact_name' => $contact->name,
                     'contact_id' => $contact->id,
@@ -184,7 +186,6 @@ class CreateContactTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-
         app(CreateContact::class)->execute($request);
     }
 }

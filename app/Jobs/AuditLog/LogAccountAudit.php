@@ -37,13 +37,8 @@ class LogAccountAudit implements ShouldQueue
      */
     public function handle()
     {
-        (new LogAccountAction)->execute([
-            'account_id' => $this->auditLog['account_id'],
-            'author_id' => $this->auditLog['author_id'],
-            'author_name' => $this->auditLog['author_name'],
-            'audited_at' => $this->auditLog['audited_at'],
-            'action' => $this->auditLog['action'],
-            'objects' => $this->auditLog['objects'],
-        ]);
+        (new LogAccountAction)->execute(
+            $this->auditLog
+        );
     }
 }

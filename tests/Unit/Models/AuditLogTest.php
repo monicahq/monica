@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use App\Models\Contact\Contact;
 use Tests\ApiTestCase;
 use App\Models\Instance\AuditLog;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -22,6 +23,16 @@ class AuditLogTest extends ApiTestCase
     {
         $auditLog = factory(AuditLog::class)->create([]);
         $this->assertTrue($auditLog->author()->exists());
+    }
+
+    /** @test */
+    public function it_belongs_to_a_contact(): void
+    {
+        $contact = factory(Contact::class)->create([]);
+        $auditLog = factory(AuditLog::class)->create([
+            'about_contact_id' => $contact->id,
+        ]);
+        $this->assertTrue($auditLog->contact()->exists());
     }
 
     /** @test */

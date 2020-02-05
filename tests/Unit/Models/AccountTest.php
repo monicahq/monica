@@ -29,6 +29,7 @@ use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ReminderOutbox;
 use App\Models\Contact\LifeEventCategory;
 use App\Models\Account\ActivityTypeCategory;
+use App\Models\Instance\AuditLog;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -251,6 +252,16 @@ class AccountTest extends FeatureTestCase
             'account_id' => $account->id,
         ]);
         $this->assertTrue($account->occupations()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_logs()
+    {
+        $account = factory(Account::class)->create([]);
+        factory(AuditLog::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->logs()->exists());
     }
 
     /** @test */

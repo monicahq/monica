@@ -22,6 +22,7 @@ use App\Models\Instance\SpecialDate;
 use App\Notifications\StayInTouchEmail;
 use App\Models\Relationship\Relationship;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
+use App\Models\Instance\AuditLog;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -132,6 +133,16 @@ class ContactTest extends FeatureTestCase
             'contact_id' => $contact->id,
         ]);
         $this->assertTrue($contact->occupations()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_logs()
+    {
+        $contact = factory(Contact::class)->create();
+        factory(AuditLog::class, 2)->create([
+            'about_contact_id' => $contact->id,
+        ]);
+        $this->assertTrue($contact->logs()->exists());
     }
 
     /** @test */

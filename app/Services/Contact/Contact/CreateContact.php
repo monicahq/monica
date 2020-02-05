@@ -59,6 +59,7 @@ class CreateContact extends BaseService
         $dataOnly = Arr::except(
             $data,
             [
+                'author_id',
                 'is_birthdate_known',
                 'birthdate_day',
                 'birthdate_month',
@@ -85,13 +86,15 @@ class CreateContact extends BaseService
 
         $this->addAvatars($contact);
 
-        $this->writeAuditLog(
+        $this->writeContactAuditLog(
             User::findOrFail($data['author_id']),
             'contact_created',
             [
                 'contact_name' => $contact->name,
                 'contact_id' => $contact->id,
-            ]
+            ],
+            $contact,
+            true
         );
 
         // we query the DB again to fill the object with all the new properties

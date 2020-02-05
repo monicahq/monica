@@ -6,7 +6,9 @@ use Carbon\Carbon;
 use App\Models\User\User;
 use Illuminate\Support\Arr;
 use App\Jobs\AuditLog\LogAccountAudit;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 abstract class BaseService
 {
@@ -63,15 +65,32 @@ abstract class BaseService
     }
 
     /**
+     * Returns the value if it's defined, or false otherwise.
+     *
+     * @param mixed $data
+     * @param mixed $index
+     * @return mixed
+     */
+    public function valueOrFalse($data, $index)
+    {
+        if (empty($data[$index])) {
+            return false;
+        }
+
+        return $data[$index];
+    }
+
+    /**
      * Add an audit log for the given action.
      * This triggers a job, that triggers the actual service to write the log.
      *
      * @param User $author
      * @param string $action
      * @param array $objects
+     * @param bool $displayOnDashboard
      * @return void
      */
-    public function writeAuditLog(User $author, string $action, array $objects): void
+    public function writeAuditLog(User $author, string $action, array $objects, bool $displayOnDashboard = false): void
     {
         LogAccountAudit::dispatch([
             'action' => $action,
@@ -79,6 +98,32 @@ abstract class BaseService
             'author_id' => $author->id,
             'author_name' => $author->name,
             'audited_at' => Carbon::now(),
+            'should_appear_on_dashboard' => $displayOnDashboard,
+            'objects' => json_encode($objects),
+        ]);
+    }
+
+    /**
+     * Add an audit log for the given action for a specific contact.
+     * Note that this creates an audit log in the Settings page, and we'll use
+     * this info to display all the logs made about the given contact.
+     *
+     * @param User $author
+     * @param string $action
+     * @param array $objects
+     * @param Contact $contact
+     * @return void
+     */
+    public function writeContactAuditLog(User $author, string $action, array $objects, Contact $contact, bool $displayOnDashboard = false): void
+    {
+        LogAccountAudit::dispatch([
+            'action' => $action,
+            'account_id' => $author->account_id,
+            'about_contact_id' => $contact->id,
+            'author_id' => $author->id,
+            'author_name' => $author->name,
+            'audited_at' => Carbon::now(),
+            'should_appear_on_dashboard' => $displayOnDashboard,
             'objects' => json_encode($objects),
         ]);
     }

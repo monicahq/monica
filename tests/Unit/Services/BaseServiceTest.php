@@ -8,6 +8,7 @@ use App\Models\User\User;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\Queue;
 use App\Jobs\AuditLog\LogAccountAudit;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class BaseServiceTest extends TestCase
@@ -98,6 +99,27 @@ class BaseServiceTest extends TestCase
     }
 
     /** @test */
+    public function it_returns_the_default_value_or_the_given_value(): void
+    {
+        $stub = $this->getMockForAbstractClass(BaseService::class);
+        $array = [
+            'value' => true,
+        ];
+
+        $this->assertTrue(
+            $stub->valueOrFalse($array, 'value')
+        );
+
+        $array = [
+            'value' => false,
+        ];
+
+        $this->assertFalse(
+            $stub->valueOrFalse($array, 'value')
+        );
+    }
+
+    /** @test */
     public function it_writes_an_audit_log_for_the_action(): void
     {
         Queue::fake();
@@ -115,6 +137,34 @@ class BaseServiceTest extends TestCase
         Queue::assertPushed(LogAccountAudit::class, function ($job) use ($michael, $action) {
             return $job->auditLog['action'] === $action &&
                 $job->auditLog['author_id'] === $michael->id &&
+                $job->auditLog['objects'] === json_encode([
+                    'id' => 3,
+                ]);
+        });
+    }
+
+    /** @test */
+    public function it_writes_an_audit_log_for_the_action_about_a_given_contact(): void
+    {
+        Queue::fake();
+
+        $stub = $this->getMockForAbstractClass(BaseService::class);
+
+        $michael = factory(User::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $michael->account_id,
+        ]);
+        $action = 'account_created';
+        $objects = [
+            'id' => 3,
+        ];
+
+        $stub->writeContactAuditLog($michael, $action, $objects, $contact);
+
+        Queue::assertPushed(LogAccountAudit::class, function ($job) use ($michael, $action, $contact) {
+            return $job->auditLog['action'] === $action &&
+                $job->auditLog['author_id'] === $michael->id &&
+                $job->auditLog['about_contact_id'] === $contact->id &&
                 $job->auditLog['objects'] === json_encode([
                     'id' => 3,
                 ]);

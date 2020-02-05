@@ -2,9 +2,11 @@
 
 namespace App\Models\Instance;
 
+use App\Helpers\AuditLogHelper;
 use App\Models\User\User;
 use App\Helpers\LogHelper;
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -20,9 +22,11 @@ class AuditLog extends Model
     protected $fillable = [
         'account_id',
         'author_id',
+        'about_contact_id',
         'author_name',
         'action',
         'objects',
+        'should_appear_on_dashboard',
         'audited_at',
     ];
 
@@ -56,6 +60,16 @@ class AuditLog extends Model
     }
 
     /**
+     * Get the Contact record associated with the audit log.
+     *
+     * @return BelongsTo
+     */
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class, 'about_contact_id');
+    }
+
+    /**
      * Get the JSON object.
      *
      * @return array
@@ -64,16 +78,5 @@ class AuditLog extends Model
     public function getObjectAttribute($value)
     {
         return json_decode($this->objects);
-    }
-
-    /**
-     * Get the content of the audit log, if defined.
-     *
-     * @return string
-     * @param mixed $value
-     */
-    public function getContentAttribute($value): string
-    {
-        return LogHelper::processAuditLog($this);
     }
 }

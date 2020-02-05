@@ -34,6 +34,7 @@ use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
+use App\Models\Instance\AuditLog;
 
 class Contact extends Model
 {
@@ -429,6 +430,16 @@ class Contact extends Model
     public function avatarPhoto()
     {
         return $this->hasOne(Photo::class, 'id', 'avatar_photo_id');
+    }
+
+    /**
+     * Get the Audot log records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function logs()
+    {
+        return $this->hasMany(AuditLog::class, 'about_contact_id', 'id');
     }
 
     /**

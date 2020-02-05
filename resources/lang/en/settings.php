@@ -12,6 +12,7 @@ return [
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'DAV Resources',
     'sidebar_settings_security' => 'Security',
+    'sidebar_settings_auditlogs' => 'Audit logs',
 
     'export_title' => 'Export your account data',
     'export_be_patient' => 'Click the button to start the export. It might take several minutes to process the export – please be patient and do not spam the button.',
