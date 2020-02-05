@@ -14,6 +14,7 @@ use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
 use App\Models\Account\Weather;
 use App\Models\Account\Activity;
+use App\Models\Instance\AuditLog;
 use function Safe\preg_match_all;
 use Illuminate\Support\Collection;
 use App\Models\Instance\SpecialDate;
@@ -34,7 +35,6 @@ use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
-use App\Models\Instance\AuditLog;
 
 class Contact extends Model
 {

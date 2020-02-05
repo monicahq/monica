@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Contact\Contact;
 use Tests\ApiTestCase;
+use App\Models\Contact\Contact;
 use App\Models\Instance\AuditLog;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

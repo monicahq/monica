@@ -5,10 +5,9 @@ namespace App\Services;
 use Carbon\Carbon;
 use App\Models\User\User;
 use Illuminate\Support\Arr;
-use App\Jobs\AuditLog\LogAccountAudit;
 use App\Models\Contact\Contact;
+use App\Jobs\AuditLog\LogAccountAudit;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 abstract class BaseService
 {
