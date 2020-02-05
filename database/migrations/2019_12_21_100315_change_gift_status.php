@@ -53,7 +53,7 @@ class ChangeGiftStatus extends Migration
                 'has_been_offered',
                 'has_been_received',
                 'offered_at',
-                'received_at'
+                'received_at',
             ]);
         });
     }
