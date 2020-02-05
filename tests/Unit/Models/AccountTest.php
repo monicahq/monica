@@ -862,7 +862,7 @@ class AccountTest extends FeatureTestCase
     public function account_has_reached_contact_limit_on_free_plan()
     {
         $account = factory(Account::class)->create();
-        $contact = factory(Contact::class, 11)->create([
+        factory(Contact::class, 11)->create([
             'account_id' => $account->id,
         ]);
 
@@ -872,7 +872,7 @@ class AccountTest extends FeatureTestCase
             $account->hasReachedContactLimit()
         );
 
-        $partials = factory(Contact::class, 5)->state('partial')->create([
+        factory(Contact::class, 5)->state('partial')->create([
             'account_id' => $account->id,
         ]);
 
@@ -884,6 +884,20 @@ class AccountTest extends FeatureTestCase
         config(['monica.number_of_allowed_contacts_free_account' => 100]);
 
         $this->assertFalse(
+            $account->hasReachedContactLimit()
+        );
+
+        config(['monica.number_of_allowed_contacts_free_account' => 3]);
+        $account = factory(Account::class)->create();
+        factory(Contact::class, 2)->create([
+            'account_id' => $account->id,
+            'is_active' => false,
+        ]);
+        factory(Contact::class, 3)->create([
+            'account_id' => $account->id,
+            'is_active' => true,
+        ]);
+        $this->assertTrue(
             $account->hasReachedContactLimit()
         );
     }
