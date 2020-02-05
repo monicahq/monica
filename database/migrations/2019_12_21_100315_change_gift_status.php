@@ -1,9 +1,11 @@
 <?php
 
 use App\Models\Contact\Gift;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ChangeGiftStatus extends Migration
 {
@@ -14,8 +16,19 @@ class ChangeGiftStatus extends Migration
      */
     public function up()
     {
+        Gift::chunk(500, function ($gifts) {
+            foreach ($gifts as $gift) {
+                try {
+                    Contact::findOrFail($gift->is_for);
+                } catch (ModelNotFoundException $e) {
+                    $gift->recipient = null;
+                    $gift->save();
+                }
+            }
+        });
+
         Schema::table('gifts', function (Blueprint $table) {
-            $table->unsignedInteger('is_for')->change();
+            $table->unsignedInteger('is_for')->nullable()->change();
             $table->string('status', 8)->after('has_been_received')->default('idea');
             $table->datetime('date')->after('status')->nullable();
 
