@@ -38,17 +38,20 @@
               {{ trans('settings.users_list_title') }}
               <a href="{{ route('settings.users.create') }}" class="btn">{{ trans('settings.users_list_add_user') }}</a>
             </h3>
-            <ul>
-              @foreach ($logs as $log)
-              <li>
-                {{ $log['author_name'] }}
-
+            <ul class="mb3">
+              @foreach ($logsCollection as $log)
+              <li class="pt2">
                 {!! $log['description'] !!}
-
-                {{ $log['audited_at'] }}
+              </li>
+              <li class="bb b--gray-monica pb2 f6">
+                By {{ $log['author_name'] }} on {{ $log['audited_at'] }}
               </li>
               @endforeach
             </ul>
+
+            <div class="tc center">
+              {{ $logsPagination->links() }}
+            </div>
 
           </div>
         </div>

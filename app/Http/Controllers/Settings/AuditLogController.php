@@ -43,6 +43,7 @@ class AuditLogController extends Controller
         }
 
         return view('settings.auditlog.index')
-            ->withLogs($logsCollection);
+            ->withLogsCollection($logsCollection)
+            ->withLogsPagination($logs);
     }
 }

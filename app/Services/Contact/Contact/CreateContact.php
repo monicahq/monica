@@ -2,7 +2,9 @@
 
 namespace App\Services\Contact\Contact;
 
+use App\Jobs\AuditLog\LogAccountAudit;
 use App\Models\User\User;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
@@ -86,16 +88,7 @@ class CreateContact extends BaseService
 
         $this->addAvatars($contact);
 
-        $this->writeContactAuditLog(
-            User::findOrFail($data['author_id']),
-            'contact_created',
-            [
-                'contact_name' => $contact->name,
-                'contact_id' => $contact->id,
-            ],
-            $contact,
-            true
-        );
+        $this->log($data, $contact);
 
         // we query the DB again to fill the object with all the new properties
         $contact->refresh();
@@ -174,6 +167,32 @@ class CreateContact extends BaseService
             'month' => $this->nullOrValue($data, 'deceased_date_month'),
             'year' => $this->nullOrValue($data, 'deceased_date_year'),
             'add_reminder' => $this->nullOrValue($data, 'deceased_date_add_reminder'),
+        ]);
+    }
+
+    /**
+     * Add an audit log.
+     *
+     * @param array $data
+     * @param Contact $contact
+     * @return void
+     */
+    private function log(array $data, Contact $contact)
+    {
+        $author = User::find($data['author_id']);
+
+        LogAccountAudit::dispatch([
+            'action' => 'contact_created',
+            'account_id' => $author->account_id,
+            'about_contact_id' => $contact->id,
+            'author_id' => $author->id,
+            'author_name' => $author->name,
+            'audited_at' => Carbon::now(),
+            'should_appear_on_dashboard' => true,
+            'objects' => json_encode([
+                'contact_name' => $contact->name,
+                'contact_id' => $contact->id,
+            ]),
         ]);
     }
 }
