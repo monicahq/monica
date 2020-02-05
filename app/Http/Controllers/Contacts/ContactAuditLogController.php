@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
-use App\Models\Account\Photo;
-use App\Models\Contact\Document;
-use App\Http\Controllers\Controller;
 use App\Models\Contact\Contact;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Controllers\Controller;
 
 class ContactAuditLogController extends Controller
 {

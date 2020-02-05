@@ -2,9 +2,7 @@
 
 namespace App\Models\Instance;
 
-use App\Helpers\AuditLogHelper;
 use App\Models\User\User;
-use App\Helpers\LogHelper;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;

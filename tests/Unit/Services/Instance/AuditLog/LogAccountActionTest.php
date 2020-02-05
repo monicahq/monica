@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Services\Instance\AuditLog;
 
-use App\Models\Contact\Contact;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User\User;
+use App\Models\Contact\Contact;
 use App\Models\Instance\AuditLog;
 use Illuminate\Validation\ValidationException;
 use App\Services\Instance\AuditLog\LogAccountAction;
