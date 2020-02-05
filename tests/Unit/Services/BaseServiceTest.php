@@ -4,11 +4,7 @@ namespace Tests\Unit\Services;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\User\User;
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Queue;
-use App\Jobs\AuditLog\LogAccountAudit;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class BaseServiceTest extends TestCase
