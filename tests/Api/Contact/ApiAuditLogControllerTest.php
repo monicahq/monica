@@ -2,13 +2,8 @@
 
 namespace Tests\Api\Contact;
 
-use Carbon\Carbon;
 use Tests\ApiTestCase;
-use App\Models\Contact\Gender;
-use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\ContactField;
-use App\Models\Contact\ContactFieldType;
 use App\Models\Instance\AuditLog;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -20,7 +15,7 @@ class ApiAuditLogControllerTest extends ApiTestCase
         'id',
         'object',
         'author' => [
-            'name'
+            'name',
         ],
         'action',
         'objects',

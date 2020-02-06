@@ -5,8 +5,6 @@ namespace App\Http\Resources\AuditLog;
 use App\Helpers\DateHelper;
 use function Safe\json_decode;
 use Illuminate\Http\Resources\Json\Resource;
-use App\Http\Resources\Emotion\Emotion as EmotionResource;
-use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
 
 class AuditLog extends Resource
 {
