@@ -17,10 +17,10 @@ class ApiAuditLogController extends ApiController
      * Get the list of the audit logs for the given contact.
      *
      * @param Request $request
-     * @param $contactId
+     * @param int $contactId
      * @return JsonResponse|AnonymousResourceCollection
      */
-    public function index(Request $request, $contactId)
+    public function index(Request $request, int $contactId)
     {
         try {
             $contact = Contact::where('account_id', auth()->user()->account_id)

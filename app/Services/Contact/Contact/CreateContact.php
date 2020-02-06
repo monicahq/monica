@@ -11,6 +11,7 @@ use App\Models\Contact\Contact;
 use App\Jobs\AuditLog\LogAccountAudit;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Jobs\Avatars\GetAvatarsFromInternet;
+use function Safe\json_encode;
 
 class CreateContact extends BaseService
 {
@@ -177,7 +178,7 @@ class CreateContact extends BaseService
      * @param Contact $contact
      * @return void
      */
-    private function log(array $data, Contact $contact)
+    private function log(array $data, Contact $contact): void
     {
         $author = User::find($data['author_id']);
 
