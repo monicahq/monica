@@ -15,6 +15,7 @@
 
 ### Fixes:
 
+* Fix edit conversation date not being editable
 * Fix display of the toggle buttons in the Settings page
 * Fix how you met date not being deleted upon save
 * Fix description not being saved when creating/editing activity
