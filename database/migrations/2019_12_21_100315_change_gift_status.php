@@ -26,7 +26,7 @@ class ChangeGiftStatus extends Migration
                     $table->dropColumn('status');
                 });
             }
-        } else if (Schema::hasColumn('gifts', 'date')) {
+        } elseif (Schema::hasColumn('gifts', 'date')) {
             Schema::table('gifts', function (Blueprint $table) {
                 $table->dropColumn('date');
             });
