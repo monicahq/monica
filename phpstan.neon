@@ -42,3 +42,4 @@ parameters:
         - */app/Services/Account/Settings/ExportAccount.php
         - */app/Http/Controllers/Contacts/ContactAuditLogController.php
         - */app/Http/Controllers/Settings/AuditLogController.php
+        - */app/Helpers/AuditLogHelper.php
