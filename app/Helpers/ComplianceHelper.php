@@ -27,17 +27,6 @@ class ComplianceHelper
         }
 
         return true;
-
-//        $compliance = Term::find($termId);
-//        $signedDate = DateHelper::parseDateTime($termUser->created_at);
-//
-//        return [
-//            'signed' => true,
-//            'signed_date' => DateHelper::getTimestamp($signedDate),
-//            'ip_address' => $termUser->ip_address,
-//            'user' => new UserResource($this),
-//            'term' => new ComplianceResource($compliance),
-//        ];
     }
 
     /**
