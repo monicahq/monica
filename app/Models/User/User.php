@@ -173,21 +173,11 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     }
 
     /**
-     * Set the contact view preference.
-     *
-     * @param  string $preference
-     */
-    public function updateContactViewPreference($preference)
-    {
-        $this->contacts_sort_order = $preference;
-        $this->save();
-    }
-
-    /**
      * Indicates whether the user has already rated the current day.
+     *
      * @return bool
      */
-    public function hasAlreadyRatedToday()
+    public function hasAlreadyRatedToday(): bool
     {
         try {
             Day::where('account_id', $this->account_id)
@@ -204,7 +194,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
      * Ecrypt the user's google_2fa secret.
      *
      * @param string  $value
-     *
      * @return void
      */
     public function setGoogle2faSecretAttribute($value): void

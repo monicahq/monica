@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Helpers\DBHelper;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
+use App\Services\User\UpdateViewPreference;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
@@ -23,6 +26,7 @@ use App\Services\Contact\Contact\DestroyContact;
 use App\Services\Contact\Contact\UpdateContactWork;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactSearch as ContactResource;
+use Illuminate\View\View;
 
 class ContactsController extends Controller
 {
@@ -31,7 +35,7 @@ class ContactsController extends Controller
      *
      * @param Request $request
      *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * @return View|RedirectResponse
      */
     public function index(Request $request)
     {
@@ -43,7 +47,7 @@ class ContactsController extends Controller
      *
      * @param Request $request
      *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * @return View|RedirectResponse
      */
     public function archived(Request $request)
     {
@@ -54,8 +58,8 @@ class ContactsController extends Controller
      * Display contacts.
      *
      * @param Request $request
-     *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * @param bool $active
+     * @return View|RedirectResponse
      */
     private function contacts(Request $request, bool $active)
     {
@@ -64,7 +68,11 @@ class ContactsController extends Controller
         $showDeceased = $request->input('show_dead');
 
         if ($user->contacts_sort_order !== $sort) {
-            $user->updateContactViewPreference($sort);
+            app(UpdateViewPreference::class)->execute([
+                'account_id' => $user->account->id,
+                'user_id' => $user->id,
+                'preference' => $sort,
+            ]);
         }
 
         $contacts = $user->account->contacts()->real();
@@ -131,7 +139,7 @@ class ContactsController extends Controller
     /**
      * Show the form to add a new contact.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @return View|Factory|RedirectResponse
      */
     public function create()
     {
@@ -141,7 +149,7 @@ class ContactsController extends Controller
     /**
      * Show the form in case the contact is missing.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @return View|Factory|RedirectResponse
      */
     public function missing()
     {
@@ -152,7 +160,7 @@ class ContactsController extends Controller
      * Show the Add user form unless the contact has limitations.
      *
      * @param  bool $isContactMissing
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @return View|Factory|RedirectResponse
      */
     private function createForm($isContactMissing = false)
     {
@@ -171,9 +179,8 @@ class ContactsController extends Controller
     /**
      * Store the contact.
      *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -208,7 +215,7 @@ class ContactsController extends Controller
      *
      * @param Contact $contact
      *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * @return View|RedirectResponse
      */
     public function show(Contact $contact)
     {
@@ -292,7 +299,7 @@ class ContactsController extends Controller
      *
      * @param Contact $contact
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function edit(Contact $contact)
     {
@@ -327,7 +334,7 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, Contact $contact)
     {
@@ -414,7 +421,7 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function destroy(Request $request, Contact $contact)
     {
@@ -439,7 +446,7 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function editWork(Request $request, Contact $contact)
     {
@@ -453,7 +460,7 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updateWork(Request $request, Contact $contact)
     {
@@ -474,7 +481,7 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function editFoodPreferences(Request $request, Contact $contact)
     {
@@ -488,7 +495,7 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updateFoodPreferences(Request $request, Contact $contact)
     {
@@ -625,7 +632,11 @@ class ContactsController extends Controller
         $sort = $request->input('sort') ?? $user->contacts_sort_order;
 
         if ($user->contacts_sort_order !== $sort) {
-            $user->updateContactViewPreference($sort);
+            app(UpdateViewPreference::class)->execute([
+                'account_id' => $user->account->id,
+                'user_id' => $user->id,
+                'preference' => $sort,
+            ]);
         }
 
         $tags = null;

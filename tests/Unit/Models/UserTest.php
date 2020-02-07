@@ -54,18 +54,6 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function it_updates_the_view_preferences()
-    {
-        $user = factory(User::class)->create();
-        $user->contacts_sort_order = 'firstnameAZ';
-
-        $this->assertEquals(
-            $user->contacts_sort_order == 'lastnameAZ',
-            $user->updateContactViewPreference('lastnameAZ')
-        );
-    }
-
-    /** @test */
     public function name_accessor_returns_name_in_the_user_preferred_way()
     {
         $user = new User;

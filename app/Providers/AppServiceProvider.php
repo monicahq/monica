@@ -159,5 +159,6 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Account\Settings\ExportAccount::class => \App\Services\Account\Settings\ExportAccount::class,
         \App\Services\Account\Settings\ResetAccount::class => \App\Services\Account\Settings\ResetAccount::class,
         \App\Services\Account\Settings\DestroyAccount::class => \App\Services\Account\Settings\DestroyAccount::class,
+        \App\Services\User\UpdateViewPreference::class => \App\Services\User\UpdateViewPreference::class,
     ];
 }
