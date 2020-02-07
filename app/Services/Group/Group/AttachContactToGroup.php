@@ -47,7 +47,7 @@ class AttachContactToGroup extends BaseService
      * @param Group $group
      * @return void
      */
-    private function attach(array $data, Group $group)
+    private function attach(array $data, Group $group): void
     {
         // reset current associations
         $group->contacts()->sync([]);

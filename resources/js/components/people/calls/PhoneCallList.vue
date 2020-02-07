@@ -86,7 +86,6 @@
             :label="$t('people.modal_call_comment')"
             :rows="4"
             :placeholder="$t('people.conversation_add_content')"
-            @contentChange="updateContent($event)"
           />
           <p class="f6">
             {{ $t('app.markdown_description') }} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="noopener noreferrer">
@@ -127,7 +126,7 @@
         <span v-if="!call.content">
           {{ $t('people.call_blank_desc', { name: call.contact.first_name }) }}
         </span>
-        <span v-if="call.content" dir="auto" v-html="compiledMarkdown(call.content)"></span>
+        <span v-if="call.content" dir="auto" class="markdown" v-html="compiledMarkdown(call.content)"></span>
       </div>
 
       <!-- INLINE UPDATE DIV -->
@@ -139,7 +138,6 @@
               :label="$t('people.modal_call_comment')"
               :rows="4"
               iclass="br2 f5 w-100 ba b--black-40 pa2 outline-0"
-              @contentChange="updateEditCallContent($event)"
             />
             <p class="f6">
               {{ $t('app.markdown_description') }}
@@ -365,14 +363,6 @@ export default {
       this.editCall.content = call.content;
       this.editCall.contact_called = call.contact_called;
       this.editCall.called_at = moment.utc(call.called_at).format('YYYY-MM-DD');
-    },
-
-    updateContent(updatedContent) {
-      this.newCall.content = updatedContent;
-    },
-
-    updateEditCallContent(updatedContent) {
-      this.editCall.content = updatedContent;
     },
 
     updateDate(updatedContent) {

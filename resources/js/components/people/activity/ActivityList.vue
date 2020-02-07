@@ -68,7 +68,7 @@
                     {{ $t('people.activities_list_participants') }}
                   </li>
                   <li v-for="attendee in activity.attendees.contacts.filter(c => c.id !== contactId)" :key="attendee.id" class="di mr2">
-                    <span>{{ attendee.complete_name }}</span>
+                    <a :href="'people/' + attendee.hash_id">{{ attendee.complete_name }}</a>
                   </li>
                 </ul>
               </li>
@@ -114,13 +114,15 @@
           </div>
         </div>
       </template>
+
+      <!-- EDIT THE CURRENT ACTIVITY -->
       <create-activity v-else
-                       :hash="hash"
-                       :name="name"
-                       :activity="activity"
-                       :contact-id="contactId"
-                       @update="updateList($event)"
-                       @cancel="$set(activity, 'edit', false); displayLogActivity = false"
+        :hash="hash"
+        :name="name"
+        :activity="activity"
+        :contact-id="contactId"
+        @update="updateList($event)"
+        @cancel="$set(activity, 'edit', false); displayLogActivity = false"
       />
     </div>
 

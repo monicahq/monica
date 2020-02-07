@@ -112,7 +112,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Contact\Contact\UpdateBirthdayInformation::class => \App\Services\Contact\Contact\UpdateBirthdayInformation::class,
         \App\Services\Contact\Contact\UpdateContact::class => \App\Services\Contact\Contact\UpdateContact::class,
         \App\Services\Contact\Contact\UpdateContactFoodPreferences::class => \App\Services\Contact\Contact\UpdateContactFoodPreferences::class,
-        \App\Services\Contact\Contact\UpdateContactIntroductions::class => \App\Services\Contact\Contact\UpdateContactIntroductions::class,
+        \App\Services\Contact\Contact\UpdateContactIntroduction::class => \App\Services\Contact\Contact\UpdateContactIntroduction::class,
         \App\Services\Contact\Contact\UpdateContactWork::class => \App\Services\Contact\Contact\UpdateContactWork::class,
         \App\Services\Contact\Contact\UpdateDeceasedInformation::class => \App\Services\Contact\Contact\UpdateDeceasedInformation::class,
         \App\Services\Contact\Conversation\AddMessageToConversation::class => \App\Services\Contact\Conversation\AddMessageToConversation::class,
@@ -160,6 +160,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Group\Group\CreateGroup::class => \App\Services\Group\Group\CreateGroup::class,
         \App\Services\Group\Group\UpdateGroup::class => \App\Services\Group\Group\UpdateGroup::class,
         \App\Services\Group\Group\DestroyGroup::class => \App\Services\Group\Group\DestroyGroup::class,
+        \App\Services\Group\Group\AttachContactToGroup::class => \App\Services\Group\Group\AttachContactToGroup::class,
         \App\Services\Account\Settings\ResetAccount::class => \App\Services\Account\Settings\ResetAccount::class,
         \App\Services\Account\Settings\DestroyAccount::class => \App\Services\Account\Settings\DestroyAccount::class,
     ];

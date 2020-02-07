@@ -34,7 +34,13 @@
         </div>
         <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2">
-            <toggle-button :class="'reminder-rule-' + reminderRule.number_of_days_before" :value="reminderRule.active" :sync="true" :labels="true" @change="toggle(reminderRule)" />
+            <toggle-button
+              :class="'reminder-rule-' + reminderRule.number_of_days_before"
+              :value="reminderRule.active"
+              :sync="true"
+              :labels="true"
+              @change="toggle(reminderRule)"
+            />
           </div>
         </div>
       </div>
@@ -84,10 +90,13 @@ export default {
         .then(response => {
           this.$notify({
             group: 'main',
-            title: response.data,
+            title: this.$t('settings.personalization_reminder_rule_save'),
             text: '',
             type: 'success'
           });
+
+          var id = this.reminderRules.findIndex(x => x.id === reminderRule.id);
+          this.$set(this.reminderRules, id, response.data.data);
         });
     }
   }

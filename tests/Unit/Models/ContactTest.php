@@ -837,21 +837,6 @@ class ContactTest extends FeatureTestCase
     }
 
     /** @test */
-    public function it_deletes_everything_about_the_contact()
-    {
-        $account = factory(Account::class)->create([]);
-        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-        $contact->save();
-        $id = $contact->id;
-
-        $this->assertEquals(1, Contact::where('id', $id)->count());
-
-        $contact->deleteEverything();
-
-        $this->assertEquals(0, Contact::where('id', $id)->count());
-    }
-
-    /** @test */
     public function it_updates_stay_in_touch_frequency()
     {
         $account = factory(Account::class)->create([]);

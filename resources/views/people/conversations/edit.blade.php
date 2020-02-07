@@ -38,7 +38,7 @@
         <p class="mb2 b">{{ trans('people.conversation_add_when') }}</p>
         <div class="">
           <div class="di {{ htmldir() == 'ltr' ? 'mr3' : 'ml3' }}">
-            <input type="radio" class="mr1" id="today" name="conversationDateRadio" value="today" checked>
+            <input type="radio" class="mr1" id="today" name="conversationDateRadio" value="today">
             <label for="today" class="pointer">{{ trans('app.today') }}</label>
           </div>
           <div class="di {{ htmldir() == 'ltr' ? 'mr3' : 'ml3' }}">
@@ -46,15 +46,16 @@
             <label for="yesterday" class="pointer">{{ trans('app.yesterday') }}</label>
           </div>
           <div class="di {{ htmldir() == 'ltr' ? 'mr3' : 'ml3' }}">
-            <input type="radio" id="another" name="conversationDateRadio" value="another">
-            <label for="another" class="pointer mr2">{{ trans('app.another_day') }}</label>
-            <div class="dib">
+            <input type="radio" id="another" name="conversationDateRadio" value="another" checked>
+            <label for="another" class="pointer mr2">{{ trans('app.another_day') }}
+            <span class="dib">
               <form-date
                 :id="'conversationDate'"
-                :default-date="'{{ now(\App\Helpers\DateHelper::getTimezone()) }}'"
+                :default-date="'{{ now() }}'"
+                :value="'{{ $conversation->happened_at }}'"
                 :locale="'{{ \App::getLocale() }}'">
               </form-date>
-            </div>
+            </span></label>
           </div>
         </div>
       </div>
