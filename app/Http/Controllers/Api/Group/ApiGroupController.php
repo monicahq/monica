@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\Api\Group;
 
 use App\Models\Group\Group;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use App\Services\Group\Group\CreateGroup;
 use App\Services\Group\Group\UpdateGroup;
 use App\Services\Group\Group\DestroyGroup;
 use App\Http\Controllers\Api\ApiController;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Validation\ValidationException;
-use App\Services\Group\Group\AttachContactToGroup;
+use App\Services\Group\Group\AddContactToGroup;
 use App\Http\Resources\Group\Group as GroupResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -19,7 +21,8 @@ class ApiGroupController extends ApiController
     /**
      * Get the list of groups.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @return AnonymousResourceCollection|JsonResponse
      */
     public function index(Request $request)
     {
@@ -39,8 +42,7 @@ class ApiGroupController extends ApiController
      *
      * @param Request $request
      * @param int $groupId
-     *
-     * @return GroupResource|\Illuminate\Http\JsonResponse
+     * @return GroupResource|JsonResponse
      */
     public function show(Request $request, int $groupId)
     {
@@ -59,8 +61,7 @@ class ApiGroupController extends ApiController
      * Store the group.
      *
      * @param Request $request
-     *
-     * @return GroupResource|\Illuminate\Http\JsonResponse
+     * @return GroupResource|JsonResponse
      */
     public function store(Request $request)
     {
@@ -88,8 +89,7 @@ class ApiGroupController extends ApiController
      *
      * @param Request $request
      * @param int $groupId
-     *
-     * @return GroupResource|\Illuminate\Http\JsonResponse
+     * @return GroupResource|JsonResponse
      */
     public function update(Request $request, int $groupId)
     {
@@ -118,8 +118,7 @@ class ApiGroupController extends ApiController
      *
      * @param Request $request
      * @param int $groupId
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function destroy(Request $request, int $groupId)
     {
@@ -144,17 +143,18 @@ class ApiGroupController extends ApiController
      *
      * @param Request $request
      * @param int $groupId
-     *
-     * @return GroupResource|\Illuminate\Http\JsonResponse
+     * @return GroupResource|JsonResponse
      */
     public function attachContacts(Request $request, int $groupId)
     {
         try {
-            $group = app(AttachContactToGroup::class)->execute([
-                'account_id' => auth()->user()->account->id,
-                'group_id' => $groupId,
-                'contacts' => $request->input('contacts'),
-            ]);
+            foreach ($request->input('contacts') as $contactId) {
+                $group = app(AddContactToGroup::class)->execute([
+                    'account_id' => auth()->user()->account->id,
+                    'group_id' => $groupId,
+                    'contact_id' => $contactId,
+                ]);
+            }
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         } catch (ValidationException $e) {

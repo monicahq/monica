@@ -160,7 +160,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Group\Group\CreateGroup::class => \App\Services\Group\Group\CreateGroup::class,
         \App\Services\Group\Group\UpdateGroup::class => \App\Services\Group\Group\UpdateGroup::class,
         \App\Services\Group\Group\DestroyGroup::class => \App\Services\Group\Group\DestroyGroup::class,
-        \App\Services\Group\Group\AttachContactToGroup::class => \App\Services\Group\Group\AttachContactToGroup::class,
+        \App\Services\Group\Group\AddContactToGroup::class => \App\Services\Group\Group\AddContactToGroup::class,
         \App\Services\Account\Settings\ResetAccount::class => \App\Services\Account\Settings\ResetAccount::class,
         \App\Services\Account\Settings\DestroyAccount::class => \App\Services\Account\Settings\DestroyAccount::class,
     ];

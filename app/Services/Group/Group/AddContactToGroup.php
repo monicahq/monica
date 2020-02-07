@@ -5,8 +5,9 @@ namespace App\Services\Group\Group;
 use App\Models\Group\Group;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use Carbon\Carbon;
 
-class AttachContactToGroup extends BaseService
+class AddContactToGroup extends BaseService
 {
     /**
      * Get the validation rules that apply to the service.
@@ -18,7 +19,7 @@ class AttachContactToGroup extends BaseService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'group_id' => 'required|integer|exists:groups,id',
-            'contacts' => 'required|array',
+            'contact_id' => 'required|integer|exists:contacts,id',
         ];
     }
 
@@ -41,7 +42,7 @@ class AttachContactToGroup extends BaseService
     }
 
     /**
-     * Create the association.
+     * Create the association between the contact and the group.
      *
      * @param array $data
      * @param Group $group
@@ -49,14 +50,17 @@ class AttachContactToGroup extends BaseService
      */
     private function attach(array $data, Group $group): void
     {
-        // reset current associations
-        $group->contacts()->sync([]);
+        Contact::where('account_id', $data['account_id'])
+            ->findOrFail($data['contact_id']);
 
-        foreach ($data['contacts'] as $contactId) {
-            Contact::where('account_id', $data['account_id'])
-                ->findOrFail($contactId);
-
-            $group->contacts()->syncWithoutDetaching([$contactId]);
+        // attaching should be done if the contact is not already attached
+        if (! $group->contacts->contains($data['contact_id'])) {
+            $group->contacts()->attach(
+                $data['contact_id'],
+                [
+                    'created_at' => Carbon::now('UTC'),
+                ]
+            );
         }
     }
 }
