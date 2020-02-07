@@ -20,7 +20,7 @@ class ApiAuditLogController extends ApiController
     public function index(Request $request)
     {
         try {
-            $logs = auth()->user()->account->logs()
+            $logs = auth()->user()->account->auditLogs()
                 ->paginate($this->getLimitPerPage());
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();

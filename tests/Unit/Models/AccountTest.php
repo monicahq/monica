@@ -261,7 +261,7 @@ class AccountTest extends FeatureTestCase
         factory(AuditLog::class)->create([
             'account_id' => $account->id,
         ]);
-        $this->assertTrue($account->logs()->exists());
+        $this->assertTrue($account->auditLogs()->exists());
     }
 
     /** @test */

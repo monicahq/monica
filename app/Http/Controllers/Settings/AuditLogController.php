@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Helpers\AuditLogHelper;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
@@ -14,39 +15,13 @@ class AuditLogController extends Controller
      */
     public function index()
     {
-        $logs = auth()->user()->account->logs()
+        $logs = auth()->user()->account->auditLogs()
             ->with('author')
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        $logsCollection = collect();
-
-        foreach ($logs as $log) {
-            // the log is about a contact
-            if (isset($log->object->{'contact_id'})) {
-                try {
-                    // check if the contact that the log is about still exists
-                    // in that case, we will display a link to point to this contact
-                    $contact = Contact::findOrFail($log->object->{'contact_id'});
-                    $description = trans('app.log_'.$log->action.'_with_name_with_link', [
-                        'link' => '/people/'.$contact->hashId(),
-                        'name' => $contact->name, ],
-                    );
-                } catch (ModelNotFoundException $e) {
-                    // the contact doesn't exist anymore, we don't need a link
-                    $description = trans('app.log_'.$log->action.'_with_name', ['name' => $log->object->{'contact_name'}]);
-                }
-
-                $logsCollection->push([
-                    'author_name' => ($log->author) ? $log->author->name : $log->author_name,
-                    'description' => $description,
-                    'audited_at' => DateHelper::getShortDateWithTime($log->audited_at),
-                ]);
-            }
-        }
-
         return view('settings.auditlog.index')
-            ->withLogsCollection($logsCollection)
+            ->withLogsCollection(AuditLogHelper::getCollectionOfAuditForSettings($logs))
             ->withLogsPagination($logs);
     }
 }

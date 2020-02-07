@@ -485,7 +485,7 @@ class Account extends Model
      *
      * @return HasMany
      */
-    public function logs()
+    public function auditLogs()
     {
         return $this->hasMany(AuditLog::class);
     }
