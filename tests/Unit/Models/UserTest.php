@@ -87,24 +87,6 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_the_right_metric_symbol()
-    {
-        $user = new User;
-        $user->metric = 'fahrenheit';
-
-        $this->assertEquals(
-            'F',
-            $user->getMetricSymbol()
-        );
-
-        $user->metric = 'celsius';
-        $this->assertEquals(
-            'C',
-            $user->getMetricSymbol()
-        );
-    }
-
-    /** @test */
     public function you_can_vote_if_you_havent_voted_yet_today()
     {
         $account = factory(Account::class)->create([]);

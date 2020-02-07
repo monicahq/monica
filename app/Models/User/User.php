@@ -112,6 +112,16 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     }
 
     /**
+     * Gets the currency for this user.
+     *
+     * @return BelongsTo
+     */
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
+
+    /**
      * Assigns a default value just in case the sort order is empty.
      *
      * @param string $value
@@ -136,18 +146,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     }
 
     /**
-     * @return string
-     */
-    public function getMetricSymbol()
-    {
-        if ($this->metric == 'fahrenheit') {
-            return 'F';
-        } else {
-            return 'C';
-        }
-    }
-
-    /**
      * Get users's full name. The name is formatted according to the user's
      * preference, either "Firstname Lastname", or "Lastname Firstname".
      *
@@ -160,28 +158,18 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         if ($this->name_order == 'firstname_lastname' || $this->name_order == 'firstname_lastname_nickname') {
             $completeName = $this->first_name;
 
-            if (! is_null($this->last_name)) {
-                $completeName = $completeName.' '.$this->last_name;
+            if (!is_null($this->last_name)) {
+                $completeName = $completeName . ' ' . $this->last_name;
             }
         } else {
-            if (! is_null($this->last_name)) {
+            if (!is_null($this->last_name)) {
                 $completeName = $this->last_name;
             }
 
-            $completeName = $completeName.' '.$this->first_name;
+            $completeName = $completeName . ' ' . $this->first_name;
         }
 
         return $completeName;
-    }
-
-    /**
-     * Gets the currency for this user.
-     *
-     * @return BelongsTo
-     */
-    public function currency()
-    {
-        return $this->belongsTo(Currency::class);
     }
 
     /**
