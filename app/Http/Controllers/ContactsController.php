@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DBHelper;
 use App\Helpers\DateHelper;
+use App\Helpers\FormHelper;
 use App\Models\Contact\Tag;
 use App\Services\User\UpdateViewPreference;
 use Illuminate\Contracts\View\Factory;
@@ -173,7 +174,8 @@ class ContactsController extends Controller
         return view('people.create')
             ->withIsContactMissing($isContactMissing)
             ->withGenders(GendersHelper::getGendersInput())
-            ->withDefaultGender(auth()->user()->account->default_gender_id);
+            ->withDefaultGender(auth()->user()->account->default_gender_id)
+            ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()));
     }
 
     /**
@@ -325,7 +327,8 @@ class ContactsController extends Controller
             ->withAge($age)
             ->withHasBirthdayReminder($hasBirthdayReminder)
             ->withHasDeceasedReminder($hasDeceasedReminder)
-            ->withGenders(GendersHelper::getGendersInput());
+            ->withGenders(GendersHelper::getGendersInput())
+            ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()));
     }
 
     /**

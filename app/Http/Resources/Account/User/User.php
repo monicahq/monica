@@ -27,7 +27,7 @@ class User extends Resource
             'timezone' => $this->timezone,
             'currency' => new CurrencyResource($this->currency),
             'locale' => $this->locale,
-            'is_policy_compliant' => $this->isPolicyCompliant(),
+            'is_policy_compliant' => $this->policy_compliant,
             'account' => [
                 'id' => $this->account->id,
             ],

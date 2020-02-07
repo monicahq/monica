@@ -13,7 +13,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::name('api.')->group(function () {
         // Me
         Route::get('/me', 'Account\\ApiUserController@show');
-        Route::get('/me/compliance', 'Account\\ApiUserController@compliance');
+        Route::get('/me/compliance', 'Account\\ApiUserController@getSignedPolicies');
         Route::get('/me/compliance/{id}', 'Account\\ApiUserController@get');
         Route::post('/me/compliance', 'Account\\ApiUserController@set');
 

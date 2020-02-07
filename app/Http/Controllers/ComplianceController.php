@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\User\AcceptPolicy;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ComplianceController extends Controller
 {
@@ -11,7 +15,7 @@ class ComplianceController extends Controller
      *
      * @param Request $request
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     * @return View|Factory
      */
     public function index(Request $request)
     {
@@ -19,13 +23,17 @@ class ComplianceController extends Controller
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
-        auth()->user()->acceptPolicy(\Request::ip());
+        app(AcceptPolicy::class)->execute([
+            'account_id' => auth()->user()->account->id,
+            'user_id' => auth()->user()->id,
+            'ip_address' => \Request::ip(),
+        ]);
 
         return redirect()->route('dashboard.index');
     }

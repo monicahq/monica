@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DateHelper;
+use App\Helpers\JournalHelper;
 use App\Models\Journal\Day;
 use Illuminate\Http\Request;
 use App\Models\Journal\Entry;
@@ -121,7 +122,7 @@ class JournalController extends Controller
      */
     public function hasRated()
     {
-        if (auth()->user()->hasAlreadyRatedToday()) {
+        if (JournalHelper::hasAlreadyRatedToday(auth()->user())) {
             return 'true';
         }
 

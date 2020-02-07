@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use App\Helpers\ComplianceHelper;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
@@ -9,6 +10,7 @@ use App\Models\Settings\Term;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Settings\Currency;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -127,16 +129,17 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
      * @param string $value
      * @return string
      */
-    public function getContactsSortOrderAttribute($value)
+    public function getContactsSortOrderAttribute($value): string
     {
         return ! empty($value) ? $value : 'firstnameAZ';
     }
 
     /**
      * Indicates if the layout is fluid or not for the UI.
+     *
      * @return string
      */
-    public function getFluidLayout()
+    public function getFluidLayout(): string
     {
         if ($this->fluid_container == 'true') {
             return 'container-fluid';
@@ -151,7 +154,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
      *
      * @return string
      */
-    public function getNameAttribute()
+    public function getNameAttribute(): string
     {
         $completeName = '';
 
@@ -159,35 +162,17 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
             $completeName = $this->first_name;
 
             if (!is_null($this->last_name)) {
-                $completeName = $completeName . ' ' . $this->last_name;
+                $completeName = $completeName.' '.$this->last_name;
             }
         } else {
             if (!is_null($this->last_name)) {
                 $completeName = $this->last_name;
             }
 
-            $completeName = $completeName . ' ' . $this->first_name;
+            $completeName = $completeName.' '.$this->first_name;
         }
 
         return $completeName;
-    }
-
-    /**
-     * Indicates whether the user has already rated the current day.
-     *
-     * @return bool
-     */
-    public function hasAlreadyRatedToday(): bool
-    {
-        try {
-            Day::where('account_id', $this->account_id)
-                ->where('date', now($this->timezone)->toDateString())
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -212,6 +197,17 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         if (! is_null($value)) {
             return decrypt($value);
         }
+    }
+
+    /**
+     * Indicate if the user has accepted the most current terms and privacy.
+     *
+     * @param string|null $value
+     * @return bool
+     */
+    public function getPolicyCompliantAttribute($value): bool
+    {
+        return ComplianceHelper::isCompliantWithCurrentTerm($this);
     }
 
     /**
@@ -248,125 +244,11 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     }
 
     /**
-     * Indicate if the user has accepted the most current terms and privacy.
-     *
-     * @return bool
-     */
-    public function isPolicyCompliant(): bool
-    {
-        $latestTerm = Term::latest()->first();
-
-        if ($this->getStatusForCompliance($latestTerm->id) == false) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Accept latest policy.
-     *
-     * @return Term|bool
-     */
-    public function acceptPolicy($ipAddress = null)
-    {
-        $latestTerm = Term::latest()->first();
-
-        if (! $latestTerm) {
-            return false;
-        }
-
-        $this->terms()->syncWithoutDetaching([$latestTerm->id => [
-            'account_id' => $this->account_id,
-            'ip_address' => $ipAddress,
-        ]]);
-
-        return $latestTerm;
-    }
-
-    /**
-     * Get the status for a given term.
-     *
-     * @param int $termId
-     * @return array|bool
-     */
-    public function getStatusForCompliance($termId)
-    {
-        // @TODO: use eloquent to do this instead
-        $termUser = DB::table('term_user')->where('user_id', $this->id)
-                                            ->where('account_id', $this->account_id)
-                                            ->where('term_id', $termId)
-                                            ->first();
-
-        if (! $termUser) {
-            return false;
-        }
-
-        $compliance = Term::find($termId);
-        $signedDate = DateHelper::parseDateTime($termUser->created_at);
-
-        return [
-            'signed' => true,
-            'signed_date' => DateHelper::getTimestamp($signedDate),
-            'ip_address' => $termUser->ip_address,
-            'user' => new UserResource($this),
-            'term' => new ComplianceResource($compliance),
-        ];
-    }
-
-    /**
-     * Get the list of all the policies the user has signed.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function getAllCompliances()
-    {
-        $terms = collect();
-        $termsUser = DB::table('term_user')->where('user_id', $this->id)
-                                                        ->get();
-
-        foreach ($termsUser as $termUser) {
-            $terms->push([
-                $this->getStatusForCompliance($termUser->term_id),
-            ]);
-        }
-
-        return $terms;
-    }
-
-    /**
-     * Get the name order that will be used when rendered the Add/Edit forms
-     * about contacts.
-     *
-     * @return string
-     */
-    public function getNameOrderForForms(): string
-    {
-        $nameOrder = '';
-
-        switch ($this->name_order) {
-            case 'firstname_lastname':
-            case 'firstname_lastname_nickname':
-            case 'firstname_nickname_lastname':
-            case 'nickname':
-                $nameOrder = 'firstname';
-                break;
-            case 'lastname_firstname':
-            case 'lastname_firstname_nickname':
-            case 'lastname_nickname_firstname':
-                $nameOrder = 'lastname';
-                break;
-        }
-
-        return $nameOrder;
-    }
-
-    /**
      * Send the email verification notification.
      *
      * @return void
      */
-    public function sendEmailVerificationNotification()
+    public function sendEmailVerificationNotification(): void
     {
         /** @var int $count */
         $count = Account::count();

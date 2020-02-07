@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\ComplianceHelper;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,7 @@ class CheckCompliance
         }
 
         if (Auth::check()) {
-            if (! auth()->user()->isPolicyCompliant()) {
+            if (! ComplianceHelper::isCompliantWithCurrentTerm(auth()->user())) {
                 return redirect()->route('compliance');
             }
         }
