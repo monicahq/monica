@@ -23,7 +23,9 @@ class AuditLogHelper
     {
         $logsCollection = collect();
 
+        /** @var AuditLog $log */
         foreach ($logs as $log) {
+
             // the log is about a contact
             if (isset($log->object->{'contact_id'})) {
                 try {
