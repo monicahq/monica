@@ -4,11 +4,7 @@ namespace App\Services\User;
 
 use App\Models\User\User;
 use App\Services\BaseService;
-use App\Helpers\RequestHelper;
-use App\Helpers\CountriesHelper;
-use App\Models\Settings\Currency;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\App;
 
 class UpdateViewPreference extends BaseService
 {

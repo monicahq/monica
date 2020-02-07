@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers\Api\Account;
 
-use App\Helpers\ComplianceHelper;
-use App\Helpers\DateHelper;
 use App\Models\User\User;
-use App\Services\User\AcceptPolicy;
-use Illuminate\Http\JsonResponse;
+use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Settings\Term;
-use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Services\User\AcceptPolicy;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiController;
-use App\Http\Resources\Account\User\User as UserResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Account\User\User as UserResource;
 use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
 class ApiUserController extends ApiController

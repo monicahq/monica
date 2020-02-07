@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DateHelper;
-use App\Helpers\JournalHelper;
 use App\Models\Journal\Day;
 use Illuminate\Http\Request;
 use App\Models\Journal\Entry;
+use App\Helpers\JournalHelper;
 use App\Models\Journal\JournalEntry;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;

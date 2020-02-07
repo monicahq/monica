@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DBHelper;
+use Illuminate\View\View;
 use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;
 use App\Models\Contact\Tag;
-use App\Services\User\UpdateViewPreference;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
@@ -18,8 +16,11 @@ use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\Factory;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
+use App\Services\User\UpdateViewPreference;
 use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
@@ -27,7 +28,6 @@ use App\Services\Contact\Contact\DestroyContact;
 use App\Services\Contact\Contact\UpdateContactWork;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactSearch as ContactResource;
-use Illuminate\View\View;
 
 class ContactsController extends Controller
 {

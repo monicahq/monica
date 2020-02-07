@@ -4,8 +4,8 @@ namespace Tests\Browser\Settings;
 
 use Tests\DuskTestCase;
 use App\Models\User\User;
-use App\Services\User\AcceptPolicy;
 use Laravel\Dusk\Browser;
+use App\Services\User\AcceptPolicy;
 use Tests\Browser\Pages\SettingsDAV;
 
 class DAVControllerTest extends DuskTestCase

@@ -2,14 +2,10 @@
 
 namespace App\Services\User;
 
-use App\Models\Settings\Term;
 use App\Models\User\User;
+use App\Models\Settings\Term;
 use App\Services\BaseService;
-use App\Helpers\RequestHelper;
-use App\Helpers\CountriesHelper;
-use App\Models\Settings\Currency;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\App;
 
 class AcceptPolicy extends BaseService
 {

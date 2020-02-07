@@ -2,14 +2,10 @@
 
 namespace Tests\Unit\Helpers;
 
-use App\Helpers\ComplianceHelper;
-use App\Helpers\FormHelper;
-use App\Models\User\User;
 use Tests\TestCase;
-use function Safe\json_decode;
-use App\Helpers\InstanceHelper;
-use App\Models\Account\Account;
+use App\Models\User\User;
 use App\Models\Settings\Term;
+use App\Helpers\ComplianceHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ComplianceHelperTest extends TestCase

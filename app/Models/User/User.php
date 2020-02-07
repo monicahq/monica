@@ -2,16 +2,13 @@
 
 namespace App\Models\User;
 
-use App\Helpers\ComplianceHelper;
 use Carbon\Carbon;
-use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Helpers\ComplianceHelper;
 use App\Models\Settings\Currency;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Notifications\VerifyEmail;
@@ -20,11 +17,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Http\Resources\Account\User\User as UserResource;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
 class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
 {
@@ -161,11 +155,11 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         if ($this->name_order == 'firstname_lastname' || $this->name_order == 'firstname_lastname_nickname') {
             $completeName = $this->first_name;
 
-            if (!is_null($this->last_name)) {
+            if (! is_null($this->last_name)) {
                 $completeName = $completeName.' '.$this->last_name;
             }
         } else {
-            if (!is_null($this->last_name)) {
+            if (! is_null($this->last_name)) {
                 $completeName = $this->last_name;
             }
 

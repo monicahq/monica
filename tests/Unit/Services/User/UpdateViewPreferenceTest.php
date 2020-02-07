@@ -2,16 +2,13 @@
 
 namespace Tests\Unit\Services\User;
 
-use App\Services\User\UpdateViewPreference;
 use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Account\Account;
-use App\Services\User\EmailChange;
-use Illuminate\Auth\Notifications\VerifyEmail;
+use App\Services\User\UpdateViewPreference;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 class UpdateViewPreferenceTest extends TestCase
 {

@@ -2,12 +2,10 @@
 
 namespace Tests\Unit\Helpers;
 
-use App\Helpers\JournalHelper;
-use App\Models\Journal\Day;
-use App\Models\User\User;
 use Tests\TestCase;
-use function Safe\json_decode;
-use App\Helpers\InstanceHelper;
+use App\Models\User\User;
+use App\Models\Journal\Day;
+use App\Helpers\JournalHelper;
 use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
