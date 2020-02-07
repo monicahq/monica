@@ -3,7 +3,6 @@
 namespace Tests\Unit\Controllers\Contact;
 
 use Tests\FeatureTestCase;
-use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

@@ -3,7 +3,6 @@
 namespace Tests\Unit\Controllers\Settings;
 
 use Tests\FeatureTestCase;
-use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -20,7 +19,7 @@ class AuditLogControllerTest extends FeatureTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->get("/settings/auditlogs");
+        $response = $this->get('/settings/auditlogs');
 
         $response->assertStatus(200);
     }
