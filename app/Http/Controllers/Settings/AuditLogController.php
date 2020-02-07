@@ -3,10 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Helpers\AuditLogHelper;
-use App\Helpers\DateHelper;
-use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AuditLogController extends Controller
 {

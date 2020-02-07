@@ -3,12 +3,8 @@
 namespace App\Helpers;
 
 use App\Models\Contact\Contact;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Jenssegers\Date\Date;
-use function Safe\strtotime;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AuditLogHelper
 {
