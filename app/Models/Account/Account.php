@@ -480,36 +480,6 @@ class Account extends Model
     }
 
     /**
-     * Check if the account can be downgraded, based on a set of rules.
-     *
-     * @return bool
-     */
-    public function canDowngrade()
-    {
-        $canDowngrade = true;
-        $numberOfUsers = $this->users()->count();
-        $numberPendingInvitations = $this->invitations()->count();
-        $numberContacts = $this->contacts()->count();
-
-        // number of users in the account should be == 1
-        if ($numberOfUsers > 1) {
-            $canDowngrade = false;
-        }
-
-        // there should not be any pending user invitations
-        if ($numberPendingInvitations > 0) {
-            $canDowngrade = false;
-        }
-
-        // there should not be more than the number of contacts allowed
-        if ($numberContacts > config('monica.number_of_allowed_contacts_free_account')) {
-            $canDowngrade = false;
-        }
-
-        return $canDowngrade;
-    }
-
-    /**
      * Indicates whether the current account has limitations with her current
      * plan.
      *

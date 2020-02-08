@@ -10,6 +10,7 @@ use Laravel\Cashier\Payment;
 use Illuminate\Http\Response;
 use App\Helpers\InstanceHelper;
 use App\Exceptions\StripeException;
+use App\Helpers\AccountHelper;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -176,7 +177,8 @@ class SubscriptionsController extends Controller
         return view('settings.subscriptions.downgrade-checklist')
             ->with('numberOfActiveContacts', $account->contacts()->active()->count())
             ->with('numberOfPendingInvitations', $account->invitations()->count())
-            ->with('numberOfUsers', $account->users()->count());
+            ->with('numberOfUsers', $account->users()->count())
+            ->with('canDowngrade', AccountHelper::canDowngrade(auth()->user()->account));
     }
 
     /**
@@ -186,7 +188,7 @@ class SubscriptionsController extends Controller
      */
     public function processDowngrade()
     {
-        if (! auth()->user()->account->canDowngrade()) {
+        if (! AccountHelper::canDowngrade(auth()->user()->account)) {
             return redirect()->route('settings.subscriptions.downgrade');
         }
 
