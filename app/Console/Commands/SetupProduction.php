@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use function Safe\touch;
-
 use App\Helpers\InstanceHelper;
 use App\Models\Account\Account;
 use Illuminate\Console\Command;

@@ -7,7 +7,6 @@ use App\Models\Account\Account;
 use App\Models\Instance\Instance;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
-
 use function Safe\file_get_contents;
 
 class InstanceHelper

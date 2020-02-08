@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Helpers\InstanceHelper;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
+use App\Helpers\InstanceHelper;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
