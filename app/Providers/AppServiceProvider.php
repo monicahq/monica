@@ -2,13 +2,16 @@
 
 namespace App\Providers;
 
+use Inertia\Inertia;
 use App\Helpers\DBHelper;
 use Laravel\Cashier\Cashier;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use App\Notifications\EmailMessaging;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Auth\Notifications\ResetPassword;
 
@@ -21,17 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer(
-            'partials.components.currency-select', 'App\Http\ViewComposers\CurrencySelectViewComposer'
-        );
-
-        View::composer(
-            'partials.components.date-select', 'App\Http\ViewComposers\DateSelectViewComposer'
-        );
-
-        View::composer(
-            'partials.check', 'App\Http\ViewComposers\InstanceViewComposer'
-        );
+        $this->registerInertia();
 
         if (config('database.use_utf8mb4')
             && DB::connection()->getDriverName() == 'mysql'
@@ -60,6 +53,36 @@ class AppServiceProvider extends ServiceProvider
 
             return \App\Helpers\MoneyHelper::format($amount / 100, $currency);
         });
+    }
+
+    public function registerInertia()
+    {
+        Inertia::version(function () {
+            return md5_file(public_path('mix-manifest.json'));
+        });
+
+        Inertia::share([
+            'auth' => function () {
+                return [
+                    'user' => Auth::user() ? [
+                        'id' => Auth::user()->id,
+                        'first_name' => Auth::user()->first_name,
+                        'last_name' => Auth::user()->last_name,
+                        'email' => Auth::user()->email,
+                    ] : null,
+                ];
+            },
+            'flash' => function () {
+                return [
+                    'success' => Session::get('success'),
+                ];
+            },
+            'errors' => function () {
+                return Session::get('errors')
+                    ? Session::get('errors')->getBag('default')->getMessages()
+                    : (object) [];
+            },
+        ]);
     }
 
     /**
