@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Contact;
 
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Call;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
@@ -32,7 +33,7 @@ class ApiCallController extends ApiController
         }
 
         return CallResource::collection($calls)->additional(['meta' => [
-            'statistics' => auth()->user()->account->getYearlyCallStatistics(),
+            'statistics' => AccountHelper::getYearlyCallStatistics(auth()->user()->account),
         ]]);
     }
 
@@ -159,7 +160,7 @@ class ApiCallController extends ApiController
                 ->paginate($this->getLimitPerPage());
 
         return CallResource::collection($calls)->additional(['meta' => [
-            'statistics' => auth()->user()->account->getYearlyCallStatistics(),
+            'statistics' => AccountHelper::getYearlyCallStatistics(auth()->user()->account),
         ]]);
     }
 }

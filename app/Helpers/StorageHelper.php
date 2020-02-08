@@ -17,7 +17,7 @@ class StorageHelper
      * @param Account $account
      * @return int
      */
-    public static function getAccountStorageSize(Account $account)
+    public static function getAccountStorageSize(Account $account): int
     {
         $documentsSize = DB::table('documents')
             ->where('account_id', $account->id)
@@ -35,7 +35,7 @@ class StorageHelper
      * @param Account $account
      * @return bool
      */
-    public static function hasReachedAccountStorageLimit(Account $account)
+    public static function hasReachedAccountStorageLimit(Account $account): bool
     {
         if (!config('monica.requires_subscription')) {
             return false;

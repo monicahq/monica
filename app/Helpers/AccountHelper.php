@@ -11,9 +11,10 @@ class AccountHelper
     /**
      * Check if the account can be downgraded, based on a set of rules.
      *
+     * @param Account $account
      * @return bool
      */
-    public static function canDowngrade(Account $account)
+    public static function canDowngrade(Account $account): bool
     {
         $canDowngrade = true;
         $numberOfUsers = $account->users()->count();
@@ -36,5 +37,80 @@ class AccountHelper
         }
 
         return $canDowngrade;
+    }
+
+    /**
+     * Get the number of activities grouped by year.
+     *
+     * @param Account $account
+     * @return Collection
+     */
+    public static function getYearlyActivitiesStatistics(Account $account): Collection
+    {
+        $activitiesStatistics = collect([]);
+        $activities = $account->activities()
+            ->select('happened_at')
+            ->latest('happened_at')
+            ->get();
+        $years = [];
+
+        foreach ($activities as $activity) {
+            $yearStatistic = $activity->happened_at->format('Y');
+            $foundInYear = false;
+
+            foreach ($years as $year => $number) {
+                if ($year == $yearStatistic) {
+                    $years[$year] = $number + 1;
+                    $foundInYear = true;
+                }
+            }
+
+            if (!$foundInYear) {
+                $years[$yearStatistic] = 1;
+            }
+        }
+
+        foreach ($years as $year => $number) {
+            $activitiesStatistics->put($year, $number);
+        }
+
+        return $activitiesStatistics;
+    }
+
+    /**
+     * Get the number of calls grouped by year.
+     *
+     * @return Collection
+     */
+    public static function getYearlyCallStatistics(Account $account): Collection
+    {
+        $callsStatistics = collect([]);
+        $calls = $account->calls()
+            ->select('called_at')
+            ->latest('called_at')
+            ->get();
+        $years = [];
+
+        foreach ($calls as $call) {
+            $yearStatistic = $call->called_at->format('Y');
+            $foundInYear = false;
+
+            foreach ($years as $year => $number) {
+                if ($year == $yearStatistic) {
+                    $years[$year] = $number + 1;
+                    $foundInYear = true;
+                }
+            }
+
+            if (!$foundInYear) {
+                $years[$yearStatistic] = 1;
+            }
+        }
+
+        foreach ($years as $year => $number) {
+            $callsStatistics->put($year, $number);
+        }
+
+        return $callsStatistics;
     }
 }

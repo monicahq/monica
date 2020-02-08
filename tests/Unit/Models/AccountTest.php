@@ -679,58 +679,6 @@ class AccountTest extends FeatureTestCase
     }
 
     /** @test */
-    public function it_retrieves_yearly_call_statistics()
-    {
-        $contact = factory(Contact::class)->create();
-        $calls = factory(Call::class, 4)->create([
-            'account_id' => $contact->account_id,
-            'contact_id' => $contact->id,
-            'called_at' => '2018-03-02',
-        ]);
-
-        $calls = factory(Call::class, 2)->create([
-            'account_id' => $contact->account_id,
-            'contact_id' => $contact->id,
-            'called_at' => '1992-03-02',
-        ]);
-
-        $statistics = $contact->account->getYearlyCallStatistics();
-
-        $this->assertTrue(
-            $statistics->contains(4)
-        );
-
-        $this->assertTrue(
-            $statistics->contains(2)
-        );
-    }
-
-    /** @test */
-    public function it_retrieves_yearly_activities_statistics()
-    {
-        $account = factory(Account::class)->create();
-        $contact = factory(Activity::class, 4)->create([
-            'account_id' => $account->id,
-            'happened_at' => '2018-03-02',
-        ]);
-
-        $contact = factory(Activity::class, 2)->create([
-            'account_id' => $account->id,
-            'happened_at' => '1992-03-02',
-        ]);
-
-        $statistics = $account->getYearlyActivitiesStatistics();
-
-        $this->assertTrue(
-            $statistics->contains(4)
-        );
-
-        $this->assertTrue(
-            $statistics->contains(2)
-        );
-    }
-
-    /** @test */
     public function it_create_default_account()
     {
         $account = Account::createDefault('John', 'Doe', 'john@doe.com', 'password');
