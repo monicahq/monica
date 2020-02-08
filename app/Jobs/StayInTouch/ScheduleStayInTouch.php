@@ -2,8 +2,8 @@
 
 namespace App\Jobs\StayInTouch;
 
-use App\Helpers\AccountHelper;
 use Illuminate\Bus\Queueable;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Queue\SerializesModels;
 use App\Notifications\StayInTouchEmail;

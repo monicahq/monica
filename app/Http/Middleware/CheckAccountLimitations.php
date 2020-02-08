@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Helpers\AccountHelper;
 use Closure;
+use App\Helpers\AccountHelper;
 use Illuminate\Support\Facades\Auth;
 
 class CheckAccountLimitations

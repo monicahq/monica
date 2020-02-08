@@ -2,8 +2,8 @@
 
 namespace App\Jobs\Reminder;
 
-use App\Helpers\AccountHelper;
 use Illuminate\Bus\Queueable;
+use App\Helpers\AccountHelper;
 use App\Notifications\UserNotified;
 use App\Notifications\UserReminded;
 use App\Interfaces\MailNotification;

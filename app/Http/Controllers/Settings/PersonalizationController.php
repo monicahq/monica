@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Helpers\AccountHelper;
 use Illuminate\Http\Request;
+use App\Helpers\AccountHelper;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use App\Models\Contact\ContactFieldType;

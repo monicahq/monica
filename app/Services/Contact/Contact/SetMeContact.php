@@ -2,9 +2,9 @@
 
 namespace App\Services\Contact\Contact;
 
-use App\Helpers\AccountHelper;
 use App\Models\User\User;
 use App\Services\BaseService;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
 
 class SetMeContact extends BaseService
