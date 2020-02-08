@@ -880,27 +880,4 @@ class Account extends Model
 
         return $currentAccountSize > (config('monica.max_storage_size') * 1000000);
     }
-
-    /**
-     * Get the storage size of the account, in bytes.
-     *
-     * @return int
-     */
-    public function getStorageSize()
-    {
-        $documents = Document::where('account_id', $this->id)
-            ->orderBy('created_at', 'desc')->get();
-        $photos = Photo::where('account_id', $this->id)
-            ->orderBy('created_at', 'desc')->get();
-
-        $currentAccountSize = 0;
-        foreach ($documents as $document) {
-            $currentAccountSize += $document->filesize;
-        }
-        foreach ($photos as $photo) {
-            $currentAccountSize += $photo->filesize;
-        }
-
-        return $currentAccountSize;
-    }
 }

@@ -882,25 +882,4 @@ class AccountTest extends FeatureTestCase
         config(['monica.requires_subscription' => false]);
         $this->assertFalse($account->hasReachedAccountStorageLimit());
     }
-
-    /** @test */
-    public function it_calculates_storage_size()
-    {
-        $account = factory(Account::class)->create([]);
-
-        $document = factory(Document::class)->create([
-            'filesize' => 1000000,
-            'account_id' => $account->id,
-        ]);
-
-        $photo = factory(Photo::class)->create([
-            'filesize' => 1000000,
-            'account_id' => $account->id,
-        ]);
-
-        $this->assertEquals(
-            2000000,
-            $account->getStorageSize()
-        );
-    }
 }

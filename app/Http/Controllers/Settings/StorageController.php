@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Helpers\StorageHelper;
 use App\Models\Account\Photo;
 use App\Models\Contact\Document;
 use App\Http\Controllers\Controller;
@@ -22,7 +23,7 @@ class StorageController extends Controller
             ->get();
 
         // size is in bytes in the database
-        $currentAccountSize = auth()->user()->account->getStorageSize();
+        $currentAccountSize = StorageHelper::getAccountStorageSize(auth()->user()->account);
 
         if ($currentAccountSize != 0) {
             $currentAccountSize = round($currentAccountSize / 1000000);
