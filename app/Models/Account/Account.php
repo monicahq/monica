@@ -581,26 +581,6 @@ class Account extends Model
     }
 
     /**
-     * Get the default gender for this account.
-     *
-     * @return string
-     */
-    public function defaultGender()
-    {
-        $defaultGenderType = Gender::MALE;
-        if ($this->default_gender_id) {
-            $defaultGender = Gender::where([
-                'account_id' => $this->id,
-            ])->find($this->default_gender_id);
-            if ($defaultGender) {
-                $defaultGenderType = $defaultGender->type;
-            }
-        }
-
-        return $defaultGenderType;
-    }
-
-    /**
      * Get if any account exists on the database.
      *
      * @return bool

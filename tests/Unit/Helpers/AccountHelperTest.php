@@ -12,6 +12,7 @@ use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use App\Models\Contact\Reminder;
 use App\Models\Account\Invitation;
+use App\Models\Contact\Gender;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AccountHelperTest extends TestCase
@@ -144,6 +145,28 @@ class AccountHelperTest extends TestCase
 
         $this->assertFalse(
             AccountHelper::canDowngrade($account)
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_default_gender_for_the_account(): void
+    {
+        $account = factory(Account::class)->create();
+
+        $this->assertEquals(
+            Gender::MALE,
+            AccountHelper::getDefaultGender($account)
+        );
+
+        $gender = factory(Gender::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $account->default_gender_id = $gender->id;
+        $account->save();
+
+        $this->assertEquals(
+            $gender->type,
+            AccountHelper::getDefaultGender($account)
         );
     }
 

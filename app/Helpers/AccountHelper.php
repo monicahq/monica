@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\Account\Account;
+use App\Models\Contact\Gender;
 use Illuminate\Support\Collection;
 
 class AccountHelper
@@ -71,6 +72,30 @@ class AccountHelper
         }
 
         return $canDowngrade;
+    }
+
+    /**
+     * Get the default gender for this account.
+     *
+     * @param Account $account
+     * @return string
+     */
+    public static function getDefaultGender(Account $account): string
+    {
+        $defaultGenderType = Gender::MALE;
+
+        if ($account->default_gender_id) {
+
+            $defaultGender = Gender::where([
+                'account_id' => $account->id,
+            ])->find($account->default_gender_id);
+
+            if ($defaultGender) {
+                $defaultGenderType = $defaultGender->type;
+            }
+        }
+
+        return $defaultGenderType;
     }
 
     /**
