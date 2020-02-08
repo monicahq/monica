@@ -1,7 +1,7 @@
 <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-100 pb3 pt1 pl3 pr3">
   <div class="br2 bg-white mb4">
 
-    @if (config('monica.requires_subscription') && auth()->user()->account->hasLimitations())
+    @if (config('monica.requires_subscription') && $accountHasLimitations)
 
     <div class="">
         <h3>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\AccountHelper;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +17,7 @@ class CheckAccountLimitations
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && auth()->user()->account->hasLimitations()) {
+        if (Auth::check() && AccountHelper::hasLimitations(auth()->user()->account)) {
             abort(402);
         }
 

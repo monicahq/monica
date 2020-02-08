@@ -8,6 +8,29 @@ use Illuminate\Support\Collection;
 class AccountHelper
 {
     /**
+     * Indicates whether the given account has limitations with her current
+     * plan.
+     *
+     * @return bool
+     */
+    public static function hasLimitations(Account $account): bool
+    {
+        if ($account->has_access_to_paid_version_for_free) {
+            return false;
+        }
+
+        if (! config('monica.requires_subscription')) {
+            return false;
+        }
+
+        if ($account->isSubscribed()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
      * @param Account $account

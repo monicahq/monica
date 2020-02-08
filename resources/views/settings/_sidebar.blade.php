@@ -57,7 +57,7 @@
       'title' => 'settings.sidebar_settings_api'])
     @endcomponent
 
-    @if (config('laravelsabre.enabled') && ! auth()->user()->account->hasLimitations())
+    @if (config('laravelsabre.enabled') && ! $accountHasLimitations)
       @component('components.sidebar', [
         'route' => 'settings.dav',
         'icon' => 'fa fa-calendar',

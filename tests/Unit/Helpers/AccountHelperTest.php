@@ -17,6 +17,31 @@ class AccountHelperTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
+    public function user_has_limitations_if_not_subscribed_or_exempted_of_subscriptions(): void
+    {
+        $account = factory(Account::class)->make([
+            'has_access_to_paid_version_for_free' => true,
+        ]);
+
+        $this->assertEquals(
+            false,
+            AccountHelper::hasLimitations($account)
+        );
+
+        // Check that if the ENV variable REQUIRES_SUBSCRIPTION has an effect
+        $account = factory(Account::class)->make([
+            'has_access_to_paid_version_for_free' => false,
+        ]);
+
+        config(['monica.requires_subscription' => false]);
+
+        $this->assertEquals(
+            false,
+            AccountHelper::hasLimitations($account)
+        );
+    }
+
+    /** @test */
     public function user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit(): void
     {
         config(['monica.number_of_allowed_contacts_free_account' => 1]);

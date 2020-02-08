@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Helpers\AccountHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
@@ -19,7 +20,10 @@ class PersonalizationController extends Controller
      */
     public function index()
     {
-        return view('settings.personalization.index');
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
+        return view('settings.personalization.index')
+            ->withAccountHasLimitations($accountHasLimitations);
     }
 
     /**

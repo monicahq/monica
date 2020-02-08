@@ -480,29 +480,6 @@ class Account extends Model
     }
 
     /**
-     * Indicates whether the current account has limitations with her current
-     * plan.
-     *
-     * @return bool
-     */
-    public function hasLimitations()
-    {
-        if ($this->has_access_to_paid_version_for_free) {
-            return false;
-        }
-
-        if (! config('monica.requires_subscription')) {
-            return false;
-        }
-
-        if ($this->isSubscribed()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Indicate whether an account has reached the contact limit if the account
      * is on a free trial.
      *

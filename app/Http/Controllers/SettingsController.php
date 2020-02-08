@@ -15,6 +15,7 @@ use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
 use App\Exceptions\StripeException;
+use App\Helpers\AccountHelper;
 use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
@@ -50,7 +51,10 @@ class SettingsController
             'nickname',
         ];
 
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('settings.index')
+                ->withAccountHasLimitations($accountHasLimitations)
                 ->withNamesOrder($namesOrder)
                 ->withLocales(LocaleHelper::getLocaleList()->sortByCollator('name-orig'))
                 ->withHours(DateHelper::getListOfHours())
@@ -178,11 +182,15 @@ class SettingsController
      */
     public function import()
     {
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         if (auth()->user()->account->importjobs->count() == 0) {
-            return view('settings.imports.blank');
+            return view('settings.imports.blank')
+                ->withAccountHasLimitations($accountHasLimitations);
         }
 
-        return view('settings.imports.index');
+        return view('settings.imports.index')
+            ->withAccountHasLimitations($accountHasLimitations);
     }
 
     /**
@@ -235,12 +243,15 @@ class SettingsController
     public function users()
     {
         $users = auth()->user()->account->users;
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
 
         if ($users->count() == 1 && auth()->user()->account->invitations()->count() == 0) {
-            return view('settings.users.blank');
+            return view('settings.users.blank')
+                ->withAccountHasLimitations($accountHasLimitations);
         }
 
-        return view('settings.users.index', compact('users'));
+        return view('settings.users.index', compact('users'))
+            ->withAccountHasLimitations($accountHasLimitations);
     }
 
     /**
