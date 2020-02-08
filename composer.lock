@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "843c23b39e7d74fd32adc28857a3d0c4",
+    "content-hash": "ea4163c12e02e2dd1f743b0afc2e4b01",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -13505,22 +13505,22 @@
         },
         {
             "name": "psalm/plugin-laravel",
-            "version": "1.1.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/laravel-psalm-plugin.git",
-                "reference": "dcdbe7d156cc654a2a9681ba21faf4f730d837c2"
+                "reference": "44b045f975975c4a977e1c594a0a48b16b4641ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/laravel-psalm-plugin/zipball/dcdbe7d156cc654a2a9681ba21faf4f730d837c2",
-                "reference": "dcdbe7d156cc654a2a9681ba21faf4f730d837c2",
+                "url": "https://api.github.com/repos/psalm/laravel-psalm-plugin/zipball/44b045f975975c4a977e1c594a0a48b16b4641ff",
+                "reference": "44b045f975975c4a977e1c594a0a48b16b4641ff",
                 "shasum": ""
             },
             "require": {
                 "barryvdh/laravel-ide-helper": "^2.6",
                 "orchestra/testbench": "^3.5 || ^4.0",
-                "vimeo/psalm": "^3.8.2"
+                "vimeo/psalm": "^3.7"
             },
             "type": "psalm-plugin",
             "extra": {
@@ -13544,7 +13544,7 @@
                 }
             ],
             "description": "A Laravel plugin for Psalm",
-            "time": "2020-01-08T05:17:32+00:00"
+            "time": "2019-11-29T20:01:27+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -14780,27 +14780,22 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.8.3",
+            "version": "3.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "389af1bfc739bfdff3f9e3dc7bd6499aee51a831"
+                "reference": "d9cae720c1af31db9ba27c2bc1fcf9b0dd092fb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/389af1bfc739bfdff3f9e3dc7bd6499aee51a831",
-                "reference": "389af1bfc739bfdff3f9e3dc7bd6499aee51a831",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/d9cae720c1af31db9ba27c2bc1fcf9b0dd092fb0",
+                "reference": "d9cae720c1af31db9ba27c2bc1fcf9b0dd092fb0",
                 "shasum": ""
             },
             "require": {
                 "amphp/amp": "^2.1",
                 "amphp/byte-stream": "^1.5",
                 "composer/xdebug-handler": "^1.1",
-                "ext-dom": "*",
-                "ext-json": "*",
-                "ext-libxml": "*",
-                "ext-simplexml": "*",
-                "ext-tokenizer": "*",
                 "felixfbecker/advanced-json-rpc": "^3.0.3",
                 "felixfbecker/language-server-protocol": "^1.4",
                 "netresearch/jsonmapper": "^1.0",
@@ -14809,7 +14804,7 @@
                 "openlss/lib-array2xml": "^1.0",
                 "php": "^7.1.3",
                 "sebastian/diff": "^3.0",
-                "symfony/console": "^3.4.17 || ^4.1.6 || ^5.0",
+                "symfony/console": "^3.3||^4.0||^5.0",
                 "webmozart/glob": "^4.1",
                 "webmozart/path-util": "^2.3"
             },
@@ -14819,8 +14814,8 @@
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.2",
                 "ext-curl": "*",
+                "friendsofphp/php-cs-fixer": "^2.15",
                 "phpmyadmin/sql-parser": "^5.0",
-                "phpspec/prophecy": ">=1.9.0",
                 "phpunit/phpunit": "^7.5 || ^8.0",
                 "psalm/plugin-phpunit": "^0.6",
                 "slevomat/coding-standard": "^5.0",
@@ -14832,10 +14827,10 @@
             },
             "bin": [
                 "psalm",
+                "psalter",
                 "psalm-language-server",
                 "psalm-plugin",
-                "psalm-refactor",
-                "psalter"
+                "psalm-refactor"
             ],
             "type": "library",
             "extra": {
@@ -14851,8 +14846,7 @@
                     "Psalm\\": "src/Psalm"
                 },
                 "files": [
-                    "src/functions.php",
-                    "src/spl_object_id.php"
+                    "src/functions.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -14870,7 +14864,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2020-01-15T03:46:19+00:00"
+            "time": "2019-12-03T13:33:31+00:00"
         },
         {
             "name": "webmozart/assert",
