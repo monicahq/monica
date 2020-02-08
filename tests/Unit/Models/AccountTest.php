@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Models;
 
-use Carbon\Carbon;
 use App\Models\User\User;
 use Tests\FeatureTestCase;
 use App\Models\User\Module;
@@ -16,7 +15,6 @@ use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Document;
-use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
