@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AccountHelper;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Debt;
@@ -69,9 +70,9 @@ class DashboardController extends Controller
 
         // Load the reminderOutboxes for the upcoming three months
         $reminderOutboxes = [
-            0 => auth()->user()->account->getRemindersForMonth(0),
-            1 => auth()->user()->account->getRemindersForMonth(1),
-            2 => auth()->user()->account->getRemindersForMonth(2),
+            0 => AccountHelper::getUpcomingRemindersForMonth(auth()->user()->account, 0),
+            1 => AccountHelper::getUpcomingRemindersForMonth(auth()->user()->account, 1),
+            2 => AccountHelper::getUpcomingRemindersForMonth(auth()->user()->account, 2),
         ];
 
         $data = [

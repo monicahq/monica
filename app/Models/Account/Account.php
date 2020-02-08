@@ -582,30 +582,6 @@ class Account extends Model
     }
 
     /**
-     * Get the reminders for the month given in parameter.
-     * - 0 means current month
-     * - 1 means month+1
-     * - 2 means month+2...
-     * @param  int    $month
-     */
-    public function getRemindersForMonth(int $month)
-    {
-        $startOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->startOfMonth();
-        // don't get reminders for past events:
-        if ($startOfMonth->isPast()) {
-            $startOfMonth = now(DateHelper::getTimezone());
-        }
-        $endOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->endOfMonth();
-
-        return $this->reminderOutboxes()
-                     ->with(['reminder', 'reminder.contact'])
-                     ->whereBetween('planned_date', [$startOfMonth, $endOfMonth])
-                     ->where('nature', 'reminder')
-                     ->orderBy('planned_date', 'asc')
-                     ->get();
-    }
-
-    /**
      * Replaces a specific gender of all the contacts in the account with another
      * gender.
      *

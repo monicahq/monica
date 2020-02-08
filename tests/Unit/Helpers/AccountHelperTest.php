@@ -10,6 +10,8 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use App\Models\Account\Invitation;
+use App\Models\Contact\Reminder;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AccountHelperTest extends TestCase
@@ -142,6 +144,49 @@ class AccountHelperTest extends TestCase
 
         $this->assertFalse(
             AccountHelper::canDowngrade($account)
+        );
+    }
+
+    /** @test */
+    public function get_reminders_for_month_returns_no_reminders()
+    {
+        $account = factory(Account::class)->create();
+
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+        factory(Reminder::class, 3)->create([
+            'account_id' => $account->id,
+        ]);
+
+        // check if there are reminders for the month of March
+        $this->assertEquals(
+            0,
+            AccountHelper::getUpcomingRemindersForMonth($account, 3)->count()
+        );
+    }
+
+    /** @test */
+    public function get_reminders_for_month_returns_reminders_for_given_month()
+    {
+        $account = factory(Account::class)->create();
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        // add 3 reminders for the month of March
+        for ($i = 0; $i < 3; $i++) {
+            $reminder = factory(Reminder::class)->create([
+                'account_id' => $account->id,
+                'initial_date' => '2017-03-03 00:00:00',
+            ]);
+
+            $reminder->schedule($user);
+        }
+
+        $this->assertEquals(
+            3,
+            AccountHelper::getUpcomingRemindersForMonth($account, 2)->count()
         );
     }
 
