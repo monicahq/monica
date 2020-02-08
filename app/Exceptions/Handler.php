@@ -87,5 +87,4 @@ class Handler extends ExceptionHandler
             return parent::whoopsHandler();
         }
     }
-
 }
