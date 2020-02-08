@@ -16,7 +16,7 @@ class AccountHelperTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
-    public function user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()
+    public function user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit(): void
     {
         config(['monica.number_of_allowed_contacts_free_account' => 1]);
         $contact = factory(Contact::class)->create();
@@ -32,7 +32,7 @@ class AccountHelperTest extends TestCase
     }
 
     /** @test */
-    public function user_cant_downgrade_with_two_users()
+    public function user_cant_downgrade_with_two_users(): void
     {
         $contact = factory(Contact::class)->create();
 
@@ -47,7 +47,7 @@ class AccountHelperTest extends TestCase
     }
 
     /** @test */
-    public function user_cant_downgrade_with_pending_invitations()
+    public function user_cant_downgrade_with_pending_invitations(): void
     {
         $account = factory(Account::class)->create();
 
@@ -62,7 +62,7 @@ class AccountHelperTest extends TestCase
     }
 
     /** @test */
-    public function user_cant_downgrade_with_too_many_contacts()
+    public function user_cant_downgrade_with_too_many_contacts(): void
     {
         config(['monica.number_of_allowed_contacts_free_account' => 1]);
         $account = factory(Account::class)->create();

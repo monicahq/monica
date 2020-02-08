@@ -28,4 +28,21 @@ class StorageHelper
 
         return $documentsSize + $photosSize;
     }
+
+    /**
+     * Indicates whether the account has the reached the maximum storage size
+     *
+     * @param Account $account
+     * @return bool
+     */
+    public static function hasReachedAccountStorageLimit(Account $account)
+    {
+        if (!config('monica.requires_subscription')) {
+            return false;
+        }
+
+        $currentAccountSize = self::getAccountStorageSize($account);
+
+        return $currentAccountSize > (config('monica.max_storage_size') * 1000000);
+    }
 }

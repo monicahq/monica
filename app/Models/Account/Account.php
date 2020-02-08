@@ -863,21 +863,4 @@ class Account extends Model
 
         return $user->locale;
     }
-
-    /**
-     * Indicates whether the account has the reached the maximum storage size
-     * for document upload.
-     *
-     * @return bool
-     */
-    public function hasReachedAccountStorageLimit()
-    {
-        if (! config('monica.requires_subscription')) {
-            return false;
-        }
-
-        $currentAccountSize = $this->getStorageSize();
-
-        return $currentAccountSize > (config('monica.max_storage_size') * 1000000);
-    }
 }

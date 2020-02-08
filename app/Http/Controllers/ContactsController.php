@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
 use App\Helpers\GendersHelper;
+use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
@@ -274,6 +275,7 @@ class ContactsController extends Controller
         ]);
 
         return view('people.profile')
+            ->withHasReachedAccountStorageLimit(StorageHelper::hasReachedAccountStorageLimit($contact->account))
             ->withLoveRelationships($loveRelationships)
             ->withFamilyRelationships($familyRelationships)
             ->withFriendRelationships($friendRelationships)

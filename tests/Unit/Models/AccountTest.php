@@ -850,36 +850,4 @@ class AccountTest extends FeatureTestCase
             DB::table('life_event_types')->where('account_id', $account->id)->get()->count()
         );
     }
-
-    /** @test */
-    public function it_tests_account_storage_limit()
-    {
-        config(['monica.requires_subscription' => true]);
-        $account = factory(Account::class)->create([]);
-
-        $document = factory(Document::class)->create([
-            'filesize' => 1000000,
-            'account_id' => $account->id,
-        ]);
-
-        config(['monica.max_storage_size' => 0.1]);
-        $this->assertTrue($account->hasReachedAccountStorageLimit());
-
-        config(['monica.max_storage_size' => 1]);
-        $this->assertFalse($account->hasReachedAccountStorageLimit());
-
-        $photo = factory(Photo::class)->create([
-            'filesize' => 1000000,
-            'account_id' => $account->id,
-        ]);
-
-        config(['monica.max_storage_size' => 2]);
-        $this->assertFalse($account->hasReachedAccountStorageLimit());
-
-        config(['monica.max_storage_size' => 1]);
-        $this->assertTrue($account->hasReachedAccountStorageLimit());
-
-        config(['monica.requires_subscription' => false]);
-        $this->assertFalse($account->hasReachedAccountStorageLimit());
-    }
 }
