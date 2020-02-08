@@ -4,9 +4,9 @@ namespace Tests\Unit\Helpers;
 
 use Tests\FeatureTestCase;
 use App\Helpers\GenderHelper;
+use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Gender;
 
 class GenderHelperTest extends FeatureTestCase
 {
@@ -37,11 +37,11 @@ class GenderHelperTest extends FeatureTestCase
 
         factory(Contact::class, 2)->create([
             'account_id' => $account->id,
-            'gender_id' => $male
+            'gender_id' => $male,
         ]);
         factory(Contact::class)->create([
             'account_id' => $account->id,
-            'gender_id' => $female
+            'gender_id' => $female,
         ]);
 
         $account->replaceGender($male, $female);
