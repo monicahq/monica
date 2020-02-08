@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
-use App\Helpers\GendersHelper;
+use App\Helpers\GenderHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
@@ -34,7 +34,7 @@ class RelationshipsController extends Controller
         return view('people.relationship.new')
             ->withContact($contact)
             ->withPartner(new Contact)
-            ->withGenders(GendersHelper::getGendersInput())
+            ->withGenders(GenderHelper::getGendersInput())
             ->withRelationshipTypes($this->getRelationshipTypesList($contact))
             ->withDefaultGender(auth()->user()->account->default_gender_id)
             ->withDays(DateHelper::getListOfDays())
@@ -117,7 +117,7 @@ class RelationshipsController extends Controller
             ->withDay($day)
             ->withMonth($month)
             ->withAge($age)
-            ->withGenders(GendersHelper::getGendersInput())
+            ->withGenders(GenderHelper::getGendersInput())
             ->withHasBirthdayReminder($hasBirthdayReminder);
     }
 

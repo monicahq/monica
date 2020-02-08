@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
 use App\Helpers\AccountHelper;
-use App\Helpers\GendersHelper;
+use App\Helpers\GenderHelper;
 use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
@@ -169,7 +169,7 @@ class ContactsController extends Controller
         return view('people.create')
             ->withAccountHasLimitations($accountHasLimitations)
             ->withIsContactMissing($isContactMissing)
-            ->withGenders(GendersHelper::getGendersInput())
+            ->withGenders(GenderHelper::getGendersInput())
             ->withDefaultGender(auth()->user()->account->default_gender_id);
     }
 
@@ -331,7 +331,7 @@ class ContactsController extends Controller
             ->withAge($age)
             ->withHasBirthdayReminder($hasBirthdayReminder)
             ->withHasDeceasedReminder($hasDeceasedReminder)
-            ->withGenders(GendersHelper::getGendersInput());
+            ->withGenders(GenderHelper::getGendersInput());
     }
 
     /**

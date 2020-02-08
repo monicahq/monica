@@ -148,7 +148,7 @@ class AccountHelperTest extends TestCase
     }
 
     /** @test */
-    public function get_reminders_for_month_returns_no_reminders()
+    public function get_reminders_for_month_returns_no_reminders(): void
     {
         $account = factory(Account::class)->create();
 
@@ -165,7 +165,7 @@ class AccountHelperTest extends TestCase
     }
 
     /** @test */
-    public function get_reminders_for_month_returns_reminders_for_given_month()
+    public function get_reminders_for_month_returns_reminders_for_given_month(): void
     {
         $account = factory(Account::class)->create();
         $user = factory(User::class)->create([

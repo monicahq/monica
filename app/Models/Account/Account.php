@@ -581,23 +581,6 @@ class Account extends Model
     }
 
     /**
-     * Replaces a specific gender of all the contacts in the account with another
-     * gender.
-     *
-     * @param  Gender $genderToDelete
-     * @param  Gender $genderToReplaceWith
-     * @return bool
-     */
-    public function replaceGender(Gender $genderToDelete, Gender $genderToReplaceWith)
-    {
-        Contact::where('account_id', $this->id)
-            ->where('gender_id', $genderToDelete->id)
-            ->update(['gender_id' => $genderToReplaceWith->id]);
-
-        return true;
-    }
-
-    /**
      * Get the default gender for this account.
      *
      * @return string

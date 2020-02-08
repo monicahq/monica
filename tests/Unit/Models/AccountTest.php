@@ -433,28 +433,6 @@ class AccountTest extends FeatureTestCase
     }
 
     /** @test */
-    public function it_replaces_gender_with_another_gender()
-    {
-        $account = factory(Account::class)->create();
-        $gender1 = factory(Gender::class)->create([
-            'account_id' => $account->id,
-        ]);
-        $gender2 = factory(Gender::class)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $contact = factory(Contact::class)->create(['account_id' => $account->id, 'gender_id' => $gender1]);
-        $contact = factory(Contact::class)->create(['account_id' => $account->id, 'gender_id' => $gender1]);
-        $contact = factory(Contact::class)->create(['account_id' => $account->id, 'gender_id' => $gender2]);
-
-        $account->replaceGender($gender1, $gender2);
-        $this->assertEquals(
-            3,
-            $gender2->contacts->count()
-        );
-    }
-
-    /** @test */
     public function it_gets_default_time_reminder_is_sent_attribute()
     {
         $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '14:00']);
