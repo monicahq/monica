@@ -6,7 +6,9 @@ use Tests\TestCase;
 use function Safe\json_decode;
 use App\Helpers\InstanceHelper;
 use App\Models\Account\Account;
+use App\Models\Instance\Instance;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\DB;
 
 class InstanceHelperTest extends TestCase
 {
@@ -116,6 +118,21 @@ class InstanceHelperTest extends TestCase
         $this->assertCount(
             3,
             InstanceHelper::getChangelogEntries(3)
+        );
+    }
+
+    /** @test */
+    public function it_checks_if_the_instance_has_at_least_one_account()
+    {
+        DB::table('accounts')->delete();
+
+        $this->assertFalse(
+            InstanceHelper::hasAtLeastOneAccount()
+        );
+
+        factory(Account::class)->create();
+        $this->assertTrue(
+            InstanceHelper::hasAtLeastOneAccount()
         );
     }
 }

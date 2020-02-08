@@ -4,7 +4,10 @@ namespace App\Helpers;
 
 use function Safe\json_decode;
 use App\Models\Account\Account;
+use App\Models\Instance\Instance;
 use App\Models\Settings\Currency;
+use Illuminate\Support\Facades\DB;
+
 use function Safe\file_get_contents;
 
 class InstanceHelper
@@ -59,5 +62,15 @@ class InstanceHelper
         }
 
         return $changelogs;
+    }
+
+    /**
+     * Check if the instance has at least one account.
+     *
+     * @return bool
+     */
+    public static function hasAtLeastOneAccount(): bool
+    {
+        return DB::table('accounts')->count() > 0;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\InstanceHelper;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
@@ -52,7 +53,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm(Request $request)
     {
-        $first = ! Account::hasAny();
+        $first = ! InstanceHelper::hasAtLeastOneAccount();
         if (config('monica.disable_signup') == 'true' && ! $first) {
             abort(403, trans('auth.signup_disabled'));
         }
@@ -87,7 +88,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data): ?User
     {
-        $first = ! Account::hasAny();
+        $first = ! InstanceHelper::hasAtLeastOneAccount();
         if (config('monica.disable_signup') == 'true' && ! $first) {
             abort(403, trans('auth.signup_disabled'));
         }
