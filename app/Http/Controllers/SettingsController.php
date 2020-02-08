@@ -384,7 +384,7 @@ class SettingsController
     public function api()
     {
         return view('settings.api.index')
-            ->with('accountHasLimitations', AccountHelper::hasLimitations(auth()->user()->account));;
+            ->with('accountHasLimitations', AccountHelper::hasLimitations(auth()->user()->account));
     }
 
     public function dav()
