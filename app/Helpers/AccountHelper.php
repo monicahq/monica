@@ -31,6 +31,18 @@ class AccountHelper
     }
 
     /**
+     * Indicate whether an account has reached the contact limit if the account
+     * is on a free trial.
+     *
+     * @param Account $account
+     * @return bool
+     */
+    public static function hasReachedContactLimit(Account $account): bool
+    {
+        return $account->contacts()->real()->active()->count() >= config('monica.number_of_allowed_contacts_free_account');
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
      * @param Account $account

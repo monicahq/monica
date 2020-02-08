@@ -29,28 +29,30 @@ class SubscriptionsController extends Controller
      */
     public function index()
     {
+        $account = auth()->user()->account;
+
         if (! config('monica.requires_subscription')) {
             return redirect()->route('settings.index');
         }
 
-        $subscription = auth()->user()->account->getSubscribedPlan();
-        if (! auth()->user()->account->isSubscribed() && (! $subscription || $subscription->ended())) {
+        $subscription = $account->getSubscribedPlan();
+        if (! $account->isSubscribed() && (! $subscription || $subscription->ended())) {
             return view('settings.subscriptions.blank', [
                 'numberOfCustomers' => InstanceHelper::getNumberOfPaidSubscribers(),
             ]);
         }
 
-        $planId = auth()->user()->account->getSubscribedPlanId();
+        $planId = $account->getSubscribedPlanId();
         try {
-            $nextBillingDate = auth()->user()->account->getNextBillingDate();
+            $nextBillingDate = $account->getNextBillingDate();
         } catch (StripeException $e) {
             $nextBillingDate = trans('app.unknown');
         }
 
-        $hasInvoices = auth()->user()->account->hasStripeId() && auth()->user()->account->hasInvoices();
+        $hasInvoices = $account->hasStripeId() && $account->hasInvoices();
         $invoices = null;
         if ($hasInvoices) {
-            $invoices = auth()->user()->account->invoices();
+            $invoices = $account->invoices();
         }
 
         return view('settings.subscriptions.account', [
@@ -59,6 +61,7 @@ class SubscriptionsController extends Controller
             'subscription' => $subscription,
             'hasInvoices' => $hasInvoices,
             'invoices' => $invoices,
+            'accountHasLimitations' => AccountHelper::hasLimitations($account),
         ]);
     }
 
@@ -169,8 +172,8 @@ class SubscriptionsController extends Controller
             return redirect()->route('settings.index');
         }
 
-        $subscription = auth()->user()->account->getSubscribedPlan();
-        if (! auth()->user()->account->isSubscribed() && ! $subscription) {
+        $subscription = $account->getSubscribedPlan();
+        if (! $account->isSubscribed() && ! $subscription) {
             return redirect()->route('settings.index');
         }
 
@@ -178,7 +181,9 @@ class SubscriptionsController extends Controller
             ->with('numberOfActiveContacts', $account->contacts()->active()->count())
             ->with('numberOfPendingInvitations', $account->invitations()->count())
             ->with('numberOfUsers', $account->users()->count())
-            ->with('canDowngrade', AccountHelper::canDowngrade(auth()->user()->account));
+            ->with('accountHasLimitations', AccountHelper::hasLimitations($account))
+            ->with('hasReachedContactLimit', AccountHelper::hasReachedContactLimit($account))
+            ->with('canDowngrade', AccountHelper::canDowngrade($account));
     }
 
     /**
@@ -240,10 +245,10 @@ class SubscriptionsController extends Controller
     /**
      * Download the invoice as PDF.
      *
-     * @param int $invoiceId
+     * @param mixed $invoiceId
      * @return Response
      */
-    public function downloadInvoice(int $invoiceId)
+    public function downloadInvoice($invoiceId)
     {
         return auth()->user()->account->downloadInvoice($invoiceId, [
             'vendor'  => 'Monica',

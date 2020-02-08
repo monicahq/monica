@@ -49,11 +49,11 @@
               <span class="rule-to-succeed">{!! trans_choice('settings.subscriptions_downgrade_rule_invitations_constraint', $numberOfPendingInvitations, ['url' => route('settings.users.index'), 'count' => $numberOfPendingInvitations]) !!}</span>
             </li>
 
-            <li class="{{ (auth()->user()->account->hasReachedContactLimit() == true)?'fail':'success' }}">
+            <li class="{{ ($hasReachedContactLimit == true)?'fail':'success' }}">
               <span class="icon"></span>
               <span class="rule-title">{{ trans('settings.subscriptions_downgrade_rule_contacts', ['number' => config('monica.number_of_allowed_contacts_free_account')]) }}</span>
               <span class="rule-to-succeed">{!! trans_choice('settings.subscriptions_downgrade_rule_contacts_constraint', $numberOfActiveContacts, ['url' => '/people', 'count' => $numberOfActiveContacts]) !!}</span>
-              @if ((auth()->user()->account->hasReachedContactLimit() == true))
+              @if (($hasReachedContactLimit == true))
               <span class="rule-to-succeed">We can also <a href="/settings/subscriptions/archive">archive all your contacts for you</a> - that would clear this rule and let you proceed with your account’s downgrade process.</span>
               @endif
             </li>

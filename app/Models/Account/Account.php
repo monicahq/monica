@@ -480,17 +480,6 @@ class Account extends Model
     }
 
     /**
-     * Indicate whether an account has reached the contact limit if the account
-     * is on a free trial.
-     *
-     * @return bool
-     */
-    public function hasReachedContactLimit()
-    {
-        return $this->contacts()->real()->active()->count() >= config('monica.number_of_allowed_contacts_free_account');
-    }
-
-    /**
      * Populates the Activity Type table right after an account is
      * created.
      */

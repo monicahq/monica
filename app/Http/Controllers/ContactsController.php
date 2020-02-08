@@ -158,7 +158,7 @@ class ContactsController extends Controller
      */
     private function createForm($isContactMissing = false)
     {
-        if (auth()->user()->account->hasReachedContactLimit()
+        if (AccountHelper::hasReachedContactLimit(auth()->user()->account)
             && AccountHelper::hasLimitations(auth()->user()->account)
             && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
             return redirect()->route('settings.subscriptions.index');

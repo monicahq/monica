@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Helpers\AccountHelper;
 use App\Models\Account\Photo;
 use App\Helpers\StorageHelper;
 use App\Models\Contact\Document;
@@ -32,7 +33,10 @@ class StorageController extends Controller
         // correspondingPercent
         $percentUsage = round($currentAccountSize * 100 / config('monica.max_storage_size'));
 
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('settings.storage.index')
+            ->withAccountHasLimitations($accountHasLimitations)
             ->withDocuments($documents)
             ->withPhotos($photos)
             ->withCurrentAccountSize($currentAccountSize)

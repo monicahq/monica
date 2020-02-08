@@ -680,50 +680,6 @@ class AccountTest extends FeatureTestCase
     }
 
     /** @test */
-    public function account_has_reached_contact_limit_on_free_plan()
-    {
-        $account = factory(Account::class)->create();
-        factory(Contact::class, 11)->create([
-            'account_id' => $account->id,
-        ]);
-
-        config(['monica.number_of_allowed_contacts_free_account' => 10]);
-
-        $this->assertTrue(
-            $account->hasReachedContactLimit()
-        );
-
-        factory(Contact::class, 5)->state('partial')->create([
-            'account_id' => $account->id,
-        ]);
-
-        config(['monica.number_of_allowed_contacts_free_account' => 15]);
-
-        $this->assertFalse(
-            $account->hasReachedContactLimit()
-        );
-        config(['monica.number_of_allowed_contacts_free_account' => 100]);
-
-        $this->assertFalse(
-            $account->hasReachedContactLimit()
-        );
-
-        config(['monica.number_of_allowed_contacts_free_account' => 3]);
-        $account = factory(Account::class)->create();
-        factory(Contact::class, 2)->create([
-            'account_id' => $account->id,
-            'is_active' => false,
-        ]);
-        factory(Contact::class, 3)->create([
-            'account_id' => $account->id,
-            'is_active' => true,
-        ]);
-        $this->assertTrue(
-            $account->hasReachedContactLimit()
-        );
-    }
-
-    /** @test */
     public function it_gets_first_user_locale()
     {
         $account = factory(Account::class)->create();

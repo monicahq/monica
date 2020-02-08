@@ -42,6 +42,49 @@ class AccountHelperTest extends TestCase
     }
 
     /** @test */
+    public function account_has_reached_contact_limit_on_free_plan(): void
+    {
+        $account = factory(Account::class)->create();
+        factory(Contact::class, 2)->create([
+            'account_id' => $account->id,
+        ]);
+
+        config(['monica.number_of_allowed_contacts_free_account' => 1]);
+        $this->assertTrue(
+            AccountHelper::hasReachedContactLimit($account)
+        );
+
+        factory(Contact::class)->state('partial')->create([
+            'account_id' => $account->id,
+        ]);
+
+        config(['monica.number_of_allowed_contacts_free_account' => 3]);
+        $this->assertFalse(
+            AccountHelper::hasReachedContactLimit($account)
+        );
+
+        config(['monica.number_of_allowed_contacts_free_account' => 100]);
+        $this->assertFalse(
+            AccountHelper::hasReachedContactLimit($account)
+        );
+
+        $account = factory(Account::class)->create();
+        factory(Contact::class, 2)->create([
+            'account_id' => $account->id,
+            'is_active' => false,
+        ]);
+        factory(Contact::class, 3)->create([
+            'account_id' => $account->id,
+            'is_active' => true,
+        ]);
+
+        config(['monica.number_of_allowed_contacts_free_account' => 3]);
+        $this->assertTrue(
+            AccountHelper::hasReachedContactLimit($account)
+        );
+    }
+
+    /** @test */
     public function user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit(): void
     {
         config(['monica.number_of_allowed_contacts_free_account' => 1]);

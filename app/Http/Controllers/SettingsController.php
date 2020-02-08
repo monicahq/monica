@@ -156,7 +156,8 @@ class SettingsController
      */
     public function export()
     {
-        return view('settings.export');
+        return view('settings.export')
+            ->with('accountHasLimitations', AccountHelper::hasLimitations(auth()->user()->account));
     }
 
     /**
@@ -358,7 +359,8 @@ class SettingsController
      */
     public function tags()
     {
-        return view('settings.tags');
+        return view('settings.tags')
+            ->with('accountHasLimitations', AccountHelper::hasLimitations(auth()->user()->account));
     }
 
     /**
@@ -381,7 +383,8 @@ class SettingsController
 
     public function api()
     {
-        return view('settings.api.index');
+        return view('settings.api.index')
+            ->with('accountHasLimitations', AccountHelper::hasLimitations(auth()->user()->account));;
     }
 
     public function dav()
@@ -393,7 +396,8 @@ class SettingsController
                 ->withDavRoute($davroute)
                 ->withCardDavRoute("{$davroute}/addressbooks/{$email}/contacts")
                 ->withCalDavBirthdaysRoute("{$davroute}/calendars/{$email}/birthdays")
-                ->withCalDavTasksRoute("{$davroute}/calendars/{$email}/tasks");
+                ->withCalDavTasksRoute("{$davroute}/calendars/{$email}/tasks")
+                ->with('accountHasLimitations', AccountHelper::hasLimitations(auth()->user()->account));
     }
 
     public function security()
@@ -406,7 +410,8 @@ class SettingsController
         return view('settings.security.index')
             ->with('is2FAActivated', Google2FA::isActivated())
             ->with('currentkeys', U2fKeyResource::collection($u2fKeys))
-            ->withWebauthnKeys(WebauthnKeyResource::collection($webauthnKeys));
+            ->withWebauthnKeys(WebauthnKeyResource::collection($webauthnKeys))
+            ->with('accountHasLimitations', AccountHelper::hasLimitations(auth()->user()->account));
     }
 
     /**
