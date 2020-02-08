@@ -514,22 +514,6 @@ class Account extends Model
     }
 
     /**
-     * Get the timezone of the user. In case an account has multiple timezones,
-     * takes the first it finds.
-     * @return string
-     */
-    public function timezone()
-    {
-        try {
-            $user = $this->users()->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return '';
-        }
-
-        return $user->timezone;
-    }
-
-    /**
      * Populates the Activity Type table right after an account is
      * created.
      */

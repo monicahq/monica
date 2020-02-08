@@ -356,27 +356,6 @@ class AccountTest extends FeatureTestCase
     }
 
     /** @test */
-    public function get_timezone_gets_the_first_timezone_it_finds()
-    {
-        $account = factory(Account::class)->create();
-
-        $user1 = factory(User::class)->create([
-            'account_id' => $account->id,
-            'timezone' => 'EN_en',
-        ]);
-
-        $user2 = factory(User::class)->create([
-            'account_id' => $account->id,
-            'timezone' => 'DE_de',
-        ]);
-
-        $this->assertEquals(
-            'EN_en',
-            $account->timezone()
-        );
-    }
-
-    /** @test */
     public function has_invoices_returns_true_if_a_plan_exists()
     {
         $account = factory(Account::class)->create();
