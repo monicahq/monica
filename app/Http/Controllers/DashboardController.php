@@ -16,10 +16,16 @@ use App\Http\Resources\Debt\Debt as DebtResource;
 class DashboardController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the dashboard.
      */
     public function index()
     {
+        // Load the reminderOutboxes for the upcoming three months
+        $reminderOutboxes = [
+            0 => auth()->user()->account->getRemindersForMonth(0),
+            1 => auth()->user()->account->getRemindersForMonth(1),
+            2 => auth()->user()->account->getRemindersForMonth(2),
+        ];
         return Inertia::render('Dashboard/Index', []);
     }
 }
