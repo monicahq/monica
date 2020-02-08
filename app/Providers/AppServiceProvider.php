@@ -6,12 +6,11 @@ use Inertia\Inertia;
 use App\Helpers\DBHelper;
 use Laravel\Cashier\Cashier;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\View;
-use App\Notifications\EmailMessaging;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\EmailMessaging;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Auth\Notifications\ResetPassword;
 
