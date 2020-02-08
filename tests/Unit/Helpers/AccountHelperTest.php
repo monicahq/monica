@@ -2,15 +2,14 @@
 
 namespace Tests\Unit\Helpers;
 
-use App\Models\Account\Activity;
 use Tests\TestCase;
-use function Safe\json_decode;
+use App\Models\User\User;
+use App\Models\Contact\Call;
 use App\Helpers\AccountHelper;
 use App\Models\Account\Account;
-use App\Models\Account\Invitation;
-use App\Models\Contact\Call;
 use App\Models\Contact\Contact;
-use App\Models\User\User;
+use App\Models\Account\Activity;
+use App\Models\Account\Invitation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AccountHelperTest extends TestCase

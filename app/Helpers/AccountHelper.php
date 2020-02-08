@@ -3,7 +3,6 @@
 namespace App\Helpers;
 
 use App\Models\Account\Account;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class AccountHelper
@@ -65,7 +64,7 @@ class AccountHelper
                 }
             }
 
-            if (!$foundInYear) {
+            if (! $foundInYear) {
                 $years[$yearStatistic] = 1;
             }
         }
@@ -102,7 +101,7 @@ class AccountHelper
                 }
             }
 
-            if (!$foundInYear) {
+            if (! $foundInYear) {
                 $years[$yearStatistic] = 1;
             }
         }

@@ -3,10 +3,6 @@
 namespace App\Helpers;
 
 use App\Models\Account\Account;
-use App\Models\Account\Photo;
-use App\Models\Contact\Document;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class StorageHelper
@@ -30,14 +26,14 @@ class StorageHelper
     }
 
     /**
-     * Indicates whether the account has the reached the maximum storage size
+     * Indicates whether the account has the reached the maximum storage size.
      *
      * @param Account $account
      * @return bool
      */
     public static function hasReachedAccountStorageLimit(Account $account): bool
     {
-        if (!config('monica.requires_subscription')) {
+        if (! config('monica.requires_subscription')) {
             return false;
         }
 

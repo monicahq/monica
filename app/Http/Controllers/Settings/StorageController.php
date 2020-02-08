@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Helpers\StorageHelper;
 use App\Models\Account\Photo;
+use App\Helpers\StorageHelper;
 use App\Models\Contact\Document;
 use App\Http\Controllers\Controller;
 
