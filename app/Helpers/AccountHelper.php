@@ -2,8 +2,8 @@
 
 namespace App\Helpers;
 
-use App\Models\Account\Account;
 use App\Models\Contact\Gender;
+use App\Models\Account\Account;
 use Illuminate\Support\Collection;
 
 class AccountHelper
@@ -85,7 +85,6 @@ class AccountHelper
         $defaultGenderType = Gender::MALE;
 
         if ($account->default_gender_id) {
-
             $defaultGender = Gender::where([
                 'account_id' => $account->id,
             ])->find($account->default_gender_id);
