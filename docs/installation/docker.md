@@ -95,6 +95,8 @@ services:
     environment:
       - APP_KEY=
       - DB_HOST=mysql
+      - DB_USERNAME=homestead
+      - DB_PASSWORD=secret
     volumes:
       - data:/var/www/monica/storage
     restart: always
