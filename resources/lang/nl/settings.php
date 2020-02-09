@@ -489,5 +489,5 @@ return [
 
     'archive_title' => 'Archive all your contacts in your account',
     'archive_desc' => 'This will archive all the contacts in your account.',
-    'archive_cta' => 'Archive all your contacts',
+    'archive_cta' => 'Archiveer al je contacten',
 ];
