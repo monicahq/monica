@@ -44,7 +44,7 @@ class GenderHelperTest extends FeatureTestCase
             'gender_id' => $female,
         ]);
 
-        $account->replaceGender($male, $female);
+        GenderHelper::replace($account, $male, $female);
 
         $this->assertEquals(
             3,

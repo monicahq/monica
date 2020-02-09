@@ -116,7 +116,10 @@ class ContactsController extends Controller
             $contactsCount += $deceasedCount;
         }
 
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('people.index')
+            ->withAccountHasLimitations($accountHasLimitations)
             ->with('hidingDeceased', $showDeceased != 'true')
             ->with('deceasedCount', $deceasedCount)
             ->withActive($active)
@@ -491,7 +494,10 @@ class ContactsController extends Controller
      */
     public function editFoodPreferences(Request $request, Contact $contact)
     {
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('people.food-preferences.edit')
+            ->withAccountHasLimitations($accountHasLimitations)
             ->withContact($contact);
     }
 
