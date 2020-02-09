@@ -44,7 +44,7 @@ return [
     'layout_big' => 'Tarayıcının tam genişliği',
     'save' => 'Tercihleri güncelle',
     'delete_title' => 'Hesabınızı silin',
-    'delete_desc' => 'Do you wish to delete your account? Warning: deletion is permanent and all your data will be erased permanently. Your subscription (if you have any) will also be immediately cancelled.',
+    'delete_desc' => 'Hesabınızı silmek istiyor musunuz? Uyarı: silme kalıcıdır ve tüm verileriniz kalıcı olarak silinecektir. (Varsa) aboneliğiniz de hemen iptal edilecektir.',
     'delete_other_desc' => 'Just to be clear: your data in the main database will be deleted immediately. However, as described in our privacy policy, we do daily backups of the database in case of failure and this backup is kept for 30 days – then it’s completely deleted. It’s unrealistic to imagine that we can go in all the backups to delete your specific data. By the way, this data is encrypted on very secure Amazon servers and no one has the encryption key except us. Therefore, your data will completely disappear in 30 days from all the backups, and no one will know this data ever existed in the first place.',
     'reset_desc' => 'Hesabınızı sıfırlamak ister misiniz? Bu, tüm kişilerinizi ve onlarla ilişkili verileri kaldıracaktır. Hesabınız silinmeyecektir.',
     'reset_title' => 'Hesabınızı sıfırlayın',
