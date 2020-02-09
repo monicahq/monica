@@ -45,7 +45,7 @@ return [
     'save' => 'Tercihleri güncelle',
     'delete_title' => 'Hesabınızı silin',
     'delete_desc' => 'Hesabınızı silmek istiyor musunuz? Uyarı: silme kalıcıdır ve tüm verileriniz kalıcı olarak silinecektir. (Varsa) aboneliğiniz de hemen iptal edilecektir.',
-    'delete_other_desc' => 'Just to be clear: your data in the main database will be deleted immediately. However, as described in our privacy policy, we do daily backups of the database in case of failure and this backup is kept for 30 days – then it’s completely deleted. It’s unrealistic to imagine that we can go in all the backups to delete your specific data. By the way, this data is encrypted on very secure Amazon servers and no one has the encryption key except us. Therefore, your data will completely disappear in 30 days from all the backups, and no one will know this data ever existed in the first place.',
+    'delete_other_desc' => 'Açık olmak gerekirse: ana veri tabanındaki verileriniz hemen silinecektir. Ancak, gizlilik politikamızda açıklandığı gibi, hata durumlarına karşı veri tabanının günlük yedeklemesini yaparız ve bu yedekleme 30 gün boyunca saklanır – daha sonra tamamen silinir. Belirli verilerinizi silmek için tüm yedeklemeleri kontrol edeceğimizi hayal etmek gerçekçi değildir. Bu arada, bu veriler çok güvenli Amazon sunucularında şifrelenmiştir ve bizim dışımızda hiç kimse şifreleme anahtarına sahip değildir. Bu nedenle, verileriniz 30 gün içinde tüm yedeklemelerden tamamen kaybolacak ve hiç kimse bu verilerin var olduğunu dahi bilemeyecektir.',
     'reset_desc' => 'Hesabınızı sıfırlamak ister misiniz? Bu, tüm kişilerinizi ve onlarla ilişkili verileri kaldıracaktır. Hesabınız silinmeyecektir.',
     'reset_title' => 'Hesabınızı sıfırlayın',
     'reset_cta' => 'Hesabı sıfırla',
@@ -190,7 +190,7 @@ return [
     'subscriptions_downgrade_rule_users_constraint' => 'Şu an hesabında <a href=":url">1 kişi</a> var.|Şu an hesabında <a href=":url">:count kişi</a> var.',
     'subscriptions_downgrade_rule_invitations' => 'Bekleyen davetiniz olmamalıdır',
     'subscriptions_downgrade_rule_invitations_constraint' => 'İnsanlara gönderdiğiniz <a href=":url">:count adet bekleyen davetiniz</a> bulunmaktadır.',
-    'subscriptions_downgrade_rule_contacts' => 'You must not have more than :number active contacts',
+    'subscriptions_downgrade_rule_contacts' => ':number adetten fazla aktif kişiye sahip olmamalısınız',
     'subscriptions_downgrade_rule_contacts_constraint' => 'Şu anda <a href=":url">:count adet kişiniz</a> bulunmaktadır.',
     'subscriptions_downgrade_cta' => 'Düşür',
     'subscriptions_downgrade_success' => 'Ücretsiz plana geri döndün!',
@@ -487,7 +487,7 @@ return [
     'dav_caldav_birthdays_export' => 'Tüm doğum günlerini tek bir dosyada dışa aktar',
     'dav_caldav_tasks_export' => 'Tüm görevleri tek bir dosyada dışa aktar',
 
-    'archive_title' => 'Archive all your contacts in your account',
-    'archive_desc' => 'This will archive all the contacts in your account.',
-    'archive_cta' => 'Archive all your contacts',
+    'archive_title' => 'Hesabınızdaki tüm kişilerinizi arşivleyin',
+    'archive_desc' => 'Bu, hesabınızdaki tüm kişileri arşivleyecektir.',
+    'archive_cta' => 'Tüm kişilerinizi arşivleyin',
 ];
