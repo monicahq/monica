@@ -2751,10 +2751,10 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
-cypress@4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-4.0.0.tgz#8f5dd24b278c46c13116053d35e1e4d014accf76"
-  integrity sha512-yH9K5OJYc/IvgPlO595HBTyD9g7ADSq2aUNGjc6BnSPoUWaERS9wTnFXiD3V2wyz58YulDa8pCsxwBOYMMsNKQ==
+cypress@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-4.0.1.tgz#815da77c8e2528501b9af2e8d12cfcaec8c9dde7"
+  integrity sha512-P+cSwc5yE+1hIkWwJzpsiSQthKmzkFeFz2ySejSrJJ6FiXoL8pp0vr1cyWp+75KT4nqL9IYt1GMrHp+mVmvocA==
   dependencies:
     "@cypress/listr-verbose-renderer" "0.4.1"
     "@cypress/xvfb" "1.2.4"
