@@ -130,6 +130,7 @@ class Weather extends Model
      * Temperature is fetched in Celsius. It needs to be
      * converted to Fahrenheit depending on the user.
      *
+     * @param string $scale
      * @return string
      */
     public function temperature($scale = 'celsius')
