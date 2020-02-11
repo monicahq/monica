@@ -15,6 +15,7 @@
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "2.9.3",
         "erusev/parsedown": "~1.7",
+        "facade/ignition": "^1.16",
         "fideloper/proxy": "^4.0",
         "giggsey/libphonenumber-for-php": "^8.9",
         "guzzlehttp/guzzle": "^6.2",
@@ -58,7 +59,6 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3",
-        "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.6",
         "khanamiryan/qrcode-detector-decoder": "1.0.2",
         "laravel/dusk": "^5.0",
@@ -73,7 +73,7 @@
         "symfony/css-selector": "~4.0",
         "symfony/dom-crawler": "~5.0",
         "thecodingmachine/phpstan-safe-rule": "^0.1",
-        "vimeo/psalm": "^3.0"
+        "vimeo/psalm": "3.7.2"
     },
     "suggest": {
         "ext-apcu": "*"
