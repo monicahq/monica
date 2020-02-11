@@ -102,13 +102,15 @@ return [
 
     'error_title' => 'Ups! Algo correu mal.',
     'error_unauthorized' => 'Não tem permissões para editar este recurso.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'Ocorreu um erro ao guardar os dados.',
     'error_try_again' => 'Something went wrong. Please try again.',
     'error_id' => 'Error ID: :id',
-    'error_unavailable' => 'Serviço Indisponível',
+    'error_unavailable' => 'Service unavailable',
     'error_maintenance' => 'Maintenance in progress. Be right back.',
     'error_help' => 'We’ll be right back.',
     'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'Os dados foram guardados.',
 
