@@ -78,4 +78,13 @@ class Handler extends ExceptionHandler
 
         return parent::render($request, $e);
     }
+
+    protected function whoopsHandler()
+    {
+        try {
+            return app(\Whoops\Handler\HandlerInterface::class);
+        } catch (\Illuminate\Contracts\Container\BindingResolutionException $e) {
+            return parent::whoopsHandler();
+        }
+    }
 }
