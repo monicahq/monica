@@ -128,7 +128,6 @@ return [
 
     // age - birthday
     'birthdate_not_set' => 'Birthdate is not set',
-    'age_approximate_in_years' => 'around :age years old',
     'age_exact_in_years' => ':age years old',
     'age_exact_birthdate' => 'born :date',
 

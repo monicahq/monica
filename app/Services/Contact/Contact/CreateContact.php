@@ -52,6 +52,7 @@ class CreateContact extends BaseService
     public function execute(array $data): Contact
     {
         $this->validate($data);
+
         // filter out the data that shall not be updated here
         $dataOnly = Arr::except(
             $data,
