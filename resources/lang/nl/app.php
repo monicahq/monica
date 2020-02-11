@@ -102,13 +102,15 @@ return [
 
     'error_title' => 'Oeps! Er is iets misgegaan.',
     'error_unauthorized' => 'Je hebt niet de rechten om dit onderdeel te bewerken.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'Er is een fout opgetreden bij het opslaan van de gegevens.',
     'error_try_again' => 'Er ging iets mis. Probeer opnieuw.',
     'error_id' => 'Fout-ID: :id',
-    'error_unavailable' => 'Service niet beschikbaar',
+    'error_unavailable' => 'Service unavailable',
     'error_maintenance' => 'Onderhoud in uitvoering. Zo terug.',
     'error_help' => 'We zijn zo terug.',
     'error_twitter' => '<a href="https://twitter.com/:twitter">Volg ons op Twitter</a> als je gewaarschuwd wilt worden als we terug zijn.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'De gegevens zijn opgeslagen.',
 
