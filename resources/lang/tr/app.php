@@ -102,13 +102,15 @@ return [
 
     'error_title' => 'Amanın! Bir şeyler ters gitti.',
     'error_unauthorized' => 'Bu kaynağı düzenlemeye yetkiniz yok.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'Verileri kaydetmeye çalışırken bir hata oluştu.',
     'error_try_again' => 'Bir şeyler ters gitti. Lütfen tekrar deneyin.',
     'error_id' => 'Hata kimliği: :id',
-    'error_unavailable' => 'Servis Mevcut Değil',
+    'error_unavailable' => 'Service unavailable',
     'error_maintenance' => 'Bakım devam ediyor. Birazdan geri döneceğiz.',
     'error_help' => 'Kısa süre sonra geri döneceğiz.',
     'error_twitter' => 'Yeniden çalışır olduğunda haberdar olmak için <a href="https://twitter.com/:twitter">Twitter hesabımızı</a> takip edin.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'Veri kaydedildi.',
 
