@@ -102,13 +102,15 @@ return [
 
     'error_title' => 'Oups ! Une erreur est survenue.',
     'error_unauthorized' => 'Vous n’avez pas le droit de modifier cette ressource.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'Une erreur est intervenue pendant la sauvegarde des données.',
     'error_try_again' => 'Une erreur s’est produite. Merci d’essayer à nouveau.',
     'error_id' => 'Erreur numéro : :id',
-    'error_unavailable' => 'Service non disponible',
+    'error_unavailable' => 'Service unavailable',
     'error_maintenance' => 'Maintenance en cours. On revient vite !',
     'error_help' => 'On revient tout de suite.',
     'error_twitter' => 'Suivez <a href="https://twitter.com/:twitter">notre compte Twitter</a> pour être alerté de l’évolution de la situation.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'Les modifications ont été enregistrées.',
 
