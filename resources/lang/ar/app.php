@@ -102,13 +102,15 @@ return [
 
     'error_title' => 'عفواً! حصل خطأ ما.',
     'error_unauthorized' => 'ليس لديك الصلاحية لتحرير هذا المصدر.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'لقد حصل خطأ بينما كنا نحاول حفظ البيانات.',
     'error_try_again' => 'حدث خطأ ما. الرجاء المحاولة مرة أخرى.',
     'error_id' => 'معرف الخطأ: :id',
-    'error_unavailable' => 'الخدمة غير متاحة',
+    'error_unavailable' => 'Service unavailable',
     'error_maintenance' => 'تتم الصيانة. سنعود حالاً.',
     'error_help' => 'سنعود إليك حالاً.',
     'error_twitter' => 'تابع <a href="https://twitter.com/:twitter">حساب تويتر</a> الخاص بنا، ليتم تنبيهك عندما يعود الموقع مجدداً.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'تم حفظ البيانات.',
 
