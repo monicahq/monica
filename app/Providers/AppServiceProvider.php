@@ -163,5 +163,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Account\Settings\ResetAccount::class => \App\Services\Account\Settings\ResetAccount::class,
         \App\Services\Account\Settings\DestroyAccount::class => \App\Services\Account\Settings\DestroyAccount::class,
         \App\Services\Instance\AuditLog\LogAccountAction::class => \App\Services\Instance\AuditLog\LogAccountAction::class,
+        \App\Services\User\UpdateViewPreference::class => \App\Services\User\UpdateViewPreference::class,
+        \App\Services\User\AcceptPolicy::class => \App\Services\User\AcceptPolicy::class,
     ];
 }
