@@ -5,6 +5,7 @@ namespace Tests\Browser\Settings;
 use Tests\DuskTestCase;
 use App\Models\User\User;
 use Laravel\Dusk\Browser;
+use App\Services\User\AcceptPolicy;
 use Tests\Browser\Pages\SettingsDAV;
 
 class DAVControllerTest extends DuskTestCase
@@ -16,7 +17,11 @@ class DAVControllerTest extends DuskTestCase
     {
         $user = factory(User::class)->create();
         $user->account->populateDefaultFields();
-        $user->acceptPolicy();
+        app(AcceptPolicy::class)->execute([
+            'account_id' => $user->account->id,
+            'user_id' => $user->id,
+            'ip_address' => null,
+        ]);
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)

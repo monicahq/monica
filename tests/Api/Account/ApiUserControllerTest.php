@@ -111,9 +111,7 @@ class ApiUserControllerTest extends ApiTestCase
 
         $response = $this->get('/api/me/compliance');
 
-        $response->assertStatus(200);
-
-        $response->assertJsonCount(0, 'data');
+        $response->assertStatus(404);
     }
 
     /** @test */
