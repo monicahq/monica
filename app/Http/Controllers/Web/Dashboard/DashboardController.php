@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Web\Dashboard;
 
+use Inertia\Inertia;
+use Inertia\Response;
 use App\Helpers\DateHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
-use Inertia\Response;
 
 class DashboardController extends Controller
 {
