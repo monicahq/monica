@@ -2,31 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\DBHelper;
-use App\Helpers\DateHelper;
-use App\Models\Contact\Tag;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Helpers\LocaleHelper;
-use App\Helpers\SearchHelper;
-use App\Helpers\GendersHelper;
-use App\Models\Contact\Contact;
-use App\Services\VCard\ExportVCard;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Relationship\Relationship;
-use Barryvdh\Debugbar\Facade as Debugbar;
-use Illuminate\Validation\ValidationException;
-use App\Services\Contact\Contact\CreateContact;
-use App\Services\Contact\Contact\UpdateContact;
-use App\Services\Contact\Contact\DestroyContact;
-use App\Services\Contact\Contact\UpdateContactWork;
-use App\Services\Contact\Contact\UpdateContactFoodPreferences;
-use App\Http\Resources\Contact\ContactSearch as ContactResource;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\Request;
+use App\Helpers\GendersHelper;
+use App\Models\Contact\Contact;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Services\Contact\Contact\CreateContact;
 
 class ContactsController extends Controller
 {
