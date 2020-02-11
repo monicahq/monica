@@ -8,13 +8,9 @@
 
 <template>
   <div>
-    <!-- list of tags -->
+    <!-- list of tags displayed in the contact list, on the right -->
     <ul class="ma0 list pl0">
       <li class="mb2">Browse by tags</li>
-      <li class="mb2" v-for="tag in tags" :key="tag.id">
-        <inertia-link :href="tag.url">{{ tag.name }}</inertia-link>
-        <span class="fr">{{ tag.number }}</span>
-      </li>
       <li class="mb2" v-for="tag in tags" :key="tag.id">
         <inertia-link :href="tag.url">{{ tag.name }}</inertia-link>
         <span class="fr">{{ tag.number }}</span>

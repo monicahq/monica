@@ -74,15 +74,6 @@ export default {
     },
   },
 
-  updated() {
-    if (localStorage.success) {
-      this.notification.message = localStorage.success;
-      this.notification.type = 'success';
-      this.notification.show = true;
-      localStorage.removeItem(success);
-    }
-  },
-
   mounted() {
     this.updatePageTitle(this.title);
 

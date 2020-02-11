@@ -14,13 +14,13 @@
       <div class="db mw9 center w-100 breadcrumb f6">
         <ul class="list ph0 tl db mh0 mv2">
           <li class="di">
-            <inertia-link :href="'/dashboard'">Dashboard</inertia-link>
+            <inertia-link :href="'/dashboard'">{{ $t('app.breadcrumb_dashboard') }}</inertia-link>
           </li>
           <li class="di">
-            <inertia-link :href="'/people'">{{ $t('app.breadcrumb_account_home') }}</inertia-link>
+            <inertia-link :href="'/people'">{{ $t('app.breadcrumb_list_contacts') }}</inertia-link>
           </li>
           <li class="di">
-            {{ $t('app.breadcrumb_account_manage_teams') }}
+            {{ $t('app.breadcrumb_contact_new') }}
           </li>
         </ul>
       </div>
@@ -35,10 +35,11 @@
       <div class="mw7 center br3 ba bg-white mb6">
 
         <form @submit.prevent="submit">
-          <errors :errors="form.errors" />
 
           <div class="pa4-ns ph3 pv2 bb">
-           <div class="mb3">
+            <errors :errors="form.errors" :classes="'mb3'" />
+
+            <div class="mb3">
               <form-input
                 v-model="form.firstname"
                 :id="'first_name'"
@@ -101,12 +102,14 @@
 import Layout from '@/Shared/Layout';
 import FormInput from '@/Shared/Input';
 import FormSelect from '@/Shared/Select';
+import Errors from '@/Shared/Errors';
 
 export default {
   components: {
     Layout,
     FormInput,
     FormSelect,
+    Errors
   },
 
   props: {

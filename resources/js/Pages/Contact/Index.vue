@@ -116,7 +116,7 @@ export default {
       default: null,
     },
     urls: {
-      type: Array,
+      type: Object,
       default: null,
     },
     numberOfArchivedContacts: {

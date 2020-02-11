@@ -13,13 +13,13 @@
       <div class="db mw9 center w-100 breadcrumb f6">
         <ul class="list ph0 tl db mh0 mv2">
           <li class="di">
-            <inertia-link :href="'/dashboard'">Dashboard</inertia-link>
+            <inertia-link :href="'/dashboard'">{{ $t('app.breadcrumb_dashboard') }}</inertia-link>
           </li>
           <li class="di">
-            <inertia-link :href="'/people'">{{ $t('app.breadcrumb_account_home') }}</inertia-link>
+            <inertia-link :href="'/people'">{{ $t('app.breadcrumb_list_contacts') }}</inertia-link>
           </li>
           <li class="di">
-            {{ $t('app.breadcrumb_account_manage_teams') }}
+            {{ $t('app.breadcrumb_contact', {name : contact.name}) }}
           </li>
         </ul>
       </div>
