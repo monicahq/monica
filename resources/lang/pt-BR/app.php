@@ -102,13 +102,15 @@ return [
 
     'error_title' => 'Ops! Algo deu errado.',
     'error_unauthorized' => 'Você não tem permissão para editar este recurso.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'Ocorreu um erro ao tentar salvar os dados.',
     'error_try_again' => 'Algo deu errado. Por favor, tente novamente.',
     'error_id' => 'Error ID: :id',
-    'error_unavailable' => 'Serviço Indisponível',
+    'error_unavailable' => 'Service unavailable',
     'error_maintenance' => 'Manutenção em andamento. Voltaremos em breve.',
     'error_help' => 'Voltaremos em breve.',
     'error_twitter' => 'Siga-nos <a href="https://twitter.com/:twitter">no Twitter </a> para saber quando voltamos.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'Dados salvos com sucesso!',
 
