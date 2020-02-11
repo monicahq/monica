@@ -102,15 +102,15 @@ return [
 
     'error_title' => '¡Ups! algo ha fallado.',
     'error_unauthorized' => 'No tienes permisos para editar este recurso.',
-    'error_user_account' => 'This user does not belong to the given account.',
+    'error_user_account' => 'Este usuario no pertenece a la cuenta dada.',
     'error_save' => 'Tuvimos un error tratando de guardar los datos.',
     'error_try_again' => 'Se ha producido un error. Por favor, inténtelo de nuevo.',
     'error_id' => 'Error ID: :id',
-    'error_unavailable' => 'Service unavailable',
+    'error_unavailable' => 'Servicio no disponible',
     'error_maintenance' => 'Mantenimiento en curso. Enseguida regresamos.',
     'error_help' => 'Enseguida regresamos.',
     'error_twitter' => 'Siguenos <a href="https://twitter.com/:twitter">en nuestra cuenta de Twitter</a> para saber cuando estamos de vuelta.',
-    'error_no_term' => 'There is no policy for this instance yet.',
+    'error_no_term' => 'Todavía no hay ninguna política para esta instancia.',
 
     'default_save_success' => 'Los datos han sido guardados.',
 
