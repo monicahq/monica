@@ -20,11 +20,7 @@
     <!-- form to edit the description -->
     <template v-if="editMode">
       <form @submit.prevent="submit">
-        <template v-if="form.errors.length > 0">
-          <div class="cf pb1 w-100 mb2">
-            <errors :errors="form.errors" />
-          </div>
-        </template>
+        <errors :errors="form.errors" :classes="'mb3'" />
 
         <text-area v-model="form.description"
           :label="$t('people.information_edit_description')"
@@ -55,11 +51,13 @@
 <script>
 import TextArea from '@/Shared/TextArea';
 import LoadingButton from '@/Shared/LoadingButton';
+import Errors from '@/Shared/Errors';
 
 export default {
   components: {
     TextArea,
     LoadingButton,
+    Errors
   },
 
   props: {
