@@ -456,4 +456,9 @@ return [
     'dav_birthdays_description' => 'Verjaardagen van de contacten van :name',
     'dav_tasks' => 'Taken',
     'dav_tasks_description' => 'Taken van :name',
+
+    // audit log
+    'log_contact_created' => 'Created the contact',
+    'log_contact_created_with_name' => 'Added :name as a contact.',
+    'log_contact_created_with_name_with_link' => 'Added <a href=":link">:name</a> as a contact.',
 ];
