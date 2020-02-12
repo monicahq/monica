@@ -12,7 +12,7 @@ return [
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'משאבי DAV',
     'sidebar_settings_security' => 'אבטחה',
-    'sidebar_settings_auditlogs' => 'Audit logs',
+    'sidebar_settings_auditlogs' => 'יומני ביקורת',
 
     'export_title' => 'יצוא נתוני החשבון שלך',
     'export_be_patient' => 'יש ללחוץ על הכפתור כדי להתחיל את הייצוא. עיבוד הייצוא עשוי לארוך מספר דקות - נא להתאזר בסבלנות ולא ללחוץ על הכפתור שוב.',
@@ -492,6 +492,6 @@ return [
     'archive_desc' => 'פעולה זו תעביר את כל אנשי הקשר בחשבון שלך לארכיון.',
     'archive_cta' => 'העברת כל אנשי הקשר לארכיון',
 
-    'logs_title' => 'Everything that happened to this account',
-    'logs_author' => 'By :name on :date',
+    'logs_title' => 'כל מה שקרה לחשבון הזה',
+    'logs_author' => 'מאת :name ב־:date',
 ];
