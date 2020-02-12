@@ -12,6 +12,7 @@ return [
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'Ressources DAV',
     'sidebar_settings_security' => 'Sécurité',
+    'sidebar_settings_auditlogs' => 'Audit logs',
 
     'export_title' => 'Exporter les données de votre compte',
     'export_be_patient' => 'Cliquez sur le bouton pour commencer l’export. Cela peut prendre plusieurs minutes pour préparer l’export – merci d’être patient et de ne pas spammer le bouton.',
@@ -490,4 +491,7 @@ return [
     'archive_title' => 'Archiver tous vos contacts de votre compte',
     'archive_desc' => 'Ceci va archiver tous les contacts de votre compte.',
     'archive_cta' => 'Archiver tous vos contacts',
+
+    'logs_title' => 'Everything that happened to this account',
+    'logs_author' => 'By :name on :date',
 ];
