@@ -66,8 +66,8 @@ export default {
       type: String,
       default: null,
     },
-    contactId: {
-      type: Number,
+    hash: {
+      type: String,
       default: null,
     },
   },
@@ -92,7 +92,7 @@ export default {
     submit() {
       this.loadingState = 'loading';
 
-      axios.post('/contacts/' + this.contactId + '/description', this.form)
+      axios.post('/people/' + this.hash + '/description', this.form)
         .then(response => {
           this.$snotify.success(this.$t('employee.description_success'), {
             timeout: 2000,

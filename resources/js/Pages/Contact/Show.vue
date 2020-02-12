@@ -42,7 +42,7 @@
             <!-- description -->
             <description
               :description="contact.description"
-              :contact-id="contact.id"
+              :hash="contact.hash"
             />
 
             <!-- family -->

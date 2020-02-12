@@ -102,7 +102,7 @@ class ContactsController extends Controller
     public function show(Contact $contact)
     {
         $contactObject = [
-            'id' => $contact->id,
+            'hash' => $contact->hashId(),
             'name' => $contact->name,
             'avatar' => $contact->getAvatarURL(),
             'age' => ($contact->birthdate) ? $contact->birthdate->getAge() : null,

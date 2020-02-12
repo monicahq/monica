@@ -2,26 +2,27 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use App\Models\Contact\Contact;
 use Illuminate\Http\Request;
 use App\Helpers\InstanceHelper;
-use App\Models\Company\Employee;
 use App\Http\Controllers\Controller;
 use App\Services\Contact\Description\SetPersonalDescription;
+use Illuminate\Http\Response;
 
 class DescriptionController extends Controller
 {
     /**
      * Assign a contact description to the given contact.
      *
-     * @param int $contactId
-     * @return \Illuminate\Http\Response
+     * @param Contact $contact
+     * @return Response
      */
-    public function store(Request $request, int $contactId)
+    public function create(Request $request, Contact $contact)
     {
         $request = [
             'account_id' => auth()->user()->account_id,
             'author_id' => auth()->user()->id,
-            'contact_id' => $contactId,
+            'contact_id' => $contact->id,
             'description' => $request->input('description'),
         ];
 
@@ -38,7 +39,7 @@ class DescriptionController extends Controller
      * @param int $companyId
      * @param int $contactId
      * @param int $employeeStatusId
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Request $request, int $companyId, int $contactId, int $employeeStatusId)
     {
