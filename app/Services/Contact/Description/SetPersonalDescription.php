@@ -2,9 +2,8 @@
 
 namespace App\Services\Contact\Description;
 
-use App\Models\Contact\Contact;
-use Carbon\Carbon;
 use App\Services\BaseService;
+use App\Models\Contact\Contact;
 
 class SetPersonalDescription extends BaseService
 {

@@ -3,15 +3,12 @@
 namespace Tests\Unit\Services\Contact\Description;
 
 use Tests\TestCase;
-use App\Jobs\LogAccountAudit;
-use App\Jobs\LogEmployeeAudit;
-use App\Models\Company\Employee;
-use App\Models\Contact\Contact;
 use App\Models\User\User;
-use App\Services\Contact\Description\ClearPersonalDescription;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\Contact\Description\ClearPersonalDescription;
 
 class ClearPersonalDescriptionTest extends TestCase
 {
