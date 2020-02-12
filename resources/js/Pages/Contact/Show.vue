@@ -40,7 +40,10 @@
             </div>
 
             <!-- description -->
-            <description :contact="contact" />
+            <description
+              :description="contact.description"
+              :contact-id="contact.id"
+            />
 
             <!-- family -->
             <div class="pa2 bb">

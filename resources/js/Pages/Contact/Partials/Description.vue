@@ -13,7 +13,7 @@
     <!-- non-edit mode -->
     <template v-if="!editMode">
       <p class="mb1 f6 mt0">Description <a class="fr pointer" @click="editMode = true">Edit</a></p>
-      <p class="mv0 lh-copy" v-if="updatedContact.description">{{ updatedContact.description }}</p>
+      <p class="mv0 lh-copy" v-if="localDescription">{{ localDescription }}</p>
       <p class="mv0 lh-copy" v-else>{{ $t('people.information_edit_no_description') }}</p>
     </template>
 
@@ -22,7 +22,8 @@
       <form @submit.prevent="submit">
         <errors :errors="form.errors" :classes="'mb3'" />
 
-        <text-area v-model="form.description"
+        <text-area
+          v-model="form.description"
           :label="$t('people.information_edit_description')"
           :datacy="'description-textarea'"
           :required="true"
@@ -61,15 +62,19 @@ export default {
   },
 
   props: {
-    contact: {
-      type: Object,
+    description: {
+      type: String,
+      default: null,
+    },
+    contactId: {
+      type: Number,
       default: null,
     },
   },
 
   data() {
     return {
-      updatedContact: null,
+      localDescription: null,
       editMode: false,
       form: {
         description: null,
@@ -80,14 +85,14 @@ export default {
   },
 
   created: function() {
-    this.updatedContact = this.contact;
+    this.localDescription = this.description;
   },
 
   methods: {
     submit() {
       this.loadingState = 'loading';
 
-      axios.post('/' + this.$page.auth.company.id + '/employees/' + this.employee.id + '/description', this.form)
+      axios.post('/contacts/' + this.contactId + '/description', this.form)
         .then(response => {
           this.$snotify.success(this.$t('employee.description_success'), {
             timeout: 2000,
@@ -96,8 +101,8 @@ export default {
             pauseOnHover: true,
           });
 
-          this.updatedEmployee = response.data.data;
-          this.showEdit = false;
+          this.localDescription = response.data.description;
+          this.editMode = false;
           this.loadingState = null;
         })
         .catch(error => {

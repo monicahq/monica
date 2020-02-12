@@ -101,6 +101,12 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
             Route::post('/people/{contact}/work/update', 'ContactsController@updateWork')->name('update');
         });
 
+        // Description
+        Route::name('description.')->group(function () {
+            Route::post('/people/{contact}/description', 'Contacts\\DescriptionController@create')->name('create');
+            Route::delete('/people/{contact}/description', 'Contacts\\DescriptionController@destroy')->name('destroy');
+        });
+
         // Introductions
         Route::name('introductions.')->group(function () {
             Route::get('/people/{contact}/introductions/edit', 'Contacts\\IntroductionsController@edit')->name('edit');
