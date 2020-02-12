@@ -137,6 +137,11 @@ return [
     'last_activity_date' => 'Last activity together: :date',
     'last_activity_date_empty' => 'Last activity together: unknown',
 
+    // description
+    'information_edit_description' => 'Description',
+    'information_edit_no_description' => 'No description yet',
+    'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
+
     // additional information
     'information_edit_success' => 'The profile has been updated successfully',
     'information_edit_title' => 'Edit :name’s personal information',
@@ -144,8 +149,6 @@ return [
     'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => 'First name',
     'information_edit_lastname' => 'Last name (Optional)',
-    'information_edit_description' => 'Description (Optional)',
-    'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_unknown' => 'I do not know this person’s age',
     'information_edit_probably' => 'This person is probably...',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',

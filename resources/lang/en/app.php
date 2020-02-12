@@ -16,6 +16,7 @@ return [
     'save_close' => 'Save and close',
     'close' => 'Close',
     'copy' => 'Copy',
+    'clear' => 'Clear',
     'create' => 'Create',
     'remove' => 'Remove',
     'revoke' => 'Revoke',

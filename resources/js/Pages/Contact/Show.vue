@@ -40,10 +40,7 @@
             </div>
 
             <!-- description -->
-            <div class="pa2 bb">
-              <p class="mb1 f6 mt0">Description</p>
-              <p class="mv0 lh-copy">{{ contact.description }}</p>
-            </div>
+            <description :contact="contact" />
 
             <!-- family -->
             <div class="pa2 bb">
@@ -175,11 +172,13 @@
 <script>
 import Layout from '@/Shared/Layout';
 import ListTags from '@/Pages/Contact/Partials/ListTags';
+import Description from '@/Pages/Contact/Partials/Description';
 
 export default {
   components: {
     Layout,
     ListTags,
+    Description,
   },
 
   props: {
