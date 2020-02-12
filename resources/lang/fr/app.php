@@ -102,15 +102,15 @@ return [
 
     'error_title' => 'Oups ! Une erreur est survenue.',
     'error_unauthorized' => 'Vous n’avez pas le droit de modifier cette ressource.',
-    'error_user_account' => 'This user does not belong to the given account.',
+    'error_user_account' => 'Cet utilisateur n\'appartient pas au compte donné.',
     'error_save' => 'Une erreur est intervenue pendant la sauvegarde des données.',
     'error_try_again' => 'Une erreur s’est produite. Merci d’essayer à nouveau.',
     'error_id' => 'Erreur numéro : :id',
-    'error_unavailable' => 'Service unavailable',
+    'error_unavailable' => 'Service indisponible',
     'error_maintenance' => 'Maintenance en cours. On revient vite !',
     'error_help' => 'On revient tout de suite.',
     'error_twitter' => 'Suivez <a href="https://twitter.com/:twitter">notre compte Twitter</a> pour être alerté de l’évolution de la situation.',
-    'error_no_term' => 'There is no policy for this instance yet.',
+    'error_no_term' => 'Il n\'y a pas encore de politique pour cette instance.',
 
     'default_save_success' => 'Les modifications ont été enregistrées.',
 
@@ -458,7 +458,7 @@ return [
     'dav_tasks_description' => 'Tâches de :name',
 
     // audit log
-    'log_contact_created' => 'Created the contact',
-    'log_contact_created_with_name' => 'Added :name as a contact.',
-    'log_contact_created_with_name_with_link' => 'Added <a href=":link">:name</a> as a contact.',
+    'log_contact_created' => 'Créé un contact',
+    'log_contact_created_with_name' => 'Ajout de :name en tant que contact.',
+    'log_contact_created_with_name_with_link' => 'Ajout de <a href=":link">:name</a> en tant que contact.',
 ];
