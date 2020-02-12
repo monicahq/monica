@@ -102,15 +102,15 @@ return [
 
     'error_title' => 'אופס! משהו השתבש.',
     'error_unauthorized' => 'אין לך את ההרשאה לערוך את המשאב הזה.',
-    'error_user_account' => 'This user does not belong to the given account.',
+    'error_user_account' => 'משתמש זה אינו שייך לחשבון שצוין.',
     'error_save' => 'אירעה שגיאה בעת שמירת הנתונים.',
     'error_try_again' => 'משהו השתבש. נא לנסות שוב.',
     'error_id' => 'מזהה שגיאה: :id',
-    'error_unavailable' => 'Service unavailable',
+    'error_unavailable' => 'השירות אינו זמין',
     'error_maintenance' => 'מתבצעות עבודות תחזוקה. תכף נשוב.',
     'error_help' => 'מיד נשוב.',
     'error_twitter' => 'ניתן לעקוב אחר <a href="https://twitter.com/:twitter">חשבון הטוויטר שלנו</a> כדי להתעדכן אם השירות שב לפעילות.',
-    'error_no_term' => 'There is no policy for this instance yet.',
+    'error_no_term' => 'עדיין אין מדיניות עבור העותק הזה.',
 
     'default_save_success' => 'הנתונים נשמרו.',
 
