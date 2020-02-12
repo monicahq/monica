@@ -500,4 +500,10 @@ return [
 
     // emotions
     'emotion_this_made_me_feel' => '这让你觉得...',
+
+    // logs
+    'auditlogs_link' => 'History',
+    'auditlogs_title' => 'Everything that happened to :name',
+    'auditlogs_breadcrumb' => 'History',
+    'auditlogs_author' => 'By :name on :date',
 ];
