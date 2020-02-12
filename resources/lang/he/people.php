@@ -502,8 +502,8 @@ return [
     'emotion_this_made_me_feel' => 'התחושה שקיבלת היא…',
 
     // logs
-    'auditlogs_link' => 'History',
-    'auditlogs_title' => 'Everything that happened to :name',
-    'auditlogs_breadcrumb' => 'History',
-    'auditlogs_author' => 'By :name on :date',
+    'auditlogs_link' => 'היסטוריה',
+    'auditlogs_title' => 'כלה מה שקרה ל:name',
+    'auditlogs_breadcrumb' => 'היסטוריה',
+    'auditlogs_author' => 'מאת :name ב־:date',
 ];
