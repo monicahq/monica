@@ -458,7 +458,7 @@ return [
     'dav_tasks_description' => 'המשימות של :name',
 
     // audit log
-    'log_contact_created' => 'Created the contact',
-    'log_contact_created_with_name' => 'Added :name as a contact.',
+    'log_contact_created' => 'איש הקשר נוצר',
+    'log_contact_created_with_name' => 'הוספה של :name כאיש קשר.',
     'log_contact_created_with_name_with_link' => 'Added <a href=":link">:name</a> as a contact.',
 ];
