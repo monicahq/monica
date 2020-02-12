@@ -34,6 +34,7 @@ class FakeContentTableSeeder extends Seeder
     private $contact;
     private $account;
     private $countries = null;
+    private $user;
 
     /**
      * Run the database seeds.
@@ -46,7 +47,8 @@ class FakeContentTableSeeder extends Seeder
 
         // Get or create the first account
         if (User::where('email', 'admin@admin.com')->exists()) {
-            $userId = User::where('email', 'admin@admin.com')->value('id');
+            $this->user = User::where('email', 'admin@admin.com')->first();
+            $userId = $this->user->value('id');
             $this->account = Account::where('id', $userId)->first();
         } else {
             $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin0');
@@ -54,6 +56,7 @@ class FakeContentTableSeeder extends Seeder
             // set default admin account to confirmed
             $adminUser = $this->account->users()->first();
             $this->confirmUser($adminUser);
+            $this->user = $adminUser;
         }
 
         // create a random number of contacts
@@ -69,6 +72,7 @@ class FakeContentTableSeeder extends Seeder
 
             $this->contact = app(CreateContact::class)->execute([
                 'account_id' => $this->account->id,
+                'author_id' => $this->user->id,
                 'first_name' => $this->faker->firstName($gender),
                 'last_name' => (rand(1, 2) == 1) ? $this->faker->lastName : null,
                 'nickname' => (rand(1, 2) == 1) ? $this->faker->name : null,
@@ -225,6 +229,7 @@ class FakeContentTableSeeder extends Seeder
 
                 $relatedContact = app(CreateContact::class)->execute([
                     'account_id' => $this->contact->account_id,
+                    'author_id' => $this->user->id,
                     'first_name' => $this->faker->firstName($gender),
                     'last_name' => (rand(1, 2) == 1) ? $this->faker->lastName : null,
                     'nickname' => (rand(1, 2) == 1) ? $this->faker->name : null,
