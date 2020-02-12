@@ -12,6 +12,7 @@ return [
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'DAV Kaynakları',
     'sidebar_settings_security' => 'Güvenlik',
+    'sidebar_settings_auditlogs' => 'Audit logs',
 
     'export_title' => 'Hesap bilgilerini dışarı aktar',
     'export_be_patient' => 'Dışarı aktarma işlemini başlatmak için butona tıklayın. Bu işlem birkaç dakika sürebilir - lütfen sabırlı olun butona sürekli basmayın.',
@@ -490,4 +491,7 @@ return [
     'archive_title' => 'Hesabınızdaki tüm kişilerinizi arşivleyin',
     'archive_desc' => 'Bu, hesabınızdaki tüm kişileri arşivleyecektir.',
     'archive_cta' => 'Tüm kişilerinizi arşivleyin',
+
+    'logs_title' => 'Everything that happened to this account',
+    'logs_author' => 'By :name on :date',
 ];
