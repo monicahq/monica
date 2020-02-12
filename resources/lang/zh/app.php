@@ -456,4 +456,9 @@ return [
     'dav_birthdays_description' => ':name的名片生日',
     'dav_tasks' => '任务',
     'dav_tasks_description' => ':name的任务',
+
+    // audit log
+    'log_contact_created' => 'Created the contact',
+    'log_contact_created_with_name' => 'Added :name as a contact.',
+    'log_contact_created_with_name_with_link' => 'Added <a href=":link">:name</a> as a contact.',
 ];
