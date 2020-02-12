@@ -2,7 +2,6 @@
 
 namespace App\Services\Contact\Contact;
 
-use Carbon\Carbon;
 use App\Models\User\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
