@@ -37,7 +37,7 @@ class LogAccountAudit implements ShouldQueue
      */
     public function handle()
     {
-        (new LogAccountAction)->execute(
+        app(LogAccountAction::class)->execute(
             $this->auditLog
         );
     }

@@ -188,7 +188,7 @@ class CreateContact extends BaseService
             'about_contact_id' => $contact->id,
             'author_id' => $author->id,
             'author_name' => $author->name,
-            'audited_at' => Carbon::now(),
+            'audited_at' => now(),
             'should_appear_on_dashboard' => true,
             'objects' => json_encode([
                 'contact_name' => $contact->name,
