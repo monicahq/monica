@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\Group\Group;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use App\Models\Group\Group;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use App\Services\Group\Group\AddContactToGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AddContactToGroupTest extends TestCase
 {
