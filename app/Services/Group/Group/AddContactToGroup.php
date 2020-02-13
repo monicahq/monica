@@ -2,10 +2,10 @@
 
 namespace App\Services\Group\Group;
 
+use Carbon\Carbon;
 use App\Models\Group\Group;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use Carbon\Carbon;
 
 class AddContactToGroup extends BaseService
 {
