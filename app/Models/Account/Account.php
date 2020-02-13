@@ -21,6 +21,7 @@ use App\Models\Contact\Message;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
+use App\Models\Instance\AuditLog;
 use App\Services\User\CreateUser;
 use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
@@ -476,6 +477,16 @@ class Account extends Model
     public function occupations()
     {
         return $this->hasMany(Occupation::class);
+    }
+
+    /**
+     * * Get the Audit log records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function auditLogs()
+    {
+        return $this->hasMany(AuditLog::class);
     }
 
     /**

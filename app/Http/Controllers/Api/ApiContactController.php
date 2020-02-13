@@ -120,6 +120,7 @@ class ApiContactController extends ApiController
                     +
                     [
                         'account_id' => auth()->user()->account->id,
+                        'author_id' => auth()->user()->id,
                     ]
             );
         } catch (ModelNotFoundException $e) {

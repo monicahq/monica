@@ -16,6 +16,8 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Document;
 use App\Models\Contact\LifeEvent;
+use App\Models\Instance\AuditLog;
+use App\Models\Account\Invitation;
 use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
 use App\Models\Account\ActivityType;
@@ -246,6 +248,16 @@ class AccountTest extends FeatureTestCase
             'account_id' => $account->id,
         ]);
         $this->assertTrue($account->occupations()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_logs()
+    {
+        $account = factory(Account::class)->create([]);
+        factory(AuditLog::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->auditLogs()->exists());
     }
 
     /** @test */
