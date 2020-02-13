@@ -32,7 +32,7 @@
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           {{-- This check is for the cultures that are used to say the last name first --}}
           <div class="mb3 mb0-ns">
-            @if (auth()->user()->getNameOrderForForms() == 'firstname')
+            @if ($formNameOrder == 'firstname')
 
             <div class="dt dt--fixed">
               <div class="dtc pr2">

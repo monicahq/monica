@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
+use App\Helpers\FormHelper;
 use Illuminate\Http\Request;
 use App\Helpers\GendersHelper;
 use App\Models\Contact\Contact;
@@ -41,7 +42,8 @@ class RelationshipsController extends Controller
             ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdate(now(DateHelper::getTimezone())->toDateString())
             ->withExistingContacts(ContactResource::collection($existingContacts))
-            ->withType($request->input('type'));
+            ->withType($request->input('type'))
+            ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()));
     }
 
     /**
@@ -118,7 +120,8 @@ class RelationshipsController extends Controller
             ->withMonth($month)
             ->withAge($age)
             ->withGenders(GendersHelper::getGendersInput())
-            ->withHasBirthdayReminder($hasBirthdayReminder);
+            ->withHasBirthdayReminder($hasBirthdayReminder)
+            ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()));
     }
 
     /**
@@ -193,6 +196,7 @@ class RelationshipsController extends Controller
 
         return [
             'account_id' => auth()->user()->account_id,
+            'author_id' => auth()->user()->id,
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'gender_id' => $request->input('gender_id'),

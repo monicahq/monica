@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Helpers\DBHelper;
 use Laravel\Cashier\Cashier;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use App\Notifications\EmailMessaging;
 use Illuminate\Support\Facades\Schema;
@@ -45,6 +46,8 @@ class AppServiceProvider extends ServiceProvider
         ResetPassword::toMailUsing(function ($user, $token) {
             return EmailMessaging::resetPasswordMail($user, $token);
         });
+
+        Paginator::defaultView('vendor.pagination.default');
     }
 
     /**
@@ -163,5 +166,8 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Group\Group\AddContactToGroup::class => \App\Services\Group\Group\AddContactToGroup::class,
         \App\Services\Account\Settings\ResetAccount::class => \App\Services\Account\Settings\ResetAccount::class,
         \App\Services\Account\Settings\DestroyAccount::class => \App\Services\Account\Settings\DestroyAccount::class,
+        \App\Services\Instance\AuditLog\LogAccountAction::class => \App\Services\Instance\AuditLog\LogAccountAction::class,
+        \App\Services\User\UpdateViewPreference::class => \App\Services\User\UpdateViewPreference::class,
+        \App\Services\User\AcceptPolicy::class => \App\Services\User\AcceptPolicy::class,
     ];
 }

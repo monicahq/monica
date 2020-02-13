@@ -66,6 +66,12 @@
     @endif
 
     @component('components.sidebar', [
+      'route' => 'settings.auditlog.index',
+      'icon' => 'fa fa-id-card-o',
+      'title' => 'settings.sidebar_settings_auditlogs'])
+    @endcomponent
+
+    @component('components.sidebar', [
       'route' => 'settings.security.index',
       'icon' => 'fa fa-shield',
       'title' => 'settings.sidebar_settings_security'])

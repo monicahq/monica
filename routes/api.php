@@ -13,7 +13,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::name('api.')->group(function () {
         // Me
         Route::get('/me', 'Account\\ApiUserController@show');
-        Route::get('/me/compliance', 'Account\\ApiUserController@compliance');
+        Route::get('/me/compliance', 'Account\\ApiUserController@getSignedPolicies');
         Route::get('/me/compliance/{id}', 'Account\\ApiUserController@get');
         Route::post('/me/compliance', 'Account\\ApiUserController@set');
 
@@ -141,10 +141,14 @@ Route::group(['middleware' => ['auth:api']], function () {
         // Avatars
         Route::put('/contacts/{contact}/avatar', 'Contact\\ApiAvatarController@update');
 
+        // Contact logs
+        Route::get('/contacts/{contact}/logs', 'Contact\\ApiAuditLogController@index');
+
         /*
          * SETTINGS
          */
         Route::apiResource('contactfieldtypes', 'Settings\\ApiContactFieldTypeController');
+        Route::apiResource('logs', 'Settings\\ApiAuditLogController');
 
         /*
          * MISC

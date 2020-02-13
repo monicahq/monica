@@ -17,6 +17,7 @@ use App\Models\Account\Activity;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
+use App\Models\Instance\AuditLog;
 use App\Models\Contact\Occupation;
 use App\Models\Contact\Conversation;
 use App\Models\Instance\SpecialDate;
@@ -152,6 +153,16 @@ class ContactTest extends FeatureTestCase
         $contact->groups()->sync([$group->id]);
 
         $this->assertTrue($contact->groups()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_logs()
+    {
+        $contact = factory(Contact::class)->create();
+        factory(AuditLog::class, 2)->create([
+            'about_contact_id' => $contact->id,
+        ]);
+        $this->assertTrue($contact->logs()->exists());
     }
 
     /** @test */

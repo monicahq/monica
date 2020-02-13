@@ -15,6 +15,7 @@ use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
 use App\Models\Account\Weather;
 use App\Models\Account\Activity;
+use App\Models\Instance\AuditLog;
 use function Safe\preg_match_all;
 use Illuminate\Support\Collection;
 use App\Models\Instance\SpecialDate;
@@ -440,6 +441,16 @@ class Contact extends Model
     public function groups()
     {
         return $this->belongsToMany(Group::class)->withTimestamps();
+    }
+
+    /**
+     * Get the Audot log records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function logs()
+    {
+        return $this->hasMany(AuditLog::class, 'about_contact_id', 'id');
     }
 
     /**
