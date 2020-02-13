@@ -147,6 +147,8 @@ class ApiGroupController extends ApiController
      */
     public function attachContacts(Request $request, int $groupId)
     {
+        $group = [];
+
         try {
             foreach ($request->input('contacts') as $contactId) {
                 $group = app(AddContactToGroup::class)->execute([
