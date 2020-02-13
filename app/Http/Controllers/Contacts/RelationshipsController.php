@@ -121,7 +121,7 @@ class RelationshipsController extends Controller
             ->withDay($day)
             ->withMonth($month)
             ->withAge($age)
-            ->withGenders(GendersHelper::getGendersInput())
+            ->withGenders(GenderHelper::getGendersInput())
             ->withHasBirthdayReminder($hasBirthdayReminder)
             ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()));
     }
