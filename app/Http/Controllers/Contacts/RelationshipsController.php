@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Helpers\GenderHelper;
 use App\Models\Contact\Contact;
@@ -18,6 +19,7 @@ use App\Services\Contact\Relationship\CreateRelationship;
 use App\Services\Contact\Relationship\UpdateRelationship;
 use App\Services\Contact\Relationship\DestroyRelationship;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
+use Illuminate\View\View;
 
 class RelationshipsController extends Controller
 {
@@ -26,7 +28,7 @@ class RelationshipsController extends Controller
      *
      * @param Contact $contact
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create(Request $request, Contact $contact)
     {
@@ -52,7 +54,7 @@ class RelationshipsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request, Contact $contact)
     {
@@ -91,7 +93,7 @@ class RelationshipsController extends Controller
      * @param Contact $contact
      * @param Relationship $relationship
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function edit(Contact $contact, Relationship $relationship)
     {
@@ -131,7 +133,7 @@ class RelationshipsController extends Controller
      * @param Contact $contact
      * @param Relationship $relationship
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, Contact $contact, Relationship $relationship)
     {
@@ -219,7 +221,7 @@ class RelationshipsController extends Controller
      * @param Contact $contact
      * @param Relationship $relationship
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function destroy(Contact $contact, Relationship $relationship)
     {

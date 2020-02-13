@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Helpers\AccountHelper;
 use App\Helpers\AuditLogHelper;
 use App\Http\Controllers\Controller;
 
@@ -17,8 +18,11 @@ class AuditLogController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('settings.auditlog.index')
             ->withLogsCollection(AuditLogHelper::getCollectionOfAuditForSettings($logs))
+            ->withAccountHasLimitations($accountHasLimitations)
             ->withLogsPagination($logs);
     }
 }

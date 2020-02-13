@@ -5,13 +5,14 @@ namespace App\Helpers;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Collection;
 
 class GenderHelper
 {
     /**
      * Return a collection of genders.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public static function getGendersInput()
     {

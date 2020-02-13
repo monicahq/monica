@@ -10,6 +10,7 @@ use App\Models\Contact\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
+use App\Helpers\GenderHelper;
 use App\Helpers\SearchHelper;
 use App\Helpers\AccountHelper;
 use App\Helpers\StorageHelper;
@@ -180,7 +181,7 @@ class ContactsController extends Controller
         return view('people.create')
             ->withAccountHasLimitations($accountHasLimitations)
             ->withIsContactMissing($isContactMissing)
-            ->withGenders(GendersHelper::getGendersInput())
+            ->withGenders(GenderHelper::getGendersInput())
             ->withDefaultGender(auth()->user()->account->default_gender_id)
             ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()));
     }
@@ -343,7 +344,7 @@ class ContactsController extends Controller
             ->withAge($age)
             ->withHasBirthdayReminder($hasBirthdayReminder)
             ->withHasDeceasedReminder($hasDeceasedReminder)
-            ->withGenders(GendersHelper::getGendersInput())
+            ->withGenders(GenderHelper::getGendersInput())
             ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()));
     }
 
