@@ -9,9 +9,11 @@ use App\Helpers\FormHelper;
 use App\Models\Contact\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Helpers\GenderHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
-use App\Helpers\GendersHelper;
+use App\Helpers\AccountHelper;
+use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
@@ -123,7 +125,10 @@ class ContactsController extends Controller
             $contactsCount += $deceasedCount;
         }
 
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('people.index')
+            ->withAccountHasLimitations($accountHasLimitations)
             ->with('hidingDeceased', $showDeceased != 'true')
             ->with('deceasedCount', $deceasedCount)
             ->withActive($active)
@@ -165,15 +170,18 @@ class ContactsController extends Controller
      */
     private function createForm($isContactMissing = false)
     {
-        if (auth()->user()->account->hasReachedContactLimit()
-            && auth()->user()->account->hasLimitations()
+        if (AccountHelper::hasReachedContactLimit(auth()->user()->account)
+            && AccountHelper::hasLimitations(auth()->user()->account)
             && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
             return redirect()->route('settings.subscriptions.index');
         }
 
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('people.create')
+            ->withAccountHasLimitations($accountHasLimitations)
             ->withIsContactMissing($isContactMissing)
-            ->withGenders(GendersHelper::getGendersInput())
+            ->withGenders(GenderHelper::getGendersInput())
             ->withDefaultGender(auth()->user()->account->default_gender_id)
             ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()));
     }
@@ -283,7 +291,12 @@ class ContactsController extends Controller
             'name' => '---',
         ]);
 
+        $hasReachedAccountStorageLimit = StorageHelper::hasReachedAccountStorageLimit($contact->account);
+        $accountHasLimitations = AccountHelper::hasLimitations($contact->account);
+
         return view('people.profile')
+            ->withHasReachedAccountStorageLimit($hasReachedAccountStorageLimit)
+            ->withAccountHasLimitations($accountHasLimitations)
             ->withLoveRelationships($loveRelationships)
             ->withFamilyRelationships($familyRelationships)
             ->withFriendRelationships($friendRelationships)
@@ -316,7 +329,10 @@ class ContactsController extends Controller
         $hasBirthdayReminder = ! is_null($contact->birthday_reminder_id);
         $hasDeceasedReminder = ! is_null($contact->deceased_reminder_id);
 
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('people.edit')
+            ->withAccountHasLimitations($accountHasLimitations)
             ->withContact($contact)
             ->withDays(DateHelper::getListOfDays())
             ->withMonths(DateHelper::getListOfMonths())
@@ -328,7 +344,7 @@ class ContactsController extends Controller
             ->withAge($age)
             ->withHasBirthdayReminder($hasBirthdayReminder)
             ->withHasDeceasedReminder($hasDeceasedReminder)
-            ->withGenders(GendersHelper::getGendersInput())
+            ->withGenders(GenderHelper::getGendersInput())
             ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()));
     }
 
@@ -489,7 +505,10 @@ class ContactsController extends Controller
      */
     public function editFoodPreferences(Request $request, Contact $contact)
     {
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('people.food-preferences.edit')
+            ->withAccountHasLimitations($accountHasLimitations)
             ->withContact($contact);
     }
 
@@ -568,7 +587,7 @@ class ContactsController extends Controller
         $frequency = intval($request->input('frequency'));
         $state = $request->input('state');
 
-        if (auth()->user()->account->hasLimitations()) {
+        if (AccountHelper::hasLimitations(auth()->user()->account)) {
             throw new \LogicException(trans('people.stay_in_touch_premium'));
         }
 

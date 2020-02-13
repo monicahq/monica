@@ -3,7 +3,6 @@
 namespace App\Models\Account;
 
 use App\Models\User\User;
-use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use App\Models\Journal\Day;
 use App\Models\User\Module;
@@ -481,93 +480,13 @@ class Account extends Model
     }
 
     /**
-     * Get the Audit log records associated with the account.
+     * * Get the Audit log records associated with the account.
      *
      * @return HasMany
      */
     public function auditLogs()
     {
         return $this->hasMany(AuditLog::class);
-    }
-
-    /**
-     * Check if the account can be downgraded, based on a set of rules.
-     *
-     * @return bool
-     */
-    public function canDowngrade()
-    {
-        $canDowngrade = true;
-        $numberOfUsers = $this->users()->count();
-        $numberPendingInvitations = $this->invitations()->count();
-        $numberContacts = $this->contacts()->count();
-
-        // number of users in the account should be == 1
-        if ($numberOfUsers > 1) {
-            $canDowngrade = false;
-        }
-
-        // there should not be any pending user invitations
-        if ($numberPendingInvitations > 0) {
-            $canDowngrade = false;
-        }
-
-        // there should not be more than the number of contacts allowed
-        if ($numberContacts > config('monica.number_of_allowed_contacts_free_account')) {
-            $canDowngrade = false;
-        }
-
-        return $canDowngrade;
-    }
-
-    /**
-     * Indicates whether the current account has limitations with her current
-     * plan.
-     *
-     * @return bool
-     */
-    public function hasLimitations()
-    {
-        if ($this->has_access_to_paid_version_for_free) {
-            return false;
-        }
-
-        if (! config('monica.requires_subscription')) {
-            return false;
-        }
-
-        if ($this->isSubscribed()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Indicate whether an account has reached the contact limit if the account
-     * is on a free trial.
-     *
-     * @return bool
-     */
-    public function hasReachedContactLimit()
-    {
-        return $this->contacts()->real()->active()->count() >= config('monica.number_of_allowed_contacts_free_account');
-    }
-
-    /**
-     * Get the timezone of the user. In case an account has multiple timezones,
-     * takes the first it finds.
-     * @return string
-     */
-    public function timezone()
-    {
-        try {
-            $user = $this->users()->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return '';
-        }
-
-        return $user->timezone;
     }
 
     /**
@@ -673,77 +592,6 @@ class Account extends Model
     }
 
     /**
-     * Get the reminders for the month given in parameter.
-     * - 0 means current month
-     * - 1 means month+1
-     * - 2 means month+2...
-     * @param  int    $month
-     */
-    public function getRemindersForMonth(int $month)
-    {
-        $startOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->startOfMonth();
-        // don't get reminders for past events:
-        if ($startOfMonth->isPast()) {
-            $startOfMonth = now(DateHelper::getTimezone());
-        }
-        $endOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->endOfMonth();
-
-        return $this->reminderOutboxes()
-                     ->with(['reminder', 'reminder.contact'])
-                     ->whereBetween('planned_date', [$startOfMonth, $endOfMonth])
-                     ->where('nature', 'reminder')
-                     ->orderBy('planned_date', 'asc')
-                     ->get();
-    }
-
-    /**
-     * Replaces a specific gender of all the contacts in the account with another
-     * gender.
-     *
-     * @param  Gender $genderToDelete
-     * @param  Gender $genderToReplaceWith
-     * @return bool
-     */
-    public function replaceGender(Gender $genderToDelete, Gender $genderToReplaceWith)
-    {
-        Contact::where('account_id', $this->id)
-            ->where('gender_id', $genderToDelete->id)
-            ->update(['gender_id' => $genderToReplaceWith->id]);
-
-        return true;
-    }
-
-    /**
-     * Get the default gender for this account.
-     *
-     * @return string
-     */
-    public function defaultGender()
-    {
-        $defaultGenderType = Gender::MALE;
-        if ($this->default_gender_id) {
-            $defaultGender = Gender::where([
-                'account_id' => $this->id,
-            ])->find($this->default_gender_id);
-            if ($defaultGender) {
-                $defaultGenderType = $defaultGender->type;
-            }
-        }
-
-        return $defaultGenderType;
-    }
-
-    /**
-     * Get if any account exists on the database.
-     *
-     * @return bool
-     */
-    public static function hasAny()
-    {
-        return DB::table('accounts')->count() > 0;
-    }
-
-    /**
      * Create a new account and associate a new User.
      *
      * @param string $first_name
@@ -833,76 +681,6 @@ class Account extends Model
     }
 
     /**
-     * Get the statistics of the number of calls grouped by year.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function getYearlyCallStatistics()
-    {
-        $callsStatistics = collect([]);
-        $calls = $this->calls()->latest('called_at')->get();
-        $years = [];
-
-        // Create a table that contains the combo year/number of
-        foreach ($calls as $call) {
-            $yearStatistic = $call->called_at->format('Y');
-            $foundInYear = false;
-
-            foreach ($years as $year => $number) {
-                if ($year == $yearStatistic) {
-                    $years[$year] = $number + 1;
-                    $foundInYear = true;
-                }
-            }
-
-            if (! $foundInYear) {
-                $years[$yearStatistic] = 1;
-            }
-        }
-
-        foreach ($years as $year => $number) {
-            $callsStatistics->put($year, $number);
-        }
-
-        return $callsStatistics;
-    }
-
-    /**
-     * Get the statistics of the number of activities grouped by year.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function getYearlyActivitiesStatistics()
-    {
-        $activitiesStatistics = collect([]);
-        $activities = $this->activities()->latest('happened_at')->get();
-        $years = [];
-
-        // Create a table that contains the combo year/number of
-        foreach ($activities as $call) {
-            $yearStatistic = $call->happened_at->format('Y');
-            $foundInYear = false;
-
-            foreach ($years as $year => $number) {
-                if ($year == $yearStatistic) {
-                    $years[$year] = $number + 1;
-                    $foundInYear = true;
-                }
-            }
-
-            if (! $foundInYear) {
-                $years[$yearStatistic] = 1;
-            }
-        }
-
-        foreach ($years as $year => $number) {
-            $activitiesStatistics->put($year, $number);
-        }
-
-        return $activitiesStatistics;
-    }
-
-    /**
      * Get the first available locale in an account. This gets the first user
      * in the account and reads his locale.
      *
@@ -919,45 +697,5 @@ class Account extends Model
         }
 
         return $user->locale;
-    }
-
-    /**
-     * Indicates whether the account has the reached the maximum storage size
-     * for document upload.
-     *
-     * @return bool
-     */
-    public function hasReachedAccountStorageLimit()
-    {
-        if (! config('monica.requires_subscription')) {
-            return false;
-        }
-
-        $currentAccountSize = $this->getStorageSize();
-
-        return $currentAccountSize > (config('monica.max_storage_size') * 1000000);
-    }
-
-    /**
-     * Get the storage size of the account, in bytes.
-     *
-     * @return int
-     */
-    public function getStorageSize()
-    {
-        $documents = Document::where('account_id', $this->id)
-            ->orderBy('created_at', 'desc')->get();
-        $photos = Photo::where('account_id', $this->id)
-            ->orderBy('created_at', 'desc')->get();
-
-        $currentAccountSize = 0;
-        foreach ($documents as $document) {
-            $currentAccountSize += $document->filesize;
-        }
-        foreach ($photos as $photo) {
-            $currentAccountSize += $photo->filesize;
-        }
-
-        return $currentAccountSize;
     }
 }
