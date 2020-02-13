@@ -17,7 +17,6 @@ use App\Models\Contact\Message;
 use App\Models\Contact\Document;
 use App\Models\Contact\LifeEvent;
 use App\Models\Instance\AuditLog;
-use App\Models\Account\Invitation;
 use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
 use App\Models\Account\ActivityType;
