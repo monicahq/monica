@@ -1087,16 +1087,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.15",
+            "version": "2.1.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "e834eea5306d85d67de5a05db5882911d5b29357"
+                "reference": "5065fafc8c29d229ff207f2a89b02175f479a909"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/e834eea5306d85d67de5a05db5882911d5b29357",
-                "reference": "e834eea5306d85d67de5a05db5882911d5b29357",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/5065fafc8c29d229ff207f2a89b02175f479a909",
+                "reference": "5065fafc8c29d229ff207f2a89b02175f479a909",
                 "shasum": ""
             },
             "require": {
@@ -1141,7 +1141,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2020-01-20T21:40:59+00:00"
+            "time": "2020-02-12T22:28:28+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -2677,16 +2677,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v6.15.0",
+            "version": "v6.15.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "2842924b9ce7ffc43b09b96966a64a2ce0708aaf"
+                "reference": "b7c152e3327c03428fb68d5abb63ca8b3eca8422"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/2842924b9ce7ffc43b09b96966a64a2ce0708aaf",
-                "reference": "2842924b9ce7ffc43b09b96966a64a2ce0708aaf",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/b7c152e3327c03428fb68d5abb63ca8b3eca8422",
+                "reference": "b7c152e3327c03428fb68d5abb63ca8b3eca8422",
                 "shasum": ""
             },
             "require": {
@@ -2819,7 +2819,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2020-02-11T14:26:43+00:00"
+            "time": "2020-02-12T21:56:14+00:00"
         },
         {
             "name": "laravel/passport",
@@ -11598,16 +11598,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v5.9.0",
+            "version": "v5.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "3e54875a69d2cb7136a56d9889c11eb2988c8eb4"
+                "reference": "361c0d82cfef688966a7470de57602ede52d995a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/3e54875a69d2cb7136a56d9889c11eb2988c8eb4",
-                "reference": "3e54875a69d2cb7136a56d9889c11eb2988c8eb4",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/361c0d82cfef688966a7470de57602ede52d995a",
+                "reference": "361c0d82cfef688966a7470de57602ede52d995a",
                 "shasum": ""
             },
             "require": {
@@ -11617,7 +11617,7 @@
                 "illuminate/support": "~5.7.0|~5.8.0|^6.0|^7.0",
                 "nesbot/carbon": "^1.20|^2.0",
                 "php": ">=7.1.0",
-                "php-webdriver/webdriver": "^1.7",
+                "php-webdriver/webdriver": "^1.7 <1.8",
                 "symfony/console": "^4.0|^5.0",
                 "symfony/finder": "^4.0|^5.0",
                 "symfony/process": "^4.0|^5.0",
@@ -11662,7 +11662,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2020-01-28T20:55:30+00:00"
+            "time": "2020-02-12T14:05:30+00:00"
         },
         {
             "name": "matthiasnoback/live-code-coverage",
