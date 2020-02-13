@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use Illuminate\View\View;
 use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Helpers\GenderHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Relationship\Relationship;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Contact\Contact\CreateContact;
@@ -19,7 +20,6 @@ use App\Services\Contact\Relationship\CreateRelationship;
 use App\Services\Contact\Relationship\UpdateRelationship;
 use App\Services\Contact\Relationship\DestroyRelationship;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
-use Illuminate\View\View;
 
 class RelationshipsController extends Controller
 {
