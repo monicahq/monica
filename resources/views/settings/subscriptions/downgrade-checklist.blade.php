@@ -53,7 +53,7 @@
               <span class="icon"></span>
               <span class="rule-title">{{ trans('settings.subscriptions_downgrade_rule_contacts', ['number' => config('monica.number_of_allowed_contacts_free_account')]) }}</span>
               <span class="rule-to-succeed">{!! trans_choice('settings.subscriptions_downgrade_rule_contacts_constraint', $numberOfActiveContacts, ['url' => '/people', 'count' => $numberOfActiveContacts]) !!}</span>
-              @if (($hasReachedContactLimit == true))
+              @if ($hasReachedContactLimit)
               <span class="rule-to-succeed">We can also <a href="/settings/subscriptions/archive">archive all your contacts for you</a> - that would clear this rule and let you proceed with your account’s downgrade process.</span>
               @endif
             </li>
