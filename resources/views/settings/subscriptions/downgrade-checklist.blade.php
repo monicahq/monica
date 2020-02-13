@@ -49,7 +49,7 @@
               <span class="rule-to-succeed">{!! trans_choice('settings.subscriptions_downgrade_rule_invitations_constraint', $numberOfPendingInvitations, ['url' => route('settings.users.index'), 'count' => $numberOfPendingInvitations]) !!}</span>
             </li>
 
-            <li class="{{ ($hasReachedContactLimit == true)?'fail':'success' }}">
+            <li class="{{ $hasReachedContactLimit ? 'fail' : 'success' }}">
               <span class="icon"></span>
               <span class="rule-title">{{ trans('settings.subscriptions_downgrade_rule_contacts', ['number' => config('monica.number_of_allowed_contacts_free_account')]) }}</span>
               <span class="rule-to-succeed">{!! trans_choice('settings.subscriptions_downgrade_rule_contacts_constraint', $numberOfActiveContacts, ['url' => '/people', 'count' => $numberOfActiveContacts]) !!}</span>
