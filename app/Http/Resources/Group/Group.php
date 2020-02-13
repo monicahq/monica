@@ -4,6 +4,7 @@ namespace App\Http\Resources\Group;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Contact\Contact as ContactResource;
 
 class Group extends Resource
 {
@@ -15,10 +16,13 @@ class Group extends Resource
      */
     public function toArray($request)
     {
+        $contacts = $this->contacts;
+
         return [
             'id' => $this->id,
             'object' => 'group',
             'name' => $this->name,
+            'contacts' => $contacts ? ContactResource::collection($contacts) : null,
             'account' => [
                 'id' => $this->account->id,
             ],

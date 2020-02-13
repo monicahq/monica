@@ -16,6 +16,7 @@ class ApiGroupControllerTest extends ApiTestCase
         'id',
         'object',
         'name',
+        'contacts' => [],
         'account' => [
             'id',
         ],
