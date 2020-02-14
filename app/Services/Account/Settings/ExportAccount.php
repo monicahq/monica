@@ -1443,7 +1443,7 @@ SET FOREIGN_KEY_CHECKS=0;
             ->where('account_id', $data['account_id'])
             ->get();
 
-        if (!$contacts) {
+        if (! $contacts) {
             throw new NoAccountException();
         }
 
