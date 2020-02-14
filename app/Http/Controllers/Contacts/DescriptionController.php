@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Models\Contact\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Helpers\InstanceHelper;
+use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Services\Contact\Description\SetPersonalDescription;
-use Illuminate\Http\Response;
 
 class DescriptionController extends Controller
 {
