@@ -2,15 +2,14 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Console\Application;
 use Carbon\Carbon;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
-use Illuminate\Database\Seeder;
+use Illuminate\Console\Command;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Console\Application;
 use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Gift\CreateGift;
@@ -162,7 +161,7 @@ class SetupTest extends Command
 
         // create a random number of contacts
         //$this->numberOfContacts = rand(60, 100);
-        echo 'Generating ' . $this->numberOfContacts . ' fake contacts' . PHP_EOL;
+        echo 'Generating '.$this->numberOfContacts.' fake contacts'.PHP_EOL;
 
         $output = new ConsoleOutput();
         $progress = new ProgressBar($output, $this->numberOfContacts);
@@ -212,7 +211,7 @@ class SetupTest extends Command
         $progress->finish();
 
         // create the second test, blank account
-        if (!User::where('email', 'blank@blank.com')->exists()) {
+        if (! User::where('email', 'blank@blank.com')->exists()) {
             $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank0');
             $blankUser = $blankAccount->users()->first();
             $this->confirmUser($blankUser);
@@ -510,10 +509,10 @@ class SetupTest extends Command
                         $data = $this->faker->phoneNumber;
                         break;
                     case 'Facebook':
-                        $data = 'https://facebook.com/' . $this->faker->userName;
+                        $data = 'https://facebook.com/'.$this->faker->userName;
                         break;
                     case 'Twitter':
-                        $data = 'https://twitter.com/' . $this->faker->userName;
+                        $data = 'https://twitter.com/'.$this->faker->userName;
                         break;
                     case 'Whatsapp':
                         $data = $this->faker->phoneNumber;
