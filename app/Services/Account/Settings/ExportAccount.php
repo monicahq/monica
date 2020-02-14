@@ -121,6 +121,8 @@ SET FOREIGN_KEY_CHECKS=0;
         $this->exportWeather($data);
         $this->exportContactPhoto($data);
         $this->exportAuditLogs($data);
+        $this->exportGroups($data);
+        $this->exportContactGroups($data);
 
         $sql = 'SET FOREIGN_KEY_CHECKS=1;';
         $this->writeToTempFile($sql);
@@ -1407,5 +1409,44 @@ SET FOREIGN_KEY_CHECKS=0;
         $foreignKey = 'account_id';
 
         $this->buildInsertSQLQuery('audit_logs', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Groups table.
+     *
+     * @param array $data
+     */
+    private function exportGroups(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'name',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('groups', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Contact Group table.
+     *
+     * @param array $data
+     */
+    private function exportContactGroups(array $data)
+    {
+        $columns = [
+            'contact_id',
+            'account_id',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('contact_group', $foreignKey, $columns, $data);
     }
 }
