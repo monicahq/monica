@@ -139,17 +139,12 @@ class Activity extends Model implements IsJournalableInterface
      */
     public function getContactsForAPI()
     {
-        $attendees = collect([]);
+        $attendees = $this->contacts->filter(function ($contact) {
+            // This should not be possible!
+            return $contact->account_id === $this->account_id;
+        });
 
-        foreach ($this->contacts as $contact) {
-            if ($contact->account_id !== $this->account_id) {
-                // This should not be possible!
-                continue;
-            }
-            $attendees->push(new ContactShortResource($contact));
-        }
-
-        return $attendees;
+        return ContactShortResource::collection($attendees);
     }
 
     /**

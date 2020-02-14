@@ -111,6 +111,27 @@ class DateHelper
     }
 
     /**
+     * Return date timestamp format.
+     *
+     * @param Carbon|\App\Models\Instance\SpecialDate|string|null $date
+     * @return string|null
+     */
+    public static function getDate($date)
+    {
+        if (is_null($date)) {
+            return;
+        }
+        if ($date instanceof \App\Models\Instance\SpecialDate) {
+            $date = $date->date;
+        }
+        if (! $date instanceof Carbon) {
+            $date = Carbon::create($date);
+        }
+
+        return $date->format(config('api.date_timestamp_format'));
+    }
+
+    /**
      * Get timezone of the current user, or null.
      *
      * @return string|null
@@ -128,7 +149,7 @@ class DateHelper
      * @param string $date
      * @return string
      */
-    public static function getShortDate($date) : string
+    public static function getShortDate($date): string
     {
         return self::formatDate($date, 'format.short_date_year');
     }
@@ -139,7 +160,7 @@ class DateHelper
      * @param string $date
      * @return string
      */
-    public static function getFullDate($date) : string
+    public static function getFullDate($date): string
     {
         return self::formatDate($date, 'format.full_date_year');
     }
@@ -151,7 +172,7 @@ class DateHelper
      * @param string $date
      * @return string
      */
-    public static function getShortMonth($date) : string
+    public static function getShortMonth($date): string
     {
         return self::formatDate($date, 'format.short_month');
     }
@@ -163,7 +184,7 @@ class DateHelper
      * @param string $date
      * @return string
      */
-    public static function getFullMonthAndDate($date) : string
+    public static function getFullMonthAndDate($date): string
     {
         return self::formatDate($date, 'format.full_month_year');
     }
@@ -175,7 +196,7 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortDay($date) : string
+    public static function getShortDay($date): string
     {
         return self::formatDate($date, 'format.short_day');
     }
@@ -187,7 +208,7 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortDateWithoutYear($date) : string
+    public static function getShortDateWithoutYear($date): string
     {
         return self::formatDate($date, 'format.short_date');
     }
@@ -199,7 +220,7 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortDateWithTime($date) : string
+    public static function getShortDateWithTime($date): string
     {
         return self::formatDate($date, 'format.short_date_year_time');
     }
@@ -210,7 +231,7 @@ class DateHelper
      * @param string $date
      * @return string
      */
-    private static function formatDate($date, $format) : string
+    private static function formatDate($date, $format): string
     {
         $date = new Date($date, static::getTimezone());
         $format = trans($format, [], Date::getLocale());
@@ -225,7 +246,7 @@ class DateHelper
      * @param int $number    the number of week/month/year to increment to
      * @return Carbon
      */
-    public static function addTimeAccordingToFrequencyType(Carbon $date, string $frequency, int $number) : Carbon
+    public static function addTimeAccordingToFrequencyType(Carbon $date, string $frequency, int $number): Carbon
     {
         switch ($frequency) {
             case 'week':
@@ -248,7 +269,7 @@ class DateHelper
      * @param  int    $month
      * @return string
      */
-    public static function getMonthAndYear(int $month) : string
+    public static function getMonthAndYear(int $month): string
     {
         $date = Date::now(static::getTimezone())->addMonthsNoOverflow($month);
         $format = trans('format.short_month_year', [], Date::getLocale());
@@ -264,7 +285,7 @@ class DateHelper
      * @param  string $interval
      * @return Carbon
      */
-    public static function getNextTheoriticalBillingDate(string $interval) : Carbon
+    public static function getNextTheoriticalBillingDate(string $interval): Carbon
     {
         if ($interval == 'monthly') {
             return now()->addMonth();
@@ -280,7 +301,7 @@ class DateHelper
      * @param int $min
      * @return Collection
      */
-    public static function getListOfYears($max = 120, $min = 0) : Collection
+    public static function getListOfYears($max = 120, $min = 0): Collection
     {
         $years = collect([]);
         $maxYear = now(static::getTimezone())->subYears($min)->year;

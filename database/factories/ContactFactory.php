@@ -131,6 +131,7 @@ $factory->define(App\Models\Contact\Gift::class, function (Faker\Generator $fake
                 'account_id' => $data['account_id'],
             ])->id;
         },
+        'status' => 'idea',
         'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
@@ -172,12 +173,6 @@ $factory->define(App\Models\Contact\Note::class, function (Faker\Generator $fake
             ])->id;
         },
         'body' => encrypt($faker->text(200)),
-    ];
-});
-
-$factory->define(App\Models\Contact\Call::class, function (Faker\Generator $faker) {
-    return [
-        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 

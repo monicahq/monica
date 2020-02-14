@@ -69,7 +69,7 @@
       <error :errors="form.errors" />
 
       <!-- Create Token Form -->
-      <form class="form-horizontal" role="form" @submit.prevent="store">
+      <form ref="form" class="form-horizontal" role="form" @submit.prevent="store">
         <!-- Name -->
         <div class="col-md-auto">
           <form-input
@@ -80,6 +80,7 @@
             :iclass="'br2 f5 w-50 ba b--black-40 pa2 outline-0'"
             :required="true"
             :title="$t('settings.api_token_name')"
+            :validator="$v.form.name"
           />
         </div>
 
@@ -106,15 +107,13 @@
         </div>
       </form>
       <!-- Modal Actions -->
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeModal">
-            {{ $t('app.close') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="store">
-            {{ $t('app.create') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeModal">
+          {{ $t('app.close') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="store">
+          {{ $t('app.create') }}
+        </a>
       </div>
     </sweet-modal>
 
@@ -128,15 +127,13 @@
       </div>
 
       <!-- Modal Actions -->
-      <div class="relative">
-        <span class="fr">
-          <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" href="" @click.prevent="copyIntoClipboard(accessToken)">
-            {{ $t('app.copy') }}
-          </a>
-          <a class="btn" href="" @click.prevent="closeModal">
-            {{ $t('app.close') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" href="" @click.prevent="copyIntoClipboard(accessToken)">
+          {{ $t('app.copy') }}
+        </a>
+        <a class="btn" href="" @click.prevent="closeModal">
+          {{ $t('app.close') }}
+        </a>
       </div>
     </sweet-modal>
   </div>
@@ -145,6 +142,8 @@
 <script>
 import Error from '../partials/Error.vue';
 import { SweetModal } from 'sweet-modal-vue';
+import { validationMixin } from 'vuelidate';
+import { required } from 'vuelidate/lib/validators';
 
 export default {
 
@@ -152,6 +151,8 @@ export default {
     SweetModal,
     Error
   },
+
+  mixins: [validationMixin],
 
   data() {
     return {
@@ -167,6 +168,14 @@ export default {
         errors: []
       },
     };
+  },
+
+  validations: {
+    form: {
+      name: {
+        required,
+      }
+    }
   },
 
   computed: {
@@ -211,6 +220,8 @@ export default {
      * Close all modals.
      */
     closeModal() {
+      this.$refs.form.reset();
+      this.$v.$reset();
       this.$refs.modalCreateToken.close();
       this.$refs.modalAccessToken.close();
     },
@@ -236,6 +247,12 @@ export default {
      * Create a new personal access token.
      */
     store() {
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
+        return;
+      }
+
       this.accessToken = null;
 
       this.form.errors = [];

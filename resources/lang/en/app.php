@@ -7,6 +7,7 @@ return [
     'save' => 'Save',
     'add' => 'Add',
     'cancel' => 'Cancel',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'Sure?',
     'delete' => 'Delete',
     'edit' => 'Edit',
@@ -21,13 +22,11 @@ return [
     'done' => 'Done',
     'back' => 'Back',
     'verify' => 'Verify',
-    'for' => 'for',
     'new' => 'new',
     'unknown' => 'I don’t know',
     'load_more' => 'Load more',
     'loading' => 'Loading...',
     'with' => 'with',
-    'days' => 'day|days',
     'today' => 'today',
     'yesterday' => 'yesterday',
     'another_day' => 'another day',
@@ -39,12 +38,13 @@ return [
     'retry' => 'Retry',
     'filter' => 'Filter the list',
     'go_back' => 'Go back',
+    'file_selected' => '1 file selected...|{count} files selected...',
 
     'application_title' => 'Monica – personal relationship manager',
-    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
+    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
-    'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
+    'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
     'markdown_link' => 'Read documentation',
 
     'header_settings_link' => 'Settings',
@@ -102,19 +102,21 @@ return [
 
     'error_title' => 'Whoops! Something went wrong.',
     'error_unauthorized' => 'You don’t have the right to edit this resource.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'We had an error trying to save the data.',
     'error_try_again' => 'Something went wrong. Please try again.',
     'error_id' => 'Error ID: :id',
-    'error_unavailable' => 'Service Unavailable',
+    'error_unavailable' => 'Service unavailable',
     'error_maintenance' => 'Maintenance in progress. Be right back.',
     'error_help' => 'We’ll be right back.',
     'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'The data has been saved.',
 
     'compliance_title' => 'Sorry for the interruption.',
     'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
     'compliance_terms' => 'Accept new terms and privacy policy',
 
     // Relationship types
@@ -260,10 +262,10 @@ return [
     'relationship_type_protege_with_name' => ':name’s protege',
     'relationship_type_protege_female_with_name' => ':name’s protege',
 
-    'relationship_type_ex_husband' => 'ex husband',
-    'relationship_type_ex_husband_female' => 'ex wife',
-    'relationship_type_ex_husband_with_name' => ':name’s ex husband',
-    'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
+    'relationship_type_ex_husband' => 'ex-husband',
+    'relationship_type_ex_husband_female' => 'ex-wife',
+    'relationship_type_ex_husband_with_name' => ':name’s ex-husband',
+    'relationship_type_ex_husband_female_with_name' => ':name’s ex-wife',
 
     // emotions
     'emotion_primary_love' => 'Love',
@@ -454,4 +456,15 @@ return [
     'dav_birthdays_description' => ':name’s contact’s birthdays',
     'dav_tasks' => 'Tasks',
     'dav_tasks_description' => ':name’s tasks',
+
+    // audit log
+    'contact_log_contact_created' => 'Created the contact.',
+    'settings_log_contact_created_with_name' => 'Added :name as a contact.',
+    'settings_log_contact_created_with_name_with_link' => 'Added <a href=":link">:name</a> as a contact.',
+    'contact_log_contact_description_updated' => 'Updated the description.',
+    'settings_log_contact_description_updated_with_name' => 'Updated the description of :name.',
+    'settings_log_contact_description_updated_with_name_with_link' => 'Updated the description of <a href=":link">:name</a>.',
+    'contact_log_contact_description_cleared' => 'Cleared the description.',
+    'settings_log_contact_description_cleared_with_name' => 'Cleared the description of :name.',
+    'settings_log_contact_description_cleared_with_name_with_link' => 'Cleared the description of <a href=":link">:name</a>.',
 ];

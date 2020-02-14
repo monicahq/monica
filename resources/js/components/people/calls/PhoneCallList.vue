@@ -86,7 +86,6 @@
             :label="$t('people.modal_call_comment')"
             :rows="4"
             :placeholder="$t('people.conversation_add_content')"
-            @contentChange="updateContent($event)"
           />
           <p class="f6">
             {{ $t('app.markdown_description') }} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="noopener noreferrer">
@@ -100,7 +99,7 @@
           <label class="b">
             {{ $t('people.modal_call_emotion') }}
           </label>
-          <emotion class="pv2" @updateEmotionsList="updateEmotionsList" />
+          <emotion class="pv2" @update="updateEmotionsList" />
         </div>
 
         <!-- ACTIONS -->
@@ -128,19 +127,32 @@
           <span v-if="!call.content">
             {{ $t('people.call_blank_desc', { name: call.contact.first_name }) }}
           </span>
-          <span v-if="call.content" v-html="compiledMarkdown(call.content)"></span>
+          <span v-if="call.content" dir="auto" class="markdown" v-html="compiledMarkdown(call.content)"></span>
         </div>
 
         <!-- INLINE UPDATE DIV -->
         <div v-show="editCallId == call.id" class="pa2">
           <div>
-            <div>
-              <form-textarea
-                v-model="editCall.content"
-                :label="$t('people.modal_call_comment')"
-                :rows="4"
-                iclass="br2 f5 w-100 ba b--black-40 pa2 outline-0"
-                @contentChange="updateEditCallContent($event)"
+            <form-textarea
+              v-model="editCall.content"
+              :label="$t('people.modal_call_comment')"
+              :rows="4"
+              iclass="br2 f5 w-100 ba b--black-40 pa2 outline-0"
+              @contentChange="updateEditCallContent($event)"
+            />
+            <p class="f6">
+              {{ $t('app.markdown_description') }}
+            </p>
+          </div>
+
+          <!-- WHO CALLED -->
+          <div class="pb3 mb3 mb0-ns">
+            <p class="mb2">
+              {{ $t('people.modal_call_who_called') }}
+            </p>
+            <div class="di mr3">
+              <input :id="'you' + call.id" v-model="editCall.contact_called" type="radio" class="mr1" :name="'contact_called' + call.id"
+                     :value="false"
               />
               <p class="f6">
                 {{ $t('app.markdown_description') }}
@@ -175,7 +187,7 @@
               <label class="b">
                 {{ $t('people.modal_call_emotion') }}
               </label>
-              <emotion class="pv2" :initial-emotions="call.emotions" @updateEmotionsList="updateEmotionsList" />
+              <emotion class="pv2" :initial-emotions="call.emotions" @update="updateEmotionsList" />
             </div>
 
             <!-- ACTIONS -->
@@ -247,8 +259,12 @@
 
 <script>
 import moment from 'moment';
+import Emotion from '../Emotion.vue';
 
 export default {
+  components: {
+    Emotion,
+  },
 
   filters: {
     moment: function (date) {
@@ -363,14 +379,6 @@ export default {
       this.editCall.content = call.content;
       this.editCall.contact_called = call.contact_called;
       this.editCall.called_at = moment.utc(call.called_at).format('YYYY-MM-DD');
-    },
-
-    updateContent(updatedContent) {
-      this.newCall.content = updatedContent;
-    },
-
-    updateEditCallContent(updatedContent) {
-      this.editCall.content = updatedContent;
     },
 
     updateDate(updatedContent) {

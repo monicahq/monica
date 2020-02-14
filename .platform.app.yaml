@@ -45,6 +45,9 @@ mounts:
   "storage/app/public":
       source: local
       source_path: "public"
+  "storage/app/temp":
+      source: local
+      source_path: "temp"
   "storage/framework/views":
       source: local
       source_path: "views"

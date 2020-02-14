@@ -12,7 +12,8 @@ class CleanCommandTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_clean_command_left_one_token()
+    /** @test */
+    public function clean_command_left_one_token()
     {
         $account = factory(Account::class)->create();
         $user = factory(User::class)->create([
@@ -35,7 +36,8 @@ class CleanCommandTest extends TestCase
         ]);
     }
 
-    public function test_clean_command_left_all_token()
+    /** @test */
+    public function clean_command_left_all_token()
     {
         $account = factory(Account::class)->create();
         $user = factory(User::class)->create([
@@ -67,7 +69,8 @@ class CleanCommandTest extends TestCase
         ]);
     }
 
-    public function test_clean_command_dryrun()
+    /** @test */
+    public function clean_command_dryrun()
     {
         $account = factory(Account::class)->create();
         $user = factory(User::class)->create([

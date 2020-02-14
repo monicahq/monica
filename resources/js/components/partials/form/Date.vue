@@ -1,5 +1,8 @@
+<style scoped>
+</style>
+
 <template>
-  <div>
+  <div :class="{ 'form-group-error': validator && validator.$error }">
     <datepicker
       ref="select"
       :ref-name="'select'"
@@ -8,15 +11,21 @@
       :parse-typed-date="formatTypedValue"
       :language="locale"
       :monday-first="mondayFirst"
-      :input-class="'br2 f5 ba b--black-40 pa2 outline-0'"
+      :input-class="inputClass"
       :typeable="true"
       :clear-button="true"
       :show-calendar-on-focus="showCalendarOnFocus"
-      @input="$emit('input', exchangeValue($event))"
-      @selected="update"
-      @clearDate="update('')"
+      @input="onInput($event)"
+      @selected="onSelected($event)"
+      @clearDate="onSelected('')"
     />
     <input :name="id" type="hidden" :value="exchange" />
+    <small v-if="validator && (validator.$error && validator.required !== undefined && !validator.required)" class="error">
+      {{ requiredMessage }}
+    </small>
+    <small v-if="validator && (validator.$error && validator.before !== undefined && !validator.before)" class="error">
+      {{ beforeMessage }}
+    </small>
   </div>
 </template>
 
@@ -44,6 +53,10 @@ export default {
       type: String,
       default: '',
     },
+    label: {
+      type: String,
+      default: '',
+    },
     defaultDate: {
       type: String,
       default: '',
@@ -55,7 +68,11 @@ export default {
     showCalendarOnFocus: {
       type: Boolean,
       default: false,
-    }
+    },
+    validator: {
+      type: Object,
+      default: null,
+    },
   },
 
   data() {
@@ -84,22 +101,36 @@ export default {
     displayFormat() {
       return 'L';
     },
+
+    inputClass() {
+      var c = ['br2 f5 ba b--black-40 pa2 outline-0'];
+      if (this.validator) {
+        c.push({ 'error': this.validator.$error });
+      }
+      return c;
+    },
+
+    requiredMessage() {
+      return this.$t('validation.vue.required', { field: this.label });
+    },
+
+    beforeMessage() {
+      return this.$t('validation.vue.max.numeric', {
+        field: this.label,
+        max: this.displayValue(this.validator.$params.before.date)
+      });
+    },
+  },
+
+  watch: {
+    value: function (newValue) {
+      this.updateExchange(newValue);
+    }
   },
 
   mounted() {
-    this.exchange = this.value;
-    if (this.exchange === '') {
-      this.exchange = this.defaultDate;
-    }
-    if (this.exchange !== '') {
-      var mdate = moment(this.exchange, this.exchangeFormat);
-      if (! mdate.isValid()) {
-        mdate = moment();
-      }
-      this.selectedDate = mdate.toDate();
-    }
+    this.updateExchange(this.value === '' ? this.defaultDate : this.value);
     this.mondayFirst = moment.localeData().firstDayOfWeek() == 1;
-    this.update(this.selectedDate);
   },
 
   methods: {
@@ -135,7 +166,18 @@ export default {
         }
         this.exchange = mdate.format(this.exchangeFormat);
       }
-      this.$emit('input', this.exchange);
+    },
+
+    updateExchange(date) {
+      this.exchange = date;
+      if (this.exchange !== '') {
+        var mdate = moment(this.exchange, this.exchangeFormat);
+        if (! mdate.isValid()) {
+          mdate = moment();
+        }
+        this.selectedDate = mdate.toDate();
+      }
+      this.update(this.selectedDate);
     },
 
     /**
@@ -149,8 +191,19 @@ export default {
 
     focus() {
       this.$refs.select.$children[0].$refs.select.focus();
-    }
+    },
 
+    onInput(event) {
+      if (this.validator) {
+        this.validator.$touch();
+      }
+      this.$emit('input', this.exchangeValue(event));
+    },
+
+    onSelected(event) {
+      this.update(event);
+      this.onInput(event);
+    }
   }
 };
 </script>

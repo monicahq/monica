@@ -34,9 +34,9 @@
             @include('partials.errors')
 
             @if (session('status'))
-              <div class="alert alert-success">
-                  {{ session('status') }}
-              </div>
+            <div class="alert alert-success">
+              {{ session('status') }}
+            </div>
             @endif
 
             <form action="{{ route('settings.save') }}" method="POST">
@@ -68,9 +68,15 @@
                 <label for="locale">{{ trans('settings.locale') }}</label>
                 <select class="form-control" name="locale" id="locale">
                   @foreach($locales as $locale)
-                    <option value="{{ $locale['lang'] }}" {{ (auth()->user()->locale == $locale['lang'])?'selected':'' }}>{{ $locale['name'] }}</option>
+                  <option value="{{ $locale['lang'] }}" {{ (auth()->user()->locale === $locale['lang'])?'selected':'' }}>
+                    {{ $locale['name-orig'] }}
+                    @if (auth()->user()->locale !== $locale['lang'] && $locale['name-orig'] !== $locale['name'])
+                    — {{ $locale['name'] }}
+                    @endif
+                  </option>
                   @endforeach
                 </select>
+                <small class="form-text text-muted">{!! trans('settings.locale_help', ['url' => 'https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md']) !!}</small>
               </div>
 
               {{-- currency for user --}}
@@ -110,10 +116,11 @@
               {{-- Reminder --}}
               <div class="form-group">
                 <reminder-time
-                :reminder="'{{ auth()->user()->account->default_time_reminder_is_sent }}'"
-                :timezone="'{{ $selectedTimezone }}'"
-                :timezones="{{ \Safe\json_encode($timezones) }}"
-                :hours="{{ \Safe\json_encode($hours) }}">
+                  :reminder="'{{ auth()->user()->account->default_time_reminder_is_sent }}'"
+                  :timezone="'{{ $selectedTimezone }}'"
+                  :timezones="{{ \Safe\json_encode($timezones) }}"
+                  :hours="{{ \Safe\json_encode($hours) }}"
+                >
                 </reminder-time>
               </div>
 
@@ -135,6 +142,7 @@
 
           <h2>{{ trans('settings.delete_title') }}</h2>
           <p>{{ trans('settings.delete_desc') }}</p>
+          <p>{{ trans('settings.delete_other_desc') }}</p>
           <button type="submit" class="btn">{{ trans('settings.delete_cta') }}</button>
         </form>
 

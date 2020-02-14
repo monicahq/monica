@@ -15,14 +15,13 @@ class ApiGiftsTest extends ApiTestCase
     protected $jsonGift = [
         'id',
         'object',
-        'date_offered',
-        'has_been_offered',
+        'status',
         'comment',
-        'is_an_idea',
-        'is_for',
         'name',
         'url',
-        'value',
+        'amount',
+        'amount_with_currency',
+        'status',
         'account' => [
             'id',
         ],
@@ -33,7 +32,8 @@ class ApiGiftsTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_gifts_get_all()
+    /** @test */
+    public function it_gets_all_the_gifts()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -67,7 +67,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_get_contact_all()
+    /** @test */
+    public function it_gets_all_the_gifts_of_a_contact()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -101,7 +102,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_get_contact_all_error()
+    /** @test */
+    public function it_cant_get_all_the_gifts_of_an_invalid_contact()
     {
         $user = $this->signin();
 
@@ -110,7 +112,8 @@ class ApiGiftsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_gifts_get_one()
+    /** @test */
+    public function it_gets_one_gift()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -141,7 +144,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_get_one_error()
+    /** @test */
+    public function it_cant_get_a_gift_with_an_invalid_id()
     {
         $user = $this->signin();
 
@@ -150,7 +154,8 @@ class ApiGiftsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_gifts_create()
+    /** @test */
+    public function it_create_a_gift()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -159,6 +164,7 @@ class ApiGiftsTest extends ApiTestCase
 
         $response = $this->json('POST', '/api/gifts', [
             'contact_id' => $contact->id,
+            'status' => 'idea',
             'name' => 'the gift',
         ]);
 
@@ -181,7 +187,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_create_is_for()
+    /** @test */
+    public function gifts_create_is_for()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -194,7 +201,8 @@ class ApiGiftsTest extends ApiTestCase
         $response = $this->json('POST', '/api/gifts', [
             'contact_id' => $contact->id,
             'name' => 'the gift',
-            'is_for' => $contact2->id,
+            'status' => 'idea',
+            'recipient_id' => $contact2->id,
         ]);
 
         $response->assertStatus(201);
@@ -217,7 +225,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_create_is_for_bad_account()
+    /** @test */
+    public function gifts_create_is_for_bad_account()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -232,13 +241,15 @@ class ApiGiftsTest extends ApiTestCase
         $response = $this->json('POST', '/api/gifts', [
             'contact_id' => $contact->id,
             'name' => 'the gift',
-            'is_for' => $contact2->id,
+            'status' => 'idea',
+            'recipient_id' => $contact2->id,
         ]);
 
         $this->expectNotFound($response);
     }
 
-    public function test_gifts_create_error()
+    /** @test */
+    public function gifts_create_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -247,6 +258,7 @@ class ApiGiftsTest extends ApiTestCase
 
         $response = $this->json('POST', '/api/gifts', [
             'contact_id' => $contact->id,
+            'status' => 'idea',
         ]);
 
         $this->expectDataError($response, [
@@ -254,7 +266,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_create_error_bad_account()
+    /** @test */
+    public function gifts_create_error_bad_account()
     {
         $user = $this->signin();
 
@@ -266,12 +279,14 @@ class ApiGiftsTest extends ApiTestCase
         $response = $this->json('POST', '/api/gifts', [
             'contact_id' => $contact->id,
             'name' => 'the gift',
+            'status' => 'idea',
         ]);
 
         $this->expectNotFound($response);
     }
 
-    public function test_gifts_update()
+    /** @test */
+    public function gifts_update()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -285,6 +300,7 @@ class ApiGiftsTest extends ApiTestCase
         $response = $this->json('PUT', '/api/gifts/'.$gift->id, [
             'contact_id' => $contact->id,
             'name' => 'the gift',
+            'status' => 'idea',
             'comment' => 'one comment',
         ]);
 
@@ -309,7 +325,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_update_is_for()
+    /** @test */
+    public function gifts_update_is_for()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -326,8 +343,9 @@ class ApiGiftsTest extends ApiTestCase
         $response = $this->json('PUT', '/api/gifts/'.$gift->id, [
             'contact_id' => $contact->id,
             'name' => 'the gift',
+            'status' => 'idea',
             'comment' => 'one comment',
-            'is_for' => $contact2->id,
+            'recipient_id' => $contact2->id,
         ]);
 
         $response->assertStatus(200);
@@ -352,7 +370,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_update_error()
+    /** @test */
+    public function gifts_update_error()
     {
         $user = $this->signin();
         $gift = factory(Gift::class)->create([
@@ -361,6 +380,7 @@ class ApiGiftsTest extends ApiTestCase
 
         $response = $this->json('PUT', '/api/gifts/'.$gift->id, [
             'contact_id' => $gift->contact_id,
+            'status' => 'idea',
         ]);
 
         $this->expectDataError($response, [
@@ -368,7 +388,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_update_error_bad_account()
+    /** @test */
+    public function gifts_update_error_bad_account()
     {
         $user = $this->signin();
 
@@ -384,13 +405,15 @@ class ApiGiftsTest extends ApiTestCase
         $response = $this->json('PUT', '/api/gifts/'.$gift->id, [
             'contact_id' => $contact->id,
             'name' => 'the gift',
+            'status' => 'idea',
             'comment' => 'one comment',
         ]);
 
         $this->expectNotFound($response);
     }
 
-    public function test_gifts_delete()
+    /** @test */
+    public function gifts_delete()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -409,6 +432,11 @@ class ApiGiftsTest extends ApiTestCase
         $response = $this->json('DELETE', '/api/gifts/'.$gift->id);
 
         $response->assertStatus(200);
+        $response->assertJson([
+            'deleted' => true,
+            'id' => $gift->id,
+        ]);
+
         $this->assertDatabaseMissing('gifts', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
@@ -416,11 +444,23 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_delete_error()
+    /** @test */
+    public function gifts_delete_error()
     {
         $user = $this->signin();
 
         $response = $this->json('DELETE', '/api/gifts/0');
+
+        $response->assertStatus(422);
+    }
+
+    /** @test */
+    public function gifts_delete_wrong_account()
+    {
+        $user = $this->signin();
+        $gift = factory(Gift::class)->create();
+
+        $response = $this->json('DELETE', '/api/gifts/'.$gift->id);
 
         $this->expectNotFound($response);
     }

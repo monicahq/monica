@@ -2,10 +2,13 @@
 
 namespace App\Services\Contact\Contact;
 
+use App\Models\User\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
+use function Safe\json_encode;
 use App\Models\Contact\Contact;
+use App\Jobs\AuditLog\LogAccountAudit;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Jobs\Avatars\GetAvatarsFromInternet;
 
@@ -20,6 +23,7 @@ class CreateContact extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
+            'author_id' => 'required|integer|exists:users,id',
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
@@ -49,13 +53,15 @@ class CreateContact extends BaseService
      * @param array $data
      * @return Contact
      */
-    public function execute(array $data) : Contact
+    public function execute(array $data): Contact
     {
         $this->validate($data);
+
         // filter out the data that shall not be updated here
         $dataOnly = Arr::except(
             $data,
             [
+                'author_id',
                 'is_birthdate_known',
                 'birthdate_day',
                 'birthdate_month',
@@ -81,6 +87,8 @@ class CreateContact extends BaseService
         $this->generateUUID($contact);
 
         $this->addAvatars($contact);
+
+        $this->log($data, $contact);
 
         // we query the DB again to fill the object with all the new properties
         $contact->refresh();
@@ -159,6 +167,32 @@ class CreateContact extends BaseService
             'month' => $this->nullOrValue($data, 'deceased_date_month'),
             'year' => $this->nullOrValue($data, 'deceased_date_year'),
             'add_reminder' => $this->nullOrValue($data, 'deceased_date_add_reminder'),
+        ]);
+    }
+
+    /**
+     * Add an audit log.
+     *
+     * @param array $data
+     * @param Contact $contact
+     * @return void
+     */
+    private function log(array $data, Contact $contact): void
+    {
+        $author = User::find($data['author_id']);
+
+        LogAccountAudit::dispatch([
+            'action' => 'contact_created',
+            'account_id' => $author->account_id,
+            'about_contact_id' => $contact->id,
+            'author_id' => $author->id,
+            'author_name' => $author->name,
+            'audited_at' => now(),
+            'should_appear_on_dashboard' => true,
+            'objects' => json_encode([
+                'contact_name' => $contact->name,
+                'contact_id' => $contact->id,
+            ]),
         ]);
     }
 }

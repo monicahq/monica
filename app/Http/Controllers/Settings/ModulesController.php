@@ -34,6 +34,13 @@ class ModulesController extends Controller
         $module->active = ! $module->active;
         $module->save();
 
-        return trans('settings.personalization_module_save');
+        return response()->json([
+            'data' => [
+                'id' => $module->id,
+                'key' => $module->key,
+                'name' => trans($module->translation_key),
+                'active' => $module->active,
+            ],
+        ], 200);
     }
 }

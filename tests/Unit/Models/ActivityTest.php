@@ -12,7 +12,8 @@ class ActivityTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_returns_the_happened_at()
+    /** @test */
+    public function it_returns_the_happened_at()
     {
         $activity = factory(Activity::class)->make();
 
@@ -22,7 +23,8 @@ class ActivityTest extends TestCase
         );
     }
 
-    public function test_it_returns_a_title()
+    /** @test */
+    public function it_returns_a_title()
     {
         $type = factory(ActivityType::class)->create();
 
@@ -36,7 +38,8 @@ class ActivityTest extends TestCase
         );
     }
 
-    public function test_get_info_for_journal_entry()
+    /** @test */
+    public function it_gets_info_for_journal_entry()
     {
         $activity = factory(Activity::class)->create();
 

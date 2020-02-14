@@ -118,7 +118,7 @@ class MoveAvatars extends Command
         }
     }
 
-    private function fileExists($storage, $avatarFileName) : bool
+    private function fileExists($storage, $avatarFileName): bool
     {
         $storage = Storage::disk($storage);
 

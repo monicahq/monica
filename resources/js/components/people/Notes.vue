@@ -28,7 +28,7 @@
         <li v-for="note in notes" :key="note.id" class="note">
           <div v-show="!note.edit" class="ba br2 b--black-10 br--top w-100 mb2" :cy-name="'note-body-' + note.id">
             <div class="pa2 markdown">
-              <span v-html="note.parsed_body"></span>
+              <span dir="auto" v-html="note.parsed_body"></span>
             </div>
             <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
               <div class="fl w-50">
@@ -61,39 +61,34 @@
     </div>
 
     <!-- Delete Note modal -->
-    <div id="modal-delete-note" class="modal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">
-              {{ $t('people.notes_delete_title') }}
-            </h5>
-            <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
-              <span aria-hidden="true">
-                &times;
-              </span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>{{ $t('people.notes_delete_confirmation') }}</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-              {{ $t('app.cancel') }}
-            </button>
-            <button type="button" class="btn btn-danger" :cy-name="'delete-mode-note-button-' + deleteNote.id" @click.prevent="trash(deleteNote)">
-              {{ $t('app.delete') }}
-            </button>
-          </div>
-        </div>
+    <sweet-modal ref="modalDeleteNote" overlay-theme="dark"
+                 :title="$t('people.notes_delete_title')"
+    >
+      <p>
+        {{ $t('people.notes_delete_confirmation') }}
+      </p>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeModal">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" :cy-name="'delete-mode-note-button-' + deleteNote.id"
+           @click.prevent="trash(deleteNote)"
+        >
+          {{ $t('app.delete') }}
+        </a>
       </div>
-    </div>
+    </sweet-modal>
   </div>
 </template>
 
 <script>
+import { SweetModal } from 'sweet-modal-vue';
 
 export default {
+
+  components: {
+    SweetModal,
+  },
 
   props: {
     hash: {
@@ -203,8 +198,11 @@ export default {
 
     showDelete(note) {
       this.deleteNote.id = note.id;
+      this.$refs.modalDeleteNote.open();
+    },
 
-      $('#modal-delete-note').modal('show');
+    closeModal() {
+      this.$refs.modalDeleteNote.close();
     },
 
     trash(note) {
@@ -212,7 +210,7 @@ export default {
         .then(response => {
           this.getNotes();
 
-          $('#modal-delete-note').modal('hide');
+          this.closeModal();
 
           this.$notify({
             group: 'main',

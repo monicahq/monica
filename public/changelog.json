@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Jan 04, 2020",
+            "title": "New feature: associate a photo to a gift",
+            "description": "Adding a gift is now done inline, and you can associate a photo with it, to remember what you offered. ![image](img/changelogs/2020-01-04-gifts-photo.png)"
+        },
+        {
             "date": "Dec 22, 2019",
             "title": "Enhancement: add emotions to activities",
             "description": "Adding activities is now done inline, and you can add emotions and participants to an activity. ![image](img/changelogs/2019-03-22-new-activity.png)"

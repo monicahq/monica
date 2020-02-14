@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Contact;
 
 use App\Helpers\DateHelper;
+use App\Http\Resources\Note\Note as NoteResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class ContactWithContactFields extends Contact
@@ -29,7 +30,7 @@ class ContactWithContactFields extends Contact
             'is_active' => (bool) $this->is_active,
             'is_dead' => (bool) $this->is_dead,
             'is_me' => $this->isMe(),
-            'last_called' => $this->when(! $this->is_partial, $this->getLastCalled()),
+            'last_called' => $this->when(! $this->is_partial, $this->last_talked_to),
             'last_activity_together' => $this->when(! $this->is_partial, $this->getLastActivityDate()),
             'stay_in_touch_frequency' => $this->when(! $this->is_partial, $this->stay_in_touch_frequency),
             'stay_in_touch_trigger_date' => $this->when(! $this->is_partial, DateHelper::getTimestamp($this->stay_in_touch_trigger_date)),
@@ -96,6 +97,7 @@ class ContactWithContactFields extends Contact
                 'number_of_debts' => $this->debts->count(),
             ]),
             'contactFields' => $this->when(! $this->is_partial, $this->getContactFieldsForAPI()),
+            'notes' => $this->when(! $this->is_partial, NoteResource::collection($this->notes()->latest()->limit(3)->get())),
             'url' => $this->when(! $this->is_partial, route('api.contact', $this->id)),
             'account' => [
                 'id' => $this->account->id,

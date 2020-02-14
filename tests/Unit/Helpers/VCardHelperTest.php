@@ -8,7 +8,8 @@ use Sabre\VObject\Component\VCard;
 
 class VCardHelperTest extends FeatureTestCase
 {
-    public function test_it_get_country_by_sabre_vcard()
+    /** @test */
+    public function it_get_country_by_sabre_vcard()
     {
         $vcard = new VCard([
             'TEL' => '202-555-0191',

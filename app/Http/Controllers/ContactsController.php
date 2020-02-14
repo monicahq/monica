@@ -3,19 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DBHelper;
+use Illuminate\View\View;
 use App\Helpers\DateHelper;
+use App\Helpers\FormHelper;
 use App\Models\Contact\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Helpers\GenderHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
-use App\Helpers\GendersHelper;
+use App\Helpers\AccountHelper;
+use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\Factory;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
+use App\Services\User\UpdateViewPreference;
 use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
@@ -31,7 +38,7 @@ class ContactsController extends Controller
      *
      * @param Request $request
      *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * @return View|RedirectResponse
      */
     public function index(Request $request)
     {
@@ -43,7 +50,7 @@ class ContactsController extends Controller
      *
      * @param Request $request
      *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * @return View|RedirectResponse
      */
     public function archived(Request $request)
     {
@@ -54,8 +61,8 @@ class ContactsController extends Controller
      * Display contacts.
      *
      * @param Request $request
-     *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * @param bool $active
+     * @return View|RedirectResponse
      */
     private function contacts(Request $request, bool $active)
     {
@@ -64,7 +71,11 @@ class ContactsController extends Controller
         $showDeceased = $request->input('show_dead');
 
         if ($user->contacts_sort_order !== $sort) {
-            $user->updateContactViewPreference($sort);
+            app(UpdateViewPreference::class)->execute([
+                'account_id' => $user->account->id,
+                'user_id' => $user->id,
+                'preference' => $sort,
+            ]);
         }
 
         $contacts = $user->account->contacts()->real();
@@ -114,7 +125,10 @@ class ContactsController extends Controller
             $contactsCount += $deceasedCount;
         }
 
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('people.index')
+            ->withAccountHasLimitations($accountHasLimitations)
             ->with('hidingDeceased', $showDeceased != 'true')
             ->with('deceasedCount', $deceasedCount)
             ->withActive($active)
@@ -131,7 +145,7 @@ class ContactsController extends Controller
     /**
      * Show the form to add a new contact.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @return View|Factory|RedirectResponse
      */
     public function create()
     {
@@ -141,7 +155,7 @@ class ContactsController extends Controller
     /**
      * Show the form in case the contact is missing.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @return View|Factory|RedirectResponse
      */
     public function missing()
     {
@@ -152,34 +166,38 @@ class ContactsController extends Controller
      * Show the Add user form unless the contact has limitations.
      *
      * @param  bool $isContactMissing
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @return View|Factory|RedirectResponse
      */
     private function createForm($isContactMissing = false)
     {
-        if (auth()->user()->account->hasReachedContactLimit()
-            && auth()->user()->account->hasLimitations()
+        if (AccountHelper::hasReachedContactLimit(auth()->user()->account)
+            && AccountHelper::hasLimitations(auth()->user()->account)
             && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
             return redirect()->route('settings.subscriptions.index');
         }
 
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('people.create')
+            ->withAccountHasLimitations($accountHasLimitations)
             ->withIsContactMissing($isContactMissing)
-            ->withGenders(GendersHelper::getGendersInput())
-            ->withDefaultGender(auth()->user()->account->default_gender_id);
+            ->withGenders(GenderHelper::getGendersInput())
+            ->withDefaultGender(auth()->user()->account->default_gender_id)
+            ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()));
     }
 
     /**
      * Store the contact.
      *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
         try {
             $contact = app(CreateContact::class)->execute([
                 'account_id' => auth()->user()->account->id,
+                'author_id' => auth()->user()->id,
                 'first_name' => $request->input('first_name'),
                 'last_name' => $request->input('last_name', null),
                 'nickname' => $request->input('nickname', null),
@@ -208,7 +226,7 @@ class ContactsController extends Controller
      *
      * @param Contact $contact
      *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * @return View|RedirectResponse
      */
     public function show(Contact $contact)
     {
@@ -253,7 +271,7 @@ class ContactsController extends Controller
         foreach ($reminders as $reminder) {
             $next_expected_date = $reminder->calculateNextExpectedDateOnTimezone();
             $reminder->next_expected_date_human_readable = DateHelper::getShortDate($next_expected_date);
-            $reminder->next_expected_date = $next_expected_date->format('Y-m-d');
+            $reminder->next_expected_date = DateHelper::getDate($next_expected_date);
         }
         $reminders = $reminders->sortBy('next_expected_date');
 
@@ -273,7 +291,12 @@ class ContactsController extends Controller
             'name' => '---',
         ]);
 
+        $hasReachedAccountStorageLimit = StorageHelper::hasReachedAccountStorageLimit($contact->account);
+        $accountHasLimitations = AccountHelper::hasLimitations($contact->account);
+
         return view('people.profile')
+            ->withHasReachedAccountStorageLimit($hasReachedAccountStorageLimit)
+            ->withAccountHasLimitations($accountHasLimitations)
             ->withLoveRelationships($loveRelationships)
             ->withFamilyRelationships($familyRelationships)
             ->withFriendRelationships($friendRelationships)
@@ -292,7 +315,7 @@ class ContactsController extends Controller
      *
      * @param Contact $contact
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function edit(Contact $contact)
     {
@@ -306,7 +329,10 @@ class ContactsController extends Controller
         $hasBirthdayReminder = ! is_null($contact->birthday_reminder_id);
         $hasDeceasedReminder = ! is_null($contact->deceased_reminder_id);
 
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('people.edit')
+            ->withAccountHasLimitations($accountHasLimitations)
             ->withContact($contact)
             ->withDays(DateHelper::getListOfDays())
             ->withMonths(DateHelper::getListOfMonths())
@@ -318,7 +344,8 @@ class ContactsController extends Controller
             ->withAge($age)
             ->withHasBirthdayReminder($hasBirthdayReminder)
             ->withHasDeceasedReminder($hasDeceasedReminder)
-            ->withGenders(GendersHelper::getGendersInput());
+            ->withGenders(GenderHelper::getGendersInput())
+            ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()));
     }
 
     /**
@@ -327,7 +354,7 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, Contact $contact)
     {
@@ -414,7 +441,7 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function destroy(Request $request, Contact $contact)
     {
@@ -439,7 +466,7 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function editWork(Request $request, Contact $contact)
     {
@@ -453,7 +480,7 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updateWork(Request $request, Contact $contact)
     {
@@ -474,11 +501,14 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function editFoodPreferences(Request $request, Contact $contact)
     {
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('people.food-preferences.edit')
+            ->withAccountHasLimitations($accountHasLimitations)
             ->withContact($contact);
     }
 
@@ -488,7 +518,7 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updateFoodPreferences(Request $request, Contact $contact)
     {
@@ -557,7 +587,7 @@ class ContactsController extends Controller
         $frequency = intval($request->input('frequency'));
         $state = $request->input('state');
 
-        if (auth()->user()->account->hasLimitations()) {
+        if (AccountHelper::hasLimitations(auth()->user()->account)) {
             throw new \LogicException(trans('people.stay_in_touch_premium'));
         }
 
@@ -625,7 +655,11 @@ class ContactsController extends Controller
         $sort = $request->input('sort') ?? $user->contacts_sort_order;
 
         if ($user->contacts_sort_order !== $sort) {
-            $user->updateContactViewPreference($sort);
+            app(UpdateViewPreference::class)->execute([
+                'account_id' => $user->account->id,
+                'user_id' => $user->id,
+                'preference' => $sort,
+            ]);
         }
 
         $tags = null;

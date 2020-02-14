@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
+use App\Helpers\InstanceHelper;
 use App\Models\Account\Account;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -51,7 +53,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm(Request $request)
     {
-        $first = ! Account::hasAny();
+        $first = ! InstanceHelper::hasAtLeastOneAccount();
         if (config('monica.disable_signup') == 'true' && ! $first) {
             abort(403, trans('auth.signup_disabled'));
         }
@@ -82,31 +84,37 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array $data
-     * @return User
+     * @return User|null
      */
-    protected function create(array $data)
+    protected function create(array $data): ?User
     {
-        $first = ! Account::hasAny();
+        $first = ! InstanceHelper::hasAtLeastOneAccount();
         if (config('monica.disable_signup') == 'true' && ! $first) {
             abort(403, trans('auth.signup_disabled'));
         }
 
-        $account = Account::createDefault(
-            $data['first_name'],
-            $data['last_name'],
-            $data['email'],
-            $data['password'],
-            RequestHelper::ip(),
-            $data['lang']
-        );
-        $user = $account->users()->first();
+        try {
+            $account = Account::createDefault(
+                $data['first_name'],
+                $data['last_name'],
+                $data['email'],
+                $data['password'],
+                RequestHelper::ip(),
+                $data['lang']
+            );
+            $user = $account->users()->first();
 
-        if (! $first) {
-            // send me an alert
-            dispatch(new SendNewUserAlert($user));
+            if (! $first) {
+                // send me an alert
+                dispatch(new SendNewUserAlert($user));
+            }
+
+            return $user;
+        } catch (\Exception $e) {
+            Log::warning($e);
+
+            return null;
         }
-
-        return $user;
     }
 
     /**
@@ -117,6 +125,10 @@ class RegisterController extends Controller
      */
     protected function registered(Request $request, $user)
     {
+        if (is_null($user)) {
+            return $user;
+        }
+
         /** @var int $count */
         $count = Account::count();
         if (! config('monica.signup_double_optin') || $count == 1) {

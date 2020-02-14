@@ -14,7 +14,8 @@ class DestroyActivityTypeTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_a_activity_type()
+    /** @test */
+    public function it_destroys_a_activity_type()
     {
         $activityType = factory(ActivityType::class)->create([]);
 
@@ -30,7 +31,8 @@ class DestroyActivityTypeTest extends TestCase
         ]);
     }
 
-    public function test_it_throws_an_exception_if_account_is_not_linked_to_activity_type()
+    /** @test */
+    public function it_throws_an_exception_if_account_is_not_linked_to_activity_type()
     {
         $account = factory(Account::class)->create([]);
         $activityType = factory(ActivityType::class)->create([]);
@@ -44,7 +46,8 @@ class DestroyActivityTypeTest extends TestCase
         app(DestroyActivityType::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_ids_do_not_exist()
+    /** @test */
+    public function it_throws_an_exception_if_ids_do_not_exist()
     {
         $request = [
             'account_id' => 11111111,

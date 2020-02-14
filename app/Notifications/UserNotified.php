@@ -52,7 +52,7 @@ class UserNotified extends LaravelNotification implements ShouldQueue, MailNotif
      * @param  User $user
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail(User $user) : MailMessage
+    public function toMail(User $user): MailMessage
     {
         $contact = Contact::where('account_id', $user->account_id)
             ->findOrFail($this->reminder->contact_id);

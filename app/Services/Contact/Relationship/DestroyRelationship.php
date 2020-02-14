@@ -28,7 +28,7 @@ class DestroyRelationship extends BaseService
      * @param array $data
      * @return bool
      */
-    public function execute(array $data) : bool
+    public function execute(array $data): bool
     {
         $this->validate($data);
 
@@ -77,7 +77,7 @@ class DestroyRelationship extends BaseService
                 ->count();
 
             if ($otherRelations == 0) {
-                $contact->deleteEverything();
+                $contact->delete();
             }
         }
     }

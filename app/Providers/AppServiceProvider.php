@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Helpers\DBHelper;
 use Laravel\Cashier\Cashier;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use App\Notifications\EmailMessaging;
 use Illuminate\Support\Facades\Schema;
@@ -45,6 +46,8 @@ class AppServiceProvider extends ServiceProvider
         ResetPassword::toMailUsing(function ($user, $token) {
             return EmailMessaging::resetPasswordMail($user, $token);
         });
+
+        Paginator::defaultView('vendor.pagination.default');
     }
 
     /**
@@ -82,7 +85,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Account\Company\CreateCompany::class => \App\Services\Account\Company\CreateCompany::class,
         \App\Services\Account\Company\DestroyCompany::class => \App\Services\Account\Company\DestroyCompany::class,
         \App\Services\Account\Company\UpdateCompany::class => \App\Services\Account\Company\UpdateCompany::class,
-        \App\Services\Account\DestroyAllDocuments::class => \App\Services\Account\DestroyAllDocuments::class,
+        \App\Services\Account\Settings\DestroyAllDocuments::class => \App\Services\Account\Settings\DestroyAllDocuments::class,
         \App\Services\Account\Gender\CreateGender::class => \App\Services\Account\Gender\CreateGender::class,
         \App\Services\Account\Gender\DestroyGender::class => \App\Services\Account\Gender\DestroyGender::class,
         \App\Services\Account\Gender\UpdateGender::class => \App\Services\Account\Gender\UpdateGender::class,
@@ -112,7 +115,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Contact\Contact\UpdateBirthdayInformation::class => \App\Services\Contact\Contact\UpdateBirthdayInformation::class,
         \App\Services\Contact\Contact\UpdateContact::class => \App\Services\Contact\Contact\UpdateContact::class,
         \App\Services\Contact\Contact\UpdateContactFoodPreferences::class => \App\Services\Contact\Contact\UpdateContactFoodPreferences::class,
-        \App\Services\Contact\Contact\UpdateContactIntroductions::class => \App\Services\Contact\Contact\UpdateContactIntroductions::class,
+        \App\Services\Contact\Contact\UpdateContactIntroduction::class => \App\Services\Contact\Contact\UpdateContactIntroduction::class,
         \App\Services\Contact\Contact\UpdateContactWork::class => \App\Services\Contact\Contact\UpdateContactWork::class,
         \App\Services\Contact\Contact\UpdateDeceasedInformation::class => \App\Services\Contact\Contact\UpdateDeceasedInformation::class,
         \App\Services\Contact\Conversation\AddMessageToConversation::class => \App\Services\Contact\Conversation\AddMessageToConversation::class,
@@ -123,6 +126,10 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Contact\Conversation\UpdateMessage::class => \App\Services\Contact\Conversation\UpdateMessage::class,
         \App\Services\Contact\Document\DestroyDocument::class => \App\Services\Contact\Document\DestroyDocument::class,
         \App\Services\Contact\Document\UploadDocument::class => \App\Services\Contact\Document\UploadDocument::class,
+        \App\Services\Contact\Gift\AssociatePhotoToGift::class => \App\Services\Contact\Gift\AssociatePhotoToGift::class,
+        \App\Services\Contact\Gift\CreateGift::class => \App\Services\Contact\Gift\CreateGift::class,
+        \App\Services\Contact\Gift\DestroyGift::class => \App\Services\Contact\Gift\DestroyGift::class,
+        \App\Services\Contact\Gift\UpdateGift::class => \App\Services\Contact\Gift\UpdateGift::class,
         \App\Services\Contact\LifeEvent\CreateLifeEvent::class => \App\Services\Contact\LifeEvent\CreateLifeEvent::class,
         \App\Services\Contact\LifeEvent\DestroyLifeEvent::class => \App\Services\Contact\LifeEvent\DestroyLifeEvent::class,
         \App\Services\Contact\LifeEvent\UpdateLifeEvent::class => \App\Services\Contact\LifeEvent\UpdateLifeEvent::class,
@@ -153,5 +160,10 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\VCard\ExportVCard::class => \App\Services\VCard\ExportVCard::class,
         \App\Services\VCard\ImportVCard::class => \App\Services\VCard\ImportVCard::class,
         \App\Services\Account\Settings\ExportAccount::class => \App\Services\Account\Settings\ExportAccount::class,
+        \App\Services\Account\Settings\ResetAccount::class => \App\Services\Account\Settings\ResetAccount::class,
+        \App\Services\Account\Settings\DestroyAccount::class => \App\Services\Account\Settings\DestroyAccount::class,
+        \App\Services\Instance\AuditLog\LogAccountAction::class => \App\Services\Instance\AuditLog\LogAccountAction::class,
+        \App\Services\User\UpdateViewPreference::class => \App\Services\User\UpdateViewPreference::class,
+        \App\Services\User\AcceptPolicy::class => \App\Services\User\AcceptPolicy::class,
     ];
 }

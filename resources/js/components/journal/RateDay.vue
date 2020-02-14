@@ -131,11 +131,11 @@
         <div v-if="hasRated == 'addComment'" :key="'comment'" class="pt2" cy-name="comment">
           <form-textarea
             :id="'comment'"
+            v-model="day.comment"
             :required="false"
             :label="$t('journal.journal_add_comment')"
             :rows="4"
             :placeholder="$t('people.life_event_create_default_description')"
-            @contentChange="updateComment($event)"
           />
           <div class="pv3">
             <div class="flex-ns justify-between">
@@ -205,10 +205,6 @@ export default {
     showComment(rate) {
       this.day.rate = rate;
       this.hasRated = 'addComment';
-    },
-
-    updateComment(comment) {
-      this.day.comment = comment;
     },
 
     dismiss() {
