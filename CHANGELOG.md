@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Add support for groups in the API
 * Add support for audit logs on a contact page
 * Add support for audit logs in the Settings page
 * Add vue data validations
