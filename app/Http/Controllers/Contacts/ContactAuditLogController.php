@@ -21,7 +21,7 @@ class ContactAuditLogController extends Controller
         $logsCollection = collect();
 
         foreach ($logs as $log) {
-            $description = trans('app.log_'.$log->action);
+            $description = trans('app.contact_log_'.$log->action);
 
             $logsCollection->push([
                 'author_name' => ($log->author) ? $log->author->name : $log->author_name,
