@@ -6,6 +6,7 @@ use App\Models\User\User;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Jobs\AuditLog\LogAccountAudit;
+use function Safe\json_encode;
 
 class ClearPersonalDescription extends BaseService
 {
