@@ -19,7 +19,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Services\Contact\Contact\UpdateContactIntroduction;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
-use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
 
 class ApiContactController extends ApiController
 {
@@ -57,9 +56,7 @@ class ApiContactController extends ApiController
                 return $this->respondInvalidQuery();
             }
 
-            $collection = $this->applyWithParameter($contacts, $this->getWithParameter());
-
-            return $collection->additional([
+            return ContactResource::collection($contacts)->additional([
                 'meta' => [
                     'query' => $needle,
                 ],
@@ -76,7 +73,7 @@ class ApiContactController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->applyWithParameter($contacts, $this->getWithParameter());
+        return ContactResource::collection($contacts);
     }
 
     /**
@@ -84,7 +81,7 @@ class ApiContactController extends ApiController
      *
      * @param Request $request
      * @param int $id
-     * @return ContactResource|JsonResponse|ContactWithContactFieldsResource
+     * @return ContactResource|JsonResponse
      */
     public function show(Request $request, int $id)
     {
@@ -97,10 +94,6 @@ class ApiContactController extends ApiController
         }
 
         $contact->updateConsulted();
-
-        if ($this->getWithParameter() == 'contactfields') {
-            return new ContactWithContactFieldsResource($contact);
-        }
 
         return new ContactResource($contact);
     }
@@ -179,20 +172,6 @@ class ApiContactController extends ApiController
         app(DestroyContact::class)->execute($data);
 
         return $this->respondObjectDeleted($contactId);
-    }
-
-    /**
-     * Apply the `?with=` parameter.
-     * @param  Collection $contacts
-     * @return JsonResource
-     */
-    private function applyWithParameter($contacts, string $parameter = null)
-    {
-        if ($parameter == 'contactfields') {
-            return ContactWithContactFieldsResource::collection($contacts);
-        }
-
-        return ContactResource::collection($contacts);
     }
 
     /**
