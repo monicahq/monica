@@ -5,6 +5,7 @@ namespace Tests;
 use Tests\Traits\SignIn;
 use App\Models\User\User;
 use Laravel\Dusk\Browser;
+use App\Services\User\AcceptPolicy;
 use Tests\Traits\CreatesApplication;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use Facebook\WebDriver\Chrome\ChromeOptions;
@@ -56,7 +57,12 @@ abstract class DuskTestCase extends BaseTestCase
         Browser::$userResolver = function () {
             $user = factory(User::class)->create();
             $user->account->populateDefaultFields();
-            $user->acceptPolicy();
+
+            app(AcceptPolicy::class)->execute([
+                'account_id' => $user->account->id,
+                'user_id' => $user->id,
+                'ip_address' => null,
+            ]);
 
             return $user;
         };

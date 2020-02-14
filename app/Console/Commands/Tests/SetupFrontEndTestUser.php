@@ -4,7 +4,7 @@ namespace App\Console\Commands\Tests;
 
 use App\Models\User\User;
 use Illuminate\Console\Command;
-use Illuminate\Database\Migrations\Migrator;
+use App\Services\User\AcceptPolicy;
 
 class SetupFrontEndTestUser extends Command
 {
@@ -52,7 +52,12 @@ class SetupFrontEndTestUser extends Command
 
         $user = factory(User::class)->create();
         $user->account->populateDefaultFields();
-        $user->acceptPolicy();
+
+        app(AcceptPolicy::class)->execute([
+            'account_id' => $user->account->id,
+            'user_id' => $user->id,
+            'ip_address' => null,
+        ]);
 
         $this->info($user->getKey());
     }
