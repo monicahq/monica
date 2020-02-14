@@ -10,6 +10,7 @@ use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 use Illuminate\Console\Application;
 use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ContactFieldType;
@@ -73,7 +74,7 @@ class SetupTest extends Command
     /**
      * The list of countries.
      *
-     * @var array
+     * @var Collection
      */
     private $countries = null;
 
