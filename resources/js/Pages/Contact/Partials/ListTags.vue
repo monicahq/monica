@@ -13,7 +13,7 @@
       <li class="mb2">Browse by tags</li>
       <li class="mb2" v-for="tag in tags" :key="tag.id">
         <inertia-link :href="tag.url">{{ tag.name }}</inertia-link>
-        <span class="fr">{{ tag.number }}</span>
+        <span class="fr">{{ tag.count }}</span>
       </li>
     </ul>
   </div>

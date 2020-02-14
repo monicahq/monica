@@ -7,9 +7,12 @@ use App\Models\User\User;
 use App\Helpers\AuditLogHelper;
 use App\Models\Contact\Contact;
 use App\Models\Instance\AuditLog;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AuditLogHelperTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /** @test */
     public function it_prepares_a_collection_of_audit_logs_for_the_settings_page()
     {
@@ -55,7 +58,7 @@ class AuditLogHelperTest extends TestCase
         );
 
         $this->assertEquals(
-            'app.log_account_created_with_name',
+            'app.settings_log_account_created_with_name',
             $collection[0]['description']
         );
     }

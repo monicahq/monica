@@ -35,7 +35,7 @@
         <div class="">
           <div class="flex-ns justify-between">
             <div>
-              <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3" data-cy="clear-description" @click="clear()">❌ {{ $t('app.clear') }}</a>
+              <a v-if="localDescription" class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3" data-cy="clear-description" @click="clear()">❌ {{ $t('app.clear') }}</a>
             </div>
             <div class="">
               <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3 pointer" data-cy="cancel-add-description" @click="editMode = false">{{ $t('app.cancel') }}</a>

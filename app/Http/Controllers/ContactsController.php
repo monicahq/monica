@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Contact\Contact\CreateContact;
+use App\ViewHelpers\ContactListHelper;
 
 class ContactsController extends Controller
 {
@@ -48,17 +49,7 @@ class ContactsController extends Controller
         }
 
         // all tags in the account
-        $tagsInAccount = $account->tags()->with('contacts')->get();
-        //$tagsInAccount = DB::table('tags')->where('account_id', $account->id)->get();
-        $tagsCollection = collect([]);
-        foreach ($tagsInAccount as $tag) {
-            $tagsCollection->push([
-                'id' => $tag->id,
-                'name' => $tag->name,
-                'number' => $tag->contacts->count(),
-                'url' => route('people.tag', ['tag' => $tag]),
-            ]);
-        }
+        $tagsCollection = ContactListHelper::getListOfTags($account);
 
         // number of archived contacts
         $numberOfArchivedContacts = $account->contacts()->notActive()->count();
