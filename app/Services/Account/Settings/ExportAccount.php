@@ -1438,15 +1438,31 @@ SET FOREIGN_KEY_CHECKS=0;
      */
     private function exportContactGroups(array $data)
     {
-        $columns = [
-            'contact_id',
-            'account_id',
-            'created_at',
-            'updated_at',
-        ];
+        $contacts = DB::table('contacts')
+            ->select('id')
+            ->where('account_id', $data['account_id'])
+            ->get();
 
-        $foreignKey = 'account_id';
+        if (!$contacts) {
+            throw new NoAccountException();
+        }
 
-        $this->buildInsertSQLQuery('contact_group', $foreignKey, $columns, $data);
+        if ($contacts->count() == 0) {
+            return;
+        }
+
+        $sql = 'INSERT IGNORE INTO '.DBHelper::getTable('contact_group').' (`contact_id`, `group_id`, `created_at`, `updated_at`) VALUES'.PHP_EOL;
+        $insertValues = [];
+        foreach ($contacts as $contact) {
+            $contactGroups = DB::table('contact_group')
+                ->where('contact_id', $contact->id)
+                ->get();
+
+            foreach ($contactGroups as $contactGroup) {
+                array_push($insertValues, ' ('.$contactGroup->contact_id.','.$contactGroup->group_id.",'".$contactGroup->created_at."','".$contactGroup->updated_at."')");
+            }
+        }
+        $sql .= implode(','.PHP_EOL, $insertValues);
+        $this->writeToTempFile($sql.';'.PHP_EOL);
     }
 }
