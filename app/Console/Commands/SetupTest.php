@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
