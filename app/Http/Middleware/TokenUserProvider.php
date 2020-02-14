@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use App\Models\User\User;
-use Illuminate\Auth\GenericUser;
 use Illuminate\Auth\DatabaseUserProvider;
 
 class TokenUserProvider extends DatabaseUserProvider

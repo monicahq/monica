@@ -19,7 +19,7 @@ class TokensController extends Controller
         UserToken::forceCreate([
             'user_id' => auth()->user()->id,
             'api_token' => hash('sha256', $token),
-            'dav_resource' => $request->input('resource')
+            'dav_resource' => $request->input('resource'),
         ]);
 
         return ['token' => $token];

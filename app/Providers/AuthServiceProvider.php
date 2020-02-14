@@ -32,6 +32,7 @@ class AuthServiceProvider extends ServiceProvider
 
         $this->app['auth']->provider('usertokens', function ($app, $config) {
             $connection = $app['db']->connection($config['connection'] ?? null);
+
             return new TokenUserProvider($connection, $app['hash'], $config['table']);
         });
     }

@@ -56,7 +56,6 @@ class AuthenticateToken
         $guard = $this->auth->guard('token');
 
         if ($user = $guard->user()) {
-
             $token = UserToken::find($user->token_id);
 
             if ($request->is($token->dav_resource)) {
