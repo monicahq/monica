@@ -22,7 +22,7 @@ Please read the list below. Feel free to delete this text after but we need you 
 - [ ] The API has been updated.
 - [ ] API's documentation has been added by submitting a pull request in the [marketing website repository](https://github.com/monicahq/marketing_site/pulls).
 - [ ] Tests have been added for the new code.
-- [ ] If you change a model, make sure the FakeContentTableSeeder is updated. We need seeders to develop locally and generate fake data.
+- [ ] If you change a model, make sure the SetupTest file is updated. We need seeders to develop locally and generate fake data.
 
 #### If the code changes the SQL schema
 - [ ] Make sure exporting account data as SQL is still working.
