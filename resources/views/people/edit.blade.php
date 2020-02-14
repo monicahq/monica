@@ -153,9 +153,4 @@
       </form>
     </div>
   </div>
-
-  <form method="POST" action="{{ route('people.destroy', $contact) }}" id="contact-delete-form" class="hidden">
-    @method('DELETE')
-    @csrf
-  </form>
 @endsection

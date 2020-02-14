@@ -1,3 +1,4 @@
+/*
 describe('Gifts', function () {
   beforeEach(function () {
     cy.login();
@@ -42,3 +43,4 @@ describe('Gifts', function () {
       });
   });
 });
+*/

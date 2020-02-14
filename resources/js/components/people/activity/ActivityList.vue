@@ -11,7 +11,7 @@
         🍿 {{ $t('people.activity_title') }}
 
         <span class="fr relative btn-title">
-          <a v-if="displayLogActivity == false" class="btn edit-information" @click="displayLogActivity = true">
+          <a v-if="displayLogActivity == false" class="btn edit-information" cy-name="add-activity-button" @click="displayLogActivity = true">
             {{ $t('people.activities_add_activity') }}
           </a>
           <a v-else class="btn edit-information" @click="displayLogActivity = false">
@@ -23,7 +23,7 @@
 
     <!-- BLANK STATE -->
     <div v-if="!displayLogActivity && activities.length == 0" class="w-100">
-      <div class="bg-near-white tc pa3 br2 ba b--light-gray">
+      <div class="bg-near-white tc pa3 br2 ba b--light-gray" cy-name="activities-blank-state">
         <p>{{ $t('people.activities_blank_title', { name: name }) }}</p>
         <a class="pointer" href="" @click.prevent="displayLogActivity = true">
           {{ $t('people.activities_blank_add_activity') }}
@@ -96,7 +96,7 @@
             <ul class="list">
               <li class="di">
                 <a href="" class="pointer" @click.prevent="$set(activity, 'edit', true)">{{ $t('app.edit') }}</a>
-                <a v-show="destroyActivityId != activity.id" href="" class="pointer" @click.prevent="showDestroyActivity(activity)">{{ $t('app.delete') }}</a>
+                <a v-show="destroyActivityId != activity.id" href="" class="pointer" :cy-name="'delete-activity-button-'+activity.id" @click.prevent="showDestroyActivity(activity)">{{ $t('app.delete') }}</a>
                 <ul v-show="destroyActivityId == activity.id" class="di">
                   <li class="di">
                     <a class="pointer red" @click.prevent="destroyActivity(activity)">

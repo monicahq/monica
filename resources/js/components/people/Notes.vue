@@ -63,6 +63,7 @@
     <!-- Delete Note modal -->
     <sweet-modal ref="modalDeleteNote" overlay-theme="dark"
                  :title="$t('people.notes_delete_title')"
+                 cy-name="modal-delete-note"
     >
       <p>
         {{ $t('people.notes_delete_confirmation') }}
