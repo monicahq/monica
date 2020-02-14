@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Services\Contact\Description;
 
-use App\Jobs\AuditLog\LogAccountAudit;
 use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Queue;
+use App\Jobs\AuditLog\LogAccountAudit;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Contact\Description\SetPersonalDescription;
