@@ -3,9 +3,12 @@
 namespace Tests\Unit\Services\Contact\Contact;
 
 use Tests\TestCase;
+use App\Models\User\User;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\Queue;
+use App\Jobs\AuditLog\LogAccountAudit;
 use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -18,12 +21,16 @@ class CreateContactTest extends TestCase
     public function it_stores_a_contact()
     {
         $account = factory(Account::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
         $gender = factory(Gender::class)->create([
             'account_id' => $account->id,
         ]);
 
         $request = [
             'account_id' => $account->id,
+            'author_id' => $user->id,
             'first_name' => 'john',
             'middle_name' => 'franck',
             'last_name' => 'doe',
@@ -57,15 +64,61 @@ class CreateContactTest extends TestCase
     }
 
     /** @test */
-    public function it_stores_a_contact_without_gender()
+    public function it_stores_a_contact_and_triggers_an_audit_log()
     {
+        Queue::fake();
+
         $account = factory(Account::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
         $gender = factory(Gender::class)->create([
             'account_id' => $account->id,
         ]);
 
         $request = [
             'account_id' => $account->id,
+            'author_id' => $user->id,
+            'first_name' => 'john',
+            'middle_name' => 'franck',
+            'last_name' => 'doe',
+            'gender_id' => $gender->id,
+            'description' => 'this is a test',
+            'is_partial' => false,
+            'is_birthdate_known' => false,
+            'is_deceased' => false,
+            'is_deceased_date_known' => false,
+        ];
+
+        $contact = app(CreateContact::class)->execute($request);
+
+        // check that a job has been triggered to create an auditlog
+        Queue::assertPushed(LogAccountAudit::class, function ($job) use ($contact, $user) {
+            return $job->auditLog['action'] === 'contact_created' &&
+                $job->auditLog['author_id'] === $user->id &&
+                $job->auditLog['about_contact_id'] === $contact->id &&
+                $job->auditLog['should_appear_on_dashboard'] === true &&
+                $job->auditLog['objects'] === json_encode([
+                    'contact_name' => $contact->name,
+                    'contact_id' => $contact->id,
+                ]);
+        });
+    }
+
+    /** @test */
+    public function it_stores_a_contact_without_gender()
+    {
+        $account = factory(Account::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $gender = factory(Gender::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $request = [
+            'account_id' => $account->id,
+            'author_id' => $user->id,
             'first_name' => 'john',
             'middle_name' => 'franck',
             'last_name' => 'doe',
@@ -133,7 +186,6 @@ class CreateContactTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-
         app(CreateContact::class)->execute($request);
     }
 }

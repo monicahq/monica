@@ -137,10 +137,14 @@ Route::group(['middleware' => ['auth:api']], function () {
         // Avatars
         Route::put('/contacts/{contact}/avatar', 'Contact\\ApiAvatarController@update');
 
+        // Contact logs
+        Route::get('/contacts/{contact}/logs', 'Contact\\ApiAuditLogController@index');
+
         /*
          * SETTINGS
          */
         Route::apiResource('contactfieldtypes', 'Settings\\ApiContactFieldTypeController');
+        Route::apiResource('logs', 'Settings\\ApiAuditLogController');
 
         /*
          * MISC

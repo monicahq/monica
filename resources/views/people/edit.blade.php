@@ -8,7 +8,7 @@
       <p><a href="{{ route('people.show', $contact) }}">< {{ $contact->name }}</a></p>
       <h3 class="f3 fw5">{{ trans('people.information_edit_title', ['name' => $contact->first_name]) }}</h3>
 
-      @if (! auth()->user()->account->hasLimitations())
+      @if (! $accountHasLimitations)
       <p class="import">{!! trans('people.people_add_import', ['url' => 'settings/import']) !!}</p>
       @endif
     </div>
