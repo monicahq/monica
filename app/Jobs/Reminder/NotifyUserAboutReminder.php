@@ -3,6 +3,7 @@
 namespace App\Jobs\Reminder;
 
 use Illuminate\Bus\Queueable;
+use App\Helpers\AccountHelper;
 use App\Notifications\UserNotified;
 use App\Notifications\UserReminded;
 use App\Interfaces\MailNotification;
@@ -44,7 +45,9 @@ class NotifyUserAboutReminder implements ShouldQueue
 
         if (! is_null($message)) {
             // send the notification to this user
-            if (! $this->reminderOutbox->user->account->hasLimitations()) {
+            $account = $this->reminderOutbox->user->account;
+            $hasLimitations = AccountHelper::hasLimitations($account);
+            if (! $hasLimitations) {
                 Notification::send($this->reminderOutbox->user, $message);
             }
 

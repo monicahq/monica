@@ -46,7 +46,7 @@
                 <ul>
                   @if(! config('monica.disable_signup'))
                     <li>{{ trans('auth.signup_no_account') }}&nbsp;<a href="register">{{ trans('auth.signup') }}</a></li>
-                  @elseif(! \App\Models\Account\Account::hasAny())
+                  @elseif(! \App\Helpers\InstanceHelper::hasAtLeastOneAccount())
                     <li>{!! trans('auth.create_account', ['url' => 'register']) !!}</li>
                   @endif
                 </ul>
