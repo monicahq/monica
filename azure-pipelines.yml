@@ -31,9 +31,14 @@ stages:
   - template: .azure/job-tests.yml
   - template: .azure/job-analyzers.yml
   - template: .azure/job-test-browser.yml
-  - template: .azure/job-test-cypress.yml
   - template: .azure/job-reporting.yml
   - template: .azure/job-test-migrations.yml
+
+- stage: cypress
+  displayName: 'Cypress tests'
+  dependsOn: build
+  jobs:
+  - template: .azure/job-test-cypress.yml
 
 
 - stage: deploy

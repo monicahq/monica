@@ -116,7 +116,7 @@
               </a>
             </div>
             <div class="">
-              <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click.prevent="store()">
+              <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" cy-name="save-activity-button" @click.prevent="store()">
                 {{ activity ? $t('app.save') : $t('app.add') }}
               </button>
             </div>
