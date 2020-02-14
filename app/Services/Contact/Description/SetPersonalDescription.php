@@ -2,8 +2,10 @@
 
 namespace App\Services\Contact\Description;
 
+use App\Jobs\AuditLog\LogAccountAudit;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use App\Models\User\User;
 
 class SetPersonalDescription extends BaseService
 {
@@ -41,6 +43,34 @@ class SetPersonalDescription extends BaseService
         $contact->description = $data['description'];
         $contact->save();
 
+        $this->log($data, $contact);
+
         return $contact;
+    }
+
+    /**
+     * Add an audit log.
+     *
+     * @param array $data
+     * @param Contact $contact
+     * @return void
+     */
+    private function log(array $data, Contact $contact): void
+    {
+        $author = User::find($data['author_id']);
+
+        LogAccountAudit::dispatch([
+            'action' => 'contact_description_updated',
+            'account_id' => $author->account_id,
+            'about_contact_id' => $contact->id,
+            'author_id' => $author->id,
+            'author_name' => $author->name,
+            'audited_at' => now(),
+            'should_appear_on_dashboard' => true,
+            'objects' => json_encode([
+                'contact_name' => $contact->name,
+                'contact_id' => $contact->id,
+            ]),
+        ]);
     }
 }

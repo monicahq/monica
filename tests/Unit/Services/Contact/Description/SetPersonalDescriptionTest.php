@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Services\Contact\Description;
 
+use App\Jobs\AuditLog\LogAccountAudit;
 use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Contact\Contact;
@@ -43,6 +44,18 @@ class SetPersonalDescriptionTest extends TestCase
             Contact::class,
             $contact
         );
+
+        // check that a job has been triggered to create an auditlog
+        Queue::assertPushed(LogAccountAudit::class, function ($job) use ($contact, $user) {
+            return $job->auditLog['action'] === 'contact_description_updated' &&
+                $job->auditLog['author_id'] === $user->id &&
+                $job->auditLog['about_contact_id'] === $contact->id &&
+                $job->auditLog['should_appear_on_dashboard'] === true &&
+                $job->auditLog['objects'] === json_encode([
+                    'contact_name' => $contact->name,
+                    'contact_id' => $contact->id,
+                ]);
+        });
     }
 
     /** @test */

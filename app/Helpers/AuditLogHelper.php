@@ -28,7 +28,7 @@ class AuditLogHelper
                     // in that case, we will display a link to point to this contact
                     $contact = Contact::findOrFail($log->object->{'contact_id'});
                     $description = trans(
-                        'app.log_'.$log->action.'_with_name_with_link',
+                        'app.settings_log_'.$log->action.'_with_name_with_link',
                         [
                             'link' => '/people/'.$contact->hashId(),
                             'name' => $contact->name,
@@ -36,7 +36,7 @@ class AuditLogHelper
                     );
                 } catch (ModelNotFoundException $e) {
                     // the contact doesn't exist anymore, we don't need a link
-                    $description = trans('app.log_'.$log->action.'_with_name', ['name' => $log->object->{'contact_name'}]);
+                    $description = trans('app.settings_log_'.$log->action.'_with_name', ['name' => $log->object->{'contact_name'}]);
                 }
 
                 $logsCollection->push([
