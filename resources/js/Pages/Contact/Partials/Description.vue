@@ -12,7 +12,7 @@
 
     <!-- non-edit mode -->
     <template v-if="!editMode">
-      <p class="mb1 f6 mt0">Description <a class="fr pointer" @click="editMode = true">Edit</a></p>
+      <p class="mb1 f6 mt0">{{ $t('people.information_edit_description') }} <a class="fr pointer" @click="editMode = true">{{ $t('app.edit') }}</a></p>
       <p class="mv0 lh-copy" v-if="localDescription">{{ localDescription }}</p>
       <p class="mv0 lh-copy" v-else>{{ $t('people.information_edit_no_description') }}</p>
     </template>
@@ -32,13 +32,13 @@
         />
 
         <!-- Actions -->
-        <div class="mt4">
+        <div class="">
           <div class="flex-ns justify-between">
             <div>
               <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3" data-cy="clear-description" @click="clear()">❌ {{ $t('app.clear') }}</a>
             </div>
             <div class="">
-              <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3" data-cy="cancel-add-description" @click="editMode = false">{{ $t('app.cancel') }}</a>
+              <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3 pointer" data-cy="cancel-add-description" @click="editMode = false">{{ $t('app.cancel') }}</a>
               <loading-button :classes="'btn add w-auto-ns w-100 mb2 pv2 ph3'" :state="loadingState" :text="$t('app.save')" :cypress-selector="'submit-add-description'" />
             </div>
           </div>
@@ -86,6 +86,7 @@ export default {
 
   created: function() {
     this.localDescription = this.description;
+    this.form.description = this.description;
   },
 
   methods: {
@@ -94,14 +95,23 @@ export default {
 
       axios.post('/people/' + this.hash + '/description', this.form)
         .then(response => {
-          this.$snotify.success(this.$t('employee.description_success'), {
-            timeout: 2000,
-            showProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-          });
-
           this.localDescription = response.data.description;
+          this.editMode = false;
+          this.loadingState = null;
+        })
+        .catch(error => {
+          this.loadingState = null;
+          this.form.errors = _.flatten(_.toArray(error.response.data));
+        });
+    },
+
+    clear() {
+      this.loadingState = 'loading';
+
+      axios.delete('/people/' + this.hash + '/description')
+        .then(response => {
+          this.localDescription = response.data.description;
+          this.form.description = response.data.description;
           this.editMode = false;
           this.loadingState = null;
         })
