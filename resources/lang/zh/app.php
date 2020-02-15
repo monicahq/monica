@@ -102,21 +102,21 @@ return [
 
     'error_title' => '糟糕! 出错了。',
     'error_unauthorized' => '你没有权限编辑此页',
-    'error_user_account' => 'This user does not belong to the given account.',
+    'error_user_account' => '此用户不属于此账号',
     'error_save' => '当储存数据时出现了一个错误',
     'error_try_again' => '出了点问题，请再试一次。',
     'error_id' => '错误代码：:id',
-    'error_unavailable' => 'Service unavailable',
+    'error_unavailable' => '服务不可用',
     'error_maintenance' => '网站维护中，待会见！',
     'error_help' => '待会见！',
     'error_twitter' => '关注我们的<a href="https://twitter.com/:twitter">推特</a>来得知网站的最新消息！',
-    'error_no_term' => 'There is no policy for this instance yet.',
+    'error_no_term' => '此实例尚无策略',
 
     'default_save_success' => '数据已被保存',
 
     'compliance_title' => '抱歉，打扰您一下',
     'compliance_desc' => '我们更新了<a href=":urlterm" hreflang=":hreflang">用户协议</a> 以及 <a href=":url" hreflang=":hreflang">隐私政策</a>，您需要阅读并同意才能继续使用您的账号。',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
+    'compliance_desc_end' => '我们会保护您的隐私安全',
     'compliance_terms' => '我已阅读并同意',
 
     // Relationship types
@@ -130,7 +130,7 @@ return [
     'relationship_type_group_family' => '家庭关系',
     'relationship_type_group_friend' => '朋友关系',
     'relationship_type_group_work' => '工作关系',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_other' => '其他关系',
 
     'relationship_type_partner' => '搭档',
     'relationship_type_partner_female' => '搭档',
@@ -245,27 +245,27 @@ return [
     'relationship_type_boss' => '上司',
     'relationship_type_boss_female' => '上司',
     'relationship_type_boss_with_name' => ':name的上司',
-    'relationship_type_boss_female_with_name' => ':name’s boss',
+    'relationship_type_boss_female_with_name' => ':name的上司',
 
-    'relationship_type_subordinate' => 'subordinate',
-    'relationship_type_subordinate_female' => 'subordinate',
-    'relationship_type_subordinate_with_name' => ':name’s subordinate',
-    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate' => '下属',
+    'relationship_type_subordinate_female' => '下属',
+    'relationship_type_subordinate_with_name' => ':name的下属',
+    'relationship_type_subordinate_female_with_name' => ':name的下属',
 
     'relationship_type_mentor' => '老师',
     'relationship_type_mentor_female' => '老师',
     'relationship_type_mentor_with_name' => ':name的老师',
     'relationship_type_mentor_female_with_name' => ':name的老师',
 
-    'relationship_type_protege' => 'protege',
-    'relationship_type_protege_female' => 'protege',
-    'relationship_type_protege_with_name' => ':name’s protege',
-    'relationship_type_protege_female_with_name' => ':name’s protege',
+    'relationship_type_protege' => '学生',
+    'relationship_type_protege_female' => '学生',
+    'relationship_type_protege_with_name' => ':name的学生',
+    'relationship_type_protege_female_with_name' => ':name的学生',
 
-    'relationship_type_ex_husband' => 'ex-husband',
-    'relationship_type_ex_husband_female' => 'ex-wife',
-    'relationship_type_ex_husband_with_name' => ':name’s ex-husband',
-    'relationship_type_ex_husband_female_with_name' => ':name’s ex-wife',
+    'relationship_type_ex_husband' => '前夫',
+    'relationship_type_ex_husband_female' => '前妻',
+    'relationship_type_ex_husband_with_name' => ':name的前夫',
+    'relationship_type_ex_husband_female_with_name' => ':name的前妻',
 
     // emotions
     'emotion_primary_love' => '喜爱',
@@ -458,9 +458,9 @@ return [
     'dav_tasks_description' => ':name的任务',
 
     // audit log
-    'contact_log_contact_created' => 'Created the contact.',
-    'settings_log_contact_created_with_name' => 'Added :name as a contact.',
-    'settings_log_contact_created_with_name_with_link' => 'Added <a href=":link">:name</a> as a contact.',
+    'contact_log_contact_created' => '已创建联系人',
+    'settings_log_contact_created_with_name' => '添加 :name 为联系人',
+    'settings_log_contact_created_with_name_with_link' => '添加 <a href=":link">:name</a> 作为联系人',
     'contact_log_contact_description_updated' => '已更新描述',
     'settings_log_contact_description_updated_with_name' => '更新了 :name 的描述',
     'settings_log_contact_description_updated_with_name_with_link' => '更新了 <a href=":link">:name</a> 的描述。',
