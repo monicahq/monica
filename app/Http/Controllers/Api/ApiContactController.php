@@ -7,6 +7,7 @@ use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
+use App\Jobs\UpdateLastConsultedDate;
 use Illuminate\Database\QueryException;
 use App\Services\Contact\Contact\SetMeContact;
 use Illuminate\Validation\ValidationException;
@@ -96,7 +97,7 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
-        $contact->updateConsulted();
+        UpdateLastConsultedDate::dispatch($contact);
 
         if ($this->getWithParameter() == 'contactfields') {
             return new ContactWithContactFieldsResource($contact);
