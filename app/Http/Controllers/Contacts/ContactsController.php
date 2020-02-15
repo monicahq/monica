@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Helpers\GenderHelper;
-use App\Helpers\PaginatorHelper;
-use App\Jobs\UpdateLastConsultedDate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\Request;
+use App\Helpers\GenderHelper;
 use App\Models\Contact\Contact;
-use App\Http\Controllers\Controller;
+use App\Helpers\PaginatorHelper;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use App\Services\Contact\Contact\CreateContact;
 use App\ViewHelpers\ContactHelper;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Jobs\UpdateLastConsultedDate;
 use App\ViewHelpers\ContactListHelper;
+use App\Services\Contact\Contact\CreateContact;
 
 class ContactsController extends Controller
 {

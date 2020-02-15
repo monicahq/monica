@@ -3,12 +3,9 @@
 namespace Tests\Unit\ViewHelpers;
 
 use Tests\TestCase;
-use App\Models\User\User;
-use App\Helpers\AuditLogHelper;
+use App\Models\Contact\Tag;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Tag;
-use App\Models\Instance\AuditLog;
 use App\ViewHelpers\ContactListHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -54,7 +51,6 @@ class ContactListHelperTest extends TestCase
         $this->assertTrue($collection->contains('name', $tagB->name));
         $this->assertTrue($collection->contains('count', 3));
         $this->assertTrue($collection->contains('count', 2));
-
     }
 
     /** @test */

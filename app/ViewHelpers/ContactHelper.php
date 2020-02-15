@@ -6,8 +6,6 @@ use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
 
 /**
  * These are methods used on the contact page.
@@ -30,7 +28,7 @@ class ContactHelper
         $logsCollection = collect();
 
         foreach ($logs as $log) {
-            $description = trans('app.contact_log_' . $log->action);
+            $description = trans('app.contact_log_'.$log->action);
 
             $logsCollection->push([
                 'author_name' => ($log->author) ? $log->author->name : $log->author_name,

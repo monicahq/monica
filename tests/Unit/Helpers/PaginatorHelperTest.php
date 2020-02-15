@@ -3,12 +3,9 @@
 namespace Tests\Unit\Helpers;
 
 use Tests\TestCase;
-use App\Models\User\User;
-use App\Models\Journal\Day;
-use App\Helpers\JournalHelper;
-use App\Helpers\PaginatorHelper;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Helpers\PaginatorHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PaginatorHelperTest extends TestCase

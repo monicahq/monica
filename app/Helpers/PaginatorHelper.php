@@ -2,10 +2,6 @@
 
 namespace App\Helpers;
 
-use App\Models\Contact\Gender;
-use App\Models\Account\Account;
-use Illuminate\Support\Collection;
-
 class PaginatorHelper
 {
     /**
