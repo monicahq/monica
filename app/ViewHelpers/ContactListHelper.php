@@ -26,6 +26,7 @@ class ContactListHelper
      * @return Collection
      */
     public static function getListOfTags(Account $account): Collection
+
     {
         $allTagsInAccount = DB::select('select id from tags where account_id = ?', [$account->id]);
         $uniqueIds = array_column($allTagsInAccount, 'id');

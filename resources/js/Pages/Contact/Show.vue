@@ -151,20 +151,9 @@
             </ul>
 
             <!-- history -->
-            <ul class="ma0 list pl0">
-              <li class="pa2">
-                <div class="mb2">
-                  Created the contact
-                </div>
-                <span class="f6 db">Regis Freyd on Feb 02, 19:23</span>
-              </li>
-              <li class="pa2">
-                <div class="mb2">
-                  Created the contact
-                </div>
-                <span class="f6 db">Regis Freyd on Feb 02, 19:23</span>
-              </li>
-            </ul>
+            <audit
+              :logs="contact.audit_logs"
+            />
           </div>
         </div>
       </div>
@@ -176,28 +165,18 @@
 import Layout from '@/Shared/Layout';
 import ListTags from '@/Pages/Contact/Partials/ListTags';
 import Description from '@/Pages/Contact/Partials/Description';
+import Audit from '@/Pages/Contact/Partials/Audit';
 
 export default {
   components: {
     Layout,
     ListTags,
     Description,
+    Audit,
   },
 
   props: {
     contact: {
-      type: Object,
-      default: null,
-    },
-    tags: {
-      type: Array,
-      default: null,
-    },
-    numberOfArchivedContacts: {
-      type: Number,
-      default: 0,
-    },
-    paginator: {
       type: Object,
       default: null,
     },

@@ -1,17 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\GenderHelper;
+use App\Helpers\PaginatorHelper;
 use App\Jobs\UpdateLastConsultedDate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Contact\Contact\CreateContact;
+use App\ViewHelpers\ContactHelper;
 use App\ViewHelpers\ContactListHelper;
 
 class ContactsController extends Controller
@@ -50,12 +53,7 @@ class ContactsController extends Controller
             'urls' => [
                 'cta' => route('people.new'),
             ],
-            'paginator' => [
-                'hasMorePages' => $contacts->hasMorePages(),
-                'currentPage' => $contacts->currentPage(),
-                'nextPageUrl' => $contacts->nextPageUrl(),
-                'previousPageUrl' => $contacts->previousPageUrl(),
-            ],
+            'paginator' => PaginatorHelper::getData($contacts),
         ]);
     }
 
@@ -80,12 +78,19 @@ class ContactsController extends Controller
      */
     public function show(Contact $contact)
     {
+        // audit logs
+        $logs = $contact->logs()->latest()->paginate(10);
+
         $contactObject = [
             'hash' => $contact->hashId(),
             'name' => $contact->name,
             'avatar' => $contact->getAvatarURL(),
             'age' => ($contact->birthdate) ? $contact->birthdate->getAge() : null,
             'description' => $contact->description,
+            'audit_logs' => [
+                'content' => ContactHelper::getListOfAuditLogs($logs),
+                'paginator' => PaginatorHelper::getData($logs),
+            ],
         ];
 
         UpdateLastConsultedDate::dispatch($contact);
@@ -105,6 +110,7 @@ class ContactsController extends Controller
     {
         $contact = app(CreateContact::class)->execute([
             'account_id' => auth()->user()->account_id,
+            'author_id' => auth()->user()->id,
             'first_name' => $request->input('firstname'),
             'last_name' => $request->input('lastname', null),
             'nickname' => $request->input('nickname', null),

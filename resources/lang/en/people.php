@@ -36,6 +36,8 @@ return [
     'people_list_account_upgrade_cta' => 'Upgrade now',
     'people_list_untagged' => 'View untagged contacts',
     'people_list_filter_untag' => 'Showing all untagged contacts',
+    'people_list_browse_by_tags' => 'Browse by tags',
+    'people_list_tags_complete_list' => 'Display complete list ({count} more)',
 
     // people add
     'people_add_title' => 'Add a new person',

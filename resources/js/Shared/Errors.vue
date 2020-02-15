@@ -10,6 +10,16 @@
   <div v-if="errors.length > 0" class="border-red ba br3 pa3" :class="classes">
     <p class="mv0 fw6">{{ $t('app.error_title') }}</p>
     <p class="mb0">{{ errors[0] }}</p>
+    <p v-if="errors[0] != 'The given data was invalid.'">
+      {{ errors[0] }}
+    </p>
+    <template v-if="display(errors[1])">
+      <ul v-for="errorsList in errors[1]" :key="errorsList.id">
+        <li v-for="error in errorsList" :key="error.id">
+          {{ error }}
+        </li>
+      </ul>
+    </template>
   </div>
 </template>
 
@@ -25,5 +35,11 @@ export default {
       default: '',
     }
   },
+
+  methods: {
+    display($val) {
+      return _.isObject($val);
+    },
+  }
 };
 </script>

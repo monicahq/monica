@@ -50,19 +50,19 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
     Route::get('/emotions/primaries/{emotion}/secondaries/{secondaryEmotion}/emotions', 'EmotionController@emotions');
 
     Route::name('people.')->group(function () {
-        Route::get('/people/notfound', 'ContactsController@missing')->name('missing');
-        Route::get('/people/archived', 'ContactsController@archived')->name('archived');
+        Route::get('/people/notfound', 'Contacts\\ContactsController@missing')->name('missing');
+        Route::get('/people/archived', 'Contacts\\ContactsController@archived')->name('archived');
 
         // Dashboard
-        Route::get('/people', 'ContactsController@index')->name('index');
-        Route::get('/people/tags/{tag}', 'ContactsController@tag')->name('tag');
-        Route::get('/people/new', 'ContactsController@new')->name('new');
-        Route::get('/people/list', 'ContactsController@list')->name('list');
-        Route::post('/people', 'ContactsController@create')->name('create');
-        Route::get('/people/{contact}', 'ContactsController@show')->name('show');
-        Route::get('/people/{contact}/edit', 'ContactsController@edit')->name('edit');
-        Route::put('/people/{contact}', 'ContactsController@update')->name('update');
-        Route::delete('/people/{contact}', 'ContactsController@destroy')->name('destroy');
+        Route::get('/people', 'Contacts\\ContactsController@index')->name('index');
+        Route::get('/people/tags/{tag}', 'Contacts\\ContactsController@tag')->name('tag');
+        Route::get('/people/new', 'Contacts\\ContactsController@new')->name('new');
+        Route::get('/people/list', 'Contacts\\ContactsController@list')->name('list');
+        Route::post('/people', 'Contacts\\ContactsController@create')->name('create');
+        Route::get('/people/{contact}', 'Contacts\\ContactsController@show')->name('show');
+        Route::get('/people/{contact}/edit', 'Contacts\\ContactsController@edit')->name('edit');
+        Route::put('/people/{contact}', 'Contacts\\ContactsController@update')->name('update');
+        Route::delete('/people/{contact}', 'Contacts\\ContactsController@destroy')->name('destroy');
 
         // Avatar
         Route::get('/people/{contact}/avatar', 'Contacts\\AvatarController@edit')->name('avatar.edit');
@@ -86,7 +86,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/people/{contact}/contactfieldtypes', 'Contacts\\ContactFieldsController@getContactFieldTypes');
 
         // Export as vCard
-        Route::get('/people/{contact}/vcard', 'ContactsController@vcard')->name('vcard');
+        Route::get('/people/{contact}/vcard', 'Contacts\\ContactsController@vcard')->name('vcard');
 
         // Addresses
         Route::get('/countries', 'Contacts\\AddressesController@getCountries');
@@ -97,8 +97,8 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
 
         // Work information
         Route::name('work.')->group(function () {
-            Route::get('/people/{contact}/work/edit', 'ContactsController@editWork')->name('edit');
-            Route::post('/people/{contact}/work/update', 'ContactsController@updateWork')->name('update');
+            Route::get('/people/{contact}/work/edit', 'Contacts\\ContactsController@editWork')->name('edit');
+            Route::post('/people/{contact}/work/update', 'Contacts\\ContactsController@updateWork')->name('update');
         });
 
         // Description
@@ -128,8 +128,8 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
 
         // Food preferences
         Route::name('food.')->group(function () {
-            Route::get('/people/{contact}/food', 'ContactsController@editFoodPreferences')->name('index');
-            Route::post('/people/{contact}/food/save', 'ContactsController@updateFoodPreferences')->name('update');
+            Route::get('/people/{contact}/food', 'Contacts\\ContactsController@editFoodPreferences')->name('index');
+            Route::post('/people/{contact}/food/save', 'Contacts\\ContactsController@updateFoodPreferences')->name('update');
         });
 
         // Relationships
@@ -170,16 +170,16 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::resource('people/{contact}/photos', 'Contacts\\PhotosController')->only(['index', 'store', 'destroy']);
 
         // Search
-        Route::post('/people/search', 'ContactsController@search')->name('search');
+        Route::post('/people/search', 'Contacts\\ContactsController@search')->name('search');
 
         // Stay in touch information
-        Route::post('/people/{contact}/stayintouch', 'ContactsController@stayInTouch');
+        Route::post('/people/{contact}/stayintouch', 'Contacts\\ContactsController@stayInTouch');
 
         // Set favorite
-        Route::post('/people/{contact}/favorite', 'ContactsController@favorite');
+        Route::post('/people/{contact}/favorite', 'Contacts\\ContactsController@favorite');
 
         // Archive/Unarchive
-        Route::put('/people/{contact}/archive', 'ContactsController@archive');
+        Route::put('/people/{contact}/archive', 'Contacts\\ContactsController@archive');
 
         // Activities
         Route::get('/activityCategories', 'Contacts\\ActivitiesController@categories')->name('activities.categories');
