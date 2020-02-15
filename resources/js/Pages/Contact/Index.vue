@@ -18,7 +18,7 @@
           <!-- filters -->
           <div class="flex items-center justify-between mb3">
             <div class="">
-              You manage 145 contacts (and {{ numberOfArchivedContacts }} archived contacts)
+              You manage {{ count }} contacts (and {{ numberOfArchivedContacts }} archived contacts)
             </div>
             <div class="dib mt0">
               Sort by
@@ -107,6 +107,10 @@ export default {
   },
 
   props: {
+    count: {
+      type: Number,
+      default: 0,
+    },
     contacts: {
       type: Array,
       default: null,
@@ -126,7 +130,7 @@ export default {
     paginator: {
       type: Object,
       default: null,
-    },
+    }
   },
 };
 </script>

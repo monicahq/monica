@@ -14,7 +14,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactListHelperTest extends TestCase
 {
-    //use DatabaseTransactions;
+    use DatabaseTransactions;
 
     /** @test */
     public function it_gets_a_list_of_tags_with_the_number_of_contacts_associated_with_them()
@@ -55,5 +55,24 @@ class ContactListHelperTest extends TestCase
         $this->assertTrue($collection->contains('count', 3));
         $this->assertTrue($collection->contains('count', 2));
 
+    }
+
+    /** @test */
+    public function it_gets_a_list_of_contacts()
+    {
+        $account = factory(Account::class)->create();
+
+        factory(Contact::class, 3)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $contacts = $account->contacts;
+
+        $collection = ContactListHelper::getListOfContacts($contacts);
+
+        $this->assertEquals(
+            3,
+            $collection->count()
+        );
     }
 }

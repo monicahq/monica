@@ -50,15 +50,11 @@ class ContactListHelper
      * Get the list of contacts, along with the list of tags and the associated
      * groups.
      *
-     * @param Account $account
+     * @param mixed $contacts
      * @return Collection
      */
-    public static function getListOfContacts(Account $account): Collection
+    public static function getListOfContacts($contacts): Collection
     {
-        $contacts = $account->contacts()->real()->active()
-            ->with('tags')
-            ->paginate(30);
-
         $contactsCollection = collect([]);
         foreach ($contacts as $contact) {
             $tags = collect([]);

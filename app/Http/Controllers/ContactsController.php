@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\GenderHelper;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\Request;
@@ -28,25 +29,11 @@ class ContactsController extends Controller
         $contacts = $account->contacts()->real()->active()
             ->with('tags')
             ->paginate(30);
-
-        $contactsCollection = collect([]);
-        foreach ($contacts as $contact) {
-            $tags = collect([]);
-            foreach ($contact->tags as $tag) {
-                $tags->push([
-                    'id' => $tag->id,
-                    'name' => $tag->name,
-                ]);
-            }
-
-            $contactsCollection->push([
-                'id' => $contact->id,
-                'name' => $contact->name,
-                'avatar' => $contact->getAvatarURL(),
-                'tags' => $tags->toArray(),
-                'url' => route('people.show', ['contact' => $contact]),
-            ]);
-        }
+        $allContactsInAccount = DB::table('contacts')
+            ->where('account_id', $account->id)
+            ->where('is_active', 1)
+            ->count();
+        $contactsCollection = ContactListHelper::getListOfContacts($contacts);
 
         // all tags in the account
         $tagsCollection = ContactListHelper::getListOfTags($account);
@@ -56,6 +43,7 @@ class ContactsController extends Controller
 
         return Inertia::render('Contact/Index', [
             'contacts' => $contactsCollection,
+            'count' => $allContactsInAccount,
             'tags' => $tagsCollection,
             'numberOfArchivedContacts' => $numberOfArchivedContacts,
             'urls' => [
@@ -78,7 +66,7 @@ class ContactsController extends Controller
     public function new()
     {
         return Inertia::render('Contact/New', [
-            'genders' => GendersHelper::getGendersInput(),
+            'genders' => GenderHelper::getGendersInput(),
         ]);
     }
 
