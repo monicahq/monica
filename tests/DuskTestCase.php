@@ -63,6 +63,7 @@ abstract class DuskTestCase extends BaseTestCase
     {
         $user = factory(User::class)->create();
         $user->account->populateDefaultFields();
+        $user->account->update(['has_access_to_paid_version_for_free' => true]);
 
         app(AcceptPolicy::class)->execute([
             'account_id' => $user->account->id,

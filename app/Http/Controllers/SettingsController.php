@@ -201,7 +201,7 @@ class SettingsController
      */
     public function upload()
     {
-        if (config('monica.requires_subscription') && ! auth()->user()->account->isSubscribed()) {
+        if (AccountHelper::hasLimitations(auth()->user()->account)) {
             return redirect()->route('settings.subscriptions.index');
         }
 
@@ -262,7 +262,7 @@ class SettingsController
      */
     public function addUser()
     {
-        if (config('monica.requires_subscription') && ! auth()->user()->account->isSubscribed()) {
+        if (AccountHelper::hasLimitations(auth()->user()->account)) {
             return redirect()->route('settings.subscriptions.index');
         }
 
