@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\GenderHelper;
+use App\Jobs\UpdateLastConsultedDate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\Request;
@@ -86,6 +87,8 @@ class ContactsController extends Controller
             'age' => ($contact->birthdate) ? $contact->birthdate->getAge() : null,
             'description' => $contact->description,
         ];
+
+        UpdateLastConsultedDate::dispatch($contact);
 
         return Inertia::render('Contact/Show', [
             'contact' => $contactObject,
