@@ -31,44 +31,6 @@ abstract class DuskTestCase extends BaseTestCase
     }
 
     /**
-     * Register the base URL and some macro with Dusk.
-     *
-     * @return void
-     *
-     * @psalm-suppress UndefinedThisPropertyFetch
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        /*
-         * Macro scrollTo to scroll down/up, until the selector is visible
-         */
-        Browser::macro('scrollTo', function ($selector) {
-            //$element = $this->element($selector);
-            //$this->driver->executeScript("arguments[0].scrollIntoView(true);",[$element]);
-
-            $selectorby = $this->resolver->format($selector);
-            $this->driver->executeScript("$(\"html, body\").animate({scrollTop: $(\"$selectorby\").offset().top}, 0);");
-
-            return $this;
-        });
-
-        Browser::$userResolver = function () {
-            $user = factory(User::class)->create();
-            $user->account->populateDefaultFields();
-
-            app(AcceptPolicy::class)->execute([
-                'account_id' => $user->account->id,
-                'user_id' => $user->id,
-                'ip_address' => null,
-            ]);
-
-            return $user;
-        };
-    }
-
-    /**
      * Create the RemoteWebDriver instance.
      *
      * @return \Facebook\WebDriver\Remote\RemoteWebDriver
@@ -91,6 +53,25 @@ abstract class DuskTestCase extends BaseTestCase
                 'http://localhost:9515', $capabilities
             );
         }
+    }
+
+    /**
+     * Return the default user to authenticate.
+     *
+     * @return \App\User|int|null
+     */
+    protected function user()
+    {
+        $user = factory(User::class)->create();
+        $user->account->populateDefaultFields();
+
+        app(AcceptPolicy::class)->execute([
+            'account_id' => $user->account->id,
+            'user_id' => $user->id,
+            'ip_address' => null,
+        ]);
+
+        return $user;
     }
 
     public function hasDivAlert(Browser $browser)
