@@ -20,6 +20,7 @@ use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Services\Contact\Contact\UpdateContactIntroduction;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
+use App\Jobs\UpdateLastConsultedDate;
 
 class ApiContactController extends ApiController
 {
@@ -96,7 +97,7 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
-        $contact->updateConsulted();
+        UpdateLastConsultedDate::dispatch($contact);
 
         if ($this->getWithParameter() == 'contactfields') {
             return new ContactWithContactFieldsResource($contact);

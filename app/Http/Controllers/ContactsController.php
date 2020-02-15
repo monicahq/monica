@@ -30,6 +30,7 @@ use App\Services\Contact\Contact\DestroyContact;
 use App\Services\Contact\Contact\UpdateContactWork;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactSearch as ContactResource;
+use App\Jobs\UpdateLastConsultedDate;
 
 class ContactsController extends Controller
 {
@@ -244,7 +245,7 @@ class ContactsController extends Controller
             $query->orderBy('updated_at', 'desc');
         }]);
 
-        $contact->updateConsulted();
+        UpdateLastConsultedDate::dispatch($contact);
 
         $relationships = $contact->relationships;
         // get love relationship type
