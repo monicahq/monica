@@ -11,11 +11,10 @@ use Laravel\Dusk\TestCase as BaseTestCase;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 abstract class DuskTestCase extends BaseTestCase
 {
-    use CreatesApplication, SignIn, DatabaseTransactions;
+    use CreatesApplication, SignIn;
 
     /**
      * Prepare for Dusk test execution.
