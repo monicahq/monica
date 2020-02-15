@@ -18,6 +18,7 @@ use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Jobs\UpdateLastConsultedDate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
 use App\Models\Relationship\Relationship;
@@ -30,7 +31,6 @@ use App\Services\Contact\Contact\DestroyContact;
 use App\Services\Contact\Contact\UpdateContactWork;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactSearch as ContactResource;
-use App\Jobs\UpdateLastConsultedDate;
 
 class ContactsController extends Controller
 {

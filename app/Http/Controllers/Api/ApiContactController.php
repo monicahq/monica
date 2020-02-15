@@ -7,6 +7,7 @@ use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
+use App\Jobs\UpdateLastConsultedDate;
 use Illuminate\Database\QueryException;
 use App\Services\Contact\Contact\SetMeContact;
 use Illuminate\Validation\ValidationException;
@@ -20,7 +21,6 @@ use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Services\Contact\Contact\UpdateContactIntroduction;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
-use App\Jobs\UpdateLastConsultedDate;
 
 class ApiContactController extends ApiController
 {
