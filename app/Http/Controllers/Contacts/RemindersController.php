@@ -22,11 +22,9 @@ class RemindersController extends Controller
      */
     public function create(Contact $contact)
     {
-        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
-
         return view('people.reminders.add')
             ->withContact($contact)
-            ->withAccountHasLimitations($accountHasLimitations)
+            ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account))
             ->withReminder(new Reminder);
     }
 
@@ -66,11 +64,9 @@ class RemindersController extends Controller
      */
     public function edit(Contact $contact, Reminder $reminder)
     {
-        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
-
         return view('people.reminders.edit')
             ->withContact($contact)
-            ->withAccountHasLimitations($accountHasLimitations)
+            ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account))
             ->withReminder($reminder);
     }
 

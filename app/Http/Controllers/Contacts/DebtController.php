@@ -32,11 +32,9 @@ class DebtController extends Controller
      */
     public function create(Contact $contact)
     {
-        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
-
         return view('people.debt.add')
             ->withContact($contact)
-            ->withAccountHasLimitations($accountHasLimitations)
+            ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account))
             ->withDebt(new Debt);
     }
 
@@ -89,11 +87,9 @@ class DebtController extends Controller
      */
     public function edit(Contact $contact, Debt $debt)
     {
-        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
-
         return view('people.debt.edit')
             ->withContact($contact)
-            ->withAccountHasLimitations($accountHasLimitations)
+            ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account))
             ->withDebt($debt);
     }
 
