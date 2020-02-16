@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Contacts;
 
 use Illuminate\Http\Request;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Http\Controllers\Controller;
@@ -21,8 +22,11 @@ class RemindersController extends Controller
      */
     public function create(Contact $contact)
     {
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('people.reminders.add')
             ->withContact($contact)
+            ->withAccountHasLimitations($accountHasLimitations)
             ->withReminder(new Reminder);
     }
 
@@ -62,8 +66,11 @@ class RemindersController extends Controller
      */
     public function edit(Contact $contact, Reminder $reminder)
     {
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('people.reminders.edit')
             ->withContact($contact)
+            ->withAccountHasLimitations($accountHasLimitations)
             ->withReminder($reminder);
     }
 
