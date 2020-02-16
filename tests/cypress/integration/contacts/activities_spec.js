@@ -27,7 +27,8 @@ describe('Activities', function () {
 
         // delete an activity
         cy.get('[cy-name=delete-activity-button-'+item+']').click();
-        cy.get('[cy-name=confirm]').should('be.visible').click();
+        cy.wait(10);
+        cy.get('[cy-name=confirm-delete-activity]').should('be.visible').click();
         cy.get('[cy-name=activities-blank-state]').should('be.visible');
         cy.get('[cy-name=activity-body-'+item+']').should('not.exist');
       });

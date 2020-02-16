@@ -38,7 +38,7 @@ describe('Debts', function () {
 
         // delete a debt
         cy.get('[cy-name=delete-debt-button-'+item+']').click();
-        cy.get('[cy-name=confirm]').should('be.visible').click();
+        cy.get('[cy-name=confirm-delete-debt]').should('be.visible').click();
         cy.get('[cy-name=debt-blank-state]').should('be.visible');
         cy.get('[cy-name=debt-item-'+item+']').should('not.exist');
       });

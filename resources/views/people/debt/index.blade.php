@@ -52,7 +52,7 @@
           <form method="POST" action="{{ route('people.debts.destroy', [$contact, $debt]) }}">
             @method('DELETE')
             @csrf
-            <confirm message="{{ trans('people.debt_delete_confirmation') }}" cy-name="delete-debt-button-{{ $debt->id }}">
+            <confirm message="{{ trans('people.debt_delete_confirmation') }}" cy-name="delete-debt-button-{{ $debt->id }}" :name="'delete-debt'">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </confirm>
           </form>

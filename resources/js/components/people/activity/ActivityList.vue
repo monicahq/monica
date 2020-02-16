@@ -100,7 +100,7 @@
                   <a v-show="destroyActivityId != activity.id" href="" class="pointer" :cy-name="'delete-activity-button-'+activity.id" @click.prevent="showDestroyActivity(activity)">{{ $t('app.delete') }}</a>
                   <ul v-show="destroyActivityId == activity.id" class="di">
                     <li class="di">
-                      <a class="pointer red" @click.prevent="destroyActivity(activity)">
+                      <a class="pointer red" cy-name="confirm-delete-activity" @click.prevent="destroyActivity(activity)">
                         {{ $t('app.delete_confirm') }}
                       </a>
                     </li>
