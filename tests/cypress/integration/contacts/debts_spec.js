@@ -24,20 +24,21 @@ describe('Debts', function () {
 
         cy.get('[cy-name=debt-item-'+item+']').should('exist');
         cy.get('[cy-name=debt-item-'+item+']').should('contain', '123');
-  
+
         // edit a debt
         cy.get('[cy-name=edit-debt-button-'+item+']').click();
         cy.url().should('include', '/edit');
-  
+
         cy.get('[name=amount]').clear();
         cy.get('[name=amount]').type('234');
         cy.get('[cy-name=save-debt-button]').click();
-  
+
         cy.get('[cy-name=debt-item-'+item+']').should('exist');
         cy.get('[cy-name=debt-item-'+item+']').should('contain', '234');
-  
+
         // delete a debt
         cy.get('[cy-name=delete-debt-button-'+item+']').click();
+        cy.get('[cy-name=confirm]').should('be.visible').click();
         cy.get('[cy-name=debt-blank-state]').should('be.visible');
         cy.get('[cy-name=debt-item-'+item+']').should('not.exist');
       });
