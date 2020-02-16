@@ -43,3 +43,4 @@ parameters:
         - */app/Http/Controllers/Contacts/ContactAuditLogController.php
         - */app/Http/Controllers/Settings/AuditLogController.php
         - */app/Helpers/AuditLogHelper.php
+        - */app/Console/Commands/SetupTest.php

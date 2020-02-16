@@ -3,6 +3,7 @@
 ### New features:
 
 * Add support for groups in the API
+* Add audit log when setting a contact's description
 * Add support for audit logs on a contact page
 * Add support for audit logs in the Settings page
 * Add vue data validations

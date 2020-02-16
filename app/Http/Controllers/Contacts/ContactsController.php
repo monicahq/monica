@@ -19,6 +19,7 @@ use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Jobs\UpdateLastConsultedDate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
 use App\Models\Relationship\Relationship;
@@ -245,7 +246,7 @@ class ContactsController extends Controller
             $query->orderBy('updated_at', 'desc');
         }]);
 
-        $contact->updateConsulted();
+        UpdateLastConsultedDate::dispatch($contact);
 
         $relationships = $contact->relationships;
         // get love relationship type
