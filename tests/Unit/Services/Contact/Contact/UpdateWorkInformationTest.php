@@ -4,8 +4,6 @@ namespace Tests\Unit\Services\Contact\Contact;
 
 use Tests\TestCase;
 use App\Models\User\User;
-use App\Models\Contact\Gender;
-use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Queue;
 use App\Jobs\AuditLog\LogAccountAudit;

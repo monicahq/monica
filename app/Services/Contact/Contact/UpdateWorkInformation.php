@@ -2,10 +2,10 @@
 
 namespace App\Services\Contact\Contact;
 
-use App\Jobs\AuditLog\LogAccountAudit;
+use App\Models\User\User;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use App\Models\User\User;
+use App\Jobs\AuditLog\LogAccountAudit;
 use Illuminate\Validation\ValidationException;
 
 class UpdateWorkInformation extends BaseService
@@ -52,6 +52,7 @@ class UpdateWorkInformation extends BaseService
         $this->log($data, $contact);
 
         $contact->refresh();
+
         return $contact;
     }
 
