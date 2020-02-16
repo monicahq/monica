@@ -96,7 +96,7 @@
               <!-- ACTIONS -->
               <ul class="list">
                 <li class="di">
-                  <a href="" class="pointer" @click.prevent="$set(activity, 'edit', true)">{{ $t('app.edit') }}</a>
+                  <a href="" class="pointer" :cy-name="'edit-activity-button-'+activity.id" @click.prevent="$set(activity, 'edit', true)">{{ $t('app.edit') }}</a>
                   <a v-show="destroyActivityId != activity.id" href="" class="pointer" :cy-name="'delete-activity-button-'+activity.id" @click.prevent="showDestroyActivity(activity)">{{ $t('app.delete') }}</a>
                   <ul v-show="destroyActivityId == activity.id" class="di">
                     <li class="di">
