@@ -92,7 +92,6 @@ class CreateContactTest extends TestCase
 
         $contact = app(CreateContact::class)->execute($request);
 
-        // check that a job has been triggered to create an auditlog
         Queue::assertPushed(LogAccountAudit::class, function ($job) use ($contact, $user) {
             return $job->auditLog['action'] === 'contact_created' &&
                 $job->auditLog['author_id'] === $user->id &&

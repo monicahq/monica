@@ -15,7 +15,7 @@ use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Services\Contact\Contact\UpdateContactWork;
+use App\Services\Contact\Contact\UpdateWorkInformation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Services\Contact\Contact\UpdateContactIntroduction;
@@ -228,11 +228,12 @@ class ApiContactController extends ApiController
     public function updateWork(Request $request, $contactId)
     {
         try {
-            $contact = app(UpdateContactWork::class)->execute(
+            $contact = app(UpdateWorkInformation::class)->execute(
                 $request->except(['account_id', 'contact_id'])
                 + [
                     'contact_id' => $contactId,
                     'account_id' => auth()->user()->account->id,
+                    'author_id' => auth()->user()->id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
