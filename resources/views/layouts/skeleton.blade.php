@@ -8,7 +8,6 @@
     <title>@yield('title', trans('app.application_title'))</title>
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="{{ asset(mix('css/app-'.htmldir().'.css')) }}">
     {{-- Required only for the Upgrade account page --}}
     @if (Route::currentRouteName() == 'settings.subscriptions.upgrade' || Route::currentRouteName() == 'settings.subscriptions.confirm')
       <link rel="stylesheet" href="{{ asset(mix('css/stripe.css')) }}">

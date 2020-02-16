@@ -1,13 +1,8 @@
 <style lang="scss" scoped>
-.notification {
-  bottom: 20px;
-  right: 20px;
-  width: 450px;
-}
 </style>
 
 <template>
-  <div class="relative">
+  <div>
     <header class="w-100 ph3 ph5-ns pv2 bg-white bb">
       <div class="db dt-ns mw9 center w-100">
         <div class="db dtc-ns v-mid tl w-10">
@@ -40,17 +35,18 @@
 
     <slot></slot>
 
-    <template v-if="notification.show">
-      <div class="absolute notification ba z-999" v-if="notification.type == 'success'">
-        success
-      </div>
-    </template>
+    <notification></notification>
   </div>
 </template>
 
 <script>
+import Notification from '@/Shared/Notification';
 
 export default {
+  components: {
+    Notification,
+  },
+
   props: {
     title: {
       type: String,
@@ -60,11 +56,6 @@ export default {
 
   data() {
     return {
-      notification: {
-        show: false,
-        type: null,
-        message: null,
-      },
     };
   },
 
@@ -76,13 +67,6 @@ export default {
 
   mounted() {
     this.updatePageTitle(this.title);
-
-    if (localStorage.success) {
-      this.notification.message = localStorage.success;
-      this.notification.type = 'success';
-      this.notification.show = true;
-      localStorage.removeItem(success);
-    }
   },
 
   methods: {

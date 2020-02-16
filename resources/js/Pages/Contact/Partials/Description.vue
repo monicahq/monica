@@ -12,9 +12,9 @@
 
     <!-- non-edit mode -->
     <template v-if="!editMode">
-      <p class="mb1 f6 mt0">{{ $t('people.information_edit_description') }} <a class="fr pointer" @click="editMode = true">{{ $t('app.edit') }}</a></p>
+      <p class="mb1 f6 mt0">{{ $t('people.description_title') }} <span class="fr pointer bb b--dotted bt-0 bl-0 br-0" @click.prevent="editMode = true">{{ $t('app.edit') }}</span></p>
       <p class="mv0 lh-copy" v-if="localDescription">{{ localDescription }}</p>
-      <p class="mv0 lh-copy" v-else>{{ $t('people.information_edit_no_description') }}</p>
+      <p class="mv0 lh-copy" v-else>{{ $t('people.description_nothing_yet') }}</p>
     </template>
 
     <!-- form to edit the description -->
@@ -24,18 +24,18 @@
 
         <text-area
           v-model="form.description"
-          :label="$t('people.information_edit_description')"
+          :label="$t('people.description_title')"
           :datacy="'description-textarea'"
           :required="true"
           :rows="10"
-          :help="$t('people.information_edit_description_help')"
+          :help="$t('people.description_title_help')"
         />
 
         <!-- Actions -->
         <div class="">
           <div class="flex-ns justify-between">
             <div>
-              <a v-if="localDescription" class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3" data-cy="clear-description" @click="clear()">❌ {{ $t('app.clear') }}</a>
+              <a v-if="localDescription" class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3" href="#" data-cy="clear-description" @click="clear()">❌ {{ $t('app.clear') }}</a>
             </div>
             <div class="">
               <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3 pointer" data-cy="cancel-add-description" @click="editMode = false">{{ $t('app.cancel') }}</a>
@@ -95,6 +95,7 @@ export default {
 
       axios.post('/people/' + this.hash + '/description', this.form)
         .then(response => {
+          flash(this.$t('people.description_edit_success'), 'success');
           this.localDescription = response.data.description;
           this.editMode = false;
           this.loadingState = null;
@@ -110,6 +111,7 @@ export default {
 
       axios.delete('/people/' + this.hash + '/description')
         .then(response => {
+          flash(this.$t('people.description_edit_success'), 'success');
           this.localDescription = response.data.description;
           this.form.description = response.data.description;
           this.editMode = false;

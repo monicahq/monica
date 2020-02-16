@@ -140,9 +140,10 @@ return [
     'last_activity_date_empty' => 'Last activity together: unknown',
 
     // description
-    'information_edit_description' => 'Description',
-    'information_edit_no_description' => 'No description yet',
-    'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
+    'description_title' => 'Description',
+    'description_nothing_yet' => 'No description yet',
+    'description_title_help' => 'Used on the contact list to add some context, if necessary.',
+    'description_edit_success' => 'The description has been saved.',
 
     // additional information
     'information_edit_success' => 'The profile has been updated successfully',

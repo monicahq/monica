@@ -62,7 +62,7 @@ class ContactsController extends Controller
      *
      * @return Response
      */
-    public function new()
+    public function new(): Response
     {
         return Inertia::render('Contact/New', [
             'genders' => GenderHelper::getGendersInput(),
@@ -76,7 +76,7 @@ class ContactsController extends Controller
      *
      * @return Response
      */
-    public function show(Contact $contact)
+    public function show(Contact $contact): Response
     {
         // audit logs
         $logs = $contact->logs()->latest()->paginate(10);

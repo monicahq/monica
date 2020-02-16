@@ -152,7 +152,7 @@
 
             <!-- history -->
             <audit
-              :logs="contact.audit_logs"
+              :contact="contact"
             />
           </div>
         </div>

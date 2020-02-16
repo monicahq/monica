@@ -27,6 +27,7 @@ return [
     'unknown' => 'I don’t know',
     'load_more' => 'Load more',
     'loading' => 'Loading...',
+    'view_more' => 'View more',
     'with' => 'with',
     'today' => 'today',
     'yesterday' => 'yesterday',

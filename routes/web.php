@@ -107,6 +107,11 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
             Route::delete('/people/{contact}/description', 'Contacts\\DescriptionController@destroy')->name('destroy');
         });
 
+        // Audit logs
+        Route::name('auditlogs.')->group(function () {
+            Route::get('/people/{contact}/logs', 'Contacts\\AuditLogController@index')->name('index');
+        });
+
         // Introductions
         Route::name('introductions.')->group(function () {
             Route::get('/people/{contact}/introductions/edit', 'Contacts\\IntroductionsController@edit')->name('edit');
