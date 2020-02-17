@@ -467,4 +467,7 @@ return [
     'contact_log_contact_description_cleared' => 'התיאור נמחק.',
     'settings_log_contact_description_cleared_with_name' => 'התיאור של :name נמחק.',
     'settings_log_contact_description_cleared_with_name_with_link' => 'התיאור של <a href=":link">:name</a> נמחק.',
+    'contact_log_contact_work_updated' => 'Updated work information.',
+    'settings_log_contact_work_updated_with_name' => 'Updated work information of :name.',
+    'settings_log_contact_work_updated_with_name_with_link' => 'Updated work information of <a href=":link">:name</a>.',
 ];
