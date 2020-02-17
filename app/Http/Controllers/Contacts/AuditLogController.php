@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Contacts;
 use App\Helpers\AccountHelper;
 use App\Helpers\AuditLogHelper;
 use App\Models\Contact\Contact;
-use App\Helpers\PaginatorHelper;
 use Illuminate\Http\JsonResponse;
-use App\ViewHelpers\ContactHelper;
 use App\Http\Controllers\Controller;
 
 class AuditLogController extends Controller
