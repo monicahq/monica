@@ -52,6 +52,9 @@
             </div>
 
             <!-- job -->
+            <work
+              :contact="contact"
+            />
             <div class="pa2 bb">
               <p class="mb1 f6 mt0">Job</p>
               <p class="mv0 lh-copy">Software developer at <a href="">Microsoft</a></p>
@@ -166,6 +169,7 @@ import Layout from '@/Shared/Layout';
 import ListTags from '@/Pages/Contact/Partials/ListTags';
 import Description from '@/Pages/Contact/Partials/Description';
 import Audit from '@/Pages/Contact/Partials/Audit';
+import Work from '@/Pages/Contact/Partials/Work';
 
 export default {
   components: {
@@ -173,6 +177,7 @@ export default {
     ListTags,
     Description,
     Audit,
+    Work,
   },
 
   props: {

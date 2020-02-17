@@ -87,6 +87,9 @@ class ContactsController extends Controller
             'avatar' => $contact->getAvatarURL(),
             'age' => ($contact->birthdate) ? $contact->birthdate->getAge() : null,
             'description' => $contact->description,
+            'work' => [
+                'job' => $contact->job,
+            ],
             'audit_logs' => [
                 'content' => ContactHelper::getListOfAuditLogs($logs),
                 'paginator' => PaginatorHelper::getData($logs),
