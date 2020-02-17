@@ -1394,7 +1394,7 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/setMe');
+        $response = $this->json('PUT', '/api/me/contact/'.$contact->id);
 
         $response->assertStatus(200);
 

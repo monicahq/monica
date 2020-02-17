@@ -1,6 +1,6 @@
 <style scoped>
 .avatar-padding {
-  padding-top: 12px;
+  padding-top: 19%
 }
 </style>
 

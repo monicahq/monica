@@ -67,13 +67,13 @@
 
                 <div class="form-group">
                   <label class="mb2 b">@lang('settings.me_title')</label>
-                  <small class="form-text text-muted">@lang('settings.me_help')</small>
                   <me-contact
                     :existing-contacts="{{ \Safe\json_encode($existingContacts) }}"
                     :contact="{{ \Safe\json_encode($meContact) }}"
-                    :limited="{{ \Safe\json_encode(auth()->user()->account->hasLimitations()) }}"
+                    :limited="{{ \Safe\json_encode($accountHasLimitations) }}"
                   >
                   </me-contact>
+                  <small class="form-text text-muted">@lang('settings.me_help')</small>
                 </div>
               </div>
 
