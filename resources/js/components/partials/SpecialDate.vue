@@ -33,10 +33,11 @@
             <form-input
               :id="'age'"
               ref="age"
-              :value="age"
+              v-model="selectedAge"
               :input-type="'number'"
               :width="50"
               :required="true"
+              :validator="$v.selectedAge"
             />
           </div>
         </form-radio>
@@ -86,10 +87,12 @@
             <form-date
               :id="'birthdayDate'"
               ref="birthday"
-              :value="birthdate"
+              v-model="selectedDate"
               :show-calendar-on-focus="true"
               :locale="locale"
+              :label="$t('people.information_edit_birthdate_label')"
               :class="[ dirltr ? 'fl' : 'fr' ]"
+              :validator="$v.selectedDate"
             />
           </div>
         </form-radio>
@@ -112,7 +115,19 @@
 </template>
 
 <script>
+import moment from 'moment';
+import { validationMixin } from 'vuelidate';
+import { required, numeric, helpers } from 'vuelidate/lib/validators';
+
+const before = (param) =>
+  helpers.withParams(
+    { type: 'before', date: param },
+    (value) => !helpers.req(value) || moment(value).isBefore(param)
+  );
+
 export default {
+
+  mixins: [validationMixin],
 
   props: {
     value: {
@@ -121,15 +136,11 @@ export default {
     },
     days: {
       type: Array,
-      default: function () {
-        return [];
-      }
+      default: () => [],
     },
     months: {
       type: Array,
-      default: function () {
-        return [];
-      }
+      default: () => [],
     },
     day: {
       type: Number,
@@ -158,10 +169,33 @@ export default {
       selectedDate: null,
       selectedOption: null,
       selectedOptionSave: null,
+      selectedAge: 0,
       selectedMonth: 0,
       selectedDay: 0,
       hasBirthdayReminder: false
     };
+  },
+
+  validations() {
+    switch (this.selectedOption) {
+    case 'approximate':
+      return {
+        selectedAge: {
+          required,
+          numeric,
+        }
+      };
+      break;
+    case 'exact':
+      return {
+        selectedDate: {
+          required,
+          before: before(moment())
+        }
+      };
+      break;
+    }
+    return null;
   },
 
   computed: {
@@ -173,9 +207,25 @@ export default {
     }
   },
 
+  watch: {
+    birthdate(val) {
+      this.selectedDate = val;
+    },
+
+    value(val) {
+      this.selectedOption = val;
+    },
+
+    age(val) {
+      this.selectedAge = val;
+    },
+  },
+
   mounted() {
+    this.selectedDate = this.birthdate;
     this.selectedOption = this.value != '' ? this.value : 'unknown';
     this.selectedOptionSave = this.selectedOption;
+    this.selectedAge = this.age;
     this.selectedMonth = this.month;
     this.selectedDay = this.day;
     this.hasBirthdayReminder = this.reminder;

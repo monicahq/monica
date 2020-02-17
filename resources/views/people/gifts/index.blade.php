@@ -9,7 +9,7 @@
           'name' => $familyRelationship->ofContact->first_name,
       ];
     }) }}"
-    :reach-limit="{{ \Safe\json_encode(auth()->user()->account->hasReachedAccountStorageLimit()) }}"
+    :reach-limit="{{ \Safe\json_encode($hasReachedAccountStorageLimit) }}"
   >
   </contact-gift>
 </div>

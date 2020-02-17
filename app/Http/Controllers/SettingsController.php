@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User\User;
 use App\Helpers\DateHelper;
-use App\Models\Contact\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
+use App\Helpers\AccountHelper;
 use App\Helpers\TimezoneHelper;
 use App\Models\Contact\Contact;
 use App\Jobs\ExportAccountAsSQL;
@@ -17,11 +17,9 @@ use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
 use App\Exceptions\StripeException;
 use Lahaxearnaud\U2f\Models\U2fKey;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
 use App\Notifications\InvitationMail;
 use App\Http\Requests\SettingsRequest;
-use Illuminate\Support\Facades\Storage;
 use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
@@ -68,7 +66,10 @@ class SettingsController
             $existingContacts->prepend($meContact);
         }
 
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('settings.index')
+                ->withAccountHasLimitations($accountHasLimitations)
                 ->withMeContact($meContact ? new ContactResource($meContact) : null)
                 ->withExistingContacts(ContactResource::collection($existingContacts))
                 ->withNamesOrder($namesOrder)
@@ -177,7 +178,8 @@ class SettingsController
      */
     public function export()
     {
-        return view('settings.export');
+        return view('settings.export')
+            ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account));
     }
 
     /**
@@ -203,11 +205,15 @@ class SettingsController
      */
     public function import()
     {
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         if (auth()->user()->account->importjobs->count() == 0) {
-            return view('settings.imports.blank');
+            return view('settings.imports.blank')
+                ->withAccountHasLimitations($accountHasLimitations);
         }
 
-        return view('settings.imports.index');
+        return view('settings.imports.index')
+            ->withAccountHasLimitations($accountHasLimitations);
     }
 
     /**
@@ -260,12 +266,15 @@ class SettingsController
     public function users()
     {
         $users = auth()->user()->account->users;
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
 
         if ($users->count() == 1 && auth()->user()->account->invitations()->count() == 0) {
-            return view('settings.users.blank');
+            return view('settings.users.blank')
+                ->withAccountHasLimitations($accountHasLimitations);
         }
 
-        return view('settings.users.index', compact('users'));
+        return view('settings.users.index', compact('users'))
+            ->withAccountHasLimitations($accountHasLimitations);
     }
 
     /**
@@ -372,7 +381,8 @@ class SettingsController
      */
     public function tags()
     {
-        return view('settings.tags');
+        return view('settings.tags')
+            ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account));
     }
 
     /**
@@ -395,7 +405,8 @@ class SettingsController
 
     public function api()
     {
-        return view('settings.api.index');
+        return view('settings.api.index')
+            ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account));
     }
 
     public function dav()
@@ -407,7 +418,8 @@ class SettingsController
                 ->withDavRoute($davroute)
                 ->withCardDavRoute("{$davroute}/addressbooks/{$email}/contacts")
                 ->withCalDavBirthdaysRoute("{$davroute}/calendars/{$email}/birthdays")
-                ->withCalDavTasksRoute("{$davroute}/calendars/{$email}/tasks");
+                ->withCalDavTasksRoute("{$davroute}/calendars/{$email}/tasks")
+                ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account));
     }
 
     public function security()
@@ -420,7 +432,8 @@ class SettingsController
         return view('settings.security.index')
             ->with('is2FAActivated', Google2FA::isActivated())
             ->with('currentkeys', U2fKeyResource::collection($u2fKeys))
-            ->withWebauthnKeys(WebauthnKeyResource::collection($webauthnKeys));
+            ->withWebauthnKeys(WebauthnKeyResource::collection($webauthnKeys))
+            ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account));
     }
 
     /**

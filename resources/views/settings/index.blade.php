@@ -34,9 +34,9 @@
             @include('partials.errors')
 
             @if (session('status'))
-              <div class="alert alert-success">
-                  {{ session('status') }}
-              </div>
+            <div class="alert alert-success">
+              {{ session('status') }}
+            </div>
             @endif
 
             <form action="{{ route('settings.save') }}" method="POST">
@@ -143,7 +143,6 @@
                 </div>
               </div>
 
-
               <button type="submit" class="btn btn-primary">{{ trans('settings.save') }}</button>
             </form>
           </div>
@@ -162,6 +161,7 @@
 
           <h2>{{ trans('settings.delete_title') }}</h2>
           <p>{{ trans('settings.delete_desc') }}</p>
+          <p>{{ trans('settings.delete_other_desc') }}</p>
           <button type="submit" class="btn">{{ trans('settings.delete_cta') }}</button>
         </form>
 

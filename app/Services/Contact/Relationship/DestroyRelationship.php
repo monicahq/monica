@@ -77,7 +77,7 @@ class DestroyRelationship extends BaseService
                 ->count();
 
             if ($otherRelations == 0) {
-                $contact->deleteEverything();
+                $contact->delete();
             }
         }
     }

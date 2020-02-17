@@ -18,7 +18,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 RUN apk update && apk upgrade
 RUN apk add --virtual .build-deps \
         curl openssl bash
-RUN apk add supervisor netcat-openbsd \
+RUN apk add supervisor netcat-openbsd rsync \
         #- base
         php7 php7-intl php7-openssl php7-ctype \
         php7-zip php7-zlib php7-opcache \
@@ -35,7 +35,7 @@ RUN apk add supervisor netcat-openbsd \
         php7-phar php7-json php7-iconv \
         #- laravel/framework sabre/vobject
         php7-mbstring \
-        #- league/flysystem-aws-s3-v3 
+        #- league/flysystem-aws-s3-v3
         php7-simplexml \
         #- sabre/vobject sabre/xml
         php7-xml php7-xmlreader php7-xmlwriter \
@@ -54,10 +54,12 @@ RUN apk add supervisor netcat-openbsd \
 
 # Create a user to own all the code and assets and give them a working
 # directory
-RUN mkdir -p /var/www/monica; \
+RUN mkdir -p /usr/src/monica; \
     grep -q apache /etc/group || addgroup -S apache; \
-    adduser -D monica apache -h /var/www/monica
-WORKDIR /var/www/monica
+    adduser -D monica apache -h /usr/src/monica
+WORKDIR /usr/src/monica
+VOLUME /var/www/monica
+
 
 # Copy the local (outside Docker) source into the working directory,
 # copy system files into their proper homes, and set file ownership
@@ -110,14 +112,16 @@ RUN composer global require hirak/prestissimo; \
     composer global remove hirak/prestissimo; \
     composer clear-cache; \
     rm -rf .composer
+
 USER root
+WORKDIR /var/www/monica
 
 # Set crontab for schedules
 RUN set -ex && \
 	cd /etc/periodic/hourly/ && \
 	{ \
 		echo '#!/bin/sh'; \
-		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v > /proc/1/fd/1 2> /proc/1/fd/2'; \
+		echo '/usr/bin/php /usr/src/monica/artisan schedule:run -v > /proc/1/fd/1 2> /proc/1/fd/2'; \
 	} | tee monica && \
 	chmod a+x monica
 
@@ -125,6 +129,8 @@ RUN set -ex && \
 RUN apk del .build-deps && \
     rm -rf /var/cache/apk/*
 
+COPY scripts/docker/upgrade.exclude \
+    /usr/local/share/
 COPY scripts/docker/entrypoint.sh \
     scripts/docker/cron.sh \
     scripts/docker/queue.sh \

@@ -5,13 +5,14 @@ namespace Tests\Unit\Models;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User\User;
-use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Models\Account\Account;
 use App\Models\Contact\Reminder;
 use App\Models\Settings\Currency;
 use App\Services\User\CreateUser;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserTest extends TestCase
@@ -54,18 +55,6 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function it_updates_the_view_preferences()
-    {
-        $user = factory(User::class)->create();
-        $user->contacts_sort_order = 'firstnameAZ';
-
-        $this->assertEquals(
-            $user->contacts_sort_order == 'lastnameAZ',
-            $user->updateContactViewPreference('lastnameAZ')
-        );
-    }
-
-    /** @test */
     public function name_accessor_returns_name_in_the_user_preferred_way()
     {
         $user = new User;
@@ -84,46 +73,6 @@ class UserTest extends TestCase
             $user->name,
             'Doe John'
         );
-    }
-
-    /** @test */
-    public function it_gets_the_right_metric_symbol()
-    {
-        $user = new User;
-        $user->metric = 'fahrenheit';
-
-        $this->assertEquals(
-            'F',
-            $user->getMetricSymbol()
-        );
-
-        $user->metric = 'celsius';
-        $this->assertEquals(
-            'C',
-            $user->getMetricSymbol()
-        );
-    }
-
-    /** @test */
-    public function you_can_vote_if_you_havent_voted_yet_today()
-    {
-        $account = factory(Account::class)->create([]);
-        $user = factory(User::class)->create(['account_id' => $account->id]);
-
-        $this->assertFalse($user->hasAlreadyRatedToday());
-    }
-
-    /** @test */
-    public function you_cant_vote_if_you_have_already_voted_today()
-    {
-        $account = factory(Account::class)->create([]);
-        $user = factory(User::class)->create(['account_id' => $account->id]);
-        $day = factory(Day::class)->create([
-            'account_id' => $account->id,
-            'date' => now(),
-        ]);
-
-        $this->assertTrue($user->hasAlreadyRatedToday());
     }
 
     /** @test */
@@ -226,124 +175,6 @@ class UserTest extends TestCase
         ]);
 
         $this->assertTrue($user->isTheRightTimeToBeReminded($reminder->initial_date));
-    }
-
-    /** @test */
-    public function it_indicates_user_is_compliant()
-    {
-        $term = factory(Term::class)->create([]);
-        $account = factory(Account::class)->create([]);
-        $user = factory(User::class)->create(['account_id' => $account->id]);
-
-        $user->terms()->syncWithoutDetaching([$term->id => ['account_id' => $account->id]]);
-
-        $this->assertTrue($user->isPolicyCompliant());
-    }
-
-    /** @test */
-    public function it_indicates_user_is_not_compliant()
-    {
-        $term = factory(Term::class)->create([]);
-        $account = factory(Account::class)->create([]);
-        $user = factory(User::class)->create(['account_id' => $account->id]);
-
-        $user->terms()->syncWithoutDetaching([$term->id => ['account_id' => $account->id]]);
-
-        // need to sleep, otherwise the creation date of the two terms are
-        // identical
-        sleep(1);
-        $term2 = factory(Term::class)->create([]);
-
-        $this->assertFalse($user->isPolicyCompliant());
-    }
-
-    /** @test */
-    public function it_accepts_the_laterms_and_privacy()
-    {
-        $term = factory(Term::class)->create([]);
-        $account = factory(Account::class)->create([]);
-        $user = factory(User::class)->create(['account_id' => $account->id]);
-        $ipAddress = '12.12.12.12';
-
-        $user->acceptPolicy($ipAddress);
-
-        $this->assertDatabaseHas('term_user', [
-            'user_id' => $user->id,
-            'account_id' => $account->id,
-            'term_id' => $term->id,
-            'ip_address' => $ipAddress,
-        ]);
-    }
-
-    /** @test */
-    public function it_gets_status_for_a_specific_compliance()
-    {
-        $user = factory(User::class)->create([]);
-        $this->assertFalse($user->getStatusForCompliance(123));
-
-        $term = factory(Term::class)->create([]);
-        $user->terms()->sync([$term->id => ['account_id' => $user->account_id]]);
-
-        $array = $user->getStatusForCompliance($term->id);
-        $this->assertArrayHasKey('signed', $array);
-    }
-
-    /** @test */
-    public function it_gets_all_the_signed_compliances_of_the_user()
-    {
-        $user = factory(User::class)->create([]);
-        $term = factory(Term::class)->create([]);
-        $user->terms()->syncWithoutDetaching([$term->id => ['account_id' => $user->account_id]]);
-
-        $term2 = factory(Term::class)->create([]);
-        $user->terms()->syncWithoutDetaching([$term2->id => ['account_id' => $user->account_id]]);
-        $collection = $user->getAllCompliances();
-
-        $this->assertEquals(
-            2,
-            $collection->count()
-        );
-    }
-
-    /** @test */
-    public function it_gets_name_order_for_a_form()
-    {
-        $user = factory(User::class)->create([]);
-        $user->name_order = 'firstname_lastname';
-        $this->assertEquals(
-            'firstname',
-            $user->getNameOrderForForms()
-        );
-
-        $user->name_order = 'firstname_lastname_nickname';
-        $this->assertEquals(
-            'firstname',
-            $user->getNameOrderForForms()
-        );
-
-        $user->name_order = 'firstname_nickname_lastname';
-        $this->assertEquals(
-            'firstname',
-            $user->getNameOrderForForms()
-        );
-
-        $user->name_order = 'lastname_firstname';
-        $this->assertEquals(
-            'lastname',
-            $user->getNameOrderForForms()
-        );
-
-        $user->name_order = 'lastname_firstname_nickname';
-        $this->assertEquals(
-            'lastname',
-            $user->getNameOrderForForms()
-        );
-
-        $user->name_order = 'lastname_nickname_firstname';
-        $this->assertEquals(
-            'lastname',
-            $user->getNameOrderForForms()
-        );
     }
 
     /** @test */
@@ -586,5 +417,31 @@ class UserTest extends TestCase
             'currency_id' => $currency->id,
             'temperature_scale' => 'celsius',
         ]);
+    }
+
+    /** @test */
+    public function it_sends_a_verification_email()
+    {
+        config(['monica.signup_double_optin' => true]);
+        Notification::fake();
+
+        $user = factory(User::class)->create([]);
+        $user->sendEmailVerificationNotification();
+
+        Notification::assertSentTo(
+            [$user], VerifyEmail::class
+        );
+    }
+
+    /** @test */
+    public function it_doesnt_send_a_verification_email_if_the_double_optin_is_disabled_at_the_instance_level()
+    {
+        config(['monica.signup_double_optin' => false]);
+        Notification::fake();
+
+        $user = factory(User::class)->create([]);
+        $user->sendEmailVerificationNotification();
+
+        Notification::assertNothingSent();
     }
 }

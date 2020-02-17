@@ -3,16 +3,30 @@
 ### New features:
 
 * Add ability to set 'me' contact
+* Add audit log when setting a contact's description
+* Add support for audit logs on a contact page
+* Add support for audit logs in the Settings page
+* Add vue data validations
 * Add ability to edit activities
 * Associate a photo to a gift
+* New API method: get all the contacts for a given tag
 
 ### Enhancements:
 
+* Contacts displayed in the activity list are now clickable again
 * Gift are now added and updated inline
+* Add a link in the downgrade process to archive all contacts in the account
 
 ### Fixes:
 
+* Fix edit conversation date not being editable
+* Fix display of the toggle buttons in the Settings page
+* Fix how you met date not being deleted upon save
+* Fix description not being saved when creating/editing activity
+* Markdown is now properly applied for a phone call description
 * Fix contacts list UX with 2 tabs opened
+* Fix activity mock data seeder
+* Fix ordering of contact tags to be alphabetical
 
 # RELEASED VERSIONS:
 

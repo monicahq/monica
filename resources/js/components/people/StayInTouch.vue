@@ -1,4 +1,15 @@
 <style scoped>
+  .error {
+    animation-name: shakeError;
+    animation-fill-mode: forwards;
+    animation-duration: .6s;
+    animation-timing-function: ease-in-out;
+  }
+
+  .form-group-error {
+    display: block;
+    color:#f57f6c;
+  }
 </style>
 
 <template>
@@ -111,16 +122,19 @@
           <div class="mb2">
             <toggle-button class="mr2" :sync="true" :labels="true" :value="stateInput" @change="stateInput = !stateInput" />
             <div class="dib relative" style="top: -2px;">
-              <stay-in-touch-label v-model="frequencyInput">
+              <stay-in-touch-label
+                v-model="frequencyInput"
+                :class="{ 'form-group-error': $v.frequencyInput.$error }"
+              >
                 <div class="dib">
                   <form-input
                     :id="'frequency'"
-                    v-model="frequencyInput"
-                    :value="frequencyInput"
+                    v-model.number="frequencyInput"
                     :input-type="'number'"
                     :width="60"
                     :required="true"
-                    @input="stateInput = $event > 0"
+                    :validator="$v.frequencyInput"
+                    @input="onInput($event)"
                   />
                 </div>
               </stay-in-touch-label>
@@ -151,6 +165,8 @@
 <script>
 import { SweetModal } from 'sweet-modal-vue';
 import { ToggleButton } from 'vue-js-toggle-button';
+import { validationMixin } from 'vuelidate';
+import { required, numeric } from 'vuelidate/lib/validators';
 
 let StayInTouchLabel = Vue.component('stay-in-touch-label', {
 
@@ -179,6 +195,8 @@ export default {
     StayInTouchLabel,
   },
 
+  mixins: [validationMixin],
+
   props: {
     hash: {
       type: String,
@@ -191,6 +209,13 @@ export default {
     limited: {
       type: Boolean,
       default: false,
+    },
+  },
+
+  validations: {
+    frequencyInput: {
+      required,
+      numeric,
     },
   },
 
@@ -248,10 +273,9 @@ export default {
         return;
       }
 
-      // make sure we can't press update if the frequency is invalid
-      // and if the feature is activated
-      if ((this.frequencyInput == '' || this.frequencyInput < 1) && this.stateInput) {
-        this.errorMessage = this.$t('people.stay_in_touch_invalid');
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
         return;
       }
 

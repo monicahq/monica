@@ -180,6 +180,9 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/people/{contact}/activities/contacts', 'Contacts\\ActivitiesController@contacts')->name('activities.contacts');
         Route::get('/people/{contact}/activities/summary', 'Contacts\\ActivitiesController@summary')->name('activities.summary');
         Route::get('/people/{contact}/activities/{year}', 'Contacts\\ActivitiesController@year')->name('activities.year');
+
+        // Audit logs
+        Route::get('/people/{contact}/auditlogs', 'Contacts\\ContactAuditLogController@index')->name('auditlogs');
     });
 
     Route::name('journal.')->group(function () {
@@ -253,11 +256,15 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
             Route::get('/settings/subscriptions/invoice/{invoice}', 'Settings\\SubscriptionsController@downloadInvoice')->name('invoice');
             Route::get('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@downgrade')->name('downgrade');
             Route::post('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@processDowngrade');
+            Route::get('/settings/subscriptions/archive', 'Settings\\SubscriptionsController@archive')->name('archive');
+            Route::post('/settings/subscriptions/archive', 'Settings\\SubscriptionsController@processArchive');
             Route::get('/settings/subscriptions/downgrade/success', 'Settings\\SubscriptionsController@downgradeSuccess')->name('downgrade.success');
             if (! App::environment('production')) {
                 Route::get('/settings/subscriptions/forceCompletePaymentOnTesting', 'Settings\\SubscriptionsController@forceCompletePaymentOnTesting')->name('forceCompletePaymentOnTesting');
             }
         });
+
+        Route::get('/settings/auditlogs', 'Settings\\AuditLogController@index')->name('auditlog.index');
 
         Route::name('tags.')->group(function () {
             Route::get('/settings/tags', 'SettingsController@tags')->name('index');
