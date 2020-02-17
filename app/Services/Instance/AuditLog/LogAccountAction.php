@@ -17,7 +17,7 @@ class LogAccountAction extends BaseService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'author_id' => 'required|integer|exists:users,id',
-            'about_contact_id' => 'sometimes|integer|exists:contacts,id',
+            'about_contact_id' => 'nullable|integer|exists:contacts,id',
             'author_name' => 'required|string|max:255',
             'audited_at' => 'required|date',
             'action' => 'required|string|max:255',
