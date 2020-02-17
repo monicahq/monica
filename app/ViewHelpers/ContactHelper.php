@@ -3,7 +3,6 @@
 namespace App\ViewHelpers;
 
 use App\Helpers\DateHelper;
-use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 
@@ -20,7 +19,7 @@ class ContactHelper
     /**
      * Prepare a collection of audit logs.
      *
-     * @param Account $account
+     * @param mixed $logs
      * @return Collection
      */
     public static function getListOfAuditLogs($logs): Collection
