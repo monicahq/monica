@@ -20,7 +20,7 @@ class ContactHelper
     /**
      * Prepare a collection of audit logs.
      *
-     * @param Account $account
+     * @param mixed $logs
      * @return Collection
      */
     public static function getListOfAuditLogs($logs): Collection
