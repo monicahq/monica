@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\Account\Account;
+use App\Helpers\InstanceHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -40,7 +40,7 @@ class LoginController extends Controller
 
     public function showLoginOrRegister()
     {
-        $first = ! Account::hasAny();
+        $first = ! InstanceHelper::hasAtLeastOneAccount();
         if ($first) {
             return redirect()->route('register');
         }

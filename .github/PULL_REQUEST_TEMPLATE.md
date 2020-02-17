@@ -7,14 +7,14 @@ Please read the list below. Feel free to delete this text after but we need you 
 #### Before submitting the PR
 - [ ] Read the [CONTRIBUTING document](https://github.com/monicahq/monica/blob/master/CONTRIBUTING.md) before submitting your PR.
 - [ ] If the PR is related to an issue or fix one, don't forget to indicate it.
-- [ ] Indicate `[wip]` in the title of the PR it is is not final yet. Remove `[wip]` when ready. Otherwise the PR will be considered complete and rejected if it's not working.
+- [ ] Create your PR as draft if it is not final yet. Mark it as ready... when it’s ready. Otherwise the PR will be considered complete and rejected if it's not working.
 
 ### General checks
 - [ ] Make sure that the change you propose is the smallest possible.
 - [ ] The name of the PR should follow the [conventional commits guideline](https://github.com/monicahq/monica/blob/master/docs/contribute/index.md#conventional-commits) that the project follows.
 
 ### Front-end changes
-- [ ] If you change the UI, make sure to ask repositories administrators first about your changes by pinging @djaiss or @asbiin in this PR.
+- [ ] If you change the UI, make sure to ask repositories administrators first about your changes by pinging djaiss or asbiin in this PR.
 - [ ] Screenshots are included if the PR changes the UI.
 - [ ] Front-end tests have been written with Cypress.
 
@@ -22,7 +22,7 @@ Please read the list below. Feel free to delete this text after but we need you 
 - [ ] The API has been updated.
 - [ ] API's documentation has been added by submitting a pull request in the [marketing website repository](https://github.com/monicahq/marketing_site/pulls).
 - [ ] Tests have been added for the new code.
-- [ ] If you change a model, make sure the FakeContentTableSeeder is updated. We need seeders to develop locally and generate fake data.
+- [ ] If you change a model, make sure the SetupTest file is updated. We need seeders to develop locally and generate fake data.
 
 #### If the code changes the SQL schema
 - [ ] Make sure exporting account data as SQL is still working.

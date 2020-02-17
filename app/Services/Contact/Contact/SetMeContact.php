@@ -4,6 +4,7 @@ namespace App\Services\Contact\Contact;
 
 use App\Models\User\User;
 use App\Services\BaseService;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
 
 class SetMeContact extends BaseService
@@ -35,7 +36,7 @@ class SetMeContact extends BaseService
         $user = User::where('account_id', $data['account_id'])
             ->findOrFail($data['user_id']);
 
-        if ($user->account->hasLimitations()) {
+        if (AccountHelper::hasLimitations($user->account)) {
             abort(402);
         }
 

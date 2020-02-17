@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use Illuminate\Database\QueryException;
@@ -31,7 +32,7 @@ class ApiActivitiesController extends ApiController
         }
 
         return ActivityResource::collection($activities)->additional(['meta' => [
-            'statistics' => auth()->user()->account->getYearlyActivitiesStatistics(),
+            'statistics' => AccountHelper::getYearlyActivitiesStatistics(auth()->user()->account),
         ]]);
     }
 
@@ -158,7 +159,7 @@ class ApiActivitiesController extends ApiController
         }
 
         return ActivityResource::collection($activities)->additional(['meta' => [
-            'statistics' => auth()->user()->account->getYearlyActivitiesStatistics(),
+            'statistics' => AccountHelper::getYearlyActivitiesStatistics(auth()->user()->account),
         ]]);
     }
 }

@@ -120,6 +120,7 @@ SET FOREIGN_KEY_CHECKS=0;
         $this->exportUser($data);
         $this->exportWeather($data);
         $this->exportContactPhoto($data);
+        $this->exportAuditLogs($data);
 
         $sql = 'SET FOREIGN_KEY_CHECKS=1;';
         $this->writeToTempFile($sql);
@@ -1380,5 +1381,31 @@ SET FOREIGN_KEY_CHECKS=0;
         }
         $sql .= implode(','.PHP_EOL, $insertValues);
         $this->writeToTempFile($sql.';'.PHP_EOL);
+    }
+
+    /**
+     * Export the Audit logs table.
+     *
+     * @param array $data
+     */
+    private function exportAuditLogs(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'author_id',
+            'about_contact_id',
+            'author_name',
+            'action',
+            'objects',
+            'should_appear_on_dashboard',
+            'audited_at',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('audit_logs', $foreignKey, $columns, $data);
     }
 }
