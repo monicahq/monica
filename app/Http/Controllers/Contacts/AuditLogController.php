@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use App\Helpers\AccountHelper;
+use App\Helpers\AuditLogHelper;
 use App\Models\Contact\Contact;
 use App\Helpers\PaginatorHelper;
 use Illuminate\Http\JsonResponse;
@@ -16,18 +18,18 @@ class AuditLogController extends Controller
      * @param Contact $contact
      * @return JsonResponse
      */
-    public function index(Contact $contact): JsonResponse
+    public function index()
     {
-        // audit logs
-        $logs = $contact->logs()->latest()->paginate(10);
+        $logs = auth()->user()->account->auditLogs()
+            ->with('author')
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
 
-        $logs = [
-            'content' => ContactHelper::getListOfAuditLogs($logs),
-            'paginator' => PaginatorHelper::getData($logs),
-        ];
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
 
-        return response()->json([
-            'data' => $logs,
-        ], 200);
+        return view('settings.auditlog.index')
+            ->withLogsCollection(AuditLogHelper::getCollectionOfAuditForSettings($logs))
+            ->withAccountHasLimitations($accountHasLimitations)
+            ->withLogsPagination($logs);
     }
 }
