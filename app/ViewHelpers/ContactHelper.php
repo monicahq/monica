@@ -3,7 +3,6 @@
 namespace App\ViewHelpers;
 
 use App\Helpers\DateHelper;
-use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 
