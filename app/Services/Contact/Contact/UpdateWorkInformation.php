@@ -8,6 +8,8 @@ use App\Models\Contact\Contact;
 use App\Jobs\AuditLog\LogAccountAudit;
 use Illuminate\Validation\ValidationException;
 
+use function Safe\json_encode;
+
 class UpdateWorkInformation extends BaseService
 {
     /**
