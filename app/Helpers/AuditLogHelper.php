@@ -28,23 +28,25 @@ class AuditLogHelper
                     // in that case, we will display a link to point to this contact
                     $contact = Contact::findOrFail($log->object->{'contact_id'});
                     $description = trans(
-                        'app.settings_log_'.$log->action.'_with_name_with_link',
+                        'logs.settings_log_'.$log->action.'_with_name_with_link',
                         [
                             'link' => '/people/'.$contact->hashId(),
                             'name' => $contact->name,
                         ]
                     );
                 } catch (ModelNotFoundException $e) {
-                    // the contact doesn't exist anymore, we don't need a link
-                    $description = trans('app.settings_log_'.$log->action.'_with_name', ['name' => $log->object->{'contact_name'}]);
+                    // the contact doesn't exist anymore, we don't need a link, we'll only display a name
+                    $description = trans('logs.settings_log_'.$log->action.'_with_name', ['name' => $log->object->{'contact_name'}]);
                 }
-
-                $logsCollection->push([
-                    'author_name' => ($log->author) ? $log->author->name : $log->author_name,
-                    'description' => $description,
-                    'audited_at' => DateHelper::getShortDateWithTime($log->audited_at),
-                ]);
+            } else {
+                $description = trans('logs.settings_log_'.$log->action, ['name' => $log->object->{'name'}]);
             }
+
+            $logsCollection->push([
+                'author_name' => ($log->author) ? $log->author->name : $log->author_name,
+                'description' => $description,
+                'audited_at' => DateHelper::getShortDateWithTime($log->audited_at),
+            ]);
         }
 
         return $logsCollection;
