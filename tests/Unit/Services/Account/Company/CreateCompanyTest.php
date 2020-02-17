@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Services\Account\Place;
 
-use App\Jobs\AuditLog\LogAccountAudit;
-use App\Models\User\User;
-use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
+use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Account\Company;
+use Illuminate\Support\Facades\Queue;
+use App\Jobs\AuditLog\LogAccountAudit;
 use Illuminate\Validation\ValidationException;
 use App\Services\Account\Company\CreateCompany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

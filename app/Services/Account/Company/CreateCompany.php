@@ -2,13 +2,12 @@
 
 namespace App\Services\Account\Company;
 
-use App\Jobs\AuditLog\LogAccountAudit;
-use App\Models\Contact\Contact;
 use App\Models\User\User;
 use App\Services\BaseService;
+use function Safe\json_encode;
 use App\Models\Account\Company;
 use Safe\Exceptions\JsonException;
-use function Safe\json_encode;
+use App\Jobs\AuditLog\LogAccountAudit;
 
 class CreateCompany extends BaseService
 {
