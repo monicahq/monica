@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use Inertia\Response;
 use App\Models\Contact\Contact;
 use App\Helpers\PaginatorHelper;
 use Illuminate\Http\JsonResponse;
