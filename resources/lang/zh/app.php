@@ -467,4 +467,7 @@ return [
     'contact_log_contact_description_cleared' => '已清除描述',
     'settings_log_contact_description_cleared_with_name' => '已清除 :name 的描述',
     'settings_log_contact_description_cleared_with_name_with_link' => '已清除 <a href=":link">:name</a> 的描述',
+    'contact_log_contact_work_updated' => 'Updated work information.',
+    'settings_log_contact_work_updated_with_name' => 'Updated work information of :name.',
+    'settings_log_contact_work_updated_with_name_with_link' => 'Updated work information of <a href=":link">:name</a>.',
 ];
