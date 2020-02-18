@@ -3,13 +3,10 @@
 namespace Tests\Unit\ViewHelpers;
 
 use Tests\TestCase;
-use App\Models\Contact\Tag;
-use App\Models\Account\Account;
+use App\Models\User\User;
 use App\Models\Contact\Contact;
 use App\Models\Instance\AuditLog;
-use App\Models\User\User;
 use App\ViewHelpers\ContactHelper;
-use App\ViewHelpers\ContactListHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactHelperTest extends TestCase
