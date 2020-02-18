@@ -71,7 +71,7 @@
         "symfony/css-selector": "~4.0",
         "symfony/dom-crawler": "~5.0",
         "thecodingmachine/phpstan-safe-rule": "^0.1",
-        "vimeo/psalm": "3.7.2"
+        "vimeo/psalm": "3.9.2"
     },
     "suggest": {
         "ext-apcu": "*"
