@@ -58,7 +58,7 @@ class AuditLogHelperTest extends TestCase
         );
 
         $this->assertEquals(
-            'app.settings_log_account_created_with_name',
+            'logs.settings_log_account_created_with_name',
             $collection[0]['description']
         );
     }

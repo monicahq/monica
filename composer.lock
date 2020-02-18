@@ -7493,16 +7493,16 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "1.6.1",
+            "version": "1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "6ccb88d2ef9e6c71ebdedadb59910843c47399e1"
+                "reference": "7debcb2f1ad080dff33dd1433d86ab45a3f5c01e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/6ccb88d2ef9e6c71ebdedadb59910843c47399e1",
-                "reference": "6ccb88d2ef9e6c71ebdedadb59910843c47399e1",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/7debcb2f1ad080dff33dd1433d86ab45a3f5c01e",
+                "reference": "7debcb2f1ad080dff33dd1433d86ab45a3f5c01e",
                 "shasum": ""
             },
             "require": {
@@ -7558,7 +7558,7 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2020-01-23T22:19:01+00:00"
+            "time": "2020-02-14T12:29:38+00:00"
         },
         {
             "name": "spomky-labs/base64url",
@@ -10125,13 +10125,14 @@
                 "shasum": ""
             },
             "require": {
-                "illuminate/config": "~5.0 || ~6.0",
-                "illuminate/cookie": "~5.0 || ~6.0",
-                "illuminate/support": "~5.0 || ~6.0",
-                "illuminate/translation": "~5.0 || ~6.0"
+                "illuminate/config": "~6.0",
+                "illuminate/cookie": "~6.0",
+                "illuminate/support": "~6.0",
+                "illuminate/translation": "~6.0",
+                "php": "^7.2"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.15",
+                "friendsofphp/php-cs-fixer": "^2.16",
                 "orchestra/testbench": "^4.0",
                 "phpunit/phpunit": "^8.4"
             },
