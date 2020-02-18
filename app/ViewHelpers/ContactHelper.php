@@ -53,11 +53,11 @@ class ContactHelper
             $information = trans('people.work_information_job_company', ['title' => $contact->job, 'company' => $contact->company]);
         }
 
-        if ($contact->job && !$contact->company) {
+        if ($contact->job && ! $contact->company) {
             $information = $contact->job;
         }
 
-        if (!$contact->job && $contact->company) {
+        if (! $contact->job && $contact->company) {
             $information = trans('people.work_information_company', ['company' => $contact->company]);
         }
 

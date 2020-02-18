@@ -5,11 +5,9 @@ namespace App\Http\Controllers\Contacts;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Contact\Contact;
+use App\ViewHelpers\ContactHelper;
 use App\Http\Controllers\Controller;
 use App\Services\Contact\Contact\UpdateWorkInformation;
-use App\Services\Contact\Description\SetPersonalDescription;
-use App\Services\Contact\Description\ClearPersonalDescription;
-use App\ViewHelpers\ContactHelper;
 
 class WorkInformationController extends Controller
 {
