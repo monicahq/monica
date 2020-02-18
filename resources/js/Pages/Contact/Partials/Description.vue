@@ -7,7 +7,10 @@
 
     <!-- non-edit mode -->
     <template v-if="!editMode">
-      <p class="mb1 f6 mt0">{{ $t('people.description_title') }} <span class="fr pointer bb b--dotted bt-0 bl-0 br-0" @click.prevent="editMode = true">{{ $t('app.edit') }}</span></p>
+      <p class="mb1 f6 mt0">
+        {{ $t('people.description_title') }}
+        <span class="fr pointer bb b--dotted bt-0 bl-0 br-0" @click.prevent="editMode = true">{{ $t('app.edit') }}</span>
+      </p>
       <p class="mv0 lh-copy" v-if="localDescription">{{ localDescription }}</p>
       <p class="mv0 lh-copy" v-else>{{ $t('people.description_nothing_yet') }}</p>
     </template>

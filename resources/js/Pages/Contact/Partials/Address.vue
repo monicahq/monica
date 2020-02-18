@@ -2,16 +2,22 @@
 </style>
 
 <template>
-  <!-- work information -->
+  <!-- list of addresses -->
   <div class="pa2 bb">
 
     <!-- non-edit mode -->
     <template v-if="!editMode">
       <p class="mb1 f6 mt0">
-        {{ $t('people.work_information_title') }}
+        {{ $t('people.contact_address_title') }}
         <span class="fr pointer bb b--dotted bt-0 bl-0 br-0" @click.prevent="editMode = true">{{ $t('app.edit') }}</span>
       </p>
-      <p class="mv0 lh-copy">{{ localDescription }}</p>
+
+      <!-- list of addresses -->
+      <ul>
+        <li v-for="address in contact.addresses" :key="address.id">
+
+        </li>
+      </ul>
     </template>
 
     <!-- form to edit the work information -->

@@ -163,11 +163,9 @@ return [
     'work_information_no_work_defined' => 'No work information defined',
     'work_information_job_company' => ':title (at :company)',
     'work_information_company' => 'Works at :company',
-    'work_add_cta' => 'Update work information',
-    'work_edit_success' => 'Work information have been updated with success',
-    'work_edit_title' => 'Update :name’s job information',
     'work_edit_job' => 'Job title',
     'work_edit_company' => 'Company',
+    'work_edit_success' => 'Work information have been updated with success',
 
     // food preferences
     'food_preferences_add_success' => 'Food preferences have been saved',

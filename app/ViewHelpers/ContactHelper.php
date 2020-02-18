@@ -63,4 +63,33 @@ class ContactHelper
 
         return $information;
     }
+
+    /**
+     * Get all the addresses of the given contact.
+     *
+     * @param Contact $contact
+     * @return array
+     */
+    public static function getAddresses(Contact $contact): array
+    {
+        $addresses = $contact->addresses->with('place')->get();
+
+        $addressesCollection = collect();
+
+        foreach ($addresses as $address) {
+            $addressesCollection->push([
+                'street' => $address->place->street,
+                'city' => $address->place->city,
+                'province' => $address->place->province,
+                'postal_code' => $address->place->postal_code,
+                'country' => $address->place->getCountryName(),
+                'latitude' => $address->place->latitude,
+                'longitude' => $address->place->longitude,
+                'google_map_link' => $address->place->getGoogleMapAddress(),
+                'full' => $address->place->getAddressAsString(),
+            ]);
+        }
+
+        return $addressesCollection;
+    }
 }

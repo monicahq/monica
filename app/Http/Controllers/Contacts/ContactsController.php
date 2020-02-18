@@ -79,7 +79,7 @@ class ContactsController extends Controller
     public function show(Contact $contact): Response
     {
         // audit logs
-        $logs = $contact->logs()->latest()->paginate(10);
+        $logs = $contact->logs()->with('author')->latest()->paginate(10);
 
         $contactObject = [
             'hash' => $contact->hashId(),
