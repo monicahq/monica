@@ -47,7 +47,7 @@
               <a href="" @click.prevent="displayEmotions = true">{{ $t('people.activities_add_emotions') }}</a>
             </li>
             <li v-show="!displayCategory" class="di pointer mr3">
-              <a href="" @click.prevent="displayCategory = true">{{ $t('people.activities_add_category') }}</a>
+              <a href="" @click.prevent="displayCategory = true" cy-name="activities_add_category">{{ $t('people.activities_add_category') }}</a>
             </li>
             <li v-show="!displayParticipants" class="di pointer">
               <a href="" @click.prevent="displayParticipants = true">{{ $t('people.activities_add_participants_cta') }}</a>

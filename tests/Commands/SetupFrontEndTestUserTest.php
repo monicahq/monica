@@ -11,7 +11,8 @@ class SetupFrontEndTestUserTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_create_a_test_user()
+    /** @test */
+    public function it_create_a_test_user()
     {
         $this->withoutMockingConsoleOutput();
 

@@ -56,7 +56,7 @@ describe('Journal entries', function () {
     cy.visit('/journal');
 
     cy.get('[cy-name=journal-blank-state]').should('be.visible');
-    
+
     cy.get('[cy-name=sad-reaction-button]').click();
     cy.wait(10);
 
@@ -67,7 +67,6 @@ describe('Journal entries', function () {
       let item = entries[0].getAttribute('cy-items');
 
       cy.get('[cy-name=entry-body-'+item+']').should('exist');
-      //cy.get('[cy-name=entry-body-1]').should('contain', 'This is a summary')
       cy.get('[cy-name=entry-delete-button-'+item+']').should('exist');
     });
   });

@@ -8,16 +8,4 @@ describe('Login', function () {
 
     cy.get('.alert').should('exist');
   });
-
-  /*
-  it('should sign in into the application', function () {
-    cy.visit('/')
-
-    cy.get('input[name=email]').type('admin@admin.com')
-    cy.get('input[name=password]').type('admin')
-    cy.get('button[type=submit]').click()
-
-    cy.url().should('include', '/dashboard')
-  })
-  */
 });

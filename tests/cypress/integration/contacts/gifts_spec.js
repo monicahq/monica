@@ -1,4 +1,8 @@
 /*
+
+Gift page has change recently a lot, let rewrite this test later ...
+
+###
 describe('Gifts', function () {
   beforeEach(function () {
     cy.login();

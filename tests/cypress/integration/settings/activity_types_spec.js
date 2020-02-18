@@ -127,7 +127,8 @@ describe('Settings: activity types', function () {
       // make sure the activity type exists on the Add activity page
       cy.createContact('John', 'Doe', 'Man');
       cy.get('[cy-name=add-activity-button]').click();
-      //cy.get('#activity_type_id').should('contain', 'This is activity type 1');
+      cy.get('[cy-name=activities_add_category]').click();
+      cy.get('[name=acticity-type-list]').should('contain', 'This is activity type 1');
     });
   });
 });
