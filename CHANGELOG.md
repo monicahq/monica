@@ -18,6 +18,7 @@
 
 ### Fixes:
 
+* Fix resend email verification feature not sending email
 * Fix edit conversation date not being editable
 * Fix display of the toggle buttons in the Settings page
 * Fix how you met date not being deleted upon save
