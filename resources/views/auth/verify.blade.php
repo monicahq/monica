@@ -22,7 +22,11 @@
               @endif
 
               {{ trans('auth.confirmation_check') }}<br/>
-              {!! trans('auth.confirmation_request_another', ['url' => route('verification.resend')]) !!}<br/>
+              {!! trans('auth.confirmation_request_another') !!}<br/>
+              <form action="{{ route('verification.resend') }}" method="post" class="di">
+                @csrf
+                <button type="submit" class="di btn btn-primary mb3">{{ trans('auth.confirmation_request_another_link') }}</button>
+              </form>
               {!! trans('auth.confirmation_again', ['url' => 'settings/emailchange1']) !!}
             </div>
           </div>
