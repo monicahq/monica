@@ -7,34 +7,45 @@
 
     <!-- non-edit mode -->
     <template v-if="!editMode">
-      <p class="mb1 f6 mt0">{{ $t('people.work_information') }} <span class="fr pointer bb b--dotted bt-0 bl-0 br-0" @click.prevent="editMode = true">{{ $t('app.edit') }}</span></p>
-      <p class="mv0 lh-copy" v-if="localDescription">{{ localDescription }}</p>
-      <p class="mv0 lh-copy" v-else>{{ $t('people.description_nothing_yet') }}</p>
+      <p class="mb1 f6 mt0">{{ $t('people.work_information_title') }} <span class="fr pointer bb b--dotted bt-0 bl-0 br-0" @click.prevent="editMode = true">{{ $t('app.edit') }}</span></p>
+
+      <!-- to display only if one of these two variables exist -->
+      <p class="mv0 lh-copy">{{ localDescription }}</p>
     </template>
 
-    <!-- form to edit the description -->
+    <!-- form to edit the work information -->
     <template v-if="editMode">
       <form @submit.prevent="submit">
         <errors :errors="form.errors" :classes="'mb3'" />
 
-        <text-area
-          v-model="form.description"
-          :label="$t('people.description_title')"
-          :datacy="'description-textarea'"
-          :required="true"
-          :rows="10"
-          :help="$t('people.description_title_help')"
-        />
+        <form-input
+          v-model="form.title"
+          v-on:escape="editMode = false"
+          :id="'title'"
+          :input-type="'text'"
+          :required="false"
+          :custom-class="'br2 f5 ba b--black-40 pa2 outline-0'"
+          :title="$t('people.work_edit_job')">
+        </form-input>
+
+        <form-input
+          v-model="form.companyName"
+          v-on:escape="editMode = false"
+          :id="'companyName'"
+          :input-type="'text'"
+          :required="false"
+          :custom-class="'br2 f5 ba b--black-40 pa2 outline-0'"
+          :title="$t('people.work_edit_company')">
+        </form-input>
 
         <!-- Actions -->
         <div class="">
           <div class="flex-ns justify-between">
             <div>
-              <a v-if="localDescription" class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3" href="#" data-cy="clear-description" @click="clear()">❌ {{ $t('app.clear') }}</a>
             </div>
             <div class="">
-              <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3 pointer" data-cy="cancel-add-description" @click="editMode = false">{{ $t('app.cancel') }}</a>
-              <loading-button :classes="'btn add w-auto-ns w-100 mb2 pv2 ph3'" :state="loadingState" :text="$t('app.save')" :cypress-selector="'submit-add-description'" />
+              <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3 pointer" data-cy="cancel-add-work-information" @click="editMode = false">{{ $t('app.cancel') }}</a>
+              <loading-button :classes="'btn add w-auto-ns w-100 mb2 pv2 ph3'" :state="loadingState" :text="$t('app.save')" :cypress-selector="'submit-add-work-information'" />
             </div>
           </div>
         </div>
@@ -45,13 +56,13 @@
 </template>
 
 <script>
-import TextArea from '@/Shared/TextArea';
+import FormInput from '@/Shared/Input';
 import LoadingButton from '@/Shared/LoadingButton';
 import Errors from '@/Shared/Errors';
 
 export default {
   components: {
-    TextArea,
+    FormInput,
     LoadingButton,
     Errors
   },
@@ -65,11 +76,11 @@ export default {
 
   data() {
     return {
-      localJobTitle: null,
-      localCompanyName: null,
       editMode: false,
+      localDescription: '',
       form: {
-        description: null,
+        title: null,
+        companyName: null,
         errors: [],
       },
       loadingState: '',
@@ -77,35 +88,21 @@ export default {
   },
 
   created: function() {
-    this.localJobTitle = this.contact;
-    this.localCompanyName = this.contact;
+    this.localDescription = this.contact.work.description;
+    this.form.title = this.contact.work.title;
+    this.form.companyName = this.contact.work.companyName;
   },
 
   methods: {
     submit() {
       this.loadingState = 'loading';
 
-      axios.post('/people/' + this.hash + '/description', this.form)
+      axios.post('/people/' + this.contact.hash + '/work', this.form)
         .then(response => {
           flash(this.$t('people.description_edit_success'), 'success');
-          this.localDescription = response.data.description;
-          this.editMode = false;
-          this.loadingState = null;
-        })
-        .catch(error => {
-          this.loadingState = null;
-          this.form.errors = _.flatten(_.toArray(error.response.data));
-        });
-    },
-
-    clear() {
-      this.loadingState = 'loading';
-
-      axios.delete('/people/' + this.hash + '/description')
-        .then(response => {
-          flash(this.$t('people.description_edit_success'), 'success');
-          this.localDescription = response.data.description;
-          this.form.description = response.data.description;
+          this.localDescription = response.data.data.description;
+          this.form.title = response.data.data.title;
+          this.form.companyName = response.data.data.company;
           this.editMode = false;
           this.loadingState = null;
         })

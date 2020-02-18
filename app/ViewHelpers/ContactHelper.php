@@ -27,7 +27,7 @@ class ContactHelper
         $logsCollection = collect();
 
         foreach ($logs as $log) {
-            $description = trans('app.contact_log_'.$log->action);
+            $description = trans('logs.contact_log_'.$log->action);
 
             $logsCollection->push([
                 'author_name' => ($log->author) ? $log->author->name : $log->author_name,
@@ -37,5 +37,30 @@ class ContactHelper
         }
 
         return $logsCollection;
+    }
+
+    /**
+     * Get the work information for the given contact.
+     *
+     * @param Contact $contact
+     * @return string
+     */
+    public static function getWorkInformation(Contact $contact): string
+    {
+        $information = trans('people.work_information_no_work_defined');
+
+        if ($contact->job && $contact->company) {
+            $information = trans('people.work_information_job_company', ['title' => $contact->job, 'company' => $contact->company]);
+        }
+
+        if ($contact->job && !$contact->company) {
+            $information = $contact->job;
+        }
+
+        if (!$contact->job && $contact->company) {
+            $information = trans('people.work_information_company', ['company' => $contact->company]);
+        }
+
+        return $information;
     }
 }

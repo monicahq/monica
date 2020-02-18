@@ -88,7 +88,9 @@ class ContactsController extends Controller
             'age' => ($contact->birthdate) ? $contact->birthdate->getAge() : null,
             'description' => $contact->description,
             'work' => [
-                'job' => $contact->job,
+                'title' => $contact->job,
+                'company' => $contact->company,
+                'description' => ContactHelper::getWorkInformation($contact),
             ],
             'audit_logs' => [
                 'content' => ContactHelper::getListOfAuditLogs($logs),

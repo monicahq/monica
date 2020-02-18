@@ -157,14 +157,17 @@ return [
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'I know the exact birthdate of this person...',
     'information_edit_birthdate_label' => 'Birthdate',
-    'information_no_work_defined' => 'No work information defined',
-    'information_work_at' => 'at :company',
+
+    // work information
+    'work_information_title' => 'Work information',
+    'work_information_no_work_defined' => 'No work information defined',
+    'work_information_job_company' => ':title (at :company)',
+    'work_information_company' => 'Works at :company',
     'work_add_cta' => 'Update work information',
     'work_edit_success' => 'Work information have been updated with success',
     'work_edit_title' => 'Update :name’s job information',
-    'work_edit_job' => 'Job title (optional)',
-    'work_edit_company' => 'Company (optional)',
-    'work_information' => 'Work information',
+    'work_edit_job' => 'Job title',
+    'work_edit_company' => 'Company',
 
     // food preferences
     'food_preferences_add_success' => 'Food preferences have been saved',

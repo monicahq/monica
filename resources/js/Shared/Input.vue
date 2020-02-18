@@ -34,6 +34,7 @@
       @blur="onBlur($event)"
       @change="onChange($event)"
       @keyup.enter="onSubmit($event)"
+      @keyup.esc="onEscape($event)"
     />
   </div>
 </template>
@@ -117,6 +118,10 @@ export default {
 
     onChange(event) {
       this.$emit('change', event.target.value);
+    },
+
+    onEscape(event) {
+      this.$emit('escape');
     },
   },
 

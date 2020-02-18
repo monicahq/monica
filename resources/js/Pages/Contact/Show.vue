@@ -55,10 +55,6 @@
             <work
               :contact="contact"
             />
-            <div class="pa2 bb">
-              <p class="mb1 f6 mt0">Job</p>
-              <p class="mv0 lh-copy">Software developer at <a href="">Microsoft</a></p>
-            </div>
 
             <!-- address -->
             <div class="pa2">

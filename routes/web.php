@@ -97,8 +97,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
 
         // Work information
         Route::name('work.')->group(function () {
-            Route::get('/people/{contact}/work/edit', 'Contacts\\ContactsController@editWork')->name('edit');
-            Route::post('/people/{contact}/work/update', 'Contacts\\ContactsController@updateWork')->name('update');
+            Route::post('/people/{contact}/work', 'Contacts\\WorkInformationController@create')->name('create');
         });
 
         // Description
