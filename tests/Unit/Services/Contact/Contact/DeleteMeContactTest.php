@@ -6,8 +6,8 @@ use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Services\Contact\Contact\DeleteMeContact;
 use Illuminate\Validation\ValidationException;
+use App\Services\Contact\Contact\DeleteMeContact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -27,7 +27,7 @@ class DeleteMeContactTest extends TestCase
 
         $request = [
             'account_id' => $user->account->id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ];
 
         $user = app(DeleteMeContact::class)->execute($request);
