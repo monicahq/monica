@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
+use App\Interfaces\LabelProvider;
 use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactFieldType;
 
@@ -175,6 +176,7 @@ class ExportVCard extends BaseService
     private function exportAddress(Contact $contact, VCard $vcard)
     {
         foreach ($contact->addresses as $address) {
+            $type = $this->getContactFieldLabel($address);
             $vcard->add('ADR', [
                 '',
                 '',
@@ -194,12 +196,13 @@ class ExportVCard extends BaseService
     private function exportContactFields(Contact $contact, VCard $vcard)
     {
         foreach ($contact->contactFields as $contactField) {
+            $type = $this->getContactFieldLabel($contactField);
             switch ($contactField->contactFieldType->type) {
                 case ContactFieldType::PHONE:
-                    $vcard->add('TEL', $this->escape($contactField->data));
+                    $vcard->add('TEL', $this->escape($contactField->data), $type);
                     break;
                 case ContactFieldType::EMAIL:
-                    $vcard->add('EMAIL', $this->escape($contactField->data));
+                    $vcard->add('EMAIL', $this->escape($contactField->data), $type);
                     break;
                 default:
                     break;
@@ -225,6 +228,17 @@ class ExportVCard extends BaseService
                     break;
             }
         }
+    }
+
+    private function getContactFieldLabel(LabelProvider $labelProvider)
+    {
+        $type = [];
+        if ($labelProvider->labels) {
+            $type['type'] = $labelProvider->labels->map(function ($label) {
+                return $label->label_i18n ?: $label->label;
+            })->join(',');
+        }
+        return $type;
     }
 
     /**
