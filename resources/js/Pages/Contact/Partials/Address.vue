@@ -13,9 +13,9 @@
       </p>
 
       <!-- list of addresses -->
-      <ul>
+      <ul class="ma0 pl0 list">
         <li v-for="address in contact.addresses" :key="address.id">
-
+          {{ address.full }} <a :href="address.google_map_link">Map</a>
         </li>
       </ul>
     </template>
@@ -86,8 +86,14 @@ export default {
       editMode: false,
       localDescription: '',
       form: {
-        title: null,
-        companyName: null,
+        street: null,
+        street: null,
+        city: null,
+        province: null,
+        postal_code: null,
+        country: null,
+        latitude: null,
+        longitude: null,
         errors: [],
       },
       loadingState: '',

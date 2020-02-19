@@ -57,10 +57,9 @@
             />
 
             <!-- address -->
-            <div class="pa2">
-              <p class="mb1 f6 mt0">Address</p>
-              <p class="mv0 lh-copy">234, rue du saint sacré coeur, Montreal</p>
-            </div>
+            <contact-address
+              :contact="contact"
+            />
           </div>
 
           <!-- actions -->
@@ -166,6 +165,7 @@ import ListTags from '@/Pages/Contact/Partials/ListTags';
 import Description from '@/Pages/Contact/Partials/Description';
 import Audit from '@/Pages/Contact/Partials/Audit';
 import Work from '@/Pages/Contact/Partials/Work';
+import ContactAddress from '@/Pages/Contact/Partials/Address';
 
 export default {
   components: {
@@ -174,6 +174,7 @@ export default {
     Description,
     Audit,
     Work,
+    ContactAddress,
   },
 
   props: {

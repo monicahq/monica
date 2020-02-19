@@ -96,6 +96,7 @@ class ContactsController extends Controller
                 'content' => ContactHelper::getListOfAuditLogs($logs),
                 'paginator' => PaginatorHelper::getData($logs),
             ],
+            'addresses' => ContactHelper::getAddresses($contact),
         ];
 
         UpdateLastConsultedDate::dispatch($contact);

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\ViewHelpers;
 
+use App\Models\Contact\Address;
 use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Contact\Contact;
@@ -74,6 +75,22 @@ class ContactHelperTest extends TestCase
         $this->assertEquals(
             'salesman (at microsoft)',
             $information
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_addresses_of_the_contact()
+    {
+        $contact = factory(Contact::class)->create([]);
+        factory(Address::class, 2)->create([
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $addresses = ContactHelper::getAddresses($contact);
+        $this->assertEquals(
+            2,
+            $addresses->count()
         );
     }
 }

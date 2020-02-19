@@ -68,11 +68,11 @@ class ContactHelper
      * Get all the addresses of the given contact.
      *
      * @param Contact $contact
-     * @return array
+     * @return Collection
      */
-    public static function getAddresses(Contact $contact): array
+    public static function getAddresses(Contact $contact): Collection
     {
-        $addresses = $contact->addresses->with('place')->get();
+        $addresses = $contact->addresses()->with('place')->get();
 
         $addressesCollection = collect();
 
