@@ -234,7 +234,7 @@ class ExportVCard extends BaseService
      * @param LabelProvider $labelProvider
      * @return array|null
      */
-    private function getContactFieldLabel(LabelProvider $labelProvider) : ?array
+    private function getContactFieldLabel(LabelProvider $labelProvider): ?array
     {
         $type = null;
         if ($labelProvider->labels) {
