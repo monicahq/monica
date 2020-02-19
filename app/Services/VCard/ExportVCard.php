@@ -230,10 +230,15 @@ class ExportVCard extends BaseService
         }
     }
 
-    private function getContactFieldLabel(LabelProvider $labelProvider)
+    /**
+     * @param LabelProvider $labelProvider
+     * @return array|null
+     */
+    private function getContactFieldLabel(LabelProvider $labelProvider) : ?array
     {
-        $type = [];
+        $type = null;
         if ($labelProvider->labels) {
+            $type = [];
             $type['type'] = $labelProvider->labels->map(function ($label) {
                 return $label->label_i18n ?: $label->label;
             })->join(',');
