@@ -238,6 +238,7 @@ class ExportVCard extends BaseService
                 return $label->label_i18n ?: $label->label;
             })->join(',');
         }
+
         return $type;
     }
 
