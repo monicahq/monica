@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\ViewHelpers;
 
-use App\Models\Contact\Address;
 use Tests\TestCase;
 use App\Models\User\User;
+use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Instance\AuditLog;
 use App\ViewHelpers\ContactHelper;
