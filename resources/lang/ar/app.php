@@ -23,7 +23,7 @@ return [
     'back' => 'Back',
     'verify' => 'تحقق',
     'new' => 'جديد',
-    'unknown' => 'لا أعرف',
+    'unknown' => 'I don\'t know',
     'load_more' => 'تحميل المزيد',
     'loading' => 'جاري التحميل...',
     'with' => 'مع',
@@ -48,7 +48,7 @@ return [
     'markdown_link' => 'اقرأ الوثائق',
 
     'header_settings_link' => 'الإعدادات',
-    'header_logout_link' => 'تسجيل الخروج',
+    'header_logout_link' => 'Log out',
     'header_changelog_link' => 'تغيرات المنتج',
 
     'main_nav_cta' => 'إضافة أشخاص',
@@ -130,7 +130,7 @@ return [
     'relationship_type_group_family' => 'علاقات عائلية',
     'relationship_type_group_friend' => 'علاقات صداقة',
     'relationship_type_group_work' => 'علاقات عمل',
-    'relationship_type_group_other' => 'نوع آخر من العلاقات',
+    'relationship_type_group_other' => 'Other kinds of relationships',
 
     'relationship_type_partner' => 'significant other',
     'relationship_type_partner_female' => 'significant other',
@@ -245,22 +245,22 @@ return [
     'relationship_type_boss' => 'مدير',
     'relationship_type_boss_female' => 'مديرة',
     'relationship_type_boss_with_name' => 'مدير :name',
-    'relationship_type_boss_female_with_name' => 'مديرة :name',
+    'relationship_type_boss_female_with_name' => ':name’s manager',
 
-    'relationship_type_subordinate' => 'مرؤوس',
-    'relationship_type_subordinate_female' => 'مرؤوسة',
-    'relationship_type_subordinate_with_name' => 'مرؤوس :name',
-    'relationship_type_subordinate_female_with_name' => 'مرؤوسة :name',
+    'relationship_type_subordinate' => 'employee',
+    'relationship_type_subordinate_female' => 'employee',
+    'relationship_type_subordinate_with_name' => ':name’s employee',
+    'relationship_type_subordinate_female_with_name' => ':name’s employee',
 
     'relationship_type_mentor' => 'مرشد',
     'relationship_type_mentor_female' => 'مرشدة',
     'relationship_type_mentor_with_name' => 'مرشد :name',
     'relationship_type_mentor_female_with_name' => 'مرشدة :name',
 
-    'relationship_type_protege' => 'متدرب',
-    'relationship_type_protege_female' => 'متدربة',
-    'relationship_type_protege_with_name' => 'متدرب :name',
-    'relationship_type_protege_female_with_name' => 'متدربة :name',
+    'relationship_type_protege' => 'protégé',
+    'relationship_type_protege_female' => 'protégée',
+    'relationship_type_protege_with_name' => ':name’s protégé',
+    'relationship_type_protege_female_with_name' => ':name’s protégée',
 
     'relationship_type_ex_husband' => 'طليق',
     'relationship_type_ex_husband_female' => 'طليقة',
