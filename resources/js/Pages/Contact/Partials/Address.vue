@@ -3,7 +3,7 @@
 
 <template>
   <!-- list of addresses -->
-  <div class="pa2 bb">
+  <div class="pa2">
 
     <!-- non-edit mode -->
     <template v-if="!editMode">
@@ -26,7 +26,7 @@
         <errors :errors="form.errors" :classes="'mb3'" />
 
         <form-input
-          v-model="form.title"
+          v-model="form.street"
           v-on:escape="editMode = false"
           :id="'title'"
           :input-type="'text'"
@@ -36,14 +36,50 @@
         </form-input>
 
         <form-input
-          v-model="form.companyName"
+          v-model="form.city"
           v-on:escape="editMode = false"
-          :id="'companyName'"
+          :id="'title'"
           :input-type="'text'"
           :required="false"
           :custom-class="'br2 f5 ba b--black-40 pa2 outline-0'"
-          :title="$t('people.work_edit_company')">
+          :title="$t('people.work_edit_job')">
         </form-input>
+
+        <div class="dt-ns dt--fixed di">
+          <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
+            <form-input
+              v-model="form.province"
+              v-on:escape="editMode = false"
+              :id="'title'"
+              :input-type="'text'"
+              :required="false"
+              :custom-class="'br2 f5 ba b--black-40 pa2 outline-0'"
+              :title="$t('people.work_edit_job')">
+            </form-input>
+          </div>
+          <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
+            <form-input
+              v-model="form.postal_code"
+              v-on:escape="editMode = false"
+              :id="'title'"
+              :input-type="'text'"
+              :required="false"
+              :custom-class="'br2 f5 ba b--black-40 pa2 outline-0'"
+              :title="$t('people.work_edit_job')">
+            </form-input>
+          </div>
+          <div class="dtc-ns pb0-ns w-100">
+            <form-input
+              v-model="form.country"
+              v-on:escape="editMode = false"
+              :id="'title'"
+              :input-type="'text'"
+              :required="false"
+              :custom-class="'br2 f5 ba b--black-40 pa2 outline-0'"
+              :title="$t('people.work_edit_job')">
+            </form-input>
+          </div>
+        </div>
 
         <!-- Actions -->
         <div class="">
@@ -86,7 +122,6 @@ export default {
       editMode: false,
       localDescription: '',
       form: {
-        street: null,
         street: null,
         city: null,
         province: null,
