@@ -23,7 +23,7 @@ return [
     'back' => 'Назад',
     'verify' => 'Verify',
     'new' => 'new',
-    'unknown' => 'Я не знаю',
+    'unknown' => 'I don\'t know',
     'load_more' => 'Load more',
     'loading' => 'Loading...',
     'with' => 'with',
@@ -48,7 +48,7 @@ return [
     'markdown_link' => 'Читать документацию',
 
     'header_settings_link' => 'Настройки',
-    'header_logout_link' => 'Выйти',
+    'header_logout_link' => 'Log out',
     'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Добавить людей',
@@ -130,7 +130,7 @@ return [
     'relationship_type_group_family' => 'Family relationships',
     'relationship_type_group_friend' => 'Friend relationships',
     'relationship_type_group_work' => 'Work relationships',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_other' => 'Other kinds of relationships',
 
     'relationship_type_partner' => 'significant other',
     'relationship_type_partner_female' => 'significant other',
@@ -245,22 +245,22 @@ return [
     'relationship_type_boss' => 'boss',
     'relationship_type_boss_female' => 'boss',
     'relationship_type_boss_with_name' => ':name’s boss',
-    'relationship_type_boss_female_with_name' => ':name’s boss',
+    'relationship_type_boss_female_with_name' => ':name’s manager',
 
-    'relationship_type_subordinate' => 'subordinate',
-    'relationship_type_subordinate_female' => 'subordinate',
-    'relationship_type_subordinate_with_name' => ':name’s subordinate',
-    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate' => 'employee',
+    'relationship_type_subordinate_female' => 'employee',
+    'relationship_type_subordinate_with_name' => ':name’s employee',
+    'relationship_type_subordinate_female_with_name' => ':name’s employee',
 
     'relationship_type_mentor' => 'mentor',
     'relationship_type_mentor_female' => 'mentor',
     'relationship_type_mentor_with_name' => ':name’s mentor',
     'relationship_type_mentor_female_with_name' => ':name’s mentor',
 
-    'relationship_type_protege' => 'protege',
-    'relationship_type_protege_female' => 'protege',
-    'relationship_type_protege_with_name' => ':name’s protege',
-    'relationship_type_protege_female_with_name' => ':name’s protege',
+    'relationship_type_protege' => 'protégé',
+    'relationship_type_protege_female' => 'protégée',
+    'relationship_type_protege_with_name' => ':name’s protégé',
+    'relationship_type_protege_female_with_name' => ':name’s protégée',
 
     'relationship_type_ex_husband' => 'бывший муж',
     'relationship_type_ex_husband_female' => 'бывшая жена',
