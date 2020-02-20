@@ -313,7 +313,7 @@ return [
 
     'api_oauth_clients' => 'I tuoi client Oauth',
     'api_oauth_clients_desc' => 'Questa sezione ti permette di registrare i tuoi client OAuth.',
-    'api_oauth_clients_desc2' => 'Usa questo Id Client per richiedere un nuovo token e convertire i codici di autorizzazione a token di accesso. Vedi la <a href="{url}">documentazione di Laravel Passport</a> per ulteriori informazioni.',
+    'api_oauth_clients_desc2' => 'Use this client id to request a new token, and convert authorization codes to access tokens. See <a href="{url}">Laravel Passport documentation</a> for more explanations.',
     'api_oauth_title' => 'Client OAuth',
     'api_oauth_create_new' => 'Crea nuovo client',
     'api_oauth_edit' => 'Modifica client',
@@ -327,7 +327,7 @@ return [
     'api_oauth_redirecturl_help' => 'Indirizzo della callback di autorizzazione della tua applicazione.',
 
     'api_authorized_clients' => 'Lista di client autorizzati',
-    'api_authorized_clients_desc' => 'Questa sezione elenca tutti i client che hai autorizzato ad accedere all\'applicazione. Puoi revocare questa autorizzazione in qualsiasi momento.',
+    'api_authorized_clients_desc' => 'This section lists all the clients you’ve authorized to access your application datas. You can revoke this authorization at anytime.',
     'api_authorized_clients_title' => 'Applicazioni autorizzate',
     'api_authorized_clients_none' => 'Non c\'è ancora nessun client autorizzato.',
     'api_authorized_clients_name' => 'Nome',
