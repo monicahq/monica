@@ -23,7 +23,7 @@ return [
     'back' => 'Indietro',
     'verify' => 'Verifica',
     'new' => 'nuovo',
-    'unknown' => 'Non so',
+    'unknown' => 'I don\'t know',
     'load_more' => 'Carica altro',
     'loading' => 'Caricamento in corso...',
     'with' => 'con',
@@ -48,7 +48,7 @@ return [
     'markdown_link' => 'Leggi documentazione',
 
     'header_settings_link' => 'Impostazioni',
-    'header_logout_link' => 'Disconnettiti',
+    'header_logout_link' => 'Log out',
     'header_changelog_link' => 'Modifiche di prodotto',
 
     'main_nav_cta' => 'Aggiungi contatti',
@@ -130,7 +130,7 @@ return [
     'relationship_type_group_family' => 'Relazioni familiari',
     'relationship_type_group_friend' => 'Rapporti di amicizia',
     'relationship_type_group_work' => 'Rapporti di lavoro',
-    'relationship_type_group_other' => 'Altri tipi di relazioni',
+    'relationship_type_group_other' => 'Other kinds of relationships',
 
     'relationship_type_partner' => 'partner',
     'relationship_type_partner_female' => 'partner',
@@ -245,22 +245,22 @@ return [
     'relationship_type_boss' => 'capo',
     'relationship_type_boss_female' => 'capo',
     'relationship_type_boss_with_name' => 'capo di :name',
-    'relationship_type_boss_female_with_name' => 'capo di :name',
+    'relationship_type_boss_female_with_name' => ':name’s manager',
 
-    'relationship_type_subordinate' => 'dipendente',
-    'relationship_type_subordinate_female' => 'dipendente',
-    'relationship_type_subordinate_with_name' => 'dipendente di :name',
-    'relationship_type_subordinate_female_with_name' => 'dipendente di :name',
+    'relationship_type_subordinate' => 'employee',
+    'relationship_type_subordinate_female' => 'employee',
+    'relationship_type_subordinate_with_name' => ':name’s employee',
+    'relationship_type_subordinate_female_with_name' => ':name’s employee',
 
     'relationship_type_mentor' => 'mentore',
     'relationship_type_mentor_female' => 'mentrice',
     'relationship_type_mentor_with_name' => 'mentore di :name',
     'relationship_type_mentor_female_with_name' => 'mentrice di :name',
 
-    'relationship_type_protege' => 'apprendista',
-    'relationship_type_protege_female' => 'apprendista',
-    'relationship_type_protege_with_name' => 'apprendista di :name',
-    'relationship_type_protege_female_with_name' => 'apprendista di :name',
+    'relationship_type_protege' => 'protégé',
+    'relationship_type_protege_female' => 'protégée',
+    'relationship_type_protege_with_name' => ':name’s protégé',
+    'relationship_type_protege_female_with_name' => ':name’s protégée',
 
     'relationship_type_ex_husband' => 'ex marito',
     'relationship_type_ex_husband_female' => 'ex moglio',
