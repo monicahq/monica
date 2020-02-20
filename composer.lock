@@ -2603,16 +2603,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v10.5.3",
+            "version": "v10.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "3c485612cfd22feaa550d99e78ade39f7c57b2f8"
+                "reference": "6d35db6b4b430cc714a68e3ec8aef97cafa41f2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/3c485612cfd22feaa550d99e78ade39f7c57b2f8",
-                "reference": "3c485612cfd22feaa550d99e78ade39f7c57b2f8",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/6d35db6b4b430cc714a68e3ec8aef97cafa41f2a",
+                "reference": "6d35db6b4b430cc714a68e3ec8aef97cafa41f2a",
                 "shasum": ""
             },
             "require": {
@@ -2673,7 +2673,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2020-01-14T16:30:51+00:00"
+            "time": "2020-02-18T19:03:45+00:00"
         },
         {
             "name": "laravel/framework",
@@ -7692,16 +7692,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v7.23.0",
+            "version": "v7.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "f6365328bede25b64137833c41c6712a92924858"
+                "reference": "b73fb353b89ccbeb99baf1c5b518ba48cccf47be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/f6365328bede25b64137833c41c6712a92924858",
-                "reference": "f6365328bede25b64137833c41c6712a92924858",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/b73fb353b89ccbeb99baf1c5b518ba48cccf47be",
+                "reference": "b73fb353b89ccbeb99baf1c5b518ba48cccf47be",
                 "shasum": ""
             },
             "require": {
@@ -7745,7 +7745,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2020-02-06T01:54:41+00:00"
+            "time": "2020-02-14T22:29:50+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -8682,16 +8682,16 @@
         },
         {
             "name": "symfony/polyfill-intl-icu",
-            "version": "v1.13.1",
+            "version": "v1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-icu.git",
-                "reference": "b3dffd68afa61ca70f2327f2dd9bbeb6aa53d70b"
+                "reference": "727b3bb5bfa7ca9eeb86416784cf1c08a6289b86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-icu/zipball/b3dffd68afa61ca70f2327f2dd9bbeb6aa53d70b",
-                "reference": "b3dffd68afa61ca70f2327f2dd9bbeb6aa53d70b",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-icu/zipball/727b3bb5bfa7ca9eeb86416784cf1c08a6289b86",
+                "reference": "727b3bb5bfa7ca9eeb86416784cf1c08a6289b86",
                 "shasum": ""
             },
             "require": {
@@ -8704,7 +8704,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.13-dev"
+                    "dev-master": "1.14-dev"
                 }
             },
             "autoload": {
@@ -8736,7 +8736,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2019-11-27T13:56:44+00:00"
+            "time": "2020-01-13T11:15:53+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
