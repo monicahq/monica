@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'هذا الشخص قد يكون...',
     'information_edit_not_year' => 'أعرف اليوم والشهر لتاريخ الميلاد لهذا الشخص، ولكن ليس العام...',
     'information_edit_exact' => 'أنا أعرف تاريخ ميلاد هذا الشخص بدقة...',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'لا توجد معلومات العمل',
     'information_work_at' => 'لدى :company',
     'work_add_cta' => 'تحديث معلومات العمل',
@@ -296,17 +297,23 @@ return [
     'gifts_delete_confirmation' => 'هل أنت متأكد من أنك تريد حذف هذه الهدية؟',
     'gifts_add_gift' => 'إضافة هدية',
     'gifts_link' => 'الرابط',
-    'gifts_for' => 'لـ:',
+    'gifts_for' => 'For: {name}',
     'gifts_delete_cta' => 'حذف',
     'gifts_add_title' => 'إدارة الهدايا لـ :name',
     'gifts_add_gift_idea' => 'فكرة هدية',
     'gifts_add_gift_already_offered' => 'هدية تم تقديمها',
     'gifts_add_gift_received' => 'هدية تم استلامها',
     'gifts_add_gift_title' => 'ما هذه الهدية؟',
+    'gifts_add_gift_name' => 'Gift name',
     'gifts_add_link' => 'الرابط لصفحة الويب (اختياري)',
     'gifts_add_value' => 'القيمة (اختياري)',
     'gifts_add_comment' => 'تعليق (اختياري)',
-    'gifts_add_someone' => 'هذه الهدية لشخص ضمن عائلة :name بالذات',
+    'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
+    'gifts_add_photo' => 'Photo (optional)',
+    'gifts_add_photo_title' => 'Add a photo for this gift',
+    'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
+    'gifts_delete_title' => 'Delete a gift',
     'gifts_ideas' => 'أفكار للهدايا',
     'gifts_offered' => 'هدية تم تقديمها',
     'gifts_offered_as_an_idea' => 'وضع علامة كفكرة',
@@ -361,6 +368,7 @@ return [
     'deceased_know_date' => 'أنا أعرف تاريخ وفاة هذا الشخص',
     'deceased_add_reminder' => 'إضافة تذكير لهذا التاريخ',
     'deceased_label' => 'متوفى',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => 'توفي بتاريخ :date',
     'deceased_age' => 'العمر عند الوفاة',
 
@@ -492,4 +500,10 @@ return [
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',
+
+    // logs
+    'auditlogs_link' => 'History',
+    'auditlogs_title' => 'Everything that happened to :name',
+    'auditlogs_breadcrumb' => 'History',
+    'auditlogs_author' => 'By :name on :date',
 ];

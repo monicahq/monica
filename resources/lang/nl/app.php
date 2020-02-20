@@ -7,6 +7,7 @@ return [
     'save' => 'Opslaan',
     'add' => 'Toevoegen',
     'cancel' => 'Annuleren',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'Weet je het zeker?',
     'delete' => 'Verwijderen',
     'edit' => 'Bewerken',
@@ -37,12 +38,13 @@ return [
     'retry' => 'Opnieuw Proberen',
     'filter' => 'Filter de lijst',
     'go_back' => 'Terug',
+    'file_selected' => '1 file selected...|{count} files selected...',
 
     'application_title' => 'Monica – persoonlijke relatie manager',
-    'application_description' => 'Monica is een app voor het beheren van interacties met je geliefden, vrienden en familie.',
-    'application_og_title' => 'Bouw betere relaties met je dierbaren. Gratis Online CRM voor vrienden en familie.',
+    'application_description' => 'Monica is een app voor het beheren van interacties met uw geliefden, vrienden en familie.',
+    'application_og_title' => 'Bouw betere relaties met uw dierbaren. Gratis Online CRM voor vrienden en familie.',
 
-    'markdown_description' => 'Wil je je tekst opmaken? Monica ondersteunt Markdown om lijsten, dikgedrukte en cursieve tekst en meer toe te voegen.',
+    'markdown_description' => 'Wilt u uw tekst opmaken op een leuke manier? Wij ondersteunen Markdown om vet, cursief, lijsten en meer toe te voegen.',
     'markdown_link' => 'Lees documentatie',
 
     'header_settings_link' => 'Instellingen',
@@ -100,19 +102,21 @@ return [
 
     'error_title' => 'Oeps! Er is iets misgegaan.',
     'error_unauthorized' => 'Je hebt niet de rechten om dit onderdeel te bewerken.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'Er is een fout opgetreden bij het opslaan van de gegevens.',
     'error_try_again' => 'Er ging iets mis. Probeer opnieuw.',
     'error_id' => 'Fout-ID: :id',
-    'error_unavailable' => 'Service niet beschikbaar',
+    'error_unavailable' => 'Service unavailable',
     'error_maintenance' => 'Onderhoud in uitvoering. Zo terug.',
     'error_help' => 'We zijn zo terug.',
     'error_twitter' => '<a href="https://twitter.com/:twitter">Volg ons op Twitter</a> als je gewaarschuwd wilt worden als we terug zijn.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'De gegevens zijn opgeslagen.',
 
     'compliance_title' => 'Sorry voor de onderbreking.',
     'compliance_desc' => 'We hebben onze <a href=":urlterm" hreflang=":hreflang">gebruiksvoorwaarden</a> en ons <a href=":url" hreflang=":hreflang">privacybeleid</a> aangepast. We zijn verplicht u te vragen deze opnieuw te lezen en goed te keuren, om je account te kunnen blijven gebruiken.',
-    'compliance_desc_end' => 'Wij doen niets vervelends met je gegevens of account en zullen dit ook nooit doen.',
+    'compliance_desc_end' => 'Wij doen niets vervelends met uw gegevens of account en zullen dit ook nooit doen.',
     'compliance_terms' => 'Accepteer de nieuwe voorwaarden en privacybeleid',
 
     // Relationship types

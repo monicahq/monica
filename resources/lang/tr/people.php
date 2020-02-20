@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'Bu kişi muhtemelen...',
     'information_edit_not_year' => 'Bu kişinin doğum tarihinin gün ve ay kısmını biliyorum, yılını değil…',
     'information_edit_exact' => 'Bu kişinin tam doğum tarihini biliyorum...',
+    'information_edit_birthdate_label' => 'Doğum tarihi',
     'information_no_work_defined' => 'Tanımlanmış iş bilgisi yok',
     'information_work_at' => ':company',
     'work_add_cta' => 'İş Bilgilerini Güncelle',
@@ -296,17 +297,23 @@ return [
     'gifts_delete_confirmation' => 'Bu hediyeyi silmek istediğinizden emin misiniz?',
     'gifts_add_gift' => 'Hediye ekle',
     'gifts_link' => 'Link',
-    'gifts_for' => 'Kimin İçin:',
+    'gifts_for' => '{name} için',
     'gifts_delete_cta' => 'Sil',
     'gifts_add_title' => ':name için hediye yönetimi',
     'gifts_add_gift_idea' => 'Hediye Fikri',
     'gifts_add_gift_already_offered' => 'Hediye önerildi',
     'gifts_add_gift_received' => 'Hediye alındı',
     'gifts_add_gift_title' => 'Bu hediye nedir?',
+    'gifts_add_gift_name' => 'Hediye adı',
     'gifts_add_link' => 'Web sayfası linki (isteğe bağlı)',
     'gifts_add_value' => 'Değer (isteğe bağlı)',
     'gifts_add_comment' => 'Yorum (isteğe bağlı)',
-    'gifts_add_someone' => 'Bu hediye özellikle :name\'nin ailesinden birisi için',
+    'gifts_add_recipient' => 'Alıcı (isteğe bağlı)',
+    'gifts_add_recipient_field' => 'Alıcı',
+    'gifts_add_photo' => 'Fotoğraf (isteğe bağlı)',
+    'gifts_add_photo_title' => 'Bu hediye için bir fotoğraf ekle',
+    'gifts_add_someone' => 'Bu hediye özellikle {name}\'nin ailesinden birisi için',
+    'gifts_delete_title' => 'Hediye sil',
     'gifts_ideas' => 'Hediye fikirleri',
     'gifts_offered' => 'Önerilen hediyeler',
     'gifts_offered_as_an_idea' => 'Fikir olarak işaretle',
@@ -361,6 +368,7 @@ return [
     'deceased_know_date' => 'Bu kişinin öldüğü tarihi biliyorum',
     'deceased_add_reminder' => 'Bu tarih için bir hatırlatıcı ekleyin',
     'deceased_label' => 'Ölmüş',
+    'deceased_date_label' => 'Ölüm tarihi',
     'deceased_label_with_date' => ':date tarihinde öldü',
     'deceased_age' => 'Ölüm yaşı',
 
@@ -492,4 +500,10 @@ return [
 
     // emotions
     'emotion_this_made_me_feel' => 'Bu size … hissettirdi',
+
+    // logs
+    'auditlogs_link' => 'History',
+    'auditlogs_title' => 'Everything that happened to :name',
+    'auditlogs_breadcrumb' => 'History',
+    'auditlogs_author' => 'By :name on :date',
 ];

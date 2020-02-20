@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => '此人可能是...',
     'information_edit_not_year' => '我知道这个人的生日的日期和月份, 但不知道哪一年。',
     'information_edit_exact' => '我知道这个人的确切出生日期...',
+    'information_edit_birthdate_label' => '生日',
     'information_no_work_defined' => '未定义工作信息',
     'information_work_at' => '在 :company工作',
     'work_add_cta' => '更新工作信息',
@@ -296,17 +297,23 @@ return [
     'gifts_delete_confirmation' => '是否确实要删除此礼物？',
     'gifts_add_gift' => '添加礼物',
     'gifts_link' => '链接',
-    'gifts_for' => '给：',
+    'gifts_for' => '赠予：{name}',
     'gifts_delete_cta' => '删除',
     'gifts_add_title' => '与:name的礼物来往',
     'gifts_add_gift_idea' => '礼品创意',
     'gifts_add_gift_already_offered' => '送出的礼物',
     'gifts_add_gift_received' => '收到的礼物',
     'gifts_add_gift_title' => '这是什么礼物？',
+    'gifts_add_gift_name' => '礼品名称',
     'gifts_add_link' => '礼物链接 (可选)',
     'gifts_add_value' => '值 (可选)',
     'gifts_add_comment' => '备注 (可选)',
-    'gifts_add_someone' => '这个礼物是送给:name的家人',
+    'gifts_add_recipient' => '收件人(可选)',
+    'gifts_add_recipient_field' => '收件人',
+    'gifts_add_photo' => '相片(可选)',
+    'gifts_add_photo_title' => '为此礼物添加一张照片',
+    'gifts_add_someone' => '这份礼物特别是给{name}的家人',
+    'gifts_delete_title' => '删除礼物',
     'gifts_ideas' => '心愿单',
     'gifts_offered' => '送出的礼物',
     'gifts_offered_as_an_idea' => '标记为心愿单',
@@ -361,6 +368,7 @@ return [
     'deceased_know_date' => '我知道这个人去世日期',
     'deceased_add_reminder' => '为此日期添加提醒',
     'deceased_label' => '逝者',
+    'deceased_date_label' => '死亡日期',
     'deceased_label_with_date' => '在:date去世',
     'deceased_age' => '享年',
 
@@ -492,4 +500,10 @@ return [
 
     // emotions
     'emotion_this_made_me_feel' => '这让你觉得...',
+
+    // logs
+    'auditlogs_link' => '历史',
+    'auditlogs_title' => ':name 发生的所有事件',
+    'auditlogs_breadcrumb' => '历史',
+    'auditlogs_author' => ':name 于 :date ',
 ];
