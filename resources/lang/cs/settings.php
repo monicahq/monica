@@ -12,6 +12,7 @@ return [
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'DAV Resources',
     'sidebar_settings_security' => 'Security',
+    'sidebar_settings_auditlogs' => 'Audit logs',
 
     'export_title' => 'Exportovat data účtu',
     'export_be_patient' => 'Kliknout na tlačítko pro spuštění exportu. Zpracování exportu může zabrat až několik minut – buďte prosím trpěliví a neklikejte vícekrát.',
@@ -44,7 +45,8 @@ return [
     'layout_big' => 'Plná šířka prohlížeče',
     'save' => 'Aktualizovat předvolby',
     'delete_title' => 'Smazat účet',
-    'delete_desc' => 'Do you wish to delete your account? Warning: deletion is permanent and all your data will be erased permanently.',
+    'delete_desc' => 'Do you wish to delete your account? Warning: deletion is permanent and all your data will be erased permanently. Your subscription (if you have any) will also be immediately cancelled.',
+    'delete_other_desc' => 'Just to be clear: your data in the main database will be deleted immediately. However, as described in our privacy policy, we do daily backups of the database in case of failure and this backup is kept for 30 days – then it’s completely deleted. It’s unrealistic to imagine that we can go in all the backups to delete your specific data. By the way, this data is encrypted on very secure Amazon servers and no one has the encryption key except us. Therefore, your data will completely disappear in 30 days from all the backups, and no one will know this data ever existed in the first place.',
     'reset_desc' => 'Opravdu chcete resetovat svůj účet? Toto odstraní všechny kontakty a jejich související data. Účet nebude smazán.',
     'reset_title' => 'Resetovat vlastní účet',
     'reset_cta' => 'Resetovat účet',
@@ -189,7 +191,7 @@ return [
     'subscriptions_downgrade_rule_users_constraint' => 'You currently have <a href=":url">1 user</a> in your account.|You currently have <a href=":url">:count users</a> in your account.',
     'subscriptions_downgrade_rule_invitations' => 'Nesmíte mít čekající pozvánky',
     'subscriptions_downgrade_rule_invitations_constraint' => 'You currently have <a href=":url">1 pending invitation</a> sent to people.|You currently have <a href=":url">:count pending invitations</a> sent to people.',
-    'subscriptions_downgrade_rule_contacts' => 'You must not have more than :number contacts',
+    'subscriptions_downgrade_rule_contacts' => 'You must not have more than :number active contacts',
     'subscriptions_downgrade_rule_contacts_constraint' => 'You currently have <a href=":url">1 contact</a>.|You currently have <a href=":url">:count contacts</a>.',
     'subscriptions_downgrade_cta' => 'Přejít',
     'subscriptions_downgrade_success' => 'You are back to the Free plan!',
@@ -485,4 +487,11 @@ return [
     'dav_carddav_export' => 'Export all contacts in one file',
     'dav_caldav_birthdays_export' => 'Export all birthdays in one file',
     'dav_caldav_tasks_export' => 'Export all tasks in one file',
+
+    'archive_title' => 'Archive all your contacts in your account',
+    'archive_desc' => 'This will archive all the contacts in your account.',
+    'archive_cta' => 'Archive all your contacts',
+
+    'logs_title' => 'Everything that happened to this account',
+    'logs_author' => 'By :name on :date',
 ];

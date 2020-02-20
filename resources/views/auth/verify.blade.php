@@ -21,9 +21,18 @@
                 </div>
               @endif
 
-              {{ trans('auth.confirmation_check') }}<br/>
-              {!! trans('auth.confirmation_request_another', ['url' => route('verification.resend')]) !!}<br/>
+              <p>
+              {{ trans('auth.confirmation_check') }}
+              </p>
+              <p>
+              <form action="{{ route('verification.resend') }}" method="post" class="di">
+                @csrf
+                {!! trans('auth.confirmation_request_another', ['action' => 'href="" onclick="this.parentNode.submit(); return false"']) !!}
+              </form>
+              </p>
+              <p>
               {!! trans('auth.confirmation_again', ['url' => 'settings/emailchange1']) !!}
+              </p>
             </div>
           </div>
         </div>

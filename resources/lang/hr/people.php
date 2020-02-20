@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'Ova osoba je otprilike...',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'I know the exact birthdate of this person...',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => 'at :company',
     'work_add_cta' => 'Update work information',
@@ -296,17 +297,23 @@ return [
     'gifts_delete_confirmation' => 'Jeste li sigurni da želite izbrisati ovaj poklon?',
     'gifts_add_gift' => 'Dodaj poklon',
     'gifts_link' => 'Poveznica',
-    'gifts_for' => 'Za:',
+    'gifts_for' => 'For: {name}',
     'gifts_delete_cta' => 'Obriši',
     'gifts_add_title' => 'Uređivanje poklona za osobu: :name',
     'gifts_add_gift_idea' => 'Ideja za poklon',
     'gifts_add_gift_already_offered' => 'Već poklonjeno',
     'gifts_add_gift_received' => 'Primljen poklon',
     'gifts_add_gift_title' => 'Što je bio ovaj poklon?',
+    'gifts_add_gift_name' => 'Gift name',
     'gifts_add_link' => 'Poveznica na web stranicu (opcionalno)',
     'gifts_add_value' => 'Vrijednost (opcionalno)',
     'gifts_add_comment' => 'Komentar (opcionalno)',
-    'gifts_add_someone' => 'Ovaj poklon je za nekoga u obitelji osobe :name',
+    'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
+    'gifts_add_photo' => 'Photo (optional)',
+    'gifts_add_photo_title' => 'Add a photo for this gift',
+    'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
+    'gifts_delete_title' => 'Delete a gift',
     'gifts_ideas' => 'Ideje za poklone',
     'gifts_offered' => 'Već poklonjeno',
     'gifts_offered_as_an_idea' => 'Označi kao ideju',
@@ -361,6 +368,7 @@ return [
     'deceased_know_date' => 'I know the date this person died',
     'deceased_add_reminder' => 'Add a reminder for this date',
     'deceased_label' => 'Deceased',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => 'Deceased on :date',
     'deceased_age' => 'Age at death',
 
@@ -492,4 +500,10 @@ return [
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',
+
+    // logs
+    'auditlogs_link' => 'History',
+    'auditlogs_title' => 'Everything that happened to :name',
+    'auditlogs_breadcrumb' => 'History',
+    'auditlogs_author' => 'By :name on :date',
 ];
