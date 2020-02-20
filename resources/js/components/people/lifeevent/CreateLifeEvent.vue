@@ -247,12 +247,12 @@ export default {
     },
 
     /**
-          * Sets the date when the user chooses either an empty month
-          * or an empty day of the month.
-          * If the user chooses an empty day, the day is set to 1 and we use
-          * a boolean to indicate that the day is unknown.
-          * Same for the month.
-          */
+     * Sets the date when the user chooses either an empty month
+     * or an empty day of the month.
+     * If the user chooses an empty day, the day is set to 1 and we use
+     * a boolean to indicate that the day is unknown.
+     * Same for the month.
+     */
     updateDate() {
       if (this.selectedDay == 0) {
         this.newLifeEvent.happened_at_day_unknown = true;

@@ -7,7 +7,8 @@ return [
     'save' => 'Save',
     'add' => 'Add',
     'cancel' => 'Cancel',
-    'delete_confirm' => 'Delete',
+    'confirm' => 'Confirm',
+    'delete_confirm' => 'Sure?',
     'delete' => 'Delete',
     'edit' => 'Edit',
     'upload' => 'Upload',
@@ -37,10 +38,11 @@ return [
     'retry' => 'Retry',
     'filter' => 'Filter the list',
     'go_back' => 'Go back',
+    'file_selected' => '1 file selected...|{count} files selected...',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
-    'application_og_title' => 'Have better relationships with your loved ones. Free Online CRM for friends and family.',
+    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
     'markdown_link' => 'Read documentation',
@@ -100,19 +102,21 @@ return [
 
     'error_title' => 'Whoops! Something went wrong.',
     'error_unauthorized' => 'You don’t have the right to edit this resource.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'We had an error trying to save the data.',
     'error_try_again' => 'Something went wrong. Please try again.',
     'error_id' => 'Error ID: :id',
-    'error_unavailable' => 'Service Unavailable',
+    'error_unavailable' => 'Service unavailable',
     'error_maintenance' => 'Maintenance in progress. Be right back.',
     'error_help' => 'We’ll be right back.',
     'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'The data has been saved.',
 
     'compliance_title' => 'Sorry for the interruption.',
     'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and never will do.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
     'compliance_terms' => 'Accept new terms and privacy policy',
 
     // Relationship types

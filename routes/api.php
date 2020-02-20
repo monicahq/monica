@@ -13,7 +13,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::name('api.')->group(function () {
         // Me
         Route::get('/me', 'Account\\ApiUserController@show');
-        Route::get('/me/compliance', 'Account\\ApiUserController@compliance');
+        Route::get('/me/compliance', 'Account\\ApiUserController@getSignedPolicies');
         Route::get('/me/compliance/{id}', 'Account\\ApiUserController@get');
         Route::post('/me/compliance', 'Account\\ApiUserController@set');
 
@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         // Tags
         Route::apiResource('tags', 'ApiTagController');
+        Route::get('/tags/{tag}/contacts', 'ApiTagController@contacts');
 
         // Companies
         Route::apiResource('companies', 'Account\\ApiCompanyController');
@@ -83,9 +84,9 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('/contacts/{contact}/conversations', 'Contact\\ApiConversationController@conversations');
 
         // Activities
-        Route::apiResource('activities', 'ApiActivityController')
+        Route::apiResource('activities', 'ApiActivitiesController')
             ->names(['index' => 'activities', 'show' => 'activity']);
-        Route::get('/contacts/{contact}/activities', 'ApiActivityController@activities');
+        Route::get('/contacts/{contact}/activities', 'ApiActivitiesController@activities');
 
         // Reminders
         Route::apiResource('reminders', 'ApiReminderController');
@@ -98,6 +99,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         // Gifts
         Route::apiResource('gifts', 'ApiGiftController');
         Route::get('/contacts/{contact}/gifts', 'ApiGiftController@gifts');
+        Route::put('/gifts/{gift}/photo/{photo}', 'ApiGiftController@associate');
 
         // Debts
         Route::apiResource('debts', 'ApiDebtController');
@@ -135,10 +137,14 @@ Route::group(['middleware' => ['auth:api']], function () {
         // Avatars
         Route::put('/contacts/{contact}/avatar', 'Contact\\ApiAvatarController@update');
 
+        // Contact logs
+        Route::get('/contacts/{contact}/logs', 'Contact\\ApiAuditLogController@index');
+
         /*
          * SETTINGS
          */
         Route::apiResource('contactfieldtypes', 'Settings\\ApiContactFieldTypeController');
+        Route::apiResource('logs', 'Settings\\ApiAuditLogController');
 
         /*
          * MISC

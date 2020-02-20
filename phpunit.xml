@@ -55,5 +55,10 @@
         <server name="LOG_CHANNEL" value="testing"/>
         <server name="DAV_ENABLED" value="true"/>
         <server name="REQUIRES_SUBSCRIPTION" value="false"/>
+        <server name="MAIL_DRIVER" value="smtp"/>
+        <server name="MAIL_HOST" value=""/>
+        <server name="MAIL_PORT" value=""/>
+        <server name="MAIL_ENCRYPTION" value=""/>
+        <server name="APP_EMAIL_NEW_USERS_NOTIFICATION" value=""/>
     </php>
 </phpunit>

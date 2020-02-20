@@ -24,7 +24,7 @@ abstract class BaseService
      * @param array $data
      * @return bool
      */
-    public function validate(array $data) : bool
+    public function validate(array $data): bool
     {
         Validator::make($data, $this->rules())
             ->validate();
@@ -39,7 +39,7 @@ abstract class BaseService
      * @param mixed $index
      * @return mixed
      */
-    protected function nullOrValue($data, $index)
+    public function nullOrValue($data, $index)
     {
         $value = Arr::get($data, $index, null);
 
@@ -53,10 +53,26 @@ abstract class BaseService
      * @param mixed $index
      * @return mixed
      */
-    protected function nullOrDate($data, $index)
+    public function nullOrDate($data, $index)
     {
         $value = Arr::get($data, $index, null);
 
         return is_null($value) || $value === '' ? null : Carbon::parse($value);
+    }
+
+    /**
+     * Returns the value if it's defined, or false otherwise.
+     *
+     * @param mixed $data
+     * @param mixed $index
+     * @return mixed
+     */
+    public function valueOrFalse($data, $index)
+    {
+        if (empty($data[$index])) {
+            return false;
+        }
+
+        return $data[$index];
     }
 }

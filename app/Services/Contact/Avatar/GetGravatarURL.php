@@ -35,9 +35,9 @@ class GetGravatarURL extends BaseService
             $size = $this->size($data);
 
             return Gravatar::get($data['email'], [
-                    'size' => $size,
-                    'secure' => App::environment('production'),
-                ]);
+                'size' => $size,
+                'secure' => App::environment('production'),
+            ]);
         }
     }
 

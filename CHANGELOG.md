@@ -2,27 +2,58 @@
 
 ### New features:
 
-* Save contact tags in vCard 'CATEGORIES' field
-* Upload master docker image to GitHub packages
+* Add audit log when setting a contact's description
+* Add support for audit logs on a contact page
+* Add support for audit logs in the Settings page
+* Add vue data validations
+* Add ability to edit activities
+* Associate a photo to a gift
+* New API method: get all the contacts for a given tag
 
 ### Enhancements:
 
+* Contacts displayed in the activity list are now clickable again
+* Gift are now added and updated inline
+* Add a link in the downgrade process to archive all contacts in the account
+
+### Fixes:
+
+* Fix edit conversation date not being editable
+* Fix display of the toggle buttons in the Settings page
+* Fix how you met date not being deleted upon save
+* Fix description not being saved when creating/editing activity
+* Markdown is now properly applied for a phone call description
+* Fix contacts list UX with 2 tabs opened
+* Fix activity mock data seeder
+* Fix ordering of contact tags to be alphabetical
+
+# RELEASED VERSIONS:
+
+## v2.16.0 - 2019-12-31
+
+### New features:
+
+* Save contact tags in vCard 'CATEGORIES' field
+
+### Enhancements:
+
+* Activities are now added inline
 * Improve modals bottom buttons display
 * Add foreign keys to all tables
 * Add English (UK) locale
 * Add API methods to destroy and store documents
 * Add API methods to manage photos and avatars
 * Add emotions and participants to activities
-* Activities are now added inline
 * Enable API web navigation
 * Enhance UI of API's Settings to add comprehension and documentation
 * Improve trim string middleware to not trim password text
-* Upgrade to Laravel 6.5
+* Upgrade to Laravel 6.x
 * Enhance user invitation mail
 * Add job information next to the contact name on profile page
 * Use supervisor in docker images
 * Use JawsDB by default on heroku instances
 * Add pluralization forms for non-english-like-plural languages, for vue.js translations
+* Upload master docker image to GitHub packages
 
 ### Fixes:
 
@@ -46,9 +77,6 @@
 * Fix search when prefix table is used
 * Fix storage page not being displayed if a contact does not exist anymore
 * Fix API requests for Reminders failing with internal server error
-
-
-# RELEASED VERSIONS:
 
 ## v2.15.2 - 2019-09-26
 

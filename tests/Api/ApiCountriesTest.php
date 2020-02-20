@@ -10,10 +10,10 @@ class ApiCountriesTest extends ApiTestCase
     use DatabaseTransactions;
 
     protected $jsonCountries = [
-            'id',
-            'iso',
-            'name',
-            'object',
+        'id',
+        'iso',
+        'name',
+        'object',
     ];
 
     /** @test */

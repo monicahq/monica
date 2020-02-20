@@ -90,9 +90,9 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         ]);
 
         $response = $this->json('POST', '/api/activitytypes', [
-                            'name' => 'Movies',
-                            'activity_type_category_id' => $activityTypeCategory->id,
-                        ]);
+            'name' => 'Movies',
+            'activity_type_category_id' => $activityTypeCategory->id,
+        ]);
 
         $response->assertStatus(200);
 

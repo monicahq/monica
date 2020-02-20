@@ -6,7 +6,7 @@
   <div class="pa4-ns ph3 pv2 bb b--gray-monica">
     <div class="mb3 mb0-ns">
       <form-checkbox
-        v-model="value"
+        v-model.lazy="deceased"
         :name="'is_deceased'"
         :value="true"
         :dclass="'flex mb2'"
@@ -15,7 +15,7 @@
           {{ $t('people.deceased_mark_person_deceased') }}
         </template>
       </form-checkbox>
-      <div v-show="value" :class="[ dirltr ? 'ml4' : 'mr4' ]">
+      <div v-show="deceased" :class="[ dirltr ? 'ml4' : 'mr4' ]">
         <form-checkbox
           v-model.lazy="dateKnown"
           :name="'is_deceased_date_known'"
@@ -31,11 +31,13 @@
           <form-date
             :id="'deceased_date'"
             ref="deaceasedday"
-            v-model="date"
+            v-model="selectedDate"
+            :label="$t('people.deceased_date_label')"
             :show-calendar-on-focus="true"
             :locale="locale"
+            :validator="$v.selectedDate"
           />
-          <div v-show="date != ''" class="mt2">
+          <div v-show="selectedDate != ''" class="mt2">
             <form-checkbox
               :name="'add_reminder_deceased'"
               :value="true"
@@ -51,7 +53,19 @@
 </template>
 
 <script>
+import moment from 'moment';
+import { validationMixin } from 'vuelidate';
+import { required, numeric, helpers } from 'vuelidate/lib/validators';
+
+const before = (param) =>
+  helpers.withParams(
+    { type: 'before', date: param },
+    (value) => !helpers.req(value) || moment(value).isBefore(param)
+  );
+
 export default {
+
+  mixins: [validationMixin],
 
   props: {
     value: {
@@ -70,8 +84,17 @@ export default {
 
   data() {
     return {
+      deceased: false,
       dateKnown: false,
+      selectedDate: null,
     };
+  },
+
+  validations: {
+    selectedDate: {
+      required,
+      before: before(moment())
+    }
   },
 
   computed: {
@@ -83,8 +106,20 @@ export default {
     }
   },
 
+  watch: {
+    value(val) {
+      this.deceased = val;
+    },
+
+    date(val) {
+      this.selectedDate = val;
+    },
+  },
+
   mounted() {
+    this.deceased = this.value;
     this.dateKnown = this.date != '';
+    this.selectedDate = this.date;
   },
 
   methods: {

@@ -51,6 +51,7 @@ class Tag extends Model
                     ->join('tags', 'tags.id', '=', 'contact_tag.tag_id')
                     ->where('tags.account_id', auth()->user()->account_id)
                     ->groupBy('tag_id')
-                    ->get();
+                    ->get()
+                    ->sortByCollator('name');
     }
 }
