@@ -23,7 +23,7 @@ return [
     'back' => 'Назад',
     'verify' => 'Verify',
     'new' => 'new',
-    'unknown' => 'I don’t know',
+    'unknown' => 'Я не знаю',
     'load_more' => 'Load more',
     'loading' => 'Loading...',
     'with' => 'with',
@@ -48,7 +48,7 @@ return [
     'markdown_link' => 'Читать документацию',
 
     'header_settings_link' => 'Настройки',
-    'header_logout_link' => 'Logout',
+    'header_logout_link' => 'Выйти',
     'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Добавить людей',
