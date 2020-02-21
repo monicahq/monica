@@ -23,7 +23,7 @@ return [
     'back' => 'Geri',
     'verify' => 'Doğrula',
     'new' => 'yeni',
-    'unknown' => 'I don’t know',
+    'unknown' => 'Bilmiyorum',
     'load_more' => 'Daha fazla',
     'loading' => 'Yükleniyor...',
     'with' => 'ile',
@@ -48,7 +48,7 @@ return [
     'markdown_link' => 'Dokümantasyonu oku',
 
     'header_settings_link' => 'Ayarlar',
-    'header_logout_link' => 'Logout',
+    'header_logout_link' => 'Çıkış yap',
     'header_changelog_link' => 'Ürün değişiklikleri',
 
     'main_nav_cta' => 'Kişi ekle',
@@ -130,7 +130,7 @@ return [
     'relationship_type_group_family' => 'Aile İlişkileri',
     'relationship_type_group_friend' => 'Arkadaşlık İlişkileri',
     'relationship_type_group_work' => 'İş İlişkileri',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_other' => 'Diğer tür ilişkiler',
 
     'relationship_type_partner' => 'sevgili',
     'relationship_type_partner_female' => 'sevgili',
@@ -245,22 +245,22 @@ return [
     'relationship_type_boss' => 'patron',
     'relationship_type_boss_female' => 'patron',
     'relationship_type_boss_with_name' => ':name kişisinin patronu',
-    'relationship_type_boss_female_with_name' => ':name’s boss',
+    'relationship_type_boss_female_with_name' => ':name kişisinin patronu',
 
-    'relationship_type_subordinate' => 'subordinate',
-    'relationship_type_subordinate_female' => 'subordinate',
-    'relationship_type_subordinate_with_name' => ':name’s subordinate',
-    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate' => 'altında çalışan',
+    'relationship_type_subordinate_female' => 'altında çalışan',
+    'relationship_type_subordinate_with_name' => ':name kişisinin altında çalışan',
+    'relationship_type_subordinate_female_with_name' => ':name kişisinin altında çalışan',
 
     'relationship_type_mentor' => 'danışman',
     'relationship_type_mentor_female' => 'danışman',
     'relationship_type_mentor_with_name' => ':name kişisinin danışmanı',
     'relationship_type_mentor_female_with_name' => ':name kişisinin danışmanı',
 
-    'relationship_type_protege' => 'protege',
-    'relationship_type_protege_female' => 'protege',
-    'relationship_type_protege_with_name' => ':name’s protege',
-    'relationship_type_protege_female_with_name' => ':name’s protege',
+    'relationship_type_protege' => 'koruduğu kişi',
+    'relationship_type_protege_female' => 'koruduğu kişi',
+    'relationship_type_protege_with_name' => ':name kişisinin koruduğu kişi',
+    'relationship_type_protege_female_with_name' => ':name kişisinin koruduğu kişi',
 
     'relationship_type_ex_husband' => 'eski koca',
     'relationship_type_ex_husband_female' => 'eski karı',
