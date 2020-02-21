@@ -23,7 +23,7 @@ return [
     'back' => 'Back',
     'verify' => 'Potvrdi',
     'new' => 'novo',
-    'unknown' => 'I don’t know',
+    'unknown' => 'Nepoznato',
     'load_more' => 'Učitaj više',
     'loading' => 'Učitavanje...',
     'with' => 's',
@@ -48,7 +48,7 @@ return [
     'markdown_link' => 'Pročitajte dokumentaciju',
 
     'header_settings_link' => 'Postavke',
-    'header_logout_link' => 'Logout',
+    'header_logout_link' => 'Odjava',
     'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Dodajte osobu',
@@ -130,7 +130,7 @@ return [
     'relationship_type_group_family' => 'Family relationships',
     'relationship_type_group_friend' => 'Friend relationships',
     'relationship_type_group_work' => 'Work relationships',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_other' => 'druga vrsta odnosa',
 
     'relationship_type_partner' => 'partner',
     'relationship_type_partner_female' => 'partnerica',
