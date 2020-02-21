@@ -23,7 +23,7 @@ return [
     'back' => 'Terug',
     'verify' => 'Bevestigen',
     'new' => 'nieuw',
-    'unknown' => 'I don’t know',
+    'unknown' => 'Ik weet het niet',
     'load_more' => 'Meer laden',
     'loading' => 'Laden...',
     'with' => 'met',
@@ -48,7 +48,7 @@ return [
     'markdown_link' => 'Lees documentatie',
 
     'header_settings_link' => 'Instellingen',
-    'header_logout_link' => 'Logout',
+    'header_logout_link' => 'Uitloggen',
     'header_changelog_link' => 'Productwijzigingen',
 
     'main_nav_cta' => 'Personen toevoegen',
@@ -130,7 +130,7 @@ return [
     'relationship_type_group_family' => 'Familierelaties',
     'relationship_type_group_friend' => 'Vriendschappen',
     'relationship_type_group_work' => 'Collega\'s',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_other' => 'Andere relaties',
 
     'relationship_type_partner' => 'partner',
     'relationship_type_partner_female' => 'partner',
@@ -245,12 +245,12 @@ return [
     'relationship_type_boss' => 'baas',
     'relationship_type_boss_female' => 'baas',
     'relationship_type_boss_with_name' => ':name’s baas',
-    'relationship_type_boss_female_with_name' => ':name’s boss',
+    'relationship_type_boss_female_with_name' => ':name’s baas',
 
-    'relationship_type_subordinate' => 'subordinate',
-    'relationship_type_subordinate_female' => 'subordinate',
-    'relationship_type_subordinate_with_name' => ':name’s subordinate',
-    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate' => 'ondergeschikte',
+    'relationship_type_subordinate_female' => 'ondergeschikte',
+    'relationship_type_subordinate_with_name' => ':name’s ondergeschikte',
+    'relationship_type_subordinate_female_with_name' => ':name’s ondergeschikte',
 
     'relationship_type_mentor' => 'mentor',
     'relationship_type_mentor_female' => 'mentor',
