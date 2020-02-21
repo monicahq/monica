@@ -23,7 +23,7 @@ return [
     'back' => 'Back',
     'verify' => 'Ověřit',
     'new' => 'new',
-    'unknown' => 'I don’t know',
+    'unknown' => 'Nevím',
     'load_more' => 'Načíst další',
     'loading' => 'Načítá se...',
     'with' => 's',
@@ -48,7 +48,7 @@ return [
     'markdown_link' => 'Číst dokumentaci',
 
     'header_settings_link' => 'Nastavení',
-    'header_logout_link' => 'Logout',
+    'header_logout_link' => 'Odhlásit',
     'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Přidat osobu',
