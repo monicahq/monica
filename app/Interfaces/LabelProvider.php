@@ -4,7 +4,7 @@ namespace App\Interfaces;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-interface LabelProvider
+interface LabelInterface
 {
     /**
      * Get the label associated with the contact.

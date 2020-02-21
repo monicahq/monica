@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
-use App\Interfaces\LabelProvider;
+use App\Interfaces\LabelInterface;
 use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactFieldType;
 
@@ -231,10 +231,10 @@ class ExportVCard extends BaseService
     }
 
     /**
-     * @param LabelProvider $labelProvider
+     * @param LabelInterface $labelProvider
      * @return array|null
      */
-    private function getContactFieldLabel(LabelProvider $labelProvider): ?array
+    private function getContactFieldLabel(LabelInterface $labelProvider): ?array
     {
         $type = null;
         if ($labelProvider->labels) {
