@@ -313,7 +313,7 @@ return [
 
     'api_oauth_clients' => '您的 Oauth 客户端',
     'api_oauth_clients_desc' => '您可以注册自己的 OAuth 客户端。',
-    'api_oauth_clients_desc2' => 'Use this client id to request a new token, and convert authorization codes to access tokens. See <a href="{url}">Laravel Passport documentation</a> for more explanations.',
+    'api_oauth_clients_desc2' => '使用此客户端ID请求一个新的Token，并将授权码转换为Token。请参阅 <a href="{url}">Laravel Passport文档</a> 获取更多信息',
     'api_oauth_title' => 'OAuth 客户端',
     'api_oauth_create_new' => '创建新的客户端',
     'api_oauth_edit' => '编辑客户端',
@@ -327,7 +327,7 @@ return [
     'api_oauth_redirecturl_help' => '应用程序的授权回调 URL。',
 
     'api_authorized_clients' => '授权客户端列表',
-    'api_authorized_clients_desc' => 'This section lists all the clients you’ve authorized to access your application datas. You can revoke this authorization at anytime.',
+    'api_authorized_clients_desc' => '本节列出了您授权访问应用程序的所有客户端，您可以随时撤销此授权。',
     'api_authorized_clients_title' => '已授权的应用',
     'api_authorized_clients_none' => '尚无授权客户端',
     'api_authorized_clients_name' => '名称',
