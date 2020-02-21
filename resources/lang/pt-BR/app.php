@@ -23,7 +23,7 @@ return [
     'back' => 'Voltar',
     'verify' => 'Verificar',
     'new' => 'novo',
-    'unknown' => 'I don’t know',
+    'unknown' => 'Eu não sei',
     'load_more' => 'Carregar mais',
     'loading' => 'Carregando...',
     'with' => 'com',
@@ -48,7 +48,7 @@ return [
     'markdown_link' => 'Ler documentação',
 
     'header_settings_link' => 'Configurações',
-    'header_logout_link' => 'Logout',
+    'header_logout_link' => 'Sair',
     'header_changelog_link' => 'Atualizações de produtos',
 
     'main_nav_cta' => 'Adicionar contatos',
