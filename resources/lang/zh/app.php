@@ -23,7 +23,7 @@ return [
     'back' => '返回',
     'verify' => '验证',
     'new' => '新',
-    'unknown' => '我不知道',
+    'unknown' => 'I don’t know',
     'load_more' => '载入更多',
     'loading' => '正在加载...',
     'with' => '与',
@@ -48,7 +48,7 @@ return [
     'markdown_link' => '阅读文档',
 
     'header_settings_link' => '设置',
-    'header_logout_link' => '注销',
+    'header_logout_link' => 'Logout',
     'header_changelog_link' => '更新日志',
 
     'main_nav_cta' => '联系人',
@@ -130,7 +130,7 @@ return [
     'relationship_type_group_family' => '家庭关系',
     'relationship_type_group_friend' => '朋友关系',
     'relationship_type_group_work' => '工作关系',
-    'relationship_type_group_other' => '其他关系',
+    'relationship_type_group_other' => 'Other kind of relationships',
 
     'relationship_type_partner' => '搭档',
     'relationship_type_partner_female' => '搭档',
@@ -245,22 +245,22 @@ return [
     'relationship_type_boss' => '上司',
     'relationship_type_boss_female' => '上司',
     'relationship_type_boss_with_name' => ':name的上司',
-    'relationship_type_boss_female_with_name' => ':name的经理',
+    'relationship_type_boss_female_with_name' => ':name’s boss',
 
-    'relationship_type_subordinate' => '雇员',
-    'relationship_type_subordinate_female' => '雇员',
-    'relationship_type_subordinate_with_name' => ':name的雇员',
-    'relationship_type_subordinate_female_with_name' => ':name的雇员',
+    'relationship_type_subordinate' => 'subordinate',
+    'relationship_type_subordinate_female' => 'subordinate',
+    'relationship_type_subordinate_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
 
     'relationship_type_mentor' => '老师',
     'relationship_type_mentor_female' => '老师',
     'relationship_type_mentor_with_name' => ':name的老师',
     'relationship_type_mentor_female_with_name' => ':name的老师',
 
-    'relationship_type_protege' => '门徒',
-    'relationship_type_protege_female' => '门徒',
-    'relationship_type_protege_with_name' => ':name的门徒',
-    'relationship_type_protege_female_with_name' => ':name的门徒',
+    'relationship_type_protege' => 'protege',
+    'relationship_type_protege_female' => 'protege',
+    'relationship_type_protege_with_name' => ':name’s protege',
+    'relationship_type_protege_female_with_name' => ':name’s protege',
 
     'relationship_type_ex_husband' => '前夫',
     'relationship_type_ex_husband_female' => '前妻',
