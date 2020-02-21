@@ -48,7 +48,7 @@ return [
     'markdown_link' => 'Læs dokumentation',
 
     'header_settings_link' => 'Indstillinger',
-    'header_logout_link' => 'Logout',
+    'header_logout_link' => 'Log af',
     'header_changelog_link' => 'Produktændringer',
 
     'main_nav_cta' => 'Tilføj personer',
