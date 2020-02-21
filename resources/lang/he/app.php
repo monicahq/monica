@@ -23,7 +23,7 @@ return [
     'back' => 'חזרה',
     'verify' => 'אימות',
     'new' => 'new',
-    'unknown' => 'I don’t know',
+    'unknown' => 'לא ידוע לי',
     'load_more' => 'לטעון עוד',
     'loading' => 'בטעינה…',
     'with' => 'עם',
@@ -48,7 +48,7 @@ return [
     'markdown_link' => 'קריאת התיעוד',
 
     'header_settings_link' => 'הגדרות',
-    'header_logout_link' => 'Logout',
+    'header_logout_link' => 'יציאה',
     'header_changelog_link' => 'שינויים במוצר',
 
     'main_nav_cta' => 'הוספת אנשים',
@@ -130,7 +130,7 @@ return [
     'relationship_type_group_family' => 'קשרים משפחתיים',
     'relationship_type_group_friend' => 'קשרים חברתיים',
     'relationship_type_group_work' => 'קשרי עבודה',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_other' => 'סוגי קשר אחרים',
 
     'relationship_type_partner' => 'בן זוג',
     'relationship_type_partner_female' => 'בת זוג',
@@ -245,22 +245,22 @@ return [
     'relationship_type_boss' => 'מנהל',
     'relationship_type_boss_female' => 'מנהלת',
     'relationship_type_boss_with_name' => 'מנהל של :name',
-    'relationship_type_boss_female_with_name' => ':name’s boss',
+    'relationship_type_boss_female_with_name' => 'מנהלת של :name',
 
-    'relationship_type_subordinate' => 'subordinate',
-    'relationship_type_subordinate_female' => 'subordinate',
-    'relationship_type_subordinate_with_name' => ':name’s subordinate',
-    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate' => 'כפוף',
+    'relationship_type_subordinate_female' => 'כפופה',
+    'relationship_type_subordinate_with_name' => 'כפוף ל:name',
+    'relationship_type_subordinate_female_with_name' => 'כפופה ל:name',
 
     'relationship_type_mentor' => 'חונך',
     'relationship_type_mentor_female' => 'חונכת',
     'relationship_type_mentor_with_name' => 'חונך של :name',
     'relationship_type_mentor_female_with_name' => 'חונך של :name',
 
-    'relationship_type_protege' => 'protege',
-    'relationship_type_protege_female' => 'protege',
-    'relationship_type_protege_with_name' => ':name’s protege',
-    'relationship_type_protege_female_with_name' => ':name’s protege',
+    'relationship_type_protege' => 'חניך',
+    'relationship_type_protege_female' => 'חניכה',
+    'relationship_type_protege_with_name' => 'חניך של :name',
+    'relationship_type_protege_female_with_name' => 'חניכה של :name',
 
     'relationship_type_ex_husband' => 'גרוש',
     'relationship_type_ex_husband_female' => 'גרושה',
