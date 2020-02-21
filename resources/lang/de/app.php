@@ -23,7 +23,7 @@ return [
     'back' => 'Zurück',
     'verify' => 'Überprüfe',
     'new' => 'Neu',
-    'unknown' => 'I don\'t know',
+    'unknown' => 'I don’t know',
     'load_more' => 'Lade mehr',
     'loading' => 'Lade mehr...',
     'with' => 'mit',
@@ -48,7 +48,7 @@ return [
     'markdown_link' => 'Öffne die Dokumentation',
 
     'header_settings_link' => 'Einstellungen',
-    'header_logout_link' => 'Log out',
+    'header_logout_link' => 'Logout',
     'header_changelog_link' => 'Produktänderungen',
 
     'main_nav_cta' => 'Person hinzufügen',
@@ -130,7 +130,7 @@ return [
     'relationship_type_group_family' => 'Familienverhältnisse',
     'relationship_type_group_friend' => 'Freundschaftsbeziehungen',
     'relationship_type_group_work' => 'Arbeitsverhältnisse',
-    'relationship_type_group_other' => 'Other kinds of relationships',
+    'relationship_type_group_other' => 'Other kind of relationships',
 
     'relationship_type_partner' => 'Lebensgefährte',
     'relationship_type_partner_female' => 'Lebensgefährtin',
@@ -245,22 +245,22 @@ return [
     'relationship_type_boss' => 'Chef',
     'relationship_type_boss_female' => 'Chefin',
     'relationship_type_boss_with_name' => ':name\'s Chef',
-    'relationship_type_boss_female_with_name' => ':name’s manager',
+    'relationship_type_boss_female_with_name' => ':name’s boss',
 
-    'relationship_type_subordinate' => 'employee',
-    'relationship_type_subordinate_female' => 'employee',
-    'relationship_type_subordinate_with_name' => ':name’s employee',
-    'relationship_type_subordinate_female_with_name' => ':name’s employee',
+    'relationship_type_subordinate' => 'subordinate',
+    'relationship_type_subordinate_female' => 'subordinate',
+    'relationship_type_subordinate_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
 
     'relationship_type_mentor' => 'Mentor',
     'relationship_type_mentor_female' => 'Mentorin',
     'relationship_type_mentor_with_name' => ':name\'s Mentor',
     'relationship_type_mentor_female_with_name' => ':name\'s Mentorin',
 
-    'relationship_type_protege' => 'protégé',
-    'relationship_type_protege_female' => 'protégée',
-    'relationship_type_protege_with_name' => ':name’s protégé',
-    'relationship_type_protege_female_with_name' => ':name’s protégée',
+    'relationship_type_protege' => 'protege',
+    'relationship_type_protege_female' => 'protege',
+    'relationship_type_protege_with_name' => ':name’s protege',
+    'relationship_type_protege_female_with_name' => ':name’s protege',
 
     'relationship_type_ex_husband' => 'Ex-Mann',
     'relationship_type_ex_husband_female' => 'Ex-Frau',
