@@ -12,6 +12,7 @@ use App\Services\VCard\ImportVCard;
 use App\Models\Contact\ContactField;
 use Sabre\VObject\PHPUnitAssertions;
 use App\Models\Contact\ContactFieldType;
+use App\Models\Contact\ContactFieldLabel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportVCardTest extends TestCase
@@ -833,7 +834,7 @@ class ImportVCardTest extends TestCase
             'account_id' => $account->id,
             'contact_id' => $contact->id,
         ]);
-        $email2 = factory(ContactField::class)->create([
+        factory(ContactField::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'data' => 'xxx@mail.com',
@@ -866,6 +867,14 @@ class ImportVCardTest extends TestCase
     public function it_imports_phone()
     {
         $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        factory(ContactFieldType::class)->create([
+            'account_id' => $account->id,
+            'type' => 'phone',
+        ]);
+
         $importVCard = new ImportVCard;
         $importVCard->accountId = $account->id;
 
@@ -873,13 +882,6 @@ class ImportVCardTest extends TestCase
             'TEL' => '01010101010',
         ]);
 
-        $contact = factory(Contact::class)->create([
-            'account_id' => $account->id,
-        ]);
-        $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $account->id,
-            'type' => 'phone',
-        ]);
         $this->invokePrivateMethod($importVCard, 'importTel', [$contact, $vcard]);
 
         $this->assertDatabaseHas('contact_fields', [
@@ -893,6 +895,14 @@ class ImportVCardTest extends TestCase
     public function it_imports_phone_by_national_format()
     {
         $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        factory(ContactFieldType::class)->create([
+            'account_id' => $account->id,
+            'type' => 'phone',
+        ]);
+
         $importVCard = new ImportVCard;
         $importVCard->accountId = $account->id;
 
@@ -901,13 +911,6 @@ class ImportVCardTest extends TestCase
             'ADR' => ['', '', '17 Shakespeare Ave.', 'Southampton', '', 'SO17 2HB', 'United Kingdom'],
         ]);
 
-        $contact = factory(Contact::class)->create([
-            'account_id' => $account->id,
-        ]);
-        $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $account->id,
-            'type' => 'phone',
-        ]);
         $this->invokePrivateMethod($importVCard, 'importTel', [$contact, $vcard]);
 
         $this->assertDatabaseHas('contact_fields', [
@@ -921,27 +924,128 @@ class ImportVCardTest extends TestCase
     public function it_imports_phone_by_international_format()
     {
         $account = factory(Account::class)->create([]);
-        $importVCard = new ImportVCard;
-        $importVCard->accountId = $account->id;
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        factory(ContactFieldType::class)->create([
+            'account_id' => $account->id,
+            'type' => 'phone',
+        ]);
 
         $vcard = new VCard([
             'TEL' => '+44(0)202-555-0191',
             'ADR' => ['', '', '17 Shakespeare Ave.', 'Southampton', '', 'SO17 2HB', 'United Kingdom'],
         ]);
 
-        $contact = factory(Contact::class)->create([
-            'account_id' => $account->id,
-        ]);
-        $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $account->id,
-            'type' => 'phone',
-        ]);
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $account->id;
+
         $this->invokePrivateMethod($importVCard, 'importTel', [$contact, $vcard]);
 
         $this->assertDatabaseHas('contact_fields', [
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'data' => '+44 20 2555 0191',
+        ]);
+    }
+
+    /** @test */
+    public function it_imports_email_labels()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $email = factory(ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $account->id;
+
+        $vcard = new VCard();
+        $vcard->add(
+            'EMAIL',
+            'test@test.com',
+            [
+                'type' => ['WORK']
+            ]
+        );
+
+        $this->invokePrivateMethod($importVCard, 'importEmail', [$contact, $vcard]);
+
+        $this->assertDatabaseHas('contact_fields', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'data' => 'test@test.com',
+        ]);
+        $this->assertDatabaseHas('contact_field_labels', [
+            'account_id' => $account->id,
+            'label_i18n' => 'work',
+        ]);
+
+        $contactFieldLabel = ContactFieldLabel::where([
+            'account_id' => $account->id,
+            'label_i18n' => 'work',
+        ])->first();
+        $this->assertDatabaseHas('contact_field_contact_field_label', [
+            'account_id' => $account->id,
+            'contact_field_id' => $email->id,
+            'contact_field_label_id' => $contactFieldLabel->id,
+        ]);
+        $email->refresh();
+        $this->assertEquals($email->data, 'test@test.com');
+
+    }
+
+    /** @test */
+    public function it_imports_address_labels()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $email = factory(ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $account->id;
+
+        $vcard = new VCard();
+        $vcard->add(
+            'ADR',
+            ['', '', '5 Avenue Anatole France', 'Paris', '', '75007', 'France'],
+            [
+                'type' => ['HOME']
+            ]
+        );
+
+        $this->invokePrivateMethod($importVCard, 'importAddress', [$contact, $vcard]);
+
+        $this->assertDatabaseHas('addresses', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+        $this->assertDatabaseHas('contact_field_labels', [
+            'account_id' => $account->id,
+            'label_i18n' => 'home',
+        ]);
+
+        $address = Address::where([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ])->first();
+        $contactFieldLabel = ContactFieldLabel::where([
+            'account_id' => $account->id,
+            'label_i18n' => 'home',
+        ])->first();
+        $this->assertDatabaseHas('address_contact_field_label', [
+            'account_id' => $account->id,
+            'address_id' => $address->id,
+            'contact_field_label_id' => $contactFieldLabel->id,
         ]);
     }
 }

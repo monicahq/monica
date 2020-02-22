@@ -23,11 +23,14 @@ use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
+use App\Models\Contact\ContactFieldLabel;
 use App\Services\Account\Photo\UploadPhoto;
 use App\Services\Contact\Avatar\UpdateAvatar;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
 use App\Services\Contact\Address\DestroyAddress;
+use App\Services\Contact\Label\UpdateAddressLabels;
+use App\Services\Contact\Label\UpdateContactFieldLabels;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 
 class ImportVCard extends BaseService
@@ -738,7 +741,7 @@ class ImportVCard extends BaseService
 
             if (is_null($address)) {
                 // Address does not exist
-                app(CreateAddress::class)->execute([
+                $address = app(CreateAddress::class)->execute([
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
                 ] +
@@ -746,7 +749,7 @@ class ImportVCard extends BaseService
                 );
             } else {
                 // Address has to be updated
-                app(UpdateAddress::class)->execute([
+                $address = app(UpdateAddress::class)->execute([
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
                     'address_id' => $address->id,
@@ -755,6 +758,13 @@ class ImportVCard extends BaseService
                     $addressContent
                 );
             }
+
+            $labels = preg_split('/,/', (string) $adr['TYPE']);
+            app(UpdateAddressLabels::class)->execute([
+                'account_id' => $contact->account_id,
+                'address_id' => $address->id,
+                'labels' => $labels,
+            ]);
         }
 
         foreach ($addresses as $address) {
@@ -790,11 +800,11 @@ class ImportVCard extends BaseService
 
         foreach ($entry->EMAIL as $email) {
             // We assume contact fields are in the same order
-            $email1 = $emails->shift();
+            $contactField = $emails->shift();
 
-            if (is_null($email1)) {
+            if (is_null($contactField)) {
                 // Contact field does not exist
-                ContactField::create([
+                $contactField = ContactField::create([
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
                     'data' => $this->formatValue($email),
@@ -802,16 +812,49 @@ class ImportVCard extends BaseService
                 ]);
             } else {
                 // Contact field has to be updated
-                $email1->update([
+                $contactField->update([
                     'data' => $this->formatValue($email),
                 ]);
             }
+
+            $labels = preg_split('/,/', (string) $email['TYPE']);
+            app(UpdateContactFieldLabels::class)->execute([
+                'account_id' => $contact->account_id,
+                'contact_field_id' => $contactField->id,
+                'labels' => $labels,
+            ]);
         }
 
         foreach ($emails as $email) {
             // Remaining contact fields have to be removed
             $email->delete();
         }
+    }
+
+    private function getLabel(Contact $contact, string $labels) : array
+    {
+        $result = [];
+        $labels = preg_split('/,/', $labels);
+
+        foreach ($labels as $label)
+        {
+            $contactFieldLabel = ContactFieldLabel::where([
+                'account_id' => $contact->account_id,
+                'label_i18n' => mb_strtolower($label)
+            ])->first();
+
+            if (!$contactFieldLabel) {
+                $contactFieldLabel = ContactFieldLabel::where([
+                    'account_id' => $contact->account_id,
+                    'label' => $label
+                ])->first();
+            }
+
+            if ($contactFieldLabel) {
+                $result[] = $contactFieldLabel;
+            }
+        }
+        return $result;
     }
 
     /**

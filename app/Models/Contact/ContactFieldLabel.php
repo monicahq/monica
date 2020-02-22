@@ -17,6 +17,16 @@ class ContactFieldLabel extends Model
 
     protected $table = 'contact_field_labels';
 
+    public static $standardLabels = [
+        'home',
+        'work',
+        'cell',
+        'fax',
+        'pager',
+        'main',
+        'other',
+    ];
+
     /**
      * Get the account record associated with the contact field type.
      *

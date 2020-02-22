@@ -515,4 +515,5 @@ return [
     'contact_field_label_pager' => 'Pager',
     'contact_field_label_main' => 'Main',
     'contact_field_label_other' => 'Other',
+    'contact_field_label_personal' => 'Personal',
 ];

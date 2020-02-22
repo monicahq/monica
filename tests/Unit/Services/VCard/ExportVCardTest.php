@@ -14,6 +14,7 @@ use App\Services\VCard\ExportVCard;
 use App\Models\Contact\ContactField;
 use Sabre\VObject\PHPUnitAssertions;
 use App\Models\Contact\ContactFieldType;
+use App\Models\Contact\ContactFieldLabel;
 use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -349,6 +350,64 @@ class ExportVCardTest extends TestCase
             $vCard->children()
         );
         $this->assertStringContainsString('EMAIL:john@doe.com', $vCard->serialize());
+    }
+
+    /** @test */
+    public function vcard_add_contact_fields_labels()
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $vCard = new VCard();
+
+        $contactFieldType = factory(ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $account->id,
+            'contact_field_type_id' => $contactFieldType->id,
+        ]);
+        $contactFieldLabel = factory(ContactFieldLabel::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $contactField->labels()->attach($contactFieldLabel->id, ['account_id' => $account->id]);
+
+        $exportVCard = app(ExportVCard::class);
+        $this->invokePrivateMethod($exportVCard, 'exportContactFields', [$contact, $vCard]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+        $this->assertStringContainsString('EMAIL;TYPE=WORK:john@doe.com', $vCard->serialize());
+    }
+
+    /** @test */
+    public function vcard_add_contact_fields_personal_labels()
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $vCard = new VCard();
+
+        $contactFieldType = factory(ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $account->id,
+            'contact_field_type_id' => $contactFieldType->id,
+        ]);
+        $contactFieldLabel = factory(ContactFieldLabel::class)->create([
+            'account_id' => $account->id,
+            'label_i18n' => null,
+            'label' => 'Something'
+        ]);
+        $contactField->labels()->attach($contactFieldLabel->id, ['account_id' => $account->id]);
+
+        $exportVCard = app(ExportVCard::class);
+        $this->invokePrivateMethod($exportVCard, 'exportContactFields', [$contact, $vCard]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+        $this->assertStringContainsString('EMAIL;TYPE=Something:john@doe.com', $vCard->serialize());
     }
 
     /**
