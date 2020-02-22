@@ -86,7 +86,7 @@ class UpdateContactFieldLabelTest extends TestCase
         app(UpdateContactFieldLabels::class)->execute([
             'account_id' => $account->id,
             'contact_field_id' => $contactField->id,
-            'labels' => ['home','main','cell'],
+            'labels' => ['home', 'main', 'cell'],
         ]);
 
         $this->assertDatabaseHas('contact_field_labels', [
@@ -157,7 +157,7 @@ class UpdateContactFieldLabelTest extends TestCase
         app(UpdateContactFieldLabels::class)->execute([
             'account_id' => $account->id,
             'contact_field_id' => $contactField->id,
-            'labels' => ['home','cell'],
+            'labels' => ['home', 'cell'],
         ]);
 
         $this->assertDatabaseHas('contact_field_contact_field_label', [

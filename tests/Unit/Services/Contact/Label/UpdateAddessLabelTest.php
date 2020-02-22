@@ -7,8 +7,8 @@ use App\Models\Account\Account;
 use App\Models\Contact\Address;
 use App\Models\Contact\ContactFieldLabel;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Contact\Label\UpdateAddressLabels;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UpdateAddessLabelTest extends TestCase
@@ -56,7 +56,7 @@ class UpdateAddessLabelTest extends TestCase
         app(UpdateAddressLabels::class)->execute([
             'account_id' => $account->id,
             'address_id' => $address->id,
-            'labels' => ['home','main','cell'],
+            'labels' => ['home', 'main', 'cell'],
         ]);
 
         $this->assertDatabaseHas('contact_field_labels', [
@@ -127,7 +127,7 @@ class UpdateAddessLabelTest extends TestCase
         app(UpdateAddressLabels::class)->execute([
             'account_id' => $account->id,
             'address_id' => $address->id,
-            'labels' => ['home','cell'],
+            'labels' => ['home', 'cell'],
         ]);
 
         $this->assertDatabaseHas('address_contact_field_label', [
