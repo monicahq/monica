@@ -831,22 +831,21 @@ class ImportVCard extends BaseService
         }
     }
 
-    private function getLabel(Contact $contact, string $labels) : array
+    private function getLabel(Contact $contact, string $labels): array
     {
         $result = [];
         $labels = preg_split('/,/', $labels);
 
-        foreach ($labels as $label)
-        {
+        foreach ($labels as $label) {
             $contactFieldLabel = ContactFieldLabel::where([
                 'account_id' => $contact->account_id,
-                'label_i18n' => mb_strtolower($label)
+                'label_i18n' => mb_strtolower($label),
             ])->first();
 
-            if (!$contactFieldLabel) {
+            if (! $contactFieldLabel) {
                 $contactFieldLabel = ContactFieldLabel::where([
                     'account_id' => $contact->account_id,
-                    'label' => $label
+                    'label' => $label,
                 ])->first();
             }
 
@@ -854,6 +853,7 @@ class ImportVCard extends BaseService
                 $result[] = $contactFieldLabel;
             }
         }
+
         return $result;
     }
 

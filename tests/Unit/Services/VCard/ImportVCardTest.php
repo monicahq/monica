@@ -969,7 +969,7 @@ class ImportVCardTest extends TestCase
             'EMAIL',
             'test@test.com',
             [
-                'type' => ['WORK']
+                'type' => ['WORK'],
             ]
         );
 
@@ -996,7 +996,6 @@ class ImportVCardTest extends TestCase
         ]);
         $email->refresh();
         $this->assertEquals($email->data, 'test@test.com');
-
     }
 
     /** @test */
@@ -1019,7 +1018,7 @@ class ImportVCardTest extends TestCase
             'ADR',
             ['', '', '5 Avenue Anatole France', 'Paris', '', '75007', 'France'],
             [
-                'type' => ['HOME']
+                'type' => ['HOME'],
             ]
         );
 

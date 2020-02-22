@@ -18,7 +18,7 @@ class UpdateContactFieldLabels extends BaseService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_field_id' => 'required|integer|exists:contact_fields,id',
-            'labels' => 'required|array'
+            'labels' => 'required|array',
         ];
     }
 
@@ -46,7 +46,7 @@ class UpdateContactFieldLabels extends BaseService
      * @param array $data
      * @return array
      */
-    private function getLabelsId(array $data) : array
+    private function getLabelsId(array $data): array
     {
         $labelsId = [];
         foreach ($data['labels'] as $label) {
@@ -55,12 +55,12 @@ class UpdateContactFieldLabels extends BaseService
             if (in_array($label2, ContactFieldLabel::$standardLabels)) {
                 $labelsId[] = (ContactFieldLabel::firstOrCreate([
                     'account_id' => $data['account_id'],
-                    'label_i18n' => $label2
+                    'label_i18n' => $label2,
                 ]))->id;
             } else {
                 $labelsId[] = (ContactFieldLabel::firstOrCreate([
                     'account_id' => $data['account_id'],
-                    'label' => $label
+                    'label' => $label,
                 ]))->id;
             }
         }
@@ -84,5 +84,4 @@ class UpdateContactFieldLabels extends BaseService
 
         $contactField->labels()->sync($labelsSync);
     }
-
 }

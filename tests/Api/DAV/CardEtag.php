@@ -61,7 +61,7 @@ N:{$contact->last_name};{$contact->first_name};{$contact->middle_name};;
         foreach ($contact->contactFields as $contactField) {
             $type = '';
             if ($contactField->labels->count() > 0) {
-                $type = ";TYPE=".$contactField->labels->map(function ($label) {
+                $type = ';TYPE='.$contactField->labels->map(function ($label) {
                     return $label->label_i18n ?: $label->label;
                 })->join(',');
             }

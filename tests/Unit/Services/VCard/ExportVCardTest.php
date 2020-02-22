@@ -396,7 +396,7 @@ class ExportVCardTest extends TestCase
         $contactFieldLabel = factory(ContactFieldLabel::class)->create([
             'account_id' => $account->id,
             'label_i18n' => null,
-            'label' => 'Something'
+            'label' => 'Something',
         ]);
         $contactField->labels()->attach($contactFieldLabel->id, ['account_id' => $account->id]);
 
