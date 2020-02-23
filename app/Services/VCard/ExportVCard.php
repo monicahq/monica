@@ -172,11 +172,16 @@ class ExportVCard extends BaseService
     /**
      * @param Contact $contact
      * @param VCard $vcard
+     * @see https://tools.ietf.org/html/rfc6350#section-6.3.1
      */
     private function exportAddress(Contact $contact, VCard $vcard)
     {
         foreach ($contact->addresses as $address) {
             $type = $this->getContactFieldLabel($address);
+            $arguments = [];
+            if ($type != '') {
+                $arguments['TYPE'] = $type;
+            }
             $vcard->add('ADR', [
                 '',
                 '',
@@ -185,7 +190,9 @@ class ExportVCard extends BaseService
                 $address->place->province,
                 $address->place->postal_code,
                 $address->place->country,
-            ]);
+            ],
+                $arguments
+            );
         }
     }
 
