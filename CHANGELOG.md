@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Add backend and api for contact field labels
 * Add audit log when setting a contact's description
 * Add support for audit logs on a contact page
 * Add support for audit logs in the Settings page
