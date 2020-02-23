@@ -7,8 +7,8 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactFieldType;
 use Illuminate\Validation\ValidationException;
-use App\Services\Contact\ContactField\CreateContactField;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\Contact\ContactField\CreateContactField;
 
 class CreateContactFieldTest extends TestCase
 {

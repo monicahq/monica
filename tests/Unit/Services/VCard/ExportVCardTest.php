@@ -389,7 +389,7 @@ class ExportVCardTest extends TestCase
 
         $contactFieldType = factory(ContactFieldType::class)->create([
             'account_id' => $account->id,
-            'type' => 'phone'
+            'type' => 'phone',
         ]);
         $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,

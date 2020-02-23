@@ -305,7 +305,7 @@ class ApiContactFieldControllerTest extends ApiTestCase
         $response = $this->json('DELETE', '/api/contactfields/0');
 
         $this->expectDataError($response, [
-            "The selected contact field id is invalid."
+            'The selected contact field id is invalid.',
         ]);
     }
 }

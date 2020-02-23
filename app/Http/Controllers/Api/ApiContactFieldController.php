@@ -7,10 +7,10 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\ContactField\CreateContactField;
 use App\Services\Contact\ContactField\UpdateContactField;
 use App\Services\Contact\ContactField\DestroyContactField;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
 class ApiContactFieldController extends ApiController
