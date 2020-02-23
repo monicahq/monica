@@ -502,17 +502,16 @@ class ExportVCardTest extends TestCase
             'account_id' => $account->id,
         ]);
 
-        $tag = factory(Tag::class)->create([
-            'account_id' => $contact->account_id,
-        ]);
-
-        $request = [
+        app(AssociateTag::class)->execute([
             'account_id' => $contact->account->id,
             'contact_id' => $contact->id,
-            'name' => $tag->name,
-        ];
-
-        app(AssociateTag::class)->execute($request);
+            'name' => 'tag1',
+        ]);
+        app(AssociateTag::class)->execute([
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+            'name' => 'tag2',
+        ]);
 
         $exportVCard = app(ExportVCard::class);
         $contact = $contact->refresh();

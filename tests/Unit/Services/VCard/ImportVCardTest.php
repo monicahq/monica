@@ -4,6 +4,8 @@ namespace Tests\Unit\Services\VCard;
 
 use Tests\TestCase;
 use App\Models\User\User;
+use App\Models\Contact\Tag;
+use Illuminate\Support\Str;
 use App\Models\Account\Account;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
@@ -942,6 +944,109 @@ class ImportVCardTest extends TestCase
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'data' => '+44 20 2555 0191',
+        ]);
+    }
+
+    /** @test */
+    public function it_imports_categories()
+    {
+        $account = factory(Account::class)->create();
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $account->id;
+
+        $tag1 = factory(Tag::class)->create([
+            'account_id' => $account->id,
+            'name' => 'tag1',
+            'name_slug' => Str::slug('tag1'),
+        ]);
+        $tag2 = factory(Tag::class)->create([
+            'account_id' => $account->id,
+            'name' => 'tag2',
+            'name_slug' => Str::slug('tag2'),
+        ]);
+
+        $vcard = new VCard([
+            'CATEGORIES' => ['tag1', 'tag2'],
+        ]);
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->invokePrivateMethod($importVCard, 'importCategories', [$contact, $vcard]);
+
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'tag_id' => $tag1->id,
+        ]);
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'tag_id' => $tag2->id,
+        ]);
+    }
+
+    /** @test */
+    public function it_imports_new_categories()
+    {
+        $account = factory(Account::class)->create();
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $account->id;
+
+        $tag1 = factory(Tag::class)->create([
+            'account_id' => $account->id,
+            'name' => 'tag1',
+            'name_slug' => Str::slug('tag1'),
+        ]);
+        $tag2 = factory(Tag::class)->create([
+            'account_id' => $account->id,
+            'name' => 'tag2',
+            'name_slug' => Str::slug('tag2'),
+        ]);
+        $tag3 = factory(Tag::class)->create([
+            'account_id' => $account->id,
+            'name' => 'tag3',
+            'name_slug' => Str::slug('tag3'),
+        ]);
+
+        $vcard = new VCard([
+            'CATEGORIES' => ['tag2', 'tag3'],
+        ]);
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $contact->tags()->sync([
+            $tag1->id => ['account_id' => $contact->account_id],
+            $tag2->id => ['account_id' => $contact->account_id],
+        ]);
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'tag_id' => $tag1->id,
+        ]);
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'tag_id' => $tag2->id,
+        ]);
+
+        $this->invokePrivateMethod($importVCard, 'importCategories', [$contact, $vcard]);
+
+        $this->assertDatabaseMissing('contact_tag', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'tag_id' => $tag1->id,
+        ]);
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'tag_id' => $tag2->id,
+        ]);
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'tag_id' => $tag3->id,
         ]);
     }
 }

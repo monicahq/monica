@@ -55,8 +55,10 @@ class AssociateTag extends BaseService
      */
     private function tagExistOrCreate(array $data): Tag
     {
-        $tag = Tag::where('name', $data['name'])
-                ->where('account_id', $data['account_id'])
+        $tag = Tag::where([
+            'account_id' => $data['account_id'],
+            'name' => $data['name'],
+        ])
                 ->first();
 
         if (! $tag) {
@@ -73,17 +75,10 @@ class AssociateTag extends BaseService
      */
     private function createTag(array $data): Tag
     {
-        $array = [
+        return app(CreateTag::class)->execute([
             'account_id' => $data['account_id'],
             'name' => $data['name'],
-            'name_slug' => Str::slug($data['name'], '-', LocaleHelper::getLang()),
-        ];
-
-        if (empty($array['name_slug'])) {
-            $array['name_slug'] = htmlentities($data['name']);
-        }
-
-        return Tag::create($array);
+        ]);
     }
 
     /**

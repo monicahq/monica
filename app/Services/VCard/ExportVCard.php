@@ -242,9 +242,10 @@ class ExportVCard extends BaseService
      */
     private function exportTags(Contact $contact, VCard $vcard)
     {
-        $tags = $contact->getTagsAsString();
-        if (! empty($tags)) {
-            $vcard->CATEGORIES = $tags;
+        if ($contact->tags->count() > 0) {
+            $vcard->CATEGORIES = $contact->tags->map(function ($tag) {
+                return $tag->name;
+            })->toArray();
         }
     }
 }
