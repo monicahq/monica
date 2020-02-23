@@ -7,6 +7,7 @@ return [
     'save' => 'שמירה',
     'add' => 'הוספה',
     'cancel' => 'ביטול',
+    'confirm' => 'אישור',
     'delete_confirm' => 'להמשיך?',
     'delete' => 'מחיקה',
     'edit' => 'עריכה',
@@ -37,6 +38,7 @@ return [
     'retry' => 'לנסות שוב',
     'filter' => 'סינון הרשימה',
     'go_back' => 'חזרה',
+    'file_selected' => 'קובץ אחד נבחר…|{count} קבצים נבחרו…',
 
     'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
     'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
@@ -100,6 +102,7 @@ return [
 
     'error_title' => 'אופס! משהו השתבש.',
     'error_unauthorized' => 'אין לך את ההרשאה לערוך את המשאב הזה.',
+    'error_user_account' => 'משתמש זה אינו שייך לחשבון שצוין.',
     'error_save' => 'אירעה שגיאה בעת שמירת הנתונים.',
     'error_try_again' => 'משהו השתבש. נא לנסות שוב.',
     'error_id' => 'מזהה שגיאה: :id',
@@ -107,6 +110,7 @@ return [
     'error_maintenance' => 'מתבצעות עבודות תחזוקה. תכף נשוב.',
     'error_help' => 'מיד נשוב.',
     'error_twitter' => 'ניתן לעקוב אחר <a href="https://twitter.com/:twitter">חשבון הטוויטר שלנו</a> כדי להתעדכן אם השירות שב לפעילות.',
+    'error_no_term' => 'עדיין אין מדיניות עבור העותק הזה.',
 
     'default_save_success' => 'הנתונים נשמרו.',
 

@@ -120,4 +120,12 @@ return [
 
     'attributes' => [],
 
+    'vue' => [
+        'max' => [
+            'numeric' => '{field} 不能大于 {max}',
+            'string'  => '{field} 不能大于 {max} 个字符',
+        ],
+        'required' => '{field} 必填',
+        'url' => '{field} 不是一个有效的 URL',
+    ],
 ];

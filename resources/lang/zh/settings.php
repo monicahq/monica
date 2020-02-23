@@ -12,6 +12,7 @@ return [
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'Dav 资源',
     'sidebar_settings_security' => '安全',
+    'sidebar_settings_auditlogs' => '追踪日志',
 
     'export_title' => '导出帐户数据',
     'export_be_patient' => '单击按钮开始导出。处理导出可能需要几分钟时间，请耐心等待, 不要取消按钮。',
@@ -44,7 +45,8 @@ return [
     'layout_big' => '浏览器的全宽度',
     'save' => '更新偏好',
     'delete_title' => '删除您的帐户',
-    'delete_desc' => '是否要删除您的帐户？警告: 删除是永久性的, 您的所有数据将永久的删除',
+    'delete_desc' => '您想要删除您的帐户吗？警告：删除是永久性的，您的所有数据将被永久删除，如果您有订阅的话也将立即取消',
+    'delete_other_desc' => '声明：您在主数据库中的数据将立即删除。 然而，正如我们的隐私政策所描述的那样。 如果出现故障，我们会做数据库的每日备份。备份将保存30天——然后它将被完全删除。 想象我们可以在所有备份中删除您的特定数据是不现实的。 顺便提一下，这种数据是在非常安全的亚马逊服务器上加密的，除了我们以外，没有人拥有加密密钥。 因此，您的数据将在 30 天后从所有备份中完全消失。',
     'reset_desc' => '您想重置您的帐户吗？这将删除所有联系人以及与之关联的数据。您的帐户将不会被删除。',
     'reset_title' => '删除您的帐户',
     'reset_cta' => '重置帐户',
@@ -66,11 +68,11 @@ return [
     'locale_it' => '意大利文',
     'locale_nl' => '荷兰文',
     'locale_pt' => '葡萄牙文',
-    'locale_pt-BR' => 'Português (Brazil)',
+    'locale_pt-BR' => '葡萄牙语 (巴西)',
     'locale_ru' => '俄文',
     'locale_zh' => '简体中文',
     'locale_tr' => '土耳其文',
-    'locale_en-GB' => 'English (United Kingdom)',
+    'locale_en-GB' => '英语 (英国)',
 
     'security_title' => '安全',
     'security_help' => '更改您的帐户的安全选项。',
@@ -189,7 +191,7 @@ return [
     'subscriptions_downgrade_rule_users_constraint' => '您的帐户中当前有 <a href=":url">:count 个用户</a>。',
     'subscriptions_downgrade_rule_invitations' => '您不能有未接受的邀请',
     'subscriptions_downgrade_rule_invitations_constraint' => '您的帐户中当前有 <a href=":url">:count 个未确认邀请</a>。',
-    'subscriptions_downgrade_rule_contacts' => '您不能拥有超过:number个联系人',
+    'subscriptions_downgrade_rule_contacts' => '您不能超过 :number 的活跃联系人',
     'subscriptions_downgrade_rule_contacts_constraint' => '当前有 <a href=":url">:count 位联系人</a>。',
     'subscriptions_downgrade_cta' => '降级',
     'subscriptions_downgrade_success' => '您已降级到免费版！',
@@ -485,4 +487,11 @@ return [
     'dav_carddav_export' => '导出一个文件中的所有联系人',
     'dav_caldav_birthdays_export' => '在一个文件中导出所有生日',
     'dav_caldav_tasks_export' => '导出一个文件中的所有任务',
+
+    'archive_title' => '存档您帐户中的所有联系人',
+    'archive_desc' => '这将存档您帐户中的所有联系人',
+    'archive_cta' => '存档所有联系人',
+
+    'logs_title' => '此账户发生的所有情况',
+    'logs_author' => ':name 于 :date ',
 ];

@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'Этому человеку примерно',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Я знаю точную дату рождения этого человека, которая',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'Рабочая информация не указана',
     'information_work_at' => 'работает в :company',
     'work_add_cta' => 'Обновите информацию о работе',
@@ -296,17 +297,23 @@ return [
     'gifts_delete_confirmation' => 'Вы уверены что хотите удалить этот подарок?',
     'gifts_add_gift' => 'Добавить подарок',
     'gifts_link' => 'Ссылка',
-    'gifts_for' => 'Для:',
+    'gifts_for' => 'For: {name}',
     'gifts_delete_cta' => 'Удалить',
     'gifts_add_title' => 'Управление подарками для :name',
     'gifts_add_gift_idea' => 'Идея подарка',
     'gifts_add_gift_already_offered' => 'Подарок уже предложен',
     'gifts_add_gift_received' => 'Получен подарок',
     'gifts_add_gift_title' => 'Что это за подарок?',
+    'gifts_add_gift_name' => 'Gift name',
     'gifts_add_link' => 'Ссылка на веб-страницу (не обязательно)',
     'gifts_add_value' => 'Стоимость (не обязательно)',
     'gifts_add_comment' => 'Комментарий (не обязательно)',
-    'gifts_add_someone' => 'This gift is for someone in :name’s family in particular',
+    'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
+    'gifts_add_photo' => 'Photo (optional)',
+    'gifts_add_photo_title' => 'Add a photo for this gift',
+    'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
+    'gifts_delete_title' => 'Delete a gift',
     'gifts_ideas' => 'Идеи подарка',
     'gifts_offered' => 'Предложенные подарки',
     'gifts_offered_as_an_idea' => 'Отметить как идею',
@@ -361,6 +368,7 @@ return [
     'deceased_know_date' => 'Я знаю когда этот человек умер',
     'deceased_add_reminder' => 'Добавить напоминание на эту дату',
     'deceased_label' => 'Умерший',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => 'Дата смерти :date',
     'deceased_age' => 'Возраст смерти',
 
@@ -492,4 +500,10 @@ return [
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',
+
+    // logs
+    'auditlogs_link' => 'History',
+    'auditlogs_title' => 'Everything that happened to :name',
+    'auditlogs_breadcrumb' => 'History',
+    'auditlogs_author' => 'By :name on :date',
 ];
