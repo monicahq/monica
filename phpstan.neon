@@ -17,6 +17,7 @@ parameters:
         - '#Access to an undefined property Illuminate\\Support\\Fluent::\$[a-zA-Z0-9_]+\.#'
         - '#Access to an undefined property Sabre\\VObject\\Component\\[a-zA-Z0-9\\_]+::\$[a-zA-Z0-9_]+\.#'
         - '#Access to an undefined property PragmaRX\\Countries\\Package\\Support\\Collection::\$[a-zA-Z0-9_]+\.#'
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Builder::\$id\.#'
         - '#Call to an undefined method Illuminate\\View\\View::with[a-zA-Z0-9\\_]+\(\)\.#'
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::[a-zA-Z0-9_]+\(\)\.#'
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::active\(\)\.#'

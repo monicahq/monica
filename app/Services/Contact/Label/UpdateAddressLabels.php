@@ -51,7 +51,6 @@ class UpdateAddressLabels extends BaseService
         $labelsId = [];
         foreach ($data['labels'] as $label) {
             $label2 = mb_strtolower($label);
-            $s = ContactFieldLabel::$standardLabels;
             if (in_array($label2, ContactFieldLabel::$standardLabels)) {
                 $labelsId[] = (ContactFieldLabel::firstOrCreate([
                     'account_id' => $data['account_id'],

@@ -28,7 +28,7 @@ class AddContactFieldLabel extends Migration
             $table->unsignedBigInteger('contact_field_label_id');
             $table->unsignedInteger('contact_field_id');
             $table->unsignedInteger('account_id');
-            $table->index(['contact_field_label_id', 'contact_field_id', 'account_id']);
+            $table->index(['contact_field_label_id', 'contact_field_id', 'account_id'], 'contact_field_contact_field_label_index');
             $table->foreign('contact_field_label_id')->references('id')->on('contact_field_labels')->onDelete('cascade');
             $table->foreign('contact_field_id')->references('id')->on('contact_fields')->onDelete('cascade');
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
@@ -38,6 +38,7 @@ class AddContactFieldLabel extends Migration
             $table->unsignedBigInteger('contact_field_label_id');
             $table->unsignedInteger('address_id');
             $table->unsignedInteger('account_id');
+            $table->index(['contact_field_label_id', 'address_id', 'account_id'], 'address_contact_field_label_index');
             $table->foreign('contact_field_label_id')->references('id')->on('contact_field_labels')->onDelete('cascade');
             $table->foreign('address_id')->references('id')->on('addresses')->onDelete('cascade');
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
