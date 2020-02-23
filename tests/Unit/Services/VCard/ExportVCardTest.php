@@ -3,7 +3,6 @@
 namespace Tests\Unit\Services\VCard;
 
 use Tests\TestCase;
-use App\Models\Contact\Tag;
 use Tests\Api\DAV\CardEtag;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;

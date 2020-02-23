@@ -959,7 +959,7 @@ class ImportVCard extends BaseService
     private function importCategories(Contact $contact, VCard $entry)
     {
         $tags = [];
-        foreach($contact->tags as $tag) {
+        foreach ($contact->tags as $tag) {
             $tags[$tag->name] = $tag->id;
         }
 
