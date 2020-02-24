@@ -19,6 +19,7 @@
 
 ### Fixes:
 
+* Fix vcard categories import/export as tags
 * Fix resend email verification feature not sending email
 * Fix edit conversation date not being editable
 * Fix display of the toggle buttons in the Settings page

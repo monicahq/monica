@@ -22,7 +22,9 @@ use App\Helpers\CountriesHelper;
 use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
+use App\Services\Contact\Tag\DetachTag;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Tag\AssociateTag;
 use App\Services\Account\Photo\UploadPhoto;
 use App\Services\Contact\Avatar\UpdateAvatar;
 use App\Services\Contact\Address\CreateAddress;
@@ -454,6 +456,7 @@ class ImportVCard extends BaseService
         $this->importEmail($contact, $entry);
         $this->importTel($contact, $entry);
         $this->importSocialProfile($contact, $entry);
+        $this->importCategories($contact, $entry);
 
         $contact->save();
 
@@ -959,5 +962,45 @@ class ImportVCard extends BaseService
         }
 
         return Arr::get($this->contactFields, $type);
+    }
+
+    /**
+     * Import the categories as tags.
+     *
+     * @param Contact $contact
+     * @param  VCard $entry
+     * @return void
+     */
+    private function importCategories(Contact $contact, VCard $entry)
+    {
+        $tags = [];
+        foreach ($contact->tags as $tag) {
+            $tags[$tag->name] = $tag->id;
+        }
+
+        if (! is_null($entry->CATEGORIES)) {
+            $categories = preg_split('/,/', $entry->CATEGORIES);
+
+            foreach ($categories as $category) {
+                $name = (string) $category;
+                if (isset($tags[$name])) {
+                    unset($tags[$name]);
+                } else {
+                    app(AssociateTag::class)->execute([
+                        'account_id' => $contact->account_id,
+                        'contact_id' => $contact->id,
+                        'name' => $name,
+                    ]);
+                }
+            }
+        }
+
+        foreach ($tags as $tag) {
+            app(DetachTag::class)->execute([
+                'account_id' => $contact->account_id,
+                'contact_id' => $contact->id,
+                'tag_id' => $tag,
+            ]);
+        }
     }
 }
