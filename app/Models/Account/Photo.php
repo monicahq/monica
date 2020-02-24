@@ -3,8 +3,8 @@
 namespace App\Models\Account;
 
 use App\Models\Contact\Contact;
-use Intervention\Image\Facades\Image;
 use App\Models\ModelBinding as Model;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
