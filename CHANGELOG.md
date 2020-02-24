@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Add backend and api for contact field labels
 * Add audit log when setting a contact's description
 * Add support for audit logs on a contact page
 * Add support for audit logs in the Settings page
@@ -18,6 +19,8 @@
 
 ### Fixes:
 
+* Fix vcard categories import/export as tags
+* Fix resend email verification feature not sending email
 * Fix edit conversation date not being editable
 * Fix display of the toggle buttons in the Settings page
 * Fix how you met date not being deleted upon save

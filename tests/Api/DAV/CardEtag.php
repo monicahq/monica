@@ -59,12 +59,18 @@ N:{$contact->last_name};{$contact->first_name};{$contact->middle_name};;
             $data .= "\n";
         }
         foreach ($contact->contactFields as $contactField) {
+            $type = '';
+            if ($contactField->labels->count() > 0) {
+                $type = ';TYPE='.$contactField->labels->map(function ($label) {
+                    return $label->label_i18n ?: $label->label;
+                })->join(',');
+            }
             switch ($contactField->contactFieldType->type) {
                 case ContactFieldType::PHONE:
-                    $data .= "TEL:{$contactField->data}\n";
+                    $data .= "TEL$type:{$contactField->data}\n";
                     break;
                 case ContactFieldType::EMAIL:
-                    $data .= "EMAIL:{$contactField->data}\n";
+                    $data .= "EMAIL$type:{$contactField->data}\n";
                     break;
                 default:
                     break;

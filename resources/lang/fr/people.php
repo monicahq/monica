@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'Vous devez mettre à jour votre compte pour pouvoir profiter de cette fonctionnalité',
     'stay_in_touch_modal_title' => 'Restez en contact',
     'stay_in_touch_modal_desc' => 'Nous pouvons vous rappeler par courriel pour rester en contact avec {firstname} à intervalle régulier.',
-    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
+    'stay_in_touch_modal_label' => 'Envoyez-moi un email tous les... {count} jour|Envoyez-moi un email tous les... {count} jours',
 
     // Calls
     'modal_call_title' => 'Enregistrer un appel téléphonique',
@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'Cette personne a probablement …',
     'information_edit_not_year' => 'Je connais le jour et le mois de sa naissance, mais pas l’année…',
     'information_edit_exact' => 'Je connais la date de naissance précise, qui est …',
+    'information_edit_birthdate_label' => 'Date de naissance',
     'information_no_work_defined' => 'Aucune information professionnelle définie',
     'information_work_at' => 'chez :company',
     'work_add_cta' => 'Mettre à jour les informations professionnelles',
@@ -243,7 +244,7 @@ return [
     'activity_type_ate_at_his_place' => 'mangé chez lui·elle',
     'activity_type_went_bar' => 'aller dans un bar',
     'activity_type_ate_at_home' => 'manger à la maison',
-    'activity_type_picnicked' => 'picnicked',
+    'activity_type_picnicked' => 'pique-niqué',
     'activity_type_ate_restaurant' => 'aller au restaurant',
     'activity_type_went_theater' => 'aller au cinéma',
     'activity_type_went_concert' => 'aller à un concert',
@@ -296,17 +297,23 @@ return [
     'gifts_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer ce cadeau ?',
     'gifts_add_gift' => 'Ajouter un cadeau',
     'gifts_link' => 'Lien',
-    'gifts_for' => 'Pour :',
+    'gifts_for' => 'Pour : {name}',
     'gifts_delete_cta' => 'Supprimer',
     'gifts_add_title' => 'Gestion des cadeaux pour :name',
     'gifts_add_gift_idea' => 'Idée de cadeau',
     'gifts_add_gift_already_offered' => 'Cadeau déjà offert',
     'gifts_add_gift_received' => 'Cadeau reçu',
     'gifts_add_gift_title' => 'Quel est ce cadeau ?',
+    'gifts_add_gift_name' => 'Cadeau',
     'gifts_add_link' => 'Lien de la page web (optionnel)',
     'gifts_add_value' => 'Valeur (optionnel)',
     'gifts_add_comment' => 'Commentaire (optionnel)',
-    'gifts_add_someone' => 'Ce cadeau est destiné à quelqu’un de la famille de :name en particulier',
+    'gifts_add_recipient' => 'Destinataire (optionnel)',
+    'gifts_add_recipient_field' => 'Destinataire',
+    'gifts_add_photo' => 'Photo (optionnelle)',
+    'gifts_add_photo_title' => 'Ajouter une photo pour ce cadeau',
+    'gifts_add_someone' => 'Ce cadeau est destiné à quelqu’un de la famille de {name} en particulier',
+    'gifts_delete_title' => 'Supprimer un cadeau',
     'gifts_ideas' => 'Idées cadeaux',
     'gifts_offered' => 'Cadeaux déjà offerts',
     'gifts_offered_as_an_idea' => 'Marquer comme idée',
@@ -361,6 +368,7 @@ return [
     'deceased_know_date' => 'Je connais la date de décès de cette personne',
     'deceased_add_reminder' => 'Ajouter un rappel pour cette date',
     'deceased_label' => 'Décédé',
+    'deceased_date_label' => 'Date de décès',
     'deceased_label_with_date' => 'Décédé le :date',
     'deceased_age' => 'Age au moment du décès',
 
@@ -492,4 +500,10 @@ return [
 
     // emotions
     'emotion_this_made_me_feel' => 'Cela vous fait sentir …',
+
+    // logs
+    'auditlogs_link' => 'Historique',
+    'auditlogs_title' => 'Tout ce qui est arrivé à :name',
+    'auditlogs_breadcrumb' => 'Historique',
+    'auditlogs_author' => 'Par :name le :date',
 ];

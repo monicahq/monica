@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'This person is probably...',
     'information_edit_not_year' => 'Jeg kender dag og måned på denne person\'s fødselsdag, men ikke året…',
     'information_edit_exact' => 'Jeg kender den præcise fødselsdag på denne person...',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => 'hos :company',
     'work_add_cta' => 'Opdatér arbejdsoplysninger',
@@ -296,17 +297,23 @@ return [
     'gifts_delete_confirmation' => 'Er du sikker på at du vil slette denne gave?',
     'gifts_add_gift' => 'Tilføj en gave',
     'gifts_link' => 'Link',
-    'gifts_for' => 'For:',
+    'gifts_for' => 'For: {name}',
     'gifts_delete_cta' => 'Slet',
     'gifts_add_title' => 'Gift management for :name',
     'gifts_add_gift_idea' => 'Gave idé',
     'gifts_add_gift_already_offered' => 'Gave givet',
     'gifts_add_gift_received' => 'Gave modtaget',
     'gifts_add_gift_title' => 'Hvad er gaven?',
+    'gifts_add_gift_name' => 'Gift name',
     'gifts_add_link' => 'Link til web side (valgfri)',
     'gifts_add_value' => 'Værdi (valgfri)',
     'gifts_add_comment' => 'Kommentar (valgfri)',
-    'gifts_add_someone' => 'This gift is for someone in :name’s family in particular',
+    'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
+    'gifts_add_photo' => 'Photo (optional)',
+    'gifts_add_photo_title' => 'Add a photo for this gift',
+    'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
+    'gifts_delete_title' => 'Delete a gift',
     'gifts_ideas' => 'Gave idéer',
     'gifts_offered' => 'Gaver givet',
     'gifts_offered_as_an_idea' => 'Markér som idé',
@@ -361,6 +368,7 @@ return [
     'deceased_know_date' => 'Jeg kender dagen, hvor denne person døde',
     'deceased_add_reminder' => 'Tilføj en påmindelse for denne dag',
     'deceased_label' => 'Afdød',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => 'Døde den :date',
     'deceased_age' => 'Age at death',
 
@@ -492,4 +500,10 @@ return [
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',
+
+    // logs
+    'auditlogs_link' => 'History',
+    'auditlogs_title' => 'Everything that happened to :name',
+    'auditlogs_breadcrumb' => 'History',
+    'auditlogs_author' => 'By :name on :date',
 ];

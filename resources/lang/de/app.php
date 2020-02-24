@@ -7,6 +7,7 @@ return [
     'save' => 'Speichern',
     'add' => 'Hinzufügen',
     'cancel' => 'Abbrechen',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'Sicher?',
     'delete' => 'Löschen',
     'edit' => 'Bearbeiten',
@@ -37,6 +38,7 @@ return [
     'retry' => 'Wiederholen',
     'filter' => 'Filter the list',
     'go_back' => 'Zurück',
+    'file_selected' => '1 file selected...|{count} files selected...',
 
     'application_title' => 'Monica – persönlicher Beziehungsmanager',
     'application_description' => 'Monica ist ein Werkzeug, um Ihre Interaktionen mit Ihren Lieben, Freunden und Familie zu verwalten.',
@@ -100,13 +102,15 @@ return [
 
     'error_title' => 'Whoops! Da lief etwas falsch.',
     'error_unauthorized' => 'Du darfst das leider nicht, da du nicht angemeldet bist.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'Beim Versuch die Daten zu speichern ist ein Fehler aufgetreten.',
     'error_try_again' => 'Etwas ist schiefgegangen. Bitte versuche es noch mal.',
     'error_id' => 'Fehler Nr: :id',
-    'error_unavailable' => 'Dienst nicht verfügbar',
+    'error_unavailable' => 'Service unavailable',
     'error_maintenance' => 'Wartungsarbeiten im Gange. Bin gleich zurück.',
     'error_help' => 'Wir sind gleich wieder da.',
     'error_twitter' => 'Folgen Sie <a href="https://twitter.com/:twitter"> uns auf Twitter</a> um informiert zu werden, wenn es weitergeht.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'Die Daten wurden gespeichert.',
 

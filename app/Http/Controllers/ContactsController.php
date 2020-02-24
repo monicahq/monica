@@ -18,6 +18,7 @@ use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Jobs\UpdateLastConsultedDate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
 use App\Models\Relationship\Relationship;
@@ -27,7 +28,7 @@ use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
-use App\Services\Contact\Contact\UpdateContactWork;
+use App\Services\Contact\Contact\UpdateWorkInformation;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactSearch as ContactResource;
 
@@ -244,7 +245,7 @@ class ContactsController extends Controller
             $query->orderBy('updated_at', 'desc');
         }]);
 
-        $contact->updateConsulted();
+        UpdateLastConsultedDate::dispatch($contact);
 
         $relationships = $contact->relationships;
         // get love relationship type
@@ -484,8 +485,9 @@ class ContactsController extends Controller
      */
     public function updateWork(Request $request, Contact $contact)
     {
-        $contact = app(UpdateContactWork::class)->execute([
+        $contact = app(UpdateWorkInformation::class)->execute([
             'account_id' => auth()->user()->account->id,
+            'author_id' => auth()->user()->id,
             'contact_id' => $contact->id,
             'job' => $request->input('job'),
             'company' => $request->input('company'),

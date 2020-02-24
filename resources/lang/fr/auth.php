@@ -73,7 +73,7 @@ return [
     'confirmation_title' => 'Vérifiez votre adresse courriel',
     'confirmation_fresh' => 'Un nouveau lien de vérification a été envoyé à votre adresse courriel.',
     'confirmation_check' => 'Avant de continuer, veuillez vérifier votre boîte mail pour un lien de vérification.',
-    'confirmation_request_another' => 'Si vous n’avez pas reçu le courriel <a href=":url">cliquez ici pour en demander un autre</a>.',
+    'confirmation_request_another' => 'Si vous n’avez pas reçu le courriel <a :action>cliquez ici pour en demander un autre</a>.',
 
     'confirmation_again' => 'Si vous souhaitez modifier votre adresse courriel vous pouvez <a href=":url" class="alert-link">cliquer ici</a>.',
     'email_change_current_email' => 'Adresse courriel actuelle :',

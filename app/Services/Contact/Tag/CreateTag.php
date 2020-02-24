@@ -38,6 +38,10 @@ class CreateTag extends BaseService
             'name_slug' => Str::slug($data['name'], '-', LocaleHelper::getLang()),
         ];
 
+        if (empty($array['name_slug'])) {
+            $array['name_slug'] = htmlentities($data['name']);
+        }
+
         return Tag::create($array);
     }
 }

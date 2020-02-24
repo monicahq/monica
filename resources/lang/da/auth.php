@@ -73,7 +73,7 @@ return [
     'confirmation_title' => 'Bekræft din e-mail adresse',
     'confirmation_fresh' => 'A fresh verification link has been sent to your email address.',
     'confirmation_check' => 'Before proceeding, please check your email for a verification link.',
-    'confirmation_request_another' => 'If you did not receive the email <a href=":url">click here to request another</a>.',
+    'confirmation_request_another' => 'If you did not receive the email <a :action>click here to request another</a>.',
 
     'confirmation_again' => 'If you want to change your email address you can <a href=":url" class="alert-link">click here</a>.',
     'email_change_current_email' => 'Nuværende e-mail adresse:',

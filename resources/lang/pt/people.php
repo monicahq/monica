@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'Esta pessoa é provavelmente',
     'information_edit_not_year' => 'Eu sei o dia e o mês da data de nascimento desta pessoa, mas não o ano…',
     'information_edit_exact' => 'Conheço a data de nascimento exata dessa pessoa, que é',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'Nenhuma informação profissional definida',
     'information_work_at' => 'em :company',
     'work_add_cta' => 'Atualizar informação de trabalho',
@@ -296,17 +297,23 @@ return [
     'gifts_delete_confirmation' => 'Tem certeza de que deseja excluir esse presente?',
     'gifts_add_gift' => 'Adicionar um presente',
     'gifts_link' => 'Ligar',
-    'gifts_for' => 'For:',
+    'gifts_for' => 'For: {name}',
     'gifts_delete_cta' => 'Deletar',
     'gifts_add_title' => 'Gerenciamento de presentes para :name',
     'gifts_add_gift_idea' => 'Ideia de presente',
     'gifts_add_gift_already_offered' => 'Presente já oferecido',
     'gifts_add_gift_received' => 'Gift received',
     'gifts_add_gift_title' => 'O que é esse presente?',
+    'gifts_add_gift_name' => 'Gift name',
     'gifts_add_link' => 'Ligar com o site (Opcional)',
     'gifts_add_value' => 'Valor (Opcional)',
     'gifts_add_comment' => 'Comentário (Opcional)',
-    'gifts_add_someone' => 'Esse presente é pra alguem na família de :name',
+    'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
+    'gifts_add_photo' => 'Photo (optional)',
+    'gifts_add_photo_title' => 'Add a photo for this gift',
+    'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
+    'gifts_delete_title' => 'Delete a gift',
     'gifts_ideas' => 'Gift ideas',
     'gifts_offered' => 'Gifts offered',
     'gifts_offered_as_an_idea' => 'Mark as an idea',
@@ -361,6 +368,7 @@ return [
     'deceased_know_date' => 'I know the date this person died',
     'deceased_add_reminder' => 'Add a reminder for this date',
     'deceased_label' => 'Deceased',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => 'Deceased on :date',
     'deceased_age' => 'Age at death',
 
@@ -492,4 +500,10 @@ return [
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',
+
+    // logs
+    'auditlogs_link' => 'History',
+    'auditlogs_title' => 'Everything that happened to :name',
+    'auditlogs_breadcrumb' => 'History',
+    'auditlogs_author' => 'By :name on :date',
 ];

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
+use App\Jobs\UpdateLastConsultedDate;
 use Illuminate\Database\QueryException;
 use App\Services\Contact\Contact\SetMeContact;
 use Illuminate\Validation\ValidationException;
@@ -13,7 +15,7 @@ use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Services\Contact\Contact\UpdateContactWork;
+use App\Services\Contact\Contact\UpdateWorkInformation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Services\Contact\Contact\UpdateContactIntroduction;
@@ -92,7 +94,7 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
-        $contact->updateConsulted();
+        UpdateLastConsultedDate::dispatch($contact);
 
         return new ContactResource($contact);
     }
@@ -205,11 +207,12 @@ class ApiContactController extends ApiController
     public function updateWork(Request $request, $contactId)
     {
         try {
-            $contact = app(UpdateContactWork::class)->execute(
+            $contact = app(UpdateWorkInformation::class)->execute(
                 $request->except(['account_id', 'contact_id'])
                 + [
                     'contact_id' => $contactId,
                     'account_id' => auth()->user()->account->id,
+                    'author_id' => auth()->user()->id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
