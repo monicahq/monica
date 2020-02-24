@@ -506,4 +506,14 @@ return [
     'auditlogs_title' => 'Everything that happened to :name',
     'auditlogs_breadcrumb' => 'History',
     'auditlogs_author' => 'By :name on :date',
+
+    // contact field label
+    'contact_field_label_home' => 'Home',
+    'contact_field_label_work' => 'Work',
+    'contact_field_label_cell' => 'Mobile',
+    'contact_field_label_fax' => 'Fax',
+    'contact_field_label_pager' => 'Pager',
+    'contact_field_label_main' => 'Main',
+    'contact_field_label_other' => 'Other',
+    'contact_field_label_personal' => 'Personal',
 ];
