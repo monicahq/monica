@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Collection;
 use App\Jobs\UpdateLastConsultedDate;
 use Illuminate\Database\QueryException;
 use App\Services\Contact\Contact\SetMeContact;
