@@ -163,8 +163,8 @@ class ApiContactFieldControllerTest extends ApiTestCase
         ]);
 
         $this->expectDataError($response, [
-            'The data field is required.',
             'The contact field type id field is required.',
+            'The data field is required.',
         ]);
     }
 
@@ -242,8 +242,8 @@ class ApiContactFieldControllerTest extends ApiTestCase
         ]);
 
         $this->expectDataError($response, [
-            'The data field is required.',
             'The contact field type id field is required.',
+            'The data field is required.',
         ]);
     }
 
@@ -304,6 +304,8 @@ class ApiContactFieldControllerTest extends ApiTestCase
 
         $response = $this->json('DELETE', '/api/contactfields/0');
 
-        $this->expectNotFound($response);
+        $this->expectDataError($response, [
+            'The selected contact field id is invalid.',
+        ]);
     }
 }
