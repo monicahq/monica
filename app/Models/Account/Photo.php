@@ -3,6 +3,7 @@
 namespace App\Models\Account;
 
 use App\Models\Contact\Contact;
+use Intervention\Image\Facades\Image;
 use App\Models\ModelBinding as Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -64,5 +65,18 @@ class Photo extends Model
         $url = $this->new_filename;
 
         return asset(Storage::disk(config('filesystems.default'))->url($url));
+    }
+
+    /**
+     * Gets the data-url format of the photo.
+     *
+     * @return string
+     */
+    public function dataUrl()
+    {
+        $url = $this->new_filename;
+        $file = Storage::disk(config('filesystems.default'))->get($url);
+
+        return (string) Image::make($file)->encode('data-url');
     }
 }

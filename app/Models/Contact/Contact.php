@@ -988,7 +988,7 @@ class Contact extends Model
                 $avatarURL = $this->avatar_gravatar_url;
                 break;
             case 'photo':
-                $avatarURL = $this->avatarPhoto()->get()->first()->url();
+                $avatarURL = $this->avatarPhoto->url();
                 break;
             case 'default':
             default:
