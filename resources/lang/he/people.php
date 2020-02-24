@@ -508,12 +508,12 @@ return [
     'auditlogs_author' => 'מאת :name ב־:date',
 
     // contact field label
-    'contact_field_label_home' => 'Home',
-    'contact_field_label_work' => 'Work',
-    'contact_field_label_cell' => 'Mobile',
-    'contact_field_label_fax' => 'Fax',
-    'contact_field_label_pager' => 'Pager',
-    'contact_field_label_main' => 'Main',
-    'contact_field_label_other' => 'Other',
-    'contact_field_label_personal' => 'Personal',
+    'contact_field_label_home' => 'בית',
+    'contact_field_label_work' => 'עבודה',
+    'contact_field_label_cell' => 'נייד',
+    'contact_field_label_fax' => 'פקס',
+    'contact_field_label_pager' => 'זימונית',
+    'contact_field_label_main' => 'עיקרי',
+    'contact_field_label_other' => 'אחר',
+    'contact_field_label_personal' => 'אישי',
 ];
