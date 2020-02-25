@@ -1422,7 +1422,7 @@ class ApiContactControllerTest extends ApiTestCase
         $response = $this->json('PUT', '/api/me/contact/0');
 
         $this->expectDataError($response, [
-            'The selected contact id is invalid.'
+            'The selected contact id is invalid.',
         ]);
     }
 
