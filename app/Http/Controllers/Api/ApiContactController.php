@@ -238,13 +238,7 @@ class ApiContactController extends ApiController
             'user_id' => auth()->user()->id,
         ];
 
-        try {
-            app(DeleteMeContact::class)->execute($data);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        } catch (ValidationException $e) {
-            return $this->respondValidatorFailed($e->validator);
-        }
+        app(DeleteMeContact::class)->execute($data);
 
         return $this->respond(['true']);
     }

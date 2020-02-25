@@ -5,7 +5,6 @@ namespace Tests\Api\Contact;
 use Carbon\Carbon;
 use Tests\ApiTestCase;
 use App\Models\Contact\Gender;
-use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
@@ -1401,6 +1400,29 @@ class ApiContactControllerTest extends ApiTestCase
         $this->assertDatabaseHas('users', [
             'account_id' => $user->account_id,
             'me_contact_id' => $contact->id,
+        ]);
+    }
+
+    /** @test */
+    public function it_throws_an_error_if_wrong_account_on_sets_me_contact()
+    {
+        $this->signin();
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->json('PUT', '/api/me/contact/'.$contact->id);
+
+        $this->expectNotFound($response);
+    }
+
+    /** @test */
+    public function it_throws_an_error_if_account_not_exists_on_sets_me_contact()
+    {
+        $this->signin();
+
+        $response = $this->json('PUT', '/api/me/contact/0');
+
+        $this->expectDataError($response, [
+            'The selected contact id is invalid.'
         ]);
     }
 
