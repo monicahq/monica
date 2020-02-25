@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'הגיל של איש הקשר הוא כנראה…',
     'information_edit_not_year' => 'ידועים לי היום והחודש של הולדת איש הקשר, אך לא השנה…',
     'information_edit_exact' => 'מועד הלידה המדויק של אדם זה ידוע לי…',
+    'information_edit_birthdate_label' => 'תאריך לידה',
     'information_no_work_defined' => 'לא צוינו פרטי עבודה',
     'information_work_at' => 'ב:company',
     'work_add_cta' => 'עדכון פרטי עבודה',
@@ -296,17 +297,23 @@ return [
     'gifts_delete_confirmation' => 'למחוק את המתנה הזאת?',
     'gifts_add_gift' => 'הוספת מתנה',
     'gifts_link' => 'קישור',
-    'gifts_for' => 'עבור:',
+    'gifts_for' => 'עבור: {name}',
     'gifts_delete_cta' => 'מחיקה',
     'gifts_add_title' => 'ניהול מתנות עבור :name',
     'gifts_add_gift_idea' => 'רעיון למתנה',
     'gifts_add_gift_already_offered' => 'מתנה שהוצעה',
     'gifts_add_gift_received' => 'מתנה שהתקבלה',
     'gifts_add_gift_title' => 'מה זו המתנה הזו?',
+    'gifts_add_gift_name' => 'שם המתנה',
     'gifts_add_link' => 'קישור לאתר אינטרנט (רשות)',
     'gifts_add_value' => 'ערך (רשות)',
     'gifts_add_comment' => 'הערה (רשות)',
-    'gifts_add_someone' => 'מתנה זו מיועדת במיוחד למישהו במשפחה של :name',
+    'gifts_add_recipient' => 'למי מיועדת המתנה (רשות)',
+    'gifts_add_recipient_field' => 'נמען',
+    'gifts_add_photo' => 'תמונה (רשות)',
+    'gifts_add_photo_title' => 'הוספת תמונה למתנה הזאת',
+    'gifts_add_someone' => 'מתנה זו מיועדת במיוחד למישהו מהמשפחה של {name}',
+    'gifts_delete_title' => 'מחיקת מתנה',
     'gifts_ideas' => 'רעיונות למתנות',
     'gifts_offered' => 'מתנות שהוצעו',
     'gifts_offered_as_an_idea' => 'סימון כרעיון',
@@ -361,6 +368,7 @@ return [
     'deceased_know_date' => 'מועד הפטירה של האדם הזה ידוע לי',
     'deceased_add_reminder' => 'הוספת תזכורת לתאריך הזה',
     'deceased_label' => 'פטירה',
+    'deceased_date_label' => 'מועד הפטירה',
     'deceased_label_with_date' => 'פטירה ב־:date',
     'deceased_age' => 'גיל בעת הפטירה',
 
@@ -492,4 +500,10 @@ return [
 
     // emotions
     'emotion_this_made_me_feel' => 'התחושה שקיבלת היא…',
+
+    // logs
+    'auditlogs_link' => 'היסטוריה',
+    'auditlogs_title' => 'כלה מה שקרה ל:name',
+    'auditlogs_breadcrumb' => 'היסטוריה',
+    'auditlogs_author' => 'מאת :name ב־:date',
 ];

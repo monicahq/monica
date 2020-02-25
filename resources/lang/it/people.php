@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'Devi fare l\'upgrade al tuo account per usare questa funzione',
     'stay_in_touch_modal_title' => 'Rimani in contatto',
     'stay_in_touch_modal_desc' => 'Possiamo ricordarti di rimanere in contatto con {firstname} tramite email a intervalli regolari.',
-    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
+    'stay_in_touch_modal_label' => 'Mandami una email ogni... {count} giorno|Mandami una email ogni... {count} giorni',
 
     // Calls
     'modal_call_title' => 'Aggiungi chiamata',
@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'Questa persona probabilmente ha',
     'information_edit_not_year' => 'Conosco il giorno e il mese della data di nascita, ma non l\'anno…',
     'information_edit_exact' => 'Conosco la data di nascita esatta di questa persona, che è il',
+    'information_edit_birthdate_label' => 'Data di nascita',
     'information_no_work_defined' => 'Nessuna informazione professionale',
     'information_work_at' => 'alla :company',
     'work_add_cta' => 'Aggiorna informazioni professionali',
@@ -243,7 +244,7 @@ return [
     'activity_type_ate_at_his_place' => 'mangiato a casa sua/loro',
     'activity_type_went_bar' => 'andati al bar',
     'activity_type_ate_at_home' => 'mangiato a casa',
-    'activity_type_picnicked' => 'picnicked',
+    'activity_type_picnicked' => 'abbiamo fatto un picnic',
     'activity_type_ate_restaurant' => 'mangiato al ristorante',
     'activity_type_went_theater' => 'andati a teatro',
     'activity_type_went_concert' => 'andati a un concerto',
@@ -296,17 +297,23 @@ return [
     'gifts_delete_confirmation' => 'Rimuovere regalo?',
     'gifts_add_gift' => 'Aggiungi regalo',
     'gifts_link' => 'Collegamento',
-    'gifts_for' => 'Per:',
+    'gifts_for' => 'Per: {name}',
     'gifts_delete_cta' => 'Rimuovi',
     'gifts_add_title' => 'Gestione dei regali a :name',
     'gifts_add_gift_idea' => 'Idea regalo',
     'gifts_add_gift_already_offered' => 'Regalo già consegnato',
     'gifts_add_gift_received' => 'Regalo ricevuto',
     'gifts_add_gift_title' => 'Cos\'è questo regalo?',
+    'gifts_add_gift_name' => 'Nome del regalo',
     'gifts_add_link' => 'Link alla pagina web (facoltativo)',
     'gifts_add_value' => 'Valore (facoltativo)',
     'gifts_add_comment' => 'Commenti (facoltativo)',
-    'gifts_add_someone' => 'Questo regalo è per qualcuno in particolare nella famiglia di :name',
+    'gifts_add_recipient' => 'Destinatario (opzionale)',
+    'gifts_add_recipient_field' => 'Destinatario',
+    'gifts_add_photo' => 'Foto (opzionale)',
+    'gifts_add_photo_title' => 'Aggiungi una foto per questo regalo',
+    'gifts_add_someone' => 'Questo regalo é per qualcuno in particolare nella famiglia di {name}',
+    'gifts_delete_title' => 'Rimuovi un regalo',
     'gifts_ideas' => 'Idee regalo',
     'gifts_offered' => 'Regali offerti',
     'gifts_offered_as_an_idea' => 'Segna come idea',
@@ -361,6 +368,7 @@ return [
     'deceased_know_date' => 'Conosco il giorno in cui questa persona é deceduta',
     'deceased_add_reminder' => 'Aggiungi un promemoria per questa data',
     'deceased_label' => 'Deceduto/a',
+    'deceased_date_label' => 'Data morte',
     'deceased_label_with_date' => 'Decesso il :date',
     'deceased_age' => 'Età di decesso',
 
@@ -492,4 +500,10 @@ return [
 
     // emotions
     'emotion_this_made_me_feel' => 'Questo mi ha fatto sentire…',
+
+    // logs
+    'auditlogs_link' => 'History',
+    'auditlogs_title' => 'Everything that happened to :name',
+    'auditlogs_breadcrumb' => 'History',
+    'auditlogs_author' => 'By :name on :date',
 ];

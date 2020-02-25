@@ -131,6 +131,8 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Contact\Gift\CreateGift::class => \App\Services\Contact\Gift\CreateGift::class,
         \App\Services\Contact\Gift\DestroyGift::class => \App\Services\Contact\Gift\DestroyGift::class,
         \App\Services\Contact\Gift\UpdateGift::class => \App\Services\Contact\Gift\UpdateGift::class,
+        \App\Services\Contact\Label\UpdateAddressLabels::class => \App\Services\Contact\Label\UpdateAddressLabels::class,
+        \App\Services\Contact\Label\UpdateContactFieldLabels::class => \App\Services\Contact\Label\UpdateContactFieldLabels::class,
         \App\Services\Contact\LifeEvent\CreateLifeEvent::class => \App\Services\Contact\LifeEvent\CreateLifeEvent::class,
         \App\Services\Contact\LifeEvent\DestroyLifeEvent::class => \App\Services\Contact\LifeEvent\DestroyLifeEvent::class,
         \App\Services\Contact\LifeEvent\UpdateLifeEvent::class => \App\Services\Contact\LifeEvent\UpdateLifeEvent::class,

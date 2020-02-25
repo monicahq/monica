@@ -7,6 +7,7 @@ return [
     'save' => 'Salvar',
     'add' => 'Adicionar',
     'cancel' => 'Cancelar',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'Tem certeza?',
     'delete' => 'Excluir',
     'edit' => 'Editar',
@@ -22,7 +23,7 @@ return [
     'back' => 'Voltar',
     'verify' => 'Verificar',
     'new' => 'novo',
-    'unknown' => 'Não sei',
+    'unknown' => 'Eu não sei',
     'load_more' => 'Carregar mais',
     'loading' => 'Carregando...',
     'with' => 'com',
@@ -37,12 +38,13 @@ return [
     'retry' => 'Tentar novamente',
     'filter' => 'Filtrar lista',
     'go_back' => 'Voltar',
+    'file_selected' => '1 file selected...|{count} files selected...',
 
     'application_title' => 'Monica – Gerenciador de relacionamento pessoal',
-    'application_description' => 'Monica é uma ferramenta para gerenciar suas interações com amigos, familiares e pessoas queridas.',
-    'application_og_title' => 'Fortaleça seus vínculos com pessoas importantes para você. CRM Gratuito para amigos e familiares.',
+    'application_description' => 'Monica é uma ferramenta para gerenciar suas interações com seus amigos, familiares e pessoas queridas.',
+    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
-    'markdown_description' => 'Quer deixar o seu texto mais bonito? Você pode usar o Markdown para adicionar listas, negrito, itálico e muito mais.',
+    'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
     'markdown_link' => 'Ler documentação',
 
     'header_settings_link' => 'Configurações',
@@ -100,19 +102,21 @@ return [
 
     'error_title' => 'Ops! Algo deu errado.',
     'error_unauthorized' => 'Você não tem permissão para editar este recurso.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'Ocorreu um erro ao tentar salvar os dados.',
     'error_try_again' => 'Algo deu errado. Por favor, tente novamente.',
     'error_id' => 'Error ID: :id',
-    'error_unavailable' => 'Serviço Indisponível',
+    'error_unavailable' => 'Service unavailable',
     'error_maintenance' => 'Manutenção em andamento. Voltaremos em breve.',
     'error_help' => 'Voltaremos em breve.',
     'error_twitter' => 'Siga-nos <a href="https://twitter.com/:twitter">no Twitter </a> para saber quando voltamos.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'Dados salvos com sucesso!',
 
     'compliance_title' => 'Desculpa pelo incômodo.',
     'compliance_desc' => 'Alteramos nossos <a href=":urlterm" hreflang=":hreflang">Termos de Uso</a> e <a href=":url" hreflang=":hreflang">Política de Privacidade</a>. Por lei, solicitamos que você os revise e aceite ambos para que possa continuar usando sua conta.',
-    'compliance_desc_end' => 'Não utilizamos os seus dados ou conta para outros fins e nunca o faremos.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
     'compliance_terms' => 'Aceitar os novos Termos e Política de Privacidade',
 
     // Relationship types
@@ -126,7 +130,7 @@ return [
     'relationship_type_group_family' => 'Relacionamentos familiares',
     'relationship_type_group_friend' => 'Relacionamentos de amizade',
     'relationship_type_group_work' => 'Relacionamentos profissionais',
-    'relationship_type_group_other' => 'Outros relacionamentos',
+    'relationship_type_group_other' => 'Other kind of relationships',
 
     'relationship_type_partner' => 'companheiro',
     'relationship_type_partner_female' => 'companheira',
@@ -241,27 +245,27 @@ return [
     'relationship_type_boss' => 'chefe',
     'relationship_type_boss_female' => 'chefa',
     'relationship_type_boss_with_name' => 'chefe de :name',
-    'relationship_type_boss_female_with_name' => 'chefa de :name',
+    'relationship_type_boss_female_with_name' => ':name’s boss',
 
-    'relationship_type_subordinate' => 'funcionário',
-    'relationship_type_subordinate_female' => 'funcionária',
-    'relationship_type_subordinate_with_name' => 'funcionário de :name',
-    'relationship_type_subordinate_female_with_name' => 'funcionária de :name',
+    'relationship_type_subordinate' => 'subordinate',
+    'relationship_type_subordinate_female' => 'subordinate',
+    'relationship_type_subordinate_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
 
     'relationship_type_mentor' => 'mentor',
     'relationship_type_mentor_female' => 'mentora',
     'relationship_type_mentor_with_name' => 'mentor de :name',
     'relationship_type_mentor_female_with_name' => 'mentora de :name',
 
-    'relationship_type_protege' => 'mentorado',
-    'relationship_type_protege_female' => 'mentorada',
-    'relationship_type_protege_with_name' => 'mentorado de :name',
-    'relationship_type_protege_female_with_name' => 'mentorada de :name',
+    'relationship_type_protege' => 'protege',
+    'relationship_type_protege_female' => 'protege',
+    'relationship_type_protege_with_name' => ':name’s protege',
+    'relationship_type_protege_female_with_name' => ':name’s protege',
 
-    'relationship_type_ex_husband' => 'ex-esposo',
-    'relationship_type_ex_husband_female' => 'ex-esposa',
-    'relationship_type_ex_husband_with_name' => 'ex-esposo de :name',
-    'relationship_type_ex_husband_female_with_name' => 'ex-esposa de :name',
+    'relationship_type_ex_husband' => 'ex husband',
+    'relationship_type_ex_husband_female' => 'ex wife',
+    'relationship_type_ex_husband_with_name' => ':name’s ex husband',
+    'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
 
     // emotions
     'emotion_primary_love' => 'Amor',
