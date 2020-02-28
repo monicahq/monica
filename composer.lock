@@ -7442,20 +7442,20 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "1.6.2",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "7debcb2f1ad080dff33dd1433d86ab45a3f5c01e"
+                "reference": "72684758f15aae4562149460b70fea81e9a06a25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/7debcb2f1ad080dff33dd1433d86ab45a3f5c01e",
-                "reference": "7debcb2f1ad080dff33dd1433d86ab45a3f5c01e",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/72684758f15aae4562149460b70fea81e9a06a25",
+                "reference": "72684758f15aae4562149460b70fea81e9a06a25",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "5.0 - 5.8 | ^6.0",
+                "illuminate/support": "5.0 - 5.8 | ^6.0 | ^7.0",
                 "php": "^7.1",
                 "sentry/sdk": "^2.1"
             },
@@ -7507,7 +7507,7 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2020-02-14T12:29:38+00:00"
+            "time": "2020-02-26T09:01:08+00:00"
         },
         {
             "name": "spomky-labs/base64url",
