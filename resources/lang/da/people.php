@@ -457,7 +457,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'Begynde at gå med briller eller linser',
     'life_event_sentence_broken_bone' => 'Brækkede en knogle',
     'life_event_sentence_removed_braces' => 'Removed braces',
-    'life_event_sentence_surgery' => 'Blev opereret',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => 'Gik til tandlægen',
     'life_event_sentence_new_sport' => 'Startede til sport',
     'life_event_sentence_new_hobby' => 'Startede en hobby',
