@@ -240,7 +240,7 @@ return [
     'activity_type_just_hung_out' => 'just hung out',
     'activity_type_watched_movie_at_home' => 'watched a movie at home',
     'activity_type_talked_at_home' => 'just talked at home',
-    'activity_type_did_sport_activities_together' => 'did sport together',
+    'activity_type_did_sport_activities_together' => 'played a sport together',
     'activity_type_ate_at_his_place' => 'ate at their place',
     'activity_type_went_bar' => 'gik på bar',
     'activity_type_ate_at_home' => 'spiste hjemme',
