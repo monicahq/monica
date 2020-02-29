@@ -240,7 +240,7 @@ return [
     'activity_type_just_hung_out' => 'einfach zusammen Zeit verbracht',
     'activity_type_watched_movie_at_home' => 'zu Hause einen Film gesehen',
     'activity_type_talked_at_home' => 'zu Hause geredet',
-    'activity_type_did_sport_activities_together' => 'zusammen Sport gemacht',
+    'activity_type_did_sport_activities_together' => 'played a sport together',
     'activity_type_ate_at_his_place' => 'bei Ihnen gegessen',
     'activity_type_went_bar' => 'in eine Bar gegangen',
     'activity_type_ate_at_home' => 'zu Hause gegessen',
