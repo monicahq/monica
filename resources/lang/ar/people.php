@@ -457,7 +457,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'بدأت في ارتداء النظارات أو العدسات',
     'life_event_sentence_broken_bone' => 'كسرت عظماً',
     'life_event_sentence_removed_braces' => 'أزلت تقويم الأسنان',
-    'life_event_sentence_surgery' => 'Got a surgery',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => 'ذهبت لطبيب الأسنان',
     'life_event_sentence_new_sport' => 'بدأت في رياضة',
     'life_event_sentence_new_hobby' => 'بدأت هواية',
