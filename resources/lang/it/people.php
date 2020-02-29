@@ -457,7 +457,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'Occhiali o lenti a contatto',
     'life_event_sentence_broken_bone' => 'Rotto un osso',
     'life_event_sentence_removed_braces' => 'Levato l\'apparecchio',
-    'life_event_sentence_surgery' => 'Subito un intervento',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => 'Andato dal dentista',
     'life_event_sentence_new_sport' => 'Iniziato uno sport',
     'life_event_sentence_new_hobby' => 'Iniziato un hobby',
