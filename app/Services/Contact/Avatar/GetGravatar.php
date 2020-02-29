@@ -2,7 +2,6 @@
 
 namespace App\Services\Contact\Avatar;
 
-use App\Helpers\StringHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Validator;
