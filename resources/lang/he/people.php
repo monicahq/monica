@@ -457,7 +457,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'הרכבת משקפיים או עדשות מגע לראשונה',
     'life_event_sentence_broken_bone' => 'שבירת עצם',
     'life_event_sentence_removed_braces' => 'הסרת גשר',
-    'life_event_sentence_surgery' => 'ניתוח',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => 'טיפול שיניים',
     'life_event_sentence_new_sport' => 'התחלה של ספורט',
     'life_event_sentence_new_hobby' => 'התחלת תחביב',
