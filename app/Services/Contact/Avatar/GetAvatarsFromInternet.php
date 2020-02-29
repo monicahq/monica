@@ -42,10 +42,16 @@ class GetAvatarsFromInternet extends BaseService
 
         $contact = Contact::findOrFail($data['contact_id']);
 
+        // prevent timestamp update
+        $timestamps = $contact->timestamps;
+        $contact->timestamps = false;
+
         $contact = $this->generateUUID($contact);
         $contact = $this->getAdorable($contact);
         $contact = $this->getGravatar($contact);
         $contact->save();
+
+        $contact->timestamps = $timestamps;
 
         return $contact;
     }
@@ -83,32 +89,6 @@ class GetAvatarsFromInternet extends BaseService
     }
 
     /**
-     * Get the email (if it exists) of the contact, based on the contact fields.
-     *
-     * @param Contact $contact
-     * @return null|string
-     */
-    private function getEmail(Contact $contact)
-    {
-        try {
-            $contactField = $contact->contactFields()
-                                    ->email()
-                                    ->first();
-
-            $email = $contactField ? $contactField->data : null;
-
-            Validator::make(['email' => $email], ['email' => 'email'])
-                ->validate();
-
-            return $email;
-        } catch (ModelNotFoundException $e) {
-            // Not found
-        } catch (ValidationException $e) {
-            // Not an email
-        }
-    }
-
-    /**
      * Query Gravatar (if it exists) for the contact's email address.
      *
      * @param Contact  $contact
@@ -116,22 +96,8 @@ class GetAvatarsFromInternet extends BaseService
      */
     private function getGravatar(Contact $contact)
     {
-        $email = $this->getEmail($contact);
-
-        if (! StringHelper::isNullOrWhitespace($email)) {
-            $contact->avatar_gravatar_url = app(GetGravatarURL::class)->execute([
-                'email' => $email,
-                'size' => config('monica.avatar_size'),
-            ]);
-        } else {
-            // in this case we need to make sure that we reset the gravatar URL
-            $contact->avatar_gravatar_url = null;
-
-            if ($contact->avatar_source == 'gravatar') {
-                $contact->avatar_source = 'adorable';
-            }
-        }
-
-        return $contact;
+        return app(GetGravatar::class)->execute([
+            'contact_id' => $contact->id,
+        ]);
     }
 }
