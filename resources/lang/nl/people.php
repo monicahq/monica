@@ -457,7 +457,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'Begon met dragen van bril of contactlenzen',
     'life_event_sentence_broken_bone' => 'Bot gebroken',
     'life_event_sentence_removed_braces' => 'Beugel verwijderd',
-    'life_event_sentence_surgery' => 'Kreeg een operatie',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => 'Ging naar de tandarts',
     'life_event_sentence_new_sport' => 'Begon met een sport',
     'life_event_sentence_new_hobby' => 'Begon met een hobby',
