@@ -457,7 +457,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'Started to wear glass or contact lenses',
     'life_event_sentence_broken_bone' => 'Broke a bone',
     'life_event_sentence_removed_braces' => 'Removed braces',
-    'life_event_sentence_surgery' => 'Got a surgery',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => 'Went to the dentist',
     'life_event_sentence_new_sport' => 'Started a sport',
     'life_event_sentence_new_hobby' => 'Started a hobby',
