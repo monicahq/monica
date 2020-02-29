@@ -457,7 +457,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => '开始佩戴玻璃或隐形眼镜',
     'life_event_sentence_broken_bone' => '折断了骨头',
     'life_event_sentence_removed_braces' => '去掉了牙齿矫正器',
-    'life_event_sentence_surgery' => '做了手术',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => '去看牙医了',
     'life_event_sentence_new_sport' => '开始运动',
     'life_event_sentence_new_hobby' => '有了新爱好',
