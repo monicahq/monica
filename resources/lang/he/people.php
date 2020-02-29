@@ -240,7 +240,7 @@ return [
     'activity_type_just_hung_out' => 'בילוי משותף',
     'activity_type_watched_movie_at_home' => 'צפיתם בסרט בבית',
     'activity_type_talked_at_home' => 'דיברתם בבית',
-    'activity_type_did_sport_activities_together' => 'עשיתם ספורט יחד',
+    'activity_type_did_sport_activities_together' => 'played a sport together',
     'activity_type_ate_at_his_place' => 'אכלתם אצלם',
     'activity_type_went_bar' => 'הלכת לבר',
     'activity_type_ate_at_home' => 'אכלתם בבית',
