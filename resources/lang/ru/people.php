@@ -240,7 +240,7 @@ return [
     'activity_type_just_hung_out' => 'просто повеселились',
     'activity_type_watched_movie_at_home' => 'смотрели кино дома',
     'activity_type_talked_at_home' => 'разговаривали дома',
-    'activity_type_did_sport_activities_together' => 'занимались спортом вместе',
+    'activity_type_did_sport_activities_together' => 'played a sport together',
     'activity_type_ate_at_his_place' => 'ate at their place',
     'activity_type_went_bar' => 'отправились в бар',
     'activity_type_ate_at_home' => 'ели дома',
