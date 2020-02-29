@@ -240,7 +240,7 @@ return [
     'activity_type_just_hung_out' => 'apenas sai',
     'activity_type_watched_movie_at_home' => 'assisti um filme em casa',
     'activity_type_talked_at_home' => 'apenas fiquei em casa',
-    'activity_type_did_sport_activities_together' => 'fizemos algum esporte juntos',
+    'activity_type_did_sport_activities_together' => 'played a sport together',
     'activity_type_ate_at_his_place' => 'ate at their place',
     'activity_type_went_bar' => 'fui para um bar',
     'activity_type_ate_at_home' => 'comi em casa',
