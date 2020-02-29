@@ -240,7 +240,7 @@ return [
     'activity_type_just_hung_out' => 'قضينا الوقت معا',
     'activity_type_watched_movie_at_home' => 'شاهدنا فيلم في المنزل',
     'activity_type_talked_at_home' => 'تحدثنا في المنزل',
-    'activity_type_did_sport_activities_together' => 'مارسنا الرياضة مع بعض',
+    'activity_type_did_sport_activities_together' => 'played a sport together',
     'activity_type_ate_at_his_place' => 'تناولنا الطعام بمنزلهم',
     'activity_type_went_bar' => 'ذهبنا إلى حانة',
     'activity_type_ate_at_home' => 'تناولنا الطعام في المنزل',
