@@ -457,7 +457,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'Gözlük veya lens takmaya başlamak',
     'life_event_sentence_broken_bone' => 'Bir kemiği kırmak',
     'life_event_sentence_removed_braces' => 'Diş tellerini kaldırmak',
-    'life_event_sentence_surgery' => 'Ameliyat olmak',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => 'Dişçiye gitmek',
     'life_event_sentence_new_sport' => 'Bir spora başlamak',
     'life_event_sentence_new_hobby' => 'Bir hobiye başlamak',
