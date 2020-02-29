@@ -240,7 +240,7 @@ return [
     'activity_type_just_hung_out' => 'gewoon een beetje gehangen',
     'activity_type_watched_movie_at_home' => 'thuis een film gekeken',
     'activity_type_talked_at_home' => 'thuis gekletst',
-    'activity_type_did_sport_activities_together' => 'samen gesport',
+    'activity_type_did_sport_activities_together' => 'played a sport together',
     'activity_type_ate_at_his_place' => 'bij hun gegeten',
     'activity_type_went_bar' => 'naar een bar gegaan',
     'activity_type_ate_at_home' => 'thuis gegeten',
