@@ -457,7 +457,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'Empezó a llevar gafas o lentillas',
     'life_event_sentence_broken_bone' => 'Se rompió un hueso',
     'life_event_sentence_removed_braces' => 'Se quitó los brackets',
-    'life_event_sentence_surgery' => 'Se sometió a una operación',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => 'Fue al dentista',
     'life_event_sentence_new_sport' => 'Inició la práctica de un deporte',
     'life_event_sentence_new_hobby' => 'Comenzó un hobby',
