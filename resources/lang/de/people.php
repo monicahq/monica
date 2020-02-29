@@ -457,7 +457,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'Hat angefangen, eine Brille oder Kontaktlinsen zu tragen',
     'life_event_sentence_broken_bone' => 'Knochen gebrochen',
     'life_event_sentence_removed_braces' => 'Zahnspange entfernt',
-    'life_event_sentence_surgery' => 'Hatte eine Operation',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => 'Ging zum Zahnarzt',
     'life_event_sentence_new_sport' => 'Hat eine Sportart begonnen',
     'life_event_sentence_new_hobby' => 'Ein Hobby begonnen',
