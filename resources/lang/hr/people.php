@@ -240,7 +240,7 @@ return [
     'activity_type_just_hung_out' => 'druženje',
     'activity_type_watched_movie_at_home' => 'gledali film doma',
     'activity_type_talked_at_home' => 'razgovarali doma',
-    'activity_type_did_sport_activities_together' => 'bavili se sportom skupa',
+    'activity_type_did_sport_activities_together' => 'played a sport together',
     'activity_type_ate_at_his_place' => 'jeli u gostima',
     'activity_type_went_bar' => 'bili u kafiću',
     'activity_type_ate_at_home' => 'jeli doma',
