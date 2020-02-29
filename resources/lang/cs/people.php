@@ -240,7 +240,7 @@ return [
     'activity_type_just_hung_out' => 'společný čas',
     'activity_type_watched_movie_at_home' => 'sledování filmu doma',
     'activity_type_talked_at_home' => 'promluvili jsme si doma',
-    'activity_type_did_sport_activities_together' => 'společný sport',
+    'activity_type_did_sport_activities_together' => 'played a sport together',
     'activity_type_ate_at_his_place' => 'ate at their place',
     'activity_type_went_bar' => 'návštěva baru',
     'activity_type_ate_at_home' => 'jídlo doma',
