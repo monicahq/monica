@@ -240,7 +240,7 @@ return [
     'activity_type_just_hung_out' => 'traîner ensemble',
     'activity_type_watched_movie_at_home' => 'regarder un film à la maison ensemble',
     'activity_type_talked_at_home' => 'parler ensemble à la maison',
-    'activity_type_did_sport_activities_together' => 'fait du sport ensemble',
+    'activity_type_did_sport_activities_together' => 'played a sport together',
     'activity_type_ate_at_his_place' => 'mangé chez lui·elle',
     'activity_type_went_bar' => 'aller dans un bar',
     'activity_type_ate_at_home' => 'manger à la maison',
