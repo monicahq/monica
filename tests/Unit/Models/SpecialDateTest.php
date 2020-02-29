@@ -59,6 +59,8 @@ class SpecialDateTest extends FeatureTestCase
     /** @test */
     public function get_age_returns_age()
     {
+        Carbon::setTestNow(Carbon::create(2020, 2, 17, 17, 0, 0));
+
         $specialDate = factory(SpecialDate::class)->make();
         $specialDate->is_year_unknown = 0;
         $specialDate->date = now()->subYears(5);
