@@ -457,7 +457,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'A commencé à porter des lunettes ou des lentilles de contact',
     'life_event_sentence_broken_bone' => 'S’est cassé un os',
     'life_event_sentence_removed_braces' => 'S’est fait retiré un appareil dentaire',
-    'life_event_sentence_surgery' => 'S’est fait opéré',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => 'Est allé chez le dentiste',
     'life_event_sentence_new_sport' => 'A commencé un sport',
     'life_event_sentence_new_hobby' => 'A commencé un passe-temps',
