@@ -62,6 +62,13 @@ $factory->define(App\Models\Contact\ContactField::class, function (Faker\Generat
     ];
 });
 
+$factory->define(App\Models\Contact\ContactFieldLabel::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'label_i18n' => 'work',
+    ];
+});
+
 $factory->define(App\Models\Contact\Conversation::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,

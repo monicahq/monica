@@ -7,6 +7,7 @@ return [
     'save' => 'Gem',
     'add' => 'Tilføj',
     'cancel' => 'Annullér',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'Sikker?',
     'delete' => 'Slet',
     'edit' => 'Redigér',
@@ -37,6 +38,7 @@ return [
     'retry' => 'Prøv igen',
     'filter' => 'Filter the list',
     'go_back' => 'Gå tilbage',
+    'file_selected' => '1 file selected...|{count} files selected...',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
@@ -100,13 +102,15 @@ return [
 
     'error_title' => 'Whoops! Something went wrong.',
     'error_unauthorized' => 'You don’t have the right to edit this resource.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'We had an error trying to save the data.',
     'error_try_again' => 'Something went wrong. Please try again.',
     'error_id' => 'Error ID: :id',
-    'error_unavailable' => 'Tjenesten er ikke tilgængelig',
+    'error_unavailable' => 'Service unavailable',
     'error_maintenance' => 'Maintenance in progress. Be right back.',
     'error_help' => 'We’ll be right back.',
     'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'The data has been saved.',
 

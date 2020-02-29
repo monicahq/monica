@@ -22,6 +22,7 @@ class ContactField extends Resource
             'object' => 'contactfield',
             'content' => $this->data,
             'contact_field_type' => new ContactFieldTypeResource($this->contactFieldType),
+            'labels' => ContactFieldLabel::collection($this->labels),
             'account' => [
                 'id' => $this->account->id,
             ],
