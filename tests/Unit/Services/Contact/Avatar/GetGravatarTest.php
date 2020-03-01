@@ -3,6 +3,10 @@
 namespace Tests\Unit\Services\Contact\Avatar;
 
 use Tests\TestCase;
+use App\Models\Contact\Contact;
+use App\Models\Contact\ContactField;
+use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Avatar\GetGravatar;
 use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Avatar\GetGravatarURL;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -10,6 +14,62 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class GetGravatarTest extends TestCase
 {
     use DatabaseTransactions;
+
+    /** @test */
+    public function it_get_gravatar_url()
+    {
+        $contact = factory(Contact::class)->create();
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $contact->account->id,
+        ]);
+        factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'matt@wordpress.com',
+        ]);
+
+        $request = [
+            'contact_id' => $contact->id,
+        ];
+
+        $contact = app(GetGravatar::class)->execute($request);
+
+        $this->assertNotNull(
+            $contact->avatar_gravatar_url
+        );
+    }
+
+    /** @test */
+    public function it_get_gravatar_of_real_email()
+    {
+        $contact = factory(Contact::class)->create();
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $contact->account->id,
+        ]);
+        factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'bademail',
+        ]);
+        factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'matt@wordpress.com',
+        ]);
+
+        $request = [
+            'contact_id' => $contact->id,
+        ];
+
+        $contact = app(GetGravatar::class)->execute($request);
+
+        $this->assertNotNull(
+            $contact->avatar_gravatar_url
+        );
+    }
 
     /** @test */
     public function it_returns_an_url()
