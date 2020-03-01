@@ -111,6 +111,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Contact\Call\DestroyCall::class => \App\Services\Contact\Call\DestroyCall::class,
         \App\Services\Contact\Call\UpdateCall::class => \App\Services\Contact\Call\UpdateCall::class,
         \App\Services\Contact\Contact\CreateContact::class => \App\Services\Contact\Contact\CreateContact::class,
+        \App\Services\Contact\Contact\DeleteMeContact::class => \App\Services\Contact\Contact\DeleteMeContact::class,
         \App\Services\Contact\Contact\DestroyContact::class => \App\Services\Contact\Contact\DestroyContact::class,
         \App\Services\Contact\Contact\SetMeContact::class => \App\Services\Contact\Contact\SetMeContact::class,
         \App\Services\Contact\Contact\UpdateBirthdayInformation::class => \App\Services\Contact\Contact\UpdateBirthdayInformation::class,

@@ -168,6 +168,10 @@ Vue.component(
 );
 
 Vue.component(
+  'me-contact',
+  require('./components/people/MeContact.vue').default
+);
+Vue.component(
   'stay-in-touch',
   require('./components/people/StayInTouch.vue').default
 );
