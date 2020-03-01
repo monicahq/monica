@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Add ability to set 'me' contact
 * Add middle name field to new contact and edit contact
 * Add backend and api for contact field labels
 * Add audit log when setting a contact's description
