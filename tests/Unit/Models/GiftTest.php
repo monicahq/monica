@@ -68,7 +68,7 @@ class GiftTest extends TestCase
     public function it_gets_the_gift_name()
     {
         $gift = factory(Gift::class)->make([
-            'name' => 'Maison de folie'
+            'name' => 'Maison de folie',
         ]);
 
         $this->assertEquals(
@@ -81,7 +81,7 @@ class GiftTest extends TestCase
     public function it_gets_the_gift_url()
     {
         $gift = factory(Gift::class)->make([
-            'url' => 'https://facebook.com'
+            'url' => 'https://facebook.com',
         ]);
 
         $this->assertEquals(
@@ -94,7 +94,7 @@ class GiftTest extends TestCase
     public function it_gets_the_comment()
     {
         $gift = factory(Gift::class)->make([
-            'comment' => 'This is just a comment'
+            'comment' => 'This is just a comment',
         ]);
 
         $this->assertEquals(
@@ -107,7 +107,7 @@ class GiftTest extends TestCase
     public function it_gets_the_value()
     {
         $gift = factory(Gift::class)->make([
-            'value' => 100
+            'value' => 100,
         ]);
 
         $this->assertEquals(
