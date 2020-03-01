@@ -14,6 +14,19 @@ return [
     'sidebar_settings_security' => 'Sécurité',
     'sidebar_settings_auditlogs' => 'Journal d’audit',
 
+    'title_general' => 'General Information',
+    'title_i18n' => 'International settings',
+    'title_layout' => 'Layout',
+
+    'me_title' => 'My contact',
+    'me_help' => 'This is the contact that represents <em>you</em> in Monica',
+    'me_select' => 'Select a contact',
+    'me_no_contact' => 'No contact selected yet.',
+    'me_select_click' => 'Click here to select a contact.',
+    'me_remove_contact' => 'Remove the association',
+    'me_choose' => 'Choose yourself',
+    'me_choose_placeholder' => 'Choose yourself',
+
     'export_title' => 'Exporter les données de votre compte',
     'export_be_patient' => 'Cliquez sur le bouton pour commencer l’export. Cela peut prendre plusieurs minutes pour préparer l’export – merci d’être patient et de ne pas spammer le bouton.',
     'export_title_sql' => 'Exporter en SQL',
@@ -364,7 +377,7 @@ return [
     'personalization_genders_modal_name_help' => 'Nom utilisé pour afficher le genre sur la page d’un contact.',
     'personalization_genders_modal_sex' => 'Sexe',
     'personalization_genders_modal_sex_help' => 'Utilisé pour définir les relations, et pendant le processus d’importation/exportation VCard.',
-    'personalization_genders_modal_default' => 'Est-ce le genre par défaut pour un nouveau contact ?',
+    'personalization_genders_modal_default' => 'Select the default gender for a new contact',
     'personalization_genders_modal_delete' => 'Supprimer le type de genre',
     'personalization_genders_modal_delete_desc' => 'Êtes-vous sûr de vouloir supprimer {name} ?',
     'personalization_genders_modal_delete_question' => 'Vous avez actuellement {count} contact qui a ce genre. Si vous supprimez ce genre, quel genre ce contact aurait ?|Vous avez actuellement {count} contacts qui ont ce genre. Si vous supprimez ce genre, quel genre ces contacts devraient avoir ?',
@@ -392,7 +405,8 @@ return [
     'personalization_module_title' => 'Fonctionnalités',
     'personalization_module_desc' => 'Certaines personnes n’ont pas besoin de toutes ces fonctionnalités. Ci-dessous vous pouvez activer ou désactiver des fonctionnalités spécifiques qui sont utilisées sur la vue d’un contact. Ces modifications s’appliqueront à tous vos contacts. Notez que si vous désactivez une de ces fonctionnalités les données ne seront pas perdues, la fonctionnalité sera simplement masquée.',
 
-    'personalisation_paid_upgrade' => 'Il s’agit d’une fonctionnalité premium qui nécessite un abonnement payant pour être activée. Mettez à niveau votre compte en visitant Paramètres > Abonnement.',
+    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href=":url">Settings > Subscription</a>.',
+    'personalisation_paid_upgrade_vue' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href="{url}">Settings > Subscription</a>.',
 
     'reminder_time_to_send' => 'Heure du jour à laquelle les rappels doivent être envoyés',
     'reminder_time_to_send_help' => 'Pour votre information, votre prochain rappel sera envoyé le <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
