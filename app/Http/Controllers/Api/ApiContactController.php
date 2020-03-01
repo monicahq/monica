@@ -121,7 +121,7 @@ class ApiContactController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                         'author_id' => auth()->user()->id,
                     ]
             );
@@ -151,7 +151,7 @@ class ApiContactController extends ApiController
                     +
                     [
                         'contact_id' => $contactId,
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -176,7 +176,7 @@ class ApiContactController extends ApiController
     {
         $data = [
             'contact_id' => $contactId,
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
         ];
         app(DestroyContact::class)->execute($data);
 
@@ -258,7 +258,7 @@ class ApiContactController extends ApiController
                 $request->except(['account_id', 'contact_id'])
                 + [
                     'contact_id' => $contactId,
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                     'author_id' => auth()->user()->id,
                 ]
             );
@@ -288,7 +288,7 @@ class ApiContactController extends ApiController
                 $request->except(['account_id', 'contact_id'])
                 + [
                     'contact_id' => $contactId,
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -317,7 +317,7 @@ class ApiContactController extends ApiController
                 $request->except(['account_id', 'contact_id'])
                 + [
                     'contact_id' => $contactId,
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
