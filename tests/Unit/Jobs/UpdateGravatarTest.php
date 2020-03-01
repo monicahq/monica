@@ -6,8 +6,8 @@ use Tests\TestCase;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
-use App\Jobs\Avatars\UpdateGravatar as UpdateGravatarJob;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Jobs\Avatars\UpdateGravatar as UpdateGravatarJob;
 
 class UpdateGravatarTest extends TestCase
 {
