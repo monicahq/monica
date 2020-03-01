@@ -27,7 +27,7 @@ class ApiAvatarController extends ApiController
                 $request->except(['account_id', 'contact_id'])
                 +
                 [
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                     'contact_id' => $contactId,
                 ]
             );

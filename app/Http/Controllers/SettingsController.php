@@ -374,7 +374,7 @@ class SettingsController
     {
         app(DestroyTag::class)->execute([
             'tag_id' => $tagId,
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
         ]);
 
         return redirect()->route('settings.tags.index')

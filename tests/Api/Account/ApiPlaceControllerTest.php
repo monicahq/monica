@@ -33,7 +33,7 @@ class ApiPlaceControllerTest extends ApiTestCase
         $user = $this->signin();
 
         factory(Place::class, 3)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/places');
@@ -76,7 +76,7 @@ class ApiPlaceControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $place = factory(Place::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('get', '/api/places/'.$place->id);
@@ -121,7 +121,7 @@ class ApiPlaceControllerTest extends ApiTestCase
         ]);
 
         $this->assertDatabaseHas('places', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $placeId,
             'city' => 'New York',
             'latitude' => null,
@@ -133,7 +133,7 @@ class ApiPlaceControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $place = factory(Place::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('put', '/api/places/'.$place->id, [
@@ -156,7 +156,7 @@ class ApiPlaceControllerTest extends ApiTestCase
         ]);
 
         $this->assertDatabaseHas('places', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $placeId,
             'city' => 'New York',
             'latitude' => null,
@@ -184,7 +184,7 @@ class ApiPlaceControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $place = factory(Place::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('delete', '/api/places/'.$place->id);
@@ -192,7 +192,7 @@ class ApiPlaceControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $this->assertdatabasemissing('places', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $place->id,
         ]);
     }

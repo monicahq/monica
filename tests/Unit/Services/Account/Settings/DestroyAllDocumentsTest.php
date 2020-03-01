@@ -28,13 +28,13 @@ class DestroyAllDocumentsTest extends TestCase
         }
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ];
 
         app(DestroyAllDocuments::class)->execute($request);
 
         $this->assertDatabaseMissing('documents', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ]);
 
         foreach ($documents as $document) {
@@ -56,7 +56,7 @@ class DestroyAllDocumentsTest extends TestCase
     private function uploadDocument($contact)
     {
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'document' => UploadedFile::fake()->image('document.pdf'),
         ];

@@ -23,11 +23,11 @@ class UpdateCallTest extends TestCase
         $contact = factory(Contact::class)->create([]);
         $call = factory(Call::class)->create([
             'contact_id' => $contact,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ]);
 
         $request = [
-            'account_id' => $call->account->id,
+            'account_id' => $call->account_id,
             'call_id' => $call->id,
             'called_at' => now(),
             'content' => 'this is the content',
@@ -37,8 +37,8 @@ class UpdateCallTest extends TestCase
 
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,
-            'contact_id' => $call->contact->id,
-            'account_id' => $call->contact->account->id,
+            'contact_id' => $call->contact_id,
+            'account_id' => $call->contact->account_id,
             'content' => 'this is the content',
         ]);
 
@@ -54,12 +54,12 @@ class UpdateCallTest extends TestCase
         $contact = factory(Contact::class)->create([]);
         $call = factory(Call::class)->create([
             'contact_id' => $contact,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_called' => 0,
         ]);
 
         $request = [
-            'account_id' => $call->account->id,
+            'account_id' => $call->account_id,
             'call_id' => $call->id,
             'called_at' => now(),
             'content' => 'this is the content',
@@ -70,8 +70,8 @@ class UpdateCallTest extends TestCase
 
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,
-            'contact_id' => $call->contact->id,
-            'account_id' => $call->contact->account->id,
+            'contact_id' => $call->contact_id,
+            'account_id' => $call->contact->account_id,
             'content' => 'this is the content',
             'contact_called' => 1,
         ]);
@@ -83,11 +83,11 @@ class UpdateCallTest extends TestCase
         $contact = factory(Contact::class)->create([]);
         $call = factory(Call::class)->create([
             'contact_id' => $contact,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ]);
 
         $request = [
-            'account_id' => $call->account->id,
+            'account_id' => $call->account_id,
             'call_id' => $call->id,
             'called_at' => now(),
         ];
@@ -96,8 +96,8 @@ class UpdateCallTest extends TestCase
 
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,
-            'contact_id' => $call->contact->id,
-            'account_id' => $call->contact->account->id,
+            'contact_id' => $call->contact_id,
+            'account_id' => $call->contact->account_id,
             'content' => null,
         ]);
     }
@@ -128,7 +128,7 @@ class UpdateCallTest extends TestCase
         array_push($emotionArray, $emotion2->id);
 
         $request = [
-            'account_id' => $call->account->id,
+            'account_id' => $call->account_id,
             'call_id' => $call->id,
             'called_at' => now(),
             'content' => 'this is the content',
@@ -188,7 +188,7 @@ class UpdateCallTest extends TestCase
         array_push($emotionArray, $emotion4->id);
 
         $request = [
-            'account_id' => $call->account->id,
+            'account_id' => $call->account_id,
             'call_id' => $call->id,
             'called_at' => now(),
             'content' => 'this is the content',
@@ -235,13 +235,13 @@ class UpdateCallTest extends TestCase
         ]);
         $call = factory(Call::class)->create([
             'contact_id' => $contact,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ]);
 
         $date = now();
 
         $request = [
-            'account_id' => $call->account->id,
+            'account_id' => $call->account_id,
             'call_id' => $call->id,
             'called_at' => now(),
         ];
@@ -262,13 +262,13 @@ class UpdateCallTest extends TestCase
         ]);
         $call = factory(Call::class)->create([
             'contact_id' => $contact,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ]);
 
         $date = now();
 
         $request = [
-            'account_id' => $call->account->id,
+            'account_id' => $call->account_id,
             'call_id' => $call->id,
             'called_at' => now(),
         ];

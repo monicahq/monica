@@ -31,17 +31,17 @@ class ApiContactFieldControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contactField1 = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contactField2 = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -76,14 +76,14 @@ class ApiContactFieldControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contactField1 = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contactField2 = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
 
@@ -118,7 +118,7 @@ class ApiContactFieldControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $field = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
@@ -142,7 +142,7 @@ class ApiContactFieldControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $contactField_id);
         $this->assertDatabaseHas('contact_fields', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $contactField_id,
             'contact_field_type_id' => $field->id,
@@ -155,7 +155,7 @@ class ApiContactFieldControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/contactfields', [
@@ -195,10 +195,10 @@ class ApiContactFieldControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contactField = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -221,7 +221,7 @@ class ApiContactFieldControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $contactField_id);
         $this->assertDatabaseHas('contact_fields', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $contactField_id,
             'contact_field_type_id' => $contactField->contact_field_type_id,
@@ -234,7 +234,7 @@ class ApiContactFieldControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contactField = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/contactfields/'.$contactField->id, [
@@ -257,7 +257,7 @@ class ApiContactFieldControllerTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
         $contactField = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -275,14 +275,14 @@ class ApiContactFieldControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contactField = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
         $this->assertDatabaseHas('contact_fields', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $contactField->id,
         ]);
@@ -291,7 +291,7 @@ class ApiContactFieldControllerTest extends ApiTestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('contact_fields', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $contactField->id,
         ]);

@@ -22,7 +22,7 @@ class LifeEventCategory extends Resource
             'core_monica_data' => (bool) $this->core_monica_data,
             'default_life_event_category_key' => $this->default_life_event_category_key,
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

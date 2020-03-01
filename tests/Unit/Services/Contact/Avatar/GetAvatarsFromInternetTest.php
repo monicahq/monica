@@ -19,11 +19,11 @@ class GetAvatarsFromInternetTest extends TestCase
     {
         $contact = factory(Contact::class)->create([]);
         $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ]);
         $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_field_type_id' => $contactFieldType->id,
             'data' => 'matt@wordpress.com',
         ]);
@@ -71,11 +71,11 @@ class GetAvatarsFromInternetTest extends TestCase
             'avatar_source' => 'gravatar',
         ]);
         $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ]);
         $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_field_type_id' => $contactFieldType->id,
             'data' => 'matt@wordpress.com',
         ]);

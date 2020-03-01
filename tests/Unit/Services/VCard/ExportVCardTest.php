@@ -618,12 +618,12 @@ class ExportVCardTest extends TestCase
         ]);
 
         app(AssociateTag::class)->execute([
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'name' => 'tag1',
         ]);
         app(AssociateTag::class)->execute([
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'name' => 'tag2',
         ]);

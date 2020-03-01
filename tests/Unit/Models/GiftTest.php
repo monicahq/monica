@@ -25,8 +25,9 @@ class GiftTest extends TestCase
     /** @test */
     public function has_particular_recipient_returns_true_if_it_s_for_a_specific_recipient()
     {
-        $gift = factory(Gift::class)->make();
-        $gift->is_for = 1;
+        $gift = factory(Gift::class)->make([
+            'is_for' => 1,
+        ]);
 
         $this->assertEquals(
             true,
@@ -37,8 +38,9 @@ class GiftTest extends TestCase
     /** @test */
     public function it_sets_is_for_attribute()
     {
-        $gift = factory(Gift::class)->make();
-        $gift->is_for = 1;
+        $gift = factory(Gift::class)->make([
+            'is_for' => 1,
+        ]);
 
         $this->assertEquals(
             1,
@@ -49,11 +51,12 @@ class GiftTest extends TestCase
     /** @test */
     public function it_gets_the_recipient_name()
     {
-        $gift = factory(Gift::class)->make();
-        $gift->is_for = 1;
-        $gift->contact_id = 1;
-
-        $contact = factory(Contact::class)->create(['id' => 1, 'first_name' => 'Regis']);
+        $contact = factory(Contact::class)->create(['first_name' => 'Regis']);
+        $gift = factory(Gift::class)->make([
+            'account_id' => $contact->account_id,
+            'is_for' => $contact->id,
+            'contact_id' =>  $contact->id,
+        ]);
 
         $this->assertEquals(
             'Regis',
@@ -64,8 +67,9 @@ class GiftTest extends TestCase
     /** @test */
     public function it_gets_the_gift_name()
     {
-        $gift = factory(Gift::class)->make();
-        $gift->name = 'Maison de folie';
+        $gift = factory(Gift::class)->make([
+            'name' => 'Maison de folie'
+        ]);
 
         $this->assertEquals(
             'Maison de folie',
@@ -76,8 +80,9 @@ class GiftTest extends TestCase
     /** @test */
     public function it_gets_the_gift_url()
     {
-        $gift = factory(Gift::class)->make();
-        $gift->url = 'https://facebook.com';
+        $gift = factory(Gift::class)->make([
+            'url' => 'https://facebook.com'
+        ]);
 
         $this->assertEquals(
             'https://facebook.com',
@@ -88,8 +93,9 @@ class GiftTest extends TestCase
     /** @test */
     public function it_gets_the_comment()
     {
-        $gift = factory(Gift::class)->make();
-        $gift->comment = 'This is just a comment';
+        $gift = factory(Gift::class)->make([
+            'comment' => 'This is just a comment'
+        ]);
 
         $this->assertEquals(
             'This is just a comment',
@@ -100,8 +106,9 @@ class GiftTest extends TestCase
     /** @test */
     public function it_gets_the_value()
     {
-        $gift = factory(Gift::class)->make();
-        $gift->value = '100';
+        $gift = factory(Gift::class)->make([
+            'value' => 100
+        ]);
 
         $this->assertEquals(
             '100',

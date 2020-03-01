@@ -25,7 +25,7 @@ class Relationship extends Resource
             'of_contact' => new ContactShortResource($this->ofContact),
             'url' => route('api.relationship', $this->id),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

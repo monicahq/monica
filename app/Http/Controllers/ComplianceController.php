@@ -30,7 +30,7 @@ class ComplianceController extends Controller
     public function store(Request $request)
     {
         app(AcceptPolicy::class)->execute([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'user_id' => auth()->user()->id,
             'ip_address' => \Request::ip(),
         ]);

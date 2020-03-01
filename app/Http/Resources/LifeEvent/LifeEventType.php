@@ -24,7 +24,7 @@ class LifeEventType extends Resource
             'default_life_event_type_key' => $this->default_life_event_type_key,
             'life_event_category' => new LifeEventCategoryResource($this->lifeEventCategory),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

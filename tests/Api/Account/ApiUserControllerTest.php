@@ -52,7 +52,7 @@ class ApiUserControllerTest extends ApiTestCase
         $user = $this->signIn();
 
         $term = factory(Term::class)->create([]);
-        $user->terms()->syncWithoutDetaching([$term->id => ['account_id' => $user->account->id]]);
+        $user->terms()->syncWithoutDetaching([$term->id => ['account_id' => $user->account_id]]);
 
         $response = $this->get('/api/me/compliance/'.$term->id);
 

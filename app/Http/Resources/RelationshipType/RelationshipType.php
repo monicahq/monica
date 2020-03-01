@@ -23,7 +23,7 @@ class RelationshipType extends Resource
             'relationship_type_group_id' => $this->relationship_type_group_id,
             'delible' => $this->delible,
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

@@ -19,7 +19,7 @@ class VEventBirthdayTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $specialDate = $contact->setSpecialDate('birthdate', 1983, 03, 04);
         $specialDate->uuid = Str::uuid();
@@ -37,7 +37,7 @@ class VEventBirthdayTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $specialDate = $contact->setSpecialDate('birthdate', 1983, 03, 04);
         $specialDate->uuid = Str::uuid();
@@ -80,14 +80,14 @@ class VEventBirthdayTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $specialDate1 = $contact1->setSpecialDate('birthdate', 1983, 03, 04);
         $specialDate1->uuid = Str::uuid();
         $specialDate1->save();
 
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'firstname' => 'Jane',
         ]);
         $specialDate2 = $contact2->setSpecialDate('birthdate', 1980, 05, 01);

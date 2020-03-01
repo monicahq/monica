@@ -20,7 +20,7 @@ class CalDAVTasksTest extends ApiTestCase
     {
         $user = $this->signin();
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => null,
             'created_at' => now(),
             'updated_at' => now(),
@@ -73,7 +73,7 @@ class CalDAVTasksTest extends ApiTestCase
     {
         $user = $this->signin();
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -90,10 +90,10 @@ class CalDAVTasksTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -142,10 +142,10 @@ class CalDAVTasksTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'created_at' => now(),
             'updated_at' => now(),
@@ -198,10 +198,10 @@ class CalDAVTasksTest extends ApiTestCase
 
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'created_at' => now(),
             'updated_at' => now(),
@@ -209,7 +209,7 @@ class CalDAVTasksTest extends ApiTestCase
 
         Carbon::setTestNow(Carbon::create(2019, 1, 1, 8, 0, 0));
         $token = factory(SyncToken::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'name' => 'tasks',
             'timestamp' => now(),
@@ -247,10 +247,10 @@ class CalDAVTasksTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'created_at' => now(),
             'updated_at' => now(),

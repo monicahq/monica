@@ -17,7 +17,7 @@ class SearchHelperTest extends FeatureTestCase
         $user = $this->signin();
 
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $searchResults = SearchHelper::searchContacts($contact->first_name, 1, 'created_at');
 
@@ -32,7 +32,7 @@ class SearchHelperTest extends FeatureTestCase
         $user = $this->signin();
 
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $searchResults = SearchHelper::searchContacts('wrongsearchfield:1', 1, 'created_at');
 

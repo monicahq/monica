@@ -30,7 +30,7 @@ class UpdateReminderTest extends TestCase
         ]);
 
         $request = [
-            'contact_id' => $reminder->contact->id,
+            'contact_id' => $reminder->contact_id,
             'account_id' => $reminder->contact->account_id,
             'reminder_id' => $reminder->id,
             'initial_date' => '2017-10-01',
@@ -43,7 +43,7 @@ class UpdateReminderTest extends TestCase
 
         $this->assertDatabaseHas('reminders', [
             'id' => $reminder->id,
-            'contact_id' => $reminder->contact->id,
+            'contact_id' => $reminder->contact_id,
             'account_id' => $reminder->contact->account_id,
             'initial_date' => '2017-10-01',
         ]);
@@ -88,7 +88,7 @@ class UpdateReminderTest extends TestCase
         ]);
 
         $request = [
-            'contact_id' => $reminder->contact->id,
+            'contact_id' => $reminder->contact_id,
             'account_id' => $reminder->contact->account_id,
             'reminder_id' => $reminder->id,
             'initial_date' => '2017-02-02',

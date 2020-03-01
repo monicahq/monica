@@ -177,12 +177,12 @@ class NotifyUserAboutReminderTest extends TestCase
         NotifyUserAboutReminder::dispatch($reminderOutbox);
 
         $this->assertDatabaseMissing('reminder_outbox', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $reminderOutbox->id,
         ]);
 
         $this->assertDatabaseHas('reminders', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $reminder->id,
             'inactive' => true,
         ]);
@@ -218,18 +218,18 @@ class NotifyUserAboutReminderTest extends TestCase
         NotifyUserAboutReminder::dispatch($reminderOutbox);
 
         $this->assertDatabaseMissing('reminder_outbox', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $reminderOutbox->id,
         ]);
 
         $this->assertDatabaseHas('reminders', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $reminder->id,
             'inactive' => false,
         ]);
 
         $this->assertDatabaseHas('reminder_outbox', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'reminder_id' => $reminder->id,
         ]);
     }
