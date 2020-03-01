@@ -14,6 +14,19 @@ return [
     'sidebar_settings_security' => 'Beveiliging',
     'sidebar_settings_auditlogs' => 'Audit logs',
 
+    'title_general' => 'General Information',
+    'title_i18n' => 'International settings',
+    'title_layout' => 'Layout',
+
+    'me_title' => 'My contact',
+    'me_help' => 'This is the contact that represents <em>you</em> in Monica',
+    'me_select' => 'Select a contact',
+    'me_no_contact' => 'No contact selected yet.',
+    'me_select_click' => 'Click here to select a contact.',
+    'me_remove_contact' => 'Remove the association',
+    'me_choose' => 'Choose yourself',
+    'me_choose_placeholder' => 'Choose yourself',
+
     'export_title' => 'Exporteer je accountgegevens',
     'export_be_patient' => 'Klik op de knop om het exporteren te starten. Het kan enige minuten duren om de export te verwerken - Wees alsjeblieft geduldig en klik niet meerdere malen op de knop.',
     'export_title_sql' => 'Exporteer naar SQL',
@@ -364,7 +377,7 @@ return [
     'personalization_genders_modal_name_help' => 'De titel voor het aangeven van het geslacht op een contactpagina.',
     'personalization_genders_modal_sex' => 'Geslacht',
     'personalization_genders_modal_sex_help' => 'Wordt gebruikt voor het definiëren van relaties, o.a. tijdens het importeren en exporteren van VCards.',
-    'personalization_genders_modal_default' => 'Is dit het standaardgeslacht voor nieuwe contacten?',
+    'personalization_genders_modal_default' => 'Select the default gender for a new contact',
     'personalization_genders_modal_delete' => 'Genderidentiteit verwijderen',
     'personalization_genders_modal_delete_desc' => 'Weet je zeker dat je {name} wil verwijderen?',
     'personalization_genders_modal_delete_question' => 'Op dit moment heeft {count} contact deze genderidentiteit. Als je deze verwijderd, welke genderidentiteit moet dit contact krijgen?|Op dit moment hebben {count} contacten deze genderidentiteit. Als je deze verwijderd, welke genderidentiteit moeten deze contacten krijgen?',
@@ -392,7 +405,8 @@ return [
     'personalization_module_title' => 'Functionaliteiten',
     'personalization_module_desc' => 'Sommige mensen hebben niet alle functies nodig. Hieronder kunt u specifieke functies inschakelen die gebruikt worden op het contactoverzicht. Deze verandering zal ALLE contacten beïnvloeden. Let op dat als u een van deze functies uitschakelt, de gegevens niet verloren zullen gaan - we zullen de functie simpelweg verbergen.',
 
-    'personalisation_paid_upgrade' => 'Dit is een betaalde functionaliteit en vereist dat je een betaald abonnement hebt. Upgrade je account door naar Instellingen > Abonnement te gaan.',
+    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href=":url">Settings > Subscription</a>.',
+    'personalisation_paid_upgrade_vue' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href="{url}">Settings > Subscription</a>.',
 
     'reminder_time_to_send' => 'De tijd dat herinneringen verstuurd moeten worden',
     'reminder_time_to_send_help' => 'Ter informatie, de volgende herinnering wordt verzonden op <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
