@@ -101,6 +101,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Contact\Avatar\GenerateDefaultAvatar::class => \App\Services\Contact\Avatar\GenerateDefaultAvatar::class,
         \App\Services\Contact\Avatar\GetAdorableAvatarURL::class => \App\Services\Contact\Avatar\GetAdorableAvatarURL::class,
         \App\Services\Contact\Avatar\GetAvatarsFromInternet::class => \App\Services\Contact\Avatar\GetAvatarsFromInternet::class,
+        \App\Services\Contact\Avatar\GetGravatar::class => \App\Services\Contact\Avatar\GetGravatar::class,
         \App\Services\Contact\Avatar\GetGravatarURL::class => \App\Services\Contact\Avatar\GetGravatarURL::class,
         \App\Services\Contact\Avatar\UpdateAvatar::class => \App\Services\Contact\Avatar\UpdateAvatar::class,
         \App\Services\Contact\Address\CreateAddress::class => \App\Services\Contact\Address\CreateAddress::class,
