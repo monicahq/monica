@@ -14,6 +14,19 @@ return [
     'sidebar_settings_security' => '安全',
     'sidebar_settings_auditlogs' => '追踪日志',
 
+    'title_general' => 'General Information',
+    'title_i18n' => 'International settings',
+    'title_layout' => 'Layout',
+
+    'me_title' => 'My contact',
+    'me_help' => 'This is the contact that represents <em>you</em> in Monica',
+    'me_select' => 'Select a contact',
+    'me_no_contact' => 'No contact selected yet.',
+    'me_select_click' => 'Click here to select a contact.',
+    'me_remove_contact' => 'Remove the association',
+    'me_choose' => 'Choose yourself',
+    'me_choose_placeholder' => 'Choose yourself',
+
     'export_title' => '导出帐户数据',
     'export_be_patient' => '单击按钮开始导出。处理导出可能需要几分钟时间，请耐心等待, 不要取消按钮。',
     'export_title_sql' => '导出到 SQL',
@@ -364,7 +377,7 @@ return [
     'personalization_genders_modal_name_help' => '在联系人页面显示性别的名称',
     'personalization_genders_modal_sex' => '性别',
     'personalization_genders_modal_sex_help' => '在导入/导出 VCard 时用于定义关系',
-    'personalization_genders_modal_default' => '设为新联系人的默认性别吗？',
+    'personalization_genders_modal_default' => 'Select the default gender for a new contact',
     'personalization_genders_modal_delete' => '删除性别类型',
     'personalization_genders_modal_delete_desc' => '是否确实要删除{name}？',
     'personalization_genders_modal_delete_question' => '这个性别下有{count} 个联系人，请您为这个联系人分配新的性别：|这个性别下有{count} 个联系人，请您为这些联系人分配新的性别',
@@ -392,7 +405,8 @@ return [
     'personalization_module_title' => '功能',
     'personalization_module_desc' => '有些人并不需要启用所有功能。因此您可以在此处隐藏不需要的功能，该改动对所有联系人生效。',
 
-    'personalisation_paid_upgrade' => '这是一个高级版的功能. 在设置-订阅内进行高级版订阅。',
+    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href=":url">Settings > Subscription</a>.',
+    'personalisation_paid_upgrade_vue' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href="{url}">Settings > Subscription</a>.',
 
     'reminder_time_to_send' => '应发送每日提醒的时间',
     'reminder_time_to_send_help' => '基于您提供的信息, 您的下一次提醒将在 <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>发送.',
