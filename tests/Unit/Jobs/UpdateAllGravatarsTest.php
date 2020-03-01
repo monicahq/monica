@@ -19,7 +19,7 @@ class UpdateAllGravatarsTest extends TestCase
         Queue::fake();
 
         $contacts = factory(Contact::class, 10)->create([
-            'avatar_source' => 'gravatar'
+            'avatar_source' => 'gravatar',
         ]);
 
         (new UpdateAllGravatars)->handle();
