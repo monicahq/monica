@@ -4,6 +4,7 @@ namespace App\Services\Contact\Avatar;
 
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -44,7 +45,7 @@ class GetGravatar extends BaseService
      * Get the emails of the contact, based on the contact fields.
      *
      * @param Contact $contact
-     * @return null|string
+     * @return Collection
      */
     private function getEmails(Contact $contact)
     {
