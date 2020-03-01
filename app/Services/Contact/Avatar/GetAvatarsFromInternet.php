@@ -38,16 +38,8 @@ class GetAvatarsFromInternet extends BaseService
 
         $contact = Contact::findOrFail($data['contact_id']);
 
-        // prevent timestamp update
-        $timestamps = $contact->timestamps;
-        $contact->timestamps = false;
-
-        $contact = $this->generateUUID($contact);
         $contact = $this->getAdorable($contact);
         $contact = $this->getGravatar($contact);
-        $contact->save();
-
-        $contact->timestamps = $timestamps;
 
         return $contact;
     }
@@ -76,10 +68,18 @@ class GetAvatarsFromInternet extends BaseService
      */
     private function getAdorable(Contact $contact)
     {
+        // prevent timestamp update
+        $timestamps = $contact->timestamps;
+        $contact->timestamps = false;
+
+        $contact = $this->generateUUID($contact);
         $contact->avatar_adorable_url = app(GetAdorableAvatarURL::class)->execute([
             'uuid' => $contact->avatar_adorable_uuid,
             'size' => 200,
         ]);
+        $contact->save();
+
+        $contact->timestamps = $timestamps;
 
         return $contact;
     }
