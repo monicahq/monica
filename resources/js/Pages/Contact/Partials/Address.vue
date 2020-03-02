@@ -31,41 +31,49 @@
           :id="'title'"
           :input-type="'text'"
           :required="false"
-          :custom-class="'br2 f5 ba b--black-40 pa2 outline-0'"
-          :title="$t('people.work_edit_job')">
+          :label-class="'db mb2'"
+          :input-class="'db mb2'"
+          :title="$t('people.contact_address_form_street')">
         </form-input>
 
-        <form-input
-          v-model="form.city"
-          v-on:escape="editMode = false"
-          :id="'title'"
-          :input-type="'text'"
-          :required="false"
-          :custom-class="'br2 f5 ba b--black-40 pa2 outline-0'"
-          :title="$t('people.work_edit_job')">
-        </form-input>
-
-        <div class="dt-ns dt--fixed di">
-          <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
+        <div class="flex">
+          <div class="w-100 pb3">
             <form-input
               v-model="form.province"
               v-on:escape="editMode = false"
               :id="'title'"
               :input-type="'text'"
               :required="false"
-              :custom-class="'br2 f5 ba b--black-40 pa2 outline-0'"
-              :title="$t('people.work_edit_job')">
+              :label-class="'db mb2'"
+              :input-class="'db'"
+              :title="$t('people.contact_address_form_province')">
             </form-input>
           </div>
-          <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
+          <div class="pb0-ns w-100">
             <form-input
               v-model="form.postal_code"
               v-on:escape="editMode = false"
               :id="'title'"
               :input-type="'text'"
               :required="false"
-              :custom-class="'br2 f5 ba b--black-40 pa2 outline-0'"
-              :title="$t('people.work_edit_job')">
+              :label-class="'db mb2'"
+              :input-class="'db'"
+              :title="$t('people.contact_address_form_postal_code')">
+            </form-input>
+          </div>
+        </div>
+
+        <div class="dt-ns dt--fixed di mb2">
+          <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
+            <form-input
+              v-model="form.city"
+              v-on:escape="editMode = false"
+              :id="'title'"
+              :input-type="'text'"
+              :required="false"
+              :label-class="'db mb2'"
+              :input-class="'db'"
+              :title="$t('people.contact_address_form_city')">
             </form-input>
           </div>
           <div class="dtc-ns pb0-ns w-100">
@@ -75,8 +83,9 @@
               :id="'title'"
               :input-type="'text'"
               :required="false"
-              :custom-class="'br2 f5 ba b--black-40 pa2 outline-0'"
-              :title="$t('people.work_edit_job')">
+              :label-class="'db mb2'"
+              :input-class="'db'"
+              :title="$t('people.contact_address_form_country')">
             </form-input>
           </div>
         </div>

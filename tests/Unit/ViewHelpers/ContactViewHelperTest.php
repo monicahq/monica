@@ -7,10 +7,10 @@ use App\Models\User\User;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Instance\AuditLog;
-use App\ViewHelpers\ContactHelper;
+use App\ViewHelpers\ContactViewHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ContactHelperTest extends TestCase
+class ContactViewHelperTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -26,7 +26,7 @@ class ContactHelperTest extends TestCase
         ]);
 
         $logs = $user->account->auditLogs;
-        $collection = ContactHelper::getListOfAuditLogs($logs);
+        $collection = ContactViewHelper::getListOfAuditLogs($logs);
 
         $this->assertEquals(
             2,
@@ -43,7 +43,7 @@ class ContactHelperTest extends TestCase
     public function it_gets_the_work_information()
     {
         $contact = factory(Contact::class)->create([]);
-        $information = ContactHelper::getWorkInformation($contact);
+        $information = ContactViewHelper::getWorkInformation($contact);
         $this->assertEquals(
             'No work information defined',
             $information
@@ -52,7 +52,7 @@ class ContactHelperTest extends TestCase
         $contact = factory(Contact::class)->create([
             'job' => 'salesman',
         ]);
-        $information = ContactHelper::getWorkInformation($contact);
+        $information = ContactViewHelper::getWorkInformation($contact);
         $this->assertEquals(
             'salesman',
             $information
@@ -61,7 +61,7 @@ class ContactHelperTest extends TestCase
         $contact = factory(Contact::class)->create([
             'company' => 'microsoft',
         ]);
-        $information = ContactHelper::getWorkInformation($contact);
+        $information = ContactViewHelper::getWorkInformation($contact);
         $this->assertEquals(
             'Works at microsoft',
             $information
@@ -71,7 +71,7 @@ class ContactHelperTest extends TestCase
             'job' => 'salesman',
             'company' => 'microsoft',
         ]);
-        $information = ContactHelper::getWorkInformation($contact);
+        $information = ContactViewHelper::getWorkInformation($contact);
         $this->assertEquals(
             'salesman (at microsoft)',
             $information
@@ -87,7 +87,7 @@ class ContactHelperTest extends TestCase
             'contact_id' => $contact->id,
         ]);
 
-        $addresses = ContactHelper::getAddresses($contact);
+        $addresses = ContactViewHelper::getAddresses($contact);
         $this->assertEquals(
             2,
             $addresses->count()

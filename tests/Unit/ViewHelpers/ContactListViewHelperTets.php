@@ -6,10 +6,10 @@ use Tests\TestCase;
 use App\Models\Contact\Tag;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\ViewHelpers\ContactListHelper;
+use App\ViewHelpers\ContactListViewHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ContactListHelperTest extends TestCase
+class ContactListViewHelperTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -38,7 +38,7 @@ class ContactListHelperTest extends TestCase
             $contact->tags()->syncWithoutDetaching([$tagB->id => ['account_id' => $account->id]]);
         }
 
-        $collection = ContactListHelper::getListOfTags($account);
+        $collection = ContactListViewHelper::getListOfTags($account);
 
         $this->assertEquals(
             2,
@@ -64,7 +64,7 @@ class ContactListHelperTest extends TestCase
 
         $contacts = $account->contacts;
 
-        $collection = ContactListHelper::getListOfContacts($contacts);
+        $collection = ContactListViewHelper::getListOfContacts($contacts);
 
         $this->assertEquals(
             3,

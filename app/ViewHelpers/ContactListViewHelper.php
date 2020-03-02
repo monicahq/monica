@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
  * hydrated and memory allocated. As this function is used on the list of
  * contacts, we need it to be really performant.
  */
-class ContactListHelper
+class ContactListViewHelper
 {
     /**
      * Get the list of tags and the number of contacts associated with them for

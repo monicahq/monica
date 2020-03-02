@@ -6,7 +6,7 @@ use Inertia\Response;
 use App\Models\Contact\Contact;
 use App\Helpers\PaginatorHelper;
 use Illuminate\Http\JsonResponse;
-use App\ViewHelpers\ContactHelper;
+use App\ViewHelpers\ContactViewHelper;
 use App\Http\Controllers\Controller;
 
 class AuditLogController extends Controller
@@ -23,7 +23,7 @@ class AuditLogController extends Controller
         $logs = $contact->logs()->latest()->paginate(10);
 
         $logs = [
-            'content' => ContactHelper::getListOfAuditLogs($logs),
+            'content' => ContactViewHelper::getListOfAuditLogs($logs),
             'paginator' => PaginatorHelper::getData($logs),
         ];
 

@@ -13,11 +13,11 @@
 <template>
   <div>
     <label
-      v-if="title"
+      v-if="label"
       :for="name"
       class="mb2"
     >
-      {{ title }}
+      {{ label }}
     </label>
     <select
       :id="id"

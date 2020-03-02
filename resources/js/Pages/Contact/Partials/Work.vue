@@ -25,7 +25,8 @@
           :id="'title'"
           :input-type="'text'"
           :required="false"
-          :custom-class="'br2 f5 ba b--black-40 pa2 outline-0'"
+          :label-class="'db mb2'"
+          :input-class="'db'"
           :title="$t('people.work_edit_job')">
         </form-input>
 
@@ -35,7 +36,8 @@
           :id="'companyName'"
           :input-type="'text'"
           :required="false"
-          :custom-class="'br2 f5 ba b--black-40 pa2 outline-0'"
+          :label-class="'db mb2'"
+          :input-class="'db mb3'"
           :title="$t('people.work_edit_company')">
         </form-input>
 

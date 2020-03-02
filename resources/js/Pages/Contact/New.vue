@@ -45,6 +45,8 @@
                 :id="'first_name'"
                 :input-type="'text'"
                 :required="true"
+                :label-class="'db mb2'"
+                :input-class="'w-100'"
                 :title="$t('people.people_add_firstname')">
               </form-input>
             </div>
@@ -55,6 +57,8 @@
                 :id="'last_name'"
                 :input-type="'text'"
                 :required="false"
+                :label-class="'db mb2'"
+                :input-class="'w-100'"
                 :title="$t('people.people_add_lastname')">
               </form-input>
             </div>
@@ -65,6 +69,8 @@
                 :id="'nickname'"
                 :input-type="'text'"
                 :required="false"
+                :label-class="'db mb2'"
+                :input-class="'w-100'"
                 :title="$t('people.people_add_nickname')">
               </form-input>
             </div>

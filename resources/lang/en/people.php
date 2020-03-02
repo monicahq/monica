@@ -387,14 +387,14 @@ return [
 
     // Addresses
     'contact_address_title' => 'Addresses',
-    'contact_address_form_name' => 'Label (optional)',
-    'contact_address_form_street' => 'Street (optional)',
-    'contact_address_form_city' => 'City (optional)',
-    'contact_address_form_province' => 'Province (optional)',
-    'contact_address_form_postal_code' => 'Postal code (optional)',
-    'contact_address_form_country' => 'Country (optional)',
-    'contact_address_form_latitude' => 'Latitude (numbers only) (optional)',
-    'contact_address_form_longitude' => 'Longitude (numbers only) (optional)',
+    'contact_address_form_name' => 'Label',
+    'contact_address_form_street' => 'Street',
+    'contact_address_form_city' => 'City',
+    'contact_address_form_province' => 'Province',
+    'contact_address_form_postal_code' => 'Postal code',
+    'contact_address_form_country' => 'Country',
+    'contact_address_form_latitude' => 'Latitude (numbers only)',
+    'contact_address_form_longitude' => 'Longitude (numbers only)',
 
     // Pets
     'pets_kind' => 'Kind of pet',

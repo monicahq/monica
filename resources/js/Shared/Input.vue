@@ -15,8 +15,7 @@
     <label
       v-if="title"
       :for="name"
-      class="mb2"
-      :class="{ b: required }"
+      :class="customLabelClasses"
     >
       {{ title }}
     </label>
@@ -27,7 +26,7 @@
       :required="required"
       :name="id"
       :placeholder="placeholder"
-      :class="classes"
+      :class="customInputClasses"
       :value="value"
       :maxlength="maxlength"
       @input="onInput($event)"
@@ -75,7 +74,11 @@ export default {
       type: String,
       default: '',
     },
-    customClass: {
+    labelClass: {
+      type: String,
+      default: '',
+    },
+    inputClass: {
       type: String,
       default: '',
     },
@@ -91,12 +94,17 @@ export default {
 
   data() {
     return {
-      classes: '',
+      customInputClasses: '',
+      customLabelClasses: '',
     };
   },
 
   created: function() {
-    this.classes = this.customClass != '' ? this.customClass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0';
+    this.customInputClasses = this.inputClass + ' ' + this.customInputClasses;
+    this.customLabelClasses = this.labelClass + ' ' + this.customLabelClasses;
+    if (this.required) {
+      this.customLabelClasses = this.customLabelClasses + ' b';
+    }
   },
 
   methods: {

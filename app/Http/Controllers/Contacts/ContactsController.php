@@ -9,12 +9,12 @@ use App\Helpers\GenderHelper;
 use App\Models\Contact\Contact;
 use App\Helpers\PaginatorHelper;
 use Illuminate\Http\JsonResponse;
-use App\ViewHelpers\ContactHelper;
+use App\ViewHelpers\ContactViewHelper;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\UpdateLastConsultedDate;
-use App\ViewHelpers\ContactListHelper;
+use App\ViewHelpers\ContactListViewHelper;
 use App\Services\Contact\Contact\CreateContact;
 
 class ContactsController extends Controller
@@ -37,10 +37,10 @@ class ContactsController extends Controller
             ->where('account_id', $account->id)
             ->where('is_active', 1)
             ->count();
-        $contactsCollection = ContactListHelper::getListOfContacts($contacts);
+        $contactsCollection = ContactListViewHelper::getListOfContacts($contacts);
 
         // all tags in the account
-        $tagsCollection = ContactListHelper::getListOfTags($account);
+        $tagsCollection = ContactListViewHelper::getListOfTags($account);
 
         // number of archived contacts
         $numberOfArchivedContacts = $account->contacts()->notActive()->count();
@@ -90,13 +90,13 @@ class ContactsController extends Controller
             'work' => [
                 'title' => $contact->job,
                 'company' => $contact->company,
-                'description' => ContactHelper::getWorkInformation($contact),
+                'description' => ContactViewHelper::getWorkInformation($contact),
             ],
             'audit_logs' => [
-                'content' => ContactHelper::getListOfAuditLogs($logs),
+                'content' => ContactViewHelper::getListOfAuditLogs($logs),
                 'paginator' => PaginatorHelper::getData($logs),
             ],
-            'addresses' => ContactHelper::getAddresses($contact),
+            'addresses' => ContactViewHelper::getAddresses($contact),
         ];
 
         UpdateLastConsultedDate::dispatch($contact);

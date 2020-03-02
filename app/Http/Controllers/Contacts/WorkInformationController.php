@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Contacts;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Contact\Contact;
-use App\ViewHelpers\ContactHelper;
+use App\ViewHelpers\ContactViewHelper;
 use App\Http\Controllers\Controller;
 use App\Services\Contact\Contact\UpdateWorkInformation;
 
@@ -33,7 +33,7 @@ class WorkInformationController extends Controller
             'data' => [
                 'title' => $contact->job,
                 'company' => $contact->company,
-                'description' => ContactHelper::getWorkInformation($contact),
+                'description' => ContactViewHelper::getWorkInformation($contact),
             ],
         ], 200);
     }

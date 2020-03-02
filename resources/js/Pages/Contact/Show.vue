@@ -76,15 +76,7 @@
 
           <!-- contact / weather -->
           <div class="ba mb3">
-            <h2 class="ma0 bb pa2 fw4 f5">Contact information</h2>
-            <ul class="ma0 list pl0">
-              <li class="pa2">
-                <a href="">https://facebook.com/regis</a>
-              </li>
-              <li class="pa2">
-                <a href="">+ 3483 384384 8234</a>
-              </li>
-            </ul>
+            <contact-information />
           </div>
 
           <!-- reminders and tasks -->
@@ -166,6 +158,7 @@ import Description from '@/Pages/Contact/Partials/Description';
 import Audit from '@/Pages/Contact/Partials/Audit';
 import Work from '@/Pages/Contact/Partials/Work';
 import ContactAddress from '@/Pages/Contact/Partials/Address';
+import ContactInformation from '@/Pages/Contact/Partials/ContactInformation';
 
 export default {
   components: {
@@ -175,6 +168,7 @@ export default {
     Audit,
     Work,
     ContactAddress,
+    ContactInformation,
   },
 
   props: {

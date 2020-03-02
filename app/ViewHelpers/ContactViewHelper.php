@@ -8,13 +8,8 @@ use Illuminate\Support\Collection;
 
 /**
  * These are methods used on the contact page.
- *
- * We use raw sql queries for performance reasons. If we use Eloquent,
- * this will drastically affect performances as each model will be
- * hydrated and memory allocated. As this function is used on the list of
- * contacts, we need it to be really performant.
  */
-class ContactHelper
+class ContactViewHelper
 {
     /**
      * Prepare a collection of audit logs.
