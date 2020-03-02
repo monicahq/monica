@@ -36,8 +36,8 @@
           :title="$t('people.contact_address_form_street')">
         </form-input>
 
-        <div class="flex">
-          <div class="w-100 pb3">
+        <div class="dt-ns dt--fixed di mb2">
+          <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
             <form-input
               v-model="form.province"
               v-on:escape="editMode = false"
@@ -49,7 +49,7 @@
               :title="$t('people.contact_address_form_province')">
             </form-input>
           </div>
-          <div class="pb0-ns w-100">
+          <div class="dtc-ns pb0-ns w-100">
             <form-input
               v-model="form.postal_code"
               v-on:escape="editMode = false"
@@ -129,7 +129,6 @@ export default {
   data() {
     return {
       editMode: false,
-      localDescription: '',
       form: {
         street: null,
         city: null,
@@ -145,29 +144,9 @@ export default {
   },
 
   created: function() {
-    this.localDescription = this.contact.work.description;
-    this.form.title = this.contact.work.title;
-    this.form.companyName = this.contact.work.companyName;
   },
 
   methods: {
-    submit() {
-      this.loadingState = 'loading';
-
-      axios.post('/people/' + this.contact.hash + '/work', this.form)
-        .then(response => {
-          flash(this.$t('people.work_edit_success'), 'success');
-          this.localDescription = response.data.data.description;
-          this.form.title = response.data.data.title;
-          this.form.companyName = response.data.data.company;
-          this.editMode = false;
-          this.loadingState = null;
-        })
-        .catch(error => {
-          this.loadingState = null;
-          this.form.errors = _.flatten(_.toArray(error.response.data));
-        });
-    },
   }
 };
 </script>

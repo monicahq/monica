@@ -1055,13 +1055,9 @@ class Contact extends Model
      */
     public function getTagsAsString()
     {
-        $tags = [];
-
-        foreach ($this->tags as $tag) {
-            array_push($tags, $tag->name);
-        }
-
-        return implode(',', $tags);
+        return $this->tags->map(function ($tag) {
+            return $tag->name;
+        })->join(',');
     }
 
     /**

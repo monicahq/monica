@@ -66,12 +66,12 @@
           <!-- pagination -->
           <template v-if="paginator.hasMorePages">
             <div class="db tc">
-              <div class="dib overflow-hidden ba br2 b--light-silver">
-                <nav class="cf" data-name="pagination-numbers-bordered">
+              <div class="dib ba br2 b--light-silver">
+                <nav class="cf">
                   <inertia-link class="fl dib link dim black pv2 ph2 br b--light-silver" :href="paginator.previousPageUrl" v-if="paginator.previousPageUrl" title="Previous">&larr; Previous</inertia-link>
                   <inertia-link class="fr dib link dim black pv2 ph2" :href="paginator.nextPageUrl" v-if="paginator.nextPageUrl" title="Next">Next &rarr;</inertia-link>
 
-                  <div class="overflow-hidden center dt tc">
+                  <div class="center dt tc">
                     <span class="dtc link dim white bg-blue pv2 ph2 br b--light-silver">Page {{ paginator.currentPage }}</span>
                   </div>
                 </nav>

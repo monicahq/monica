@@ -92,28 +92,7 @@
             </ul>
 
             <!-- content -->
-            <ul class="ma0 list pl0">
-              <li class="bb pa2 flex items-center">
-                <span class="mr3 tc">
-                  Feb
-                  <span class="db">25</span>
-                </span>
-                <div>
-                  Anniversary of the day you first met
-                  <span class="db f6"><a href="">Regis Freyd</a></span>
-                </div>
-              </li>
-              <li class="pa2 flex items-center">
-                <span class="mr3 tc">
-                  Feb
-                  <span class="db">25</span>
-                </span>
-                <div>
-                  Anniversary of the day you first met
-                  <span class="db f6"><a href="">Regis Freyd</a></span>
-                </div>
-              </li>
-            </ul>
+            <reminder />
           </div>
 
           <div class="ba mb3">
@@ -159,6 +138,7 @@ import Audit from '@/Pages/Contact/Partials/Audit';
 import Work from '@/Pages/Contact/Partials/Work';
 import ContactAddress from '@/Pages/Contact/Partials/Address';
 import ContactInformation from '@/Pages/Contact/Partials/ContactInformation';
+import Reminder from '@/Pages/Contact/Partials/Reminder';
 
 export default {
   components: {
@@ -169,6 +149,7 @@ export default {
     Work,
     ContactAddress,
     ContactInformation,
+    Reminder,
   },
 
   props: {

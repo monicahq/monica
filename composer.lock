@@ -84,6 +84,7 @@
         },
         {
             "name": "aws/aws-sdk-php",
+<<<<<<< HEAD
             "version": "3.133.14",
             "source": {
                 "type": "git",
@@ -94,6 +95,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/80e9763a2883f39cd684e8136e93aa9ab01c32af",
                 "reference": "80e9763a2883f39cd684e8136e93aa9ab01c32af",
+=======
+            "version": "3.133.20",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aws/aws-sdk-php.git",
+                "reference": "c5f84f9edafb6372dafdbc87cb588772761179ca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c5f84f9edafb6372dafdbc87cb588772761179ca",
+                "reference": "c5f84f9edafb6372dafdbc87cb588772761179ca",
+>>>>>>> master
                 "shasum": ""
             },
             "require": {
@@ -164,7 +177,11 @@
                 "s3",
                 "sdk"
             ],
+<<<<<<< HEAD
             "time": "2020-02-13T19:12:30+00:00"
+=======
+            "time": "2020-02-21T19:09:49+00:00"
+>>>>>>> master
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1429,24 +1446,24 @@
         },
         {
             "name": "fideloper/proxy",
-            "version": "4.2.2",
+            "version": "4.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fideloper/TrustedProxy.git",
-                "reference": "790194d5d3da89a713478875d2e2d05855a90a81"
+                "reference": "ec38ad69ee378a1eec04fb0e417a97cfaf7ed11a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fideloper/TrustedProxy/zipball/790194d5d3da89a713478875d2e2d05855a90a81",
-                "reference": "790194d5d3da89a713478875d2e2d05855a90a81",
+                "url": "https://api.github.com/repos/fideloper/TrustedProxy/zipball/ec38ad69ee378a1eec04fb0e417a97cfaf7ed11a",
+                "reference": "ec38ad69ee378a1eec04fb0e417a97cfaf7ed11a",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^5.0|^6.0|^7.0",
+                "illuminate/contracts": "^5.0|^6.0|^7.0|^8.0",
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "illuminate/http": "^5.0|^6.0|^7.0",
+                "illuminate/http": "^5.0|^6.0|^7.0|^8.0",
                 "mockery/mockery": "^1.0",
                 "phpunit/phpunit": "^6.0"
             },
@@ -1479,7 +1496,7 @@
                 "proxy",
                 "trusted proxy"
             ],
-            "time": "2019-12-20T13:11:11+00:00"
+            "time": "2020-02-22T01:51:47+00:00"
         },
         {
             "name": "filp/whoops",
@@ -2654,16 +2671,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v10.5.3",
+            "version": "v10.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "3c485612cfd22feaa550d99e78ade39f7c57b2f8"
+                "reference": "6d35db6b4b430cc714a68e3ec8aef97cafa41f2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/3c485612cfd22feaa550d99e78ade39f7c57b2f8",
-                "reference": "3c485612cfd22feaa550d99e78ade39f7c57b2f8",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/6d35db6b4b430cc714a68e3ec8aef97cafa41f2a",
+                "reference": "6d35db6b4b430cc714a68e3ec8aef97cafa41f2a",
                 "shasum": ""
             },
             "require": {
@@ -2724,20 +2741,20 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2020-01-14T16:30:51+00:00"
+            "time": "2020-02-18T19:03:45+00:00"
         },
         {
             "name": "laravel/framework",
-            "version": "v6.16.0",
+            "version": "v6.17.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "b47217e41868d3049ec545cbb713aa94c6f39e55"
+                "reference": "32d1ed55dd46dcd706ff2e45bb7965be7320b87d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/b47217e41868d3049ec545cbb713aa94c6f39e55",
-                "reference": "b47217e41868d3049ec545cbb713aa94c6f39e55",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/32d1ed55dd46dcd706ff2e45bb7965be7320b87d",
+                "reference": "32d1ed55dd46dcd706ff2e45bb7965be7320b87d",
                 "shasum": ""
             },
             "require": {
@@ -2870,7 +2887,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2020-02-18T15:17:52+00:00"
+            "time": "2020-02-26T14:23:01+00:00"
         },
         {
             "name": "laravel/passport",
@@ -3074,16 +3091,16 @@
         },
         {
             "name": "laravolt/avatar",
-            "version": "3.0.6",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravolt/avatar.git",
-                "reference": "bec46869822ffa85284216c839ab41c9c967ff9d"
+                "reference": "4b462e6d7e287c8035641542dbdb2882952ed633"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravolt/avatar/zipball/bec46869822ffa85284216c839ab41c9c967ff9d",
-                "reference": "bec46869822ffa85284216c839ab41c9c967ff9d",
+                "url": "https://api.github.com/repos/laravolt/avatar/zipball/4b462e6d7e287c8035641542dbdb2882952ed633",
+                "reference": "4b462e6d7e287c8035641542dbdb2882952ed633",
                 "shasum": ""
             },
             "require": {
@@ -3136,7 +3153,7 @@
                 "laravel",
                 "laravolt"
             ],
-            "time": "2020-01-07T14:30:43+00:00"
+            "time": "2020-02-29T01:48:04+00:00"
         },
         {
             "name": "lcobucci/jwt",
@@ -3403,16 +3420,16 @@
         },
         {
             "name": "league/flysystem-aws-s3-v3",
-            "version": "1.0.23",
+            "version": "1.0.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-aws-s3-v3.git",
-                "reference": "15b0cdeab7240bf8e8bffa85ae5275bbc3692bf4"
+                "reference": "4382036bde5dc926f9b8b337e5bdb15e5ec7b570"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/15b0cdeab7240bf8e8bffa85ae5275bbc3692bf4",
-                "reference": "15b0cdeab7240bf8e8bffa85ae5275bbc3692bf4",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/4382036bde5dc926f9b8b337e5bdb15e5ec7b570",
+                "reference": "4382036bde5dc926f9b8b337e5bdb15e5ec7b570",
                 "shasum": ""
             },
             "require": {
@@ -3446,7 +3463,7 @@
                 }
             ],
             "description": "Flysystem adapter for the AWS S3 SDK v3.x",
-            "time": "2019-06-05T17:18:29+00:00"
+            "time": "2020-02-23T13:31:58+00:00"
         },
         {
             "name": "league/flysystem-cached-adapter",
@@ -6768,16 +6785,16 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "3.9.2",
+            "version": "3.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "7779489a47d443f845271badbdcedfe4df8e06fb"
+                "reference": "7e1633a6964b48589b142d60542f9ed31bd37a92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/7779489a47d443f845271badbdcedfe4df8e06fb",
-                "reference": "7779489a47d443f845271badbdcedfe4df8e06fb",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/7e1633a6964b48589b142d60542f9ed31bd37a92",
+                "reference": "7e1633a6964b48589b142d60542f9ed31bd37a92",
                 "shasum": ""
             },
             "require": {
@@ -6851,7 +6868,7 @@
                 "identifier",
                 "uuid"
             ],
-            "time": "2019-12-17T08:18:51+00:00"
+            "time": "2020-02-21T04:36:14+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
@@ -7493,20 +7510,20 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "1.6.2",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "7debcb2f1ad080dff33dd1433d86ab45a3f5c01e"
+                "reference": "72684758f15aae4562149460b70fea81e9a06a25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/7debcb2f1ad080dff33dd1433d86ab45a3f5c01e",
-                "reference": "7debcb2f1ad080dff33dd1433d86ab45a3f5c01e",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/72684758f15aae4562149460b70fea81e9a06a25",
+                "reference": "72684758f15aae4562149460b70fea81e9a06a25",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "5.0 - 5.8 | ^6.0",
+                "illuminate/support": "5.0 - 5.8 | ^6.0 | ^7.0",
                 "php": "^7.1",
                 "sentry/sdk": "^2.1"
             },
@@ -7558,7 +7575,7 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2020-02-14T12:29:38+00:00"
+            "time": "2020-02-26T09:01:08+00:00"
         },
         {
             "name": "spomky-labs/base64url",
@@ -7743,6 +7760,7 @@
         },
         {
             "name": "stripe/stripe-php",
+<<<<<<< HEAD
             "version": "v7.24.0",
             "source": {
                 "type": "git",
@@ -7753,6 +7771,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/stripe/stripe-php/zipball/98689fa7d69defe3d219c8578466108f40e584a7",
                 "reference": "98689fa7d69defe3d219c8578466108f40e584a7",
+=======
+            "version": "v7.25.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "b73fb353b89ccbeb99baf1c5b518ba48cccf47be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/b73fb353b89ccbeb99baf1c5b518ba48cccf47be",
+                "reference": "b73fb353b89ccbeb99baf1c5b518ba48cccf47be",
+>>>>>>> master
                 "shasum": ""
             },
             "require": {
@@ -7796,7 +7826,11 @@
                 "payment processing",
                 "stripe"
             ],
+<<<<<<< HEAD
             "time": "2020-02-10T22:09:18+00:00"
+=======
+            "time": "2020-02-14T22:29:50+00:00"
+>>>>>>> master
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -10910,26 +10944,26 @@
         },
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v3.2.8",
+            "version": "v3.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "18208d64897ab732f6c04a19b319fe8f1d57a9c0"
+                "reference": "42d5da5379a7860093f8e4032167e4cb5ebec180"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/18208d64897ab732f6c04a19b319fe8f1d57a9c0",
-                "reference": "18208d64897ab732f6c04a19b319fe8f1d57a9c0",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/42d5da5379a7860093f8e4032167e4cb5ebec180",
+                "reference": "42d5da5379a7860093f8e4032167e4cb5ebec180",
                 "shasum": ""
             },
             "require": {
-                "illuminate/routing": "^5.5|^6",
-                "illuminate/session": "^5.5|^6",
-                "illuminate/support": "^5.5|^6",
-                "maximebf/debugbar": "~1.15.0",
+                "illuminate/routing": "^5.5|^6|^7",
+                "illuminate/session": "^5.5|^6|^7",
+                "illuminate/support": "^5.5|^6|^7",
+                "maximebf/debugbar": "^1.15.1",
                 "php": ">=7.0",
-                "symfony/debug": "^3|^4",
-                "symfony/finder": "^3|^4"
+                "symfony/debug": "^3|^4|^5",
+                "symfony/finder": "^3|^4|^5"
             },
             "require-dev": {
                 "laravel/framework": "5.5.x"
@@ -10974,7 +11008,7 @@
                 "profiler",
                 "webprofiler"
             ],
-            "time": "2019-08-29T07:01:03+00:00"
+            "time": "2020-02-25T20:42:23+00:00"
         },
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -11807,22 +11841,22 @@
         },
         {
             "name": "maximebf/debugbar",
-            "version": "v1.15.1",
+            "version": "v1.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maximebf/php-debugbar.git",
-                "reference": "6c4277f6117e4864966c9cb58fb835cee8c74a1e"
+                "reference": "58998b818c6567fac01e35b8a4b70c1a64530556"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maximebf/php-debugbar/zipball/6c4277f6117e4864966c9cb58fb835cee8c74a1e",
-                "reference": "6c4277f6117e4864966c9cb58fb835cee8c74a1e",
+                "url": "https://api.github.com/repos/maximebf/php-debugbar/zipball/58998b818c6567fac01e35b8a4b70c1a64530556",
+                "reference": "58998b818c6567fac01e35b8a4b70c1a64530556",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6",
+                "php": "^7.1",
                 "psr/log": "^1.0",
-                "symfony/var-dumper": "^2.6|^3|^4"
+                "symfony/var-dumper": "^2.6|^3|^4|^5"
             },
             "require-dev": {
                 "phpunit/phpunit": "^5"
@@ -11835,7 +11869,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.15-dev"
+                    "dev-master": "1.16-dev"
                 }
             },
             "autoload": {
@@ -11864,7 +11898,7 @@
                 "debug",
                 "debugbar"
             ],
-            "time": "2019-09-24T14:55:42+00:00"
+            "time": "2019-11-24T09:46:11+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -13598,12 +13632,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "1df6b9d09d2b074fd3f0f10a7696d9f797d4772c"
+                "reference": "71174ad65ddde2852b10107ebf2f75d04eb47b43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/1df6b9d09d2b074fd3f0f10a7696d9f797d4772c",
-                "reference": "1df6b9d09d2b074fd3f0f10a7696d9f797d4772c",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/71174ad65ddde2852b10107ebf2f75d04eb47b43",
+                "reference": "71174ad65ddde2852b10107ebf2f75d04eb47b43",
                 "shasum": ""
             },
             "conflict": {
@@ -13618,6 +13652,7 @@
                 "bagisto/bagisto": "<0.1.5",
                 "bolt/bolt": "<3.6.10",
                 "brightlocal/phpwhois": "<=4.2.5",
+                "buddypress/buddypress": "<5.1.2",
                 "bugsnag/bugsnag-laravel": ">=2,<2.0.2",
                 "cakephp/cakephp": ">=1.3,<1.3.18|>=2,<2.4.99|>=2.5,<2.5.99|>=2.6,<2.6.12|>=2.7,<2.7.6|>=3,<3.5.18|>=3.6,<3.6.15|>=3.7,<3.7.7",
                 "cart2quote/module-quotation": ">=4.1.6,<=4.4.5|>=5,<5.4.4",
@@ -13646,7 +13681,7 @@
                 "drupal/core": ">=7,<7.69|>=8,<8.7.11|>=8.8,<8.8.1",
                 "drupal/drupal": ">=7,<7.69|>=8,<8.7.11|>=8.8,<8.8.1",
                 "endroid/qr-code-bundle": "<3.4.2",
-                "enshrined/svg-sanitize": "<0.12",
+                "enshrined/svg-sanitize": "<0.13.1",
                 "erusev/parsedown": "<1.7.2",
                 "ezsystems/ezfind-ls": ">=5.3,<5.3.6.1|>=5.4,<5.4.11.1|>=2017.12,<2017.12.0.1",
                 "ezsystems/ezplatform": ">=1.7,<1.7.9.1|>=1.13,<1.13.5.1|>=2.5,<2.5.4",
@@ -13792,7 +13827,7 @@
                 "typo3/phar-stream-wrapper": ">=1,<2.1.1|>=3,<3.1.1",
                 "ua-parser/uap-php": "<3.8",
                 "usmanhalalit/pixie": "<1.0.3|>=2,<2.0.2",
-                "verot/class.upload.php": "<1.0.3|>=2,<2.0.4",
+                "verot/class.upload.php": "<=1.0.3|>=2,<=2.0.4",
                 "wallabag/tcpdf": "<6.2.22",
                 "willdurand/js-translation-bundle": "<2.1.1",
                 "yii2mod/yii2-cms": "<1.9.2",
@@ -13849,7 +13884,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2020-02-19T06:23:50+00:00"
+            "time": "2020-02-29T00:01:08+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -14604,16 +14639,16 @@
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v5.0.4",
+            "version": "v5.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
-                "reference": "439c3c7be4daa569deef0dd1e30cf3562108d062"
+                "reference": "4368bdd61b83af365b8f23e9616d2a2ed52cbe7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/439c3c7be4daa569deef0dd1e30cf3562108d062",
-                "reference": "439c3c7be4daa569deef0dd1e30cf3562108d062",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/4368bdd61b83af365b8f23e9616d2a2ed52cbe7c",
+                "reference": "4368bdd61b83af365b8f23e9616d2a2ed52cbe7c",
                 "shasum": ""
             },
             "require": {
@@ -14661,7 +14696,7 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "time": "2020-01-04T14:08:26+00:00"
+            "time": "2020-02-29T10:07:09+00:00"
         },
         {
             "name": "symfony/filesystem",

@@ -5,12 +5,15 @@
     </p>
     <input type="hidden" :name="name" :value="selected ? selected.id : ''" />
     <v-select
-      v-model="selected"
+      :value="selected"
       :placeholder="placeholder"
       :label="'complete_name'"
       :options="items"
+      :dir="$root.htmldir"
       @search="search"
       @search:blur="blur"
+      @search:focus="focus"
+      @input="selected = $event; $emit('input', $event)"
     />
   </div>
 </template>
@@ -25,6 +28,10 @@ export default {
     vSelect
   },
   props: {
+    value: {
+      type: Object,
+      default: null,
+    },
     name: {
       type: String,
       default: '',
@@ -38,8 +45,8 @@ export default {
       default: true,
     },
     userContactId: {
-      type: String,
-      default: '',
+      type: Number,
+      default: null,
     },
     defaultOptions: {
       type: Array,
@@ -64,7 +71,14 @@ export default {
     };
   },
 
+  watch: {
+    value(newValue) {
+      this.selected = newValue;
+    }
+  },
+
   mounted() {
+    this.selected = this.value;
     this.callUpdateItems = _.debounce((text) => {
       this.getContacts(text, this)
         .then((response) => {
@@ -77,7 +91,7 @@ export default {
 
   methods: {
 
-    updateItems (text) {
+    updateItems(text) {
       if (text === null) {
         return;
       }
@@ -94,7 +108,7 @@ export default {
       }
     },
 
-    displayItems (text) {
+    displayItems(text) {
       var datas = [];
       if (text === undefined || text.length === 0) {
         datas = this.defaultOptions;
@@ -107,7 +121,7 @@ export default {
       this.items = datas;
     },
 
-    getContacts: function (keyword, vm) {
+    getContacts(keyword, vm) {
       return axios.post('people/search', {
         needle: keyword
       }).then(function(response) {
@@ -123,9 +137,12 @@ export default {
       this.updateItems(keyword);
     },
 
-    blur (e) {
-      this.items = this.defaultOptions;
+    blur(e) {
+      //this.items = this.defaultOptions;
     },
+
+    focus(e) {
+    }
   }
 };
 </script>

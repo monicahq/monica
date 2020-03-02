@@ -3,7 +3,6 @@
 namespace Tests\Unit\Services\VCard;
 
 use Tests\TestCase;
-use App\Models\Contact\Tag;
 use Tests\Api\DAV\CardEtag;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
@@ -14,6 +13,7 @@ use App\Services\VCard\ExportVCard;
 use App\Models\Contact\ContactField;
 use Sabre\VObject\PHPUnitAssertions;
 use App\Models\Contact\ContactFieldType;
+use App\Models\Contact\ContactFieldLabel;
 use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -335,7 +335,7 @@ class ExportVCardTest extends TestCase
         $vCard = new VCard();
 
         $contactFieldType = factory(ContactFieldType::class)->create(['account_id' => $account->id]);
-        $contactField = factory(ContactField::class)->create([
+        factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $account->id,
             'contact_field_type_id' => $contactFieldType->id,
@@ -349,6 +349,94 @@ class ExportVCardTest extends TestCase
             $vCard->children()
         );
         $this->assertStringContainsString('EMAIL:john@doe.com', $vCard->serialize());
+    }
+
+    /** @test */
+    public function vcard_add_contact_fields_email_labels()
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $vCard = new VCard();
+
+        $contactFieldType = factory(ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $account->id,
+            'contact_field_type_id' => $contactFieldType->id,
+        ]);
+        $contactFieldLabel = factory(ContactFieldLabel::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $contactField->labels()->attach($contactFieldLabel->id, ['account_id' => $account->id]);
+
+        $exportVCard = app(ExportVCard::class);
+        $this->invokePrivateMethod($exportVCard, 'exportContactFields', [$contact, $vCard]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+        $this->assertStringContainsString('EMAIL;TYPE=WORK:john@doe.com', $vCard->serialize());
+    }
+
+    /** @test */
+    public function vcard_add_contact_fields_tel_labels()
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $vCard = new VCard();
+
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $account->id,
+            'type' => 'phone',
+        ]);
+        $contactField = factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $account->id,
+            'data' => '0123456789',
+            'contact_field_type_id' => $contactFieldType->id,
+        ]);
+        $contactFieldLabel = factory(ContactFieldLabel::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $contactField->labels()->attach($contactFieldLabel->id, ['account_id' => $account->id]);
+
+        $exportVCard = app(ExportVCard::class);
+        $this->invokePrivateMethod($exportVCard, 'exportContactFields', [$contact, $vCard]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+        $this->assertStringContainsString('TEL;TYPE=WORK:0123456789', $vCard->serialize());
+    }
+
+    /** @test */
+    public function vcard_add_contact_fields_personal_labels()
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $vCard = new VCard();
+
+        $contactField = factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $account->id,
+        ]);
+        $contactFieldLabel = factory(ContactFieldLabel::class)->create([
+            'account_id' => $account->id,
+            'label_i18n' => null,
+            'label' => 'Something',
+        ]);
+        $contactField->labels()->attach($contactFieldLabel->id, ['account_id' => $account->id]);
+
+        $exportVCard = app(ExportVCard::class);
+        $this->invokePrivateMethod($exportVCard, 'exportContactFields', [$contact, $vCard]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+        $this->assertStringContainsString('EMAIL;TYPE=Something:john@doe.com', $vCard->serialize());
     }
 
     /**
@@ -417,13 +505,12 @@ class ExportVCardTest extends TestCase
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $vCard = new VCard();
 
-        $address = factory(Address::class)->create([
+        factory(Address::class)->create([
             'contact_id' => $contact->id,
             'name' => 'Home',
             'account_id' => $account->id,
         ]);
-
-        $address = factory(Address::class)->create([
+        factory(Address::class)->create([
             'contact_id' => $contact->id,
             'name' => 'Home',
             'account_id' => $account->id,
@@ -438,6 +525,34 @@ class ExportVCardTest extends TestCase
         );
         $this->assertStringContainsString('ADR:;;12;beverly hills;;90210;US', $vCard->serialize());
         $this->assertStringContainsString('ADR:;;12;beverly hills;;90210;US', $vCard->serialize());
+    }
+
+    /** @test */
+    public function vcard_add_addresses_with_labels()
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $vCard = new VCard();
+
+        $address = factory(Address::class)->create([
+            'contact_id' => $contact->id,
+            'name' => 'Home',
+            'account_id' => $account->id,
+        ]);
+
+        $contactFieldLabel = factory(ContactFieldLabel::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $address->labels()->attach($contactFieldLabel->id, ['account_id' => $account->id]);
+
+        $exportVCard = app(ExportVCard::class);
+        $this->invokePrivateMethod($exportVCard, 'exportAddress', [$contact, $vCard]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+        $this->assertStringContainsString('ADR;TYPE=WORK:;;12;beverly hills;;90210;US', $vCard->serialize());
     }
 
     /** @test */
@@ -463,20 +578,20 @@ class ExportVCardTest extends TestCase
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
 
-        $address = factory(Address::class)->create([
+        factory(Address::class)->create([
             'contact_id' => $contact->id,
             'name' => 'Home',
             'account_id' => $account->id,
         ]);
 
-        $address = factory(Address::class)->create([
+        factory(Address::class)->create([
             'contact_id' => $contact->id,
             'name' => 'Home',
             'account_id' => $account->id,
         ]);
 
         $contactFieldType = factory(ContactFieldType::class)->create(['account_id' => $account->id]);
-        $contactField = factory(ContactField::class)->create([
+        factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $account->id,
             'contact_field_type_id' => $contactFieldType->id,
@@ -502,17 +617,16 @@ class ExportVCardTest extends TestCase
             'account_id' => $account->id,
         ]);
 
-        $tag = factory(Tag::class)->create([
-            'account_id' => $contact->account_id,
-        ]);
-
-        $request = [
+        app(AssociateTag::class)->execute([
             'account_id' => $contact->account->id,
             'contact_id' => $contact->id,
-            'name' => $tag->name,
-        ];
-
-        app(AssociateTag::class)->execute($request);
+            'name' => 'tag1',
+        ]);
+        app(AssociateTag::class)->execute([
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+            'name' => 'tag2',
+        ]);
 
         $exportVCard = app(ExportVCard::class);
         $contact = $contact->refresh();
