@@ -9,11 +9,11 @@ use App\Helpers\GenderHelper;
 use App\Models\Contact\Contact;
 use App\Helpers\PaginatorHelper;
 use Illuminate\Http\JsonResponse;
-use App\ViewHelpers\ContactViewHelper;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\UpdateLastConsultedDate;
+use App\ViewHelpers\ContactViewHelper;
 use App\ViewHelpers\ContactListViewHelper;
 use App\Services\Contact\Contact\CreateContact;
 

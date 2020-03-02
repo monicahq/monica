@@ -6,8 +6,8 @@ use Inertia\Response;
 use App\Models\Contact\Contact;
 use App\Helpers\PaginatorHelper;
 use Illuminate\Http\JsonResponse;
-use App\ViewHelpers\ContactViewHelper;
 use App\Http\Controllers\Controller;
+use App\ViewHelpers\ContactViewHelper;
 
 class AuditLogController extends Controller
 {
