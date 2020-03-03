@@ -269,7 +269,7 @@ class SetupTest extends Command
             $birthdate = $this->faker->dateTimeThisCentury();
 
             app(UpdateBirthdayInformation::class)->execute([
-                'account_id' => $this->contact->account->id,
+                'account_id' => $this->contact->account_id,
                 'contact_id' => $this->contact->id,
                 'is_date_known' => rand(1, 2) == 1,
                 'day' => (int) $birthdate->format('d'),
