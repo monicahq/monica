@@ -804,7 +804,7 @@
   dependencies:
     tslib "^1.9.3"
 
-"@snyk/cli-interface@2.3.2", "@snyk/cli-interface@^2.0.3":
+"@snyk/cli-interface@^2.0.3":
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/@snyk/cli-interface/-/cli-interface-2.3.2.tgz#e93afa82de15b912e657f1ba86f9d7963983e594"
   integrity sha512-jmZyxVHqzYU1GfdnWCGdd68WY/lAzpPVyqalHazPj4tFJehrSfEFc82RMTYAMgXEJuvFRFIwhsvXh3sWUhIQmg==
