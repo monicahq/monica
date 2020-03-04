@@ -2,6 +2,9 @@
 
 ### New features:
 
+* Add a weekly job to update gravatars
+* Add ability to set 'me' contact
+* Add middle name field to new contact and edit contact
 * Add backend and api for contact field labels
 * Add audit log when setting a contact's description
 * Add support for audit logs on a contact page
