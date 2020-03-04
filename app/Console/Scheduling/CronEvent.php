@@ -84,6 +84,19 @@ class CronEvent
     }
 
     /**
+     * Run the command once a week.
+     *
+     * @return self
+     */
+    public function weekly(): self
+    {
+        $this->minutes = 0;
+        $this->days = 7;
+
+        return $this;
+    }
+
+    /**
      * Test if the command is due to run.
      *
      * @return bool

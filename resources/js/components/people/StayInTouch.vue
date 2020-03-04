@@ -113,9 +113,7 @@
                   </g>
                 </svg>
               </div>
-              <div>
-                {{ $t('settings.personalisation_paid_upgrade') }}
-              </div>
+              <div v-html="$t('settings.personalisation_paid_upgrade_vue', {url: 'settings/subscriptions' })"></div>
             </div>
           </div>
           <p class="mt3 b mb3" :class="[ dirltr ? 'tl' : 'tr' ]">

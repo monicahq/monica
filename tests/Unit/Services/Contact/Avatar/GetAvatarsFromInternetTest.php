@@ -21,7 +21,7 @@ class GetAvatarsFromInternetTest extends TestCase
         $contactFieldType = factory(ContactFieldType::class)->create([
             'account_id' => $contact->account_id,
         ]);
-        $contactField = factory(ContactField::class)->create([
+        factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $contact->account_id,
             'contact_field_type_id' => $contactFieldType->id,

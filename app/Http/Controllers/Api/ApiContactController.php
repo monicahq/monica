@@ -15,6 +15,7 @@ use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Services\Contact\Contact\DeleteMeContact;
 use App\Services\Contact\Contact\UpdateWorkInformation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
@@ -212,7 +213,32 @@ class ApiContactController extends ApiController
             'user_id' => auth()->user()->id,
         ];
 
-        app(SetMeContact::class)->execute($data);
+        try {
+            app(SetMeContact::class)->execute($data);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        }
+
+        return $this->respond(['true']);
+    }
+
+    /**
+     * Removes contact as 'me' association.
+     *
+     * @param Request $request
+     *
+     * @return string
+     */
+    public function removeMe(Request $request)
+    {
+        $data = [
+            'account_id' => auth()->user()->account_id,
+            'user_id' => auth()->user()->id,
+        ];
+
+        app(DeleteMeContact::class)->execute($data);
 
         return $this->respond(['true']);
     }
