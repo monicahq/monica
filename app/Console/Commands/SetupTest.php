@@ -226,7 +226,7 @@ class SetupTest extends Command
             $i = 0;
             do {
                 app(AssociateTag::class)->execute([
-                    'account_id' => $this->contact->account->id,
+                    'account_id' => $this->account->id,
                     'contact_id' => $this->contact->id,
                     'name' => $this->faker->word,
                 ]);
@@ -251,7 +251,7 @@ class SetupTest extends Command
             $birthdate = $this->faker->dateTimeThisCentury();
 
             app(UpdateDeceasedInformation::class)->execute([
-                'account_id' => $this->contact->account->id,
+                'account_id' => $this->account->id,
                 'contact_id' => $this->contact->id,
                 'is_deceased' => rand(1, 2) == 1,
                 'is_date_known' => rand(1, 2) == 1,
@@ -269,7 +269,7 @@ class SetupTest extends Command
             $birthdate = $this->faker->dateTimeThisCentury();
 
             app(UpdateBirthdayInformation::class)->execute([
-                'account_id' => $this->contact->account_id,
+                'account_id' => $this->account->id,
                 'contact_id' => $this->contact->id,
                 'is_date_known' => rand(1, 2) == 1,
                 'day' => (int) $birthdate->format('d'),
@@ -300,7 +300,7 @@ class SetupTest extends Command
                 $specialDate = $this->contact->setSpecialDate('first_met', $firstMetDate->format('Y'), $firstMetDate->format('m'), $firstMetDate->format('d'));
             }
             app(CreateReminder::class)->execute([
-                'account_id' => $this->contact->account->id,
+                'account_id' => $this->account->id,
                 'contact_id' => $this->contact->id,
                 'initial_date' => $specialDate->date->toDateString(),
                 'frequency_type' => 'year',
@@ -330,7 +330,7 @@ class SetupTest extends Command
                 $gender = (rand(1, 2) == 1) ? 'male' : 'female';
 
                 $relatedContact = app(CreateContact::class)->execute([
-                    'account_id' => $this->contact->account->id,
+                    'account_id' => $this->account->id,
                     'author_id' => $this->user->id,
                     'first_name' => $this->faker->firstName($gender),
                     'last_name' => (rand(1, 2) == 1) ? $this->faker->lastName : null,
@@ -344,7 +344,7 @@ class SetupTest extends Command
 
                 $relatedContactBirthDate = $this->faker->dateTimeThisCentury();
                 app(UpdateBirthdayInformation::class)->execute([
-                    'account_id' => $this->contact->account->id,
+                    'account_id' => $this->account->id,
                     'contact_id' => $relatedContact->id,
                     'is_date_known' => rand(1, 2) == 1,
                     'day' => (int) $relatedContactBirthDate->format('d'),
@@ -358,7 +358,7 @@ class SetupTest extends Command
                 // set relationship
                 $relationshipId = $this->contact->account->relationshipTypes->random()->id;
                 $relationship = app(CreateRelationship::class)->execute([
-                    'account_id' => $this->contact->account->id,
+                    'account_id' => $this->account->id,
                     'contact_is' => $this->contact->id,
                     'of_contact' => $relatedContact->id,
                     'relationship_type_id' => $relationshipId,
@@ -373,7 +373,7 @@ class SetupTest extends Command
             for ($j = 0; $j < rand(1, 13); $j++) {
                 $note = $this->contact->notes()->create([
                     'body' => $this->faker->realText(rand(40, 500)),
-                    'account_id' => $this->contact->account->id,
+                    'account_id' => $this->account->id,
                     'is_favorited' => rand(1, 3) == 1,
                     'favorited_at' => $this->faker->dateTimeThisCentury(),
                 ]);
@@ -388,7 +388,7 @@ class SetupTest extends Command
                 $date = DateHelper::getDate(Carbon::instance($this->faker->dateTimeThisYear($max = 'now')));
 
                 $request = [
-                    'account_id' => $this->contact->account->id,
+                    'account_id' => $this->account->id,
                     'activity_type_id' => rand(1, 13),
                     'summary' => $this->faker->realText(rand(40, 100)),
                     'description' => (rand(1, 2) == 1 ? $this->faker->realText(rand(100, 1000)) : null),
@@ -399,7 +399,7 @@ class SetupTest extends Command
                 $activity = app(CreateActivity::class)->execute($request);
 
                 $request = [
-                    'account_id' => $this->contact->account->id,
+                    'account_id' => $this->account->id,
                     'activity_id' => $activity->id,
                     'contacts' => [$this->contact->id],
                 ];
@@ -425,7 +425,7 @@ class SetupTest extends Command
                     'description' => $this->faker->realText(rand(100, 1000)),
                     'completed' => (rand(1, 2) == 1 ? 0 : 1),
                     'completed_at' => (rand(1, 2) == 1 ? $this->faker->dateTimeThisCentury() : null),
-                    'account_id' => $this->contact->account->id,
+                    'account_id' => $this->account->id,
                 ]);
             }
         }
@@ -440,7 +440,7 @@ class SetupTest extends Command
                     'amount' => rand(321, 39391),
                     'reason' => $this->faker->realText(rand(100, 1000)),
                     'status' => 'inprogress',
-                    'account_id' => $this->contact->account->id,
+                    'account_id' => $this->account->id,
                 ]);
             }
         }
@@ -451,7 +451,7 @@ class SetupTest extends Command
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 31); $j++) {
                 app(CreateGift::class)->execute([
-                    'account_id' => $this->contact->account->id,
+                    'account_id' => $this->account->id,
                     'contact_id' => $this->contact->id,
                     'status' => (rand(1, 3) == 1 ? 'offered' : 'idea'),
                     'name' => $this->faker->realText(rand(10, 100)),
@@ -467,7 +467,7 @@ class SetupTest extends Command
     {
         if (rand(1, 3) == 1) {
             $request = [
-                'account_id' => $this->contact->account->id,
+                'account_id' => $this->account->id,
                 'contact_id' => $this->contact->id,
                 'country' => $this->getRandomCountry(),
                 'name' => $this->faker->word,
@@ -530,7 +530,7 @@ class SetupTest extends Command
                 $this->contact->contactFields()->create([
                     'contact_field_type_id' => $contactFieldType->id,
                     'data' => $data,
-                    'account_id' => $this->contact->account->id,
+                    'account_id' => $this->account->id,
                 ]);
             }
         }
@@ -607,7 +607,7 @@ class SetupTest extends Command
     {
         if (rand(1, 3) == 1) {
             $this->contact->calls()->create([
-                'account_id' => $this->contact->account->id,
+                'account_id' => $this->account->id,
                 'called_at' => $this->faker->dateTimeThisYear(),
             ]);
         }
@@ -623,12 +623,12 @@ class SetupTest extends Command
                     'happened_at' => $this->faker->dateTimeThisCentury(),
                     'contact_id' => $this->contact->id,
                     'contact_field_type_id' => $contactFieldType->id,
-                    'account_id' => $this->contact->account->id,
+                    'account_id' => $this->account->id,
                 ]);
 
                 for ($k = 0; $k < rand(1, 20); $k++) {
                     app(AddMessageToConversation::class)->execute([
-                        'account_id' => $this->contact->account->id,
+                        'account_id' => $this->account->id,
                         'contact_id' => $this->contact->id,
                         'conversation_id' => $conversation->id,
                         'written_at' => $this->faker->dateTimeThisCentury(),
@@ -647,7 +647,7 @@ class SetupTest extends Command
                 $lifeEventType = LifeEventType::where('account_id', $this->account->id)->orderBy(DB::raw('RAND()'))->firstOrFail();
 
                 app(CreateLifeEvent::class)->execute([
-                    'account_id' => $this->contact->account->id,
+                    'account_id' => $this->account->id,
                     'contact_id' => $this->contact->id,
                     'life_event_type_id' => $lifeEventType->id,
                     'happened_at' => $this->faker->dateTimeThisCentury(),
