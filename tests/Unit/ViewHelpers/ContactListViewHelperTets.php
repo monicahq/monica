@@ -9,7 +9,7 @@ use App\Models\Contact\Contact;
 use App\ViewHelpers\ContactListViewHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ContactListViewHelperTest extends TestCase
+class ContactListViewHelperTets extends TestCase
 {
     use DatabaseTransactions;
 
