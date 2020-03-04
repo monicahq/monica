@@ -35,7 +35,7 @@
         <div class="mb3">
           <form-input
             :id="'first_name'"
-            :input-type="'text'"
+            :type="'text'"
             :required="true"
             :title="'{{ trans('people.people_add_firstname') }}'">
           </form-input>
@@ -44,7 +44,7 @@
         <div class="mb3">
           <form-input
             :id="'middle_name'"
-            :input-type="'text'"
+            :type="'text'"
             :required="false"
             :title="'{{ trans('people.people_add_middlename') }}'">
           </form-input>
@@ -53,7 +53,7 @@
         <div class="mb3">
           <form-input
             :id="'last_name'"
-            :input-type="'text'"
+            :type="'text'"
             :required="false"
             :title="'{{ trans('people.people_add_lastname') }}'">
           </form-input>
@@ -62,7 +62,7 @@
         <div class="mb3 mb0-ns">
           <form-input
             :id="'nickname'"
-            :input-type="'text'"
+            :type="'text'"
             :required="false"
             :title="'{{ trans('people.people_add_nickname') }}'">
           </form-input>
@@ -73,7 +73,7 @@
         <div class="mb3">
           <form-input
             :id="'last_name'"
-            :input-type="'text'"
+            :type="'text'"
             :required="false"
             :title="'{{ trans('people.people_add_lastname') }}'">
           </form-input>
@@ -82,7 +82,7 @@
         <div class="mb3">
           <form-input
             :id="'first_name'"
-            :input-type="'text'"
+            :type="'text'"
             :required="true"
             :title="'{{ trans('people.people_add_firstname') }}'">
           </form-input>
@@ -91,7 +91,7 @@
         <div class="mb3">
           <form-input
             :id="'middle_name'"
-            :input-type="'text'"
+            :type="'text'"
             :required="false"
             :title="'{{ trans('people.people_add_middlename') }}'">
           </form-input>
@@ -100,7 +100,7 @@
         <div class="mb3 mb0-ns">
           <form-input
             :id="'nickname'"
-            :input-type="'text'"
+            :type="'text'"
             :required="false"
             :title="'{{ trans('people.people_add_nickname') }}'">
           </form-input>

@@ -12,7 +12,7 @@
             <form-input
               :id="'summary'"
               v-model="newActivity.summary"
-              :input-type="'text'"
+              :type="'text'"
               :title="$t('people.activities_add_title', { name: name })"
               :required="true"
             />

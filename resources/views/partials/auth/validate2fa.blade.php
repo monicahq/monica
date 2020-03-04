@@ -5,7 +5,7 @@
 @endif
 <div class="form-group">
   <label for="one_time_password">{{ trans('auth.2fa_one_time_password') }}</label>
-  <form-input :input-type="'number'"
+  <form-input :type="'number'"
             :id="'one_time_password'"
             :width="100"
             :required="true"></form-input>

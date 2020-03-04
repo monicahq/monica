@@ -56,7 +56,7 @@
                 v-model="updateForm.data"
                 :title="$t('people.contact_info_form_content')"
                 iclass="pa2 db w-100"
-                :input-type="'text'"
+                :type="'text'"
               />
             </div>
             <div class="lh-copy mt3">

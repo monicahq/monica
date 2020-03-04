@@ -5,14 +5,14 @@
   <!-- list of reminders -->
   <div class="">
     <!-- summary and call to action -->
-    <div class="flex pa2">
+    <div class="flex justify-between pa2" v-show="!editMode">
       <p class="mv0">Showing 5 out of 13 reminders</p>
-      <inertia-link :href="''" class="mb1 db btn">Add a new reminder</inertia-link>
+      <a :href="''" class="mb1 db btn btn-primary" @click.prevent="editMode = true">Add a new reminder</a>
     </div>
 
 
     <!-- list of the first 5 reminders -->
-    <ul class="ma0 list pl0">
+    <ul class="ma0 list pl0" v-show="!editMode">
       <li class="bb pa2 flex items-center relative">
         <span class="mr3 tc">
           <span class="db mb1">Feb 25</span>
@@ -96,20 +96,57 @@
     </ul>
 
     <!-- view more link -->
-    <div class="pa2 tc">
+    <div class="pa2 tc" v-show="!editMode">
       <inertia-link :href="''" class="">View all the reminders</inertia-link>
     </div>
+
+    <!-- add a new reminder -->
+    <template v-if="editMode">
+      <form @submit.prevent="submit" class="pa2">
+        <errors :errors="form.errors" :classes="'mb3'" />
+
+        <form-input
+          v-on:escape="editMode = false"
+          :id="'title'"
+          :type="'text'"
+          :required="true"
+          :label-class="'db mb2'"
+          :input-class="'db mb3'"
+          :title="'What should we remind you about?'">
+        </form-input>
+
+        <form-input
+          v-on:escape="editMode = false"
+          :id="'title'"
+          :type="'date'"
+          :required="true"
+          :label-class="'db mb2'"
+          :input-class="'db mb3'"
+          :title="'What is the date of this event? It can be in the past.'">
+        </form-input>
+
+        What is
+
+        <!-- Actions -->
+        <div class="">
+          <loading-button :classes="'btn add w-auto-ns w-100 mb2 pv2 ph3'" :state="loadingState" :text="$t('app.save')" :cypress-selector="'submit-add-work-information'" />
+          <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3 pointer" data-cy="cancel-add-work-information" @click="editMode = false">{{ $t('app.cancel') }}</a>
+        </div>
+      </form>
+    </template>
   </div>
 </template>
 
 <script>
 import FormInput from '@/Shared/Input';
+import FormSelect from '@/Shared/Select';
 import LoadingButton from '@/Shared/LoadingButton';
 import Errors from '@/Shared/Errors';
 
 export default {
   components: {
     FormInput,
+    FormSelect,
     LoadingButton,
     Errors
   },
@@ -124,17 +161,10 @@ export default {
   data() {
     return {
       editMode: false,
+      loadingState: '',
       form: {
-        street: null,
-        city: null,
-        province: null,
-        postal_code: null,
-        country: null,
-        latitude: null,
-        longitude: null,
         errors: [],
       },
-      loadingState: '',
     };
   },
 

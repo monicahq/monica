@@ -34,7 +34,7 @@
               :id="'age'"
               ref="age"
               v-model="selectedAge"
-              :input-type="'number'"
+              :type="'number'"
               :width="50"
               :required="true"
               :validator="$v.selectedAge"

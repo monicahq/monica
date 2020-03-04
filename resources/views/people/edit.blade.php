@@ -30,7 +30,7 @@
               <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->first_name }}"
-                  :input-type="'text'"
+                  :type="'text'"
                   :id="'firstname'"
                   :required="true"
                   :title="'{{ trans('people.people_add_firstname') }}'">
@@ -39,7 +39,7 @@
               <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->middle_name }}"
-                  :input-type="'text'"
+                  :type="'text'"
                   :id="'middlename'"
                   :required="false"
                   :title="'{{ trans('people.people_add_middlename') }}'">
@@ -48,7 +48,7 @@
               <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->last_name }}"
-                  :input-type="'text'"
+                  :type="'text'"
                   :id="'lastname'"
                   :required="false"
                   :title="'{{ trans('people.people_add_lastname') }}'">
@@ -57,7 +57,7 @@
               <div class="dtc-ns pb0-ns w-100">
                 <form-input
                   value="{{ $contact->nickname }}"
-                  :input-type="'text'"
+                  :type="'text'"
                   :id="'nickname'"
                   :required="false"
                   :title="'{{ trans('people.people_add_nickname') }}'">
@@ -71,7 +71,7 @@
               <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->last_name }}"
-                  :input-type="'text'"
+                  :type="'text'"
                   :id="'lastname'"
                   :required="false"
                   :title="'{{ trans('people.people_add_lastname') }}'">
@@ -80,7 +80,7 @@
               <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->first_name }}"
-                  :input-type="'text'"
+                  :type="'text'"
                   :id="'firstname'"
                   :required="true"
                   :title="'{{ trans('people.people_add_firstname') }}'">
@@ -89,7 +89,7 @@
               <div class="dtc-ns pb0-ns w-100">
                 <form-input
                   value="{{ $contact->nickname }}"
-                  :input-type="'text'"
+                  :type="'text'"
                   :id="'nickname'"
                   :required="false"
                   :title="'{{ trans('people.information_edit_description') }}'">
@@ -119,7 +119,7 @@
           <div class="mb3 mb0-ns">
             <form-input
               value="{{ $contact->description }}"
-              :input-type="'text'"
+              :type="'text'"
               :id="'description'"
               :required="false"
               :title="'{{ trans('people.information_edit_description') }}'">

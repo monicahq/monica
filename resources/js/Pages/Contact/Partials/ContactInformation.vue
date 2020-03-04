@@ -42,7 +42,7 @@
             <form-input
               v-on:escape="editMode = false"
               :id="'title'"
-              :input-type="'text'"
+              :type="'text'"
               :required="false"
               :label-class="'db mb2'"
               :input-class="'db'"
@@ -66,7 +66,7 @@
             <form-input
               v-on:escape="editMode = false"
               :id="'title'"
-              :input-type="'text'"
+              :type="'text'"
               :required="false"
               :label-class="'db mb2'"
               :input-class="'db'"

@@ -23,7 +23,7 @@
           v-model="form.title"
           v-on:escape="editMode = false"
           :id="'title'"
-          :input-type="'text'"
+          :type="'text'"
           :required="false"
           :label-class="'db mb2'"
           :input-class="'db'"
@@ -34,7 +34,7 @@
           v-model="form.companyName"
           v-on:escape="editMode = false"
           :id="'companyName'"
-          :input-type="'text'"
+          :type="'text'"
           :required="false"
           :label-class="'db mb2'"
           :input-class="'db mb3'"
@@ -43,14 +43,8 @@
 
         <!-- Actions -->
         <div class="">
-          <div class="flex-ns justify-between">
-            <div>
-            </div>
-            <div class="">
-              <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3 pointer" data-cy="cancel-add-work-information" @click="editMode = false">{{ $t('app.cancel') }}</a>
-              <loading-button :classes="'btn add w-auto-ns w-100 mb2 pv2 ph3'" :state="loadingState" :text="$t('app.save')" :cypress-selector="'submit-add-work-information'" />
-            </div>
-          </div>
+          <loading-button :classes="'btn add w-auto-ns w-100 mb2 pv2 ph3'" :state="loadingState" :text="$t('app.save')" :cypress-selector="'submit-add-work-information'" />
+          <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3 pointer" data-cy="cancel-add-work-information" @click="editMode = false">{{ $t('app.cancel') }}</a>
         </div>
       </form>
     </template>

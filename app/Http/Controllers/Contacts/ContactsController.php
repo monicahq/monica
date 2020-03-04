@@ -73,7 +73,6 @@ class ContactsController extends Controller
      * Display the profile of the contact.
      *
      * @param Contact $contact
-     *
      * @return Response
      */
     public function show(Contact $contact): Response
@@ -112,7 +111,7 @@ class ContactsController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function create(Request $request)
+    public function create(Request $request): JsonResponse
     {
         $contact = app(CreateContact::class)->execute([
             'account_id' => auth()->user()->account_id,

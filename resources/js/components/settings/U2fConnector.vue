@@ -58,7 +58,7 @@
             v-model="keyName"
             :title="$t('settings.u2f_key_name')"
             :value="keyName"
-            :input-type="'text'"
+            :type="'text'"
             :width="150"
             :required="true"
             @keyup.enter="showRegisterModalTab('2');startRegister();"

@@ -84,10 +84,10 @@
 
             <ul class="ma0 list pt3 ph2 bb">
               <li class="di">
-                <a href="" class="bt bl br no-underline ph2 pt2 pb2 bg-white bb-0" style="border-bottom: 1px solid #fff">Reminders <span>4</span></a>
+                <a href="" class="bt bl br no-underline ph2 pt2 pb2 bg-white bb-0" style="border-bottom: 1px solid #fff">Reminders</a>
               </li>
               <li class="di">
-                <a href="" class="bt bl br no-underline ph2 pt2 pb2 dib">Tasks <span>4</span></a>
+                <a href="" class="bt bl br no-underline ph2 pt2 pb2 dib">Tasks</a>
               </li>
             </ul>
 

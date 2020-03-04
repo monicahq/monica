@@ -15,7 +15,7 @@
     <label
       v-if="label"
       :for="name"
-      class="mb2"
+      :class="customLabelClasses"
     >
       {{ label }}
     </label>
@@ -25,7 +25,7 @@
       :value="selectedOption"
       :name="name"
       :required="required"
-      :class="classes"
+      :class="customInputClasses"
       @input="onInput"
     >
       <template v-if="Array.isArray(options)">
@@ -92,7 +92,11 @@ export default {
       type: Boolean,
       default: true,
     },
-    customClass: {
+    labelClass: {
+      type: String,
+      default: '',
+    },
+    inputClass: {
       type: String,
       default: '',
     },
@@ -106,7 +110,12 @@ export default {
   },
 
   created: function() {
-    this.classes = this.customClass != '' ? this.customClass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0';
+    this.customInputClasses = this.inputClass + ' ' + this.customInputClasses;
+    this.customLabelClasses = this.labelClass + ' ' + this.customLabelClasses;
+
+    if (this.required) {
+      this.customLabelClasses = this.customLabelClasses + ' b';
+    }
   },
 
   watch: {

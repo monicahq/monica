@@ -90,7 +90,7 @@
           <form-input
             :id="'add-category-name'"
             v-model="createCategoryForm.name"
-            :input-type="'text'"
+            :type="'text'"
             :required="true"
             :title="$t('settings.personalization_activity_type_category_modal_question')"
           />
@@ -114,7 +114,7 @@
           <form-input
             :id="'update-category-name'"
             v-model="updateCategoryForm.name"
-            :input-type="'text'"
+            :type="'text'"
             :required="true"
             :title="$t('settings.personalization_activity_type_category_modal_question')"
           />
@@ -138,7 +138,7 @@
           <form-input
             :id="'add-type-name'"
             v-model="createTypeForm.name"
-            :input-type="'text'"
+            :type="'text'"
             :required="true"
             :title="$t('settings.personalization_activity_type_modal_question')"
           />
@@ -162,7 +162,7 @@
           <form-input
             :id="'update-type-name'"
             v-model="updateTypeForm.name"
-            :input-type="'text'"
+            :type="'text'"
             :required="true"
             :title="$t('settings.personalization_activity_type_modal_question')"
           />

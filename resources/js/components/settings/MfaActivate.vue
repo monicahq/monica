@@ -40,7 +40,7 @@
             :id="'one_time_password1'"
             v-model="one_time_password"
             :title="$t('auth.2fa_one_time_password')"
-            :input-type="'number'"
+            :type="'number'"
             :width="100"
             :required="true"
           />
@@ -65,7 +65,7 @@
             :id="'one_time_password2'"
             v-model="one_time_password"
             :title="$t('auth.2fa_one_time_password')"
-            :input-type="'number'"
+            :type="'number'"
             :width="100"
             :required="true"
           />

@@ -38,7 +38,7 @@
             <form-input
               :id="'cardholder-name'"
               v-model="name"
-              :input-type="'text'"
+              :type="'text'"
               :iclass="'br3 b--black-30 ba pa3 w-100 f4'"
               :required="true"
               :title="$t('settings.subscriptions_upgrade_name')"
@@ -49,7 +49,7 @@
             <form-input
               :id="'address-zip'"
               v-model="zip"
-              :input-type="'text'"
+              :type="'text'"
               :iclass="'br3 b--black-30 ba pa3 w-100 f4'"
               :title="$t('settings.subscriptions_upgrade_zip')"
             />

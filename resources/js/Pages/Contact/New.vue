@@ -43,7 +43,7 @@
               <form-input
                 v-model="form.firstname"
                 :id="'first_name'"
-                :input-type="'text'"
+                :type="'text'"
                 :required="true"
                 :label-class="'db mb2'"
                 :input-class="'w-100'"
@@ -55,7 +55,7 @@
               <form-input
                 v-model="form.lastname"
                 :id="'last_name'"
-                :input-type="'text'"
+                :type="'text'"
                 :required="false"
                 :label-class="'db mb2'"
                 :input-class="'w-100'"
@@ -67,7 +67,7 @@
               <form-input
                 v-model="form.nickname"
                 :id="'nickname'"
-                :input-type="'text'"
+                :type="'text'"
                 :required="false"
                 :label-class="'db mb2'"
                 :input-class="'w-100'"
@@ -86,15 +86,13 @@
             </form-select>
           </div>
 
-          <div class="ph4-ns ph3 pv3">
-            <div class="flex-ns justify-between">
-              <div>
-                <inertia-link href="/people" class="btn w-auto-ns w-100 mb2 pb0-ns">{{ $t('app.cancel') }}</inertia-link>
-              </div>
-              <div>
-                <button class="btn w-auto-ns w-100 mb2 pb0-ns" name="save_and_add_another" type="submit">{{ $t('people.people_save_and_add_another_cta') }}</button>
-                <button class="btn w-auto-ns w-100 mb2 pb0-ns" name="save" value="true" type="submit">{{ $t('people.people_add_cta') }}</button>
-              </div>
+          <div class="ph4-ns ph3 pv3 flex-ns justify-between">
+            <div>
+              <button class="btn w-auto-ns w-100 pb0-ns" name="save_and_add_another" type="submit">{{ $t('people.people_save_and_add_another_cta') }}</button>
+              <button class="btn w-auto-ns w-100 pb0-ns" name="save" value="true" type="submit">{{ $t('people.people_add_cta') }}</button>
+            </div>
+            <div>
+              <inertia-link href="/people" class="btn w-auto-ns w-100 pb0-ns">{{ $t('app.cancel') }}</inertia-link>
             </div>
           </div>
 

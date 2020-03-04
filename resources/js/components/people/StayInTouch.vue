@@ -130,7 +130,7 @@
                   <form-input
                     :id="'frequency'"
                     v-model.number="frequencyInput"
-                    :input-type="'number'"
+                    :type="'number'"
                     :width="60"
                     :required="true"
                     :validator="$v.frequencyInput"

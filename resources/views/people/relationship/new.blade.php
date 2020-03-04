@@ -51,7 +51,7 @@
               <div class="dtc pr2">
                 <form-input
                   value=""
-                  :input-type="'text'"
+                  :type="'text'"
                   :id="'first_name'"
                   :required="true"
                   :title="'{{ trans('people.people_add_firstname') }}'">
@@ -60,7 +60,7 @@
               <div class="dtc">
                 <form-input
                   value=""
-                  :input-type="'text'"
+                  :type="'text'"
                   :id="'last_name'"
                   :required="false"
                   :title="'{{ trans('people.people_add_lastname') }}'">
@@ -74,7 +74,7 @@
               <div class="dtc pr2">
                 <form-input
                   value=""
-                  :input-type="'text'"
+                  :type="'text'"
                   :id="'last_name'"
                   :required="false"
                   :title="'{{ trans('people.people_add_lastname') }}'">
@@ -83,7 +83,7 @@
               <div class="dtc">
                 <form-input
                   value=""
-                  :input-type="'text'"
+                  :type="'text'"
                   :id="'first_name'"
                   :required="true"
                   :title="'{{ trans('people.people_add_firstname') }}'">

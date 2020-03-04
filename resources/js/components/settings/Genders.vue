@@ -80,7 +80,7 @@
             <form-input
               :id="''"
               v-model="createForm.name"
-              :input-type="'text'"
+              :type="'text'"
               :required="true"
               :title="$t('settings.personalization_genders_modal_name')"
             />
@@ -129,7 +129,7 @@
             <form-input
               :id="''"
               v-model="updateForm.name"
-              :input-type="'text'"
+              :type="'text'"
               :required="true"
               :title="$t('settings.personalization_genders_modal_name')"
             />

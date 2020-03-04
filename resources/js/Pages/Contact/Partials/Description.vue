@@ -30,15 +30,14 @@
         />
 
         <!-- Actions -->
-        <div class="">
-          <div class="flex-ns justify-between">
-            <div>
-              <a v-if="localDescription" class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3" href="#" data-cy="clear-description" @click.prevent="clear()">❌ {{ $t('app.clear') }}</a>
-            </div>
-            <div class="">
-              <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3 pointer" data-cy="cancel-add-description" @click="editMode = false">{{ $t('app.cancel') }}</a>
-              <loading-button :classes="'btn add w-auto-ns w-100 mb2 pv2 ph3'" :state="loadingState" :text="$t('app.save')" :cypress-selector="'submit-add-description'" />
-            </div>
+
+        <div class="flex-ns justify-between">
+          <div>
+            <loading-button :classes="'btn add w-auto-ns w-100 pv2 ph3'" :state="loadingState" :text="$t('app.save')" :cypress-selector="'submit-add-description'" />
+            <a class="btn dib tc w-auto-ns w-100 pv2 ph3 pointer" data-cy="cancel-add-description" @click="editMode = false">{{ $t('app.cancel') }}</a>
+          </div>
+          <div>
+            <a v-if="localDescription" class="btn dib tc w-auto-ns w-100 pv2 ph3" href="#" data-cy="clear-description" @click.prevent="clear()">❌ {{ $t('app.clear') }}</a>
           </div>
         </div>
       </form>

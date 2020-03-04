@@ -18,6 +18,7 @@
       :class="customLabelClasses"
     >
       {{ title }}
+      <span v-if="!required">Optional</span>
     </label>
     <input
       :id="id"
@@ -29,6 +30,8 @@
       :class="customInputClasses"
       :value="value"
       :maxlength="maxlength"
+      :min="min"
+      :max="max"
       @input="onInput($event)"
       @blur="onBlur($event)"
       @change="onChange($event)"
@@ -87,6 +90,14 @@ export default {
       default: -1,
     },
     maxlength: {
+      type: Number,
+      default: null,
+    },
+    min: {
+      type: Number,
+      default: null,
+    },
+    max: {
       type: Number,
       default: null,
     },

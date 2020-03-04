@@ -53,7 +53,7 @@
           <form-input
             :id="'name'"
             v-model="newGift.name"
-            :input-type="'text'"
+            :type="'text'"
             :maxlength="255"
             :required="true"
             :class="'dtc pr2'"
@@ -89,7 +89,7 @@
           <form-input
             :id="'comment'"
             v-model="newGift.comment"
-            :input-type="'text'"
+            :type="'text'"
             :class="'dtc pr2'"
             :title="$t('people.gifts_add_comment')"
             @submit="store"
@@ -101,7 +101,7 @@
           <form-input
             :id="'url'"
             v-model="newGift.url"
-            :input-type="'text'"
+            :type="'text'"
             :class="'dtc pr2'"
             :title="$t('people.gifts_add_link')"
             :placeholder="'https://'"
@@ -114,7 +114,7 @@
           <form-input
             :id="'amount'"
             v-model="newGift.amount"
-            :input-type="'number'"
+            :type="'number'"
             :class="'dtc pr2'"
             :title="$t('people.gifts_add_value')"
             :required="displayAmount"

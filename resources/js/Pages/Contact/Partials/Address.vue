@@ -15,8 +15,9 @@
       <!-- list of addresses -->
       <ul class="ma0 pl0 list">
         <li v-for="address in contact.addresses" :key="address.id">
-          {{ address.full }} <a :href="address.google_map_link">Map</a>
+          {{ address.full }} <a :href="address.google_map_link" target="_blank" rel="noopener">Map</a>
         </li>
+        <li v-if="contact.addresses.length == 0">No address yet</li>
       </ul>
     </template>
 
@@ -29,7 +30,7 @@
           v-model="form.street"
           v-on:escape="editMode = false"
           :id="'title'"
-          :input-type="'text'"
+          :type="'text'"
           :required="false"
           :label-class="'db mb2'"
           :input-class="'db mb2'"
@@ -42,7 +43,7 @@
               v-model="form.province"
               v-on:escape="editMode = false"
               :id="'title'"
-              :input-type="'text'"
+              :type="'text'"
               :required="false"
               :label-class="'db mb2'"
               :input-class="'db'"
@@ -54,7 +55,7 @@
               v-model="form.postal_code"
               v-on:escape="editMode = false"
               :id="'title'"
-              :input-type="'text'"
+              :type="'text'"
               :required="false"
               :label-class="'db mb2'"
               :input-class="'db'"
@@ -69,7 +70,7 @@
               v-model="form.city"
               v-on:escape="editMode = false"
               :id="'title'"
-              :input-type="'text'"
+              :type="'text'"
               :required="false"
               :label-class="'db mb2'"
               :input-class="'db'"
@@ -81,7 +82,7 @@
               v-model="form.country"
               v-on:escape="editMode = false"
               :id="'title'"
-              :input-type="'text'"
+              :type="'text'"
               :required="false"
               :label-class="'db mb2'"
               :input-class="'db'"
@@ -92,14 +93,8 @@
 
         <!-- Actions -->
         <div class="">
-          <div class="flex-ns justify-between">
-            <div>
-            </div>
-            <div class="">
-              <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3 pointer" data-cy="cancel-add-work-information" @click="editMode = false">{{ $t('app.cancel') }}</a>
-              <loading-button :classes="'btn add w-auto-ns w-100 mb2 pv2 ph3'" :state="loadingState" :text="$t('app.save')" :cypress-selector="'submit-add-work-information'" />
-            </div>
-          </div>
+          <loading-button :classes="'btn add w-auto-ns w-100 mb2 pv2 ph3'" :state="loadingState" :text="$t('app.save')" :cypress-selector="'submit-add-work-information'" />
+          <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3 pointer" data-cy="cancel-add-work-information" @click="editMode = false">{{ $t('app.cancel') }}</a>
         </div>
       </form>
     </template>
