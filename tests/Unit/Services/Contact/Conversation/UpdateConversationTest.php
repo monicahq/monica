@@ -23,11 +23,11 @@ class UpdateConversationTest extends TestCase
             'happened_at' => '2008-01-01',
         ]);
         $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $conversation->account->id,
+            'account_id' => $conversation->account_id,
         ]);
 
         $request = [
-            'account_id' => $conversation->account->id,
+            'account_id' => $conversation->account_id,
             'conversation_id' => $conversation->id,
             'happened_at' => '2010-02-02',
             'contact_field_type_id' => $contactFieldType->id,
@@ -68,7 +68,7 @@ class UpdateConversationTest extends TestCase
         $account = factory(Account::class)->create();
         $conversation = factory(Conversation::class)->create([]);
         $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $conversation->account->id,
+            'account_id' => $conversation->account_id,
         ]);
 
         $request = [

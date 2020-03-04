@@ -26,7 +26,7 @@ class Call extends Resource
             'emotions' => EmotionResource::collection($this->emotions),
             'url' => route('api.call', $this->id),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'contact' => new ContactShortResource($this->contact),
             'created_at' => DateHelper::getTimestamp($this->created_at),

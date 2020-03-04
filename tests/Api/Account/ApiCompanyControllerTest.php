@@ -30,7 +30,7 @@ class ApiCompanyControllerTest extends ApiTestCase
         $user = $this->signin();
 
         factory(Company::class, 3)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/companies');
@@ -75,7 +75,7 @@ class ApiCompanyControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $company = factory(Company::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('get', '/api/companies/'.$company->id);
@@ -122,7 +122,7 @@ class ApiCompanyControllerTest extends ApiTestCase
         ]);
 
         $this->assertDatabaseHas('companies', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $companyId,
             'name' => 'Central Perk',
             'number_of_employees' => null,
@@ -135,7 +135,7 @@ class ApiCompanyControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $company = factory(Company::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('put', '/api/companies/'.$company->id, [
@@ -159,7 +159,7 @@ class ApiCompanyControllerTest extends ApiTestCase
         ]);
 
         $this->assertDatabaseHas('companies', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $companyId,
             'name' => 'Central Perk Central',
             'number_of_employees' => 30,
@@ -189,7 +189,7 @@ class ApiCompanyControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $company = factory(Company::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('delete', '/api/companies/'.$company->id);
@@ -197,7 +197,7 @@ class ApiCompanyControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $this->assertdatabasemissing('companies', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $company->id,
         ]);
     }

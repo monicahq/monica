@@ -34,17 +34,17 @@ class ApiNotesTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note1 = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note2 = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -69,17 +69,17 @@ class ApiNotesTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note1 = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note2 = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -114,14 +114,14 @@ class ApiNotesTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note1 = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $note2 = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
 
@@ -156,7 +156,7 @@ class ApiNotesTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/notes', [
@@ -179,7 +179,7 @@ class ApiNotesTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $note_id);
         $this->assertDatabaseHas('notes', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $note_id,
             'body' => 'the body of the note',
@@ -194,7 +194,7 @@ class ApiNotesTest extends ApiTestCase
 
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/notes', [
@@ -218,7 +218,7 @@ class ApiNotesTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $note_id);
         $this->assertDatabaseHas('notes', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $note_id,
             'body' => 'the body of the note',
@@ -232,7 +232,7 @@ class ApiNotesTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/notes', [
@@ -268,10 +268,10 @@ class ApiNotesTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -296,7 +296,7 @@ class ApiNotesTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $note_id);
         $this->assertDatabaseHas('notes', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $note_id,
             'body' => 'the body of the note',
@@ -311,10 +311,10 @@ class ApiNotesTest extends ApiTestCase
 
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -340,7 +340,7 @@ class ApiNotesTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $note_id);
         $this->assertDatabaseHas('notes', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $note_id,
             'body' => 'the body of the note',
@@ -354,7 +354,7 @@ class ApiNotesTest extends ApiTestCase
     {
         $user = $this->signin();
         $note = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/notes/'.$note->id, [
@@ -376,7 +376,7 @@ class ApiNotesTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
         $note = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -394,14 +394,14 @@ class ApiNotesTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
         $this->assertDatabaseHas('notes', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $note->id,
         ]);
@@ -410,7 +410,7 @@ class ApiNotesTest extends ApiTestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('notes', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $note->id,
         ]);

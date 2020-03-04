@@ -32,17 +32,17 @@ class ApiCallControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $call1 = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $call2 = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -67,17 +67,17 @@ class ApiCallControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $call1 = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $call2 = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -112,14 +112,14 @@ class ApiCallControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $call1 = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $call2 = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
 
@@ -154,7 +154,7 @@ class ApiCallControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/calls', [
@@ -175,7 +175,7 @@ class ApiCallControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $callId);
         $this->assertDatabaseHas('calls', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $callId,
             'content' => 'the call',
@@ -188,7 +188,7 @@ class ApiCallControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/calls', [
@@ -224,10 +224,10 @@ class ApiCallControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $call = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -250,7 +250,7 @@ class ApiCallControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $callId);
         $this->assertDatabaseHas('calls', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $callId,
             'content' => 'the call',
@@ -263,10 +263,10 @@ class ApiCallControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $call = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -286,7 +286,7 @@ class ApiCallControllerTest extends ApiTestCase
 
         $contact = factory(Contact::class)->create([]);
         $call = factory(Call::class)->create([
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -303,14 +303,14 @@ class ApiCallControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $call = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
         $this->assertDatabaseHas('calls', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $call->id,
         ]);
@@ -319,7 +319,7 @@ class ApiCallControllerTest extends ApiTestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('calls', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $call->id,
         ]);
@@ -341,7 +341,7 @@ class ApiCallControllerTest extends ApiTestCase
         $user = $this->signin();
         $contact = factory(Contact::class)->create([]);
         $call = factory(Call::class)->create([
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
         ]);
 

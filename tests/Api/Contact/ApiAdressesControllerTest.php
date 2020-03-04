@@ -37,9 +37,9 @@ class ApiAdressesControllerTest extends ApiTestCase
     public function it_gets_a_list_of_addresses()
     {
         $user = $this->signin();
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
         $address = factory(Address::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -67,9 +67,9 @@ class ApiAdressesControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
         factory(Address::class, 20)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -100,9 +100,9 @@ class ApiAdressesControllerTest extends ApiTestCase
     public function it_gets_addresses_for_a_specific_contact()
     {
         $user = $this->signin();
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
         $address = factory(Address::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -131,9 +131,9 @@ class ApiAdressesControllerTest extends ApiTestCase
     public function it_gets_a_specific_address()
     {
         $user = $this->signin();
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
         $address = factory(Address::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -157,7 +157,7 @@ class ApiAdressesControllerTest extends ApiTestCase
     public function it_creates_an_address()
     {
         $user = $this->signin();
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
 
         $response = $this->json('POST', '/api/addresses', [
             'contact_id' => $contact->id,
@@ -170,7 +170,7 @@ class ApiAdressesControllerTest extends ApiTestCase
         $response->assertStatus(201);
 
         $this->assertDatabaseHas('addresses', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'name' => 'address name',
         ]);
@@ -196,7 +196,7 @@ class ApiAdressesControllerTest extends ApiTestCase
     public function create_addresses_gets_an_error_if_fields_are_missing()
     {
         $user = $this->signin();
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
 
         $response = $this->json('POST', '/api/addresses', [
         ]);
@@ -231,9 +231,9 @@ class ApiAdressesControllerTest extends ApiTestCase
     public function it_updates_an_address()
     {
         $user = $this->signin();
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
         $address = factory(Address::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'name' => 'address name',
         ]);
@@ -260,7 +260,7 @@ class ApiAdressesControllerTest extends ApiTestCase
         ]);
 
         $this->assertDatabaseHas('addresses', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'place_id' => $address->place->id,
             'id' => $address->id,
@@ -273,7 +273,7 @@ class ApiAdressesControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $address = factory(Address::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/addresses/'.$address->id, []);
@@ -290,7 +290,7 @@ class ApiAdressesControllerTest extends ApiTestCase
 
         $contact = factory(Contact::class)->create([]);
         $address = factory(Address::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/addresses/'.$address->id, [
@@ -304,9 +304,9 @@ class ApiAdressesControllerTest extends ApiTestCase
     public function it_deletes_an_address()
     {
         $user = $this->signin();
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
         $address = factory(Address::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -320,7 +320,7 @@ class ApiAdressesControllerTest extends ApiTestCase
         ]);
 
         $this->assertDatabaseMissing('addresses', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $address->id,
         ]);

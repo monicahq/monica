@@ -23,7 +23,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
         $relationshipType = factory(RelationshipType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         // make sure contact_is is an integer
@@ -121,16 +121,16 @@ class ApiRelationshipControllerTest extends ApiTestCase
     public function it_creates_a_new_resource()
     {
         $user = $this->signin();
-        $contactA = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $contactB = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $contactA = factory(Contact::class)->create(['account_id' => $user->account_id]);
+        $contactB = factory(Contact::class)->create(['account_id' => $user->account_id]);
         $relationshipType = factory(RelationshipType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
         $relationshipTypeB = factory(RelationshipType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'name' => 'nephew',
             'name_reverse_relationship' => 'uncle',
         ]);
@@ -162,22 +162,22 @@ class ApiRelationshipControllerTest extends ApiTestCase
     public function it_displays_a_relationship()
     {
         $user = $this->signin();
-        $contactA = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $contactB = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $contactA = factory(Contact::class)->create(['account_id' => $user->account_id]);
+        $contactB = factory(Contact::class)->create(['account_id' => $user->account_id]);
         $relationshipType = factory(RelationshipType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
         $relationshipTypeB = factory(RelationshipType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'name' => 'nephew',
             'name_reverse_relationship' => 'uncle',
         ]);
 
         $relationship = factory(Relationship::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'relationship_type_id' => $relationshipType->id,
             'contact_is' => $contactA->id,
             'of_contact' => $contactB->id,
@@ -196,29 +196,29 @@ class ApiRelationshipControllerTest extends ApiTestCase
     public function it_deletes_a_relationship()
     {
         $user = $this->signin();
-        $contactA = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $contactB = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $contactA = factory(Contact::class)->create(['account_id' => $user->account_id]);
+        $contactB = factory(Contact::class)->create(['account_id' => $user->account_id]);
         $relationshipType = factory(RelationshipType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
         $relationshipTypeB = factory(RelationshipType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'name' => 'nephew',
             'name_reverse_relationship' => 'uncle',
         ]);
 
         $relationship = factory(Relationship::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'relationship_type_id' => $relationshipType->id,
             'contact_is' => $contactA->id,
             'of_contact' => $contactB->id,
         ]);
 
         $relationshipB = factory(Relationship::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'relationship_type_id' => $relationshipTypeB->id,
             'contact_is' => $contactB->id,
             'of_contact' => $contactA->id,
@@ -265,7 +265,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $relationship = factory(Relationship::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $relationshipType = factory(RelationshipType::class)->create();
 
@@ -282,7 +282,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $relationship = factory(Relationship::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         // make sure relationship type id is an integer
@@ -298,7 +298,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $relationship = factory(Relationship::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $relationshipType = factory(RelationshipType::class)->create();
 
@@ -313,22 +313,22 @@ class ApiRelationshipControllerTest extends ApiTestCase
     public function it_updates_a_relationship()
     {
         $user = $this->signin();
-        $contactA = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $contactB = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $contactA = factory(Contact::class)->create(['account_id' => $user->account_id]);
+        $contactB = factory(Contact::class)->create(['account_id' => $user->account_id]);
         $relationshipType = factory(RelationshipType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
         $relationshipTypeC = factory(RelationshipType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'name' => 'fuckfriend',
             'name_reverse_relationship' => 'funnysituation',
         ]);
 
         $relationship = factory(Relationship::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'relationship_type_id' => $relationshipType->id,
             'contact_is' => $contactA->id,
             'of_contact' => $contactB->id,
@@ -354,22 +354,22 @@ class ApiRelationshipControllerTest extends ApiTestCase
     public function it_displays_all_relationships_of_a_contact()
     {
         $user = $this->signin();
-        $contactA = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $contactB = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $contactA = factory(Contact::class)->create(['account_id' => $user->account_id]);
+        $contactB = factory(Contact::class)->create(['account_id' => $user->account_id]);
         $relationshipType = factory(RelationshipType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
         $relationshipTypeB = factory(RelationshipType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'name' => 'nephew',
             'name_reverse_relationship' => 'uncle',
         ]);
 
         $relationship = factory(Relationship::class, 3)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'relationship_type_id' => $relationshipType->id,
             'contact_is' => $contactA->id,
             'of_contact' => $contactB->id,
