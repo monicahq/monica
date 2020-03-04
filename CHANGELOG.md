@@ -19,6 +19,7 @@
 
 ### Fixes:
 
+* Fix dates being off by one day
 * Fix vcard categories import/export as tags
 * Fix resend email verification feature not sending email
 * Fix edit conversation date not being editable

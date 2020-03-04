@@ -233,7 +233,7 @@ class DateHelper
      */
     private static function formatDate($date, $format): string
     {
-        $date = new Date($date, static::getTimezone());
+        $date = new Date($date);
         $format = trans($format, [], Date::getLocale());
 
         return $date->format($format) ?: '';
