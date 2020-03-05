@@ -1,9 +1,9 @@
 @php
-    function cmp($a, $b)
+    function my_cmpr($a, $b)
     {
         return strcmp($a->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null), $b->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null));
     }
-    usort($relationships, "cmp");
+    usort($relationships, "my_cmpr");
     $curr_relationship = NULL;
 @endphp
 @foreach ($relationships as $relationship)
