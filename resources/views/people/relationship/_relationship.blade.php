@@ -1,7 +1,10 @@
 @php
-    function my_cmpr($a, $b)
+    if(!function_exists('my_cmpr'))
     {
+      function my_cmpr($a, $b)
+      {
         return strcmp($a->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null), $b->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null));
+      }
     }
     usort($relationships, "my_cmpr");
     $curr_relationship = NULL;
