@@ -1,9 +1,24 @@
+@php
+    function cmp($a, $b)
+    {
+        return strcmp($a->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null), $b->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null));
+    }
+    usort($relationships, "cmp");
+    $curr_relationship = NULL;
+@endphp
 @foreach ($relationships as $relationship)
   @if (! $relationship->ofContact)
     @continue
   @endif
   <div class="sidebar-box-paragraph">
-    <span class="silver fw3 ba br2 ph1 {{ htmldir() == 'ltr' ? '' : 'fr' }}">{{ $relationship->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null) }}</span>
+    @php 
+      $relationshipType = $relationship->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null);
+      if( $curr_relationship !== $relationshipType )
+      {
+        echo "<h3>" . relationshipType . "</h3>";
+        $curr_relationship = relationshipType;
+      }
+    @endphp
 
     {{-- NAME --}}
     @if ($relationship->ofContact->is_partial)
