@@ -1,12 +1,10 @@
 @php
-    if(!function_exists('my_cmpr'))
-    {
-      function my_cmpr($a, $b)
-      {
-        return strcmp($a->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null), $b->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null));
-      }
-    }
-    usort($relationships, "my_cmpr");
+    usort($relationships, function ($a, $b) { 
+      return strcmp(
+        $a->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null),
+        $b->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null)
+      ); 
+    });
     $curr_relationship = NULL;
 @endphp
 @foreach ($relationships as $relationship)
@@ -18,8 +16,8 @@
       $relationshipType = $relationship->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null);
       if( $curr_relationship !== $relationshipType )
       {
-        echo "<h3>" . relationshipType . "</h3>";
-        $curr_relationship = relationshipType;
+        echo "<h3>" . $relationshipType . "</h3>";
+        $curr_relationship = $relationshipType;
       }
     @endphp
 
