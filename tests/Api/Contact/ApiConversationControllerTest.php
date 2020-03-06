@@ -148,7 +148,7 @@ class ApiConversationControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contactFieldType = factory(ContactFieldType::class)->create([
             'account_id' => $contact->account_id,
@@ -174,7 +174,7 @@ class ApiConversationControllerTest extends ApiTestCase
 
         $conversation = $this->createConversation($user);
         $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/conversations/'.$conversation->id, [

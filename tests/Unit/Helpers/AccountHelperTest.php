@@ -94,7 +94,7 @@ class AccountHelperTest extends TestCase
         $contact = factory(Contact::class)->create();
 
         factory(User::class)->create([
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ]);
 
         $this->assertEquals(
@@ -109,7 +109,7 @@ class AccountHelperTest extends TestCase
         $contact = factory(Contact::class)->create();
 
         factory(User::class, 3)->create([
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ]);
 
         $this->assertEquals(

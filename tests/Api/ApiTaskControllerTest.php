@@ -34,17 +34,17 @@ class ApiTaskControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task1 = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task2 = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -69,17 +69,17 @@ class ApiTaskControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task1 = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task2 = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -114,14 +114,14 @@ class ApiTaskControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task1 = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $task2 = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
 
@@ -156,7 +156,7 @@ class ApiTaskControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/tasks', [
@@ -178,7 +178,7 @@ class ApiTaskControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $taskId);
         $this->assertDatabaseHas('tasks', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $taskId,
             'title' => 'the task',
@@ -191,7 +191,7 @@ class ApiTaskControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/tasks', [
@@ -213,7 +213,7 @@ class ApiTaskControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $taskId);
         $this->assertDatabaseHas('tasks', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $taskId,
             'title' => 'the task',
@@ -226,7 +226,7 @@ class ApiTaskControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/tasks', [
@@ -262,10 +262,10 @@ class ApiTaskControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -288,7 +288,7 @@ class ApiTaskControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $taskId);
         $this->assertDatabaseHas('tasks', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $taskId,
             'title' => 'the task',
@@ -301,7 +301,7 @@ class ApiTaskControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/tasks/'.$task->id, [
@@ -339,10 +339,10 @@ class ApiTaskControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -351,7 +351,7 @@ class ApiTaskControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $this->assertDatabaseMissing('tasks', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $task->id,
         ]);

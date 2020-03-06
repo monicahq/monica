@@ -15,11 +15,11 @@ class StorageController extends Controller
      */
     public function index()
     {
-        $documents = Document::where('account_id', auth()->user()->account->id)
+        $documents = Document::where('account_id', auth()->user()->account_id)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $photos = Photo::where('account_id', auth()->user()->account->id)
+        $photos = Photo::where('account_id', auth()->user()->account_id)
             ->orderBy('created_at', 'desc')
             ->get();
 

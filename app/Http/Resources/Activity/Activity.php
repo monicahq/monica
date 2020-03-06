@@ -31,7 +31,7 @@ class Activity extends Resource
             'emotions' => EmotionResource::collection($this->emotions),
             'url' => route('api.activity', $this->id),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

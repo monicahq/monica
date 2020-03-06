@@ -46,7 +46,7 @@ class CreateUser extends BaseService
         $user->save();
 
         app(AcceptPolicy::class)->execute([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'ip_address' => $ipAddress,
         ]);

@@ -24,7 +24,7 @@ class DestroyCallTest extends TestCase
         ]);
 
         $request = [
-            'account_id' => $call->account->id,
+            'account_id' => $call->account_id,
             'call_id' => $call->id,
         ];
 
@@ -57,7 +57,7 @@ class DestroyCallTest extends TestCase
         ]);
 
         $request = [
-            'account_id' => $call->account->id,
+            'account_id' => $call->account_id,
             'call_id' => $call->id,
         ];
 
@@ -91,7 +91,7 @@ class DestroyCallTest extends TestCase
         ]);
 
         $request = [
-            'account_id' => $call->account->id,
+            'account_id' => $call->account_id,
             'call_id' => $call->id,
         ];
 
@@ -115,7 +115,7 @@ class DestroyCallTest extends TestCase
         ]);
 
         $request = [
-            'account_id' => $call->account->id,
+            'account_id' => $call->account_id,
             'call_id' => $call->id,
         ];
 

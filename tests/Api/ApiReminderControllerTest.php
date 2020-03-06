@@ -37,17 +37,17 @@ class ApiReminderControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $reminder1 = factory(Reminder::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $reminder2 = factory(Reminder::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
             'delible' => false,
         ]);
@@ -75,17 +75,17 @@ class ApiReminderControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $reminder1 = factory(Reminder::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $reminder2 = factory(Reminder::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -120,14 +120,14 @@ class ApiReminderControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $reminder1 = factory(Reminder::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $reminder2 = factory(Reminder::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
 
@@ -164,7 +164,7 @@ class ApiReminderControllerTest extends ApiTestCase
 
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/reminders', [
@@ -188,7 +188,7 @@ class ApiReminderControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $reminderId);
         $this->assertDatabaseHas('reminders', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $reminderId,
             'title' => 'the title',
@@ -203,7 +203,7 @@ class ApiReminderControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/reminders', [
@@ -249,10 +249,10 @@ class ApiReminderControllerTest extends ApiTestCase
 
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $reminder = factory(Reminder::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -281,7 +281,7 @@ class ApiReminderControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $reminder_id);
         $this->assertDatabaseHas('reminders', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $reminder_id,
             'title' => 'the title',
@@ -296,7 +296,7 @@ class ApiReminderControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $reminder = factory(Reminder::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/reminders/'.$reminder->id, [
@@ -339,10 +339,10 @@ class ApiReminderControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $reminder = factory(Reminder::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -350,7 +350,7 @@ class ApiReminderControllerTest extends ApiTestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('reminders', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $reminder->id,
         ]);

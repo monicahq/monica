@@ -20,9 +20,9 @@ class UpdateContactFieldTest extends TestCase
         $contactField = factory(ContactField::class)->create();
 
         $request = [
-            'account_id' => $contactField->account->id,
+            'account_id' => $contactField->account_id,
             'contact_field_id' => $contactField->id,
-            'contact_id' => $contactField->contact->id,
+            'contact_id' => $contactField->contact_id,
             'contact_field_type_id' => $contactField->contactFieldType->id,
             'data' => 'mark@twain.com',
         ];
@@ -31,7 +31,7 @@ class UpdateContactFieldTest extends TestCase
 
         $this->assertDatabaseHas('contact_fields', [
             'id' => $contactField->id,
-            'account_id' => $contactField->account->id,
+            'account_id' => $contactField->account_id,
             'data' => 'mark@twain.com',
         ]);
     }
@@ -42,9 +42,9 @@ class UpdateContactFieldTest extends TestCase
         $contactField = factory(ContactField::class)->create();
 
         $request = [
-            'account_id' => $contactField->account->id,
+            'account_id' => $contactField->account_id,
             'contact_field_id' => $contactField->id,
-            'contact_id' => $contactField->contact->id,
+            'contact_id' => $contactField->contact_id,
             'contact_field_type_id' => $contactField->contactFieldType->id,
             'data' => null,
         ];
@@ -61,7 +61,7 @@ class UpdateContactFieldTest extends TestCase
         $request = [
             'account_id' => -1,
             'contact_field_id' => $contactField->id,
-            'contact_id' => $contactField->contact->id,
+            'contact_id' => $contactField->contact_id,
             'contact_field_type_id' => $contactField->contactFieldType->id,
             'data' => 'mark@twain.com',
         ];
@@ -76,9 +76,9 @@ class UpdateContactFieldTest extends TestCase
         $contactField = factory(ContactField::class)->create();
 
         $request = [
-            'account_id' => $contactField->account->id,
+            'account_id' => $contactField->account_id,
             'contact_field_id' => -1,
-            'contact_id' => $contactField->contact->id,
+            'contact_id' => $contactField->contact_id,
             'contact_field_type_id' => $contactField->contactFieldType->id,
             'data' => 'mark@twain.com',
         ];
@@ -96,7 +96,7 @@ class UpdateContactFieldTest extends TestCase
         $request = [
             'account_id' => $account->id,
             'contact_field_id' => $contactField->id,
-            'contact_id' => $contactField->contact->id,
+            'contact_id' => $contactField->contact_id,
             'contact_field_type_id' => $contactField->contactFieldType->id,
             'data' => 'mark@twain.com',
         ];

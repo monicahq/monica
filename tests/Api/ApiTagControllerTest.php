@@ -140,10 +140,10 @@ class ApiTagControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $tag1 = factory(Tag::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $tag2 = factory(Tag::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/tags');
@@ -171,7 +171,7 @@ class ApiTagControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $tag = factory(Tag::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/tags/'.$tag->id);
@@ -220,7 +220,7 @@ class ApiTagControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $tag_id);
         $this->assertDatabaseHas('tags', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $tag_id,
             'name' => 'the tag',
         ]);
@@ -231,7 +231,7 @@ class ApiTagControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $tag = factory(Tag::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/tags/'.$tag->id, [
@@ -254,7 +254,7 @@ class ApiTagControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $tag_id);
         $this->assertDatabaseHas('tags', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $tag_id,
             'name' => 'the tag',
         ]);
@@ -265,7 +265,7 @@ class ApiTagControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $tag = factory(Tag::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('DELETE', '/api/tags/'.$tag->id);
@@ -273,11 +273,11 @@ class ApiTagControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $this->assertDatabaseMissing('contact_tag', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'tag_id' => $tag->id,
         ]);
         $this->assertDatabaseMissing('tags', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $tag->id,
         ]);
     }
@@ -287,7 +287,7 @@ class ApiTagControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $tag = factory(Tag::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account_id,
@@ -300,12 +300,12 @@ class ApiTagControllerTest extends ApiTestCase
         $response = $this->json('POST', "/api/contacts/{$contact2->id}/setTags", ['tags' => [$tag->name]]);
 
         $this->assertDatabaseHas('contact_tag', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
             'tag_id' => $tag->id,
         ]);
         $this->assertDatabaseHas('contact_tag', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
             'tag_id' => $tag->id,
         ]);
@@ -315,17 +315,17 @@ class ApiTagControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $this->assertDatabaseMissing('contact_tag', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
             'tag_id' => $tag->id,
         ]);
         $this->assertDatabaseMissing('contact_tag', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
             'tag_id' => $tag->id,
         ]);
         $this->assertDatabaseMissing('tags', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $tag->id,
         ]);
     }
@@ -336,7 +336,7 @@ class ApiTagControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $tag = factory(Tag::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         factory(Contact::class, 10)->create([
             'account_id' => $user->account_id,
@@ -372,7 +372,7 @@ class ApiTagControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $tag = factory(Tag::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         factory(Contact::class, 10)->create([
             'account_id' => $user->account_id,

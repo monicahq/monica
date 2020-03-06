@@ -17,7 +17,7 @@ class DestroyOccupationTest extends TestCase
         $occupation = factory(Occupation::class)->create([]);
 
         $request = [
-            'account_id' => $occupation->account->id,
+            'account_id' => $occupation->account_id,
             'occupation_id' => $occupation->id,
         ];
 

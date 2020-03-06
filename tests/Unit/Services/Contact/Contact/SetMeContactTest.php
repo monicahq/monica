@@ -19,11 +19,11 @@ class SetMeContactTest extends TestCase
     {
         $user = factory(User::class)->create();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $request = [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'contact_id' => $contact->id,
         ];
@@ -32,7 +32,7 @@ class SetMeContactTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'me_contact_id' => $contact->id,
         ]);
     }
@@ -42,11 +42,11 @@ class SetMeContactTest extends TestCase
     {
         $user = factory(User::class)->create();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $request = [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'contact_id' => 0,
         ];
@@ -62,7 +62,7 @@ class SetMeContactTest extends TestCase
         $contact = factory(Contact::class)->create();
 
         $request = [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'contact_id' => $contact->id,
         ];

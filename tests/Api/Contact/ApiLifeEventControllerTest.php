@@ -144,7 +144,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $lifeEventType = factory(LifeEventType::class)->create([
             'account_id' => $contact->account_id,
@@ -174,7 +174,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/lifeevents', [
@@ -214,7 +214,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $lifeEventType = factory(LifeEventType::class)->create([
             'account_id' => $contact->account_id,
@@ -242,7 +242,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
 
         $lifeEvent = $this->createLifeEvent($user);
         $lifeEventType = factory(LifeEventType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/lifeevents/'.$lifeEvent->id, [
@@ -266,7 +266,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
 
         $lifeEvent = $this->createLifeEvent($user);
         $lifeEventType = factory(LifeEventType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/lifeevents/23929390', [
@@ -295,7 +295,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
 
         $lifeEvent = $this->createLifeEvent($user);
         $lifeEventType = factory(LifeEventType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/lifeevents/'.$lifeEvent->id, [

@@ -24,7 +24,7 @@ class ContactFieldType extends Resource
             'delible' => (bool) $this->delible,
             'type' => $this->type,
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

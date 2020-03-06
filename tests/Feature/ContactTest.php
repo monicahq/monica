@@ -449,7 +449,7 @@ class ContactTest extends FeatureTestCase
         [$user, $contact] = $this->fetchUser();
 
         $contacts = factory(Contact::class, 3)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         config(['monica.number_of_allowed_contacts_free_account' => 1]);
@@ -465,7 +465,7 @@ class ContactTest extends FeatureTestCase
         [$user, $contact] = $this->fetchUser();
 
         $contacts = factory(Contact::class, 3)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         config(['monica.number_of_allowed_contacts_free_account' => 1]);

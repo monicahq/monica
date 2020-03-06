@@ -22,7 +22,7 @@ class UpdateDeceasedInformationTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_deceased' => true,
             'is_date_known' => false,
@@ -33,13 +33,13 @@ class UpdateDeceasedInformationTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'is_dead' => 1,
         ]);
 
         // now set the contact as not dead anymore (a zombie, basically)
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_deceased' => false,
             'is_date_known' => false,
@@ -50,7 +50,7 @@ class UpdateDeceasedInformationTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'is_dead' => 0,
             'deceased_special_date_id' => null,
             'deceased_reminder_id' => null,
@@ -63,7 +63,7 @@ class UpdateDeceasedInformationTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_deceased' => true,
             'is_date_known' => true,
@@ -79,13 +79,13 @@ class UpdateDeceasedInformationTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'deceased_special_date_id' => $specialDate->id,
         ]);
 
         $this->assertDatabaseHas('special_dates', [
             'id' => $specialDate->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'is_age_based' => false,
             'is_year_unknown' => false,
         ]);
@@ -97,7 +97,7 @@ class UpdateDeceasedInformationTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_deceased' => true,
             'is_date_known' => true,
@@ -113,13 +113,13 @@ class UpdateDeceasedInformationTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'deceased_special_date_id' => $specialDate->id,
         ]);
 
         $this->assertDatabaseHas('special_dates', [
             'id' => $specialDate->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'is_age_based' => false,
             'is_year_unknown' => true,
         ]);
@@ -131,7 +131,7 @@ class UpdateDeceasedInformationTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_deceased' => true,
             'is_date_known' => true,
@@ -160,7 +160,7 @@ class UpdateDeceasedInformationTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_date_known' => true,
             'day' => 10,
@@ -198,12 +198,12 @@ class UpdateDeceasedInformationTest extends TestCase
     {
         $reminder = factory(Reminder::class)->create([]);
         $contact = factory(Contact::class)->create([
-            'account_id' => $reminder->account->id,
+            'account_id' => $reminder->account_id,
             'deceased_reminder_id' => $reminder->id,
         ]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_deceased' => true,
             'is_date_known' => true,
@@ -225,12 +225,12 @@ class UpdateDeceasedInformationTest extends TestCase
     {
         $special_date = factory(SpecialDate::class)->create();
         $contact = factory(Contact::class)->create([
-            'account_id' => $special_date->account->id,
+            'account_id' => $special_date->account_id,
             'deceased_special_date_id' => $special_date->id,
         ]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_deceased' => true,
             'is_date_known' => true,

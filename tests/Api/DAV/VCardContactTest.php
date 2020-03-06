@@ -22,7 +22,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->get("/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf", [
@@ -52,7 +52,7 @@ class VCardContactTest extends ApiTestCase
         $response->assertHeaderMissing('ETag');
 
         $this->assertDatabaseHas('contacts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'first_name' => 'John',
             'last_name' => 'Doe',
         ]);
@@ -79,15 +79,15 @@ class VCardContactTest extends ApiTestCase
         $response->assertHeaderMissing('ETag');
 
         $this->assertDatabaseHas('contacts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'first_name' => 'John',
             'last_name' => 'Doe',
         ]);
         $this->assertDatabaseHas('photos', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
-        $photo = Photo::where(['account_id' => $user->account->id])->first();
+        $photo = Photo::where(['account_id' => $user->account_id])->first();
 
         Storage::disk('public')->assertExists($photo->new_filename);
     }
@@ -120,7 +120,7 @@ class VCardContactTest extends ApiTestCase
         $response->assertHeaderMissing('ETag');
 
         $this->assertDatabaseHas('contacts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'first_name' => 'John',
             'last_name' => 'Doe',
             'avatar_photo_id' => $photo->id,
@@ -148,15 +148,15 @@ class VCardContactTest extends ApiTestCase
         $response->assertHeaderMissing('ETag');
 
         $this->assertDatabaseHas('contacts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'first_name' => 'John',
             'last_name' => 'Doe',
         ]);
         $this->assertDatabaseHas('photos', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
-        $photo = Photo::where(['account_id' => $user->account->id])->first();
+        $photo = Photo::where(['account_id' => $user->account_id])->first();
 
         Storage::disk('public')->assertExists($photo->new_filename);
     }
@@ -168,7 +168,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf", [], [], [],
@@ -181,7 +181,7 @@ class VCardContactTest extends ApiTestCase
         $response->assertHeaderMissing('ETag');
 
         $this->assertDatabaseHas('contacts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'first_name' => 'John',
             'last_name' => 'Doex',
         ]);
@@ -194,7 +194,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
@@ -211,7 +211,7 @@ class VCardContactTest extends ApiTestCase
         $response->assertHeaderMissing('ETag');
 
         $this->assertDatabaseHas('contacts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'first_name' => 'John',
             'last_name' => 'Doex',
         ]);
@@ -224,7 +224,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
@@ -254,7 +254,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
@@ -271,7 +271,7 @@ class VCardContactTest extends ApiTestCase
         $response->assertHeaderMissing('ETag');
 
         $this->assertDatabaseHas('contacts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'first_name' => 'John',
             'last_name' => 'Doex',
         ]);
@@ -284,7 +284,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
@@ -315,7 +315,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
@@ -336,7 +336,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->call('REPORT', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
@@ -375,7 +375,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->call('REPORT', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
@@ -415,10 +415,10 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->call('REPORT', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],

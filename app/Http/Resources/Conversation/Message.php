@@ -23,7 +23,7 @@ class Message extends Resource
             'written_at' => DateHelper::getTimestamp($this->written_at),
             'written_by_me' => (bool) $this->written_by_me,
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'contact' => new ContactShortResource($this->contact),
             'conversation' => [

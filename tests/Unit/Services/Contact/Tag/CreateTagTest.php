@@ -18,7 +18,7 @@ class CreateTagTest extends TestCase
         $tag = factory(Tag::class)->create([]);
 
         $request = [
-            'account_id' => $tag->account->id,
+            'account_id' => $tag->account_id,
             'name' => 'Central Perk',
         ];
 

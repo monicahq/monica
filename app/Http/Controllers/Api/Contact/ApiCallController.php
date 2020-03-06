@@ -71,7 +71,7 @@ class ApiCallController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -100,7 +100,7 @@ class ApiCallController extends ApiController
                 $request->except(['account_id', 'call_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                         'call_id' => $callId,
                     ]
             );
@@ -126,7 +126,7 @@ class ApiCallController extends ApiController
     {
         try {
             app(DestroyCall::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'call_id' => $callId,
             ]);
         } catch (ModelNotFoundException $e) {

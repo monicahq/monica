@@ -33,7 +33,7 @@ class TasksController extends Controller
     public function store(Request $request): Task
     {
         return app(CreateTask::class)->execute([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => ($request->input('contact_id') == '' ? null : $request->input('contact_id')),
             'title' => $request->input('title'),
             'description' => ($request->input('description') == '' ? null : $request->input('description')),
@@ -50,7 +50,7 @@ class TasksController extends Controller
     public function update(Request $request, Task $task): Task
     {
         return app(UpdateTask::class)->execute([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'task_id' => $task->id,
             'contact_id' => ($request->input('contact_id') == '' ? null : $request->input('contact_id')),
             'title' => $request->input('title'),
@@ -70,7 +70,7 @@ class TasksController extends Controller
     {
         if (app(DestroyTask::class)->execute([
             'task_id' => $task->id,
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
         ])) {
             return $this->respondObjectDeleted($task->id);
         }
