@@ -311,7 +311,7 @@ return [
     'emotion_compassion' => 'חמלה',
     'emotion_sentimentality' => 'רגשנות',
     'emotion_arousal' => 'גירוי',
-    'emotion_desire' => 'Desire',
+    'emotion_desire' => 'שקיקה',
     'emotion_lust' => 'תאווה',
     'emotion_passion' => 'Passion',
     'emotion_infatuation' => 'Infatuation',
