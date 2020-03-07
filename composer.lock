@@ -3903,32 +3903,32 @@
         },
         {
             "name": "monicahq/laravel-cloudflare",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-cloudflare.git",
-                "reference": "75cf29f88315266b70cf54f155d6cb812b9f1479"
+                "reference": "f76dd54e8bab4824adeee3c54e726acaff78a3fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/75cf29f88315266b70cf54f155d6cb812b9f1479",
-                "reference": "75cf29f88315266b70cf54f155d6cb812b9f1479",
+                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/f76dd54e8bab4824adeee3c54e726acaff78a3fe",
+                "reference": "f76dd54e8bab4824adeee3c54e726acaff78a3fe",
                 "shasum": ""
             },
             "require": {
                 "fideloper/proxy": "~4.0",
                 "guzzlehttp/guzzle": "^6.3",
-                "illuminate/console": "^5.5 || ^6.0",
-                "illuminate/http": "^5.5 || ^6.0",
-                "illuminate/support": "^5.5 || ^6.0",
+                "illuminate/console": ">5.5",
+                "illuminate/http": ">5.5",
+                "illuminate/support": ">5.5",
                 "php": ">= 7.2.0"
             },
             "require-dev": {
-                "laravel/framework": "^5.6 || ^6.0",
+                "laravel/framework": ">5.6",
                 "mockery/mockery": "^1.2",
-                "orchestra/testbench": "^3.8",
-                "phpunit/phpunit": "^7.4 || ^8.0",
-                "vimeo/psalm": "^2.0 || ^3.0"
+                "orchestra/testbench": "^5.0",
+                "phpunit/phpunit": "^9.0",
+                "vimeo/psalm": "^3.9"
             },
             "type": "library",
             "extra": {
@@ -3960,7 +3960,7 @@
                 "php",
                 "proxies"
             ],
-            "time": "2019-09-26T18:28:20+00:00"
+            "time": "2020-03-07T11:56:26+00:00"
         },
         {
             "name": "monicahq/laravel-sabre",
