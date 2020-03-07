@@ -309,7 +309,7 @@ return [
 
     'api_title' => 'Accès avec l’API',
     'api_description' => 'L’API peut être utilisée pour manipuler les données de Monica depuis une application externe, comme une application mobile par exemple.',
-    'api_help' => 'Pour utiliser l’API, un jeton est obligatoire. Vous pouvez soit créer un jeton d\'accès personnel (authentification Bearer), soit autoriser un client OAuth à le créer pour vous. Voir la <a href=":url">documentation de l’API</a>.',
+    'api_help' => 'Pour utiliser l’API, un jeton est obligatoire. Vous pouvez soit créer un jeton d’accès personnel (authentification Bearer), soit autoriser un client OAuth à le créer pour vous. Voir la <a href=":url">documentation de l’API</a>.',
     'api_endpoint' => 'Le point de terminaison de l’API pour cette instance Monica est :',
 
     'api_personal_access_tokens' => 'Jeton d’accès personnel',
