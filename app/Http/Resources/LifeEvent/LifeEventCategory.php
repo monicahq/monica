@@ -3,9 +3,9 @@
 namespace App\Http\Resources\LifeEvent;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class LifeEventCategory extends Resource
+class LifeEventCategory extends JsonResource
 {
     /**
      * Transform the resource into an array.

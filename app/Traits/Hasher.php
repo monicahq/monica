@@ -11,11 +11,11 @@ trait Hasher
         return app(IdHasher::class)->encodeId(parent::getRouteKey());
     }
 
-    public function resolveRouteBinding($value)
+    public function resolveRouteBinding($value, $field = null)
     {
         $id = $this->decodeId($value);
 
-        return parent::resolveRouteBinding($id);
+        return parent::resolveRouteBinding($id, $field);
     }
 
     protected function decodeId($value)

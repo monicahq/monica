@@ -4,7 +4,7 @@ namespace App\Http\Resources\Auditlog;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class AuditLogCollection extends ResourceCollection
+class AuditLogCollection extends JsonResourceCollection
 {
     /**
      * Transform the resource collection into an array.

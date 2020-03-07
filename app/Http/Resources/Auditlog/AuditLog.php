@@ -4,9 +4,9 @@ namespace App\Http\Resources\AuditLog;
 
 use App\Helpers\DateHelper;
 use function Safe\json_decode;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class AuditLog extends Resource
+class AuditLog extends JsonResource
 {
     /**
      * Transform the resource into an array.

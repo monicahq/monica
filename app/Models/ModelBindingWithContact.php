@@ -12,9 +12,10 @@ abstract class ModelBindingWithContact extends Model
      * Resolve binding with contact relation.
      *
      * @param  string  $value
-     * @return mixed|null
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function resolveRouteBinding($value)
+    public function resolveRouteBinding($value, $field = null)
     {
         $contact = Route::current()->parameter('contact');
 

@@ -4,7 +4,7 @@ namespace App\Http\Resources\Conversation;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class MessageCollection extends ResourceCollection
+class MessageCollection extends JsonResourceCollection
 {
     /**
      * Transform the resource collection into an array.

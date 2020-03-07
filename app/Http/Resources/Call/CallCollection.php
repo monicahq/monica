@@ -4,7 +4,7 @@ namespace App\Http\Resources\Call;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class CallCollection extends ResourceCollection
+class CallCollection extends JsonResourceCollection
 {
     /**
      * Transform the resource collection into an array.

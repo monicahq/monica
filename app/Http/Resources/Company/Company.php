@@ -3,9 +3,9 @@
 namespace App\Http\Resources\Company;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class Company extends Resource
+class Company extends JsonResource
 {
     /**
      * Transform the resource into an array.

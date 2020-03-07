@@ -3,9 +3,9 @@
 namespace App\Http\Resources\Settings\ContactFieldType;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class ContactFieldType extends Resource
+class ContactFieldType extends JsonResource
 {
     /**
      * Transform the resource into an array.

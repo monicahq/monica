@@ -3,9 +3,9 @@
 namespace App\Http\Resources\Settings\Compliance;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class Compliance extends Resource
+class Compliance extends JsonResource
 {
     /**
      * Transform the resource into an array.

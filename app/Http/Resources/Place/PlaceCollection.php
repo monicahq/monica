@@ -4,7 +4,7 @@ namespace App\Http\Resources\Place;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class PlaceCollection extends ResourceCollection
+class PlaceCollection extends JsonResourceCollection
 {
     /**
      * Transform the resource collection into an array.

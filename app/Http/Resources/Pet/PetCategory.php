@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources\Pet;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class PetCategory extends Resource
+class PetCategory extends JsonResource
 {
     /**
      * Transform the resource into an array.

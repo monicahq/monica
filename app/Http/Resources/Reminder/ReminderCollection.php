@@ -4,7 +4,7 @@ namespace App\Http\Resources\Reminder;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ReminderCollection extends ResourceCollection
+class ReminderCollection extends JsonResourceCollection
 {
     /**
      * Transform the resource collection into an array.

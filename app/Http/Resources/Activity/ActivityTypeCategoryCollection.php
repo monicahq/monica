@@ -4,7 +4,7 @@ namespace App\Http\Resources\Activity;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ActivityTypeCategoryCollection extends ResourceCollection
+class ActivityTypeCategoryCollection extends JsonResourceCollection
 {
     /**
      * Transform the resource collection into an array.

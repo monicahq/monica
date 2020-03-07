@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources\Emotion;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class Emotion extends Resource
+class Emotion extends JsonResource
 {
     /**
      * Transform the resource into an array.

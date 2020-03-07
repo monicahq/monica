@@ -3,10 +3,10 @@
 namespace App\Http\Resources\Activity;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Activity\ActivityTypeCategory as ActivityTypeCategoryResource;
 
-class ActivityType extends Resource
+class ActivityType extends JsonResource
 {
     /**
      * Transform the resource into an array.

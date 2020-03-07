@@ -3,11 +3,11 @@
 namespace App\Http\Resources\Gift;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Photo\Photo as PhotoResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Gift extends Resource
+class Gift extends JsonResource
 {
     /**
      * Transform the resource into an array.

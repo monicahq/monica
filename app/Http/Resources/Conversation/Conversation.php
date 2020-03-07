@@ -3,12 +3,12 @@
 namespace App\Http\Resources\Conversation;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Conversation\Message as MessageResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\Settings\ContactFieldType\ContactFieldType as ContactFieldTypeResource;
 
-class Conversation extends Resource
+class Conversation extends JsonResource
 {
     /**
      * Transform the resource into an array.

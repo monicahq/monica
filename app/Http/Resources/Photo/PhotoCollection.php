@@ -4,7 +4,7 @@ namespace App\Http\Resources\Photo;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class PhotoCollection extends ResourceCollection
+class PhotoCollection extends JsonResourceCollection
 {
     /**
      * Transform the resource collection into an array.

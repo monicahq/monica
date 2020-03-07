@@ -4,7 +4,7 @@ namespace App\Http\Resources\Gift;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class GiftCollection extends ResourceCollection
+class GiftCollection extends JsonResourceCollection
 {
     /**
      * Transform the resource collection into an array.

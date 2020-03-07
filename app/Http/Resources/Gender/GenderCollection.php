@@ -4,7 +4,7 @@ namespace App\Http\Resources\Gender;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class GenderCollection extends ResourceCollection
+class GenderCollection extends JsonResourceCollection
 {
     /**
      * Transform the resource collection into an array.

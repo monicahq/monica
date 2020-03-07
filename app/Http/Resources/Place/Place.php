@@ -3,10 +3,10 @@
 namespace App\Http\Resources\Place;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Country\Country as CountryResource;
 
-class Place extends Resource
+class Place extends JsonResource
 {
     /**
      * Transform the resource into an array.

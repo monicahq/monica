@@ -4,7 +4,7 @@ namespace App\Http\Resources\Note;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class NoteCollection extends ResourceCollection
+class NoteCollection extends JsonResourceCollection
 {
     /**
      * Transform the resource collection into an array.

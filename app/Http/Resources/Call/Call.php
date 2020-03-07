@@ -3,11 +3,11 @@
 namespace App\Http\Resources\Call;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Emotion\Emotion as EmotionResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Call extends Resource
+class Call extends JsonResource
 {
     /**
      * Transform the resource into an array.

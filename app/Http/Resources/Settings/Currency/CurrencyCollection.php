@@ -4,7 +4,7 @@ namespace App\Http\Resources\Settings\Currency;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class CurrencyCollection extends ResourceCollection
+class CurrencyCollection extends JsonResourceCollection
 {
     /**
      * Transform the resource collection into an array.

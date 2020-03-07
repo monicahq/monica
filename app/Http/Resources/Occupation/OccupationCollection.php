@@ -4,7 +4,7 @@ namespace App\Http\Resources\Occupation;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class OccupationCollection extends ResourceCollection
+class OccupationCollection extends JsonResourceCollection
 {
     /**
      * Transform the resource collection into an array.

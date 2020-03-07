@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources\Settings\Currency;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class Currency extends Resource
+class Currency extends JsonResource
 {
     /**
      * Transform the resource into an array.
