@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Pet;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class PetCollection extends JsonResourceCollection
 {
     /**

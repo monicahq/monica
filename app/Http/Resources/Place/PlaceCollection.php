@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Place;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class PlaceCollection extends JsonResourceCollection
 {
     /**

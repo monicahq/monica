@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Call;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class CallCollection extends JsonResourceCollection
 {
     /**

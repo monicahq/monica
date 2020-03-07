@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Auditlog;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class AuditLogCollection extends JsonResourceCollection
 {
     /**

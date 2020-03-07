@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Settings\Currency;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class CurrencyCollection extends JsonResourceCollection
 {
     /**

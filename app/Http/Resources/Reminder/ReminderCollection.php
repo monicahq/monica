@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Reminder;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class ReminderCollection extends JsonResourceCollection
 {
     /**

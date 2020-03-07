@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Conversation;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class MessageCollection extends JsonResourceCollection
 {
     /**

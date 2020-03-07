@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Gender;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class GenderCollection extends JsonResourceCollection
 {
     /**

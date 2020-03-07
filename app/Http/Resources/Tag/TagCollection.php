@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Tag;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class TagCollection extends JsonResourceCollection
 {
     /**

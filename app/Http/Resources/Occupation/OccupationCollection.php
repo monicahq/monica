@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Occupation;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class OccupationCollection extends JsonResourceCollection
 {
     /**

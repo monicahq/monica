@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Photo;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class PhotoCollection extends JsonResourceCollection
 {
     /**

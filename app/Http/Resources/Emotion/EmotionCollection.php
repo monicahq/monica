@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Emotion;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class EmotionCollection extends JsonResourceCollection
 {
     /**

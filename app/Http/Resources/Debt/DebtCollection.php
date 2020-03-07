@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Debt;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class DebtCollection extends JsonResourceCollection
 {
     /**

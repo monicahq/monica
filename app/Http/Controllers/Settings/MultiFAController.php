@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
-use function Safe\json_decode;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Traits\JsonRespondController;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use PragmaRX\Google2FALaravel\Support\Authenticator;

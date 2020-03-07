@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Gift;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class GiftCollection extends JsonResourceCollection
 {
     /**

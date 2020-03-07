@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Address;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class AddressCollection extends JsonResourceCollection
 {
     /**

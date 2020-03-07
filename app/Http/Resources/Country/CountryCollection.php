@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Country;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class CountryCollection extends JsonResourceCollection
 {
     /**

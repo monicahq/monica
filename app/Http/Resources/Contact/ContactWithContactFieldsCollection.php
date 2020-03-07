@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Contact;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class ContactWithContactFieldsCollection extends JsonResourceCollection
 {
     /**

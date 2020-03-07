@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\RelationshipType;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class RelationshipTypeCollection extends JsonResourceCollection
 {
     /**

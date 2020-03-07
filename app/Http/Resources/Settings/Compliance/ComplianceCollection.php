@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Settings\Compliance;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class ComplianceCollection extends JsonResourceCollection
 {
     /**

@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Document;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 class DocumentCollection extends JsonResourceCollection
 {
     /**
