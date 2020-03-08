@@ -10,6 +10,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property Account $account
  * @property Contact $contact
+ * @property int $id
+ * @property string $title
+ * @property string $description
+ * @property string $uuid
+ * @property bool $completed
+ * @property \Carbon\Carbon $completed_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  * @method static Builder completed()
  * @method static Builder inProgress()
  */

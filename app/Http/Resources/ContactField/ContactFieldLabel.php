@@ -21,7 +21,7 @@ class ContactFieldLabel extends Resource
             'type' => $this->label_i18n ?: $this->label,
             'label' => $this->label_i18n ? trans('people.contact_field_label_'.$this->label_i18n) : $this->label,
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

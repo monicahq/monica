@@ -67,7 +67,7 @@ class ApiCompanyController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                         'author_id' => auth()->user()->id,
                     ]
             );
@@ -97,7 +97,7 @@ class ApiCompanyController extends ApiController
                 $request->except(['account_id', 'company_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                         'company_id' => $companyId,
                     ]
             );
@@ -123,7 +123,7 @@ class ApiCompanyController extends ApiController
     {
         try {
             app(DestroyCompany::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'company_id' => $companyId,
             ]);
         } catch (ModelNotFoundException $e) {

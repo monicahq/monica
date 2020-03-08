@@ -20,7 +20,7 @@ class UpdateViewPreferenceTest extends TestCase
         $user = factory(User::class)->create([]);
 
         $request = [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'preference' => 'last_first',
         ];
@@ -29,7 +29,7 @@ class UpdateViewPreferenceTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contacts_sort_order' => 'last_first',
         ]);
 

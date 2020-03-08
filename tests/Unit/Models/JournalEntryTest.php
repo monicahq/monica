@@ -33,7 +33,7 @@ class JournalEntryTest extends TestCase
         $activity->refresh();
 
         $this->assertNotNull($journalEntry->journalable);
-        $this->assertEquals($activity->id, $journalEntry->journalable->id);
+        $this->assertEquals($activity->id, $journalEntry->journalable_id);
         $this->assertNotNull($activity->journalEntry);
         $this->assertEquals($journalEntry->id, $activity->journalEntry->id);
     }
@@ -47,7 +47,7 @@ class JournalEntryTest extends TestCase
         $entry->refresh();
 
         $this->assertNotNull($journalEntry->journalable);
-        $this->assertEquals($entry->id, $journalEntry->journalable->id);
+        $this->assertEquals($entry->id, $journalEntry->journalable_id);
         $this->assertNotNull($entry->journalEntry);
         $this->assertEquals($journalEntry->id, $entry->journalEntry->id);
     }

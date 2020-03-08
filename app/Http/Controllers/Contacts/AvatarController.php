@@ -31,7 +31,7 @@ class AvatarController extends Controller
     {
         // update the avatar
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'source' => $request->input('avatar'),
         ];
@@ -50,7 +50,7 @@ class AvatarController extends Controller
                 }
 
                 $photo = app(UploadPhoto::class)->execute([
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                     'contact_id' => $contact->id,
                     'photo' => $request->photo,
                 ]);
@@ -80,7 +80,7 @@ class AvatarController extends Controller
     {
         // update the avatar
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'source' => 'photo',
             'photo_id' => $photoId,

@@ -13,6 +13,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Account $account
  * @property Contact $contact
  * @property string $parsed_body
+ * @property string $body
+ * @property bool $is_favorited
+ * @property \Carbon\Carbon $favorited_at
+ * @property \Carbon\Carbon $created_at
  */
 class Note extends Model
 {

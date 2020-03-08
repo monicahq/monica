@@ -20,7 +20,7 @@ class ActivityTypeCategory extends Resource
             'object' => 'activityTypeCategory',
             'name' => $this->name,
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

@@ -22,6 +22,8 @@
 
 ### Fixes:
 
+* Fix markdown doesn't work on Activity entries
+* Fix summary of activities showing the same date for every entry
 * Fix vcard categories import/export as tags
 * Fix resend email verification feature not sending email
 * Fix edit conversation date not being editable

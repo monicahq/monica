@@ -37,7 +37,7 @@ class UpdateWorkInformationTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'job' => 'Dunder',
             'company' => null,
         ]);
@@ -62,7 +62,7 @@ class UpdateWorkInformationTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'job' => null,
             'company' => 'Sales',
         ]);

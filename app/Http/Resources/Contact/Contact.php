@@ -113,7 +113,7 @@ class Contact extends Resource
             'notes' => $this->when($withContactField && ! $this->is_partial, NoteResource::collection($this->notes()->latest()->limit(3)->get())),
             'url' => $this->when(! $this->is_partial, route('api.contact', $this->id)),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

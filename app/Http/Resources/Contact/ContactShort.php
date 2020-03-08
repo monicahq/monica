@@ -49,7 +49,7 @@ class ContactShort extends Contact
             ],
             'url' => $this->when(! $this->is_partial, route('api.contact', $this->id)),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
         ];
     }
