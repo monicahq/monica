@@ -34,7 +34,6 @@
         "moneyphp/money": "^3.1",
         "monicahq/laravel-cloudflare": "^1.0",
         "monicahq/laravel-sabre": "^1.2",
-        "nesbot/carbon": "^2.31",
         "ok/ipstack-client": "^1.2",
         "paragonie/constant_time_encoding": "^2.2",
         "pragmarx/countries-laravel": "^0.6.1",
