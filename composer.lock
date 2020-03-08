@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "db042b1bab3ca35935d2824f240de161",
+    "content-hash": "1b22f22cbcc5ed3be54103b17c6d9846",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -4727,76 +4727,6 @@
                 "php"
             ],
             "time": "2020-02-22T20:09:03+00:00"
-        },
-        {
-            "name": "nunomaduro/collision",
-            "version": "v4.1.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nunomaduro/collision.git",
-                "reference": "a430bce33d1ad07f756ea6cae9afce9ef8670b42"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/a430bce33d1ad07f756ea6cae9afce9ef8670b42",
-                "reference": "a430bce33d1ad07f756ea6cae9afce9ef8670b42",
-                "shasum": ""
-            },
-            "require": {
-                "facade/ignition-contracts": "^1.0",
-                "filp/whoops": "^2.4",
-                "jakub-onderka/php-console-highlighter": "^0.4",
-                "php": "^7.2.5",
-                "symfony/console": "^5.0"
-            },
-            "require-dev": {
-                "facade/ignition": "^2.0",
-                "fideloper/proxy": "^4.2",
-                "fruitcake/laravel-cors": "^1.0",
-                "laravel/framework": "^7.0",
-                "laravel/tinker": "^2.0",
-                "nunomaduro/larastan": "^0.5",
-                "orchestra/testbench": "^5.0",
-                "phpstan/phpstan": "^0.12.3",
-                "phpunit/phpunit": "^8.5.1 || ^9.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "NunoMaduro\\Collision\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nuno Maduro",
-                    "email": "enunomaduro@gmail.com"
-                }
-            ],
-            "description": "Cli error handling for console/command-line PHP applications.",
-            "keywords": [
-                "artisan",
-                "cli",
-                "command-line",
-                "console",
-                "error",
-                "handling",
-                "laravel",
-                "laravel-zero",
-                "php",
-                "symfony"
-            ],
-            "time": "2020-03-07T12:46:00+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -12436,6 +12366,76 @@
             ],
             "description": "Map nested JSON structures onto PHP classes",
             "time": "2019-08-15T19:41:25+00:00"
+        },
+        {
+            "name": "nunomaduro/collision",
+            "version": "v4.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nunomaduro/collision.git",
+                "reference": "a430bce33d1ad07f756ea6cae9afce9ef8670b42"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/a430bce33d1ad07f756ea6cae9afce9ef8670b42",
+                "reference": "a430bce33d1ad07f756ea6cae9afce9ef8670b42",
+                "shasum": ""
+            },
+            "require": {
+                "facade/ignition-contracts": "^1.0",
+                "filp/whoops": "^2.4",
+                "jakub-onderka/php-console-highlighter": "^0.4",
+                "php": "^7.2.5",
+                "symfony/console": "^5.0"
+            },
+            "require-dev": {
+                "facade/ignition": "^2.0",
+                "fideloper/proxy": "^4.2",
+                "fruitcake/laravel-cors": "^1.0",
+                "laravel/framework": "^7.0",
+                "laravel/tinker": "^2.0",
+                "nunomaduro/larastan": "^0.5",
+                "orchestra/testbench": "^5.0",
+                "phpstan/phpstan": "^0.12.3",
+                "phpunit/phpunit": "^8.5.1 || ^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "NunoMaduro\\Collision\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nuno Maduro",
+                    "email": "enunomaduro@gmail.com"
+                }
+            ],
+            "description": "Cli error handling for console/command-line PHP applications.",
+            "keywords": [
+                "artisan",
+                "cli",
+                "command-line",
+                "console",
+                "error",
+                "handling",
+                "laravel",
+                "laravel-zero",
+                "php",
+                "symfony"
+            ],
+            "time": "2020-03-07T12:46:00+00:00"
         },
         {
             "name": "nunomaduro/larastan",
