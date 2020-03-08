@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 use PDO;
 use Illuminate\Support\Facades\DB;
-use \Illuminate\Database\Connection;
+use Illuminate\Database\Connection;
 
 class DBHelper
 {
@@ -14,7 +14,7 @@ class DBHelper
      * @param string $name
      * @return \Illuminate\Database\Connection
      */
-    public static function connection($name = null) : Connection
+    public static function connection($name = null): Connection
     {
         return DB::connection($name);
     }

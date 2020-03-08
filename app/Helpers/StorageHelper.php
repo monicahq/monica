@@ -15,10 +15,11 @@ class StorageHelper
      * @param string $name
      * @return \Illuminate\Filesystem\FilesystemAdapter
      */
-    public static function disk($name = null) : FilesystemAdapter
+    public static function disk($name = null): FilesystemAdapter
     {
         /** @var \Illuminate\Filesystem\FilesystemAdapter */
         $disk = Storage::disk($name);
+
         return $disk;
     }
 
