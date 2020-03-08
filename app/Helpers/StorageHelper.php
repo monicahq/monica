@@ -4,9 +4,20 @@ namespace App\Helpers;
 
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class StorageHelper
 {
+    /**
+     * Get a filesystem instance.
+     *
+     * @return \Illuminate\Filesystem\FilesystemAdapter
+     */
+    public static function disk($name = null)
+    {
+        return Storage::disk($name);
+    }
+
     /**
      * Get the storage size of the account, in bytes.
      *

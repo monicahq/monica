@@ -16,8 +16,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /**
+ * @property int $id
  * @property Account $account
+ * @property int $account_id
  * @property User $user
+ * @property int $user_id
+ * @property bool $failed
+ * @property string $failed_reason
+ * @property string $filename
+ * @property int $contacts_found
+ * @property int $contacts_skipped
+ * @property int $contacts_imported
+ * @property \Carbon\Carbon $started_at
+ * @property \Carbon\Carbon $ended_at
  */
 class ImportJob extends Model
 {

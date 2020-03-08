@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
         );
 
         if (config('database.use_utf8mb4')
-            && DB::connection()->getDriverName() == 'mysql'
+            && DBHelper::connection()->getDriverName() == 'mysql'
             && ! DBHelper::testVersion('5.7.7')) {
             Schema::defaultStringLength(191);
         }

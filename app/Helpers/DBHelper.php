@@ -8,6 +8,15 @@ use Illuminate\Support\Facades\DB;
 class DBHelper
 {
     /**
+     * Get connection.
+     *
+     * @return \Illuminate\Database\Connection
+     */
+    public static function connection() {
+        return DB::connection();
+    }
+
+    /**
      * Get the version of DB engine.
      *
      * @return string|null
@@ -15,7 +24,7 @@ class DBHelper
     public static function version()
     {
         try {
-            return DB::connection()->getPdo()->getAttribute(PDO::ATTR_SERVER_VERSION);
+            return static::connection()->getPdo()->getAttribute(PDO::ATTR_SERVER_VERSION);
         } catch (\Exception $e) {
             return;
         }
@@ -43,13 +52,13 @@ class DBHelper
                 FROM information_schema.tables
                 WHERE table_schema = :table_schema
                 AND table_name LIKE :table_prefix', [
-            'table_schema' => DB::connection()->getDatabaseName(),
-            'table_prefix' => '%'.DB::connection()->getTablePrefix().'%',
+            'table_schema' => static::connection()->getDatabaseName(),
+            'table_prefix' => '%'.static::connection()->getTablePrefix().'%',
         ]);
     }
 
     public static function getTable($name)
     {
-        return '`'.DB::connection()->getTablePrefix().$name.'`';
+        return '`'.static::connection()->getTablePrefix().$name.'`';
     }
 }
