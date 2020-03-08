@@ -114,5 +114,17 @@
             </errorLevel>
         </UndefinedPropertyFetch>
 
+        <UndefinedMagicMethod>
+            <errorLevel type="suppress">
+                <file name="app/Traits/Searchable.php" />
+            </errorLevel>
+        </UndefinedMagicMethod>
+
+        <InvalidStaticInvocation>
+            <errorLevel type="suppress">
+                <file name="app/Providers/RouteServiceProvider.php" />
+            </errorLevel>
+        </InvalidStaticInvocation>
+
     </issueHandlers>
 </psalm>

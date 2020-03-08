@@ -10,8 +10,14 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * @property int $id
  * @property Account $account
  * @property User $invitedBy
+ * @property int $account_id
+ * @property IsJournalableInterface $journalable
+ * @property int $journalable_id
+ * @property string $journalable_type
+ * @property \Carbon\Carbon $date
  */
 class JournalEntry extends Model
 {

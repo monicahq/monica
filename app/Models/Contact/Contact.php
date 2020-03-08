@@ -3,13 +3,13 @@
 namespace App\Models\Contact;
 
 use Carbon\Carbon;
-use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use function Safe\preg_split;
+use App\Helpers\StorageHelper;
 use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
 use App\Models\Account\Weather;
@@ -955,7 +955,7 @@ class Contact extends Model
 
         try {
             $matches = preg_split('/\?/', $this->avatar_default_url);
-            $url = asset(Storage::disk(config('filesystems.default'))->url($matches[0]));
+            $url = asset(StorageHelper::disk(config('filesystems.default'))->url($matches[0]));
             if (count($matches) > 1) {
                 $url .= '?'.$matches[1];
             }
