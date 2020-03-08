@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Helpers\DBHelper;
 use App\Models\Account\Account;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use App\Console\Commands\Helpers\CommandExecutor;
 use App\Console\Commands\Helpers\CommandExecutorInterface;
 

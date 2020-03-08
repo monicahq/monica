@@ -12,7 +12,8 @@ class DBHelper
      *
      * @return \Illuminate\Database\Connection
      */
-    public static function connection() {
+    public static function connection()
+    {
         return DB::connection();
     }
 

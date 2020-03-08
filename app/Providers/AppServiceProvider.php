@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Helpers\DBHelper;
 use Laravel\Cashier\Cashier;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use App\Notifications\EmailMessaging;
