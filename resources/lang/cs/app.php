@@ -202,18 +202,18 @@ return [
     'relationship_type_grandchild_with_name' => ':name’s grand child',
     'relationship_type_grandchild_female_with_name' => ':name’s grand child',
 
-    'relationship_type_uncle' => 'uncle',
-    'relationship_type_uncle_female' => 'aunt',
+    'relationship_type_uncle' => 'strýc',
+    'relationship_type_uncle_female' => 'teta',
     'relationship_type_uncle_with_name' => ':name’s uncle',
     'relationship_type_uncle_female_with_name' => ':name’s aunt',
 
-    'relationship_type_nephew' => 'nephew',
-    'relationship_type_nephew_female' => 'niece',
+    'relationship_type_nephew' => 'synovec',
+    'relationship_type_nephew_female' => 'neteř',
     'relationship_type_nephew_with_name' => ':name’s nephew',
     'relationship_type_nephew_female_with_name' => ':name’s niece',
 
-    'relationship_type_cousin' => 'cousin',
-    'relationship_type_cousin_female' => 'cousin',
+    'relationship_type_cousin' => 'bratranec',
+    'relationship_type_cousin_female' => 'sestřenice',
     'relationship_type_cousin_with_name' => ':name’s cousin',
     'relationship_type_cousin_female_with_name' => ':name’s cousin',
 
@@ -227,28 +227,28 @@ return [
     'relationship_type_godson_with_name' => ':name’s godson',
     'relationship_type_godson_female_with_name' => ':name’s goddaughter',
 
-    'relationship_type_friend' => 'friend',
-    'relationship_type_friend_female' => 'friend',
+    'relationship_type_friend' => 'kamarád',
+    'relationship_type_friend_female' => 'kamarádka',
     'relationship_type_friend_with_name' => ':name’s friend',
     'relationship_type_friend_female_with_name' => ':name’s friend',
 
-    'relationship_type_bestfriend' => 'best friend',
-    'relationship_type_bestfriend_female' => 'best friend',
+    'relationship_type_bestfriend' => 'nejlepší kamarád',
+    'relationship_type_bestfriend_female' => 'nejlepší kamarádka',
     'relationship_type_bestfriend_with_name' => ':name’s best friend',
     'relationship_type_bestfriend_female_with_name' => ':name’s best friend',
 
-    'relationship_type_colleague' => 'colleague',
-    'relationship_type_colleague_female' => 'colleague',
+    'relationship_type_colleague' => 'kolega',
+    'relationship_type_colleague_female' => 'kolegyně',
     'relationship_type_colleague_with_name' => ':name’s colleague',
     'relationship_type_colleague_female_with_name' => ':name’s colleague',
 
-    'relationship_type_boss' => 'boss',
-    'relationship_type_boss_female' => 'boss',
+    'relationship_type_boss' => 'nadřízený',
+    'relationship_type_boss_female' => 'nadřízená',
     'relationship_type_boss_with_name' => ':name’s boss',
     'relationship_type_boss_female_with_name' => ':name’s boss',
 
-    'relationship_type_subordinate' => 'subordinate',
-    'relationship_type_subordinate_female' => 'subordinate',
+    'relationship_type_subordinate' => 'podřízený',
+    'relationship_type_subordinate_female' => 'podřízená',
     'relationship_type_subordinate_with_name' => ':name’s subordinate',
     'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
 
