@@ -81,7 +81,7 @@ class UploadPhoto extends BaseService
         $array = [
             'account_id' => $data['account_id'],
             'original_filename' => $photo->getClientOriginalName(),
-            'filesize' => $photo->getClientSize(),
+            'filesize' => $photo->getSize(),
             'mime_type' => (new \Mimey\MimeTypes)->getMimeType($photo->guessClientExtension()),
         ];
         $array['new_filename'] = $photo->storePublicly('photos', config('filesystems.default'));
