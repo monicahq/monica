@@ -5,17 +5,21 @@ namespace App\Helpers;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Filesystem\FilesystemAdapter;
 
 class StorageHelper
 {
     /**
      * Get a filesystem instance.
      *
+     * @param string $name
      * @return \Illuminate\Filesystem\FilesystemAdapter
      */
-    public static function disk($name = null)
+    public static function disk($name = null) : FilesystemAdapter
     {
-        return Storage::disk($name);
+        /** @var \Illuminate\Filesystem\FilesystemAdapter */
+        $disk = Storage::disk($name);
+        return $disk;
     }
 
     /**
