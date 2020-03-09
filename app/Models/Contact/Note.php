@@ -15,8 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $parsed_body
  * @property string $body
  * @property bool $is_favorited
- * @property \Carbon\Carbon $favorited_at
- * @property \Carbon\Carbon $created_at
+ * @property \Illuminate\Support\Carbon|null $favorited_at
  */
 class Note extends Model
 {

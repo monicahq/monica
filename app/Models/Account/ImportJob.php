@@ -27,8 +27,8 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
  * @property int $contacts_found
  * @property int $contacts_skipped
  * @property int $contacts_imported
- * @property \Carbon\Carbon $started_at
- * @property \Carbon\Carbon $ended_at
+ * @property \Illuminate\Support\Carbon|null $started_at
+ * @property \Illuminate\Support\Carbon|null $ended_at
  */
 class ImportJob extends Model
 {

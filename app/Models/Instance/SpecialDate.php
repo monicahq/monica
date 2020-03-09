@@ -19,6 +19,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * Instead of adding a lot of logic in the Contact table, we've decided to
  * create this class that will deal with this complexity.
+ *
+ * @property bool $is_age_based
+ * @property bool $is_year_unknown
+ * @property \Illuminate\Support\Carbon|null $date
  */
 class SpecialDate extends Model
 {

@@ -18,7 +18,7 @@ use App\Models\ModelBindingHasherWithContact as Model;
  * @property Reminder $reminder
  * @property int $reminder_id
  * @property string $nature
- * @property \Carbon\Carbon $planned_date
+ * @property \Illuminate\Support\Carbon|null $planned_date
  * @property int $notification_number_days_before
  */
 class ReminderOutbox extends Model

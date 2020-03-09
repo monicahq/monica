@@ -55,11 +55,13 @@ class NotifyUserAboutReminder implements ShouldQueue
             $this->reminderOutbox->logSent($message);
 
             // schedule the next reminder for this user
-            if ($this->reminderOutbox->reminder->frequency_type == 'one_time') {
-                $this->reminderOutbox->reminder->inactive = true;
-                $this->reminderOutbox->reminder->save();
+            /** @var \App\Models\Contact\Reminder */
+            $reminder = $this->reminderOutbox->reminder;
+            if ($reminder->frequency_type == 'one_time') {
+                $reminder->inactive = true;
+                $reminder->save();
             } else {
-                $this->reminderOutbox->reminder->schedule($this->reminderOutbox->user);
+                $reminder->schedule($this->reminderOutbox->user);
             }
         }
 
