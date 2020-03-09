@@ -139,5 +139,11 @@
             </errorLevel>
         </InvalidStaticInvocation>
 
+        <InvalidPropertyAssignmentValue>
+            <errorLevel type="suppress">
+                <file name="database/migrations/2017_08_06_153253_move_kids_to_contacts.php" />
+            </errorLevel>
+        </InvalidPropertyAssignmentValue>
+
     </issueHandlers>
 </psalm>
