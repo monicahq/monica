@@ -36,6 +36,9 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
+/**
+ * @property \App\Models\Instance\SpecialDate $birthdate
+ */
 class Contact extends Model
 {
     use Searchable;
@@ -896,17 +899,19 @@ class Contact extends Model
     public function calculateActivitiesStatistics()
     {
         // Delete the Activities statistics table for this contact
-        $this->activityStatistics->each->delete();
+        $this->activityStatistics->each(function($activityStatistic) {
+            $activityStatistic->delete();
+        });
 
         // Create the statistics again
         $this->activities->groupBy('happened_at.year')
             ->map(function (Collection $activities, $year) {
-                $activityStatistic = $this->activityStatistics()->make();
-                $activityStatistic->account_id = $this->account_id;
-                $activityStatistic->contact_id = $this->id;
-                $activityStatistic->year = $year;
-                $activityStatistic->count = $activities->count();
-                $activityStatistic->save();
+                ActivityStatistic::create([
+                    'account_id' => $this->account_id,
+                    'contact_id' => $this->id,
+                    'year' => $year,
+                    'count' => $activities->count()
+                ]);
             });
     }
 

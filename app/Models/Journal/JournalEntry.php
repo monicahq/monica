@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property IsJournalableInterface $journalable
  * @property int $journalable_id
  * @property string $journalable_type
- * @property \Carbon\Carbon $date
+ * @property \Illuminate\Support\Carbon|null $date
  */
 class JournalEntry extends Model
 {
