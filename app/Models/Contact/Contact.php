@@ -899,7 +899,7 @@ class Contact extends Model
     public function calculateActivitiesStatistics()
     {
         // Delete the Activities statistics table for this contact
-        $this->activityStatistics->each(function($activityStatistic) {
+        $this->activityStatistics->each(function ($activityStatistic) {
             $activityStatistic->delete();
         });
 
@@ -910,7 +910,7 @@ class Contact extends Model
                     'account_id' => $this->account_id,
                     'contact_id' => $this->id,
                     'year' => $year,
-                    'count' => $activities->count()
+                    'count' => $activities->count(),
                 ]);
             });
     }
