@@ -10877,33 +10877,33 @@
         },
         {
             "name": "barryvdh/laravel-ide-helper",
-            "version": "v2.6.6",
+            "version": "v2.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-ide-helper.git",
-                "reference": "b91b959364d97af658f268c733c75dccdbff197e"
+                "reference": "edd69c5e0508972c81f1f7173236de2459c45814"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/b91b959364d97af658f268c733c75dccdbff197e",
-                "reference": "b91b959364d97af658f268c733c75dccdbff197e",
+                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/edd69c5e0508972c81f1f7173236de2459c45814",
+                "reference": "edd69c5e0508972c81f1f7173236de2459c45814",
                 "shasum": ""
             },
             "require": {
                 "barryvdh/reflection-docblock": "^2.0.6",
                 "composer/composer": "^1.6",
                 "doctrine/dbal": "~2.3",
-                "illuminate/console": "^5.5|^6",
-                "illuminate/filesystem": "^5.5|^6",
-                "illuminate/support": "^5.5|^6",
-                "php": ">=7"
+                "illuminate/console": "^5.5|^6|^7",
+                "illuminate/filesystem": "^5.5|^6|^7",
+                "illuminate/support": "^5.5|^6|^7",
+                "php": ">=7.2"
             },
             "require-dev": {
-                "illuminate/config": "^5.5|^6",
-                "illuminate/view": "^5.5|^6",
-                "phpro/grumphp": "^0.14",
-                "phpunit/phpunit": "4.*",
-                "scrutinizer/ocular": "~1.1",
+                "illuminate/config": "^5.5|^6|^7",
+                "illuminate/view": "^5.5|^6|^7",
+                "mockery/mockery": "^1.3",
+                "orchestra/testbench": "^3|^4",
+                "phpro/grumphp": "^0.17.1",
                 "squizlabs/php_codesniffer": "^3"
             },
             "type": "library",
@@ -10944,7 +10944,7 @@
                 "phpstorm",
                 "sublime"
             ],
-            "time": "2019-10-30T20:53:27+00:00"
+            "time": "2020-02-25T20:41:32+00:00"
         },
         {
             "name": "barryvdh/reflection-docblock",
@@ -11138,16 +11138,16 @@
         },
         {
             "name": "composer/spdx-licenses",
-            "version": "1.5.2",
+            "version": "1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/spdx-licenses.git",
-                "reference": "7ac1e6aec371357df067f8a688c3d6974df68fa5"
+                "reference": "0c3e51e1880ca149682332770e25977c70cf9dae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/spdx-licenses/zipball/7ac1e6aec371357df067f8a688c3d6974df68fa5",
-                "reference": "7ac1e6aec371357df067f8a688c3d6974df68fa5",
+                "url": "https://api.github.com/repos/composer/spdx-licenses/zipball/0c3e51e1880ca149682332770e25977c70cf9dae",
+                "reference": "0c3e51e1880ca149682332770e25977c70cf9dae",
                 "shasum": ""
             },
             "require": {
@@ -11194,7 +11194,7 @@
                 "spdx",
                 "validator"
             ],
-            "time": "2019-07-29T10:31:59+00:00"
+            "time": "2020-02-14T07:44:31+00:00"
         },
         {
             "name": "composer/xdebug-handler",
@@ -12444,22 +12444,22 @@
         },
         {
             "name": "orchestra/testbench",
-            "version": "v4.6.0",
+            "version": "v4.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench.git",
-                "reference": "0b537bf4d34a8da92759b79fcbe371e10b0135f0"
+                "reference": "133e2756f15e8e605c22973d255290798f933e70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench/zipball/0b537bf4d34a8da92759b79fcbe371e10b0135f0",
-                "reference": "0b537bf4d34a8da92759b79fcbe371e10b0135f0",
+                "url": "https://api.github.com/repos/orchestral/testbench/zipball/133e2756f15e8e605c22973d255290798f933e70",
+                "reference": "133e2756f15e8e605c22973d255290798f933e70",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "^6.9",
+                "laravel/framework": "^6.18",
                 "mockery/mockery": "~1.2.3 || ^1.3.1",
-                "orchestra/testbench-core": "^4.6",
+                "orchestra/testbench-core": "^4.7",
                 "php": ">=7.2",
                 "phpunit/phpunit": "^8.3 || ^9.0"
             },
@@ -12490,20 +12490,20 @@
                 "orchestral",
                 "testing"
             ],
-            "time": "2020-01-29T23:03:49+00:00"
+            "time": "2020-03-06T23:23:46+00:00"
         },
         {
             "name": "orchestra/testbench-core",
-            "version": "v4.6.0",
+            "version": "v4.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench-core.git",
-                "reference": "6e6f1c330d37563d2ecca125d6b672e752ab88b5"
+                "reference": "fad3769a7903021f5784d5d76aa6eb3a3904b215"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/6e6f1c330d37563d2ecca125d6b672e752ab88b5",
-                "reference": "6e6f1c330d37563d2ecca125d6b672e752ab88b5",
+                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/fad3769a7903021f5784d5d76aa6eb3a3904b215",
+                "reference": "fad3769a7903021f5784d5d76aa6eb3a3904b215",
                 "shasum": ""
             },
             "require": {
@@ -12511,13 +12511,13 @@
                 "php": ">=7.2"
             },
             "require-dev": {
-                "laravel/framework": "^6.9",
-                "laravel/laravel": "dev-master",
-                "mockery/mockery": "^1.2.3",
+                "laravel/framework": "^6.18.0",
+                "laravel/laravel": "6.x-dev",
+                "mockery/mockery": "~1.2.3 || ^1.3.1",
                 "phpunit/phpunit": "^8.3 || ^9.0"
             },
             "suggest": {
-                "laravel/framework": "Required for testing (^6.9).",
+                "laravel/framework": "Required for testing (^6.18).",
                 "mockery/mockery": "Allow using Mockery for testing (^1.2.3).",
                 "orchestra/testbench-browser-kit": "Allow using legacy Laravel BrowserKit for testing (^4.0).",
                 "orchestra/testbench-dusk": "Allow using Laravel Dusk for testing (^4.0).",
@@ -12555,7 +12555,7 @@
                 "orchestral",
                 "testing"
             ],
-            "time": "2020-01-29T22:59:50+00:00"
+            "time": "2020-03-06T23:07:37+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -13449,22 +13449,22 @@
         },
         {
             "name": "psalm/plugin-laravel",
-            "version": "1.0.1",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/laravel-psalm-plugin.git",
-                "reference": "44b045f975975c4a977e1c594a0a48b16b4641ff"
+                "reference": "db04cb1acd274b36a71150621cb27d8ddddc0939"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/laravel-psalm-plugin/zipball/44b045f975975c4a977e1c594a0a48b16b4641ff",
-                "reference": "44b045f975975c4a977e1c594a0a48b16b4641ff",
+                "url": "https://api.github.com/repos/psalm/laravel-psalm-plugin/zipball/db04cb1acd274b36a71150621cb27d8ddddc0939",
+                "reference": "db04cb1acd274b36a71150621cb27d8ddddc0939",
                 "shasum": ""
             },
             "require": {
                 "barryvdh/laravel-ide-helper": "^2.6",
-                "orchestra/testbench": "^3.5 || ^4.0",
-                "vimeo/psalm": "^3.7"
+                "orchestra/testbench": "^3.5 || ^4.0 || ^5.0",
+                "vimeo/psalm": "^3.8.2"
             },
             "type": "psalm-plugin",
             "extra": {
@@ -13488,7 +13488,7 @@
                 }
             ],
             "description": "A Laravel plugin for Psalm",
-            "time": "2019-11-29T20:01:27+00:00"
+            "time": "2020-03-06T13:17:13+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -14459,16 +14459,16 @@
         },
         {
             "name": "seld/phar-utils",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/phar-utils.git",
-                "reference": "84715761c35808076b00908a20317a3a8a67d17e"
+                "reference": "8800503d56b9867d43d9c303b9cbcc26016e82f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/phar-utils/zipball/84715761c35808076b00908a20317a3a8a67d17e",
-                "reference": "84715761c35808076b00908a20317a3a8a67d17e",
+                "url": "https://api.github.com/repos/Seldaek/phar-utils/zipball/8800503d56b9867d43d9c303b9cbcc26016e82f0",
+                "reference": "8800503d56b9867d43d9c303b9cbcc26016e82f0",
                 "shasum": ""
             },
             "require": {
@@ -14497,9 +14497,9 @@
             ],
             "description": "PHAR file format utilities, for when PHP phars you up",
             "keywords": [
-                "phra"
+                "phar"
             ],
-            "time": "2020-01-13T10:41:09+00:00"
+            "time": "2020-02-14T15:25:33+00:00"
         },
         {
             "name": "symfony/dom-crawler",
@@ -14564,7 +14564,7 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v4.4.4",
+            "version": "v4.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
