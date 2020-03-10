@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'Je moet je account upgraden om gebruik te maken van deze functie',
     'stay_in_touch_modal_title' => 'Blijf in contact',
     'stay_in_touch_modal_desc' => 'We kunnen je herinneren via e-mail om regelmatig in contact te blijven met {firstname}.',
-    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
+    'stay_in_touch_modal_label' => 'Stuur me elke...{count} dag een e-mail|Stuur me elke... {count} dagen een email',
 
     // Calls
     'modal_call_title' => 'Telefoongesprek registreren',
@@ -185,7 +185,7 @@ return [
     'reminders_create_success' => 'De herinnering is met succes toegevoegd',
     'reminders_delete_success' => 'De herinnering is verwijderd',
     'reminders_update_success' => 'De herinnering is succesvol bijgewerkt',
-    'reminders_add_optional_comment' => 'Optional comment',
+    'reminders_add_optional_comment' => 'Opmerking (optioneel)',
 
     'reminder_frequency_day' => 'dagelijks | elke :number dagen',
     'reminder_frequency_week' => 'wekelijks | elke :number weken',
@@ -240,11 +240,11 @@ return [
     'activity_type_just_hung_out' => 'gewoon een beetje gehangen',
     'activity_type_watched_movie_at_home' => 'thuis een film gekeken',
     'activity_type_talked_at_home' => 'thuis gekletst',
-    'activity_type_did_sport_activities_together' => 'played a sport together',
+    'activity_type_did_sport_activities_together' => 'samen gesport',
     'activity_type_ate_at_his_place' => 'bij hun gegeten',
     'activity_type_went_bar' => 'naar een bar gegaan',
     'activity_type_ate_at_home' => 'thuis gegeten',
-    'activity_type_picnicked' => 'picnicked',
+    'activity_type_picnicked' => 'gepicknicked',
     'activity_type_ate_restaurant' => 'naar een restaurant gegaan',
     'activity_type_went_theater' => 'naar het theater gegaan',
     'activity_type_went_concert' => 'naar een concert gegaan',
