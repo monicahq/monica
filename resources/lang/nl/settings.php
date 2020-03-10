@@ -12,7 +12,7 @@ return [
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'DAV bronnen',
     'sidebar_settings_security' => 'Beveiliging',
-    'sidebar_settings_auditlogs' => 'Audit logs',
+    'sidebar_settings_auditlogs' => 'Auditlog',
 
     'title_general' => 'Algemene Informatie',
     'title_i18n' => 'International settings',
