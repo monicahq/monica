@@ -14,9 +14,9 @@ return [
     'sidebar_settings_security' => 'Beveiliging',
     'sidebar_settings_auditlogs' => 'Audit logs',
 
-    'title_general' => 'General Information',
+    'title_general' => 'Algemene Informatie',
     'title_i18n' => 'International settings',
-    'title_layout' => 'Layout',
+    'title_layout' => 'Lay-out',
 
     'me_title' => 'My contact',
     'me_help' => 'This is the contact that represents <em>you</em> in Monica',
