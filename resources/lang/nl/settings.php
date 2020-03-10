@@ -18,7 +18,7 @@ return [
     'title_i18n' => 'International settings',
     'title_layout' => 'Lay-out',
 
-    'me_title' => 'My contact',
+    'me_title' => 'Mijn contact',
     'me_help' => 'Dit is het contact dat <em>jou</em> vertegenwoordigt in Monica',
     'me_select' => 'Selecteer een contactpersoon',
     'me_no_contact' => 'Nog geen contact geselecteerd.',
@@ -377,7 +377,7 @@ return [
     'personalization_genders_modal_name_help' => 'De titel voor het aangeven van het geslacht op een contactpagina.',
     'personalization_genders_modal_sex' => 'Geslacht',
     'personalization_genders_modal_sex_help' => 'Wordt gebruikt voor het definiëren van relaties, o.a. tijdens het importeren en exporteren van VCards.',
-    'personalization_genders_modal_default' => 'Select the default gender for a new contact',
+    'personalization_genders_modal_default' => 'Selecteer het standaardgeslacht voor nieuwe contacten',
     'personalization_genders_modal_delete' => 'Genderidentiteit verwijderen',
     'personalization_genders_modal_delete_desc' => 'Weet je zeker dat je {name} wil verwijderen?',
     'personalization_genders_modal_delete_question' => 'Op dit moment heeft {count} contact deze genderidentiteit. Als je deze verwijderd, welke genderidentiteit moet dit contact krijgen?|Op dit moment hebben {count} contacten deze genderidentiteit. Als je deze verwijderd, welke genderidentiteit moeten deze contacten krijgen?',
@@ -405,8 +405,8 @@ return [
     'personalization_module_title' => 'Functionaliteiten',
     'personalization_module_desc' => 'Sommige mensen hebben niet alle functies nodig. Hieronder kunt u specifieke functies inschakelen die gebruikt worden op het contactoverzicht. Deze verandering zal ALLE contacten beïnvloeden. Let op dat als u een van deze functies uitschakelt, de gegevens niet verloren zullen gaan - we zullen de functie simpelweg verbergen.',
 
-    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href=":url">Settings > Subscription</a>.',
-    'personalisation_paid_upgrade_vue' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href="{url}">Settings > Subscription</a>.',
+    'personalisation_paid_upgrade' => 'Dit is een betaalde functionaliteit en vereist dat je een betaald abonnement hebt. Upgrade je account door naar <a href=":url">Instellingen > Abonnement</a> te gaan.',
+    'personalisation_paid_upgrade_vue' => 'Dit is een betaalde functionaliteit en vereist dat je een betaald abonnement hebt. Upgrade je account door naar <a href="{url}">Instellingen > Abonnement</a> te gaan.',
 
     'reminder_time_to_send' => 'De tijd dat herinneringen verstuurd moeten worden',
     'reminder_time_to_send_help' => 'Ter informatie, de volgende herinnering wordt verzonden op <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
