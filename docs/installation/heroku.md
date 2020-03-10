@@ -11,7 +11,7 @@ Before deployment, Heroku will ask you to define a few variables.
 After deployment, click on ![Manage App](../images/heroku_manage_app.png) to open the dashboard of your new application:
 ![Heroku Dashbord](../images/heroku_dashboard.png)
 
-Click on **Heroku Scheduler** to open scheduler dashboard. Create a new job, and defines a new job to run this command every 10 minutes or every hour at 00 minutes:
+Click on **Heroku Scheduler** to open scheduler dashboard. Create a new job, and define a new job to run this command every 10 minutes or every hour at 00 minutes:
 ```sh
 php artisan schedule:run
 ```
@@ -20,7 +20,7 @@ You are now able to open the application and register a new user.
 
 ### Configuration 
 
-Your Monica instance will use a [ClearDB Ignite plan](https://elements.heroku.com/addons/cleardb) (free) by default. Additional environment variables, such as details of the mail server, can be added after setup through the Heroku interface.
+Your Monica instance will use a [JawsDB MySQL Kitefin Shared plan](https://elements.heroku.com/addons/jawsdb) (free) by default. Additional environment variables, such as details of the mail server, can be added after setup through the Heroku interface.
 Monica doesn't require a lot of power - it will run perfectly fine on the free plan provided by Heroku. 
 
 After deployment, the configuration of your app should look like this:

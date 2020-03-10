@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\DBHelper;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -111,7 +112,7 @@ class Update extends Command
 
     private function migrateCollationTest()
     {
-        $connection = DB::connection();
+        $connection = DBHelper::connection();
 
         if ($connection->getDriverName() != 'mysql') {
             return false;
