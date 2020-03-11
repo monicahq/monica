@@ -48,7 +48,7 @@ return [
     'name' => 'Jouw naam: :name',
     'email' => 'E-mailadres',
     'email_placeholder' => 'E-mailadres invoeren',
-    'email_help' => 'Dit is het e-mailadres wat je gebruikt om in te loggen en hier worden ook je herinneringen naar verstuurd.',
+    'email_help' => 'Dit is het e-mailadres dat je gebruikt om in te loggen. Hier worden ook je herinneringen naar verstuurd.',
     'timezone' => 'Tijdzone',
     'temperature_scale' => 'Temperatuurschaal',
     'temperature_scale_fahrenheit' => 'Fahrenheit',
