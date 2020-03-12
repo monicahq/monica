@@ -16,6 +16,7 @@
 
 ### Enhancements:
 
+* Use Carbon v2 library as translator for dates
 * Contacts displayed in the activity list are now clickable again
 * Gift are now added and updated inline
 * Add a link in the downgrade process to archive all contacts in the account
