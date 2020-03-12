@@ -50,7 +50,7 @@
     "moment-timezone": "^0.5.28",
     "popper.js": "^1.16.1",
     "pretty-checkbox-vue": "^1.1.8",
-    "sass": "^1.26.2",
+    "sass": "^1.26.3",
     "snyk": "^1.298.1",
     "sweet-modal-vue": "^2.0.0",
     "tachyons": "^4.9.1",

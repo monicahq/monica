@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property Account $account
  * @property User $invitedBy
+ * @property string $invitation_key
  */
 class Invitation extends Model
 {

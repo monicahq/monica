@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\DBHelper;
 use App\Models\Account\Account;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use App\Console\Commands\Helpers\CommandExecutor;
 use App\Console\Commands\Helpers\CommandExecutorInterface;
 
@@ -51,7 +51,7 @@ class SetupFrontEndTest extends Command
      */
     public function handle(): void
     {
-        $connection = DB::connection();
+        $connection = DBHelper::connection();
         if (file_exists('monicadump.sql')) {
             $cmd = 'mysql -u '.$connection->getConfig('username');
             if ($connection->getConfig('password') != '') {
