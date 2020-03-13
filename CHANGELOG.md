@@ -23,6 +23,7 @@
 
 ### Fixes:
 
+* Fix markdown doesn't work on journal activity entries
 * Fix markdown doesn't work on Activity entries
 * Fix summary of activities showing the same date for every entry
 * Fix vcard categories import/export as tags
