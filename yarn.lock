@@ -6076,10 +6076,10 @@ mocha@^7.1.0:
     yargs-parser "13.1.1"
     yargs-unparser "1.6.0"
 
-moment-locales-webpack-plugin@^1.0.7:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/moment-locales-webpack-plugin/-/moment-locales-webpack-plugin-1.1.2.tgz#9ae5263ac38d5cba227fc9d76efad025bb685a0c"
-  integrity sha512-s+JE7lADQjUyeQvqB3sVcfxXncg1o+t5hrRl2GBY66vXuLO2tXIjD+4mNUXQMS10qCGoeK3R3skBrW34gHobBQ==
+moment-locales-webpack-plugin@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/moment-locales-webpack-plugin/-/moment-locales-webpack-plugin-1.2.0.tgz#9af83876a44053706b868ceece5119584d10d7aa"
+  integrity sha512-QAi5v0OlPUP7GXviKMtxnpBAo8WmTHrUNN7iciAhNOEAd9evCOvuN0g1N7ThIg3q11GLCkjY1zQ2saRcf/43nQ==
   dependencies:
     lodash.difference "^4.5.0"
 
