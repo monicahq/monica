@@ -117,7 +117,7 @@ class ContactsController extends Controller
             } else {
                 $contacts = $contacts->tags($tags);
             }
-        } else if ($request->input('no_tag')) {
+        } elseif ($request->input('no_tag')) {
             $contacts = $contacts->tags('NONE');
         }
 
