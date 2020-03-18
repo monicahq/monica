@@ -86,16 +86,15 @@ jobs:
     - name: Cypress verify
       run: npm run cy:verify
 
-    - name: Run http server
-      run: php artisan serve &
-
     - uses: cypress-io/github-action@v1
       with:
+        start: php artisan serve
         browser: chrome
         headless: true
         record: true
         parallel: true
         group: Azure DevOps CI
+        config: baseUrl=http://localhost:8000
       env:
         CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
