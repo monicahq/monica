@@ -20,7 +20,7 @@ describe('Settings: activity types', function () {
     // make sure that going premium removes restrictions
     cy.visit('/settings/personalization');
     cy.get('[cy-name=activity-type-premium-message]').should('not.be.visible');
-    cy.get('[cy-name=activity-types]').should('contain', 'did sport together');
+    cy.get('[cy-name=activity-types]').should('contain', 'played a sport together');
 
     // add an activity type category
     cy.get('[cy-name=add-activity-type-category-button]').click();
@@ -97,7 +97,7 @@ describe('Settings: activity types', function () {
     // make sure that going premium removes restrictions
     cy.visit('/settings/personalization');
     cy.get('[cy-name=activity-type-premium-message]').should('not.be.visible');
-    cy.get('[cy-name=activity-types]').should('contain', 'did sport together');
+    cy.get('[cy-name=activity-types]').should('contain', 'played a sport together');
 
     // add an activity type category
     cy.get('[cy-name=add-activity-type-category-button]').click();
