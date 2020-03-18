@@ -32,9 +32,10 @@ jobs:
     - name: Prepare environment
       run: |
         mkdir -p results/coverage
-        cp scripts/ci/.env.mysql .env
+        sed 's/DB_TEST_PASSWORD=/DB_TEST_PASSWORD=root/' scripts/ci/.env.mysql > .env
         touch .sentry-release
-        echo "REQUIRES_SUBSCRIPTION=true" >> .env
+
+    - run: echo "REQUIRES_SUBSCRIPTION=true" >> .env
 
     - name: Validate composer.json and composer.lock
       run: composer validate
@@ -55,14 +56,12 @@ jobs:
       run: composer install --no-interaction --no-suggest --ignore-platform-reqs
 
     # step-prepare-db
-    - uses: samin/mysql-action@v1
-      with:
-        mysql version: '5.7'
-        mysql database: 'monica'
-        mysql user: 'root'
-        mysql password: ''
+    - name: Start Mysql
+      run: sudo service mysql start
+    - name: Create db
+      run: mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
     - name: Prepare db
-      run: mysql -u root -p  monica < scripts/database.test.sql
+      run: mysql -u root -proot monica < scripts/database.test.sql
     - name: Run migration scripts
       run: php artisan migrate --no-interaction -vvv
 
