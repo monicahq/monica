@@ -1,0 +1,56 @@
+name: Chrome headless
+
+on: [push]
+
+jobs:
+  cypress-run:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-version: ['7.3']
+      max-parallel: 10
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Setup PHP ${{ matrix.php-version }}
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: ${{ matrix.php-version }}
+        coverage: none
+    - name: Check PHP Version
+      run: php -v
+    - name: Check Composer Version
+      run: composer -V
+    - name: Check PHP Extensions
+      run: php -m
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - name: Cache composer files
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          ${{ runner.os }}-composer-
+
+    - name: Install dependencies
+      run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+
+
+    - uses: cypress-io/github-action@v1
+      with:
+        browser: chrome
+        headless: true
+        record: true
+      env:
+        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

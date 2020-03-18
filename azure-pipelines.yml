@@ -34,12 +34,11 @@ stages:
   - template: .azure/job-reporting.yml
   - template: .azure/job-test-migrations.yml
 
-- stage: cypress
-  displayName: 'Cypress tests'
-  dependsOn: build
-  jobs:
-  - template: .azure/job-test-cypress.yml
-
+#- stage: cypress
+#  displayName: 'Cypress tests'
+#  dependsOn: build
+#  jobs:
+#  - template: .azure/job-test-cypress.yml
 
 - stage: deploy
   displayName: 'Deploy'
