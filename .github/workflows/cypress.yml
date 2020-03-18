@@ -99,8 +99,8 @@ jobs:
         CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Store results
-      uses: actions/upload-artifact@v1
-      with:
-        name: results
-        path: results/junit/cypress/results*.xml
+#    - name: Store results
+#      uses: actions/upload-artifact@v1
+#      with:
+#        name: results
+#        path: results/junit/cypress/results*.xml
