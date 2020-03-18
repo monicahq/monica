@@ -32,7 +32,7 @@ jobs:
     - name: Prepare environment
       run: |
         mkdir -p results/coverage
-        cp scripts/ci/.env.mysql > .env
+        cp scripts/ci/.env.mysql .env
         touch .sentry-release
         echo "REQUIRES_SUBSCRIPTION=true" >> .env
 
