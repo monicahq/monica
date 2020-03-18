@@ -32,10 +32,9 @@ jobs:
     - name: Prepare environment
       run: |
         mkdir -p results/coverage
-        sed 's/DB_TEST_PASSWORD=/DB_TEST_PASSWORD=root/' scripts/ci/.env.mysql > .env
+        cp scripts/ci/.env.mysql > .env
         touch .sentry-release
-
-    - run: echo "REQUIRES_SUBSCRIPTION=true" >> .env
+        echo "REQUIRES_SUBSCRIPTION=true" >> .env
 
     - name: Validate composer.json and composer.lock
       run: composer validate
@@ -56,10 +55,14 @@ jobs:
       run: composer install --no-interaction --no-suggest --ignore-platform-reqs
 
     # step-prepare-db
-    - name: Create db
-      run: mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+    - uses: samin/mysql-action@v1
+      with:
+        mysql version: '5.7'
+        mysql database: 'monica'
+        mysql user: 'root'
+        mysql password: ''
     - name: Prepare db
-      run: mysql -u root -proot monica < scripts/database.test.sql
+      run: mysql -u root -p  monica < scripts/database.test.sql
     - name: Run migration scripts
       run: php artisan migrate --no-interaction -vvv
 
@@ -83,6 +86,7 @@ jobs:
         headless: true
         record: true
         parallel: true
+        group: Azure DevOps CI
       env:
         CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
