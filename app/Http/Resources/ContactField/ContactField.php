@@ -22,8 +22,9 @@ class ContactField extends Resource
             'object' => 'contactfield',
             'content' => $this->data,
             'contact_field_type' => new ContactFieldTypeResource($this->contactFieldType),
+            'labels' => ContactFieldLabel::collection($this->labels),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'contact' => new ContactShortResource($this->contact),
             'created_at' => DateHelper::getTimestamp($this->created_at),

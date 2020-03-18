@@ -128,7 +128,7 @@ describe('Settings: activity types', function () {
       cy.createContact('John', 'Doe', 'Man');
       cy.get('[cy-name=add-activity-button]').click();
       cy.get('[cy-name=activities_add_category]').click();
-      cy.get('[name=acticity-type-list]').should('contain', 'This is activity type 1');
+      cy.get('[name=activity-type-list]').should('contain', 'This is activity type 1');
     });
   });
 });

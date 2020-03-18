@@ -15,7 +15,8 @@ use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Services\Contact\Contact\UpdateContactWork;
+use App\Services\Contact\Contact\DeleteMeContact;
+use App\Services\Contact\Contact\UpdateWorkInformation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Services\Contact\Contact\UpdateContactIntroduction;
@@ -120,7 +121,7 @@ class ApiContactController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                         'author_id' => auth()->user()->id,
                     ]
             );
@@ -150,7 +151,7 @@ class ApiContactController extends ApiController
                     +
                     [
                         'contact_id' => $contactId,
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -175,7 +176,7 @@ class ApiContactController extends ApiController
     {
         $data = [
             'contact_id' => $contactId,
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
         ];
         app(DestroyContact::class)->execute($data);
 
@@ -208,11 +209,36 @@ class ApiContactController extends ApiController
     {
         $data = [
             'contact_id' => $contactId,
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'user_id' => auth()->user()->id,
         ];
 
-        app(SetMeContact::class)->execute($data);
+        try {
+            app(SetMeContact::class)->execute($data);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        }
+
+        return $this->respond(['true']);
+    }
+
+    /**
+     * Removes contact as 'me' association.
+     *
+     * @param Request $request
+     *
+     * @return string
+     */
+    public function removeMe(Request $request)
+    {
+        $data = [
+            'account_id' => auth()->user()->account_id,
+            'user_id' => auth()->user()->id,
+        ];
+
+        app(DeleteMeContact::class)->execute($data);
 
         return $this->respond(['true']);
     }
@@ -228,11 +254,12 @@ class ApiContactController extends ApiController
     public function updateWork(Request $request, $contactId)
     {
         try {
-            $contact = app(UpdateContactWork::class)->execute(
+            $contact = app(UpdateWorkInformation::class)->execute(
                 $request->except(['account_id', 'contact_id'])
                 + [
                     'contact_id' => $contactId,
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
+                    'author_id' => auth()->user()->id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -261,7 +288,7 @@ class ApiContactController extends ApiController
                 $request->except(['account_id', 'contact_id'])
                 + [
                     'contact_id' => $contactId,
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -290,7 +317,7 @@ class ApiContactController extends ApiController
                 $request->except(['account_id', 'contact_id'])
                 + [
                     'contact_id' => $contactId,
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                 ]
             );
         } catch (ModelNotFoundException $e) {

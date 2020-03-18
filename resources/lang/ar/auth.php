@@ -73,7 +73,7 @@ return [
     'confirmation_title' => 'Verify Your Email Address',
     'confirmation_fresh' => 'A fresh verification link has been sent to your email address.',
     'confirmation_check' => 'Before proceeding, please check your email for a verification link.',
-    'confirmation_request_another' => 'If you did not receive the email <a href=":url">click here to request another</a>.',
+    'confirmation_request_another' => 'If you did not receive the email <a :action>click here to request another</a>.',
 
     'confirmation_again' => 'إذا أردت تغيير بريدك الإلكتروني يمكنك <a href=":url" class="alert-link">الضغط هنا</a>.',
     'email_change_current_email' => 'البريد الإلكتروني الحالي:',

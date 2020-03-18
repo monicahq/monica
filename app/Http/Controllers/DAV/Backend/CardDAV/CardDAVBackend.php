@@ -388,7 +388,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
             $data = [
                 'contact_id' => $contact->id,
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'user_id' => auth()->user()->id,
             ];
 

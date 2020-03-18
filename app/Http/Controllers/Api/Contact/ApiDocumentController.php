@@ -98,7 +98,7 @@ class ApiDocumentController extends ApiController
                 $request->except(['account_id'])
                 +
                 [
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -124,7 +124,7 @@ class ApiDocumentController extends ApiController
     {
         try {
             app(DestroyDocument::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'document_id' => $documentId,
             ]);
         } catch (ModelNotFoundException $e) {

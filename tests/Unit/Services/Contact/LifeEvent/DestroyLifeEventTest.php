@@ -21,7 +21,7 @@ class DestroyLifeEventTest extends TestCase
         $lifeEvent = factory(LifeEvent::class)->create([]);
 
         $request = [
-            'account_id' => $lifeEvent->account->id,
+            'account_id' => $lifeEvent->account_id,
             'life_event_id' => $lifeEvent->id,
         ];
 
@@ -47,7 +47,7 @@ class DestroyLifeEventTest extends TestCase
         $lifeEvent->save();
 
         $request = [
-            'account_id' => $lifeEvent->account->id,
+            'account_id' => $lifeEvent->account_id,
             'life_event_id' => $lifeEvent->id,
         ];
 

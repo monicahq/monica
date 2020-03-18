@@ -58,8 +58,8 @@ class ApiMessageControllerTest extends ApiTestCase
     private function addMessage(Conversation $conversation): Message
     {
         $message = factory(Message::class)->create([
-            'account_id' => $conversation->account->id,
-            'contact_id' => $conversation->contact->id,
+            'account_id' => $conversation->account_id,
+            'contact_id' => $conversation->contact_id,
             'conversation_id' => $conversation->id,
         ]);
 

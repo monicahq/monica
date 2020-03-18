@@ -17,6 +17,7 @@ use App\Console\Commands\SendReminders;
 use App\Console\Commands\SentryRelease;
 use App\Console\Commands\SendStayInTouch;
 use App\Console\Commands\SetupProduction;
+use App\Console\Commands\UpdateGravatars;
 use App\Console\Commands\PingVersionServer;
 use App\Console\Commands\SetPremiumAccount;
 use Illuminate\Console\Scheduling\Schedule;
@@ -55,6 +56,7 @@ class Kernel extends ConsoleKernel
         SetupTest::class,
         SetUserAdmin::class,
         Update::class,
+        UpdateGravatars::class,
     ];
 
     /**
@@ -82,6 +84,7 @@ class Kernel extends ConsoleKernel
         $this->scheduleCommand($schedule, 'monica:calculatestatistics', 'daily');
         $this->scheduleCommand($schedule, 'monica:ping', 'daily');
         $this->scheduleCommand($schedule, 'monica:clean', 'daily');
+        $this->scheduleCommand($schedule, 'monica:updategravatars', 'weekly');
         if (config('trustedproxy.cloudflare')) {
             $this->scheduleCommand($schedule, 'cloudflare:reload', 'daily'); // @codeCoverageIgnore
         }

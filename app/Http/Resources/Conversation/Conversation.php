@@ -26,7 +26,7 @@ class Conversation extends Resource
             'contact_field_type' => new ContactFieldTypeResource($this->contactFieldType),
             'url' => route('api.conversation', $this->id),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'contact' => new ContactShortResource($this->contact),
             'created_at' => DateHelper::getTimestamp($this->created_at),

@@ -273,7 +273,7 @@ class RelationshipTest extends FeatureTestCase
             'relationship_type_id' => $relationshipType->id,
             'first_name' => 'Arnold',
             'last_name' => 'Schwarzenegger',
-            'gender_id' => $partner->gender->id,
+            'gender_id' => $partner->gender_id,
             'birthdate' => 'exact',
             'birthdayDate' => '1947-07-30',
         ];

@@ -94,7 +94,7 @@ class ApiConversationController extends ApiController
                 $request->except(['account_id'])
                 +
                 [
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -123,7 +123,7 @@ class ApiConversationController extends ApiController
                 $request->except(['account_id', 'conversation_id'])
                 +
                 [
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                     'conversation_id' => $conversationId,
                 ]
             );
@@ -150,7 +150,7 @@ class ApiConversationController extends ApiController
     {
         try {
             app(DestroyConversation::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'conversation_id' => $conversationId,
             ]);
         } catch (ModelNotFoundException $e) {

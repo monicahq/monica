@@ -15,6 +15,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property Account $account
  * @property Contact $contact
  * @property Contact $recipient
+ * @property string $name
+ * @property string $comment
+ * @property string $url
+ * @property Contact $is_for
+ * @property int $value
  * @method static Builder offered()
  * @method static Builder isIdea()
  */

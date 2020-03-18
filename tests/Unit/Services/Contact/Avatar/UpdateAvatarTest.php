@@ -21,7 +21,7 @@ class UpdateAvatarTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'source' => 'gravatar',
         ];
@@ -45,7 +45,7 @@ class UpdateAvatarTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'source' => 'default',
         ];
@@ -69,7 +69,7 @@ class UpdateAvatarTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'source' => 'adorable',
         ];
@@ -96,7 +96,7 @@ class UpdateAvatarTest extends TestCase
         ]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'source' => 'photo',
             'photo_id' => $photo->id,
@@ -122,7 +122,7 @@ class UpdateAvatarTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
         ];
 
@@ -153,7 +153,7 @@ class UpdateAvatarTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'source' => 'photo',
             'photo_id' => 0,
@@ -165,7 +165,7 @@ class UpdateAvatarTest extends TestCase
         // Case: photo exists but belongs to another account
         $photo = factory(Photo::class)->create();
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'source' => 'photo',
             'photo_id' => $photo->id,

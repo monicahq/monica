@@ -57,15 +57,12 @@
                 </label>
               </div>
 
-              @if (isset($errors))
-                @if (count($errors) > 0)
-                  <div class="form-group links">
-                    <ul>
-                      <li>{{ trans('auth.password_forget') }}&nbsp;<a href="{{ route('password.request') }}">{{ trans('auth.password_reset') }}</a></li>
-                    </ul>
-                  </div>
-                @endif
-              @endif
+              <div class="form-group links">
+                <ul>
+                  <li>{{ trans('auth.password_forget') }}&nbsp;<a href="{{ route('password.request') }}">{{ trans('auth.password_reset') }}</a></li>
+                </ul>
+              </div>
+
               <div class="form-group links">
                 <ul>
                   @if(! config('monica.disable_signup'))

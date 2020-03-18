@@ -28,7 +28,7 @@ use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
-use App\Services\Contact\Contact\UpdateContactWork;
+use App\Services\Contact\Contact\UpdateWorkInformation;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactSearch as ContactResource;
 
@@ -73,7 +73,7 @@ class ContactsController extends Controller
 
         if ($user->contacts_sort_order !== $sort) {
             app(UpdateViewPreference::class)->execute([
-                'account_id' => $user->account->id,
+                'account_id' => $user->account_id,
                 'user_id' => $user->id,
                 'preference' => $sort,
             ]);
@@ -197,9 +197,10 @@ class ContactsController extends Controller
     {
         try {
             $contact = app(CreateContact::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'author_id' => auth()->user()->id,
                 'first_name' => $request->input('first_name'),
+                'middle_name' => $request->input('middle_name', null),
                 'last_name' => $request->input('last_name', null),
                 'nickname' => $request->input('nickname', null),
                 'gender_id' => $request->input('gender'),
@@ -391,9 +392,10 @@ class ContactsController extends Controller
         }
 
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'first_name' => $request->input('firstname'),
+            'middle_name' => $request->input('middlename', null),
             'last_name' => $request->input('lastname', null),
             'nickname' => $request->input('nickname', null),
             'gender_id' => $request->input('gender'),
@@ -451,7 +453,7 @@ class ContactsController extends Controller
         }
 
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
         ];
 
@@ -485,8 +487,9 @@ class ContactsController extends Controller
      */
     public function updateWork(Request $request, Contact $contact)
     {
-        $contact = app(UpdateContactWork::class)->execute([
-            'account_id' => auth()->user()->account->id,
+        $contact = app(UpdateWorkInformation::class)->execute([
+            'account_id' => auth()->user()->account_id,
+            'author_id' => auth()->user()->id,
             'contact_id' => $contact->id,
             'job' => $request->input('job'),
             'company' => $request->input('company'),
@@ -524,7 +527,7 @@ class ContactsController extends Controller
     public function updateFoodPreferences(Request $request, Contact $contact)
     {
         $contact = app(UpdateContactFoodPreferences::class)->execute([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'food_preferences' => $request->input('food'),
         ]);
@@ -657,7 +660,7 @@ class ContactsController extends Controller
 
         if ($user->contacts_sort_order !== $sort) {
             app(UpdateViewPreference::class)->execute([
-                'account_id' => $user->account->id,
+                'account_id' => $user->account_id,
                 'user_id' => $user->id,
                 'preference' => $sort,
             ]);

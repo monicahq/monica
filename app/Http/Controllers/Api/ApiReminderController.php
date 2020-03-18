@@ -67,7 +67,7 @@ class ApiReminderController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -96,7 +96,7 @@ class ApiReminderController extends ApiController
                 $request->except(['account_id', 'reminder_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                         'reminder_id' => $reminderId,
                     ]
             );
@@ -122,7 +122,7 @@ class ApiReminderController extends ApiController
     {
         try {
             app(DestroyReminder::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'reminder_id' => $reminderId,
             ]);
         } catch (ModelNotFoundException $e) {

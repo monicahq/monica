@@ -39,7 +39,7 @@ class RemindersController extends Controller
     public function store(Request $request, Contact $contact)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'initial_date' => $request->input('initial_date'),
             'frequency_type' => $request->input('frequency_type'),
@@ -82,7 +82,7 @@ class RemindersController extends Controller
     public function update(Request $request, Contact $contact, Reminder $reminder)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'reminder_id' => $reminder->id,
             'initial_date' => $request->input('initial_date'),
@@ -110,7 +110,7 @@ class RemindersController extends Controller
     public function destroy(Request $request, Contact $contact, Reminder $reminder)
     {
         $data = [
-            'account_id' => $reminder->account->id,
+            'account_id' => $reminder->account_id,
             'reminder_id' => $reminder->id,
         ];
 

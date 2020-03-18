@@ -151,6 +151,7 @@ return [
     'information_edit_probably' => 'Deze persoon is waarschijnlijk...',
     'information_edit_not_year' => 'Ik weet de dag en de maand van de geboortedatum van deze persoon, maar niet het jaar…',
     'information_edit_exact' => 'Ik weet de exacte geboortedatum van deze persoon...',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'Geen werkgegevens gedefinieerd',
     'information_work_at' => 'bij :company',
     'work_add_cta' => 'Werk informatie bijwerken',
@@ -296,17 +297,23 @@ return [
     'gifts_delete_confirmation' => 'Weet je zeker dat je dit cadeau wil verwijderen?',
     'gifts_add_gift' => 'Cadeau toevoegen',
     'gifts_link' => 'Link',
-    'gifts_for' => 'Voor:',
+    'gifts_for' => 'For: {name}',
     'gifts_delete_cta' => 'Verwijderen',
     'gifts_add_title' => 'Cadeaubeheer voor :name',
     'gifts_add_gift_idea' => 'Cadeau idee',
     'gifts_add_gift_already_offered' => 'Cadeau aangeboden',
     'gifts_add_gift_received' => 'Cadeau ontvangen',
     'gifts_add_gift_title' => 'Wat is dit voor een cadeau?',
+    'gifts_add_gift_name' => 'Gift name',
     'gifts_add_link' => 'Link naar de webpagina (optioneel)',
     'gifts_add_value' => 'Waarde (optioneel)',
     'gifts_add_comment' => 'Opmerking (optioneel)',
-    'gifts_add_someone' => 'Dit cadeau is voor iemand in :name\'s familie',
+    'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
+    'gifts_add_photo' => 'Photo (optional)',
+    'gifts_add_photo_title' => 'Add a photo for this gift',
+    'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
+    'gifts_delete_title' => 'Delete a gift',
     'gifts_ideas' => 'Cadeau-ideeën',
     'gifts_offered' => 'Cadeaus aangeboden',
     'gifts_offered_as_an_idea' => 'Als idee markeren',
@@ -361,6 +368,7 @@ return [
     'deceased_know_date' => 'Ik weet de datum waarop dit persoon is overleden',
     'deceased_add_reminder' => 'Stel een herinnering in voor de sterfdag',
     'deceased_label' => 'Overleden',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => 'Overleden op :date',
     'deceased_age' => 'Leeftijd bij overlijden',
 
@@ -492,4 +500,10 @@ return [
 
     // emotions
     'emotion_this_made_me_feel' => 'Je voelde je…',
+
+    // logs
+    'auditlogs_link' => 'History',
+    'auditlogs_title' => 'Everything that happened to :name',
+    'auditlogs_breadcrumb' => 'History',
+    'auditlogs_author' => 'By :name on :date',
 ];
