@@ -57,8 +57,7 @@ jobs:
 
     # step-prepare-db
     - name: Create db
-      run: |
-        mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+      run: mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
     - name: Prepare db
       run: mysql -u root -proot monica < scripts/database.test.sql
     - name: Run migration scripts
@@ -72,8 +71,8 @@ jobs:
 
     - name: yarn install
       run: yarn inst
-    - script: npm run cy:verify
-      displayName: Cypress verify
+    - name: Cypress verify
+      run: npm run cy:verify
 
     - name: Run http server
       run: php artisan serve &
