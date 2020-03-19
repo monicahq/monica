@@ -11,7 +11,7 @@
         🍿 {{ $t('people.activity_title') }}
 
         <span class="fr relative btn-title">
-          <a v-if="displayLogActivity == false" class="btn edit-information" v-cy-name="'add-activity-button'" @click="displayLogActivity = true">
+          <a v-if="displayLogActivity == false" v-cy-name="'add-activity-button'" class="btn edit-information" @click="displayLogActivity = true">
             {{ $t('people.activities_add_activity') }}
           </a>
           <a v-else class="btn edit-information" @click="displayLogActivity = false">
@@ -23,7 +23,7 @@
 
     <!-- BLANK STATE -->
     <div v-if="!displayLogActivity && activities.length == 0" class="w-100">
-      <div class="bg-near-white tc pa3 br2 ba b--light-gray" v-cy-name="'activities-blank-state'">
+      <div v-cy-name="'activities-blank-state'" class="bg-near-white tc pa3 br2 ba b--light-gray">
         <p>{{ $t('people.activities_blank_title', { name: name }) }}</p>
         <a class="pointer" href="" @click.prevent="displayLogActivity = true">
           {{ $t('people.activities_blank_add_activity') }}
@@ -44,7 +44,7 @@
 
     <!-- LIST OF ACTIVITIES -->
     <div v-cy-name="'activities-body'" v-cy-items="activities.map(c => c.id)">
-      <div v-for="activity in activities" :key="activity.id" class="ba br2 b--black-10 br--top w-100 mb2" v-cy-name="'activity-body-'+activity.id">
+      <div v-for="activity in activities" :key="activity.id" v-cy-name="'activity-body-'+activity.id" class="ba br2 b--black-10 br--top w-100 mb2">
         <template v-if="!activity.edit">
           <h2 class="pl2 pr2 pt3 f5">
             {{ activity.summary }}
@@ -96,11 +96,11 @@
               <!-- ACTIONS -->
               <ul class="list">
                 <li class="di">
-                  <a href="" class="pointer" v-cy-name="'edit-activity-button-'+activity.id" @click.prevent="$set(activity, 'edit', true)">{{ $t('app.edit') }}</a>
-                  <a v-show="destroyActivityId != activity.id" href="" class="pointer" v-cy-name="'delete-activity-button-'+activity.id" @click.prevent="showDestroyActivity(activity)">{{ $t('app.delete') }}</a>
+                  <a v-cy-name="'edit-activity-button-'+activity.id" href="" class="pointer" @click.prevent="$set(activity, 'edit', true)">{{ $t('app.edit') }}</a>
+                  <a v-show="destroyActivityId != activity.id" v-cy-name="'delete-activity-button-'+activity.id" href="" class="pointer" @click.prevent="showDestroyActivity(activity)">{{ $t('app.delete') }}</a>
                   <ul v-show="destroyActivityId == activity.id" class="di">
                     <li class="di">
-                      <a class="pointer red" v-cy-name="'confirm-delete-activity'" @click.prevent="destroyActivity(activity)">
+                      <a v-cy-name="'confirm-delete-activity'" class="pointer red" @click.prevent="destroyActivity(activity)">
                         {{ $t('app.delete_confirm') }}
                       </a>
                     </li>
@@ -118,12 +118,12 @@
 
         <!-- EDIT THE CURRENT ACTIVITY -->
         <create-activity v-else
-          :hash="hash"
-          :name="name"
-          :activity="activity"
-          :contact-id="contactId"
-          @update="updateList($event)"
-          @cancel="$set(activity, 'edit', false); displayLogActivity = false"
+                         :hash="hash"
+                         :name="name"
+                         :activity="activity"
+                         :contact-id="contactId"
+                         @update="updateList($event)"
+                         @cancel="$set(activity, 'edit', false); displayLogActivity = false"
         />
       </div>
     </div>

@@ -8,7 +8,7 @@
         ☎️ {{ $t('people.call_title') }}
 
         <span class="fr relative" style="top: -7px;">
-          <a v-if="displayLogCall == false" class="btn edit-information" href="" v-cy-name="'add-call-button'" @click.prevent="displayLogCall = true">
+          <a v-if="displayLogCall == false" v-cy-name="'add-call-button'" class="btn edit-information" href="" @click.prevent="displayLogCall = true">
             {{ $t('people.call_button') }}
           </a>
           <a v-if="displayLogCall" class="btn edit-information" href="" @click.prevent="displayLogCall = false">
@@ -19,7 +19,7 @@
     </div>
 
     <!-- BLANK STATE -->
-    <div v-if="!displayLogCall && calls.length == 0" class="w-100" v-cy-name="'calls-blank-state'">
+    <div v-if="!displayLogCall && calls.length == 0" v-cy-name="'calls-blank-state'" class="w-100">
       <div class="bg-near-white tc pa3 br2 ba b--light-gray">
         <p>{{ $t('people.call_blank_title', { name: name }) }}</p>
         <a class="pointer" href="" @click.prevent="displayLogCall = true">
@@ -30,7 +30,7 @@
 
     <!-- LOG A CALL -->
     <transition name="fade">
-      <div v-if="displayLogCall" class="ba br3 mb3 pa3 b--black-40" v-cy-name="'log-call-form'">
+      <div v-if="displayLogCall" v-cy-name="'log-call-form'" class="ba br3 mb3 pa3 b--black-40">
         <div class="dt dt--fixed pb3 mb3 mb0-ns">
           <!-- WHEN -->
           <div class="dtc pr2">
@@ -111,7 +111,7 @@
               </a>
             </div>
             <div class="">
-              <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" v-cy-name="'save-call-button'" @click.prevent="store()">
+              <button v-cy-name="'save-call-button'" class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click.prevent="store()">
                 {{ $t('app.add') }}
               </button>
             </div>
@@ -122,7 +122,7 @@
 
     <!-- LIST OF CALLS -->
     <div v-cy-name="'calls-body'" v-cy-items="calls.map(c => c.id)">
-      <div v-for="call in calls" :key="call.id" class="ba br2 b--black-10 br--top w-100 mb2" v-cy-name="'call-body-'+call.id">
+      <div v-for="call in calls" :key="call.id" v-cy-name="'call-body-'+call.id" class="ba br2 b--black-10 br--top w-100 mb2">
         <div v-show="editCallId != call.id" class="pa2">
           <span v-if="!call.content">
             {{ $t('people.call_blank_desc', { name: call.contact.first_name }) }}
@@ -235,7 +235,7 @@
             <a :class="[ dirltr ? 'mr2' : 'ml2' ]" class="pointer " href="" @click.prevent="showEditBox(call)">
               {{ $t('app.update') }}
             </a>
-            <a v-show="destroyCallId != call.id" class="pointer" href="" v-cy-name="'delete-call-button-'+call.id" @click.prevent="showDestroyCall(call)">
+            <a v-show="destroyCallId != call.id" v-cy-name="'delete-call-button-'+call.id" class="pointer" href="" @click.prevent="showDestroyCall(call)">
               {{ $t('app.delete') }}
             </a>
             <ul v-show="destroyCallId == call.id" class="di">
@@ -245,7 +245,7 @@
                 </a>
               </li>
               <li class="di">
-                <a class="pointer red" href="" v-cy-name="'delete-call-confirm-button-'+call.id" @click.prevent="destroyCall(call)">
+                <a v-cy-name="'delete-call-confirm-button-'+call.id" class="pointer red" href="" @click.prevent="destroyCall(call)">
                   {{ $t('app.delete_confirm') }}
                 </a>
               </li>

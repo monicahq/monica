@@ -17,7 +17,7 @@
         <a class="btn mt2" href="" @click.prevent="close">
           {{ $t('app.cancel') }}
         </a>
-        <button class="btn btn-primary w-auto-ns w100 mt2 pb0-ns" v-cy-name="'confirm-' + name" @click="confirm($event)">
+        <button v-cy-name="'confirm-' + name" class="btn btn-primary w-auto-ns w100 mt2 pb0-ns" @click="confirm($event)">
           {{ $t('app.confirm') }}
         </button>
       </div>

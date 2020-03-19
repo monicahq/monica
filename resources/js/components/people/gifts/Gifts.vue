@@ -10,7 +10,7 @@
       <img src="img/people/gifts.svg" :alt="$t('people.gifts_title')" class="icon-section icon-tasks" />
       <h3>
         {{ $t('people.gifts_title') }}
-        <a href="" v-cy-name="'add-gift-button'" class="btn f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]"
+        <a v-cy-name="'add-gift-button'" href="" class="btn f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]"
            @click.prevent="displayCreateGift = true"
         >
           {{ $t('people.gifts_add_gift') }}
@@ -54,7 +54,7 @@
         </li>
       </ul>
 
-      <div v-for="gift in filteredGifts" :key="gift.id" class="ba b--gray-monica mb3 br2" v-cy-name="'gift-item-' + gift.id">
+      <div v-for="gift in filteredGifts" :key="gift.id" v-cy-name="'gift-item-' + gift.id" class="ba b--gray-monica mb3 br2">
         <gift v-if="!gift.edit"
               :gift="gift"
               @update="($event) => { updateList($event) }"
@@ -69,12 +69,12 @@
           </div>
 
           <div :class="dirltr ? 'fr' : 'fl'">
-            <a :class="dirltr ? 'mr1' : 'ml1'" class="di" href="" v-cy-name="'edit-gift-button-' + gift.id"
+            <a v-cy-name="'edit-gift-button-' + gift.id" :class="dirltr ? 'mr1' : 'ml1'" class="di" href=""
                @click.prevent="$set(gift, 'edit', true)"
             >
               {{ $t('app.edit') }}
             </a>
-            <a :class="dirltr ? 'mr1' : 'ml1'" class="di" href="" v-cy-name="'delete-gift-button-' + gift.id"
+            <a v-cy-name="'delete-gift-button-' + gift.id" :class="dirltr ? 'mr1' : 'ml1'" class="di" href=""
                @click.prevent="showDeleteModal(gift)"
             >
               {{ $t('app.delete') }}
@@ -103,7 +103,7 @@
         <a class="btn" href="" @click.prevent="closeDeleteModal()">
           {{ $t('app.cancel') }}
         </a>
-        <a class="btn btn-primary" v-cy-name="'modal-delete-gift-button-' + giftToTrash.id" href="" @click.prevent="trash(giftToTrash)">
+        <a v-cy-name="'modal-delete-gift-button-' + giftToTrash.id" class="btn btn-primary" href="" @click.prevent="trash(giftToTrash)">
           {{ $t('app.delete') }}
         </a>
       </div>
