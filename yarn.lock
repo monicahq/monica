@@ -5403,10 +5403,10 @@ laravel-mix-purgecss@^4.2.0:
     glob-all "^3.1.0"
     purgecss-webpack-plugin "^1.3.0"
 
-laravel-mix@^5.0.0:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/laravel-mix/-/laravel-mix-5.0.1.tgz#cccd59e2662b0db225c606a4e12f89d91ee91b46"
-  integrity sha512-Ccs+VcxJj+FJ6hiMVwboqP1LLLCUA4fa8BrgqFBwK9XJuf/4r+5LEPYurvRGhizjUEybCb4ty/2u+mfEY4YvtA==
+laravel-mix@^5.0.4:
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/laravel-mix/-/laravel-mix-5.0.4.tgz#606a28781b936d66cf96a0d631909cea22ebf0a8"
+  integrity sha512-/fkcMdlxhGDBcH+kFDqKONlAfhJinMAWd+fjQ+VLii4UzIeXUF5Q8FbS4+ZrZs9JO3Y1E4KoNq3hMw0t/soahA==
   dependencies:
     "@babel/core" "^7.2.0"
     "@babel/plugin-proposal-object-rest-spread" "^7.2.0"
