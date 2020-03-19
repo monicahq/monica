@@ -10,12 +10,12 @@ describe('Tasks', function () {
 
     // add a task
     cy.get('[cy-name=add-task-button]').click();
-    var view = cy.get('[cy-name=task-add-view]');
-    view.should('be.visible');
+    cy.get('[cy-name=task-add-view]').should('be.visible');
 
     cy.get('[cy-name=task-add-title]').type('This is a task');
     cy.get('[cy-name=save-task-button]').click();
-    view.should('not.be.visible');
+    cy.wait(2);
+    cy.get('[cy-name=task-add-view]').should('not.be.visible');
 
     cy.get('[cy-name=tasks-body]').should('be.visible')
       .invoke('attr', 'cy-items').then(function (item) {
