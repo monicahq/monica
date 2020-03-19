@@ -5,15 +5,15 @@
 
 function testingDirective(el, binding, vnode) {
   if (window.Laravel.env != 'production') {
+    var value = '';
     try {
-      var value = function(expr) {
-          return eval(expr);
-        }.call(vnode.context, ' with(this) { ' + binding.expression + ' } ');
-
-      el.setAttribute(binding.name, value.toString());
+      value = function(expr) {
+        return eval(expr);
+      }.call(vnode.context, ' with(this) { ' + binding.expression + ' } ');
     } catch (e) {
-      // ignore error
+      value = binding.value;
     }
+    el.setAttribute(binding.name, value.toString());
   }
 }
 
