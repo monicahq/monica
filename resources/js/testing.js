@@ -1,11 +1,16 @@
+/**
+ * Add cy-name and cy-items directives.
+ * These are only active on local or testing environment.
+ */
+
 function testingDirective(el, binding, vnode) {
   if (window.Laravel.env != 'production') {
     try {
-    var value = function(expr) {
-        return eval(expr);
-      }.call(vnode.context, ' with(this) { ' + binding.expression + ' } ');
+      var value = function(expr) {
+          return eval(expr);
+        }.call(vnode.context, ' with(this) { ' + binding.expression + ' } ');
 
-    el.setAttribute(binding.name, value.toString());
+      el.setAttribute(binding.name, value.toString());
     } catch (e) {
       // ignore error
     }
