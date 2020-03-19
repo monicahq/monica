@@ -111,7 +111,7 @@
               </a>
             </div>
             <div class="">
-              <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" v-cy-name="'add-call-button'" @click.prevent="store()">
+              <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" v-cy-name="'save-call-button'" @click.prevent="store()">
                 {{ $t('app.add') }}
               </button>
             </div>

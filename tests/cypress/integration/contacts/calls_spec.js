@@ -14,7 +14,7 @@ describe('Calls', function () {
     // add a call
     cy.get('[cy-name=add-call-button]').click();
     cy.get('[cy-name=log-call-form]').should('be.visible');
-    cy.get('[cy-name=add-call-button]').click();
+    cy.get('[cy-name=save-call-button]').click();
     cy.get('[cy-name=calls-blank-state]').should('not.exist');
 
     cy.get('[cy-name=calls-body]').should('be.visible')
