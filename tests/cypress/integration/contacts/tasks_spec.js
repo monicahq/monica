@@ -14,8 +14,6 @@ describe('Tasks', function () {
 
     cy.get('[cy-name=task-add-title]').type('This is a task');
     cy.get('[cy-name=save-task-button]').click();
-    cy.wait(2);
-    cy.get('[cy-name=task-add-view]').should('not.be.visible');
 
     cy.get('[cy-name=tasks-body]').should('be.visible')
       .invoke('attr', 'cy-items').then(function (item) {
