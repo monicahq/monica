@@ -11,22 +11,22 @@
     <div>
       <div>
         <form class="bg-near-white pa2 br2 mb3">
-          <textarea v-model="newNote.body" class="w-100 br2 pa2 b--light-gray" cy-name="add-note-textarea" :placeholder="$t('people.notes_add_cta')" @focus="addMode = true"
+          <textarea v-model="newNote.body" class="w-100 br2 pa2 b--light-gray" v-cy-name="'add-note-textarea'" :placeholder="$t('people.notes_add_cta')" @focus="addMode = true"
                     @keyup.esc="addMode = false"
           ></textarea>
-          <a v-if="addMode" class="pointer btn btn-primary" cy-name="add-note-button" href="" @click.prevent="store">
+          <a v-if="addMode" class="pointer btn btn-primary" v-cy-name="'add-note-button'" href="" @click.prevent="store">
             {{ $t('app.add') }}
           </a>
-          <a v-if="addMode" class="pointer btn btn-secondary" cy-name="cancel-note-button" href="" @click.prevent="addMode = false">
+          <a v-if="addMode" class="pointer btn btn-secondary" v-cy-name="'cancel-note-button'" href="" @click.prevent="addMode = false">
             {{ $t('app.cancel') }}
           </a>
         </form>
       </div>
 
       <!-- LIST OF NORMAL NOTES -->
-      <ul cy-name="notes-body" :cy-items="notes.map(n => n.id)">
+      <ul v-cy-name="'notes-body'" v-cy-items="notes.map(n => n.id)">
         <li v-for="note in notes" :key="note.id" class="note">
-          <div v-show="!note.edit" class="ba br2 b--black-10 br--top w-100 mb2" :cy-name="'note-body-' + note.id">
+          <div v-show="!note.edit" class="ba br2 b--black-10 br--top w-100 mb2" v-cy-name="'note-body-' + note.id">
             <div class="pa2 markdown">
               <span dir="auto" v-html="note.parsed_body"></span>
             </div>
@@ -38,11 +38,11 @@
                 {{ note.created_at_short }}
               </div>
               <div class="fl w-50 tr">
-                <a class="pointer" :cy-name="'edit-note-button-' + note.id" href="" @click.prevent="toggleEditMode(note)">
+                <a class="pointer" v-cy-name="'edit-note-button-' + note.id" href="" @click.prevent="toggleEditMode(note)">
                   {{ $t('app.edit') }}
                 </a>
                 |
-                <a class="pointer" :cy-name="'delete-note-button-' + note.id" href="" @click.prevent="showDelete(note)">
+                <a class="pointer" v-cy-name="'delete-note-button-' + note.id" href="" @click.prevent="showDelete(note)">
                   {{ $t('app.delete') }}
                 </a>
               </div>
@@ -51,8 +51,8 @@
 
           <!-- EDIT MODE -->
           <form v-show="note.edit" class="bg-near-white pa2 br2 mt3 mb3">
-            <textarea v-model="note.body" class="w-100 br2 pa2 b--light-gray" :cy-name="'edit-note-body-' + note.id" @keyup.esc="note.edit = false"></textarea>
-            <a class="pointer btn btn-primary" :cy-name="'edit-mode-note-button-' + note.id" href="" @click.prevent="update(note)">
+            <textarea v-model="note.body" class="w-100 br2 pa2 b--light-gray" v-cy-name="'edit-note-body-' + note.id" @keyup.esc="note.edit = false"></textarea>
+            <a class="pointer btn btn-primary" v-cy-name="'edit-mode-note-button-' + note.id" href="" @click.prevent="update(note)">
               {{ $t('app.update') }}
             </a>
           </form>
@@ -63,7 +63,7 @@
     <!-- Delete Note modal -->
     <sweet-modal ref="modalDeleteNote" overlay-theme="dark"
                  :title="$t('people.notes_delete_title')"
-                 cy-name="modal-delete-note"
+                 v-cy-name="'modal-delete-note'"
     >
       <p>
         {{ $t('people.notes_delete_confirmation') }}
@@ -72,7 +72,7 @@
         <a class="btn" href="" @click.prevent="closeModal">
           {{ $t('app.cancel') }}
         </a>
-        <a class="btn btn-primary" href="" :cy-name="'delete-mode-note-button-' + deleteNote.id"
+        <a class="btn btn-primary" href="" v-cy-name="'delete-mode-note-button-' + deleteNote.id"
            @click.prevent="trash(deleteNote)"
         >
           {{ $t('app.delete') }}

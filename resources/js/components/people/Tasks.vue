@@ -9,10 +9,10 @@
         {{ $t('people.section_personal_tasks') }}
 
         <span v-if="tasks.length != 0" class="f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]">
-          <a v-if="!editMode" class="pointer" cy-name="task-toggle-edit-mode" href="" @click.prevent="editMode = true">
+          <a v-if="!editMode" class="pointer" v-cy-name="'task-toggle-edit-mode'" href="" @click.prevent="editMode = true">
             {{ $t('app.edit') }}
           </a>
-          <a v-else class="pointer" cy-name="task-toggle-edit-mode" href="" @click.prevent="editMode = false">
+          <a v-else class="pointer" v-cy-name="'task-toggle-edit-mode'" href="" @click.prevent="editMode = false">
             {{ $t('app.done') }}
           </a>
         </span>
@@ -21,18 +21,18 @@
 
     <div :class="[editMode ? 'bg-washed-yellow b--yellow ba pa2' : '']">
       <!-- EMPTY STATE -->
-      <div v-if="tasks.length == 0 && !addMode" class="tc bg-near-white b--moon-gray pa3" cy-name="task-blank-state">
+      <div v-if="tasks.length == 0 && !addMode" class="tc bg-near-white b--moon-gray pa3" v-cy-name="'task-blank-state'">
         <p>{{ $t('people.tasks_blank_title') }}</p>
         <p>
-          <a class="pointer" cy-name="add-task-button" href="" @click.prevent="toggleAddMode">
+          <a class="pointer" v-cy-name="'add-task-button'" href="" @click.prevent="toggleAddMode">
             {{ $t('people.tasks_add_task') }}
           </a>
         </p>
       </div>
 
       <!-- LIST OF IN PROGRESS TASKS -->
-      <ul cy-name="tasks-body" :cy-items="inProgress(tasks).map(t => t.id)">
-        <li v-for="(task, i) in inProgress(tasks)" :key="task.id" :cy-name="'task-item-' + task.id">
+      <ul v-cy-name="'tasks-body'" v-cy-items="inProgress(tasks).map(t => t.id)">
+        <li v-for="(task, i) in inProgress(tasks)" :key="task.id" v-cy-name="'task-item-' + task.id">
           <form-checkbox
             v-model.lazy="task.completed"
             :disabled="task.disabled"
@@ -48,7 +48,7 @@
 
           <div v-if="editMode" class="di">
             <em class="fa fa-pencil-square-o pointer pr2 ml3 dark-blue" @click="toggleEditMode(task)"></em>
-            <em class="fa fa-trash-o pointer pr2 dark-blue" :cy-name="'task-delete-button-' + task.id" @click="trash(task)"></em>
+            <em class="fa fa-trash-o pointer pr2 dark-blue" v-cy-name="'task-delete-button-' + task.id" @click="trash(task)"></em>
           </div>
 
           <!-- EDIT BOX -->
@@ -91,13 +91,13 @@
       </div>
 
       <!-- ADD A TASK VIEW -->
-      <div v-if="addMode" cy-name="task-add-view">
+      <div v-if="addMode" v-cy-name="'task-add-view'">
         <form class="bg-near-white pa2 br2 mt3 mb3">
           <div>
             <label for="add-title" class="db fw6 lh-copy f6">
               {{ $t('people.tasks_form_title') }}
             </label>
-            <input id="add-title" v-model="newTask.title" class="pa2 db w-100" type="text" cy-name="task-add-title"
+            <input id="add-title" v-model="newTask.title" class="pa2 db w-100" type="text" v-cy-name="'task-add-title'"
                    @keyup.esc="addMode = false"
             />
           </div>
@@ -108,7 +108,7 @@
             <textarea id="add-description" v-model="newTask.description" class="pa2 db w-100" type="text" @keyup.esc="addMode = false"></textarea>
           </div>
           <div class="lh-copy mt3">
-            <a class="btn btn-primary" cy-name="save-task-button" href="" @click.prevent="store">
+            <a class="btn btn-primary" v-cy-name="'save-task-button'" href="" @click.prevent="store">
               {{ $t('app.add') }}
             </a>
             <a class="btn" href="" @click.prevent="addMode = false">
@@ -120,7 +120,7 @@
 
       <!-- LIST OF COMPLETED TASKS -->
       <ul>
-        <li v-for="task in completed(tasks)" :key="task.id" class="f6" :cy-name="'task-item-completed-' + task.id">
+        <li v-for="task in completed(tasks)" :key="task.id" class="f6" v-cy-name="'task-item-completed-' + task.id">
           <form-checkbox
             v-model.lazy="task.completed"
             :disabled="task.disabled"

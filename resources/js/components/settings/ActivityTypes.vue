@@ -7,7 +7,7 @@
 
     <h3 class="with-actions">
       {{ $t('settings.personalization_activity_type_category_title') }}
-      <a v-if="!limited" class="btn nt2" :class="[ dirltr ? 'fr' : 'fl' ]" href="" cy-name="add-activity-type-category-button"
+      <a v-if="!limited" class="btn nt2" :class="[ dirltr ? 'fr' : 'fl' ]" href="" v-cy-name="'add-activity-type-category-button'"
          @click.prevent="showCreateCategoryModal"
       >
         {{ $t('settings.personalization_activity_type_category_add') }}
@@ -15,7 +15,7 @@
     </h3>
     <p>{{ $t('settings.personalization_activity_type_category_description') }}</p>
 
-    <div v-if="limited" class="mt3 mb3 form-information-message br2" cy-name="activity-type-premium-message">
+    <div v-if="limited" class="mt3 mb3 form-information-message br2" v-cy-name="'activity-type-premium-message'">
       <div class="pa3 flex">
         <div class="mr3">
           <svg viewBox="0 0 20 20">
@@ -43,10 +43,10 @@
       </div>
     </div>
 
-    <div cy-name="activity-types">
-      <ul cy-name="activity-type-categories" :cy-items="activityTypeCategories.map(a => a.id)">
+    <div v-cy-name="'activity-types'">
+      <ul v-cy-name="'activity-type-categories'" v-cy-items="activityTypeCategories.map(a => a.id)">
         <li v-for="activityTypeCategory in activityTypeCategories" :key="activityTypeCategory.id" class="dt dt--fixed w-100 collapse br--top br--bottom mt3"
-            :cy-name="'activity-types-'+activityTypeCategory.id" :cy-items="activityTypeCategory.activityTypes ? activityTypeCategory.activityTypes.map(a => a.id) : ''"
+            v-cy-name="'activity-types-'+activityTypeCategory.id" v-cy-items="activityTypeCategory.activityTypes ? activityTypeCategory.activityTypes.map(a => a.id) : ''"
         >
           <!-- ACTIVITY TYPE CATEGORY -->
           <div class="dt-row hover bb b--light-gray">
@@ -58,10 +58,10 @@
             <div class="dtc">
               <div class="pa2" :class="[ dirltr ? 'tr' : 'tl' ]">
                 <em v-if="!limited" class="fa fa-pencil-square-o pointer pr2"
-                    :cy-name="'activity-type-category-edit-button-'+activityTypeCategory.id" @click="showEditCategory(activityTypeCategory)"
+                    v-cy-name="'activity-type-category-edit-button-'+activityTypeCategory.id" @click="showEditCategory(activityTypeCategory)"
                 ></em>
                 <em v-if="!limited" class="fa fa-trash-o pointer"
-                    :cy-name="'activity-type-category-delete-button-'+activityTypeCategory.id" @click="showDeleteCategory(activityTypeCategory)"
+                    v-cy-name="'activity-type-category-delete-button-'+activityTypeCategory.id" @click="showDeleteCategory(activityTypeCategory)"
                 ></em>
               </div>
             </div>
@@ -75,10 +75,10 @@
             <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
               <div class="pa2">
                 <em v-if="!limited" class="fa fa-pencil-square-o pointer pr2"
-                    :cy-name="'activity-type-edit-button-'+activityType.id" @click="showEditType(activityType, activityTypeCategory.id)"
+                    v-cy-name="'activity-type-edit-button-'+activityType.id" @click="showEditType(activityType, activityTypeCategory.id)"
                 ></em>
                 <em v-if="!limited" class="fa fa-trash-o pointer"
-                    :cy-name="'activity-type-delete-button-'+activityType.id" @click="showDeleteType(activityType)"
+                    v-cy-name="'activity-type-delete-button-'+activityType.id" @click="showDeleteType(activityType)"
                 ></em>
               </div>
             </div>
@@ -86,7 +86,7 @@
           <div v-if="!limited" class="dt-row">
             <div class="dtc">
               <div class="pa2 pl4">
-                <a class="pointer" href="" :cy-name="'add-activity-type-button-for-category-'+activityTypeCategory.id"
+                <a class="pointer" href="" v-cy-name="'add-activity-type-button-for-category-'+activityTypeCategory.id"
                    @click.prevent="showCreateTypeModal(activityTypeCategory)"
                 >
                   {{ $t('settings.personalization_activity_type_add_button') }}
@@ -116,7 +116,7 @@
         <a class="btn" href="" @click.prevent="closeCategoryModal()">
           {{ $t('app.cancel') }}
         </a>
-        <a class="btn btn-primary" href="" cy-name="add-activity-type-category-save-button" @click.prevent="storeCategory()">
+        <a class="btn btn-primary" href="" v-cy-name="'add-activity-type-category-save-button'" @click.prevent="storeCategory()">
           {{ $t('app.save') }}
         </a>
       </div>
@@ -140,7 +140,7 @@
         <a class="btn" href="" @click.prevent="closeUpdateCategoryModal()">
           {{ $t('app.cancel') }}
         </a>
-        <a class="btn btn-primary" href="" cy-name="update-activity-type-category-button" @click.prevent="updateCategory()">
+        <a class="btn btn-primary" href="" v-cy-name="'update-activity-type-category-button'" @click.prevent="updateCategory()">
           {{ $t('app.update') }}
         </a>
       </div>
@@ -164,7 +164,7 @@
         <a class="btn" href="" @click.prevent="closeCreateTypeModal()">
           {{ $t('app.cancel') }}
         </a>
-        <a class="btn btn-primary" href="" cy-name="add-type-button" @click.prevent="storeType()">
+        <a class="btn btn-primary" href="" v-cy-name="'add-type-button'" @click.prevent="storeType()">
           {{ $t('app.save') }}
         </a>
       </div>
@@ -188,7 +188,7 @@
         <a class="btn" href="" @click.prevent="closeUpdateTypeModal()">
           {{ $t('app.cancel') }}
         </a>
-        <a class="btn btn-primary" href="" cy-name="update-type-button" @click.prevent="updateType()">
+        <a class="btn btn-primary" href="" v-cy-name="'update-type-button'" @click.prevent="updateType()">
           {{ $t('app.update') }}
         </a>
       </div>
@@ -214,7 +214,7 @@
         <a class="btn" href="" @click.prevent="closeDeleteCategoryModal()">
           {{ $t('app.cancel') }}
         </a>
-        <a class="btn btn-primary" href="" cy-name="delete-category-button" @click.prevent="destroyCategory()">
+        <a class="btn btn-primary" href="" v-cy-name="'delete-category-button'" @click.prevent="destroyCategory()">
           {{ $t('app.delete') }}
         </a>
       </div>
@@ -240,7 +240,7 @@
         <a class="btn" href="" @click.prevent="closeDeleteTypeModal()">
           {{ $t('app.cancel') }}
         </a>
-        <a class="btn btn-primary" href="" cy-name="delete-type-button" @click.prevent="destroyType()">
+        <a class="btn btn-primary" href="" v-cy-name="'delete-type-button'" @click.prevent="destroyType()">
           {{ $t('app.delete') }}
         </a>
       </div>

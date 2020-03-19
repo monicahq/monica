@@ -47,7 +47,7 @@
               <a href="" @click.prevent="displayEmotions = true">{{ $t('people.activities_add_emotions') }}</a>
             </li>
             <li v-show="!displayCategory" class="di pointer mr3">
-              <a href="" @click.prevent="displayCategory = true" cy-name="activities_add_category">{{ $t('people.activities_add_category') }}</a>
+              <a href="" @click.prevent="displayCategory = true" v-cy-name="'activities_add_category'">{{ $t('people.activities_add_category') }}</a>
             </li>
             <li v-show="!displayParticipants" class="di pointer">
               <a href="" @click.prevent="displayParticipants = true">{{ $t('people.activities_add_participants_cta') }}</a>
@@ -116,7 +116,7 @@
               </a>
             </div>
             <div class="">
-              <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" cy-name="save-activity-button" @click.prevent="store()">
+              <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" v-cy-name="'save-activity-button'" @click.prevent="store()">
                 {{ activity ? $t('app.save') : $t('app.add') }}
               </button>
             </div>

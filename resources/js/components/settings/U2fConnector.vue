@@ -30,7 +30,7 @@
             <div class="table-cell actions">
               <a
                 class="pointer"
-                :cy-name="'u2fkey-delete-button-' + key.id"
+                v-cy-name="'u2fkey-delete-button-' + key.id"
                 @click.prevent="showDeleteModal(key.id)"
               >
                 {{ $t('app.delete') }}
@@ -176,7 +176,7 @@
         <a
           class="btn"
           href=""
-          :cy-name="'modal-delete-u2fkey-button-' + keyToTrash"
+          v-cy-name="'modal-delete-u2fkey-button-' + keyToTrash"
           @click.prevent="u2fRemove(keyToTrash)"
         >
           {{ $t('app.delete') }}

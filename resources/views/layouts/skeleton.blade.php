@@ -21,6 +21,7 @@
           'htmldir' => htmldir(),
           'profileDefaultView' => auth()->user()->profile_active_tab,
           'timezone' => auth()->user()->timezone,
+          'env' => \App::environment(),
       ]); !!}
     </script>
   </head>
