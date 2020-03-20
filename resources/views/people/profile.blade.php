@@ -74,7 +74,7 @@
               <form method="POST" action="{{ route('people.destroy', $contact) }}">
                 @method('DELETE')
                 @csrf
-                <confirm message="{{ trans('people.people_delete_confirmation') }}">
+                <confirm id="link-delete-contact" message="{{ trans('people.people_delete_confirmation') }}">
                   {{ trans('people.people_delete_message') }}
                 </confirm>
               </form>
