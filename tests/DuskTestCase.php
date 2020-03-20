@@ -3,7 +3,10 @@
 namespace Tests;
 
 use Tests\Traits\SignIn;
+use App\Models\User\User;
 use Laravel\Dusk\Browser;
+use App\Services\User\AcceptPolicy;
+use Tests\Traits\CreatesApplication;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -49,6 +52,26 @@ abstract class DuskTestCase extends BaseTestCase
                 'http://localhost:9515', $capabilities
             );
         }
+    }
+
+    /**
+     * Return the default user to authenticate.
+     *
+     * @return \App\User|int|null
+     */
+    protected function user()
+    {
+        $user = factory(User::class)->create();
+        $user->account->populateDefaultFields();
+        $user->account->update(['has_access_to_paid_version_for_free' => true]);
+
+        app(AcceptPolicy::class)->execute([
+            'account_id' => $user->account->id,
+            'user_id' => $user->id,
+            'ip_address' => null,
+        ]);
+
+        return $user;
     }
 
     public function hasDivAlert(Browser $browser)

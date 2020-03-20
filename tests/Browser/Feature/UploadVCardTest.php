@@ -3,8 +3,6 @@
 namespace Tests\BrowserFeature;
 
 use Tests\DuskTestCase;
-use App\Models\User\User;
-use App\Services\User\AcceptPolicy;
 use Tests\Browser\Pages\ImportVCardUpload;
 
 class UploadVCardTest extends DuskTestCase
@@ -17,16 +15,8 @@ class UploadVCardTest extends DuskTestCase
      */
     public function test_upload_vcard_is_accessible_from_add_contact_view()
     {
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        app(AcceptPolicy::class)->execute([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-            'ip_address' => null,
-        ]);
-
-        $this->browse(function ($browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function ($browser) {
+            $browser->login()
                   ->visit('/people/add')
                   ->assertSee('import your contacts');
 
@@ -43,16 +33,8 @@ class UploadVCardTest extends DuskTestCase
      */
     public function test_import_button_leads_to_import_screen()
     {
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        app(AcceptPolicy::class)->execute([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-            'ip_address' => null,
-        ]);
-
-        $this->browse(function ($browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function ($browser) {
+            $browser->login()
                   ->visit('/settings/import')
                   ->clickLink('Import vCard')
                   ->assertPathIs('/settings/import/upload')
@@ -68,16 +50,8 @@ class UploadVCardTest extends DuskTestCase
      */
     public function test_user_can_import_contacts_from_a_vcf_card()
     {
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        app(AcceptPolicy::class)->execute([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-            'ip_address' => null,
-        ]);
-
-        $this->browse(function ($browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function ($browser) {
+            $browser->login()
                   ->visit('/settings/import')
                   ->clickLink('Import vCard')
                   ->attach('vcard', base_path('tests/stubs/single_vcard_stub.vcard'))
@@ -95,16 +69,8 @@ class UploadVCardTest extends DuskTestCase
      */
     public function test_user_see_error_when_importing_broken_vcard()
     {
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        app(AcceptPolicy::class)->execute([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-            'ip_address' => null,
-        ]);
-
-        $this->browse(function ($browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function ($browser) {
+            $browser->login()
                   ->visit('/settings/import')
                   ->clickLink('Import vCard')
                   ->attach('vcard', base_path('tests/stubs/broken_vcard_stub.vcard'))
