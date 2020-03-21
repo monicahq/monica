@@ -34,7 +34,6 @@ stages:
   - template: .azure/job-reporting.yml
   - template: .azure/job-test-migrations.yml
 
-
 - stage: deploy
   displayName: 'Deploy'
   dependsOn: build
