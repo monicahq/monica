@@ -24,9 +24,10 @@
             <div class="flex items-center h-100">
               <div class="flex-none w-100" :class="[ dirltr ? 'tr' : 'tl' ]">
                 <!-- sad smiley monochrome -->
-                <svg v-if="!showSadSmileyColor" width="42px" height="41px" viewBox="0 0 42 41" version="1.1"
-                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer" :class="{ selected: day.rate == 1 }" @click="showComment(1)"
-                     @mouseover="showSadSmileyColor = true"
+                <svg v-if="!showSadSmileyColor" v-cy-name="'sad-reaction-button'" width="42px" height="41px" viewBox="0 0 42 41"
+                     version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                     class="pointer" :class="{ selected: day.rate == 1 }"
+                     @click="showComment(1)" @mouseover="showSadSmileyColor = true"
                 >
                   <defs />
                   <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -43,9 +44,10 @@
                 </svg>
 
                 <!-- sad smiley color -->
-                <svg v-if="showSadSmileyColor" width="42px" height="41px" viewBox="0 0 42 41" version="1.1"
-                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer" :class="{ selected: day.rate == 1 }" @click="showComment(1)"
-                     @mouseleave="showSadSmileyColor = false"
+                <svg v-if="showSadSmileyColor" v-cy-name="'sad-reaction-button'" width="42px" height="41px" viewBox="0 0 42 41"
+                     version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                     class="pointer" :class="{ selected: day.rate == 1 }"
+                     @click="showComment(1)" @mouseleave="showSadSmileyColor = false"
                 >
                   <defs />
                   <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -62,8 +64,9 @@
                 </svg>
 
                 <!-- mediocre day monochrome -->
-                <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                     xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer" :class="{ selected: day.rate == 2 }" @click="showComment(2)"
+                <svg v-cy-name="'medium-reaction-button'" width="42px" height="41px" viewBox="0 0 42 41" version="1.1"
+                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                     class="pointer" :class="{ selected: day.rate == 2 }" @click="showComment(2)"
                 >
                   <defs />
                   <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -79,9 +82,10 @@
                 </svg>
 
                 <!-- happy day monochrome -->
-                <svg v-if="!showHappySmileyColor" width="42px" height="42px" viewBox="0 0 42 42" version="1.1"
-                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer" :class="{ selected: day.rate == 3 }" @click="showComment(3)"
-                     @mouseover="showHappySmileyColor = true"
+                <svg v-if="!showHappySmileyColor" v-cy-name="'happy-reaction-button'" width="42px" height="42px" viewBox="0 0 42 42"
+                     version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                     class="pointer" :class="{ selected: day.rate == 3 }"
+                     @click="showComment(3)" @mouseover="showHappySmileyColor = true"
                 >
                   <defs />
                   <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -99,9 +103,10 @@
                 </svg>
 
                 <!-- happy day color -->
-                <svg v-if="showHappySmileyColor" width="42px" height="42px" viewBox="0 0 42 42" version="1.1"
-                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer" :class="{ selected: day.rate == 3 }" @click="showComment(3)"
-                     @mouseleave="showHappySmileyColor = false"
+                <svg v-if="showHappySmileyColor" v-cy-name="'happy-reaction-button'" width="42px" height="42px" viewBox="0 0 42 42"
+                     version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                     class="pointer" :class="{ selected: day.rate == 3 }"
+                     @click="showComment(3)" @mouseleave="showHappySmileyColor = false"
                 >
                   <defs />
                   <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -123,7 +128,7 @@
         </div>
 
         <!-- COMMENT BOX -->
-        <div v-if="hasRated == 'addComment'" :key="'comment'" class="pt2">
+        <div v-if="hasRated == 'addComment'" :key="'comment'" v-cy-name="'comment'" class="pt2">
           <form-textarea
             :id="'comment'"
             v-model="day.comment"
@@ -140,7 +145,7 @@
                 </a>
               </div>
               <div>
-                <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click="rate()">
+                <button v-cy-name="'save-entry-button'" class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click="rate()">
                   {{ $t('app.save') }}
                 </button>
               </div>

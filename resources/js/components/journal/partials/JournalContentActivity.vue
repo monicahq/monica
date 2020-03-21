@@ -44,8 +44,7 @@
               {{ activity.summary }}
             </p>
 
-            <p v-if="showDescription">
-              {{ activity.description }}
+            <p v-if="showDescription" class="markdown" v-html="compiledMarkdown(activity.description)">
             </p>
           </div>
 
@@ -141,6 +140,10 @@ export default {
 
     redirect(attendee) {
       window.location.href = 'people/' + attendee.hash_id;
+    },
+
+    compiledMarkdown (text) {
+      return marked(text, { sanitize: true });
     }
   }
 };

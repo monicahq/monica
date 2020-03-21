@@ -99,7 +99,7 @@
                 {{ $t('journal.journal_entry_rate') }}
               </li>
               <li class="di">
-                <a class="pointer" :cy-name="'entry-delete-button-' + journalEntry.id" href="" @click.prevent="destroy()">
+                <a v-cy-name="'entry-delete-button-' + journalEntry.id" class="pointer" href="" @click.prevent="destroy()">
                   {{ $t('app.delete') }}
                 </a>
               </li>
