@@ -7,9 +7,10 @@
     "require": {
         "php": "^7.2",
         "ext-bcmath": "*",
+        "ext-intl": "*",
         "ext-gd": "*",
         "ext-gmp": "*",
-        "ext-intl": "*",
+        "ext-redis": "*",
         "asbiin/laravel-webauthn": "~0.7",
         "bacon/bacon-qr-code": "^1.0",
         "creativeorange/gravatar": "~1.0",
