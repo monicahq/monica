@@ -240,7 +240,7 @@ return [
     'activity_type_just_hung_out' => 'einfach zusammen Zeit verbracht',
     'activity_type_watched_movie_at_home' => 'zu Hause einen Film gesehen',
     'activity_type_talked_at_home' => 'zu Hause geredet',
-    'activity_type_did_sport_activities_together' => 'zusammen Sport gemacht',
+    'activity_type_did_sport_activities_together' => 'played a sport together',
     'activity_type_ate_at_his_place' => 'bei Ihnen gegessen',
     'activity_type_went_bar' => 'in eine Bar gegangen',
     'activity_type_ate_at_home' => 'zu Hause gegessen',
@@ -457,7 +457,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'Hat angefangen, eine Brille oder Kontaktlinsen zu tragen',
     'life_event_sentence_broken_bone' => 'Knochen gebrochen',
     'life_event_sentence_removed_braces' => 'Zahnspange entfernt',
-    'life_event_sentence_surgery' => 'Hatte eine Operation',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => 'Ging zum Zahnarzt',
     'life_event_sentence_new_sport' => 'Hat eine Sportart begonnen',
     'life_event_sentence_new_hobby' => 'Ein Hobby begonnen',
@@ -506,4 +506,14 @@ return [
     'auditlogs_title' => 'Everything that happened to :name',
     'auditlogs_breadcrumb' => 'History',
     'auditlogs_author' => 'By :name on :date',
+
+    // contact field label
+    'contact_field_label_home' => 'Home',
+    'contact_field_label_work' => 'Work',
+    'contact_field_label_cell' => 'Mobile',
+    'contact_field_label_fax' => 'Fax',
+    'contact_field_label_pager' => 'Pager',
+    'contact_field_label_main' => 'Main',
+    'contact_field_label_other' => 'Other',
+    'contact_field_label_personal' => 'Personal',
 ];

@@ -240,7 +240,7 @@ return [
     'activity_type_just_hung_out' => 'בילוי משותף',
     'activity_type_watched_movie_at_home' => 'צפיתם בסרט בבית',
     'activity_type_talked_at_home' => 'דיברתם בבית',
-    'activity_type_did_sport_activities_together' => 'עשיתם ספורט יחד',
+    'activity_type_did_sport_activities_together' => 'עסקתם בפעילות ספורטיבית משותפת',
     'activity_type_ate_at_his_place' => 'אכלתם אצלם',
     'activity_type_went_bar' => 'הלכת לבר',
     'activity_type_ate_at_home' => 'אכלתם בבית',
@@ -457,7 +457,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'הרכבת משקפיים או עדשות מגע לראשונה',
     'life_event_sentence_broken_bone' => 'שבירת עצם',
     'life_event_sentence_removed_braces' => 'הסרת גשר',
-    'life_event_sentence_surgery' => 'ניתוח',
+    'life_event_sentence_surgery' => 'לאחר ניתוח',
     'life_event_sentence_dentist' => 'טיפול שיניים',
     'life_event_sentence_new_sport' => 'התחלה של ספורט',
     'life_event_sentence_new_hobby' => 'התחלת תחביב',
@@ -506,4 +506,14 @@ return [
     'auditlogs_title' => 'כלה מה שקרה ל:name',
     'auditlogs_breadcrumb' => 'היסטוריה',
     'auditlogs_author' => 'מאת :name ב־:date',
+
+    // contact field label
+    'contact_field_label_home' => 'בית',
+    'contact_field_label_work' => 'עבודה',
+    'contact_field_label_cell' => 'נייד',
+    'contact_field_label_fax' => 'פקס',
+    'contact_field_label_pager' => 'זימונית',
+    'contact_field_label_main' => 'עיקרי',
+    'contact_field_label_other' => 'אחר',
+    'contact_field_label_personal' => 'אישי',
 ];

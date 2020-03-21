@@ -14,6 +14,19 @@ return [
     'sidebar_settings_security' => 'الأمن',
     'sidebar_settings_auditlogs' => 'Audit logs',
 
+    'title_general' => 'General Information',
+    'title_i18n' => 'International settings',
+    'title_layout' => 'Layout',
+
+    'me_title' => 'My contact',
+    'me_help' => 'This is the contact that represents <em>you</em> in Monica',
+    'me_select' => 'Select a contact',
+    'me_no_contact' => 'No contact selected yet.',
+    'me_select_click' => 'Click here to select a contact.',
+    'me_remove_contact' => 'Remove the association',
+    'me_choose' => 'Choose yourself',
+    'me_choose_placeholder' => 'Choose yourself',
+
     'export_title' => 'قم بتصدير بيانات حسابك',
     'export_be_patient' => 'انقر فوق الزر لبدء التصدير. قد يستغرق الأمر عدة دقائق لعملية التصدير – يرجى التحلي بالصبر، و لا تضغط كثيراً على الزر.',
     'export_title_sql' => 'التصدير إلى SQL',
@@ -364,7 +377,7 @@ return [
     'personalization_genders_modal_name_help' => 'The name used to display the gender on a contact page.',
     'personalization_genders_modal_sex' => 'Sex',
     'personalization_genders_modal_sex_help' => 'Used to define the relationships, and during the VCard import/export process.',
-    'personalization_genders_modal_default' => 'Is this the default gender for a new contact?',
+    'personalization_genders_modal_default' => 'Select the default gender for a new contact',
     'personalization_genders_modal_delete' => 'حذف نوع الجنس',
     'personalization_genders_modal_delete_desc' => 'هل أنت متأكد من حذف {name}؟',
     'personalization_genders_modal_delete_question' => 'حاليا لديك {count} جهة اتصال لديها هذا النوع من الجنس. إذا قمت بحذف هذا الجنس، فأي نوع يجب أن تكون جهة الاتصال هذه؟| لديك حاليا {count} جهات اتصال لديها هذا النوع من الجنس. إذا قمت بحذف هذا الجنس، ما بين فأي نوع يجب أن تكون جهات الإتصال هؤلاء؟',
@@ -392,7 +405,8 @@ return [
     'personalization_module_title' => 'الميزات',
     'personalization_module_desc' => 'بعض الأشخاص لا يحتاجون كل الميزات. يمكنك أدناه تبديل ميزات معينة و التي تُستخدم على صفحة جهة الإتصال. هذا التغيير سيؤثر على جميع جهات اتصالك. علماً بأنك إذا قمت بتعطيل إحدى الميزات، فلن تُحذف البيانات - سنقوم ببساطة بإخفاء هذه الميزة.',
 
-    'personalisation_paid_upgrade' => 'هذه ميزة خاصة و التي تتطلب اشتراكاً مدفوعاً لتفعيلها. قم بترقية حسابك عبر زيارة الإعدادت > الإشتراك.',
+    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href=":url">Settings > Subscription</a>.',
+    'personalisation_paid_upgrade_vue' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href="{url}">Settings > Subscription</a>.',
 
     'reminder_time_to_send' => 'وقت تذكيرات اليوم يجب أن قد تم إرسالها',
     'reminder_time_to_send_help' => 'لمعلوماتك، تذكيرك القادم سيرسل في <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',

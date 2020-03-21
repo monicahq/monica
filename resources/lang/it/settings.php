@@ -14,6 +14,19 @@ return [
     'sidebar_settings_security' => 'Sicurezza',
     'sidebar_settings_auditlogs' => 'Audit logs',
 
+    'title_general' => 'General Information',
+    'title_i18n' => 'International settings',
+    'title_layout' => 'Layout',
+
+    'me_title' => 'My contact',
+    'me_help' => 'This is the contact that represents <em>you</em> in Monica',
+    'me_select' => 'Select a contact',
+    'me_no_contact' => 'No contact selected yet.',
+    'me_select_click' => 'Click here to select a contact.',
+    'me_remove_contact' => 'Remove the association',
+    'me_choose' => 'Choose yourself',
+    'me_choose_placeholder' => 'Choose yourself',
+
     'export_title' => 'Esporta i dati del tuo account',
     'export_be_patient' => 'Clicca il pulsante per iniziare l\'esportazione. Potrebbe volerci qualche minuto – ti chiediamo di portare pazienza e non premere il pulsante a ripetizione.',
     'export_title_sql' => 'Esporta a SQL',
@@ -364,7 +377,7 @@ return [
     'personalization_genders_modal_name_help' => 'Il nome utilizzato per visualizzare il genere in una pagina di contatto.',
     'personalization_genders_modal_sex' => 'Sesso',
     'personalization_genders_modal_sex_help' => 'Usato per definire le relazioni, e durante il processo di importazione/esportazione della VCard.',
-    'personalization_genders_modal_default' => 'Questo è il genere predefinito per un nuovo contatto?',
+    'personalization_genders_modal_default' => 'Select the default gender for a new contact',
     'personalization_genders_modal_delete' => 'Elimina sesso',
     'personalization_genders_modal_delete_desc' => 'Sei sicuro di voler eliminare {name}?',
     'personalization_genders_modal_delete_question' => 'Attualmente hai {count} contatto con questo sesso. Se lo elimini, quale sesso vuoi impostargli?|Attualmente hai {count} contatti con questo sesso. Se lo elimini, quale sesso vuoi impostare per loro?',
@@ -392,7 +405,8 @@ return [
     'personalization_module_title' => 'Funzionalità',
     'personalization_module_desc' => 'Alcune persone non hanno bisogno di tutte le funzioni. Qui sotto puoi decidere quali funzioni attivare per le pagine dei contatti. Questi cambiamenti riguardano TUTTI i contatti. Nota: se disattivi una funzione non elimineremo nessun dato - verranno semplicemente nascosti.',
 
-    'personalisation_paid_upgrade' => 'Questa è una funzionalità premium e richiede un abbonamento. Abbonati ora nvigando su Impostazioni > Abbonamento.',
+    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href=":url">Settings > Subscription</a>.',
+    'personalisation_paid_upgrade_vue' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href="{url}">Settings > Subscription</a>.',
 
     'reminder_time_to_send' => 'Ora del giorno in cui inviare i promemoria',
     'reminder_time_to_send_help' => 'Per informazione, il tuo prossimo promemoria verrà inviato il <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
