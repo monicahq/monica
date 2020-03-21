@@ -27,7 +27,7 @@ class UploadDocumentTest extends TestCase
         $file = UploadedFile::fake()->image('document.pdf');
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'document' => $file,
         ];
@@ -36,7 +36,7 @@ class UploadDocumentTest extends TestCase
 
         $this->assertDatabaseHas('documents', [
             'id' => $document->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'type' => 'pdf',
         ]);

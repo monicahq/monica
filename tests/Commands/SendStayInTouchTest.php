@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Jobs;
+namespace Tests\Commands;
 
 use Carbon\Carbon;
 use Tests\TestCase;

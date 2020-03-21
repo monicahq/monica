@@ -41,7 +41,7 @@ class PhotosController extends Controller
     public function store(Request $request, Contact $contact): PhotoResource
     {
         $photo = app(UploadPhoto::class)->execute([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'photo' => $request->photo,
         ]);
@@ -63,7 +63,7 @@ class PhotosController extends Controller
     public function destroy(Request $request, Contact $contact, Photo $photo)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'photo_id' => $photo->id,
         ];
 
@@ -76,7 +76,7 @@ class PhotosController extends Controller
         if ($contact->avatar_source == 'photo'
             && $contact->avatar_photo_id == $photo->id) {
             app(UpdateAvatar::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'contact_id' => $contact->id,
                 'source' => 'adorable',
             ]);

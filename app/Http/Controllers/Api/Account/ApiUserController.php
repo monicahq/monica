@@ -122,7 +122,7 @@ class ApiUserController extends ApiController
 
         try {
             $term = app(AcceptPolicy::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'user_id' => auth()->user()->id,
                 'ip_address' => $request->input('ip_address'),
             ]);

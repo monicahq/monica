@@ -20,7 +20,7 @@ class DestroyPlaceTest extends TestCase
         $place = factory(Place::class)->create([]);
 
         $request = [
-            'account_id' => $place->account->id,
+            'account_id' => $place->account_id,
             'place_id' => $place->id,
         ];
 

@@ -24,7 +24,7 @@ class Task extends Resource
             'completed' => (bool) $this->completed,
             'completed_at' => DateHelper::getTimestamp($this->completed_at),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'contact' => new ContactShortResource($this->contact),
             'created_at' => DateHelper::getTimestamp($this->created_at),

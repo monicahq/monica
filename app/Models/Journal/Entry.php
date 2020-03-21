@@ -10,6 +10,9 @@ use App\Models\ModelBinding as Model;
 use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property \Carbon\Carbon $date
+ */
 class Entry extends Model implements IsJournalableInterface
 {
     use Journalable;

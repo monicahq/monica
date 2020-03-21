@@ -17,7 +17,7 @@ class ContactFieldTypeTest extends FeatureTestCase
     {
         $contactFieldType = factory(ContactFieldType::class)->create([]);
         $conversation = factory(Conversation::class, 3)->create([
-            'account_id' => $contactFieldType->account->id,
+            'account_id' => $contactFieldType->account_id,
             'contact_field_type_id' => $contactFieldType->id,
         ]);
 

@@ -2,6 +2,10 @@
 
 ### New features:
 
+* Add a weekly job to update gravatars
+* Add ability to set 'me' contact
+* Add middle name field to new contact and edit contact
+* Add backend and api for contact field labels
 * Add audit log when setting a contact's description
 * Add support for audit logs on a contact page
 * Add support for audit logs in the Settings page
@@ -12,12 +16,18 @@
 
 ### Enhancements:
 
+* Use Carbon v2 library as translator for dates
 * Contacts displayed in the activity list are now clickable again
 * Gift are now added and updated inline
 * Add a link in the downgrade process to archive all contacts in the account
 
 ### Fixes:
 
+* Fix wrong untagged contacts counter when viewing untagged contacts
+* Fix markdown doesn't work on journal activity entries
+* Fix markdown doesn't work on Activity entries
+* Fix summary of activities showing the same date for every entry
+* Fix vcard categories import/export as tags
 * Fix resend email verification feature not sending email
 * Fix edit conversation date not being editable
 * Fix display of the toggle buttons in the Settings page

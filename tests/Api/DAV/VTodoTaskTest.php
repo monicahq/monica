@@ -21,7 +21,7 @@ class VTodoTaskTest extends ApiTestCase
     {
         $user = $this->signin();
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => null,
             'created_at' => now(),
             'updated_at' => now(),
@@ -61,7 +61,7 @@ END:VCALENDAR
         $response->assertHeaderMissing('ETag');
 
         $this->assertDatabaseHas('tasks', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => null,
             'uuid' => $uuid,
             'title' => 'title',
@@ -76,7 +76,7 @@ END:VCALENDAR
     {
         $user = $this->signin();
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => null,
         ]);
 
@@ -97,7 +97,7 @@ END:VCALENDAR
         $response->assertHeaderMissing('ETag');
 
         $this->assertDatabaseHas('tasks', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'uuid' => $task->uuid,
             'title' => 'new title',
             'description' => 'new description',
@@ -111,7 +111,7 @@ END:VCALENDAR
     {
         $user = $this->signin();
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => null,
         ]);
 
@@ -134,7 +134,7 @@ END:VCALENDAR
         $response->assertHeaderMissing('ETag');
 
         $this->assertDatabaseHas('tasks', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'uuid' => $task->uuid,
             'completed' => true,
             'completed_at' => Carbon::create(2019, 01, 21, 18, 28, 00),
@@ -145,10 +145,10 @@ END:VCALENDAR
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'created_at' => now(),
         ]);
 
@@ -192,11 +192,11 @@ END:VCALENDAR
     {
         $user = $this->signin();
         $task1 = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'created_at' => now(),
         ]);
         $task2 = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'created_at' => now(),
         ]);
 

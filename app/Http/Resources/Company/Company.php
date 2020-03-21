@@ -22,7 +22,7 @@ class Company extends Resource
             'website' => $this->website,
             'number_of_employees' => $this->number_of_employees,
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

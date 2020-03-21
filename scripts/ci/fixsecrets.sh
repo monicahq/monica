@@ -20,3 +20,7 @@ if [ "$STRIPE_SECRET" == "\$(STRIPE_SECRET)" ]; then
     echo -e "\033[0;36mFix STRIPE_SECRET\033[0;37m"
     export STRIPE_SECRET=
 fi
+if [ "$CYPRESS_RECORD_KEY" == "\$(CYPRESS_RECORD_KEY)" ]; then
+    echo -e "\033[0;36mFix CYPRESS_RECORD_KEY\033[0;37m"
+    export CYPRESS_RECORD_KEY=
+fi

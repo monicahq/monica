@@ -38,6 +38,15 @@
               </div>
               <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
+                  value="{{ $contact->middle_name }}"
+                  :input-type="'text'"
+                  :id="'middlename'"
+                  :required="false"
+                  :title="'{{ trans('people.people_add_middlename') }}'">
+                </form-input>
+              </div>
+              <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
+                <form-input
                   value="{{ $contact->last_name }}"
                   :input-type="'text'"
                   :id="'lastname'"
@@ -153,9 +162,4 @@
       </form>
     </div>
   </div>
-
-  <form method="POST" action="{{ route('people.destroy', $contact) }}" id="contact-delete-form" class="hidden">
-    @method('DELETE')
-    @csrf
-  </form>
 @endsection

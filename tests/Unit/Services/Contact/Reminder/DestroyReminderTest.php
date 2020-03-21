@@ -26,7 +26,7 @@ class DestroyReminderTest extends TestCase
         ]);
 
         $request = [
-            'account_id' => $reminder->account->id,
+            'account_id' => $reminder->account_id,
             'reminder_id' => $reminder->id,
         ];
 
@@ -68,7 +68,7 @@ class DestroyReminderTest extends TestCase
         ]);
 
         $request = [
-            'account_id' => $reminder->account->id,
+            'account_id' => $reminder->account_id,
             'reminder_id' => $reminder->id,
         ];
 

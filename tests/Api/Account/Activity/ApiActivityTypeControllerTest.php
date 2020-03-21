@@ -86,7 +86,7 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/activitytypes', [
@@ -124,11 +124,11 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $activityType = factory(ActivityType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'activity_type_category_id' => $activityTypeCategory->id,
         ]);
 
@@ -211,11 +211,11 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $activityType = factory(ActivityType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'activity_type_category_id' => $activityTypeCategory->id,
         ]);
 

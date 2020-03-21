@@ -25,7 +25,7 @@ class LifeEvent extends Resource
             'happened_at' => DateHelper::getTimestamp($this->happened_at),
             'life_event_type' => new LifeEventTypeResource($this->lifeEventType),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'contact' => new ContactShortResource($this->contact),
             'created_at' => DateHelper::getTimestamp($this->created_at),

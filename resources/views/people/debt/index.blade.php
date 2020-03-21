@@ -22,7 +22,7 @@
 
   <div class="col-12 debts-list">
 
-    <ul class="table">
+    <ul class="table" cy-name="debts-body" cy-items="{{ $contact->debts->implode('id', ',') }}">
       @foreach($contact->debts as $debt)
       <li class="table-row" cy-name="debt-item-{{ $debt->id }}">
         <div class="table-cell date">
@@ -52,7 +52,7 @@
           <form method="POST" action="{{ route('people.debts.destroy', [$contact, $debt]) }}">
             @method('DELETE')
             @csrf
-            <confirm message="{{ trans('people.debt_delete_confirmation') }}" cy-name="delete-debt-button-{{ $debt->id }}">
+            <confirm message="{{ trans('people.debt_delete_confirmation') }}" cy-name="delete-debt-button-{{ $debt->id }}" :name="'delete-debt'">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </confirm>
           </form>
