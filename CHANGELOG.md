@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Change title of birthday reminder for deceased people
 * Add a weekly job to update gravatars
 * Add ability to set 'me' contact
 * Add middle name field to new contact and edit contact
