@@ -18,8 +18,8 @@ use App\Models\ModelBindingHasherWithContact as Model;
  * @property int $frequency_number
  * @property string $frequency_type
  * @property string $nature
- * @property \Carbon\Carbon $sent_date
- * @property \Carbon\Carbon $planned_date
+ * @property \Illuminate\Support\Carbon|null $sent_date
+ * @property \Illuminate\Support\Carbon|null $planned_date
  */
 class ReminderSent extends Model
 {
