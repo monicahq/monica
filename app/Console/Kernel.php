@@ -18,6 +18,7 @@ use App\Console\Commands\SentryRelease;
 use App\Console\Commands\SendStayInTouch;
 use App\Console\Commands\SetupProduction;
 use App\Console\Commands\UpdateGravatars;
+use App\Console\Commands\DavClientsUpdate;
 use App\Console\Commands\PingVersionServer;
 use App\Console\Commands\SetPremiumAccount;
 use Illuminate\Console\Scheduling\Schedule;
@@ -38,6 +39,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         CalculateStatistics::class,
         Clean::class,
+        DavClientsUpdate::class,
         Deactivate2FA::class,
         ExportAll::class,
         GetVersion::class,
