@@ -240,7 +240,7 @@ return [
     'activity_type_just_hung_out' => '约会',
     'activity_type_watched_movie_at_home' => '看电影',
     'activity_type_talked_at_home' => '谈心',
-    'activity_type_did_sport_activities_together' => '一起运动',
+    'activity_type_did_sport_activities_together' => '一起打球',
     'activity_type_ate_at_his_place' => '在对方家里做客',
     'activity_type_went_bar' => '泡吧',
     'activity_type_ate_at_home' => '在家吃饭',
@@ -506,4 +506,14 @@ return [
     'auditlogs_title' => ':name 发生的所有事件',
     'auditlogs_breadcrumb' => '历史',
     'auditlogs_author' => ':name 于 :date ',
+
+    // contact field label
+    'contact_field_label_home' => '家庭',
+    'contact_field_label_work' => '工作',
+    'contact_field_label_cell' => '手机',
+    'contact_field_label_fax' => '传真',
+    'contact_field_label_pager' => '寻呼机',
+    'contact_field_label_main' => '主要',
+    'contact_field_label_other' => '其它',
+    'contact_field_label_personal' => '个人',
 ];

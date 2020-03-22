@@ -9,7 +9,17 @@ use App\Models\ModelBindingHasherWithContact as Model;
 
 /**
  * @property Account $account
+ * @property int $account_id
  * @property Contact $contact
+ * @property User $user
+ * @property int $user_id
+ * @property int $reminder_id
+ * @property string $html_content
+ * @property int $frequency_number
+ * @property string $frequency_type
+ * @property string $nature
+ * @property \Illuminate\Support\Carbon|null $sent_date
+ * @property \Illuminate\Support\Carbon|null $planned_date
  */
 class ReminderSent extends Model
 {

@@ -29,8 +29,8 @@
             </div>
             <div class="table-cell actions">
               <a
+                v-cy-name="'u2fkey-delete-button-' + key.id"
                 class="pointer"
-                :cy-name="'u2fkey-delete-button-' + key.id"
                 @click.prevent="showDeleteModal(key.id)"
               >
                 {{ $t('app.delete') }}
@@ -174,9 +174,9 @@
           {{ $t('app.cancel') }}
         </a>
         <a
+          v-cy-name="'modal-delete-u2fkey-button-' + keyToTrash"
           class="btn"
           href=""
-          :cy-name="'modal-delete-u2fkey-button-' + keyToTrash"
           @click.prevent="u2fRemove(keyToTrash)"
         >
           {{ $t('app.delete') }}

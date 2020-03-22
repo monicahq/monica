@@ -9,6 +9,9 @@ use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @property Contact $contact
+ */
 class Call extends Model
 {
     /**

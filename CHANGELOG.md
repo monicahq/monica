@@ -16,6 +16,7 @@
 
 ### Enhancements:
 
+* Use Carbon v2 library as translator for dates
 * Contacts displayed in the activity list are now clickable again
 * Gift are now added and updated inline
 * Add a link in the downgrade process to archive all contacts in the account
@@ -23,6 +24,9 @@
 ### Fixes:
 
 * Fix dates being off by one day
+* Fix wrong untagged contacts counter when viewing untagged contacts
+* Fix markdown doesn't work on journal activity entries
+* Fix markdown doesn't work on Activity entries
 * Fix summary of activities showing the same date for every entry
 * Fix vcard categories import/export as tags
 * Fix resend email verification feature not sending email
