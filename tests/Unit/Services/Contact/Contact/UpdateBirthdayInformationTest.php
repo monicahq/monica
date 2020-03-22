@@ -31,6 +31,7 @@ class UpdateBirthdayInformationTest extends TestCase
             'is_age_based' => false,
             'age' => 0,
             'add_reminder' => true,
+            'is_deceased' => false,
         ];
 
         app(UpdateBirthdayInformation::class)->execute($request);
@@ -143,6 +144,7 @@ class UpdateBirthdayInformationTest extends TestCase
             'year' => 1980,
             'is_age_based' => false,
             'add_reminder' => true,
+            'is_deceased' => false,
         ];
 
         $contact = app(UpdateBirthdayInformation::class)->execute($request);
