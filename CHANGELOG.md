@@ -23,6 +23,7 @@
 
 ### Fixes:
 
+* Fix dates being off by one day
 * Fix wrong untagged contacts counter when viewing untagged contacts
 * Fix markdown doesn't work on journal activity entries
 * Fix markdown doesn't work on Activity entries
