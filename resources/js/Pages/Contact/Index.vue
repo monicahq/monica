@@ -43,7 +43,7 @@
             <li class="bb pa2 flex items-center" v-for="contact in contacts" :key="contact.id">
               <img :src="contact.avatar" class="br-100 ba h2 w2 dib mr2" alt="avatar">
               <div>
-                <inertia-link :href="contact.url" class="mb1 db">{{ contact.name }}</inertia-link>
+
                 <div class="db f7">
                   <!-- tags -->
                   <ul class="dib ma0 list pl0">

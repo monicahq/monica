@@ -10,9 +10,43 @@
       <a :href="''" class="mb1 db btn btn-primary" @click.prevent="editMode = true">Add a new reminder</a>
     </div>
 
+    <!-- add a new reminder -->
+    <template v-if="editMode">
+      <form @submit.prevent="submit" class="pa2">
+        <errors :errors="form.errors" :classes="'mb3'" />
+
+        <form-input
+          v-on:escape="editMode = false"
+          :id="'title'"
+          :type="'text'"
+          :required="true"
+          :label-class="'db mb2'"
+          :input-class="'db mb3'"
+          :title="'What should we remind you about?'">
+        </form-input>
+
+        <form-input
+          v-on:escape="editMode = false"
+          :id="'title'"
+          :type="'date'"
+          :required="true"
+          :label-class="'db mb2'"
+          :input-class="'db mb3'"
+          :title="'What is the date of this event? It can be in the past.'">
+        </form-input>
+
+        What is
+
+        <!-- Actions -->
+        <div class="">
+          <loading-button :classes="'btn add w-auto-ns w-100 mb2 pv2 ph3'" :state="loadingState" :text="$t('app.save')" :cypress-selector="'submit-add-work-information'" />
+          <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3 pointer" data-cy="cancel-add-work-information" @click="editMode = false">{{ $t('app.cancel') }}</a>
+        </div>
+      </form>
+    </template>
 
     <!-- list of the first 5 reminders -->
-    <ul class="ma0 list pl0" v-show="!editMode">
+    <ul class="ma0 list pl0">
       <li class="bb pa2 flex items-center relative">
         <span class="mr3 tc">
           <span class="db mb1">Feb 25</span>
@@ -96,44 +130,9 @@
     </ul>
 
     <!-- view more link -->
-    <div class="pa2 tc" v-show="!editMode">
+    <div class="pa2 tc">
       <inertia-link :href="''" class="">View all the reminders</inertia-link>
     </div>
-
-    <!-- add a new reminder -->
-    <template v-if="editMode">
-      <form @submit.prevent="submit" class="pa2">
-        <errors :errors="form.errors" :classes="'mb3'" />
-
-        <form-input
-          v-on:escape="editMode = false"
-          :id="'title'"
-          :type="'text'"
-          :required="true"
-          :label-class="'db mb2'"
-          :input-class="'db mb3'"
-          :title="'What should we remind you about?'">
-        </form-input>
-
-        <form-input
-          v-on:escape="editMode = false"
-          :id="'title'"
-          :type="'date'"
-          :required="true"
-          :label-class="'db mb2'"
-          :input-class="'db mb3'"
-          :title="'What is the date of this event? It can be in the past.'">
-        </form-input>
-
-        What is
-
-        <!-- Actions -->
-        <div class="">
-          <loading-button :classes="'btn add w-auto-ns w-100 mb2 pv2 ph3'" :state="loadingState" :text="$t('app.save')" :cypress-selector="'submit-add-work-information'" />
-          <a class="btn dib tc w-auto-ns w-100 mb2 pv2 ph3 pointer" data-cy="cancel-add-work-information" @click="editMode = false">{{ $t('app.cancel') }}</a>
-        </div>
-      </form>
-    </template>
   </div>
 </template>
 
