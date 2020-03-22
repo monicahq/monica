@@ -219,7 +219,7 @@ class DateHelper
      */
     private static function formatDate($date, $format): string
     {
-        $date = Carbon::parse($date, static::getTimezone());
+        $date = Carbon::parse($date);
         $format = trans($format, [], Carbon::getLocale());
 
         return $date->translatedFormat($format) ?: '';
