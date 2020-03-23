@@ -3,6 +3,7 @@
 namespace App\Services\VCard;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use App\Services\BaseService;
 use Sabre\VObject\Component\VCard;
 use GuzzleHttp\Client as GuzzleClient;
@@ -31,11 +32,93 @@ class ClientVCard extends BaseService
     {
         $addressbook = $this->getAddressBook($data, $httpClient);
 
-        $client = $this->getClient($httpClient);
+        try {
+
+            $client = $this->getClient($httpClient);
+
+            $client->setBaseUri($addressbook);
+
+            $displayname = $client->getProperty('{DAV:}displayname');
+
+
+            $supportedReportSet = $client->getSupportedReportSet();
+
+            // INITIAL SYNC
+            if (in_array('{DAV:}sync-collection', $supportedReportSet)) {
+
+                // get ctag
+
+                //$syncToken = $client->getProperty('{DAV:}sync-token');
+
+                // initial sync
+                $collection = $client->syncCollection('', '', [
+                    '{DAV:}getcontenttype',
+                    '{DAV:}getetag'
+                ]);
+
+            } else {
+
+                // synchronisation
+
+                $collection = $client->propFind('', [
+                    '{DAV:}getcontenttype',
+                    '{DAV:}getetag',
+                ], 1);
+            }
+
+
+            $refresh = collect();
+            foreach ($collection as $href => $contact) {
+                if (isset($contact[200]) && Str::contains($contact[200]['{DAV:}getcontenttype'], 'text/vcard')) {
+                    // test si le contact existe
+                    // si non -> on l'ajoute
+                    // si oui : test du etag
+                    //    si pas identique : on l'ajoute
+
+                    $refresh->push([
+                        'href' => $href,
+                        'etag' => $contact[200]['{DAV:}getetag'],
+                    ]);
+                }
+            }
+
+
+            if (in_array('{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-multiget', $supportedReportSet)) {
+
+                $datas = $client->addressbookMultiget('', [
+                    '{DAV:}getetag',
+                    '{'.CardDAVPlugin::NS_CARDDAV.'}address-data',
+                ], $refresh->map(function ($contact) { return $contact['href']; }));
+
+                foreach ($datas as $href => $contact) {
+                    if (isset($contact[200])) {
+                        $etag = $contact[200]['{DAV:}getetag'];
+                        $vcard = $contact[200]['{'.CardDAVPlugin::NS_CARDDAV.'}address-data'];
+                    }
+                }
+
+            } else {
+
+                foreach ($refresh as $contact) {
+                    $c = $client->request('GET', $contact['href']);
+                    if ($c['statusCode'] === 200) {
+                        $etag = $contact['etag'];
+                        $vcard = $c['body'];
+                    }
+                }
+            }
+
+        } catch (ClientException $e) {
+            $r = $e->getResponse();
+            $s = (string) $r->getBody();
+        } catch (\Exception $e) {
+            dump($e->getMessage());
+        }
 
     }
 
-    private function getAddressBook(array $data, GuzzleClient $httpClient = null)
+
+    private function getAddressBook(array $data, GuzzleClient $httpClient = null) : string
     {
         $client = $this->getClient($httpClient);
 
@@ -51,6 +134,8 @@ class ClientVCard extends BaseService
             $principal = $this->getCurrentUserPrincipal($client);
 
             $addressbook = $this->getAddressBookUrl($client, $principal);
+
+            return $client->getBaseUri($addressbook);
 
         } catch (ClientException $e) {
             $r = $e->getResponse();

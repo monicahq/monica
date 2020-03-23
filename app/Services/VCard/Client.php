@@ -4,31 +4,20 @@ namespace App\Services\VCard;
 
 use Sabre\DAV\Xml\Service;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Collection;
 use Sabre\DAV\Xml\Request\PropPatch;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
+use Sabre\CardDAV\Plugin as CardDAVPlugin;
 
-/**
- * SabreDAV DAV client.
- *
- * This client wraps around Curl to provide a convenient API to a WebDAV
- * server.
- *
- * NOTE: This class is experimental, it's api will likely change in the future.
- *
- * @copyright Copyright (C) fruux GmbH (https://fruux.com/)
- * @author Evert Pot (http://evertpot.com/)
- * @license http://sabre.io/license/ Modified BSD License
- */
 class Client
 {
     /**
      * The xml service.
      *
-     * Uset this service to configure the property and namespace maps.
-     *
-     * @var mixed
+     * @var Service
      */
     public $xml;
 
@@ -39,24 +28,7 @@ class Client
 
 
     /**
-     * Constructor.
-     *
-     * Settings are provided through the 'settings' argument. The following
-     * settings are supported:
-     *
-     *   * baseUri
-     *   * userName (optional)
-     *   * password (optional)
-     *   * proxy (optional)
-     *   * authType (optional)
-     *   * encoding (optional)
-     *
-     *  authType must be a bitmap, using self::AUTH_BASIC, self::AUTH_DIGEST
-     *  and self::AUTH_NTLM. If you know which authentication method will be
-     *  used, it's recommended to set it, as it will save a great deal of
-     *  requests to 'discover' this information.
-     *
-     *  Encoding is a bitmap with one of the ENCODING constants.
+     * Create a new client.
      *
      * @param array $settings
      * @param GuzzleClient $client
@@ -66,8 +38,6 @@ class Client
         if (is_null($client) && !isset($settings['base_uri'])) {
             throw new \InvalidArgumentException('A baseUri must be provided');
         }
-
-        //parent::__construct();
 
         $this->client = is_null($client) ? new GuzzleClient([
             'base_uri' => $settings['base_uri'],
@@ -87,15 +57,53 @@ class Client
      */
     public function getServiceUrl()
     {
-        $baseUri = $this->client->getConfig('base_uri')->withPath('/.well-known/carddav');
+        // Get well-known register (section 9.1)
+        $wkUri = $this->getBaseUri('/.well-known/carddav');
 
-        $response = $this->client->get($baseUri, ['allow_redirects' => false]);
+        $response = $this->client->get($wkUri, ['allow_redirects' => false]);
 
-        $code = $response->getStatusCode(); // 200
-
+        $code = $response->getStatusCode();
         if (($code === 301 || $code === 302) && $response->hasHeader('Location')) {
             return $response->getHeader('Location')[0];
         }
+
+        // Get service name register (section 9.2)
+        $target = $this->getServiceUrlSrv('_carddavs._tcp', true);
+        if (is_null($target)) {
+            $target = $this->getServiceUrlSrv('_carddav._tcp', false);
+        }
+
+        return $target;
+    }
+
+    /**
+     * Service Discovery via SRV Records
+     *
+     * @see https://tools.ietf.org/html/rfc6352#section-11
+     */
+    private function getServiceUrlSrv(string $name, bool $https): ?string
+    {
+        $host = parse_url($this->getBaseUri(), PHP_URL_HOST);
+        $entry = dns_get_record($name.'.'.$host, DNS_SRV);
+
+        if ($entry && count($entry) > 0) {
+            $target = isset($entry[0]['target']) ? $entry[0]['target'] : null;
+            $port = isset($entry[0]['port']) ? $entry[0]['port'] : null;
+            if ($target) {
+                if ($port === 443 && $https) {
+                    $port = null;
+                } else if ($port === 80 && !$https) {
+                    $port = null;
+                }
+                return ($https ? 'https' : 'http') . '://' . $target . (is_null($port) ? '' : ':'.$port);
+            }
+        }
+    }
+
+    public function getBaseUri(?string $path = null)
+    {
+        $baseUri = $this->client->getConfig('base_uri');
+        return is_null($path) ? $baseUri : $baseUri->withPath($path);
     }
 
     public function setBaseUri($uri)
@@ -134,44 +142,28 @@ class Client
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
-        $root = $dom->createElementNS('DAV:', 'd:propfind');
-        $prop = $dom->createElement('d:prop');
+        $root = $dom->appendChild($dom->createElementNS('DAV:', 'd:propfind'));
+        $prop = $root->appendChild($dom->createElement('d:prop'));
 
-        foreach ($properties as $property) {
-            list(
-                $namespace,
-                $elementName
-            ) = \Sabre\Xml\Service::parseClarkNotation($property);
+        $namespaces = [
+            'DAV:' => 'd'
+        ];
 
-            if ('DAV:' === $namespace) {
-                $element = $dom->createElement('d:'.$elementName);
-            } else {
-                $element = $dom->createElementNS($namespace, 'x:'.$elementName);
-            }
+        $this->fetchProperties($dom, $prop, $properties, $namespaces);
 
-            $prop->appendChild($element);
-        }
-
-        $dom->appendChild($root)->appendChild($prop);
         $body = $dom->saveXML();
 
         $request = new Request('PROPFIND', $url, [
             'Depth' => $depth,
-            'Content-Type' => 'application/xml',
+            'Content-Type' => 'application/xml; charset=utf-8',
         ], $body);
 
         $response = $this->client->send($request);
 
-        /*
-        if ($response->getStatusCode() >= 400) {
-            throw new ClientException($response);
-        }
-        */
-
         $result = $this->parseMultiStatus((string) $response->getBody());
 
         // If depth was 0, we only return the top item
-        if (0 === $depth) {
+        if ($depth === 0) {
             reset($result);
             $result = current($result);
 
@@ -186,6 +178,96 @@ class Client
         return $newResult;
     }
 
+    /**
+     * @see https://tools.ietf.org/html/rfc6578
+     */
+    public function syncCollection(string $url, string $syncToken, array $properties) : array
+    {
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+        $root = $dom->appendChild($dom->createElementNS('DAV:', 'd:sync-collection'));
+
+        $root->appendChild($dom->createElement('d:sync-token', $syncToken));
+        $root->appendChild($dom->createElement('d:sync-level', '1'));
+
+        $prop = $root->appendChild($dom->createElement('d:prop'));
+
+        $namespaces = [
+            'DAV:' => 'd'
+        ];
+
+        $this->fetchProperties($dom, $prop, $properties, $namespaces);
+
+        $body = $dom->saveXML();
+
+        $request = new Request('REPORT', $url, [
+            'Depth' => '0',
+            'Content-Type' => 'application/xml; charset=utf-8',
+        ], $body);
+
+        $response = $this->client->send($request);
+
+        $result = $this->parseMultiStatus((string) $response->getBody());
+
+        return $result;
+    }
+
+    /**
+     *
+     */
+    public function addressbookMultiget(string $url, array $properties, Collection $contacts) : array
+    {
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+        $root = $dom->appendChild($dom->createElementNS(CardDAVPlugin::NS_CARDDAV, 'card:addressbook-multiget'));
+        $dom->createAttributeNS('DAV:', 'd:e');
+
+        $prop = $root->appendChild($dom->createElement('d:prop'));
+
+        $namespaces = [
+            'DAV:' => 'd',
+            CardDAVPlugin::NS_CARDDAV => 'card',
+        ];
+
+        $this->fetchProperties($dom, $prop, $properties, $namespaces);
+
+        foreach ($contacts as $contact) {
+            $root->appendChild($dom->createElement('d:href', $contact));
+        }
+
+        $body = $dom->saveXML();
+
+        $request = new Request('REPORT', $url, [
+            'Depth' => '1',
+            'Content-Type' => 'application/xml; charset=utf-8',
+        ], $body);
+
+        $response = $this->client->send($request);
+
+        $result = $this->parseMultiStatus((string) $response->getBody());
+
+        return $result;
+    }
+
+    private function fetchProperties($dom, $prop, array $properties, array $namespaces)
+    {
+        foreach ($properties as $property) {
+            list($namespace, $elementName) = Service::parseClarkNotation($property);
+
+            $value = Arr::get($namespaces, $namespace, null);
+            if (!is_null($value)) {
+                $element = $dom->createElement("$value:$elementName");
+            } else {
+                $element = $dom->createElementNS($namespace, 'x:'.$elementName);
+            }
+
+            $prop->appendChild($element);
+        }
+    }
+
+    /**
+     * @return string|null|mixed
+     */
     public function getProperty(string $property, string $url = '')
     {
         $propfind = $this->propfind($url, [
@@ -196,7 +278,36 @@ class Client
             return null;
         }
 
-        return $propfind[$property][0]['value'];
+        $prop = $propfind[$property];
+
+        if (is_string($prop)) {
+            return $prop;
+        } else if (is_array($prop)) {
+            $value = $prop[0];
+            if (is_string($value)) {
+                return $value;
+            } else if (is_array($value)) {
+                return Arr::get($value, 'value', $value);
+            }
+        }
+
+        return $prop;
+    }
+
+    public function getSupportedReportSet()
+    {
+        $propName = '{DAV:}supported-report-set';
+        $supportedReportSets = $this->propFind('', [$propName])[$propName];
+
+        return array_map(function ($supportedReportSet) {
+            foreach ($supportedReportSet['value'] as $kind) {
+                if ($kind['name'] == '{DAV:}report') {
+                    foreach($kind['value'] as $type) {
+                        return $type['name'];
+                    }
+                }
+            }
+        }, $supportedReportSets);
     }
 
     /**
@@ -220,25 +331,18 @@ class Client
             $propPatch
         );
 
-        //$url = $this->getAbsoluteUrl($url);
         $request = new Request('PROPPATCH', $url, [
-            'Content-Type' => 'application/xml',
+            'Content-Type' => 'application/xml; charset=utf-8',
         ], $xml);
         $response = $this->client->send($request);
 
-        /*
-        if ($response->getStatus() >= 400) {
-            throw new HTTP\ClientHttpException($response);
-        }
-        */
-
-        if (207 === $response->getStatusCode()) {
+        if ($response->getStatusCode() === 207) {
             // If it's a 207, the request could still have failed, but the
             // information is hidden in the response body.
-            $result = $this->parseMultiStatus($response->getBody());
+            $result = $this->parseMultiStatus((string) $response->getBody());
 
             $errorProperties = [];
-            foreach ($result as $href => $statusList) {
+            foreach ($result as $statusList) {
                 foreach ($statusList as $status => $properties) {
                     if ($status >= 400) {
                         foreach ($properties as $propName => $propValue) {
@@ -266,7 +370,7 @@ class Client
      */
     public function options() : array
     {
-        $request = new Request('OPTIONS', ''/*, $this->getAbsoluteUrl('')*/);
+        $request = new Request('OPTIONS', '');
         $response = $this->client->send($request);
 
         $dav = $response->getHeader('Dav');
@@ -314,12 +418,10 @@ class Client
      */
     public function request(string $method, string $url = '', ?string $body = null, array $headers = []) : array
     {
-        //$url = $this->getAbsoluteUrl($url);
-
         $response = $this->client->send(new Request($method, $url, $headers, $body));
 
         return [
-            'body' => $response->getBody(),
+            'body' => (string) $response->getBody(),
             'statusCode' => $response->getStatusCode(),
             'headers' => array_change_key_case($response->getHeaders()),
         ];
@@ -359,6 +461,11 @@ class Client
 
         foreach ($multistatus->getResponses() as $response) {
             $result[$response->getHref()] = $response->getResponseProperties();
+        }
+
+        $synctoken = $multistatus->getSyncToken();
+        if (! empty($synctoken)) {
+            $result['synctoken'] = $synctoken;
         }
 
         return $result;
