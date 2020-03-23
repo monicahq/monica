@@ -21,7 +21,7 @@
 
       <p>{{ $t('settings.recovery_help_intro') }}</p>
       <p :class="[ dirltr ? 'ml3' : 'mr3' ]">
-        <span v-for="code in codes" :key="code.id" :cy-name="'recovery-' + code.id">
+        <span v-for="code in codes" :key="code.id" v-cy-name="'recovery-' + code.id">
           <pre class="code" :class="[ code.used ? 'used' : '' ]" :title="[ code.used ? usedHelp : '']">{{ code.recovery }}</pre>
         </span>
       </p>

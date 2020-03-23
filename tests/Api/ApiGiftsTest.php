@@ -37,17 +37,17 @@ class ApiGiftsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $gift1 = factory(Gift::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $gift2 = factory(Gift::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -72,17 +72,17 @@ class ApiGiftsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $gift1 = factory(Gift::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $gift2 = factory(Gift::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -117,14 +117,14 @@ class ApiGiftsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $gift1 = factory(Gift::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $gift2 = factory(Gift::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
 
@@ -159,7 +159,7 @@ class ApiGiftsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/gifts', [
@@ -180,7 +180,7 @@ class ApiGiftsTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $gift_id);
         $this->assertDatabaseHas('gifts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $gift_id,
             'name' => 'the gift',
@@ -192,10 +192,10 @@ class ApiGiftsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/gifts', [
@@ -217,7 +217,7 @@ class ApiGiftsTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $gift_id);
         $this->assertDatabaseHas('gifts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $gift_id,
             'name' => 'the gift',
@@ -230,7 +230,7 @@ class ApiGiftsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $account = factory(Account::class)->create();
@@ -253,7 +253,7 @@ class ApiGiftsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/gifts', [
@@ -290,10 +290,10 @@ class ApiGiftsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $gift = factory(Gift::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -317,7 +317,7 @@ class ApiGiftsTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $gift_id);
         $this->assertDatabaseHas('gifts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $gift_id,
             'name' => 'the gift',
@@ -330,13 +330,13 @@ class ApiGiftsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $gift = factory(Gift::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -361,7 +361,7 @@ class ApiGiftsTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $gift_id);
         $this->assertDatabaseHas('gifts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $gift_id,
             'name' => 'the gift',
@@ -375,7 +375,7 @@ class ApiGiftsTest extends ApiTestCase
     {
         $user = $this->signin();
         $gift = factory(Gift::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/gifts/'.$gift->id, [
@@ -398,7 +398,7 @@ class ApiGiftsTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
         $gift = factory(Gift::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -417,14 +417,14 @@ class ApiGiftsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $gift = factory(Gift::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
         $this->assertDatabaseHas('gifts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $gift->id,
         ]);
@@ -438,7 +438,7 @@ class ApiGiftsTest extends ApiTestCase
         ]);
 
         $this->assertDatabaseMissing('gifts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $gift->id,
         ]);

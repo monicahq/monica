@@ -23,12 +23,12 @@ class UpdateLifeEventTest extends TestCase
             'happened_at' => '2008-01-01',
         ]);
         $lifeEventType = factory(LifeEventType::class)->create([
-            'account_id' => $lifeEvent->account->id,
+            'account_id' => $lifeEvent->account_id,
         ]);
 
         $request = [
             'life_event_id' => $lifeEvent->id,
-            'account_id' => $lifeEvent->account->id,
+            'account_id' => $lifeEvent->account_id,
             'life_event_type_id' => $lifeEventType->id,
             'happened_at' => '2018-01-01',
             'name' => 'This is a name',
@@ -41,8 +41,8 @@ class UpdateLifeEventTest extends TestCase
             'id' => $lifeEvent->id,
             'happened_at' => '2018-01-01 00:00:00',
             'life_event_type_id' => $lifeEventType->id,
-            'contact_id' => $lifeEvent->contact->id,
-            'account_id' => $lifeEvent->account->id,
+            'contact_id' => $lifeEvent->contact_id,
+            'account_id' => $lifeEvent->account_id,
             'name' => 'This is a name',
             'note' => 'This is a note',
         ]);
@@ -74,12 +74,12 @@ class UpdateLifeEventTest extends TestCase
         $account = factory(Account::class)->create();
         $lifeEvent = factory(LifeEvent::class)->create([]);
         $lifeEventType = factory(LifeEventType::class)->create([
-            'account_id' => $lifeEvent->account->id,
+            'account_id' => $lifeEvent->account_id,
         ]);
 
         $request = [
             'account_id' => $account->id,
-            'contact_id' => $lifeEvent->contact->id,
+            'contact_id' => $lifeEvent->contact_id,
             'life_event_id' => $lifeEvent->id,
             'happened_at' => '2010-02-02',
             'life_event_type_id' => $lifeEventType->id,

@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User\User;
 use Illuminate\Support\Str;
-use App\Http\Requests\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
 use App\Http\Requests\PasswordChangeRequest;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\RedirectsUsers;
@@ -97,6 +95,7 @@ class PasswordChangeController extends Controller
      */
     protected function getUser(array $credentials)
     {
+        /** @var User */
         $user = Auth::user();
 
         // Using current email from user, and current password sent with the request to authenticate the user

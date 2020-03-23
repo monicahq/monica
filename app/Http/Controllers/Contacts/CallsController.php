@@ -39,7 +39,7 @@ class CallsController extends Controller
     public function store(Request $request, Contact $contact)
     {
         return app(CreateCall::class)->execute([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'content' => $request->input('content'),
             'called_at' => $request->input('called_at'),
@@ -58,7 +58,7 @@ class CallsController extends Controller
     public function update(Request $request, Contact $contact, Call $call)
     {
         return app(UpdateCall::class)->execute([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'call_id' => $call->id,
             'content' => $request->input('content'),
             'called_at' => $request->input('called_at'),
@@ -79,7 +79,7 @@ class CallsController extends Controller
     public function destroy(Request $request, Contact $contact, Call $call)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'call_id' => $call->id,
         ];
 

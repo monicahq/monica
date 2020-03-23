@@ -21,8 +21,8 @@ class UpdateTaskTest extends TestCase
         $task = factory(Task::class)->create([]);
 
         $request = [
-            'account_id' => $task->account->id,
-            'contact_id' => $task->contact->id,
+            'account_id' => $task->account_id,
+            'contact_id' => $task->contact_id,
             'task_id' => $task->id,
             'title' => 'title',
             'description' => 'description',
@@ -33,7 +33,7 @@ class UpdateTaskTest extends TestCase
 
         $this->assertDatabaseHas('tasks', [
             'id' => $task->id,
-            'contact_id' => $task->contact->id,
+            'contact_id' => $task->contact_id,
             'title' => 'title',
             'description' => 'description',
             'completed' => 1,
@@ -53,7 +53,7 @@ class UpdateTaskTest extends TestCase
         ]);
 
         $request = [
-            'account_id' => $task->account->id,
+            'account_id' => $task->account_id,
             'task_id' => $task->id,
             'title' => 'title',
             'description' => 'description',
@@ -82,7 +82,7 @@ class UpdateTaskTest extends TestCase
         $task = factory(Task::class)->create([]);
 
         $request = [
-            'account_id' => $task->account->id,
+            'account_id' => $task->account_id,
             'task_id' => $task->id,
             'title' => 'title',
             'description' => 'description',
@@ -101,7 +101,7 @@ class UpdateTaskTest extends TestCase
         $task = factory(Task::class)->create([]);
 
         $request = [
-            'account_id' => $task->account->id,
+            'account_id' => $task->account_id,
             'contact_id' => $contact->id,
             'task_id' => $task->id,
             'title' => 'title',

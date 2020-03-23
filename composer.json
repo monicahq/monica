@@ -7,9 +7,10 @@
     "require": {
         "php": "^7.2",
         "ext-bcmath": "*",
+        "ext-intl": "*",
         "ext-gd": "*",
         "ext-gmp": "*",
-        "ext-intl": "*",
+        "ext-redis": "*",
         "asbiin/laravel-webauthn": "~0.7",
         "bacon/bacon-qr-code": "^1.0",
         "creativeorange/gravatar": "~1.0",
@@ -20,7 +21,6 @@
         "giggsey/libphonenumber-for-php": "^8.9",
         "guzzlehttp/guzzle": "^6.2",
         "intervention/image": "^2.3",
-        "jenssegers/date": "^3.3",
         "lahaxearnaud/laravel-u2f": "^1.6",
         "laravel/cashier": "~10.0",
         "laravel/framework": "^6.4",
@@ -50,7 +50,7 @@
         "thecodingmachine/safe": "^0.1.15",
         "vectorface/whip": "^0.3.2",
         "vinkla/hashids": "^7.0",
-        "vluzrmos/language-detector": "dev-master",
+        "vluzrmos/language-detector": "^2.0",
         "web-token/jwt-signature-algorithm-ecdsa": "^2.1",
         "web-token/jwt-signature-algorithm-eddsa": "^2.1",
         "web-token/jwt-signature-algorithm-rsa": "^2.1"
@@ -71,7 +71,7 @@
         "symfony/css-selector": "~4.0",
         "symfony/dom-crawler": "~5.0",
         "thecodingmachine/phpstan-safe-rule": "^0.1",
-        "vimeo/psalm": "3.7.2"
+        "vimeo/psalm": "3.9.4"
     },
     "suggest": {
         "ext-apcu": "*"

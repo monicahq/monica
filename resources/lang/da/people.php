@@ -240,7 +240,7 @@ return [
     'activity_type_just_hung_out' => 'just hung out',
     'activity_type_watched_movie_at_home' => 'watched a movie at home',
     'activity_type_talked_at_home' => 'just talked at home',
-    'activity_type_did_sport_activities_together' => 'did sport together',
+    'activity_type_did_sport_activities_together' => 'played a sport together',
     'activity_type_ate_at_his_place' => 'ate at their place',
     'activity_type_went_bar' => 'gik på bar',
     'activity_type_ate_at_home' => 'spiste hjemme',
@@ -457,7 +457,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'Begynde at gå med briller eller linser',
     'life_event_sentence_broken_bone' => 'Brækkede en knogle',
     'life_event_sentence_removed_braces' => 'Removed braces',
-    'life_event_sentence_surgery' => 'Blev opereret',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => 'Gik til tandlægen',
     'life_event_sentence_new_sport' => 'Startede til sport',
     'life_event_sentence_new_hobby' => 'Startede en hobby',
@@ -506,4 +506,14 @@ return [
     'auditlogs_title' => 'Everything that happened to :name',
     'auditlogs_breadcrumb' => 'History',
     'auditlogs_author' => 'By :name on :date',
+
+    // contact field label
+    'contact_field_label_home' => 'Home',
+    'contact_field_label_work' => 'Work',
+    'contact_field_label_cell' => 'Mobile',
+    'contact_field_label_fax' => 'Fax',
+    'contact_field_label_pager' => 'Pager',
+    'contact_field_label_main' => 'Main',
+    'contact_field_label_other' => 'Other',
+    'contact_field_label_personal' => 'Personal',
 ];

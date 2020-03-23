@@ -13,7 +13,7 @@ class AddMultipleGendersChoices extends Migration
      */
     public function up()
     {
-        $driverName = DB::connection()->getDriverName();
+        $driverName = DBHelper::connection()->getDriverName();
         switch ($driverName) {
             case 'mysql':
                 DB::statement('ALTER TABLE '.DBHelper::getTable('contacts')." CHANGE COLUMN gender gender ENUM('male', 'female', 'none')");

@@ -46,7 +46,7 @@ class CreateContactTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'first_name' => 'john',
         ]);
 
@@ -132,7 +132,7 @@ class CreateContactTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'first_name' => 'john',
             'gender_id' => null,
         ]);

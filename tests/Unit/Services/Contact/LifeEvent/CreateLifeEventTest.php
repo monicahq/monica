@@ -26,7 +26,7 @@ class CreateLifeEventTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'life_event_type_id' => $lifeEventType->id,
             'happened_at' => now(),
             'name' => 'This is a name',
@@ -41,7 +41,7 @@ class CreateLifeEventTest extends TestCase
         $this->assertDatabaseHas('life_events', [
             'id' => $lifeEvent->id,
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'life_event_type_id' => $lifeEventType->id,
             'name' => 'This is a name',
             'note' => 'This is a note',
@@ -64,7 +64,7 @@ class CreateLifeEventTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'life_event_type_id' => $lifeEventType->id,
             'happened_at' => now(),
             'name' => 'This is a name',
@@ -107,7 +107,7 @@ class CreateLifeEventTest extends TestCase
         $lifeEvent = factory(LifeEvent::class)->create([]);
 
         $request = [
-            'contact_id' => $lifeEvent->contact->id,
+            'contact_id' => $lifeEvent->contact_id,
             'account_id' => $account->id,
             'life_event_type_id' => $lifeEvent->lifeEventType->id,
             'name' => 'This is a name',
@@ -131,7 +131,7 @@ class CreateLifeEventTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'life_event_type_id' => $lifeEventType->id,
             'name' => 'This is a name',
             'note' => 'This is a note',

@@ -27,7 +27,7 @@ class Place extends Resource
             'longitude' => $this->longitude,
             'country' => new CountryResource($this->country),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

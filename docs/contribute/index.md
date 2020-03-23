@@ -98,7 +98,7 @@ Once the above softwares are installed (or if you've finished the installation o
     1. If you use Homestead (which uses Vagrant under the hood), `vagrant ssh` will let you login as root inside your VM.
 1. Run `make install` in the folder the repository has been cloned. This will run :
     1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
-    1. `composer install --no-interaction --no-suggest` to install all packages.
+    1. `composer install --no-interaction --no-suggest --ignore-platform-reqs` to install all packages.
     1. `yarn install` to install all the front-end dependencies and tools needed to compile assets.
     1. `yarn run dev` to compile js and css assets.
     1. `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
@@ -114,7 +114,7 @@ If you haven't skipped the seeding of fake data, two accounts are created by def
 * Second account is `blank@blank.com` with the password `blank0`. This account does not contain any data and shall be used to check all the blank states.
 
 To update a current installation with the latest dependencies, just run `make update` to run
-  1. `composer install --no-interaction --no-suggest`
+  1. `composer install --no-interaction --no-suggest --ignore-platform-reqs`
   1. `yarn upgrade`
   1. `yarn run dev`
   1. `php artisan migrate`

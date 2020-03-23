@@ -18,12 +18,12 @@ class UpdateContactTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'first_name' => 'john',
             'middle_name' => 'franck',
             'last_name' => 'doe',
-            'gender_id' => $contact->gender->id,
+            'gender_id' => $contact->gender_id,
             'description' => 'this is a test',
             'is_partial' => false,
             'is_birthdate_known' => true,
@@ -45,7 +45,7 @@ class UpdateContactTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'first_name' => 'john',
         ]);
 
@@ -61,11 +61,11 @@ class UpdateContactTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'middle_name' => 'franck',
             'last_name' => 'doe',
-            'gender_id' => $contact->gender->id,
+            'gender_id' => $contact->gender_id,
             'description' => 'this is a test',
             'is_partial' => false,
             'is_birthdate_known' => true,
@@ -98,7 +98,7 @@ class UpdateContactTest extends TestCase
             'first_name' => 'john',
             'middle_name' => 'franck',
             'last_name' => 'doe',
-            'gender_id' => $contact->gender->id,
+            'gender_id' => $contact->gender_id,
             'description' => 'this is a test',
             'is_partial' => false,
             'is_birthdate_known' => true,

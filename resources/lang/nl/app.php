@@ -110,7 +110,7 @@ return [
     'error_maintenance' => 'Onderhoud in uitvoering. Zo terug.',
     'error_help' => 'We zijn zo terug.',
     'error_twitter' => '<a href="https://twitter.com/:twitter">Volg ons op Twitter</a> als je gewaarschuwd wilt worden als we terug zijn.',
-    'error_no_term' => 'There is no policy for this instance yet.',
+    'error_no_term' => 'Er zijn nog geen voorwaarden opgesteld voor deze server.',
 
     'default_save_success' => 'De gegevens zijn opgeslagen.',
 
@@ -260,7 +260,7 @@ return [
     'relationship_type_protege' => 'protege',
     'relationship_type_protege_female' => 'protege',
     'relationship_type_protege_with_name' => ':name’s protege',
-    'relationship_type_protege_female_with_name' => ':name\'s protege',
+    'relationship_type_protege_female_with_name' => ':name’s protege',
 
     'relationship_type_ex_husband' => 'ex-echtgenoot',
     'relationship_type_ex_husband_female' => 'ex-vrouw',

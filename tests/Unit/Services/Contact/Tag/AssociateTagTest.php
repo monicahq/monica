@@ -21,7 +21,7 @@ class AssociateTagTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'name' => '朋友',
         ];
@@ -29,13 +29,13 @@ class AssociateTagTest extends TestCase
         $tag = app(AssociateTag::class)->execute($request);
 
         $this->assertDatabaseHas('tags', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'name' => '朋友',
             'name_slug' => '朋友',
         ]);
 
         $this->assertDatabaseHas('contact_tag', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'tag_id' => $tag->id,
         ]);
@@ -52,7 +52,7 @@ class AssociateTagTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'name' => 'Central Perk',
         ];
@@ -60,13 +60,13 @@ class AssociateTagTest extends TestCase
         $tag = app(AssociateTag::class)->execute($request);
 
         $this->assertDatabaseHas('tags', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'name' => 'Central Perk',
             'name_slug' => 'central-perk',
         ]);
 
         $this->assertDatabaseHas('contact_tag', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'tag_id' => $tag->id,
         ]);
@@ -86,19 +86,19 @@ class AssociateTagTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('tags', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'name' => $tag->name,
             'name_slug' => $tag->name_slug,
         ]);
 
         $this->assertDatabaseMissing('contact_tag', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'tag_id' => $tag->id,
         ]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'name' => 'Central Perk',
         ];
@@ -106,13 +106,13 @@ class AssociateTagTest extends TestCase
         $tag = app(AssociateTag::class)->execute($request);
 
         $this->assertDatabaseHas('tags', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'name' => 'Central Perk',
             'name_slug' => 'central-perk',
         ]);
 
         $this->assertDatabaseHas('contact_tag', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'tag_id' => $tag->id,
         ]);

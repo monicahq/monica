@@ -85,7 +85,7 @@ class LifeEventsController extends Controller
     public function store(Request $request, Contact $contact)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'life_event_type_id' => $request->input('life_event_type_id'),
             'happened_at' => $request->input('happened_at'),
@@ -119,7 +119,7 @@ class LifeEventsController extends Controller
     public function destroy(Request $request, LifeEvent $lifeEvent)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'life_event_id' => $lifeEvent->id,
         ];
 

@@ -14,6 +14,19 @@ return [
     'sidebar_settings_security' => 'אבטחה',
     'sidebar_settings_auditlogs' => 'יומני ביקורת',
 
+    'title_general' => 'מידע כללי',
+    'title_i18n' => 'הגדרות בינלאומיות',
+    'title_layout' => 'פריסה',
+
+    'me_title' => 'פרטי הקשר שלי',
+    'me_help' => 'איש קשר זה או הייצוג <em>שלך</em> במוניקה',
+    'me_select' => 'נא לבחור איש קשר',
+    'me_no_contact' => 'טרם נבחרו אנשי קשר.',
+    'me_select_click' => 'יש ללחוץ כאן כדי לבחור אנשי קשר.',
+    'me_remove_contact' => 'הסרת השיוך',
+    'me_choose' => 'בחירה עצמית',
+    'me_choose_placeholder' => 'בחירה עצמית',
+
     'export_title' => 'יצוא נתוני החשבון שלך',
     'export_be_patient' => 'יש ללחוץ על הכפתור כדי להתחיל את הייצוא. עיבוד הייצוא עשוי לארוך מספר דקות - נא להתאזר בסבלנות ולא ללחוץ על הכפתור שוב.',
     'export_title_sql' => 'יצוא ל־SQL',
@@ -364,7 +377,7 @@ return [
     'personalization_genders_modal_name_help' => 'השם המשמש להצגת המגדר בעמוד יצירת הקשר.',
     'personalization_genders_modal_sex' => 'מגדר',
     'personalization_genders_modal_sex_help' => 'משמש לציון יחסים ומהלך ייבוא/ייצוא של כרטיס ביקור - vCard.',
-    'personalization_genders_modal_default' => 'האם המגדר החדש הזה מיועד לאיש קשר חדש?',
+    'personalization_genders_modal_default' => 'נא לבחור את מגדר בררת המחדל לאנשי קשר חדשים',
     'personalization_genders_modal_delete' => 'מחיקת סוג מגדר',
     'personalization_genders_modal_delete_desc' => 'למחוק את {name}?',
     'personalization_genders_modal_delete_question' => 'לאחד מאנשי הקשר שלך מוגדר המגדר הזה. אם המגדר יימחק, לאיזה מגדר לשייך את איש הקשר?|ל־{count} מאנשי הקשר שלך מוגדר המגדר הזה. אם המגדר יימחק, לאיזה מגדר לשייך את אנשי הקשר?',
@@ -392,7 +405,8 @@ return [
     'personalization_module_title' => 'תכונות',
     'personalization_module_desc' => 'חלק מהאנשים לא זקוקים לכל התכונות. להלן ניתן לכבות או להפעיל תכונות בהן נעשה שימוש בגיליון אנשי הקשר. השינוי הזה ישפיע על כל אנשי הקשר שלך. נא לשים לב שכיבוי של תכונה אחת או יותר לא יגרום לאבדן מידע, התכונה פשוט תוסתר.',
 
-    'personalisation_paid_upgrade' => 'תכונה זו היא תכונת פרמיום שדורשת הפעלת מינוי בתשלום. ניתן לשדרג את החשבון שלך על ידי מעבר להגדרות > מינוי.',
+    'personalisation_paid_upgrade' => 'תכונה זו היא תכונת פרמיום שדורשת הפעלת מינוי בתשלום. ניתן לשדרג את החשבון שלך על ידי מעבר ל<a href=":url">הגדרות > מינוי</a>.',
+    'personalisation_paid_upgrade_vue' => 'תכונה זו היא תכונת פרמיום שדורשת הפעלת מינוי בתשלום. ניתן לשדרג את החשבון שלך על ידי מעבר ל<a href="{url}">הגדרות > מינוי</a>.',
 
     'reminder_time_to_send' => 'השעה ביום בה אמורות להישלח התזכורות',
     'reminder_time_to_send_help' => 'לידיעתך, התזכורת הבאה שלך תישלח ב־<span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
