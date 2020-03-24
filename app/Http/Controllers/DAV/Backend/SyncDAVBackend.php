@@ -167,7 +167,6 @@ trait SyncDAVBackend
 
             $timestamp = $token->timestamp;
         } else {
-            $token = $this->createSyncTokenNow();
             $timestamp = null;
         }
 
