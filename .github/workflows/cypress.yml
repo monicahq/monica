@@ -95,6 +95,7 @@ jobs:
         parallel: true
         group: Azure DevOps CI
         config: baseUrl=http://localhost:8000
+        wait-on: http://localhost:8000
       env:
         CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
