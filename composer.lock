@@ -2758,16 +2758,16 @@
         },
         {
             "name": "laravel/passport",
-            "version": "v8.4.1",
+            "version": "v8.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "4088cdf174d25ccf3fb79d234b94b2a90785fa69"
+                "reference": "0420dc294ce2fbf92bb3a2d18505053f552b70b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/4088cdf174d25ccf3fb79d234b94b2a90785fa69",
-                "reference": "4088cdf174d25ccf3fb79d234b94b2a90785fa69",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/0420dc294ce2fbf92bb3a2d18505053f552b70b1",
+                "reference": "0420dc294ce2fbf92bb3a2d18505053f552b70b1",
                 "shasum": ""
             },
             "require": {
@@ -2827,7 +2827,7 @@
                 "oauth",
                 "passport"
             ],
-            "time": "2020-03-04T13:55:07+00:00"
+            "time": "2020-03-24T16:31:27+00:00"
         },
         {
             "name": "laravel/socialite",
@@ -5306,16 +5306,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "2.0.25",
+            "version": "2.0.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "c18159618ed7cd7ff721ac1a8fec7860a475d2f0"
+                "reference": "09655fcc1f8bab65727be036b28f6f20311c126c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/c18159618ed7cd7ff721ac1a8fec7860a475d2f0",
-                "reference": "c18159618ed7cd7ff721ac1a8fec7860a475d2f0",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/09655fcc1f8bab65727be036b28f6f20311c126c",
+                "reference": "09655fcc1f8bab65727be036b28f6f20311c126c",
                 "shasum": ""
             },
             "require": {
@@ -5394,7 +5394,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2020-02-25T04:16:50+00:00"
+            "time": "2020-03-13T04:15:39+00:00"
         },
         {
             "name": "pragmarx/coollection",
