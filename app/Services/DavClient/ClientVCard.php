@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Services\VCard;
+namespace App\Services\DavClient;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
 use Sabre\VObject\Component\VCard;
+use App\Services\DavClient\Dav\Client;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;

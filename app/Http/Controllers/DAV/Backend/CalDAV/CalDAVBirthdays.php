@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\DAV\Backend\CalDAV;
 
-use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Log;
 use App\Models\Instance\SpecialDate;
-use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use App\Services\VCalendar\ExportVCalendar;
@@ -14,6 +12,12 @@ use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 
 class CalDAVBirthdays extends AbstractCalDAVBackend
 {
+    public function __construct($account, $user)
+    {
+        $this->account = $account;
+        $this->user = $user;
+    }
+
     /**
      * Returns the uri for this backend.
      *
@@ -30,8 +34,8 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
         + [
             '{DAV:}displayname' => trans('app.dav_birthdays'),
             '{'.SabreServer::NS_SABREDAV.'}read-only' => true,
-            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => trans('app.dav_birthdays_description', ['name' => Auth::user()->name]),
-            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => Auth::user()->timezone,
+            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => trans('app.dav_birthdays_description', ['name' => $this->user->name]),
+            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => $this->user->timezone,
             '{'.CalDAVPlugin::NS_CALDAV.'}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VEVENT']),
             '{'.CalDAVPlugin::NS_CALDAV.'}schedule-calendar-transp' => new ScheduleCalendarTransp(ScheduleCalendarTransp::TRANSPARENT),
         ];
@@ -59,7 +63,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
             try {
                 $vcal = app(ExportVCalendar::class)
                     ->execute([
-                        'account_id' => Auth::user()->account_id,
+                        'account_id' => $this->account->id,
                         'special_date_id' => $date->id,
                     ]);
 
@@ -100,7 +104,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
     public function getObjectUuid($uuid)
     {
         return SpecialDate::where([
-            'account_id' => Auth::user()->account_id,
+            'account_id' => $this->account->id,
             'uuid' => $uuid,
         ])->first();
     }
@@ -112,7 +116,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
      */
     public function getObjects()
     {
-        $contacts = Auth::user()->account
+        $contacts = $this->account
                     ->contacts()
                     ->real()
                     ->active()

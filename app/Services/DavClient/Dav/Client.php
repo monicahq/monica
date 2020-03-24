@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\VCard;
+namespace App\Services\DavClient\Dav;
 
 use Sabre\DAV\Xml\Service;
 use Illuminate\Support\Arr;
@@ -25,7 +25,6 @@ class Client
      * @var GuzzleClient
      */
     protected $client;
-
 
     /**
      * Create a new client.
@@ -213,7 +212,7 @@ class Client
     }
 
     /**
-     *
+     * @see https://tools.ietf.org/html/rfc6352#section-8.7
      */
     public function addressbookMultiget(string $url, array $properties, Collection $contacts) : array
     {

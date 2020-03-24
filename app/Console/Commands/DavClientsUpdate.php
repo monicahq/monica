@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Services\VCard\ClientVCard;
+use App\Services\DavClient\SynchronizeAddressBook;
 
 class DavClientsUpdate extends Command
 {
@@ -28,6 +28,6 @@ class DavClientsUpdate extends Command
      */
     public function handle()
     {
-        app(ClientVCard::class)->execute([]);
+        app(SynchronizeAddressBook::class)->execute([]);
     }
 }

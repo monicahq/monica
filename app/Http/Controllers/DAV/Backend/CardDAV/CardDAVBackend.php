@@ -4,13 +4,11 @@ namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
 use Sabre\DAV;
 use Illuminate\Support\Arr;
-use App\Models\User\SyncToken;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ExportVCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\CardDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
@@ -25,6 +23,12 @@ use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
 class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 {
     use SyncDAVBackend;
+
+    public function __construct($account, $user)
+    {
+        $this->account = $account;
+        $this->user = $user;
+    }
 
     /**
      * Returns the uri for this backend.
@@ -62,7 +66,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
             'uri'               => $this->backendUri(),
             'principaluri'      => PrincipalBackend::getPrincipalUser(),
             '{DAV:}displayname' => trans('app.dav_contacts'),
-            '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => trans('app.dav_contacts_description', ['name' => Auth::user()->name]),
+            '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => trans('app.dav_contacts_description', ['name' => $this->user->name]),
         ];
         if ($token) {
             $des += [
@@ -72,10 +76,10 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
             ];
         }
 
-        $me = auth()->user()->me;
+        $me = $this->user->me;
         if ($me) {
             $des += [
-                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card' => '/'.config('laravelsabre.path').'/addressbooks/'.Auth::user()->email.'/contacts/'.$this->encodeUri($me),
+                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card' => '/'.config('laravelsabre.path').'/addressbooks/'.$this->user->email.'/contacts/'.$this->encodeUri($me),
             ];
         }
 
@@ -166,7 +170,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         try {
             $vcard = app(ExportVCard::class)
                 ->execute([
-                    'account_id' => Auth::user()->account_id,
+                    'account_id' => $this->account->id,
                     'contact_id' => $contact->id,
                 ]);
 
@@ -194,7 +198,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     public function getObjectUuid($uuid)
     {
         return Contact::where([
-            'account_id' => Auth::user()->account_id,
+            'account_id' => $this->account->id,
             'uuid' => $uuid,
         ])->first();
     }
@@ -206,7 +210,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      */
     public function getObjects()
     {
-        return Auth::user()->account
+        return Account::find($this->account->id)
                     ->contacts()
                     ->real()
                     ->active()
@@ -333,15 +337,15 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         try {
             $result = app(ImportVCard::class)
                 ->execute([
-                    'account_id' => Auth::user()->account_id,
-                    'user_id' => Auth::user()->id,
+                    'account_id' => $this->account->id,
+                    'user_id' => $this->user->id,
                     'contact_id' => $contact_id,
                     'entry' => $cardData,
                     'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
                 ]);
 
             if (! Arr::has($result, 'error')) {
-                $contact = Contact::where('account_id', Auth::user()->account_id)
+                $contact = Contact::where('account_id', $this->account->id)
                     ->find($result['contact_id']);
                 $card = $this->prepareCard($contact);
 
@@ -388,8 +392,8 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
             $data = [
                 'contact_id' => $contact->id,
-                'account_id' => auth()->user()->account_id,
-                'user_id' => auth()->user()->id,
+                'account_id' => $this->account->id,
+                'user_id' => $this->user->id,
             ];
 
             app(SetMeContact::class)->execute($data);

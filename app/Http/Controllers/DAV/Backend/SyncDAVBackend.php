@@ -4,11 +4,19 @@ namespace App\Http\Controllers\DAV\Backend;
 
 use Illuminate\Support\Str;
 use App\Models\User\SyncToken;
-use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Auth;
 
 trait SyncDAVBackend
 {
+    /**
+     * @var \App\Models\Account\Account
+     */
+    protected $account;
+
+    /**
+     * @var \App\Models\User\User
+     */
+    protected $user;
+
     /**
      * This method returns a sync-token for this collection.
      *
@@ -20,8 +28,8 @@ trait SyncDAVBackend
     protected function getCurrentSyncToken()
     {
         $tokens = SyncToken::where([
-            'account_id' => Auth::user()->account_id,
-            'user_id' => Auth::user()->id,
+            'account_id' => $this->account->id,
+            'user_id' => $this->user->id,
             'name' => $this->backendUri(),
         ])
             ->orderBy('created_at')
@@ -48,8 +56,8 @@ trait SyncDAVBackend
     protected function getSyncToken($syncToken)
     {
         return SyncToken::where([
-            'account_id' => Auth::user()->account_id,
-            'user_id' => Auth::user()->id,
+            'account_id' => $this->account->id,
+            'user_id' => $this->user->id,
             'name' => $this->backendUri(),
         ])
             ->find($syncToken);
@@ -66,8 +74,8 @@ trait SyncDAVBackend
 
         if ($max) {
             return SyncToken::create([
-                'account_id' => Auth::user()->account_id,
-                'user_id' => Auth::user()->id,
+                'account_id' => $this->account->id,
+                'user_id' => $this->user->id,
                 'name' => $this->backendUri(),
                 'timestamp' => $max,
             ]);
@@ -82,8 +90,8 @@ trait SyncDAVBackend
     private function createSyncTokenNow()
     {
         return SyncToken::create([
-            'account_id' => Auth::user()->account_id,
-            'user_id' => Auth::user()->id,
+            'account_id' => $this->account->id,
+            'user_id' => $this->user->id,
             'name' => $this->backendUri(),
             'timestamp' => now(),
         ]);
@@ -183,8 +191,10 @@ trait SyncDAVBackend
                    $obj->created_at >= $timestamp;
         });
 
+        $currentSyncToken = $this->getCurrentSyncToken();
+
         return [
-            'syncToken' => $token->id,
+            'syncToken' => $currentSyncToken->id,
             'added' => $added->map(function ($obj) {
                 return $this->encodeUri($obj);
             })->toArray(),
