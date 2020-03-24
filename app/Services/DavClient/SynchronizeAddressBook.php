@@ -3,6 +3,7 @@
 namespace App\Services\DavClient;
 
 use App\Models\User\User;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
 use Illuminate\Support\Collection;
@@ -24,12 +25,14 @@ class SynchronizeAddressBook extends BaseService
     public function rules()
     {
         return [
-            'addressbook' => 'required',
-            'addressbookId' => 'required',
-            'username' => 'required',
-            'password' => 'required',
-            'localSyncToken' => 'nullable',
-            'syncToken' => 'nullable',
+            'account_id' => 'required|integer|exists:accounts,id',
+            'user_id' => 'required|integer|exists:users,id',
+            'addressbook' => 'required|string|url',
+            'addressbookId' => 'required|integer',
+            'username' => 'required|string',
+            'password' => 'required|string',
+            'localSyncToken' => 'nullable|integer|exists:syncToken,id',
+            'syncToken' => 'nullable|string',
         ];
     }
 
@@ -41,6 +44,8 @@ class SynchronizeAddressBook extends BaseService
     public function execute(array $data, GuzzleClient $httpClient = null)
     {
         $data = [
+            'account_id' => 1,
+            'user_id' => 1,
             'addressbook' => 'http://monica.test/dav/addressbooks/admin@admin.com/contacts/',
             'addressbookId' => 0,
             'username' => 'admin@admin.com',
@@ -49,7 +54,13 @@ class SynchronizeAddressBook extends BaseService
             'syncToken' => 'http://sabre.io/ns/sync/15',
         ];
 
-        $user = User::find(1);
+        /* TESTS */
+
+        $this->validate($data);
+
+        $user = User::where('account_id', $data['account_id'])
+            ->findOrFail($data['user_id']);
+
         $backend = new CardDAVBackend($user->account, $user);
 
         try {
@@ -86,7 +97,7 @@ class SynchronizeAddressBook extends BaseService
 
                 if ($localContact !== false && $localContact['etag'] == $etag) {
                     // contact already exist, and the etag is the same
-                    continue;
+                    //continue;
                 }
 
                 $refresh->push([
@@ -104,10 +115,34 @@ class SynchronizeAddressBook extends BaseService
         $refreshContacts = collect();
         if (in_array('{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-multiget', $supportedReportSet)) {
 
+            // get the supported card format
+            $addressData = collect($client->getProperty('{'.CardDAVPlugin::NS_CARDDAV.'}supported-address-data'));
+            $datas = $addressData->firstWhere('attributes.version', '4.0');
+            if (!$datas) {
+                $datas = $addressData->firstWhere('attributes.version', '3.0');
+            }
+
+            if (!$datas) {
+                // It should not happen !
+                $datas = [
+                    'attributes' => [
+                        'content-type' => 'text/vcard',
+                        'version' => '4.0',
+                    ],
+                ];
+            }
+
             $hrefs = $refresh->pluck('href');
             $datas = $client->addressbookMultiget('', [
                 '{DAV:}getetag',
-                '{'.CardDAVPlugin::NS_CARDDAV.'}address-data',
+                [
+                    'name' => '{'.CardDAVPlugin::NS_CARDDAV.'}address-data',
+                    'value' => null,
+                    'attributes' => [
+                        'content-type' => $datas['attributes']['content-type'],
+                        'version' => $datas['attributes']['version'],
+                    ],
+                ]
             ], $hrefs);
 
             foreach ($datas as $href => $contact) {
@@ -171,27 +206,26 @@ class SynchronizeAddressBook extends BaseService
         // With sync-collection
         if (in_array('{DAV:}sync-collection', $supportedReportSet)) {
 
+            $syncToken = Arr::get($data, 'syncToken', '');
+
             // get the current distant syncToken
-            $syncToken = $client->getProperty('{DAV:}sync-token');
+            $distantSyncToken = $client->getProperty('{DAV:}sync-token');
 
-            if ($syncToken == $data['syncToken']) {
+            if ($syncToken == $distantSyncToken) {
                 // no change at all
-
+                return [];
             }
 
             // get sync
-            $collection = $client->syncCollection('', $data['syncToken'], [
+            $collection = $client->syncCollection('', [
                 '{DAV:}getcontenttype',
                 '{DAV:}getetag',
-            ]);
-
-            $newSyncToken = $collection['synctoken'];
-
-            if ($newSyncToken == $data['syncToken']) {
-                // no change
-            }
+            ], $syncToken);
 
             // save the new syncToken as current one
+            $newSyncToken = $collection['synctoken'];
+
+            // TODO
 
         } else {
 

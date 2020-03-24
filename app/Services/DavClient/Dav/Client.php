@@ -59,7 +59,9 @@ class Client
         // Get well-known register (section 9.1)
         $wkUri = $this->getBaseUri('/.well-known/carddav');
 
-        $response = $this->client->get($wkUri, ['allow_redirects' => false]);
+        $response = $this->client->get($wkUri, [
+            'allow_redirects' => false
+        ]);
 
         $code = $response->getStatusCode();
         if (($code === 301 || $code === 302) && $response->hasHeader('Location')) {
@@ -180,7 +182,7 @@ class Client
     /**
      * @see https://tools.ietf.org/html/rfc6578
      */
-    public function syncCollection(string $url, string $syncToken, array $properties) : array
+    public function syncCollection(string $url, array $properties, string $syncToken) : array
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
@@ -214,7 +216,7 @@ class Client
     /**
      * @see https://tools.ietf.org/html/rfc6352#section-8.7
      */
-    public function addressbookMultiget(string $url, array $properties, Collection $contacts) : array
+    public function addressbookMultiget(string $url, array $properties, \ArrayAccess $contacts) : array
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
@@ -248,19 +250,48 @@ class Client
         return $result;
     }
 
+    /**
+     * Add properties to the prop object.
+     *
+     * Properties must follow:
+     * [
+     * // Simple value
+     *     '{namespace}value',
+     *
+     * // More complex value element
+     *     [
+     *         'name' => '{namespace}value',
+     *         'value' => 'content element',
+     *         'attributes' => ['name' => 'value', ...],
+     *     ]
+     * ]
+     */
     private function fetchProperties($dom, $prop, array $properties, array $namespaces)
     {
         foreach ($properties as $property) {
+            if (is_array($property)) {
+                $propertyExt = $property;
+                $property = $propertyExt['name'];
+            }
             list($namespace, $elementName) = Service::parseClarkNotation($property);
 
             $value = Arr::get($namespaces, $namespace, null);
             if (!is_null($value)) {
-                $element = $dom->createElement("$value:$elementName");
+                $element = $prop->appendChild($dom->createElement("$value:$elementName"));
             } else {
-                $element = $dom->createElementNS($namespace, 'x:'.$elementName);
+                $element = $prop->appendChild($dom->createElementNS($namespace, 'x:'.$elementName));
             }
 
-            $prop->appendChild($element);
+            if (isset($propertyExt)) {
+                if (isset($propertyExt['value']) && !is_null($propertyExt['value'])) {
+                    $element->nodeValue = $propertyExt['value'];
+                }
+                if (isset($propertyExt['attributes'])) {
+                    foreach ($propertyExt['attributes'] as $name => $property) {
+                        $element->appendChild($dom->createAttribute($name))->value = $property;
+                    }
+                }
+            }
         }
     }
 
@@ -285,8 +316,10 @@ class Client
             $value = $prop[0];
             if (is_string($value)) {
                 return $value;
-            } else if (is_array($value)) {
-                return Arr::get($value, 'value', $value);
+            //} else if (is_array($value)) {
+            //    return Arr::get($value, 'value', $value);
+            } else {
+                return $prop;
             }
         }
 
