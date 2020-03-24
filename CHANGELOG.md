@@ -2,6 +2,23 @@
 
 ### New features:
 
+*
+
+### Enhancements:
+
+*
+
+### Fixes:
+
+* Fix carddav sync-collection reporting wrong syncToken
+
+
+# RELEASED VERSIONS:
+
+## v2.17.0 - 2019-03-22
+
+### New features:
+
 * Add a weekly job to update gravatars
 * Add ability to set 'me' contact
 * Add middle name field to new contact and edit contact
@@ -39,7 +56,6 @@
 * Fix activity mock data seeder
 * Fix ordering of contact tags to be alphabetical
 
-# RELEASED VERSIONS:
 
 ## v2.16.0 - 2019-12-31
 
