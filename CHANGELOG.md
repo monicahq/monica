@@ -10,7 +10,8 @@
 
 ### Fixes:
 
-*
+* Fix carddav sync-collection reporting wrong syncToken
+
 
 # RELEASED VERSIONS:
 
