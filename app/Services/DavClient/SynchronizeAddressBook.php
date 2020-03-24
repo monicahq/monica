@@ -65,7 +65,6 @@ class SynchronizeAddressBook extends BaseService
 
             $this->pushContacts($data, $client, $supportedReportSet, $backend, $refresh, $localChanges);
 
-
         } catch (ClientException $e) {
             $r = $e->getResponse();
             $s = (string) $r->getBody();
@@ -85,7 +84,7 @@ class SynchronizeAddressBook extends BaseService
                 $localContact = $backend->getCard($data['addressbookId'], $href);
                 $etag = $contact[200]['{DAV:}getetag'];
 
-                if ($localContact !== false &&  $localContact['etag'] == $etag) {
+                if ($localContact !== false && $localContact['etag'] == $etag) {
                     // contact already exist, and the etag is the same
                     continue;
                 }
@@ -105,7 +104,7 @@ class SynchronizeAddressBook extends BaseService
         $refreshContacts = collect();
         if (in_array('{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-multiget', $supportedReportSet)) {
 
-            $hrefs = $refresh->map(function ($contact) { return $contact['href']; });
+            $hrefs = $refresh->pluck('href');
             $datas = $client->addressbookMultiget('', [
                 '{DAV:}getetag',
                 '{'.CardDAVPlugin::NS_CARDDAV.'}address-data',
@@ -147,19 +146,15 @@ class SynchronizeAddressBook extends BaseService
 
     private function pushContacts(array $data, Client $client, array $supportedReportSet, CardDAVBackend $backend, Collection $refresh, array $localChanges)
     {
-        $refreshIds = $refresh->map(function ($contact) use ($backend) {
-            $c = $backend->getObject($contact['href']);
-            if ($c) {
-                return $c->uuid;
-            }
-        })->toArray();
+        $refreshIds = $refresh->pluck('href');
 
         // All added contact must be pushed
         $localChangesAdd = collect($localChanges['added']);
+
         // We don't push contact that have just been updated
-        $localChangesUpdate = collect($localChanges['modified'])->reject(function ($value) use ($refreshIds) {
-            $uuid = pathinfo(urldecode($value), PATHINFO_FILENAME);
-            return in_array($uuid, $refreshIds);
+        $localChangesUpdate = collect($localChanges['modified'])->reject(function ($uri) use ($refreshIds, $backend) {
+            $uuid = $backend->getUuid($uri);
+            return $refreshIds->contains($uuid);
         });
 
         foreach ($localChangesAdd->union($localChangesUpdate) as $uri)
@@ -169,7 +164,6 @@ class SynchronizeAddressBook extends BaseService
                 'If-Match' => '*'
             ]);
         }
-
     }
 
     private function getContactsList(array $data, Client $client, $supportedReportSet): array

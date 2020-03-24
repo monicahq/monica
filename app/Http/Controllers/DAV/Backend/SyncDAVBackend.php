@@ -205,7 +205,7 @@ trait SyncDAVBackend
         ];
     }
 
-    protected function encodeUri($obj)
+    protected function encodeUri($obj) : string
     {
         if (empty($obj->uuid)) {
             // refresh model from database
@@ -222,9 +222,20 @@ trait SyncDAVBackend
         return urlencode($obj->uuid.$this->getExtension());
     }
 
-    private function decodeUri($uri)
+    private function decodeUri($uri) : string
     {
         return pathinfo(urldecode($uri), PATHINFO_FILENAME);
+    }
+
+    /**
+     * Returns the contact uuid for the specific uri.
+     *
+     * @param string  $uri
+     * @return string
+     */
+    public function getUuid($uri) : string
+    {
+        return $this->decodeUri($uri);
     }
 
     /**
@@ -236,7 +247,7 @@ trait SyncDAVBackend
     public function getObject($uri)
     {
         try {
-            return $this->getObjectUuid($this->decodeUri($uri));
+            return $this->getObjectUuid($this->getUuid($uri));
         } catch (\Exception $e) {
             // Object not found
         }
