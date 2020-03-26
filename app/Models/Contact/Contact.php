@@ -560,9 +560,10 @@ class Contact extends Model
         if ($accountId && $addressBookId) {
             $addressBook = AddressBook::where([
                 'account_id' => $accountId,
-                'addressBookId' => $addressBookId
+                'addressBookId' => $addressBookId,
             ])->first();
         }
+
         return $query->where('addressbook_id', $addressBook ? $addressBook->id : null);
     }
 

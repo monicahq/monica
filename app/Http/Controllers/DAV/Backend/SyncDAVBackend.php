@@ -203,7 +203,7 @@ trait SyncDAVBackend
         ];
     }
 
-    protected function encodeUri($obj) : string
+    protected function encodeUri($obj): string
     {
         if (empty($obj->uuid)) {
             // refresh model from database
@@ -220,7 +220,7 @@ trait SyncDAVBackend
         return urlencode($obj->uuid.$this->getExtension());
     }
 
-    private function decodeUri($uri) : string
+    private function decodeUri($uri): string
     {
         return pathinfo(urldecode($uri), PATHINFO_FILENAME);
     }
@@ -231,7 +231,7 @@ trait SyncDAVBackend
      * @param string  $uri
      * @return string
      */
-    public function getUuid($uri) : string
+    public function getUuid($uri): string
     {
         return $this->decodeUri($uri);
     }

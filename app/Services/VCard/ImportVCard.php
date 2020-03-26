@@ -19,9 +19,9 @@ use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Helpers\CountriesHelper;
-use App\Models\Account\AddressBook;
 use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCard;
+use App\Models\Account\AddressBook;
 use App\Models\Contact\ContactField;
 use App\Services\Contact\Tag\DetachTag;
 use App\Models\Contact\ContactFieldType;
@@ -431,7 +431,7 @@ class ImportVCard extends BaseService
             if ($contactField &&
                     (
                     $this->addressBook && $contactField->contact->addressbook_id == $this->addressBook->id
-                    || !$this->addressBook
+                    || ! $this->addressBook
                     )
                 ) {
                 return $contactField->contact;
