@@ -14,7 +14,7 @@ interface IDAVBackend
     /**
      * Returns the object for the specific uuid.
      *
-     * @param mixed|null $collectionId
+     * @param string|null $collectionId
      * @param string  $uuid
      * @return mixed
      */
@@ -23,6 +23,7 @@ interface IDAVBackend
     /**
      * Returns the collection of objects.
      *
+     * @param string|null $collectionId
      * @return \Illuminate\Support\Collection
      */
     public function getObjects($collectionId);

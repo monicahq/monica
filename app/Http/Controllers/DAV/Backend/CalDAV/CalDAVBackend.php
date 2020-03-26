@@ -198,7 +198,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     {
         $backend = $this->getBackend($calendarId);
         if ($backend) {
-            $obj = $backend->getObject($objectUri);
+            $obj = $backend->getObject($calendarId, $objectUri);
 
             if ($obj) {
                 return $backend->prepareData($obj);
@@ -251,7 +251,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     {
         $backend = $this->getBackend($calendarId);
         if ($backend) {
-            return $backend->updateOrCreateCalendarObject($objectUri, $calendarData);
+            return $backend->updateOrCreateCalendarObject($calendarId, $objectUri, $calendarData);
         }
     }
 

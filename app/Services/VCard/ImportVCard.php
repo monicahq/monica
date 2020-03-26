@@ -87,7 +87,7 @@ class ImportVCard extends BaseService
     protected $genders;
 
     /**
-     * @var AddressBook
+     * @var AddressBook|null
      */
     protected $addressBook;
 
