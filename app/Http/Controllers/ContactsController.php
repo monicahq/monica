@@ -280,7 +280,7 @@ class ContactsController extends Controller
         $reminders = $reminders->sortBy('next_expected_date');
 
         // list of active features
-        $modules = $contact->account->modules()->active()->addressBook()->get();
+        $modules = $contact->account->modules()->active()->get();
 
         // add `---` at the top of the dropdowns
         $days = DateHelper::getListOfDays();
