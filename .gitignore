@@ -23,3 +23,5 @@ monicadump.sql
 .phpunit.result.cache
 .composer
 .idea
+/public/js
+/public/css
