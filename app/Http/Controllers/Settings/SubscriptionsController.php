@@ -178,7 +178,7 @@ class SubscriptionsController extends Controller
         }
 
         return view('settings.subscriptions.downgrade-checklist')
-            ->with('numberOfActiveContacts', $account->contacts()->active()->count())
+            ->with('numberOfActiveContacts', $account->contacts()->addressBook()->active()->count())
             ->with('numberOfPendingInvitations', $account->invitations()->count())
             ->with('numberOfUsers', $account->users()->count())
             ->with('accountHasLimitations', AccountHelper::hasLimitations($account))

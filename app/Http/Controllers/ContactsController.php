@@ -79,7 +79,7 @@ class ContactsController extends Controller
             ]);
         }
 
-        $contacts = $user->account->contacts()->real();
+        $contacts = $user->account->contacts()->real()->addressBook();
         if ($active) {
             $nbArchived = $contacts->count();
             $contacts = $contacts->active();
@@ -280,7 +280,7 @@ class ContactsController extends Controller
         $reminders = $reminders->sortBy('next_expected_date');
 
         // list of active features
-        $modules = $contact->account->modules()->active()->get();
+        $modules = $contact->account->modules()->active()->addressBook()->get();
 
         // add `---` at the top of the dropdowns
         $days = DateHelper::getListOfDays();
@@ -672,7 +672,7 @@ class ContactsController extends Controller
         $url = '';
         $count = 1;
 
-        $contacts = $user->account->contacts()->real();
+        $contacts = $user->account->contacts()->real()->addressBook();
 
         // filter out archived contacts if necessary
         if ($request->input('show_archived') != 'true') {

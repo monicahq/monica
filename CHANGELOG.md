@@ -2,7 +2,7 @@
 
 ### New features:
 
-*
+* Add the notion of AddressBooks
 
 ### Enhancements:
 

@@ -17,6 +17,7 @@ use App\Models\Account\Activity;
 use App\Models\Instance\AuditLog;
 use function Safe\preg_match_all;
 use Illuminate\Support\Collection;
+use App\Models\Account\AddressBook;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -543,6 +544,26 @@ class Contact extends Model
     public function scopeNotActive($query)
     {
         return $query->where('is_active', 0);
+    }
+
+    /**
+     * Scope a query to only include contacts from designated address book.
+     *
+     * @param Builder $query
+     * @param int|null $accountId
+     * @param mixed|null $addressBookId
+     * @return Builder
+     */
+    public function scopeAddressBook($query, $accountId = null, $addressBookId = null)
+    {
+        $addressBook = null;
+        if ($accountId && $addressBookId) {
+            $addressBook = AddressBook::where([
+                'account_id' => $accountId,
+                'addressBookId' => $addressBookId
+            ])->first();
+        }
+        return $query->where('addressbook_id', $addressBook ? $addressBook->id : null);
     }
 
     /**

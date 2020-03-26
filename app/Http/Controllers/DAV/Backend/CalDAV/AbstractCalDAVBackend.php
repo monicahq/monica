@@ -15,7 +15,7 @@ abstract class AbstractCalDAVBackend implements ICalDAVBackend, IDAVBackend
 
     public function getDescription()
     {
-        $token = $this->getCurrentSyncToken();
+        $token = $this->getCurrentSyncToken(null);
 
         $des = [
             'id' => $this->backendUri(),

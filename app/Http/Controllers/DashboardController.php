@@ -28,7 +28,7 @@ class DashboardController extends Controller
             )->with('debts.contact')
             ->first();
 
-        if ($account->contacts()->real()->active()->count() === 0) {
+        if ($account->contacts()->real()->addressBook()->active()->count() === 0) {
             return view('dashboard.blank');
         }
 
@@ -36,6 +36,7 @@ class DashboardController extends Controller
         $lastUpdatedContactsCollection = collect([]);
         $lastUpdatedContacts = $account->contacts()
             ->real()
+            ->addressBook()
             ->active()
             ->alive()
             ->latest('last_consulted_at')
@@ -77,7 +78,7 @@ class DashboardController extends Controller
 
         $data = [
             'lastUpdatedContacts' => $lastUpdatedContactsCollection,
-            'number_of_contacts' => $account->contacts()->real()->active()->count(),
+            'number_of_contacts' => $account->contacts()->real()->addressBook()->active()->count(),
             'number_of_reminders' => $account->reminders_count,
             'number_of_notes' => $account->notes_count,
             'number_of_activities' => $account->activities_count,
