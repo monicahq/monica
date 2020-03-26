@@ -47,7 +47,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getObjects()
+    public function getObjects($addressBookId)
     {
         return $this->account
                     ->tasks()
@@ -57,10 +57,11 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Returns the contact for the specific uuid.
      *
+     * @param mixed|null $addressBookId
      * @param string  $uuid
      * @return mixed
      */
-    public function getObjectUuid($uuid)
+    public function getObjectUuid($addressBookId, $uuid)
     {
         return Task::where([
             'account_id' => $this->account->id,

@@ -3,7 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Services\DavClient\SynchronizeAddressBook;
+use App\Models\Account\AddressBook;
+use App\Jobs\SynchronizeAddressBooks;
+use App\Services\DavClient\AddAddressBook;
 
 class DavClientsUpdate extends Command
 {
@@ -12,14 +14,14 @@ class DavClientsUpdate extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:dav';
+    protected $signature = 'monica:davclients';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '';
+    protected $description = 'Update all dav subscriptions';
 
     /**
      * Execute the console command.
@@ -28,6 +30,14 @@ class DavClientsUpdate extends Command
      */
     public function handle()
     {
-        app(SynchronizeAddressBook::class)->execute([]);
+        //app(AddAddressBook::class)->execute([]);
+        //return;
+
+        $addressBooks = AddressBook::all();
+
+        foreach ($addressBooks as $addressBook)
+        {
+            SynchronizeAddressBooks::dispatch($addressBook);
+        }
     }
 }

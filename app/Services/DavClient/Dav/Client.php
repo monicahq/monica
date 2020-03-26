@@ -314,13 +314,7 @@ class Client
             return $prop;
         } else if (is_array($prop)) {
             $value = $prop[0];
-            if (is_string($value)) {
-                return $value;
-            //} else if (is_array($value)) {
-            //    return Arr::get($value, 'value', $value);
-            } else {
-                return $prop;
-            }
+            return is_string($value) ? $value : $prop;
         }
 
         return $prop;
@@ -482,7 +476,6 @@ class Client
      *
      *
      * @param string $body xml body
-     *
      * @return array
      */
     public function parseMultiStatus(string $body) : array

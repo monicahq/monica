@@ -23,26 +23,31 @@ trait SyncDAVBackend
      * If null is returned from this function, the plugin assumes there's no
      * sync information available.
      *
+     * @param mixed|null $addressBookId
      * @return SyncToken|null
      */
-    protected function getCurrentSyncToken()
+    protected function getCurrentSyncToken($addressBookId)
     {
         $tokens = SyncToken::where([
             'account_id' => $this->account->id,
             'user_id' => $this->user->id,
-            'name' => $this->backendUri(),
+            'name' => $addressBookId ?? $this->backendUri(),
         ])
             ->orderBy('created_at')
             ->get();
 
         if ($tokens->count() <= 0) {
-            $token = $this->createSyncToken();
+            $token = $this->createSyncToken($addressBookId);
         } else {
             $token = $tokens->last();
+            /*
+        } else if ($refresh) {
+            $token = $tokens->last();
 
-            if ($token->timestamp < $this->getLastModified()) {
-                $token = $this->createSyncToken();
+            if ($token->timestamp < $this->getLastModified($addressBookId)) {
+                $token = $this->createSyncToken($addressBookId);
             }
+            */
         }
 
         return $token;
@@ -51,14 +56,15 @@ trait SyncDAVBackend
     /**
      * Get SyncToken by token id.
      *
+     * @param mixed|null $addressBookId
      * @return SyncToken|null
      */
-    protected function getSyncToken($syncToken)
+    protected function getSyncToken($addressBookId, $syncToken)
     {
         return SyncToken::where([
             'account_id' => $this->account->id,
             'user_id' => $this->user->id,
-            'name' => $this->backendUri(),
+            'name' => $addressBookId ?? $this->backendUri(),
         ])
             ->find($syncToken);
     }
@@ -66,17 +72,18 @@ trait SyncDAVBackend
     /**
      * Create a token.
      *
+     * @param mixed|null $addressBookId
      * @return SyncToken|null
      */
-    private function createSyncToken()
+    private function createSyncToken($addressBookId)
     {
-        $max = $this->getLastModified();
+        $max = $this->getLastModified($addressBookId);
 
         if ($max) {
             return SyncToken::create([
                 'account_id' => $this->account->id,
                 'user_id' => $this->user->id,
-                'name' => $this->backendUri(),
+                'name' => $addressBookId ?? $this->backendUri(),
                 'timestamp' => $max,
             ]);
         }
@@ -85,14 +92,15 @@ trait SyncDAVBackend
     /**
      * Create a token with now timestamp.
      *
+     * @param mixed|null $addressBookId
      * @return SyncToken
      */
-    private function createSyncTokenNow()
+    private function createSyncTokenNow($addressBookId)
     {
         return SyncToken::create([
             'account_id' => $this->account->id,
             'user_id' => $this->user->id,
-            'name' => $this->backendUri(),
+            'name' => $addressBookId ?? $this->backendUri(),
             'timestamp' => now(),
         ]);
     }
@@ -100,11 +108,12 @@ trait SyncDAVBackend
     /**
      * Returns the last modification date.
      *
+     * @param mixed|null $addressBookId
      * @return \Carbon\Carbon|null
      */
-    public function getLastModified()
+    public function getLastModified($addressBookId)
     {
-        return $this->getObjects()
+        return $this->getObjects($addressBookId)
                     ->max('updated_at');
     }
 
@@ -158,15 +167,16 @@ trait SyncDAVBackend
      *
      * The limit is 'suggestive'. You are free to ignore it.
      *
+     * @param string $addressBookId
      * @param string $syncToken
      * @return array|null
      */
-    public function getChanges($syncToken)
+    public function getChanges($addressBookId, $syncToken)
     {
         $token = null;
         $timestamp = null;
         if (! empty($syncToken)) {
-            $token = $this->getSyncToken($syncToken);
+            $token = $this->getSyncToken($addressBookId, $syncToken);
 
             if (is_null($token)) {
                 // syncToken is not recognized
@@ -175,11 +185,11 @@ trait SyncDAVBackend
 
             $timestamp = $token->timestamp;
         } else {
-            $token = $this->createSyncTokenNow();
+            $token = $this->createSyncTokenNow($addressBookId);
             $timestamp = null;
         }
 
-        $objs = $this->getObjects();
+        $objs = $this->getObjects($addressBookId);
 
         $modified = $objs->filter(function ($obj) use ($timestamp) {
             return ! is_null($timestamp) &&
@@ -191,7 +201,7 @@ trait SyncDAVBackend
                    $obj->created_at >= $timestamp;
         });
 
-        $currentSyncToken = $this->getCurrentSyncToken();
+        $currentSyncToken = $this->getCurrentSyncToken($addressBookId);
 
         return [
             'syncToken' => $currentSyncToken->id,
@@ -241,13 +251,14 @@ trait SyncDAVBackend
     /**
      * Returns the contact for the specific uri.
      *
+     * @param mixed|null $addressBookId
      * @param string  $uri
      * @return mixed
      */
-    public function getObject($uri)
+    public function getObject($addressBookId, $uri)
     {
         try {
-            return $this->getObjectUuid($this->getUuid($uri));
+            return $this->getObjectUuid($addressBookId, $this->getUuid($uri));
         } catch (\Exception $e) {
             // Object not found
         }
@@ -256,17 +267,19 @@ trait SyncDAVBackend
     /**
      * Returns the object for the specific uuid.
      *
+     * @param mixed|null $addressBookId
      * @param string  $uuid
      * @return mixed
      */
-    abstract public function getObjectUuid($uuid);
+    abstract public function getObjectUuid($addressBookId, $uuid);
 
     /**
      * Returns the collection of objects.
      *
+     * @param mixed|null $addressBookId
      * @return \Illuminate\Support\Collection
      */
-    abstract public function getObjects();
+    abstract public function getObjects($addressBookId);
 
     abstract public function getExtension();
 }

@@ -35,6 +35,7 @@ use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
+use App\Models\Account\AddressBook;
 
 /**
  * @property \App\Models\Instance\SpecialDate $birthdate
@@ -547,6 +548,26 @@ class Contact extends Model
     public function scopeNotActive($query)
     {
         return $query->where('is_active', 0);
+    }
+
+    /**
+     * Scope a query to only include contacts from designated address book.
+     *
+     * @param Builder $query
+     * @param int|null $accountId
+     * @param mixed|null $addressBookId
+     * @return Builder
+     */
+    public function scopeAddressBook($query, $accountId = null, $addressBookId = null)
+    {
+        $addressBook = null;
+        if ($accountId && $addressBookId) {
+            $addressBook = AddressBook::where([
+                'account_id' => $accountId,
+                'addressBookId' => $addressBookId
+            ])->first();
+        }
+        return $query->where('addressbook_id', $addressBook ? $addressBook->id : null);
     }
 
     /**

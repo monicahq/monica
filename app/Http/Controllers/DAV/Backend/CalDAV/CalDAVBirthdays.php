@@ -98,10 +98,11 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
     /**
      * Returns the date for the specific uuid.
      *
+     * @param mixed|null $addressBookId
      * @param string  $uuid
      * @return mixed
      */
-    public function getObjectUuid($uuid)
+    public function getObjectUuid($addressBookId, $uuid)
     {
         return SpecialDate::where([
             'account_id' => $this->account->id,
@@ -114,11 +115,12 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getObjects()
+    public function getObjects($addressBookId)
     {
         $contacts = $this->account
                     ->contacts()
                     ->real()
+                    ->addressBook()
                     ->active()
                     ->get();
 
