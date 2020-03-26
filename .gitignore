@@ -25,3 +25,4 @@ monicadump.sql
 .idea
 /public/js
 /public/css
+/public/mix-manifest.json
