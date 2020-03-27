@@ -382,7 +382,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * @param \Sabre\DAV\PropPatch $propPatch
      * @return bool|null
      */
-    public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch)
+    public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch): ?bool
     {
         $propPatch->handle('{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card', function ($props) {
             $contact = $this->getObject($props->getHref());
@@ -397,7 +397,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
             return true;
         });
-        return;
+        return null;
     }
 
     /**

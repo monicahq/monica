@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc8562f0a3c17ea96cefa97544c87454",
+    "content-hash": "b9cad7520c7e3c2d1e4d86cb5307aa97",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -14886,16 +14886,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.9.4",
+            "version": "3.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "352bd3f5c5789db04e4010856c2f4e01ed354f4e"
+                "reference": "eeed5ecccc10131397f0eb7ee6da810c0be3a7fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/352bd3f5c5789db04e4010856c2f4e01ed354f4e",
-                "reference": "352bd3f5c5789db04e4010856c2f4e01ed354f4e",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/eeed5ecccc10131397f0eb7ee6da810c0be3a7fc",
+                "reference": "eeed5ecccc10131397f0eb7ee6da810c0be3a7fc",
                 "shasum": ""
             },
             "require": {
@@ -14978,7 +14978,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2020-03-06T20:23:11+00:00"
+            "time": "2020-03-23T11:40:30+00:00"
         },
         {
             "name": "webmozart/assert",

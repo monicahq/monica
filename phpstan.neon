@@ -16,7 +16,6 @@ parameters:
         - '#Call to an undefined method App\\Http\\Resources\\[a-zA-Z0-9\\_]+::[a-zA-Z0-9_]+\(\)\.#'
         - '#Access to an undefined property App\\Interfaces\\LabelInterface::\$labels\.#'
         # Level 2
-        - '#Access to an undefined property App\\Models\\.*::\$[a-zA-Z0-9_]+\.#'
         - '#Access to an undefined property Illuminate\\Support\\Fluent::\$[a-zA-Z0-9_]+\.#'
         - '#Access to an undefined property Sabre\\VObject\\Component\\[a-zA-Z0-9\\_]+::\$[a-zA-Z0-9_]+\.#'
         - '#Access to an undefined property PragmaRX\\Countries\\Package\\Support\\Collection::\$[a-zA-Z0-9_]+\.#'
