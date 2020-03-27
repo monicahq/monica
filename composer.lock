@@ -11615,22 +11615,22 @@
         },
         {
             "name": "matthiasnoback/live-code-coverage",
-            "version": "v1.1.0",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasnoback/live-code-coverage.git",
-                "reference": "eeb964ae2388f4807f403425e1f22f5a3c1e1709"
+                "reference": "f1a69bed903a889e64cfefc41421a5efc5d836ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasnoback/live-code-coverage/zipball/eeb964ae2388f4807f403425e1f22f5a3c1e1709",
-                "reference": "eeb964ae2388f4807f403425e1f22f5a3c1e1709",
+                "url": "https://api.github.com/repos/matthiasnoback/live-code-coverage/zipball/f1a69bed903a889e64cfefc41421a5efc5d836ea",
+                "reference": "f1a69bed903a889e64cfefc41421a5efc5d836ea",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1",
-                "phpunit/php-code-coverage": "^4.0 || ^5.2 || ^6.0 || ^7.0",
-                "phpunit/phpunit": "^5.7 || ^6.0 || ^7.0 || ^8.0",
+                "phpunit/php-code-coverage": "^4.0 || ^5.2 || ^6.0 || ^7.0 || ^8.0",
+                "phpunit/phpunit": "^5.7 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
                 "webmozart/assert": "^1.2"
             },
             "require-dev": {
@@ -11649,7 +11649,7 @@
                 "MIT"
             ],
             "description": "Generate code coverage reports on a live server",
-            "time": "2019-02-04T07:51:15+00:00"
+            "time": "2020-03-27T08:23:44+00:00"
         },
         {
             "name": "maximebf/debugbar",
