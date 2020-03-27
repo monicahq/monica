@@ -25,25 +25,25 @@
         <div class="fl w-50-l w-100 pl2-l pl0">
 
           <!-- latest activity -->
-          <div class="ba mb3">
-            <h2 class="ma0 bb pa2 fw4 f5">Latest activity</h2>
+          <div class="ba mb3 bg-white br2 box bc-gray">
+            <h2 class="ma0 bb pa3 fw5 f5 bc-gray c-strong">Latest activity</h2>
             <ul class="ma0 list pl0">
-              <li class="bb pa2">
-                <span class="f6 db pb2">Regis Freyd on Feb 02, 19:23</span>
-                <span class="db">Added Mali as a new contact</span>
+              <li class="bb bc-gray ph3 pv2">
+                <span class="db pb1">Added Mali as a new contact</span>
+                <span class="f7 dbc-gray">Regis Freyd on Feb 02, 19:23</span>
               </li>
-              <li class="pa2">
-                <span class="f6 db pb2">Regis Freyd on Feb 02, 19:23</span>
-                <span class="db">Added Mali as a new contact</span>
+              <li class="ph3 pv2">
+                <span class="db pb1">Added Mali as a new contact</span>
+                <span class="f7 dbc-gray">Regis Freyd on Feb 02, 19:23</span>
               </li>
             </ul>
           </div>
 
           <!-- tasks -->
-          <div class="ba">
-            <h2 class="ma0 bb pa2 fw4 f5">Your tasks</h2>
+          <div class="ba mb3 bg-white br2 box bc-gray">
+            <h2 class="ma0 bb pa3 fw5 f5 bc-gray c-strong">Your tasks</h2>
             <ul class="ma0 list pl0">
-              <li class="bb pa2">
+              <li class="bb bc-gray pa2">
                 <div class="flex items-start">
                   <div class="flex items-center">
                     <input type="checkbox" />

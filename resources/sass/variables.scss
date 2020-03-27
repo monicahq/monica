@@ -1,6 +1,6 @@
 
 // Body
-$body-bg: #F6F7F9;
+$body-bg: #F0F1F5;
 $body-color:  #4d4d4f;
 
 // Typography
@@ -26,10 +26,11 @@ $cyan: #6cb2eb;
 .bg-gray { background-color: #fafbfc; }
 
 // Border colors
-.bb-gray { border-color: #dae1e7 }
+.bc-gray { border-color: #f0f0f0 }
+.bc-gray-strong { border-color: #e1e1e1 }
 
 // Background-color on line hover
-.bb-gray-hover {
+.bc-gray-hover {
   &:hover {
     background-color: #fcfbeb;
   }
@@ -37,3 +38,5 @@ $cyan: #6cb2eb;
 
 // Colors
 .c-delete { color: #b8394c; }
+.c-strong { color: #232E3B; }
+.c-gray { color: #697386; }

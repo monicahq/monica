@@ -113,6 +113,7 @@ export default {
   created: function() {
     this.customInputClasses = this.inputClass + ' ' + this.customInputClasses;
     this.customLabelClasses = this.labelClass + ' ' + this.customLabelClasses;
+
     if (this.required) {
       this.customLabelClasses = this.customLabelClasses + ' b';
     }

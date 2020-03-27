@@ -18,6 +18,7 @@
       :data-cy="datacy"
       :rows="rows"
       @input="$emit('input', $event.target.value)"
+      @keyup.esc="onEscape($event)"
     ></textarea>
 
     <p v-if="help" class="f7 mb3 lh-title">
@@ -75,11 +76,9 @@ export default {
     focus() {
       this.$refs.input.focus();
     },
-    select() {
-      this.$refs.input.select();
-    },
-    setSelectionRange(start, end) {
-      this.$refs.input.setSelectionRange(start, end);
+
+    onEscape(event) {
+      this.$emit('escape');
     },
   },
 };

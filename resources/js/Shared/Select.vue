@@ -25,7 +25,7 @@
       :value="selectedOption"
       :name="name"
       :required="required"
-      :class="customInputClasses"
+      :class="customSelectClasses"
       @input="onInput"
     >
       <template v-if="Array.isArray(options)">
@@ -96,7 +96,7 @@ export default {
       type: String,
       default: '',
     },
-    inputClass: {
+    selectClass: {
       type: String,
       default: '',
     },
@@ -105,12 +105,11 @@ export default {
   data() {
     return {
       selectedOption: null,
-      classes: '',
     };
   },
 
   created: function() {
-    this.customInputClasses = this.inputClass + ' ' + this.customInputClasses;
+    this.customSelectClasses = this.selectClass + ' ' + this.customSelectClasses;
     this.customLabelClasses = this.labelClass + ' ' + this.customLabelClasses;
 
     if (this.required) {

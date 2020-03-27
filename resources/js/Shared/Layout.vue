@@ -3,7 +3,7 @@
 
 <template>
   <div>
-    <header class="w-100 ph3 ph5-ns pv2 bg-white bb">
+    <header class="w-100 ph3 ph5-ns pv2 bg-white bb bc-gray-strong mb3">
       <div class="db dt-ns mw9 center w-100">
         <div class="db dtc-ns v-mid tl w-10">
           <a href="/" class="dib f5 f4-ns fw6 mt0 mb1 link black-70" title="Home">

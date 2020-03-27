@@ -35,7 +35,8 @@
               ref=""
               :options="''"
               :label="'Content type'"
-              :custom-class="'db w-90'"
+              :label-class="'db mb2'"
+              :select-class="'db'"
             />
           </div>
           <div class="w-100">
@@ -59,7 +60,8 @@
               ref=""
               :options="''"
               :label="'Content type'"
-              :custom-class="'db w-90'"
+              :label-class="'db mb2'"
+              :select-class="'db'"
             />
           </div>
           <div class="w-100">

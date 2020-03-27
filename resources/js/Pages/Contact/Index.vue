@@ -4,6 +4,11 @@
     border-bottom: 0;
   }
 }
+
+.avatar {
+  width: 35px;
+}
+
 </style>
 
 <template>
@@ -39,11 +44,12 @@
           </div>
 
           <!-- table of contacts -->
-          <ul class="ba ma0 list pl0 mb4 contacts">
-            <li class="bb pa2 flex items-center" v-for="contact in contacts" :key="contact.id">
-              <img :src="contact.avatar" class="br-100 ba h2 w2 dib mr2" alt="avatar">
+          <ul class="ba ma0 list pl0 mb4 contacts bg-white br2 box bc-gray">
+            <li class="bb bc-gray ph3 pv3 flex items-center" v-for="contact in contacts" :key="contact.id">
+              <img :src="contact.avatar" class="br-100 ba dib mr2 bc-gray avatar" alt="avatar">
               <div>
 
+                <inertia-link :href="contact.url" class="db mb1">{{ contact.name }}</inertia-link>
                 <div class="db f7">
                   <!-- tags -->
                   <ul class="dib ma0 list pl0">

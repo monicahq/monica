@@ -27,10 +27,10 @@
           :required="true"
           :rows="10"
           :help="$t('people.description_title_help')"
+          v-on:escape="editMode = false"
         />
 
         <!-- Actions -->
-
         <div class="flex-ns justify-between">
           <div>
             <loading-button :classes="'btn add w-auto-ns w-100 pv2 ph3'" :state="loadingState" :text="$t('app.save')" :cypress-selector="'submit-add-description'" />
