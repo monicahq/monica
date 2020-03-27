@@ -9,7 +9,7 @@ Before deployment, Heroku will ask you to define a few variables.
 - In addition, you can edit the email address Monica will send emails to (`MAIL_FROM_ADDRESS`), the name of the sender (`MAIL_FROM_NAME`) and some other important variables on that screen.
 
 After deployment, click on ![Manage App](../images/heroku_manage_app.png) to open the dashboard of your new application:
-![Heroku Dashbord](../images/heroku_dashboard.png)
+![Heroku Dashbord](../images/heroku_dashboard.jpg)
 
 Click on **Heroku Scheduler** to open scheduler dashboard. Create a new job, and define a new job to run this command every 10 minutes or every hour at 00 minutes:
 ```sh
@@ -25,7 +25,7 @@ Monica doesn't require a lot of power - it will run perfectly fine on the free p
 
 After deployment, the configuration of your app should look like this:
 
-![picture of configuration](https://raw.githubusercontent.com/monicahq/monica/master/docs/images/heroku_dashboard-resources.png)
+![picture of configuration](../images/heroku_dashboard-resources.png)
 
 Note that when you deploy with the "Deploy to Heroku" purple button, only 1 dyno ("web") is activated while the "queue" one is not. That is OK - the "queue" dyno is only helpful if you set `QUEUE_CONNECTION=database` (default is 'sync').
 
