@@ -147,6 +147,7 @@ class Gift extends Model
                 return $this->recipient->first_name;
             }
         }
+
         return null;
     }
 

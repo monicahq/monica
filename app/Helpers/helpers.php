@@ -33,6 +33,7 @@ if (! function_exists('disk_adapter')) {
                 return $adapter;
             }
         }
+
         return null;
     }
 }

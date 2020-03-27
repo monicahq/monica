@@ -90,6 +90,7 @@ class Relationship extends Model
                 'relationship_type_id' => $reverseRelationshipType->id,
             ])->first();
         }
+
         return null;
     }
 }

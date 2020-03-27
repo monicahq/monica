@@ -69,6 +69,5 @@ class DocumentsController extends Controller
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }
-        return null;
     }
 }

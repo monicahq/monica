@@ -22,6 +22,7 @@ class VCardHelper
         }
 
         $country = Arr::get($vCardAddress->getParts(), '6');
+
         return empty($country) ? null : CountriesHelper::find($country);
     }
 }

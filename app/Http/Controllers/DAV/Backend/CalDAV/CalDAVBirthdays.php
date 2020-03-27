@@ -76,6 +76,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
                 Log::debug(__CLASS__.' prepareData: '.(string) $e);
             }
         }
+
         return [];
     }
 
@@ -129,7 +130,6 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
 
     public function updateOrCreateCalendarObject($objectUri, $calendarData)
     {
-        return null;
     }
 
     public function deleteCalendarObject($objectUri)
