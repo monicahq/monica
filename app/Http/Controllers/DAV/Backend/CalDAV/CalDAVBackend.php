@@ -253,7 +253,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      * @param string $calendarData
      * @return string|null
      */
-    public function updateCalendarObject($calendarId, $objectUri, $calendarData)
+    public function updateCalendarObject($calendarId, $objectUri, $calendarData): ?string
     {
         $backend = $this->getBackend($calendarId);
 
