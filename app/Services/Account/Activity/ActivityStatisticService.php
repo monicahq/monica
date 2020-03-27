@@ -36,7 +36,7 @@ class ActivityStatisticService
      */
     public function activitiesPerYearWithContact(Contact $contact)
     {
-        return $contact->activityStatistics;
+        return $contact->activityStatistics();
     }
 
     /**

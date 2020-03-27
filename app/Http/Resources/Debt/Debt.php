@@ -26,7 +26,7 @@ class Debt extends JsonResource
             'in_debt' => $this->in_debt,
             'status' => $this->status,
             'amount' => $this->amount,
-            'amount_with_currency' => MoneyHelper::format($this->amount),
+            'amount_with_currency' => MoneyHelper::format((int) $this->amount),
             'reason' => $this->reason,
             'account' => [
                 'id' => $this->account_id,
