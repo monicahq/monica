@@ -102,6 +102,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
                 Log::debug(__CLASS__.' prepareData: '.(string) $e);
             }
         }
+        return [];
     }
 
     /**
@@ -151,6 +152,8 @@ class CalDAVTasks extends AbstractCalDAVBackend
         } catch (\Exception $e) {
             Log::debug(__CLASS__.' updateOrCreateCalendarObject: '.(string) $e);
         }
+
+        return null;
     }
 
     /**

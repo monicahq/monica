@@ -86,6 +86,7 @@ class OAuthController extends Controller
 
             return Route::respondWithRoute('oauth.verify');
         }
+        return;
     }
 
     /**
@@ -188,6 +189,7 @@ class OAuthController extends Controller
     private function proxy(array $data = []): array
     {
         $url = App::runningUnitTests() ? config('app.url').'/oauth/token' : route('passport.token');
+        /** @var \Illuminate\Http\Response */
         $response = app(Kernel::class)->handle(Request::create($url, 'POST', [
             'grant_type' => $data['grantType'],
             'client_id' => config('monica.mobile_client_id'),

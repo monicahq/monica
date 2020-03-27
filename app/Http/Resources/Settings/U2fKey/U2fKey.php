@@ -3,9 +3,12 @@
 namespace App\Http\Resources\Settings\U2fKey;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class U2fKey extends Resource
+/**
+ * @extends JsonResource<\Lahaxearnaud\U2f\Models\U2fKey>
+ */
+class U2fKey extends JsonResource
 {
     /**
      * Transform the resource into an array.

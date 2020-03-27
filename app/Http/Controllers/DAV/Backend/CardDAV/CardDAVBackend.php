@@ -159,9 +159,9 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * Prepare datas for this contact.
      *
      * @param Contact $contact
-     * @return array|null
+     * @return array
      */
-    private function prepareCard($contact)
+    private function prepareCard($contact) : array
     {
         try {
             $vcard = app(ExportVCard::class)
@@ -351,6 +351,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
             Log::debug(__CLASS__.' updateCard: '.(string) $e);
             throw $e;
         }
+        return null;
     }
 
     /**
@@ -396,6 +397,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
             return true;
         });
+        return;
     }
 
     /**

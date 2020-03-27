@@ -68,11 +68,16 @@ class TasksController extends Controller
      */
     public function destroy(Task $task)
     {
-        if (app(DestroyTask::class)->execute([
-            'task_id' => $task->id,
-            'account_id' => auth()->user()->account_id,
-        ])) {
-            return $this->respondObjectDeleted($task->id);
+        try {
+            if (app(DestroyTask::class)->execute([
+                'task_id' => $task->id,
+                'account_id' => auth()->user()->account_id,
+            ])) {
+                return $this->respondObjectDeleted($task->id);
+            }
+        } catch (\Exception $e) {
+            return $this->respondNotFound();
         }
+        return null;
     }
 }

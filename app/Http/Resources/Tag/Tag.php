@@ -3,9 +3,12 @@
 namespace App\Http\Resources\Tag;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class Tag extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\Tag>
+ */
+class Tag extends JsonResource
 {
     /**
      * Transform the resource into an array.

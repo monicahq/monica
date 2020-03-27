@@ -72,7 +72,7 @@ class LocaleHelper
      *
      * @return string|null  country, uppercase form.
      */
-    public static function extractCountry($locale = null)
+    public static function extractCountry($locale = null): ?string
     {
         if (is_null($locale)) {
             $locale = App::getLocale();
@@ -82,6 +82,7 @@ class LocaleHelper
 
             return mb_strtoupper($locale);
         }
+        return null;
     }
 
     /**
