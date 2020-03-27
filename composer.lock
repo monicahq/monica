@@ -3522,28 +3522,28 @@
         },
         {
             "name": "mariuzzo/laravel-js-localization",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rmariuzzo/Laravel-JS-Localization.git",
-                "reference": "9bb8e8590716f24ebe2c4813680db35f3447f763"
+                "reference": "76026e0008909f02f1abf471d040f701a76a70f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rmariuzzo/Laravel-JS-Localization/zipball/9bb8e8590716f24ebe2c4813680db35f3447f763",
-                "reference": "9bb8e8590716f24ebe2c4813680db35f3447f763",
+                "url": "https://api.github.com/repos/rmariuzzo/Laravel-JS-Localization/zipball/76026e0008909f02f1abf471d040f701a76a70f7",
+                "reference": "76026e0008909f02f1abf471d040f701a76a70f7",
                 "shasum": ""
             },
             "require": {
-                "illuminate/config": ">=4.2",
-                "illuminate/console": ">=4.2",
-                "illuminate/filesystem": ">=4.2",
-                "php": ">=5.4.0",
-                "tedivm/jshrink": "~1.0",
-                "vlucas/phpdotenv": "^3.3"
+                "illuminate/config": "^4.2 || ^5.0 || ^6.0 || ^7.0",
+                "illuminate/console": "^4.2 || ^5.0 || ^6.0 || ^7.0",
+                "illuminate/filesystem": "^4.2 || ^5.0 || ^6.0 || ^7.0",
+                "php": "^5.4 || ^7.0",
+                "tedivm/jshrink": "~1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.8.*"
+                "orchestra/testbench": "^2.2 || ^3.0 || ^4.0",
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0"
             },
             "type": "library",
             "extra": {
@@ -3589,6 +3589,11 @@
                     "name": "Anton Komarev",
                     "homepage": "https://github.com/antonkomarev",
                     "role": "Developer"
+                },
+                {
+                    "name": "Pascal Baljet",
+                    "homepage": "https://github.com/pascalbaljetmedia",
+                    "role": "Developer"
                 }
             ],
             "description": "Laravel Localization in JavaScript",
@@ -3602,7 +3607,7 @@
                 "laravel 5",
                 "localization"
             ],
-            "time": "2019-09-10T11:39:41+00:00"
+            "time": "2020-03-27T04:07:54+00:00"
         },
         {
             "name": "matriphe/iso-639",
@@ -8505,16 +8510,16 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.14.0",
+            "version": "v1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "fbdeaec0df06cf3d51c93de80c7eb76e271f5a38"
+                "reference": "4719fa9c18b0464d399f1a63bf624b42b6fa8d14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/fbdeaec0df06cf3d51c93de80c7eb76e271f5a38",
-                "reference": "fbdeaec0df06cf3d51c93de80c7eb76e271f5a38",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/4719fa9c18b0464d399f1a63bf624b42b6fa8d14",
+                "reference": "4719fa9c18b0464d399f1a63bf624b42b6fa8d14",
                 "shasum": ""
             },
             "require": {
@@ -8526,7 +8531,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.14-dev"
+                    "dev-master": "1.15-dev"
                 }
             },
             "autoload": {
@@ -8559,7 +8564,7 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2020-01-13T11:15:53+00:00"
+            "time": "2020-02-27T09:26:54+00:00"
         },
         {
             "name": "symfony/polyfill-iconv",
@@ -11610,22 +11615,22 @@
         },
         {
             "name": "matthiasnoback/live-code-coverage",
-            "version": "v1.1.0",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasnoback/live-code-coverage.git",
-                "reference": "eeb964ae2388f4807f403425e1f22f5a3c1e1709"
+                "reference": "f1a69bed903a889e64cfefc41421a5efc5d836ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasnoback/live-code-coverage/zipball/eeb964ae2388f4807f403425e1f22f5a3c1e1709",
-                "reference": "eeb964ae2388f4807f403425e1f22f5a3c1e1709",
+                "url": "https://api.github.com/repos/matthiasnoback/live-code-coverage/zipball/f1a69bed903a889e64cfefc41421a5efc5d836ea",
+                "reference": "f1a69bed903a889e64cfefc41421a5efc5d836ea",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1",
-                "phpunit/php-code-coverage": "^4.0 || ^5.2 || ^6.0 || ^7.0",
-                "phpunit/phpunit": "^5.7 || ^6.0 || ^7.0 || ^8.0",
+                "phpunit/php-code-coverage": "^4.0 || ^5.2 || ^6.0 || ^7.0 || ^8.0",
+                "phpunit/phpunit": "^5.7 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
                 "webmozart/assert": "^1.2"
             },
             "require-dev": {
@@ -11644,7 +11649,7 @@
                 "MIT"
             ],
             "description": "Generate code coverage reports on a live server",
-            "time": "2019-02-04T07:51:15+00:00"
+            "time": "2020-03-27T08:23:44+00:00"
         },
         {
             "name": "maximebf/debugbar",
