@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "35a48159fff5fb7909ce1c8cd9fde78d",
+    "content-hash": "6c601013b1d89e3ccdaa0502556a397b",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -4098,16 +4098,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.32.0",
+            "version": "2.32.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "7410a349613bf32d02d8aaed1c669698ddd2b718"
+                "reference": "ecb525c766deb3bbbb6a0082ea0e41d3d9ae477c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/7410a349613bf32d02d8aaed1c669698ddd2b718",
-                "reference": "7410a349613bf32d02d8aaed1c669698ddd2b718",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/ecb525c766deb3bbbb6a0082ea0e41d3d9ae477c",
+                "reference": "ecb525c766deb3bbbb6a0082ea0e41d3d9ae477c",
                 "shasum": ""
             },
             "require": {
@@ -4165,7 +4165,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2020-03-24T16:01:47+00:00"
+            "time": "2020-03-26T13:04:10+00:00"
         },
         {
             "name": "nette/caching",
@@ -5403,28 +5403,28 @@
         },
         {
             "name": "pragmarx/coollection",
-            "version": "v0.7.1",
+            "version": "v0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/coollection.git",
-                "reference": "e6ef538d366bf58a0d82812789c47d17a8691258"
+                "reference": "75e4186c3e17acea4dbbe6f65ec3c79f736061cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/coollection/zipball/e6ef538d366bf58a0d82812789c47d17a8691258",
-                "reference": "e6ef538d366bf58a0d82812789c47d17a8691258",
+                "url": "https://api.github.com/repos/antonioribeiro/coollection/zipball/75e4186c3e17acea4dbbe6f65ec3c79f736061cb",
+                "reference": "75e4186c3e17acea4dbbe6f65ec3c79f736061cb",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.0",
-                "pragmarx/ia-arr": ">=5.5.33",
-                "pragmarx/ia-collection": ">=5.5.33",
-                "pragmarx/ia-str": ">=5.5.33"
+                "pragmarx/ia-arr": "~5.0|~6.0|~7.0",
+                "pragmarx/ia-collection": "~5.0|~6.0|~7.0",
+                "pragmarx/ia-str": "~5.0|~6.0|~7.0"
             },
             "require-dev": {
                 "mockery/mockery": "~1.0",
-                "phpunit/php-timer": ">=1.0|>=2.0",
-                "phpunit/phpunit": ">=6.0|>=7.0",
+                "phpunit/php-timer": "~1.0|~2.0",
+                "phpunit/phpunit": "~6.0|~7.0|~8.0|~9.0",
                 "squizlabs/php_codesniffer": "^2.3"
             },
             "type": "library",
@@ -5463,27 +5463,27 @@
                 "laravel",
                 "pragmarx"
             ],
-            "time": "2019-09-24T18:55:06+00:00"
+            "time": "2020-03-26T08:57:17+00:00"
         },
         {
             "name": "pragmarx/countries",
-            "version": "v0.7.0",
+            "version": "v0.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/countries.git",
-                "reference": "f815d5f68b86248b7dd67ee7d259f8ffacab2305"
+                "reference": "af3e865e2dcce303445f8d2c51c517cb210c06ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/countries/zipball/f815d5f68b86248b7dd67ee7d259f8ffacab2305",
-                "reference": "f815d5f68b86248b7dd67ee7d259f8ffacab2305",
+                "url": "https://api.github.com/repos/antonioribeiro/countries/zipball/af3e865e2dcce303445f8d2c51c517cb210c06ac",
+                "reference": "af3e865e2dcce303445f8d2c51c517cb210c06ac",
                 "shasum": ""
             },
             "require": {
                 "colinodell/json5": "^1.0",
                 "nette/caching": "^2.5",
                 "php": ">=7.0",
-                "pragmarx/coollection": "^0.7",
+                "pragmarx/coollection": ">=0.5",
                 "psr/simple-cache": "^1.0"
             },
             "require-dev": {
@@ -5525,20 +5525,20 @@
                 "timezones",
                 "topology"
             ],
-            "time": "2019-09-12T23:43:15+00:00"
+            "time": "2019-09-24T19:45:24+00:00"
         },
         {
             "name": "pragmarx/countries-laravel",
-            "version": "v0.6.3",
+            "version": "v0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/countries-laravel.git",
-                "reference": "577eeac8a5ceb47221f0babbed18c4179dab29cd"
+                "reference": "02dd4745d6cee3d4dd3a71dd2e0160c8edbb5d6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/countries-laravel/zipball/577eeac8a5ceb47221f0babbed18c4179dab29cd",
-                "reference": "577eeac8a5ceb47221f0babbed18c4179dab29cd",
+                "url": "https://api.github.com/repos/antonioribeiro/countries-laravel/zipball/02dd4745d6cee3d4dd3a71dd2e0160c8edbb5d6f",
+                "reference": "02dd4745d6cee3d4dd3a71dd2e0160c8edbb5d6f",
                 "shasum": ""
             },
             "require": {
@@ -5551,8 +5551,8 @@
             "require-dev": {
                 "colinodell/json5": "^1.0",
                 "gasparesganga/php-shapefile": "^2.3",
-                "orchestra/testbench": "~3.0",
-                "phpunit/phpunit": "~6.0",
+                "orchestra/testbench": "~3.0|~4.0|~5.0",
+                "phpunit/phpunit": "~6.0|~7.0|~8.0|~9.0",
                 "squizlabs/php_codesniffer": "^2.3"
             },
             "type": "library",
@@ -5596,7 +5596,7 @@
                 "timezones",
                 "topology"
             ],
-            "time": "2019-09-24T20:21:26+00:00"
+            "time": "2020-03-26T09:17:39+00:00"
         },
         {
             "name": "pragmarx/google2fa",
@@ -5785,26 +5785,26 @@
         },
         {
             "name": "pragmarx/ia-arr",
-            "version": "v6.0.3",
+            "version": "v7.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/ia-arr.git",
-                "reference": "91c7096639d40111bf8234cb6db685ede7bdea1f"
+                "reference": "e0107e68bbce8736f6e19c796a5511b741ced227"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/ia-arr/zipball/91c7096639d40111bf8234cb6db685ede7bdea1f",
-                "reference": "91c7096639d40111bf8234cb6db685ede7bdea1f",
+                "url": "https://api.github.com/repos/antonioribeiro/ia-arr/zipball/e0107e68bbce8736f6e19c796a5511b741ced227",
+                "reference": "e0107e68bbce8736f6e19c796a5511b741ced227",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.0",
-                "symfony/var-dumper": "~3.3|~4.0"
+                "symfony/var-dumper": "~3.3|~4.0|~5.0"
             },
             "require-dev": {
                 "mockery/mockery": "~1.0",
                 "nesbot/carbon": "^1.26 || ^2.00",
-                "phpunit/phpunit": "~6.0|~7.0",
+                "phpunit/phpunit": "~6.0|~7.0|~8.0|~9.0",
                 "squizlabs/php_codesniffer": "^2.3"
             },
             "suggest": {
@@ -5847,27 +5847,28 @@
                 "laravel",
                 "pragmarx"
             ],
-            "time": "2019-09-12T04:10:21+00:00"
+            "time": "2020-03-26T08:59:52+00:00"
         },
         {
             "name": "pragmarx/ia-collection",
-            "version": "v6.0.3",
+            "version": "v7.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/ia-collection.git",
-                "reference": "8eb5fd6717ff314bb7b7f74bb00b8793dd54acd3"
+                "reference": "97a00312ffc190cfcac3ae919ed2e122deb685f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/ia-collection/zipball/8eb5fd6717ff314bb7b7f74bb00b8793dd54acd3",
-                "reference": "8eb5fd6717ff314bb7b7f74bb00b8793dd54acd3",
+                "url": "https://api.github.com/repos/antonioribeiro/ia-collection/zipball/97a00312ffc190cfcac3ae919ed2e122deb685f5",
+                "reference": "97a00312ffc190cfcac3ae919ed2e122deb685f5",
                 "shasum": ""
             },
             "require": {
                 "nesbot/carbon": "^1.26 || ^2.00",
                 "php": ">=7.0",
-                "ramsey/uuid": "^3.7",
-                "symfony/var-dumper": "~3.3|~4.0"
+                "ramsey/uuid": "~3.7|~4.0",
+                "symfony/var-dumper": "~3.3|~4.0|~5.0",
+                "voku/portable-ascii": "^1.4"
             },
             "require-dev": {
                 "mockery/mockery": "~1.0",
@@ -5911,34 +5912,35 @@
                 "laravel",
                 "pragmarx"
             ],
-            "time": "2019-09-12T04:12:08+00:00"
+            "time": "2020-03-26T08:39:18+00:00"
         },
         {
             "name": "pragmarx/ia-str",
-            "version": "v6.0.3",
+            "version": "v7.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/ia-str.git",
-                "reference": "85a1dcfc193708532cda0dee65b937fa25f52b9d"
+                "reference": "6f0c981d3b16cd9715366a6d5f452df0654cbcc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/ia-str/zipball/85a1dcfc193708532cda0dee65b937fa25f52b9d",
-                "reference": "85a1dcfc193708532cda0dee65b937fa25f52b9d",
+                "url": "https://api.github.com/repos/antonioribeiro/ia-str/zipball/6f0c981d3b16cd9715366a6d5f452df0654cbcc4",
+                "reference": "6f0c981d3b16cd9715366a6d5f452df0654cbcc4",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0"
+                "php": ">=7.0",
+                "voku/portable-ascii": "^1.4"
             },
             "require-dev": {
                 "doctrine/inflector": "^1.2",
                 "mockery/mockery": "~1.0",
                 "moontoast/math": "^1.1",
                 "nesbot/carbon": "^1.26 || ^2.00",
-                "phpunit/phpunit": "~6.0|~7.0",
-                "ramsey/uuid": "^3.7",
+                "phpunit/phpunit": "~6.0|~7.0|~8.0|~9.0",
+                "ramsey/uuid": "^3.7|^4.0",
                 "squizlabs/php_codesniffer": "^2.3",
-                "symfony/var-dumper": "~3.3|~4.0"
+                "symfony/var-dumper": "~3.3|~4.0|~5.0"
             },
             "suggest": {
                 "doctrine/inflector": "",
@@ -5983,7 +5985,7 @@
                 "str",
                 "string"
             ],
-            "time": "2019-09-12T03:59:57+00:00"
+            "time": "2020-03-26T08:45:03+00:00"
         },
         {
             "name": "pragmarx/random",
@@ -8747,16 +8749,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.14.0",
+            "version": "v1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "34094cfa9abe1f0f14f48f490772db7a775559f2"
+                "reference": "81ffd3a9c6d707be22e3012b827de1c9775fc5ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/34094cfa9abe1f0f14f48f490772db7a775559f2",
-                "reference": "34094cfa9abe1f0f14f48f490772db7a775559f2",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/81ffd3a9c6d707be22e3012b827de1c9775fc5ac",
+                "reference": "81ffd3a9c6d707be22e3012b827de1c9775fc5ac",
                 "shasum": ""
             },
             "require": {
@@ -8768,7 +8770,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.14-dev"
+                    "dev-master": "1.15-dev"
                 }
             },
             "autoload": {
@@ -8802,7 +8804,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-01-13T11:15:53+00:00"
+            "time": "2020-03-09T19:04:49+00:00"
         },
         {
             "name": "symfony/polyfill-php56",
@@ -8862,16 +8864,16 @@
         },
         {
             "name": "symfony/polyfill-php72",
-            "version": "v1.14.0",
+            "version": "v1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php72.git",
-                "reference": "46ecacf4751dd0dc81e4f6bf01dbf9da1dc1dadf"
+                "reference": "37b0976c78b94856543260ce09b460a7bc852747"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/46ecacf4751dd0dc81e4f6bf01dbf9da1dc1dadf",
-                "reference": "46ecacf4751dd0dc81e4f6bf01dbf9da1dc1dadf",
+                "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/37b0976c78b94856543260ce09b460a7bc852747",
+                "reference": "37b0976c78b94856543260ce09b460a7bc852747",
                 "shasum": ""
             },
             "require": {
@@ -8880,7 +8882,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.14-dev"
+                    "dev-master": "1.15-dev"
                 }
             },
             "autoload": {
@@ -8913,7 +8915,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-01-13T11:15:53+00:00"
+            "time": "2020-02-27T09:26:54+00:00"
         },
         {
             "name": "symfony/polyfill-php73",
@@ -9466,16 +9468,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v4.4.5",
+            "version": "v4.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "2572839911702b0405479410ea7a1334bfab0b96"
+                "reference": "6dae4692ac91230b33b70d9a48882ff5c838d67a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/2572839911702b0405479410ea7a1334bfab0b96",
-                "reference": "2572839911702b0405479410ea7a1334bfab0b96",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/6dae4692ac91230b33b70d9a48882ff5c838d67a",
+                "reference": "6dae4692ac91230b33b70d9a48882ff5c838d67a",
                 "shasum": ""
             },
             "require": {
@@ -9538,7 +9540,7 @@
                 "debug",
                 "dump"
             ],
-            "time": "2020-02-24T13:10:00+00:00"
+            "time": "2020-03-18T07:15:43+00:00"
         },
         {
             "name": "tedivm/jshrink",
@@ -10010,6 +10012,55 @@
                 "lumen"
             ],
             "time": "2020-03-22T01:07:02+00:00"
+        },
+        {
+            "name": "voku/portable-ascii",
+            "version": "1.4.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/voku/portable-ascii.git",
+                "reference": "240e93829a5f985fab0984a6e55ae5e26b78a334"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/voku/portable-ascii/zipball/240e93829a5f985fab0984a6e55ae5e26b78a334",
+                "reference": "240e93829a5f985fab0984a6e55ae5e26b78a334",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~6.0 || ~7.0"
+            },
+            "suggest": {
+                "ext-intl": "Use Intl for transliterator_transliterate() support"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "voku\\": "src/voku/",
+                    "voku\\tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lars Moelleken",
+                    "homepage": "http://www.moelleken.org/"
+                }
+            ],
+            "description": "Portable ASCII library - performance optimized (ascii) string functions for php.",
+            "homepage": "https://github.com/voku/portable-ascii",
+            "keywords": [
+                "ascii",
+                "clean",
+                "php"
+            ],
+            "time": "2020-03-13T01:23:26+00:00"
         },
         {
             "name": "web-auth/cose-lib",
