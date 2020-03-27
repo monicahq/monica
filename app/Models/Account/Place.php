@@ -102,7 +102,6 @@ class Place extends Model
         if ($this->country) {
             return CountriesHelper::get($this->country);
         }
-
         return null;
     }
 

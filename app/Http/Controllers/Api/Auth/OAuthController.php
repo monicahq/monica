@@ -86,6 +86,7 @@ class OAuthController extends Controller
 
             return Route::respondWithRoute('oauth.verify');
         }
+        return;
     }
 
     /**

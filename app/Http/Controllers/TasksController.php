@@ -78,5 +78,6 @@ class TasksController extends Controller
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }
+        return null;
     }
 }

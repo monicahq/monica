@@ -82,7 +82,6 @@ class LocaleHelper
 
             return mb_strtoupper($locale);
         }
-
         return null;
     }
 
