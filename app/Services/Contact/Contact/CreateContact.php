@@ -2,15 +2,15 @@
 
 namespace App\Services\Contact\Contact;
 
-use App\Models\User\User;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use App\Services\BaseService;
-use function Safe\json_encode;
-use App\Models\Contact\Contact;
 use App\Jobs\AuditLog\LogAccountAudit;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Jobs\Avatars\GetAvatarsFromInternet;
+use App\Models\Contact\Contact;
+use App\Models\User\User;
+use App\Services\BaseService;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use function Safe\json_encode;
 
 class CreateContact extends BaseService
 {

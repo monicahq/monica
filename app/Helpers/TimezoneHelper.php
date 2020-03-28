@@ -3,8 +3,8 @@
 namespace App\Helpers;
 
 use DateTimeZone;
-use function Safe\substr;
 use Illuminate\Support\Arr;
+use function Safe\substr;
 
 class TimezoneHelper
 {

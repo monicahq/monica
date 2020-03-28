@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\Account\Activity\ActivityType;
 
-use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Account\ActivityType;
 use App\Models\Account\ActivityTypeCategory;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Account\Activity\ActivityType\UpdateActivityType;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class UpdateActivityTypeTest extends TestCase
 {

@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\Account;
 
-use Tests\TestCase;
-use App\Models\User\User;
-use App\Models\Contact\Contact;
 use App\Models\Account\ActivityType;
-use Illuminate\Validation\ValidationException;
+use App\Models\Contact\Contact;
+use App\Models\User\User;
+use App\Services\Account\Activity\Activity\CreateActivity;
 use App\Services\Account\Settings\ResetAccount;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Services\Account\Activity\Activity\CreateActivity;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class ResetAccountTest extends TestCase
 {

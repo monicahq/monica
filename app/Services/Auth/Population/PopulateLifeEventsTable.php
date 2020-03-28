@@ -2,14 +2,14 @@
 
 namespace App\Services\Auth\Population;
 
-use App\Services\BaseService;
 use App\Models\Account\Account;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\App;
-use App\Models\Contact\LifeEventType;
-use Illuminate\Database\QueryException;
 use App\Models\Contact\LifeEventCategory;
+use App\Models\Contact\LifeEventType;
+use App\Services\BaseService;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Populate life event types and life event categories for a given account.

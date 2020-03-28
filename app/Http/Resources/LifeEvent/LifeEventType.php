@@ -3,8 +3,8 @@
 namespace App\Http\Resources\LifeEvent;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\LifeEvent\LifeEventCategory as LifeEventCategoryResource;
+use Illuminate\Http\Resources\Json\Resource;
 
 class LifeEventType extends Resource
 {

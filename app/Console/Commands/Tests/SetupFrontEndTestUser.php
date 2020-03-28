@@ -3,8 +3,8 @@
 namespace App\Console\Commands\Tests;
 
 use App\Models\User\User;
-use Illuminate\Console\Command;
 use App\Services\User\AcceptPolicy;
+use Illuminate\Console\Command;
 
 class SetupFrontEndTestUser extends Command
 {

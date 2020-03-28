@@ -4,8 +4,8 @@ namespace App\Models\Account;
 
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * @property Account $account

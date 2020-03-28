@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Controllers\Auth;
 
-use Tests\TestCase;
 use App\Models\User\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
+use Tests\TestCase;
 
 class PasswordResetTest extends TestCase
 {

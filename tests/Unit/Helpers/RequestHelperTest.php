@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
 use App\Helpers\RequestHelper;
 use Illuminate\Support\Facades\Request;
+use Tests\TestCase;
 
 class RequestHelperTest extends TestCase
 {

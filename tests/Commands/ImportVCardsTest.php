@@ -2,12 +2,12 @@
 
 namespace Tests\Commands;
 
-use Mockery as m;
-use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Storage;
+use Mockery as m;
+use Tests\TestCase;
 
 class ImportVCardsTest extends TestCase
 {

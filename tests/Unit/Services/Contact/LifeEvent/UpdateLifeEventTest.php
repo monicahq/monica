@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Services\Contact\LifeEvent;
 
-use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
-use Illuminate\Validation\ValidationException;
 use App\Services\Contact\LifeEvent\UpdateLifeEvent;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class UpdateLifeEventTest extends TestCase
 {

@@ -2,8 +2,8 @@
 
 namespace App\Services\Contact\Contact;
 
-use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use App\Services\BaseService;
 use Illuminate\Validation\ValidationException;
 
 class UpdateContactFoodPreferences extends BaseService

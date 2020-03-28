@@ -2,8 +2,8 @@
 
 namespace App\Models\Instance\Emotion;
 
-use App\Models\Contact\Call;
 use App\Models\Account\Activity;
+use App\Models\Contact\Call;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

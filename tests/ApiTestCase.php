@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use Tests\Traits\ApiSignIn;
 use Illuminate\Foundation\Testing\TestResponse;
+use Tests\Traits\ApiSignIn;
 
 class ApiTestCase extends TestCase
 {

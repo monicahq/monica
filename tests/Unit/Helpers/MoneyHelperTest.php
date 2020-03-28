@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
-use App\Models\User\User;
 use App\Helpers\MoneyHelper;
 use App\Models\Settings\Currency;
-use Illuminate\Support\Facades\App;
+use App\Models\User\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\App;
+use Tests\TestCase;
 
 class MoneyHelperTest extends TestCase
 {

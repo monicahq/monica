@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\FeatureTestCase;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class ContactFieldTest extends FeatureTestCase
 {

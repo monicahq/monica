@@ -3,15 +3,15 @@
 namespace App\Services\Contact\Contact;
 
 use App\Helpers\DateHelper;
-use Illuminate\Support\Arr;
-use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
-use Illuminate\Validation\ValidationException;
+use App\Services\BaseService;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
+use Illuminate\Support\Arr;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class UpdateContactIntroduction extends BaseService
 {

@@ -2,17 +2,17 @@
 
 namespace Tests\Commands;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\User\User;
+use App\Jobs\Reminder\NotifyUserAboutReminder;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use Illuminate\Support\Facades\Bus;
 use App\Models\Contact\ReminderOutbox;
-use Illuminate\Support\Facades\Artisan;
-use App\Jobs\Reminder\NotifyUserAboutReminder;
+use App\Models\User\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Bus;
+use Tests\TestCase;
 
 class SendRemindersTest extends TestCase
 {

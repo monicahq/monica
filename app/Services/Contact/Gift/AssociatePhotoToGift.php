@@ -2,8 +2,8 @@
 
 namespace App\Services\Contact\Gift;
 
-use App\Models\Contact\Gift;
 use App\Models\Account\Photo;
+use App\Models\Contact\Gift;
 use App\Services\BaseService;
 
 class AssociatePhotoToGift extends BaseService

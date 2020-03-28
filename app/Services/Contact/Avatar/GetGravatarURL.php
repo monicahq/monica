@@ -3,8 +3,8 @@
 namespace App\Services\Contact\Avatar;
 
 use App\Services\BaseService;
-use Illuminate\Support\Facades\App;
 use Creativeorange\Gravatar\Facades\Gravatar;
+use Illuminate\Support\Facades\App;
 
 class GetGravatarURL extends BaseService
 {

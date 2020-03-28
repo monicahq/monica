@@ -2,8 +2,8 @@
 
 namespace App\Services\Account\Company;
 
-use App\Services\BaseService;
 use App\Models\Account\Company;
+use App\Services\BaseService;
 
 class UpdateCompany extends BaseService
 {

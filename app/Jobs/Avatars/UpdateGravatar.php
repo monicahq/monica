@@ -2,13 +2,13 @@
 
 namespace App\Jobs\Avatars;
 
-use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Services\Contact\Avatar\GetGravatar;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Services\Contact\Avatar\GetGravatar;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class UpdateGravatar implements ShouldQueue
 {

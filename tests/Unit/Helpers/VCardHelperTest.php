@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\FeatureTestCase;
 use App\Helpers\VCardHelper;
 use Sabre\VObject\Component\VCard;
+use Tests\FeatureTestCase;
 
 class VCardHelperTest extends FeatureTestCase
 {

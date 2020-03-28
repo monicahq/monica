@@ -2,9 +2,9 @@
 
 namespace Tests\Api;
 
-use Tests\ApiTestCase;
 use App\Http\Controllers\Api\ApiController;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiControllerTest extends ApiTestCase
 {

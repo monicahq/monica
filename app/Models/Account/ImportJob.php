@@ -3,17 +3,17 @@
 namespace App\Models\Account;
 
 use App\Models\User\User;
-use Sabre\VObject\Reader;
-use Illuminate\Support\Arr;
-use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ImportVCard;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Sabre\VObject\Component\VCard;
+use Sabre\VObject\Reader;
 use Sabre\VObject\Splitter\VCard as VCardReader;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /**
  * @property int $id

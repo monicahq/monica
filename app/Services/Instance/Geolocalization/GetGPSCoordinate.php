@@ -2,13 +2,13 @@
 
 namespace App\Services\Instance\Geolocalization;
 
-use Illuminate\Support\Str;
 use App\Models\Account\Place;
 use App\Services\BaseService;
-use function Safe\json_decode;
-use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use function Safe\json_decode;
 
 class GetGPSCoordinate extends BaseService
 {

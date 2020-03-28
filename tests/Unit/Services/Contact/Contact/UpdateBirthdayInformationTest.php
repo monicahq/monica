@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Services\Contact\Contact;
 
-use Tests\TestCase;
 use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class UpdateBirthdayInformationTest extends TestCase
 {

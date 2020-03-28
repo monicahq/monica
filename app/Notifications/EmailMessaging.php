@@ -3,8 +3,8 @@
 namespace App\Notifications;
 
 use App\Models\User\User;
-use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\App;
 
 class EmailMessaging
 {

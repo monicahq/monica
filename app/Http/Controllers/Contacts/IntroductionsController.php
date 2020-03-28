@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
-use App\Traits\JsonRespondController;
+use App\Models\Contact\Contact;
 use App\Services\Contact\Contact\UpdateContactIntroduction;
+use App\Traits\JsonRespondController;
+use Illuminate\Http\Request;
 
 class IntroductionsController extends Controller
 {

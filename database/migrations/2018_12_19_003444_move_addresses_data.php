@@ -2,9 +2,9 @@
 
 use App\Models\Account\Place;
 use App\Models\Contact\Address;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class MoveAddressesData extends Migration
 {

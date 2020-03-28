@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Jobs\Avatars\UpdateAllGravatars;
+use Illuminate\Console\Command;
 
 class UpdateGravatars extends Command
 {

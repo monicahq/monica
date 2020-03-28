@@ -3,8 +3,8 @@
 namespace App\Http\Resources\AuditLog;
 
 use App\Helpers\DateHelper;
-use function Safe\json_decode;
 use Illuminate\Http\Resources\Json\Resource;
+use function Safe\json_decode;
 
 class AuditLog extends Resource
 {

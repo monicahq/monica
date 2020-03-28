@@ -3,11 +3,11 @@
 namespace App\Jobs;
 
 use App\Models\User\User;
-use Illuminate\Bus\Queueable;
 use App\Notifications\NewUserAlert;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Notification;
 
 class SendNewUserAlert implements ShouldQueue

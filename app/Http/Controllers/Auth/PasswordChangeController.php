@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User\User;
-use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PasswordChangeRequest;
+use App\Models\User\User;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\PasswordChangeRequest;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Foundation\Auth\RedirectsUsers;
-use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Support\Str;
 
 class PasswordChangeController extends Controller
 {

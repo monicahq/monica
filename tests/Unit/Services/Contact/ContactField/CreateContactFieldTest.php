@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Contact\ContactField;
 
-use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactFieldType;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Contact\ContactField\CreateContactField;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class CreateContactFieldTest extends TestCase
 {

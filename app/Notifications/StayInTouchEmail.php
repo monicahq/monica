@@ -2,16 +2,16 @@
 
 namespace App\Notifications;
 
+use App\Interfaces\MailNotification;
+use App\Models\Contact\Contact;
 use App\Models\User\User;
 use Illuminate\Bus\Queueable;
-use App\Models\Contact\Contact;
-use App\Interfaces\MailNotification;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification as LaravelNotification;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class StayInTouchEmail extends LaravelNotification implements ShouldQueue, MailNotification
 {

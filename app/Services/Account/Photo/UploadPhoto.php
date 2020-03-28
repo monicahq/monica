@@ -2,19 +2,19 @@
 
 namespace App\Services\Account\Photo;
 
-use function Safe\substr;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use App\Models\Account\Photo;
-use App\Services\BaseService;
-use function Safe\finfo_open;
-use function Safe\preg_match;
 use App\Models\Contact\Contact;
-use function Safe\base64_decode;
-use Intervention\Image\Facades\Image;
+use App\Services\BaseService;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Intervention\Image\Exception\NotReadableException;
+use Intervention\Image\Facades\Image;
+use function Safe\base64_decode;
+use function Safe\finfo_open;
+use function Safe\preg_match;
+use function Safe\substr;
 
 class UploadPhoto extends BaseService
 {

@@ -3,9 +3,9 @@
 namespace App\Http\Resources\Relationship;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\RelationshipType\RelationshipType as RelationshipTypeResource;
+use Illuminate\Http\Resources\Json\Resource;
 
 class Relationship extends Resource
 {

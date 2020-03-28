@@ -2,12 +2,12 @@
 
 namespace App\Services\Contact\Avatar;
 
-use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use App\Services\BaseService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class GetGravatar extends BaseService
 {

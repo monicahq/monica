@@ -2,9 +2,9 @@
 
 namespace App\Models\Contact;
 
-use App\Models\Account\Place;
-use App\Models\Account\Account;
 use App\Interfaces\LabelInterface;
+use App\Models\Account\Account;
+use App\Models\Account\Place;
 use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

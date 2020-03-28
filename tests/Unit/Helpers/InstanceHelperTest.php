@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
-use function Safe\json_decode;
 use App\Helpers\InstanceHelper;
 use App\Models\Account\Account;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\DB;
+use function Safe\json_decode;
+use Tests\TestCase;
 
 class InstanceHelperTest extends TestCase
 {

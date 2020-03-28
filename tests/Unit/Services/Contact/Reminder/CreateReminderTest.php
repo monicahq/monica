@@ -2,16 +2,16 @@
 
 namespace Tests\Unit\Services\Contact\Reminder;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use Illuminate\Validation\ValidationException;
+use App\Models\User\User;
 use App\Services\Contact\Reminder\CreateReminder;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class CreateReminderTest extends TestCase
 {

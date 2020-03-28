@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Message;
-use App\Models\Contact\Conversation;
 use App\Models\Contact\ContactFieldType;
+use App\Models\Contact\Conversation;
+use App\Models\Contact\Message;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ConversationTest extends TestCase
 {

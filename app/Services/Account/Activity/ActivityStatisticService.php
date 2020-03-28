@@ -2,11 +2,11 @@
 
 namespace App\Services\Account\Activity;
 
-use Carbon\Carbon;
-use App\Models\Contact\Contact;
-use Illuminate\Support\Collection;
 use App\Models\Account\ActivityType;
+use App\Models\Contact\Contact;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 class ActivityStatisticService
 {

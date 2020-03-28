@@ -4,8 +4,8 @@ namespace App\Console\Commands;
 
 use App\Helpers\DBHelper;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Console\ConfirmableTrait;
+use Illuminate\Support\Facades\DB;
 
 class MigrateDatabaseCollation extends Command
 {

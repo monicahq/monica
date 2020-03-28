@@ -2,9 +2,9 @@
 
 namespace App\Services\Contact\Tag;
 
+use App\Models\Contact\Contact;
 use App\Models\Contact\Tag;
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
 
 class AssociateTag extends BaseService
 {

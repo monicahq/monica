@@ -2,9 +2,9 @@
 
 namespace Tests\Api\Settings;
 
-use Tests\ApiTestCase;
 use App\Models\Settings\Currency;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiCurrencyControllerTest extends ApiTestCase
 {

@@ -2,8 +2,8 @@
 
 namespace App\Services\Contact\ContactField;
 
-use App\Services\BaseService;
 use App\Models\Contact\ContactField;
+use App\Services\BaseService;
 
 class DestroyContactField extends BaseService
 {

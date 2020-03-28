@@ -2,10 +2,10 @@
 
 namespace Tests\Commands;
 
-use Tests\TestCase;
-use App\Models\User\User;
 use App\Models\Account\Account;
+use App\Models\User\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class SetupFrontEndTestUserTest extends TestCase
 {

@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers\Settings;
 
-use Illuminate\View\View;
-use App\Helpers\DateHelper;
-use Illuminate\Http\Request;
-use Laravel\Cashier\Cashier;
-use Laravel\Cashier\Payment;
-use Illuminate\Http\Response;
-use App\Helpers\AccountHelper;
-use App\Helpers\InstanceHelper;
 use App\Exceptions\StripeException;
-use Illuminate\Support\Facades\App;
+use App\Helpers\AccountHelper;
+use App\Helpers\DateHelper;
+use App\Helpers\InstanceHelper;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
+use App\Services\Account\Settings\ArchiveAllContacts;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
+use Illuminate\View\View;
+use Laravel\Cashier\Cashier;
+use Laravel\Cashier\Exceptions\IncompletePayment;
+use Laravel\Cashier\Payment;
 use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent as StripePaymentIntent;
-use Laravel\Cashier\Exceptions\IncompletePayment;
-use App\Services\Account\Settings\ArchiveAllContacts;
 
 class SubscriptionsController extends Controller
 {

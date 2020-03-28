@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Services\Contact\Avatar;
 
-use Tests\TestCase;
-use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Avatar\GetAdorableAvatarURL;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class GetAdorableAvatarTest extends TestCase
 {

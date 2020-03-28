@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api\Settings;
 
-use Illuminate\Http\Request;
-use App\Models\Settings\Term;
 use App\Http\Controllers\Api\ApiController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
+use App\Models\Settings\Term;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 class ApiComplianceController extends ApiController
 {

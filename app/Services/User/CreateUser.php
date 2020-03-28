@@ -2,11 +2,11 @@
 
 namespace App\Services\User;
 
+use App\Helpers\CountriesHelper;
+use App\Helpers\RequestHelper;
+use App\Models\Settings\Currency;
 use App\Models\User\User;
 use App\Services\BaseService;
-use App\Helpers\RequestHelper;
-use App\Helpers\CountriesHelper;
-use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\App;
 
 class CreateUser extends BaseService

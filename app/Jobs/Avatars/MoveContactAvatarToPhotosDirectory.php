@@ -2,18 +2,18 @@
 
 namespace App\Jobs\Avatars;
 
-use App\Models\Account\Photo;
-use Illuminate\Bus\Queueable;
 use App\Events\MoveAvatarEvent;
-use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Queue\InteractsWithQueue;
 use App\Exceptions\FileNotFoundException;
+use App\Models\Account\Photo;
+use App\Models\Contact\Contact;
+use App\Services\Contact\Avatar\UpdateAvatar;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Services\Contact\Avatar\UpdateAvatar;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Storage;
 
 class MoveContactAvatarToPhotosDirectory implements ShouldQueue
 {

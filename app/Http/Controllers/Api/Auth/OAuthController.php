@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Models\User\User;
-use Illuminate\Http\Request;
-use function Safe\json_decode;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User\User;
 use App\Traits\JsonRespondController;
-use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Redirect;
 use Barryvdh\Debugbar\Facade as Debugbar;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Encryption\Encrypter;
+use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
+use function Safe\json_decode;
 
 class OAuthController extends Controller
 {

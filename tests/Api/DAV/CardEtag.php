@@ -2,10 +2,10 @@
 
 namespace Tests\Api\DAV;
 
-use App\Models\Contact\Task;
 use App\Models\Contact\Contact;
-use App\Models\Instance\SpecialDate;
 use App\Models\Contact\ContactFieldType;
+use App\Models\Contact\Task;
+use App\Models\Instance\SpecialDate;
 
 trait CardEtag
 {

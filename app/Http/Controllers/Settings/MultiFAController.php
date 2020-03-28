@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Settings;
 
-use Illuminate\Http\Request;
-use function Safe\json_decode;
-use Lahaxearnaud\U2f\Models\U2fKey;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 use App\Traits\JsonRespondController;
-use Illuminate\Support\Facades\Event;
-use Lahaxearnaud\U2f\U2fFacade as U2f;
 use Illuminate\Foundation\Auth\RedirectsUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
+use Lahaxearnaud\U2f\Models\U2fKey;
+use Lahaxearnaud\U2f\U2fFacade as U2f;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
-use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
+use function Safe\json_decode;
 
 class MultiFAController extends Controller
 {

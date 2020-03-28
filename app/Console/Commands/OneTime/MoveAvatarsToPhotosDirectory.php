@@ -3,13 +3,13 @@
 namespace App\Console\Commands\OneTime;
 
 use App\Events\MoveAvatarEvent;
+use App\Exceptions\FileNotFoundException;
+use App\Jobs\Avatars\MoveContactAvatarToPhotosDirectory;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Console\ConfirmableTrait;
-use App\Exceptions\FileNotFoundException;
+use Illuminate\Support\Facades\Event;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Jobs\Avatars\MoveContactAvatarToPhotosDirectory;
 
 /**
  * This command moves current avatars to the new Photos directory and converts

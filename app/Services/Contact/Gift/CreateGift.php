@@ -2,9 +2,9 @@
 
 namespace App\Services\Contact\Gift;
 
+use App\Models\Contact\Contact;
 use App\Models\Contact\Gift;
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 
 class CreateGift extends BaseService

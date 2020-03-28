@@ -2,11 +2,11 @@
 
 namespace Tests\Api\DAV;
 
-use Carbon\Carbon;
-use Tests\ApiTestCase;
-use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
+use App\Models\User\SyncToken;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class CardDAVTest extends ApiTestCase
 {

@@ -2,10 +2,10 @@
 
 namespace App\Models\Instance;
 
-use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

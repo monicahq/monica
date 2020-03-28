@@ -2,12 +2,12 @@
 
 namespace Tests\Api\Contact;
 
-use Tests\ApiTestCase;
-use App\Models\User\User;
 use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
+use App\Models\User\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiLifeEventControllerTest extends ApiTestCase
 {

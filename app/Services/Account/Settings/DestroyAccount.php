@@ -2,9 +2,9 @@
 
 namespace App\Services\Account\Settings;
 
-use App\Services\BaseService;
-use App\Models\Account\Account;
 use App\Exceptions\StripeException;
+use App\Models\Account\Account;
+use App\Services\BaseService;
 
 class DestroyAccount extends BaseService
 {

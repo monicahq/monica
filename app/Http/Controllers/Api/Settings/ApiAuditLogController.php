@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api\Settings;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Resources\AuditLog\AuditLog as AuditLogResource;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ApiAuditLogController extends ApiController

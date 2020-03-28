@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\Contact\Avatar;
 
-use Tests\TestCase;
-use App\Models\Account\Photo;
 use App\Models\Account\Account;
+use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
 use App\Services\Contact\Avatar\UpdateAvatar;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class UpdateAvatarTest extends TestCase
 {

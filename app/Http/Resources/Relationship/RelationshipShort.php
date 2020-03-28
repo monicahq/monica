@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources\Relationship;
 
-use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
+use Illuminate\Http\Resources\Json\Resource;
 
 class RelationshipShort extends Resource
 {

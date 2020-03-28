@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Jobs;
 
-use Tests\TestCase;
+use App\Jobs\Avatars\UpdateGravatar as UpdateGravatarJob;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Jobs\Avatars\UpdateGravatar as UpdateGravatarJob;
+use Tests\TestCase;
 
 class UpdateGravatarTest extends TestCase
 {

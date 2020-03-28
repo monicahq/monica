@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\Contact\Description;
 
-use Tests\TestCase;
-use App\Models\User\User;
-use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Queue;
 use App\Jobs\AuditLog\LogAccountAudit;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Contact\Contact;
+use App\Models\User\User;
 use App\Services\Contact\Description\SetPersonalDescription;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class SetPersonalDescriptionTest extends TestCase
 {

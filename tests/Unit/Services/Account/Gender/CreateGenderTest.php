@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Services\Account\Gender;
 
-use Tests\TestCase;
-use App\Models\Contact\Gender;
 use App\Models\Account\Account;
+use App\Models\Contact\Gender;
 use App\Services\Account\Gender\CreateGender;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class CreateGenderTest extends TestCase
 {

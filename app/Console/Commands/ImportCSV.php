@@ -2,19 +2,19 @@
 
 namespace App\Console\Commands;
 
-use function Safe\fopen;
-use App\Models\User\User;
-use function Safe\fclose;
 use App\Helpers\DateHelper;
-use App\Models\Contact\Gender;
+use App\Jobs\Avatars\GetAvatarsFromInternet;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
-use Illuminate\Console\Command;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
-use App\Jobs\Avatars\GetAvatarsFromInternet;
+use App\Models\Contact\Gender;
+use App\Models\User\User;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Reminder\CreateReminder;
+use Illuminate\Console\Command;
+use function Safe\fclose;
+use function Safe\fopen;
 
 class ImportCSV extends Command
 {

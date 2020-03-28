@@ -3,8 +3,8 @@
 namespace App\Models\Account;
 
 use App\Models\ModelBinding as Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ActivityTypeCategory extends Model
 {

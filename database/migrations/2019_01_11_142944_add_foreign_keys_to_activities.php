@@ -2,11 +2,11 @@
 
 use App\Models\Account\Account;
 use App\Models\Account\Activity;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AddForeignKeysToActivities extends Migration
 {

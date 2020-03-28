@@ -2,8 +2,8 @@
 
 namespace App\Services\Instance\AuditLog;
 
-use App\Services\BaseService;
 use App\Models\Instance\AuditLog;
+use App\Services\BaseService;
 
 class LogAccountAction extends BaseService
 {

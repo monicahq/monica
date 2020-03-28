@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
-use Tests\TestCase;
-use App\Models\Contact\Call;
 use App\Models\Account\Account;
+use App\Models\Contact\Call;
 use App\Models\Contact\Contact;
 use App\Models\Instance\Emotion\Emotion;
 use App\Services\Contact\Call\CreateCall;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class CreateCallTest extends TestCase
 {

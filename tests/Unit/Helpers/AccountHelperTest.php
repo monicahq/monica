@@ -2,18 +2,18 @@
 
 namespace Tests\Unit\Helpers;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\User\User;
-use App\Models\Contact\Call;
 use App\Helpers\AccountHelper;
-use App\Models\Contact\Gender;
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
-use App\Models\Contact\Reminder;
 use App\Models\Account\Invitation;
+use App\Models\Contact\Call;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Gender;
+use App\Models\Contact\Reminder;
+use App\Models\User\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class AccountHelperTest extends TestCase
 {

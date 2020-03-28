@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Settings;
 
-use Illuminate\Http\Request;
-use App\Helpers\GenderHelper;
-use App\Models\Contact\Gender;
 use App\Helpers\CollectionHelper;
+use App\Helpers\GenderHelper;
 use App\Http\Controllers\Controller;
-use App\Traits\JsonRespondController;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Settings\GendersRequest;
+use App\Models\Contact\Gender;
+use App\Traits\JsonRespondController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class GendersController extends Controller
 {

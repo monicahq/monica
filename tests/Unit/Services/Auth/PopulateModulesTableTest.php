@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Auth;
 
-use Tests\TestCase;
-use App\Models\User\User;
 use App\Models\Account\Account;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
+use App\Models\User\User;
 use App\Services\Auth\Population\PopulateModulesTable;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class PopulateModulesTableTest extends TestCase
 {

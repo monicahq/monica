@@ -2,9 +2,9 @@
 
 namespace Tests\Commands;
 
-use Tests\TestCase;
 use App\Console\Commands\Update;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class UpdateCommandTest extends TestCase
 {

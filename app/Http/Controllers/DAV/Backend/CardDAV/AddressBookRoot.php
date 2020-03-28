@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
-use Sabre\DAVACL\IACL;
-use Sabre\DAVACL\ACLTrait;
 use Sabre\CardDAV\AddressBookRoot as BaseAddressBookRoot;
+use Sabre\DAVACL\ACLTrait;
+use Sabre\DAVACL\IACL;
 
 class AddressBookRoot extends BaseAddressBookRoot implements IACL
 {

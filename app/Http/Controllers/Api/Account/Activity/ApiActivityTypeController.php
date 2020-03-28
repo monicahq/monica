@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api\Account\Activity;
 
-use Illuminate\Http\Request;
-use App\Models\Account\ActivityType;
-use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Services\Account\Activity\ActivityType\CreateActivityType;
-use App\Services\Account\Activity\ActivityType\UpdateActivityType;
-use App\Services\Account\Activity\ActivityType\DestroyActivityType;
 use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
+use App\Models\Account\ActivityType;
+use App\Services\Account\Activity\ActivityType\CreateActivityType;
+use App\Services\Account\Activity\ActivityType\DestroyActivityType;
+use App\Services\Account\Activity\ActivityType\UpdateActivityType;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ApiActivityTypeController extends ApiController
 {

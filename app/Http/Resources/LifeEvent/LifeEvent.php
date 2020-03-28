@@ -3,9 +3,9 @@
 namespace App\Http\Resources\LifeEvent;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\LifeEvent\LifeEventType as LifeEventTypeResource;
+use Illuminate\Http\Resources\Json\Resource;
 
 class LifeEvent extends Resource
 {

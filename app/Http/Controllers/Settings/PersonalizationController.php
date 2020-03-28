@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Settings;
 
-use Illuminate\Http\Request;
 use App\Helpers\AccountHelper;
 use App\Http\Controllers\Controller;
-use App\Traits\JsonRespondController;
 use App\Models\Contact\ContactFieldType;
+use App\Traits\JsonRespondController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class PersonalizationController extends Controller

@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Account\gender;
 
-use Tests\TestCase;
-use App\Models\Contact\Gender;
 use App\Models\Account\Account;
+use App\Models\Contact\Gender;
 use App\Services\Account\Gender\DestroyGender;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class DestroyGenderTest extends TestCase
 {

@@ -2,8 +2,8 @@
 
 namespace App\Helpers;
 
-use App\Models\Contact\Gender;
 use App\Models\Account\Account;
+use App\Models\Contact\Gender;
 use Illuminate\Support\Collection;
 
 class AccountHelper

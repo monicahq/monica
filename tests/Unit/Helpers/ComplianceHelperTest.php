@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
-use App\Models\User\User;
-use App\Models\Settings\Term;
 use App\Helpers\ComplianceHelper;
+use App\Models\Settings\Term;
+use App\Models\User\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ComplianceHelperTest extends TestCase
 {

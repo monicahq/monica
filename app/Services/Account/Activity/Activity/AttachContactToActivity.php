@@ -2,9 +2,9 @@
 
 namespace App\Services\Account\Activity\Activity;
 
-use App\Services\BaseService;
-use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
+use App\Models\Contact\Contact;
+use App\Services\BaseService;
 
 class AttachContactToActivity extends BaseService
 {

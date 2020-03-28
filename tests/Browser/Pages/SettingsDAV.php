@@ -2,8 +2,8 @@
 
 namespace Tests\Browser\Pages;
 
-use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Laravel\Dusk\Browser;
 
 class SettingsDAV extends Page
 {

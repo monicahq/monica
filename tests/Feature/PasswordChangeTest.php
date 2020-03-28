@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class PasswordChangeTest extends FeatureTestCase
 {

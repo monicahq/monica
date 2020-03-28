@@ -2,9 +2,9 @@
 
 namespace App\Services\Contact\Contact;
 
+use App\Models\Contact\Contact;
 use App\Models\User\User;
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
 
 class DeleteMeContact extends BaseService
 {

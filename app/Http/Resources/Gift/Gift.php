@@ -3,9 +3,9 @@
 namespace App\Http\Resources\Gift;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
-use App\Http\Resources\Photo\Photo as PhotoResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
+use App\Http\Resources\Photo\Photo as PhotoResource;
+use Illuminate\Http\Resources\Json\Resource;
 
 class Gift extends Resource
 {

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Models\Contact\Call;
-use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
-use App\Traits\JsonRespondController;
-use App\Services\Contact\Call\CreateCall;
-use App\Services\Contact\Call\UpdateCall;
-use App\Services\Contact\Call\DestroyCall;
 use App\Http\Resources\Call\Call as CallResource;
+use App\Models\Contact\Call;
+use App\Models\Contact\Contact;
+use App\Services\Contact\Call\CreateCall;
+use App\Services\Contact\Call\DestroyCall;
+use App\Services\Contact\Call\UpdateCall;
+use App\Traits\JsonRespondController;
+use Illuminate\Http\Request;
 
 class CallsController extends Controller
 {

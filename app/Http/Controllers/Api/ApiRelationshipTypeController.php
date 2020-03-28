@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
+use App\Http\Resources\RelationshipType\RelationshipType as RelationshipTypeResource;
 use App\Models\Relationship\RelationshipType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Http\Resources\RelationshipType\RelationshipType as RelationshipTypeResource;
+use Illuminate\Http\Request;
 
 class ApiRelationshipTypeController extends ApiController
 {

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
+use App\Http\Resources\Relationship\Relationship as RelationshipResource;
 use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Relationship\CreateRelationship;
-use App\Services\Contact\Relationship\UpdateRelationship;
 use App\Services\Contact\Relationship\DestroyRelationship;
-use App\Http\Resources\Relationship\Relationship as RelationshipResource;
+use App\Services\Contact\Relationship\UpdateRelationship;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ApiRelationshipController extends ApiController
 {

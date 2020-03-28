@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
-use Tests\TestCase;
 use App\Models\Contact\Tag;
 use App\Services\Contact\Tag\CreateTag;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class CreateTagTest extends TestCase
 {

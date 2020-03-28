@@ -1,10 +1,10 @@
 <?php
 
 use App\Models\Account\Account;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class MigrateCurrentRelationshipTableToNewRelationshipStructure extends Migration
 {

@@ -2,10 +2,10 @@
 
 namespace App\Services\Contact\ContactField;
 
-use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
+use App\Services\BaseService;
 use App\Services\Contact\Label\UpdateContactFieldLabels;
 
 class CreateContactField extends BaseService

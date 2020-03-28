@@ -2,11 +2,11 @@
 
 namespace Tests\Api;
 
-use Tests\ApiTestCase;
-use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use App\Models\Account\ActivityType;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiActivitiesTest extends ApiTestCase
 {

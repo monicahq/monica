@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\FeatureTestCase;
 use App\Helpers\CountriesHelper;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class CountriesTest extends FeatureTestCase
 {

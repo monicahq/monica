@@ -2,20 +2,20 @@
 
 namespace Tests\Unit\Services\VCard;
 
-use Tests\TestCase;
-use Tests\Api\DAV\CardEtag;
-use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
-use Sabre\VObject\Component\VCard;
-use App\Services\VCard\ExportVCard;
 use App\Models\Contact\ContactField;
-use Sabre\VObject\PHPUnitAssertions;
-use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\ContactFieldLabel;
+use App\Models\Contact\ContactFieldType;
+use App\Models\Contact\Gender;
 use App\Services\Contact\Tag\AssociateTag;
+use App\Services\VCard\ExportVCard;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Sabre\VObject\Component\VCard;
+use Sabre\VObject\PHPUnitAssertions;
+use Tests\Api\DAV\CardEtag;
+use Tests\TestCase;
 
 class ExportVCardTest extends TestCase
 {

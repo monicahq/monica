@@ -2,12 +2,12 @@
 
 namespace App\Models\Contact;
 
-use Parsedown;
 use App\Models\Account\Account;
 use App\Models\Instance\Emotion\Emotion;
 use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Parsedown;
 
 /**
  * @property Contact $contact

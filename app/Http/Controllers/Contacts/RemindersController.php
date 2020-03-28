@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use Illuminate\Http\Request;
 use App\Helpers\AccountHelper;
+use App\Http\Controllers\Controller;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use App\Http\Controllers\Controller;
 use App\Services\Contact\Reminder\CreateReminder;
-use App\Services\Contact\Reminder\UpdateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
+use App\Services\Contact\Reminder\UpdateReminder;
+use Illuminate\Http\Request;
 
 class RemindersController extends Controller
 {

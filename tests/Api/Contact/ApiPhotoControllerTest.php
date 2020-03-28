@@ -2,13 +2,13 @@
 
 namespace Tests\Api\Contact;
 
-use Tests\ApiTestCase;
-use App\Models\User\User;
 use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
+use App\Models\User\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiPhotoControllerTest extends ApiTestCase
 {

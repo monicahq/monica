@@ -2,8 +2,8 @@
 
 namespace App\Services\Account\Gender;
 
-use App\Services\BaseService;
 use App\Models\Contact\Gender;
+use App\Services\BaseService;
 use Illuminate\Validation\Rule;
 
 class UpdateGender extends BaseService

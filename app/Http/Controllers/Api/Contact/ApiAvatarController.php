@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\Contact;
 
-use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
-use App\Services\Contact\Avatar\UpdateAvatar;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
+use App\Services\Contact\Avatar\UpdateAvatar;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ApiAvatarController extends ApiController
 {

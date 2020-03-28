@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Services\Account;
 
-use Tests\TestCase;
-use App\Models\User\User;
 use App\Models\Contact\Contact;
-use Illuminate\Validation\ValidationException;
+use App\Models\User\User;
 use App\Services\Account\Settings\DestroyAccount;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class DestroyAccountTest extends TestCase
 {

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api\Contact;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ApiController;
+use App\Http\Resources\Photo\Photo as PhotoResource;
 use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
-use Illuminate\Database\QueryException;
-use App\Http\Controllers\Api\ApiController;
-use App\Services\Account\Photo\UploadPhoto;
 use App\Services\Account\Photo\DestroyPhoto;
-use Illuminate\Validation\ValidationException;
-use App\Http\Resources\Photo\Photo as PhotoResource;
+use App\Services\Account\Photo\UploadPhoto;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ApiPhotoController extends ApiController
 {

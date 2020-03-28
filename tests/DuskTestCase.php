@@ -2,15 +2,15 @@
 
 namespace Tests;
 
-use Tests\Traits\SignIn;
 use App\Models\User\User;
-use Laravel\Dusk\Browser;
 use App\Services\User\AcceptPolicy;
-use Tests\Traits\CreatesApplication;
-use Laravel\Dusk\TestCase as BaseTestCase;
 use Facebook\WebDriver\Chrome\ChromeOptions;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Laravel\Dusk\Browser;
+use Laravel\Dusk\TestCase as BaseTestCase;
+use Tests\Traits\CreatesApplication;
+use Tests\Traits\SignIn;
 
 abstract class DuskTestCase extends BaseTestCase
 {

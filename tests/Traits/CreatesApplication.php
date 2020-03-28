@@ -2,9 +2,9 @@
 
 namespace Tests\Traits;
 
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Contracts\Console\Kernel;
 
 trait CreatesApplication
 {

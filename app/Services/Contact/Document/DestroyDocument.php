@@ -2,8 +2,8 @@
 
 namespace App\Services\Contact\Document;
 
-use App\Services\BaseService;
 use App\Models\Contact\Document;
+use App\Services\BaseService;
 use Illuminate\Support\Facades\Storage;
 
 class DestroyDocument extends BaseService

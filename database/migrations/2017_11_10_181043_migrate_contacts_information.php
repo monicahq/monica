@@ -2,8 +2,8 @@
 
 use App\Models\Account\Account;
 use App\Models\Instance\Instance;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class MigrateContactsInformation extends Migration
 {

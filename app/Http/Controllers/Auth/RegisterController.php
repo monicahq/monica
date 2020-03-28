@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User\User;
-use Illuminate\Http\Request;
+use App\Helpers\InstanceHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\RequestHelper;
-use App\Jobs\SendNewUserAlert;
-use App\Helpers\InstanceHelper;
-use App\Models\Account\Account;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
+use App\Jobs\SendNewUserAlert;
+use App\Models\Account\Account;
+use App\Models\User\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {

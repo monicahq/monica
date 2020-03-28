@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\Contact\LAbel;
 
-use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Address;
 use App\Models\Contact\ContactFieldLabel;
-use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Label\UpdateAddressLabels;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class UpdateAddessLabelTest extends TestCase
 {

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Models\Contact\Debt;
 use App\Helpers\AccountHelper;
-use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\DebtRequest;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Debt;
 
 class DebtController extends Controller
 {

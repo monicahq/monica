@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
-use PDO;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Connection;
+use Illuminate\Support\Facades\DB;
+use PDO;
 
 class DBHelper
 {

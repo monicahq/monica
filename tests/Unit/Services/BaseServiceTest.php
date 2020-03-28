@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Services;
 
-use Carbon\Carbon;
-use Tests\TestCase;
 use App\Services\BaseService;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class BaseServiceTest extends TestCase
 {

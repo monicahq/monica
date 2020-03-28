@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Contact\Call;
 
-use Tests\TestCase;
 use App\Models\Contact\Call;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\DB;
 use App\Models\Instance\Emotion\Emotion;
 use App\Services\Contact\Call\DestroyCall;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\DB;
+use Tests\TestCase;
 
 class DestroyCallTest extends TestCase
 {

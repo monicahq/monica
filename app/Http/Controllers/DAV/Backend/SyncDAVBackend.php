@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\DAV\Backend;
 
-use Illuminate\Support\Str;
-use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
+use App\Models\User\SyncToken;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 trait SyncDAVBackend
 {

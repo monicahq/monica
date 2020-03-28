@@ -2,10 +2,10 @@
 
 namespace Tests\Api\Account;
 
-use Tests\ApiTestCase;
-use App\Models\Account\Place;
 use App\Models\Account\Account;
+use App\Models\Account\Place;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiPlaceControllerTest extends ApiTestCase
 {

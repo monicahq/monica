@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\Instance\AuditLog;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\User\User;
 use App\Models\Contact\Contact;
 use App\Models\Instance\AuditLog;
-use Illuminate\Validation\ValidationException;
+use App\Models\User\User;
 use App\Services\Instance\AuditLog\LogAccountAction;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class LogAccountActionTest extends TestCase
 {

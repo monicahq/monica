@@ -2,8 +2,8 @@
 
 namespace Tests\Api;
 
-use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiCountriesTest extends ApiTestCase
 {

@@ -2,9 +2,9 @@
 
 namespace Tests\Browser\Settings;
 
-use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\SettingsDAV;
+use Tests\DuskTestCase;
 
 class DAVControllerTest extends DuskTestCase
 {

@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\FeatureTestCase;
 use App\Helpers\LocaleHelper;
-use Illuminate\Support\Facades\App;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\App;
+use Tests\FeatureTestCase;
 
 class LocaleHelperTest extends FeatureTestCase
 {

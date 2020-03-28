@@ -3,13 +3,13 @@
 namespace App\Jobs\Avatars;
 
 use App\Helpers\StringHelper;
-use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Services\Contact\Avatar\GenerateDefaultAvatar as GenerateDefaultAvatarService;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Services\Contact\Avatar\GenerateDefaultAvatar as GenerateDefaultAvatarService;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class GenerateDefaultAvatar implements ShouldQueue
 {

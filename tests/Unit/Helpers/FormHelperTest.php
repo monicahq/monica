@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
-use App\Models\User\User;
 use App\Helpers\FormHelper;
+use App\Models\User\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class FormHelperTest extends TestCase
 {

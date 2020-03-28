@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\People\ContactFieldsRequest;
+use App\Jobs\Avatars\GetAvatarsFromInternet;
+use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use Illuminate\Support\Facades\Auth;
-use App\Jobs\Avatars\GetAvatarsFromInternet;
-use App\Http\Requests\People\ContactFieldsRequest;
 
 class ContactFieldsController extends Controller
 {

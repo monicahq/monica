@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\Account\Settings;
 
-use Tests\TestCase;
 use App\Models\Contact\Contact;
+use App\Services\Account\Settings\DestroyAllDocuments;
+use App\Services\Contact\Document\UploadDocument;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
-use App\Services\Contact\Document\UploadDocument;
-use App\Services\Account\Settings\DestroyAllDocuments;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class DestroyAllDocumentsTest extends TestCase
 {

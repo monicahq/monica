@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\Contact\Avatar;
 
-use Tests\TestCase;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Avatar\GetGravatar;
-use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Avatar\GetGravatarURL;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class GetGravatarTest extends TestCase
 {

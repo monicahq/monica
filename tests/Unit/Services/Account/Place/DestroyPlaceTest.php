@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Account\Place;
 
-use Tests\TestCase;
-use App\Models\Account\Place;
 use App\Models\Account\Account;
+use App\Models\Account\Place;
 use App\Services\Account\Place\DestroyPlace;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class DestroyPlaceTest extends TestCase
 {

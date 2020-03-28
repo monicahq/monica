@@ -3,9 +3,9 @@
 namespace App\Http\Resources\ContactField;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\Settings\ContactFieldType\ContactFieldType as ContactFieldTypeResource;
+use Illuminate\Http\Resources\Json\Resource;
 
 class ContactField extends Resource
 {

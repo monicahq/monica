@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Jobs;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\Contact\Contact;
 use App\Jobs\UpdateLastConsultedDate;
+use App\Models\Contact\Contact;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class UpdateLastConsultedDateTest extends TestCase
 {

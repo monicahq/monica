@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Models\User\User;
-use Tests\FeatureTestCase;
 use App\Jobs\SendNewUserAlert;
+use App\Models\User\User;
 use App\Notifications\NewUserAlert;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class RegisterTest extends FeatureTestCase
 {

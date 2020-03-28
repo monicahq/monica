@@ -2,20 +2,20 @@
 
 namespace Tests\Unit\Services\VCard;
 
-use Tests\TestCase;
-use App\Models\User\User;
-use App\Models\Contact\Tag;
-use Illuminate\Support\Str;
 use App\Models\Account\Account;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
-use Sabre\VObject\Component\VCard;
-use App\Services\VCard\ImportVCard;
 use App\Models\Contact\ContactField;
-use Sabre\VObject\PHPUnitAssertions;
-use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\ContactFieldLabel;
+use App\Models\Contact\ContactFieldType;
+use App\Models\Contact\Tag;
+use App\Models\User\User;
+use App\Services\VCard\ImportVCard;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Str;
+use Sabre\VObject\Component\VCard;
+use Sabre\VObject\PHPUnitAssertions;
+use Tests\TestCase;
 
 class ImportVCardTest extends TestCase
 {

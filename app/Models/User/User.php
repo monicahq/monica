@@ -2,23 +2,23 @@
 
 namespace App\Models\User;
 
-use Carbon\Carbon;
-use App\Models\Journal\Day;
-use App\Models\Settings\Term;
+use App\Helpers\ComplianceHelper;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Helpers\ComplianceHelper;
+use App\Models\Journal\Day;
 use App\Models\Settings\Currency;
-use Laravel\Passport\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
+use App\Models\Settings\Term;
+use Carbon\Carbon;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
 {

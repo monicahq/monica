@@ -2,26 +2,26 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\DAV\Auth\AuthBackend;
+use App\Http\Controllers\DAV\Backend\CalDAV\CalDAVBackend;
+use App\Http\Controllers\DAV\Backend\CardDAV\AddressBookRoot;
+use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
+use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
+use App\Http\Controllers\DAV\DAVRedirect;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\ServiceProvider;
 use LaravelSabre\LaravelSabre;
 use Sabre\CalDAV\CalendarRoot;
 use Sabre\CalDAV\ICSExportPlugin;
+use Sabre\CalDAV\Plugin as CalDAVPlugin;
+use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use Sabre\CardDAV\VCFExportPlugin;
-use Illuminate\Support\Facades\App;
+use Sabre\DAV\Auth\Plugin as AuthPlugin;
+use Sabre\DAV\Browser\Plugin as BrowserPlugin;
+use Sabre\DAV\Sync\Plugin as SyncPlugin;
 use Sabre\DAVACL\Plugin as AclPlugin;
 use Sabre\DAVACL\PrincipalCollection;
-use Illuminate\Support\ServiceProvider;
-use Sabre\CalDAV\Plugin as CalDAVPlugin;
-use Sabre\DAV\Auth\Plugin as AuthPlugin;
-use Sabre\DAV\Sync\Plugin as SyncPlugin;
-use App\Http\Controllers\DAV\DAVRedirect;
-use Sabre\CardDAV\Plugin as CardDAVPlugin;
-use App\Http\Controllers\DAV\Auth\AuthBackend;
-use Sabre\DAV\Browser\Plugin as BrowserPlugin;
-use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
-use App\Http\Controllers\DAV\Backend\CalDAV\CalDAVBackend;
-use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
-use App\Http\Controllers\DAV\Backend\CardDAV\AddressBookRoot;
 
 class DAVServiceProvider extends ServiceProvider
 {

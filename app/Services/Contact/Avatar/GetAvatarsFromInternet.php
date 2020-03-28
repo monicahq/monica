@@ -2,9 +2,9 @@
 
 namespace App\Services\Contact\Avatar;
 
-use Illuminate\Support\Str;
-use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use App\Services\BaseService;
+use Illuminate\Support\Str;
 
 class GetAvatarsFromInternet extends BaseService
 {

@@ -2,16 +2,16 @@
 
 namespace App\Providers;
 
-use Illuminate\Routing\Router;
+use App\Exceptions\WrongIdException;
 use App\Models\Contact\Contact;
 use App\Services\Instance\IdHasher;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\URL;
-use App\Exceptions\WrongIdException;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 class RouteServiceProvider extends ServiceProvider
 {

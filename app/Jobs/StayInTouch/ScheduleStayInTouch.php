@@ -2,14 +2,14 @@
 
 namespace App\Jobs\StayInTouch;
 
-use Illuminate\Bus\Queueable;
 use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
-use Illuminate\Queue\SerializesModels;
 use App\Notifications\StayInTouchEmail;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 class ScheduleStayInTouch implements ShouldQueue

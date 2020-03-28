@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Contact\Tag;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use App\Services\Contact\Tag\CreateTag;
-use App\Services\Contact\Tag\UpdateTag;
-use Illuminate\Database\QueryException;
-use App\Services\Contact\Tag\DestroyTag;
-use Illuminate\Database\Eloquent\Builder;
-use App\Http\Resources\Tag\Tag as TagResource;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
+use App\Http\Resources\Tag\Tag as TagResource;
+use App\Models\Contact\Tag;
+use App\Services\Contact\Tag\CreateTag;
+use App\Services\Contact\Tag\DestroyTag;
+use App\Services\Contact\Tag\UpdateTag;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Validation\ValidationException;
 
 class ApiTagController extends ApiController
 {

@@ -2,12 +2,12 @@
 
 namespace App\Services\Contact\LifeEvent;
 
-use Carbon\Carbon;
-use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
+use App\Services\BaseService;
 use App\Services\Contact\Reminder\CreateReminder;
+use Carbon\Carbon;
 
 class CreateLifeEvent extends BaseService
 {

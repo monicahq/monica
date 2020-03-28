@@ -2,34 +2,34 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
-use App\Models\User\User;
+use App\Helpers\CountriesHelper;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use Illuminate\Console\Command;
-use App\Helpers\CountriesHelper;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Console\Application;
-use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ContactFieldType;
-use App\Services\Contact\Gift\CreateGift;
-use App\Services\Contact\Tag\AssociateTag;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Contact\LifeEventType;
+use App\Models\User\User;
+use App\Services\Account\Activity\Activity\AttachContactToActivity;
+use App\Services\Account\Activity\Activity\CreateActivity;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Contact\CreateContact;
-use App\Services\Contact\Reminder\CreateReminder;
-use Symfony\Component\Console\Helper\ProgressBar;
-use App\Services\Contact\LifeEvent\CreateLifeEvent;
-use Symfony\Component\Console\Output\ConsoleOutput;
-use App\Services\Contact\Conversation\CreateConversation;
-use App\Services\Contact\Relationship\CreateRelationship;
-use App\Services\Account\Activity\Activity\CreateActivity;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 use App\Services\Contact\Contact\UpdateDeceasedInformation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
-use App\Services\Account\Activity\Activity\AttachContactToActivity;
+use App\Services\Contact\Conversation\CreateConversation;
+use App\Services\Contact\Gift\CreateGift;
+use App\Services\Contact\LifeEvent\CreateLifeEvent;
+use App\Services\Contact\Relationship\CreateRelationship;
+use App\Services\Contact\Reminder\CreateReminder;
+use App\Services\Contact\Tag\AssociateTag;
+use Carbon\Carbon;
+use Illuminate\Console\Application;
+use Illuminate\Console\Command;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class SetupTest extends Command
 {

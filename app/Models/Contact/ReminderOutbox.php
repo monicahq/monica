@@ -2,12 +2,12 @@
 
 namespace App\Models\Contact;
 
-use App\Models\User\User;
 use App\Helpers\MailHelper;
-use App\Models\Account\Account;
 use App\Interfaces\MailNotification;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Account\Account;
 use App\Models\ModelBindingHasherWithContact as Model;
+use App\Models\User\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property Account $account

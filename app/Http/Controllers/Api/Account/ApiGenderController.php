@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api\Account;
 
-use Illuminate\Http\Request;
-use App\Models\Contact\Gender;
-use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
-use App\Services\Account\Gender\CreateGender;
-use App\Services\Account\Gender\UpdateGender;
-use App\Services\Account\Gender\DestroyGender;
-use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Gender\Gender as GenderResource;
+use App\Models\Contact\Gender;
+use App\Services\Account\Gender\CreateGender;
+use App\Services\Account\Gender\DestroyGender;
+use App\Services\Account\Gender\UpdateGender;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ApiGenderController extends ApiController
 {

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\Contact;
 
-use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\AuditLog\AuditLog as AuditLogResource;
+use App\Models\Contact\Contact;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ApiAuditLogController extends ApiController

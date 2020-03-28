@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\FeatureTestCase;
 use App\Helpers\GenderHelper;
-use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Gender;
+use Tests\FeatureTestCase;
 
 class GenderHelperTest extends FeatureTestCase
 {

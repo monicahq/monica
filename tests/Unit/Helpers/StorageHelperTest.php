@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
-use App\Models\Account\Photo;
 use App\Helpers\StorageHelper;
 use App\Models\Account\Account;
+use App\Models\Account\Photo;
 use App\Models\Contact\Document;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class StorageHelperTest extends TestCase
 {

@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Contact\Call;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\User\User;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\ReminderRule;
+use App\Models\User\User;
 use App\Services\Contact\Reminder\DestroyReminder;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class DestroyReminderTest extends TestCase
 {

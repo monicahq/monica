@@ -2,9 +2,9 @@
 
 namespace Tests\Browser\Pages\Settings;
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\Page;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SettingsPersonnalization extends Page
 {

@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\DAV\Backend\CalDAV;
 
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Log;
 use App\Models\Instance\SpecialDate;
-use Illuminate\Support\Facades\Auth;
-use Sabre\DAV\Server as SabreServer;
-use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use App\Services\VCalendar\ExportVCalendar;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
+use Sabre\DAV\Server as SabreServer;
 
 class CalDAVBirthdays extends AbstractCalDAVBackend
 {

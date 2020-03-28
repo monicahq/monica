@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
-use App\Models\Contact\Note;
-use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\NotesRequest;
 use App\Http\Requests\People\NoteToggleRequest;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Note;
 
 class NotesController extends Controller
 {

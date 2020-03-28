@@ -2,8 +2,8 @@
 
 namespace App\Helpers;
 
-use App\Models\User\User;
 use App\Models\Settings\Term;
+use App\Models\User\User;
 use Illuminate\Support\Facades\DB;
 
 class ComplianceHelper

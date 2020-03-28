@@ -2,8 +2,8 @@
 
 namespace App\Helpers;
 
-use App\Models\User\User;
 use App\Models\Journal\Day;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class JournalHelper

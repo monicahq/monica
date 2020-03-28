@@ -3,8 +3,8 @@
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Migrations\Migration;
 
 class MigratePreviousRemiders extends Migration
 {

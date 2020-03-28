@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Settings;
 
-use Illuminate\Http\Request;
-use App\Models\User\RecoveryCode;
 use App\Http\Controllers\Controller;
+use App\Models\User\RecoveryCode;
 use App\Traits\JsonRespondController;
+use Illuminate\Http\Request;
 use PragmaRX\Recovery\Recovery as PragmaRXRecovery;
 
 class RecoveryCodesController extends Controller

@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\User;
 
-use Tests\TestCase;
-use App\Models\User\User;
-use App\Models\Settings\Term;
 use App\Models\Account\Account;
+use App\Models\Settings\Term;
+use App\Models\User\User;
 use App\Services\User\AcceptPolicy;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class AcceptPolicyTest extends TestCase
 {

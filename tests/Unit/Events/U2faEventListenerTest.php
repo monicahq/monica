@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Events;
 
-use Tests\FeatureTestCase;
 use App\Events\RecoveryLogin;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\Events\Login;
-use Lahaxearnaud\U2f\Models\U2fKey;
-use Illuminate\Support\Facades\Event;
-use PragmaRX\Google2FALaravel\Events\LoginSucceeded;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Event;
+use Lahaxearnaud\U2f\Models\U2fKey;
+use PragmaRX\Google2FALaravel\Events\LoginSucceeded;
+use Tests\FeatureTestCase;
 
 class U2faEventListenerTest extends FeatureTestCase
 {

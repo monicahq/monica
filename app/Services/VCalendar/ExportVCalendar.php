@@ -2,12 +2,12 @@
 
 namespace App\Services\VCalendar;
 
-use Illuminate\Support\Str;
-use App\Services\BaseService;
-use Sabre\VObject\Component\VEvent;
 use App\Models\Instance\SpecialDate;
+use App\Services\BaseService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Sabre\VObject\Component\VCalendar;
+use Sabre\VObject\Component\VEvent;
 
 class ExportVCalendar extends BaseService
 {

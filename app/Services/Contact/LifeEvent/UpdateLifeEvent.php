@@ -2,9 +2,9 @@
 
 namespace App\Services\Contact\LifeEvent;
 
-use App\Services\BaseService;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
+use App\Services\BaseService;
 
 class UpdateLifeEvent extends BaseService
 {

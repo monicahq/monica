@@ -2,10 +2,10 @@
 
 namespace Tests\Api;
 
-use Tests\ApiTestCase;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiRelationshipTypeControllerTest extends ApiTestCase
 {

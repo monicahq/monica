@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Jobs;
 
-use Tests\TestCase;
-use App\Models\Contact\Contact;
-use App\Jobs\Avatars\UpdateGravatar;
-use Illuminate\Support\Facades\Queue;
 use App\Jobs\Avatars\UpdateAllGravatars;
+use App\Jobs\Avatars\UpdateGravatar;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
+use Tests\TestCase;
 
 class UpdateAllGravatarsTest extends TestCase
 {

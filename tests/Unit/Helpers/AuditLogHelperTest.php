@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
-use App\Models\User\User;
 use App\Helpers\AuditLogHelper;
 use App\Models\Contact\Contact;
 use App\Models\Instance\AuditLog;
+use App\Models\User\User;
+use Tests\TestCase;
 
 class AuditLogHelperTest extends TestCase
 {

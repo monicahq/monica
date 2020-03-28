@@ -2,10 +2,10 @@
 
 namespace App\Services\Account\Settings;
 
-use App\Services\BaseService;
 use App\Models\Contact\Document;
-use Illuminate\Support\Facades\Storage;
+use App\Services\BaseService;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Facades\Storage;
 
 class DestroyAllDocuments extends BaseService
 {

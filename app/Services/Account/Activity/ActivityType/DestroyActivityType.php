@@ -2,8 +2,8 @@
 
 namespace App\Services\Account\Activity\ActivityType;
 
-use App\Services\BaseService;
 use App\Models\Account\ActivityType;
+use App\Services\BaseService;
 
 class DestroyActivityType extends BaseService
 {

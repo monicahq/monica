@@ -2,8 +2,8 @@
 
 namespace App\Services\User;
 
-use App\Models\User\User;
 use App\Models\Settings\Term;
+use App\Models\User\User;
 use App\Services\BaseService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

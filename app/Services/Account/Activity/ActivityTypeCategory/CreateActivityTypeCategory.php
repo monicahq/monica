@@ -2,8 +2,8 @@
 
 namespace App\Services\Account\Activity\ActivityTypeCategory;
 
-use App\Services\BaseService;
 use App\Models\Account\ActivityTypeCategory;
+use App\Services\BaseService;
 
 class CreateActivityTypeCategory extends BaseService
 {

@@ -2,8 +2,8 @@
 
 namespace Tests\BrowserFeature;
 
-use Tests\DuskTestCase;
 use Tests\Browser\Pages\ImportVCardUpload;
+use Tests\DuskTestCase;
 
 class UploadVCardTest extends DuskTestCase
 {

@@ -2,9 +2,9 @@
 
 namespace App\Services\Contact\Contact;
 
-use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
+use App\Services\BaseService;
 use App\Services\Contact\Relationship\DestroyRelationship;
 
 class DestroyContact extends BaseService

@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Services\Account\Place;
 
-use Tests\TestCase;
-use App\Models\User\User;
+use App\Jobs\AuditLog\LogAccountAudit;
 use App\Models\Account\Account;
 use App\Models\Account\Company;
-use Illuminate\Support\Facades\Queue;
-use App\Jobs\AuditLog\LogAccountAudit;
-use Illuminate\Validation\ValidationException;
+use App\Models\User\User;
 use App\Services\Account\Company\CreateCompany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class CreateCompanyTest extends TestCase
 {

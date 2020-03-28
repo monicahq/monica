@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\Contact\ReminderOutbox;
 use App\Jobs\Reminder\NotifyUserAboutReminder;
+use App\Models\Contact\ReminderOutbox;
+use Illuminate\Console\Command;
 
 class SendReminders extends Command
 {

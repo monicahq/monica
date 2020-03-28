@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use Stripe\Plan;
-use Stripe\Stripe;
-use Stripe\Product;
-use Stripe\ApiResource;
-use Tests\FeatureTestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Subscription;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Stripe\ApiResource;
+use Stripe\Plan;
+use Stripe\Product;
+use Stripe\Stripe;
+use Tests\FeatureTestCase;
 
 class AccountSubscriptionTest extends FeatureTestCase
 {

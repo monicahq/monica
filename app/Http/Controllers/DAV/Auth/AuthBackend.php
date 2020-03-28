@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\DAV\Auth;
 
-use Sabre\HTTP\RequestInterface;
-use Sabre\HTTP\ResponseInterface;
+use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Auth\Backend\BackendInterface;
-use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
+use Sabre\HTTP\RequestInterface;
+use Sabre\HTTP\ResponseInterface;
 
 class AuthBackend implements BackendInterface
 {

@@ -3,9 +3,9 @@
 namespace App\Http\Resources\Call;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
-use App\Http\Resources\Emotion\Emotion as EmotionResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
+use App\Http\Resources\Emotion\Emotion as EmotionResource;
+use Illuminate\Http\Resources\Json\Resource;
 
 class Call extends Resource
 {

@@ -2,10 +2,10 @@
 
 namespace App\Services\Account\Settings;
 
-use App\Services\BaseService;
 use App\Models\Account\Account;
-use Illuminate\Support\Facades\DB;
+use App\Services\BaseService;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class ArchiveAllContacts extends BaseService
 {

@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Auth;
 
-use Tests\TestCase;
-use App\Models\User\User;
 use App\Models\Account\Account;
+use App\Models\User\User;
+use App\Services\Auth\Population\PopulateLifeEventsTable;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Services\Auth\Population\PopulateLifeEventsTable;
+use Tests\TestCase;
 
 class PopulateLifeEventsTableTest extends TestCase
 {

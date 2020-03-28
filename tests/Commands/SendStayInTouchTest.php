@@ -2,14 +2,14 @@
 
 namespace Tests\Commands;
 
-use Carbon\Carbon;
-use Tests\TestCase;
+use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Artisan;
-use App\Jobs\StayInTouch\ScheduleStayInTouch;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Bus;
+use Tests\TestCase;
 
 class SendStayInTouchTest extends TestCase
 {

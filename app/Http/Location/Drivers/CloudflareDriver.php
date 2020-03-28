@@ -3,10 +3,10 @@
 namespace App\Http\Location\Drivers;
 
 use App\Helpers\RequestHelper;
-use Illuminate\Support\Fluent;
-use Stevebauman\Location\Position;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Fluent;
 use Stevebauman\Location\Drivers\Driver;
+use Stevebauman\Location\Position;
 
 class CloudflareDriver extends Driver
 {

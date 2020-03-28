@@ -2,9 +2,9 @@
 
 namespace Tests\Api\Account\Activity;
 
-use Tests\ApiTestCase;
 use App\Models\Account\ActivityTypeCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiActivityTypeCategoryControllerTest extends ApiTestCase
 {

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Contact\Task;
-use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
-use App\Services\Task\CreateTask;
-use App\Services\Task\UpdateTask;
-use App\Services\Task\DestroyTask;
-use Illuminate\Database\QueryException;
-use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Task\Task as TaskResource;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Task;
+use App\Services\Task\CreateTask;
+use App\Services\Task\DestroyTask;
+use App\Services\Task\UpdateTask;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ApiTaskController extends ApiController
 {

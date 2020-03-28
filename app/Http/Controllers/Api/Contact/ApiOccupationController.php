@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api\Contact;
 
-use Illuminate\Http\Request;
-use App\Models\Contact\Occupation;
-use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
-use Illuminate\Validation\ValidationException;
-use App\Services\Contact\Occupation\CreateOccupation;
-use App\Services\Contact\Occupation\UpdateOccupation;
-use App\Services\Contact\Occupation\DestroyOccupation;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Occupation\Occupation as OccupationResource;
+use App\Models\Contact\Occupation;
+use App\Services\Contact\Occupation\CreateOccupation;
+use App\Services\Contact\Occupation\DestroyOccupation;
+use App\Services\Contact\Occupation\UpdateOccupation;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ApiOccupationController extends ApiController
 {

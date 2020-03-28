@@ -3,8 +3,8 @@
 namespace App\Helpers;
 
 use App\Models\Contact\Contact;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Collection;
 
 class AuditLogHelper
 {

@@ -2,17 +2,17 @@
 
 namespace App\Models\Account;
 
-use Parsedown;
 use App\Helpers\DateHelper;
-use App\Traits\Journalable;
-use App\Models\Contact\Contact;
-use App\Models\Journal\JournalEntry;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Instance\Emotion\Emotion;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Interfaces\IsJournalableInterface;
+use App\Models\Contact\Contact;
+use App\Models\Instance\Emotion\Emotion;
+use App\Models\Journal\JournalEntry;
+use App\Traits\Journalable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
+use Parsedown;
 
 class Activity extends Model implements IsJournalableInterface
 {

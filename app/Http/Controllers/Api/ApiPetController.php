@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Contact\Pet;
-use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Pet\Pet as PetResource;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Pet;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiPetController extends ApiController
 {

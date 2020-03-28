@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use App\Http\Controllers\Controller;
+use App\Http\Resources\Activity\Activity as ActivityResource;
+use App\Models\Account\Activity;
+use App\Models\Account\ActivityType;
+use App\Models\Contact\Contact;
+use App\Services\Account\Activity\ActivityStatisticService;
+use App\Traits\JsonRespondController;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
-use App\Models\Account\Activity;
 use Illuminate\Support\Collection;
-use App\Http\Controllers\Controller;
-use App\Models\Account\ActivityType;
-use App\Traits\JsonRespondController;
-use App\Services\Account\Activity\ActivityStatisticService;
-use App\Http\Resources\Activity\Activity as ActivityResource;
 
 class ActivitiesController extends Controller
 {

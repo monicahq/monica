@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
-use App\Models\User\User;
-use Illuminate\Session\Store;
 use App\Http\Requests\Request;
-use Illuminate\Session\NullSessionHandler;
+use App\Models\User\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Session\NullSessionHandler;
+use Illuminate\Session\Store;
+use Tests\TestCase;
 
 class Google2FATest extends TestCase
 {

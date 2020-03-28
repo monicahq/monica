@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
-use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
+use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
+use App\Services\Contact\Conversation\AddMessageToConversation;
+use App\Services\Contact\Conversation\CreateConversation;
+use App\Services\Contact\Conversation\DestroyConversation;
+use App\Services\Contact\Conversation\DestroyMessage;
+use App\Services\Contact\Conversation\UpdateConversation;
 use App\Traits\JsonRespondController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use App\Services\Contact\Conversation\DestroyMessage;
-use App\Services\Contact\Conversation\CreateConversation;
-use App\Services\Contact\Conversation\UpdateConversation;
-use App\Services\Contact\Conversation\DestroyConversation;
-use App\Services\Contact\Conversation\AddMessageToConversation;
 
 class ConversationsController extends Controller
 {

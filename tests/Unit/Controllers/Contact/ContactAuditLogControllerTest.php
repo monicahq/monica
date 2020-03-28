@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Controllers\Contact;
 
-use Tests\FeatureTestCase;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class ContactAuditLogControllerTest extends FeatureTestCase
 {

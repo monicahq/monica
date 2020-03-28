@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use App\Helpers\LocaleHelper;
+use Closure;
 use Illuminate\Support\Facades\App;
 
 class CheckLocale

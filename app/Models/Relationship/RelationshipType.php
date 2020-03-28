@@ -3,9 +3,9 @@
 namespace App\Models\Relationship;
 
 use App\Helpers\AccountHelper;
-use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Gender;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

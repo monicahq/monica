@@ -4,8 +4,8 @@ namespace App\Http\Resources\Debt;
 
 use App\Helpers\DateHelper;
 use App\Helpers\MoneyHelper;
-use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
+use Illuminate\Http\Resources\Json\Resource;
 
 class Debt extends Resource
 {

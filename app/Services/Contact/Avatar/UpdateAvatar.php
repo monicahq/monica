@@ -3,8 +3,8 @@
 namespace App\Services\Contact\Avatar;
 
 use App\Models\Account\Photo;
-use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use App\Services\BaseService;
 use Illuminate\Validation\Rule;
 
 /**

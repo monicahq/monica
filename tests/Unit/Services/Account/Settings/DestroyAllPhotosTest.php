@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\Account\Settings;
 
-use Tests\TestCase;
 use App\Models\Contact\Contact;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use App\Services\Account\Photo\UploadPhoto;
-use Illuminate\Validation\ValidationException;
 use App\Services\Account\Settings\DestroyAllPhotos;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class DestroyAllPhotosTest extends TestCase
 {

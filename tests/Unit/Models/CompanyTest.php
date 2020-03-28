@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Account\Company;
 use App\Models\Contact\Occupation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class CompanyTest extends TestCase
 {

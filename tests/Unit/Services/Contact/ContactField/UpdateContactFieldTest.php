@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Contact\ContactField;
 
-use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\ContactField;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\ContactField\UpdateContactField;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class UpdateContactFieldTest extends TestCase
 {

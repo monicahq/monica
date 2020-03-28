@@ -2,13 +2,13 @@
 
 namespace App\Jobs\Avatars;
 
-use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Services\Contact\Avatar\GetAvatarsFromInternet as GetAvatarsFromInternetService;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Services\Contact\Avatar\GetAvatarsFromInternet as GetAvatarsFromInternetService;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class GetAvatarsFromInternet implements ShouldQueue
 {

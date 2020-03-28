@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\FeatureTestCase;
 use App\Models\Account\Account;
 use App\Models\Account\Invitation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
+use Tests\FeatureTestCase;
 
 class InvitationTest extends FeatureTestCase
 {

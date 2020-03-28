@@ -3,10 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Str;
 use Illuminate\Cache\RateLimiter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\InteractsWithTime;
+use Illuminate\Support\Str;
 
 class ThrottleRequestsMiddleware
 {

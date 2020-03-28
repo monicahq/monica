@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Contact\Gift;
-use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
-use Illuminate\Database\QueryException;
-use App\Services\Contact\Gift\CreateGift;
-use App\Services\Contact\Gift\UpdateGift;
-use App\Services\Contact\Gift\DestroyGift;
-use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Gift\Gift as GiftResource;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Gift;
 use App\Services\Contact\Gift\AssociatePhotoToGift;
+use App\Services\Contact\Gift\CreateGift;
+use App\Services\Contact\Gift\DestroyGift;
+use App\Services\Contact\Gift\UpdateGift;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ApiGiftController extends ApiController
 {

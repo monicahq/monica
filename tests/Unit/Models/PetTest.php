@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
-use App\Models\Contact\Pet;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Pet;
 use App\Models\Contact\PetCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class PetTest extends TestCase
 {

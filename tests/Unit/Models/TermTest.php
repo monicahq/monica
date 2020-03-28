@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
-use App\Models\User\User;
-use App\Models\Settings\Term;
 use App\Models\Account\Account;
+use App\Models\Settings\Term;
+use App\Models\User\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class TermTest extends TestCase
 {

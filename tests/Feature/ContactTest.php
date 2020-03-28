@@ -2,18 +2,18 @@
 
 namespace Tests\Feature;
 
-use Tests\FeatureTestCase;
 use App\Helpers\DateHelper;
-use App\Models\Contact\Tag;
-use App\Models\Contact\Gift;
 use App\Helpers\StringHelper;
-use App\Models\Contact\Gender;
-use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Gender;
+use App\Models\Contact\Gift;
 use App\Models\Contact\Reminder;
+use App\Models\Contact\Tag;
 use App\Models\Settings\Currency;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\FeatureTestCase;
 
 class ContactTest extends FeatureTestCase
 {
