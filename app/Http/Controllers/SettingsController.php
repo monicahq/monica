@@ -424,14 +424,10 @@ class SettingsController
 
     public function security()
     {
-        $u2fKeys = U2fKey::where('user_id', auth()->id())
-                        ->get();
-
         $webauthnKeys = WebauthnKey::where('user_id', auth()->id())->get();
 
         return view('settings.security.index')
             ->with('is2FAActivated', Google2FA::isActivated())
-            ->with('currentkeys', U2fKeyResource::collection($u2fKeys))
             ->withWebauthnKeys(WebauthnKeyResource::collection($webauthnKeys))
             ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account));
     }

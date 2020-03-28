@@ -21,7 +21,6 @@
         "giggsey/libphonenumber-for-php": "^8.9",
         "guzzlehttp/guzzle": "^6.2",
         "intervention/image": "^2.3",
-        "lahaxearnaud/laravel-u2f": "^1.6",
         "laravel/cashier": "~10.0",
         "laravel/framework": "^6.4",
         "laravel/passport": "^8.0",

@@ -28,17 +28,6 @@ class Google2faEventListenerTest extends FeatureTestCase
     }
 
     /** @test */
-    public function it_listens_u2f_event()
-    {
-        $user = $this->signIn();
-        $user->google2fa_secret = 'x';
-
-        Event::dispatch('u2f.authentication', ['u2fKey' => null, 'user' => $user]);
-
-        $this->assertTrue($this->app['session']->get('google2fa.auth_passed'));
-    }
-
-    /** @test */
     public function it_listens_recovery_event()
     {
         $user = $this->signIn();

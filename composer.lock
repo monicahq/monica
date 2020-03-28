@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "35a48159fff5fb7909ce1c8cd9fde78d",
+    "content-hash": "810bef355ccdad6a88b64753f8d96fa3",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -2332,73 +2332,6 @@
                 "versions"
             ],
             "time": "2018-06-13T13:22:40+00:00"
-        },
-        {
-            "name": "lahaxearnaud/laravel-u2f",
-            "version": "1.6.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/lahaxearnaud/laravel-u2f.git",
-                "reference": "fb1ecf1f36e78ffaeeab30f359a758028a423041"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lahaxearnaud/laravel-u2f/zipball/fb1ecf1f36e78ffaeeab30f359a758028a423041",
-                "reference": "fb1ecf1f36e78ffaeeab30f359a758028a423041",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/auth": "^6.0",
-                "illuminate/config": "^6.0",
-                "illuminate/container": "^6.0",
-                "illuminate/contracts": "^6.0",
-                "illuminate/database": "^6.0",
-                "illuminate/events": "^6.0",
-                "illuminate/http": "^6.0",
-                "illuminate/routing": "^6.0",
-                "illuminate/session": "^6.0",
-                "illuminate/translation": "^6.0",
-                "illuminate/view": "^6.0",
-                "laravel/framework": "^6.0",
-                "php": ">=7.2",
-                "yubico/u2flib-server": "1.0.2"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Lahaxearnaud\\U2f\\U2fServiceProvider"
-                    ],
-                    "aliases": {
-                        "U2f": "Lahaxearnaud\\U2f\\U2fFacade"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Lahaxearnaud\\U2f\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "LAHAXE Arnaud",
-                    "email": "lahaxe.arnaud@gmail.com",
-                    "homepage": "http://lahaxe.fr",
-                    "role": "Developer"
-                }
-            ],
-            "description": "U2F support for laravel 6",
-            "homepage": "https://github.com/lahaxearnaud/laravel-u2f",
-            "keywords": [
-                "otp",
-                "security",
-                "u2f"
-            ],
-            "time": "2019-12-03T15:59:23+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
@@ -10578,43 +10511,6 @@
                 "symfony"
             ],
             "time": "2019-12-27T22:22:20+00:00"
-        },
-        {
-            "name": "yubico/u2flib-server",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Yubico/php-u2flib-server.git",
-                "reference": "55d813acf68212ad2cadecde07551600d6971939"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Yubico/php-u2flib-server/zipball/55d813acf68212ad2cadecde07551600d6971939",
-                "reference": "55d813acf68212ad2cadecde07551600d6971939",
-                "shasum": ""
-            },
-            "require": {
-                "ext-openssl": "*",
-                "paragonie/random_compat": ">= 1",
-                "php": ">=5.6"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~5.7",
-                "vimeo/psalm": "^0|^1|^2"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "description": "Library for U2F implementation",
-            "homepage": "https://developers.yubico.com/php-u2flib-server",
-            "time": "2018-09-07T08:16:44+00:00"
         }
     ],
     "packages-dev": [

@@ -6,7 +6,7 @@
 
 ### Enhancements:
 
-*
+* Remove u2f support (replaced with WebAuthn)
 
 ### Fixes:
 
