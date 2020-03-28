@@ -20,7 +20,7 @@ RUN apk update && apk upgrade; \
         php7-phar php7-json php7-iconv \
         #- laravel/framework sabre/vobject
         php7-mbstring \
-        #- league/flysystem-aws-s3-v3 
+        #- league/flysystem-aws-s3-v3
         php7-simplexml \
         #- sabre/vobject sabre/xml
         php7-xml php7-xmlreader php7-xmlwriter \
@@ -62,7 +62,7 @@ RUN scripts/docker/install-composer.sh
 # Install composer dependencies
 USER monica
 RUN composer global require hirak/prestissimo; \
-    composer install --no-interaction --no-suggest; \
+    composer install --no-interaction --no-suggest --ignore-platform-reqs; \
     composer global remove hirak/prestissimo; \
     composer clear-cache
 USER root

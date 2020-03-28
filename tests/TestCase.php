@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Illuminate\Testing\TestResponse;
+use Tests\Traits\CreatesApplication;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase

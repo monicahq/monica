@@ -221,6 +221,14 @@ class CalDAVBirthdaysTest extends ApiTestCase
 
         $response->assertStatus(207);
 
+        $token = SyncToken::where([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'name' => 'birthdays',
+        ])
+            ->orderBy('created_at')
+            ->get()
+            ->last();
         $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\" xmlns:cal=\"urn:ietf:params:xml:ns:caldav\" xmlns:cs=\"http://calendarserver.org/ns/\">
  <d:response>
   <d:href>/dav/calendars/{$user->email}/birthdays/{$specialDate->uuid}.ics</d:href>

@@ -82,7 +82,7 @@ class GetGravatarTest extends TestCase
         $url = app(GetGravatarURL::class)->execute($request);
 
         $this->assertEquals(
-            'https://www.gravatar.com/avatar/5bbc9048a99ec78cdbc227770e707efb.jpg?s=400&d=mm&r=g',
+            'https://www.gravatar.com/avatar/5bbc9048a99ec78cdbc227770e707efb.jpg?s=400&d=404&r=g',
             $url
         );
     }
@@ -98,7 +98,7 @@ class GetGravatarTest extends TestCase
         $url = app(GetGravatarURL::class)->execute($request);
 
         $this->assertEquals(
-            'https://www.gravatar.com/avatar/5bbc9048a99ec78cdbc227770e707efb.jpg?s=80&d=mm&r=g',
+            'https://www.gravatar.com/avatar/5bbc9048a99ec78cdbc227770e707efb.jpg?s=80&d=404&r=g',
             $url
         );
     }
@@ -114,7 +114,7 @@ class GetGravatarTest extends TestCase
 
         // should return an avatar of 200 px wide
         $this->assertEquals(
-            'https://www.gravatar.com/avatar/5bbc9048a99ec78cdbc227770e707efb.jpg?s=200&d=mm&r=g',
+            'https://www.gravatar.com/avatar/5bbc9048a99ec78cdbc227770e707efb.jpg?s=200&d=404&r=g',
             $url
         );
     }

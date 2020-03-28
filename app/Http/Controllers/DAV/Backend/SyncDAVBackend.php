@@ -167,7 +167,6 @@ trait SyncDAVBackend
 
             $timestamp = $token->timestamp;
         } else {
-            $token = $this->createSyncTokenNow();
             $timestamp = null;
         }
 
@@ -184,7 +183,7 @@ trait SyncDAVBackend
         });
 
         return [
-            'syncToken' => $token->id,
+            'syncToken' => $this->getCurrentSyncToken()->id,
             'added' => $added->map(function ($obj) {
                 return $this->encodeUri($obj);
             })->toArray(),

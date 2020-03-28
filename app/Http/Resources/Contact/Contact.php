@@ -3,8 +3,13 @@
 namespace App\Http\Resources\Contact;
 
 use App\Helpers\DateHelper;
+use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Note\Note as NoteResource;
+use App\Http\Resources\Address\Address as AddressResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
+use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
+use App\Http\Resources\Relationship\RelationshipShort as RelationshipShortResource;
 
 class Contact extends JsonResource
 {
@@ -16,6 +21,11 @@ class Contact extends JsonResource
      */
     public function toArray($request)
     {
+        return $this->toArrayInternal($request, $request->input('with') == 'contactfields');
+    }
+
+    protected function toArrayInternal($request, $withContactField)
+    {
         return [
             'id' => $this->id,
             'object' => 'contact',
@@ -24,6 +34,7 @@ class Contact extends JsonResource
             'last_name' => $this->last_name,
             'nickname' => $this->nickname,
             'complete_name' => $this->name,
+            'initials' => $this->getInitials(),
             'description' => $this->description,
             'gender' => is_null($this->gender) ? null : $this->gender->name,
             'gender_type' => is_null($this->gender) ? null : $this->gender->type,
@@ -40,19 +51,19 @@ class Contact extends JsonResource
                 'relationships' => $this->when(! $this->is_partial, [
                     'love' => [
                         'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('love')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('love')->count()),
-                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('love')) ? null : \App\Models\Contact\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('love'))),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('love')) ? null : RelationshipShortResource::collection($this->getRelationshipsByRelationshipTypeGroup('love'))),
                     ],
                     'family' => [
                         'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('family')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('family')->count()),
-                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('family')) ? null : \App\Models\Contact\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('family'))),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('family')) ? null : RelationshipShortResource::collection($this->getRelationshipsByRelationshipTypeGroup('family'))),
                     ],
                     'friend' => [
                         'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('friend')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('friend')->count()),
-                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('friend')) ? null : \App\Models\Contact\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('friend'))),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('friend')) ? null : RelationshipShortResource::collection($this->getRelationshipsByRelationshipTypeGroup('friend'))),
                     ],
                     'work' => [
                         'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('work')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('work')->count()),
-                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('work')) ? null : \App\Models\Contact\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('work'))),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('work')) ? null : RelationshipShortResource::collection($this->getRelationshipsByRelationshipTypeGroup('work'))),
                     ],
                 ]),
                 'dates' => [
@@ -87,8 +98,8 @@ class Contact extends JsonResource
                     'first_met_through_contact' => new ContactShortResource($this->getIntroducer()),
                 ]),
             ],
-            'addresses' => $this->when(! $this->is_partial, $this->getAddressesForAPI()),
-            'tags' => $this->when(! $this->is_partial, $this->getTagsForAPI()),
+            'addresses' => $this->when(! $this->is_partial, AddressResource::collection($this->addresses)),
+            'tags' => $this->when(! $this->is_partial, TagResource::collection($this->tags)),
             'statistics' => $this->when(! $this->is_partial, [
                 'number_of_calls' => $this->calls->count(),
                 'number_of_notes' => $this->notes->count(),
@@ -98,6 +109,8 @@ class Contact extends JsonResource
                 'number_of_gifts' => $this->gifts->count(),
                 'number_of_debts' => $this->debts->count(),
             ]),
+            'contactFields' => $this->when($withContactField && ! $this->is_partial, ContactFieldResource::collection($this->contactFields)),
+            'notes' => $this->when($withContactField && ! $this->is_partial, NoteResource::collection($this->notes()->latest()->limit(3)->get())),
             'url' => $this->when(! $this->is_partial, route('api.contact', $this->id)),
             'account' => [
                 'id' => $this->account_id,

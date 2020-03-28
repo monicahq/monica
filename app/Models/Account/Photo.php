@@ -2,9 +2,9 @@
 
 namespace App\Models\Account;
 
+use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
 use App\Models\ModelBinding as Model;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -63,6 +63,6 @@ class Photo extends Model
     {
         $url = $this->new_filename;
 
-        return asset(Storage::disk(config('filesystems.default'))->url($url));
+        return asset(StorageHelper::disk(config('filesystems.default'))->url($url));
     }
 }

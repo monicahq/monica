@@ -299,6 +299,8 @@ Vue.component(
   require('./components/settings/DAVResources.vue').default
 );
 
+require('./testing');
+
 var common = require('./common').default;
 
 common.loadLanguage(window.Laravel.locale, true).then((i18n) => {
