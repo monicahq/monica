@@ -4,7 +4,6 @@ namespace App\Listeners;
 
 use App\Events\RecoveryLogin;
 use Illuminate\Auth\Events\Login;
-use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Support\Facades\Auth;
 use LaravelWebauthn\Facades\Webauthn;
 use LaravelWebauthn\Events\WebauthnLogin;
