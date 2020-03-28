@@ -52,7 +52,7 @@ return [
     'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Add people',
-    'main_nav_dashboard' => 'Dashboard',
+    'main_nav_dashboard' => 'ダッシュボード',
     'main_nav_family' => 'Contacts',
     'main_nav_journal' => 'Journal',
     'main_nav_activities' => 'Activities',
@@ -95,8 +95,8 @@ return [
     'breadcrumb_settings_security_2fa' => 'Two Factor Authentication',
     'breadcrumb_profile' => 'Profile of :name',
 
-    'gender_male' => 'Man',
-    'gender_female' => 'Woman',
+    'gender_male' => '男',
+    'gender_female' => '女',
     'gender_none' => 'Rather not say',
     'gender_no_gender' => 'No gender',
 
@@ -126,11 +126,11 @@ return [
     // and then, the feminine version of the string. Finally, in some sentences
     // in the UI, we need to include the name of the person we add the relationship
     // to.
-    'relationship_type_group_love' => 'Love relationships',
-    'relationship_type_group_family' => 'Family relationships',
-    'relationship_type_group_friend' => 'Friend relationships',
-    'relationship_type_group_work' => 'Work relationships',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_love' => '恋人関係',
+    'relationship_type_group_family' => '家族構成',
+    'relationship_type_group_friend' => '友人関係',
+    'relationship_type_group_work' => '仕事関係',
+    'relationship_type_group_other' => 'その他の人間関係',
 
     'relationship_type_partner' => 'significant other',
     'relationship_type_partner_female' => 'significant other',
@@ -167,8 +167,8 @@ return [
     'relationship_type_ex_with_name' => ':name’s ex-boyfriend',
     'relationship_type_ex_female_with_name' => ':name’s ex-girlfriend',
 
-    'relationship_type_parent' => 'father',
-    'relationship_type_parent_female' => 'mother',
+    'relationship_type_parent' => '父',
+    'relationship_type_parent_female' => '母',
     'relationship_type_parent_with_name' => ':name’s father',
     'relationship_type_parent_female_with_name' => ':name’s mother',
 
@@ -450,7 +450,7 @@ return [
     'weather_current_title' => 'Current weather',
 
     // dav
-    'dav_contacts' => 'Contacts',
+    'dav_contacts' => '連絡先',
     'dav_contacts_description' => ':name’s contacts',
     'dav_birthdays' => 'Birthdays',
     'dav_birthdays_description' => ':name’s contact’s birthdays',
