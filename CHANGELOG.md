@@ -6,7 +6,7 @@
 
 ### Enhancements:
 
-*
+* Add audit log when updating birthday information
 
 ### Fixes:
 
