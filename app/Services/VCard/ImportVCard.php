@@ -162,7 +162,7 @@ class ImportVCard extends BaseService
         }
         $this->userId = $this->data['user_id'];
 
-        $entry = $this->getEntry();
+        $entry = $this->getEntry($this->data);
 
         if (! $entry) {
             return [
@@ -172,16 +172,17 @@ class ImportVCard extends BaseService
             ];
         }
 
-        return $this->processEntry($entry);
+        return $this->processEntry($this->data, $entry);
     }
 
     /**
      * Process entry importation.
      *
+     * @param array $data
      * @param VCard $entry
      * @return array
      */
-    private function processEntry(VCard $entry): array
+    private function processEntry(array $data, VCard $entry): array
     {
         if (! $this->canImportCurrentEntry($entry)) {
             return [
@@ -191,22 +192,23 @@ class ImportVCard extends BaseService
             ];
         }
 
-        $contactId = Arr::get($this->data, 'contact_id');
+        $contactId = Arr::get($data, 'contact_id');
         $contact = $this->getExistingContact($entry, $contactId);
 
-        return $this->processEntryContact($entry, $contact);
+        return $this->processEntryContact($data, $entry, $contact);
     }
 
     /**
      * Process entry importation.
      *
+     * @param array $data
      * @param VCard $entry
      * @param Contact|null $contact
      * @return array
      */
-    private function processEntryContact(VCard $entry, $contact): array
+    private function processEntryContact(array $data, VCard $entry, $contact): array
     {
-        $behaviour = $this->data['behaviour'] ?: self::BEHAVIOUR_ADD;
+        $behaviour = $data['behaviour'] ?: self::BEHAVIOUR_ADD;
         if ($contact && $behaviour === self::BEHAVIOUR_ADD) {
             return [
                 'contact_id' => $contact->id,
@@ -216,7 +218,7 @@ class ImportVCard extends BaseService
             ];
         }
 
-        $contact = $this->importEntry($contact, $entry);
+        $contact = $this->importEntry($contact, $entry, $this->userId);
 
         return [
             'contact_id' => $contact->id,
@@ -225,11 +227,12 @@ class ImportVCard extends BaseService
     }
 
     /**
+     * @param array $data
      * @return VCard|null
      */
-    private function getEntry(): ?VCard
+    private function getEntry($data): ?VCard
     {
-        $entry = $this->data['entry'];
+        $entry = $data['entry'];
 
         if (! $entry instanceof VCard) {
             try {
@@ -441,9 +444,10 @@ class ImportVCard extends BaseService
      *
      * @param  Contact|null $contact
      * @param  VCard $entry
+     * @param  int $userId
      * @return Contact
      */
-    private function importEntry($contact, VCard $entry): Contact
+    private function importEntry($contact, VCard $entry, int $userId): Contact
     {
         if (! $contact) {
             $contact = new Contact;
@@ -459,7 +463,7 @@ class ImportVCard extends BaseService
         $this->importGender($contact, $entry);
         $this->importPhoto($contact, $entry);
         $this->importWorkInformation($contact, $entry);
-        $this->importBirthday($contact, $entry, $this->userId);
+        $this->importBirthday($contact, $entry, $userId);
         $this->importAddress($contact, $entry);
         $this->importEmail($contact, $entry);
         $this->importTel($contact, $entry);

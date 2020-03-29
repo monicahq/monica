@@ -246,6 +246,9 @@ class ImportVCardTest extends TestCase
     public function it_creates_a_contact()
     {
         $account = factory(Account::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
         $importVCard = new ImportVCard;
         $importVCard->accountId = $account->id;
 
@@ -253,12 +256,12 @@ class ImportVCardTest extends TestCase
             'N' => ['John', 'Doe', '', '', ''],
             'EMAIL' => 'john@doe.com',
         ]);
-        $contactFieldType = factory(ContactFieldType::class)->create([
+        factory(ContactFieldType::class)->create([
             'account_id' => $account->id,
             'type' => 'email',
         ]);
 
-        $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [null, $vcard]);
+        $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [null, $vcard, $user->id]);
 
         $this->assertTrue($contact->exists);
     }
@@ -528,7 +531,7 @@ class ImportVCardTest extends TestCase
         $user = factory(User::class)->create([
             'account_id' => $account->id,
         ]);
-        $this->invokePrivateMethod($importVCard, 'importBirthday', [$contact, $vcard, $userId]);
+        $this->invokePrivateMethod($importVCard, 'importBirthday', [$contact, $vcard, $user->id]);
 
         $contact->refresh();
         $this->assertNotNull($contact->birthday_special_date_id);
@@ -557,7 +560,7 @@ class ImportVCardTest extends TestCase
         $user = factory(User::class)->create([
             'account_id' => $account->id,
         ]);
-        $this->invokePrivateMethod($importVCard, 'importBirthday', [$contact, $vcard, $userId]);
+        $this->invokePrivateMethod($importVCard, 'importBirthday', [$contact, $vcard, $user->id]);
 
         $contact->refresh();
         $this->assertNotNull($contact->birthday_special_date_id);
@@ -586,7 +589,7 @@ class ImportVCardTest extends TestCase
         $user = factory(User::class)->create([
             'account_id' => $account->id,
         ]);
-        $this->invokePrivateMethod($importVCard, 'importBirthday', [$contact, $vcard, $userId]);
+        $this->invokePrivateMethod($importVCard, 'importBirthday', [$contact, $vcard, $user->id]);
 
         $contact->refresh();
         $this->assertNotNull($contact->birthday_special_date_id);
