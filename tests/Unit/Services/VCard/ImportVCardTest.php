@@ -525,7 +525,10 @@ class ImportVCardTest extends TestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
         ]);
-        $this->invokePrivateMethod($importVCard, 'importBirthday', [$contact, $vcard]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->invokePrivateMethod($importVCard, 'importBirthday', [$contact, $vcard, $userId]);
 
         $contact->refresh();
         $this->assertNotNull($contact->birthday_special_date_id);
@@ -551,7 +554,10 @@ class ImportVCardTest extends TestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
         ]);
-        $this->invokePrivateMethod($importVCard, 'importBirthday', [$contact, $vcard]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->invokePrivateMethod($importVCard, 'importBirthday', [$contact, $vcard, $userId]);
 
         $contact->refresh();
         $this->assertNotNull($contact->birthday_special_date_id);
@@ -577,7 +583,10 @@ class ImportVCardTest extends TestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
         ]);
-        $this->invokePrivateMethod($importVCard, 'importBirthday', [$contact, $vcard]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->invokePrivateMethod($importVCard, 'importBirthday', [$contact, $vcard, $userId]);
 
         $contact->refresh();
         $this->assertNotNull($contact->birthday_special_date_id);

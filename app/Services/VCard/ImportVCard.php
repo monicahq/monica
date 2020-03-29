@@ -89,7 +89,7 @@ class ImportVCard extends BaseService
      * The array that the service was called with.
      * @var array
      */
-    protected $data;
+    public $data;
 
     /**
      * Get the validation rules that apply to the service.
@@ -459,7 +459,7 @@ class ImportVCard extends BaseService
         $this->importGender($contact, $entry);
         $this->importPhoto($contact, $entry);
         $this->importWorkInformation($contact, $entry);
-        $this->importBirthday($contact, $entry);
+        $this->importBirthday($contact, $entry, $this->userId);
         $this->importAddress($contact, $entry);
         $this->importEmail($contact, $entry);
         $this->importTel($contact, $entry);
@@ -687,9 +687,10 @@ class ImportVCard extends BaseService
     /**
      * @param Contact $contact
      * @param  VCard $entry
+     * @param  int $userId
      * @return void
      */
-    private function importBirthday(Contact $contact, VCard $entry): void
+    private function importBirthday(Contact $contact, VCard $entry, int $userId): void
     {
         if ($entry->BDAY && ! empty((string) $entry->BDAY)) {
             $bday = (string) $entry->BDAY;
@@ -710,7 +711,7 @@ class ImportVCard extends BaseService
             if (! is_null($birthdate)) {
                 app(UpdateBirthdayInformation::class)->execute([
                     'account_id' => $contact->account_id,
-                    'author_id' => $this->data['user_id'],
+                    'author_id' => $userId,
                     'contact_id' => $contact->id,
                     'is_date_known' => true,
                     'is_age_based' => false,
