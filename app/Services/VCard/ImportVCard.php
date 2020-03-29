@@ -85,7 +85,6 @@ class ImportVCard extends BaseService
      */
     protected $genders;
 
-
     /**
      * The array that the service was called with.
      * @var array
