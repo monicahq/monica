@@ -346,7 +346,7 @@ class SetupTest extends Command
                 $relatedContactBirthDate = $this->faker->dateTimeThisCentury();
                 app(UpdateBirthdayInformation::class)->execute([
                     'account_id' => $this->account->id,
-                    'user_id' => $this->user->id,
+                    'author_id' => $this->user->id,
                     'contact_id' => $relatedContact->id,
                     'is_date_known' => rand(1, 2) == 1,
                     'day' => (int) $relatedContactBirthDate->format('d'),
