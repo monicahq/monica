@@ -3,6 +3,8 @@ includes:
     - ./vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
 
 parameters:
+    paths:
+        - app
     inferPrivatePropertyTypeFromConstructor: true
     level: 5
     ignoreErrors:
@@ -34,9 +36,19 @@ parameters:
         - '#Method [a-zA-Z0-9\\_:]+\(\) should return [a-zA-Z0-9\\_\|]+ but empty return statement found\.#'
         - '#Method [a-zA-Z0-9\\_:]+\(\) should return Illuminate\\Http\\Response but returns [a-zA-Z0-9\\_]+\.#'
 
-        -
-            message: '#Access to an undefined property App\\Interfaces\\IsJournalableInterface::\$account_id\.#'
-            path: */app/Models/Journal/JournalEntry.php
+        - message: '#Access to an undefined property App\\Interfaces\\IsJournalableInterface::\$account_id\.#'
+          path: */app/Models/Journal/JournalEntry.php
+        - message: '#Function factory invoked with 1 parameter, 0 required\.#'
+          path: */Console/Commands/Tests/SetupFrontEndTestUser.php
+        - message: '#Call to function is_null\(\) with Carbon\\Carbon will always evaluate to false\.#'
+          path: */Models/Instance/SpecialDate.php
+        - message: '#Call to function is_null\(\) with string will always evaluate to false\.#'
+          path: */Models/User/User.php
+        - message: '#Cannot assign offset ''VALUE'' to string\.#'
+          path: */Services/VCalendar/ExportVCalendar.php
+        - message: '#Property App\\Models\\Contact\\Contact::\$deceased_special_date_id \(int\) does not accept null\.#'
+          path: */Services/Contact/Contact/UpdateDeceasedInformation.php
+
     excludes_analyse:
         - */app/Helpers/ComposerScripts.php
         - */app/Http/Controllers/DAV/Backend/CardDAV/AddressBookHome.php

@@ -137,9 +137,9 @@ class Gift extends Model
     /**
      * Get the name of the recipient for this gift.
      *
-     * @return string
+     * @return string|null
      */
-    public function getRecipientNameAttribute()
+    public function getRecipientNameAttribute(): ?string
     {
         if ($this->hasParticularRecipient()) {
             $recipient = $this->recipient;
@@ -147,6 +147,8 @@ class Gift extends Model
                 return $this->recipient->first_name;
             }
         }
+
+        return null;
     }
 
     /**

@@ -57,14 +57,10 @@ class GetGPSCoordinate extends BaseService
      * @param Place $place
      * @return string|null
      */
-    private function buildQuery(Place $place)
+    private function buildQuery(Place $place): ?string
     {
-        if (! config('monica.enable_geolocation')) {
-            return;
-        }
-
-        if (is_null(config('monica.location_iq_api_key'))) {
-            return;
+        if (! config('monica.enable_geolocation') || is_null(config('monica.location_iq_api_key'))) {
+            return null;
         }
 
         $query = http_build_query([
@@ -82,12 +78,12 @@ class GetGPSCoordinate extends BaseService
      * @param Place $place
      * @return Place|null
      */
-    private function query(Place $place)
+    private function query(Place $place): ?Place
     {
         $query = $this->buildQuery($place);
 
         if (is_null($query)) {
-            return;
+            return null;
         }
 
         try {
@@ -95,7 +91,7 @@ class GetGPSCoordinate extends BaseService
         } catch (ClientException $e) {
             Log::error('Error making the call: '.$e);
 
-            return;
+            return null;
         }
 
         $response = json_decode($response->getBody());

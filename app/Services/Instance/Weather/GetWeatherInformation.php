@@ -88,7 +88,7 @@ class GetWeatherInformation extends BaseService
      * @return Weather|null
      * @throws \Exception
      */
-    private function query(Place $place)
+    private function query(Place $place): ?Weather
     {
         $query = $this->buildQuery($place);
 
@@ -106,6 +106,8 @@ class GetWeatherInformation extends BaseService
         } catch (ClientException $e) {
             Log::error('Error making the call: '.$e);
         }
+
+        return null;
     }
 
     /**

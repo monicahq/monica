@@ -74,7 +74,7 @@ class NotifyUserAboutReminder implements ShouldQueue
      *
      * @return MailNotification|null
      */
-    private function getMessage()
+    private function getMessage(): ?MailNotification
     {
         switch ($this->reminderOutbox->nature) {
             case 'reminder':
@@ -82,7 +82,7 @@ class NotifyUserAboutReminder implements ShouldQueue
             case 'notification':
                 return new UserNotified($this->reminderOutbox->reminder, $this->reminderOutbox->notification_number_days_before);
             default:
-                break;
+                return null;
         }
     }
 }

@@ -35,14 +35,14 @@ class ImportCSV extends Command
     /**
      * The contact field email object.
      *
-     * @var array
+     * @var int|null
      */
     public $contactFieldEmailId;
 
     /**
      * The contact field phone object.
      *
-     * @var array
+     * @var int|null
      */
     public $contactFieldPhoneId;
 
