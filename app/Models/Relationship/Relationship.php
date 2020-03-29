@@ -79,7 +79,7 @@ class Relationship extends Model
      *
      * @return self|null
      */
-    public function reverseRelationship()
+    public function reverseRelationship(): ?self
     {
         $reverseRelationshipType = $this->relationshipType->reverseRelationshipType();
         if ($reverseRelationshipType) {
@@ -90,5 +90,7 @@ class Relationship extends Model
                 'relationship_type_id' => $reverseRelationshipType->id,
             ])->first();
         }
+
+        return null;
     }
 }

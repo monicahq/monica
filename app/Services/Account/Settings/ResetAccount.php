@@ -58,7 +58,7 @@ class ResetAccount extends BaseService
     {
         $companies = $account->companies;
         foreach ($companies as $company) {
-            $company->delete;
+            $company->delete();
         }
     }
 
@@ -72,7 +72,7 @@ class ResetAccount extends BaseService
     {
         $days = $account->days;
         foreach ($days as $day) {
-            $day->delete;
+            $day->delete();
         }
     }
 
@@ -86,7 +86,7 @@ class ResetAccount extends BaseService
     {
         $places = $account->places;
         foreach ($places as $place) {
-            $place->delete;
+            $place->delete();
         }
     }
 
@@ -127,7 +127,7 @@ class ResetAccount extends BaseService
     {
         $entries = $account->entries;
         foreach ($entries as $entry) {
-            $entry->delete;
+            $entry->delete();
         }
 
         $activities = $account->activities;

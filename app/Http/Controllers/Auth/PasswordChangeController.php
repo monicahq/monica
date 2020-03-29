@@ -61,7 +61,7 @@ class PasswordChangeController extends Controller
             return $user;
         }
 
-        if ($user instanceof Authenticatable) {
+        if ($user instanceof User) {
             $this->setNewPassword($user, $credentials['password']);
         }
 

@@ -145,5 +145,7 @@
             </errorLevel>
         </InvalidPropertyAssignmentValue>
 
+        <TooManyTemplateParams errorLevel="info" />
+
     </issueHandlers>
 </psalm>

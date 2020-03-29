@@ -63,9 +63,13 @@ class DocumentsController extends Controller
         ];
 
         try {
-            app(DestroyDocument::class)->execute($data);
+            if (app(DestroyDocument::class)->execute($data)) {
+                return $this->respondObjectDeleted($document->id);
+            }
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }
+
+        return;
     }
 }

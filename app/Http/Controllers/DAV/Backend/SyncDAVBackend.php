@@ -64,14 +64,14 @@ trait SyncDAVBackend
     {
         $max = $this->getLastModified();
 
-        if ($max) {
-            return SyncToken::create([
+        return $max ?
+            SyncToken::create([
                 'account_id' => Auth::user()->account_id,
                 'user_id' => Auth::user()->id,
                 'name' => $this->backendUri(),
                 'timestamp' => $max,
-            ]);
-        }
+            ])
+            : null;
     }
 
     /**

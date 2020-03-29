@@ -186,11 +186,9 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
      * @param  string|null  $value
      * @return string|null
      */
-    public function getGoogle2faSecretAttribute($value)
+    public function getGoogle2faSecretAttribute($value): ?string
     {
-        if (! is_null($value)) {
-            return decrypt($value);
-        }
+        return is_null($value) ? null : decrypt($value);
     }
 
     /**

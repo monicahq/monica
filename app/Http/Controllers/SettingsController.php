@@ -144,7 +144,7 @@ class SettingsController
                 ->withErrors($e->getMessage());
         }
 
-        auth()->logout();
+        auth('')->logout();
 
         return redirect()->route('login');
     }

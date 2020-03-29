@@ -3,10 +3,13 @@
 namespace App\Http\Resources\Reminder;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Reminder extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\Reminder>
+ */
+class Reminder extends JsonResource
 {
     /**
      * Transform the resource into an array.
