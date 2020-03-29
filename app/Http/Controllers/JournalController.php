@@ -39,7 +39,7 @@ class JournalController extends Controller
         $previousEntryYear = 0;
         $showCalendar = true;
 
-        foreach ($journalEntries as $journalEntry) {
+        foreach ($journalEntries->items() as $journalEntry) {
             if ($previousEntryMonth == $journalEntry->date->month && $previousEntryYear == $journalEntry->date->year) {
                 $showCalendar = false;
             }

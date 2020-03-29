@@ -70,14 +70,14 @@ trait SyncDAVBackend
     {
         $max = $this->getLastModified($collectionId);
 
-        if ($max) {
-            return SyncToken::create([
+        return $max ?
+            SyncToken::create([
                 'account_id' => Auth::user()->account_id,
                 'user_id' => Auth::user()->id,
                 'name' => $collectionId ?? $this->backendUri(),
                 'timestamp' => $max,
-            ]);
-        }
+            ])
+            : null;
     }
 
     /**

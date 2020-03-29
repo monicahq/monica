@@ -3,11 +3,14 @@
 namespace App\Http\Resources\Account\User;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\Settings\Currency\Currency as CurrencyResource;
 
-class User extends Resource
+/**
+ * @extends JsonResource<\App\Models\User\User>
+ */
+class User extends JsonResource
 {
     /**
      * Transform the resource into an array.

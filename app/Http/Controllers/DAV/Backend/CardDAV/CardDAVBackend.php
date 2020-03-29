@@ -177,9 +177,9 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * Prepare datas for this contact.
      *
      * @param Contact $contact
-     * @return array|null
+     * @return array
      */
-    private function prepareCard($contact)
+    private function prepareCard($contact): array
     {
         try {
             $carddata = $contact->vcard;
@@ -384,6 +384,8 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
             Log::debug(__CLASS__.' updateCard: '.(string) $e);
             throw $e;
         }
+
+        return;
     }
 
     /**
@@ -414,7 +416,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * @param \Sabre\DAV\PropPatch $propPatch
      * @return bool|null
      */
-    public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch)
+    public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch): ?bool
     {
         $propPatch->handle('{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card', function ($props) use ($addressBookId) {
             $contact = $this->getObject($addressBookId, $props->getHref());
@@ -429,6 +431,8 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
             return true;
         });
+
+        return null;
     }
 
     /**

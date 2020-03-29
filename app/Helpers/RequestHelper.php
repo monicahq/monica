@@ -35,13 +35,11 @@ class RequestHelper
      * @param string $ip
      * @return string|null
      */
-    public static function country($ip)
+    public static function country($ip): ?string
     {
         $position = Location::get($ip);
 
-        if ($position) {
-            return $position->countryCode;
-        }
+        return $position ? $position->countryCode : null;
     }
 
     /**

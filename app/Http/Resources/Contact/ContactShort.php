@@ -3,9 +3,15 @@
 namespace App\Http\Resources\Contact;
 
 use App\Helpers\DateHelper;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class ContactShort extends Contact
+/**
+ * @extends JsonResource<\App\Models\Contact\Contact>
+ */
+class ContactShort extends JsonResource
 {
+    use ContactBase;
+
     /**
      * Transform the resource into an array.
      *

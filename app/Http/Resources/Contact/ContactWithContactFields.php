@@ -2,8 +2,15 @@
 
 namespace App\Http\Resources\Contact;
 
-class ContactWithContactFields extends Contact
+use Illuminate\Http\Resources\Json\JsonResource;
+
+/**
+ * @extends JsonResource<\App\Models\Contact\Contact>
+ */
+class ContactWithContactFields extends JsonResource
 {
+    use ContactBase;
+
     /**
      * Transform the resource into an array.
      *

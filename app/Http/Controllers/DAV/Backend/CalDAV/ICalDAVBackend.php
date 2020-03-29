@@ -104,7 +104,7 @@ interface ICalDAVBackend
      * @param string $calendarData
      * @return string|null
      */
-    public function updateOrCreateCalendarObject($calendarId, $objectUri, $calendarData);
+    public function updateOrCreateCalendarObject($calendarId, $objectUri, $calendarData): ?string;
 
     /**
      * Deletes an existing calendar object.
