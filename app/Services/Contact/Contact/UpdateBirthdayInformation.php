@@ -6,6 +6,7 @@ use App\Models\User\User;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
+use function Safe\json_encode;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
@@ -13,8 +14,6 @@ use App\Models\Instance\SpecialDate;
 use App\Jobs\AuditLog\LogAccountAudit;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
-
-use function Safe\json_encode;
 
 class UpdateBirthdayInformation extends BaseService
 {
