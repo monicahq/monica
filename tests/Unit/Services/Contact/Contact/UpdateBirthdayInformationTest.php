@@ -76,7 +76,7 @@ class UpdateBirthdayInformationTest extends TestCase
 
         // check that a job has been triggered to create an auditlog
         Queue::assertPushed(LogAccountAudit::class, function ($job) use ($contact, $user) {
-            return $job->auditLog['action'] === 'contact_description_cleared' &&
+            return $job->auditLog['action'] === 'contact_birthday_updated' &&
                 $job->auditLog['author_id'] === $user->id &&
                 $job->auditLog['about_contact_id'] === $contact->id &&
                 $job->auditLog['should_appear_on_dashboard'] === true &&
