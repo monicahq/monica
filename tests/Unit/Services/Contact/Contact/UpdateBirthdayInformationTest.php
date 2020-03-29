@@ -8,6 +8,7 @@ use App\Models\Instance\SpecialDate;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
+use Illuminate\Contracts\Queue\Queue;
 
 class UpdateBirthdayInformationTest extends TestCase
 {
@@ -16,6 +17,8 @@ class UpdateBirthdayInformationTest extends TestCase
     /** @test */
     public function it_deletes_all_birthday_information()
     {
+        Queue::fake();
+
         // to delete birthday information, we need first to update the contact
         // with its birthday info, then update it again by indicating that
         // we don't know his birthday info
@@ -63,6 +66,18 @@ class UpdateBirthdayInformationTest extends TestCase
             'account_id' => $contact->account_id,
             'birthday_special_date_id' => null,
         ]);
+
+        // check that a job has been triggered to create an auditlog
+        Queue::assertPushed(LogAccountAudit::class, function ($job) use ($contact, $user) {
+            return $job->auditLog['action'] === 'contact_description_cleared' &&
+                $job->auditLog['author_id'] === $user->id &&
+                $job->auditLog['about_contact_id'] === $contact->id &&
+                $job->auditLog['should_appear_on_dashboard'] === true &&
+                $job->auditLog['objects'] === json_encode([
+                    'contact_name' => $contact->name,
+                    'contact_id' => $contact->id,
+                ]);
+        });
     }
 
     /** @test */

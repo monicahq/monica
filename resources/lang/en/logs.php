@@ -24,6 +24,11 @@ return [
     'settings_log_contact_work_updated_with_name' => 'Updated work information of :name.',
     'settings_log_contact_work_updated_with_name_with_link' => 'Updated work information of <a href=":link">:name</a>.',
 
+    // contact birthday update
+    'contact_log_contact_birthday_updated' => 'Updated birthday information.',
+    'settings_log_contact_birthday_updated_with_name' => 'Updated birthday information of :name.',
+    'settings_log_contact_birthday_updated_with_name_with_link' => 'Updated birthday information of <a href=":link">:name</a>.',
+
     // company created
     'settings_log_company_created' => 'Created a company called :name.',
 ];

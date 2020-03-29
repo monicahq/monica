@@ -3,12 +3,14 @@
 namespace App\Services\Contact\Contact;
 
 use App\Helpers\DateHelper;
+use App\Jobs\AuditLog\LogAccountAudit;
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
+use App\Models\User\User;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
 
@@ -76,6 +78,8 @@ class UpdateBirthdayInformation extends BaseService
         $this->clearRelatedSpecialDate($contact);
 
         $this->manageBirthday($data, $contact);
+
+        $this->log($data, $contact);
 
         return $contact;
     }
@@ -196,5 +200,31 @@ class UpdateBirthdayInformation extends BaseService
             $contact->birthday_reminder_id = $reminder->id;
             $contact->save();
         }
+    }
+
+    /**
+     * Add an audit log.
+     *
+     * @param array $data
+     * @param Contact $contact
+     * @return void
+     */
+    private function log(array $data, Contact $contact): void
+    {
+        $author = User::find($data['author_id']);
+
+        LogAccountAudit::dispatch([
+            'action' => 'contact_birthday_updated',
+            'account_id' => $author->account_id,
+            'about_contact_id' => $contact->id,
+            'author_id' => $author->id,
+            'author_name' => $author->name,
+            'audited_at' => now(),
+            'should_appear_on_dashboard' => true,
+            'objects' => json_encode([
+                'contact_name' => $contact->name,
+                'contact_id' => $contact->id,
+            ]),
+        ]);
     }
 }
