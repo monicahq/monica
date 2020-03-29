@@ -2,10 +2,12 @@
 
 namespace Tests\Unit\Services\Contact\Contact;
 
+use App\Jobs\AuditLog\LogAccountAudit;
 use Tests\TestCase;
 use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
-use Illuminate\Contracts\Queue\Queue;
+use App\Models\User\User;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
@@ -23,9 +25,13 @@ class UpdateBirthdayInformationTest extends TestCase
         // with its birthday info, then update it again by indicating that
         // we don't know his birthday info
         $contact = factory(Contact::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
 
         $request = [
             'account_id' => $contact->account_id,
+            'author_id' => $user->id,
             'contact_id' => $contact->id,
             'is_date_known' => true,
             'day' => 10,
@@ -56,6 +62,7 @@ class UpdateBirthdayInformationTest extends TestCase
         $request = [
             'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
+            'author_id' => $user->id,
             'is_date_known' => false,
         ];
 
@@ -84,9 +91,13 @@ class UpdateBirthdayInformationTest extends TestCase
     public function it_sets_a_date_if_age_is_provided()
     {
         $contact = factory(Contact::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
 
         $request = [
             'account_id' => $contact->account_id,
+            'author_id' => $user->id,
             'contact_id' => $contact->id,
             'is_date_known' => true,
             'is_age_based' => true,
@@ -114,9 +125,13 @@ class UpdateBirthdayInformationTest extends TestCase
     public function it_sets_a_complete_date()
     {
         $contact = factory(Contact::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
 
         $request = [
             'account_id' => $contact->account_id,
+            'author_id' => $user->id,
             'contact_id' => $contact->id,
             'is_date_known' => true,
             'day' => 10,
@@ -148,9 +163,13 @@ class UpdateBirthdayInformationTest extends TestCase
     public function it_sets_a_complete_date_and_sets_a_reminder()
     {
         $contact = factory(Contact::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
 
         $request = [
             'account_id' => $contact->account_id,
+            'author_id' => $user->id,
             'contact_id' => $contact->id,
             'is_date_known' => true,
             'day' => 10,
@@ -162,7 +181,7 @@ class UpdateBirthdayInformationTest extends TestCase
 
         $contact = app(UpdateBirthdayInformation::class)->execute($request);
 
-        $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
+        SpecialDate::where('contact_id', $contact->id)->first();
 
         $this->assertNotNull($contact->birthday_reminder_id);
     }
@@ -191,9 +210,13 @@ class UpdateBirthdayInformationTest extends TestCase
     public function it_throws_an_exception_if_contact_and_account_are_not_linked()
     {
         $contact = factory(Contact::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
 
         $request = [
             'account_id' => 11111111,
+            'author_id' => $user->id,
             'contact_id' => $contact->id,
             'is_date_known' => true,
             'day' => 10,

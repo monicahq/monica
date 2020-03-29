@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\Contact\Contact;
 
 use Tests\TestCase;
 use App\Models\Contact\Contact;
+use App\Models\User\User;
 use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\UpdateContact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -16,9 +17,13 @@ class UpdateContactTest extends TestCase
     public function it_updates_a_contact()
     {
         $contact = factory(Contact::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
 
         $request = [
             'account_id' => $contact->account_id,
+            'author_id' => $user->id,
             'contact_id' => $contact->id,
             'first_name' => 'john',
             'middle_name' => 'franck',
@@ -91,9 +96,13 @@ class UpdateContactTest extends TestCase
     public function it_throws_an_exception_if_account_doesnt_exist()
     {
         $contact = factory(Contact::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
 
         $request = [
             'account_id' => 11111,
+            'author_id' => $user->id,
             'contact_id' => $contact->id,
             'first_name' => 'john',
             'middle_name' => 'franck',

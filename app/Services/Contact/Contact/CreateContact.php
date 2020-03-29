@@ -138,6 +138,7 @@ class CreateContact extends BaseService
     {
         app(UpdateBirthdayInformation::class)->execute([
             'account_id' => $data['account_id'],
+            'author_id' => $data['author_id'],
             'contact_id' => $contact->id,
             'is_date_known' => $data['is_birthdate_known'],
             'day' => $this->nullOrvalue($data, 'birthdate_day'),

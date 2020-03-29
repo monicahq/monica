@@ -14,6 +14,8 @@ use App\Jobs\AuditLog\LogAccountAudit;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
 
+use function Safe\json_encode;
+
 class UpdateBirthdayInformation extends BaseService
 {
     /**
@@ -30,6 +32,7 @@ class UpdateBirthdayInformation extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
+            'author_id' => 'required|integer|exists:users,id',
             'contact_id' => 'required|integer|exists:contacts,id',
             'is_date_known' => 'required|boolean',
             'is_age_based' => 'nullable|boolean',

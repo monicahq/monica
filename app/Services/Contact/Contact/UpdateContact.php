@@ -18,6 +18,7 @@ class UpdateContact extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
+            'author_id' => 'required|integer|exists:users,id',
             'contact_id' => 'required|integer',
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
@@ -117,6 +118,7 @@ class UpdateContact extends BaseService
     {
         app(UpdateBirthdayInformation::class)->execute([
             'account_id' => $data['account_id'],
+            'author_id' => $data['author_id'],
             'contact_id' => $contact->id,
             'is_date_known' => $data['is_birthdate_known'],
             'day' => $this->nullOrvalue($data, 'birthdate_day'),

@@ -143,6 +143,7 @@ class ApiContactController extends ApiController
                     +
                     [
                         'contact_id' => $contactId,
+                        'author_id' => auth()->user()->id,
                         'account_id' => auth()->user()->account_id,
                     ]
             );

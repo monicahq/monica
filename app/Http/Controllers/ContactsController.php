@@ -395,6 +395,7 @@ class ContactsController extends Controller
 
         $data = [
             'account_id' => auth()->user()->account_id,
+            'author_id' => auth()->user()->id,
             'contact_id' => $contact->id,
             'first_name' => $request->input('firstname'),
             'middle_name' => $request->input('middlename', null),

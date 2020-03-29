@@ -681,11 +681,12 @@ class ImportVCard extends BaseService
     }
 
     /**
+     * @param array $data
      * @param Contact $contact
      * @param  VCard $entry
      * @return void
      */
-    private function importBirthday(Contact $contact, VCard $entry): void
+    private function importBirthday(array $data, Contact $contact, VCard $entry): void
     {
         if ($entry->BDAY && ! empty((string) $entry->BDAY)) {
             $bday = (string) $entry->BDAY;
@@ -706,6 +707,7 @@ class ImportVCard extends BaseService
             if (! is_null($birthdate)) {
                 app(UpdateBirthdayInformation::class)->execute([
                     'account_id' => $contact->account_id,
+                    'author_id' => $data['user_id'],
                     'contact_id' => $contact->id,
                     'is_date_known' => true,
                     'is_age_based' => false,
