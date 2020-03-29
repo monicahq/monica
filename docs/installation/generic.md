@@ -97,10 +97,10 @@ exit
 `cd /var/www/monica` then run these steps:
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
-1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind. You'll need to configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
-1. Run `composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs` to install all packages.
-1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-1. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
+2. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind. You'll need to configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
+3. Run `composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs` to install all packages.
+4. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
+5. Run `php artisan setup:production --email=your@email.com --password=yourpassword -v` to run the migrations, seed the database, symlink folders and setup the first user account.
 
 The `setup:production` command will run migrations scripts for database, and flush all cache for config, route, and view, as an optimization process.
 As the configuration of the application is cached, any update on the `.env` file will not be detected after that. You may have to run `php artisan config:cache` manually after every update of `.env` file.
