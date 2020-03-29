@@ -5,10 +5,10 @@ namespace Tests\Unit\Services\Contact\Contact;
 use Tests\TestCase;
 use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
+use Illuminate\Contracts\Queue\Queue;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
-use Illuminate\Contracts\Queue\Queue;
 
 class UpdateBirthdayInformationTest extends TestCase
 {

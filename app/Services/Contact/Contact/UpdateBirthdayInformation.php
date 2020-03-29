@@ -2,15 +2,15 @@
 
 namespace App\Services\Contact\Contact;
 
+use App\Models\User\User;
 use App\Helpers\DateHelper;
-use App\Jobs\AuditLog\LogAccountAudit;
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
-use App\Models\User\User;
+use App\Jobs\AuditLog\LogAccountAudit;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
 
