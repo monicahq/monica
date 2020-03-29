@@ -4,8 +4,8 @@ namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
 use Sabre\DAV;
 use Illuminate\Support\Arr;
-use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Account\AddressBook;
 use App\Services\VCard\ExportVCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Support\Facades\Log;
@@ -19,15 +19,13 @@ use App\Services\Contact\Contact\SetMeContact;
 use App\Http\Controllers\DAV\Backend\IDAVBackend;
 use App\Http\Controllers\DAV\Backend\SyncDAVBackend;
 use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
-use App\Models\Account\AddressBook;
 
 class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 {
     use SyncDAVBackend;
 
-    public function __construct($account, $user)
+    public function __construct($user)
     {
-        $this->account = $account;
         $this->user = $user;
     }
 
@@ -63,14 +61,14 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         $result = [];
         $result[] = $this->getDefaultAddressBook($principalUri);
 
-        $addressbooks = AddressBook::where('account_id', $this->account->id)
+        $addressbooks = AddressBook::where('account_id', $this->user->account_id)
             ->get();
 
         foreach ($addressbooks as $addressbook) {
             $result[] = [
                 'id'                => $addressbook->addressBookId,
                 'uri'               => $addressbook->addressBookId,
-                'principaluri'      => PrincipalBackend::getPrincipalUser(),
+                'principaluri'      => PrincipalBackend::getPrincipalUser($this->user),
                 '{DAV:}displayname' => $addressbook->name,
             ];
         }
@@ -86,7 +84,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         $des = [
             'id'                => $id,
             'uri'               => $id,
-            'principaluri'      => PrincipalBackend::getPrincipalUser(),
+            'principaluri'      => PrincipalBackend::getPrincipalUser($this->user),
             '{DAV:}displayname' => trans('app.dav_contacts'),
             '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => trans('app.dav_contacts_description', ['name' => $this->user->name]),
         ];
@@ -192,7 +190,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
             if (empty($carddat)) {
                 $vcard = app(ExportVCard::class)
                     ->execute([
-                        'account_id' => $this->account->id,
+                        'account_id' => $this->user->account_id,
                         'contact_id' => $contact->id,
                     ]);
 
@@ -224,13 +222,13 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         $addressBook = null;
         if ($addressBookId) {
             $addressBook = AddressBook::where([
-                'account_id' => $this->account->id,
+                'account_id' => $this->user->account_id,
                 'addressBookId' => $addressBookId == $this->backendUri() ? null : $addressBookId,
             ])->first();
         }
 
         return Contact::where([
-            'account_id' => $this->account->id,
+            'account_id' => $this->user->account_id,
             'uuid' => $uuid,
             'addressbook_id' => $addressBook ? $addressBook->id : null,
         ])->first();
@@ -243,10 +241,10 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      */
     public function getObjects($addressBookId)
     {
-        return Account::find($this->account->id)
+        return $this->user->account
                     ->contacts()
                     ->real()
-                    ->addressBook($this->account->id, $addressBookId)
+                    ->addressBook($this->user->account_id, $addressBookId)
                     ->active()
                     ->get();
     }
@@ -354,10 +352,10 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * @param mixed $addressBookId
      * @param string $cardUri
-     * @param string $cardData
+     * @param string|resource $cardData
      * @return string|null
      */
-    public function updateCard($addressBookId, $cardUri, $cardData)
+    public function updateCard($addressBookId, $cardUri, $cardData): ?string
     {
         $contact_id = null;
         if ($cardUri) {
@@ -371,7 +369,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         try {
             $result = app(ImportVCard::class)
                 ->execute([
-                    'account_id' => $this->account->id,
+                    'account_id' => $this->user->account_id,
                     'user_id' => $this->user->id,
                     'contact_id' => $contact_id,
                     'entry' => $cardData,
@@ -380,7 +378,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
                 ]);
 
             if (! Arr::has($result, 'error')) {
-                $contact = Contact::where('account_id', $this->account->id)
+                $contact = Contact::where('account_id', $this->user->account_id)
                     ->find($result['contact_id']);
                 $card = $this->prepareCard($contact);
 
@@ -427,7 +425,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
             $data = [
                 'contact_id' => $contact->id,
-                'account_id' => $this->account->id,
+                'account_id' => $this->user->account_id,
                 'user_id' => $this->user->id,
             ];
 

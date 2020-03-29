@@ -44,7 +44,7 @@ class AuthBackend implements BackendInterface
             return [false, 'User is not authenticated'];
         }
 
-        return [true, PrincipalBackend::getPrincipalUser()];
+        return [true, PrincipalBackend::getPrincipalUser(Auth::user())];
     }
 
     /**

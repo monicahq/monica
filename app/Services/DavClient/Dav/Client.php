@@ -2,14 +2,17 @@
 
 namespace App\Services\DavClient\Dav;
 
+use GuzzleHttp\Pool;
 use Sabre\DAV\Xml\Service;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use GuzzleHttp\Psr7\Request;
-use Illuminate\Support\Collection;
+use GuzzleHttp\RequestOptions;
 use Sabre\DAV\Xml\Request\PropPatch;
 use GuzzleHttp\Client as GuzzleClient;
+use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Promise\PromisorInterface;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 
 class Client
@@ -60,7 +63,7 @@ class Client
         $wkUri = $this->getBaseUri('/.well-known/carddav');
 
         $response = $this->client->get($wkUri, [
-            'allow_redirects' => false
+            RequestOptions::ALLOW_REDIRECTS => false
         ]);
 
         $code = $response->getStatusCode();
@@ -101,24 +104,37 @@ class Client
         }
     }
 
-    public function getBaseUri(?string $path = null)
+    /**
+     * Get current uri.
+     *
+     * @param string|null $path
+     * @return string
+     */
+    public function getBaseUri(?string $path = null): string
     {
         $baseUri = $this->client->getConfig('base_uri');
         return is_null($path) ? $baseUri : $baseUri->withPath($path);
     }
 
-    public function setBaseUri($uri)
+    /**
+     * Set the base uri of client.
+     *
+     * @param string $uri
+     * @return self
+     */
+    public function setBaseUri($uri): self
     {
         $this->client = new GuzzleClient(
             Arr::except($this->client->getConfig(), ['base_uri'])
             +
             ['base_uri' => $uri]
         );
+
+        return $this;
     }
 
-
     /**
-     * Does a PROPFIND request.
+     * Do a PROPFIND request.
      *
      * The list of requested properties must be specified as an array, in clark
      * notation.
@@ -141,6 +157,35 @@ class Client
      */
     public function propFind(string $url, array $properties, int $depth = 0) : array
     {
+        return $this->propFindAsync($url, $properties, $depth, [
+            RequestOptions::SYNCHRONOUS => true
+        ])->wait();
+    }
+
+    /**
+     * Do a PROPFIND request.
+     *
+     * The list of requested properties must be specified as an array, in clark
+     * notation.
+     *
+     * The returned array will contain a list of filenames as keys, and
+     * properties as values.
+     *
+     * The properties array will contain the list of properties. Only properties
+     * that are actually returned from the server (without error) will be
+     * returned, anything else is discarded.
+     *
+     * Depth should be either 0 or 1. A depth of 1 will cause a request to be
+     * made to the server to also return all child resources.
+     *
+     * @param string $url
+     * @param array  $properties
+     * @param int    $depth
+     *
+     * @return PromiseInterface<array>
+     */
+    public function propFindAsync(string $url, array $properties, int $depth = 0, array $options = []) : PromiseInterface
+    {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
         $root = $dom->appendChild($dom->createElementNS('DAV:', 'd:propfind'));
@@ -154,35 +199,41 @@ class Client
 
         $body = $dom->saveXML();
 
-        $request = new Request('PROPFIND', $url, [
+        return $this->requestAsync('PROPFIND', $url, [
             'Depth' => $depth,
             'Content-Type' => 'application/xml; charset=utf-8',
-        ], $body);
+        ], $body, $options)->then(function (ResponseInterface $response) use ($depth): array {
+            $result = $this->parseMultiStatus((string) $response->getBody());
 
-        $response = $this->client->send($request);
+            // If depth was 0, we only return the top item
+            if ($depth === 0) {
+                reset($result);
+                $result = current($result);
 
-        $result = $this->parseMultiStatus((string) $response->getBody());
+                return isset($result[200]) ? $result[200] : [];
+            }
 
-        // If depth was 0, we only return the top item
-        if ($depth === 0) {
-            reset($result);
-            $result = current($result);
+            $newResult = [];
+            foreach ($result as $href => $statusList) {
+                $newResult[$href] = isset($statusList[200]) ? $statusList[200] : [];
+            }
 
-            return isset($result[200]) ? $result[200] : [];
-        }
-
-        $newResult = [];
-        foreach ($result as $href => $statusList) {
-            $newResult[$href] = isset($statusList[200]) ? $statusList[200] : [];
-        }
-
-        return $newResult;
+            return $newResult;
+        });
     }
 
     /**
+     * Run a REPORT {DAV:}sync-collection.
+     *
+     * @param string $url
+     * @param array $properties
+     * @param string $syncToken
+     *
+     * @return PromiseInterface<array>
+     *
      * @see https://tools.ietf.org/html/rfc6578
      */
-    public function syncCollection(string $url, array $properties, string $syncToken) : array
+    public function syncCollectionAsync(string $url, array $properties, string $syncToken, array $options = []) : PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
@@ -201,22 +252,26 @@ class Client
 
         $body = $dom->saveXML();
 
-        $request = new Request('REPORT', $url, [
+        return $this->requestAsync('REPORT', $url, [
             'Depth' => '0',
             'Content-Type' => 'application/xml; charset=utf-8',
-        ], $body);
-
-        $response = $this->client->send($request);
-
-        $result = $this->parseMultiStatus((string) $response->getBody());
-
-        return $result;
+        ], $body, $options)->then(function (ResponseInterface $response) {
+            return $this->parseMultiStatus((string) $response->getBody());
+        });
     }
 
     /**
+     * Run a REPORT card:addressbook-multiget.
+     *
+     * @param string $url
+     * @param array $properties
+     * @param \ArrayAccess $contacts
+     *
+     * @return PromiseInterface<array>
+     *
      * @see https://tools.ietf.org/html/rfc6352#section-8.7
      */
-    public function addressbookMultiget(string $url, array $properties, \ArrayAccess $contacts) : array
+    public function addressbookMultigetAsync(string $url, array $properties, \ArrayAccess $contacts, array $options = []) : PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
@@ -238,35 +293,40 @@ class Client
 
         $body = $dom->saveXML();
 
-        $request = new Request('REPORT', $url, [
+        return $this->requestAsync('REPORT', $url, [
             'Depth' => '1',
             'Content-Type' => 'application/xml; charset=utf-8',
-        ], $body);
-
-        $response = $this->client->send($request);
-
-        $result = $this->parseMultiStatus((string) $response->getBody());
-
-        return $result;
+        ], $body, $options)->then(function (ResponseInterface $response) {
+            return $this->parseMultiStatus((string) $response->getBody());
+        });
     }
 
     /**
      * Add properties to the prop object.
      *
      * Properties must follow:
+     * - for a simple value
      * [
-     * // Simple value
      *     '{namespace}value',
+     * ]
      *
-     * // More complex value element
+     * - for a more complex value element
+     * [
      *     [
      *         'name' => '{namespace}value',
      *         'value' => 'content element',
      *         'attributes' => ['name' => 'value', ...],
      *     ]
      * ]
+     *
+     * @param \DOMDocument $dom
+     * @param \DOMNode $prop
+     * @param array $properties
+     * @param array $namespaces
+     *
+     * @return void
      */
-    private function fetchProperties($dom, $prop, array $properties, array $namespaces)
+    private function fetchProperties(\DOMDocument $dom, \DOMNode $prop, array $properties, array $namespaces)
     {
         foreach ($properties as $property) {
             if (is_array($property)) {
@@ -296,44 +356,82 @@ class Client
     }
 
     /**
-     * @return string|null|mixed
+     * Get a WebDAV property.
+     *
+     * @param string $property
+     * @param string $url
+     *
+     * @return string|array|null
      */
     public function getProperty(string $property, string $url = '')
     {
-        $propfind = $this->propfind($url, [
-            $property,
-        ]);
-
-        if (!isset($propfind[$property])) {
-            return null;
-        }
-
-        $prop = $propfind[$property];
-
-        if (is_string($prop)) {
-            return $prop;
-        } else if (is_array($prop)) {
-            $value = $prop[0];
-            return is_string($value) ? $value : $prop;
-        }
-
-        return $prop;
+        return $this->getPropertyAsync($property, $url, [
+            RequestOptions::SYNCHRONOUS => true
+        ])->wait();
     }
 
-    public function getSupportedReportSet()
+    /**
+     * Get a WebDAV property.
+     *
+     * @param string $property
+     * @param string $url
+     *
+     * @return PromiseInterface<string|array|null>
+     */
+    public function getPropertyAsync(string $property, string $url = ''): PromiseInterface
+    {
+        return $this->propfindAsync($url, [
+            $property,
+        ])->then(function (array $properties) use ($property) {
+            if (!isset($properties[$property])) {
+                return null;
+            }
+
+            $prop = $properties[$property];
+
+            if (is_string($prop)) {
+                return $prop;
+            } else if (is_array($prop)) {
+                $value = $prop[0];
+                return is_string($value) ? $value : $prop;
+            }
+
+            return $prop;
+        });
+    }
+
+    /**
+     * Get a {DAV:}supported-report-set propfind.
+     *
+     * @return array
+     */
+    public function getSupportedReportSet() : array
+    {
+        return $this->getSupportedReportSetAsync([
+            RequestOptions::SYNCHRONOUS => true
+        ])->wait();
+    }
+
+    /**
+     * Get a {DAV:}supported-report-set propfind.
+     *
+     * @return PromiseInterface<array>
+     */
+    public function getSupportedReportSetAsync(array $options = []) : PromiseInterface
     {
         $propName = '{DAV:}supported-report-set';
-        $supportedReportSets = $this->propFind('', [$propName])[$propName];
-
-        return array_map(function ($supportedReportSet) {
-            foreach ($supportedReportSet['value'] as $kind) {
-                if ($kind['name'] == '{DAV:}report') {
-                    foreach($kind['value'] as $type) {
-                        return $type['name'];
+        return $this->propFindAsync('', [$propName], 0, $options)
+        ->then(function (array $properties) use ($propName): array {
+            return array_map(function ($supportedReportSet) {
+                foreach ($supportedReportSet['value'] as $kind) {
+                    if ($kind['name'] == '{DAV:}report') {
+                        foreach($kind['value'] as $type) {
+                            return $type['name'];
+                        }
                     }
                 }
-            }
-        }, $supportedReportSets);
+            }, $properties[$propName]);
+        });
     }
 
     /**
@@ -348,7 +446,7 @@ class Client
      *
      * @return bool
      */
-    public function propPatch(string $url, array $properties) : bool
+    public function propPatchAsync(string $url, array $properties) : PromiseInterface
     {
         $propPatch = new PropPatch();
         $propPatch->properties = $properties;
@@ -357,32 +455,31 @@ class Client
             $propPatch
         );
 
-        $request = new Request('PROPPATCH', $url, [
+        return $this->requestAsync('PROPPATCH', $url, [
             'Content-Type' => 'application/xml; charset=utf-8',
-        ], $xml);
-        $response = $this->client->send($request);
+        ], $xml)->then(function (ResponseInterface $response): bool {
+            if ($response->getStatusCode() === 207) {
+                // If it's a 207, the request could still have failed, but the
+                // information is hidden in the response body.
+                $result = $this->parseMultiStatus((string) $response->getBody());
 
-        if ($response->getStatusCode() === 207) {
-            // If it's a 207, the request could still have failed, but the
-            // information is hidden in the response body.
-            $result = $this->parseMultiStatus((string) $response->getBody());
-
-            $errorProperties = [];
-            foreach ($result as $statusList) {
-                foreach ($statusList as $status => $properties) {
-                    if ($status >= 400) {
-                        foreach ($properties as $propName => $propValue) {
-                            $errorProperties[] = $propName.' ('.$status.')';
+                $errorProperties = [];
+                foreach ($result as $statusList) {
+                    foreach ($statusList as $status => $properties) {
+                        if ($status >= 400) {
+                            foreach ($properties as $propName => $propValue) {
+                                $errorProperties[] = $propName.' ('.$status.')';
+                            }
                         }
                     }
                 }
+                if ($errorProperties) {
+                    throw new DavClientException('PROPPATCH failed. The following properties errored: '.implode(', ', $errorProperties));
+                }
             }
-            if ($errorProperties) {
-                throw new ClientException('PROPPATCH failed. The following properties errored: '.implode(', ', $errorProperties), $request);
-            }
-        }
 
-        return true;
+            return true;
+        });
     }
 
     /**
@@ -396,8 +493,7 @@ class Client
      */
     public function options() : array
     {
-        $request = new Request('OPTIONS', '');
-        $response = $this->client->send($request);
+        $response = $this->request('OPTIONS');
 
         $dav = $response->getHeader('Dav');
         if (!$dav) {
@@ -414,43 +510,47 @@ class Client
     /**
      * Performs an actual HTTP request, and returns the result.
      *
-     * If the specified url is relative, it will be expanded based on the base
-     * url.
+     * @param string $method
+     * @param string $url
+     * @param string|null|resource|\Psr\Http\MessageStreamInterface $body
+     * @param array $headers
      *
-     * The returned array contains 3 keys:
-     *   * body - the response body
-     *   * httpCode - a HTTP code (200, 404, etc)
-     *   * headers - a list of response http headers. The header names have
-     *     been lowercased.
-     *
-     * For large uploads, it's highly recommended to specify body as a stream
-     * resource. You can easily do this by simply passing the result of
-     * fopen(..., 'r').
-     *
-     * This method will throw an exception if an HTTP error was received. Any
-     * HTTP status code above 399 is considered an error.
-     *
-     * Note that it is no longer recommended to use this method, use the send()
-     * method instead.
-     *
-     * @param string               $method
-     * @param string               $url
-     * @param string|resource|null $body
-     * @param array                $headers
+     * @return ResponseInterface
      *
      * @throws ClientException, in case a curl error occurred
-     *
-     * @return array
      */
-    public function request(string $method, string $url = '', ?string $body = null, array $headers = []) : array
+    public function request(string $method, string $url = '', array $headers = [], $body = null, array $options = []) : ResponseInterface
     {
-        $response = $this->client->send(new Request($method, $url, $headers, $body));
+        return $this->client->send(new Request($method, $url, $headers, $body), $options);
+    }
 
-        return [
-            'body' => (string) $response->getBody(),
-            'statusCode' => $response->getStatusCode(),
-            'headers' => array_change_key_case($response->getHeaders()),
-        ];
+    /**
+     * Performs an actual HTTP request, and returns the result.
+     *
+     * @param string $method
+     * @param string $url
+     * @param string|null|resource|\Psr\Http\MessageStreamInterface $body
+     * @param array $headers
+     *
+     * @return PromiseInterface
+     *
+     * @throws ClientException, in case a curl error occurred
+     */
+    public function requestAsync(string $method, string $url = '', array $headers = [], $body = null, array $options = []) : PromiseInterface
+    {
+        return $this->client->sendAsync(new Request($method, $url, $headers, $body), $options);
+    }
+
+    /**
+     * Create
+     * @param array $requests
+     * @param array $config
+     *
+     * @return PromisorInterface
+     */
+    public function requestPool(array $requests, array $config = []): PromisorInterface
+    {
+        return new Pool($this->client, $requests, $config);
     }
 
     /**
@@ -473,7 +573,6 @@ class Client
      *      .. etc ..
      *   ]
      * ]
-     *
      *
      * @param string $body xml body
      * @return array

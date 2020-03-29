@@ -106,8 +106,8 @@ class ImportVCard extends BaseService
             'entry' => [
                 'required',
                 function ($attribute, $value, $fail) {
-                    if (! is_string($value) && ! $value instanceof VCard) {
-                        $fail($attribute.' must be a string or a VCard object.');
+                    if (! is_string($value) && ! is_resource($value) && ! $value instanceof VCard) {
+                        $fail($attribute.' must be a string, a resource, or a VCard object.');
                     }
                 },
             ],

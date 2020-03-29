@@ -12,12 +12,6 @@ use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 
 class CalDAVBirthdays extends AbstractCalDAVBackend
 {
-    public function __construct($account, $user)
-    {
-        $this->account = $account;
-        $this->user = $user;
-    }
-
     /**
      * Returns the uri for this backend.
      *
@@ -63,7 +57,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
             try {
                 $vcal = app(ExportVCalendar::class)
                     ->execute([
-                        'account_id' => $this->account->id,
+                        'account_id' => $this->user->account_id,
                         'special_date_id' => $date->id,
                     ]);
 
@@ -105,7 +99,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
     public function getObjectUuid($addressBookId, $uuid)
     {
         return SpecialDate::where([
-            'account_id' => $this->account->id,
+            'account_id' => $this->user->account_id,
             'uuid' => $uuid,
         ])->first();
     }
@@ -117,7 +111,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
      */
     public function getObjects($addressBookId)
     {
-        $contacts = $this->account
+        $contacts = $this->user->account
                     ->contacts()
                     ->real()
                     ->addressBook()

@@ -18,22 +18,32 @@ class PrincipalBackend extends AbstractBackend
     public const PRINCIPAL_PREFIX = 'principals/';
 
     /**
-     * Get the principal for current user.
+     * @var \App\Models\User\User
+     */
+    protected $user;
+
+    public function __construct($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * Get the principal for user.
      *
      * @return string
      */
-    public static function getPrincipalUser(): string
+    public static function getPrincipalUser($user): string
     {
-        return static::PRINCIPAL_PREFIX.Auth::user()->email;
+        return static::PRINCIPAL_PREFIX.$user->email;
     }
 
     protected function getPrincipals()
     {
         return [
             [
-                'uri'               => static::getPrincipalUser(),
-                '{DAV:}displayname' => Auth::user()->name,
-                '{'.SabreServer::NS_SABREDAV.'}email-address' => Auth::user()->email,
+                'uri'               => static::getPrincipalUser($this->user),
+                '{DAV:}displayname' => $this->user->name,
+                '{'.SabreServer::NS_SABREDAV.'}email-address' => $this->user->email,
             ],
         ];
     }
@@ -168,7 +178,9 @@ class PrincipalBackend extends AbstractBackend
             return [];
         }
 
-        return [$principal['uri']];
+        return [
+            $principal['uri'],
+        ];
     }
 
     /**

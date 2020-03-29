@@ -3,9 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\Account\AddressBook;
 use App\Jobs\SynchronizeAddressBooks;
-use App\Services\DavClient\AddAddressBook;
+use App\Models\Account\AddressBookSubscription;
 
 class DavClientsUpdate extends Command
 {
@@ -33,11 +32,11 @@ class DavClientsUpdate extends Command
         //app(AddAddressBook::class)->execute([]);
         //return;
 
-        $addressBooks = AddressBook::all();
+        $subscriptions = AddressBookSubscription::all();
 
-        foreach ($addressBooks as $addressBook)
+        foreach ($subscriptions as $subscription)
         {
-            SynchronizeAddressBooks::dispatch($addressBook);
+            SynchronizeAddressBooks::dispatch($subscription);
         }
     }
 }

@@ -62,9 +62,9 @@ class DAVServiceProvider extends ServiceProvider
         $user = Auth::user();
 
         // Initiate custom backends for link between Sabre and Monica
-        $principalBackend = new PrincipalBackend();   // User rights
-        $carddavBackend = new CardDAVBackend($user->account, $user);       // Contacts
-        $caldavBackend = new CalDAVBackend($user->account, $user);         // Calendar
+        $principalBackend = new PrincipalBackend($user);   // User rights
+        $carddavBackend = new CardDAVBackend($user);       // Contacts
+        $caldavBackend = new CalDAVBackend($user);         // Calendar
 
         return [
             new PrincipalCollection($principalBackend),

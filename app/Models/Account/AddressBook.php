@@ -24,10 +24,6 @@ class AddressBook extends Model
         'user_id',
         'name',
         'addressBookId',
-        'uri',
-        'capabilities',
-        'username',
-        'password',
     ];
 
     /**
@@ -73,49 +69,5 @@ class AddressBook extends Model
     public function contacts()
     {
         return $this->hasMany(Contact::class);
-    }
-
-    /**
-     * Get capabilities.
-     *
-     * @param string $value
-     * @return array
-     */
-    public function getCapabilitiesAttribute($value)
-    {
-        return json_decode($value, true);
-    }
-
-    /**
-     * Set capabilities.
-     *
-     * @param string $value
-     * @return void
-     */
-    public function setCapabilitiesAttribute($value)
-    {
-        $this->attributes['capabilities'] = json_encode($value);
-    }
-
-    /**
-     * Get password.
-     *
-     * @param string $value
-     * @return string
-     */
-    public function getPasswordAttribute($value)
-    {
-        return Crypt::decryptString($value);
-    }
-
-    /**
-     * Set password.
-     *
-     * @param string $value
-     * @return void
-     */
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = Crypt::encryptString($value);
     }
 }

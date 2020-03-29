@@ -3,28 +3,28 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
-use App\Models\Account\AddressBook;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\SynchronizeAddressBook;
 
 class SynchronizeAddressBooks implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $addressBook;
+    protected $addressBookSubscription;
 
     /**
      * Create a new job instance.
      *
-     * @param AddressBook $addressBook
+     * @param AddressBookSubscription $addressBookSubscription
      * @return void
      */
-    public function __construct(AddressBook $addressBook)
+    public function __construct(AddressBookSubscription $addressBookSubscription)
     {
-        $this->addressBook = $addressBook;
+        $this->addressBookSubscription = $addressBookSubscription;
     }
 
     /**
@@ -35,18 +35,9 @@ class SynchronizeAddressBooks implements ShouldQueue
     public function handle()
     {
         app(SynchronizeAddressBook::class)->execute([
-            'account_id' => $this->addressBook->account_id,
-            'user_id' => $this->addressBook->user_id,
-            'addressbook_id' => $this->addressBook->id,
-            /*
-            'addressbook' => $this->addressBook->uri,
-            'addressBookId' => $this->addressBook->addressBookId,
-            'username' => $this->addressBook->username,
-            'password' => $this->addressBook->password,
-            'localSyncToken' => null, // TODO
-            'syncToken' => $this->addressBook->syncToken,
-            'capabilities' => $this->addressBook->capabilities,
-            */
+            'account_id' => $this->addressBookSubscription->account_id,
+            'user_id' => $this->addressBookSubscription->user_id,
+            'addressbook_subscription_id' => $this->addressBookSubscription->id,
         ]);
     }
 }

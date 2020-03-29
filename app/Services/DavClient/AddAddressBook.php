@@ -2,15 +2,15 @@
 
 namespace App\Services\DavClient;
 
-use App\Models\User\User;
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
-use Sabre\VObject\Component\VCard;
+use Illuminate\Support\Facades\Log;
 use App\Models\Account\AddressBook;
 use App\Services\DavClient\Dav\Client;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
+use App\Models\Account\AddressBookSubscription;
 
 class AddAddressBook extends BaseService
 {
@@ -23,6 +23,7 @@ class AddAddressBook extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
+            'user_id' => 'required|integer|exists:users,id',
             'base_uri' => 'required|string|url',
             'username' => 'required|string',
             'password' => 'required|string',
@@ -30,24 +31,17 @@ class AddAddressBook extends BaseService
     }
 
     /**
+     * Add a new Adress Book.
      *
      * @param array $data
-     * @return VCard
+     * @param GuzzleClient $httpClient
+     * @return AddressBookSubscription
      */
-    public function execute(array $data, GuzzleClient $httpClient = null)
+    public function execute(array $data, GuzzleClient $httpClient = null): AddressBookSubscription
     {
-        $data = [
-            'account_id' => 2,
-            'base_uri' => 'http://monica.test/dav/',
-            'username' => 'admin@admin.com',
-            'password' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZjUzYmRkYzJhNzQ0ZTgxZDRiYmUwMTQ2ODY1YTA3ZTIyMWM0ZTQ5YzkyNzJkN2FhZmE1ODk5ZDRmM2NkZGRlMWQyMWQ5MmM5M2E4YTNkMGMiLCJpYXQiOjE1ODQ4MDkxNDQsIm5iZiI6MTU4NDgwOTE0NCwiZXhwIjoxNjE2MzQ1MTQ0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.MUtcgy3PWk9McA59zx4SBJxKAkdSiGv1a9ZtVKwlgtk09bJEx1lJgymGSfDlrNqKvD2LqhTu0y95jLZNoj4-uM6DBZm3RMo18mw2xCEywB4st1hZpMYSYoOmtrOcsZweoP5r31zf_jzMX3mLde6MAeEkJcotGfO9z57M74FquLKixZRLvVruES2DcZoL1hwCKoxvv11BGRE78RQsWiipv0cfgmcSNEQVR820BWkM0X_4WwpufJdzZ5p1EpTy5AP2XXlx6amGXqxgMUIY7C-KyF1uw1Rmr6B-bTcMLJHZBH6TzU0yFoaJnhZZ9tJFyf7E70BL8SaO9_P6nA7ACjDREjAJBD9dZYrP46G-mqJXjWyVOcDVJZNW7dhF5vnEp7gghIVWhAm4lLy5nPI_CNpB0mqPrdkj57Avoi3MAEwf4ADy9CZp1EoLZIvNjBuMpgwwONTF5oP18NMaHJcsbFkmviY7eW-DIuIcNtCuoAM7Q4ulhuVX4tVry5NLsiab0_W8_l63C_n1-ICpv2t04jSh9H3SwgIXAZXhe-0vMt0gTIc3c_1HZ4eRd1kOuUs-708Esiq7J_Nt98PJZB8AP6qbeuScI0Cxnm7IulJ1WaI7mLjA7JPDvISeL2rrYjwqmguDbA8nQ7UjEq1dLN-PaAaL08p_iKU3ssPV2YziNSi_Alc',
-        ];
-
-        /* TESTS */
-
         $this->validate($data);
 
-        $addressbook = $this->getAddressBook($data, $httpClient);
+        $addressbookData = $this->getAddressBookData($data, $httpClient);
 
         $lastAddressBook = AddressBook::where('account_id', $data['account_id'])
             ->get()
@@ -55,7 +49,7 @@ class AddAddressBook extends BaseService
 
         $lastId = 0;
         if ($lastAddressBook) {
-            $lastId = intval(preg_replace('/\w+(\d+)/i', '$1', $lastAddressBook->identifier));
+            $lastId = intval(preg_replace('/\w+(\d+)/i', '$1', $lastAddressBook->addressBookId));
         }
         $nextAddressBookId = 'contacts'.($lastId+1);
 
@@ -63,58 +57,62 @@ class AddAddressBook extends BaseService
             'account_id' => $data['account_id'],
             'user_id' => $data['user_id'],
             'addressBookId' => $nextAddressBookId,
+            'name' => $addressbookData['name'],
+        ]);
+        $subscription = AddressBookSubscription::create([
+            'account_id' => $data['account_id'],
+            'user_id' => $data['user_id'],
             'username' => $data['username'],
-        ]
-            + $addressbook
-        );
-        $addressbook->password = $data['password'];
-        $addressbook->save();
+            'addressbook_id' => $addressbook->id,
+            'uri' => $addressbookData['uri'],
+            'capabilities' => $addressbookData['capabilities'],
+        ]);
+        $subscription->password = $data['password'];
+        $subscription->save();
 
-        return $addressbook;
+        return $subscription;
     }
 
-    public function getAddressBook(array $data, GuzzleClient $httpClient = null)
+    public function getAddressBookData(array $data, GuzzleClient $httpClient = null): ?array
     {
-        $client = $this->getClient($data, $httpClient);
+        try {
+            $client = $this->getClient($data, $httpClient);
 
-        $uri = $this->getAddressBookBaseUri($data, $client);
+            $uri = $this->getAddressBookBaseUri($data, $client);
 
-        $client->setBaseUri($uri);
+            $client->setBaseUri($uri);
 
-        $capabilities = $this->getCapabilities($client);
+            $capabilities = $this->getCapabilities($client);
 
-        $name = $client->getProperty('{DAV:}displayname');
+            $name = $client->getProperty('{DAV:}displayname');
 
-        return [
-            'uri' => $uri,
-            'capabilities' => $capabilities,
-            'name' => $name,
-        ];
+            return [
+                'uri' => $uri,
+                'capabilities' => $capabilities,
+                'name' => $name,
+            ];
+        } catch (ClientException $e) {
+            Log::error(__CLASS__.' getAddressBookBaseUri: '.$e->getMessage(), $e);
+        }
+        return null;
     }
 
 
     private function getAddressBookBaseUri(array $data, Client $client) : string
     {
-        try {
+        $baseUri = $client->getServiceUrl();
+        $client->setBaseUri($baseUri);
 
-            $baseUri = $client->getServiceUrl();
-            $client->setBaseUri($baseUri);
+        // Check the OPTIONS of the server
+        $this->checkOptions($client);
 
-            $this->checkOptions($client);
+        // Get the principal of this account
+        $principal = $this->getCurrentUserPrincipal($client);
 
+        // Get the AddressBook of this principal
+        $addressbook = $this->getAddressBookUrl($client, $principal);
 
-            // /dav/principals/admin@admin.com/
-            $principal = $this->getCurrentUserPrincipal($client);
-
-            $addressbook = $this->getAddressBookUrl($client, $principal);
-
-            return $client->getBaseUri($addressbook);
-
-        } catch (ClientException $e) {
-            $r = $e->getResponse();
-            $s = (string) $r->getBody();
-        } catch (\Exception $e) {
-        }
+        return $client->getBaseUri($addressbook);
     }
 
     /**

@@ -14,12 +14,6 @@ use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 
 class CalDAVTasks extends AbstractCalDAVBackend
 {
-    public function __construct($account, $user)
-    {
-        $this->account = $account;
-        $this->user = $user;
-    }
-
     /**
      * Returns the uri for this backend.
      *
@@ -45,11 +39,12 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Returns the collection of all tasks.
      *
+     * @param mixed|null $collectionId
      * @return \Illuminate\Support\Collection
      */
-    public function getObjects($addressBookId)
+    public function getObjects($collectionId)
     {
-        return $this->account
+        return $this->user->account
                     ->tasks()
                     ->get();
     }
@@ -57,14 +52,14 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Returns the contact for the specific uuid.
      *
-     * @param mixed|null $addressBookId
+     * @param mixed|null $collectionId
      * @param string  $uuid
      * @return mixed
      */
-    public function getObjectUuid($addressBookId, $uuid)
+    public function getObjectUuid($collectionId, $uuid)
     {
         return Task::where([
-            'account_id' => $this->account->id,
+            'account_id' => $this->user->account_id,
             'uuid' => $uuid,
         ])->first();
     }
@@ -91,7 +86,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
             try {
                 $vcal = app(ExportTask::class)
                     ->execute([
-                        'account_id' => $this->account->id,
+                        'account_id' => $this->user->account_id,
                         'task_id' => $task->id,
                     ]);
 
@@ -131,7 +126,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
     {
         $task_id = null;
         if ($objectUri) {
-            $task = $this->getObject($objectUri);
+            $task = $this->getObject($this->backendUri(), $objectUri);
 
             if ($task) {
                 $task_id = $task->id;
@@ -141,13 +136,13 @@ class CalDAVTasks extends AbstractCalDAVBackend
         try {
             $result = app(ImportTask::class)
                 ->execute([
-                    'account_id' => $this->account->id,
+                    'account_id' => $this->user->account_id,
                     'task_id' => $task_id,
                     'entry' => $calendarData,
                 ]);
 
             if (! Arr::has($result, 'error')) {
-                $task = Task::where('account_id', $this->account->id)
+                $task = Task::where('account_id', $this->user->account_id)
                     ->find($result['task_id']);
 
                 $calendar = $this->prepareData($task);
@@ -169,13 +164,13 @@ class CalDAVTasks extends AbstractCalDAVBackend
      */
     public function deleteCalendarObject($objectUri)
     {
-        $task = $this->getObject($objectUri);
+        $task = $this->getObject($this->backendUri(), $objectUri);
 
         if ($task) {
             try {
                 app(DestroyTask::class)
                     ->execute([
-                        'account_id' => $this->account->id,
+                        'account_id' => $this->user->account_id,
                         'task_id' => $task->id,
                     ]);
             } catch (\Exception $e) {

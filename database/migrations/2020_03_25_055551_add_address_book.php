@@ -18,18 +18,31 @@ class AddAddressBook extends Migration
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('user_id');
 
-            $table->string('uri', 2096);
             $table->string('name', 500)->nullable();
             $table->string('addressBookId', 100);
-            $table->string('capabilities', 1024);
-            $table->string('username', 1024);
-            $table->string('password', 2048);
-            $table->string('syncToken', 512)->nullable();
             $table->timestamps();
 
             $table->index('addressBookId');
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        });
+
+        Schema::create('addressbook_subscriptions', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedInteger('account_id');
+            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('addressbook_id',);
+
+            $table->string('uri', 2096);
+            $table->string('username', 1024);
+            $table->string('password', 2048);
+            $table->string('capabilities', 1024);
+            $table->string('syncToken', 512)->nullable();
+            $table->timestamps();
+
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('addressbook_id')->references('id')->on('addressbooks')->onDelete('cascade');
         });
     }
 
@@ -40,6 +53,7 @@ class AddAddressBook extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('addressbook_subscriptions');
         Schema::dropIfExists('addressbooks');
     }
 }

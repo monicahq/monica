@@ -8,11 +8,6 @@ use App\Models\User\SyncToken;
 trait SyncDAVBackend
 {
     /**
-     * @var \App\Models\Account\Account
-     */
-    protected $account;
-
-    /**
      * @var \App\Models\User\User
      */
     protected $user;
@@ -29,7 +24,7 @@ trait SyncDAVBackend
     protected function getCurrentSyncToken($addressBookId)
     {
         $tokens = SyncToken::where([
-            'account_id' => $this->account->id,
+            'account_id' => $this->user->account_id,
             'user_id' => $this->user->id,
             'name' => $addressBookId ?? $this->backendUri(),
         ])
@@ -62,7 +57,7 @@ trait SyncDAVBackend
     protected function getSyncToken($addressBookId, $syncToken)
     {
         return SyncToken::where([
-            'account_id' => $this->account->id,
+            'account_id' => $this->user->account_id,
             'user_id' => $this->user->id,
             'name' => $addressBookId ?? $this->backendUri(),
         ])
@@ -81,7 +76,7 @@ trait SyncDAVBackend
 
         if ($max) {
             return SyncToken::create([
-                'account_id' => $this->account->id,
+                'account_id' => $this->user->account_id,
                 'user_id' => $this->user->id,
                 'name' => $addressBookId ?? $this->backendUri(),
                 'timestamp' => $max,
@@ -98,7 +93,7 @@ trait SyncDAVBackend
     private function createSyncTokenNow($addressBookId)
     {
         return SyncToken::create([
-            'account_id' => $this->account->id,
+            'account_id' => $this->user->account_id,
             'user_id' => $this->user->id,
             'name' => $addressBookId ?? $this->backendUri(),
             'timestamp' => now(),
