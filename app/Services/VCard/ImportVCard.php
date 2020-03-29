@@ -90,7 +90,7 @@ class ImportVCard extends BaseService
      * The array that the service was called with.
      * @var array
      */
-    private $data;
+    protected $data;
 
     /**
      * Get the validation rules that apply to the service.
@@ -139,7 +139,7 @@ class ImportVCard extends BaseService
                 ->findOrFail($contactId);
         }
 
-        return $this->process($data);
+        return $this->process();
     }
 
     private function clear()
@@ -153,18 +153,17 @@ class ImportVCard extends BaseService
     /**
      * Process data importation.
      *
-     * @param array $data
      * @return array
      */
-    private function process(array $data): array
+    private function process(): array
     {
-        if ($this->accountId !== $data['account_id']) {
+        if ($this->accountId !== $this->data['account_id']) {
             $this->clear();
-            $this->accountId = $data['account_id'];
+            $this->accountId = $this->data['account_id'];
         }
-        $this->userId = $data['user_id'];
+        $this->userId = $this->data['user_id'];
 
-        $entry = $this->getEntry($data);
+        $entry = $this->getEntry();
 
         if (! $entry) {
             return [
@@ -174,17 +173,16 @@ class ImportVCard extends BaseService
             ];
         }
 
-        return $this->processEntry($data, $entry);
+        return $this->processEntry($entry);
     }
 
     /**
      * Process entry importation.
      *
-     * @param array $data
      * @param VCard $entry
      * @return array
      */
-    private function processEntry(array $data, VCard $entry): array
+    private function processEntry(VCard $entry): array
     {
         if (! $this->canImportCurrentEntry($entry)) {
             return [
@@ -194,23 +192,22 @@ class ImportVCard extends BaseService
             ];
         }
 
-        $contactId = Arr::get($data, 'contact_id');
+        $contactId = Arr::get($this->data, 'contact_id');
         $contact = $this->getExistingContact($entry, $contactId);
 
-        return $this->processEntryContact($data, $entry, $contact);
+        return $this->processEntryContact($entry, $contact);
     }
 
     /**
      * Process entry importation.
      *
-     * @param array $data
      * @param VCard $entry
      * @param Contact|null $contact
      * @return array
      */
-    private function processEntryContact(array $data, VCard $entry, $contact): array
+    private function processEntryContact(VCard $entry, $contact): array
     {
-        $behaviour = $data['behaviour'] ?: self::BEHAVIOUR_ADD;
+        $behaviour = $this->data['behaviour'] ?: self::BEHAVIOUR_ADD;
         if ($contact && $behaviour === self::BEHAVIOUR_ADD) {
             return [
                 'contact_id' => $contact->id,
@@ -229,12 +226,11 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param array $data
      * @return VCard|null
      */
-    private function getEntry($data): ?VCard
+    private function getEntry(): ?VCard
     {
-        $entry = $data['entry'];
+        $entry = $this->data['entry'];
 
         if (! $entry instanceof VCard) {
             try {
