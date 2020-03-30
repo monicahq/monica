@@ -4122,26 +4122,28 @@
         },
         {
             "name": "monicahq/laravel-sabre",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-sabre.git",
-                "reference": "b15f8195513990bb30e08161e0375d52e7d46c31"
+                "reference": "4ae1bc031d73346720e1d9cb70d813bb6abb2f28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/b15f8195513990bb30e08161e0375d52e7d46c31",
-                "reference": "b15f8195513990bb30e08161e0375d52e7d46c31",
+                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/4ae1bc031d73346720e1d9cb70d813bb6abb2f28",
+                "reference": "4ae1bc031d73346720e1d9cb70d813bb6abb2f28",
                 "shasum": ""
             },
             "require": {
                 "laravel/framework": ">5.6",
-                "sabre/dav": "^4.0"
+                "sabre/dav": "^4.0",
+                "thecodingmachine/safe": "^1.0"
             },
             "require-dev": {
                 "nunomaduro/larastan": "^0.5",
                 "orchestra/testbench": "^5.0",
                 "phpunit/phpunit": "^9.0",
+                "thecodingmachine/phpstan-safe-rule": "^1.0",
                 "vimeo/psalm": "^3.0"
             },
             "type": "library",
@@ -4174,7 +4176,7 @@
                 "php",
                 "sabre"
             ],
-            "time": "2020-03-07T14:46:44+00:00"
+            "time": "2020-03-07T15:24:56+00:00"
         },
         {
             "name": "monolog/monolog",
