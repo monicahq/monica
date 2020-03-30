@@ -2,6 +2,7 @@
 
 namespace App\Models\Account;
 
+use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
 use App\Models\ModelBinding as Model;
 use Intervention\Image\Facades\Image;
@@ -64,7 +65,7 @@ class Photo extends Model
     {
         $url = $this->new_filename;
 
-        return asset(Storage::disk(config('filesystems.default'))->url($url));
+        return asset(StorageHelper::disk(config('filesystems.default'))->url($url));
     }
 
     /**

@@ -74,5 +74,7 @@ class AddressBook extends BaseAddressBook
                 return $date->timestamp;
             }
         }
+
+        return;
     }
 }

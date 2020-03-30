@@ -131,7 +131,7 @@ class Activity extends Model implements IsJournalableInterface
      */
     public function getTitle()
     {
-        return $this->type ? $this->type->key : null;
+        return $this->type ? $this->type->translation_key : null;
     }
 
     /**

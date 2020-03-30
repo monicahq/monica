@@ -25,7 +25,7 @@ class EmailChangeTest extends TestCase
         $user = factory(User::class)->create([]);
 
         $request = [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'email' => 'newmail@ok.com',
         ];
@@ -37,7 +37,7 @@ class EmailChangeTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'email' => 'newmail@ok.com',
         ]);
 
@@ -87,7 +87,7 @@ class EmailChangeTest extends TestCase
         $user = factory(User::class)->create([]);
 
         $request = [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'email' => 'newmail@ok.com',
         ];
@@ -98,7 +98,7 @@ class EmailChangeTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'email' => 'newmail@ok.com',
         ]);
 
@@ -117,7 +117,7 @@ class EmailChangeTest extends TestCase
         $user = factory(User::class)->create([]);
 
         $request = [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'email' => 'newmail@ok.com',
         ];

@@ -44,6 +44,13 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Auth\Population\PopulateLifeEventsTable;
 use App\Services\Auth\Population\PopulateContactFieldTypesTable;
 
+/**
+ * @property int $reminders_count
+ * @property int $notes_count
+ * @property int $activities_count
+ * @property int $gifts_count
+ * @property int $tasks_count
+ */
 class Account extends Model
 {
     use Subscription;

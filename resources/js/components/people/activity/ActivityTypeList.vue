@@ -3,6 +3,7 @@
 
 <template>
   <form-select
+    :id="'activity-type-list'"
     :title="title"
     :options="activityCategories"
     :iclass="'br2 f5 w-100 ba b--black-40 pa2 outline-0'"

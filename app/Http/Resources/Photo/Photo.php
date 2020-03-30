@@ -3,10 +3,13 @@
 namespace App\Http\Resources\Photo;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Photo extends Resource
+/**
+ * @extends JsonResource<\App\Models\Account\Photo>
+ */
+class Photo extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -25,7 +28,7 @@ class Photo extends Resource
             'mime_type' => $this->mime_type,
             'link' => $this->url(),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'contact' => new ContactShortResource($this->contact()),
             'created_at' => DateHelper::getTimestamp($this->created_at),

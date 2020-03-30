@@ -17,13 +17,14 @@ use App\Console\Commands\SendReminders;
 use App\Console\Commands\SentryRelease;
 use App\Console\Commands\SendStayInTouch;
 use App\Console\Commands\SetupProduction;
+use App\Console\Commands\UpdateGravatars;
 use App\Console\Commands\PingVersionServer;
 use App\Console\Commands\SetPremiumAccount;
-use App\Console\Commands\SetupFrontEndTest;
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\CalculateStatistics;
 use App\Console\Commands\OneTime\MoveAvatars;
 use App\Console\Commands\MigrateDatabaseCollation;
+use App\Console\Commands\Tests\SetupFrontEndTestUser;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\OneTime\MoveAvatarsToPhotosDirectory;
 
@@ -51,12 +52,24 @@ class Kernel extends ConsoleKernel
         SendStayInTouch::class,
         SentryRelease::class,
         SetPremiumAccount::class,
-        SetupFrontEndTest::class,
         SetupProduction::class,
         SetupTest::class,
         SetUserAdmin::class,
         Update::class,
+        UpdateGravatars::class,
     ];
+
+    /**
+     * Register the Closure based commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        if ($this->app->environment() != 'production') {
+            $this->commands[] = SetupFrontEndTestUser::class;
+        }
+    }
 
     /**
      * Define the application's command schedule.
@@ -71,6 +84,7 @@ class Kernel extends ConsoleKernel
         $this->scheduleCommand($schedule, 'monica:calculatestatistics', 'daily');
         $this->scheduleCommand($schedule, 'monica:ping', 'daily');
         $this->scheduleCommand($schedule, 'monica:clean', 'daily');
+        $this->scheduleCommand($schedule, 'monica:updategravatars', 'weekly');
         if (config('trustedproxy.cloudflare')) {
             $this->scheduleCommand($schedule, 'cloudflare:reload', 'daily'); // @codeCoverageIgnore
         }

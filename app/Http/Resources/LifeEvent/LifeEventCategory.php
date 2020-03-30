@@ -3,9 +3,12 @@
 namespace App\Http\Resources\LifeEvent;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class LifeEventCategory extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\LifeEventCategory>
+ */
+class LifeEventCategory extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,7 +25,7 @@ class LifeEventCategory extends Resource
             'core_monica_data' => (bool) $this->core_monica_data,
             'default_life_event_category_key' => $this->default_life_event_category_key,
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

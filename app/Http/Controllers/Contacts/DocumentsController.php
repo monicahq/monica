@@ -40,7 +40,7 @@ class DocumentsController extends Controller
     public function store(Request $request, Contact $contact): Document
     {
         return app(UploadDocument::class)->execute([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'document' => $request->document,
         ]);
@@ -58,14 +58,18 @@ class DocumentsController extends Controller
     public function destroy(Request $request, Contact $contact, Document $document)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'document_id' => $document->id,
         ];
 
         try {
-            app(DestroyDocument::class)->execute($data);
+            if (app(DestroyDocument::class)->execute($data)) {
+                return $this->respondObjectDeleted($document->id);
+            }
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }
+
+        return;
     }
 }

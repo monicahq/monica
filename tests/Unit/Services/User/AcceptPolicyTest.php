@@ -22,7 +22,7 @@ class AcceptPolicyTest extends TestCase
         $term = factory(Term::class)->create([]);
 
         $request = [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'ip_address' => '182.21.12.21',
         ];
@@ -32,7 +32,7 @@ class AcceptPolicyTest extends TestCase
         $this->assertDatabaseHas('term_user', [
             'user_id' => $user->id,
             'term_id' => $term->id,
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'ip_address' => '182.21.12.21',
         ]);
 

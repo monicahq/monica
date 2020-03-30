@@ -3,9 +3,9 @@
 namespace App\Http\Resources\Country;
 
 use App\Helpers\CountriesHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class Country extends Resource
+class Country extends JsonResource
 {
     /**
      * Transform the resource into an array.

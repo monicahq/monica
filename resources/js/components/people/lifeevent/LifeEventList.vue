@@ -536,7 +536,7 @@
         <a class="btn center" href="" @click.prevent="closeDeleteModal()">
           {{ $t('app.cancel') }}
         </a>
-        <a :cy-name="'delete-life-event-button'" class="btn btn-primary" href="" @click.prevent="destroy(lifeEventToDelete)">
+        <a v-cy-name="'delete-life-event-button'" class="btn btn-primary" href="" @click.prevent="destroy(lifeEventToDelete)">
           {{ $t('app.delete') }}
         </a>
       </div>

@@ -246,14 +246,14 @@ END:VCARD
     {
         $importJob = $this->createImportJob();
         $contact = factory(Contact::class)->create([
-            'account_id' => $importJob->account->id,
+            'account_id' => $importJob->account_id,
         ]);
         $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $importJob->account->id,
+            'account_id' => $importJob->account_id,
             'type' => 'email',
         ]);
         $contactField = factory(ContactField::class)->create([
-            'account_id' => $importJob->account->id,
+            'account_id' => $importJob->account_id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
             'data' => 'john@doe.com',
@@ -287,7 +287,7 @@ END:VCARD
         );
 
         $this->assertDatabaseHas('import_job_reports', [
-            'account_id' => $importJob->account->id,
+            'account_id' => $importJob->account_id,
             'import_job_id' => $importJob->id,
         ]);
     }

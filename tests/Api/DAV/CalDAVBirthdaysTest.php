@@ -20,7 +20,7 @@ class CalDAVBirthdaysTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $specialDate = $contact->setSpecialDate('birthdate', 1983, 03, 04);
 
@@ -72,7 +72,7 @@ class CalDAVBirthdaysTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $specialDate = $contact->setSpecialDate('birthdate', 1983, 03, 04);
         $specialDate->uuid = Str::uuid();
@@ -90,7 +90,7 @@ class CalDAVBirthdaysTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $specialDate = $contact->setSpecialDate('birthdate', 1983, 03, 04);
         $specialDate->uuid = Str::uuid();
@@ -141,7 +141,7 @@ class CalDAVBirthdaysTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $specialDate = $contact->setSpecialDate('birthdate', 1983, 03, 04);
         $specialDate->uuid = Str::uuid();
@@ -194,7 +194,7 @@ class CalDAVBirthdaysTest extends ApiTestCase
 
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $specialDate = $contact->setSpecialDate('birthdate', 1983, 03, 04);
         $specialDate->uuid = Str::uuid();
@@ -202,7 +202,7 @@ class CalDAVBirthdaysTest extends ApiTestCase
 
         Carbon::setTestNow(Carbon::create(2019, 1, 1, 8, 0, 0));
         $token = factory(SyncToken::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'name' => 'birthdays',
             'timestamp' => now(),
@@ -223,6 +223,14 @@ class CalDAVBirthdaysTest extends ApiTestCase
 
         $response->assertStatus(207);
 
+        $token = SyncToken::where([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'name' => 'birthdays',
+        ])
+            ->orderBy('created_at')
+            ->get()
+            ->last();
         $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\" xmlns:cal=\"urn:ietf:params:xml:ns:caldav\" xmlns:cs=\"http://calendarserver.org/ns/\">
  <d:response>
   <d:href>/dav/calendars/{$user->email}/birthdays/{$specialDate->uuid}.ics</d:href>
@@ -241,7 +249,7 @@ class CalDAVBirthdaysTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $specialDate = $contact->setSpecialDate('birthdate', 1983, 03, 04);
         $specialDate->uuid = Str::uuid();

@@ -72,7 +72,7 @@ class ApiTagController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -99,7 +99,7 @@ class ApiTagController extends ApiController
                     +
                     [
                         'tag_id' => $id,
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -123,7 +123,7 @@ class ApiTagController extends ApiController
         try {
             app(DestroyTag::class)->execute([
                 'tag_id' => $id,
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

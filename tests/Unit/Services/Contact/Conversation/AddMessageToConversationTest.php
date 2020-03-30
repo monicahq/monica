@@ -35,8 +35,8 @@ class AddMessageToConversationTest extends TestCase
         $conversation = factory(Conversation::class)->create([]);
 
         $request = [
-            'account_id' => $conversation->account->id,
-            'contact_id' => $conversation->contact->id,
+            'account_id' => $conversation->account_id,
+            'contact_id' => $conversation->contact_id,
             'conversation_id' => $conversation->id,
             'written_by_me' => true,
             'written_at' => now(),
@@ -48,8 +48,8 @@ class AddMessageToConversationTest extends TestCase
         $this->assertDatabaseHas('messages', [
             'id' => $message->id,
             'conversation_id' => $conversation->id,
-            'contact_id' => $message->contact->id,
-            'account_id' => $message->account->id,
+            'contact_id' => $message->contact_id,
+            'account_id' => $message->account_id,
             'written_by_me' => true,
             'content' => 'lorem ipsum',
         ]);

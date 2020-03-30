@@ -68,7 +68,7 @@ class ImportVCards extends Command
 
         $importJob = $this->import($path, $user);
 
-        return $this->report($importJob);
+        return $this->report($importJob) ? 0 : 1;
     }
 
     private function acceptedExtensions(Filesystem $filesystem, string $path): bool

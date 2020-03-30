@@ -114,7 +114,7 @@ exit
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
 1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind. You'll need to configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
-1. Run `composer install --no-interaction --no-suggest --no-dev` to install all packages.
+1. Run `composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs` to install all packages.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
 1. *Optional*: Setup the queues with Redis, Beanstalk or Amazon SQS: see optional instruction of [generic installation](generic.md#setup-queues)

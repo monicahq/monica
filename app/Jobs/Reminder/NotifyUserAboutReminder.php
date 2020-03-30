@@ -55,11 +55,13 @@ class NotifyUserAboutReminder implements ShouldQueue
             $this->reminderOutbox->logSent($message);
 
             // schedule the next reminder for this user
-            if ($this->reminderOutbox->reminder->frequency_type == 'one_time') {
-                $this->reminderOutbox->reminder->inactive = true;
-                $this->reminderOutbox->reminder->save();
+            /** @var \App\Models\Contact\Reminder */
+            $reminder = $this->reminderOutbox->reminder;
+            if ($reminder->frequency_type == 'one_time') {
+                $reminder->inactive = true;
+                $reminder->save();
             } else {
-                $this->reminderOutbox->reminder->schedule($this->reminderOutbox->user);
+                $reminder->schedule($this->reminderOutbox->user);
             }
         }
 
@@ -72,7 +74,7 @@ class NotifyUserAboutReminder implements ShouldQueue
      *
      * @return MailNotification|null
      */
-    private function getMessage()
+    private function getMessage(): ?MailNotification
     {
         switch ($this->reminderOutbox->nature) {
             case 'reminder':
@@ -80,7 +82,7 @@ class NotifyUserAboutReminder implements ShouldQueue
             case 'notification':
                 return new UserNotified($this->reminderOutbox->reminder, $this->reminderOutbox->notification_number_days_before);
             default:
-                break;
+                return null;
         }
     }
 }

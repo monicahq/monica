@@ -29,7 +29,7 @@ class ApiGenderControllerTest extends ApiTestCase
         $user = $this->signin();
 
         factory(Gender::class, 3)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/genders');
@@ -74,7 +74,7 @@ class ApiGenderControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $gender = factory(Gender::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('get', '/api/genders/'.$gender->id);
@@ -122,7 +122,7 @@ class ApiGenderControllerTest extends ApiTestCase
         ]);
 
         $this->assertDatabasehas('genders', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $genderId,
             'name' => 'man',
             'type' => 'M',
@@ -135,7 +135,7 @@ class ApiGenderControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $gender = factory(Gender::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('put', '/api/genders/'.$gender->id, [
@@ -159,7 +159,7 @@ class ApiGenderControllerTest extends ApiTestCase
         ]);
 
         $this->assertDatabaseHas('genders', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $genderId,
             'name' => 'man',
             'type' => 'M',
@@ -209,7 +209,7 @@ class ApiGenderControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $gender = factory(Gender::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('delete', '/api/genders/'.$gender->id);
@@ -217,7 +217,7 @@ class ApiGenderControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $this->assertDatabaseMissing('genders', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $gender->id,
         ]);
     }

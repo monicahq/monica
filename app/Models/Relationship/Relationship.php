@@ -79,16 +79,18 @@ class Relationship extends Model
      *
      * @return self|null
      */
-    public function reverseRelationship()
+    public function reverseRelationship(): ?self
     {
         $reverseRelationshipType = $this->relationshipType->reverseRelationshipType();
         if ($reverseRelationshipType) {
             return self::where([
-                'account_id'=> $this->account->id,
+                'account_id'=> $this->account_id,
                 'contact_is' => $this->of_contact,
                 'of_contact' => $this->contact_is,
                 'relationship_type_id' => $reverseRelationshipType->id,
             ])->first();
         }
+
+        return null;
     }
 }

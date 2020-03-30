@@ -3,13 +3,13 @@
 namespace App\Models\Contact;
 
 use Carbon\Carbon;
-use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use function Safe\preg_split;
+use App\Helpers\StorageHelper;
 use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
 use App\Models\Account\Weather;
@@ -24,18 +24,17 @@ use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingHasher as Model;
-use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
-use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
+/**
+ * @property \App\Models\Instance\SpecialDate $birthdate
+ */
 class Contact extends Model
 {
     use Searchable;
@@ -795,32 +794,6 @@ class Contact extends Model
     }
 
     /**
-     * Translate a collection of relationships into a collection that the API can
-     * parse.
-     *
-     * @param  Collection $collection
-     * @return Collection
-     */
-    public static function translateForAPI(Collection $collection)
-    {
-        $contacts = collect();
-
-        foreach ($collection as $relationship) {
-            $contact = $relationship->ofContact;
-
-            $contacts->push([
-                'relationship' => [
-                    'id' => $relationship->id,
-                    'name' => $relationship->relationshipType->name,
-                ],
-                'contact' => new ContactShortResource($contact),
-            ]);
-        }
-
-        return $contacts;
-    }
-
-    /**
      * Set the default avatar color for this object.
      *
      * @param string|null $color
@@ -896,17 +869,19 @@ class Contact extends Model
     public function calculateActivitiesStatistics()
     {
         // Delete the Activities statistics table for this contact
-        $this->activityStatistics->each->delete();
+        $this->activityStatistics->each(function ($activityStatistic) {
+            $activityStatistic->delete();
+        });
 
         // Create the statistics again
         $this->activities->groupBy('happened_at.year')
             ->map(function (Collection $activities, $year) {
-                $activityStatistic = $this->activityStatistics()->make();
-                $activityStatistic->account_id = $this->account_id;
-                $activityStatistic->contact_id = $this->id;
-                $activityStatistic->year = $year;
-                $activityStatistic->count = $activities->count();
-                $activityStatistic->save();
+                ActivityStatistic::create([
+                    'account_id' => $this->account_id,
+                    'contact_id' => $this->id,
+                    'year' => $year,
+                    'count' => $activities->count(),
+                ]);
             });
     }
 
@@ -955,7 +930,7 @@ class Contact extends Model
 
         try {
             $matches = preg_split('/\?/', $this->avatar_default_url);
-            $url = asset(Storage::disk(config('filesystems.default'))->url($matches[0]));
+            $url = asset(StorageHelper::disk(config('filesystems.default'))->url($matches[0]));
             if (count($matches) > 1) {
                 $url .= '?'.$matches[1];
             }
@@ -1058,30 +1033,6 @@ class Contact extends Model
         return $this->tags->map(function ($tag) {
             return $tag->name;
         })->join(',');
-    }
-
-    /**
-     * Get the list of tags for this contact.
-     */
-    public function getTagsForAPI()
-    {
-        return TagResource::collection($this->tags);
-    }
-
-    /**
-     * Get the list of addresses for this contact.
-     */
-    public function getAddressesForAPI()
-    {
-        return AddressResource::collection($this->addresses);
-    }
-
-    /**
-     * Get the list of contact fields for this contact.
-     */
-    public function getContactFieldsForAPI()
-    {
-        return ContactFieldResource::collection($this->contactFields);
     }
 
     /**

@@ -3,27 +3,12 @@
 namespace App\Helpers;
 
 use Carbon\Carbon;
-use Jenssegers\Date\Date;
 use function Safe\strtotime;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class DateHelper
 {
-    /**
-     * Set the locale of the instance for Date frameworks.
-     *
-     * @param string $locale
-     *
-     * @return void
-     */
-    public static function setLocale($locale): void
-    {
-        $locale = $locale ?: config('app.locale');
-        Carbon::setLocale($locale);
-        Date::setLocale($locale);
-    }
-
     /**
      * Creates a Carbon object from DateTime format.
      * If timezone is given, it parse the date with this timezone.
@@ -80,6 +65,7 @@ class DateHelper
         }
 
         $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0, $timezone ?? $date->timezone);
+        $f = $date->getLocale();
 
         $appTimezone = config('app.timezone');
         if ($date->timezone !== $appTimezone) {
@@ -104,10 +90,10 @@ class DateHelper
             $date = $date->date;
         }
         if (! $date instanceof Carbon) {
-            $date = Carbon::create($date);
+            $date = Carbon::parse($date);
         }
 
-        return $date->format(config('api.timestamp_format'));
+        return $date->translatedFormat(config('api.timestamp_format'));
     }
 
     /**
@@ -125,10 +111,10 @@ class DateHelper
             $date = $date->date;
         }
         if (! $date instanceof Carbon) {
-            $date = Carbon::create($date);
+            $date = Carbon::parse($date);
         }
 
-        return $date->format(config('api.date_timestamp_format'));
+        return $date->translatedFormat(config('api.date_timestamp_format'));
     }
 
     /**
@@ -136,11 +122,9 @@ class DateHelper
      *
      * @return string|null
      */
-    public static function getTimezone()
+    public static function getTimezone(): ?string
     {
-        if (Auth::check()) {
-            return Auth::user()->timezone;
-        }
+        return Auth::check() ? Auth::user()->timezone : null;
     }
 
     /**
@@ -233,10 +217,10 @@ class DateHelper
      */
     private static function formatDate($date, $format): string
     {
-        $date = new Date($date, static::getTimezone());
-        $format = trans($format, [], Date::getLocale());
+        $date = Carbon::parse($date);
+        $format = trans($format, [], Carbon::getLocale());
 
-        return $date->format($format) ?: '';
+        return $date->translatedFormat($format) ?: '';
     }
 
     /**
@@ -271,10 +255,10 @@ class DateHelper
      */
     public static function getMonthAndYear(int $month): string
     {
-        $date = Date::now(static::getTimezone())->addMonthsNoOverflow($month);
-        $format = trans('format.short_month_year', [], Date::getLocale());
+        $date = Carbon::now(static::getTimezone())->addMonthsNoOverflow($month);
+        $format = trans('format.short_month_year', [], Carbon::getLocale());
 
-        return $date->format($format) ?: '';
+        return $date->translatedFormat($format) ?: '';
     }
 
     /**
@@ -325,14 +309,14 @@ class DateHelper
     public static function getListOfMonths()
     {
         $months = collect([]);
-        $currentDate = Date::parse('2000-01-01');
-        $format = trans('format.full_month', [], Date::getLocale());
+        $currentDate = Carbon::parse('2000-01-01');
+        $format = trans('format.full_month', [], Carbon::getLocale());
 
         for ($month = 1; $month <= 12; $month++) {
             $currentDate->month = $month;
             $months->push([
                 'id' => $month,
-                'name' => mb_convert_case($currentDate->format($format), MB_CASE_TITLE, 'UTF-8'),
+                'name' => mb_convert_case($currentDate->translatedFormat($format), MB_CASE_TITLE, 'UTF-8'),
             ]);
         }
 
@@ -361,15 +345,15 @@ class DateHelper
      */
     public static function getListOfHours()
     {
-        $currentDate = Date::parse('2000-01-01 00:00:00');
-        $format = trans('format.full_hour', [], Date::getLocale());
+        $currentDate = Carbon::parse('2000-01-01 00:00:00');
+        $format = trans('format.full_hour', [], Carbon::getLocale());
 
         $hours = collect([]);
         for ($hour = 1; $hour <= 24; $hour++) {
             $currentDate->hour = $hour;
             $hours->push([
                 'id' => date('H:i', strtotime("$hour:00")),
-                'name' => $currentDate->format($format),
+                'name' => $currentDate->translatedFormat($format),
             ]);
         }
 

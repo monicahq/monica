@@ -49,7 +49,7 @@ class ApiContactFieldController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -78,7 +78,7 @@ class ApiContactFieldController extends ApiController
                 $request->except(['account_id', 'address_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                         'contact_field_id' => $contactFieldId,
                     ]
             );
@@ -105,7 +105,7 @@ class ApiContactFieldController extends ApiController
     {
         try {
             app(DestroyContactField::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'contact_field_id' => $contactFieldId,
             ]);
         } catch (ModelNotFoundException $e) {

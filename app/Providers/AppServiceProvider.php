@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Helpers\DBHelper;
 use Laravel\Cashier\Cashier;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use App\Notifications\EmailMessaging;
@@ -35,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         );
 
         if (config('database.use_utf8mb4')
-            && DB::connection()->getDriverName() == 'mysql'
+            && DBHelper::connection()->getDriverName() == 'mysql'
             && ! DBHelper::testVersion('5.7.7')) {
             Schema::defaultStringLength(191);
         }
@@ -101,6 +100,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Contact\Avatar\GenerateDefaultAvatar::class => \App\Services\Contact\Avatar\GenerateDefaultAvatar::class,
         \App\Services\Contact\Avatar\GetAdorableAvatarURL::class => \App\Services\Contact\Avatar\GetAdorableAvatarURL::class,
         \App\Services\Contact\Avatar\GetAvatarsFromInternet::class => \App\Services\Contact\Avatar\GetAvatarsFromInternet::class,
+        \App\Services\Contact\Avatar\GetGravatar::class => \App\Services\Contact\Avatar\GetGravatar::class,
         \App\Services\Contact\Avatar\GetGravatarURL::class => \App\Services\Contact\Avatar\GetGravatarURL::class,
         \App\Services\Contact\Avatar\UpdateAvatar::class => \App\Services\Contact\Avatar\UpdateAvatar::class,
         \App\Services\Contact\Address\CreateAddress::class => \App\Services\Contact\Address\CreateAddress::class,
@@ -110,6 +110,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Contact\Call\DestroyCall::class => \App\Services\Contact\Call\DestroyCall::class,
         \App\Services\Contact\Call\UpdateCall::class => \App\Services\Contact\Call\UpdateCall::class,
         \App\Services\Contact\Contact\CreateContact::class => \App\Services\Contact\Contact\CreateContact::class,
+        \App\Services\Contact\Contact\DeleteMeContact::class => \App\Services\Contact\Contact\DeleteMeContact::class,
         \App\Services\Contact\Contact\DestroyContact::class => \App\Services\Contact\Contact\DestroyContact::class,
         \App\Services\Contact\Contact\SetMeContact::class => \App\Services\Contact\Contact\SetMeContact::class,
         \App\Services\Contact\Contact\UpdateBirthdayInformation::class => \App\Services\Contact\Contact\UpdateBirthdayInformation::class,

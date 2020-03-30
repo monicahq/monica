@@ -67,7 +67,7 @@ class ApiPlaceController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -96,7 +96,7 @@ class ApiPlaceController extends ApiController
                 $request->except(['account_id', 'place_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                         'place_id' => $placeId,
                     ]
             );
@@ -122,7 +122,7 @@ class ApiPlaceController extends ApiController
     {
         try {
             app(DestroyPlace::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'place_id' => $placeId,
             ]);
         } catch (ModelNotFoundException $e) {
