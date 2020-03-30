@@ -2,7 +2,7 @@
 
 ### New features:
 
-*
+* Add addressbook subscriptions (Carddav client)
 
 ### Enhancements:
 
