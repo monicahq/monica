@@ -116,7 +116,7 @@ exit
 1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind. You'll need to configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
 1. Run `composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs` to install all packages.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-1. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
+1. Run `php artisan setup:production --email=your@email.com --password=yourpassword -v` to run the migrations, seed the database, symlink folders and setup the first user account.
 1. *Optional*: Setup the queues with Redis, Beanstalk or Amazon SQS: see optional instruction of [generic installation](generic.md#setup-queues)
 1. *Optional*: Setup the access tokens to use the API follow optional instruction of [generic installation](generic.md#setup-access-tokens)
 
