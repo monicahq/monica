@@ -18,7 +18,7 @@ class CountriesHelper
      */
     public static function getAll(): Collection
     {
-        $x=Countries::all();
+        $x = Countries::all();
         $countries = $x->map(function ($item) {
             return [
                 'id' => $item->cca2,

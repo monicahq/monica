@@ -18,7 +18,7 @@ class Country extends JsonResource
         if (is_array($this->resource)) {
             $id = $this->resource['id'];
             $name = $this->resource['country'];
-        } else if ($this->resource instanceof \PragmaRX\Countries\Package\Support\Collection) {
+        } elseif ($this->resource instanceof \PragmaRX\Countries\Package\Support\Collection) {
             $id = $this->resource->id;
             $name = $this->resource->country;
         } else {
