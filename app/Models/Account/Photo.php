@@ -7,9 +7,9 @@ use App\Models\Contact\Contact;
 use App\Models\ModelBinding as Model;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class Photo extends Model
 {
