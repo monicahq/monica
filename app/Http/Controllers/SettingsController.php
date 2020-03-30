@@ -16,7 +16,6 @@ use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
 use App\Exceptions\StripeException;
-use Lahaxearnaud\U2f\Models\U2fKey;
 use App\Http\Requests\ImportsRequest;
 use App\Notifications\InvitationMail;
 use App\Http\Requests\SettingsRequest;
@@ -27,7 +26,6 @@ use App\Services\Account\Settings\ResetAccount;
 use App\Services\Account\Settings\DestroyAccount;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
-use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
 
 class SettingsController
@@ -146,7 +144,7 @@ class SettingsController
                 ->withErrors($e->getMessage());
         }
 
-        auth()->logout();
+        auth('')->logout();
 
         return redirect()->route('login');
     }
@@ -424,14 +422,10 @@ class SettingsController
 
     public function security()
     {
-        $u2fKeys = U2fKey::where('user_id', auth()->id())
-                        ->get();
-
         $webauthnKeys = WebauthnKey::where('user_id', auth()->id())->get();
 
         return view('settings.security.index')
             ->with('is2FAActivated', Google2FA::isActivated())
-            ->with('currentkeys', U2fKeyResource::collection($u2fKeys))
             ->withWebauthnKeys(WebauthnKeyResource::collection($webauthnKeys))
             ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account));
     }

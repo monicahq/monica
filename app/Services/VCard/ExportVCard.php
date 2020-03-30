@@ -131,10 +131,16 @@ class ExportVCard extends BaseService
      */
     private function exportPhoto(Contact $contact, VCard $vcard)
     {
-        $picture = $contact->getAvatarURL();
+        if ($contact->avatar_source == 'photo') {
+            $photo = $contact->avatarPhoto;
 
-        if (! empty($picture)) {
-            $vcard->add('PHOTO', $picture);
+            $vcard->add('PHOTO', $photo->dataUrl());
+        } else {
+            $picture = $contact->getAvatarURL();
+
+            if (! empty($picture)) {
+                $vcard->add('PHOTO', $picture);
+            }
         }
     }
 

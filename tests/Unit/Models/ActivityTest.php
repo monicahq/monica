@@ -33,7 +33,7 @@ class ActivityTest extends TestCase
         ]);
 
         $this->assertEquals(
-            $type->key,
+            $type->translation_key,
             $activity->getTitle()
         );
     }

@@ -106,12 +106,10 @@ class UpdateBirthdayInformation extends BaseService
      */
     private function clearRelatedSpecialDate(Contact $contact)
     {
-        if (is_null($contact->birthday_special_date_id)) {
-            return;
-        }
-
         $specialDate = SpecialDate::find($contact->birthday_special_date_id);
-        $specialDate->delete();
+        if (! is_null($specialDate)) {
+            $specialDate->delete();
+        }
     }
 
     /**

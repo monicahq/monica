@@ -2,10 +2,13 @@
 
 namespace App\Http\Resources\Relationship;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class RelationshipShort extends Resource
+/**
+ * @extends JsonResource<\App\Models\Relationship\Relationship>
+ */
+class RelationshipShort extends JsonResource
 {
     /**
      * Transform the resource into an array.

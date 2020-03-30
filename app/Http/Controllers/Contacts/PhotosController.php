@@ -81,5 +81,7 @@ class PhotosController extends Controller
                 'source' => 'adorable',
             ]);
         }
+
+        return $this->respondObjectDeleted($photo->id);
     }
 }
