@@ -5,6 +5,9 @@ namespace App\Http\Resources\Activity;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @extends JsonResource<\App\Models\Account\ActivityTypeCategory>
+ */
 class ActivityTypeCategory extends JsonResource
 {
     /**

@@ -5,6 +5,9 @@ namespace App\Http\Resources\LifeEvent;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @extends JsonResource<\App\Models\Contact\LifeEventCategory>
+ */
 class LifeEventCategory extends JsonResource
 {
     /**

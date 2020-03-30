@@ -4,6 +4,9 @@ namespace App\Http\Resources\Emotion;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @extends JsonResource<\App\Models\Instance\Emotion\Emotion>
+ */
 class Emotion extends JsonResource
 {
     /**

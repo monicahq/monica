@@ -7,6 +7,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Photo\Photo as PhotoResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
+/**
+ * @extends JsonResource<\App\Models\Contact\Gift>
+ */
 class Gift extends JsonResource
 {
     /**

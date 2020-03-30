@@ -7,6 +7,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Emotion\Emotion as EmotionResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
+/**
+ * @extends JsonResource<\App\Models\Contact\Call>
+ */
 class Call extends JsonResource
 {
     /**

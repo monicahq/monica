@@ -4,6 +4,9 @@ namespace App\Http\Resources\Settings\Currency;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @extends JsonResource<\App\Models\Settings\Currency>
+ */
 class Currency extends JsonResource
 {
     /**

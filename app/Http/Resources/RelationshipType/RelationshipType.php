@@ -5,6 +5,9 @@ namespace App\Http\Resources\RelationshipType;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @extends JsonResource<\App\Models\Relationship\RelationshipType>
+ */
 class RelationshipType extends JsonResource
 {
     /**

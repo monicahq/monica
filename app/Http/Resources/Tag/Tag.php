@@ -5,6 +5,9 @@ namespace App\Http\Resources\Tag;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @extends JsonResource<\App\Models\Contact\Tag>
+ */
 class Tag extends JsonResource
 {
     /**

@@ -8,6 +8,9 @@ use App\Http\Resources\Conversation\Message as MessageResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\Settings\ContactFieldType\ContactFieldType as ContactFieldTypeResource;
 
+/**
+ * @extends JsonResource<\App\Models\Contact\Conversation>
+ */
 class Conversation extends JsonResource
 {
     /**

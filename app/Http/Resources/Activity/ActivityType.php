@@ -6,6 +6,9 @@ use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Activity\ActivityTypeCategory as ActivityTypeCategoryResource;
 
+/**
+ * @extends JsonResource<\App\Models\Account\ActivityType>
+ */
 class ActivityType extends JsonResource
 {
     /**

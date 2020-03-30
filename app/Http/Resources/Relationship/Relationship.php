@@ -7,6 +7,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\RelationshipType\RelationshipType as RelationshipTypeResource;
 
+/**
+ * @extends JsonResource<\App\Models\Relationship\Relationship>
+ */
 class Relationship extends JsonResource
 {
     /**

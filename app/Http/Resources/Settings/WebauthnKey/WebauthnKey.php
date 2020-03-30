@@ -5,6 +5,9 @@ namespace App\Http\Resources\Settings\WebauthnKey;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @extends JsonResource<\LaravelWebauthn\Models\WebauthnKey>
+ */
 class WebauthnKey extends JsonResource
 {
     /**

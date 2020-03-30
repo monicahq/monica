@@ -5,6 +5,9 @@ namespace App\Http\Resources\Gender;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @extends JsonResource<\App\Models\Contact\Gender>
+ */
 class Gender extends JsonResource
 {
     /**

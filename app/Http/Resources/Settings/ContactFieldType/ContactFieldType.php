@@ -5,6 +5,9 @@ namespace App\Http\Resources\Settings\ContactFieldType;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @extends JsonResource<\App\Models\Contact\ContactFieldType>
+ */
 class ContactFieldType extends JsonResource
 {
     /**

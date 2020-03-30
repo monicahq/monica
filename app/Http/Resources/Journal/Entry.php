@@ -5,6 +5,9 @@ namespace App\Http\Resources\Journal;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @extends JsonResource<\App\Models\Journal\Entry>
+ */
 class Entry extends JsonResource
 {
     /**

@@ -6,6 +6,9 @@ use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Country\Country as CountryResource;
 
+/**
+ * @extends JsonResource<\App\Models\Account\Place>
+ */
 class Place extends JsonResource
 {
     /**

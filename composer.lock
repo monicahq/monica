@@ -328,22 +328,22 @@
         },
         {
             "name": "colinodell/json5",
-            "version": "v1.0.5",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/colinodell/json5.git",
-                "reference": "8c73e1a5cd933ed0e29fb5d5997f23902bd9804c"
+                "reference": "86136a74726d48ec60285d5b8585d62e0645b56c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/colinodell/json5/zipball/8c73e1a5cd933ed0e29fb5d5997f23902bd9804c",
-                "reference": "8c73e1a5cd933ed0e29fb5d5997f23902bd9804c",
+                "url": "https://api.github.com/repos/colinodell/json5/zipball/86136a74726d48ec60285d5b8585d62e0645b56c",
+                "reference": "86136a74726d48ec60285d5b8585d62e0645b56c",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "php": "^5.4.8|^7.0"
+                "php": "^5.6|^7.0"
             },
             "require-dev": {
                 "mikehaertl/php-shellcommand": "^1.2.5",
@@ -357,7 +357,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -388,7 +388,7 @@
                 "json5_decode",
                 "json_decode"
             ],
-            "time": "2018-09-20T15:43:07+00:00"
+            "time": "2019-03-28T18:28:32+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -1657,16 +1657,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.12.0",
+            "version": "8.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "f15a9cdffd6728abb28184a1c45e84a9919f8b40"
+                "reference": "198dffa12831e17320207ce1bd3b121402d2cc8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/f15a9cdffd6728abb28184a1c45e84a9919f8b40",
-                "reference": "f15a9cdffd6728abb28184a1c45e84a9919f8b40",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/198dffa12831e17320207ce1bd3b121402d2cc8d",
+                "reference": "198dffa12831e17320207ce1bd3b121402d2cc8d",
                 "shasum": ""
             },
             "require": {
@@ -1721,7 +1721,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2020-03-18T21:29:37+00:00"
+            "time": "2020-03-30T08:29:12+00:00"
         },
         {
             "name": "giggsey/locale",
@@ -2349,16 +2349,16 @@
         },
         {
             "name": "laminas/laminas-diactoros",
-            "version": "2.2.2",
+            "version": "2.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-diactoros.git",
-                "reference": "95178c4751d737cdf9ab0a9f70a42754ac860e7b"
+                "reference": "b596c7141f5093aefec94cb5e8745212299e290f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-diactoros/zipball/95178c4751d737cdf9ab0a9f70a42754ac860e7b",
-                "reference": "95178c4751d737cdf9ab0a9f70a42754ac860e7b",
+                "url": "https://api.github.com/repos/laminas/laminas-diactoros/zipball/b596c7141f5093aefec94cb5e8745212299e290f",
+                "reference": "b596c7141f5093aefec94cb5e8745212299e290f",
                 "shasum": ""
             },
             "require": {
@@ -2375,7 +2375,7 @@
                 "psr/http-message-implementation": "1.0"
             },
             "replace": {
-                "zendframework/zend-diactoros": "self.version"
+                "zendframework/zend-diactoros": "^2.2.1"
             },
             "require-dev": {
                 "ext-curl": "*",
@@ -2383,7 +2383,7 @@
                 "ext-libxml": "*",
                 "http-interop/http-factory-tests": "^0.5.0",
                 "laminas/laminas-coding-standard": "~1.0.0",
-                "php-http/psr7-integration-tests": "dev-master",
+                "php-http/psr7-integration-tests": "^1.0",
                 "phpunit/phpunit": "^7.5.18"
             },
             "type": "library",
@@ -2429,7 +2429,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2020-01-07T19:39:26+00:00"
+            "time": "2020-03-29T12:30:54+00:00"
         },
         {
             "name": "laminas/laminas-zendframework-bridge",
@@ -4396,29 +4396,26 @@
         },
         {
             "name": "nette/caching",
-            "version": "v2.5.9",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/caching.git",
-                "reference": "d93ef446836a5a0ff7ef78d5ffebb7fe043f9953"
+                "reference": "b9ecbf920f240bd1ab14900d9a77876924ad7fb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/caching/zipball/d93ef446836a5a0ff7ef78d5ffebb7fe043f9953",
-                "reference": "d93ef446836a5a0ff7ef78d5ffebb7fe043f9953",
+                "url": "https://api.github.com/repos/nette/caching/zipball/b9ecbf920f240bd1ab14900d9a77876924ad7fb4",
+                "reference": "b9ecbf920f240bd1ab14900d9a77876924ad7fb4",
                 "shasum": ""
             },
             "require": {
-                "nette/finder": "^2.2 || ~3.0.0",
-                "nette/utils": "^2.4 || ~3.0.0",
-                "php": ">=5.6.0"
-            },
-            "conflict": {
-                "nette/nette": "<2.2"
+                "nette/finder": "^2.4 || ^3.0",
+                "nette/utils": "^2.4 || ^3.0",
+                "php": ">=7.1"
             },
             "require-dev": {
                 "latte/latte": "^2.4",
-                "nette/di": "^2.4 || ~3.0.0",
+                "nette/di": "^v3.0",
                 "nette/tester": "^2.0",
                 "tracy/tracy": "^2.4"
             },
@@ -4428,7 +4425,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -4461,7 +4458,7 @@
                 "nette",
                 "sqlite"
             ],
-            "time": "2019-11-19T18:38:13+00:00"
+            "time": "2019-11-19T18:41:40+00:00"
         },
         {
             "name": "nette/finder",
@@ -4528,16 +4525,16 @@
         },
         {
             "name": "nette/utils",
-            "version": "v3.0.3",
+            "version": "v3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "f1b5ce0fae07f13e066e64f9a8f59e53b8f4982e"
+                "reference": "2c17d16d8887579ae1c0898ff94a3668997fd3eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/f1b5ce0fae07f13e066e64f9a8f59e53b8f4982e",
-                "reference": "f1b5ce0fae07f13e066e64f9a8f59e53b8f4982e",
+                "url": "https://api.github.com/repos/nette/utils/zipball/2c17d16d8887579ae1c0898ff94a3668997fd3eb",
+                "reference": "2c17d16d8887579ae1c0898ff94a3668997fd3eb",
                 "shasum": ""
             },
             "require": {
@@ -4560,7 +4557,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "3.1-dev"
                 }
             },
             "autoload": {
@@ -4571,8 +4568,8 @@
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause",
-                "GPL-2.0",
-                "GPL-3.0"
+                "GPL-2.0-only",
+                "GPL-3.0-only"
             ],
             "authors": [
                 {
@@ -4602,7 +4599,7 @@
                 "utility",
                 "validation"
             ],
-            "time": "2019-12-27T03:47:50+00:00"
+            "time": "2020-02-09T14:10:55+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -5695,21 +5692,21 @@
         },
         {
             "name": "pragmarx/countries",
-            "version": "v0.6.1",
+            "version": "v0.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/countries.git",
-                "reference": "af3e865e2dcce303445f8d2c51c517cb210c06ac"
+                "reference": "7956321811d65e07f6f69d9e6ecc2853aa85f0c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/countries/zipball/af3e865e2dcce303445f8d2c51c517cb210c06ac",
-                "reference": "af3e865e2dcce303445f8d2c51c517cb210c06ac",
+                "url": "https://api.github.com/repos/antonioribeiro/countries/zipball/7956321811d65e07f6f69d9e6ecc2853aa85f0c2",
+                "reference": "7956321811d65e07f6f69d9e6ecc2853aa85f0c2",
                 "shasum": ""
             },
             "require": {
-                "colinodell/json5": "^1.0",
-                "nette/caching": "^2.5",
+                "colinodell/json5": "^1.0|^2.0",
+                "nette/caching": "^2.5|^3.0",
                 "php": ">=7.0",
                 "pragmarx/coollection": ">=0.5",
                 "psr/simple-cache": "^1.0"
@@ -5753,7 +5750,7 @@
                 "timezones",
                 "topology"
             ],
-            "time": "2019-09-24T19:45:24+00:00"
+            "time": "2020-03-29T10:36:46+00:00"
         },
         {
             "name": "pragmarx/countries-laravel",

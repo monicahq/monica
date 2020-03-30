@@ -5,6 +5,9 @@ namespace App\Http\Resources\Settings\Compliance;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @extends JsonResource<\App\Models\Settings\Term>
+ */
 class Compliance extends JsonResource
 {
     /**

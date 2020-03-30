@@ -7,6 +7,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\Settings\Currency\Currency as CurrencyResource;
 
+/**
+ * @extends JsonResource<\App\Models\User\User>
+ */
 class User extends JsonResource
 {
     /**

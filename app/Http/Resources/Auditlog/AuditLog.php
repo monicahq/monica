@@ -6,6 +6,9 @@ use App\Helpers\DateHelper;
 use function Safe\json_decode;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @extends JsonResource<\App\Models\Instance\AuditLog>
+ */
 class AuditLog extends JsonResource
 {
     /**
@@ -20,8 +23,8 @@ class AuditLog extends JsonResource
             'id' => $this->id,
             'object' => 'auditlog',
             'author' => ($this->author) ? [
-                'id' => $this->id,
-                'name' => $this->name,
+                'id' => $this->author->id,
+                'name' => $this->author->name,
             ] : [
                 'name' => $this->author_name,
             ],

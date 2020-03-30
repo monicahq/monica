@@ -7,6 +7,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\LifeEvent\LifeEventType as LifeEventTypeResource;
 
+/**
+ * @extends JsonResource<\App\Models\Contact\LifeEvent>
+ */
 class LifeEvent extends JsonResource
 {
     /**

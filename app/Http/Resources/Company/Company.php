@@ -5,6 +5,9 @@ namespace App\Http\Resources\Company;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @extends JsonResource<\App\Models\Account\Company>
+ */
 class Company extends JsonResource
 {
     /**

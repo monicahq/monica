@@ -4,6 +4,9 @@ namespace App\Http\Resources\Pet;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @extends JsonResource<\App\Models\Contact\PetCategory>
+ */
 class PetCategory extends JsonResource
 {
     /**

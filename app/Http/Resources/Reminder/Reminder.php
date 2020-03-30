@@ -6,6 +6,9 @@ use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
+/**
+ * @extends JsonResource<\App\Models\Contact\Reminder>
+ */
 class Reminder extends JsonResource
 {
     /**

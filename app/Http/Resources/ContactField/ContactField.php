@@ -7,6 +7,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\Settings\ContactFieldType\ContactFieldType as ContactFieldTypeResource;
 
+/**
+ * @extends JsonResource<\App\Models\Contact\ContactField>
+ */
 class ContactField extends JsonResource
 {
     /**
