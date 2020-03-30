@@ -19,9 +19,10 @@ trait SyncDAVBackend
      * sync information available.
      *
      * @param mixed|null $addressBookId
+     * @param bool $refresh
      * @return SyncToken|null
      */
-    protected function getCurrentSyncToken($addressBookId)
+    public function getCurrentSyncToken($addressBookId, $refresh)
     {
         $tokens = SyncToken::where([
             'account_id' => $this->user->account_id,
@@ -35,14 +36,10 @@ trait SyncDAVBackend
             $token = $this->createSyncToken($addressBookId);
         } else {
             $token = $tokens->last();
-            /*
-        } else if ($refresh) {
-            $token = $tokens->last();
 
-            if ($token->timestamp < $this->getLastModified($addressBookId)) {
+            if ($refresh && $token->timestamp < $this->getLastModified($addressBookId)) {
                 $token = $this->createSyncToken($addressBookId);
             }
-            */
         }
 
         return $token;
@@ -196,7 +193,7 @@ trait SyncDAVBackend
                    $obj->created_at >= $timestamp;
         });
 
-        $currentSyncToken = $this->getCurrentSyncToken($addressBookId);
+        $currentSyncToken = $this->getCurrentSyncToken($addressBookId, false);
 
         return [
             'syncToken' => $currentSyncToken->id,

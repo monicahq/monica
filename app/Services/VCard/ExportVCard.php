@@ -2,10 +2,12 @@
 
 namespace App\Services\VCard;
 
+use Sabre\VObject\Reader;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
+use Sabre\VObject\ParseException;
 use App\Interfaces\LabelInterface;
 use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactFieldType;
@@ -38,7 +40,13 @@ class ExportVCard extends BaseService
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
-        return $this->export($contact);
+        $vcard = $this->export($contact);
+
+        $contact->timestamps = false;
+        $contact->vcard = $vcard->serialize();
+        $contact->save();
+
+        return $vcard;
     }
 
     private function escape($value): string
@@ -59,12 +67,21 @@ class ExportVCard extends BaseService
             ])->save();
         }
 
-        // Basic information
-        $vcard = new VCard([
-            'UID' => $contact->uuid,
-            'SOURCE' => $contact->getLink(),
-            'VERSION' => '4.0',
-        ]);
+        if ($contact->vcard) {
+            try {
+                $vcard = Reader::read($contact->vcard, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
+            } catch (ParseException $e) {
+                // Ignore error
+            }
+        }
+        if (!isset($vcard)) {
+            // Basic information
+            $vcard = new VCard([
+                'UID' => $contact->uuid,
+                'SOURCE' => $contact->getLink(),
+                'VERSION' => '4.0',
+            ]);
+        }
 
         $this->exportNames($contact, $vcard);
         $this->exportGender($contact, $vcard);
@@ -85,14 +102,17 @@ class ExportVCard extends BaseService
      */
     private function exportNames(Contact $contact, VCard $vcard)
     {
+        $vcard->remove('FN');
         $vcard->add('FN', $this->escape($contact->name));
 
+        $vcard->remove('N');
         $vcard->add('N', [
             $this->escape($contact->last_name),
             $this->escape($contact->first_name),
             $this->escape($contact->middle_name),
         ]);
 
+        $vcard->remove('NICKNAME');
         if (! empty($contact->nickname)) {
             $vcard->add('NICKNAME', $this->escape($contact->nickname));
         }
@@ -104,6 +124,8 @@ class ExportVCard extends BaseService
      */
     private function exportGender(Contact $contact, VCard $vcard)
     {
+        $vcard->remove('GENDER');
+
         if (is_null($contact->gender)) {
             return;
         }
@@ -131,6 +153,8 @@ class ExportVCard extends BaseService
      */
     private function exportPhoto(Contact $contact, VCard $vcard)
     {
+        $vcard->remove('PHOTO');
+
         $picture = $contact->getAvatarURL();
 
         if (! empty($picture)) {
@@ -144,10 +168,12 @@ class ExportVCard extends BaseService
      */
     private function exportWorkInformation(Contact $contact, VCard $vcard)
     {
+        $vcard->remove('ORG');
         if (! empty($contact->company)) {
             $vcard->add('ORG', $this->escape($contact->company));
         }
 
+        $vcard->remove('TITLE');
         if (! empty($contact->job)) {
             $vcard->add('TITLE', $this->escape($contact->job));
         }
@@ -159,6 +185,7 @@ class ExportVCard extends BaseService
      */
     private function exportBirthday(Contact $contact, VCard $vcard)
     {
+        $vcard->remove('BDAY');
         if (! is_null($contact->birthdate)) {
             if ($contact->birthdate->is_year_unknown) {
                 $date = $contact->birthdate->date->format('--m-d');
@@ -176,6 +203,7 @@ class ExportVCard extends BaseService
      */
     private function exportAddress(Contact $contact, VCard $vcard)
     {
+        $vcard->remove('ADR');
         foreach ($contact->addresses as $address) {
             $type = $this->getContactFieldLabel($address);
             $arguments = [];
@@ -202,6 +230,9 @@ class ExportVCard extends BaseService
      */
     private function exportContactFields(Contact $contact, VCard $vcard)
     {
+        $vcard->remove('TEL');
+        $vcard->remove('EMAIL');
+        $vcard->remove('socialProfile');
         foreach ($contact->contactFields as $contactField) {
             $type = $this->getContactFieldLabel($contactField);
             switch ($contactField->contactFieldType->type) {
@@ -260,6 +291,7 @@ class ExportVCard extends BaseService
      */
     private function exportTimestamp(Contact $contact, VCard $vcard)
     {
+        $vcard->remove('REV');
         $vcard->REV = $contact->updated_at->format('Ymd\\THis\\Z');
     }
 
@@ -269,6 +301,7 @@ class ExportVCard extends BaseService
      */
     private function exportTags(Contact $contact, VCard $vcard)
     {
+        $vcard->remove('CATEGORIES');
         if ($contact->tags->count() > 0) {
             $vcard->CATEGORIES = $contact->tags->map(function ($tag) {
                 return $tag->name;

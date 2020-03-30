@@ -37,7 +37,8 @@ class AddAddressBook extends Migration
             $table->string('username', 1024);
             $table->string('password', 2048);
             $table->string('capabilities', 1024);
-            $table->string('syncToken', 512)->nullable();
+            $table->string('syncToken', 1024)->nullable();
+            $table->string('localSyncToken', 1024)->nullable();
             $table->timestamps();
 
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');

@@ -68,6 +68,10 @@ class SynchronizeAddressBook extends BaseService
             })
             ->wait();
 
+            $token = $backend->getCurrentSyncToken($subscription->addressbook->addressBookId, false);
+            $subscription->localSyncToken = $token->id;
+            $subscription->save();
+
         } catch (ClientException $e) {
             //$r = $e->getResponse();
             //$s = (string) $r->getBody();
@@ -238,9 +242,10 @@ class SynchronizeAddressBook extends BaseService
 
             if ($syncToken == $distantSyncToken) {
                 // no change at all
-                return new Promise(function () {
-                    return [];
+                $promise = new Promise(function () use (&$promise) {
+                    $promise->resolve([]);
                 });
+                return $promise;
             }
 
             // get sync

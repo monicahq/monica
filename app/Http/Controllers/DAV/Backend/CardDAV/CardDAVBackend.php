@@ -65,12 +65,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
             ->get();
 
         foreach ($addressbooks as $addressbook) {
-            $result[] = [
-                'id'                => $addressbook->addressBookId,
-                'uri'               => $addressbook->addressBookId,
-                'principaluri'      => PrincipalBackend::getPrincipalUser($this->user),
-                '{DAV:}displayname' => $addressbook->name,
-            ];
+            $result[] = $this->getAddressBookDescription($addressbook);
         }
 
         return $result;
@@ -79,7 +74,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     private function getDefaultAddressBook($principalUri)
     {
         $id = $this->backendUri();
-        $token = $this->getCurrentSyncToken(null);
+        $token = $this->getCurrentSyncToken(null, true);
 
         $des = [
             'id'                => $id,
@@ -100,6 +95,28 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         if ($me) {
             $des += [
                 '{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card' => '/'.config('laravelsabre.path').'/addressbooks/'.$this->user->email.'/contacts/'.$this->encodeUri($me),
+            ];
+        }
+
+        return $des;
+    }
+
+    private function getAddressBookDescription($addressbook)
+    {
+        $token = $this->getCurrentSyncToken($addressbook->addressBookId, true);
+
+        $des = [
+            'id'                => $addressbook->addressBookId,
+            'uri'               => $addressbook->addressBookId,
+            'principaluri'      => PrincipalBackend::getPrincipalUser($this->user),
+            '{DAV:}displayname' => $addressbook->name,
+        ];
+
+        if ($token) {
+            $des += [
+                '{DAV:}sync-token'  => $token->id,
+                '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token->id,
+                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => DAVSyncPlugin::SYNCTOKEN_PREFIX.$token->id,
             ];
         }
 
@@ -186,16 +203,13 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     private function prepareCard($contact)
     {
         try {
-            $carddata = $contact->vcard;
-            if (empty($carddat)) {
-                $vcard = app(ExportVCard::class)
-                    ->execute([
-                        'account_id' => $this->user->account_id,
-                        'contact_id' => $contact->id,
-                    ]);
+            $vcard = app(ExportVCard::class)
+                ->execute([
+                    'account_id' => $this->user->account_id,
+                    'contact_id' => $contact->id,
+                ]);
 
-                $carddata = $vcard->serialize();
-            }
+            $carddata = $vcard->serialize();
 
             return [
                 'id' => $contact->hashID(),
@@ -380,9 +394,8 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
             if (! Arr::has($result, 'error')) {
                 $contact = Contact::where('account_id', $this->user->account_id)
                     ->find($result['contact_id']);
-                $card = $this->prepareCard($contact);
 
-                return $card['etag'];
+                return '"'.md5($contact->vcard).'"';
             }
         } catch (\Exception $e) {
             Log::debug(__CLASS__.' updateCard: '.(string) $e);

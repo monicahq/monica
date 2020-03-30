@@ -15,13 +15,12 @@ use App\Helpers\LocaleHelper;
 use App\Services\BaseService;
 use function Safe\preg_split;
 use App\Models\Contact\Gender;
-use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Helpers\CountriesHelper;
-use App\Models\Account\AddressBook;
 use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCard;
+use App\Models\Account\AddressBook;
 use App\Models\Contact\ContactField;
 use App\Services\Contact\Tag\DetachTag;
 use App\Models\Contact\ContactFieldType;
@@ -406,6 +405,8 @@ class ImportVCard extends BaseService
         if (! $contact) {
             $contact = $this->existingContactWithName($entry);
         }
+
+        $contact->timestamps = false;
 
         return $contact;
     }

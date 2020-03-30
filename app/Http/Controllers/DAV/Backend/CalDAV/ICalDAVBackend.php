@@ -55,10 +55,11 @@ interface ICalDAVBackend
      * The getChanges method returns all the changes that have happened, since
      * the specified syncToken in the specified calendar.
      *
+     * @param string|null $calendarId
      * @param string $syncToken
      * @return array
      */
-    public function getChanges($syncToken);
+    public function getChanges($calendarId, $syncToken);
 
     /**
      * Returns calendar object.
