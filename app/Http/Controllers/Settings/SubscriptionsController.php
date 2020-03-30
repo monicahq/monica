@@ -261,10 +261,10 @@ class SubscriptionsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|null
      */
-    public function forceCompletePaymentOnTesting(Request $request)
+    public function forceCompletePaymentOnTesting(Request $request): ?RedirectResponse
     {
         if (App::environment('production')) {
-            return;
+            return null;
         }
         $subscription = auth()->user()->account->getSubscribedPlan();
         $subscription->stripe_status = 'active';

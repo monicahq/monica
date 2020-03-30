@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Contacts;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use App\Services\Contact\Document\UploadDocument;
@@ -55,7 +56,7 @@ class DocumentsController extends Controller
      *
      * @return null|\Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, Contact $contact, Document $document)
+    public function destroy(Request $request, Contact $contact, Document $document): ?JsonResponse
     {
         $data = [
             'account_id' => auth()->user()->account_id,
@@ -70,6 +71,6 @@ class DocumentsController extends Controller
             return $this->respondNotFound();
         }
 
-        return;
+        return null;
     }
 }
