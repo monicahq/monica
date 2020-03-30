@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Services\Instance\IdHasher;
+use Illuminate\Database\Eloquent\Model;
 
 trait Hasher
 {
@@ -11,7 +12,7 @@ trait Hasher
         return app(IdHasher::class)->encodeId(parent::getRouteKey());
     }
 
-    public function resolveRouteBinding($value, $field = null)
+    public function resolveRouteBinding($value, $field = null): ?Model
     {
         $id = $this->decodeId($value);
 

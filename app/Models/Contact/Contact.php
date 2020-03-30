@@ -2,6 +2,7 @@
 
 namespace App\Models\Contact;
 
+use DateTime;
 use Carbon\Carbon;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
@@ -762,10 +763,10 @@ class Contact extends Model
      *
      * @return \DateTime|null
      */
-    public function getLastActivityDate()
+    public function getLastActivityDate(): ?DateTime
     {
         if ($this->activities->count() === 0) {
-            return;
+            return null;
         }
 
         $lastActivity = $this->activities->sortByDesc('happened_at')->first();
@@ -780,12 +781,12 @@ class Contact extends Model
      * @param  string $type
      * @return Collection|null
      */
-    public function getRelationshipsByRelationshipTypeGroup(string $type)
+    public function getRelationshipsByRelationshipTypeGroup(string $type): ?Collection
     {
         $relationshipTypeGroup = $this->account->getRelationshipTypeGroupByType($type);
 
         if (! $relationshipTypeGroup) {
-            return;
+            return null;
         }
 
         return $this->relationships->filter(function ($item) use ($type) {
@@ -1074,10 +1075,10 @@ class Contact extends Model
      *
      * @return Contact|null
      */
-    public function getIntroducer()
+    public function getIntroducer(): ?Contact
     {
         if (! $this->first_met_through_contact_id) {
-            return;
+            return null;
         }
 
         try {
@@ -1085,7 +1086,7 @@ class Contact extends Model
             $contact = self::where('account_id', $this->account_id)
                 ->findOrFail($this->first_met_through_contact_id);
         } catch (ModelNotFoundException $e) {
-            return;
+            return null;
         }
 
         return $contact;
@@ -1101,10 +1102,10 @@ class Contact extends Model
      * @param int $day
      * @return SpecialDate|null
      */
-    public function setSpecialDate($occasion, int $year, int $month, int $day)
+    public function setSpecialDate($occasion, int $year, int $month, int $day): ?SpecialDate
     {
         if (empty($occasion)) {
-            return;
+            return null;
         }
 
         $specialDate = new SpecialDate;
@@ -1254,18 +1255,18 @@ class Contact extends Model
      *
      * @return int|null
      */
-    public function getAgeAtDeath()
+    public function getAgeAtDeath(): ?int
     {
         if (! $this->deceasedDate) {
-            return;
+            return null;
         }
 
         if ($this->deceasedDate->is_year_unknown == 1) {
-            return;
+            return null;
         }
 
         if (! $this->birthdate) {
-            return;
+            return null;
         }
 
         return $this->birthdate->date->diffInYears($this->deceasedDate->date);

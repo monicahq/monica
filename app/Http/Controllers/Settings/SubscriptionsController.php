@@ -7,7 +7,6 @@ use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use Laravel\Cashier\Cashier;
 use Laravel\Cashier\Payment;
-use Illuminate\Http\Response;
 use App\Helpers\AccountHelper;
 use App\Helpers\InstanceHelper;
 use App\Exceptions\StripeException;
@@ -246,7 +245,7 @@ class SubscriptionsController extends Controller
      * Download the invoice as PDF.
      *
      * @param mixed $invoiceId
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function downloadInvoice($invoiceId)
     {
@@ -260,12 +259,12 @@ class SubscriptionsController extends Controller
      * Download the invoice as PDF.
      *
      * @param Request $request
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|null
      */
     public function forceCompletePaymentOnTesting(Request $request)
     {
         if (App::environment('production')) {
-            return;
+            return null;
         }
         $subscription = auth()->user()->account->getSubscribedPlan();
         $subscription->stripe_status = 'active';

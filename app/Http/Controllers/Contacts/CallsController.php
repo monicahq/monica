@@ -91,6 +91,6 @@ class CallsController extends Controller
             return $this->respondNotFound();
         }
 
-        return;
+        return null;
     }
 }

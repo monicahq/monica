@@ -11,7 +11,7 @@ class AuditLogHelper
     /**
      * Prepare a collection of audit logs that is displayed on the Settings page.
      *
-     * @param mixed $logs
+     * @param \Illuminate\Contracts\Pagination\LengthAwarePaginator|Collection<\App\Models\Instance\AuditLog> $logs
      *
      * @return Collection
      */
@@ -19,7 +19,7 @@ class AuditLogHelper
     {
         $logsCollection = collect();
 
-        foreach ($logs as $log) {
+        foreach ($logs as $key => $log) {
 
             // the log is about a contact
             if (isset($log->object->{'contact_id'})) {

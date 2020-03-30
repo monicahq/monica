@@ -103,9 +103,6 @@
         <UndefinedPropertyAssignment>
             <errorLevel type="suppress">
                 <file name="database/migrations/2017_07_26_220021_change_contacts_table.php" />
-                <file name="app/Http/Controllers/Auth/Validate2faController.php" />
-                <file name="tests/Unit/Events/Google2faEventListenerTest.php" />
-                <file name="tests/Unit/Models/Google2FATest.php" />
             </errorLevel>
         </UndefinedPropertyAssignment>
 
@@ -115,35 +112,23 @@
             </errorLevel>
         </UndefinedMagicPropertyAssignment>
 
-        <UndefinedPropertyFetch>
-            <errorLevel type="suppress">
-                <file name="app/Services/VCalendar/ImportTask.php" />
-            </errorLevel>
-        </UndefinedPropertyFetch>
-
         <UndefinedMagicPropertyFetch>
             <errorLevel type="suppress">
                 <file name="database/migrations/2017_05_04_164723_remove_contact_encryption.php" />
             </errorLevel>
         </UndefinedMagicPropertyFetch>
 
+        <UndefinedPropertyFetch>
+            <errorLevel type="suppress">
+                <file name="app/Services/VCalendar/ImportTask.php" />
+            </errorLevel>
+        </UndefinedPropertyFetch>
+
         <UndefinedMagicMethod>
             <errorLevel type="suppress">
                 <file name="app/Traits/Searchable.php" />
             </errorLevel>
         </UndefinedMagicMethod>
-
-        <InvalidStaticInvocation>
-            <errorLevel type="suppress">
-                <file name="app/Providers/RouteServiceProvider.php" />
-            </errorLevel>
-        </InvalidStaticInvocation>
-
-        <InvalidPropertyAssignmentValue>
-            <errorLevel type="suppress">
-                <file name="database/migrations/2017_08_06_153253_move_kids_to_contacts.php" />
-            </errorLevel>
-        </InvalidPropertyAssignmentValue>
 
         <TooManyTemplateParams errorLevel="info" />
 
