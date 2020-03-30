@@ -7,6 +7,7 @@ use App\Models\Contact\Contact;
 use App\Models\ModelBinding as Model;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -71,13 +72,17 @@ class Photo extends Model
     /**
      * Gets the data-url format of the photo.
      *
-     * @return string
+     * @return string|null
      */
-    public function dataUrl()
+    public function dataUrl(): ?string
     {
-        $url = $this->new_filename;
-        $file = Storage::disk(config('filesystems.default'))->get($url);
+        try {
+            $url = $this->new_filename;
+            $file = Storage::disk(config('filesystems.default'))->get($url);
 
-        return (string) Image::make($file)->encode('data-url');
+            return (string) Image::make($file)->encode('data-url');
+        } catch (FileNotFoundException $e) {
+            return null;
+        }
     }
 }
