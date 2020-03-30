@@ -1075,7 +1075,7 @@ class Contact extends Model
      *
      * @return Contact|null
      */
-    public function getIntroducer(): ?Contact
+    public function getIntroducer(): ?self
     {
         if (! $this->first_met_through_contact_id) {
             return null;

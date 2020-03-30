@@ -70,6 +70,6 @@ class DocumentsController extends Controller
             return $this->respondNotFound();
         }
 
-        return null;
+        return;
     }
 }

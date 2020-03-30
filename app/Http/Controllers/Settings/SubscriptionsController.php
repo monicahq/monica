@@ -264,7 +264,7 @@ class SubscriptionsController extends Controller
     public function forceCompletePaymentOnTesting(Request $request)
     {
         if (App::environment('production')) {
-            return null;
+            return;
         }
         $subscription = auth()->user()->account->getSubscribedPlan();
         $subscription->stripe_status = 'active';

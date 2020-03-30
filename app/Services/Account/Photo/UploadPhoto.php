@@ -78,6 +78,7 @@ class UploadPhoto extends BaseService
     private function importPhoto($data): array
     {
         $photo = $data['photo'];
+
         return [
             'account_id' => $data['account_id'],
             'original_filename' => $photo->getClientOriginalName(),

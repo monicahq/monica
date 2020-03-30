@@ -79,6 +79,6 @@ class TasksController extends Controller
             return $this->respondNotFound();
         }
 
-        return null;
+        return;
     }
 }
