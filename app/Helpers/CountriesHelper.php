@@ -5,6 +5,7 @@ namespace App\Helpers;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+//use PragmaRX\Countries\Package\Support\Collection;
 use PragmaRX\CountriesLaravel\Package\Facade as Countries;
 use PragmaRX\Countries\Package\Support\Collection as Country;
 
@@ -13,18 +14,19 @@ class CountriesHelper
     /**
      * Get list of countries.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection<Country>
      */
     public static function getAll(): Collection
     {
-        $countries = Countries::all()->map(function ($item) {
+        $x=Countries::all();
+        $countries = $x->map(function ($item) {
             return [
                 'id' => $item->cca2,
                 'country' => static::getCommonNameLocale($item),
             ];
         });
 
-        return $countries->sortByCollator('country');
+        return collect($countries->sortByCollator('country'));
     }
 
     /**
