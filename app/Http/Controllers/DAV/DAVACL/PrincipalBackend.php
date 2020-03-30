@@ -88,6 +88,8 @@ class PrincipalBackend extends AbstractBackend
                 return $principal;
             }
         }
+
+        return [];
     }
 
     /**

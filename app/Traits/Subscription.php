@@ -85,13 +85,11 @@ trait Subscription
      *
      * @return string|null
      */
-    public function getSubscribedPlanName()
+    public function getSubscribedPlanName(): ?string
     {
         $plan = $this->getSubscribedPlan();
 
-        if (! is_null($plan)) {
-            return $plan->name;
-        }
+        return is_null($plan) ? null : $plan->name;
     }
 
     /**

@@ -71,14 +71,14 @@ trait SyncDAVBackend
     {
         $max = $this->getLastModified($addressBookId);
 
-        if ($max) {
-            return SyncToken::create([
+        return $max ?
+            SyncToken::create([
                 'account_id' => $this->user->account_id,
                 'user_id' => $this->user->id,
                 'name' => $addressBookId ?? $this->backendUri(),
                 'timestamp' => $max,
-            ]);
-        }
+            ])
+            : null;
     }
 
     /**

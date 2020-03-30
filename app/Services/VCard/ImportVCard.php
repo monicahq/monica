@@ -244,7 +244,7 @@ class ImportVCard extends BaseService
      * @param array $data
      * @return VCard|null
      */
-    private function getEntry($data)
+    private function getEntry($data): ?VCard
     {
         $entry = $data['entry'];
 
@@ -252,13 +252,15 @@ class ImportVCard extends BaseService
             try {
                 $entry = Reader::read($entry, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
             } catch (ParseException $e) {
-                return;
+                return null;
             }
         }
 
         if ($entry instanceof VCard) {
             return $entry;
         }
+
+        return null;
     }
 
     /**
@@ -417,10 +419,10 @@ class ImportVCard extends BaseService
      * @param  VCard $entry
      * @return Contact|null
      */
-    private function existingContactWithEmail(VCard $entry)
+    private function existingContactWithEmail(VCard $entry): ?Contact
     {
         if (empty($entry->EMAIL)) {
-            return;
+            return null;
         }
 
         if ($this->isValidEmail((string) $entry->EMAIL)) {
@@ -438,6 +440,8 @@ class ImportVCard extends BaseService
                 return $contactField->contact;
             }
         }
+
+        return null;
     }
 
     /**

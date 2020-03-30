@@ -90,7 +90,7 @@ class DateHelper
             $date = $date->date;
         }
         if (! $date instanceof Carbon) {
-            $date = Carbon::create($date);
+            $date = Carbon::parse($date);
         }
 
         return $date->translatedFormat(config('api.timestamp_format'));
@@ -111,7 +111,7 @@ class DateHelper
             $date = $date->date;
         }
         if (! $date instanceof Carbon) {
-            $date = Carbon::create($date);
+            $date = Carbon::parse($date);
         }
 
         return $date->translatedFormat(config('api.date_timestamp_format'));
@@ -122,11 +122,9 @@ class DateHelper
      *
      * @return string|null
      */
-    public static function getTimezone()
+    public static function getTimezone(): ?string
     {
-        if (Auth::check()) {
-            return Auth::user()->timezone;
-        }
+        return Auth::check() ? Auth::user()->timezone : null;
     }
 
     /**
@@ -219,7 +217,7 @@ class DateHelper
      */
     private static function formatDate($date, $format): string
     {
-        $date = Carbon::parse($date, static::getTimezone());
+        $date = Carbon::parse($date);
         $format = trans($format, [], Carbon::getLocale());
 
         return $date->translatedFormat($format) ?: '';

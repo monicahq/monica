@@ -2,6 +2,23 @@
 
 ### New features:
 
+*
+
+### Enhancements:
+
+* Serialize photo content in VCard photo value
+
+### Fixes:
+
+* Fix carddav sync-collection reporting wrong syncToken
+
+
+# RELEASED VERSIONS:
+
+## v2.17.0 - 2019-03-22
+
+### New features:
+
 * Add a weekly job to update gravatars
 * Add ability to set 'me' contact
 * Add middle name field to new contact and edit contact
@@ -23,6 +40,7 @@
 
 ### Fixes:
 
+* Fix dates being off by one day
 * Fix wrong untagged contacts counter when viewing untagged contacts
 * Fix markdown doesn't work on journal activity entries
 * Fix markdown doesn't work on Activity entries
@@ -38,7 +56,6 @@
 * Fix activity mock data seeder
 * Fix ordering of contact tags to be alphabetical
 
-# RELEASED VERSIONS:
 
 ## v2.16.0 - 2019-12-31
 

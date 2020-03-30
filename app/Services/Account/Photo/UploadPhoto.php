@@ -45,9 +45,9 @@ class UploadPhoto extends BaseService
      * Upload a photo.
      *
      * @param array $data
-     * @return Photo
+     * @return Photo|null
      */
-    public function execute(array $data)
+    public function execute(array $data): ?Photo
     {
         $this->validate($data);
 
@@ -62,7 +62,7 @@ class UploadPhoto extends BaseService
         }
 
         if (! $array) {
-            return;
+            return null;
         }
 
         return tap(Photo::create($array), function ($photo) use ($contact) {
@@ -171,13 +171,9 @@ class UploadPhoto extends BaseService
      */
     private function isBinary(string $data): bool
     {
-        if (is_string($data)) {
-            $mime = finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $data);
+        $mime = finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $data);
 
-            return substr($mime, 0, 4) != 'text' && $mime != 'application/x-empty';
-        }
-
-        return false;
+        return substr($mime, 0, 4) != 'text' && $mime != 'application/x-empty';
     }
 
     /**

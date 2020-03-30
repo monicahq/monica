@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use App\Models\Account\ActivityType;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ActivityStatisticService
 {
@@ -32,11 +31,11 @@ class ActivityStatisticService
      * the contact.
      *
      * @param  Contact $contact
-     * @return HasMany
+     * @return \Illuminate\Database\Eloquent\Collection<\App\Models\Account\ActivityStatistic>
      */
     public function activitiesPerYearWithContact(Contact $contact)
     {
-        return $contact->activityStatistics;
+        return $contact->activityStatistics()->get();
     }
 
     /**
