@@ -97,6 +97,8 @@ class VCardContactTest extends ApiTestCase
      */
     public function test_carddav_put_one_contact_with_photo_already_set()
     {
+        Storage::fake();
+
         $user = $this->signin();
         $photo = factory(Photo::class)->create([
             'account_id' => $user->account_id,

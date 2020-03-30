@@ -6,7 +6,7 @@
 
 ### Enhancements:
 
-*
+* Serialize photo content in VCard photo value
 
 ### Fixes:
 
