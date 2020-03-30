@@ -6,6 +6,7 @@
 
 ### Enhancements:
 
+* Remove u2f support (replaced with WebAuthn)
 * Serialize photo content in VCard photo value
 
 ### Fixes:
