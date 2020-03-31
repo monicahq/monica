@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\VCard;
+namespace Tests\Unit\Services\Instance;
 
 use Tests\TestCase;
 use App\Models\User\User;
