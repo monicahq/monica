@@ -172,7 +172,6 @@ return [
         Laravel\Cashier\CashierServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Creativeorange\Gravatar\GravatarServiceProvider::class,
-        Lahaxearnaud\U2f\U2fServiceProvider::class,
         App\Providers\DAVServiceProvider::class,
     ],
 
