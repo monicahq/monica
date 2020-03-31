@@ -16,7 +16,7 @@ abstract class DuskTestCase extends BaseTestCase
 {
     use CreatesApplication, SignIn;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         Browser::$storeScreenshotsAt = base_path('results/screenshots');
