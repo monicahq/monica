@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d0462dd812807c8c6fa6b7a79604f8cf",
+    "content-hash": "2a0a194087ff9f4d24f37d5c13c52ede",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -12345,16 +12345,16 @@
         },
         {
             "name": "orchestra/testbench-core",
-            "version": "v5.1.1",
+            "version": "v5.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench-core.git",
-                "reference": "69ddd365c01bb90b89edd9c52e44d0dc5bbc0854"
+                "reference": "ca909601ac743dbdf6807608bcb33e78a0c3f80a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/69ddd365c01bb90b89edd9c52e44d0dc5bbc0854",
-                "reference": "69ddd365c01bb90b89edd9c52e44d0dc5bbc0854",
+                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/ca909601ac743dbdf6807608bcb33e78a0c3f80a",
+                "reference": "ca909601ac743dbdf6807608bcb33e78a0c3f80a",
                 "shasum": ""
             },
             "require": {
@@ -12407,7 +12407,7 @@
                 "orchestral",
                 "testing"
             ],
-            "time": "2020-03-16T04:35:18+00:00"
+            "time": "2020-03-31T01:45:21+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -13141,6 +13141,58 @@
             "time": "2020-02-07T06:19:00+00:00"
         },
         {
+            "name": "phpunit/phpcov",
+            "version": "7.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/phpcov.git",
+                "reference": "b91ef1640a7571f32e2eb58b107865f4c87a2eef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpcov/zipball/b91ef1640a7571f32e2eb58b107865f4c87a2eef",
+                "reference": "b91ef1640a7571f32e2eb58b107865f4c87a2eef",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3",
+                "phpunit/php-code-coverage": "^8.0",
+                "phpunit/phpunit": "^9.0",
+                "sebastian/diff": "^4.0",
+                "sebastian/finder-facade": "^2.0",
+                "sebastian/version": "^3.0",
+                "symfony/console": "^3.0 || ^4.0 || ^5.0"
+            },
+            "bin": [
+                "phpcov"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "7.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "CLI frontend for php-code-coverage",
+            "homepage": "https://github.com/sebastianbergmann/phpcov",
+            "time": "2020-03-05T05:41:11+00:00"
+        },
+        {
             "name": "phpunit/phpunit",
             "version": "9.0.1",
             "source": {
@@ -13819,6 +13871,52 @@
             "time": "2020-02-07T06:10:52+00:00"
         },
         {
+            "name": "sebastian/finder-facade",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/finder-facade.git",
+                "reference": "9d3e74b845a2ce50e19b25b5f0c2718e153bee6c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/finder-facade/zipball/9d3e74b845a2ce50e19b25b5f0c2718e153bee6c",
+                "reference": "9d3e74b845a2ce50e19b25b5f0c2718e153bee6c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "php": "^7.3",
+                "symfony/finder": "^4.1|^5.0",
+                "theseer/fdomdocument": "^1.6"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "FinderFacade is a convenience wrapper for Symfony's Finder component.",
+            "homepage": "https://github.com/sebastianbergmann/finder-facade",
+            "time": "2020-02-08T06:07:58+00:00"
+        },
+        {
             "name": "sebastian/global-state",
             "version": "4.0.0",
             "source": {
@@ -14402,6 +14500,46 @@
             ],
             "description": "A PHPStan rule to detect safety issues. Must be used in conjunction with thecodingmachine/safe",
             "time": "2020-01-02T14:59:39+00:00"
+        },
+        {
+            "name": "theseer/fdomdocument",
+            "version": "1.6.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/theseer/fDOMDocument.git",
+                "reference": "6e8203e40a32a9c770bcb62fe37e68b948da6dca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/theseer/fDOMDocument/zipball/6e8203e40a32a9c770bcb62fe37e68b948da6dca",
+                "reference": "6e8203e40a32a9c770bcb62fe37e68b948da6dca",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "lib-libxml": "*",
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Arne Blankerts",
+                    "email": "arne@blankerts.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "The classes contained within this repository extend the standard DOM to use exceptions at all occasions of errors instead of PHP warnings or notices. They also add various custom methods and shortcuts for convenience and to simplify the usage of DOM.",
+            "homepage": "https://github.com/theseer/fDOMDocument",
+            "time": "2017-06-30T11:53:12+00:00"
         },
         {
             "name": "theseer/tokenizer",
