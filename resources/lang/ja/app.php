@@ -1,17 +1,17 @@
 <?php
 
 return [
-    'yes' => 'Yes',
-    'no' => 'No',
-    'update' => 'Update',
-    'save' => 'Save',
-    'add' => 'Add',
-    'cancel' => 'Cancel',
-    'confirm' => 'Confirm',
+    'yes' => 'はい',
+    'no' => 'いいえ',
+    'update' => '更新',
+    'save' => '保存',
+    'add' => '追加',
+    'cancel' => 'キャンセル',
+    'confirm' => '確定する',
     'delete_confirm' => 'Sure?',
-    'delete' => 'Delete',
-    'edit' => 'Edit',
-    'upload' => 'Upload',
+    'delete' => '削除',
+    'edit' => '編集',
+    'upload' => 'アップロード',
     'download' => 'Download',
     'save_close' => 'Save and close',
     'close' => 'Close',
@@ -97,8 +97,8 @@ return [
 
     'gender_male' => '男',
     'gender_female' => '女',
-    'gender_none' => 'Rather not say',
-    'gender_no_gender' => 'No gender',
+    'gender_none' => '言いたくない',
+    'gender_no_gender' => '性別無し',
 
     'error_title' => 'Whoops! Something went wrong.',
     'error_unauthorized' => 'You don’t have the right to edit this resource.',
