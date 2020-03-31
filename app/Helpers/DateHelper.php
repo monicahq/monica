@@ -65,7 +65,6 @@ class DateHelper
         }
 
         $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0, $timezone ?? $date->timezone);
-        $f = $date->getLocale();
 
         $appTimezone = config('app.timezone');
         if ($date->timezone !== $appTimezone) {

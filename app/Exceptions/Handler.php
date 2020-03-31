@@ -2,7 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
 use Throwable;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
