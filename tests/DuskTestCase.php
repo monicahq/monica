@@ -20,6 +20,8 @@ abstract class DuskTestCase extends BaseTestCase
     {
         parent::setUp();
         Browser::$storeScreenshotsAt = base_path('results/screenshots');
+        Browser::$storeConsoleLogAt = base_path('results/console');
+        Browser::$storeSourceAt = base_path('results/source');
     }
 
     /**
