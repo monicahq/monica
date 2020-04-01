@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Call;
+namespace Tests\Unit\Services\Contact\Reminder;
 
 use Carbon\Carbon;
 use Tests\TestCase;

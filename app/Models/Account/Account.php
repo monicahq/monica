@@ -695,12 +695,12 @@ class Account extends Model
      *
      * @throws ModelNotFoundException
      */
-    public function getFirstLocale()
+    public function getFirstLocale(): ?string
     {
         try {
             $user = $this->users()->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            return;
+            return null;
         }
 
         return $user->locale;

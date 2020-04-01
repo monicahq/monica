@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Account;
+namespace Tests\Unit\Services\Account\Settings;
 
 use Tests\TestCase;
 use App\Models\User\User;
