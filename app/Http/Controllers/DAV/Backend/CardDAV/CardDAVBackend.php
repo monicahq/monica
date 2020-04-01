@@ -351,7 +351,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * @param string $cardData
      * @return string|null
      */
-    public function updateCard($addressBookId, $cardUri, $cardData)
+    public function updateCard($addressBookId, $cardUri, $cardData): ?string
     {
         $contact_id = null;
         if ($cardUri) {
@@ -385,7 +385,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
             throw $e;
         }
 
-        return;
+        return null;
     }
 
     /**

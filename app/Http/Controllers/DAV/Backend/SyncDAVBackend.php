@@ -162,7 +162,7 @@ trait SyncDAVBackend
      * @param string $syncToken
      * @return array|null
      */
-    public function getChanges($collectionId, $syncToken)
+    public function getChanges($collectionId, $syncToken): ?array
     {
         $token = null;
         $timestamp = null;
@@ -171,7 +171,7 @@ trait SyncDAVBackend
 
             if (is_null($token)) {
                 // syncToken is not recognized
-                return;
+                return null;
             }
 
             $timestamp = $token->timestamp;

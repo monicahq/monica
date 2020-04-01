@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Call;
+namespace Tests\Unit\Services\Contact\Occupation;
 
 use Tests\TestCase;
 use App\Models\Contact\Occupation;

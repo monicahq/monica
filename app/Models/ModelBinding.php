@@ -11,12 +11,13 @@ abstract class ModelBinding extends Model
      * Resolve binding.
      *
      * @param  string  $value
-     * @return mixed|null
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function resolveRouteBinding($value)
+    public function resolveRouteBinding($value, $field = null): ?Model
     {
         if (Auth::guest()) {
-            return;
+            return null;
         }
 
         return $this->where('account_id', Auth::user()->account_id)
