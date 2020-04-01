@@ -4,12 +4,6 @@
     "license": "AGPL",
     "keywords": ["prm", "crm", "social"],
     "type": "project",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/ktamas77/live-code-coverage"
-        }
-    ],
     "require": {
         "php": "^7.2.5",
         "ext-bcmath": "*",
@@ -67,12 +61,11 @@
         "fzaninotto/faker": "^1.6",
         "khanamiryan/qrcode-detector-decoder": "1.0.2",
         "laravel/dusk": "^5.0",
-        "matthiasnoback/live-code-coverage": "dev-master",
+        "matthiasnoback/live-code-coverage": "^1.0",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^4.1",
         "nunomaduro/larastan": "^0.5",
-        "phpunit/phpcov": "^7.0",
-        "phpunit/phpunit": "^9.0",
+        "phpunit/phpunit": "^8.5",
         "psalm/plugin-laravel": "^1.0",
         "roave/security-advisories": "dev-master",
         "thecodingmachine/phpstan-safe-rule": "^1.0",
