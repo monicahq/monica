@@ -1,6 +1,9 @@
 name: Chrome headless
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - 'l10n_master*'
 
 jobs:
   cypress-run:
