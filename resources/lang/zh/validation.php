@@ -116,7 +116,7 @@ return [
     'unique' => ':attribute 已经被占用',
     'uploaded' => ':attribute上传失败.',
     'url' => ':attribute 格式不对',
-    'uuid' => 'The :attribute must be a valid UUID.',
+    'uuid' => ':attribute 必须是个有效的 UUID。',
 
     /*
     |--------------------------------------------------------------------------
