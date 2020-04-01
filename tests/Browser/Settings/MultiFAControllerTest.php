@@ -46,24 +46,6 @@ class MultiFAControllerTest extends DuskTestCase
     }
 
     /**
-     * Test U2F modal.
-     * @group multifa
-     */
-    public function testU2fModal()
-    {
-        $this->markTestIncomplete('Ignore 2fa tests for now.');
-
-        $this->browse(function (Browser $browser) {
-            $browser->login()
-                    ->visit(new SettingsSecurity)
-                    ->scrollTo('two_factor_link')
-                    ->clickLink('Add a new U2F security key')
-                    ->waitFor('registerModal')
-                    ->assertSee('Insert your security key.');
-        });
-    }
-
-    /**
      * Test the barcode generated in 2fa Enable Page.
      * @group multifa
      */

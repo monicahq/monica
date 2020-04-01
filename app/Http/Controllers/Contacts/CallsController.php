@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Contacts;
 use App\Models\Contact\Call;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use App\Services\Contact\Call\CreateCall;
@@ -76,7 +77,7 @@ class CallsController extends Controller
      *
      * @return null|\Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, Contact $contact, Call $call)
+    public function destroy(Request $request, Contact $contact, Call $call): ?JsonResponse
     {
         $data = [
             'account_id' => auth()->user()->account_id,
@@ -90,5 +91,7 @@ class CallsController extends Controller
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }
+
+        return null;
     }
 }

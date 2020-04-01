@@ -3,9 +3,12 @@
 namespace App\Http\Resources\Gender;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class Gender extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\Gender>
+ */
+class Gender extends JsonResource
 {
     /**
      * Transform the resource into an array.

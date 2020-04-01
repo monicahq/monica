@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrowserFeature;
+namespace Tests\Browser\Feature;
 
 use Tests\DuskTestCase;
 use Tests\Browser\Pages\ImportVCardUpload;
