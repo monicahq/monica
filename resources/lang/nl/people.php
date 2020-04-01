@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'Je moet je account upgraden om gebruik te maken van deze functie',
     'stay_in_touch_modal_title' => 'Blijf in contact',
     'stay_in_touch_modal_desc' => 'We kunnen je herinneren via e-mail om regelmatig in contact te blijven met {firstname}.',
-    'stay_in_touch_modal_label' => 'Stuur me elke...{count} dag een e-mail|Stuur me elke... {count} dagen een email',
+    'stay_in_touch_modal_label' => 'Stuur me elke dag een e-mail|Stuur me elke... {count} dagen een email',
 
     // Calls
     'modal_call_title' => 'Telefoongesprek registreren',
@@ -151,7 +151,7 @@ return [
     'information_edit_probably' => 'Deze persoon is waarschijnlijk...',
     'information_edit_not_year' => 'Ik weet de dag en de maand van de geboortedatum van deze persoon, maar niet het jaar…',
     'information_edit_exact' => 'Ik weet de exacte geboortedatum van deze persoon...',
-    'information_edit_birthdate_label' => 'Birthdate',
+    'information_edit_birthdate_label' => 'Geboortedatum',
     'information_no_work_defined' => 'Geen werkgegevens gedefinieerd',
     'information_work_at' => 'bij :company',
     'work_add_cta' => 'Werk informatie bijwerken',
