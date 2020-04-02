@@ -12,7 +12,7 @@ return [
     'delete' => '削除',
     'edit' => '編集',
     'upload' => 'アップロード',
-    'download' => 'Download',
+    'download' => 'ダウンロード',
     'save_close' => 'Save and close',
     'close' => 'Close',
     'copy' => 'Copy',
@@ -22,7 +22,7 @@ return [
     'done' => 'Done',
     'back' => 'Back',
     'verify' => 'Verify',
-    'new' => 'new',
+    'new' => '新規',
     'unknown' => 'I don’t know',
     'load_more' => 'Load more',
     'loading' => 'Loading...',
@@ -47,8 +47,8 @@ return [
     'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
     'markdown_link' => 'Read documentation',
 
-    'header_settings_link' => 'Settings',
-    'header_logout_link' => 'Logout',
+    'header_settings_link' => '設定',
+    'header_logout_link' => 'ログアウト',
     'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Add people',
