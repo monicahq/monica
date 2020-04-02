@@ -5871,16 +5871,16 @@
         },
         {
             "name": "pragmarx/google2fa-laravel",
-            "version": "v1.3.1",
+            "version": "v1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/google2fa-laravel.git",
-                "reference": "876cd52ddef2f39e029441ea2b8c1b9aa4549e58"
+                "reference": "0dd5825bd49cf2b47b7f5cf30131b2421e02cb5e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/google2fa-laravel/zipball/876cd52ddef2f39e029441ea2b8c1b9aa4549e58",
-                "reference": "876cd52ddef2f39e029441ea2b8c1b9aa4549e58",
+                "url": "https://api.github.com/repos/antonioribeiro/google2fa-laravel/zipball/0dd5825bd49cf2b47b7f5cf30131b2421e02cb5e",
+                "reference": "0dd5825bd49cf2b47b7f5cf30131b2421e02cb5e",
                 "shasum": ""
             },
             "require": {
@@ -5938,7 +5938,7 @@
                 "google2fa",
                 "laravel"
             ],
-            "time": "2020-01-26T00:46:00+00:00"
+            "time": "2020-04-02T09:18:17+00:00"
         },
         {
             "name": "pragmarx/google2fa-qrcode",
