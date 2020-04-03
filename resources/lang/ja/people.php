@@ -38,7 +38,7 @@ return [
     'people_list_filter_untag' => 'Showing all untagged contacts',
 
     // people add
-    'people_add_title' => 'Add a new person',
+    'people_add_title' => '新しく人を作成する',
     'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => '名',
     'people_add_middlename' => 'Middle name (Optional)',
@@ -210,7 +210,7 @@ return [
     'relationship_form_is_with' => 'This person is...',
     'relationship_form_is_with_name' => ':name is...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
-    'relationship_form_create_contact' => 'Add a new person',
+    'relationship_form_create_contact' => '新しく人を作成する',
     'relationship_form_associate_contact' => 'An existing contact',
     'relationship_form_associate_dropdown' => 'Search and select an existing contact from the dropdown below',
     'relationship_form_associate_dropdown_placeholder' => 'Search and select an existing contact',
