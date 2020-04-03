@@ -76,6 +76,6 @@ return [
     'confirmation_again' => 'If you want to change your email address you can <a href=":url" class="alert-link">click here</a>.',
     'email_change_current_email' => 'Current email address:',
     'email_change_title' => 'Change your email address',
-    'email_change_new' => 'New email address',
+    'email_change_new' => '新しいEメールアドレス',
     'email_changed' => 'Your email address has been changed. Check your mailbox to validate it.',
 ];
