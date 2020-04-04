@@ -50,6 +50,7 @@
         "vectorface/whip": "^0.3.2",
         "vinkla/hashids": "^8.1",
         "vluzrmos/language-detector": "^2.1",
+        "web-token/jwt-key-mgmt": "^2.1",
         "web-token/jwt-signature-algorithm-ecdsa": "^2.1",
         "web-token/jwt-signature-algorithm-eddsa": "^2.1",
         "web-token/jwt-signature-algorithm-rsa": "^2.1"
