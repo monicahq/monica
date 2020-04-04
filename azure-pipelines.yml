@@ -34,6 +34,29 @@ stages:
   - template: .azure/job-reporting.yml
   - template: .azure/job-test-migrations.yml
 
+- stage: deploytest
+  displayName: 'DeployTest'
+  jobs:
+  - deployment: deploy_docker_master_staging
+    #condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment:
+      name: staging
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        preDeploy:
+          steps:
+          - download: none
+          - checkout: self
+          - template: .azure/step-dockercompose-pull.yml
+        deploy:
+          steps:
+          - download: none
+          - checkout: self
+          - template: .azure/step-dockercompose-restart.yml
+
 - stage: deploy
   displayName: 'Deploy'
   dependsOn: build
@@ -84,26 +107,3 @@ stages:
           - template: .azure/step-docker-build.yml
           - template: .azure/step-docker-push-github.yml
           - template: .azure/step-docker-push.yml
-
-- stage: deploytest
-  displayName: 'DeployTest'
-  jobs:
-  - deployment: deploy_docker_master_staging
-    #condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
-    pool:
-      vmImage: 'ubuntu-latest'
-    environment:
-      name: staging
-      resourceType: VirtualMachine
-    strategy:
-      runOnce:
-        preDeploy:
-          steps:
-          - download: none
-          - checkout: self
-          - template: .azure/step-dockercompose-pull.yml
-        deploy:
-          steps:
-          - download: none
-          - checkout: self
-          - template: .azure/step-dockercompose-restart.yml
