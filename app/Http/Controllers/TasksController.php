@@ -6,6 +6,7 @@ use App\Models\Contact\Task;
 use Illuminate\Http\Request;
 use App\Services\Task\CreateTask;
 use App\Services\Task\UpdateTask;
+use Illuminate\Http\JsonResponse;
 use App\Services\Task\DestroyTask;
 use App\Traits\JsonRespondController;
 use App\Http\Resources\Task\Task as TaskResource;
@@ -66,7 +67,7 @@ class TasksController extends Controller
      *
      * @return null|\Illuminate\Http\JsonResponse
      */
-    public function destroy(Task $task)
+    public function destroy(Task $task): ?JsonResponse
     {
         try {
             if (app(DestroyTask::class)->execute([
@@ -79,6 +80,6 @@ class TasksController extends Controller
             return $this->respondNotFound();
         }
 
-        return;
+        return null;
     }
 }

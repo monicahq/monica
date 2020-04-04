@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Models;
+namespace Tests\Unit\Traits;
 
 use Tests\TestCase;
 use App\Models\Contact\Contact;

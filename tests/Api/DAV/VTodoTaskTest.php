@@ -185,7 +185,7 @@ END:VCALENDAR
              '<d:status>HTTP/1.1 200 OK</d:status>'.
            '</d:propstat>'.
           '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>', false);
     }
 
     public function test_caldav_tasks_report_multiget()
@@ -227,7 +227,7 @@ END:VCALENDAR
              '</d:prop>'.
              '<d:status>HTTP/1.1 200 OK</d:status>'.
            '</d:propstat>'.
-          '</d:response>');
+          '</d:response>', false);
         $response->assertSee(
           '<d:response>'.
             "<d:href>/dav/calendars/{$user->email}/tasks/{$task2->uuid}.ics</d:href>".
@@ -239,6 +239,6 @@ END:VCALENDAR
                '<d:status>HTTP/1.1 200 OK</d:status>'.
              '</d:propstat>'.
             '</d:response>'.
-          '</d:multistatus>');
+          '</d:multistatus>', false);
     }
 }
