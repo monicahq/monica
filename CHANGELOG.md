@@ -11,6 +11,7 @@
 
 ### Fixes:
 
+* Fix setMe contact controller
 * Fix carddav sync-collection reporting wrong syncToken
 
 
