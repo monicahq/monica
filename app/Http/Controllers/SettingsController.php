@@ -112,7 +112,7 @@ class SettingsController
             ]);
         }
 
-        if (! $user->account->hasLimitations() && $request->input('me_contact_id')) {
+        if (! AccountHelper::hasLimitations($user->account) && $request->input('me_contact_id')) {
             $user->me_contact_id = $request->input('me_contact_id');
             $user->save();
         }
