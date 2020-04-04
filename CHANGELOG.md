@@ -11,6 +11,7 @@
 
 ### Fixes:
 
+* Fix editing multiple notes at the same time only edits one note
 * Fix carddav sync-collection reporting wrong syncToken
 
 
