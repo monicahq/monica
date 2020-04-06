@@ -35,7 +35,7 @@ return [
     'export_sql_link_instructions' => 'Note: <a href=":url">read the instructions</a> to learn more about importing this file to your instance.',
 
     'firstname' => 'First name',
-    'lastname' => 'Last name',
+    'lastname' => '姓',
     'name_order' => 'Name order',
     'name_order_firstname_lastname' => '<First name> <Last name> - John Doe',
     'name_order_lastname_firstname' => '<Last name> <First name> - Doe John',
