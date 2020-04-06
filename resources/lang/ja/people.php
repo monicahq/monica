@@ -90,7 +90,7 @@ return [
     // Calls
     'modal_call_title' => 'Log a call',
     'modal_call_comment' => 'What did you talk about? (optional)',
-    'modal_call_exact_date' => 'The phone call happened on',
+    'modal_call_exact_date' => '電話をかけたのは',
     'modal_call_who_called' => 'Who called?',
     'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'The phone call has been saved.',
@@ -480,14 +480,14 @@ return [
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
 
     // Photos
-    'photo_title' => 'Photos',
+    'photo_title' => '写真',
     'photo_list_title' => 'Related photos',
-    'photo_list_cta' => 'Upload photo',
+    'photo_list_cta' => '写真をアップロード',
     'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
-    'photo_upload_zone_cta' => 'Upload a photo',
+    'photo_upload_zone_cta' => '写真をアップロード',
     'photo_current_profile_pic' => 'Current profile picture',
     'photo_make_profile_pic' => 'Make profile picture',
-    'photo_delete' => 'Delete photo',
+    'photo_delete' => '写真を削除',
 
     // Avatars
     'avatar_change_title' => 'Change your avatar',
