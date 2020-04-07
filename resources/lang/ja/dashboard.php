@@ -24,7 +24,7 @@ return [
 
     'debts_you_owe' => 'You owe',
 
-    'statistics_contacts' => 'Contacts',
+    'statistics_contacts' => '連絡先',
     'statistics_activities' => 'Activities',
     'statistics_gifts' => 'Gifts',
 
