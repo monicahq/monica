@@ -244,7 +244,7 @@ return [
     'stripe_error_authentication' => 'Wrong authentication with Stripe',
 
     'import_title' => 'Import contacts in your account',
-    'import_cta' => 'Upload contacts',
+    'import_cta' => '連絡先をアップロード',
     'import_stat' => 'You’ve imported :number files so far.',
     'import_result_stat' => 'Uploaded vCard with 1 contact (:total_imported imported, :total_skipped skipped)|Uploaded vCard with :total_contacts contacts (:total_imported imported, :total_skipped skipped)',
     'import_view_report' => 'View report',
@@ -280,7 +280,7 @@ return [
     'import_blank_title' => 'You haven’t imported any contacts yet.',
     'import_blank_question' => 'Would you like to import contacts now?',
     'import_blank_description' => 'We can import vCard files that you can get from Google Contacts or your Contact manager.',
-    'import_blank_cta' => 'Import vCard',
+    'import_blank_cta' => 'vCardをインポートする',
     'import_need_subscription' => 'Importing data requires a subscription.',
 
     'tags_list_title' => 'Tags',
