@@ -150,7 +150,7 @@ return [
     'information_edit_unknown' => '年齢は不明です',
     'information_edit_probably' => 'おそらく年齢は…',
     'information_edit_not_year' => '誕生日だけ判明しています',
-    'information_edit_exact' => 'I know the exact birthdate of this person...',
+    'information_edit_exact' => '生年月日が判明しています',
     'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => 'at :company',
