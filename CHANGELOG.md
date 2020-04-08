@@ -13,6 +13,8 @@
 ### Fixes:
 
 * Fix docker rsync exclude rules
+* Fix docker cron (legacy) on apache variant
+* Fix login route already set by Laravel now
 * Fix setMe contact controller
 * Fix carddav sync-collection reporting wrong syncToken
 
