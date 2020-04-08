@@ -67,7 +67,7 @@
     "sweet-modal-vue": "^2.0.0",
     "tachyons": "^4.9.1",
     "vue": "^2.5.21",
-    "vue-autosuggest": "^2.0.0",
+    "vue-autosuggest": "^2.1.1",
     "vue-checkbox-radio": "^0.6.0",
     "vue-clipboard2": "^0.3.0",
     "vue-directive-tooltip": "^1.4.2",

@@ -11,6 +11,6 @@ class AuthenticateTest extends FeatureTestCase
         $response = $this->get('/people');
 
         $response->assertStatus(302);
-        $response->assertRedirect('/login');
+        $response->assertRedirect('/');
     }
 }

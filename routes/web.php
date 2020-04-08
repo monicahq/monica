@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'Auth\LoginController@showLoginOrRegister')->name('login');
+Route::get('/', 'Auth\LoginController@showLoginOrRegister')->name('loginRedirect');
 
 Auth::routes(['verify' => true]);
 
