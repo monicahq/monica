@@ -12,6 +12,7 @@
 
 ### Fixes:
 
+* Fix docker rsync exclude rules
 * Fix setMe contact controller
 * Fix carddav sync-collection reporting wrong syncToken
 

@@ -42,11 +42,11 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
     else
         rsync_options="-rlD"
     fi
-    rsync $rsync_options --delete --exclude-from=/usr/local/share/upgrade.exclude $MONICASRC /var/www
+    rsync $rsync_options --delete --exclude-from=/usr/local/share/upgrade.exclude $MONICASRC/ $MONICADIR/
 
     for dir in storage; do
         if [ ! -d "$MONICADIR/$dir" ] || directory_empty "$MONICADIR/$dir"; then
-            rsync $rsync_options --include "/$dir/" --exclude '/*' $MONICASRC /var/www
+            rsync $rsync_options --include "/$dir/" --exclude '/*' $MONICASRC/ $MONICADIR/
         fi
     done
     echo "...done!"
