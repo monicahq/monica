@@ -12,6 +12,7 @@
 
 ### Fixes:
 
+* Fix login route already set by Laravel now
 * Fix setMe contact controller
 * Fix carddav sync-collection reporting wrong syncToken
 
