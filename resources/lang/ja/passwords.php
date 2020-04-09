@@ -13,12 +13,12 @@ return [
     |
     */
 
-    'reset' => 'Your password has been reset!',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'token' => 'This password reset token is invalid.',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
+    'reset' => 'パスワードをリセットしました。',
+    'sent' => 'パスワードリマインダーを送信しました。',
+    'token' => 'このパスワードリセットトークンは無効です。',
+    'user' => 'このメールアドレスに一致するユーザーを見つけることが出来ませんでした。',
     'changed' => 'Password changed successfully.',
     'invalid' => 'Current password you entered is not correct.',
-    'throttled' => 'Please wait before retrying.',
+    'throttled' => '時間を置いて再度お試しください。',
 
 ];
