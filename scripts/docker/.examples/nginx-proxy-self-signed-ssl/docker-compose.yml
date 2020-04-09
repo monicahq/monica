@@ -53,6 +53,7 @@ services:
     restart: always
     volumes:
       - data:/var/www/monica/storage
+      - www:/var/www/monica:ro
     command: cron.sh
     depends_on:
       - db
@@ -64,6 +65,7 @@ services:
     restart: always
     volumes:
       - data:/var/www/monica/storage
+      - www:/var/www/monica:ro
     command: queue.sh
     depends_on:
       - db
