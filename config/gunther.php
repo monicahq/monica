@@ -5,7 +5,7 @@ return [
      * Available languages of the application.
      * List of all languages, separated by comas.
      */
-    'languages' => env('LANGUAGES', 'ar,cs,de,es,fr,he,hr,it,nl,pt,pt-BR,ru,tr,zh-CN'),
+    'languages' => env('LANGUAGES', 'ar,cs,de,es,fr,he,hr,it,ja,nl,pt,pt-BR,ru,tr,zh-CN'),
 
     /*
      * Source language of the application.
