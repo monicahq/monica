@@ -4,7 +4,7 @@ use App\Models\Contact\Gift;
 use App\Models\Contact\Note;
 use App\Models\Contact\Task;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Activity;
+use App\Models\Account\Activity;
 use App\Models\Contact\Reminder;
 use Illuminate\Database\Migrations\Migration;
 

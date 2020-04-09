@@ -3,16 +3,19 @@
 namespace App\Http\Resources\Occupation;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Company\Company as CompanyResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Occupation extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\Occupation>
+ */
+class Occupation extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -25,8 +28,8 @@ class Occupation extends Resource
             'salary' => $this->salary,
             'salary_unit' => $this->salary_unit,
             'currently_works_here' => (bool) $this->currently_works_here,
-            'start_date' => is_null($this->start_date) ? null : $this->start_date->format('Y-m-d'),
-            'end_date' => is_null($this->end_date) ? null : $this->end_date->format('Y-m-d'),
+            'start_date' => DateHelper::getDate($this->start_date),
+            'end_date' => DateHelper::getDate($this->end_date),
             'company' => new CompanyResource($this->company),
             'account' => [
                 'id' => $this->account_id,

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
+use App\Helpers\AccountHelper;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use App\Models\Contact\ContactFieldType;
@@ -14,11 +15,15 @@ class PersonalizationController extends Controller
 
     /**
      * Display the personalization page.
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index()
     {
-        return view('settings.personalization.index');
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
+        return view('settings.personalization.index')
+            ->withAccountHasLimitations($accountHasLimitations);
     }
 
     /**
@@ -49,7 +54,7 @@ class PersonalizationController extends Controller
                 'protocol',
             ])
             + [
-                'fontawesome_icon' => $request->get('icon'),
+                'fontawesome_icon' => $request->input('icon'),
                 'account_id' => auth()->user()->account_id,
             ]
         );
@@ -60,9 +65,10 @@ class PersonalizationController extends Controller
      *
      * @param Request $request
      * @param ContactFieldType $contactFieldType
-     * @return \Illuminate\Http\Response
+     *
+     * @return ContactFieldType
      */
-    public function editContactFieldType(Request $request, ContactFieldType $contactFieldType)
+    public function editContactFieldType(Request $request, ContactFieldType $contactFieldType): ContactFieldType
     {
         Validator::make($request->all(), [
             'name' => 'required|max:255',
@@ -76,7 +82,7 @@ class PersonalizationController extends Controller
                 'protocol',
             ])
             + [
-                'fontawesome_icon' => $request->get('icon'),
+                'fontawesome_icon' => $request->input('icon'),
             ]
         );
 

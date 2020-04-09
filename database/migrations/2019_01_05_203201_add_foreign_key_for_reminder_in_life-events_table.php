@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use Illuminate\Support\Facades\Schema;

@@ -41,6 +41,11 @@ class AddressBook extends BaseAddressBook
                 'principal' => '{DAV:}owner',
                 'protected' => true,
             ],
+            [
+                'privilege' => '{DAV:}write-properties',
+                'principal' => '{DAV:}owner',
+                'protected' => true,
+            ],
         ];
     }
 
@@ -59,12 +64,17 @@ class AddressBook extends BaseAddressBook
     /**
      * Returns the last modification date.
      *
-     * @return \Carbon\Carbon
+     * @return int|null
      */
-    public function getLastModified()
+    public function getLastModified(): ?int
     {
         if ($this->carddavBackend instanceof CardDAVBackend) {
-            return $this->carddavBackend->getLastModified();
+            $date = $this->carddavBackend->getLastModified();
+            if (! is_null($date)) {
+                return $date->timestamp;
+            }
         }
+
+        return null;
     }
 }

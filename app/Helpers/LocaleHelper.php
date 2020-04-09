@@ -2,9 +2,15 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Arr;
 use Matriphe\ISO639\ISO639;
+use function Safe\preg_match;
+use function Safe\preg_split;
+use Illuminate\Support\Facades\App;
+use libphonenumber\PhoneNumberUtil;
 use Illuminate\Support\Facades\Auth;
 use libphonenumber\PhoneNumberFormat;
+use libphonenumber\NumberParseException;
 
 class LocaleHelper
 {
@@ -34,7 +40,7 @@ class LocaleHelper
     public static function getLang($locale = null)
     {
         if (is_null($locale)) {
-            $locale = self::getLocale();
+            $locale = App::getLocale();
         }
         if (preg_match(self::LANG_SPLIT, $locale)) {
             $locale = preg_split(self::LANG_SPLIT, $locale, 2)[0];
@@ -66,16 +72,18 @@ class LocaleHelper
      *
      * @return string|null  country, uppercase form.
      */
-    public static function extractCountry($locale = null)
+    public static function extractCountry($locale = null): ?string
     {
         if (is_null($locale)) {
-            $locale = self::getLocale();
+            $locale = App::getLocale();
         }
         if (preg_match(self::LANG_SPLIT, $locale)) {
             $locale = preg_split(self::LANG_SPLIT, $locale, 2)[1];
 
             return mb_strtoupper($locale);
         }
+
+        return null;
     }
 
     /**
@@ -85,20 +93,32 @@ class LocaleHelper
      */
     public static function getLocaleList()
     {
-        $locales = collect([]);
-        foreach (config('lang-detector.languages') as $lang) {
-            $name = trans('settings.locale_'.$lang);
-            if ($name == 'settings.locale_'.$lang) {
-                // The name of the new language is not already set, even in english
-                $name = $lang;
-            }
-            $locales->push([
+        return collect(config('lang-detector.languages'))->map(function ($lang) {
+            return [
                 'lang' => $lang,
-                'name' => $name,
-            ]);
+                'name' => self::getLocaleName($lang),
+                'name-orig' => self::getLocaleName($lang, $lang),
+            ];
+        });
+    }
+
+    /**
+     * Get the name of one language.
+     *
+     * @param string $lang
+     * @param string $locale
+     *
+     * @return string
+     */
+    private static function getLocaleName($lang, $locale = null): string
+    {
+        $name = trans('settings.locale_'.$lang, [], $locale);
+        if ($name == 'settings.locale_'.$lang) {
+            // The name of the new language is not already set, even in english
+            $name = $lang;
         }
 
-        return CollectionHelper::sortByCollator($locales, 'name');
+        return $name;
     }
 
     /**
@@ -137,13 +157,13 @@ class LocaleHelper
     /**
      * Get ISO-639-2/t (three-letter codes) from ISO-639-1 (two-letters code).
      *
-     * @param string
+     * @param  string $locale
      * @return string
      */
     public static function getLocaleAlpha($locale)
     {
-        if (array_has(static::$locales, $locale)) {
-            return array_get(static::$locales, $locale);
+        if (Arr::has(static::$locales, $locale)) {
+            return Arr::get(static::$locales, $locale);
         }
         $locale = mb_strtolower($locale);
         $languages = (new ISO639)->allLanguages();
@@ -163,24 +183,23 @@ class LocaleHelper
      * Format phone number by country.
      *
      * @param string $tel
-     * @param $iso
+     * @param string|null $iso
      * @param int $format
-     *
-     * @return null | string
+     * @return string
      */
-    public static function formatTelephoneNumberByISO(string $tel, $iso, int $format = PhoneNumberFormat::INTERNATIONAL)
+    public static function formatTelephoneNumberByISO(string $tel, $iso, int $format = PhoneNumberFormat::INTERNATIONAL): string
     {
         if (empty($iso)) {
             return $tel;
         }
 
         try {
-            $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+            $phoneUtil = PhoneNumberUtil::getInstance();
 
-            $phoneInstance = $phoneUtil->parse($tel, strtoupper($iso));
+            $phoneInstance = $phoneUtil->parse($tel, mb_strtoupper($iso));
 
             $tel = $phoneUtil->format($phoneInstance, $format);
-        } catch (\libphonenumber\NumberParseException $e) {
+        } catch (NumberParseException $e) {
             // Do nothing if the number cannot be parsed successfully
         }
 

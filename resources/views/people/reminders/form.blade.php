@@ -1,6 +1,6 @@
 <form method="POST" action="{{ $action }}">
-    {{ method_field($method) }}
-    {{ csrf_field() }}
+    @method($method)
+    @csrf
 
     <h2>{{ trans('people.reminders_add_title', ['name' => $contact->first_name]) }}</h2>
 
@@ -78,7 +78,7 @@
     </div>
 
     <div class="form-group">
-        <label for="description">{{ trans('people.activities_add_optional_comment') }}</label>
+        <label for="description">{{ trans('people.reminders_add_optional_comment') }}</label>
         <textarea class="form-control" id="description" name="description" rows="3">{{ old('description') ?? $reminder->description }}</textarea>
     </div>
 

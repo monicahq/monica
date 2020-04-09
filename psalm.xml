@@ -9,12 +9,15 @@
         <directory name="database/migrations" />
         <directory name="app" />
         <directory name="routes" />
-        <directory name="tests" />
         <ignoreFiles>
             <directory name="vendor" />
             <file name="app/Helpers/helpers.php" />
         </ignoreFiles>
     </projectFiles>
+
+    <plugins>
+        <pluginClass class="Psalm\LaravelPlugin\Plugin" />
+    </plugins>
 
     <issueHandlers>
         <LessSpecificReturnType errorLevel="info" />
@@ -89,36 +92,51 @@
         <NullableReturnStatement errorLevel="info" />
         <ImplementedReturnTypeMismatch errorLevel="info" />
         <UnresolvableInclude errorLevel="info" />
-        <InvalidReturnStatement errorLevel="info" />
-        <InvalidReturnType errorLevel="info" />
 
         <InvalidArgument errorLevel="info" />
 
         <PossiblyUndefinedMethod errorLevel="info" />
         <ReservedWord errorLevel="info" />
 
-        <UndefinedGlobalVariable>
-            <errorLevel type="suppress">
-                <directory name="resources/views" />
-            </errorLevel>
-        </UndefinedGlobalVariable>
+        <RawObjectIteration errorLevel="suppress" />
 
         <UndefinedPropertyAssignment>
             <errorLevel type="suppress">
-                <file name="app/Models/Contact/Contact.php" />
+                <file name="database/migrations/2017_07_26_220021_change_contacts_table.php" />
             </errorLevel>
         </UndefinedPropertyAssignment>
 
-        <UndefinedThisPropertyFetch>
+        <UndefinedMagicPropertyAssignment>
             <errorLevel type="suppress">
-                <file name="tests/DuskTestCase.php" />
+                <file name="database/migrations/2017_08_06_153253_move_kids_to_contacts.php" />
             </errorLevel>
-        </UndefinedThisPropertyFetch>
+        </UndefinedMagicPropertyAssignment>
+
+        <UndefinedMagicPropertyFetch>
+            <errorLevel type="suppress">
+                <file name="database/migrations/2017_05_04_164723_remove_contact_encryption.php" />
+            </errorLevel>
+        </UndefinedMagicPropertyFetch>
+
+        <InvalidPropertyAssignmentValue>
+            <errorLevel type="suppress">
+                <file name="database/migrations/2017_08_06_153253_move_kids_to_contacts.php" />
+            </errorLevel>
+        </InvalidPropertyAssignmentValue>
 
         <UndefinedPropertyFetch>
             <errorLevel type="suppress">
-                <file name="app/Models/Contact/Contact.php" />
+                <file name="app/Services/VCalendar/ImportTask.php" />
             </errorLevel>
         </UndefinedPropertyFetch>
+
+        <UndefinedMagicMethod>
+            <errorLevel type="suppress">
+                <file name="app/Traits/Searchable.php" />
+            </errorLevel>
+        </UndefinedMagicMethod>
+
+        <TooManyTemplateParams errorLevel="info" />
+
     </issueHandlers>
 </psalm>

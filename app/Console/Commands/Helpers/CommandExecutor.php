@@ -16,13 +16,16 @@ class CommandExecutor implements CommandExecutorInterface
     /**
      * Create a new CommandExecutor.
      *
-     * @param Command
+     * @param Command $command base
      */
     public function __construct(Command $command)
     {
         $this->command = $command;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function exec($message, $commandline)
     {
         $this->command->info($message);
@@ -34,6 +37,9 @@ class CommandExecutor implements CommandExecutorInterface
         $this->command->line('', null, OutputInterface::VERBOSITY_VERBOSE);
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function artisan($message, $commandline, array $arguments = [])
     {
         $info = '';

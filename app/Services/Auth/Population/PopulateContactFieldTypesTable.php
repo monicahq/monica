@@ -34,7 +34,7 @@ class PopulateContactFieldTypesTable extends BaseService
      * @param array $data
      * @return bool
      */
-    public function execute(array $data) : bool
+    public function execute(array $data): bool
     {
         $this->createEntries($data);
 
@@ -80,7 +80,8 @@ class PopulateContactFieldTypesTable extends BaseService
     /**
      * Create an entry in the life event category table.
      *
-     * @param object $defaultLifeEventCategory
+     * @param object $defaultContactFieldType
+     * @param array $data
      * @return void
      */
     private function createEntry($defaultContactFieldType, $data)

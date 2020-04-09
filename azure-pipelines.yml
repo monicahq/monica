@@ -1,0 +1,86 @@
+# PHP
+# Test and package your PHP project.
+# Add steps that run tests, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/php
+
+trigger:
+  batch: 'true'
+  branches:
+    include:
+    - master
+  tags:
+    include:
+    - '*'
+pr:
+  autoCancel: 'true'
+  branches:
+    include:
+    - '*'
+
+variables:
+  phpVersion: 7.3
+  COMPOSER_HOME: $(Pipeline.Workspace)/.composer
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+
+stages:
+- stage: build
+  displayName: 'Build'
+  condition: not(startsWith(variables['System.PullRequest.SourceBranch'], 'l10n_master'))
+  jobs:
+  - template: .azure/job-build.yml
+  - template: .azure/job-tests.yml
+  - template: .azure/job-analyzers.yml
+  - template: .azure/job-test-browser.yml
+  - template: .azure/job-reporting.yml
+  - template: .azure/job-test-migrations.yml
+
+- stage: deploy
+  displayName: 'Deploy'
+  dependsOn: build
+  condition: in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI')
+
+  jobs:
+  - deployment: deploy_dist
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'monica'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: none
+          - checkout: self
+          - template: .azure/step-composer-install.yml
+            parameters:
+              no_dev: 'true'
+          - template: .azure/step-deploy-dist.yml
+
+  - deployment: deploy_docker_master
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'monica'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: none
+          - checkout: self
+          - template: .azure/step-docker-build.yml
+          - template: .azure/step-docker-push-github.yml
+
+  - deployment: deploy_docker
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'monica'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: none
+          - checkout: self
+          - template: .azure/step-docker-build.yml
+          - template: .azure/step-docker-push-github.yml
+          - template: .azure/step-docker-push.yml

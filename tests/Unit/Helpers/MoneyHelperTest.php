@@ -6,13 +6,15 @@ use Tests\TestCase;
 use App\Models\User\User;
 use App\Helpers\MoneyHelper;
 use App\Models\Settings\Currency;
+use Illuminate\Support\Facades\App;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class MoneyHelperTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testFormatReturnsAmountWithCurrencySymbol()
+    /** @test */
+    public function it_returns_the_amount_with_the_currency_symbol()
     {
         $currency = new Currency();
         $currency->iso = 'EUR';
@@ -21,7 +23,29 @@ class MoneyHelperTest extends TestCase
         $this->assertEquals('€5,038.29', MoneyHelper::format(5038.29, $currency));
     }
 
-    public function testFormatUsesCurrencySettingIfDefined()
+    /** @test */
+    public function it_returns_the_amount_with_the_currency_symbol_in_the_right_locale()
+    {
+        App::setLocale('fr');
+
+        $currency = new Currency();
+        $currency->iso = 'EUR';
+
+        $this->assertEquals('500,00 €', MoneyHelper::format(500, $currency));
+    }
+
+    /** @test */
+    public function it_returns_the_amount_with_the_currency_symbol_with_the_right_punctuation()
+    {
+        $currency = new Currency();
+        $currency->iso = 'JPY'; // minorUnit value is zero "0"
+
+        $this->assertEquals('¥500', MoneyHelper::format(500, $currency));
+        $this->assertEquals('¥5,038', MoneyHelper::format(5038, $currency));
+    }
+
+    /** @test */
+    public function it_formats_the_currency_with_the_right_locale()
     {
         $currency = Currency::where('iso', 'GBP')->first();
         $user = factory(User::class)->create([
@@ -33,18 +57,21 @@ class MoneyHelperTest extends TestCase
         $this->assertEquals('£2,734.12', MoneyHelper::format(2734.12));
     }
 
-    public function testFormatReturnsAmountWithoutSymbolIfCurrencyIsUndefined()
+    /** @test */
+    public function it_returns_the_amount_without_the_currency_symbol_if_not_provided()
     {
         $this->assertEquals('500', MoneyHelper::format(500));
         $this->assertEquals('5,000', MoneyHelper::format(5000));
     }
 
-    public function testFormatReturnsZeroIfAmountIsNull()
+    /** @test */
+    public function it_returns_zero_if_amount_is_null()
     {
         $this->assertEquals('0', MoneyHelper::format(null));
     }
 
-    public function test_it_covers_brazilian_currency()
+    /** @test */
+    public function it_covers_brazilian_currency()
     {
         $currency = Currency::where('iso', 'BRL')->first();
 

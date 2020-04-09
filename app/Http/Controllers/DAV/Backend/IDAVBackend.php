@@ -14,7 +14,7 @@ interface IDAVBackend
     /**
      * Returns the object for the specific uuid.
      *
-     * @param string  $uri
+     * @param string  $uuid
      * @return mixed
      */
     public function getObjectUuid($uuid);

@@ -5,15 +5,21 @@ namespace App\Models\Contact;
 use App\Models\User\User;
 use App\Helpers\MailHelper;
 use App\Models\Account\Account;
-use App\Notifications\UserNotified;
-use App\Notifications\UserReminded;
-use Illuminate\Notifications\Notification;
+use App\Interfaces\MailNotification;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
 
 /**
  * @property Account $account
+ * @property int $account_id
  * @property Contact $contact
+ * @property User $user
+ * @property int $user_id
+ * @property Reminder $reminder
+ * @property int $reminder_id
+ * @property string $nature
+ * @property \Illuminate\Support\Carbon|null $planned_date
+ * @property int $notification_number_days_before
  */
 class ReminderOutbox extends Model
 {
@@ -68,7 +74,7 @@ class ReminderOutbox extends Model
     /**
      * Log the message that has been sent to the user.
      *
-     * @param Notification $message
+     * @param MailNotification $message
      * @return void
      */
     public function logSent($message)
@@ -78,18 +84,12 @@ class ReminderOutbox extends Model
         $reminderSent->reminder_id = $this->reminder_id;
         $reminderSent->user_id = $this->user_id;
         $reminderSent->planned_date = $this->planned_date;
+        $reminderSent->nature = $this->nature;
         $reminderSent->sent_date = now();
         $reminderSent->frequency_type = is_null($this->reminder) ? null : $this->reminder->frequency_type;
         $reminderSent->frequency_number = is_null($this->reminder) ? null : $this->reminder->frequency_number;
         $reminderSent->html_content = MailHelper::emailView($message, $this->user);
 
-        if ($message instanceof UserNotified) {
-            $reminderSent->nature = 'notification';
-        }
-
-        if ($message instanceof UserReminded) {
-            $reminderSent->nature = 'reminder';
-        }
         $reminderSent->save();
     }
 }

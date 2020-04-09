@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Models\Contact\Debt;
-use App\Helpers\AvatarHelper;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\DebtRequest;
@@ -14,7 +14,8 @@ class DebtController extends Controller
      * Display a listing of the resource.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function index(Contact $contact)
     {
@@ -26,13 +27,14 @@ class DebtController extends Controller
      * Show the form for creating a new resource.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function create(Contact $contact)
     {
         return view('people.debt.add')
             ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
+            ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account))
             ->withDebt(new Debt);
     }
 
@@ -41,7 +43,8 @@ class DebtController extends Controller
      *
      * @param DebtRequest $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(DebtRequest $request, Contact $contact)
     {
@@ -66,9 +69,10 @@ class DebtController extends Controller
      *
      * @param Contact $contact
      * @param Debt $debt
-     * @return \Illuminate\Http\Response
+     *
+     * @return void
      */
-    public function show(Contact $contact, Debt $debt)
+    public function show(Contact $contact, Debt $debt): void
     {
         //
     }
@@ -78,13 +82,14 @@ class DebtController extends Controller
      *
      * @param Contact $contact
      * @param Debt $debt
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Contact $contact, Debt $debt)
     {
         return view('people.debt.edit')
             ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
+            ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account))
             ->withDebt($debt);
     }
 
@@ -94,7 +99,8 @@ class DebtController extends Controller
      * @param DebtRequest $request
      * @param Contact $contact
      * @param Debt $debt
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(DebtRequest $request, Contact $contact, Debt $debt)
     {
@@ -119,7 +125,8 @@ class DebtController extends Controller
      *
      * @param Contact $contact
      * @param Debt $debt
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Contact $contact, Debt $debt)
     {

@@ -6,8 +6,9 @@ use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Debt;
 use Illuminate\Http\Request;
+use App\Helpers\AccountHelper;
+use function Safe\json_encode;
 use App\Helpers\InstanceHelper;
-use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Debt\Debt as DebtResource;
@@ -17,7 +18,7 @@ class DashboardController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index()
     {
@@ -36,18 +37,15 @@ class DashboardController extends Controller
         $lastUpdatedContacts = $account->contacts()
             ->real()
             ->active()
-            ->latest('updated_at')
+            ->alive()
+            ->latest('last_consulted_at')
             ->limit(10)
             ->get();
         foreach ($lastUpdatedContacts as $contact) {
-            if ($contact->is_dead) {
-                continue;
-            }
-
             $data = [
                 'id' => $contact->hashID(),
                 'has_avatar' => $contact->has_avatar,
-                'avatar_url' => $contact->getAvatarURL(110),
+                'avatar_url' => $contact->getAvatarURL(),
                 'initials' => $contact->getInitials(),
                 'default_avatar_color' => $contact->default_avatar_color,
                 'complete_name' => $contact->name,
@@ -72,9 +70,9 @@ class DashboardController extends Controller
 
         // Load the reminderOutboxes for the upcoming three months
         $reminderOutboxes = [
-            0 => auth()->user()->account->getRemindersForMonth(0),
-            1 => auth()->user()->account->getRemindersForMonth(1),
-            2 => auth()->user()->account->getRemindersForMonth(2),
+            0 => AccountHelper::getUpcomingRemindersForMonth(auth()->user()->account, 0),
+            1 => AccountHelper::getUpcomingRemindersForMonth(auth()->user()->account, 1),
+            2 => AccountHelper::getUpcomingRemindersForMonth(auth()->user()->account, 2),
         ];
 
         $data = [
@@ -141,7 +139,7 @@ class DashboardController extends Controller
                 'contact' => [
                     'id' => $note->contact->hashID(),
                     'has_avatar' => $note->contact->has_avatar,
-                    'avatar_url' => $note->contact->getAvatarURL(110),
+                    'avatar_url' => $note->contact->getAvatarURL(),
                     'initials' => $note->contact->getInitials(),
                     'default_avatar_color' => $note->contact->default_avatar_color,
                     'complete_name' => $note->contact->name,
@@ -174,7 +172,7 @@ class DashboardController extends Controller
      */
     public function setTab(Request $request)
     {
-        auth()->user()->dashboard_active_tab = $request->get('tab');
+        auth()->user()->dashboard_active_tab = $request->input('tab');
         auth()->user()->save();
     }
 }

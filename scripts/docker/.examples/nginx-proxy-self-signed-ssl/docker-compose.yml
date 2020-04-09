@@ -1,0 +1,127 @@
+# Run Monica with a self-signed-ssl certificate
+#
+# You might want to set these variables in you .env file:
+#
+#- APP_ENV=production
+#- APP_URL with your domain (https scheme)
+#- APP_TRUSTED_PROXIES=*
+#
+#- DB_HOST=db
+# See `db` container for these values:
+#- DB_DATABASE=monica
+#- DB_USERNAME=homestead
+#- DB_PASSWORD=secret
+#
+# To use redis:
+#- REDIS_HOST=redis
+#- CACHE_DRIVER=redis
+#- QUEUE_DRIVER=redis
+#
+
+version: "3.4"
+
+services:
+  app:
+    image: monicahq/monicahq:fpm
+    env_file: .env
+    volumes:
+      - data:/var/www/monica/storage
+      - www:/var/www/monica
+    restart: always
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=sekret_root_password
+      - MYSQL_DATABASE=monica
+      - MYSQL_USER=homestead
+      - MYSQL_PASSWORD=secret
+    volumes:
+      - db:/var/lib/mysql
+    restart: always
+
+  redis:
+    image: redis:alpine
+    restart: always
+
+  cron:
+    image: monicahq/monicahq:fpm
+    env_file: .env
+    restart: always
+    volumes:
+      - data:/var/www/monica/storage
+      - www:/var/www/monica:ro
+    command: cron.sh
+    depends_on:
+      - db
+      - redis
+
+  queue:
+    image: monicahq/monicahq:fpm
+    env_file: .env
+    restart: always
+    volumes:
+      - data:/var/www/monica/storage
+      - www:/var/www/monica:ro
+    command: queue.sh
+    depends_on:
+      - db
+      - redis
+
+  web:
+    build: ./web
+    restart: always
+    environment:
+      - VIRTUAL_HOST=monica.local
+    volumes:
+      - data:/var/www/monica/storage:ro
+      - www:/var/www/monica:ro
+    depends_on:
+      - app
+    networks:
+      - proxy-tier
+      - default
+
+  proxy:
+    build: ./proxy
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - proxy-tier
+    depends_on:
+      - omgwtfssl
+
+  omgwtfssl:
+    image: paulczar/omgwtfssl
+    restart: "no"
+    volumes:
+      - certs:/certs
+    environment:
+      - SSL_SUBJECT=monica.local
+      - CA_SUBJECT=my@example.com
+      - SSL_KEY=/certs/monica.local.key
+      - SSL_CSR=/certs/monica.local.csr
+      - SSL_CERT=/certs/monica.local.crt
+    networks:
+      - proxy-tier
+
+volumes:
+  data:
+    name: data
+  www:
+    name: www
+  db:
+    name: db
+  certs:
+    name: certs
+
+networks:
+  proxy-tier:

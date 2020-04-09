@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\People;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\AuthorizedRequest;
 
-class ConversationRequest extends FormRequest
+class ConversationRequest extends AuthorizedRequest
 {
     /**
      * Get the validation rules that apply to the request.

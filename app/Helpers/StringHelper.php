@@ -2,8 +2,6 @@
 
 namespace App\Helpers;
 
-use Illuminate\Support\Facades\DB;
-
 class StringHelper
 {
     /**
@@ -19,7 +17,7 @@ class StringHelper
         $searchTerms = explode(' ', $searchTerm);
 
         foreach ($searchTerms as $searchTerm) {
-            $searchTerm = DB::connection()->getPdo()->quote('%'.$searchTerm.'%');
+            $searchTerm = DBHelper::connection()->getPdo()->quote('%'.$searchTerm.'%');
 
             foreach ($array as $column) {
                 if ($first) {
@@ -32,5 +30,16 @@ class StringHelper
         }
 
         return $queryString;
+    }
+
+    /**
+     * Test if string is null or whitespace.
+     *
+     * @param  mixed $text
+     * @return bool
+     */
+    public static function isNullOrWhitespace($text): bool
+    {
+        return ctype_space($text) || $text === '' || is_null($text);
     }
 }

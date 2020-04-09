@@ -2,8 +2,10 @@
 
 namespace App\Services\Instance\Weather;
 
+use Illuminate\Support\Str;
 use App\Models\Account\Place;
 use App\Services\BaseService;
+use function Safe\json_decode;
 use App\Models\Account\Weather;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
@@ -31,14 +33,14 @@ class GetWeatherInformation extends BaseService
      * Get the weather information.
      *
      * @param array $data
-     * @param GuzzleClient the Guzzle client, only needed when unit testing
+     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
      * @return Weather|null
-     * @throws Illuminate\Validation\ValidationException if the array that is given in parameter is not valid
-     * @throws App\Exceptions\MissingEnvVariableException if the weather services are not enabled
-     * @throws Illuminate\Database\Eloquent\ModelNotFoundException if the Place object is not found
-     * @throws GuzzleHttp\Exception\ClientException if the request to Darksky crashed
+     * @throws \Illuminate\Validation\ValidationException if the array that is given in parameter is not valid
+     * @throws \App\Exceptions\MissingEnvVariableException if the weather services are not enabled
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException if the Place object is not found
+     * @throws \GuzzleHttp\Exception\ClientException if the request to Darksky crashed
      */
-    public function execute(array $data, GuzzleClient $client = null)
+    public function execute(array $data, GuzzleClient $client = null): ?Weather
     {
         $this->validateWeatherEnvVariables();
 
@@ -50,7 +52,7 @@ class GetWeatherInformation extends BaseService
             $place = $this->fetchGPS($place);
 
             if (is_null($place)) {
-                return;
+                return null;
             }
         }
 
@@ -83,29 +85,29 @@ class GetWeatherInformation extends BaseService
      * Actually make the call to Darksky.
      *
      * @param Place $place
-     * @return Weather
-     * @throws Exception
+     * @return Weather|null
+     * @throws \Exception
      */
-    private function query(Place $place) : Weather
+    private function query(Place $place): ?Weather
     {
         $query = $this->buildQuery($place);
 
         try {
             $response = $this->client->request('GET', $query);
             $response = json_decode($response->getBody());
+
+            $weather = new Weather();
+            $weather->weather_json = $response;
+            $weather->account_id = $place->account_id;
+            $weather->place_id = $place->id;
+            $weather->save();
+
+            return $weather;
         } catch (ClientException $e) {
             Log::error('Error making the call: '.$e);
-
-            return null;
         }
 
-        $weather = new Weather();
-        $weather->weather_json = $response;
-        $weather->account_id = $place->account_id;
-        $weather->place_id = $place->id;
-        $weather->save();
-
-        return $weather;
+        return null;
     }
 
     /**
@@ -116,7 +118,7 @@ class GetWeatherInformation extends BaseService
      */
     private function buildQuery(Place $place)
     {
-        $url = str_finish(config('location.darksky_url'), '/');
+        $url = Str::finish(config('location.darksky_url'), '/');
         $key = config('monica.darksky_api_key');
         $coords = $place->latitude.','.$place->longitude;
 

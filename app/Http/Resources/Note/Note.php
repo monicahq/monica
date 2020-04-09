@@ -3,15 +3,18 @@
 namespace App\Http\Resources\Note;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Note extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\Note>
+ */
+class Note extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -22,6 +25,7 @@ class Note extends Resource
             'body' => $this->body,
             'is_favorited' => (bool) $this->is_favorited,
             'favorited_at' => DateHelper::getTimestamp($this->favorited_at),
+            'url' => route('api.note', $this->id),
             'account' => [
                 'id' => $this->account_id,
             ],

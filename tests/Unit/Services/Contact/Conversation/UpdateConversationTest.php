@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -17,17 +16,18 @@ class UpdateConversationTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_a_conversation()
+    /** @test */
+    public function it_updates_a_conversation()
     {
         $conversation = factory(Conversation::class)->create([
             'happened_at' => '2008-01-01',
         ]);
         $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $conversation->account->id,
+            'account_id' => $conversation->account_id,
         ]);
 
         $request = [
-            'account_id' => $conversation->account->id,
+            'account_id' => $conversation->account_id,
             'conversation_id' => $conversation->id,
             'happened_at' => '2010-02-02',
             'contact_field_type_id' => $contactFieldType->id,
@@ -47,13 +47,14 @@ class UpdateConversationTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
             'contact_id' => $contact->id,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
         ];
 
         $this->expectException(ValidationException::class);
@@ -61,12 +62,13 @@ class UpdateConversationTest extends TestCase
         app(UpdateConversation::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_conversation_doesnt_exist()
+    /** @test */
+    public function it_throws_an_exception_if_conversation_doesnt_exist()
     {
         $account = factory(Account::class)->create();
         $conversation = factory(Conversation::class)->create([]);
         $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $conversation->account->id,
+            'account_id' => $conversation->account_id,
         ]);
 
         $request = [

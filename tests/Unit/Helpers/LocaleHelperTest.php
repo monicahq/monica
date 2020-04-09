@@ -4,13 +4,15 @@ namespace Tests\Unit\Helpers;
 
 use Tests\FeatureTestCase;
 use App\Helpers\LocaleHelper;
+use Illuminate\Support\Facades\App;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class LocaleHelperTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
-    public function test_get_locale_returns_english_by_default()
+    /** @test */
+    public function get_locale_returns_english_by_default()
     {
         $this->assertEquals(
             'en',
@@ -18,7 +20,8 @@ class LocaleHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_get_locale_returns_right_locale_if_user_logged()
+    /** @test */
+    public function get_locale_returns_right_locale_if_user_logged()
     {
         $user = $this->signIn();
         $user->locale = 'fr';
@@ -30,7 +33,8 @@ class LocaleHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_get_direction_default()
+    /** @test */
+    public function get_direction_default()
     {
         $this->assertEquals(
             'ltr',
@@ -38,11 +42,10 @@ class LocaleHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_get_direction_french()
+    /** @test */
+    public function get_direction_french()
     {
-        $user = $this->signIn();
-        $user->locale = 'fr';
-        $user->save();
+        App::setLocale('fr');
 
         $this->assertEquals(
             'ltr',
@@ -50,11 +53,10 @@ class LocaleHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_get_direction_hebrew()
+    /** @test */
+    public function get_direction_hebrew()
     {
-        $user = $this->signIn();
-        $user->locale = 'he';
-        $user->save();
+        App::setLocale('he');
 
         $this->assertEquals(
             'rtl',
@@ -62,7 +64,8 @@ class LocaleHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_format_telephone_by_iso()
+    /** @test */
+    public function format_telephone_by_iso()
     {
         $tel = LocaleHelper::formatTelephoneNumberByISO('202-555-0191', 'gb');
 
@@ -130,6 +133,15 @@ class LocaleHelperTest extends FeatureTestCase
     public function test_locale_extract_country($locale, $expect)
     {
         $country = LocaleHelper::extractCountry($locale);
+
+        $this->assertEquals(
+            $expect,
+            $country
+        );
+
+        App::setLocale($locale);
+
+        $country = LocaleHelper::extractCountry();
 
         $this->assertEquals(
             $expect,

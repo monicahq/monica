@@ -40,6 +40,6 @@ class AddressBookHome extends BaseAddressBookHome
 
         return collect($addressbooks)->map(function ($addressbook) {
             return new AddressBook($this->carddavBackend, $addressbook);
-        });
+        })->toArray();
     }
 }

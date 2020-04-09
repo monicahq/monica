@@ -38,7 +38,7 @@ class ApiOccupationControllerTest extends ApiTestCase
         $user = $this->signin();
 
         factory(Occupation::class, 3)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/occupations');
@@ -81,16 +81,16 @@ class ApiOccupationControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $occupation = factory(Occupation::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('get', '/api/occupations/'.$occupation->id);
 
-        $response->assertstatus(200);
-        $response->assertjsonstructure([
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
             'data' => $this->jsonOccupation,
         ]);
-        $response->assertjsonfragment([
+        $response->assertJsonFragment([
             'object' => 'occupation',
             'id' => $occupation->id,
         ]);
@@ -102,7 +102,7 @@ class ApiOccupationControllerTest extends ApiTestCase
 
         $response = $this->json('get', '/api/occupations/0');
 
-        $this->expectnotfound($response);
+        $this->expectNotFound($response);
     }
 
     public function test_it_creates_a_occupation()
@@ -122,20 +122,20 @@ class ApiOccupationControllerTest extends ApiTestCase
             'title' => 'Waiter',
         ]);
 
-        $response->assertstatus(201);
-        $response->assertjsonstructure([
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
             'data' => $this->jsonOccupation,
         ]);
 
         $occupationId = $response->json('data.id');
 
-        $response->assertjsonfragment([
+        $response->assertJsonFragment([
             'object' => 'occupation',
             'id' => $occupationId,
         ]);
 
-        $this->assertdatabasehas('occupations', [
-            'account_id' => $user->account->id,
+        $this->assertDatabaseHas('occupations', [
+            'account_id' => $user->account_id,
             'id' => $occupationId,
             'title' => 'Waiter',
         ]);
@@ -145,7 +145,7 @@ class ApiOccupationControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $occupation = factory(Occupation::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('put', '/api/occupations/'.$occupation->id, [
@@ -155,23 +155,23 @@ class ApiOccupationControllerTest extends ApiTestCase
             'salary' => null,
         ]);
 
-        $response->assertstatus(200);
+        $response->assertStatus(200);
 
-        $response->assertjsonstructure([
+        $response->assertJsonStructure([
             'data' => $this->jsonOccupation,
         ]);
 
         $occupationId = $response->json('data.id');
 
-        $this->assertequals($occupation->id, $occupationId);
+        $this->assertEquals($occupation->id, $occupationId);
 
-        $response->assertjsonfragment([
+        $response->assertJsonFragment([
             'object' => 'occupation',
             'id' => $occupationId,
         ]);
 
         $this->assertDatabaseHas('occupations', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $occupationId,
             'title' => 'Commissaire',
             'salary' => null,
@@ -194,7 +194,7 @@ class ApiOccupationControllerTest extends ApiTestCase
             'salary' => null,
         ]);
 
-        $this->expectnotfound($response);
+        $this->expectNotFound($response);
     }
 
     public function test_it_deletes_a_occupation()
@@ -202,15 +202,15 @@ class ApiOccupationControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $occupation = factory(Occupation::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('delete', '/api/occupations/'.$occupation->id);
 
-        $response->assertstatus(200);
+        $response->assertStatus(200);
 
         $this->assertdatabasemissing('occupations', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $occupation->id,
         ]);
     }

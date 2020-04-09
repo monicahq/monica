@@ -5,6 +5,7 @@ namespace Tests\Api\DAV;
 use App\Models\Contact\Task;
 use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
+use App\Models\Contact\ContactFieldType;
 
 trait CardEtag
 {
@@ -24,6 +25,7 @@ trait CardEtag
 
     protected function getCard(Contact $contact, bool $realFormat = false): string
     {
+        $contact = $contact->refresh();
         $url = route('people.show', $contact);
         $sabreversion = \Sabre\VObject\Version::VERSION;
         $timestamp = $contact->updated_at->format('Ymd\THis\Z');
@@ -35,8 +37,18 @@ UID:{$contact->uuid}
 SOURCE:{$url}
 FN:{$contact->name}
 N:{$contact->last_name};{$contact->first_name};{$contact->middle_name};;
-GENDER:O;
 ";
+
+        if ($contact->gender) {
+            $data .= "GENDER:{$contact->gender->type}";
+            $data .= "\n";
+        }
+
+        $picture = $contact->getAvatarURL();
+        if (! empty($picture)) {
+            $data .= "PHOTO;VALUE=URI:{$picture}\n";
+        }
+
         foreach ($contact->addresses as $address) {
             $data .= 'ADR:;;';
             $data .= $address->place->street.';';
@@ -47,20 +59,29 @@ GENDER:O;
             $data .= "\n";
         }
         foreach ($contact->contactFields as $contactField) {
+            $type = '';
+            if ($contactField->labels->count() > 0) {
+                $type = ';TYPE='.$contactField->labels->map(function ($label) {
+                    return $label->label_i18n ?: $label->label;
+                })->join(',');
+            }
             switch ($contactField->contactFieldType->type) {
-                case 'phone':
-                    $data .= "TEL:{$contactField->data}\n";
+                case ContactFieldType::PHONE:
+                    $data .= "TEL$type:{$contactField->data}\n";
                     break;
-                case 'email':
-                    $data .= "EMAIL:{$contactField->data}\n";
+                case ContactFieldType::EMAIL:
+                    $data .= "EMAIL$type:{$contactField->data}\n";
                     break;
                 default:
                     break;
             }
         }
-        $data .= "REV:{$timestamp}
-END:VCARD
-";
+        $data .= "REV:{$timestamp}\n";
+        $tags = $contact->getTagsAsString();
+        if (! empty($tags)) {
+            $data .= "CATEGORIES:{$tags}\n";
+        }
+        $data .= "END:VCARD\n";
 
         if ($realFormat) {
             $data = mb_ereg_replace("\n", "\r\n", $data);

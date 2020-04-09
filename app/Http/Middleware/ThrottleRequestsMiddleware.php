@@ -98,7 +98,7 @@ class ThrottleRequestsMiddleware
      *
      * @param  string $key
      * @param  int $maxAttempts
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function buildResponse($key, $maxAttempts)
     {
@@ -123,7 +123,7 @@ class ThrottleRequestsMiddleware
     /**
      * Add the limit header information to the given response.
      *
-     * @param  \Illuminate\Http\Response  $response
+     * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @param  int  $maxAttempts
      * @param  int  $remainingAttempts
      * @param  int|null  $retryAfter

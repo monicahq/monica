@@ -67,6 +67,7 @@ return [
     'not_in'               => ':attribute ist ungültig.',
     'not_regex'            => 'Das Format von :attribute ist ungültig.',
     'numeric'              => ':attribute muss eine Zahl sein.',
+    'password' => 'Das Passwort ist falsch.',
     'present'              => 'Das :attribute Feld muss vorhanden sein.',
     'regex'                => 'Das :attribute Format ist ungültig.',
     'required'             => 'Das :attribute Feld ist ein Pflichtfeld.',
@@ -119,4 +120,12 @@ return [
 
     'attributes' => [],
 
+    'vue' => [
+        'max' => [
+            'numeric' => '{field} may not be greater than {max}.',
+            'string'  => '{field} may not be greater than {max} characters.',
+        ],
+        'required' => '{field} is required.',
+        'url' => '{field} is not a valid URL.',
+    ],
 ];

@@ -13,7 +13,7 @@ class ApiComplianceController extends ApiController
     /**
      * Get the list of terms and privacy policies.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -24,8 +24,10 @@ class ApiComplianceController extends ApiController
 
     /**
      * Get the detail of a given term.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return ComplianceResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $termId)
     {

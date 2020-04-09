@@ -24,8 +24,8 @@ class CreateConversation extends BaseService
         return [
             'happened_at' => 'required|date',
             'account_id' => 'required|integer|exists:accounts,id',
-            'contact_id' => 'required|integer',
-            'contact_field_type_id' => 'required|integer',
+            'contact_id' => 'required|integer|exists:contacts,id',
+            'contact_field_type_id' => 'required|integer|exists:contact_field_types,id',
         ];
     }
 

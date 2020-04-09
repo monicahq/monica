@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit\Jobs\Reminder;
 
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -10,7 +10,6 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Notifications\UserNotified;
 use App\Notifications\UserReminded;
-use Illuminate\Support\Facades\Event;
 use App\Models\Contact\ReminderOutbox;
 use Illuminate\Support\Facades\Notification;
 use App\Jobs\Reminder\NotifyUserAboutReminder;
@@ -20,7 +19,8 @@ class NotifyUserAboutReminderTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_sends_a_reminder_to_a_user()
+    /** @test */
+    public function it_sends_a_reminder_to_a_user()
     {
         Notification::fake();
 
@@ -54,18 +54,19 @@ class NotifyUserAboutReminderTest extends TestCase
         Notification::assertSentTo(
             $user,
             UserReminded::class,
-            function ($notification, $channels) use ($reminderOutbox, $user, $contact) {
+            function ($notification, $channels) use ($reminderOutbox, $reminder, $user, $contact) {
                 $mailData = $notification->toMail($user)->toArray();
                 $this->assertEquals("Reminder for {$contact->name}", $mailData['subject']);
                 $this->assertEquals("Hi {$user->first_name}", $mailData['greeting']);
-                $this->assertContains("You wanted to be reminded of {$reminderOutbox->reminder->title}", $mailData['introLines']);
+                $this->assertStringContainsString("You wanted to be reminded of {$reminderOutbox->reminder->title}", $mailData['introLines'][0]);
 
-                return $notification->reminderOutbox->id === $reminderOutbox->id;
+                return $notification->reminder->id === $reminder->id;
             }
         );
     }
 
-    public function test_it_sends_a_notification_to_a_user()
+    /** @test */
+    public function it_sends_a_notification_to_a_user()
     {
         Notification::fake();
 
@@ -99,18 +100,19 @@ class NotifyUserAboutReminderTest extends TestCase
         Notification::assertSentTo(
             $user,
             UserNotified::class,
-            function ($notification, $channels) use ($reminderOutbox, $user, $contact) {
+            function ($notification, $channels) use ($reminderOutbox, $reminder, $user, $contact) {
                 $mailData = $notification->toMail($user)->toArray();
                 $this->assertEquals("Reminder for {$contact->name}", $mailData['subject']);
                 $this->assertEquals("Hi {$user->first_name}", $mailData['greeting']);
-                $this->assertContains('In  days (on Jan 01, 2018), the following event will happen:', $mailData['introLines']);
+                $this->assertStringContainsString('In  days (on Jan 01, 2018), the following event will happen:', $mailData['introLines'][0]);
 
-                return $notification->reminderOutbox->id === $reminderOutbox->id;
+                return $notification->reminder->id === $reminder->id;
             }
         );
     }
 
-    public function test_it_doesnt_notify_a_user_if_he_is_on_the_free_plan()
+    /** @test */
+    public function it_doesnt_notify_a_user_if_he_is_on_the_free_plan()
     {
         Notification::fake();
 
@@ -146,7 +148,8 @@ class NotifyUserAboutReminderTest extends TestCase
         );
     }
 
-    public function test_it_marks_the_one_time_reminder_has_inactive_once_it_is_sent()
+    /** @test */
+    public function it_marks_the_one_time_reminder_has_inactive_once_it_is_sent()
     {
         Notification::fake();
 
@@ -174,18 +177,19 @@ class NotifyUserAboutReminderTest extends TestCase
         NotifyUserAboutReminder::dispatch($reminderOutbox);
 
         $this->assertDatabaseMissing('reminder_outbox', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $reminderOutbox->id,
         ]);
 
         $this->assertDatabaseHas('reminders', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $reminder->id,
             'inactive' => true,
         ]);
     }
 
-    public function test_it_reschedule_a_recurring_reminder_once_it_is_sent()
+    /** @test */
+    public function it_reschedule_a_recurring_reminder_once_it_is_sent()
     {
         Notification::fake();
 
@@ -214,23 +218,24 @@ class NotifyUserAboutReminderTest extends TestCase
         NotifyUserAboutReminder::dispatch($reminderOutbox);
 
         $this->assertDatabaseMissing('reminder_outbox', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $reminderOutbox->id,
         ]);
 
         $this->assertDatabaseHas('reminders', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $reminder->id,
             'inactive' => false,
         ]);
 
         $this->assertDatabaseHas('reminder_outbox', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'reminder_id' => $reminder->id,
         ]);
     }
 
-    public function test_it_creates_a_reminder_sent_object()
+    /** @test */
+    public function it_creates_a_reminder_sent_object()
     {
         Notification::fake();
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));

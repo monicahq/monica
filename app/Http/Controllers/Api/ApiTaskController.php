@@ -18,7 +18,7 @@ class ApiTaskController extends ApiController
     /**
      * Get the list of task.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -35,8 +35,10 @@ class ApiTaskController extends ApiController
 
     /**
      * Get the detail of a given task.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return TaskResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $taskId)
     {
@@ -53,17 +55,19 @@ class ApiTaskController extends ApiController
 
     /**
      * Store the task.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return TaskResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
             $task = app(CreateTask::class)->execute([
-                'account_id' => auth()->user()->account->id,
-                'contact_id' => ($request->get('contact_id') == '' ? null : $request->get('contact_id')),
-                'title' => $request->get('title'),
-                'description' => ($request->get('description') == '' ? null : $request->get('description')),
+                'account_id' => auth()->user()->account_id,
+                'contact_id' => ($request->input('contact_id') == '' ? null : $request->input('contact_id')),
+                'title' => $request->input('title'),
+                'description' => ($request->input('description') == '' ? null : $request->input('description')),
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -76,20 +80,22 @@ class ApiTaskController extends ApiController
 
     /**
      * Update the task.
-     * @param  Request $request
-     * @param  int $taskId
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     * @param int $taskId
+     *
+     * @return TaskResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $taskId)
     {
         try {
             $task = app(UpdateTask::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'task_id'])
                     +
                     [
-                    'task_id' => $taskId,
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'task_id' => $taskId,
+                        'account_id' => auth()->user()->account_id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -102,15 +108,17 @@ class ApiTaskController extends ApiController
 
     /**
      * Delete a task.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $taskId)
     {
         try {
             app(DestroyTask::class)->execute([
                 'task_id' => $taskId,
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -124,7 +132,7 @@ class ApiTaskController extends ApiController
     /**
      * Get the list of tasks for the given contact.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function tasks(Request $request, $contactId)
     {

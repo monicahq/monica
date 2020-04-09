@@ -3,28 +3,28 @@
 namespace App\Models\Account;
 
 use App\Models\User\User;
-use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use App\Models\Journal\Day;
 use App\Models\User\Module;
+use Illuminate\Support\Str;
 use App\Models\Contact\Call;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Note;
 use App\Models\Contact\Task;
+use App\Traits\Subscription;
 use App\Models\Journal\Entry;
-use Laravel\Cashier\Billable;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
-use App\Models\Contact\Activity;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
+use App\Models\Instance\AuditLog;
+use App\Services\User\CreateUser;
 use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
-use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\ReminderRule;
@@ -34,10 +34,8 @@ use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ReminderOutbox;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
-use App\Models\Contact\ActivityStatistic;
 use App\Models\Contact\LifeEventCategory;
 use App\Models\Relationship\Relationship;
-use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -46,9 +44,16 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Auth\Population\PopulateLifeEventsTable;
 use App\Services\Auth\Population\PopulateContactFieldTypesTable;
 
+/**
+ * @property int $reminders_count
+ * @property int $notes_count
+ * @property int $activities_count
+ * @property int $gifts_count
+ * @property int $tasks_count
+ */
 class Account extends Model
 {
-    use Billable;
+    use Subscription;
 
     /**
      * The attributes that are mass assignable.
@@ -59,6 +64,7 @@ class Account extends Model
         'number_of_invitations_sent',
         'api_key',
         'default_time_reminder_is_sent',
+        'default_gender_id',
     ];
 
     /**
@@ -481,162 +487,13 @@ class Account extends Model
     }
 
     /**
-     * Get the default time reminder is sent.
+     * * Get the Audit log records associated with the account.
      *
-     * @param  string  $value
-     * @return string
+     * @return HasMany
      */
-    public function getDefaultTimeReminderIsSentAttribute($value)
+    public function auditLogs()
     {
-        return $value;
-    }
-
-    /**
-     * Set the default time a reminder is sent.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setDefaultTimeReminderIsSentAttribute($value)
-    {
-        $this->attributes['default_time_reminder_is_sent'] = $value;
-    }
-
-    /**
-     * Check if the account can be downgraded, based on a set of rules.
-     *
-     * @return $this
-     */
-    public function canDowngrade()
-    {
-        $canDowngrade = true;
-        $numberOfUsers = $this->users()->count();
-        $numberPendingInvitations = $this->invitations()->count();
-        $numberContacts = $this->contacts()->count();
-
-        // number of users in the account should be == 1
-        if ($numberOfUsers > 1) {
-            $canDowngrade = false;
-        }
-
-        // there should not be any pending user invitations
-        if ($numberPendingInvitations > 0) {
-            $canDowngrade = false;
-        }
-
-        // there should not be more than the number of contacts allowed
-        if ($numberContacts > config('monica.number_of_allowed_contacts_free_account')) {
-            $canDowngrade = false;
-        }
-
-        return $canDowngrade;
-    }
-
-    /**
-     * Check if the account is currently subscribed to a plan.
-     *
-     * @return bool $isSubscribed
-     */
-    public function isSubscribed()
-    {
-        if ($this->has_access_to_paid_version_for_free) {
-            return true;
-        }
-
-        $isSubscribed = false;
-
-        if ($this->subscribed(config('monica.paid_plan_monthly_friendly_name'))) {
-            $isSubscribed = true;
-        }
-
-        if ($this->subscribed(config('monica.paid_plan_annual_friendly_name'))) {
-            $isSubscribed = true;
-        }
-
-        return $isSubscribed;
-    }
-
-    /**
-     * Check if the account has invoices linked to this account.
-     * This was created because Laravel Cashier doesn't know how to properly
-     * handled the case when a user doesn't have invoices yet. This sucks balls.
-     *
-     * @return bool
-     */
-    public function hasInvoices()
-    {
-        $query = DB::table('subscriptions')->where('account_id', $this->id)->count();
-
-        return $query > 0;
-    }
-
-    /**
-     * Get the next billing date for the account.
-     *
-     * @return string $timestamp
-     */
-    public function getNextBillingDate()
-    {
-        // Weird method to get the next billing date from Laravel Cashier
-        // see https://stackoverflow.com/questions/41576568/get-next-billing-date-from-laravel-cashier
-        $subscriptions = $this->asStripeCustomer()['subscriptions'];
-        if (count($subscriptions->data) <= 0) {
-            return;
-        }
-        $timestamp = $subscriptions->data[0]['current_period_end'];
-
-        return DateHelper::getShortDate($timestamp);
-    }
-
-    /**
-     * Indicates whether the current account has limitations with her current
-     * plan.
-     *
-     * @return bool
-     */
-    public function hasLimitations()
-    {
-        if ($this->has_access_to_paid_version_for_free) {
-            return false;
-        }
-
-        if (! config('monica.requires_subscription')) {
-            return false;
-        }
-
-        if ($this->isSubscribed()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Indicate whether an account has reached the contact limit if the account
-     * is on a free trial.
-     *
-     * @return bool
-     */
-    public function hasReachedContactLimit()
-    {
-        return $this->contacts()->real()->count() >= config('monica.number_of_allowed_contacts_free_account');
-    }
-
-    /**
-     * Get the timezone of the user. In case an account has multiple timezones,
-     * takes the first it finds.
-     * @return string
-     */
-    public function timezone()
-    {
-        $timezone = '';
-
-        foreach ($this->users as $user) {
-            $timezone = $user->timezone;
-            break;
-        }
-
-        return $timezone;
+        return $this->hasMany(AuditLog::class);
     }
 
     /**
@@ -674,9 +531,9 @@ class Account extends Model
      */
     public function populateDefaultGendersTable()
     {
-        Gender::create(['name' => trans('app.gender_male'), 'account_id' => $this->id]);
-        Gender::create(['name' => trans('app.gender_female'), 'account_id' => $this->id]);
-        Gender::create(['name' => trans('app.gender_none'), 'account_id' => $this->id]);
+        Gender::create(['type' => Gender::MALE, 'name' => trans('app.gender_male'), 'account_id' => $this->id]);
+        Gender::create(['type' => Gender::FEMALE, 'name' => trans('app.gender_female'), 'account_id' => $this->id]);
+        Gender::create(['type' => Gender::OTHER, 'name' => trans('app.gender_none'), 'account_id' => $this->id]);
     }
 
     /**
@@ -742,99 +599,6 @@ class Account extends Model
     }
 
     /**
-     * Get the reminders for the month given in parameter.
-     * - 0 means current month
-     * - 1 means month+1
-     * - 2 means month+2...
-     * @param  int    $month
-     */
-    public function getRemindersForMonth(int $month)
-    {
-        $startOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->startOfMonth();
-        // don't get reminders for past events:
-        if ($startOfMonth->isPast()) {
-            $startOfMonth = now(DateHelper::getTimezone());
-        }
-        $endOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->endOfMonth();
-
-        return $this->reminderOutboxes()
-                     ->with(['reminder', 'reminder.contact'])
-                     ->whereBetween('planned_date', [$startOfMonth, $endOfMonth])
-                     ->where('nature', 'reminder')
-                     ->orderBy('planned_date', 'asc')
-                     ->get();
-    }
-
-    /**
-     * Get the id of the plan the account is subscribed to.
-     *
-     * @return string
-     */
-    public function getSubscribedPlanId()
-    {
-        $plan = $this->subscriptions()->first();
-
-        if (! is_null($plan)) {
-            return $plan->stripe_plan;
-        }
-
-        return '';
-    }
-
-    /**
-     * Get the friendly name of the plan the account is subscribed to.
-     *
-     * @return string
-     */
-    public function getSubscribedPlanName()
-    {
-        $plan = $this->subscriptions()->first();
-
-        if (! is_null($plan)) {
-            return $plan->name;
-        }
-    }
-
-    /**
-     * Cancel the plan the account is subscribed to.
-     */
-    public function subscriptionCancel()
-    {
-        $plan = $this->subscriptions()->first();
-
-        if (! is_null($plan)) {
-            return $plan->cancelNow();
-        }
-    }
-
-    /**
-     * Replaces a specific gender of all the contacts in the account with another
-     * gender.
-     *
-     * @param  Gender $genderToDelete
-     * @param  Gender $genderToReplaceWith
-     * @return bool
-     */
-    public function replaceGender(Gender $genderToDelete, Gender $genderToReplaceWith)
-    {
-        Contact::where('account_id', $this->id)
-            ->where('gender_id', $genderToDelete->id)
-            ->update(['gender_id' => $genderToReplaceWith->id]);
-
-        return true;
-    }
-
-    /**
-     * Get if any account exists on the database.
-     *
-     * @return bool
-     */
-    public static function hasAny()
-    {
-        return DB::table('accounts')->count() > 0;
-    }
-
-    /**
      * Create a new account and associate a new User.
      *
      * @param string $first_name
@@ -842,18 +606,31 @@ class Account extends Model
      * @param string $email
      * @param string $password
      * @param string $ipAddress
-     * @return $this
+     * @return self
      */
     public static function createDefault($first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
     {
         // create new account
         $account = new self;
-        $account->api_key = str_random(30);
+        $account->api_key = Str::random(30);
         $account->created_at = now();
         $account->save();
 
-        // create the first user for this account
-        User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress, $lang);
+        try {
+            // create the first user for this account
+            $user = app(CreateUser::class)->execute([
+                'account_id' => $account->id,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'email' => $email,
+                'password' => $password,
+                'locale' => $lang,
+                'ip_address' => $ipAddress,
+            ]);
+        } catch (\Exception $e) {
+            $account->delete();
+            throw $e;
+        }
 
         $account->populateDefaultFields();
 
@@ -892,7 +669,7 @@ class Account extends Model
      * Gets the RelationshipType object matching the given type.
      *
      * @param  string $relationshipTypeName
-     * @return RelationshipType
+     * @return RelationshipType|null
      */
     public function getRelationshipTypeByType(string $relationshipTypeName)
     {
@@ -903,7 +680,7 @@ class Account extends Model
      * Gets the RelationshipType object matching the given type.
      *
      * @param  string $relationshipTypeGroupName
-     * @return RelationshipTypeGroup
+     * @return RelationshipTypeGroup|null
      */
     public function getRelationshipTypeGroupByType(string $relationshipTypeGroupName)
     {
@@ -911,131 +688,21 @@ class Account extends Model
     }
 
     /**
-     * Get the statistics of the number of calls grouped by year.
-     *
-     * @return array
-     */
-    public function getYearlyCallStatistics()
-    {
-        $callsStatistics = collect([]);
-        $calls = $this->calls()->latest('called_at')->get();
-        $years = [];
-
-        // Create a table that contains the combo year/number of
-        foreach ($calls as $call) {
-            $yearStatistic = $call->called_at->format('Y');
-            $foundInYear = false;
-
-            foreach ($years as $year => $number) {
-                if ($year == $yearStatistic) {
-                    $years[$year] = $number + 1;
-                    $foundInYear = true;
-                }
-            }
-
-            if (! $foundInYear) {
-                $years[$yearStatistic] = 1;
-            }
-        }
-
-        foreach ($years as $year => $number) {
-            $callsStatistics->put($year, $number);
-        }
-
-        return $callsStatistics;
-    }
-
-    /**
-     * Get the statistics of the number of activities grouped by year.
-     *
-     * @return array
-     */
-    public function getYearlyActivitiesStatistics()
-    {
-        $activitiesStatistics = collect([]);
-        $activities = $this->activities()->latest('date_it_happened')->get();
-        $years = [];
-
-        // Create a table that contains the combo year/number of
-        foreach ($activities as $call) {
-            $yearStatistic = $call->date_it_happened->format('Y');
-            $foundInYear = false;
-
-            foreach ($years as $year => $number) {
-                if ($year == $yearStatistic) {
-                    $years[$year] = $number + 1;
-                    $foundInYear = true;
-                }
-            }
-
-            if (! $foundInYear) {
-                $years[$yearStatistic] = 1;
-            }
-        }
-
-        foreach ($years as $year => $number) {
-            $activitiesStatistics->put($year, $number);
-        }
-
-        return $activitiesStatistics;
-    }
-
-    /**
      * Get the first available locale in an account. This gets the first user
      * in the account and reads his locale.
      *
-     * @return string
+     * @return string|null
      *
      * @throws ModelNotFoundException
      */
-    public function getFirstLocale()
+    public function getFirstLocale(): ?string
     {
         try {
             $user = $this->users()->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            return;
+            return null;
         }
 
         return $user->locale;
-    }
-
-    /**
-     * Indicates whether the account has the reached the maximum storage size
-     * for document upload.
-     *
-     * @return bool
-     */
-    public function hasReachedAccountStorageLimit()
-    {
-        if (! config('monica.requires_subscription')) {
-            return false;
-        }
-
-        $currentAccountSize = $this->getStorageSize();
-
-        return $currentAccountSize > (config('monica.max_storage_size') * 1000000);
-    }
-
-    /**
-     * Get the storage size of the account, in bytes.
-     *
-     * @return int
-     */
-    public function getStorageSize()
-    {
-        $documents = Document::where('account_id', $this->id)
-            ->orderBy('created_at', 'desc')->get();
-        $photos = Photo::where('account_id', $this->id)
-            ->orderBy('created_at', 'desc')->get();
-
-        $currentAccountSize = 0;
-        foreach ($documents as $document) {
-            $currentAccountSize += $document->filesize;
-        }
-        foreach ($photos as $photo) {
-            $currentAccountSize += $photo->filesize;
-        }
-
-        return $currentAccountSize;
     }
 }

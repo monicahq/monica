@@ -24,9 +24,9 @@
     <div class="main-content central-form">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
-          <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-sm-offset-3-right">
+          <div class="col-12 col-sm-6 offset-sm-3 offset-sm-3-right">
             <form method="POST" action="{{ route('journal.save') }}">
-              {{ csrf_field() }}
+              @csrf
 
               @include('partials.errors')
 
@@ -46,7 +46,7 @@
               <div class="form-group">
                 <label for="field-entry">{{ trans('journal.journal_add_post') }}</label>
                 <textarea class="form-control" id="field-entry" name="entry" rows="15" required></textarea>
-                <p class="f6">{{ trans('app.markdown_description')}} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">{{ trans('app.markdown_link') }}</a></p>
+                <p class="f6">{{ trans('app.markdown_description')}} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="noopener noreferrer">{{ trans('app.markdown_link') }}</a></p>
               </div>
 
               <div class="form-group actions">

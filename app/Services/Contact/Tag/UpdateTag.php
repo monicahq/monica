@@ -3,6 +3,8 @@
 namespace App\Services\Contact\Tag;
 
 use App\Models\Contact\Tag;
+use Illuminate\Support\Str;
+use App\Helpers\LocaleHelper;
 use App\Services\BaseService;
 
 class UpdateTag extends BaseService
@@ -27,7 +29,7 @@ class UpdateTag extends BaseService
      * @param array $data
      * @return Tag
      */
-    public function execute(array $data) : Tag
+    public function execute(array $data): Tag
     {
         $this->validate($data);
 
@@ -35,7 +37,7 @@ class UpdateTag extends BaseService
                             ->findOrFail($data['tag_id']);
 
         $tag->name = $data['name'];
-        $tag->name_slug = str_slug($data['name']);
+        $tag->name_slug = Str::slug($data['name'], '-', LocaleHelper::getLang());
         $tag->save();
 
         return $tag;

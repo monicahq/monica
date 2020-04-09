@@ -2,26 +2,52 @@
 
 <img alt="Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Debian-OpenLogo.svg/109px-Debian-OpenLogo.svg.png" width="96" height="127" />
 
-Monica can run on Debian Stretch.
+Monica can run on Debian Buster.
 
 ## Prerequisites
 
-1. Install the required packages:
+Monica depends on the following:
+
+* A Web server, like [Apache httpd webserver](https://httpd.apache.org/) 
+* [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+* PHP 7.2+
+* [Composer](https://getcomposer.org/)
+* MySQL / MariaDB
+
+An editor like vim or nano should be useful too.
+
+**Apache:** Install Apache with:
 
 ```sh
-sudo apt install apache2 mariadb-server php7.1 php7.1-cli php7.1-common \
-    php7.1-json php7.1-opcache php7.1-mysql php7.1-mbstring php7.1-mcrypt \
-    php7.1-zip php7.1-fpm php7.1-bcmath php7.1-intl php7.1-simplexml \
-    php7.1-dom php7.1-curl php7.1-gd git curl
+sudo apt update
+sudo apt install -y apache2
 ```
 
-2. Install composer
+**Git:** Install Git with:
 
-Download and install the binary by following the [Command-line installation of composer](https://getcomposer.org/download/).
-
-Move it to the bin directory.
 ```sh
-sudo mv composer.phar /usr/local/bin/composer
+sudo apt install -y git
+```
+
+**PHP:** 
+
+Install PHP 7.3 with these extensions:
+
+```sh
+sudo apt install -y php php-bcmath php-gd php-gmp php-curl php-intl \
+    php-mbstring php-mysql php-xml php-zip
+```
+
+**Composer:** After you're done installing PHP, you'll need the Composer dependency manager.
+
+```sh
+sudo apt install -y composer
+```
+
+**MariaDB:** Install MariaDB. Note that this only installs the package, but does not setup Mysql. This is done later in the instructions:
+
+```sh
+sudo apt install -y mariadb-server
 ```
 
 ## Installation steps
@@ -32,7 +58,8 @@ Once the softwares above are installed:
 
 You may install Monica by simply cloning the repository. Consider cloning the repository into any folder, example here in `/var/www/monica` directory:
 ```sh
-sudo git clone https://github.com/monicahq/monica.git /var/www/monica
+cd /var/www/
+sudo git clone https://github.com/monicahq/monica.git
 ```
 
 You should check out a tagged version of Monica since `master` branch may not always be stable.
@@ -81,57 +108,75 @@ exit
 `cd /var/www/monica` then run these steps with `sudo`:
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
-1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
+1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind. You'll need to configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
 1. Run `composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs` to install all packages.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-1. Run `php artisan setup:production` to run the migrations, seed the database and symlink folders.
-1. Optional: run `php artisan passport:install` to create the access tokens required for the API (Optional).
+1. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
+1. *Optional*: Setup the queues with Redis, Beanstalk or Amazon SQS: see optional instruction of [generic installation](generic.md#setup-queues)
+1. *Optional*: Setup the access tokens to use the API follow optional instruction of [generic installation](generic.md#setup-access-tokens)
 
 ### 4. Configure cron job
 
-Monica requires some background processes to continuously run. The list of things Monica does in the background is described [here](https://github.com/monicahq/monica/blob/master/app/Console/Kernel.php#L33).
+Monica requires some background processes to continuously run. The list of things Monica does in the background is described [here](https://github.com/monicahq/monica/blob/master/app/Console/Kernel.php#L63).
 Basically those crons are needed to send reminder emails and check if a new version is available.
 To do this, setup a cron that runs every minute that triggers the following command `php artisan schedule:run`.
 
-1. Open the crontab edit:
+Run the crontab command:
 ```sh
-sudo crontab -e
+crontab -u www-data -e
 ```
-2. Then, in the text editor window you just opened, copy the following:
-```
-* * * * * sudo -u www-data php /var/www/monica/artisan schedule:run
+
+Then, in the `crontab` editor window you just opened, paste the following at the end of the document:
+```sh
+* * * * * php /var/www/monica/artisan schedule:run
 ```
 
 ### 5. Configure Apache webserver
 
-Give proper permissions to the project directory by running
+1. Give proper permissions to the project directory by running:
+
 ```sh
 sudo chown -R www-data:www-data /var/www/monica
+sudo chmod -R 775 /var/www/monica/storage
 ```
 
-Enable the rewrite module of the Apache webserver:
+2. Enable the rewrite module of the Apache webserver:
 ```sh
 sudo a2enmod rewrite
 ```
 
-Edit `/etc/apache2/sites-enabled/000-default.conf` file.
+3. Configure a new monica site in apache by doing:
 
-* Update `DocumentRoot` property to:
-```
-DocumentRoot /var/www/monica/public
-```
-* and add a new `Directory` directive:
-```
-<Directory /var/www/monica/public>
-    Options Indexes FollowSymLinks
-    AllowOverride All
-    Require all granted
-</Directory>
-```
-
-Finally restart Apache.
 ```sh
-sudo systemctl restart apache2
+sudo nano /etc/apache2/sites-available/monica.conf
+```
+
+Then, in the `nano` text editor window you just opened, copy the following - swapping the `**YOUR IP ADDRESS/DOMAIN**` with your server's IP address/associated domain:
+
+```html
+<VirtualHost *:80>
+    ServerName **YOUR IP ADDRESS/DOMAIN**
+
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/monica/public
+
+    <Directory /var/www/monica/public>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+
+4. Apply the new `.conf` file and reload Apache. You can do that by running:
+
+```sh
+sudo a2dissite 000-default.conf
+sudo a2ensite monica.conf
+sudo systemctl reload apache2
 ```
 
 

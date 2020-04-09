@@ -5,15 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>@yield('title', trans('app.application_title'))</title>
     <link rel="manifest" href="manifest.webmanifest">
 
     <link rel="stylesheet" href="{{ asset(mix('css/app-'.htmldir().'.css')) }}">
     <link rel="shortcut icon" href="img/favicon.png">
     <script>
-      window.Laravel = {!! json_encode([
-          'csrfToken' => csrf_token(),
+      window.Laravel = {!! \Safe\json_encode([
           'locale' => \App::getLocale(),
           'htmldir' => htmldir(),
       ]); !!}

@@ -3,7 +3,7 @@
 namespace Tests;
 
 use Tests\Traits\ApiSignIn;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 
 class ApiTestCase extends TestCase
 {
@@ -22,6 +22,23 @@ class ApiTestCase extends TestCase
             'error' => [
                 'message' => 'The resource has not been found',
                 'error_code' => 31,
+            ],
+        ]);
+    }
+
+    /**
+     * Test that the response contains a not authorized notification.
+     *
+     * @param TestResponse $response
+     */
+    public function expectNotAuthorized(TestResponse $response)
+    {
+        $response->assertStatus(401);
+
+        $response->assertJson([
+            'error' => [
+                'message' => 'Not authorized',
+                'error_code' => 42,
             ],
         ]);
     }

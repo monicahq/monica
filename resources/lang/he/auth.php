@@ -20,6 +20,7 @@ return [
     'back_homepage' => 'חזרה לדף הבית',
     'mfa_auth_otp' => 'אימות עם ההתקן שלך לאימות דו־שלבי',
     'mfa_auth_u2f' => 'אימות עם התקן U2F',
+    'mfa_auth_webauthn' => 'אימות עם מפתח אבטחה (WebAuthn)',
     '2fa_title' => 'אימות דו־שלבי',
     '2fa_wrong_validation' => 'האימות הדו־שלבי נכשל.',
     '2fa_one_time_password' => 'קוד אימות דו־שלבי',
@@ -72,7 +73,7 @@ return [
     'confirmation_title' => 'אימות כתובת הדוא״ל שלך',
     'confirmation_fresh' => 'נשלח קישור אימות טרי לכתובת הדוא״ל שלך.',
     'confirmation_check' => 'בטרם המשך התהליך, נא לחפש את קישור האימות בתיבת הדוא״ל שלך.',
-    'confirmation_request_another' => 'אם לא קיבלת את ההודעה <a href=":url">נא ללחוץ כאן כדי לבקש אחת נוספת</a>.',
+    'confirmation_request_another' => 'אם לא קיבלת את ההודעה בדוא״ל <a :action>יש ללחוץ כאן כדי לבקש אחת נוספת</a>.',
 
     'confirmation_again' => 'כדי לשנות את כתובת הדוא״ל שלך נא <a href=":url" class="alert-link">ללחוץ כאן</a>.',
     'email_change_current_email' => 'כתובת הדוא״ל הנוכחית:',

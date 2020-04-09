@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Account\Account;
-use App\Models\Contact\Activity;
+use App\Models\Account\Activity;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;

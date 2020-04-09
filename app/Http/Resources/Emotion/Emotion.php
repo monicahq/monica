@@ -2,14 +2,17 @@
 
 namespace App\Http\Resources\Emotion;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class Emotion extends Resource
+/**
+ * @extends JsonResource<\App\Models\Instance\Emotion\Emotion>
+ */
+class Emotion extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)

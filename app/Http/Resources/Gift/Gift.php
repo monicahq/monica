@@ -3,15 +3,19 @@
 namespace App\Http\Resources\Gift;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Photo\Photo as PhotoResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Gift extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\Gift>
+ */
+class Gift extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -19,18 +23,19 @@ class Gift extends Resource
         return [
             'id' => $this->id,
             'object' => 'gift',
-            'is_for' => new ContactShortResource($this->recipient),
             'name' => $this->name,
             'comment' => $this->comment,
             'url' => $this->url,
-            'value' => $this->value,
-            'is_an_idea' => $this->is_an_idea,
-            'has_been_offered' => $this->has_been_offered,
-            'date_offered' => $this->date_offered,
+            'amount' => $this->value,
+            'amount_with_currency' => $this->amount,
+            'status' => $this->status,
+            'date' => DateHelper::getDate($this->date),
+            'recipient' => new ContactShortResource($this->recipient),
+            'photos' => PhotoResource::collection($this->photos),
+            'contact' => new ContactShortResource($this->contact),
             'account' => [
                 'id' => $this->account_id,
             ],
-            'contact' => new ContactShortResource($this->contact),
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];

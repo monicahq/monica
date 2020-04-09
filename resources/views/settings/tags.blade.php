@@ -8,7 +8,7 @@
   <div class="breadcrumb">
     <div class="{{ Auth::user()->getFluidLayout() }}">
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
           <ul class="horizontal">
             <li>
               <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
@@ -30,12 +30,12 @@
 
       @include('settings._sidebar')
 
-      <div class="col-xs-12 col-sm-9">
+      <div class="col-12 col-sm-9">
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
             @if (auth()->user()->account->tags->count() == 0)
 
-              <div class="col-xs-12 col-sm-9 blank-screen">
+              <div class="col-12 col-sm-9 blank-screen">
 
               <img src="img/settings/tags/tags.png">
 
@@ -72,15 +72,15 @@
                     </ul>
                   </div>
                   <div class="table-cell actions">
-                    <a href="#" onclick="if (confirm('{{ trans('settings.tags_list_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
-                      <i class="fa fa-trash-o" aria-hidden="true"></i>
-                    </a>
+                    <form method="POST" action="{{ route('settings.tags.delete', $tag) }}">
+                      @method('DELETE')
+                      @csrf
+                      <confirm message="{{ trans('settings.tags_list_delete_confirmation') }}">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                      </confirm>
+                    </form>
                   </div>
 
-                  <form method="POST" action="{{ route('settings.tags.delete', $tag) }}" class="entry-delete-form hidden">
-                    {{ method_field('DELETE') }}
-                    {{ csrf_field() }}
-                  </form>
                 </li>
               @endforeach
               </ul>

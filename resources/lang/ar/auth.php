@@ -20,6 +20,7 @@ return [
     'back_homepage' => 'العودة إلى الصفحة الرئيسية',
     'mfa_auth_otp' => 'المصادقة مع جهاز العامل الثنائي الخاص بك',
     'mfa_auth_u2f' => 'المصادقة باستخدام جهاز U2F',
+    'mfa_auth_webauthn' => 'Authenticate with a security key (WebAuthn)',
     '2fa_title' => 'المصادقة الثنائية',
     '2fa_wrong_validation' => 'فشلت المصادقة الثنائية.',
     '2fa_one_time_password' => 'رمز المصادقة الثنائية',
@@ -72,7 +73,7 @@ return [
     'confirmation_title' => 'Verify Your Email Address',
     'confirmation_fresh' => 'A fresh verification link has been sent to your email address.',
     'confirmation_check' => 'Before proceeding, please check your email for a verification link.',
-    'confirmation_request_another' => 'If you did not receive the email <a href=":url">click here to request another</a>.',
+    'confirmation_request_another' => 'If you did not receive the email <a :action>click here to request another</a>.',
 
     'confirmation_again' => 'إذا أردت تغيير بريدك الإلكتروني يمكنك <a href=":url" class="alert-link">الضغط هنا</a>.',
     'email_change_current_email' => 'البريد الإلكتروني الحالي:',

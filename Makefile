@@ -16,6 +16,15 @@ else ifeq ($(TRAVIS),true)
   GIT_COMMIT := $(if $(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_COMMIT))
   GIT_TAG := $(TRAVIS_TAG)
   COMMIT_MESSAGE := $(TRAVIS_COMMIT_MESSAGE)
+else ifeq ($(TF_BUILD),True)
+  REPO := $(BUILD_REPOSITORY_NAME)
+  BRANCH := $(if $(SYSTEM_PULLREQUEST_SOURCEBRANCH),$(SYSTEM_PULLREQUEST_SOURCEBRANCH),$(BUILD_SOURCEBRANCHNAME))
+  PR_NUMBER := $(if $(SYSTEM_PULLREQUEST_PULLREQUESTNUMBER),$(SYSTEM_PULLREQUEST_PULLREQUESTNUMBER),false)
+  BUILD_NUMBER := $(BUILD_BUILDNUMBER)
+  GIT_COMMIT := $(shell git rev-parse --verify "HEAD^2" 2>/dev/null)
+  ifeq ($(GIT_COMMIT),)
+    GIT_COMMIT ?= $(BUILD_SOURCEVERSION)
+  endif
 else
   REPO := $(subst https://github.com/,,$(CHANGE_URL))
   ifneq ($(CHANGE_ID),)
@@ -59,6 +68,7 @@ endif
 DESTDIR := monica-$(BUILD)
 ASSETS := monica-assets-$(BUILD)
 DOCKER_IMAGE := monicahq/monicahq
+BUILD_DATE := $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 default: build
 
@@ -72,13 +82,37 @@ docker:
 	$(MAKE) docker_tag
 	$(MAKE) docker_push
 
-docker_build:
+docker_build: docker_build_apache docker_build_fpm docker_build_php_apache
+docker_build_master: docker_build_apache docker_build_fpm
+
+docker_build_apache:
 	docker build \
-		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		--build-arg VCS_REF=$(GIT_REF) \
 		--build-arg COMMIT=$(GIT_COMMIT) \
 		--build-arg VERSION=$(BUILD) \
+		-f scripts/docker/apache/Dockerfile \
 		-t $(DOCKER_IMAGE) .
+	docker images
+
+docker_build_php_apache:
+	docker build \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
+		--build-arg VCS_REF=$(GIT_REF) \
+		--build-arg COMMIT=$(GIT_COMMIT) \
+		--build-arg VERSION=$(BUILD) \
+		-f scripts/docker/php-apache/Dockerfile \
+		-t $(DOCKER_IMAGE):php-apache .
+	docker images
+
+docker_build_fpm:
+	docker build \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
+		--build-arg VCS_REF=$(GIT_REF) \
+		--build-arg COMMIT=$(GIT_COMMIT) \
+		--build-arg VERSION=$(BUILD) \
+		-f scripts/docker/fpm/Dockerfile \
+		-t $(DOCKER_IMAGE):fpm .
 	docker images
 
 DOCKER_SQUASH := $(shell which docker-squash)
@@ -87,22 +121,61 @@ ifeq ($(DOCKER_SQUASH),)
 endif
 
 docker_squash:
-	$(DOCKER_SQUASH) -f $(shell docker image ls -q `head -n 1 Dockerfile | cut -d ' ' -f 2`) -t $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):latest
+	$(DOCKER_SQUASH) -f $(shell docker image ls -q `head -n 1 scripts/docker/apache/Dockerfile | cut -d ' ' -f 2`) -t $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):latest
+	$(DOCKER_SQUASH) -f $(shell docker image ls -q `head -n 1 scripts/docker/fpm/Dockerfile | cut -d ' ' -f 2`) -t $(DOCKER_IMAGE):fpm $(DOCKER_IMAGE):fpm
 	docker images
 
 docker_tag:
-	docker tag $(DOCKER_IMAGE) $(DOCKER_IMAGE):$(BUILD)
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):apache
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):alpine
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)-apache
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)-alpine
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)-alpine-apache
+	docker tag $(DOCKER_IMAGE):fpm $(DOCKER_IMAGE):$(BUILD)-fpm
+	docker tag $(DOCKER_IMAGE):fpm $(DOCKER_IMAGE):$(BUILD)-alpine-fpm
+	docker tag $(DOCKER_IMAGE):php-apache $(DOCKER_IMAGE):$(BUILD)-php-apache
+	docker images
 
 docker_push: docker_tag
-	docker push $(DOCKER_IMAGE):$(BUILD)
 	docker push $(DOCKER_IMAGE):latest
+	docker push $(DOCKER_IMAGE):fpm
+	docker push $(DOCKER_IMAGE):php-apache
+	docker push $(DOCKER_IMAGE):$(BUILD)
+	docker push $(DOCKER_IMAGE):apache
+	docker push $(DOCKER_IMAGE):alpine
+	docker push $(DOCKER_IMAGE):$(BUILD)-apache
+	docker push $(DOCKER_IMAGE):$(BUILD)-alpine
+	docker push $(DOCKER_IMAGE):$(BUILD)-alpine-apache
+	docker push $(DOCKER_IMAGE):$(BUILD)-fpm
+	docker push $(DOCKER_IMAGE):$(BUILD)-alpine-fpm
+	docker push $(DOCKER_IMAGE):$(BUILD)-php-apache
 
-docker_push_bintray: .deploy.json
+docker_push_bintray: docker_push_bintray_apache docker_push_bintray_fpm
+
+docker_push_bintray_apache: .deploy.json
 	docker tag $(DOCKER_IMAGE) monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
 	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
-	BUILD=$(BUILD) scripts/tests/fix-bintray.sh
+	BUILD=$(BUILD) scripts/ci/fix-bintray.sh
 
-.PHONY: docker docker_build docker_tag docker_push docker_push_bintray
+docker_push_bintray_fpm: .deploy.json
+	docker tag $(DOCKER_IMAGE):fpm monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)-fpm
+	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)-fpm
+	BUILD=$(BUILD)-fpm scripts/ci/fix-bintray.sh
+
+docker_push_github: docker_push_github_apache docker_push_github_fpm
+
+docker_push_github_apache:
+	docker tag $(DOCKER_IMAGE) docker.pkg.github.com/monicahq/monica/monica:$(BUILD)
+	docker push docker.pkg.github.com/monicahq/monica/monica:$(BUILD)
+
+docker_push_github_fpm:
+	docker tag $(DOCKER_IMAGE):fpm docker.pkg.github.com/monicahq/monica/monica:$(BUILD)-fpm
+	docker push docker.pkg.github.com/monicahq/monica/monica:$(BUILD)-fpm
+
+.PHONY: docker docker_build docker_build_master docker_build_apache docker_build_fpm docker_build_php_apache docker_tag
+.PHONY: docker_push docker_push_bintray docker_push_bintray_apache docker_push_bintray_fpm
+.PHONY: docker_push_github docker_push_github_apache docker_push_github_fpm
 
 build:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs
@@ -132,7 +205,7 @@ $(DESTDIR):
 	mkdir -p $@
 	ln -s ../readme.md $@/
 	ln -s ../CONTRIBUTING.md $@/
-	ln -s ../CHANGELOG $@/
+	ln -s ../CHANGELOG.md $@/
 	ln -s ../CONTRIBUTORS $@/
 	ln -s ../LICENSE $@/
 	ln -s ../.env.example $@/
@@ -161,6 +234,8 @@ $(DESTDIR):
 	mkdir -p $@/storage/framework/views
 	mkdir -p $@/storage/framework/cache
 	mkdir -p $@/storage/framework/sessions
+	echo "$(GIT_REF)" > $@/.sentry-release
+	echo "$(GIT_COMMIT)" > $@/.sentry-commit
 
 $(ASSETS):
 	mkdir -p $@/public
@@ -176,7 +251,7 @@ assets: results/$(ASSETS).tar.bz2
 DESCRIPTION := $(shell echo "$(COMMIT_MESSAGE)" | sed -s 's/"/\\\\\\\\\\"/g' | sed -s 's/(/\\(/g' | sed -s 's/)/\\)/g' | sed -s 's%/%\\/%g')
 
 ifeq (,$(DEPLOY_TEMPLATE))
-DEPLOY_TEMPLATE := scripts/tests/.deploy.json.in
+DEPLOY_TEMPLATE := scripts/ci/.deploy.json.in
 endif
 
 .deploy.json: $(DEPLOY_TEMPLATE)
@@ -225,8 +300,8 @@ vagrant_build:
 	make -C scripts/vagrant/build package
 
 push_bintray_assets: results/$(ASSETS).tar.bz2 .deploy.json
-	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/tests/bintray-upload.sh
+	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/ci/bintray-upload.sh
 
 push_bintray_dist: results/$(DESTDIR).tar.bz2 results/$(ASSETS).tar.bz2 .deploy.json
-	INPUT=results/$(DESTDIR).tar.bz2 FILE=$(DESTDIR).tar.bz2 scripts/tests/bintray-upload.sh
-	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/tests/bintray-upload.sh
+	INPUT=results/$(DESTDIR).tar.bz2 FILE=$(DESTDIR).tar.bz2 scripts/ci/bintray-upload.sh
+	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/ci/bintray-upload.sh

@@ -14,7 +14,7 @@ class ApiCountryController extends ApiController
     /**
      * Get the list of countries.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {

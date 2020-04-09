@@ -2,8 +2,10 @@
 
 namespace App\Services\Instance\Geolocalization;
 
+use Illuminate\Support\Str;
 use App\Models\Account\Place;
 use App\Services\BaseService;
+use function Safe\json_decode;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
@@ -30,7 +32,7 @@ class GetGPSCoordinate extends BaseService
      * This method uses LocationIQ to process the geocoding.
      *
      * @param array $data
-     * @param GuzzleClient the Guzzle client, only needed when unit testing
+     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
      * @return Place|null
      */
     public function execute(array $data, GuzzleClient $client = null)
@@ -55,14 +57,10 @@ class GetGPSCoordinate extends BaseService
      * @param Place $place
      * @return string|null
      */
-    private function buildQuery(Place $place)
+    private function buildQuery(Place $place): ?string
     {
-        if (! config('monica.enable_geolocation')) {
-            return;
-        }
-
-        if (is_null(config('monica.location_iq_api_key'))) {
-            return;
+        if (! config('monica.enable_geolocation') || is_null(config('monica.location_iq_api_key'))) {
+            return null;
         }
 
         $query = http_build_query([
@@ -71,7 +69,7 @@ class GetGPSCoordinate extends BaseService
             'q' => $place->getAddressAsString(),
         ]);
 
-        return str_finish(config('location.location_iq_url'), '/').'search.php?'.$query;
+        return Str::finish(config('location.location_iq_url'), '/').'search.php?'.$query;
     }
 
     /**
@@ -80,12 +78,12 @@ class GetGPSCoordinate extends BaseService
      * @param Place $place
      * @return Place|null
      */
-    private function query(Place $place)
+    private function query(Place $place): ?Place
     {
         $query = $this->buildQuery($place);
 
         if (is_null($query)) {
-            return;
+            return null;
         }
 
         try {
@@ -93,7 +91,7 @@ class GetGPSCoordinate extends BaseService
         } catch (ClientException $e) {
             Log::error('Error making the call: '.$e);
 
-            return;
+            return null;
         }
 
         $response = json_decode($response->getBody());

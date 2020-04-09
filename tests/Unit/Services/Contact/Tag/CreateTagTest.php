@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Conversation;
+namespace Tests\Unit\Services\Contact\Tag;
 
 use Tests\TestCase;
 use App\Models\Contact\Tag;
@@ -12,12 +12,13 @@ class CreateTagTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_creates_a_tag()
+    /** @test */
+    public function it_creates_a_tag()
     {
         $tag = factory(Tag::class)->create([]);
 
         $request = [
-            'account_id' => $tag->account->id,
+            'account_id' => $tag->account_id,
             'name' => 'Central Perk',
         ];
 
@@ -35,7 +36,8 @@ class CreateTagTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [
             'account_id' => 1,

@@ -3,8 +3,12 @@
 namespace Tests\Api\DAV;
 
 use Tests\ApiTestCase;
+use Illuminate\Support\Str;
+use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
 use Sabre\VObject\PHPUnitAssertions;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class VCardContactTest extends ApiTestCase
@@ -18,7 +22,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->get("/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf", [
@@ -48,10 +52,115 @@ class VCardContactTest extends ApiTestCase
         $response->assertHeaderMissing('ETag');
 
         $this->assertDatabaseHas('contacts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'first_name' => 'John',
             'last_name' => 'Doe',
         ]);
+    }
+
+    /**
+     * @group dav
+     */
+    public function test_carddav_put_one_contact_with_photo()
+    {
+        Storage::fake();
+
+        $user = $this->signin();
+
+        $image = Image::canvas(1, 1, '#fff')->encode('data-url');
+
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/single_vcard_stub.vcf", [], [], [],
+            ['content-type' => 'application/xml; charset=utf-8'],
+            "BEGIN:VCARD\nVERSION:4.0\nFN:John Doe\nN:Doe;John;;;\nPHOTO:$image\nEND:VCARD"
+        );
+
+        $response->assertStatus(201);
+        $response->assertHeader('X-Sabre-Version');
+        $response->assertHeaderMissing('ETag');
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account_id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+        ]);
+        $this->assertDatabaseHas('photos', [
+            'account_id' => $user->account_id,
+        ]);
+
+        $photo = Photo::where(['account_id' => $user->account_id])->first();
+
+        Storage::disk('public')->assertExists($photo->new_filename);
+    }
+
+    /**
+     * @group dav
+     */
+    public function test_carddav_put_one_contact_with_photo_already_set()
+    {
+        Storage::fake();
+
+        $user = $this->signin();
+        $photo = factory(Photo::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+            'avatar_source' => 'photo',
+            'avatar_photo_id' => $photo->id,
+            'uuid' => Str::uuid()->toString(),
+        ]);
+
+        $image = Image::canvas(1, 1, '#fff')->encode('data-url');
+
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf", [], [], [],
+            ['content-type' => 'application/xml; charset=utf-8'],
+            "BEGIN:VCARD\nVERSION:4.0\nFN:John Doe\nN:Doe;John;;;\nPHOTO:$image\nEND:VCARD"
+        );
+
+        $response->assertStatus(204);
+        $response->assertHeader('X-Sabre-Version');
+        $response->assertHeaderMissing('ETag');
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account_id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'avatar_photo_id' => $photo->id,
+        ]);
+    }
+
+    /**
+     * @group dav
+     */
+    public function test_carddav_put_one_contact_with_photo_and_attributes()
+    {
+        Storage::fake();
+
+        $user = $this->signin();
+
+        $image = base64_encode(Image::canvas(1, 1, '#fff')->encode('jpg'));
+
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/single_vcard_stub.vcf", [], [], [],
+            ['content-type' => 'application/xml; charset=utf-8'],
+            "BEGIN:VCARD\nVERSION:3.0\nFN:John Doe\nN:Doe;John;;;\nPHOTO;ENCODING=B;TYPE=JPEG:$image\nEND:VCARD"
+        );
+
+        $response->assertStatus(201);
+        $response->assertHeader('X-Sabre-Version');
+        $response->assertHeaderMissing('ETag');
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account_id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+        ]);
+        $this->assertDatabaseHas('photos', [
+            'account_id' => $user->account_id,
+        ]);
+
+        $photo = Photo::where(['account_id' => $user->account_id])->first();
+
+        Storage::disk('public')->assertExists($photo->new_filename);
     }
 
     /**
@@ -61,7 +170,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf", [], [], [],
@@ -74,7 +183,7 @@ class VCardContactTest extends ApiTestCase
         $response->assertHeaderMissing('ETag');
 
         $this->assertDatabaseHas('contacts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'first_name' => 'John',
             'last_name' => 'Doex',
         ]);
@@ -87,7 +196,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
@@ -104,7 +213,7 @@ class VCardContactTest extends ApiTestCase
         $response->assertHeaderMissing('ETag');
 
         $this->assertDatabaseHas('contacts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'first_name' => 'John',
             'last_name' => 'Doex',
         ]);
@@ -117,7 +226,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
@@ -147,7 +256,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
@@ -164,7 +273,7 @@ class VCardContactTest extends ApiTestCase
         $response->assertHeaderMissing('ETag');
 
         $this->assertDatabaseHas('contacts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'first_name' => 'John',
             'last_name' => 'Doex',
         ]);
@@ -177,7 +286,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
@@ -198,7 +307,7 @@ class VCardContactTest extends ApiTestCase
         $response->assertSee("<d:error xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\">
   <s:sabredav-version>{$sabreversion}</s:sabredav-version>
   <s:exception>Sabre\DAV\Exception\PreconditionFailed</s:exception>
-  <s:message>An If-Unmodified-Since header was specified, but the entity has been changed since the specified date.</s:message>");
+  <s:message>An If-Unmodified-Since header was specified, but the entity has been changed since the specified date.</s:message>", false);
     }
 
     /**
@@ -208,7 +317,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
@@ -229,7 +338,7 @@ class VCardContactTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->call('REPORT', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
@@ -261,14 +370,14 @@ class VCardContactTest extends ApiTestCase
              '<d:status>HTTP/1.1 200 OK</d:status>'.
            '</d:propstat>'.
           '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>', false);
     }
 
     public function test_carddav_contacts_report_version3()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->call('REPORT', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
@@ -301,17 +410,17 @@ class VCardContactTest extends ApiTestCase
              '<d:status>HTTP/1.1 200 OK</d:status>'.
            '</d:propstat>'.
           '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>', false);
     }
 
     public function test_carddav_contacts_report_multiget()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->call('REPORT', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
@@ -344,7 +453,7 @@ class VCardContactTest extends ApiTestCase
              '</d:prop>'.
              '<d:status>HTTP/1.1 200 OK</d:status>'.
            '</d:propstat>'.
-          '</d:response>');
+          '</d:response>', false);
         $response->assertSee(
           '<d:response>'.
             "<d:href>/dav/addressbooks/{$user->email}/contacts/{$contact2->uuid}.vcf</d:href>".
@@ -356,6 +465,6 @@ class VCardContactTest extends ApiTestCase
                '<d:status>HTTP/1.1 200 OK</d:status>'.
              '</d:propstat>'.
             '</d:response>'.
-          '</d:multistatus>');
+          '</d:multistatus>', false);
     }
 }

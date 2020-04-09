@@ -25,12 +25,13 @@ class SendStayInTouch extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         // we add two days to make sure we cover all timezones
         Contact::where('stay_in_touch_trigger_date', '<', now()->addDays(2))
+                ->whereNotNull('stay_in_touch_frequency')
                 ->orderBy('stay_in_touch_trigger_date', 'asc')
                 ->chunk(500, function ($contacts) {
                     $this->schedule($contacts);

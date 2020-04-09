@@ -10,7 +10,8 @@ class UpdateCommandTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_update_command_default()
+    /** @test */
+    public function update_command_default()
     {
         $commandExecutor = new CommandExecutorTester();
         $command = new Update();
@@ -26,7 +27,8 @@ class UpdateCommandTest extends TestCase
         $this->assertCommandContains($commandExecutor->buffer[7], 'Maintenance mode: off', 'php artisan up');
     }
 
-    public function test_update_command_composer()
+    /** @test */
+    public function update_command_composer()
     {
         $commandExecutor = new CommandExecutorTester();
         $command = new Update();
@@ -45,7 +47,7 @@ class UpdateCommandTest extends TestCase
 
     private function assertCommandContains($array, $message, $command)
     {
-        $this->assertContains($message, $array['message']);
-        $this->assertContains($command, $array['command']);
+        $this->assertStringContainsString($message, $array['message']);
+        $this->assertStringContainsString($command, $array['command']);
     }
 }

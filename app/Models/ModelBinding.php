@@ -7,10 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class ModelBinding extends Model
 {
-    public function resolveRouteBinding($value)
+    /**
+     * Resolve binding.
+     *
+     * @param  string  $value
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function resolveRouteBinding($value, $field = null): ?Model
     {
         if (Auth::guest()) {
-            return;
+            return null;
         }
 
         return $this->where('account_id', Auth::user()->account_id)

@@ -5,20 +5,23 @@
 
     <section class="ph3 ph5-ns pv4 cf w-100 bg-gray-monica">
       <div class="mw9 center">
-        <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-70 ph2">
-          <div class="flex items-center">
-            <div class="pr2">
+        <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-70-ns ph2">
+          <div class="pb2 tc dn-ns w-100">
+            {{ trans('people.people_list_last_updated') }}
+          </div>
+          <div class="h3 overflow-hidden mb2">
+            <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} pr2 dn dib-ns v-mid h3" style="line-height: 4rem;">
               {{ trans('people.people_list_last_updated') }}
             </div>
             @foreach($lastUpdatedContacts as $contact)
-            <div class="pr2 pointer avatars">
+            <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} pr2 pointer">
               <avatar :contact="{{ $contact }}" :clickable="true"></avatar>
             </div>
             @endforeach
           </div>
         </div>
-        <div class="{{ htmldir() == 'ltr' ? 'fl tr' : 'fr tl' }} w-30 ph2">
-          <a href="{{ route('people.create') }}" class="btn btn-primary" style="padding: 15px 45px;">
+        <div class="{{ htmldir() == 'ltr' ? 'fl-ns tr' : 'fr-ns tl' }} w-30-ns ph2">
+          <a href="{{ route('people.create') }}" class="btn btn-primary w-100 w-auto-ns tc" style="padding: 15px 45px;">
             {{ trans('people.people_list_blank_cta') }}
           </a>
         </div>

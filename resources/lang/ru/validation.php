@@ -67,6 +67,7 @@ return [
     'not_in'               => 'Выбранное значение для :attribute ошибочно.',
     'not_regex'            => 'Выбранный формат для :attribute ошибочный.',
     'numeric'              => 'Поле :attribute должно быть числом.',
+    'password' => 'The password is incorrect.',
     'present'              => 'Поле :attribute должно присутствовать.',
     'regex'                => 'Поле :attribute имеет ошибочный формат.',
     'required'             => 'Поле :attribute обязательно для заполнения.',
@@ -119,4 +120,12 @@ return [
 
     'attributes' => [],
 
+    'vue' => [
+        'max' => [
+            'numeric' => '{field} may not be greater than {max}.',
+            'string'  => '{field} may not be greater than {max} characters.',
+        ],
+        'required' => '{field} is required.',
+        'url' => '{field} is not a valid URL.',
+    ],
 ];

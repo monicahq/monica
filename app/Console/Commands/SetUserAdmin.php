@@ -12,9 +12,9 @@ class SetUserAdmin extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:admin'.
-                           ' {--email= : The email of the user whose admin status you want to change}'.
-                           ' {--force : Run without asking for confirmation}';
+    protected $signature = 'monica:admin
+                            {--force : Force the operation to run when in production.}
+                            {--email= : The email of the user whose admin status you want to change}';
 
     /**
      * The console command description.

@@ -67,6 +67,7 @@ return [
     'not_in'               => 'Il valore selezionato per :attribute non è valido.',
     'not_regex'            => 'Il formato di :attribute non è valido.',
     'numeric'              => ':attribute deve essere un numero.',
+    'password' => 'La password non è corretta.',
     'present'              => 'Il campo :attribute deve essere presente.',
     'regex'                => 'Il formato del campo :attribute non è valido.',
     'required'             => 'Il campo :attribute è richiesto.',
@@ -119,4 +120,12 @@ return [
 
     'attributes' => [],
 
+    'vue' => [
+        'max' => [
+            'numeric' => '{field} non può essere maggiore di {max}.',
+            'string'  => 'Il {field} non può essere maggiore di {max} caratteri.',
+        ],
+        'required' => '{field} è richiesto.',
+        'url' => '{field} non é un URL valido.',
+    ],
 ];

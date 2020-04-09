@@ -3,14 +3,17 @@
 namespace App\Http\Resources\Gender;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class Gender extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\Gender>
+ */
+class Gender extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -19,8 +22,9 @@ class Gender extends Resource
             'id' => $this->id,
             'object' => 'gender',
             'name' => $this->name,
+            'type' => $this->type,
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

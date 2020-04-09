@@ -3,8 +3,10 @@
 namespace App\Jobs\Reminder;
 
 use Illuminate\Bus\Queueable;
+use App\Helpers\AccountHelper;
 use App\Notifications\UserNotified;
 use App\Notifications\UserReminded;
+use App\Interfaces\MailNotification;
 use App\Models\Contact\ReminderOutbox;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -16,6 +18,9 @@ class NotifyUserAboutReminder implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /**
+     * @var ReminderOutbox
+     */
     protected $reminderOutbox;
 
     /**
@@ -36,32 +41,48 @@ class NotifyUserAboutReminder implements ShouldQueue
     public function handle()
     {
         // prepare the notification to be sent
-        $message = '';
-        if ($this->reminderOutbox->nature == 'reminder') {
-            $message = new UserReminded($this->reminderOutbox);
-        }
+        $message = $this->getMessage();
 
-        if ($this->reminderOutbox->nature == 'notification') {
-            $message = new UserNotified($this->reminderOutbox);
-        }
+        if (! is_null($message)) {
+            // send the notification to this user
+            $account = $this->reminderOutbox->user->account;
+            $hasLimitations = AccountHelper::hasLimitations($account);
+            if (! $hasLimitations) {
+                Notification::send($this->reminderOutbox->user, $message);
+            }
 
-        // send the notification to this user
-        if (! $this->reminderOutbox->user->account->hasLimitations()) {
-            Notification::send($this->reminderOutbox->user, $message);
-        }
+            // create the Reminder Sent object
+            $this->reminderOutbox->logSent($message);
 
-        // create the Reminder Sent object
-        $this->reminderOutbox->logSent($message);
-
-        // schedule the next reminder for this user
-        if ($this->reminderOutbox->reminder->frequency_type == 'one_time') {
-            $this->reminderOutbox->reminder->inactive = true;
-            $this->reminderOutbox->reminder->save();
-        } else {
-            $this->reminderOutbox->reminder->schedule($this->reminderOutbox->user);
+            // schedule the next reminder for this user
+            /** @var \App\Models\Contact\Reminder */
+            $reminder = $this->reminderOutbox->reminder;
+            if ($reminder->frequency_type == 'one_time') {
+                $reminder->inactive = true;
+                $reminder->save();
+            } else {
+                $reminder->schedule($this->reminderOutbox->user);
+            }
         }
 
         // delete the reminder outbox
         $this->reminderOutbox->delete();
+    }
+
+    /**
+     * Get message to send.
+     *
+     * @return MailNotification|null
+     */
+    private function getMessage(): ?MailNotification
+    {
+        switch ($this->reminderOutbox->nature) {
+            case 'reminder':
+                return new UserReminded($this->reminderOutbox->reminder);
+            case 'notification':
+                return new UserNotified($this->reminderOutbox->reminder, $this->reminderOutbox->notification_number_days_before);
+            default:
+                return null;
+        }
     }
 }

@@ -5,7 +5,9 @@ namespace App\Services\Contact\Address;
 use App\Models\Account\Place;
 use App\Services\BaseService;
 use App\Models\Contact\Address;
+use App\Models\Contact\Contact;
 use App\Services\Account\Place\UpdatePlace;
+use App\Services\Contact\Label\UpdateAddressLabels;
 
 class UpdateAddress extends BaseService
 {
@@ -28,6 +30,7 @@ class UpdateAddress extends BaseService
             'country' => 'nullable|string|max:3',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
+            'labels' => 'nullable|array',
         ];
     }
 
@@ -37,7 +40,7 @@ class UpdateAddress extends BaseService
      * @param array $data
      * @return Address
      */
-    public function execute(array $data) : Address
+    public function execute(array $data): Address
     {
         $this->validate($data);
 
@@ -45,11 +48,22 @@ class UpdateAddress extends BaseService
             ->where('contact_id', $data['contact_id'])
             ->findOrFail($data['address_id']);
 
+        Contact::where('account_id', $data['account_id'])
+            ->findOrFail($data['contact_id']);
+
         $this->updatePlace($data, $address);
 
         $address->update([
             'name' => $this->nullOrValue($data, 'name'),
         ]);
+
+        if ($labels = $this->nullOrValue($data, 'labels')) {
+            app(UpdateAddressLabels::class)->execute([
+                'account_id' => $data['account_id'],
+                'address_id' => $address->id,
+                'labels' => $labels,
+            ]);
+        }
 
         return $address;
     }

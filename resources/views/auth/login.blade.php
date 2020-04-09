@@ -4,7 +4,7 @@
   <body class="marketing register">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
+        <div class="col-12 col-md-6 offset-md-3 offset-md-3-right">
 
           <div class="signup-box">
             <div class="dt w-100">
@@ -35,7 +35,7 @@
             @endif
 
             <form action="login" method="post">
-              {{ csrf_field() }}
+              @csrf
 
               <div class="form-group">
                 <label for="email">{{ trans('auth.email') }}</label>
@@ -57,20 +57,17 @@
                 </label>
               </div>
 
-              @if (isset($errors))
-                @if (count($errors) > 0)
-                  <div class="form-group links">
-                    <ul>
-                      <li>{{ trans('auth.password_forget') }}&nbsp;<a href="{{ route('password.request') }}">{{ trans('auth.password_reset') }}</a></li>
-                    </ul>
-                  </div>
-                @endif
-              @endif
+              <div class="form-group links">
+                <ul>
+                  <li>{{ trans('auth.password_forget') }}&nbsp;<a href="{{ route('password.request') }}">{{ trans('auth.password_reset') }}</a></li>
+                </ul>
+              </div>
+
               <div class="form-group links">
                 <ul>
                   @if(! config('monica.disable_signup'))
                     <li>{{ trans('auth.signup_no_account') }}&nbsp;<a href="register">{{ trans('auth.signup') }}</a></li>
-                  @elseif(! \App\Models\Account\Account::hasAny())
+                  @elseif(! \App\Helpers\InstanceHelper::hasAtLeastOneAccount())
                     <li>{!! trans('auth.create_account', ['url' => 'register']) !!}</li>
                   @endif
                 </ul>

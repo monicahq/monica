@@ -7,7 +7,7 @@
     <div class="breadcrumb">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <ul class="horizontal">
               <li>
                   <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
@@ -31,7 +31,7 @@
     <div class="main-content central-form report">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
 
             <h2>{{ trans('settings.import_report_title') }}</h2>
 

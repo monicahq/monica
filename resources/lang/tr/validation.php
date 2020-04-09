@@ -67,6 +67,7 @@ return [
     'not_in'               => 'Seçili :attribute geçersiz.',
     'not_regex'            => ':attribute biçimi geçersiz.',
     'numeric'              => ':attribute sayı olmalıdır.',
+    'password' => 'Parola hatalı.',
     'present'              => ':attribute alanı mevcut olmalıdır.',
     'regex'                => ':attribute biçimi geçersiz.',
     'required'             => ':attribute alanı gereklidir.',
@@ -119,4 +120,12 @@ return [
 
     'attributes' => [],
 
+    'vue' => [
+        'max' => [
+            'numeric' => '{field} en fazla {max} olabilir.',
+            'string'  => '{field} en fazla {max} karakter olabilir.',
+        ],
+        'required' => '{field} gereklidir.',
+        'url' => '{field} geçerli bir URL değil.',
+    ],
 ];

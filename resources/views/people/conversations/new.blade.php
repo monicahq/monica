@@ -23,7 +23,7 @@
     @include('partials.errors')
 
     <form action="{{ route('people.conversations.store', $contact) }}" method="POST">
-      {{ csrf_field() }}
+      @csrf
 
       {{-- When did it take place --}}
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">

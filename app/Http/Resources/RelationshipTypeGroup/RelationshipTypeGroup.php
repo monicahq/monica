@@ -3,14 +3,17 @@
 namespace App\Http\Resources\RelationshipTypeGroup;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class RelationshipTypeGroup extends Resource
+/**
+ * @extends JsonResource<\App\Models\Relationship\RelationshipTypeGroup>
+ */
+class RelationshipTypeGroup extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -21,7 +24,7 @@ class RelationshipTypeGroup extends Resource
             'name' => $this->name,
             'delible' => (bool) $this->delible,
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

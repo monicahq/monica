@@ -1,0 +1,44 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+    - ./vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
+
+parameters:
+    paths:
+        - app
+    inferPrivatePropertyTypeFromConstructor: true
+    level: 5
+    ignoreErrors:
+        - '#Call to an undefined method Illuminate\\View\\View::with[a-zA-Z0-9\\_]+\(\)\.#'
+        - '#Argument of an invalid type Illuminate\\Contracts\\Pagination\\LengthAwarePaginator supplied for foreach, only iterables are supported\.#'
+        - '#Access to an undefined property Sabre\\VObject\\Component\\[a-zA-Z0-9\\_]+::\$[a-zA-Z0-9_]+\.#'
+        - '#Access to an undefined property PragmaRX\\Countries\\Package\\Support\\Collection::\$[a-zA-Z0-9_]+\.#'
+
+        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::sortedBy\(\)\.#'
+          path: */Traits/Searchable.php
+        - message: '#Call to an undefined static method PragmaRX\\CountriesLaravel\\Package\\Facade::[a-zA-Z0-9_]+\(\)\.#'
+          path: */Helpers/CountriesHelper.php
+        - message: '#Access to an undefined property Illuminate\\Support\\Fluent::\$[a-zA-Z0-9_]+\.#'
+          path: */Http/Location/Drivers/CloudflareDriver.php
+        - message: '#Parameter \#2 \$configGroup of static method Creativeorange\\Gravatar\\Gravatar::get\(\) expects string, array<string, bool\|int\|string> given\.#'
+          path: */Services/Contact/Avatar/GetGravatarURL.php
+        - message: '#Access to an undefined property App\\Interfaces\\IsJournalableInterface::\$account_id\.#'
+          path: */app/Models/Journal/JournalEntry.php
+        - message: '#Function factory invoked with 1 parameter, 0 required\.#'
+          path: */Console/Commands/Tests/SetupFrontEndTestUser.php
+        - message: '#Call to function is_null\(\) with Carbon\\Carbon will always evaluate to false\.#'
+          path: */Models/Instance/SpecialDate.php
+        - message: '#Call to function is_null\(\) with string will always evaluate to false\.#'
+          path: */Models/User/User.php
+        - message: '#Cannot assign offset ''VALUE'' to string\.#'
+          path: */Services/VCalendar/ExportVCalendar.php
+        - message: '#Property App\\Models\\Contact\\Contact::\$deceased_special_date_id \(int\) does not accept null\.#'
+          path: */Services/Contact/Contact/UpdateDeceasedInformation.php
+        - message: '#Parameter \#1 \$principalUri of method Sabre\\CardDAV\\Backend\\BackendInterface::getAddressBooksForUser\(\) expects string, array given\.#'
+          path: */Http/Controllers/DAV/Backend/CardDAV/AddressBookHome.php
+        - message: '#Access to an undefined property object::\$action\.#'
+          path: */Helpers/AuditLogHelper.php
+
+    excludes_analyse:
+        - */app/Helpers/ComposerScripts.php
+        - */app/Providers/BroadcastServiceProvider.php
+        - */Services/Instance/IdHasher.php

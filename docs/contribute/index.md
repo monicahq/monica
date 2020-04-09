@@ -2,39 +2,40 @@
 
 <!-- TOC -->
 
-- [Considerations](#considerations)
-- [Design rules](#design-rules)
-- [Install Monica locally](#install-monica-locally)
+- [Contribute as a developer](#contribute-as-a-developer)
+  - [Considerations](#considerations)
+  - [Design rules](#design-rules)
+  - [Install Monica locally](#install-monica-locally)
     - [Homestead (macOS, Linux, Windows)](#homestead-macos-linux-windows)
     - [Valet (macOS)](#valet-macos)
     - [Instructions](#instructions)
-- [Testing environment](#testing-environment)
+  - [Testing environment](#testing-environment)
     - [Setup](#setup)
     - [Run the test suite](#run-the-test-suite)
     - [Run browser tests](#run-browser-tests)
     - [Mocking HTTP calls](#mocking-http-calls)
-- [Coding guidelines](#coding-guidelines)
+  - [Coding guidelines](#coding-guidelines)
     - [Feature branch](#feature-branch)
     - [Conventional commits](#conventional-commits)
-- [Backend](#backend)
+  - [Backend](#backend)
     - [Things to consider when adding new code](#things-to-consider-when-adding-new-code)
-        - [Add a new table to the database schema](#add-a-new-table-to-the-database-schema)
-        - [Manipulating data during a migration](#manipulating-data-during-a-migration)
+      - [Add a new table to the database schema](#add-a-new-table-to-the-database-schema)
+      - [Manipulating data during a migration](#manipulating-data-during-a-migration)
     - [Email testing](#email-testing)
     - [Email reminders](#email-reminders)
     - [Statistics](#statistics)
-- [Database](#database)
+  - [Database](#database)
     - [Connecting to mySQL](#connecting-to-mysql)
-- [Front-end](#front-end)
+  - [Front-end](#front-end)
     - [Considerations](#considerations-1)
     - [Mix](#mix)
     - [Watching and compiling assets](#watching-and-compiling-assets)
     - [CSS](#css)
     - [JS and Vue](#js-and-vue)
     - [Localization (i18n)](#localization-i18n)
-        - [Application](#application)
-            - [Laravel](#laravel)
-            - [VueJS](#vuejs)
+      - [Application](#application)
+        - [Laravel](#laravel)
+        - [VueJS](#vuejs)
 
 <!-- /TOC -->
 
@@ -84,7 +85,7 @@ We've installed the development version with [Valet](https://laravel.com/docs/va
 **Prerequisites**:
 * Git
 * [Node](https://nodejs.org/en/)
-* PHP 7.0+
+* PHP 7.2+
 * [Composer](https://getcomposer.org/)
 * GNU Make
 
@@ -97,7 +98,7 @@ Once the above softwares are installed (or if you've finished the installation o
     1. If you use Homestead (which uses Vagrant under the hood), `vagrant ssh` will let you login as root inside your VM.
 1. Run `make install` in the folder the repository has been cloned. This will run :
     1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
-    1. `composer install --no-interaction --no-suggest` to install all packages.
+    1. `composer install --no-interaction --no-suggest --ignore-platform-reqs` to install all packages.
     1. `yarn install` to install all the front-end dependencies and tools needed to compile assets.
     1. `yarn run dev` to compile js and css assets.
     1. `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
@@ -109,11 +110,11 @@ Once the above softwares are installed (or if you've finished the installation o
 
 If you haven't skipped the seeding of fake data, two accounts are created by default:
 
-* First account is `admin@admin.com` with the password `admin`. This account contains a lot of fake data that will let you play with the product.
-* Second account is `blank@blank.com` with the password `blank`. This account does not contain any data and shall be used to check all the blank states.
+* First account is `admin@admin.com` with the password `admin0`. This account contains a lot of fake data that will let you play with the product.
+* Second account is `blank@blank.com` with the password `blank0`. This account does not contain any data and shall be used to check all the blank states.
 
 To update a current installation with the latest dependencies, just run `make update` to run
-  1. `composer install --no-interaction --no-suggest`
+  1. `composer install --no-interaction --no-suggest --ignore-platform-reqs`
   1. `yarn upgrade`
   1. `yarn run dev`
   1. `php artisan migrate`

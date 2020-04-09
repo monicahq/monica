@@ -15,7 +15,7 @@ trait SyncDAVBackend
      * If null is returned from this function, the plugin assumes there's no
      * sync information available.
      *
-     * @return SyncToken
+     * @return SyncToken|null
      */
     protected function getCurrentSyncToken()
     {
@@ -43,7 +43,7 @@ trait SyncDAVBackend
     /**
      * Get SyncToken by token id.
      *
-     * @return SyncToken
+     * @return SyncToken|null
      */
     protected function getSyncToken($syncToken)
     {
@@ -64,14 +64,14 @@ trait SyncDAVBackend
     {
         $max = $this->getLastModified();
 
-        if ($max) {
-            return SyncToken::create([
+        return $max ?
+            SyncToken::create([
                 'account_id' => Auth::user()->account_id,
                 'user_id' => Auth::user()->id,
                 'name' => $this->backendUri(),
                 'timestamp' => $max,
-            ]);
-        }
+            ])
+            : null;
     }
 
     /**
@@ -92,7 +92,7 @@ trait SyncDAVBackend
     /**
      * Returns the last modification date.
      *
-     * @return \Carbon\Carbon
+     * @return \Carbon\Carbon|null
      */
     public function getLastModified()
     {
@@ -151,9 +151,9 @@ trait SyncDAVBackend
      * The limit is 'suggestive'. You are free to ignore it.
      *
      * @param string $syncToken
-     * @return array
+     * @return array|null
      */
-    public function getChanges($syncToken)
+    public function getChanges($syncToken): ?array
     {
         $token = null;
         $timestamp = null;
@@ -162,12 +162,11 @@ trait SyncDAVBackend
 
             if (is_null($token)) {
                 // syncToken is not recognized
-                return;
+                return null;
             }
 
             $timestamp = $token->timestamp;
         } else {
-            $token = $this->createSyncTokenNow();
             $timestamp = null;
         }
 
@@ -184,7 +183,7 @@ trait SyncDAVBackend
         });
 
         return [
-            'syncToken' => $token->id,
+            'syncToken' => $this->getCurrentSyncToken()->id,
             'added' => $added->map(function ($obj) {
                 return $this->encodeUri($obj);
             })->toArray(),
@@ -235,7 +234,7 @@ trait SyncDAVBackend
     /**
      * Returns the object for the specific uuid.
      *
-     * @param string  $uri
+     * @param string  $uuid
      * @return mixed
      */
     abstract public function getObjectUuid($uuid);

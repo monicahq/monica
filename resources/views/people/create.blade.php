@@ -4,10 +4,14 @@
 
 <section class="ph3 ph0-ns">
   <div class="mt4 mw7 center mb3">
-    <h3 class="f3 fw5">{{ trans('people.people_add_title') }}</h3>
+    @if ($isContactMissing)
+      <h2 class="f2 fw5">{{ trans('people.people_add_missing') }}</h2>
+    @else
+      <h2 class="f3 fw5">{{ trans('people.people_add_title') }}</h2>
+    @endif
 
-    @if (! auth()->user()->account->hasLimitations())
-      <p class="import">{!! trans('people.people_add_import', ['url' => 'settings/import']) !!}</p>
+    @if (! $accountHasLimitations)
+      <p class="import">{!! trans('people.people_add_import', ['url' => route('settings.import')]) !!}</p>
     @endif
   </div>
 
@@ -22,11 +26,11 @@
     @include('partials.errors')
 
     <form action="{{ route('people.store') }}" method="POST">
-      {{ csrf_field() }}
+      @csrf
 
       <div class="pa4-ns ph3 pv2 bb b--gray-monica">
         {{-- This check is for the cultures that are used to say the last name first --}}
-        @if (auth()->user()->getNameOrderForForms() == 'firstname')
+        @if ($formNameOrder == 'firstname')
 
         <div class="mb3">
           <form-input
@@ -34,6 +38,15 @@
             :input-type="'text'"
             :required="true"
             :title="'{{ trans('people.people_add_firstname') }}'">
+          </form-input>
+        </div>
+
+        <div class="mb3">
+          <form-input
+            :id="'middle_name'"
+            :input-type="'text'"
+            :required="false"
+            :title="'{{ trans('people.people_add_middlename') }}'">
           </form-input>
         </div>
 
@@ -75,6 +88,15 @@
           </form-input>
         </div>
 
+        <div class="mb3">
+          <form-input
+            :id="'middle_name'"
+            :input-type="'text'"
+            :required="false"
+            :title="'{{ trans('people.people_add_middlename') }}'">
+          </form-input>
+        </div>
+
         <div class="mb3 mb0-ns">
           <form-input
             :id="'nickname'"
@@ -90,9 +112,10 @@
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
         <form-select
           :options="{{ $genders }}"
-          :required="true"
+          :required="false"
           :title="'{{ trans('people.people_add_gender') }}'"
-          :id="'gender'">
+          :id="'gender'"
+          :value="'{{ $defaultGender }}'">
         </form-select>
       </div>
 

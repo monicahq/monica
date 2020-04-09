@@ -67,6 +67,7 @@ return [
     'not_in'               => 'Het formaat van :attribute is ongeldig.',
     'not_regex'            => 'De :attribute formaat is ongeldig.',
     'numeric'              => ':attribute moet een nummer zijn.',
+    'password' => 'Het wachtwoord is incorrect.',
     'present'              => ':attribute moet bestaan.',
     'regex'                => ':attribute formaat is ongeldig.',
     'required'             => ':attribute is verplicht.',
@@ -119,4 +120,12 @@ return [
 
     'attributes' => [],
 
+    'vue' => [
+        'max' => [
+            'numeric' => '{field} mag niet groter zijn dan {max}.',
+            'string'  => '{field} may not be greater than {max} characters.',
+        ],
+        'required' => '{field} is required.',
+        'url' => '{field} is not a valid URL.',
+    ],
 ];

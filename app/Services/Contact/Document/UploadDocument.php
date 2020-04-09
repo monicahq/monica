@@ -28,7 +28,7 @@ class UploadDocument extends BaseService
      * @param array $data
      * @return Document
      */
-    public function execute(array $data) : Document
+    public function execute(array $data): Document
     {
         $this->validate($data);
 
@@ -53,7 +53,7 @@ class UploadDocument extends BaseService
             'account_id' => $data['account_id'],
             'contact_id' => $data['contact_id'],
             'original_filename' => $document->getClientOriginalName(),
-            'filesize' => $document->getClientSize(),
+            'filesize' => $document->getSize(),
             'type' => $document->guessClientExtension(),
             'mime_type' => (new \Mimey\MimeTypes)->getMimeType($document->guessClientExtension()),
         ];

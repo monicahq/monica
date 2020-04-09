@@ -6,25 +6,23 @@
 
 @section('content')
   @if(isset($exception) && $exception->getMessage())
-    <p>{{ $exception->getMessage() }}</p>
+    <p class="message">{{ $exception->getMessage() }}</p>
   @endif
 
   @if(Auth::check() && app()->bound('sentry') && config('monica.sentry_support') && ! empty(app('sentry')->getLastEventID()))
     <div class="subtitle">@lang('app.error_id', ['id' => app('sentry')->getLastEventID()])</div>
 
     <!-- Sentry JS SDK 2.1.+ required -->
-    <script src="https://cdn.ravenjs.com/3.3.0/raven.min.js"></script>
-
+    <script src="https://browser.sentry-cdn.com/4.6.4/bundle.min.js" crossorigin="anonymous"></script>
     <script>
-        Raven.showReportDialog({
+      Sentry.init({ dsn: '{{ config('sentry.dsn') }}' });
+      Sentry.showReportDialog({
             eventId: '{{ app('sentry')->getLastEventID() }}',
-            // use the public DSN (dont include your secret!)
-            dsn: '{{ config('sentry.dsn') }}',
             user: {
-                'username': '{{ auth()->user()->name }}',
-                'email': '{{ auth()->user()->email }}',
-            }
-        });
+                name: '{{ auth()->user()->name }}',
+                email: '{{ auth()->user()->email }}',
+            },
+      });
     </script>
   @endif
 

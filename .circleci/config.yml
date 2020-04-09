@@ -36,7 +36,7 @@ aliases:
       name: Prepare environment
       command: |
         mkdir -p results/coverage
-        cp scripts/tests/.env.mysql .env
+        cp scripts/ci/.env.mysql .env
         touch .sentry-release
   - &yarn-install
     run:
@@ -60,6 +60,11 @@ aliases:
       name: Run http server
       command: php -S localhost:8000 -t public scripts/tests/server-cc.php
       background: true
+  - &http-server-cc2
+    run:
+      name: Run http server
+      command: php -S localhost:8001 -t public scripts/tests/server-cc.php
+      background: true
   - &http-server
     run:
       name: Run http server
@@ -74,15 +79,20 @@ aliases:
       name: Run unit tests
       command: |
         php artisan route:cache
-        phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml
+        TESTSUITE=$(echo -e "Api,Feature\nUnit-Models,Unit-Services" | circleci tests split)
+        phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results${CIRCLE_NODE_INDEX}.xml --coverage-clover ./results/coverage${CIRCLE_NODE_INDEX}.xml --testsuite $TESTSUITE
   - &psalm
     run:
       name: Run psalm
       command: vendor/bin/psalm --show-info=false
+  - &phpstan
+    run:
+      name: Run phpstan
+      command: php artisan code:analyse
   - &browser-tests
     run:
       name: Run browser tests
-      command: php artisan dusk --log-junit results/junit/dusk/results.xml
+      command: php artisan dusk --log-junit results/junit/dusk/results3.xml
   - &browser-cypress
     run:
       name: Run browser tests (cypress)
@@ -93,13 +103,13 @@ aliases:
     run:
       name: Fix coverage
       command: |
-        vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
+        vendor/bin/phpcov merge --clover=results/coverage3.xml results/coverage/
         rm -rf results/coverage
   - &fix-coverage2
     run:
       name: Fix coverage
       command: |
-        vendor/bin/phpcov merge --clover=results/coverage3.xml results/coverage/
+        vendor/bin/phpcov merge --clover=results/coverage4.xml results/coverage/
         rm -rf results/coverage
   - &selenium
     run:
@@ -164,7 +174,10 @@ jobs:
 
       ## COMPOSER
       - *restore_composer
-      - run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+      - run: 
+          command: |
+            composer global require hirak/prestissimo
+            composer install --no-interaction --no-suggest --ignore-platform-reqs
       - save_cache:
           key: *composer_key
           paths: ~/.composer/cache/
@@ -204,6 +217,7 @@ jobs:
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_ROOT_PASSWORD: ''
+    parallelism: 2
 
     steps:
       - checkout:
@@ -214,8 +228,6 @@ jobs:
       - *remove-xdebug
       - *prepare-db
       - *seed-test-db
-      - *http-server
-      - *wait-for-server
       - *unit-tests
       - store_test_results:
           path: results/junit
@@ -238,6 +250,19 @@ jobs:
       - *prepare-environment
       - *psalm
 
+  phpstan:
+    <<: *defaults
+    docker:
+      - image: monicahq/circleci-docker-centralperk:latest
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - attach_workspace:
+          at: *root
+      - *prepare-environment
+      - *phpstan
+
   tests-browser-7.2:
     <<: *defaults
     docker:
@@ -257,6 +282,7 @@ jobs:
       - *seed-test-db
       - *selenium
       - *http-server-cc
+      - *http-server-cc2
       - *wait-for-server
       - *browser-tests
       - *fix-coverage
@@ -327,7 +353,7 @@ jobs:
           name: Run sonar scanner
           command: |
             export SONAR_RESULT=./results/results.xml
-            export SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml,./results/coverage3.xml
+            export SONAR_COVERAGE=$(ls -m ./results/coverage*.xml | sed 's/ //g' | sed ':a;N;$!ba;s/\n//g')
             scripts/tests/runsonar.sh
 
       - save_cache:
@@ -360,7 +386,10 @@ jobs:
           <<: *post_checkout
       - attach_workspace:
           at: *root
-      - run: composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
+      - run: 
+          command: |
+            composer global require hirak/prestissimo
+            composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
       - run: make dist
       - run: make push_bintray_dist
 
@@ -431,6 +460,14 @@ workflows:
             tags:
               only: /.*/
       - psalm:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /l10n_master.*/
+            tags:
+              only: /.*/
+      - phpstan:
           requires:
             - build
           filters:

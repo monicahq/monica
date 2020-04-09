@@ -1,4 +1,4 @@
-<div class="col-xs-12 col-sm-3 sidebar-menu">
+<div class="col-12 col-sm-3 sidebar-menu">
   <ul class="mb4">
 
     @component('components.sidebar', [
@@ -57,13 +57,19 @@
       'title' => 'settings.sidebar_settings_api'])
     @endcomponent
 
-    @if (config('dav.enabled') && ! auth()->user()->account->has_access_to_paid_version_for_free)
+    @if (config('laravelsabre.enabled') && ! $accountHasLimitations)
       @component('components.sidebar', [
         'route' => 'settings.dav',
         'icon' => 'fa fa-calendar',
         'title' => 'settings.sidebar_settings_dav'])
       @endcomponent
     @endif
+
+    @component('components.sidebar', [
+      'route' => 'settings.auditlog.index',
+      'icon' => 'fa fa-id-card-o',
+      'title' => 'settings.sidebar_settings_auditlogs'])
+    @endcomponent
 
     @component('components.sidebar', [
       'route' => 'settings.security.index',

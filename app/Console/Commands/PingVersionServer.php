@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use GuzzleHttp\Client;
+use function Safe\json_decode;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 use App\Models\Instance\Instance;
@@ -18,7 +19,8 @@ class PingVersionServer extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:ping {--force}';
+    protected $signature = 'monica:ping
+                            {--force : Force the operation to run when in production.}';
 
     /**
      * The console command description.
@@ -104,8 +106,6 @@ class PingVersionServer extends Command
 
     public function log($string)
     {
-        if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->info($string);
-        }
+        $this->info($string, OutputInterface::VERBOSITY_VERBOSE);
     }
 }

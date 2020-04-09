@@ -17,7 +17,7 @@ class ApiLifeEventController extends ApiController
     /**
      * Get the list of life events.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -31,8 +31,9 @@ class ApiLifeEventController extends ApiController
     /**
      * Get the detail of a given life event.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return LifeEventResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $lifeEventId)
     {
@@ -49,17 +50,18 @@ class ApiLifeEventController extends ApiController
     /**
      * Store the life event.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return LifeEventResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
             $lifeEvent = app(CreateLifeEvent::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                 +
                 [
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -74,20 +76,21 @@ class ApiLifeEventController extends ApiController
     /**
      * Update the life event.
      *
-     * @param  Request $request
-     * @param  int $lifeEventId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $lifeEventId
+     *
+     * @return LifeEventResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $lifeEventId)
     {
         try {
             $lifeEvent = app(UpdateLifeEvent::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'life_event_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'life_event_id' => $lifeEventId,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                        'life_event_id' => $lifeEventId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -101,15 +104,16 @@ class ApiLifeEventController extends ApiController
     /**
      * Destroy the life event.
      *
-     * @param  Request $request
-     * @param  int $lifeEventId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $lifeEventId
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $lifeEventId)
     {
         try {
             app(DestroyLifeEvent::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'life_event_id' => $lifeEventId,
             ]);
         } catch (ModelNotFoundException $e) {

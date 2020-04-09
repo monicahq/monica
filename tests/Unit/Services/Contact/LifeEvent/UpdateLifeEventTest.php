@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services\Contact\LifeEvent;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -17,18 +16,19 @@ class UpdateLifeEventTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_a_life_event()
+    /** @test */
+    public function it_updates_a_life_event()
     {
         $lifeEvent = factory(LifeEvent::class)->create([
             'happened_at' => '2008-01-01',
         ]);
         $lifeEventType = factory(LifeEventType::class)->create([
-            'account_id' => $lifeEvent->account->id,
+            'account_id' => $lifeEvent->account_id,
         ]);
 
         $request = [
             'life_event_id' => $lifeEvent->id,
-            'account_id' => $lifeEvent->account->id,
+            'account_id' => $lifeEvent->account_id,
             'life_event_type_id' => $lifeEventType->id,
             'happened_at' => '2018-01-01',
             'name' => 'This is a name',
@@ -41,8 +41,8 @@ class UpdateLifeEventTest extends TestCase
             'id' => $lifeEvent->id,
             'happened_at' => '2018-01-01 00:00:00',
             'life_event_type_id' => $lifeEventType->id,
-            'contact_id' => $lifeEvent->contact->id,
-            'account_id' => $lifeEvent->account->id,
+            'contact_id' => $lifeEvent->contact_id,
+            'account_id' => $lifeEvent->account_id,
             'name' => 'This is a name',
             'note' => 'This is a note',
         ]);
@@ -53,13 +53,14 @@ class UpdateLifeEventTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
             'contact_id' => $contact->id,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
         ];
 
         $this->expectException(ValidationException::class);
@@ -67,17 +68,18 @@ class UpdateLifeEventTest extends TestCase
         app(UpdateLifeEvent::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_life_type_doesnt_exist()
+    /** @test */
+    public function it_throws_an_exception_if_life_type_doesnt_exist()
     {
         $account = factory(Account::class)->create();
         $lifeEvent = factory(LifeEvent::class)->create([]);
         $lifeEventType = factory(LifeEventType::class)->create([
-            'account_id' => $lifeEvent->account->id,
+            'account_id' => $lifeEvent->account_id,
         ]);
 
         $request = [
             'account_id' => $account->id,
-            'contact_id' => $lifeEvent->contact->id,
+            'contact_id' => $lifeEvent->contact_id,
             'life_event_id' => $lifeEvent->id,
             'happened_at' => '2010-02-02',
             'life_event_type_id' => $lifeEventType->id,

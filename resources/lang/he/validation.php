@@ -67,6 +67,7 @@ return [
     'not_in'               => ':attribute הנבחר שגוי.',
     'not_regex'            => 'התבנית :attribute שגויה.',
     'numeric'              => ':attribute חייב להיות מספר.',
+    'password' => 'הססמה שגויה.',
     'present'              => 'השדה :attribute חייב להיות נוכח.',
     'regex'                => 'המבנה :attribute שגוי.',
     'required'             => 'השדה :attribute נחוץ.',
@@ -119,4 +120,12 @@ return [
 
     'attributes' => [],
 
+    'vue' => [
+        'max' => [
+            'numeric' => '{field} לא יכול להיות גדול מהערך {max}.',
+            'string'  => '{field} לא יכול לחרוג מעבר ל־{max} תווים.',
+        ],
+        'required' => '{field} הוא שדה חובה.',
+        'url' => '{field} אינה כתובת אתר תקנית.',
+    ],
 ];

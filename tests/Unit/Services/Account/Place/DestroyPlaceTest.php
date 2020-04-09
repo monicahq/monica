@@ -14,12 +14,13 @@ class DestroyPlaceTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_a_place()
+    /** @test */
+    public function it_destroys_a_place()
     {
         $place = factory(Place::class)->create([]);
 
         $request = [
-            'account_id' => $place->account->id,
+            'account_id' => $place->account_id,
             'place_id' => $place->id,
         ];
 
@@ -30,7 +31,8 @@ class DestroyPlaceTest extends TestCase
         ]);
     }
 
-    public function test_it_throws_an_exception_if_account_is_not_linked_to_places()
+    /** @test */
+    public function it_throws_an_exception_if_account_is_not_linked_to_places()
     {
         $account = factory(Account::class)->create([]);
         $place = factory(Place::class)->create([]);
@@ -44,7 +46,8 @@ class DestroyPlaceTest extends TestCase
         app(DestroyPlace::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_ids_do_not_exist()
+    /** @test */
+    public function it_throws_an_exception_if_ids_do_not_exist()
     {
         $request = [
             'account_id' => 11111111,

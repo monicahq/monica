@@ -60,14 +60,4 @@ class Message extends Model
     {
         return $this->belongsTo(Conversation::class);
     }
-
-    /**
-     * Get the content of the message.
-     *
-     * @return string
-     */
-    public function getContentAttribute($value)
-    {
-        return $value;
-    }
 }

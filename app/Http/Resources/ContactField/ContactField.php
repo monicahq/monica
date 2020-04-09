@@ -3,16 +3,19 @@
 namespace App\Http\Resources\ContactField;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\Settings\ContactFieldType\ContactFieldType as ContactFieldTypeResource;
 
-class ContactField extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\ContactField>
+ */
+class ContactField extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -22,8 +25,9 @@ class ContactField extends Resource
             'object' => 'contactfield',
             'content' => $this->data,
             'contact_field_type' => new ContactFieldTypeResource($this->contactFieldType),
+            'labels' => ContactFieldLabel::collection($this->labels),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'contact' => new ContactShortResource($this->contact),
             'created_at' => DateHelper::getTimestamp($this->created_at),

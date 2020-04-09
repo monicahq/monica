@@ -13,7 +13,7 @@ class EmotionController extends Controller
     /**
      * Get the list of primary emotions.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function primaries()
     {
@@ -23,7 +23,7 @@ class EmotionController extends Controller
     /**
      * Get the list of secondary emotions.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function secondaries(Request $request, $primaryEmotionId)
     {
@@ -36,7 +36,7 @@ class EmotionController extends Controller
     /**
      * Get the list of emotions.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function emotions(Request $request, $primaryEmotionId, $secondaryEmotionId)
     {

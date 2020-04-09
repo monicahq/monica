@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Account $account
  * @property Contact $contact
  * @property string $parsed_body
+ * @property string $body
+ * @property bool $is_favorited
+ * @property \Illuminate\Support\Carbon|null $favorited_at
  */
 class Note extends Model
 {
@@ -46,6 +49,14 @@ class Note extends Model
         'contact_id',
         'body',
         'is_favorited',
+    ];
+
+    /**
+     * Eager load with every note.
+     */
+    protected $with = [
+        'account',
+        'contact',
     ];
 
     /**
@@ -102,7 +113,6 @@ class Note extends Model
     /**
      * Gets the activity date for this note.
      *
-     * @param  string $locale
      * @return string
      */
     public function getCreatedAt()

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\DBHelper;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Console\ConfirmableTrait;
@@ -15,7 +16,8 @@ class MigrateDatabaseCollation extends Command
      *
      * @var string
      */
-    protected $signature = 'migrate:collation {--force : Force the operation to run when in production.}';
+    protected $signature = 'migrate:collation
+                            {--force : Force the operation to run when in production.}';
 
     /**
      * The console command description.
@@ -33,7 +35,7 @@ class MigrateDatabaseCollation extends Command
     {
         if ($this->confirmToProceed()) {
             try {
-                $connection = DB::connection();
+                $connection = DBHelper::connection();
 
                 if ($connection->getDriverName() != 'mysql') {
                     return;

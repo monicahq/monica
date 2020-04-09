@@ -5,7 +5,6 @@ namespace Tests\Api\Contact;
 use Carbon\Carbon;
 use Tests\ApiTestCase;
 use App\Models\Contact\Gender;
-use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
@@ -23,9 +22,11 @@ class ApiContactControllerTest extends ApiTestCase
         'last_name',
         'nickname',
         'gender',
+        'gender_type',
         'is_starred',
         'is_partial',
         'is_dead',
+        'is_me',
         'last_called',
         'last_activity_together',
         'stay_in_touch_frequency',
@@ -63,7 +64,7 @@ class ApiContactControllerTest extends ApiTestCase
             ],
             'career',
             'avatar',
-            'food_preferencies',
+            'food_preferences',
             'how_you_met',
         ],
         'addresses',
@@ -83,6 +84,7 @@ class ApiContactControllerTest extends ApiTestCase
         'first_name',
         'last_name',
         'gender',
+        'gender_type',
         'is_starred',
         'is_partial',
         'is_dead',
@@ -130,7 +132,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'source',
                 'default_avatar_color',
             ],
-            'food_preferencies',
+            'food_preferences',
             'how_you_met' => [
                 'general_information',
                 'first_met_date' => [
@@ -179,6 +181,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'updated_at',
             ],
         ],
+        'notes' => [],
         'account' => [
             'id',
         ],
@@ -194,6 +197,7 @@ class ApiContactControllerTest extends ApiTestCase
         'last_name',
         'nickname',
         'gender',
+        'gender_type',
         'is_partial',
         'is_dead',
         'information' => [
@@ -217,7 +221,8 @@ class ApiContactControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_it_gets_a_list_of_contacts()
+    /** @test */
+    public function it_gets_a_list_of_contacts()
     {
         $user = $this->signin();
 
@@ -238,7 +243,30 @@ class ApiContactControllerTest extends ApiTestCase
         );
     }
 
-    public function test_it_contains_pagination_when_fetching_contacts()
+    /** @test */
+    public function it_gets_a_list_of_contacts_without_gender()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class, 10)->state('no_gender')->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('GET', '/api/contacts');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => ['*' => $this->jsonStructureContact],
+        ]);
+
+        $this->assertCount(
+            10,
+            $response->decodeResponseJson()['data']
+        );
+    }
+
+    /** @test */
+    public function it_contains_pagination_when_fetching_contacts()
     {
         $user = $this->signin();
 
@@ -259,7 +287,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_applies_the_limit_parameter_in_search()
+    /** @test */
+    public function it_applies_the_limit_parameter_in_search()
     {
         $user = $this->signin();
 
@@ -294,7 +323,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_is_possible_to_search_contacts_with_query()
+    /** @test */
+    public function it_is_possible_to_search_contacts_with_query()
     {
         $user = $this->signin();
 
@@ -323,7 +353,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_is_possible_to_search_contacts_and_limit_query()
+    /** @test */
+    public function it_is_possible_to_search_contacts_and_limit_query()
     {
         $user = $this->signin();
 
@@ -354,7 +385,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_is_possible_to_search_contacts_and_limit_query_and_paginate()
+    /** @test */
+    public function it_is_possible_to_search_contacts_and_limit_query_and_paginate()
     {
         $user = $this->signin();
 
@@ -385,7 +417,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_a_contact()
+    /** @test */
+    public function it_gets_a_contact()
     {
         $user = $this->signin();
 
@@ -407,7 +440,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_getting_a_contact_matches_a_specific_json_structure()
+    /** @test */
+    public function getting_a_contact_matches_a_specific_json_structure()
     {
         $user = $this->signin();
 
@@ -425,7 +459,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_getting_a_partial_contact_matches_a_specific_json_structure()
+    /** @test */
+    public function getting_a_partial_contact_matches_a_specific_json_structure()
     {
         $user = $this->signin();
 
@@ -444,7 +479,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_getting_a_contact_with_the_parameter_with_matches_a_specific_json_structure()
+    /** @test */
+    public function getting_a_contact_with_the_parameter_with_matches_a_specific_json_structure()
     {
         $user = $this->signin();
 
@@ -479,7 +515,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_list_of_contacts_with_parameter_and_limit_and_page()
+    /** @test */
+    public function it_gets_list_of_contacts_with_parameter_and_limit_and_page()
     {
         $user = $this->signin();
 
@@ -535,7 +572,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_query_injection()
+    /** @test */
+    public function it_prevents_a_contact_query_injection()
     {
         $firstuser = $this->signin();
         $firstcontact = factory(Contact::class)->create([
@@ -550,7 +588,7 @@ class ApiContactControllerTest extends ApiTestCase
         $response = $this->json('GET', "/api/contacts?with=contactfields&page=1&limit=100&query=1')%20or%20('%'='");
 
         $response->assertStatus(200);
-        // Assure that firstcontact from other account is not get (SQL injection)
+        // Ensure that firstcontact from other account is not get (SQL injection)
         $response->assertJsonMissing([
             'id' => $firstcontact->id,
             'first_name' => 'Bad',
@@ -560,7 +598,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_get_withcontactfields()
+    /** @test */
+    public function it_gets_a_contact_with_the_contact_fields()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -603,7 +642,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_field_query_all_account()
+    /** @test */
+    public function contact_field_query_all_account()
     {
         $firstuser = $this->signin();
         $firstcontact = factory(Contact::class)->create([
@@ -645,7 +685,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_query_internationalphone()
+    /** @test */
+    public function contact_query_internationalphone()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -656,7 +697,7 @@ class ApiContactControllerTest extends ApiTestCase
             'name' => 'Phone',
             'protocol' => 'tel:',
             'type' => 'phone',
-            ]);
+        ]);
         $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
@@ -668,16 +709,17 @@ class ApiContactControllerTest extends ApiTestCase
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
-                'id' => $contact->id,
-                'first_name' => 'John',
-                'last_name' => 'Doe',
-                'account' => [
-                    'id' => $user->account_id,
-                ],
+            'id' => $contact->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'account' => [
+                'id' => $user->account_id,
+            ],
         ]);
     }
 
-    public function test_it_creates_a_contact()
+    /** @test */
+    public function it_creates_a_contact()
     {
         $user = $this->signin();
         $gender = factory(Gender::class)->create([
@@ -697,7 +739,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_deceased_date_known' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -722,7 +764,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_creating_contact_is_not_possible_if_parameters_are_missing()
+    /** @test */
+    public function creating_contact_is_not_possible_if_parameters_are_missing()
     {
         $user = $this->signin();
 
@@ -732,14 +775,14 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
 
         $this->expectDataError($response, [
-            'The gender id field is required.',
             'The is birthdate known field is required.',
             'The is deceased field is required.',
             'The is deceased date known field is required.',
         ]);
     }
 
-    public function test_it_creates_a_birthdate()
+    /** @test */
+    public function it_creates_a_birthdate()
     {
         $user = $this->signin();
         $gender = factory(Gender::class)->create([
@@ -764,7 +807,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_deceased_date_known' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -793,7 +836,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_create_birthdate_year_unknown()
+    /** @test */
+    public function contact_create_birthdate_year_unknown()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -819,7 +863,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_deceased_date_known' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -848,7 +892,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_create_birthdate_age_based()
+    /** @test */
+    public function contact_create_birthdate_age_based()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -875,7 +920,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_deceased_date_known' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -904,7 +949,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_create_deceased_date()
+    /** @test */
+    public function contact_create_deceased_date()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -929,7 +975,7 @@ class ApiContactControllerTest extends ApiTestCase
             'deceased_date_add_reminder' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -958,7 +1004,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_create_deceased_date_year_unknown()
+    /** @test */
+    public function contact_create_deceased_date_year_unknown()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -983,7 +1030,7 @@ class ApiContactControllerTest extends ApiTestCase
             'deceased_date_add_reminder' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -1012,7 +1059,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_updates_a_contact()
+    /** @test */
+    public function it_updates_a_contact()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -1069,7 +1117,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_update_bad_account()
+    /** @test */
+    public function contact_update_bad_account()
     {
         $user = $this->signin();
         $gender = factory(Gender::class)->create([
@@ -1100,7 +1149,8 @@ class ApiContactControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_cant_update_the_contact_if_parameters_are_missing()
+    /** @test */
+    public function it_cant_update_the_contact_if_parameters_are_missing()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -1113,13 +1163,13 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
 
         $this->expectDataError($response, [
-            'The gender id field is required.',
             'The is birthdate known field is required.',
             'The is deceased date known field is required.',
         ]);
     }
 
-    public function test_contact_update_birthdate()
+    /** @test */
+    public function contact_update_birthdate()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -1168,7 +1218,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_update_birthdate_year_unknown()
+    /** @test */
+    public function contact_update_birthdate_year_unknown()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -1217,7 +1268,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_update_birthdate_age_based()
+    /** @test */
+    public function contact_update_birthdate_age_based()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -1267,7 +1319,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_update_deceased_date()
+    /** @test */
+    public function contact_update_deceased_date()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -1315,7 +1368,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_deletes_a_contact()
+    /** @test */
+    public function it_deletes_a_contact()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -1328,6 +1382,374 @@ class ApiContactControllerTest extends ApiTestCase
         $this->assertDatabaseMissing('contacts', [
             'account_id' => $user->account_id,
             'id' => $contact->id,
+        ]);
+    }
+
+    /** @test */
+    public function it_sets_me_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('PUT', '/api/me/contact/'.$contact->id);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('users', [
+            'account_id' => $user->account_id,
+            'me_contact_id' => $contact->id,
+        ]);
+    }
+
+    /** @test */
+    public function it_throws_an_error_if_wrong_account_on_sets_me_contact()
+    {
+        $this->signin();
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->json('PUT', '/api/me/contact/'.$contact->id);
+
+        $this->expectNotFound($response);
+    }
+
+    /** @test */
+    public function it_throws_an_error_if_account_not_exists_on_sets_me_contact()
+    {
+        $this->signin();
+
+        $response = $this->json('PUT', '/api/me/contact/0');
+
+        $this->expectDataError($response, [
+            'The selected contact id is invalid.',
+        ]);
+    }
+
+    /** @test */
+    public function it_removes_me_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $user->me_contact_id = $contact->id;
+        $user->save();
+
+        $response = $this->json('DELETE', '/api/me/contact/');
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('users', [
+            'account_id' => $user->account_id,
+            'me_contact_id' => null,
+        ]);
+    }
+
+    /** @test */
+    public function it_gets_me_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $user->me_contact_id = $contact->id;
+        $user->save();
+
+        $response = $this->json('GET', '/api/contacts/'.$contact->id);
+
+        $response->assertOk();
+
+        $response->assertJsonStructure([
+            'data' => $this->jsonStructureContactShort,
+        ]);
+
+        $response->assertJsonFragment([
+            'id' => $contact->id,
+            'is_me' => true,
+        ]);
+    }
+
+    /** @test */
+    public function it_sets_career()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/work', [
+            'job' => 'Astronaut',
+            'company' => 'NASA',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'career' => [
+                'job' => 'Astronaut',
+                'company' => 'NASA',
+            ],
+        ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account_id,
+            'id' => $contact->id,
+            'job' => 'Astronaut',
+            'company' => 'NASA',
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/work', [
+            'job' => 'Mom',
+            'company' => null,
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'career' => [
+                'job' => 'Mom',
+                'company' => null,
+            ],
+        ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account_id,
+            'id' => $contact->id,
+            'job' => 'Mom',
+            'company' => null,
+        ]);
+    }
+
+    /** @test */
+    public function it_get_an_error_when_set_career_with_wrong_params()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/work', [
+            'job' => 'xx',
+            'company' => 'xx',
+        ]);
+        $this->expectNotFound($response);
+    }
+
+    /** @test */
+    public function it_get_an_error_when_set_career_on_partial_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+            'is_partial' => true,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/work', [
+        ]);
+        $this->expectDataError($response, [
+            'The contact can\'t be a partial contact',
+        ]);
+    }
+
+    /** @test */
+    public function it_sets_food_preferences()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/food', [
+            'food_preferences' => 'Pas de laitages, le lait c\'est le mal',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'food_preferences' => 'Pas de laitages, le lait c\'est le mal',
+        ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account_id,
+            'id' => $contact->id,
+            'food_preferences' => 'Pas de laitages, le lait c\'est le mal',
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/food', [
+            'food_preferences' => null,
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'food_preferences' => null,
+        ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account_id,
+            'id' => $contact->id,
+            'food_preferences' => null,
+        ]);
+    }
+
+    /** @test */
+    public function it_get_an_error_when_set_food_preferences_with_wrong_params()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/food');
+        $this->expectNotFound($response);
+    }
+
+    /** @test */
+    public function it_get_an_error_when_set_food_preferences_on_partial_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+            'is_partial' => true,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/food', [
+        ]);
+        $this->expectDataError($response, [
+            'The contact can\'t be a partial contact',
+        ]);
+    }
+
+    /** @test */
+    public function it_sets_first_met()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/introduction', [
+            'is_date_known' => true,
+            'year' => 2006,
+            'month' => 1,
+            'day' => 2,
+        ]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonFragment([
+            'first_met_date' => [
+                'date' => '2006-01-02T00:00:00Z',
+                'is_age_based' => false,
+                'is_year_unknown' => false,
+            ],
+        ]);
+
+        $this->assertDatabaseHas('special_dates', [
+            'account_id' => $user->account_id,
+            'contact_id' => $contact->id,
+            'id' => Contact::find($contact->id)->first_met_special_date_id,
+            'is_age_based' => false,
+            'is_year_unknown' => false,
+            'date' => '2006-01-02',
+        ]);
+    }
+
+    /** @test */
+    public function it_sets_first_met_age()
+    {
+        Carbon::setTestNow(Carbon::create(2019, 12, 1, 7, 0, 0));
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/introduction', [
+            'is_date_known' => true,
+            'is_age_based' => true,
+            'age' => 13,
+        ]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonFragment([
+            'first_met_date' => [
+                'date' => '2006-01-01T00:00:00Z',
+                'is_age_based' => true,
+                'is_year_unknown' => false,
+            ],
+        ]);
+
+        $this->assertDatabaseHas('special_dates', [
+            'account_id' => $user->account_id,
+            'contact_id' => $contact->id,
+            'id' => Contact::find($contact->id)->first_met_special_date_id,
+            'is_age_based' => true,
+            'is_year_unknown' => false,
+            'date' => '2006-01-01',
+        ]);
+    }
+
+    /** @test */
+    public function it_sets_first_met_reminder()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/introduction', [
+            'is_date_known' => true,
+            'year' => 2006,
+            'month' => 1,
+            'day' => 2,
+            'add_reminder' => true,
+        ]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonFragment([
+            'first_met_date' => [
+                'date' => '2006-01-02T00:00:00Z',
+                'is_age_based' => false,
+                'is_year_unknown' => false,
+            ],
+        ]);
+
+        $this->assertDatabaseHas('reminders', [
+            'account_id' => $user->account_id,
+            'contact_id' => $contact->id,
+            'id' => Contact::find($contact->id)->first_met_reminder_id,
+        ]);
+    }
+
+    /** @test */
+    public function it_get_an_error_when_set_first_met_with_wrong_params()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/introduction', [
+            'is_date_known' => true,
+            'year' => 2006,
+            'month' => 1,
+            'day' => 2,
+            'add_reminder' => false,
+        ]);
+        $this->expectNotFound($response);
+    }
+
+    /** @test */
+    public function it_get_an_error_when_set_first_met_on_partial_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+            'is_partial' => true,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/introduction', [
+            'is_date_known' => true,
+            'year' => 2006,
+            'month' => 1,
+            'day' => 2,
+            'add_reminder' => false,
+        ]);
+        $this->expectDataError($response, [
+            'The contact can\'t be a partial contact',
         ]);
     }
 }

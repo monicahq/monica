@@ -1,10 +1,13 @@
 <?php
 
 return [
+    'yes' => 'Yes',
+    'no' => 'No',
     'update' => 'تحديث',
     'save' => 'حفظ',
     'add' => 'إضافة',
     'cancel' => 'إلغاء',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'Sure?',
     'delete' => 'حذف',
     'edit' => 'تعديل',
@@ -19,13 +22,11 @@ return [
     'done' => 'تم',
     'back' => 'Back',
     'verify' => 'تحقق',
-    'for' => 'من أجل',
     'new' => 'جديد',
     'unknown' => 'لا أعرف',
     'load_more' => 'تحميل المزيد',
     'loading' => 'جاري التحميل...',
     'with' => 'مع',
-    'days' => 'يوم|أيام',
     'today' => 'اليوم',
     'yesterday' => 'أمس',
     'another_day' => 'يوم آخر',
@@ -34,6 +35,10 @@ return [
     'zoom' => 'Zoom',
     'upgrade' => 'Upgrade to unlock',
     'percent_uploaded' => '{percent}% uploaded',
+    'retry' => 'Retry',
+    'filter' => 'Filter the list',
+    'go_back' => 'Go back',
+    'file_selected' => '1 file selected...|{count} files selected...',
 
     'application_title' => 'Monica (مونيكا) – مدير العلاقات الشخصية',
     'application_description' => 'Monica هو أداة لإدارة تفاعلاتك مع أحبائك، أصدقائك و عائلتك.',
@@ -83,6 +88,7 @@ return [
     'breadcrumb_add_note' => 'أضف ملاحظة',
     'breadcrumb_edit_note' => 'حرر ملاحظة',
     'breadcrumb_api' => 'API (واجهة برمجة التطبيق)',
+    'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'كيف تقابلتما',
     'breadcrumb_settings_personalization' => 'التخصيص',
     'breadcrumb_settings_security' => 'الأمن',
@@ -92,16 +98,19 @@ return [
     'gender_male' => 'رجل',
     'gender_female' => 'إمرأة',
     'gender_none' => 'أُفَضل ألا أقول',
+    'gender_no_gender' => 'No gender',
 
     'error_title' => 'عفواً! حصل خطأ ما.',
     'error_unauthorized' => 'ليس لديك الصلاحية لتحرير هذا المصدر.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'لقد حصل خطأ بينما كنا نحاول حفظ البيانات.',
     'error_try_again' => 'حدث خطأ ما. الرجاء المحاولة مرة أخرى.',
     'error_id' => 'معرف الخطأ: :id',
-    'error_unavailable' => 'الخدمة غير متاحة',
+    'error_unavailable' => 'Service unavailable',
     'error_maintenance' => 'تتم الصيانة. سنعود حالاً.',
     'error_help' => 'سنعود إليك حالاً.',
     'error_twitter' => 'تابع <a href="https://twitter.com/:twitter">حساب تويتر</a> الخاص بنا، ليتم تنبيهك عندما يعود الموقع مجدداً.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'تم حفظ البيانات.',
 
@@ -167,6 +176,16 @@ return [
     'relationship_type_child_female' => 'ابنة',
     'relationship_type_child_with_name' => 'ابن :name',
     'relationship_type_child_female_with_name' => 'ابنة :name',
+
+    'relationship_type_stepparent' => 'stepfather',
+    'relationship_type_stepparent_female' => 'stepmother',
+    'relationship_type_stepparent_with_name' => ':name’s stepfather',
+    'relationship_type_stepparent_female_with_name' => ':name’s stepmother',
+
+    'relationship_type_stepchild' => 'stepson',
+    'relationship_type_stepchild_female' => 'stepdaughter',
+    'relationship_type_stepchild_with_name' => ':name’s stepson',
+    'relationship_type_stepchild_female_with_name' => ':name’s stepdaughter',
 
     'relationship_type_sibling' => 'أخ',
     'relationship_type_sibling_female' => 'أخت',
@@ -325,7 +344,7 @@ return [
     'emotion_pride' => 'Pride',
     'emotion_eagerness' => 'Eagerness',
     'emotion_hope' => 'Hope',
-    'emotion_optimism' => 'optimism',
+    'emotion_optimism' => 'Optimism',
     'emotion_enthrallment' => 'Enthrallment',
     'emotion_rapture' => 'Rapture',
     'emotion_relief' => 'Relief',
@@ -429,4 +448,12 @@ return [
     'weather_current_temperature_celsius' => ':temperature °C',
     'weather_current_temperature_fahrenheit' => ':temperature °F',
     'weather_current_title' => 'Current weather',
+
+    // dav
+    'dav_contacts' => 'Contacts',
+    'dav_contacts_description' => ':name’s contacts',
+    'dav_birthdays' => 'Birthdays',
+    'dav_birthdays_description' => ':name’s contact’s birthdays',
+    'dav_tasks' => 'Tasks',
+    'dav_tasks_description' => ':name’s tasks',
 ];

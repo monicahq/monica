@@ -2,14 +2,17 @@
 
 namespace App\Http\Resources\Settings\Currency;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class Currency extends Resource
+/**
+ * @extends JsonResource<\App\Models\Settings\Currency>
+ */
+class Currency extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)

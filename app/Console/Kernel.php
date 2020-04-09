@@ -2,8 +2,31 @@
 
 namespace App\Console;
 
+use App\Console\Commands\Clean;
+use App\Console\Commands\Update;
+use App\Console\Commands\ExportAll;
+use App\Console\Commands\ImportCSV;
+use App\Console\Commands\SetupTest;
+use App\Console\Commands\GetVersion;
+use App\Console\Scheduling\CronEvent;
+use App\Console\Commands\ImportVCards;
+use App\Console\Commands\LangGenerate;
+use App\Console\Commands\SetUserAdmin;
+use App\Console\Commands\Deactivate2FA;
+use App\Console\Commands\SendReminders;
+use App\Console\Commands\SentryRelease;
+use App\Console\Commands\SendStayInTouch;
+use App\Console\Commands\SetupProduction;
+use App\Console\Commands\UpdateGravatars;
+use App\Console\Commands\PingVersionServer;
+use App\Console\Commands\SetPremiumAccount;
 use Illuminate\Console\Scheduling\Schedule;
+use App\Console\Commands\CalculateStatistics;
+use App\Console\Commands\OneTime\MoveAvatars;
+use App\Console\Commands\MigrateDatabaseCollation;
+use App\Console\Commands\Tests\SetupFrontEndTestUser;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Console\Commands\OneTime\MoveAvatarsToPhotosDirectory;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,26 +36,40 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        'App\Console\Commands\CalculateStatistics',
-        'App\Console\Commands\Deactivate2FA',
-        'App\Console\Commands\ExportAll',
-        'App\Console\Commands\GetVersion',
-        'App\Console\Commands\ImportCSV',
-        'App\Console\Commands\ImportVCards',
-        'App\Console\Commands\LangGenerate',
-        'App\Console\Commands\PingVersionServer',
-        'App\Console\Commands\SendReminders',
-        'App\Console\Commands\SendStayInTouch',
-        'App\Console\Commands\SentryRelease',
-        'App\Console\Commands\SetupProduction',
-        'App\Console\Commands\SetupTest',
-        'App\Console\Commands\SetupFrontEndTest',
-        'App\Console\Commands\SetPremiumAccount',
-        'App\Console\Commands\SetUserAdmin',
-        'App\Console\Commands\Update',
-        'App\Console\Commands\MigrateDatabaseCollation',
-        'App\Console\Commands\OneTime\MoveAvatars',
+        CalculateStatistics::class,
+        Clean::class,
+        Deactivate2FA::class,
+        ExportAll::class,
+        GetVersion::class,
+        ImportCSV::class,
+        ImportVCards::class,
+        LangGenerate::class,
+        MigrateDatabaseCollation::class,
+        MoveAvatars::class,
+        MoveAvatarsToPhotosDirectory::class,
+        PingVersionServer::class,
+        SendReminders::class,
+        SendStayInTouch::class,
+        SentryRelease::class,
+        SetPremiumAccount::class,
+        SetupProduction::class,
+        SetupTest::class,
+        SetUserAdmin::class,
+        Update::class,
+        UpdateGravatars::class,
     ];
+
+    /**
+     * Register the Closure based commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        if ($this->app->environment() != 'production') {
+            $this->commands[] = SetupFrontEndTestUser::class;
+        }
+    }
 
     /**
      * Define the application's command schedule.
@@ -42,15 +79,29 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('send:reminders')->hourly();
-        $schedule->command('send:stay_in_touch')->hourly();
-        $schedule->command('monica:calculatestatistics')->daily();
-        $schedule->command('monica:ping')->daily();
+        $this->scheduleCommand($schedule, 'send:reminders', 'hourly');
+        $this->scheduleCommand($schedule, 'send:stay_in_touch', 'hourly');
+        $this->scheduleCommand($schedule, 'monica:calculatestatistics', 'daily');
+        $this->scheduleCommand($schedule, 'monica:ping', 'daily');
+        $this->scheduleCommand($schedule, 'monica:clean', 'daily');
+        $this->scheduleCommand($schedule, 'monica:updategravatars', 'weekly');
         if (config('trustedproxy.cloudflare')) {
-            $schedule->command('cloudflare:reload')->daily();
+            $this->scheduleCommand($schedule, 'cloudflare:reload', 'daily'); // @codeCoverageIgnore
         }
-        if (config('telescope.enabled')) {
-            $schedule->command('telescope:prune --hours=48')->daily();
-        }
+    }
+
+    /**
+     * Define a new schedule command with a frequency.
+     */
+    private function scheduleCommand(Schedule $schedule, string $command, $frequency)
+    {
+        $schedule->command($command)->when(function () use ($command, $frequency) {
+            $event = CronEvent::command($command); // @codeCoverageIgnore
+            if ($frequency) { // @codeCoverageIgnore
+                $event = $event->$frequency(); // @codeCoverageIgnore
+            }
+
+            return $event->isDue(); // @codeCoverageIgnore
+        });
     }
 }

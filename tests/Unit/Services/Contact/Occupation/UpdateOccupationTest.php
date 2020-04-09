@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Account\Place;
+namespace Tests\Unit\Services\Contact\Occupation;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
@@ -14,7 +14,8 @@ class UpdateOccupationTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_an_occupation()
+    /** @test */
+    public function it_updates_an_occupation()
     {
         $occupation = factory(Occupation::class)->create([]);
 
@@ -45,7 +46,8 @@ class UpdateOccupationTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $occupation = factory(Occupation::class)->create([]);
 
@@ -57,7 +59,8 @@ class UpdateOccupationTest extends TestCase
         app(UpdateOccupation::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_occupation_is_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_occupation_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create([]);
         $occupation = factory(Occupation::class)->create([]);

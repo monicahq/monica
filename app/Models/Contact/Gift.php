@@ -2,16 +2,24 @@
 
 namespace App\Models\Contact;
 
+use App\Helpers\MoneyHelper;
+use App\Models\Account\Photo;
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property Account $account
  * @property Contact $contact
  * @property Contact $recipient
+ * @property string $name
+ * @property string $comment
+ * @property string $url
+ * @property Contact $is_for
+ * @property int $value
  * @method static Builder offered()
  * @method static Builder isIdea()
  */
@@ -30,8 +38,7 @@ class Gift extends Model
      * @var array
      */
     protected $dates = [
-        'offered_at',
-        'received_at',
+        'date',
     ];
 
     /**
@@ -40,9 +47,6 @@ class Gift extends Model
      * @var array
      */
     protected $casts = [
-        'is_an_idea' => 'boolean',
-        'has_been_offered' => 'boolean',
-        'has_been_received' => 'boolean',
     ];
 
     /**
@@ -76,6 +80,16 @@ class Gift extends Model
     }
 
     /**
+     * Get the photos record associated with the gift.
+     *
+     * @return BelongsToMany
+     */
+    public function photos()
+    {
+        return $this->belongsToMany(Photo::class)->withTimestamps();
+    }
+
+    /**
      * Limit results to already offered gifts.
      *
      * @param Builder $query
@@ -83,7 +97,7 @@ class Gift extends Model
      */
     public function scopeOffered(Builder $query)
     {
-        return $query->where('has_been_offered', 1);
+        return $query->where('status', 'offered');
     }
 
     /**
@@ -94,7 +108,7 @@ class Gift extends Model
      */
     public function scopeIsIdea(Builder $query)
     {
-        return $query->where('is_an_idea', 1);
+        return $query->where('status', 'idea');
     }
 
     /**
@@ -112,9 +126,10 @@ class Gift extends Model
      * Set the recipient for the gift.
      *
      * @param int $value
-     * @return string
+     *
+     * @return void
      */
-    public function setRecipientAttribute($value)
+    public function setRecipientAttribute($value): void
     {
         $this->attributes['is_for'] = $value;
     }
@@ -122,10 +137,9 @@ class Gift extends Model
     /**
      * Get the name of the recipient for this gift.
      *
-     * @param  string  $value
-     * @return string
+     * @return string|null
      */
-    public function getRecipientNameAttribute()
+    public function getRecipientNameAttribute(): ?string
     {
         if ($this->hasParticularRecipient()) {
             $recipient = $this->recipient;
@@ -133,70 +147,17 @@ class Gift extends Model
                 return $this->recipient->first_name;
             }
         }
+
+        return null;
     }
 
     /**
-     * Get the gift name.
+     * Get amount with currency.
      *
-     * @param  string  $value
      * @return string
      */
-    public function getNameAttribute($value)
+    public function getAmountAttribute(): string
     {
-        return $value;
-    }
-
-    /**
-     * Get the URL of the gift.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getUrlAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Get the comment of the gift.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getCommentAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Get the value of the gift.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getValueAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Toggle a gift between the idea and offered state.
-     * @return void
-     */
-    public function toggle()
-    {
-        $this->has_been_received = false;
-
-        if ($this->is_an_idea == 1) {
-            $this->is_an_idea = false;
-            $this->has_been_offered = true;
-            $this->save();
-
-            return;
-        }
-
-        $this->is_an_idea = true;
-        $this->has_been_offered = false;
-        $this->save();
+        return $this->value ? MoneyHelper::format($this->value) : '';
     }
 }

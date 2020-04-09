@@ -33,10 +33,10 @@ class UpdatePlace extends BaseService
      * Update a place.
      *
      * @param array $data
-     * @param GuzzleClient the Guzzle client, only needed when unit testing
+     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
      * @return Place
      */
-    public function execute(array $data, GuzzleClient $client = null) : Place
+    public function execute(array $data, GuzzleClient $client = null): Place
     {
         $this->validate($data);
 
@@ -64,8 +64,8 @@ class UpdatePlace extends BaseService
      * Get geocoding information about the place (lat/longitude).
      *
      * @param Place $place
-     * @param GuzzleClient the Guzzle client, only needed when unit testing
-     * @return void|null
+     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
+     * @return void
      */
     private function getGeocodingInfo(Place $place, GuzzleClient $client = null)
     {

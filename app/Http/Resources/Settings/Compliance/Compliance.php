@@ -3,14 +3,17 @@
 namespace App\Http\Resources\Settings\Compliance;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class Compliance extends Resource
+/**
+ * @extends JsonResource<\App\Models\Settings\Term>
+ */
+class Compliance extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)

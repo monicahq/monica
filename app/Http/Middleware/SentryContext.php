@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Sentry\State\Scope;
 use App\Helpers\RequestHelper;
 
 class SentryContext
@@ -18,27 +19,25 @@ class SentryContext
     public function handle($request, Closure $next)
     {
         if (app()->bound('sentry') && config('monica.sentry_support')) {
-            /** @var \Raven_Client $sentry */
-            $sentry = app('sentry');
-
-            $user_context = [];
-            $extra_context = [];
-
             // Add user context
             if (auth()->check()) {
-                $user = auth()->user();
-
-                $user_context['id'] = $user->id;
-                $user_context['username'] = $user->name;
-                $user_context['email'] = $user->email;
-                $extra_context['isSubscribed'] = $user->account->isSubscribed();
+                \Sentry\configureScope(function (Scope $scope): void {
+                    $user = auth()->user();
+                    $scope->setUser([
+                        'id' => $user->id,
+                        'email' => $user->email,
+                        'username' => $user->name,
+                    ]);
+                    $scope->setExtra('isSubscribed', $user->account->isSubscribed());
+                });
             } else {
-                $user_context['id'] = null;
-                $user_context['ip_address'] = RequestHelper::ip();
+                \Sentry\configureScope(function (Scope $scope): void {
+                    $scope->setUser([
+                        'id' => null,
+                        'ip_address' => RequestHelper::ip(),
+                    ]);
+                });
             }
-
-            $sentry->user_context($user_context);
-            $sentry->extra_context($extra_context);
         }
 
         return $next($request);

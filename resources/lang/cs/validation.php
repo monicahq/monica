@@ -67,6 +67,7 @@ return [
     'not_in'               => 'Zvolená hodnota pro :attribute je neplatná.',
     'not_regex'            => 'The :attribute format is invalid.',
     'numeric'              => ':attribute musí být číslo.',
+    'password' => 'The password is incorrect.',
     'present'              => ':attribute musí být vyplněno.',
     'regex'                => ':attribute nemá správný formát.',
     'required'             => ':attribute musí být vyplněno.',
@@ -119,4 +120,12 @@ return [
 
     'attributes' => [],
 
+    'vue' => [
+        'max' => [
+            'numeric' => '{field} may not be greater than {max}.',
+            'string'  => '{field} may not be greater than {max} characters.',
+        ],
+        'required' => '{field} is required.',
+        'url' => '{field} is not a valid URL.',
+    ],
 ];

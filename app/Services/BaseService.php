@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 
 abstract class BaseService
@@ -18,12 +19,12 @@ abstract class BaseService
     }
 
     /**
-     * Validate all documents in an account.
+     * Validate all datas to execute the service.
      *
      * @param array $data
      * @return bool
      */
-    public function validate(array $data) : bool
+    public function validate(array $data): bool
     {
         Validator::make($data, $this->rules())
             ->validate();
@@ -38,13 +39,11 @@ abstract class BaseService
      * @param mixed $index
      * @return mixed
      */
-    protected function nullOrValue($data, $index)
+    public function nullOrValue($data, $index)
     {
-        if (empty($data[$index])) {
-            return;
-        }
+        $value = Arr::get($data, $index, null);
 
-        return $data[$index] == '' ? null : $data[$index];
+        return is_null($value) || $value === '' ? null : $value;
     }
 
     /**
@@ -54,12 +53,26 @@ abstract class BaseService
      * @param mixed $index
      * @return mixed
      */
-    protected function nullOrDate($data, $index)
+    public function nullOrDate($data, $index)
+    {
+        $value = Arr::get($data, $index, null);
+
+        return is_null($value) || $value === '' ? null : Carbon::parse($value);
+    }
+
+    /**
+     * Returns the value if it's defined, or false otherwise.
+     *
+     * @param mixed $data
+     * @param mixed $index
+     * @return mixed
+     */
+    public function valueOrFalse($data, $index)
     {
         if (empty($data[$index])) {
-            return;
+            return false;
         }
 
-        return $data[$index] == '' ? null : Carbon::parse($data[$index]);
+        return $data[$index];
     }
 }

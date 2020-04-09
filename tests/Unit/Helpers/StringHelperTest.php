@@ -10,7 +10,8 @@ class StringHelperTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_builds_a_sql_query()
+    /** @test */
+    public function it_builds_a_sql_query()
     {
         $array = [
             'column1',

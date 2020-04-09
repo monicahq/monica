@@ -8,7 +8,7 @@
   <div class="breadcrumb">
     <div class="{{ Auth::user()->getFluidLayout() }}">
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
           <ul class="horizontal">
             <li>
               <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
@@ -30,7 +30,7 @@
 
       @include('settings._sidebar')
 
-      <div class="col-xs-12 col-sm-9 blank-screen">
+      <div class="col-12 col-sm-9 blank-screen">
 
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
@@ -45,7 +45,7 @@
 
             <p class="cta"><a href="{{ route('settings.upload') }}" class="btn">{{ trans('settings.import_blank_cta') }}</a></p>
 
-            @if (config('monica.requires_subscription') && auth()->user()->account->hasLimitations())
+            @if (config('monica.requires_subscription') && $accountHasLimitations)
               <p class="requires-subscription">{{ trans('settings.import_need_subscription') }}</p>
             @endif
           </div>

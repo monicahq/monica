@@ -4,7 +4,6 @@ namespace Tests\Browser\Settings;
 
 use Zxing\QrReader;
 use Tests\DuskTestCase;
-use App\Models\User\User;
 use Laravel\Dusk\Browser;
 use Illuminate\Console\Application;
 use Tests\Browser\Pages\SettingsSecurity;
@@ -18,7 +17,6 @@ class MultiFAControllerTest extends DuskTestCase
     public function cleanup()
     {
         exec(Application::formatCommandString('2fa:deactivate --force --email=admin@admin.com'), $output);
-        //$this->log(implode($output));
     }
 
     /**
@@ -27,53 +25,23 @@ class MultiFAControllerTest extends DuskTestCase
      */
     public function testHasSettings2faEnableLink()
     {
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->login()
                     ->visit(new SettingsSecurity)
                     ->assertSeeLink('Enable Two Factor Authentication');
         });
     }
 
     /**
-     * Test if the user has U2F Enable Link in Security Page.
+     * Test if the user has WebAuthn Enable Link in Security Page.
      * @group multifa
      */
-    public function testHasSettingsU2fEnableLink()
+    public function testHasSettingsWebAuthnEnableLink()
     {
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->login()
                     ->visit(new SettingsSecurity)
-                    ->assertSeeLink('Add a new U2F security key');
-        });
-    }
-
-    /**
-     * Test U2F modal.
-     * @group multifa
-     */
-    public function testU2fModal()
-    {
-        $this->markTestIncomplete('Ignore 2fa tests for now.');
-
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
-                    ->visit(new SettingsSecurity)
-                    ->scrollTo('two_factor_link')
-                    ->clickLink('Add a new U2F security key')
-                    ->waitFor('registerModal')
-                    ->assertSee('Insert your security key.');
+                    ->assertSeeLink('Add a new security key');
         });
     }
 
@@ -85,12 +53,8 @@ class MultiFAControllerTest extends DuskTestCase
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->login()
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
@@ -109,13 +73,9 @@ class MultiFAControllerTest extends DuskTestCase
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
+        $this->browse(function (Browser $browser) {
             $browser =
-            $browser->loginAs($user)
+            $browser->login()
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
@@ -162,13 +122,9 @@ class MultiFAControllerTest extends DuskTestCase
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
+        $this->browse(function (Browser $browser) {
             $browser =
-            $browser->loginAs($user)
+            $browser->login()
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
@@ -180,8 +136,8 @@ class MultiFAControllerTest extends DuskTestCase
 
             $this->assertTrue($this->hasNotification($browser));
             $notification = $this->getNotification($browser);
-            $this->assertContains('error', $notification->getAttribute('class'));
-            $this->assertContains('Two Factor Authentication', $notification->getText());
+            $this->assertStringContainsString('error', $notification->getAttribute('class'));
+            $this->assertStringContainsString('Two Factor Authentication', $notification->getText());
         });
     }
 
@@ -193,13 +149,9 @@ class MultiFAControllerTest extends DuskTestCase
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
+        $this->browse(function (Browser $browser) {
             $browser =
-            $browser->loginAs($user)
+            $browser->login()
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
@@ -224,8 +176,8 @@ class MultiFAControllerTest extends DuskTestCase
 
         $this->assertTrue($this->hasNotification($browser));
         $notification = $this->getNotification($browser);
-        $this->assertContains('success', $notification->getAttribute('class'));
-        $this->assertContains('Two Factor Authentication', $notification->getText());
+        $this->assertStringContainsString('success', $notification->getAttribute('class'));
+        $this->assertStringContainsString('Two Factor Authentication', $notification->getText());
 
         // TODO: test if user has 2fa enabled actually
         // TODO: test if session token auth is right
@@ -243,9 +195,7 @@ class MultiFAControllerTest extends DuskTestCase
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
+        $user = call_user_func(Browser::$userResolver);
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser =
@@ -267,8 +217,8 @@ class MultiFAControllerTest extends DuskTestCase
 
             $this->assertTrue($this->hasDivAlert($browser));
             $notification = $this->getDivAlert($browser);
-            $this->assertContains('alert-danger', $notification->getAttribute('class'));
-            $this->assertContains('The two factor authentication has failed.', $notification->getText());
+            $this->assertStringContainsString('alert-danger', $notification->getAttribute('class'));
+            $this->assertStringContainsString('The two factor authentication has failed.', $notification->getText());
         });
     }
 
@@ -280,9 +230,7 @@ class MultiFAControllerTest extends DuskTestCase
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
+        $user = call_user_func(Browser::$userResolver);
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser =
@@ -317,13 +265,9 @@ class MultiFAControllerTest extends DuskTestCase
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
+        $this->browse(function (Browser $browser) {
             $browser =
-            $browser->loginAs($user)
+            $browser->login()
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
@@ -344,8 +288,8 @@ class MultiFAControllerTest extends DuskTestCase
 
             $this->assertTrue($this->hasNotification($browser));
             $notification = $this->getNotification($browser);
-            $this->assertContains('success', $notification->getAttribute('class'));
-            $this->assertContains('Two Factor Authentication', $notification->getText());
+            $this->assertStringContainsString('success', $notification->getAttribute('class'));
+            $this->assertStringContainsString('Two Factor Authentication', $notification->getText());
         });
     }
 
@@ -357,13 +301,9 @@ class MultiFAControllerTest extends DuskTestCase
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
+        $this->browse(function (Browser $browser) {
             $browser =
-            $browser->loginAs($user)
+            $browser->login()
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
@@ -385,8 +325,8 @@ class MultiFAControllerTest extends DuskTestCase
             $res = $browser->elements('.notification');
             $notification = $res[1];
 
-            $this->assertContains('error', $notification->getAttribute('class'));
-            $this->assertContains('Two Factor Authentication', $notification->getText());
+            $this->assertStringContainsString('error', $notification->getAttribute('class'));
+            $this->assertStringContainsString('Two Factor Authentication', $notification->getText());
         });
     }
 }

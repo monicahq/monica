@@ -13,13 +13,15 @@ class CreateGenderTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_stores_a_gender()
+    /** @test */
+    public function it_stores_a_gender()
     {
         $account = factory(Account::class)->create([]);
 
         $request = [
             'account_id' => $account->id,
             'name' => 'man',
+            'type' => 'M',
         ];
 
         $gender = app(CreateGender::class)->execute($request);
@@ -28,6 +30,7 @@ class CreateGenderTest extends TestCase
             'id' => $gender->id,
             'account_id' => $account->id,
             'name' => 'man',
+            'type' => 'M',
         ]);
 
         $this->assertInstanceOf(
@@ -36,12 +39,14 @@ class CreateGenderTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $account = factory(Account::class)->create([]);
 
         $request = [
             'name' => 'man',
+            'type' => 'X',
         ];
 
         $this->expectException(ValidationException::class);

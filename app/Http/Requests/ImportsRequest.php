@@ -2,20 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class ImportsRequest extends FormRequest
+class ImportsRequest extends AuthorizedRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,7 +12,7 @@ class ImportsRequest extends FormRequest
     public function rules()
     {
         return [
-            'vcard' => 'required|max:'.config('monica.max_upload_size').'|mimes:vcf,vcard',
+            'vcard' => 'required|file|max:'.config('monica.max_upload_size').'|mimes:vcf,vcard',
         ];
     }
 }

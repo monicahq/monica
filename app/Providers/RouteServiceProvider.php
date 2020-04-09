@@ -33,10 +33,14 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
+        if (App::environment('production')) {
+            URL::forceScheme('https');
+        }
+
         Route::bind('contact', function ($value) {
             // In case the user is logged out
             if (! Auth::check()) {
-                redirect()->route('login')->send();
+                redirect()->route('loginRedirect')->send();
 
                 return;
             }
@@ -64,14 +68,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
-        if (App::environment('production')) {
-            URL::forceScheme('https');
-        }
-
         $this->mapApiRoutes($router);
         $this->mapWebRoutes($router);
         $this->mapOAuthRoutes($router);
-        $this->mapDAVRoutes($router);
         $this->mapSpecialRoutes($router);
     }
 
@@ -124,24 +123,6 @@ class RouteServiceProvider extends ServiceProvider
             'namespace' => $this->namespace.'\Api',
         ], function () {
             require base_path('routes/api.php');
-        });
-    }
-
-    /**
-     * Define the DAV routes for the application.
-     *
-     * These routes are typically stateless.
-     *
-     * @return void
-     */
-    protected function mapDAVRoutes(Router $router)
-    {
-        $router->group([
-            'prefix' => config('dav.path'),
-            'middleware' => 'api',
-            'namespace' => $this->namespace,
-        ], function () {
-            require base_path('routes/dav.php');
         });
     }
 

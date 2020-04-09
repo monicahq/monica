@@ -5,29 +5,47 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Collection;
+use Illuminate\Http\JsonResponse;
+use App\Jobs\UpdateLastConsultedDate;
 use Illuminate\Database\QueryException;
+use App\Services\Contact\Contact\SetMeContact;
 use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
+use Illuminate\Http\Resources\Json\JsonResource;
+use App\Services\Contact\Contact\DeleteMeContact;
+use App\Services\Contact\Contact\UpdateWorkInformation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
-use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
+use App\Services\Contact\Contact\UpdateContactIntroduction;
+use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 
 class ApiContactController extends ApiController
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('limitations')->only('setMe');
+        parent::__construct();
+    }
+
     /**
      * Get the list of the contacts.
      * We will only retrieve the contacts that are "real", not the partials
      * ones.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResource|JsonResponse
      */
     public function index(Request $request)
     {
-        if ($request->get('query')) {
-            $needle = rawurldecode($request->get('query'));
+        if ($request->input('query')) {
+            $needle = rawurldecode($request->input('query'));
 
             try {
                 $contacts = SearchHelper::searchContacts(
@@ -39,9 +57,7 @@ class ApiContactController extends ApiController
                 return $this->respondInvalidQuery();
             }
 
-            $collection = $this->applyWithParameter($contacts, $this->getWithParameter());
-
-            return $collection->additional([
+            return ContactResource::collection($contacts)->additional([
                 'meta' => [
                     'query' => $needle,
                 ],
@@ -58,15 +74,17 @@ class ApiContactController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->applyWithParameter($contacts, $this->getWithParameter());
+        return ContactResource::collection($contacts);
     }
 
     /**
      * Get the detail of a given contact.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     * @param int $id
+     * @return ContactResource|JsonResponse
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, int $id)
     {
         try {
             $contact = Contact::where('account_id', auth()->user()->account_id)
@@ -76,9 +94,7 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
-        if ($this->getWithParameter() == 'contactfields') {
-            return new ContactWithContactFieldsResource($contact);
-        }
+        UpdateLastConsultedDate::dispatch($contact);
 
         return new ContactResource($contact);
     }
@@ -86,18 +102,20 @@ class ApiContactController extends ApiController
     /**
      * Store the contact.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return ContactResource|JsonResponse
      */
     public function store(Request $request)
     {
         try {
             $contact = app(CreateContact::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                        'author_id' => auth()->user()->id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -112,19 +130,21 @@ class ApiContactController extends ApiController
 
     /**
      * Update the contact.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return ContactResource|JsonResponse
      */
     public function update(Request $request, $contactId)
     {
         try {
             $contact = app(UpdateContact::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'contact_id'])
                     +
                     [
-                    'contact_id' => $contactId,
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'contact_id' => $contactId,
+                        'account_id' => auth()->user()->account_id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -139,14 +159,16 @@ class ApiContactController extends ApiController
 
     /**
      * Delete a contact.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
      */
     public function destroy(Request $request, $contactId)
     {
         $data = [
             'contact_id' => $contactId,
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
         ];
         app(DestroyContact::class)->execute($data);
 
@@ -154,16 +176,136 @@ class ApiContactController extends ApiController
     }
 
     /**
-     * Apply the `?with=` parameter.
-     * @param  Collection $contacts
-     * @return Collection
+     * Set a contact as 'me'.
+     *
+     * @param Request $request
+     * @param int $contactId
+     *
+     * @return string
      */
-    private function applyWithParameter($contacts, string $parameter = null)
+    public function setMe(Request $request, $contactId)
     {
-        if ($parameter == 'contactfields') {
-            return ContactWithContactFieldsResource::collection($contacts);
+        $data = [
+            'contact_id' => $contactId,
+            'account_id' => auth()->user()->account_id,
+            'user_id' => auth()->user()->id,
+        ];
+
+        try {
+            app(SetMeContact::class)->execute($data);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
-        return ContactResource::collection($contacts);
+        return $this->respond(['true']);
+    }
+
+    /**
+     * Removes contact as 'me' association.
+     *
+     * @param Request $request
+     *
+     * @return string
+     */
+    public function removeMe(Request $request)
+    {
+        $data = [
+            'account_id' => auth()->user()->account_id,
+            'user_id' => auth()->user()->id,
+        ];
+
+        app(DeleteMeContact::class)->execute($data);
+
+        return $this->respond(['true']);
+    }
+
+    /**
+     * Set the contact career.
+     *
+     * @param Request $request
+     * @param int $contactId
+     *
+     * @return ContactResource|JsonResponse
+     */
+    public function updateWork(Request $request, $contactId)
+    {
+        try {
+            $contact = app(UpdateWorkInformation::class)->execute(
+                $request->except(['account_id', 'contact_id'])
+                + [
+                    'contact_id' => $contactId,
+                    'account_id' => auth()->user()->account_id,
+                    'author_id' => auth()->user()->id,
+                ]
+            );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return new ContactResource($contact);
+    }
+
+    /**
+     * Set the contact food preferences.
+     *
+     * @param Request $request
+     * @param int $contactId
+     *
+     * @return ContactResource|JsonResponse
+     */
+    public function updateFoodPreferences(Request $request, $contactId)
+    {
+        try {
+            $contact = app(UpdateContactFoodPreferences::class)->execute(
+                $request->except(['account_id', 'contact_id'])
+                + [
+                    'contact_id' => $contactId,
+                    'account_id' => auth()->user()->account_id,
+                ]
+            );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return new ContactResource($contact);
+    }
+
+    /**
+     * Set how you met the contact.
+     *
+     * @param Request $request
+     * @param int $contactId
+     *
+     * @return ContactResource|JsonResponse
+     */
+    public function updateIntroduction(Request $request, $contactId)
+    {
+        try {
+            $contact = app(UpdateContactIntroduction::class)->execute(
+                $request->except(['account_id', 'contact_id'])
+                + [
+                    'contact_id' => $contactId,
+                    'account_id' => auth()->user()->account_id,
+                ]
+            );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return new ContactResource($contact);
     }
 }

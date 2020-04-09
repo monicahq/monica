@@ -1,9 +1,8 @@
 <?php
 
-namespace Tests\Api\Contact;
+namespace Tests\Api\Account;
 
 use Tests\ApiTestCase;
-use App\Models\User\User;
 use App\Models\Settings\Term;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -28,13 +27,14 @@ class ApiUserControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_it_gets_the_authenticated_user()
+    /** @test */
+    public function it_gets_the_authenticated_user()
     {
         $user = $this->signIn();
 
         $response = $this->get('/api/me');
 
-        $response->assertStatus(201);
+        $response->assertStatus(200);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureUser,
@@ -46,12 +46,13 @@ class ApiUserControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_tells_if_the_user_has_signed_a_given_policy()
+    /** @test */
+    public function it_tells_if_the_user_has_signed_a_given_policy()
     {
         $user = $this->signIn();
 
         $term = factory(Term::class)->create([]);
-        $user->terms()->syncWithoutDetaching([$term->id => ['account_id' => $user->account->id]]);
+        $user->terms()->syncWithoutDetaching([$term->id => ['account_id' => $user->account_id]]);
 
         $response = $this->get('/api/me/compliance/'.$term->id);
 
@@ -71,7 +72,8 @@ class ApiUserControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_returns_method_not_found_if_no_policy_is_found()
+    /** @test */
+    public function it_returns_method_not_found_if_no_policy_is_found()
     {
         $user = $this->signIn();
 
@@ -85,7 +87,8 @@ class ApiUserControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_all_the_compliances_signed_by_user()
+    /** @test */
+    public function it_gets_all_the_compliances_signed_by_user()
     {
         $user = $this->signIn();
         $term = factory(Term::class)->create([]);
@@ -101,32 +104,30 @@ class ApiUserControllerTest extends ApiTestCase
         $response->assertJsonCount(2, 'data');
     }
 
-    public function test_it_gets_no_compliances_signed_by_user()
+    /** @test */
+    public function it_gets_no_compliances_signed_by_user()
     {
         $user = $this->signIn();
 
         $response = $this->get('/api/me/compliance');
 
-        $response->assertStatus(200);
-
-        $response->assertJsonCount(0, 'data');
+        $response->assertStatus(404);
     }
 
-    public function test_it_tries_to_sign_latest_policy()
+    /** @test */
+    public function it_tries_to_sign_lapolicy()
     {
         $user = $this->signIn();
 
         $response = $this->post('/api/me/compliance');
 
-        $response->assertStatus(400);
-
-        $response->assertJsonFragment([
-            'error_code' => 37,
-            'message' => 'Problems parsing JSON',
+        $this->expectDataError($response, [
+            'The ip address field is required.',
         ]);
     }
 
-    public function test_it_signs_latest_policy()
+    /** @test */
+    public function it_signs_lapolicy()
     {
         $user = $this->signIn();
         $term = factory(Term::class)->create([]);

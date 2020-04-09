@@ -1,0 +1,90 @@
+# This file describes an application. You can have multiple applications
+# in the same project.
+
+# The name of this app. Must be unique within a project.
+name: app
+
+# The type of the application to build.
+type: php:7.3
+build:
+  flavor: none
+
+runtime:
+  extensions:
+    - apcu
+    - gmp
+    - redis
+    - sodium
+
+# The hooks that will be performed when the package is deployed.
+hooks:
+  build: |
+    set -evx
+    composer install --no-interaction --no-suggest --no-dev
+    composer require --update-no-dev platformsh/laravel-bridge
+    mkdir -p ${SENTRY_ROOT:-/app/vendor/bin}
+    curl -sL https://sentry.io/get-cli/ | INSTALL_DIR=${SENTRY_ROOT:-/app/vendor/bin} bash
+  deploy: |
+    set -evx
+    php artisan monica:update --force --skip-storage-link -vvv
+
+# The relationships of the application with services or other applications.
+# The left-hand side is the name of the relationship as it will be exposed
+# to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
+# side is in the form `<service name>:<endpoint name>`.
+relationships:
+    database: "db:mysql"
+    rediscache: "cache:redis"
+    redissession: "cache:redis"
+
+# The size of the persistent disk of the application (in MB).
+disk: 512
+
+# The mounts that will be performed when the package is deployed.
+mounts:
+  "storage/app/public":
+      source: local
+      source_path: "public"
+  "storage/app/temp":
+      source: local
+      source_path: "temp"
+  "storage/framework/views":
+      source: local
+      source_path: "views"
+  "storage/framework/sessions":
+      source: local
+      source_path: "sessions"
+  "storage/framework/cache":
+      source: local
+      source_path: "cache"
+  "storage/logs":
+      source: local
+      source_path: "logs"
+  "bootstrap/cache":
+      source: local
+      source_path: "cache"
+  "/.config":
+      source: local
+      source_path: "config"
+
+# The configuration of app when it is exposed to the web.
+web:
+  locations:
+    "/":
+      root: "public"
+      index:
+        - index.php
+      allow: true
+      passthru: "/index.php"
+
+workers:
+  queue:
+    size: S
+    commands:
+      start: |
+        php artisan queue:work --sleep=3 --tries=3 --queue=default,migration
+
+crons:
+  scheduler:
+    spec: '*/5 * * * *'
+    cmd: 'php artisan schedule:run -v'

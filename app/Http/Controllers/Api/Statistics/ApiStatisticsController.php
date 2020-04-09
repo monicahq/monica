@@ -13,7 +13,7 @@ class ApiStatisticsController extends ApiController
     /**
      * Get the list of general, public statistics.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Support\Collection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {

@@ -44,7 +44,7 @@ class NotesController extends Controller
     {
         return $contact->notes()->create([
             'account_id' => auth()->user()->account_id,
-            'body' => $request->get('body'),
+            'body' => $request->input('body'),
         ]);
     }
 
@@ -68,9 +68,10 @@ class NotesController extends Controller
      * @param NotesRequest $request
      * @param Contact $contact
      * @param Note $note
-     * @return \Illuminate\Http\Response
+     *
+     * @return Note
      */
-    public function update(NotesRequest $request, Contact $contact, Note $note)
+    public function update(NotesRequest $request, Contact $contact, Note $note): Note
     {
         $note->update(
             $request->only([
@@ -87,9 +88,10 @@ class NotesController extends Controller
      *
      * @param Contact $contact
      * @param Note $note
-     * @return \Illuminate\Http\Response
+     *
+     * @return void
      */
-    public function destroy(Contact $contact, Note $note)
+    public function destroy(Contact $contact, Note $note): void
     {
         $note->delete();
     }

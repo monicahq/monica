@@ -2,14 +2,18 @@
 
 namespace App\Services\Contact\Contact;
 
-use App\Helpers\RandomHelper;
+use App\Models\User\User;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use App\Services\BaseService;
+use function Safe\json_encode;
 use App\Models\Contact\Contact;
+use App\Jobs\AuditLog\LogAccountAudit;
+use App\Jobs\Avatars\GenerateDefaultAvatar;
+use App\Jobs\Avatars\GetAvatarsFromInternet;
 
 class CreateContact extends BaseService
 {
-    private $contact;
-
     /**
      * Get the validation rules that apply to the service.
      *
@@ -19,11 +23,12 @@ class CreateContact extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
+            'author_id' => 'required|integer|exists:users,id',
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
             'nickname' => 'nullable|string|max:255',
-            'gender_id' => 'required|integer|exists:genders,id',
+            'gender_id' => 'nullable|integer|exists:genders,id',
             'description' => 'nullable|string|max:255',
             'is_partial' => 'nullable|boolean',
             'is_birthdate_known' => 'required|boolean',
@@ -48,14 +53,15 @@ class CreateContact extends BaseService
      * @param array $data
      * @return Contact
      */
-    public function execute(array $data) : Contact
+    public function execute(array $data): Contact
     {
         $this->validate($data);
 
         // filter out the data that shall not be updated here
-        $dataOnly = array_except(
+        $dataOnly = Arr::except(
             $data,
             [
+                'author_id',
                 'is_birthdate_known',
                 'birthdate_day',
                 'birthdate_month',
@@ -72,44 +78,67 @@ class CreateContact extends BaseService
             ]
         );
 
-        $this->contact = Contact::create($dataOnly);
+        $contact = Contact::create($dataOnly);
 
-        $this->updateBirthDayInformation($data);
+        $this->updateBirthDayInformation($data, $contact);
 
-        $this->updateDeceasedInformation($data);
+        $this->updateDeceasedInformation($data, $contact);
 
-        $this->generateUUID();
+        $this->generateUUID($contact);
 
-        $this->contact->setAvatarColor();
+        $this->addAvatars($contact);
 
-        $this->contact->save();
+        $this->log($data, $contact);
 
         // we query the DB again to fill the object with all the new properties
-        return Contact::find($this->contact->id);
+        $contact->refresh();
+
+        return $contact;
     }
 
     /**
      * Generates a UUID for this contact.
      *
+     * @param Contact $contact
      * @return void
      */
-    private function generateUUID()
+    private function generateUUID(Contact $contact)
     {
-        $this->contact->uuid = RandomHelper::uuid();
-        $this->contact->save();
+        $contact->uuid = Str::uuid()->toString();
+        $contact->save();
+    }
+
+    /**
+     * Add the different default avatars.
+     *
+     * @param Contact $contact
+     * @return void
+     */
+    private function addAvatars(Contact $contact)
+    {
+        // set the default avatar color
+        $contact->setAvatarColor();
+        $contact->save();
+
+        // populate the avatar from Adorable and grab the Gravatar
+        GetAvatarsFromInternet::dispatch($contact);
+
+        // also generate the default avatar
+        GenerateDefaultAvatar::dispatch($contact);
     }
 
     /**
      * Update the information about the birthday.
      *
      * @param array $data
+     * @param Contact $contact
      * @return void
      */
-    private function updateBirthDayInformation(array $data)
+    private function updateBirthDayInformation(array $data, Contact $contact)
     {
         app(UpdateBirthdayInformation::class)->execute([
             'account_id' => $data['account_id'],
-            'contact_id' => $this->contact->id,
+            'contact_id' => $contact->id,
             'is_date_known' => $data['is_birthdate_known'],
             'day' => $this->nullOrvalue($data, 'birthdate_day'),
             'month' => $this->nullOrvalue($data, 'birthdate_month'),
@@ -124,19 +153,46 @@ class CreateContact extends BaseService
      * Update the information about the date of death.
      *
      * @param array $data
+     * @param Contact $contact
      * @return void
      */
-    private function updateDeceasedInformation(array $data)
+    private function updateDeceasedInformation(array $data, Contact $contact)
     {
         app(UpdateDeceasedInformation::class)->execute([
             'account_id' => $data['account_id'],
-            'contact_id' => $this->contact->id,
+            'contact_id' => $contact->id,
             'is_deceased' => $data['is_deceased'],
             'is_date_known' => $data['is_deceased_date_known'],
             'day' => $this->nullOrValue($data, 'deceased_date_day'),
             'month' => $this->nullOrValue($data, 'deceased_date_month'),
             'year' => $this->nullOrValue($data, 'deceased_date_year'),
             'add_reminder' => $this->nullOrValue($data, 'deceased_date_add_reminder'),
+        ]);
+    }
+
+    /**
+     * Add an audit log.
+     *
+     * @param array $data
+     * @param Contact $contact
+     * @return void
+     */
+    private function log(array $data, Contact $contact): void
+    {
+        $author = User::find($data['author_id']);
+
+        LogAccountAudit::dispatch([
+            'action' => 'contact_created',
+            'account_id' => $author->account_id,
+            'about_contact_id' => $contact->id,
+            'author_id' => $author->id,
+            'author_name' => $author->name,
+            'audited_at' => now(),
+            'should_appear_on_dashboard' => true,
+            'objects' => json_encode([
+                'contact_name' => $contact->name,
+                'contact_id' => $contact->id,
+            ]),
         ]);
     }
 }

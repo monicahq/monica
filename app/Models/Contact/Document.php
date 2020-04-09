@@ -2,9 +2,9 @@
 
 namespace App\Models\Contact;
 
+use App\Helpers\StorageHelper;
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Document extends Model
@@ -22,6 +22,15 @@ class Document extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'number_of_downloads' => 'number',
+    ];
 
     /**
      * Get the account record associated with the document.
@@ -48,10 +57,10 @@ class Document extends Model
      *
      * @return string
      */
-    public function getDownloadLink() : string
+    public function getDownloadLink(): string
     {
         $url = $this->new_filename;
 
-        return asset(Storage::disk(config('filesystems.default'))->url($url));
+        return asset(StorageHelper::disk(config('filesystems.default'))->url($url));
     }
 }

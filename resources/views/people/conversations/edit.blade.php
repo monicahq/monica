@@ -6,13 +6,15 @@
 
   {{-- Breadcrumb --}}
   <div class="mt4 mw7 center mb3">
-    <p><a href="{{ route('people.show', $contact) }}">< {{ $contact->name }}</a></p>
+    <p><a href="{{ route('people.show', $contact) }}">&lt; {{ $contact->name }}</a></p>
     <div class="mt4 mw7 center mb3">
       <h3 class="f3 fw5">{{ trans('people.conversation_edit_title') }}</h3>
-      <p><a href="#" onclick="if (confirm('{{ trans('people.conversation_edit_delete') }}')) { $('#conversation-delete-form').submit(); } return false;" class="w-auto-ns w-100 mb2 pb0-ns">{{ trans('people.conversation_delete_link') }}</a></p>
-      <form method="POST" action="{{ route('people.conversations.destroy', [$contact, $conversation]) }}" id="conversation-delete-form" class="hidden">
-        {{ method_field('DELETE') }}
-        {{ csrf_field() }}
+      <form method="POST" action="{{ route('people.conversations.destroy', [$contact, $conversation]) }}">
+        @method('DELETE')
+        @csrf
+        <confirm message="{{ trans('people.conversation_edit_delete') }}" link-class="w-auto-ns w-100 mb2 pb0-ns">
+          {{ trans('people.conversation_delete_link') }}
+        </confirm>
       </form>
     </div>
   </div>
@@ -29,14 +31,14 @@
 
     <form action="{{ route('people.conversations.update', [$contact, $conversation]) }}" method="POST" enctype="multipart/form-data">
       @method('PUT')
-      {{ csrf_field() }}
+      @csrf
 
       {{-- When did it take place --}}
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
         <p class="mb2 b">{{ trans('people.conversation_add_when') }}</p>
         <div class="">
           <div class="di {{ htmldir() == 'ltr' ? 'mr3' : 'ml3' }}">
-            <input type="radio" class="mr1" id="today" name="conversationDateRadio" value="today" checked>
+            <input type="radio" class="mr1" id="today" name="conversationDateRadio" value="today">
             <label for="today" class="pointer">{{ trans('app.today') }}</label>
           </div>
           <div class="di {{ htmldir() == 'ltr' ? 'mr3' : 'ml3' }}">
@@ -44,15 +46,16 @@
             <label for="yesterday" class="pointer">{{ trans('app.yesterday') }}</label>
           </div>
           <div class="di {{ htmldir() == 'ltr' ? 'mr3' : 'ml3' }}">
-            <input type="radio" id="another" name="conversationDateRadio" value="another">
-            <label for="another" class="pointer mr2">{{ trans('app.another_day') }}</label>
-            <div class="dib">
+            <input type="radio" id="another" name="conversationDateRadio" value="another" checked>
+            <label for="another" class="pointer mr2">{{ trans('app.another_day') }}
+            <span class="dib">
               <form-date
                 :id="'conversationDate'"
-                :default-date="'{{ now(\App\Helpers\DateHelper::getTimezone()) }}'"
+                :default-date="'{{ now() }}'"
+                :value="'{{ $conversation->happened_at }}'"
                 :locale="'{{ \App::getLocale() }}'">
               </form-date>
-            </div>
+            </span></label>
           </div>
         </div>
       </div>

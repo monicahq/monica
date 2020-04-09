@@ -8,7 +8,7 @@
   <div class="breadcrumb">
     <div class="{{ Auth::user()->getFluidLayout() }}">
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
           <ul class="horizontal">
             <li>
                 <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
@@ -31,7 +31,7 @@
   <div class="main-content central-form">
     <div class="{{ auth()->user()->getFluidLayout() }}">
       <div class="row">
-        <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-sm-offset-3-right">
+        <div class="col-12 col-sm-6 offset-sm-3 offset-sm-3-right">
 
           <div class="br3 ba b--gray-monica bg-white mb4">
             <div class="pa3 bb b--gray-monica">
@@ -42,7 +42,10 @@
                 <ul>
                     <li>{!! trans('settings.import_upload_rule_format') !!}</li>
                     <li>{{ trans('settings.import_upload_rule_vcard') }}</li>
-                    <li>{!! trans('settings.import_upload_rule_instructions') !!}</li>
+                    <li>{!! trans('settings.import_upload_rule_instructions', [
+                      'url1' => 'http://osxdaily.com/2015/07/14/export-contacts-mac-os-x/',
+                      'url2' => 'http://www.akruto.com/backup-phone-contacts-calendar/how-to-export-google-contacts-to-csv-or-vcard/'
+                    ]) !!}</li>
                     <li>{{ trans('settings.import_upload_rule_multiple') }}</li>
                     <li>{{ trans('settings.import_upload_rule_limit') }}</li>
                     <li>{{ trans('settings.import_upload_rule_time') }}</li>
@@ -53,7 +56,7 @@
               @include('partials.errors')
 
               <form action="{{ route('settings.storeImport') }}" method="POST" enctype="multipart/form-data">
-                {{ csrf_field() }}
+                @csrf
 
                   <div class="form-group">
                       <label for="vcard">{!! trans('settings.import_upload_form_file') !!}</label>

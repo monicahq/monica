@@ -10,8 +10,12 @@ use Stevebauman\Location\Drivers\Driver;
 
 class CloudflareDriver extends Driver
 {
-    public function url()
+    /**
+     * @return string
+     */
+    public function url($ip)
     {
+        return '';
     }
 
     protected function hydrate(Position $position, Fluent $location)
@@ -23,18 +27,14 @@ class CloudflareDriver extends Driver
 
     protected function process($ip = null)
     {
-        if (! is_null($ip)) {
-            return $this->fallback->get($ip);
-        }
-
         try {
-            return $this->getCountry();
+            return $this->getCountry($ip);
         } catch (\Exception $e) {
             return false;
         }
     }
 
-    private function getCountry()
+    private function getCountry($ip = null)
     {
         $country = Request::header('Cf-Ipcountry');
 
@@ -44,6 +44,6 @@ class CloudflareDriver extends Driver
             return new Fluent($response);
         }
 
-        return $this->fallback->get(RequestHelper::ip());
+        return $this->fallback->get($ip ?: RequestHelper::ip());
     }
 }

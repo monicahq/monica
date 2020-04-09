@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\DAV\Backend\CalDAV;
 
-use Sabre\DAV;
+use Illuminate\Support\Arr;
 use App\Models\Contact\Task;
 use App\Services\Task\DestroyTask;
 use Illuminate\Support\Facades\Log;
@@ -50,9 +50,9 @@ class CalDAVTasks extends AbstractCalDAVBackend
     }
 
     /**
-     * Returns the contact for the specific uri.
+     * Returns the contact for the specific uuid.
      *
-     * @param string  $uri
+     * @param string  $uuid
      * @return mixed
      */
     public function getObjectUuid($uuid)
@@ -102,6 +102,8 @@ class CalDAVTasks extends AbstractCalDAVBackend
                 Log::debug(__CLASS__.' prepareData: '.(string) $e);
             }
         }
+
+        return [];
     }
 
     /**
@@ -121,7 +123,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
      * @param string $calendarData
      * @return string|null
      */
-    public function updateOrCreateCalendarObject($objectUri, $calendarData)
+    public function updateOrCreateCalendarObject($objectUri, $calendarData): ?string
     {
         $task_id = null;
         if ($objectUri) {
@@ -139,18 +141,20 @@ class CalDAVTasks extends AbstractCalDAVBackend
                     'task_id' => $task_id,
                     'entry' => $calendarData,
                 ]);
+
+            if (! Arr::has($result, 'error')) {
+                $task = Task::where('account_id', Auth::user()->account_id)
+                    ->find($result['task_id']);
+
+                $calendar = $this->prepareData($task);
+
+                return $calendar['etag'];
+            }
         } catch (\Exception $e) {
             Log::debug(__CLASS__.' updateOrCreateCalendarObject: '.(string) $e);
         }
 
-        if (! array_has($result, 'error')) {
-            $task = Task::where('account_id', Auth::user()->account_id)
-                ->find($result['task_id']);
-
-            $calendar = $this->prepareData($task);
-
-            return $calendar['etag'];
-        }
+        return null;
     }
 
     /**

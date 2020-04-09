@@ -30,16 +30,16 @@ class ContactFieldTest extends FeatureTestCase
 
     public function test_user_can_get_contact_fields()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
-        $feild = factory(ContactFieldType::class)->create([
+        $field = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
         ]);
 
         $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
-            'contact_field_type_id' => $feild->id,
+            'contact_field_type_id' => $field->id,
         ]);
 
         $response = $this->get('/people/'.$contact->hashID().'/contactfield');
@@ -51,9 +51,9 @@ class ContactFieldTest extends FeatureTestCase
 
     public function test_user_can_get_contact_field_types()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
-        $feild = factory(ContactFieldType::class)->create([
+        $field = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -61,21 +61,21 @@ class ContactFieldTest extends FeatureTestCase
 
         $response->assertStatus(200);
 
-        $response->assertSee($feild->name);
+        $response->assertSee($field->name);
     }
 
     public function test_users_can_add_contact_field()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
-        $feild = factory(ContactFieldType::class)->create([
+        $field = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
             'name' => 'Test Name',
             'type' => 'test',
         ]);
 
         $params = [
-            'contact_field_type_id' => $feild->id,
+            'contact_field_type_id' => $field->id,
             'data' => 'test_data',
         ];
 
@@ -98,11 +98,11 @@ class ContactFieldTest extends FeatureTestCase
 
     public function test_users_can_edit_contact_field()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $params = ['data' => 'test_data'];
 
-        $feild = factory(ContactFieldType::class)->create([
+        $field = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
             'name' => 'Test Name',
             'type' => 'test',
@@ -111,11 +111,11 @@ class ContactFieldTest extends FeatureTestCase
         $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
-            'contact_field_type_id' => $feild->id,
+            'contact_field_type_id' => $field->id,
         ]);
 
         $params['id'] = $contactField->id;
-        $params['contact_field_type_id'] = $feild->id;
+        $params['contact_field_type_id'] = $field->id;
 
         $response = $this->put('/people/'.$contact->hashID().'/contactfield/'.$contactField->id, $params);
 
@@ -136,16 +136,16 @@ class ContactFieldTest extends FeatureTestCase
 
     public function test_users_can_delete_addresses()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
-        $feild = factory(ContactFieldType::class)->create([
+        $field = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
         ]);
 
         $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
-            'contact_field_type_id' => $feild->id,
+            'contact_field_type_id' => $field->id,
         ]);
 
         $response = $this->delete('/people/'.$contact->hashID().'/contactfield/'.$contactField->id);

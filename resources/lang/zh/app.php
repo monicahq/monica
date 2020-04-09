@@ -1,11 +1,14 @@
 <?php
 
 return [
+    'yes' => '是',
+    'no' => '否',
     'update' => '更新',
     'save' => '保存',
     'add' => '添加',
     'cancel' => '取消',
-    'delete_confirm' => '您确定吗？',
+    'confirm' => '确认',
+    'delete_confirm' => '确定？',
     'delete' => '删除',
     'edit' => '编辑',
     'upload' => '上传',
@@ -19,13 +22,11 @@ return [
     'done' => '完成',
     'back' => '返回',
     'verify' => '验证',
-    'for' => '为',
     'new' => '新',
     'unknown' => '我不知道',
     'load_more' => '载入更多',
     'loading' => '正在加载...',
     'with' => '与',
-    'days' => '天|天',
     'today' => '今天',
     'yesterday' => '昨天',
     'another_day' => '某一天',
@@ -33,7 +34,11 @@ return [
     'type' => '类型',
     'zoom' => '放大',
     'upgrade' => '升级解锁',
-    'percent_uploaded' => '已上传 {percent}% ',
+    'percent_uploaded' => '已上传 {percent}%',
+    'retry' => '重试',
+    'filter' => '过滤列表',
+    'go_back' => '后退',
+    'file_selected' => '选择了 1 个文件...| 选择了 {count} 个文件...',
 
     'application_title' => 'Monica – 您的私人社交关系管家',
     'application_description' => 'Monica是用来收集并管理您与亲朋好友之间的关系的得力助手。',
@@ -83,6 +88,7 @@ return [
     'breadcrumb_add_note' => '添加注释',
     'breadcrumb_edit_note' => '编辑注释',
     'breadcrumb_api' => 'API',
+    'breadcrumb_dav' => 'DAV 资源',
     'breadcrumb_edit_introductions' => '你是怎么知道的',
     'breadcrumb_settings_personalization' => '个性化',
     'breadcrumb_settings_security' => '安全',
@@ -92,9 +98,11 @@ return [
     'gender_male' => '男',
     'gender_female' => '女',
     'gender_none' => '保密',
+    'gender_no_gender' => '无性别',
 
     'error_title' => '糟糕! 出错了。',
     'error_unauthorized' => '你没有权限编辑此页',
+    'error_user_account' => '此用户不属于此账号',
     'error_save' => '当储存数据时出现了一个错误',
     'error_try_again' => '出了点问题，请再试一次。',
     'error_id' => '错误代码：:id',
@@ -102,12 +110,13 @@ return [
     'error_maintenance' => '网站维护中，待会见！',
     'error_help' => '待会见！',
     'error_twitter' => '关注我们的<a href="https://twitter.com/:twitter">推特</a>来得知网站的最新消息！',
+    'error_no_term' => '此实例尚无策略',
 
     'default_save_success' => '数据已被保存',
 
     'compliance_title' => '抱歉，打扰您一下',
     'compliance_desc' => '我们更新了<a href=":urlterm" hreflang=":hreflang">用户协议</a> 以及 <a href=":url" hreflang=":hreflang">隐私政策</a>，您需要阅读并同意才能继续使用您的账号。',
-    'compliance_desc_end' => '我们会保护您的隐私安全。',
+    'compliance_desc_end' => '我们会保护您的隐私安全',
     'compliance_terms' => '我已阅读并同意',
 
     // Relationship types
@@ -167,6 +176,16 @@ return [
     'relationship_type_child_female' => '女儿',
     'relationship_type_child_with_name' => ':name的儿子',
     'relationship_type_child_female_with_name' => ':name的女人',
+
+    'relationship_type_stepparent' => '继父',
+    'relationship_type_stepparent_female' => '继母',
+    'relationship_type_stepparent_with_name' => ':name的继父',
+    'relationship_type_stepparent_female_with_name' => ':name的继母',
+
+    'relationship_type_stepchild' => '继子',
+    'relationship_type_stepchild_female' => '继女',
+    'relationship_type_stepchild_with_name' => ':name的继子',
+    'relationship_type_stepchild_female_with_name' => ':name的继女',
 
     'relationship_type_sibling' => '兄弟',
     'relationship_type_sibling_female' => '姐妹',
@@ -429,4 +448,12 @@ return [
     'weather_current_temperature_celsius' => ':temperature °C',
     'weather_current_temperature_fahrenheit' => ':temperature °F',
     'weather_current_title' => '当前天气',
+
+    // dav
+    'dav_contacts' => '名片',
+    'dav_contacts_description' => ':name的名片',
+    'dav_birthdays' => '生日',
+    'dav_birthdays_description' => ':name的名片生日',
+    'dav_tasks' => '任务',
+    'dav_tasks_description' => ':name的任务',
 ];

@@ -1,0 +1,133 @@
+# Run Monica with Let's Encrypt certificate
+#
+# You might want to set these variables in you .env file:
+#
+#- APP_ENV=production
+#- APP_URL with your domain (https scheme)
+#
+#- DB_HOST=db
+# See `db` container for these values:
+#- DB_DATABASE=monica
+#- DB_USERNAME=homestead
+#- DB_PASSWORD=secret
+#
+# To use redis:
+#- REDIS_HOST=redis
+#- CACHE_DRIVER=redis
+#- QUEUE_CONNECTION=redis
+#
+
+version: "3.4"
+
+services:
+  app:
+    image: monicahq/monicahq:fpm
+    env_file: .env
+    volumes:
+      - data:/var/www/monica/storage
+      - www:/var/www/monica
+    restart: always
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=sekret_root_password
+      - MYSQL_DATABASE=monica
+      - MYSQL_USER=homestead
+      - MYSQL_PASSWORD=secret
+    volumes:
+      - mysql:/var/lib/mysql
+    restart: always
+
+  redis:
+    image: redis:alpine
+    restart: always
+
+  cron:
+    image: monicahq/monicahq:fpm
+    env_file: .env
+    restart: always
+    volumes:
+      - data:/var/www/monica/storage
+      - www:/var/www/monica:ro
+    command: cron.sh
+    depends_on:
+      - db
+      - redis
+
+  queue:
+    image: monicahq/monicahq:fpm
+    env_file: .env
+    restart: always
+    volumes:
+      - data:/var/www/monica/storage
+      - www:/var/www/monica:ro
+    command: queue.sh
+    depends_on:
+      - db
+      - redis
+
+  web:
+    build: ./web
+    restart: always
+    environment:
+      - VIRTUAL_HOST=
+      - LETSENCRYPT_HOST=
+      - LETSENCRYPT_EMAIL=
+    volumes:
+      - data:/var/www/monica/storage:ro
+      - www:/var/www/monica:ro
+    depends_on:
+      - app
+    networks:
+      - proxy-tier
+      - default
+
+  proxy:
+    build: ./proxy
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    labels:
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
+    volumes:
+      - certs:/etc/nginx/certs:ro
+      - vhost.d:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - proxy-tier
+
+  letsencrypt-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    restart: always
+    volumes:
+      - certs:/etc/nginx/certs
+      - vhost.d:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - proxy-tier
+    depends_on:
+      - proxy
+
+volumes:
+  data:
+    name: data
+  www:
+    name: www
+  mysql:
+    name: mysql
+  certs:
+    name: certs
+  vhost.d:
+    name: vhost.d
+  html:
+    name: html
+
+networks:
+  proxy-tier:

@@ -2,18 +2,8 @@
 
 namespace App\Http\Requests;
 
-class PasswordChangeRequest extends Request
+class PasswordChangeRequest extends AuthorizedRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *

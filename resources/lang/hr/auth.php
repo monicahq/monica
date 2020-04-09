@@ -20,6 +20,7 @@ return [
     'back_homepage' => 'Back to homepage',
     'mfa_auth_otp' => 'Authenticate with your two factor device',
     'mfa_auth_u2f' => 'Authenticate with a U2F device',
+    'mfa_auth_webauthn' => 'Authenticate with a security key (WebAuthn)',
     '2fa_title' => 'Two Factor Authentication',
     '2fa_wrong_validation' => 'The two factor authentication has failed.',
     '2fa_one_time_password' => 'Two factor authentication code',
@@ -72,7 +73,7 @@ return [
     'confirmation_title' => 'Verify Your Email Address',
     'confirmation_fresh' => 'A fresh verification link has been sent to your email address.',
     'confirmation_check' => 'Before proceeding, please check your email for a verification link.',
-    'confirmation_request_another' => 'If you did not receive the email <a href=":url">click here to request another</a>.',
+    'confirmation_request_another' => 'If you did not receive the email <a :action>click here to request another</a>.',
 
     'confirmation_again' => 'If you want to change your email address you can <a href=":url" class="alert-link">click here</a>.',
     'email_change_current_email' => 'Current email address:',

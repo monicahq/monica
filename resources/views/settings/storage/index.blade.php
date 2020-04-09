@@ -8,7 +8,7 @@
   <div class="breadcrumb">
     <div class="{{ Auth::user()->getFluidLayout() }}">
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
           <ul class="horizontal">
             <li>
               <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
@@ -30,7 +30,7 @@
 
       @include('settings._sidebar')
 
-      <div class="col-xs-12 col-sm-9 users-list">
+      <div class="col-12 col-sm-9 users-list">
 
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
@@ -51,7 +51,7 @@
                         {{ $document->original_filename }} ({{ round($document->filesize / 1000) }} Kb)
                     </div>
                     <div class="table-cell">
-                        <a href="people/{{ $document->contact->hashID() }}">{{ $document->contact->name }}</a>
+                        {{ $document->contact->name }}
                     </div>
                   </li>
                 @endforeach
@@ -64,7 +64,7 @@
                         {{ $photo->original_filename }} ({{ round($photo->filesize / 1000) }} Kb)
                     </div>
                     <div class="table-cell">
-                        <a href="people/{{ $photo->contact()->hashID() }}">{{ $photo->contact()->name }}</a>
+                        {{ $photo->contact() ? $photo->contact()->name : '' }}
                     </div>
                   </li>
                 @endforeach

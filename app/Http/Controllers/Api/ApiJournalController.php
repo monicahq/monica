@@ -14,7 +14,7 @@ class ApiJournalController extends ApiController
     /**
      * Get the list of journal entries.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -31,8 +31,10 @@ class ApiJournalController extends ApiController
 
     /**
      * Get the detail of a given journal entry.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return JournalResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $entryId)
     {
@@ -49,8 +51,10 @@ class ApiJournalController extends ApiController
 
     /**
      * Store the call.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return JournalResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -61,7 +65,7 @@ class ApiJournalController extends ApiController
 
         try {
             $entry = Entry::create(
-                $request->all()
+                $request->except(['account_id'])
                 + ['account_id' => auth()->user()->account_id]
             );
         } catch (QueryException $e) {
@@ -73,9 +77,11 @@ class ApiJournalController extends ApiController
 
     /**
      * Update the note.
-     * @param  Request $request
-     * @param  int $entryId
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     * @param int $entryId
+     *
+     * @return JournalResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $entryId)
     {
@@ -93,7 +99,7 @@ class ApiJournalController extends ApiController
         }
 
         try {
-            $entry->update($request->all());
+            $entry->update($request->only(['title', 'post']));
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
@@ -105,7 +111,7 @@ class ApiJournalController extends ApiController
      * Validate the request for update.
      *
      * @param  Request $request
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse|true
      */
     private function validateUpdate(Request $request)
     {
@@ -124,8 +130,10 @@ class ApiJournalController extends ApiController
 
     /**
      * Delete a journal entry.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $entryId)
     {

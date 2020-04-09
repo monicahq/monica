@@ -20,6 +20,7 @@ return [
     'back_homepage' => '回到主页',
     'mfa_auth_otp' => '使用二次验证设备进行认证',
     'mfa_auth_u2f' => '使用U2F设备进行认证',
+    'mfa_auth_webauthn' => '使用安全钥匙验证(WebAuthn)',
     '2fa_title' => '二次验证',
     '2fa_wrong_validation' => '二次验证失败',
     '2fa_one_time_password' => '验证码',
@@ -72,7 +73,7 @@ return [
     'confirmation_title' => '验证您的电子邮件地址',
     'confirmation_fresh' => '一条新的验证链接已经发送到您的邮箱',
     'confirmation_check' => '在您继续之前，请检查您的邮箱以获得验证链接。',
-    'confirmation_request_another' => '如果您没有收到电子邮件 <a href=":url">, 请单击此处重新发送</a>。',
+    'confirmation_request_another' => '如果您没有收到电子邮件 <a :action>, 请单击此处重新发送</a>。',
 
     'confirmation_again' => '如果要更改电子邮件地址, 可以 <a href=":url" class="alert-link">单击此处</a>。',
     'email_change_current_email' => '当前邮件地址：',

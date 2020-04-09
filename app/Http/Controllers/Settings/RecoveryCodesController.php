@@ -16,7 +16,7 @@ class RecoveryCodesController extends Controller
      * Generate recovery codes.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Support\Collection
      */
     public function store(Request $request)
     {
@@ -38,7 +38,7 @@ class RecoveryCodesController extends Controller
      * Get list of recovery codes.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Support\Collection
      */
     public function index(Request $request)
     {
@@ -56,7 +56,7 @@ class RecoveryCodesController extends Controller
      * Format codes collection for response.
      *
      * @param \Illuminate\Database\Eloquent\Collection  $codes
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     private function response($codes)
     {

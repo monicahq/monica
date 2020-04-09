@@ -29,21 +29,22 @@ class ApiNotesTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_notes_get_all()
+    /** @test */
+    public function it_gets_all_the_notes()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note1 = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note2 = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -63,21 +64,22 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_get_contact_all()
+    /** @test */
+    public function it_gets_all_the_notes_of_a_given_contact()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note1 = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note2 = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -97,7 +99,8 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_get_contact_all_error()
+    /** @test */
+    public function it_cant_get_notes_from_a_contact_with_invalid_id()
     {
         $user = $this->signin();
 
@@ -106,18 +109,19 @@ class ApiNotesTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_notes_get_one()
+    /** @test */
+    public function it_gets_one_note()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note1 = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $note2 = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
 
@@ -137,7 +141,8 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_get_one_error()
+    /** @test */
+    public function it_gets_a_note_with_an_invalid_id()
     {
         $user = $this->signin();
 
@@ -146,11 +151,12 @@ class ApiNotesTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_notes_create()
+    /** @test */
+    public function it_creates_a_note()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/notes', [
@@ -173,7 +179,7 @@ class ApiNotesTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $note_id);
         $this->assertDatabaseHas('notes', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $note_id,
             'body' => 'the body of the note',
@@ -181,13 +187,14 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_create_favorite()
+    /** @test */
+    public function it_creates_a_note_and_marks_as_favorite()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
 
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/notes', [
@@ -211,7 +218,7 @@ class ApiNotesTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $note_id);
         $this->assertDatabaseHas('notes', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $note_id,
             'body' => 'the body of the note',
@@ -220,11 +227,12 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_create_error()
+    /** @test */
+    public function it_cant_create_a_note_with_missing_parameters()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/notes', [
@@ -236,7 +244,8 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_create_error_bad_account()
+    /** @test */
+    public function it_cant_create_a_note_with_an_invalid_account()
     {
         $user = $this->signin();
 
@@ -254,14 +263,15 @@ class ApiNotesTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_notes_update()
+    /** @test */
+    public function it_updates_a_note()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -286,7 +296,7 @@ class ApiNotesTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $note_id);
         $this->assertDatabaseHas('notes', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $note_id,
             'body' => 'the body of the note',
@@ -294,16 +304,17 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_update_favorite()
+    /** @test */
+    public function it_updates_a_note_and_marks_it_as_favorite()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
 
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -329,7 +340,7 @@ class ApiNotesTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $note_id);
         $this->assertDatabaseHas('notes', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $note_id,
             'body' => 'the body of the note',
@@ -338,11 +349,12 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_update_error()
+    /** @test */
+    public function it_cant_update_a_note_with_missing_parameters()
     {
         $user = $this->signin();
         $note = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/notes/'.$note->id, [
@@ -354,7 +366,8 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_update_error_bad_account()
+    /** @test */
+    public function it_cant_update_a_note_with_an_invalid_account()
     {
         $user = $this->signin();
 
@@ -363,7 +376,7 @@ class ApiNotesTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
         $note = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -376,18 +389,19 @@ class ApiNotesTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_notes_delete()
+    /** @test */
+    public function it_deletes_a_note()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $note = factory(Note::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
         $this->assertDatabaseHas('notes', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $note->id,
         ]);
@@ -396,13 +410,14 @@ class ApiNotesTest extends ApiTestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('notes', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $note->id,
         ]);
     }
 
-    public function test_notes_delete_error()
+    /** @test */
+    public function it_cant_delete_a_note_with_an_invalid_id()
     {
         $user = $this->signin();
 

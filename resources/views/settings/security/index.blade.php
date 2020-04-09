@@ -8,7 +8,7 @@
   <div class="breadcrumb">
     <div class="{{ auth()->user()->getFluidLayout() }}">
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
           <ul class="horizontal">
             <li>
               <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
@@ -30,7 +30,7 @@
 
       @include('settings._sidebar')
 
-      <div class="col-xs-12 col-md-9">
+      <div class="col-12 col-md-9">
 
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
@@ -46,7 +46,7 @@
             <p>{{ trans('settings.security_help') }}</p>
 
             <form method="POST" action="{{ route('settings.security.passwordChange') }}" class="settings-reset">
-              {{ csrf_field() }}
+              @csrf
 
               <h2>{{ trans('settings.password_change') }}</h2>
 
@@ -66,7 +66,7 @@
               <button type="submit" class="btn">{{ trans('settings.password_btn') }}</button>
             </form>
 
-            @if (config('google2fa.enabled')===true || config('u2f.enable')===true)
+            @if (config('google2fa.enabled')===true)
             <form class="settings-reset">
               <h2>{{ trans('settings.2fa_title') }}</h2>
 
@@ -74,18 +74,18 @@
 
               @if (config('google2fa.enabled')===true)
                 <mfa-activate
-                  :activated="{{ json_encode($is2FAActivated) }}"
+                  :activated="{{ \Safe\json_encode($is2FAActivated) }}"
                 >
                 </mfa-activate>
               @endif
 
-              @if (config('u2f.enable')===true)
-                <u2f-connector
+              @if (config('webauthn.enable')===true)
+                <webauthn-connector
                   :method="'register-modal'"
-                  :currentkeys="{{ json_encode($currentkeys) }}"
-                  :timezone="{{ json_encode(auth()->user()->timezone) }}">
-                </u2f-connector>
-                <script src="{{ asset(mix('js/u2f-api.js')) }}" type="text/javascript"></script>
+                  :keys="{{ \Safe\json_encode($webauthnKeys) }}"
+                  :timezone="{{ \Safe\json_encode(auth()->user()->timezone) }}"
+                >
+                </webauthn-connector>
               @endif
 
             </form>

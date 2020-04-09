@@ -17,7 +17,7 @@ class DestroyPhoto extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'photo_id' => 'required|integer',
+            'photo_id' => 'required|integer|exists:photos,id',
         ];
     }
 
@@ -27,14 +27,17 @@ class DestroyPhoto extends BaseService
      * @param array $data
      * @return bool
      */
-    public function execute(array $data) : bool
+    public function execute(array $data): bool
     {
         $this->validate($data);
+
         $photo = Photo::where('account_id', $data['account_id'])
             ->findOrFail($data['photo_id']);
+
         // Delete the physical photo
         // Throws FileNotFoundException
         Storage::delete($photo->new_filename);
+
         // Delete the object in the DB
         $photo->delete();
 

@@ -1,0 +1,42 @@
+version: "3.4"
+
+services:
+  app:
+    build: ./app
+    depends_on:
+      - db
+    env_file: .env
+    volumes:
+      - data:/var/www/monica/storage
+      - www:/var/www/monica
+    restart: always
+
+  web:
+    build: ./web
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - data:/var/www/monica/storage:ro
+      - www:/var/www/monica:ro
+    depends_on:
+      - app
+
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=sekret_root_password
+      - MYSQL_DATABASE=monica
+      - MYSQL_USER=homestead
+      - MYSQL_PASSWORD=secret
+    volumes:
+      - mysql:/var/lib/mysql
+    restart: always
+
+volumes:
+  data:
+    name: data
+  www:
+    name: www
+  mysql:
+    name: mysql

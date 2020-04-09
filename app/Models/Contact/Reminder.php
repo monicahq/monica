@@ -14,6 +14,9 @@ use App\Models\ModelBindingHasherWithContact as Model;
  * A reminder has two states: active and inactive.
  * An inactive reminder is basically a one_time reminder that has already be
  * sent once and has been marked inactive so we don't schedule it again.
+ *
+ * @property string $next_expected_date_human_readable
+ * @property string $next_expected_date
  */
 class Reminder extends Model
 {
@@ -86,43 +89,15 @@ class Reminder extends Model
     }
 
     /**
-     * Get the title of a reminder.
-     *
-     * @return string
-     */
-    public function getTitleAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Set the title of a reminder.
-     *
-     * @return string
-     */
-    public function setTitleAttribute($title)
-    {
-        $this->attributes['title'] = $title;
-    }
-
-    /**
-     * Get the description of a reminder.
-     *
-     * @return string
-     */
-    public function getDescriptionAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
      * Calculate the next expected date for this reminder.
      *
      * @return Carbon
      */
-    public function calculateNextExpectedDate()
+    public function calculateNextExpectedDate($date = null)
     {
-        $date = $this->initial_date;
+        if (is_null($date)) {
+            $date = $this->initial_date;
+        }
 
         while ($date->isPast()) {
             $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
@@ -133,6 +108,20 @@ class Reminder extends Model
         }
 
         return $date;
+    }
+
+    /**
+     * Calculate the next expected date using user timezone for this reminder.
+     *
+     * @return Carbon
+     */
+    public function calculateNextExpectedDateOnTimezone()
+    {
+        $date = $this->initial_date;
+        $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0,
+                    DateHelper::getTimezone() ?? config('app.timezone'));
+
+        return $this->calculateNextExpectedDate($date);
     }
 
     /**

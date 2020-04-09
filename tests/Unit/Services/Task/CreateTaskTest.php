@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Conversation;
+namespace Tests\Unit\Services\Task;
 
 use Tests\TestCase;
 use App\Models\Contact\Task;
@@ -15,13 +15,14 @@ class CreateTaskTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_stores_a_task()
+    /** @test */
+    public function it_stores_a_task()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'title' => 'This is a title',
             'description' => 'This is a description',
         ];
@@ -41,12 +42,13 @@ class CreateTaskTest extends TestCase
         );
     }
 
-    public function test_it_stores_a_task_without_contact_id()
+    /** @test */
+    public function it_stores_a_task_without_contact_id()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'title' => 'This is a title',
             'description' => 'This is a description',
         ];
@@ -66,12 +68,13 @@ class CreateTaskTest extends TestCase
         );
     }
 
-    public function test_it_stores_a_task_without_description()
+    /** @test */
+    public function it_stores_a_task_without_description()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'title' => 'This is a title',
             'description' => null,
@@ -91,13 +94,14 @@ class CreateTaskTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ];
 
         $this->expectException(ValidationException::class);
@@ -105,7 +109,8 @@ class CreateTaskTest extends TestCase
         app(CreateTask::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_contact_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create();

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
 use App\Models\Contact\Contact;
+use LaravelWebauthn\Models\WebauthnKey;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SettingsTest extends FeatureTestCase
@@ -28,7 +29,7 @@ class SettingsTest extends FeatureTestCase
 
     public function test_user_can_access_settings_page()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $response = $this->get('/settings');
 
@@ -39,7 +40,7 @@ class SettingsTest extends FeatureTestCase
 
     public function test_user_can_export_account()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $response = $this->get('/settings/export');
 
@@ -53,21 +54,9 @@ class SettingsTest extends FeatureTestCase
         $this->assertTrue($response->headers->get('content-disposition') == 'attachment; filename=monica.sql');
     }
 
-    public function test_user_can_reset_account()
-    {
-        list($user, $contact) = $this->fetchUser();
-
-        $response = $this->followingRedirects()
-                        ->post(route('settings.reset'));
-
-        $response->assertStatus(200);
-
-        $response->assertSee('Sorry for the interruption');
-    }
-
     public function test_user_can_delete_account()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $response = $this->followingRedirects()
             ->post(route('settings.delete'));
@@ -75,5 +64,59 @@ class SettingsTest extends FeatureTestCase
         $response->assertStatus(200);
 
         $response->assertSee('Login');
+    }
+
+    public function test_it_updates_the_default_profile_view()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('POST', '/settings/updateDefaultProfileView', [
+            'name' => 'life-events',
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('users', [
+            'profile_active_tab' => 'life-events',
+            'id' => $user->id,
+        ]);
+
+        $response = $this->json('POST', '/settings/updateDefaultProfileView', [
+            'name' => 'notes',
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('users', [
+            'profile_active_tab' => 'notes',
+            'id' => $user->id,
+        ]);
+
+        $response = $this->json('POST', '/settings/updateDefaultProfileView', [
+            'name' => 'nawak',
+        ]);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_user_see_webauthnkeys()
+    {
+        $user = $this->signin();
+        $webauthnKey = factory(WebauthnKey::class)->create([
+            'user_id' => $user->id,
+            'updated_at' => '2019-04-01 09:18:35',
+        ]);
+
+        $this->session([
+            'webauthn_auth' => true,
+        ]);
+
+        $response = $this->followingRedirects()
+            ->get(route('settings.security.index'));
+
+        $response->assertStatus(200);
+
+        $response->assertSee($webauthnKey->name);
+        $response->assertSee('2019-04-01T09:18:35Z');
     }
 }

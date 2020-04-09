@@ -1,5 +1,7 @@
 <?php
 
+use function Safe\json_decode;
+
 $passports = [
 
     /*

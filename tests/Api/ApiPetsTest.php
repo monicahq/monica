@@ -33,21 +33,22 @@ class ApiPetsTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_pets_get_all()
+    /** @test */
+    public function pets_get_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $pet1 = factory(Pet::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $pet2 = factory(Pet::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -67,21 +68,22 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_get_contact_all()
+    /** @test */
+    public function pets_get_contact_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $pet1 = factory(Pet::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $pet2 = factory(Pet::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -101,7 +103,8 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_get_contact_all_error()
+    /** @test */
+    public function pets_get_contact_all_error()
     {
         $user = $this->signin();
 
@@ -110,18 +113,19 @@ class ApiPetsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_pets_get_one()
+    /** @test */
+    public function pets_get_one()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $pet1 = factory(Pet::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $pet2 = factory(Pet::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
 
@@ -141,7 +145,8 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_get_one_error()
+    /** @test */
+    public function pets_get_one_error()
     {
         $user = $this->signin();
 
@@ -150,11 +155,12 @@ class ApiPetsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_pets_create()
+    /** @test */
+    public function pets_create()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $pet_category = factory(PetCategory::class)->create();
 
@@ -177,7 +183,7 @@ class ApiPetsTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $pet_id);
         $this->assertDatabaseHas('pets', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'pet_category_id' => $pet_category->id,
             'id' => $pet_id,
@@ -185,11 +191,12 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_create_error()
+    /** @test */
+    public function pets_create_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/pets', [
@@ -201,7 +208,8 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_create_error_bad_account()
+    /** @test */
+    public function pets_create_error_bad_account()
     {
         $user = $this->signin();
 
@@ -219,14 +227,15 @@ class ApiPetsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_pets_update()
+    /** @test */
+    public function pets_update()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $pet = factory(Pet::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
         $pet_category = factory(PetCategory::class)->create();
@@ -251,7 +260,7 @@ class ApiPetsTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $pet_id);
         $this->assertDatabaseHas('pets', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'pet_category_id' => $pet_category->id,
             'id' => $pet_id,
@@ -259,11 +268,12 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_update_error()
+    /** @test */
+    public function pets_update_error()
     {
         $user = $this->signin();
         $pet = factory(Pet::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/pets/'.$pet->id, [
@@ -275,7 +285,8 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_update_error_bad_account()
+    /** @test */
+    public function pets_update_error_bad_account()
     {
         $user = $this->signin();
 
@@ -284,7 +295,7 @@ class ApiPetsTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
         $pet = factory(Pet::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
         $pet_category = factory(PetCategory::class)->create();
@@ -297,18 +308,19 @@ class ApiPetsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_pets_delete()
+    /** @test */
+    public function pets_delete()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $pet = factory(Pet::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
         $this->assertDatabaseHas('pets', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $pet->id,
         ]);
@@ -317,13 +329,14 @@ class ApiPetsTest extends ApiTestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('pets', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $pet->id,
         ]);
     }
 
-    public function test_pets_delete_error()
+    /** @test */
+    public function pets_delete_error()
     {
         $user = $this->signin();
 

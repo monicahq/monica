@@ -6,6 +6,7 @@ use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
 use Illuminate\Http\Request;
 use App\Models\Journal\Entry;
+use App\Helpers\JournalHelper;
 use App\Models\Journal\JournalEntry;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -16,7 +17,7 @@ class JournalController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index()
     {
@@ -38,7 +39,7 @@ class JournalController extends Controller
         $previousEntryYear = 0;
         $showCalendar = true;
 
-        foreach ($journalEntries as $journalEntry) {
+        foreach ($journalEntries->items() as $journalEntry) {
             if ($previousEntryMonth == $journalEntry->date->month && $previousEntryYear == $journalEntry->date->year) {
                 $showCalendar = false;
             }
@@ -87,12 +88,12 @@ class JournalController extends Controller
     {
         $day = auth()->user()->account->days()->create([
             'date' => now(DateHelper::getTimezone()),
-            'rate' => $request->get('rate'),
-            'comment' => $request->get('comment'),
+            'rate' => $request->input('rate'),
+            'comment' => $request->input('comment'),
         ]);
 
         // Log a journal entry
-        $journalEntry = (new JournalEntry)->add($day);
+        $journalEntry = JournalEntry::add($day);
 
         return [
             'id' => $journalEntry->id,
@@ -106,9 +107,10 @@ class JournalController extends Controller
 
     /**
      * Delete the Day entry.
-     * @return mixed
+     *
+     * @return void
      */
-    public function trashDay(Day $day)
+    public function trashDay(Day $day): void
     {
         $day->deleteJournalEntry();
         $day->delete();
@@ -116,11 +118,11 @@ class JournalController extends Controller
 
     /**
      * Indicates whether the user has already rated the current day.
-     * @return bool
+     * @return string
      */
     public function hasRated()
     {
-        if (auth()->user()->hasAlreadyRatedToday()) {
+        if (JournalHelper::hasAlreadyRatedToday(auth()->user())) {
             return 'true';
         }
 
@@ -130,7 +132,7 @@ class JournalController extends Controller
     /**
      * Display the Create journal entry screen.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function create()
     {
@@ -168,7 +170,56 @@ class JournalController extends Controller
 
         $entry->date = $request->input('date');
         // Log a journal entry
-        (new JournalEntry)->add($entry);
+        JournalEntry::add($entry);
+
+        return redirect()->route('journal.index');
+    }
+
+    /**
+     * Display the Edit journal entry screen.
+     *
+     * @param Entry $entry
+     * @return \Illuminate\View\View
+     */
+    public function edit(Entry $entry)
+    {
+        return view('journal.edit')
+            ->withEntry($entry);
+    }
+
+    /**
+     * Update a journal entry.
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, Entry $entry)
+    {
+        $validator = Validator::make($request->all(), [
+            'entry' => 'required|string',
+            'date' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withInput()
+                ->withErrors($validator);
+        }
+
+        $entry->post = $request->input('entry');
+
+        if ($request->input('title') != '') {
+            $entry->title = $request->input('title');
+        }
+
+        $entry->save();
+
+        // Update journal entry
+        $journalEntry = $entry->journalEntry;
+        if ($journalEntry) {
+            $entry->date = $request->input('date');
+            $journalEntry->edit($entry);
+        }
 
         return redirect()->route('journal.index');
     }
@@ -176,12 +227,11 @@ class JournalController extends Controller
     /**
      * Delete the reminder.
      */
-    public function deleteEntry(Request $request, $entryId)
+    public function deleteEntry(Request $request, Entry $entry)
     {
-        $entry = Entry::where('account_id', $request->user()->account_id)
-            ->findOrFail($entryId);
-
         $entry->deleteJournalEntry();
         $entry->delete();
+
+        return ['true'];
     }
 }

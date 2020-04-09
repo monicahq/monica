@@ -6,9 +6,13 @@ use Parsedown;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelBinding as Model;
 use App\Interfaces\IsJournalableInterface;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property \Carbon\Carbon $date
+ */
 class Entry extends Model implements IsJournalableInterface
 {
     use Journalable;
@@ -35,6 +39,8 @@ class Entry extends Model implements IsJournalableInterface
 
     /**
      * Get the account record associated with the entry.
+     *
+     * @return BelongsTo
      */
     public function account()
     {
@@ -42,14 +48,15 @@ class Entry extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get the Entry title.
+     * Get the Entry date.
      *
      * @param  string  $value
-     * @return string
+     * @return \Carbon\Carbon
      */
-    public function getTitleAttribute($value)
+    public function getDateAttribute($value)
     {
-        return $value;
+        // Default to created_at, but show journalEntry->date if the entry type is JournalEntry
+        return $this->journalEntry ? $this->journalEntry->date : $this->created_at;
     }
 
     /**
@@ -69,19 +76,17 @@ class Entry extends Model implements IsJournalableInterface
      */
     public function getInfoForJournalEntry()
     {
-        // Default to created_at, but show journalEntry->date if the entry type is JournalEntry
-        $entryDate = $this->journalEntry ? $this->journalEntry->date : $this->created_at;
-
         return [
             'type' => 'entry',
             'id' => $this->id,
             'title' => $this->title,
             'post' => $this->post,
-            'day' => $entryDate->day,
-            'day_name' => DateHelper::getShortDay($entryDate),
-            'month' => $entryDate->month,
-            'month_name' => DateHelper::getShortMonth($entryDate),
-            'year' => $entryDate->year,
+            'day' => $this->date->day,
+            'day_name' => mb_convert_case(DateHelper::getShortDay($this->date), MB_CASE_TITLE, 'UTF-8'),
+            'month' => $this->date->month,
+            'month_name' => mb_convert_case(DateHelper::getShortMonth($this->date), MB_CASE_UPPER, 'UTF-8'),
+            'year' => $this->date->year,
+            'date' => $this->date,
         ];
     }
 }

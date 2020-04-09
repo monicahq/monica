@@ -19,7 +19,7 @@ class ApiAddressController extends ApiController
     /**
      * Get the list of addresses.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -36,8 +36,10 @@ class ApiAddressController extends ApiController
 
     /**
      * Get the detail of a given address.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return AddressResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id)
     {
@@ -55,17 +57,18 @@ class ApiAddressController extends ApiController
     /**
      * Store the address.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return AddressResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
             $address = app(CreateAddress::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -81,20 +84,22 @@ class ApiAddressController extends ApiController
 
     /**
      * Update the address.
-     * @param  Request $request
-     * @param  int $addressId
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     * @param int $addressId
+     *
+     * @return AddressResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $addressId)
     {
         try {
             $address = app(UpdateAddress::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'address_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'address_id' => $addressId,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                        'address_id' => $addressId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -109,14 +114,16 @@ class ApiAddressController extends ApiController
 
     /**
      * Delete an address.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $addressId)
     {
         try {
             app(DestroyAddress::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'address_id' => $addressId,
             ]);
         } catch (ModelNotFoundException $e) {
@@ -133,7 +140,7 @@ class ApiAddressController extends ApiController
     /**
      * Get the list of addresses for the given contact.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function addresses(Request $request, $contactId)
     {

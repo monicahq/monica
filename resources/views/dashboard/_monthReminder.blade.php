@@ -3,6 +3,9 @@
     <ul class="mb4">
         @if(count($reminderOutboxes) > 0)
             @foreach($reminderOutboxes as $reminderOutbox)
+            @if (!is_object($reminderOutbox->reminder))
+                @continue;
+            @endif
             <li class="pb2">
                 <span class="ttu f6 mr2 black-60">{{ \App\Helpers\DateHelper::getShortDateWithoutYear($reminderOutbox->planned_date) }}</span>
                 <span>

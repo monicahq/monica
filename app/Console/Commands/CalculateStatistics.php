@@ -26,9 +26,9 @@ class CalculateStatistics extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $statistic = new Statistic;
         $statistic->number_of_users = DB::table('users')->count();

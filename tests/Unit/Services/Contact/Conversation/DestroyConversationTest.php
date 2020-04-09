@@ -15,14 +15,15 @@ class DestroyConversationTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_a_conversation()
+    /** @test */
+    public function it_destroys_a_conversation()
     {
         $conversation = factory(Conversation::class)->create([
             'happened_at' => '2008-01-01',
         ]);
 
         $request = [
-            'account_id' => $conversation->account->id,
+            'account_id' => $conversation->account_id,
             'conversation_id' => $conversation->id,
         ];
 
@@ -37,7 +38,8 @@ class DestroyConversationTest extends TestCase
         ]);
     }
 
-    public function test_destroying_a_conversation_destroys_corresponding_messages()
+    /** @test */
+    public function destroying_a_conversation_destroys_corresponding_messages()
     {
         $conversation = factory(Conversation::class)->create([
             'happened_at' => '2008-01-01',
@@ -45,8 +47,8 @@ class DestroyConversationTest extends TestCase
 
         $message = factory(Message::class)->create([
             'conversation_id' => $conversation->id,
-            'account_id' => $conversation->account->id,
-            'contact_id' => $conversation->contact->id,
+            'account_id' => $conversation->account_id,
+            'contact_id' => $conversation->contact_id,
             'content' => 'tititi',
             'written_at' => '2009-01-01',
             'written_by_me' => false,
@@ -57,7 +59,7 @@ class DestroyConversationTest extends TestCase
         ]);
 
         $request = [
-            'account_id' => $conversation->account->id,
+            'account_id' => $conversation->account_id,
             'conversation_id' => $conversation->id,
         ];
 
@@ -68,14 +70,15 @@ class DestroyConversationTest extends TestCase
         ]);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $conversation = factory(Conversation::class)->create([
             'happened_at' => '2008-01-01',
         ]);
 
         $request = [
-            'account_id' => $conversation->account->id,
+            'account_id' => $conversation->account_id,
         ];
 
         $this->expectException(ValidationException::class);
@@ -83,7 +86,8 @@ class DestroyConversationTest extends TestCase
         app(DestroyConversation::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_conversation_doesnt_exist()
+    /** @test */
+    public function it_throws_an_exception_if_conversation_doesnt_exist()
     {
         $account = factory(Account::class)->create();
         $conversation = factory(Conversation::class)->create([]);

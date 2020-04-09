@@ -15,13 +15,14 @@ class UpdateTaskTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_a_task_associated_with_a_contact()
+    /** @test */
+    public function it_updates_a_task_associated_with_a_contact()
     {
         $task = factory(Task::class)->create([]);
 
         $request = [
-            'account_id' => $task->account->id,
-            'contact_id' => $task->contact->id,
+            'account_id' => $task->account_id,
+            'contact_id' => $task->contact_id,
             'task_id' => $task->id,
             'title' => 'title',
             'description' => 'description',
@@ -32,7 +33,7 @@ class UpdateTaskTest extends TestCase
 
         $this->assertDatabaseHas('tasks', [
             'id' => $task->id,
-            'contact_id' => $task->contact->id,
+            'contact_id' => $task->contact_id,
             'title' => 'title',
             'description' => 'description',
             'completed' => 1,
@@ -44,14 +45,15 @@ class UpdateTaskTest extends TestCase
         );
     }
 
-    public function test_it_updates_a_task_associated_without_a_contact()
+    /** @test */
+    public function it_updates_a_task_associated_without_a_contact()
     {
         $task = factory(Task::class)->create([
             'contact_id' => null,
         ]);
 
         $request = [
-            'account_id' => $task->account->id,
+            'account_id' => $task->account_id,
             'task_id' => $task->id,
             'title' => 'title',
             'description' => 'description',
@@ -74,12 +76,13 @@ class UpdateTaskTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $task = factory(Task::class)->create([]);
 
         $request = [
-            'account_id' => $task->account->id,
+            'account_id' => $task->account_id,
             'task_id' => $task->id,
             'title' => 'title',
             'description' => 'description',
@@ -90,14 +93,15 @@ class UpdateTaskTest extends TestCase
         app(UpdateTask::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_contact_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create();
         $task = factory(Task::class)->create([]);
 
         $request = [
-            'account_id' => $task->account->id,
+            'account_id' => $task->account_id,
             'contact_id' => $contact->id,
             'task_id' => $task->id,
             'title' => 'title',
@@ -110,7 +114,8 @@ class UpdateTaskTest extends TestCase
         app(UpdateTask::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_task_is_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_task_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create();
