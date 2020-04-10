@@ -52,7 +52,7 @@
     "bootstrap": "^4.0.0",
     "font-awesome": "^4.7.0",
     "hint.css": "^2.3.2",
-    "jquery": "^3.4.0",
+    "jquery": "^3.5.0",
     "laravel-mix": "^5.0.4",
     "laravel-mix-purgecss": "^4.2.0",
     "list.js": "^1.5.0",
