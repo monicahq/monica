@@ -27,9 +27,8 @@ class PassportCommandTest extends TestCase
 
         $command->run(new \Symfony\Component\Console\Input\ArrayInput([]), new \Symfony\Component\Console\Output\NullOutput());
 
-        $this->assertCount(2, $commandExecutor->buffer);
-        $this->assertCommandContains($commandExecutor->buffer[0], '✓ Creating encryption keys', 'php artisan passport:keys');
-        $this->assertCommandContains($commandExecutor->buffer[1], '✓ Creating personal access client', 'passport:client --personal --no-interaction');
+        $this->assertCount(1, $commandExecutor->buffer);
+        $this->assertCommandContains($commandExecutor->buffer[0], '✓ Creating personal access client', 'php artisan passport:client');
     }
 
     private function assertCommandContains($array, $message, $command)
