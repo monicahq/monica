@@ -32,11 +32,27 @@ class PassportCommandTest extends TestCase
     }
 
     /** @test */
-    public function passport_command_alreday_created()
+    public function passport_command_already_created()
     {
         $app = $this->createApplication();
         $app->make('config')->set(['passport.private_key' => '', 'passport.public_key' => '']);
         PersonalAccessClient::create();
+
+        $commandExecutor = new CommandExecutorTester();
+        $command = new Passport();
+        $command->commandExecutor = $commandExecutor;
+        $command->setLaravel($app);
+
+        $command->run(new \Symfony\Component\Console\Input\ArrayInput([]), new \Symfony\Component\Console\Output\NullOutput());
+
+        $this->assertCount(0, $commandExecutor->buffer);
+    }
+
+    /** @test */
+    public function passport_command_env_config()
+    {
+        $app = $this->createApplication();
+        $app->make('config')->set(['passport.private_key' => '-', 'passport.public_key' => '-']);
 
         $commandExecutor = new CommandExecutorTester();
         $command = new Passport();
