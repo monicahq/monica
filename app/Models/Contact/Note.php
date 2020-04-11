@@ -91,16 +91,6 @@ class Note extends Model
     }
 
     /**
-     * Return the markdown parsed body.
-     *
-     * @return string
-     */
-    public function getParsedBodyAttribute()
-    {
-        return (new Parsedown())->text($this->body);
-    }
-
-    /**
      * Get the description of a note.
      *
      * @return string
