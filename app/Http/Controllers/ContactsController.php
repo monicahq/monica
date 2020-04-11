@@ -149,30 +149,33 @@ class ContactsController extends Controller
     /**
      * Show the form to add a new contact.
      *
+     * @param Request $request
      * @return View|Factory|RedirectResponse
      */
-    public function create()
+    public function create(Request $request)
     {
-        return $this->createForm(false);
+        return $this->createForm($request, false);
     }
 
     /**
      * Show the form in case the contact is missing.
      *
+     * @param Request $request
      * @return View|Factory|RedirectResponse
      */
-    public function missing()
+    public function missing(Request $request)
     {
-        return $this->createForm(true);
+        return $this->createForm($request, true);
     }
 
     /**
      * Show the Add user form unless the contact has limitations.
      *
+     * @param Request $request
      * @param  bool $isContactMissing
      * @return View|Factory|RedirectResponse
      */
-    private function createForm($isContactMissing = false)
+    private function createForm(Request $request, bool $isContactMissing = false)
     {
         if (AccountHelper::hasReachedContactLimit(auth()->user()->account)
             && AccountHelper::hasLimitations(auth()->user()->account)
@@ -187,7 +190,9 @@ class ContactsController extends Controller
             ->withIsContactMissing($isContactMissing)
             ->withGenders(GenderHelper::getGendersInput())
             ->withDefaultGender(auth()->user()->account->default_gender_id)
-            ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()));
+            ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()))
+            ->withFirstName($request->input('first_name'))
+            ->withLastName($request->input('last_name'));
     }
 
     /**

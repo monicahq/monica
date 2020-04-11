@@ -49,7 +49,19 @@ export default {
       if (contact.item.id > 0) {
         window.location = contact.item.route;
       } else {
-        window.location = 'people/add';
+        const names = contact.item.keyword.split(' ').map(name =>
+          name.charAt(0).toUpperCase() + name.substr(1).toLowerCase()
+        );
+        const first_name = names[0];
+        const last_name = names.slice(1).join(' ');
+        
+        let params = new URLSearchParams();
+        if (first_name)
+          params.set('first_name', first_name);
+        if (last_name)
+          params.set('last_name', last_name);
+
+        window.location = 'people/add' + (params != "" ? '?' + params : "");
       }
     },
 
