@@ -52,6 +52,7 @@ return [
     'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Opravdu chcete smazat tento kontakt? Smazání je trvalé.',
     'people_add_birthday_reminder' => 'Popřát k narozeninám :name',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
     'people_add_import' => 'Chcete <a href=":url">importovat své kontakty</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
     'people_export' => 'Export as vCard',
