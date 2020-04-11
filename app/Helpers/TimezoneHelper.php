@@ -18,13 +18,15 @@ class TimezoneHelper
         $list = [];
         $timezones = DateTimeZone::listIdentifiers();
 
-        foreach ($timezones as $timezone) {
-            [$tz, $name] = self::formatTimezone($timezone);
-            array_push($list, [
-                'id' => $tz,
-                'timezone' => $timezone,
-                'name' => $name,
-            ]);
+        if ($timezones !== false) {
+            foreach ($timezones as $timezone) {
+                [$tz, $name] = self::formatTimezone($timezone);
+                array_push($list, [
+                    'id' => $tz,
+                    'timezone' => $timezone,
+                    'name' => $name,
+                ]);
+            }
         }
 
         $collect = collect($list)

@@ -1,0 +1,110 @@
+name: Chrome headless
+
+on:
+  push:
+    branches-ignore:
+      - 'l10n_master*'
+
+jobs:
+  cypress-run:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-version: ['7.3']
+        containers: [1, 2, 3, 4, 5, 6, 7, 8]
+      max-parallel: 10
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Setup PHP ${{ matrix.php-version }}
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: ${{ matrix.php-version }}
+        coverage: none
+    - name: Check PHP Version
+      run: php -v
+    - name: Check Composer Version
+      run: composer -V
+    - name: Check PHP Extensions
+      run: php -m
+
+    # step-prepare-environment
+    - name: Prepare environment
+      run: |
+        mkdir -p results/coverage
+        sed 's/DB_TEST_PASSWORD=/DB_TEST_PASSWORD=root/' scripts/ci/.env.mysql > .env
+        touch .sentry-release
+
+    - run: echo "REQUIRES_SUBSCRIPTION=true" >> .env
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Get Composer Cache Directory
+      id: composer-cache-dir-path
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - name: Cache composer files
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          ${{ runner.os }}-composer-
+
+    - name: Install dependencies
+      run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+
+    # step-prepare-db
+    - name: Start Mysql
+      run: sudo service mysql start
+    - name: Create db
+      run: mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+    - name: Prepare db
+      run: mysql -u root -proot monica < scripts/database.test.sql
+    - name: Run migration scripts
+      run: php artisan migrate --no-interaction -vvv
+
+    # step-seed-test-db
+    - name: Seed database
+      run: |
+        php artisan db:seed --no-interaction -vvv
+        php artisan passport:keys --no-interaction -vvv
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+    - uses: actions/cache@v1
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - name: yarn install
+      run: yarn inst
+    - name: Cypress verify
+      run: npm run cy:verify
+
+    - uses: cypress-io/github-action@v1
+      with:
+        start: php artisan serve
+        browser: chrome
+        headless: true
+        record: true
+        parallel: true
+        group: Azure DevOps CI
+        config: baseUrl=http://localhost:8000
+        wait-on: http://localhost:8000
+      env:
+        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+#    - name: Store results
+#      uses: actions/upload-artifact@v1
+#      with:
+#        name: results
+#        path: results/junit/cypress/results*.xml

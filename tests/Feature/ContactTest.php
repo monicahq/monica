@@ -515,7 +515,7 @@ class ContactTest extends FeatureTestCase
           :date="\'\'"
           :reminder="false"
         >
-        </form-specialdeceased>');
+        </form-specialdeceased>', false);
     }
 
     public function test_edit_contact_with_specialdeceased()
@@ -538,7 +538,7 @@ class ContactTest extends FeatureTestCase
           :date="\''.$reminder->initial_date.'\'"
           :reminder="true"
         >
-        </form-specialdeceased>');
+        </form-specialdeceased>', false);
     }
 
     public function test_edit_contact_put_deceased()

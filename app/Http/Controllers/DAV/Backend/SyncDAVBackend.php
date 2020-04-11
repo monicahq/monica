@@ -64,14 +64,14 @@ trait SyncDAVBackend
     {
         $max = $this->getLastModified();
 
-        if ($max) {
-            return SyncToken::create([
+        return $max ?
+            SyncToken::create([
                 'account_id' => Auth::user()->account_id,
                 'user_id' => Auth::user()->id,
                 'name' => $this->backendUri(),
                 'timestamp' => $max,
-            ]);
-        }
+            ])
+            : null;
     }
 
     /**
@@ -153,7 +153,7 @@ trait SyncDAVBackend
      * @param string $syncToken
      * @return array|null
      */
-    public function getChanges($syncToken)
+    public function getChanges($syncToken): ?array
     {
         $token = null;
         $timestamp = null;
@@ -162,12 +162,11 @@ trait SyncDAVBackend
 
             if (is_null($token)) {
                 // syncToken is not recognized
-                return;
+                return null;
             }
 
             $timestamp = $token->timestamp;
         } else {
-            $token = $this->createSyncTokenNow();
             $timestamp = null;
         }
 
@@ -184,7 +183,7 @@ trait SyncDAVBackend
         });
 
         return [
-            'syncToken' => $token->id,
+            'syncToken' => $this->getCurrentSyncToken()->id,
             'added' => $added->map(function ($obj) {
                 return $this->encodeUri($obj);
             })->toArray(),

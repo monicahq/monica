@@ -97,6 +97,8 @@ class VCardContactTest extends ApiTestCase
      */
     public function test_carddav_put_one_contact_with_photo_already_set()
     {
+        Storage::fake();
+
         $user = $this->signin();
         $photo = factory(Photo::class)->create([
             'account_id' => $user->account_id,
@@ -305,7 +307,7 @@ class VCardContactTest extends ApiTestCase
         $response->assertSee("<d:error xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\">
   <s:sabredav-version>{$sabreversion}</s:sabredav-version>
   <s:exception>Sabre\DAV\Exception\PreconditionFailed</s:exception>
-  <s:message>An If-Unmodified-Since header was specified, but the entity has been changed since the specified date.</s:message>");
+  <s:message>An If-Unmodified-Since header was specified, but the entity has been changed since the specified date.</s:message>", false);
     }
 
     /**
@@ -368,7 +370,7 @@ class VCardContactTest extends ApiTestCase
              '<d:status>HTTP/1.1 200 OK</d:status>'.
            '</d:propstat>'.
           '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>', false);
     }
 
     public function test_carddav_contacts_report_version3()
@@ -408,7 +410,7 @@ class VCardContactTest extends ApiTestCase
              '<d:status>HTTP/1.1 200 OK</d:status>'.
            '</d:propstat>'.
           '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>', false);
     }
 
     public function test_carddav_contacts_report_multiget()
@@ -451,7 +453,7 @@ class VCardContactTest extends ApiTestCase
              '</d:prop>'.
              '<d:status>HTTP/1.1 200 OK</d:status>'.
            '</d:propstat>'.
-          '</d:response>');
+          '</d:response>', false);
         $response->assertSee(
           '<d:response>'.
             "<d:href>/dav/addressbooks/{$user->email}/contacts/{$contact2->uuid}.vcf</d:href>".
@@ -463,6 +465,6 @@ class VCardContactTest extends ApiTestCase
                '<d:status>HTTP/1.1 200 OK</d:status>'.
              '</d:propstat>'.
             '</d:response>'.
-          '</d:multistatus>');
+          '</d:multistatus>', false);
     }
 }

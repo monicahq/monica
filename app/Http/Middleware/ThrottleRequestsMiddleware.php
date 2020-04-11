@@ -98,7 +98,7 @@ class ThrottleRequestsMiddleware
      *
      * @param  string $key
      * @param  int $maxAttempts
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function buildResponse($key, $maxAttempts)
     {

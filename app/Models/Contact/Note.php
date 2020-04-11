@@ -2,7 +2,6 @@
 
 namespace App\Models\Contact;
 
-use Parsedown;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Builder;
@@ -88,16 +87,6 @@ class Note extends Model
     public function scopeFavorited(Builder $query)
     {
         return $query->where('is_favorited', true);
-    }
-
-    /**
-     * Return the markdown parsed body.
-     *
-     * @return string
-     */
-    public function getParsedBodyAttribute()
-    {
-        return (new Parsedown())->text($this->body);
     }
 
     /**

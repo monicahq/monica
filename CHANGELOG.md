@@ -2,6 +2,32 @@
 
 ### New features:
 
+* Change title of birthday reminder for deceased people
+
+### Enhancements:
+
+* Add new command monica:passport to generate encryption if needed
+* Improve nginx config docker examples
+* Remove u2f support (replaced with WebAuthn)
+* Serialize photo content in VCard photo value
+
+### Fixes:
+
+* Fix editing multiple notes at the same time only edits one note
+* Fix countries in fake contact seeder
+* Fix docker rsync exclude rules
+* Fix docker cron (legacy) on apache variant
+* Fix login route already set by Laravel now
+* Fix setMe contact controller
+* Fix carddav sync-collection reporting wrong syncToken
+
+
+# RELEASED VERSIONS:
+
+## v2.17.0 - 2019-03-22
+
+### New features:
+
 * Add a weekly job to update gravatars
 * Add ability to set 'me' contact
 * Add middle name field to new contact and edit contact
@@ -23,6 +49,9 @@
 
 ### Fixes:
 
+* Fix dates being off by one day
+* Fix wrong untagged contacts counter when viewing untagged contacts
+* Fix markdown doesn't work on journal activity entries
 * Fix markdown doesn't work on Activity entries
 * Fix summary of activities showing the same date for every entry
 * Fix vcard categories import/export as tags
@@ -36,7 +65,6 @@
 * Fix activity mock data seeder
 * Fix ordering of contact tags to be alphabetical
 
-# RELEASED VERSIONS:
 
 ## v2.16.0 - 2019-12-31
 

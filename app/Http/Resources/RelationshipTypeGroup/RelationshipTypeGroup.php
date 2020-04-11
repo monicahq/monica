@@ -3,9 +3,12 @@
 namespace App\Http\Resources\RelationshipTypeGroup;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class RelationshipTypeGroup extends Resource
+/**
+ * @extends JsonResource<\App\Models\Relationship\RelationshipTypeGroup>
+ */
+class RelationshipTypeGroup extends JsonResource
 {
     /**
      * Transform the resource into an array.
