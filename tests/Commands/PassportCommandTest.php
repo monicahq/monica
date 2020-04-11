@@ -4,6 +4,7 @@ namespace Tests\Commands;
 
 use Tests\TestCase;
 use App\Console\Commands\Passport;
+use Laravel\Passport\PersonalAccessClient;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PassportCommandTest extends TestCase
@@ -15,6 +16,9 @@ class PassportCommandTest extends TestCase
     {
         $app = $this->createApplication();
         $app->make('config')->set(['passport.private_key' => '', 'passport.public_key' => '']);
+        foreach(PersonalAccessClient::all() as $client) {
+            $client->delete();
+        }
 
         $commandExecutor = new CommandExecutorTester();
         $command = new Passport();
