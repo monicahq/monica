@@ -12,6 +12,7 @@
 
 ### Fixes:
 
+* Fix countries in fake contact seeder
 * Fix docker rsync exclude rules
 * Fix docker cron (legacy) on apache variant
 * Fix login route already set by Laravel now
