@@ -487,7 +487,7 @@ class SetupTest extends Command
             $this->countries = CountriesHelper::getAll();
         }
 
-        return $this->countries->random()->id;
+        return $this->countries->random()['id'];
     }
 
     public function populateContactFields()
