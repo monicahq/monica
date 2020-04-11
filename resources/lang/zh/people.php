@@ -52,6 +52,7 @@ return [
     'people_delete_message' => '删除联系人',
     'people_delete_confirmation' => '确实要删除此联系人吗？删除是永久性的。',
     'people_add_birthday_reminder' => '祝: name生日快乐',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
     'people_add_import' => '是否要 <a href=":url">导入您的联系人</a>？',
     'people_edit_email_error' => '您的联系人中已经有人使用此电子邮件，请更换一个',
     'people_export' => '导出为 vCard',
