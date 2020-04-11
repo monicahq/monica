@@ -2,7 +2,6 @@
 
 namespace App\Models\Contact;
 
-use Parsedown;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Builder;
