@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'sidebar_settings' => 'Account settings',
+    'sidebar_settings' => 'アカウントの設定',
     'sidebar_personalization' => 'Personalization',
     'sidebar_settings_storage' => 'Storage',
     'sidebar_settings_export' => 'Export data',
@@ -68,7 +68,7 @@ return [
     'delete_notice' => 'Are you sure to delete your account? There is no turning back.',
     'delete_cta' => 'Delete account',
     'settings_success' => 'Preferences updated!',
-    'locale' => 'Language used in the app',
+    'locale' => '使用する言語',
     'locale_help' => 'Do you want to help translating Monica or add a new language? Please follow <a href=":url" target="_blank" lang="en">this link for more information</a>.',
     'locale_ar' => 'Arabic',
     'locale_cs' => 'Czech',
