@@ -32,6 +32,7 @@ class PassportCommandTest extends TestCase
         $this->assertCommandContains($commandExecutor->buffer[1], '✓ Creating personal access client', 'passport:client --personal --no-interaction');
     }
 
+
     private function assertCommandContains($array, $message, $command)
     {
         $this->assertStringContainsString($message, $array['message']);

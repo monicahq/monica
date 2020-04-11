@@ -72,7 +72,7 @@ class Passport extends Command
             return;
         }
 
-        $this->commandExecutor->artisan('✓ Creating encryption keys', 'passport:keys');
+        $this->commandExecutor->artisan('✓ Creating encryption keys', 'passport:keys', ['--no-interaction']);
         $this->warn('! Please be careful to backup '.base_path('storage/oauth-public.key').' and '.base_path('storage/oauth-private.key').' files !', OutputInterface::VERBOSITY_VERBOSE);
     }
 
@@ -86,6 +86,6 @@ class Passport extends Command
             return;
         }
 
-        $this->commandExecutor->artisan('✓ Creating personal access client', 'passport:client --personal --no-interaction');
+        $this->commandExecutor->artisan('✓ Creating personal access client', 'passport:client', ['--personal', '--no-interaction']);
     }
 }
