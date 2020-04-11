@@ -16,7 +16,7 @@ class PassportCommandTest extends TestCase
     {
         $app = $this->createApplication();
         $app->make('config')->set(['passport.private_key' => '', 'passport.public_key' => '']);
-        foreach(PersonalAccessClient::all() as $client) {
+        foreach (PersonalAccessClient::all() as $client) {
             $client->delete();
         }
 
