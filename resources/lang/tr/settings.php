@@ -79,6 +79,7 @@ return [
     'locale_he' => 'İbranice',
     'locale_hr' => 'Hırvatca',
     'locale_it' => 'İtalyanca',
+    'locale_ja' => 'Japanese',
     'locale_nl' => 'Flemenkçe',
     'locale_pt' => 'Portekizce',
     'locale_pt-BR' => 'Portekizce (Brezilya)',
