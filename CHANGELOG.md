@@ -13,6 +13,7 @@
 
 ### Fixes:
 
+* Fix editing multiple notes at the same time only edits one note
 * Fix countries in fake contact seeder
 * Fix docker rsync exclude rules
 * Fix docker cron (legacy) on apache variant
