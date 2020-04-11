@@ -77,13 +77,6 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
         ${ARTISAN} sentry:release --release="$release" --commit="$commit" --environment="$SENTRY_ENV" -v || true
     fi
 
-    if [ ! -f "${STORAGE}/oauth-public.key" -o ! -f "${STORAGE}/oauth-private.key" ]; then
-        echo "Passport keys creation ..."
-        ${ARTISAN} passport:keys
-        ${ARTISAN} passport:client --personal --no-interaction
-        echo "! Please be careful to backup $MONICADIR/storage/oauth-public.key and $MONICADIR/storage/oauth-private.key files !"
-    fi
-
     # Run cron
     if [ -f "/usr/sbin/crond" ]; then
         if [ "$CRON_LEGACY" = "true" ]; then
