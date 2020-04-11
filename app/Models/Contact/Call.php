@@ -82,10 +82,10 @@ class Call extends Model
      *
      * @return string|null
      */
-    public function getParsedContentAttribute()
+    public function getParsedContentAttribute(): ?string
     {
         if (is_null($this->content)) {
-            return;
+            return null;
         }
 
         return (new Parsedown())->text($this->content);

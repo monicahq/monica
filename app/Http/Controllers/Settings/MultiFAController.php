@@ -22,7 +22,7 @@ class MultiFAController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function enableTwoFactor(Request $request)
     {
@@ -46,7 +46,7 @@ class MultiFAController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function validateTwoFactor(Request $request)
     {
@@ -93,7 +93,7 @@ class MultiFAController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function deactivateTwoFactor(Request $request)
     {

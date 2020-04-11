@@ -70,24 +70,30 @@ $db = [
 
         'sqlite' => [
             'driver' => 'sqlite',
+            'url' => env('DATABASE_URL'),
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => env('DB_PREFIX', ''),
-            'foreign_key_constraints' => true,
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', 'localhost'),
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'unix_socket' => env('DB_UNIX_SOCKET', ''),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
+            'unix_socket' => env('DB_UNIX_SOCKET', ''),
             'charset' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4' : 'utf8',
             'collation' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4_unicode_ci' : 'utf8_unicode_ci',
             'prefix' => env('DB_PREFIX', ''),
+            'prefix_indexes' => true,
             'strict' => false,
             'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
         ],
 
         'testing' => [
@@ -100,6 +106,7 @@ $db = [
             'charset' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4' : 'utf8',
             'collation' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4_unicode_ci' : 'utf8_unicode_ci',
             'prefix' => env('DB_TEST_PREFIX', ''),
+            'prefix_indexes' => true,
             'strict' => false,
         ],
 
@@ -125,6 +132,19 @@ $db = [
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
+        ],
+
+        'sqlsrv' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '1433'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
         ],
 
     ],

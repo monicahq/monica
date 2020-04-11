@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\Clean;
 use App\Console\Commands\Update;
+use App\Console\Commands\Passport;
 use App\Console\Commands\ExportAll;
 use App\Console\Commands\ImportCSV;
 use App\Console\Commands\SetupTest;
@@ -47,6 +48,7 @@ class Kernel extends ConsoleKernel
         MigrateDatabaseCollation::class,
         MoveAvatars::class,
         MoveAvatarsToPhotosDirectory::class,
+        Passport::class,
         PingVersionServer::class,
         SendReminders::class,
         SendStayInTouch::class,

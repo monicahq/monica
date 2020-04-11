@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Conversation;
+namespace Tests\Unit\Services\Task;
 
 use Tests\TestCase;
 use App\Models\Contact\Task;

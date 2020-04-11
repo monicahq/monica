@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Helpers\DBHelper;
 use App\Helpers\StringHelper;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 trait Searchable
 {
@@ -20,10 +21,10 @@ trait Searchable
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|null
      */
-    public function scopeSearch(Builder $builder, $needle, $accountId, $limitPerPage, $orderBy, $whereCondition = null, $sortOrder = null)
+    public function scopeSearch(Builder $builder, $needle, $accountId, $limitPerPage, $orderBy, $whereCondition = null, $sortOrder = null): ?LengthAwarePaginator
     {
         if ($this->searchable_columns == null) {
-            return;
+            return null;
         }
 
         $searchableColumns = array_map(function ($column) {

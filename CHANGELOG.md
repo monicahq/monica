@@ -2,16 +2,23 @@
 
 ### New features:
 
-*
+* Change title of birthday reminder for deceased people
 
 ### Enhancements:
 
+* Add new command monica:passport to generate encryption if needed
+* Improve nginx config docker examples
 * Remove u2f support (replaced with WebAuthn)
 * Serialize photo content in VCard photo value
 
 ### Fixes:
 
 * Fix editing multiple notes at the same time only edits one note
+* Fix countries in fake contact seeder
+* Fix docker rsync exclude rules
+* Fix docker cron (legacy) on apache variant
+* Fix login route already set by Laravel now
+* Fix setMe contact controller
 * Fix carddav sync-collection reporting wrong syncToken
 
 
