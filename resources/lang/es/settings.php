@@ -79,6 +79,7 @@ return [
     'locale_he' => 'Hebreo',
     'locale_hr' => 'Croata',
     'locale_it' => 'Italiano',
+    'locale_ja' => 'Japanese',
     'locale_nl' => 'Alemán',
     'locale_pt' => 'Portugues',
     'locale_pt-BR' => 'Portuguese (Brazil)',
