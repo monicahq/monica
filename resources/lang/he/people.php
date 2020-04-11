@@ -52,7 +52,7 @@ return [
     'people_delete_message' => 'מחיקת איש קשר',
     'people_delete_confirmation' => 'למחוק את איש הקשר הזה? מחיקה היא לצמיתות.',
     'people_add_birthday_reminder' => 'נא לאחל יום הולדת שמח ל־:name',
-    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
+    'people_add_birthday_reminder_deceased' => 'בתאריך הזה, אמור היה להחגג יום ההולדת של :name',
     'people_add_import' => 'ברצונך <a href=":url">לייבא את אנשי הקשר שלך</a>?',
     'people_edit_email_error' => 'כבר יש איש קשר בחשבון שלך עם כתובת הדוא״ל הזו. נא לבחור באחד אחר.',
     'people_export' => 'ייצוא כ־vCard',
