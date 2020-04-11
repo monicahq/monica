@@ -60,18 +60,20 @@ class Passport extends Command
     {
         $this->info('Checking encryption keys...', OutputInterface::VERBOSITY_VERBOSE);
 
-        if (! empty(config('passport.private_key')) && !empty(config('passport.public_key'))) {
+        if (! empty(config('passport.private_key')) && ! empty(config('passport.public_key'))) {
             $this->info('✓ PASSPORT_PRIVATE_KEY and PASSPORT_PUBLIC_KEY detected.', OutputInterface::VERBOSITY_VERBOSE);
+
             return;
         }
 
-        if ( file_exists(base_path('storage/oauth-private.key')) && file_exists(base_path('storage/oauth-public.key')) ) {
+        if (file_exists(base_path('storage/oauth-private.key')) && file_exists(base_path('storage/oauth-public.key'))) {
             $this->info('✓ Files storage/oauth-private.key and storage/oauth-public.key detected.', OutputInterface::VERBOSITY_VERBOSE);
+
             return;
         }
 
         $this->commandExecutor->artisan('✓ Creating encryption keys', 'passport:keys');
-        $this->warn('! Please be careful to backup '.base_path('storage/oauth-public.key').' and '.base_path('storage/oauth-private.key'). ' files !', OutputInterface::VERBOSITY_VERBOSE);
+        $this->warn('! Please be careful to backup '.base_path('storage/oauth-public.key').' and '.base_path('storage/oauth-private.key').' files !', OutputInterface::VERBOSITY_VERBOSE);
     }
 
     private function checkPersonalAccessClient()
@@ -80,6 +82,7 @@ class Passport extends Command
 
         if (PersonalAccessClient::all()->count() > 0) {
             $this->info('✓ Personal Access Client already created.', OutputInterface::VERBOSITY_VERBOSE);
+
             return;
         }
 
