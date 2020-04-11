@@ -23,7 +23,12 @@ class UpdateCommandTest extends TestCase
         $this->assertCount(9, $commandExecutor->buffer);
         $this->assertCommandContains($commandExecutor->buffer[0], 'Maintenance mode: on', 'php artisan down');
         $this->assertCommandContains($commandExecutor->buffer[1], 'Resetting application cache', 'php artisan cache:clear');
+        $this->assertCommandContains($commandExecutor->buffer[2], 'Clear config cache', 'php artisan config:clear');
+        $this->assertCommandContains($commandExecutor->buffer[3], 'Clear route cache', 'php artisan route:clear');
+        $this->assertCommandContains($commandExecutor->buffer[4], 'Clear view cache', 'php artisan view:clear');
         $this->assertCommandContains($commandExecutor->buffer[5], 'Performing migrations', 'php artisan migrate');
+        $this->assertCommandContains($commandExecutor->buffer[6], 'Check for encryption keys', 'php artisan monica:passport');
+        $this->assertCommandContains($commandExecutor->buffer[7], 'Ping for new version', 'php artisan monica:ping');
         $this->assertCommandContains($commandExecutor->buffer[8], 'Maintenance mode: off', 'php artisan up');
     }
 
@@ -40,8 +45,13 @@ class UpdateCommandTest extends TestCase
         $this->assertCount(10, $commandExecutor->buffer);
         $this->assertCommandContains($commandExecutor->buffer[0], 'Maintenance mode: on', 'php artisan down');
         $this->assertCommandContains($commandExecutor->buffer[1], 'Resetting application cache', 'php artisan cache:clear');
+        $this->assertCommandContains($commandExecutor->buffer[2], 'Clear config cache', 'php artisan config:clear');
+        $this->assertCommandContains($commandExecutor->buffer[3], 'Clear route cache', 'php artisan route:clear');
+        $this->assertCommandContains($commandExecutor->buffer[4], 'Clear view cache', 'php artisan view:clear');
         $this->assertCommandContains($commandExecutor->buffer[5], 'Updating composer dependencies', 'composer install');
         $this->assertCommandContains($commandExecutor->buffer[6], 'Performing migrations', 'php artisan migrate');
+        $this->assertCommandContains($commandExecutor->buffer[7], 'Check for encryption keys', 'php artisan monica:passport');
+        $this->assertCommandContains($commandExecutor->buffer[8], 'Ping for new version', 'php artisan monica:ping');
         $this->assertCommandContains($commandExecutor->buffer[9], 'Maintenance mode: off', 'php artisan up');
     }
 
