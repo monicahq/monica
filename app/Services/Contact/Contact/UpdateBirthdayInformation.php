@@ -187,7 +187,8 @@ class UpdateBirthdayInformation extends BaseService
                 'frequency_type' => 'year',
                 'frequency_number' => 1,
                 'title' => trans(
-                    'people.people_add_birthday_reminder',
+                    ($data['is_deceased'] ?
+                        'people.people_add_birthday_reminder_deceased' : 'people.people_add_birthday_reminder'),
                     ['name' => $contact->first_name]
                 ),
                 'delible' => false,

@@ -278,6 +278,7 @@ class SetupTest extends Command
                 'is_age_based' => rand(1, 2) == 1,
                 'age' => rand(1, 99),
                 'add_reminder' => rand(1, 2) == 1,
+                'is_deceased' => $this->contact->is_dead,
             ]);
         }
     }
@@ -353,6 +354,7 @@ class SetupTest extends Command
                     'is_age_based' => rand(1, 2) == 1,
                     'age' => rand(1, 99),
                     'add_reminder' => rand(1, 2) == 1,
+                    'is_deceased' => $relatedContact->is_dead,
                 ]);
 
                 // set relationship

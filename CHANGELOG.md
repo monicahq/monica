@@ -2,7 +2,7 @@
 
 ### New features:
 
-*
+* Change title of birthday reminder for deceased people
 
 ### Enhancements:
 
