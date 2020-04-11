@@ -52,6 +52,7 @@ return [
     'people_delete_message' => 'Contact verwijderen',
     'people_delete_confirmation' => 'Weet je zeker dat je dit contact wilt verwijderen? Dit is permanent.',
     'people_add_birthday_reminder' => 'Feliciteer :name met zijn/haar verjaardag',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
     'people_add_import' => 'Wil je <a href=":url">contacten importeren</a>?',
     'people_edit_email_error' => 'Er is al een contactpersoon in jouw account met dit e-mailadres. Kies alsjeblieft een ander.',
     'people_export' => 'Exporteer als vCard',
