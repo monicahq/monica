@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Add Japanese langage
 * Change title of birthday reminder for deceased people
 
 ### Enhancements:
