@@ -95,7 +95,7 @@ class Update extends Command
 
                 $this->commandExecutor->artisan('✓ Performing migrations', 'migrate', ['--force']);
 
-                $this->commandExecutor->artisan('✓ Check for encprytion keys', 'monica:passport', ['--force']);
+                $this->commandExecutor->artisan('✓ Check for encryption keys', 'monica:passport', ['--force']);
 
                 $this->commandExecutor->artisan('✓ Ping for new version', 'monica:ping', ['--force']);
 
