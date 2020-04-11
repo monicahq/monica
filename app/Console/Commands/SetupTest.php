@@ -295,10 +295,10 @@ class SetupTest extends Command
 
             if (rand(1, 2) == 1) {
                 // add a date where we don't know the year
-                $specialDate = $this->contact->setSpecialDate('first_met', 0, $firstMetDate->format('m'), $firstMetDate->format('d'));
+                $specialDate = $this->contact->setSpecialDate('first_met', 0, intval($firstMetDate->format('m')), intval($firstMetDate->format('d')));
             } else {
                 // add a date where we know the year
-                $specialDate = $this->contact->setSpecialDate('first_met', $firstMetDate->format('Y'), $firstMetDate->format('m'), $firstMetDate->format('d'));
+                $specialDate = $this->contact->setSpecialDate('first_met', intval($firstMetDate->format('Y')), intval($firstMetDate->format('m')), intval($firstMetDate->format('d')));
             }
             app(CreateReminder::class)->execute([
                 'account_id' => $this->account->id,
@@ -489,7 +489,7 @@ class SetupTest extends Command
             $this->countries = CountriesHelper::getAll();
         }
 
-        return $this->countries->random()->id;
+        return $this->countries->random()['id'];
     }
 
     public function populateContactFields()
@@ -601,7 +601,7 @@ class SetupTest extends Command
 
     public function changeUpdatedAt()
     {
-        $this->contact->last_consulted_at = $this->faker->dateTimeThisYear();
+        $this->contact->last_consulted_at = Carbon::instance($this->faker->dateTimeThisYear());
         $this->contact->save();
     }
 

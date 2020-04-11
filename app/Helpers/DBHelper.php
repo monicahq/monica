@@ -24,12 +24,12 @@ class DBHelper
      *
      * @return string|null
      */
-    public static function version()
+    public static function version(): ?string
     {
         try {
             return static::connection()->getPdo()->getAttribute(PDO::ATTR_SERVER_VERSION);
         } catch (\Exception $e) {
-            return;
+            return null;
         }
     }
 

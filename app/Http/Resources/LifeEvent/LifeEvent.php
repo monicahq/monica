@@ -3,11 +3,14 @@
 namespace App\Http\Resources\LifeEvent;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\LifeEvent\LifeEventType as LifeEventTypeResource;
 
-class LifeEvent extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\LifeEvent>
+ */
+class LifeEvent extends JsonResource
 {
     /**
      * Transform the resource into an array.

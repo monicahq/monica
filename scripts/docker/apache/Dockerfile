@@ -108,7 +108,7 @@ RUN install-composer.sh
 # Install composer dependencies
 USER monica
 RUN composer global require hirak/prestissimo; \
-    composer install --no-interaction --no-suggest --no-progress --no-dev; \
+    composer install --no-interaction --no-suggest --no-progress --no-dev --ignore-platform-reqs; \
     composer global remove hirak/prestissimo; \
     composer clear-cache; \
     rm -rf .composer
@@ -121,7 +121,7 @@ RUN set -ex && \
 	cd /etc/periodic/hourly/ && \
 	{ \
 		echo '#!/bin/sh'; \
-		echo '/usr/bin/php /usr/src/monica/artisan schedule:run -v > /proc/1/fd/1 2> /proc/1/fd/2'; \
+		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v > /proc/1/fd/1 2> /proc/1/fd/2'; \
 	} | tee monica && \
 	chmod a+x monica
 

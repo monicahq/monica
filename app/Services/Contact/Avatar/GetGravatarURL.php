@@ -27,7 +27,7 @@ class GetGravatarURL extends BaseService
      * @param array $data
      * @return string|null
      */
-    public function execute(array $data)
+    public function execute(array $data): ?string
     {
         $this->validate($data);
 
@@ -39,6 +39,8 @@ class GetGravatarURL extends BaseService
                 'secure' => App::environment('production'),
             ]);
         }
+
+        return null;
     }
 
     /**

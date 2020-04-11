@@ -78,12 +78,10 @@ class UpdateDeceasedInformation extends BaseService
      */
     private function clearRelatedSpecialDate(Contact $contact)
     {
-        if (is_null($contact->deceased_special_date_id)) {
-            return;
-        }
-
         $specialDate = SpecialDate::find($contact->deceased_special_date_id);
-        $specialDate->delete();
+        if (! is_null($specialDate)) {
+            $specialDate->delete();
+        }
     }
 
     /**

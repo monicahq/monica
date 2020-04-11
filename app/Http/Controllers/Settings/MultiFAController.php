@@ -3,17 +3,11 @@
 namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
-use function Safe\json_decode;
-use Lahaxearnaud\U2f\Models\U2fKey;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Traits\JsonRespondController;
-use Illuminate\Support\Facades\Event;
-use Lahaxearnaud\U2f\U2fFacade as U2f;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
-use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 
 class MultiFAController extends Controller
 {
@@ -28,7 +22,7 @@ class MultiFAController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function enableTwoFactor(Request $request)
     {
@@ -52,7 +46,7 @@ class MultiFAController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function validateTwoFactor(Request $request)
     {
@@ -99,7 +93,7 @@ class MultiFAController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function deactivateTwoFactor(Request $request)
     {
@@ -136,58 +130,5 @@ class MultiFAController extends Controller
     private function generateSecret()
     {
         return Google2FA::generateSecretKey(32);
-    }
-
-    /**
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function u2fRegisterData(Request $request)
-    {
-        [$req, $sigs] = app('u2f')->getRegisterData($request->user());
-        session(['u2f.registerData' => $req]);
-
-        return $this->respond([
-            'currentKeys' => $sigs,
-            'registerData' => $req,
-        ]);
-    }
-
-    public function u2fRegister(Request $request)
-    {
-        try {
-            $key = U2f::doRegister(Auth::user(), session('u2f.registerData'), json_decode($request->input('register')));
-            if ($request->filled('name')) {
-                $key->name = $request->input('name');
-                $key->save();
-            }
-
-            Event::dispatch('u2f.register', ['u2fKey' => $key, 'user' => Auth::user()]);
-            session()->forget('u2f.registerData');
-
-            session([config('u2f.sessionU2fName') => true]);
-
-            return new U2fKeyResource($key);
-        } catch (\Exception $e) {
-            return $this->respondWithError($e->getMessage());
-        }
-    }
-
-    /**
-     * Remove an existing security key.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function u2fRemove(Request $request, int $u2fKeyId)
-    {
-        $u2fKey = U2fKey::where('user_id', auth()->id())
-            ->findOrFail($u2fKeyId);
-
-        $u2fKey->delete();
-
-        return $this->respondObjectDeleted($u2fKeyId);
     }
 }

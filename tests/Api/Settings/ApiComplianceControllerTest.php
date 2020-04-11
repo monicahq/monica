@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Api\Contact;
+namespace Tests\Api\Settings;
 
 use Tests\ApiTestCase;
 use App\Models\Settings\Term;

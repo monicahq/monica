@@ -56,7 +56,7 @@ class GetGravatar extends BaseService
                                 ->get();
         foreach ($contactFields as $contactField) {
             try {
-                $email = $contactField ? $contactField->data : null;
+                $email = $contactField->data;
 
                 Validator::make(['email' => $email], ['email' => 'email'])
                     ->validate();

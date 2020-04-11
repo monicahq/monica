@@ -69,7 +69,7 @@ class AuthenticateWithTokenOnBasicAuth
             $user = $guard->setRequest($request)->user();
         }
 
-        if ($user && (! $request->getUser() || $request->getUser() === $user->email)) {
+        if ($user && (! $request->getUser() || (property_exists($user, 'email') && $request->getUser() === $user->email))) {
             $this->auth->guard()->setUser($user);
         } else {
             // Basic authentication

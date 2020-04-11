@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\LAbel;
+namespace Tests\Unit\Services\Contact\Label;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
