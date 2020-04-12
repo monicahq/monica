@@ -7,6 +7,7 @@
 
 ### Enhancements:
 
+* Add cache for S3 storage, and use new standard variables
 * Add new command monica:passport to generate encryption if needed
 * Improve nginx config docker examples
 * Remove u2f support (replaced with WebAuthn)
