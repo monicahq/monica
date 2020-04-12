@@ -52,7 +52,7 @@ return [
     'people_delete_message' => 'Bağlantıyı Sil',
     'people_delete_confirmation' => 'Bu kişiyi silmek istediğinizden emin misiniz? Silinen kayıtlar geri alınamaz.',
     'people_add_birthday_reminder' => 'Mutlu yıllar diliyorum: isim',
-    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
+    'people_add_birthday_reminder_deceased' => 'Bu tarihte, :name doğum gününü kutlardı',
     'people_add_import' => '<a href=":url">Bağlantılarınızı aktarmak</a> istiyor musunuz?',
     'people_edit_email_error' => 'Bu e-mail adresine sahip bir kişi listenize kayıtlı. Lütfen farklı bir adres giriniz.',
     'people_export' => 'Vcard Formatında Çıkar',
@@ -504,7 +504,7 @@ return [
 
     // logs
     'auditlogs_link' => 'Geçmiş',
-    'auditlogs_title' => 'Everything that happened to :name',
+    'auditlogs_title' => 'Bu hesaba ait tüm kayıtlar',
     'auditlogs_breadcrumb' => 'Geçmiş',
     'auditlogs_author' => ':date tarihinde :name adına göre',
 
