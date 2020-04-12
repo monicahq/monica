@@ -7,6 +7,7 @@
 
 ### Enhancements:
 
+* Add cache for S3 storage, and use new standard variables
 * Remove authentication with login+password for carddav
 * Add new command monica:passport to generate encryption if needed
 * Improve nginx config docker examples
