@@ -29,6 +29,11 @@ AWS_BUCKET=my-bucket
 AWS_DEFAULT_REGION=eu-west-3
 ```
 
+You can also use [AWS CLI](https://docs.aws.amazon.com/cli/index.html) to create the bucket:
+```sh
+aws s3 mb s3://my-bucket
+```
+
 ### 2. Create a user
 
 1. Create a new user via the [console](https://console.aws.amazon.com/iam/home#/users).
@@ -43,6 +48,25 @@ AWS_ACCESS_KEY_ID=AKXA3E2NYF7NPDJVQSOU
 AWS_SECRET_ACCESS_KEY=aASalDme6wB8kGC7Xla6K3pI+FiFylpCVnGCmdnD
 ```
 
+You can also use [AWS CLI](https://docs.aws.amazon.com/cli/index.html) to set credentials:
+```sh
+aws iam create-user --user-name user-monica-test
+aws iam attach-user-policy --user-name user-monica-test --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
+aws iam create-access-key --user-name user-monica-test
+```
+Output:
+```
+{
+    "AccessKey": {
+        "UserName": "user-monica-test",
+        "AccessKeyId": "AKIAXE2N0F6NIMZXLCGB",
+        "Status": "Active",
+        "SecretAccessKey": "Lh5ValIoe9xlfrhkpqiZOub1TFFo4qn1sAdFvlOM",
+        "CreateDate": "2020-04-12T11:35:06+00:00"
+    }
+}
+```
+Then save `AccessKeyId` and `SecretAccessKey` in `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` variables.
 
 ### 3. Set environment variables
 
