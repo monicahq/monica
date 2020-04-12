@@ -8,6 +8,7 @@
 ### Enhancements:
 
 * Add cache for S3 storage, and use new standard variables
+* Remove authentication with login+password for carddav
 * Add new command monica:passport to generate encryption if needed
 * Improve nginx config docker examples
 * Remove u2f support (replaced with WebAuthn)
@@ -15,6 +16,7 @@
 
 ### Fixes:
 
+* Fix authentication with token on basic auth
 * Fix editing multiple notes at the same time only edits one note
 * Fix countries in fake contact seeder
 * Fix docker rsync exclude rules
