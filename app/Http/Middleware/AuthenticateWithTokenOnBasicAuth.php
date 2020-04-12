@@ -68,11 +68,11 @@ class AuthenticateWithTokenOnBasicAuth
     }
 
     /**
-     * Try Bearer authentication, with token in 'password' field on basic auth
+     * Try Bearer authentication, with token in 'password' field on basic auth.
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    private function tryBearer(Request  $request)
+    private function tryBearer(Request $request)
     {
         // Try Bearer authentication, with token in 'password' field on basic auth
         if (! $request->bearerToken()) {
