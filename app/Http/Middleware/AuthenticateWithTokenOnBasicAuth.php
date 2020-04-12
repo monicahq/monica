@@ -3,12 +3,15 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Auth\AuthManager;
 
 /**
- * Authenticate user with Basic Authentication, with two methods:
- * - Basic auth: login + password
- * - Bearer on basic: login + api token.
+ * Authenticate user with Basic Authentication, with Passport token on password field.
+ *
+ * Examples:
+ *   curl -u "email@example.com:$TOKEN" -X PROPFIND https://localhost/dav/
+ *   curl -u ":$TOKEN" -X PROPFIND https://localhost/dav/
  */
 class AuthenticateWithTokenOnBasicAuth
 {
@@ -57,25 +60,40 @@ class AuthenticateWithTokenOnBasicAuth
             return;
         }
 
+        $user = $this->tryBearer($request);
+
+        if ($user && (! $request->getUser() || $request->getUser() === $user->email)) {
+            $this->auth->guard()->setUser($user);
+        }
+    }
+
+    /**
+     * Try Bearer authentication, with token in 'password' field on basic auth
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    private function tryBearer(Request  $request)
+    {
         // Try Bearer authentication, with token in 'password' field on basic auth
         if (! $request->bearerToken()) {
             $password = $request->getPassword();
             $request->headers->set('Authorization', 'Bearer '.$password);
         }
 
+        $headerUser = $request->getUser();
         $user = null;
-        $guard = $this->auth->guard('api');
-        if (method_exists($guard, 'setRequest')) {
-            $user = $guard->setRequest($request)->user();
+        try {
+            $request->headers->set('PHP_AUTH_USER', '');
+
+            $guard = $this->auth->guard('api');
+
+            if (method_exists($guard, 'setRequest')) {
+                $user = $guard->setRequest($request)->user();
+            }
+        } finally {
+            $request->headers->set('PHP_AUTH_USER', $headerUser);
         }
 
-        if ($user && (! $request->getUser() || (property_exists($user, 'email') && $request->getUser() === $user->email))) {
-            $this->auth->guard()->setUser($user);
-        } else {
-            // Basic authentication
-            /** @var \Illuminate\Contracts\Auth\SupportsBasicAuth */
-            $guard = $this->auth->guard();
-            $guard->onceBasic();
-        }
+        return $user;
     }
 }
