@@ -5,6 +5,7 @@
   - [2. Create a user](#2-create-a-user)
   - [3. Set environment variables](#3-set-environment-variables)
   - [(Optional) Use another S3 provider](#optional-use-another-s3-provider)
+  - [Move avatars to S3 storage](#move-avatars-to-s3-storage)
 
 
 Some times you want to add an external storage for your avatars, photos, or documents.
@@ -55,3 +56,11 @@ DEFAULT_FILESYSTEM=s3
 
 *AWS_ENDPOINT* variable can be used to define a S3-compatible provider other than Amazon, like [Digitalocean](https://www.digitalocean.com/products/spaces/) or [Minio](https://min.io/).
    example: `AWS_ENDPOINT=https://nyc3.digitaloceanspaces.com`
+
+
+### Move avatars to S3 storage
+
+If you previously used local storage and want to move all avatars to a new S3 storage, use `monica:moveavatars` command once to move all files:
+```sh
+php artisan monica:moveavatars
+```
