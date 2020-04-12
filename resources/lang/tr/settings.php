@@ -19,13 +19,13 @@ return [
     'title_layout' => 'Görünüm',
 
     'me_title' => 'Kişilerim',
-    'me_help' => 'This is the contact that represents <em>you</em> in Monica',
+    'me_help' => 'Bu hesap Monica\'da <em>sizi</em> temsil eden kişidir',
     'me_select' => 'Bir kişi seçin',
     'me_no_contact' => 'Henüz bir kişi seçilmedi.',
     'me_select_click' => 'Bir kişi seçmek için buraya tıklayınız.',
     'me_remove_contact' => 'İlişkiyi Kaldır',
-    'me_choose' => 'Choose yourself',
-    'me_choose_placeholder' => 'Choose yourself',
+    'me_choose' => 'Kendinizi seçin',
+    'me_choose_placeholder' => 'Kendinizi seçin',
 
     'export_title' => 'Hesap bilgilerini dışarı aktar',
     'export_be_patient' => 'Dışarı aktarma işlemini başlatmak için butona tıklayın. Bu işlem birkaç dakika sürebilir - lütfen sabırlı olun butona sürekli basmayın.',
@@ -390,7 +390,7 @@ return [
     'personalization_module_title' => 'Özellikler',
     'personalization_module_desc' => 'Bazı insanların tüm özelliklere ihtiyacı yoktur. Aşağıda, bir kişi sayfasında kullanılan belirli özellikleri değiştirebilirsiniz. Bu değişiklik TÜM kişilerinizi etkileyecektir. Bu özelliklerden birini kapatırsanız, verilerin kaybolmayacağını - sadece özelliği gizleyeceğimizi unutmayın.',
 
-    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href=":url">Settings > Subscription</a>.',
+    'personalisation_paid_upgrade' => 'Bu Ücretli bir abonelik gerektiren premium bir özelliktir. <a href=":url">Ayarlar > Abonelik</a> bölümünü ziyaret ederek hesabınızı yükseltin.',
     'personalisation_paid_upgrade_vue' => 'Bu Ücretli bir abonelik gerektiren premium bir özelliktir. <a href="{url}">Ayarlar > Abonelik</a> bölümünü ziyaret ederek hesabınızı yükseltin.',
 
     'reminder_time_to_send' => 'Gün içinde hatırlatmaların gönderilmesi gereken saat',
@@ -491,6 +491,6 @@ return [
     'archive_desc' => 'Bu, hesabınızdaki tüm kişileri arşivleyecektir.',
     'archive_cta' => 'Tüm kişilerinizi arşivleyin',
 
-    'logs_title' => 'Everything that happened to this account',
+    'logs_title' => 'Bu hesaba ait tüm kayıtlar',
     'logs_author' => ':date tarihinde :name adına göre',
 ];
