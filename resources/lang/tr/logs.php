@@ -15,15 +15,15 @@ return [
     'settings_log_contact_description_updated_with_name_with_link' => '<a href=":link">:name</a> açıklaması güncellendi.',
 
     // contact description clear
-    'contact_log_contact_description_cleared' => 'Cleared the description.',
-    'settings_log_contact_description_cleared_with_name' => 'Cleared the description of :name.',
-    'settings_log_contact_description_cleared_with_name_with_link' => 'Cleared the description of <a href=":link">:name</a>.',
+    'contact_log_contact_description_cleared' => 'Açıklama temizlendi.',
+    'settings_log_contact_description_cleared_with_name' => ':name açıklaması temizlendi.',
+    'settings_log_contact_description_cleared_with_name_with_link' => '<a href=":link">:name</a> açıklaması temizlendi.',
 
     // contact work information update
-    'contact_log_contact_work_updated' => 'Updated work information.',
-    'settings_log_contact_work_updated_with_name' => 'Updated work information of :name.',
-    'settings_log_contact_work_updated_with_name_with_link' => 'Updated work information of <a href=":link">:name</a>.',
+    'contact_log_contact_work_updated' => 'İş bilgileri güncellendi.',
+    'settings_log_contact_work_updated_with_name' => ':name iş bilgileri güncellendi.',
+    'settings_log_contact_work_updated_with_name_with_link' => '<a href=":link">:name</a> iş bilgileri güncellendi.',
 
     // company created
-    'settings_log_company_created' => 'Created a company called :name.',
+    'settings_log_company_created' => ':name adında bir firma oluşturuldu.',
 ];
