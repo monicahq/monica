@@ -12,18 +12,18 @@ return [
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'DAV Kaynakları',
     'sidebar_settings_security' => 'Güvenlik',
-    'sidebar_settings_auditlogs' => 'Audit logs',
+    'sidebar_settings_auditlogs' => 'İnceleme günlüğü',
 
-    'title_general' => 'General Information',
-    'title_i18n' => 'International settings',
-    'title_layout' => 'Layout',
+    'title_general' => 'Genel Bilgiler',
+    'title_i18n' => 'Uluslararası ayarlar',
+    'title_layout' => 'Görünüm',
 
-    'me_title' => 'My contact',
+    'me_title' => 'Kişilerim',
     'me_help' => 'This is the contact that represents <em>you</em> in Monica',
-    'me_select' => 'Select a contact',
-    'me_no_contact' => 'No contact selected yet.',
-    'me_select_click' => 'Click here to select a contact.',
-    'me_remove_contact' => 'Remove the association',
+    'me_select' => 'Bir kişi seçin',
+    'me_no_contact' => 'Henüz bir kişi seçilmedi.',
+    'me_select_click' => 'Bir kişi seçmek için buraya tıklayınız.',
+    'me_remove_contact' => 'İlişkiyi Kaldır',
     'me_choose' => 'Choose yourself',
     'me_choose_placeholder' => 'Choose yourself',
 
@@ -79,7 +79,7 @@ return [
     'locale_he' => 'İbranice',
     'locale_hr' => 'Hırvatca',
     'locale_it' => 'İtalyanca',
-    'locale_ja' => 'Japanese',
+    'locale_ja' => 'Japonca',
     'locale_nl' => 'Flemenkçe',
     'locale_pt' => 'Portekizce',
     'locale_pt-BR' => 'Portekizce (Brezilya)',
@@ -362,7 +362,7 @@ return [
     'personalization_genders_modal_name_help' => 'İletişim sayfasında gösterilecek olan cinsiyetin ismi.',
     'personalization_genders_modal_sex' => 'Cinsiyet',
     'personalization_genders_modal_sex_help' => 'İlişkileri tanımlamak için ve vCard içe/dışa aktarma işlemi sırasında kullanılır.',
-    'personalization_genders_modal_default' => 'Select the default gender for a new contact',
+    'personalization_genders_modal_default' => 'Yeni bağlantılar için genel cinsiyeti seçiniz',
     'personalization_genders_modal_delete' => 'Cinsiyet türünü sil',
     'personalization_genders_modal_delete_desc' => '{name} silmek istediğinizden emin misiniz?',
     'personalization_genders_modal_delete_question' => 'Şu anda bu cinsiyete sahip {count} kişiniz bulunmaktadır. Bu cinsiyeti silerseniz, bu kişi(ler) hangi cinsiyete sahip olmalıdır?',
@@ -391,7 +391,7 @@ return [
     'personalization_module_desc' => 'Bazı insanların tüm özelliklere ihtiyacı yoktur. Aşağıda, bir kişi sayfasında kullanılan belirli özellikleri değiştirebilirsiniz. Bu değişiklik TÜM kişilerinizi etkileyecektir. Bu özelliklerden birini kapatırsanız, verilerin kaybolmayacağını - sadece özelliği gizleyeceğimizi unutmayın.',
 
     'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href=":url">Settings > Subscription</a>.',
-    'personalisation_paid_upgrade_vue' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href="{url}">Settings > Subscription</a>.',
+    'personalisation_paid_upgrade_vue' => 'Bu Ücretli bir abonelik gerektiren premium bir özelliktir. <a href="{url}">Ayarlar > Abonelik</a> bölümünü ziyaret ederek hesabınızı yükseltin.',
 
     'reminder_time_to_send' => 'Gün içinde hatırlatmaların gönderilmesi gereken saat',
     'reminder_time_to_send_help' => 'Bilginize, bir sonraki hatırlatıcınız <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span> tarihinde gönderilecek.',
@@ -492,5 +492,5 @@ return [
     'archive_cta' => 'Tüm kişilerinizi arşivleyin',
 
     'logs_title' => 'Everything that happened to this account',
-    'logs_author' => 'By :name on :date',
+    'logs_author' => ':date tarihinde :name adına göre',
 ];
