@@ -1,8 +1,22 @@
-# Installing Monica on Docker
+# Installing Monica on Docker <!-- omit in toc -->
 
 <img alt="Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Docker_%28container_engine%29_logo.svg/915px-Docker_%28container_engine%29_logo.svg.png" width="290" height="69" />
 
 Monica can run with Docker images.
+
+- [Prerequisites](#prerequisites)
+- [Use Monica docker image](#use-monica-docker-image)
+  - [Using the apache image](#using-the-apache-image)
+  - [Using the fpm image](#using-the-fpm-image)
+  - [Persistent data storage](#persistent-data-storage)
+  - [Run commands inside the container](#run-commands-inside-the-container)
+- [Running the image with docker-compose](#running-the-image-with-docker-compose)
+  - [Apache version](#apache-version)
+  - [FPM version](#fpm-version)
+- [Make Monica available from the internet](#make-monica-available-from-the-internet)
+  - [Using a proxy webserver on the host](#using-a-proxy-webserver-on-the-host)
+  - [Using a proxy webserver container](#using-a-proxy-webserver-container)
+- [Other documents to read](#other-documents-to-read)
 
 ## Prerequisites
 
@@ -44,9 +58,9 @@ To have a persistent storage for your datas, you may want to create volumes for 
 
 Run a container with this named volume:
 ```sh
-docker run -d 
--v monica_data:/var/www/monica/storage
-monicahq/monicahq
+docker run -d  \
+    -v monica_data:/var/www/monica/storage \
+    monicahq/monicahq
 ```
 
 ### Run commands inside the container
@@ -207,14 +221,15 @@ To expose your Monica instance for the internet, it's important to set `APP_ENV=
 
 One way to expose your Monica instance is to use a proxy webserver from your host with SSL capabilities. This is possible with a reverse proxy.
 
+See [this documentation](/docs/installation/ssl.md) about howto set a ssl reverse proxy.
+
 ### Using a proxy webserver container
 
 See some examples of docker-compose possibilities in the [example section](/scripts/docker/.examples) to show how to a proxy webserver with ssl capabilities.
 
 
 
-# Other documents to read	
+## Other documents to read	
 
 - [Build your own docker image](/docs/contribute/docker.md)
 - [Connecting to MySQL inside of a Docker container](/docs/installation/docker-mysql.md)
-- [Use mobile app with standalone server](/docs/installation/mobile.md)

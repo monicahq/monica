@@ -1,0 +1,57 @@
+# External storage <!-- omit in toc -->
+
+- [Add an external storage](#add-an-external-storage)
+  - [1. Create AWS S3 storage](#1-create-aws-s3-storage)
+  - [2. Create a user](#2-create-a-user)
+  - [3. Set environment variables](#3-set-environment-variables)
+  - [(Optional) Use another S3 provider](#optional-use-another-s3-provider)
+
+
+Some times you want to add an external storage for your avatars, photos, or documents.
+
+This is useful in particular if you install Monica on a stateless volatile instance, like Heroku, Platform.sh, etc.
+
+We currently only support AWS S3 driver as external storage.
+
+
+## Add an external storage
+
+### 1. Create AWS S3 storage
+
+1. Go to the S3 [console](https://s3.console.aws.amazon.com/s3/home)
+2. Add a new bucket
+   - Allow public access for the bucket. This is mandatory for now.
+3. Save the name and location of the bucket in `AWS_BUCKET` and `AWS_DEFAULT_REGION` variables
+
+```
+AWS_BUCKET=my-bucket
+AWS_DEFAULT_REGION=eu-west-3
+```
+
+### 2. Create a user
+
+1. Create a new user via the [console](https://console.aws.amazon.com/iam/home#/users).
+2. Add the strategy for S3 access, for instance `AmazonS3FullAccess` is a good choice:
+   - add the user to a group with the right strategy
+   - or attach the strategy directly.
+
+3. Save credentials of the user in `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` variables
+
+```
+AWS_ACCESS_KEY_ID=AKXA3E2NYF7NPDJVQSOU
+AWS_SECRET_ACCESS_KEY=aASalDme6wB8kGC7Xla6K3pI+FiFylpCVnGCmdnD
+```
+
+
+### 3. Set environment variables
+
+Don't forget to set this variable to use S3 storage:
+```
+DEFAULT_FILESYSTEM=s3
+```
+
+
+### (Optional) Use another S3 provider
+
+*AWS_ENDPOINT* variable can be used to define a S3-compatible provider other than Amazon, like [Digitalocean](https://www.digitalocean.com/products/spaces/) or [Minio](https://min.io/).
+   example: `AWS_ENDPOINT=https://nyc3.digitaloceanspaces.com`

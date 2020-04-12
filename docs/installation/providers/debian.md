@@ -1,8 +1,17 @@
-# Installing Monica on Debian
+# Installing Monica on Debian <!-- omit in toc -->
 
 <img alt="Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Debian-OpenLogo.svg/109px-Debian-OpenLogo.svg.png" width="96" height="127" />
 
 Monica can run on Debian Buster.
+
+- [Prerequisites](#prerequisites)
+- [Installation steps](#installation-steps)
+  - [1. Clone the repository](#1-clone-the-repository)
+  - [2. Setup the database](#2-setup-the-database)
+  - [3. Configure Monica](#3-configure-monica)
+  - [4. Configure cron job](#4-configure-cron-job)
+  - [5. Configure Apache webserver](#5-configure-apache-webserver)
+  - [Final step](#final-step)
 
 ## Prerequisites
 
