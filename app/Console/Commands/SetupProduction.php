@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use function Safe\touch;
+use App\Helpers\InstanceHelper;
 use App\Models\Account\Account;
 use Illuminate\Console\Command;
 
@@ -67,7 +68,7 @@ class SetupProduction extends Command
             $this->info('| You can now sign in to your account:');
             $this->line('| username: '.$email);
             $this->line('| password: <hidden>');
-        } elseif (Account::hasAny()) {
+        } elseif (InstanceHelper::hasAtLeastOneAccount()) {
             $this->info('| You can now log in to your account');
         } else {
             $this->info('| You can now register to the first account by opening the application:');

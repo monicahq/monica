@@ -5,19 +5,21 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Collection;
+use Illuminate\Http\JsonResponse;
+use App\Jobs\UpdateLastConsultedDate;
 use Illuminate\Database\QueryException;
 use App\Services\Contact\Contact\SetMeContact;
 use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
-use App\Services\Contact\Contact\UpdateContactWork;
+use Illuminate\Http\Resources\Json\JsonResource;
+use App\Services\Contact\Contact\DeleteMeContact;
+use App\Services\Contact\Contact\UpdateWorkInformation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
-use App\Services\Contact\Contact\UpdateContactIntroductions;
+use App\Services\Contact\Contact\UpdateContactIntroduction;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
-use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
 
 class ApiContactController extends ApiController
 {
@@ -37,7 +39,8 @@ class ApiContactController extends ApiController
      * We will only retrieve the contacts that are "real", not the partials
      * ones.
      *
-     * @return \Illuminate\Http\Resources\Json\JsonResource|\Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResource|JsonResponse
      */
     public function index(Request $request)
     {
@@ -54,9 +57,7 @@ class ApiContactController extends ApiController
                 return $this->respondInvalidQuery();
             }
 
-            $collection = $this->applyWithParameter($contacts, $this->getWithParameter());
-
-            return $collection->additional([
+            return ContactResource::collection($contacts)->additional([
                 'meta' => [
                     'query' => $needle,
                 ],
@@ -73,17 +74,17 @@ class ApiContactController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->applyWithParameter($contacts, $this->getWithParameter());
+        return ContactResource::collection($contacts);
     }
 
     /**
      * Get the detail of a given contact.
      *
      * @param Request $request
-     *
-     * @return ContactResource|\Illuminate\Http\JsonResponse|ContactWithContactFieldsResource
+     * @param int $id
+     * @return ContactResource|JsonResponse
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, int $id)
     {
         try {
             $contact = Contact::where('account_id', auth()->user()->account_id)
@@ -93,11 +94,7 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
-        $contact->updateConsulted();
-
-        if ($this->getWithParameter() == 'contactfields') {
-            return new ContactWithContactFieldsResource($contact);
-        }
+        UpdateLastConsultedDate::dispatch($contact);
 
         return new ContactResource($contact);
     }
@@ -107,7 +104,7 @@ class ApiContactController extends ApiController
      *
      * @param Request $request
      *
-     * @return ContactResource|\Illuminate\Http\JsonResponse
+     * @return ContactResource|JsonResponse
      */
     public function store(Request $request)
     {
@@ -116,7 +113,8 @@ class ApiContactController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
+                        'author_id' => auth()->user()->id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -135,7 +133,7 @@ class ApiContactController extends ApiController
      *
      * @param Request $request
      *
-     * @return ContactResource|\Illuminate\Http\JsonResponse
+     * @return ContactResource|JsonResponse
      */
     public function update(Request $request, $contactId)
     {
@@ -145,7 +143,7 @@ class ApiContactController extends ApiController
                     +
                     [
                         'contact_id' => $contactId,
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -164,31 +162,17 @@ class ApiContactController extends ApiController
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function destroy(Request $request, $contactId)
     {
         $data = [
             'contact_id' => $contactId,
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
         ];
         app(DestroyContact::class)->execute($data);
 
         return $this->respondObjectDeleted($contactId);
-    }
-
-    /**
-     * Apply the `?with=` parameter.
-     * @param  Collection $contacts
-     * @return \Illuminate\Http\Resources\Json\JsonResource
-     */
-    private function applyWithParameter($contacts, string $parameter = null)
-    {
-        if ($parameter == 'contactfields') {
-            return ContactWithContactFieldsResource::collection($contacts);
-        }
-
-        return ContactResource::collection($contacts);
     }
 
     /**
@@ -203,11 +187,36 @@ class ApiContactController extends ApiController
     {
         $data = [
             'contact_id' => $contactId,
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'user_id' => auth()->user()->id,
         ];
 
-        app(SetMeContact::class)->execute($data);
+        try {
+            app(SetMeContact::class)->execute($data);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        }
+
+        return $this->respond(['true']);
+    }
+
+    /**
+     * Removes contact as 'me' association.
+     *
+     * @param Request $request
+     *
+     * @return string
+     */
+    public function removeMe(Request $request)
+    {
+        $data = [
+            'account_id' => auth()->user()->account_id,
+            'user_id' => auth()->user()->id,
+        ];
+
+        app(DeleteMeContact::class)->execute($data);
 
         return $this->respond(['true']);
     }
@@ -218,16 +227,17 @@ class ApiContactController extends ApiController
      * @param Request $request
      * @param int $contactId
      *
-     * @return ContactResource|\Illuminate\Http\JsonResponse
+     * @return ContactResource|JsonResponse
      */
     public function updateWork(Request $request, $contactId)
     {
         try {
-            $contact = app(UpdateContactWork::class)->execute(
+            $contact = app(UpdateWorkInformation::class)->execute(
                 $request->except(['account_id', 'contact_id'])
                 + [
                     'contact_id' => $contactId,
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
+                    'author_id' => auth()->user()->id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -247,7 +257,7 @@ class ApiContactController extends ApiController
      * @param Request $request
      * @param int $contactId
      *
-     * @return ContactResource|\Illuminate\Http\JsonResponse
+     * @return ContactResource|JsonResponse
      */
     public function updateFoodPreferences(Request $request, $contactId)
     {
@@ -256,7 +266,7 @@ class ApiContactController extends ApiController
                 $request->except(['account_id', 'contact_id'])
                 + [
                     'contact_id' => $contactId,
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -276,16 +286,16 @@ class ApiContactController extends ApiController
      * @param Request $request
      * @param int $contactId
      *
-     * @return ContactResource|\Illuminate\Http\JsonResponse
+     * @return ContactResource|JsonResponse
      */
     public function updateIntroduction(Request $request, $contactId)
     {
         try {
-            $contact = app(UpdateContactIntroductions::class)->execute(
+            $contact = app(UpdateContactIntroduction::class)->execute(
                 $request->except(['account_id', 'contact_id'])
                 + [
                     'contact_id' => $contactId,
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                 ]
             );
         } catch (ModelNotFoundException $e) {

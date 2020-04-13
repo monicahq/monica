@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use Illuminate\Database\QueryException;
@@ -31,7 +32,7 @@ class ApiActivitiesController extends ApiController
         }
 
         return ActivityResource::collection($activities)->additional(['meta' => [
-            'statistics' => auth()->user()->account->getYearlyActivitiesStatistics(),
+            'statistics' => AccountHelper::getYearlyActivitiesStatistics(auth()->user()->account),
         ]]);
     }
 
@@ -68,7 +69,7 @@ class ApiActivitiesController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -97,7 +98,7 @@ class ApiActivitiesController extends ApiController
                 $request->except(['account_id', 'activity_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                         'activity_id' => $activityId,
                     ]
             );
@@ -158,7 +159,7 @@ class ApiActivitiesController extends ApiController
         }
 
         return ActivityResource::collection($activities)->additional(['meta' => [
-            'statistics' => auth()->user()->account->getYearlyActivitiesStatistics(),
+            'statistics' => AccountHelper::getYearlyActivitiesStatistics(auth()->user()->account),
         ]]);
     }
 }

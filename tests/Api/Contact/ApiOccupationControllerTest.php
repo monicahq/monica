@@ -38,7 +38,7 @@ class ApiOccupationControllerTest extends ApiTestCase
         $user = $this->signin();
 
         factory(Occupation::class, 3)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/occupations');
@@ -81,7 +81,7 @@ class ApiOccupationControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $occupation = factory(Occupation::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('get', '/api/occupations/'.$occupation->id);
@@ -135,7 +135,7 @@ class ApiOccupationControllerTest extends ApiTestCase
         ]);
 
         $this->assertDatabaseHas('occupations', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $occupationId,
             'title' => 'Waiter',
         ]);
@@ -145,7 +145,7 @@ class ApiOccupationControllerTest extends ApiTestCase
     {
         $user = $this->signin();
         $occupation = factory(Occupation::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('put', '/api/occupations/'.$occupation->id, [
@@ -171,7 +171,7 @@ class ApiOccupationControllerTest extends ApiTestCase
         ]);
 
         $this->assertDatabaseHas('occupations', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $occupationId,
             'title' => 'Commissaire',
             'salary' => null,
@@ -202,7 +202,7 @@ class ApiOccupationControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $occupation = factory(Occupation::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('delete', '/api/occupations/'.$occupation->id);
@@ -210,7 +210,7 @@ class ApiOccupationControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $this->assertdatabasemissing('occupations', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $occupation->id,
         ]);
     }

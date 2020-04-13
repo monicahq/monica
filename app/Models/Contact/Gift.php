@@ -15,6 +15,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property Account $account
  * @property Contact $contact
  * @property Contact $recipient
+ * @property string $name
+ * @property string $comment
+ * @property string $url
+ * @property Contact $is_for
+ * @property int $value
  * @method static Builder offered()
  * @method static Builder isIdea()
  */
@@ -132,9 +137,9 @@ class Gift extends Model
     /**
      * Get the name of the recipient for this gift.
      *
-     * @return string
+     * @return string|null
      */
-    public function getRecipientNameAttribute()
+    public function getRecipientNameAttribute(): ?string
     {
         if ($this->hasParticularRecipient()) {
             $recipient = $this->recipient;
@@ -142,6 +147,8 @@ class Gift extends Model
                 return $this->recipient->first_name;
             }
         }
+
+        return null;
     }
 
     /**

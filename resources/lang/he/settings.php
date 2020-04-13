@@ -12,6 +12,20 @@ return [
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'משאבי DAV',
     'sidebar_settings_security' => 'אבטחה',
+    'sidebar_settings_auditlogs' => 'יומני ביקורת',
+
+    'title_general' => 'מידע כללי',
+    'title_i18n' => 'הגדרות בינלאומיות',
+    'title_layout' => 'פריסה',
+
+    'me_title' => 'פרטי הקשר שלי',
+    'me_help' => 'איש קשר זה או הייצוג <em>שלך</em> במוניקה',
+    'me_select' => 'נא לבחור איש קשר',
+    'me_no_contact' => 'טרם נבחרו אנשי קשר.',
+    'me_select_click' => 'יש ללחוץ כאן כדי לבחור אנשי קשר.',
+    'me_remove_contact' => 'הסרת השיוך',
+    'me_choose' => 'בחירה עצמית',
+    'me_choose_placeholder' => 'בחירה עצמית',
 
     'export_title' => 'יצוא נתוני החשבון שלך',
     'export_be_patient' => 'יש ללחוץ על הכפתור כדי להתחיל את הייצוא. עיבוד הייצוא עשוי לארוך מספר דקות - נא להתאזר בסבלנות ולא ללחוץ על הכפתור שוב.',
@@ -44,7 +58,8 @@ return [
     'layout_big' => 'הרוחב המלא של הדפדפן',
     'save' => 'עדכון העדפות',
     'delete_title' => 'מחיקת החשבון שלך',
-    'delete_desc' => 'למחוק את החשבון שלך? אזהרה: מחיקה היא לצמיתות וכל הנתונים שלך יימחקו לצמיתות.',
+    'delete_desc' => 'האם רצונך הוא לסגור את החשבון? אזהרה: מחיקה היא לצמיתות וכל הנתונים שלך יימחקו לצמיתות. המינויים שלך (אם יש לך כאלה) יבוטלו באופן מיידי גם כן.',
+    'delete_other_desc' => 'לצורך הבהרה: הנתונים במסד הנתונים הראשי יימחקו מיד. עם זאת, כפי שצוין במדיניות הפרטיות שלנו, אנו עורכים גיבויים יומיים של מסד הנתונים למקרה של תקלה ומסד נתונים זה נשמר למשך 30 יום - לאחר מכן הנתונים שלך יימחקו לגמרי. מחיקת הנתונים שלך באופן נקודתי מכל אחד ואחד מהגיבויים היא בגדר הזיה. דרך אגב, נתונים אלו מוצפנים בשרת מאובטח מאוד שמתאחסן בשרתים של Amazon ולאף אחד אין את מפתח ההפצנה חוץ מאתנו. לכן, הנתונים שלך יימחקו לגמרי תוך 30 יום מכל הגיבויים ואף אחד לא יוכל לדעת שהנתונים האלו אי פעם היו קיימים מלכתחילה.',
     'reset_desc' => 'לאפס את החשבון שלך? פעולה זו תסיר את כל אנשי הקשר שלך ואת כל המידע המשויך להם. החשבון שלך לא יימחק.',
     'reset_title' => 'איפוס החשבון שלך',
     'reset_cta' => 'איפוס חשבון',
@@ -189,7 +204,7 @@ return [
     'subscriptions_downgrade_rule_users_constraint' => 'יש לך <a href=":url">משתמש אחד</a> בחשבון כרגע.|יש לך <a href=":url">:count משתמשים</a> בחשבון כרגע.',
     'subscriptions_downgrade_rule_invitations' => 'אסור שתהיינה לך הזמנות ממתינות',
     'subscriptions_downgrade_rule_invitations_constraint' => 'יש לך כרגע <a href=":url">הזמנה אחת בהמתנה</a> שנשלחה למישהו.|יש לך כרגע <a href=":url">:count הזמנות בהמתנה</a> שנשלחו לאנשים.',
-    'subscriptions_downgrade_rule_contacts' => 'לא יכולים להיות לך יותר מ־:number אנשי קשר',
+    'subscriptions_downgrade_rule_contacts' => 'לא יכולים להיות לך יותר מ־:number אנשי קשר פעילים',
     'subscriptions_downgrade_rule_contacts_constraint' => 'כרגע יש לך <a href=":url">איש קשר יחיד</a>.|כרגע יש לך <a href=":url">:count אנשי קשר</a>.',
     'subscriptions_downgrade_cta' => 'שנמוך',
     'subscriptions_downgrade_success' => 'חזרת לתכנית החינמית!',
@@ -362,7 +377,7 @@ return [
     'personalization_genders_modal_name_help' => 'השם המשמש להצגת המגדר בעמוד יצירת הקשר.',
     'personalization_genders_modal_sex' => 'מגדר',
     'personalization_genders_modal_sex_help' => 'משמש לציון יחסים ומהלך ייבוא/ייצוא של כרטיס ביקור - vCard.',
-    'personalization_genders_modal_default' => 'האם המגדר החדש הזה מיועד לאיש קשר חדש?',
+    'personalization_genders_modal_default' => 'נא לבחור את מגדר בררת המחדל לאנשי קשר חדשים',
     'personalization_genders_modal_delete' => 'מחיקת סוג מגדר',
     'personalization_genders_modal_delete_desc' => 'למחוק את {name}?',
     'personalization_genders_modal_delete_question' => 'לאחד מאנשי הקשר שלך מוגדר המגדר הזה. אם המגדר יימחק, לאיזה מגדר לשייך את איש הקשר?|ל־{count} מאנשי הקשר שלך מוגדר המגדר הזה. אם המגדר יימחק, לאיזה מגדר לשייך את אנשי הקשר?',
@@ -390,7 +405,8 @@ return [
     'personalization_module_title' => 'תכונות',
     'personalization_module_desc' => 'חלק מהאנשים לא זקוקים לכל התכונות. להלן ניתן לכבות או להפעיל תכונות בהן נעשה שימוש בגיליון אנשי הקשר. השינוי הזה ישפיע על כל אנשי הקשר שלך. נא לשים לב שכיבוי של תכונה אחת או יותר לא יגרום לאבדן מידע, התכונה פשוט תוסתר.',
 
-    'personalisation_paid_upgrade' => 'תכונה זו היא תכונת פרמיום שדורשת הפעלת מינוי בתשלום. ניתן לשדרג את החשבון שלך על ידי מעבר להגדרות > מינוי.',
+    'personalisation_paid_upgrade' => 'תכונה זו היא תכונת פרמיום שדורשת הפעלת מינוי בתשלום. ניתן לשדרג את החשבון שלך על ידי מעבר ל<a href=":url">הגדרות > מינוי</a>.',
+    'personalisation_paid_upgrade_vue' => 'תכונה זו היא תכונת פרמיום שדורשת הפעלת מינוי בתשלום. ניתן לשדרג את החשבון שלך על ידי מעבר ל<a href="{url}">הגדרות > מינוי</a>.',
 
     'reminder_time_to_send' => 'השעה ביום בה אמורות להישלח התזכורות',
     'reminder_time_to_send_help' => 'לידיעתך, התזכורת הבאה שלך תישלח ב־<span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
@@ -485,4 +501,11 @@ return [
     'dav_carddav_export' => 'ייצוא כל אנשי הקשר בקובץ אחד',
     'dav_caldav_birthdays_export' => 'ייצוא כל ימי ההולדת בקובץ אחד',
     'dav_caldav_tasks_export' => 'ייצוא כל המשימות בקובץ אחד',
+
+    'archive_title' => 'העברת כל אנשי הקשר בחשבון שלך לארכיון',
+    'archive_desc' => 'פעולה זו תעביר את כל אנשי הקשר בחשבון שלך לארכיון.',
+    'archive_cta' => 'העברת כל אנשי הקשר לארכיון',
+
+    'logs_title' => 'כל מה שקרה לחשבון הזה',
+    'logs_author' => 'מאת :name ב־:date',
 ];

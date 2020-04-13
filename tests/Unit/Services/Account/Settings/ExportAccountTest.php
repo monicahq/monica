@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Account;
+namespace Tests\Unit\Services\Account\Settings;
 
 use Tests\TestCase;
 use App\Models\User\User;
@@ -21,7 +21,7 @@ class ExportAccountTest extends TestCase
         $user = factory(User::class)->create([]);
 
         $request = [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
         ];
 

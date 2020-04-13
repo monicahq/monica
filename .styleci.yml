@@ -4,6 +4,7 @@ enabled:
   - fully_qualified_strict_types
 disabled:
   - alpha_ordered_imports
+  - no_useless_return
 finder:
   not-name:
     - index.php

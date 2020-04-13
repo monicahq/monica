@@ -22,7 +22,7 @@ or if you have installed Monica on your own server, you need to follow the steps
        ```
 1. Then, run the following command at the root of the project:
    ```sh
-   composer install --no-interaction --no-suggest --no-dev
+   composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs
    php artisan monica:update --force
    ```
 

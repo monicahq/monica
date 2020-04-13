@@ -73,7 +73,7 @@ return [
     'confirmation_title' => 'Verifieer je e-mailadres',
     'confirmation_fresh' => 'Een nieuwe verificatie e-mail is verstuurd naar jouw e-mailadres.',
     'confirmation_check' => 'Voordat je verdergaat, controleer alsjeblieft je e-mail voor een verificatie e-mail.',
-    'confirmation_request_another' => 'Als je de e-mail niet hebt ontvangen <a href=":url">Klik hier om er nog een</a> te sturen.',
+    'confirmation_request_another' => 'Heb je de e-mail niet ontvangen? <a :action>Klik hier om er nog een te sturen.</a>',
 
     'confirmation_again' => 'Als je jouw e-mailadres wilt wijzigen kun je <a href=":url" class="alert-link">hier klikken</a>.',
     'email_change_current_email' => 'Huidige e-mailadres:',

@@ -7,6 +7,7 @@ return [
     'save' => 'Sauver',
     'add' => 'Ajouter',
     'cancel' => 'Annuler',
+    'confirm' => 'Confirmer',
     'delete_confirm' => 'Êtes-vous sûr ?',
     'delete' => 'Supprimer',
     'edit' => 'Éditer',
@@ -37,6 +38,7 @@ return [
     'retry' => 'Réessayer',
     'filter' => 'Filtrer la liste',
     'go_back' => 'Revenir en arrière',
+    'file_selected' => '{count} fichier sélectionné...|{count} fichiers sélectionnés...',
 
     'application_title' => 'Monica – gestionnaire de relations personnelles',
     'application_description' => 'Monica est un outil pour gérer vos interactions avec vos proches, vos amis et votre famille.',
@@ -100,13 +102,15 @@ return [
 
     'error_title' => 'Oups ! Une erreur est survenue.',
     'error_unauthorized' => 'Vous n’avez pas le droit de modifier cette ressource.',
+    'error_user_account' => 'Cet utilisateur n’appartient pas au compte donné.',
     'error_save' => 'Une erreur est intervenue pendant la sauvegarde des données.',
     'error_try_again' => 'Une erreur s’est produite. Merci d’essayer à nouveau.',
     'error_id' => 'Erreur numéro : :id',
-    'error_unavailable' => 'Service non disponible',
+    'error_unavailable' => 'Service indisponible',
     'error_maintenance' => 'Maintenance en cours. On revient vite !',
     'error_help' => 'On revient tout de suite.',
     'error_twitter' => 'Suivez <a href="https://twitter.com/:twitter">notre compte Twitter</a> pour être alerté de l’évolution de la situation.',
+    'error_no_term' => 'Il n’y a pas encore de politique pour cette instance.',
 
     'default_save_success' => 'Les modifications ont été enregistrées.',
 

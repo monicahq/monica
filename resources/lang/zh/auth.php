@@ -73,7 +73,7 @@ return [
     'confirmation_title' => '验证您的电子邮件地址',
     'confirmation_fresh' => '一条新的验证链接已经发送到您的邮箱',
     'confirmation_check' => '在您继续之前，请检查您的邮箱以获得验证链接。',
-    'confirmation_request_another' => '如果您没有收到电子邮件 <a href=":url">, 请单击此处重新发送</a>。',
+    'confirmation_request_another' => '如果您没有收到电子邮件 <a :action>, 请单击此处重新发送</a>。',
 
     'confirmation_again' => '如果要更改电子邮件地址, 可以 <a href=":url" class="alert-link">单击此处</a>。',
     'email_change_current_email' => '当前邮件地址：',

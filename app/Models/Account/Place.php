@@ -55,7 +55,7 @@ class Place extends Model
      *
      * @return string|null
      */
-    public function getAddressAsString()
+    public function getAddressAsString(): ?string
     {
         $address = '';
 
@@ -80,7 +80,7 @@ class Place extends Model
         }
 
         if (empty($address)) {
-            return;
+            return null;
         }
 
         // trim extra whitespaces inside the address
@@ -88,6 +88,8 @@ class Place extends Model
         if (is_string($address)) {
             return $address;
         }
+
+        return null;
     }
 
     /**
@@ -95,11 +97,13 @@ class Place extends Model
      *
      * @return string|null
      */
-    public function getCountryName()
+    public function getCountryName(): ?string
     {
         if ($this->country) {
             return CountriesHelper::get($this->country);
         }
+
+        return null;
     }
 
     /**

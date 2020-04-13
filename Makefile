@@ -234,6 +234,8 @@ $(DESTDIR):
 	mkdir -p $@/storage/framework/views
 	mkdir -p $@/storage/framework/cache
 	mkdir -p $@/storage/framework/sessions
+	echo "$(GIT_REF)" > $@/.sentry-release
+	echo "$(GIT_COMMIT)" > $@/.sentry-commit
 
 $(ASSETS):
 	mkdir -p $@/public

@@ -21,10 +21,10 @@ class DAVServerTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee('<d:response><d:href>/dav/</d:href>');
-        $response->assertSee('<d:response><d:href>/dav/principals/</d:href>');
-        $response->assertSee('<d:response><d:href>/dav/addressbooks/</d:href>');
-        $response->assertSee('<d:response><d:href>/dav/calendars/</d:href>');
+        $response->assertSee('<d:response><d:href>/dav/</d:href>', false);
+        $response->assertSee('<d:response><d:href>/dav/principals/</d:href>', false);
+        $response->assertSee('<d:response><d:href>/dav/addressbooks/</d:href>', false);
+        $response->assertSee('<d:response><d:href>/dav/calendars/</d:href>', false);
     }
 
     /**
@@ -39,8 +39,8 @@ class DAVServerTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee('<d:response><d:href>/dav/principals/</d:href>');
-        $response->assertSee("<d:response><d:href>/dav/principals/{$user->email}/</d:href>");
+        $response->assertSee('<d:response><d:href>/dav/principals/</d:href>', false);
+        $response->assertSee("<d:response><d:href>/dav/principals/{$user->email}/</d:href>", false);
     }
 
     /**
@@ -55,7 +55,7 @@ class DAVServerTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/dav/principals/{$user->email}/</d:href>");
+        $response->assertSee("<d:response><d:href>/dav/principals/{$user->email}/</d:href>", false);
     }
 
     /**
@@ -111,7 +111,7 @@ class DAVServerTest extends ApiTestCase
                     '<d:status>HTTP/1.1 200 OK</d:status>'.
                 '</d:propstat>'.
             '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>', false);
     }
 
     /**
@@ -152,7 +152,7 @@ class DAVServerTest extends ApiTestCase
                     '<d:status>HTTP/1.1 200 OK</d:status>'.
                 '</d:propstat>'.
             '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>', false);
     }
 
     /**
@@ -167,8 +167,8 @@ class DAVServerTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee('<d:response><d:href>/dav/calendars/</d:href>');
-        $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/</d:href>");
+        $response->assertSee('<d:response><d:href>/dav/calendars/</d:href>', false);
+        $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/</d:href>", false);
     }
 
     /**
@@ -183,9 +183,9 @@ class DAVServerTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/</d:href>");
-        $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/birthdays/</d:href>");
-        $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/tasks/</d:href>");
+        $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/</d:href>", false);
+        $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/birthdays/</d:href>", false);
+        $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/tasks/</d:href>", false);
     }
 
     /**

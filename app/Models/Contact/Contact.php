@@ -2,42 +2,40 @@
 
 namespace App\Models\Contact;
 
+use DateTime;
 use Carbon\Carbon;
-use App\Helpers\DBHelper;
-use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use function Safe\preg_split;
+use App\Helpers\StorageHelper;
 use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
 use App\Models\Account\Weather;
 use App\Models\Account\Activity;
+use App\Models\Instance\AuditLog;
 use function Safe\preg_match_all;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingHasher as Model;
-use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
-use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
+/**
+ * @property \App\Models\Instance\SpecialDate $birthdate
+ */
 class Contact extends Model
 {
     use Searchable;
@@ -435,6 +433,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the Audot log records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function logs()
+    {
+        return $this->hasMany(AuditLog::class, 'about_contact_id', 'id');
+    }
+
+    /**
      * Test if this is the 'me' contact.
      *
      * @return bool
@@ -464,6 +472,7 @@ class Contact extends Model
             case 'lastactivitydateNewtoOld':
                 $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
                 $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
+                $builder->groupBy('contacts.id');
                 $builder->orderBy('activities.happened_at', 'desc');
                 $builder->select(['*', 'contacts.id as id']);
 
@@ -471,6 +480,7 @@ class Contact extends Model
             case 'lastactivitydateOldtoNew':
                 $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
                 $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
+                $builder->groupBy('contacts.id');
                 $builder->orderBy('activities.happened_at', 'asc');
                 $builder->select(['*', 'contacts.id as id']);
 
@@ -484,8 +494,8 @@ class Contact extends Model
      * Scope a query to only include contacts who are not only a kid or a
      * significant other without being a contact.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeReal($query)
     {
@@ -495,8 +505,8 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are active.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeActive($query)
     {
@@ -506,8 +516,8 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are alive.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeAlive($query)
     {
@@ -517,8 +527,8 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are dead.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeDead($query)
     {
@@ -528,8 +538,8 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are not active.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeNotActive($query)
     {
@@ -753,10 +763,10 @@ class Contact extends Model
      *
      * @return \DateTime|null
      */
-    public function getLastActivityDate()
+    public function getLastActivityDate(): ?DateTime
     {
         if ($this->activities->count() === 0) {
-            return;
+            return null;
         }
 
         $lastActivity = $this->activities->sortByDesc('happened_at')->first();
@@ -771,43 +781,17 @@ class Contact extends Model
      * @param  string $type
      * @return Collection|null
      */
-    public function getRelationshipsByRelationshipTypeGroup(string $type)
+    public function getRelationshipsByRelationshipTypeGroup(string $type): ?Collection
     {
         $relationshipTypeGroup = $this->account->getRelationshipTypeGroupByType($type);
 
         if (! $relationshipTypeGroup) {
-            return;
+            return null;
         }
 
         return $this->relationships->filter(function ($item) use ($type) {
             return $item->relationshipType->relationshipTypeGroup->name == $type;
         });
-    }
-
-    /**
-     * Translate a collection of relationships into a collection that the API can
-     * parse.
-     *
-     * @param  Collection $collection
-     * @return Collection
-     */
-    public static function translateForAPI(Collection $collection)
-    {
-        $contacts = collect();
-
-        foreach ($collection as $relationship) {
-            $contact = $relationship->ofContact;
-
-            $contacts->push([
-                'relationship' => [
-                    'id' => $relationship->id,
-                    'name' => $relationship->relationshipType->name,
-                ],
-                'contact' => new ContactShortResource($contact),
-            ]);
-        }
-
-        return $contacts;
     }
 
     /**
@@ -886,17 +870,19 @@ class Contact extends Model
     public function calculateActivitiesStatistics()
     {
         // Delete the Activities statistics table for this contact
-        $this->activityStatistics->each->delete();
+        $this->activityStatistics->each(function ($activityStatistic) {
+            $activityStatistic->delete();
+        });
 
         // Create the statistics again
         $this->activities->groupBy('happened_at.year')
             ->map(function (Collection $activities, $year) {
-                $activityStatistic = $this->activityStatistics()->make();
-                $activityStatistic->account_id = $this->account_id;
-                $activityStatistic->contact_id = $this->id;
-                $activityStatistic->year = $year;
-                $activityStatistic->count = $activities->count();
-                $activityStatistic->save();
+                ActivityStatistic::create([
+                    'account_id' => $this->account_id,
+                    'contact_id' => $this->id,
+                    'year' => $year,
+                    'count' => $activities->count(),
+                ]);
             });
     }
 
@@ -945,7 +931,7 @@ class Contact extends Model
 
         try {
             $matches = preg_split('/\?/', $this->avatar_default_url);
-            $url = asset(Storage::disk(config('filesystems.default'))->url($matches[0]));
+            $url = asset(StorageHelper::disk(config('filesystems.default'))->url($matches[0]));
             if (count($matches) > 1) {
                 $url .= '?'.$matches[1];
             }
@@ -1045,37 +1031,9 @@ class Contact extends Model
      */
     public function getTagsAsString()
     {
-        $tags = [];
-
-        foreach ($this->tags as $tag) {
-            array_push($tags, $tag->name);
-        }
-
-        return implode(',', $tags);
-    }
-
-    /**
-     * Get the list of tags for this contact.
-     */
-    public function getTagsForAPI()
-    {
-        return TagResource::collection($this->tags);
-    }
-
-    /**
-     * Get the list of addresses for this contact.
-     */
-    public function getAddressesForAPI()
-    {
-        return AddressResource::collection($this->addresses);
-    }
-
-    /**
-     * Get the list of contact fields for this contact.
-     */
-    public function getContactFieldsForAPI()
-    {
-        return ContactFieldResource::collection($this->contactFields);
+        return $this->tags->map(function ($tag) {
+            return $tag->name;
+        })->join(',');
     }
 
     /**
@@ -1117,10 +1075,10 @@ class Contact extends Model
      *
      * @return Contact|null
      */
-    public function getIntroducer()
+    public function getIntroducer(): ?self
     {
         if (! $this->first_met_through_contact_id) {
-            return;
+            return null;
         }
 
         try {
@@ -1128,7 +1086,7 @@ class Contact extends Model
             $contact = self::where('account_id', $this->account_id)
                 ->findOrFail($this->first_met_through_contact_id);
         } catch (ModelNotFoundException $e) {
-            return;
+            return null;
         }
 
         return $contact;
@@ -1144,10 +1102,10 @@ class Contact extends Model
      * @param int $day
      * @return SpecialDate|null
      */
-    public function setSpecialDate($occasion, int $year, int $month, int $day)
+    public function setSpecialDate($occasion, int $year, int $month, int $day): ?SpecialDate
     {
         if (empty($occasion)) {
-            return;
+            return null;
         }
 
         $specialDate = new SpecialDate;
@@ -1203,34 +1161,6 @@ class Contact extends Model
         $this->save();
 
         return $specialDate;
-    }
-
-    /**
-     * Delete all related objects.
-     *
-     * @return bool
-     */
-    public function deleteEverything()
-    {
-        // I know: this is a really brutal way of deleting objects. I'm doing
-        // this because I'll add more objects related to contacts in the future
-        // and I don't want to have to think of deleting a row that matches a
-        // contact.
-        //
-        $tables = DBHelper::getTables();
-        foreach ($tables as $table) {
-            $tableName = $table->table_name;
-
-            try {
-                DB::table($tableName)->where('contact_id', $this->id)->delete();
-            } catch (QueryException $e) {
-                continue;
-            }
-        }
-
-        $this->delete();
-
-        return true;
     }
 
     /**
@@ -1299,9 +1229,9 @@ class Contact extends Model
     /**
      * Get the contacts that have all the provided $tags
      * or if $tags is NONE get contacts that have no tags.
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param Builder $query
      * @param mixed $tags string or Tag
-     * @return \Illuminate\Database\Eloquent\Builder $query
+     * @return Builder $query
      */
     public function scopeTags($query, $tags)
     {
@@ -1311,7 +1241,7 @@ class Contact extends Model
         } elseif (! empty($tags)) {
             // gets users who have all the tags
             foreach ($tags as $tag) {
-                $query = $query->whereHas('tags', function ($query) use ($tag) {
+                $query = $query->whereHas('tags', function (Builder $query) use ($tag) {
                     $query->where('id', $tag->id);
                 });
             }
@@ -1325,18 +1255,18 @@ class Contact extends Model
      *
      * @return int|null
      */
-    public function getAgeAtDeath()
+    public function getAgeAtDeath(): ?int
     {
         if (! $this->deceasedDate) {
-            return;
+            return null;
         }
 
         if ($this->deceasedDate->is_year_unknown == 1) {
-            return;
+            return null;
         }
 
         if (! $this->birthdate) {
-            return;
+            return null;
         }
 
         return $this->birthdate->date->diffInYears($this->deceasedDate->date);

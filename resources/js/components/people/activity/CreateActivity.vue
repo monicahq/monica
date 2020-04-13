@@ -47,7 +47,7 @@
               <a href="" @click.prevent="displayEmotions = true">{{ $t('people.activities_add_emotions') }}</a>
             </li>
             <li v-show="!displayCategory" class="di pointer mr3">
-              <a href="" @click.prevent="displayCategory = true">{{ $t('people.activities_add_category') }}</a>
+              <a v-cy-name="'activities_add_category'" href="" @click.prevent="displayCategory = true">{{ $t('people.activities_add_category') }}</a>
             </li>
             <li v-show="!displayParticipants" class="di pointer">
               <a href="" @click.prevent="displayParticipants = true">{{ $t('people.activities_add_participants_cta') }}</a>
@@ -64,6 +64,7 @@
             :rows="4"
             :title="$t('people.activities_summary')"
             :placeholder="$t('people.conversation_add_content')"
+            @contentChange="updateDescription($event)"
           />
           <p class="f6">
             {{ $t('app.markdown_description') }} <a href="https://guides.github.com/features/mastering-markdown/" rel="noopener noreferrer" target="_blank">
@@ -115,7 +116,7 @@
               </a>
             </div>
             <div class="">
-              <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click.prevent="store()">
+              <button v-cy-name="'save-activity-button'" class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click.prevent="store()">
                 {{ activity ? $t('app.save') : $t('app.add') }}
               </button>
             </div>
@@ -210,6 +211,10 @@ export default {
     prepareComponent() {
       this.todayDate = moment().format('YYYY-MM-DD');
       this.resetFields();
+    },
+
+    updateDescription(updatedDescription) {
+      this.newActivity.description = updatedDescription;
     },
 
     resetFields() {

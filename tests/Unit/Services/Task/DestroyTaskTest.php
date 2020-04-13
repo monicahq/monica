@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Document;
+namespace Tests\Unit\Services\Task;
 
 use Tests\TestCase;
 use App\Models\Contact\Task;
@@ -24,7 +24,7 @@ class DestroyTaskTest extends TestCase
         ]);
 
         $request = [
-            'account_id' => $task->account->id,
+            'account_id' => $task->account_id,
             'task_id' => $task->id,
         ];
 

@@ -5,7 +5,7 @@
             contact-id="{{ $contact->id }}"
             contact-name="'{{ $contact->first_name }}''"
             current-photo-id-as-avatar="{{ $contact->avatar_photo_id }}"
-            reach-limit="{{ \Safe\json_encode($contact->account->hasReachedAccountStorageLimit()) }}"
+            reach-limit="{{ \Safe\json_encode($hasReachedAccountStorageLimit) }}"
         >
         </photo-list>
     </div>

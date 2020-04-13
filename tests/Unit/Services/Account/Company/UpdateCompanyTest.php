@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Account\Place;
+namespace Tests\Unit\Services\Account\Company;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
@@ -20,7 +20,7 @@ class UpdateCompanyTest extends TestCase
         $company = factory(Company::class)->create([]);
 
         $request = [
-            'account_id' => $company->account->id,
+            'account_id' => $company->account_id,
             'company_id' => $company->id,
             'name' => 'Chandler House',
             'website' => 'https://centralperk.com',

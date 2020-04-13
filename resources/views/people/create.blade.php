@@ -10,7 +10,7 @@
       <h2 class="f3 fw5">{{ trans('people.people_add_title') }}</h2>
     @endif
 
-    @if (! auth()->user()->account->hasLimitations())
+    @if (! $accountHasLimitations)
       <p class="import">{!! trans('people.people_add_import', ['url' => route('settings.import')]) !!}</p>
     @endif
   </div>
@@ -30,7 +30,7 @@
 
       <div class="pa4-ns ph3 pv2 bb b--gray-monica">
         {{-- This check is for the cultures that are used to say the last name first --}}
-        @if (auth()->user()->getNameOrderForForms() == 'firstname')
+        @if ($formNameOrder == 'firstname')
 
         <div class="mb3">
           <form-input
@@ -38,6 +38,15 @@
             :input-type="'text'"
             :required="true"
             :title="'{{ trans('people.people_add_firstname') }}'">
+          </form-input>
+        </div>
+
+        <div class="mb3">
+          <form-input
+            :id="'middle_name'"
+            :input-type="'text'"
+            :required="false"
+            :title="'{{ trans('people.people_add_middlename') }}'">
           </form-input>
         </div>
 
@@ -76,6 +85,15 @@
             :input-type="'text'"
             :required="true"
             :title="'{{ trans('people.people_add_firstname') }}'">
+          </form-input>
+        </div>
+
+        <div class="mb3">
+          <form-input
+            :id="'middle_name'"
+            :input-type="'text'"
+            :required="false"
+            :title="'{{ trans('people.people_add_middlename') }}'">
           </form-input>
         </div>
 

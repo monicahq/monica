@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
+use App\Interfaces\LabelInterface;
 use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactFieldType;
 
@@ -130,10 +131,16 @@ class ExportVCard extends BaseService
      */
     private function exportPhoto(Contact $contact, VCard $vcard)
     {
-        $picture = $contact->getAvatarURL();
+        if ($contact->avatar_source == 'photo') {
+            $photo = $contact->avatarPhoto;
 
-        if (! empty($picture)) {
-            $vcard->add('PHOTO', $picture);
+            $vcard->add('PHOTO', $photo->dataUrl());
+        } else {
+            $picture = $contact->getAvatarURL();
+
+            if (! empty($picture)) {
+                $vcard->add('PHOTO', $picture);
+            }
         }
     }
 
@@ -171,10 +178,16 @@ class ExportVCard extends BaseService
     /**
      * @param Contact $contact
      * @param VCard $vcard
+     * @see https://tools.ietf.org/html/rfc6350#section-6.3.1
      */
     private function exportAddress(Contact $contact, VCard $vcard)
     {
         foreach ($contact->addresses as $address) {
+            $type = $this->getContactFieldLabel($address);
+            $arguments = [];
+            if ($type != '') {
+                $arguments['TYPE'] = $type;
+            }
             $vcard->add('ADR', [
                 '',
                 '',
@@ -183,7 +196,9 @@ class ExportVCard extends BaseService
                 $address->place->province,
                 $address->place->postal_code,
                 $address->place->country,
-            ]);
+            ],
+                $arguments
+            );
         }
     }
 
@@ -194,12 +209,13 @@ class ExportVCard extends BaseService
     private function exportContactFields(Contact $contact, VCard $vcard)
     {
         foreach ($contact->contactFields as $contactField) {
+            $type = $this->getContactFieldLabel($contactField);
             switch ($contactField->contactFieldType->type) {
                 case ContactFieldType::PHONE:
-                    $vcard->add('TEL', $this->escape($contactField->data));
+                    $vcard->add('TEL', $this->escape($contactField->data), $type);
                     break;
                 case ContactFieldType::EMAIL:
-                    $vcard->add('EMAIL', $this->escape($contactField->data));
+                    $vcard->add('EMAIL', $this->escape($contactField->data), $type);
                     break;
                 default:
                     break;
@@ -228,6 +244,24 @@ class ExportVCard extends BaseService
     }
 
     /**
+     * @param LabelInterface $labelProvider
+     * @return array|null
+     */
+    private function getContactFieldLabel(LabelInterface $labelProvider): ?array
+    {
+        $type = null;
+        $labels = $labelProvider->labels()->get();
+        if ($labels->count() > 0) {
+            $type = [];
+            $type['type'] = $labels->map(function ($label) {
+                return mb_strtoupper($label->label_i18n) ?: $label->label;
+            })->join(',');
+        }
+
+        return $type;
+    }
+
+    /**
      * @param Contact $contact
      * @param VCard $vcard
      */
@@ -242,9 +276,10 @@ class ExportVCard extends BaseService
      */
     private function exportTags(Contact $contact, VCard $vcard)
     {
-        $tags = $contact->getTagsAsString();
-        if (! empty($tags)) {
-            $vcard->CATEGORIES = $tags;
+        if ($contact->tags->count() > 0) {
+            $vcard->CATEGORIES = $contact->tags->map(function ($tag) {
+                return $tag->name;
+            })->toArray();
         }
     }
 }

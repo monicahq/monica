@@ -1,9 +1,11 @@
 <?php
 
 use App\Models\Contact\Gift;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ChangeGiftStatus extends Migration
 {
@@ -14,8 +16,35 @@ class ChangeGiftStatus extends Migration
      */
     public function up()
     {
+        if (Schema::hasColumn('gifts', 'status')) {
+            if (Schema::hasColumn('gifts', 'date')) {
+                Schema::table('gifts', function (Blueprint $table) {
+                    $table->dropColumn(['status', 'date']);
+                });
+            } else {
+                Schema::table('gifts', function (Blueprint $table) {
+                    $table->dropColumn('status');
+                });
+            }
+        } elseif (Schema::hasColumn('gifts', 'date')) {
+            Schema::table('gifts', function (Blueprint $table) {
+                $table->dropColumn('date');
+            });
+        }
+
+        Gift::chunk(500, function ($gifts) {
+            foreach ($gifts as $gift) {
+                try {
+                    Contact::findOrFail($gift->is_for);
+                } catch (ModelNotFoundException $e) {
+                    $gift->recipient = null;
+                    $gift->save();
+                }
+            }
+        });
+
         Schema::table('gifts', function (Blueprint $table) {
-            $table->unsignedInteger('is_for')->change();
+            $table->unsignedInteger('is_for')->nullable()->change();
             $table->string('status', 8)->after('has_been_received')->default('idea');
             $table->datetime('date')->after('status')->nullable();
 
@@ -31,11 +60,13 @@ class ChangeGiftStatus extends Migration
         });
 
         Schema::table('gifts', function (Blueprint $table) {
-            $table->dropColumn('is_an_idea');
-            $table->dropColumn('has_been_offered');
-            $table->dropColumn('has_been_received');
-            $table->dropColumn('offered_at');
-            $table->dropColumn('received_at');
+            $table->dropColumn([
+                'is_an_idea',
+                'has_been_offered',
+                'has_been_received',
+                'offered_at',
+                'received_at',
+            ]);
         });
     }
 }

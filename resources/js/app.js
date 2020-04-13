@@ -168,6 +168,10 @@ Vue.component(
 );
 
 Vue.component(
+  'me-contact',
+  require('./components/people/MeContact.vue').default
+);
+Vue.component(
   'stay-in-touch',
   require('./components/people/StayInTouch.vue').default
 );
@@ -275,10 +279,6 @@ Vue.component(
   require('./components/settings/MfaActivate.vue').default
 );
 Vue.component(
-  'u2f-connector',
-  require('./components/settings/U2fConnector.vue').default
-);
-Vue.component(
   'webauthn-connector',
   require('./components/settings/WebauthnConnector.vue').default
 );
@@ -298,6 +298,8 @@ Vue.component(
   'dav-resources',
   require('./components/settings/DAVResources.vue').default
 );
+
+require('./testing');
 
 var common = require('./common').default;
 

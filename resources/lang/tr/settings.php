@@ -12,6 +12,20 @@ return [
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'DAV Kaynakları',
     'sidebar_settings_security' => 'Güvenlik',
+    'sidebar_settings_auditlogs' => 'Audit logs',
+
+    'title_general' => 'General Information',
+    'title_i18n' => 'International settings',
+    'title_layout' => 'Layout',
+
+    'me_title' => 'My contact',
+    'me_help' => 'This is the contact that represents <em>you</em> in Monica',
+    'me_select' => 'Select a contact',
+    'me_no_contact' => 'No contact selected yet.',
+    'me_select_click' => 'Click here to select a contact.',
+    'me_remove_contact' => 'Remove the association',
+    'me_choose' => 'Choose yourself',
+    'me_choose_placeholder' => 'Choose yourself',
 
     'export_title' => 'Hesap bilgilerini dışarı aktar',
     'export_be_patient' => 'Dışarı aktarma işlemini başlatmak için butona tıklayın. Bu işlem birkaç dakika sürebilir - lütfen sabırlı olun butona sürekli basmayın.',
@@ -44,7 +58,8 @@ return [
     'layout_big' => 'Tarayıcının tam genişliği',
     'save' => 'Tercihleri güncelle',
     'delete_title' => 'Hesabınızı silin',
-    'delete_desc' => 'Hesabını silmek istiyor musun? Uyarı: silinme kalıcıdır ve tüm verilerin sonsuza dek silinecekdir.',
+    'delete_desc' => 'Hesabınızı silmek istiyor musunuz? Uyarı: silme kalıcıdır ve tüm verileriniz kalıcı olarak silinecektir. (Varsa) aboneliğiniz de hemen iptal edilecektir.',
+    'delete_other_desc' => 'Açık olmak gerekirse: ana veri tabanındaki verileriniz hemen silinecektir. Ancak, gizlilik politikamızda açıklandığı gibi, hata durumlarına karşı veri tabanının günlük yedeklemesini yaparız ve bu yedekleme 30 gün boyunca saklanır – daha sonra tamamen silinir. Belirli verilerinizi silmek için tüm yedeklemeleri kontrol edeceğimizi hayal etmek gerçekçi değildir. Bu arada, bu veriler çok güvenli Amazon sunucularında şifrelenmiştir ve bizim dışımızda hiç kimse şifreleme anahtarına sahip değildir. Bu nedenle, verileriniz 30 gün içinde tüm yedeklemelerden tamamen kaybolacak ve hiç kimse bu verilerin var olduğunu dahi bilemeyecektir.',
     'reset_desc' => 'Hesabınızı sıfırlamak ister misiniz? Bu, tüm kişilerinizi ve onlarla ilişkili verileri kaldıracaktır. Hesabınız silinmeyecektir.',
     'reset_title' => 'Hesabınızı sıfırlayın',
     'reset_cta' => 'Hesabı sıfırla',
@@ -189,7 +204,7 @@ return [
     'subscriptions_downgrade_rule_users_constraint' => 'Şu an hesabında <a href=":url">1 kişi</a> var.|Şu an hesabında <a href=":url">:count kişi</a> var.',
     'subscriptions_downgrade_rule_invitations' => 'Bekleyen davetiniz olmamalıdır',
     'subscriptions_downgrade_rule_invitations_constraint' => 'İnsanlara gönderdiğiniz <a href=":url">:count adet bekleyen davetiniz</a> bulunmaktadır.',
-    'subscriptions_downgrade_rule_contacts' => ':number adetten fazla kişiye sahip olmamalısınız',
+    'subscriptions_downgrade_rule_contacts' => ':number adetten fazla aktif kişiye sahip olmamalısınız',
     'subscriptions_downgrade_rule_contacts_constraint' => 'Şu anda <a href=":url">:count adet kişiniz</a> bulunmaktadır.',
     'subscriptions_downgrade_cta' => 'Düşür',
     'subscriptions_downgrade_success' => 'Ücretsiz plana geri döndün!',
@@ -362,7 +377,7 @@ return [
     'personalization_genders_modal_name_help' => 'İletişim sayfasında gösterilecek olan cinsiyetin ismi.',
     'personalization_genders_modal_sex' => 'Cinsiyet',
     'personalization_genders_modal_sex_help' => 'İlişkileri tanımlamak için ve vCard içe/dışa aktarma işlemi sırasında kullanılır.',
-    'personalization_genders_modal_default' => 'Bu, yeni herhangi bir kişi için kullanacağın varsayılan cinsiyet mi?',
+    'personalization_genders_modal_default' => 'Select the default gender for a new contact',
     'personalization_genders_modal_delete' => 'Cinsiyet türünü sil',
     'personalization_genders_modal_delete_desc' => '{name} silmek istediğinizden emin misiniz?',
     'personalization_genders_modal_delete_question' => 'Şu anda bu cinsiyete sahip {count} kişiniz bulunmaktadır. Bu cinsiyeti silerseniz, bu kişi(ler) hangi cinsiyete sahip olmalıdır?',
@@ -390,7 +405,8 @@ return [
     'personalization_module_title' => 'Özellikler',
     'personalization_module_desc' => 'Bazı insanların tüm özelliklere ihtiyacı yoktur. Aşağıda, bir kişi sayfasında kullanılan belirli özellikleri değiştirebilirsiniz. Bu değişiklik TÜM kişilerinizi etkileyecektir. Bu özelliklerden birini kapatırsanız, verilerin kaybolmayacağını - sadece özelliği gizleyeceğimizi unutmayın.',
 
-    'personalisation_paid_upgrade' => 'Bu, etkin olmak için Ücretli bir abonelik gerektiren premium bir özelliktir. Ayarlar > Abonelik bölümünü ziyaret ederek hesabınızı yükseltin.',
+    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href=":url">Settings > Subscription</a>.',
+    'personalisation_paid_upgrade_vue' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href="{url}">Settings > Subscription</a>.',
 
     'reminder_time_to_send' => 'Gün içinde hatırlatmaların gönderilmesi gereken saat',
     'reminder_time_to_send_help' => 'Bilginize, bir sonraki hatırlatıcınız <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span> tarihinde gönderilecek.',
@@ -485,4 +501,11 @@ return [
     'dav_carddav_export' => 'Tüm kişileri tek bir dosyada dışa aktar',
     'dav_caldav_birthdays_export' => 'Tüm doğum günlerini tek bir dosyada dışa aktar',
     'dav_caldav_tasks_export' => 'Tüm görevleri tek bir dosyada dışa aktar',
+
+    'archive_title' => 'Hesabınızdaki tüm kişilerinizi arşivleyin',
+    'archive_desc' => 'Bu, hesabınızdaki tüm kişileri arşivleyecektir.',
+    'archive_cta' => 'Tüm kişilerinizi arşivleyin',
+
+    'logs_title' => 'Everything that happened to this account',
+    'logs_author' => 'By :name on :date',
 ];

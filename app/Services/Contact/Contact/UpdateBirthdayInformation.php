@@ -106,12 +106,10 @@ class UpdateBirthdayInformation extends BaseService
      */
     private function clearRelatedSpecialDate(Contact $contact)
     {
-        if (is_null($contact->birthday_special_date_id)) {
-            return;
-        }
-
         $specialDate = SpecialDate::find($contact->birthday_special_date_id);
-        $specialDate->delete();
+        if (! is_null($specialDate)) {
+            $specialDate->delete();
+        }
     }
 
     /**
@@ -189,7 +187,8 @@ class UpdateBirthdayInformation extends BaseService
                 'frequency_type' => 'year',
                 'frequency_number' => 1,
                 'title' => trans(
-                    'people.people_add_birthday_reminder',
+                    ($data['is_deceased'] ?
+                        'people.people_add_birthday_reminder_deceased' : 'people.people_add_birthday_reminder'),
                     ['name' => $contact->first_name]
                 ),
                 'delible' => false,

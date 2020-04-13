@@ -48,3 +48,18 @@ $factory->define(App\Models\Instance\Emotion\PrimaryEmotion::class, function (Fa
         'name' => $faker->text(5),
     ];
 });
+
+$factory->define(App\Models\Instance\AuditLog::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'author_id' => function (array $data) {
+            return factory(App\Models\User\User::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'action' => 'account_created',
+        'author_name' => 'Dwight Schrute',
+        'audited_at' => $faker->dateTimeThisCentury(),
+        'objects' => '{"user": 1}',
+    ];
+});

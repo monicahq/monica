@@ -68,7 +68,7 @@ class ApiAddressController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -97,7 +97,7 @@ class ApiAddressController extends ApiController
                 $request->except(['account_id', 'address_id'])
                     +
                     [
-                        'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                         'address_id' => $addressId,
                     ]
             );
@@ -123,7 +123,7 @@ class ApiAddressController extends ApiController
     {
         try {
             app(DestroyAddress::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'address_id' => $addressId,
             ]);
         } catch (ModelNotFoundException $e) {

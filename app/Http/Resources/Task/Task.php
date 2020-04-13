@@ -3,10 +3,13 @@
 namespace App\Http\Resources\Task;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Task extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\Task>
+ */
+class Task extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -24,7 +27,7 @@ class Task extends Resource
             'completed' => (bool) $this->completed,
             'completed_at' => DateHelper::getTimestamp($this->completed_at),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'contact' => new ContactShortResource($this->contact),
             'created_at' => DateHelper::getTimestamp($this->created_at),

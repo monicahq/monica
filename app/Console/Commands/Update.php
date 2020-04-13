@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\DBHelper;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -94,6 +95,8 @@ class Update extends Command
 
                 $this->commandExecutor->artisan('✓ Performing migrations', 'migrate', ['--force']);
 
+                $this->commandExecutor->artisan('✓ Check for encryption keys', 'monica:passport', ['--force']);
+
                 $this->commandExecutor->artisan('✓ Ping for new version', 'monica:ping', ['--force']);
 
                 // Cache config
@@ -111,7 +114,7 @@ class Update extends Command
 
     private function migrateCollationTest()
     {
-        $connection = DB::connection();
+        $connection = DBHelper::connection();
 
         if ($connection->getDriverName() != 'mysql') {
             return false;

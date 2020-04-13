@@ -12,6 +12,20 @@ return [
     'sidebar_settings_api' => 'Schnittstelle (API)',
     'sidebar_settings_dav' => 'DAV-Ressourcen',
     'sidebar_settings_security' => 'Sicherheit',
+    'sidebar_settings_auditlogs' => 'Audit logs',
+
+    'title_general' => 'General Information',
+    'title_i18n' => 'International settings',
+    'title_layout' => 'Layout',
+
+    'me_title' => 'My contact',
+    'me_help' => 'This is the contact that represents <em>you</em> in Monica',
+    'me_select' => 'Select a contact',
+    'me_no_contact' => 'No contact selected yet.',
+    'me_select_click' => 'Click here to select a contact.',
+    'me_remove_contact' => 'Remove the association',
+    'me_choose' => 'Choose yourself',
+    'me_choose_placeholder' => 'Choose yourself',
 
     'export_title' => 'Exportiere die Daten deines Kontos',
     'export_be_patient' => 'Button klicken um den Export zu starten. Dies kann mehrere Minuten dauern – sei bitte geduldig und klicke nicht mehrfach auf den Button.',
@@ -44,7 +58,8 @@ return [
     'layout_big' => 'Gesamte Breite des Browsers',
     'save' => 'Einstellungen speichern',
     'delete_title' => 'Konto löschen',
-    'delete_desc' => 'Willst du dein Konto löschen? Warnung: das Löschen ist permanent und alle deine Daten werden für immer weg sein.',
+    'delete_desc' => 'Do you wish to delete your account? Warning: deletion is permanent and all your data will be erased permanently. Your subscription (if you have any) will also be immediately cancelled.',
+    'delete_other_desc' => 'Just to be clear: your data in the main database will be deleted immediately. However, as described in our privacy policy, we do daily backups of the database in case of failure and this backup is kept for 30 days – then it’s completely deleted. It’s unrealistic to imagine that we can go in all the backups to delete your specific data. By the way, this data is encrypted on very secure Amazon servers and no one has the encryption key except us. Therefore, your data will completely disappear in 30 days from all the backups, and no one will know this data ever existed in the first place.',
     'reset_desc' => 'Möchtest du dein Konto zurücksetzen? Dies entfernt alle deine Kontakte und die zugehörigen Daten. Dein Konto bleibt erhalten.',
     'reset_title' => 'Konto zurücksetzen',
     'reset_cta' => 'Konto zurücksetzen',
@@ -189,7 +204,7 @@ return [
     'subscriptions_downgrade_rule_users_constraint' => 'Du hast derzeit <a href=":url">1 Benutzer</a> in deinem Konto. | Du hast derzeit <a href=":url">:count Benutzer</a> in deinem Konto.',
     'subscriptions_downgrade_rule_invitations' => 'Du darfst keine ausstehenden Einladungen haben',
     'subscriptions_downgrade_rule_invitations_constraint' => 'Du hast aktuell <a href=":url">eine ausstehende Einladung</a> verschickt.|Du hast aktuell <a href=":url">:count ausstehende Einladungen</a> verschickt.',
-    'subscriptions_downgrade_rule_contacts' => 'Sie dürfen nicht mehr als :number Kontakte haben',
+    'subscriptions_downgrade_rule_contacts' => 'You must not have more than :number active contacts',
     'subscriptions_downgrade_rule_contacts_constraint' => 'You currently have <a href=":url">1 contact</a>.|You currently have <a href=":url">:count contacts</a>.',
     'subscriptions_downgrade_cta' => 'Zurückstufen',
     'subscriptions_downgrade_success' => 'Du hast das kostenlose Abonnement!',
@@ -362,7 +377,7 @@ return [
     'personalization_genders_modal_name_help' => 'The name used to display the gender on a contact page.',
     'personalization_genders_modal_sex' => 'Geschlecht',
     'personalization_genders_modal_sex_help' => 'Used to define the relationships, and during the VCard import/export process.',
-    'personalization_genders_modal_default' => 'Ist dies das standartmäßige Geschlecht für einen neuen Kontakt?',
+    'personalization_genders_modal_default' => 'Select the default gender for a new contact',
     'personalization_genders_modal_delete' => 'Geschlechtsidentität löschen',
     'personalization_genders_modal_delete_desc' => 'Möchten Sie {name} wirklich löschen?',
     'personalization_genders_modal_delete_question' => 'Du hast aktuell {count} Kontakt mit diesem Geschlecht. Wenn du dieses Geschlecht löschst, welches Geschlecht soll der Kontakt dann haben?|Du hast aktuell {count} Kontakte mit diesem Geschlecht. Wenn du dieses Geschlecht löschst, welches Geschlecht sollen die Kontakte dann haben?',
@@ -390,7 +405,8 @@ return [
     'personalization_module_title' => 'Funktionen',
     'personalization_module_desc' => 'Manche Menschen brauchen nicht alle Funktionen. Unten kannst du die Felder auswählen, die auf einer Kontaktseite angezeigt werden. Die Änderungen werden für ALLE Kontakte übernommen. Wenn du eine Funktion ausschaltest, so gehen die Daten darin nicht verloren, wir verbergen sie nur.',
 
-    'personalisation_paid_upgrade' => 'Dies ist eine Premium-Funktion, die nur im kostenpflichtigen Abo aktiv ist. Upgrade deinen Account unter Einstellungen > Abonnement.',
+    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href=":url">Settings > Subscription</a>.',
+    'personalisation_paid_upgrade_vue' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href="{url}">Settings > Subscription</a>.',
 
     'reminder_time_to_send' => 'Zeitpunkt für den Versand von Erinnerungen',
     'reminder_time_to_send_help' => 'For your information, your next reminder will be sent on <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
@@ -485,4 +501,11 @@ return [
     'dav_carddav_export' => 'Export all contacts in one file',
     'dav_caldav_birthdays_export' => 'Export all birthdays in one file',
     'dav_caldav_tasks_export' => 'Export all tasks in one file',
+
+    'archive_title' => 'Archive all your contacts in your account',
+    'archive_desc' => 'This will archive all the contacts in your account.',
+    'archive_cta' => 'Archive all your contacts',
+
+    'logs_title' => 'Everything that happened to this account',
+    'logs_author' => 'By :name on :date',
 ];

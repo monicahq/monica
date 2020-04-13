@@ -3,7 +3,7 @@
 namespace Tests;
 
 use Tests\Traits\SignIn;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 
 class FeatureTestCase extends TestCase
 {

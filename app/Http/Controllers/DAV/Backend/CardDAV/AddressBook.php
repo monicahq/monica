@@ -66,7 +66,7 @@ class AddressBook extends BaseAddressBook
      *
      * @return int|null
      */
-    public function getLastModified()
+    public function getLastModified(): ?int
     {
         if ($this->carddavBackend instanceof CardDAVBackend) {
             $date = $this->carddavBackend->getLastModified();
@@ -74,5 +74,7 @@ class AddressBook extends BaseAddressBook
                 return $date->timestamp;
             }
         }
+
+        return null;
     }
 }

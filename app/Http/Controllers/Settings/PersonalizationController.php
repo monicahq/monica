@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
+use App\Helpers\AccountHelper;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use App\Models\Contact\ContactFieldType;
@@ -19,7 +20,10 @@ class PersonalizationController extends Controller
      */
     public function index()
     {
-        return view('settings.personalization.index');
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
+        return view('settings.personalization.index')
+            ->withAccountHasLimitations($accountHasLimitations);
     }
 
     /**

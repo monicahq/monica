@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Call;
+namespace Tests\Unit\Services\Contact\Occupation;
 
 use Tests\TestCase;
 use App\Models\Contact\Occupation;
@@ -17,7 +17,7 @@ class DestroyOccupationTest extends TestCase
         $occupation = factory(Occupation::class)->create([]);
 
         $request = [
-            'account_id' => $occupation->account->id,
+            'account_id' => $occupation->account_id,
             'occupation_id' => $occupation->id,
         ];
 
