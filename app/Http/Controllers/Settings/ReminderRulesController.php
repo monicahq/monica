@@ -29,7 +29,7 @@ class ReminderRulesController extends Controller
         $reminderRule->save();
 
         return $this->respond([
-            'data' => $this->format($reminderRule)
+            'data' => $this->format($reminderRule),
         ]);
     }
 

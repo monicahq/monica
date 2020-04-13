@@ -29,7 +29,7 @@ class ModulesController extends Controller
         $module->save();
 
         return $this->respond([
-            'data' => $this->format($module)
+            'data' => $this->format($module),
         ]);
     }
 
