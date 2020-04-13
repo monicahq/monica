@@ -9704,10 +9704,10 @@ vue-notification@^1.3.6:
   resolved "https://registry.yarnpkg.com/vue-notification/-/vue-notification-1.3.20.tgz#d85618127763b46f3e25b8962b857947d5a97cbe"
   integrity sha512-vPj67Ah72p8xvtyVE8emfadqVWguOScAjt6OJDEUdcW5hW189NsqvfkOrctxHUUO9UYl9cTbIkzAEcPnHu+zBQ==
 
-vue-select@^3.1.0, vue-select@^3.9.6:
-  version "3.9.6"
-  resolved "https://registry.yarnpkg.com/vue-select/-/vue-select-3.9.6.tgz#ae3351cd2eddea024d2b2e9300a6da49c114aabc"
-  integrity sha512-12aXUcSIpmUQB67x2rj+rFwN1QuS5avG6f54e4LXq/z2eQtY3Q/k3X9J3NjhJ/9B85X9l2/9YKf+Ox6O/gq0gA==
+vue-select@^3.1.0, vue-select@^3.10.0:
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/vue-select/-/vue-select-3.10.0.tgz#c5385fae4c5ea455668ffcf3508d083813a668a4"
+  integrity sha512-ueR1p5zoIyEO6KBoaxUnsMphlO7TREPPezWP9UJH+AXYAbQoEq1p0HztWhMpVqFhOQq6J5iUosKZT+nfSQHacQ==
 
 vue-style-loader@^4.1.0:
   version "4.1.2"
