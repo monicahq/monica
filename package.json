@@ -26,6 +26,7 @@
     "pree2e": "npm run delete:reports"
   },
   "devDependencies": {
+    "acorn": "^7.1.1",
     "cross-env": "^7.0.2",
     "cypress": "4.3.0",
     "eslint": "^6.8.0",
@@ -37,6 +38,7 @@
     "eslint-plugin-standard": ">=4.0.0",
     "eslint-plugin-vue": "^6.2.2",
     "faker": "^4.1.0",
+    "kind-of": "^6.0.3",
     "mocha": "^7.1.1",
     "mocha-junit-reporter": "^1.23.3",
     "mocha-multi-reporters": "^1.1.7",
@@ -54,7 +56,7 @@
     "hint.css": "^2.3.2",
     "jquery": "^3.5.0",
     "laravel-mix": "^5.0.4",
-    "laravel-mix-purgecss": "^4.2.0",
+    "laravel-mix-purgecss": "5.0.0-rc.1",
     "list.js": "^1.5.0",
     "lodash": "^4.17.14",
     "marked": "^0.8.2",
