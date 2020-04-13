@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
+use App\Models\Contact\Note;
+use App\Models\Contact\Contact;
 use App\Models\Contact\ReminderRule;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -10,8 +12,10 @@ class ReminderRuleTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
-    /** @test */
-    public function reminder_rule_toggle()
+    /**
+     * @return array
+     */
+    private function fetchUser()
     {
         $user = $this->signIn();
 
@@ -19,6 +23,27 @@ class ReminderRuleTest extends FeatureTestCase
             'account_id' => $user->account_id,
             'active' => true,
         ]);
+
+        return [$user, $reminderRule];
+    }
+
+    /** @test */
+    public function reminder_rule_index()
+    {
+        [$user, $reminderRule] = $this->fetchUser();
+
+        $response = $this->get('/settings/personalization/reminderrules');
+
+        $response->assertJsonFragment([
+            'id' => $reminderRule->id,
+            'active' => true,
+        ]);
+    }
+
+    /** @test */
+    public function reminder_rule_toggle()
+    {
+        [$user, $reminderRule] = $this->fetchUser();
 
         $response = $this->post('/settings/personalization/reminderrules/'.$reminderRule->id);
 
