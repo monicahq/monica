@@ -42,22 +42,4 @@ class ReminderRuleTest extends TestCase
             $reminderRule->number_of_days_before
         );
     }
-
-    /** @test */
-    public function it_toggles_the_status()
-    {
-        $reminderRule = factory(ReminderRule::class)->create();
-        $reminderRule->active = true;
-        $reminderRule->save();
-
-        $reminderRule->toggle();
-        $this->assertFalse(
-            $reminderRule->active
-        );
-
-        $reminderRule->toggle();
-        $this->assertTrue(
-            $reminderRule->active
-        );
-    }
 }
