@@ -3,10 +3,13 @@
 namespace App\Http\Resources\Pet;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Pet extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\Pet>
+ */
+class Pet extends JsonResource
 {
     /**
      * Transform the resource into an array.

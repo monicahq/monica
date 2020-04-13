@@ -2,18 +2,20 @@
 
 namespace App\Models\Contact;
 
+use DateTime;
 use Carbon\Carbon;
-use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use function Safe\preg_split;
+use App\Helpers\StorageHelper;
 use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
 use App\Models\Account\Weather;
 use App\Models\Account\Activity;
+use App\Models\Instance\AuditLog;
 use function Safe\preg_match_all;
 use Illuminate\Support\Collection;
 use App\Models\Instance\SpecialDate;
@@ -23,18 +25,17 @@ use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingHasher as Model;
-use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
-use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
+/**
+ * @property \App\Models\Instance\SpecialDate $birthdate
+ */
 class Contact extends Model
 {
     use Searchable;
@@ -432,6 +433,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the Audot log records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function logs()
+    {
+        return $this->hasMany(AuditLog::class, 'about_contact_id', 'id');
+    }
+
+    /**
      * Test if this is the 'me' contact.
      *
      * @return bool
@@ -752,10 +763,10 @@ class Contact extends Model
      *
      * @return \DateTime|null
      */
-    public function getLastActivityDate()
+    public function getLastActivityDate(): ?DateTime
     {
         if ($this->activities->count() === 0) {
-            return;
+            return null;
         }
 
         $lastActivity = $this->activities->sortByDesc('happened_at')->first();
@@ -770,43 +781,17 @@ class Contact extends Model
      * @param  string $type
      * @return Collection|null
      */
-    public function getRelationshipsByRelationshipTypeGroup(string $type)
+    public function getRelationshipsByRelationshipTypeGroup(string $type): ?Collection
     {
         $relationshipTypeGroup = $this->account->getRelationshipTypeGroupByType($type);
 
         if (! $relationshipTypeGroup) {
-            return;
+            return null;
         }
 
         return $this->relationships->filter(function ($item) use ($type) {
             return $item->relationshipType->relationshipTypeGroup->name == $type;
         });
-    }
-
-    /**
-     * Translate a collection of relationships into a collection that the API can
-     * parse.
-     *
-     * @param  Collection $collection
-     * @return Collection
-     */
-    public static function translateForAPI(Collection $collection)
-    {
-        $contacts = collect();
-
-        foreach ($collection as $relationship) {
-            $contact = $relationship->ofContact;
-
-            $contacts->push([
-                'relationship' => [
-                    'id' => $relationship->id,
-                    'name' => $relationship->relationshipType->name,
-                ],
-                'contact' => new ContactShortResource($contact),
-            ]);
-        }
-
-        return $contacts;
     }
 
     /**
@@ -885,17 +870,19 @@ class Contact extends Model
     public function calculateActivitiesStatistics()
     {
         // Delete the Activities statistics table for this contact
-        $this->activityStatistics->each->delete();
+        $this->activityStatistics->each(function ($activityStatistic) {
+            $activityStatistic->delete();
+        });
 
         // Create the statistics again
         $this->activities->groupBy('happened_at.year')
             ->map(function (Collection $activities, $year) {
-                $activityStatistic = $this->activityStatistics()->make();
-                $activityStatistic->account_id = $this->account_id;
-                $activityStatistic->contact_id = $this->id;
-                $activityStatistic->year = $year;
-                $activityStatistic->count = $activities->count();
-                $activityStatistic->save();
+                ActivityStatistic::create([
+                    'account_id' => $this->account_id,
+                    'contact_id' => $this->id,
+                    'year' => $year,
+                    'count' => $activities->count(),
+                ]);
             });
     }
 
@@ -944,7 +931,7 @@ class Contact extends Model
 
         try {
             $matches = preg_split('/\?/', $this->avatar_default_url);
-            $url = asset(Storage::disk(config('filesystems.default'))->url($matches[0]));
+            $url = asset(StorageHelper::disk(config('filesystems.default'))->url($matches[0]));
             if (count($matches) > 1) {
                 $url .= '?'.$matches[1];
             }
@@ -1044,37 +1031,9 @@ class Contact extends Model
      */
     public function getTagsAsString()
     {
-        $tags = [];
-
-        foreach ($this->tags as $tag) {
-            array_push($tags, $tag->name);
-        }
-
-        return implode(',', $tags);
-    }
-
-    /**
-     * Get the list of tags for this contact.
-     */
-    public function getTagsForAPI()
-    {
-        return TagResource::collection($this->tags);
-    }
-
-    /**
-     * Get the list of addresses for this contact.
-     */
-    public function getAddressesForAPI()
-    {
-        return AddressResource::collection($this->addresses);
-    }
-
-    /**
-     * Get the list of contact fields for this contact.
-     */
-    public function getContactFieldsForAPI()
-    {
-        return ContactFieldResource::collection($this->contactFields);
+        return $this->tags->map(function ($tag) {
+            return $tag->name;
+        })->join(',');
     }
 
     /**
@@ -1116,10 +1075,10 @@ class Contact extends Model
      *
      * @return Contact|null
      */
-    public function getIntroducer()
+    public function getIntroducer(): ?self
     {
         if (! $this->first_met_through_contact_id) {
-            return;
+            return null;
         }
 
         try {
@@ -1127,7 +1086,7 @@ class Contact extends Model
             $contact = self::where('account_id', $this->account_id)
                 ->findOrFail($this->first_met_through_contact_id);
         } catch (ModelNotFoundException $e) {
-            return;
+            return null;
         }
 
         return $contact;
@@ -1143,10 +1102,10 @@ class Contact extends Model
      * @param int $day
      * @return SpecialDate|null
      */
-    public function setSpecialDate($occasion, int $year, int $month, int $day)
+    public function setSpecialDate($occasion, int $year, int $month, int $day): ?SpecialDate
     {
         if (empty($occasion)) {
-            return;
+            return null;
         }
 
         $specialDate = new SpecialDate;
@@ -1296,18 +1255,18 @@ class Contact extends Model
      *
      * @return int|null
      */
-    public function getAgeAtDeath()
+    public function getAgeAtDeath(): ?int
     {
         if (! $this->deceasedDate) {
-            return;
+            return null;
         }
 
         if ($this->deceasedDate->is_year_unknown == 1) {
-            return;
+            return null;
         }
 
         if (! $this->birthdate) {
-            return;
+            return null;
         }
 
         return $this->birthdate->date->diffInYears($this->deceasedDate->date);

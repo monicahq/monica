@@ -4,6 +4,7 @@ namespace App\Services\Account\Activity;
 
 use Carbon\Carbon;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Collection;
 use App\Models\Account\ActivityType;
 
 class ActivityStatisticService
@@ -14,7 +15,7 @@ class ActivityStatisticService
      * @param Contact $contact
      * @param Carbon $startDate
      * @param Carbon $endDate
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function activitiesWithContactInTimeRange(Contact $contact, Carbon $startDate, Carbon $endDate)
     {
@@ -30,11 +31,11 @@ class ActivityStatisticService
      * the contact.
      *
      * @param  Contact $contact
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Database\Eloquent\Collection<\App\Models\Account\ActivityStatistic>
      */
     public function activitiesPerYearWithContact(Contact $contact)
     {
-        return $contact->activityStatistics;
+        return $contact->activityStatistics()->get();
     }
 
     /**
@@ -42,7 +43,7 @@ class ActivityStatisticService
      *
      * @param  Contact $contact
      * @param  int     $year
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function activitiesPerMonthForYear(Contact $contact, int $year)
     {
@@ -90,7 +91,7 @@ class ActivityStatisticService
      * @param Contact $contact
      * @param Carbon $startDate
      * @param Carbon $endDate
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function uniqueActivityTypesInTimeRange(Contact $contact, Carbon $startDate, Carbon $endDate)
     {

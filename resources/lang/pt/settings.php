@@ -12,6 +12,20 @@ return [
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'Recursos DAV',
     'sidebar_settings_security' => 'Segurança',
+    'sidebar_settings_auditlogs' => 'Audit logs',
+
+    'title_general' => 'General Information',
+    'title_i18n' => 'International settings',
+    'title_layout' => 'Layout',
+
+    'me_title' => 'My contact',
+    'me_help' => 'This is the contact that represents <em>you</em> in Monica',
+    'me_select' => 'Select a contact',
+    'me_no_contact' => 'No contact selected yet.',
+    'me_select_click' => 'Click here to select a contact.',
+    'me_remove_contact' => 'Remove the association',
+    'me_choose' => 'Choose yourself',
+    'me_choose_placeholder' => 'Choose yourself',
 
     'export_title' => 'Exportar os seus dados',
     'export_be_patient' => 'Click the button to start the export. It might take several minutes to process the export – please be patient and do not spam the button.',
@@ -44,7 +58,8 @@ return [
     'layout_big' => 'Largura total do navegador',
     'save' => 'Salvar Preferências',
     'delete_title' => 'Delete your account',
-    'delete_desc' => 'Do you wish to delete your account? Warning: deletion is permanent and all your data will be erased permanently.',
+    'delete_desc' => 'Do you wish to delete your account? Warning: deletion is permanent and all your data will be erased permanently. Your subscription (if you have any) will also be immediately cancelled.',
+    'delete_other_desc' => 'Just to be clear: your data in the main database will be deleted immediately. However, as described in our privacy policy, we do daily backups of the database in case of failure and this backup is kept for 30 days – then it’s completely deleted. It’s unrealistic to imagine that we can go in all the backups to delete your specific data. By the way, this data is encrypted on very secure Amazon servers and no one has the encryption key except us. Therefore, your data will completely disappear in 30 days from all the backups, and no one will know this data ever existed in the first place.',
     'reset_desc' => 'Do you wish to reset your account? This will remove all your contacts, and the data associated with them. Your account will not be deleted.',
     'reset_title' => 'Reset your account',
     'reset_cta' => 'Reset account',
@@ -189,7 +204,7 @@ return [
     'subscriptions_downgrade_rule_users_constraint' => 'You currently have <a href=":url">1 user</a> in your account.|You currently have <a href=":url">:count users</a> in your account.',
     'subscriptions_downgrade_rule_invitations' => 'You must not have pending invitations',
     'subscriptions_downgrade_rule_invitations_constraint' => 'You currently have <a href=":url">1 pending invitation</a> sent to people.|You currently have <a href=":url">:count pending invitations</a> sent to people.',
-    'subscriptions_downgrade_rule_contacts' => 'You must not have more than :number contacts',
+    'subscriptions_downgrade_rule_contacts' => 'You must not have more than :number active contacts',
     'subscriptions_downgrade_rule_contacts_constraint' => 'You currently have <a href=":url">1 contact</a>.|You currently have <a href=":url">:count contacts</a>.',
     'subscriptions_downgrade_cta' => 'Downgrade',
     'subscriptions_downgrade_success' => 'You are back to the Free plan!',
@@ -362,7 +377,7 @@ return [
     'personalization_genders_modal_name_help' => 'The name used to display the gender on a contact page.',
     'personalization_genders_modal_sex' => 'Sex',
     'personalization_genders_modal_sex_help' => 'Used to define the relationships, and during the VCard import/export process.',
-    'personalization_genders_modal_default' => 'Is this the default gender for a new contact?',
+    'personalization_genders_modal_default' => 'Select the default gender for a new contact',
     'personalization_genders_modal_delete' => 'Delete gender type',
     'personalization_genders_modal_delete_desc' => 'Are you sure you want to delete {name}?',
     'personalization_genders_modal_delete_question' => 'You currently have {count} contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have {count} contacts that have this gender. If you delete this gender, what gender should these contacts have?',
@@ -390,7 +405,8 @@ return [
     'personalization_module_title' => 'Features',
     'personalization_module_desc' => 'Some people don’t need all the features. Below you can toggle specific features that are used on a contact sheet. This change will affect ALL your contacts. Note that if you turn off one of these features, data will not be lost - we will simply hide the feature.',
 
-    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting Settings > Subscription.',
+    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href=":url">Settings > Subscription</a>.',
+    'personalisation_paid_upgrade_vue' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href="{url}">Settings > Subscription</a>.',
 
     'reminder_time_to_send' => 'Time of the day reminders should be sent',
     'reminder_time_to_send_help' => 'For your information, your next reminder will be sent on <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
@@ -485,4 +501,11 @@ return [
     'dav_carddav_export' => 'Export all contacts in one file',
     'dav_caldav_birthdays_export' => 'Export all birthdays in one file',
     'dav_caldav_tasks_export' => 'Export all tasks in one file',
+
+    'archive_title' => 'Archive all your contacts in your account',
+    'archive_desc' => 'This will archive all the contacts in your account.',
+    'archive_cta' => 'Archive all your contacts',
+
+    'logs_title' => 'Everything that happened to this account',
+    'logs_author' => 'By :name on :date',
 ];

@@ -73,7 +73,7 @@ return [
     'confirmation_title' => 'אימות כתובת הדוא״ל שלך',
     'confirmation_fresh' => 'נשלח קישור אימות טרי לכתובת הדוא״ל שלך.',
     'confirmation_check' => 'בטרם המשך התהליך, נא לחפש את קישור האימות בתיבת הדוא״ל שלך.',
-    'confirmation_request_another' => 'אם לא קיבלת את ההודעה <a href=":url">נא ללחוץ כאן כדי לבקש אחת נוספת</a>.',
+    'confirmation_request_another' => 'אם לא קיבלת את ההודעה בדוא״ל <a :action>יש ללחוץ כאן כדי לבקש אחת נוספת</a>.',
 
     'confirmation_again' => 'כדי לשנות את כתובת הדוא״ל שלך נא <a href=":url" class="alert-link">ללחוץ כאן</a>.',
     'email_change_current_email' => 'כתובת הדוא״ל הנוכחית:',

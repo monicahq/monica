@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Encryption\Encrypter;
+use Symfony\Component\HttpFoundation\Response;
 
 class OAuthController extends Controller
 {
@@ -60,9 +61,9 @@ class OAuthController extends Controller
      * Log in a user and returns an accessToken.
      *
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\Response|null
      */
-    public function login(Request $request)
+    public function login(Request $request): ?Response
     {
         $isvalid = $this->validateRequest($request);
         if ($isvalid !== true) {
@@ -86,6 +87,8 @@ class OAuthController extends Controller
 
             return Route::respondWithRoute('oauth.verify');
         }
+
+        return null;
     }
 
     /**
@@ -188,6 +191,7 @@ class OAuthController extends Controller
     private function proxy(array $data = []): array
     {
         $url = App::runningUnitTests() ? config('app.url').'/oauth/token' : route('passport.token');
+        /** @var \Illuminate\Http\Response */
         $response = app(Kernel::class)->handle(Request::create($url, 'POST', [
             'grant_type' => $data['grantType'],
             'client_id' => config('monica.mobile_client_id'),

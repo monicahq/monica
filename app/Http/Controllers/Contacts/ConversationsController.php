@@ -173,7 +173,7 @@ class ConversationsController extends Controller
         // delete all current messages
         foreach ($conversation->messages as $message) {
             $data = [
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'conversation_id' => $conversation->id,
                 'message_id' => $message->id,
             ];
@@ -243,9 +243,9 @@ class ConversationsController extends Controller
         $messages = explode(',', $request->input('messages'));
         foreach ($messages as $messageId) {
             $data = [
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'conversation_id' => $conversation->id,
-                'contact_id' => $conversation->contact->id,
+                'contact_id' => $conversation->contact_id,
                 'written_at' => $date,
                 'written_by_me' => ($request->input('who_wrote_'.$messageId) === 'me'),
                 'content' => $request->input('content_'.$messageId),
@@ -275,7 +275,7 @@ class ConversationsController extends Controller
     public function destroy(Request $request, Contact $contact, Conversation $conversation)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'conversation_id' => $conversation->id,
         ];
 

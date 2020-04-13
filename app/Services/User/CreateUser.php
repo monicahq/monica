@@ -45,7 +45,11 @@ class CreateUser extends BaseService
         $user = $this->setRegionalParameters($user, $ipAddress);
         $user->save();
 
-        $user->acceptPolicy($ipAddress);
+        app(AcceptPolicy::class)->execute([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'ip_address' => $ipAddress,
+        ]);
 
         return $user;
     }

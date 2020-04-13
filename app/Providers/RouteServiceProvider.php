@@ -40,7 +40,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('contact', function ($value) {
             // In case the user is logged out
             if (! Auth::check()) {
-                redirect()->route('login')->send();
+                redirect()->route('loginRedirect')->send();
 
                 return;
             }

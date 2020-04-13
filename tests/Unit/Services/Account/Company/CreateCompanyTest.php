@@ -1,10 +1,13 @@
 <?php
 
-namespace Tests\Unit\Services\Account\Place;
+namespace Tests\Unit\Services\Account\Company;
 
 use Tests\TestCase;
+use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Account\Company;
+use Illuminate\Support\Facades\Queue;
+use App\Jobs\AuditLog\LogAccountAudit;
 use Illuminate\Validation\ValidationException;
 use App\Services\Account\Company\CreateCompany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -16,10 +19,16 @@ class CreateCompanyTest extends TestCase
     /** @test */
     public function it_stores_a_company()
     {
+        Queue::fake();
+
         $account = factory(Account::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
 
         $request = [
             'account_id' => $account->id,
+            'author_id' => $user->id,
             'name' => 'central perk',
             'website' => 'https://centralperk.com',
             'number_of_employees' => 3,
@@ -39,6 +48,16 @@ class CreateCompanyTest extends TestCase
             Company::class,
             $company
         );
+
+        Queue::assertPushed(LogAccountAudit::class, function ($job) use ($user) {
+            return $job->auditLog['action'] === 'company_created' &&
+                $job->auditLog['author_id'] === $user->id &&
+                $job->auditLog['about_contact_id'] === null &&
+                $job->auditLog['should_appear_on_dashboard'] === true &&
+                $job->auditLog['objects'] === json_encode([
+                    'name' => 'central perk',
+                ]);
+        });
     }
 
     /** @test */

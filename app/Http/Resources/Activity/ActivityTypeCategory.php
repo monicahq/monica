@@ -3,9 +3,12 @@
 namespace App\Http\Resources\Activity;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class ActivityTypeCategory extends Resource
+/**
+ * @extends JsonResource<\App\Models\Account\ActivityTypeCategory>
+ */
+class ActivityTypeCategory extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,7 +23,7 @@ class ActivityTypeCategory extends Resource
             'object' => 'activityTypeCategory',
             'name' => $this->name,
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

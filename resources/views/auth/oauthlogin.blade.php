@@ -21,12 +21,12 @@
 
               <div class="form-group">
                 <label for="email">{{ trans('auth.email') }}</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
+                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
               </div>
 
               <div class="form-group">
                 <label for="password">{{ trans('auth.password') }}</label>
-                <input type="password" class="form-control" id="password" name="password">
+                <input type="password" class="form-control" id="password" name="password" required autocomplete="current-password">
               </div>
 
               <div class="form-group actions">
@@ -46,7 +46,7 @@
                 <ul>
                   @if(! config('monica.disable_signup'))
                     <li>{{ trans('auth.signup_no_account') }}&nbsp;<a href="register">{{ trans('auth.signup') }}</a></li>
-                  @elseif(! \App\Models\Account\Account::hasAny())
+                  @elseif(! \App\Helpers\InstanceHelper::hasAtLeastOneAccount())
                     <li>{!! trans('auth.create_account', ['url' => 'register']) !!}</li>
                   @endif
                 </ul>

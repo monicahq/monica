@@ -22,7 +22,6 @@ class NotesController extends Controller
         foreach ($notes as $note) {
             $data = [
                 'id' => $note->id,
-                'parsed_body' => $note->parsedbody,
                 'body' => $note->body,
                 'is_favorited' => $note->is_favorited,
                 'favorited_at' => $note->favorited_at,

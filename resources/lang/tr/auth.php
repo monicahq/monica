@@ -73,7 +73,7 @@ return [
     'confirmation_title' => 'E-posta adresinizi doğrulayın',
     'confirmation_fresh' => 'E-posta adresinize yeni bir doğrulama linki gönderildi.',
     'confirmation_check' => 'Devam etmeden önce lütfen doğrulama linki için e-postanızı kontrol edin.',
-    'confirmation_request_another' => 'E-postayı almadıysanız <a href=":url">başka bir tane istemek için buraya tıklayın</a>.',
+    'confirmation_request_another' => 'If you did not receive the email <a :action>click here to request another</a>.',
 
     'confirmation_again' => 'Eğer e-posta adresinizi değiştirmek istiyorsanız <a href=":url" class="alert-link">buraya tıklayabilirsiniz</a>.',
     'email_change_current_email' => 'Geçerli e-posta adresi:',

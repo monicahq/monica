@@ -9,6 +9,9 @@ use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @property Contact $contact
+ */
 class Call extends Model
 {
     /**
@@ -79,10 +82,10 @@ class Call extends Model
      *
      * @return string|null
      */
-    public function getParsedContentAttribute()
+    public function getParsedContentAttribute(): ?string
     {
         if (is_null($this->content)) {
-            return;
+            return null;
         }
 
         return (new Parsedown())->text($this->content);

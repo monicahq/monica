@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Conversation;
+namespace Tests\Unit\Services\Contact\Tag;
 
 use Tests\TestCase;
 use App\Models\Contact\Tag;
@@ -20,7 +20,7 @@ class UpdateTagTest extends TestCase
         $tag = factory(Tag::class)->create([]);
 
         $request = [
-            'account_id' => $tag->account->id,
+            'account_id' => $tag->account_id,
             'tag_id' => $tag->id,
             'name' => 'Central Perk',
         ];

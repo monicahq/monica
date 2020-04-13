@@ -20,7 +20,7 @@ class UpdateGenderTest extends TestCase
         $gender = factory(Gender::class)->create([]);
 
         $request = [
-            'account_id' => $gender->account->id,
+            'account_id' => $gender->account_id,
             'gender_id' => $gender->id,
             'name' => 'man',
             'type' => 'M',

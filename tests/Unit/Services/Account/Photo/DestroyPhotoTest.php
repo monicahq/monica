@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Document;
+namespace Tests\Unit\Services\Account\Photo;
 
 use Tests\TestCase;
 use App\Models\Account\Photo;
@@ -25,7 +25,7 @@ class DestroyPhotoTest extends TestCase
         $photo = $this->uploadPhoto($contact);
 
         $request = [
-            'account_id' => $photo->account->id,
+            'account_id' => $photo->account_id,
             'photo_id' => $photo->id,
         ];
 
@@ -75,7 +75,7 @@ class DestroyPhotoTest extends TestCase
         Storage::fake('photos');
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'photo' => UploadedFile::fake()->image('photo.png'),
         ];

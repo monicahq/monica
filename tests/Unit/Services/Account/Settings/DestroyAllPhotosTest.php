@@ -28,13 +28,13 @@ class DestroyAllPhotosTest extends TestCase
         }
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ];
 
         app(DestroyAllPhotos::class)->execute($request);
 
         $this->assertDatabaseMissing('photos', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ]);
 
         foreach ($photos as $photo) {
@@ -55,7 +55,7 @@ class DestroyAllPhotosTest extends TestCase
     private function uploadPhoto($contact)
     {
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'photo' => UploadedFile::fake()->image('imag.png'),
         ];

@@ -26,7 +26,7 @@ class DestroyDocumentTest extends TestCase
         $document = $this->uploadDocument($contact);
 
         $request = [
-            'account_id' => $document->account->id,
+            'account_id' => $document->account_id,
             'document_id' => $document->id,
         ];
 
@@ -61,7 +61,7 @@ class DestroyDocumentTest extends TestCase
         $document = factory(Document::class)->create([]);
 
         $request = [
-            'account_id' => $document->account->id,
+            'account_id' => $document->account_id,
             'document_id' => 3,
         ];
 
@@ -73,7 +73,7 @@ class DestroyDocumentTest extends TestCase
     private function uploadDocument($contact)
     {
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'document' => UploadedFile::fake()->image('document.pdf'),
         ];

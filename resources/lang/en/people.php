@@ -52,6 +52,7 @@ return [
     'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Are you sure you want to delete this contact? Deletion is permanent.',
     'people_add_birthday_reminder' => 'Wish happy birthday to :name',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
     'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
     'people_export' => 'Export as vCard',
@@ -240,7 +241,7 @@ return [
     'activity_type_just_hung_out' => 'just hung out',
     'activity_type_watched_movie_at_home' => 'watched a movie at home',
     'activity_type_talked_at_home' => 'just talked at home',
-    'activity_type_did_sport_activities_together' => 'did sport together',
+    'activity_type_did_sport_activities_together' => 'played a sport together',
     'activity_type_ate_at_his_place' => 'ate at their place',
     'activity_type_went_bar' => 'went to a bar',
     'activity_type_ate_at_home' => 'ate at home',
@@ -457,7 +458,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'Started to wear glass or contact lenses',
     'life_event_sentence_broken_bone' => 'Broke a bone',
     'life_event_sentence_removed_braces' => 'Removed braces',
-    'life_event_sentence_surgery' => 'Got a surgery',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => 'Went to the dentist',
     'life_event_sentence_new_sport' => 'Started a sport',
     'life_event_sentence_new_hobby' => 'Started a hobby',
@@ -500,4 +501,20 @@ return [
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',
+
+    // logs
+    'auditlogs_link' => 'History',
+    'auditlogs_title' => 'Everything that happened to :name',
+    'auditlogs_breadcrumb' => 'History',
+    'auditlogs_author' => 'By :name on :date',
+
+    // contact field label
+    'contact_field_label_home' => 'Home',
+    'contact_field_label_work' => 'Work',
+    'contact_field_label_cell' => 'Mobile',
+    'contact_field_label_fax' => 'Fax',
+    'contact_field_label_pager' => 'Pager',
+    'contact_field_label_main' => 'Main',
+    'contact_field_label_other' => 'Other',
+    'contact_field_label_personal' => 'Personal',
 ];

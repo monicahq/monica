@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'Auth\LoginController@showLoginOrRegister')->name('login');
+Route::get('/', 'Auth\LoginController@showLoginOrRegister')->name('loginRedirect');
 
 Auth::routes(['verify' => true]);
 
@@ -180,6 +180,9 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/people/{contact}/activities/contacts', 'Contacts\\ActivitiesController@contacts')->name('activities.contacts');
         Route::get('/people/{contact}/activities/summary', 'Contacts\\ActivitiesController@summary')->name('activities.summary');
         Route::get('/people/{contact}/activities/{year}', 'Contacts\\ActivitiesController@year')->name('activities.year');
+
+        // Audit logs
+        Route::get('/people/{contact}/auditlogs', 'Contacts\\ContactAuditLogController@index')->name('auditlogs');
     });
 
     Route::name('journal.')->group(function () {
@@ -261,6 +264,8 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
             }
         });
 
+        Route::get('/settings/auditlogs', 'Settings\\AuditLogController@index')->name('auditlog.index');
+
         Route::name('tags.')->group(function () {
             Route::get('/settings/tags', 'SettingsController@tags')->name('index');
             Route::get('/settings/tags/add', 'SettingsController@addUser')->name('add');
@@ -280,9 +285,6 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
             Route::post('/settings/security/2fa-enable', 'Settings\\MultiFAController@validateTwoFactor');
             Route::get('/settings/security/2fa-disable', 'Settings\\MultiFAController@disableTwoFactor')->name('2fa-disable');
             Route::post('/settings/security/2fa-disable', 'Settings\\MultiFAController@deactivateTwoFactor');
-            Route::get('/settings/security/u2f/register', 'Settings\\MultiFAController@u2fRegisterData');
-            Route::post('/settings/security/u2f/register', 'Settings\\MultiFAController@u2fRegister');
-            Route::delete('/settings/security/u2f/remove/{u2fKeyId}', 'Settings\\MultiFAController@u2fRemove');
 
             Route::post('/settings/security/generate-recovery-codes', 'Settings\\RecoveryCodesController@store');
             Route::post('/settings/security/recovery-codes', 'Settings\\RecoveryCodesController@index');

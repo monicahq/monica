@@ -3,10 +3,13 @@
 namespace App\Http\Resources\Document;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Document extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\Document>
+ */
+class Document extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -28,7 +31,7 @@ class Document extends Resource
             'link' => $this->getDownloadLink(),
             'url' => route('api.document', $this->id),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'contact' => new ContactShortResource($this->contact),
             'created_at' => DateHelper::getTimestamp($this->created_at),

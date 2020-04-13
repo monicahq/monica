@@ -21,15 +21,15 @@ class DestroyMessageTest extends TestCase
 
         $message = factory(Message::class)->create([
             'conversation_id' => $conversation->id,
-            'account_id' => $conversation->account->id,
-            'contact_id' => $conversation->contact->id,
+            'account_id' => $conversation->account_id,
+            'contact_id' => $conversation->contact_id,
             'content' => 'tititi',
             'written_at' => '2009-01-01',
             'written_by_me' => false,
         ]);
 
         $request = [
-            'account_id' => $conversation->account->id,
+            'account_id' => $conversation->account_id,
             'conversation_id' => $conversation->id,
             'message_id' => $message->id,
         ];
@@ -65,7 +65,7 @@ class DestroyMessageTest extends TestCase
         $message = factory(Message::class)->create([]);
 
         $request = [
-            'account_id' => $conversation->account->id,
+            'account_id' => $conversation->account_id,
             'conversation_id' => $conversation->id,
             'message_id' => $message->id,
         ];

@@ -36,17 +36,17 @@ class ApiDebtsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $debt1 = factory(Debt::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $debt2 = factory(Debt::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -71,17 +71,17 @@ class ApiDebtsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $debt1 = factory(Debt::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $debt2 = factory(Debt::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -116,14 +116,14 @@ class ApiDebtsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $debt1 = factory(Debt::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $debt2 = factory(Debt::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
 
@@ -158,7 +158,7 @@ class ApiDebtsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $currency = factory(Currency::class)->create([
             'iso' => 'USD',
@@ -192,7 +192,7 @@ class ApiDebtsTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $debt_id);
         $this->assertDatabaseHas('debts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $debt_id,
             'in_debt' => 'yes',
@@ -207,7 +207,7 @@ class ApiDebtsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/debts', [
@@ -247,10 +247,10 @@ class ApiDebtsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $debt = factory(Debt::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -279,7 +279,7 @@ class ApiDebtsTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $debt_id);
         $this->assertDatabaseHas('debts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $debt_id,
             'in_debt' => 'yes',
@@ -294,7 +294,7 @@ class ApiDebtsTest extends ApiTestCase
     {
         $user = $this->signin();
         $debt = factory(Debt::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/debts/'.$debt->id, [
@@ -318,7 +318,7 @@ class ApiDebtsTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
         $debt = factory(Debt::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -338,14 +338,14 @@ class ApiDebtsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $debt = factory(Debt::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
         $this->assertDatabaseHas('debts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $debt->id,
         ]);
@@ -354,7 +354,7 @@ class ApiDebtsTest extends ApiTestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('debts', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $debt->id,
         ]);

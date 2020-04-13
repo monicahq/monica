@@ -52,7 +52,7 @@ class ApiUserControllerTest extends ApiTestCase
         $user = $this->signIn();
 
         $term = factory(Term::class)->create([]);
-        $user->terms()->syncWithoutDetaching([$term->id => ['account_id' => $user->account->id]]);
+        $user->terms()->syncWithoutDetaching([$term->id => ['account_id' => $user->account_id]]);
 
         $response = $this->get('/api/me/compliance/'.$term->id);
 
@@ -111,9 +111,7 @@ class ApiUserControllerTest extends ApiTestCase
 
         $response = $this->get('/api/me/compliance');
 
-        $response->assertStatus(200);
-
-        $response->assertJsonCount(0, 'data');
+        $response->assertStatus(404);
     }
 
     /** @test */

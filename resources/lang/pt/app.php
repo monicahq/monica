@@ -7,6 +7,7 @@ return [
     'save' => 'Salvar',
     'add' => 'Adicionar',
     'cancel' => 'Cancelar',
+    'confirm' => 'Confirm',
     'delete_confirm' => 'Sure?',
     'delete' => 'Deletar',
     'edit' => 'Editar',
@@ -22,7 +23,7 @@ return [
     'back' => 'Back',
     'verify' => 'Verificar',
     'new' => 'new',
-    'unknown' => 'Não sei',
+    'unknown' => 'I don’t know',
     'load_more' => 'Carregar mais',
     'loading' => 'A carregar...',
     'with' => 'com',
@@ -37,16 +38,17 @@ return [
     'retry' => 'Tentar novamente',
     'filter' => 'Filter the list',
     'go_back' => 'Retroceder',
+    'file_selected' => '1 file selected...|{count} files selected...',
 
     'application_title' => 'Monica – personal relationship manager',
-    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
+    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
-    'markdown_description' => 'Quer formatar seu texto? Suportamos Markdown para adicionar negrito, itálicas, listas e mais.',
+    'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
     'markdown_link' => 'Ler a documentação',
 
     'header_settings_link' => 'Configurações',
-    'header_logout_link' => 'Sair',
+    'header_logout_link' => 'Logout',
     'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Adicionar Pessoa',
@@ -100,19 +102,21 @@ return [
 
     'error_title' => 'Ups! Algo correu mal.',
     'error_unauthorized' => 'Não tem permissões para editar este recurso.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'Ocorreu um erro ao guardar os dados.',
     'error_try_again' => 'Something went wrong. Please try again.',
     'error_id' => 'Error ID: :id',
-    'error_unavailable' => 'Serviço Indisponível',
+    'error_unavailable' => 'Service unavailable',
     'error_maintenance' => 'Maintenance in progress. Be right back.',
     'error_help' => 'We’ll be right back.',
     'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'Os dados foram guardados.',
 
     'compliance_title' => 'Pedimos desculpa pela interrupção.',
     'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
     'compliance_terms' => 'Accept new terms and privacy policy',
 
     // Relationship types
@@ -258,10 +262,10 @@ return [
     'relationship_type_protege_with_name' => ':name’s protege',
     'relationship_type_protege_female_with_name' => ':name’s protege',
 
-    'relationship_type_ex_husband' => 'ex husband',
-    'relationship_type_ex_husband_female' => 'ex wife',
-    'relationship_type_ex_husband_with_name' => ':name’s ex husband',
-    'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
+    'relationship_type_ex_husband' => 'ex-husband',
+    'relationship_type_ex_husband_female' => 'ex-wife',
+    'relationship_type_ex_husband_with_name' => ':name’s ex-husband',
+    'relationship_type_ex_husband_female_with_name' => ':name’s ex-wife',
 
     // emotions
     'emotion_primary_love' => 'Love',

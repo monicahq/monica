@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Conversation;
+namespace Tests\Unit\Services\Contact\Tag;
 
 use Tests\TestCase;
 use App\Models\Contact\Tag;
@@ -21,7 +21,7 @@ class DestroyTagTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $tag = factory(Tag::class)->create([
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ]);
 
         $contact->tags()->syncWithoutDetaching([
@@ -31,13 +31,13 @@ class DestroyTagTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('contact_tag', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'tag_id' => $tag->id,
         ]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'tag_id' => $tag->id,
         ];
@@ -45,12 +45,12 @@ class DestroyTagTest extends TestCase
         app(DestroyTag::class)->execute($request);
 
         $this->assertDatabaseMissing('contact_tag', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
         ]);
 
         $this->assertDatabaseMissing('tags', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'id' => $tag->id,
         ]);
     }

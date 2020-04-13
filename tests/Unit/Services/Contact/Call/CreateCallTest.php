@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Conversation;
+namespace Tests\Unit\Services\Contact\Call;
 
 use Tests\TestCase;
 use App\Models\Contact\Call;
@@ -23,7 +23,7 @@ class CreateCallTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'called_at' => now(),
             'content' => 'this is the content',
         ];
@@ -33,7 +33,7 @@ class CreateCallTest extends TestCase
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'content' => 'this is the content',
             'contact_called' => 0,
         ]);
@@ -51,7 +51,7 @@ class CreateCallTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'called_at' => now(),
             'content' => 'this is the content',
             'contact_called' => true,
@@ -62,7 +62,7 @@ class CreateCallTest extends TestCase
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'content' => 'this is the content',
             'contact_called' => 1,
         ]);
@@ -81,7 +81,7 @@ class CreateCallTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'called_at' => now(),
             'content' => 'this is the content',
             'contact_called' => true,
@@ -93,21 +93,21 @@ class CreateCallTest extends TestCase
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'content' => 'this is the content',
             'contact_called' => 1,
         ]);
 
         $this->assertDatabaseHas('emotion_call', [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'call_id' => $call->id,
             'emotion_id' => $emotion->id,
         ]);
 
         $this->assertDatabaseHas('emotion_call', [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'call_id' => $call->id,
             'emotion_id' => $emotion2->id,
         ]);
@@ -122,7 +122,7 @@ class CreateCallTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'called_at' => now(),
             'content' => 'this is the content',
             'contact_called' => true,
@@ -141,7 +141,7 @@ class CreateCallTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'called_at' => now(),
         ];
 
@@ -150,7 +150,7 @@ class CreateCallTest extends TestCase
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'content' => null,
         ]);
     }
@@ -166,7 +166,7 @@ class CreateCallTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'called_at' => $date,
         ];
 
@@ -189,7 +189,7 @@ class CreateCallTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'called_at' => $date,
         ];
 

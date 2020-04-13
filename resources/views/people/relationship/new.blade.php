@@ -45,7 +45,7 @@
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           {{-- This check is for the cultures that are used to say the last name first --}}
           <div class="mb3 mb0-ns">
-            @if (auth()->user()->getNameOrderForForms() == 'firstname')
+            @if ($formNameOrder == 'firstname')
 
             <div class="dt dt--fixed">
               <div class="dtc pr2">
@@ -146,7 +146,7 @@
               :name="'existing_contact_id'"
               :placeholder="'{{ trans('people.relationship_form_associate_dropdown_placeholder') }}'"
               :default-options="{{ \Safe\json_encode($existingContacts) }}"
-              :user-contact-id="'{{ $contact->id }}'">
+              :user-contact-id="{{ $contact->id }}">
             </contact-select>
           @endif
         </div>

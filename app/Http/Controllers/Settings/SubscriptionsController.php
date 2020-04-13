@@ -7,7 +7,7 @@ use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use Laravel\Cashier\Cashier;
 use Laravel\Cashier\Payment;
-use Illuminate\Http\Response;
+use App\Helpers\AccountHelper;
 use App\Helpers\InstanceHelper;
 use App\Exceptions\StripeException;
 use Illuminate\Support\Facades\App;
@@ -28,28 +28,30 @@ class SubscriptionsController extends Controller
      */
     public function index()
     {
+        $account = auth()->user()->account;
+
         if (! config('monica.requires_subscription')) {
             return redirect()->route('settings.index');
         }
 
-        $subscription = auth()->user()->account->getSubscribedPlan();
-        if (! auth()->user()->account->isSubscribed() && (! $subscription || $subscription->ended())) {
+        $subscription = $account->getSubscribedPlan();
+        if (! $account->isSubscribed() && (! $subscription || $subscription->ended())) {
             return view('settings.subscriptions.blank', [
                 'numberOfCustomers' => InstanceHelper::getNumberOfPaidSubscribers(),
             ]);
         }
 
-        $planId = auth()->user()->account->getSubscribedPlanId();
+        $planId = $account->getSubscribedPlanId();
         try {
-            $nextBillingDate = auth()->user()->account->getNextBillingDate();
+            $nextBillingDate = $account->getNextBillingDate();
         } catch (StripeException $e) {
             $nextBillingDate = trans('app.unknown');
         }
 
-        $hasInvoices = auth()->user()->account->hasStripeId() && auth()->user()->account->hasInvoices();
+        $hasInvoices = $account->hasStripeId() && $account->hasInvoices();
         $invoices = null;
         if ($hasInvoices) {
-            $invoices = auth()->user()->account->invoices();
+            $invoices = $account->invoices();
         }
 
         return view('settings.subscriptions.account', [
@@ -58,6 +60,7 @@ class SubscriptionsController extends Controller
             'subscription' => $subscription,
             'hasInvoices' => $hasInvoices,
             'invoices' => $invoices,
+            'accountHasLimitations' => AccountHelper::hasLimitations($account),
         ]);
     }
 
@@ -168,15 +171,18 @@ class SubscriptionsController extends Controller
             return redirect()->route('settings.index');
         }
 
-        $subscription = auth()->user()->account->getSubscribedPlan();
-        if (! auth()->user()->account->isSubscribed() && ! $subscription) {
+        $subscription = $account->getSubscribedPlan();
+        if (! $account->isSubscribed() && ! $subscription) {
             return redirect()->route('settings.index');
         }
 
         return view('settings.subscriptions.downgrade-checklist')
             ->with('numberOfActiveContacts', $account->contacts()->active()->count())
             ->with('numberOfPendingInvitations', $account->invitations()->count())
-            ->with('numberOfUsers', $account->users()->count());
+            ->with('numberOfUsers', $account->users()->count())
+            ->with('accountHasLimitations', AccountHelper::hasLimitations($account))
+            ->with('hasReachedContactLimit', AccountHelper::hasReachedContactLimit($account))
+            ->with('canDowngrade', AccountHelper::canDowngrade($account));
     }
 
     /**
@@ -186,7 +192,7 @@ class SubscriptionsController extends Controller
      */
     public function processDowngrade()
     {
-        if (! auth()->user()->account->canDowngrade()) {
+        if (! AccountHelper::canDowngrade(auth()->user()->account)) {
             return redirect()->route('settings.subscriptions.downgrade');
         }
 
@@ -238,10 +244,10 @@ class SubscriptionsController extends Controller
     /**
      * Download the invoice as PDF.
      *
-     * @param int $invoiceId
-     * @return Response
+     * @param mixed $invoiceId
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function downloadInvoice(int $invoiceId)
+    public function downloadInvoice($invoiceId)
     {
         return auth()->user()->account->downloadInvoice($invoiceId, [
             'vendor'  => 'Monica',
@@ -253,12 +259,12 @@ class SubscriptionsController extends Controller
      * Download the invoice as PDF.
      *
      * @param Request $request
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|null
      */
-    public function forceCompletePaymentOnTesting(Request $request)
+    public function forceCompletePaymentOnTesting(Request $request): ?RedirectResponse
     {
         if (App::environment('production')) {
-            return;
+            return null;
         }
         $subscription = auth()->user()->account->getSubscribedPlan();
         $subscription->stripe_status = 'active';

@@ -26,7 +26,7 @@ class CreateConversationTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'happened_at' => now(),
             'contact_field_type_id' => $contactFieldType->id,
         ];
@@ -36,7 +36,7 @@ class CreateConversationTest extends TestCase
         $this->assertDatabaseHas('conversations', [
             'id' => $conversation->id,
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_field_type_id' => $contactFieldType->id,
         ]);
 
@@ -90,7 +90,7 @@ class CreateConversationTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'happened_at' => now(),
             'contact_field_type_id' => $contactFieldType->id,
         ];

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Call;
+namespace Tests\Unit\Services\Contact\Reminder;
 
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -26,7 +26,7 @@ class DestroyReminderTest extends TestCase
         ]);
 
         $request = [
-            'account_id' => $reminder->account->id,
+            'account_id' => $reminder->account_id,
             'reminder_id' => $reminder->id,
         ];
 
@@ -68,7 +68,7 @@ class DestroyReminderTest extends TestCase
         ]);
 
         $request = [
-            'account_id' => $reminder->account->id,
+            'account_id' => $reminder->account_id,
             'reminder_id' => $reminder->id,
         ];
 
