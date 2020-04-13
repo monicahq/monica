@@ -28,13 +28,13 @@
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label for="first_name">{{ trans('auth.register_firstname') }}</label>
-                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="{{ trans('auth.register_firstname_example') }}" value="{{ old('first_name') }}" required autocomplete="first_name">
+                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="{{ trans('auth.register_firstname_example') }}" value="{{ old('first_name') }}" required autocomplete="given-name">
                   </div>
                 </div>
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label for="last_name">{{ trans('auth.register_lastname') }}</label>
-                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="{{ trans('auth.register_lastname_example') }}" value="{{ old('last_name') }}" required autocomplete="last_name">
+                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="{{ trans('auth.register_lastname_example') }}" value="{{ old('last_name') }}" required autocomplete="family-name">
                   </div>
                 </div>
               </div>
@@ -65,7 +65,7 @@
               <div class="form-group actions">
                 <button type="submit" class="btn btn-primary">{{ trans('auth.register_action') }}</button>
               </div>
-  
+
             </form>
           </div>
         </div>
