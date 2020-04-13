@@ -3,8 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
-use App\Models\Contact\Note;
-use App\Models\Contact\Contact;
 use App\Models\Contact\ReminderRule;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
