@@ -12,7 +12,7 @@ class SendTestEmail extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:test_email
+    protected $signature = 'monica:test-email
                             {--email= : The email address to send to}';
 
     /**
