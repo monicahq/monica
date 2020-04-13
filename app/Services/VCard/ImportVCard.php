@@ -754,6 +754,7 @@ class ImportVCard extends BaseService
                     'month' => $birthdate->month,
                     'year' => $is_year_unknown ? null : $birthdate->year,
                     'add_reminder' => true,
+                    'is_deceased' => false,
                 ]);
             }
         }

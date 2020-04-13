@@ -56,12 +56,17 @@ return [
 
         's3' => [
             'driver' => 's3',
-            'key' => env('AWS_KEY'),
-            'secret' => env('AWS_SECRET'),
-            'region' => env('AWS_REGION'),
+            'key' => env('AWS_ACCESS_KEY_ID', env('AWS_KEY')),
+            'secret' => env('AWS_SECRET_ACCESS_KEY', env('AWS_SECRET')),
+            'region' => env('AWS_DEFAULT_REGION', env('AWS_REGION')),
             'bucket' => env('AWS_BUCKET'),
-            'endpoint' => env('AWS_SERVER', '') ? 'https://'.env('AWS_SERVER') : null,
             'url' => env('AWS_URL'),
+            'endpoint' => env('AWS_ENDPOINT', env('AWS_SERVER', '') ? 'https://'.env('AWS_SERVER') : null),
+            'cache' => [
+                'store' => env('S3_CACHE_STORE', env('CACHE_DRIVER', 'file')),
+                'expire' => env('S3_CACHE_EXPIRE', 600),
+                'prefix' => env('S3_CACHE_PREFIX', 's3'),
+            ],
         ],
 
     ],

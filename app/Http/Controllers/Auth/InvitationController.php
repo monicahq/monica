@@ -44,7 +44,7 @@ class InvitationController extends Controller
     public function show($key)
     {
         if (Auth::check()) {
-            return redirect()->route('login');
+            return redirect()->route('loginRedirect');
         }
 
         $invitation = Invitation::where('invitation_key', $key)

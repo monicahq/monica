@@ -20,7 +20,7 @@
                 <label for="email">{{ trans('auth.password_reset_email') }}</label>
                 <input type="email" class="form-control" id="email" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
               </div>
-      
+
               <div class="form-group{{ $errors->has('password') ? ' is-invalid' : '' }}">
                 <label for="password">{{ trans('auth.password_reset_password') }}</label>
                 <input type="password" class="form-control" id="password" name="password" required autocomplete="new-password">
