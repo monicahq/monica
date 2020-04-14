@@ -5,7 +5,6 @@ namespace App\Traits;
 use App\Helpers\DBHelper;
 use App\Helpers\StringHelper;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 trait Searchable
 {

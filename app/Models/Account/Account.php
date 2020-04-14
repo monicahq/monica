@@ -107,6 +107,7 @@ class Account extends Model
         if ($addressBookId) {
             return $this->contacts()->real()->addressBook($this->id, $addressBookId);
         }
+
         return $this->contacts()->real()->addressBook();
     }
 
