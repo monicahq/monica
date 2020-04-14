@@ -18,11 +18,11 @@ class AddAddressBook extends Migration
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('user_id');
 
-            $table->string('name', 500)->nullable();
-            $table->string('addressBookId', 100);
+            $table->string('description', 500)->nullable();
+            $table->string('name', 100);
             $table->timestamps();
 
-            $table->index('addressBookId');
+            $table->index('name');
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

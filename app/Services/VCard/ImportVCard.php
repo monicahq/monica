@@ -115,7 +115,7 @@ class ImportVCard extends BaseService
                 'required',
                 Rule::in(self::$behaviourTypes),
             ],
-            'addressBookId' => 'nullable|string|exists:addressbooks,addressBookId',
+            'name' => 'nullable|string|exists:addressbooks,name',
         ];
     }
 
@@ -137,10 +137,10 @@ class ImportVCard extends BaseService
                 ->findOrFail($contactId);
         }
 
-        if ($addressBookId = Arr::get($data, 'addressBookId')) {
+        if ($addressBookName = Arr::get($data, 'name')) {
             AddressBook::where([
                 'account_id' => $data['account_id'],
-                'addressBookId' => $addressBookId,
+                'name' => $addressBookName,
             ])->firstOrFail();
         }
 
@@ -170,10 +170,10 @@ class ImportVCard extends BaseService
         }
         $this->userId = $data['user_id'];
 
-        if ($addressBookId = Arr::get($data, 'addressBookId')) {
+        if ($addressBookName = Arr::get($data, 'name')) {
             $this->addressBook = AddressBook::where([
                 'account_id' => $data['account_id'],
-                'addressBookId' => $addressBookId,
+                'name' => $addressBookName,
             ])->first();
         }
 

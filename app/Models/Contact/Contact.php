@@ -180,7 +180,7 @@ class Contact extends Model
      */
     public function addressBookContacts()
     {
-        return $this->account ? $this->account->addressBookContacts($this->addressBook ? $this->addressBook->addressBookId : null) : null;
+        return $this->account ? $this->account->addressBookContacts($this->addressBook ? $this->addressBook->name : null) : null;
     }
 
     /**
@@ -569,19 +569,20 @@ class Contact extends Model
 
     /**
      * Scope a query to only include contacts from designated address book.
+     * 'null' value for address book is the default address book.
      *
      * @param Builder $query
      * @param int|null $accountId
-     * @param string|null $addressBookId
+     * @param string|null $addressBookName
      * @return Builder
      */
-    public function scopeAddressBook($query, int $accountId = null, string $addressBookId = null)
+    public function scopeAddressBook($query, int $accountId = null, string $addressBookName = null)
     {
         $addressBook = null;
-        if ($accountId && $addressBookId) {
+        if ($accountId && $addressBookName) {
             $addressBook = AddressBook::where([
                 'account_id' => $accountId,
-                'addressBookId' => $addressBookId,
+                'name' => $addressBookName,
             ])->first();
         }
 
