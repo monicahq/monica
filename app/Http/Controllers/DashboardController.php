@@ -56,14 +56,14 @@ class DashboardController extends Controller
             $lastUpdatedContactsCollection->push(json_encode($data));
         }
 
-        $debt = $account->debts->inProgress();
+        $debts = $account->debts()->inProgress();
 
-        $debt_due = $debt->due()
+        $debt_due = $debts->due()->get()
             ->reduce(function ($totalDueDebt, Debt $debt) {
                 return $totalDueDebt + $debt->amount;
             }, 0);
 
-        $debt_owed = $debt->owed()
+        $debt_owed = $debts->owed()->get()
             ->reduce(function ($totalOwedDebt, Debt $debt) {
                 return $totalOwedDebt + $debt->amount;
             }, 0);
@@ -88,7 +88,7 @@ class DashboardController extends Controller
             'number_of_tasks' => $account->tasks_count,
             'debt_due' => $debt_due,
             'debt_owed' => $debt_owed,
-            'debts' => $debt,
+            'debts' => $debts,
             'user' => auth()->user(),
             'changelogs' => $changelogs,
             'reminderOutboxes' => $reminderOutboxes,

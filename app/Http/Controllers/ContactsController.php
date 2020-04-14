@@ -79,14 +79,14 @@ class ContactsController extends Controller
             ]);
         }
 
-        $addressBook = $user->account->addressBookContacts();
-        $archived = $addressBook->notActive();
         if ($active) {
-            $contacts = $addressBook->active();
+            $contacts = $user->account->addressBookContacts()->active();
+            $archived = $user->account->addressBookContacts()->notActive();
+            $nbArchived = $archived->count();
         } else {
-            $contacts = $archived;
+            $contacts = $user->account->addressBookContacts()->notActive();
+            $nbArchived = $contacts->count();
         }
-        $nbArchived = $archived->count();
 
         $tags = null;
         $url = '';
@@ -549,7 +549,7 @@ class ContactsController extends Controller
             return;
         }
 
-        $results = SearchHelper::searchContacts($needle, 20, DBHelper::getTable('contacts').'.`created_at`');
+        $results = SearchHelper::searchContacts($needle, 20, 'created_at');
 
         if (count($results) !== 0) {
             return ContactResource::collection($results);
@@ -714,7 +714,8 @@ class ContactsController extends Controller
         $perPage = $request->has('perPage') ? $request->input('perPage') : config('monica.number_of_contacts_pagination');
 
         // search contacts
-        $contacts = $contacts->search($request->input('search') ? $request->input('search') : '', $accountId, $perPage, DBHelper::getTable('contacts').'.`is_starred` desc', null, $sort);
+        $contacts = $contacts->search($request->input('search') ? $request->input('search') : '', $accountId, 'is_starred', 'desc', $sort)
+            ->paginate($perPage);
 
         return [
             'totalRecords' => $contacts->total(),
