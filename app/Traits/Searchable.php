@@ -3,9 +3,7 @@
 namespace App\Traits;
 
 use App\Helpers\DBHelper;
-use App\Helpers\StringHelper;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 trait Searchable
 {
@@ -29,10 +27,9 @@ trait Searchable
             return DBHelper::getTable($this->getTable()).".`$column`";
         }, $this->searchable_columns);
 
-        $queryString = StringHelper::buildQuery($searchableColumns, $needle);
+        $queryString = $this->buildQuery($searchableColumns, $needle);
 
         $builder->whereRaw(DBHelper::getTable($this->getTable()).".`account_id` = $accountId AND ($queryString)");
-        //$builder->orderByRaw($orderBy);
         $builder->orderBy($orderByColumn, $orderByDirection);
 
         if ($sortOrder) {
@@ -44,5 +41,33 @@ trait Searchable
         }, $this->return_from_search));
 
         return $builder;
+    }
+
+    /**
+     * Build a query based on the array that contains column names.
+     *
+     * @param  array  $array
+     * @return string
+     */
+    private function buildQuery(array $array, string $searchTerm)
+    {
+        $first = true;
+        $queryString = '';
+        $searchTerms = explode(' ', $searchTerm);
+
+        foreach ($searchTerms as $searchTerm) {
+            $searchTerm = DBHelper::connection()->getPdo()->quote('%'.$searchTerm.'%');
+
+            foreach ($array as $column) {
+                if ($first) {
+                    $first = false;
+                } else {
+                    $queryString .= ' or ';
+                }
+                $queryString .= $column.' LIKE '.$searchTerm;
+            }
+        }
+
+        return $queryString;
     }
 }

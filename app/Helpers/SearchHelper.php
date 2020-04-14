@@ -14,11 +14,12 @@ class SearchHelper
      *
      * @param  string $needle
      * @param  int $limitPerPage
-     * @param  string $orderBy
+     * @param  string $orderByColumn
+     * @param  string $orderByDirection
      * @param  string|null $addressBookId
      * @return mixed
      */
-    public static function searchContacts($needle, $limitPerPage, $orderBy, $addressBookId = null)
+    public static function searchContacts($needle, $limitPerPage, $orderByColumn, $orderByDirection = 'asc', $addressBookId = null)
     {
         $accountId = Auth::user()->account_id;
 
@@ -38,9 +39,11 @@ class SearchHelper
                     ['data', 'like', "$search_term%"],
                     ['contact_field_type_id', $field_id],
                 ]);
-            })->paginate($limitPerPage);
+            })
+                ->orderBy($orderByColumn, $orderByDirection)
+                ->paginate($limitPerPage);
         } else {
-            $results = Contact::search($needle, $accountId, $orderBy)
+            $results = Contact::search($needle, $accountId, $orderByColumn, $orderByDirection)
                 ->real()
                 ->addressBook($addressBookId)
                 ->paginate($limitPerPage);

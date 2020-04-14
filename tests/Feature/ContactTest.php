@@ -46,11 +46,9 @@ class ContactTest extends FeatureTestCase
                             ->inRandomOrder()
                             ->first();
 
-        $searchableFields = $randomContact->getSearchableFields();
         $keyword = $randomContact->first_name.' '.$randomContact->last_name;
 
-        $queryString = StringHelper::buildQuery($searchableFields, $keyword);
-        $records = Contact::whereRaw($queryString)->get();
+        $records = Contact::search($keyword, $user->account_id, 'id')->get();
 
         $this->assertGreaterThanOrEqual(1, count($records));
     }
@@ -63,11 +61,9 @@ class ContactTest extends FeatureTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $searchableFields = $contacts[0]->getSearchableFields();
         $keyword = 'no_result_with_this_keyword';
 
-        $queryString = StringHelper::buildQuery($searchableFields, $keyword);
-        $records = Contact::whereRaw($queryString)->get();
+        $records = Contact::search($keyword, $user->account_id, 'id')->get();
 
         $this->assertEquals(0, count($records));
     }
