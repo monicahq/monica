@@ -226,7 +226,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         return Contact::where([
             'account_id' => Auth::user()->account_id,
             'uuid' => $uuid,
-            'addressbook_id' => $addressBook ? $addressBook->id : null,
+            'address_book_id' => $addressBook ? $addressBook->id : null,
         ])->first();
     }
 

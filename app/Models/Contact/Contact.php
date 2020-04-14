@@ -170,7 +170,7 @@ class Contact extends Model
      */
     public function addressBook()
     {
-        return $this->belongsTo(AddressBook::class, 'addressbook_id');
+        return $this->belongsTo(AddressBook::class);
     }
 
     /**
@@ -585,7 +585,7 @@ class Contact extends Model
             ])->first();
         }
 
-        return $query->where('addressbook_id', $addressBook ? $addressBook->id : null);
+        return $query->where('address_book_id', $addressBook ? $addressBook->id : null);
     }
 
     /**
