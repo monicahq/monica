@@ -99,10 +99,10 @@ class Account extends Model
     /**
      * Get the addressBook's contacts.
      *
-     * @param int|null $addressBookId
+     * @param string|null $addressBookId
      * @return HasMany
      */
-    public function addressBookContacts(int $addressBookId = null)
+    public function addressBookContacts(string $addressBookId = null)
     {
         if ($addressBookId) {
             return $this->contacts()->real()->addressBook($this->id, $addressBookId);

@@ -13,7 +13,8 @@ trait Searchable
      * @param  Builder $builder query builder
      * @param  string $needle
      * @param  int  $accountId
-     * @param  string $orderBy
+     * @param  string $orderByColumn
+     * @param  string $orderByDirection
      * @param  string $sortOrder
      * @return Builder|null
      */
@@ -47,6 +48,7 @@ trait Searchable
      * Build a query based on the array that contains column names.
      *
      * @param  array  $array
+     * @param  string $searchTerm
      * @return string
      */
     private function buildQuery(array $array, string $searchTerm)

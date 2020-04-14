@@ -6,12 +6,14 @@ parameters:
     paths:
         - app
     inferPrivatePropertyTypeFromConstructor: true
+    reportUnmatchedIgnoredErrors: false
     level: 5
     ignoreErrors:
         - '#Call to an undefined method Illuminate\\View\\View::with[a-zA-Z0-9\\_]+\(\)\.#'
         - '#Argument of an invalid type Illuminate\\Contracts\\Pagination\\LengthAwarePaginator supplied for foreach, only iterables are supported\.#'
         - '#Access to an undefined property Sabre\\VObject\\Component\\[a-zA-Z0-9\\_]+::\$[a-zA-Z0-9_]+\.#'
         - '#Access to an undefined property PragmaRX\\Countries\\Package\\Support\\Collection::\$[a-zA-Z0-9_]+\.#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::active\(\)\.#'
 
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::sortedBy\(\)\.#'
           path: */Traits/Searchable.php
@@ -23,8 +25,6 @@ parameters:
           path: */Services/Contact/Avatar/GetGravatarURL.php
         - message: '#Access to an undefined property App\\Interfaces\\IsJournalableInterface::\$account_id\.#'
           path: */app/Models/Journal/JournalEntry.php
-        - message: '#Function factory invoked with 1 parameter, 0 required\.#'
-          path: */Console/Commands/Tests/SetupFrontEndTestUser.php
         - message: '#Call to function is_null\(\) with Carbon\\Carbon will always evaluate to false\.#'
           path: */Models/Instance/SpecialDate.php
         - message: '#Call to function is_null\(\) with string will always evaluate to false\.#'

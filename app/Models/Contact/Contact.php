@@ -170,20 +170,17 @@ class Contact extends Model
      */
     public function addressBook()
     {
-        return $this->belongsTo(AddressBook::class);
+        return $this->belongsTo(AddressBook::class, 'addressbook_id');
     }
 
     /**
-     * Get the contacts from the same address book as the contact.
+     * Get the list of contacts from the same address book as this contact.
      *
-     * @return HasMany
+     * @return HasMany|null
      */
     public function addressBookContacts()
     {
-        $addressBook = $this->addressBook();
-        $addressBookId = $addressBook->count() > 0 ? $addressBook()->get()->addressBookId : null;
-
-        return $this->account->addressBookContacts($addressBookId);
+        return $this->account ? $this->account->addressBookContacts($this->addressBook ? $this->addressBook->addressBookId : null) : null;
     }
 
     /**
@@ -575,10 +572,10 @@ class Contact extends Model
      *
      * @param Builder $query
      * @param int|null $accountId
-     * @param mixed|null $addressBookId
+     * @param string|null $addressBookId
      * @return Builder
      */
-    public function scopeAddressBook($query, $accountId = null, $addressBookId = null)
+    public function scopeAddressBook($query, int $accountId = null, string $addressBookId = null)
     {
         $addressBook = null;
         if ($accountId && $addressBookId) {

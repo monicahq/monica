@@ -45,7 +45,7 @@ class SearchHelper
         } else {
             $results = Contact::search($needle, $accountId, $orderByColumn, $orderByDirection)
                 ->real()
-                ->addressBook($addressBookId)
+                ->addressBook($accountId, $addressBookId)
                 ->paginate($limitPerPage);
         }
 
