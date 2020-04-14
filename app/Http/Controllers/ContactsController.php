@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\DBHelper;
 use Illuminate\View\View;
 use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;
