@@ -97,6 +97,20 @@ class Account extends Model
     }
 
     /**
+     * Get the addressBook's contacts.
+     *
+     * @param int|null $addressBookId
+     * @return HasMany
+     */
+    public function addressBookContacts(int $addressBookId = null)
+    {
+        if ($addressBookId) {
+            return $this->contacts()->real()->addressBook($this->id, $addressBookId);
+        }
+        return $this->contacts()->real()->addressBook();
+    }
+
+    /**
      * Get the invitations associated with the account.
      *
      * @return HasMany

@@ -65,9 +65,7 @@ class ApiContactController extends ApiController
         }
 
         try {
-            $contacts = auth()->user()->account->contacts()
-                            ->real()
-                            ->addressBook()
+            $contacts = auth()->user()->account->addressBookContacts()
                             ->active()
                             ->orderBy($this->sort, $this->sortDirection)
                             ->paginate($this->getLimitPerPage());

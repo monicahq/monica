@@ -79,15 +79,14 @@ class ContactsController extends Controller
             ]);
         }
 
-        $contacts = $user->account->contacts()->real()->addressBook();
+        $addressBook = $user->account->addressBookContacts();
+        $archived = $addressBook->notActive();
         if ($active) {
-            $nbArchived = $contacts->count();
-            $contacts = $contacts->active();
-            $nbArchived = $nbArchived - $contacts->count();
+            $contacts = $addressBook->active();
         } else {
-            $contacts = $contacts->notActive();
-            $nbArchived = $contacts->count();
+            $contacts = $archived;
         }
+        $nbArchived = $archived->count();
 
         $tags = null;
         $url = '';
@@ -672,13 +671,13 @@ class ContactsController extends Controller
         $url = '';
         $count = 1;
 
-        $contacts = $user->account->contacts()->real()->addressBook();
+        $addressBook = $user->account->addressBookContacts();
 
         // filter out archived contacts if necessary
         if ($request->input('show_archived') != 'true') {
-            $contacts = $contacts->active();
+            $contacts = $addressBook->active();
         } else {
-            $contacts = $contacts->notActive();
+            $contacts = $addressBook->notActive();
         }
 
         // filter out deceased if necessary

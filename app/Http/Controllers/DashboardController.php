@@ -28,15 +28,17 @@ class DashboardController extends Controller
             )->with('debts.contact')
             ->first();
 
-        if ($account->contacts()->real()->addressBook()->active()->count() === 0) {
+        $numberOfContacts = $account->addressBookContacts()
+            ->active()
+            ->count();
+
+        if ($numberOfContacts === 0) {
             return view('dashboard.blank');
         }
 
         // Fetch last updated contacts
         $lastUpdatedContactsCollection = collect([]);
-        $lastUpdatedContacts = $account->contacts()
-            ->real()
-            ->addressBook()
+        $lastUpdatedContacts = $account->addressBookContacts()
             ->active()
             ->alive()
             ->latest('last_consulted_at')
@@ -54,14 +56,14 @@ class DashboardController extends Controller
             $lastUpdatedContactsCollection->push(json_encode($data));
         }
 
-        $debt = $account->debts->where('status', 'inprogress');
+        $debt = $account->debts->inProgress();
 
-        $debt_due = $debt->where('in_debt', 'yes')
+        $debt_due = $debt->due()
             ->reduce(function ($totalDueDebt, Debt $debt) {
                 return $totalDueDebt + $debt->amount;
             }, 0);
 
-        $debt_owed = $debt->where('in_debt', 'no')
+        $debt_owed = $debt->owed()
             ->reduce(function ($totalOwedDebt, Debt $debt) {
                 return $totalOwedDebt + $debt->amount;
             }, 0);
@@ -78,7 +80,7 @@ class DashboardController extends Controller
 
         $data = [
             'lastUpdatedContacts' => $lastUpdatedContactsCollection,
-            'number_of_contacts' => $account->contacts()->real()->addressBook()->active()->count(),
+            'number_of_contacts' => $numberOfContacts,
             'number_of_reminders' => $account->reminders_count,
             'number_of_notes' => $account->notes_count,
             'number_of_activities' => $account->activities_count,

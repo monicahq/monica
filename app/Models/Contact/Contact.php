@@ -164,6 +164,29 @@ class Contact extends Model
     }
 
     /**
+     * Get the address book associated with the contact.
+     *
+     * @return BelongsTo
+     */
+    public function addressBook()
+    {
+        return $this->belongsTo(AddressBook::class);
+    }
+
+    /**
+     * Get the contacts from the same address book as the contact.
+     *
+     * @return HasMany
+     */
+    public function addressBookContacts()
+    {
+        $addressBook = $this->addressBook();
+        $addressBookId = $addressBook->count() > 0 ? $addressBook()->get()->addressBookId : null;
+
+        return $this->account->addressBookContacts($addressBookId);
+    }
+
+    /**
      * Get the gender of the contact.
      *
      * @return BelongsTo

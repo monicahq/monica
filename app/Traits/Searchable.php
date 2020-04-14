@@ -15,13 +15,10 @@ trait Searchable
      * @param  Builder $builder query builder
      * @param  string $needle
      * @param  int  $accountId
-     * @param  int $limitPerPage
-     * @param  string $sortOrder
-     * @param  string $whereCondition
-     *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|null
+     * @param  string $orderBy
+     * @return Builder|null
      */
-    public function scopeSearch(Builder $builder, $needle, $accountId, $limitPerPage, $orderBy, $whereCondition = null, $sortOrder = null): ?LengthAwarePaginator
+    public function scopeSearch(Builder $builder, $needle, $accountId, $orderBy): ?Builder
     {
         if ($this->searchable_columns == null) {
             return null;
@@ -33,17 +30,13 @@ trait Searchable
 
         $queryString = StringHelper::buildQuery($searchableColumns, $needle);
 
-        $builder->whereRaw(DBHelper::getTable($this->getTable()).".`account_id` = $accountId AND ($queryString) $whereCondition");
+        $builder->whereRaw(DBHelper::getTable($this->getTable()).".`account_id` = $accountId AND ($queryString)");
         $builder->orderByRaw($orderBy);
-
-        if ($sortOrder) {
-            $builder->sortedBy($sortOrder);
-        }
 
         $builder->select(array_map(function ($column) {
             return "{$this->getTable()}.$column";
         }, $this->return_from_search));
 
-        return $builder->paginate($limitPerPage);
+        return $builder;
     }
 }

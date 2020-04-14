@@ -237,10 +237,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      */
     public function getObjects($addressBookId)
     {
-        return Auth::user()->account
-                    ->contacts()
-                    ->real()
-                    ->addressBook(Auth::user()->account_id, $addressBookId)
+        return Auth::user()->account->addressBookContacts($addressBookId)
                     ->active()
                     ->get();
     }
