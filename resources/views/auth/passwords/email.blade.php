@@ -21,7 +21,7 @@
 
               <div class="form-group">
                 <label for="email">{{ trans('auth.password_reset_email') }}</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ $email ?? old('email') }}">
+                <input type="email" class="form-control" id="email" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
               </div>
 
               <div class="form-group actions">
@@ -29,7 +29,7 @@
                   <i class="fa fa-btn fa-envelope"></i>&nbsp;{{ trans('auth.password_reset_send_link') }}
                 </button>
               </div>
-  
+
             </form>
           </div>
         </div>

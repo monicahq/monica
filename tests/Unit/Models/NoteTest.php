@@ -50,18 +50,6 @@ class NoteTest extends TestCase
         );
     }
 
-    /** @test */
-    public function it_returns_body_in_markdown()
-    {
-        $note = new Note;
-        $note->body = '# Test';
-
-        $this->assertEquals(
-            '<h1>Test</h1>',
-            $note->getParsedBodyAttribute()
-        );
-    }
-
     public function testGetBodyReturnsNullIfUndefined()
     {
         $note = new Note;
