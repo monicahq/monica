@@ -368,7 +368,7 @@ return [
     'personalization_genders_modal_delete_question' => 'You currently have {count} contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have {count} contacts that have this gender. If you delete this gender, what gender should these contacts have?',
     'personalization_genders_modal_delete_question_default' => 'This gender is the default one. If you delete this gender, which one will be the next default?',
     'personalization_genders_modal_error' => 'Please choose a valid gender from the list.',
-    'personalization_genders_list_contact_number' => '{count} contact|{count} contacts',
+    'personalization_genders_list_contact_number' => '{count} の連絡先|{count} の連絡先',
     'personalization_genders_table_name' => 'Name',
     'personalization_genders_table_sex' => 'Sex',
     'personalization_genders_table_default' => 'Default',
