@@ -83,7 +83,6 @@ class SentryRelease extends Command
         }
 
         if ($this->confirmToProceed()) {
-
             $release = $this->option('release') ?? config('sentry.release');
             $commit = $this->option('commit') ??
                     (is_dir(__DIR__.'/../../../.git') ? trim(exec('git log --pretty="%H" -n1 HEAD')) : $release);
