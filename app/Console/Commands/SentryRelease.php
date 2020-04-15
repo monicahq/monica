@@ -20,6 +20,7 @@ class SentryRelease extends Command
      * @var string
      */
     protected $signature = 'sentry:release
+                            {--force : Force the operation to run when in production.}
                             {--release= : release version for sentry.}
                             {--store-release : store release version in .sentry-release file.}
                             {--commit= : commit associated with this release.}
@@ -77,30 +78,33 @@ class SentryRelease extends Command
      */
     public function handle()
     {
-        if (! $this->confirmToProceed() || ! config('monica.sentry_support') || ! $this->check()) {
+        if (! config('monica.sentry_support') || ! $this->check()) {
             return;
         }
 
-        $release = $this->option('release');
-        $commit = $this->option('commit') ??
-                  (is_dir(__DIR__.'/../../../.git') ? trim(exec('git log --pretty="%H" -n1 HEAD')) : $this->option('release'));
+        if ($this->confirmToProceed()) {
 
-        // Sentry update
-        $this->commandExecutor->exec('Update sentry', $this->getSentryCli().' update');
+            $release = $this->option('release') ?? config('sentry.release');
+            $commit = $this->option('commit') ??
+                    (is_dir(__DIR__.'/../../../.git') ? trim(exec('git log --pretty="%H" -n1 HEAD')) : $release);
 
-        // Create a release
-        $this->execSentryCli('Create a release', 'releases new '.$release.' --finalize --project '.config('sentry-release.project'));
+            // Sentry update
+            $this->commandExecutor->exec('Update sentry', $this->getSentryCli().' update');
 
-        // Associate commits with the release
-        $this->execSentryCli('Associate commits with the release', 'releases set-commits '.$release.' --commit "'.config('sentry-release.repo').'@'.$commit.'"');
+            // Create a release
+            $this->execSentryCli('Create a release', 'releases new '.$release.' --finalize --project '.config('sentry-release.project'));
 
-        // Create a deploy
-        $this->execSentryCli('Create a deploy', 'releases deploys '.$release.' new --env '.$this->option('environment').' --name '.config('monica.app_version'));
+            // Associate commits with the release
+            $this->execSentryCli('Associate commits with the release', 'releases set-commits '.$release.' --commit "'.config('sentry-release.repo').'@'.$commit.'"');
 
-        if ($this->option('store-release')) {
-            // Set sentry release
-            $this->line('Store release in .sentry-release file', null, OutputInterface::VERBOSITY_VERBOSE);
-            file_put_contents(__DIR__.'/../../../.sentry-release', $this->option('release'));
+            // Create a deploy
+            $this->execSentryCli('Create a deploy', 'releases deploys '.$release.' new --env '.$this->option('environment').' --name '.config('monica.app_version'));
+
+            if ($this->option('store-release')) {
+                // Set sentry release
+                $this->line('Store release in .sentry-release file', null, OutputInterface::VERBOSITY_VERBOSE);
+                file_put_contents(__DIR__.'/../../../.sentry-release', $release);
+            }
         }
     }
 
@@ -121,10 +125,6 @@ class SentryRelease extends Command
         }
         if (empty(config('sentry-release.repo'))) {
             $this->error('You must set the repository (SENTRY_REPO)');
-            $check = false;
-        }
-        if (empty($this->option('release'))) {
-            $this->error('No release given');
             $check = false;
         }
         if (empty($this->option('environment'))) {
