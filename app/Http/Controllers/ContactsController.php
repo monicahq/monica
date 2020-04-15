@@ -78,12 +78,13 @@ class ContactsController extends Controller
             ]);
         }
 
+        $contacts = $user->account->addressBookContacts();
         if ($active) {
-            $contacts = $user->account->addressBookContacts()->active();
-            $archived = $user->account->addressBookContacts()->notActive();
+            $archived = (clone $contacts)->notActive();
+            $contacts = (clone $contacts)->active();
             $nbArchived = $archived->count();
         } else {
-            $contacts = $user->account->addressBookContacts()->notActive();
+            $contacts = $contacts->notActive();
             $nbArchived = $contacts->count();
         }
 
@@ -97,8 +98,10 @@ class ContactsController extends Controller
             $tags = collect();
 
             while ($request->input('tag'.$count)) {
-                $tag = Tag::where('account_id', auth()->user()->account_id)
-                            ->where('name_slug', $request->input('tag'.$count));
+                $tag = Tag::where([
+                    'account_id' => auth()->user()->account_id,
+                    'name_slug' => $request->input('tag'.$count),
+                ]);
                 if ($tag->count() > 0) {
                     $tag = $tag->get();
 
@@ -713,7 +716,7 @@ class ContactsController extends Controller
         $perPage = $request->has('perPage') ? $request->input('perPage') : config('monica.number_of_contacts_pagination');
 
         // search contacts
-        $contacts = $contacts->search($request->input('search') ? $request->input('search') : '', $accountId, 'is_starred', 'desc', $sort)
+        $contacts = $contacts->search($request->input('search', '') ? $request->input('search') : '', $accountId, 'is_starred', 'desc', $sort)
             ->paginate($perPage);
 
         return [

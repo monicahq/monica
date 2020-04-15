@@ -53,7 +53,8 @@ class ApiContactController extends ApiController
                     $this->getLimitPerPage(),
                     $this->sort,
                     $this->sortDirection
-                );
+                )
+                    ->real();
             } catch (QueryException $e) {
                 return $this->respondInvalidQuery();
             }

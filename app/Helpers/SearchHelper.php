@@ -40,11 +40,11 @@ class SearchHelper
                     ['contact_field_type_id', $field_id],
                 ]);
             })
+                ->addressBook($accountId, $addressBookName)
                 ->orderBy($orderByColumn, $orderByDirection)
                 ->paginate($limitPerPage);
         } else {
             $results = Contact::search($needle, $accountId, $orderByColumn, $orderByDirection)
-                ->real()
                 ->addressBook($accountId, $addressBookName)
                 ->paginate($limitPerPage);
         }

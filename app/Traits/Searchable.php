@@ -30,7 +30,8 @@ trait Searchable
 
         $queryString = $this->buildQuery($searchableColumns, $needle);
 
-        $builder->whereRaw(DBHelper::getTable($this->getTable()).".`account_id` = $accountId AND ($queryString)");
+        $builder->where('account_id', $accountId);
+        $builder->whereRaw('('.$queryString.')');
         $builder->orderBy($orderByColumn, $orderByDirection);
 
         if ($sortOrder) {
@@ -64,7 +65,7 @@ trait Searchable
                 if ($first) {
                     $first = false;
                 } else {
-                    $queryString .= ' or ';
+                    $queryString .= ' OR ';
                 }
                 $queryString .= $column.' LIKE '.$searchTerm;
             }

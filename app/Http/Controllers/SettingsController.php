@@ -55,6 +55,7 @@ class SettingsController
             auth()->user()->last_name.' '.
             auth()->user()->email;
         $existingContacts = Contact::search($search, auth()->user()->account_id, 'id')
+            ->real()
             ->whereNotIn('id', [auth()->user()->me_contact_id])
             ->paginate(20);
 
