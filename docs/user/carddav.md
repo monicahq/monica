@@ -2,7 +2,17 @@
 
 **Using Monica as a CardDAV and CalDAV server**
 
----
+- [CardDAV and CalDAV](#carddav-and-caldav)
+  - [Authentication](#authentication)
+  - [CardDAV and CalDAV urls](#carddav-and-caldav-urls)
+  - [Clients](#clients)
+    - [Android (with DAVx5 app)](#android-with-davx5-app)
+    - [iPhone](#iphone)
+    - [Apple iOS](#apple-ios)
+    - [Thunderbird (with CardBook Add-on)](#thunderbird-with-cardbook-add-on)
+    - [Windows 10 Mail application](#windows-10-mail-application)
+    - [Outlook (Microsoft Office)](#outlook-microsoft-office)
+
 
 CardDAV is a protocol based on WebDAV, allowing you to **synchronize your contacts** between multiple devices (mobile phone, mail software, etc.).
 CalDAV is pretty much the same, with Calendars. In Monica it allows you to synchronize the birthdays anniversary of your contacts, and the task list (which uses the same CalDAV protocol).
@@ -14,7 +24,10 @@ CardDAV and CalDAV for Monica are implemented with [sabre/dav](https://sabre.io/
 
 To authenticate with the server, you'll need to create an API token.
 
-Go to the [Settings > API](https://app.monicahq.com/settings/api) page of your instance, and Create a new token.
+Go to the [Settings > API](https://app.monicahq.com/settings/api) page, and Create a new token.
+![Create a token](/docs/images/carddav_token1.png)
+![Create a token](/docs/images/carddav_token2.png)
+
 Save this token to authenticate with CardDAV and CalDAV.
 
 The login is you email login.
@@ -36,32 +49,50 @@ This list is not exhaustive, as the synchronisation can work on every CardDAV co
 
 
 
-### Android
+### Android (with DAVx5 app)
 
 For Android devices, you'll need to install some extra application.
 
 I recommend to install [DAVx5](https://www.davx5.com/) which works perfectly. You will find the application on the [Google Play store](https://play.google.com/store/apps/details?id=at.bitfire.davdroid) or even on [F-Droid store](https://f-droid.org/fr/packages/at.bitfire.davdroid/) (free).
 
-After installation the application, add a new account, using the /dav url, and email + API token.
+To add an account:
+- Click on the `+` button
+- Choose **Connection with a URL and a username**, and enter the following details:
+  - **URL**: Paste the `/dav` base url, i.e. `https://app.monicahq.com/dav`
+  - **Username**: Your email login address
+  - **Password**: The token you've created on the API settings page.
 
 ![Davx5 config](/docs/images/carddav_davx5_1.png)
+- Click on **Connect**
+
+After that, you can use any Contacts application on your phone. Be sure to display your Monica account on the list of contacts, and to use it by default.
+
+### iPhone
 
 
 ### Apple iOS
 
-_missing documentation_
 
+### Thunderbird (with CardBook Add-on)
 
-### Thunderbird
-
-For [Mozilla Thunderbird](https://www.thunderbird.net), you'll need to install some extra Add-on.
+[Thunderbird](https://www.thunderbird.net) does not support Carddav natively, so you'll need to install a third party Add-on to use Carddav.
 
 I recommend to install [CardBook](https://addons.thunderbird.net/thunderbird/addon/cardbook/).
-Download the add-on and install it on thunderbird.
+Download the add-on and install it through Thunderbird's add-on manager.
+
+To add an account:
+- Create a new Address Book.
+- Choose **Remote**
+- Choose **CardDAV** and enter the following details:
+    - **URL**: Paste the `/dav` base url, i.e. `https://app.monicahq.com/dav`
+    - **Username**: Your email login address
+    - **Password**: The token you've created on the API settings page.
+- Click **Validate** to check the credentials, then click on the **Next** button
+- You can now see the address book, and the color to associate with. Select `4.0` as vCard format if you want.
+- Click **Next** and **Finish**
 
 
+### Windows 10 Mail application
 
-### Mail (Windows 10)
 
-
-### Outlook (Office)
+### Outlook (Microsoft Office)
