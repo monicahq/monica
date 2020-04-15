@@ -71,7 +71,7 @@ return [
     'footer_modal_version_release_away' => 'You are 1 release behind the latest version available. You should update your instance.|You are :number releases behind the latest version available. You should update your instance.',
 
     'breadcrumb_dashboard' => 'ダッシュボード',
-    'breadcrumb_list_contacts' => 'List of people',
+    'breadcrumb_list_contacts' => '連絡先のリスト',
     'breadcrumb_archived_contacts' => 'Archived contacts',
     'breadcrumb_journal' => '日記',
     'breadcrumb_settings' => '設定',
