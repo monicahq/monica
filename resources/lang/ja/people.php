@@ -381,7 +381,7 @@ return [
     'contact_info_address' => 'Lives in',
 
     // Addresses
-    'contact_address_title' => 'Addresses',
+    'contact_address_title' => '住所：',
     'contact_address_form_name' => 'Label (optional)',
     'contact_address_form_street' => 'Street (optional)',
     'contact_address_form_city' => 'City (optional)',
