@@ -52,6 +52,7 @@ return [
     'people_delete_message' => 'Contact verwijderen',
     'people_delete_confirmation' => 'Weet je zeker dat je dit contact wilt verwijderen? Dit is permanent.',
     'people_add_birthday_reminder' => 'Feliciteer :name met zijn/haar verjaardag',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
     'people_add_import' => 'Wil je <a href=":url">contacten importeren</a>?',
     'people_edit_email_error' => 'Er is al een contactpersoon in jouw account met dit e-mailadres. Kies alsjeblieft een ander.',
     'people_export' => 'Exporteer als vCard',
@@ -85,7 +86,7 @@ return [
     'stay_in_touch_premium' => 'Je moet je account upgraden om gebruik te maken van deze functie',
     'stay_in_touch_modal_title' => 'Blijf in contact',
     'stay_in_touch_modal_desc' => 'We kunnen je herinneren via e-mail om regelmatig in contact te blijven met {firstname}.',
-    'stay_in_touch_modal_label' => 'Stuur me elke...{count} dag een e-mail|Stuur me elke... {count} dagen een email',
+    'stay_in_touch_modal_label' => 'Stuur me elke dag een e-mail|Stuur me elke... {count} dagen een email',
 
     // Calls
     'modal_call_title' => 'Telefoongesprek registreren',
@@ -151,7 +152,7 @@ return [
     'information_edit_probably' => 'Deze persoon is waarschijnlijk...',
     'information_edit_not_year' => 'Ik weet de dag en de maand van de geboortedatum van deze persoon, maar niet het jaar…',
     'information_edit_exact' => 'Ik weet de exacte geboortedatum van deze persoon...',
-    'information_edit_birthdate_label' => 'Birthdate',
+    'information_edit_birthdate_label' => 'Geboortedatum',
     'information_no_work_defined' => 'Geen werkgegevens gedefinieerd',
     'information_work_at' => 'bij :company',
     'work_add_cta' => 'Werk informatie bijwerken',
