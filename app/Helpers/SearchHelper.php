@@ -6,7 +6,7 @@ use function Safe\preg_match;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Contact\ContactFieldType;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 
 class SearchHelper
 {
@@ -14,12 +14,11 @@ class SearchHelper
      * Search contacts by the given query.
      *
      * @param  string $needle
-     * @param  int $limitPerPage
      * @param  string $orderByColumn
      * @param  string $orderByDirection
-     * @return mixed
+     * @return Builder
      */
-    public static function searchContacts(string $needle, int $limitPerPage, string $orderByColumn, string $orderByDirection = 'asc'): LengthAwarePaginator
+    public static function searchContacts(string $needle, string $orderByColumn, string $orderByDirection = 'asc'): Builder
     {
         $accountId = Auth::user()->account_id;
 
@@ -40,11 +39,9 @@ class SearchHelper
                     ['contact_field_type_id', $field_id],
                 ]);
             })
-                ->orderBy($orderByColumn, $orderByDirection)
-                ->paginate($limitPerPage);
+                ->orderBy($orderByColumn, $orderByDirection);
         }
 
-        return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection)
-                ->paginate($limitPerPage);
+        return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection);
     }
 }
