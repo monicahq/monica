@@ -162,15 +162,15 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * The limit is 'suggestive'. You are free to ignore it.
      *
-     * @param string $addressBookName
+     * @param string $addressBookId
      * @param string $syncToken
      * @param int $syncLevel
      * @param int $limit
      * @return array
      */
-    public function getChangesForAddressBook($addressBookName, $syncToken, $syncLevel, $limit = null)
+    public function getChangesForAddressBook($addressBookId, $syncToken, $syncLevel, $limit = null)
     {
-        return $this->getChanges($addressBookName, $syncToken);
+        return $this->getChanges($addressBookId, $syncToken);
     }
 
     /**
@@ -209,17 +209,17 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Returns the contact for the specific uuid.
      *
-     * @param mixed|null $addressBookName
+     * @param mixed|null $addressBookId
      * @param string  $uuid
      * @return Contact
      */
-    public function getObjectUuid($addressBookName, $uuid)
+    public function getObjectUuid($addressBookId, $uuid)
     {
         $addressBook = null;
-        if ($addressBookName) {
+        if ($addressBookId) {
             $addressBook = AddressBook::where([
                 'account_id' => Auth::user()->account_id,
-                'name' => $addressBookName == $this->backendUri() ? null : $addressBookName,
+                'addressBookId' => $addressBookId == $this->backendUri() ? null : $addressBookId,
             ])->first();
         }
 
@@ -235,9 +235,9 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getObjects($addressBookName)
+    public function getObjects($addressBookId)
     {
-        return Auth::user()->account->addressBookContacts($addressBookName)
+        return Auth::user()->account->addressBookContacts($addressBookId)
                     ->active()
                     ->get();
     }
@@ -258,12 +258,12 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * calculating them. If they are specified, you can also ommit carddata.
      * This may speed up certain requests, especially with large cards.
      *
-     * @param mixed $addressBookName
+     * @param mixed $addressBookId
      * @return array
      */
-    public function getCards($addressBookName)
+    public function getCards($addressBookId)
     {
-        $contacts = $this->getObjects($addressBookName);
+        $contacts = $this->getObjects($addressBookId);
 
         return $contacts->map(function ($contact) {
             return $this->prepareCard($contact);
@@ -278,13 +278,13 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * If the card does not exist, you must return false.
      *
-     * @param mixed $addressBookName
+     * @param mixed $addressBookId
      * @param string $cardUri
      * @return array|bool
      */
-    public function getCard($addressBookName, $cardUri)
+    public function getCard($addressBookId, $cardUri)
     {
-        $contact = $this->getObject($addressBookName, $cardUri);
+        $contact = $this->getObject($addressBookId, $cardUri);
 
         if ($contact) {
             return $this->prepareCard($contact);
@@ -313,14 +313,14 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * If you don't return an ETag, you can just return null.
      *
-     * @param mixed $addressBookName
+     * @param mixed $addressBookId
      * @param string $cardUri
      * @param string $cardData
      * @return string|null
      */
-    public function createCard($addressBookName, $cardUri, $cardData)
+    public function createCard($addressBookId, $cardUri, $cardData)
     {
-        return $this->updateCard($addressBookName, $cardUri, $cardData);
+        return $this->updateCard($addressBookId, $cardUri, $cardData);
     }
 
     /**
@@ -343,16 +343,16 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * If you don't return an ETag, you can just return null.
      *
-     * @param mixed $addressBookName
+     * @param mixed $addressBookId
      * @param string $cardUri
      * @param string $cardData
      * @return string|null
      */
-    public function updateCard($addressBookName, $cardUri, $cardData): ?string
+    public function updateCard($addressBookId, $cardUri, $cardData): ?string
     {
         $contact_id = null;
         if ($cardUri) {
-            $contact = $this->getObject($addressBookName, $cardUri);
+            $contact = $this->getObject($addressBookId, $cardUri);
 
             if ($contact) {
                 $contact_id = $contact->id;
@@ -367,7 +367,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
                     'contact_id' => $contact_id,
                     'entry' => $cardData,
                     'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
-                    'name' => $addressBookName == $this->backendUri() ? null : $addressBookName,
+                    'addressBookId' => $addressBookId == $this->backendUri() ? null : $addressBookId,
                 ]);
 
             if (! Arr::has($result, 'error')) {
@@ -388,11 +388,11 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Deletes a card.
      *
-     * @param mixed $addressBookName
+     * @param mixed $addressBookId
      * @param string $cardUri
      * @return bool
      */
-    public function deleteCard($addressBookName, $cardUri)
+    public function deleteCard($addressBookId, $cardUri)
     {
         return false;
     }
@@ -409,14 +409,14 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * Read the PropPatch documentation for more info and examples.
      *
-     * @param string $addressBookName
+     * @param string $addressBookId
      * @param \Sabre\DAV\PropPatch $propPatch
      * @return bool|null
      */
-    public function updateAddressBook($addressBookName, DAV\PropPatch $propPatch): ?bool
+    public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch): ?bool
     {
-        $propPatch->handle('{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card', function ($props) use ($addressBookName) {
-            $contact = $this->getObject($addressBookName, $props->getHref());
+        $propPatch->handle('{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card', function ($props) use ($addressBookId) {
+            $contact = $this->getObject($addressBookId, $props->getHref());
 
             $data = [
                 'contact_id' => $contact->id,
@@ -451,10 +451,10 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Deletes an entire addressbook and all its contents.
      *
-     * @param mixed $addressBookName
+     * @param mixed $addressBookId
      * @return bool|null
      */
-    public function deleteAddressBook($addressBookName)
+    public function deleteAddressBook($addressBookId)
     {
         return false;
     }
