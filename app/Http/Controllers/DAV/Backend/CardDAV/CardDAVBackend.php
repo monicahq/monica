@@ -367,7 +367,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
                     'contact_id' => $contact_id,
                     'entry' => $cardData,
                     'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
-                    'addressBookId' => $addressBookId == $this->backendUri() ? null : $addressBookId,
+                    'addressBookName' => $addressBookId == $this->backendUri() ? null : $addressBookId,
                 ]);
 
             if (! Arr::has($result, 'error')) {
