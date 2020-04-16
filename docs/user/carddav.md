@@ -1,17 +1,16 @@
-# CardDAV and CalDAV
+# CardDAV and CalDAV <!-- omit in toc -->
 
 **Using Monica as a CardDAV and CalDAV server**
 
-- [CardDAV and CalDAV](#carddav-and-caldav)
-  - [Authentication](#authentication)
-  - [CardDAV and CalDAV urls](#carddav-and-caldav-urls)
-  - [Clients](#clients)
-    - [Android (with DAVx5 app)](#android-with-davx5-app)
-    - [iPhone](#iphone)
-    - [Apple iOS](#apple-ios)
-    - [Thunderbird (with CardBook Add-on)](#thunderbird-with-cardbook-add-on)
-    - [Windows 10 Mail application](#windows-10-mail-application)
-    - [Outlook (Microsoft Office)](#outlook-microsoft-office)
+- [Authentication](#authentication)
+- [CardDAV and CalDAV urls](#carddav-and-caldav-urls)
+- [Clients](#clients)
+  - [Android](#android)
+  - [iPhone](#iphone)
+  - [Apple iOS](#apple-ios)
+  - [Thunderbird](#thunderbird)
+  - [Windows 10 Mail application](#windows-10-mail-application)
+  - [Outlook (Microsoft Office)](#outlook-microsoft-office)
 
 
 CardDAV is a protocol based on WebDAV, allowing you to **synchronize your contacts** between multiple devices (mobile phone, mail software, etc.).
@@ -49,23 +48,27 @@ This list is not exhaustive, as the synchronisation can work on every CardDAV co
 
 
 
-### Android (with DAVx5 app)
+### Android
 
-For Android devices, you'll need to install some extra application.
+Android devices does not support CardDAV natively, so you'll need to install a third-party application to use CardDAV.
 
-I recommend to install [DAVx5](https://www.davx5.com/) which works perfectly. You will find the application on the [Google Play store](https://play.google.com/store/apps/details?id=at.bitfire.davdroid) or even on [F-Droid store](https://f-droid.org/fr/packages/at.bitfire.davdroid/) (free).
+I recommend to install [DAVx5](https://www.davx5.com/) which is a great CardDAV client. You will find the application on the [Google Play store](https://play.google.com/store/apps/details?id=at.bitfire.davdroid) or even on [F-Droid store](https://f-droid.org/fr/packages/at.bitfire.davdroid/) for free.
 
 To add an account:
 - Click on the `+` button
-- Choose **Connection with a URL and a username**, and enter the following details:
-  - **URL**: Paste the `/dav` base url, i.e. `https://app.monicahq.com/dav`
+- Choose **Connection with URL and username.**, and enter the following details:
+  - **URL**: Enter the `/dav` base url, i.e. `https://app.monicahq.com/dav`
   - **Username**: Your email login address
   - **Password**: The token you've created on the API settings page.
 
 ![Davx5 config](/docs/images/carddav_davx5_1.png)
-- Click on **Connect**
 
-After that, you can use any Contacts application on your phone. Be sure to display your Monica account on the list of contacts, and to use it by default.
+- Chose the option **Groups are per-contact categories**
+- Click on **Connect**
+- Select the data you want to sync
+
+After that, you can use any Contacts application on your phone. Be sure to display your Monica account on the list of contacts, and to use it by default for new contacts.
+
 
 ### iPhone
 
@@ -73,9 +76,9 @@ After that, you can use any Contacts application on your phone. Be sure to displ
 ### Apple iOS
 
 
-### Thunderbird (with CardBook Add-on)
+### Thunderbird
 
-[Thunderbird](https://www.thunderbird.net) does not support Carddav natively, so you'll need to install a third party Add-on to use Carddav.
+[Thunderbird](https://www.thunderbird.net) does not support CardDAV natively, so you'll need to install a third party Add-on to use CardDAV.
 
 I recommend to install [CardBook](https://addons.thunderbird.net/thunderbird/addon/cardbook/).
 Download the add-on and install it through Thunderbird's add-on manager.
