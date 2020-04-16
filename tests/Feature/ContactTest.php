@@ -6,7 +6,6 @@ use Tests\FeatureTestCase;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use App\Models\Contact\Gift;
-use App\Helpers\StringHelper;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
