@@ -48,7 +48,6 @@ class SettingsController
             'nickname',
         ];
 
-        $filter = null;
         $meContact = null;
 
         $search = auth()->user()->first_name.' '.
@@ -60,7 +59,8 @@ class SettingsController
             ->paginate(20);
 
         if (auth()->user()->me_contact_id) {
-            $meContact = Contact::where('account_id', auth()->user()->account_id)->find(auth()->user()->me_contact_id);
+            $meContact = Contact::where('account_id', auth()->user()->account_id)
+                ->find(auth()->user()->me_contact_id);
             $existingContacts->prepend($meContact);
         }
 

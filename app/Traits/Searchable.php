@@ -18,7 +18,7 @@ trait Searchable
      * @param  string $sortOrder
      * @return Builder|null
      */
-    public function scopeSearch(Builder $builder, $needle, $accountId, $orderByColumn, $orderByDirection = 'asc', $sortOrder = null): ?Builder
+    public function scopeSearch(Builder $builder, string $needle, int $accountId, string $orderByColumn, string $orderByDirection = 'asc', string $sortOrder = null): ?Builder
     {
         if ($this->searchable_columns == null) {
             return null;
@@ -30,9 +30,8 @@ trait Searchable
 
         $queryString = $this->buildQuery($searchableColumns, $needle);
 
-        $builder->where('account_id', $accountId);
-        $builder->whereRaw('('.$queryString.')');
-        $builder->orderBy($orderByColumn, $orderByDirection);
+        $builder->whereRaw('('.$queryString.')')
+            ->orderBy($orderByColumn, $orderByDirection);
 
         if ($sortOrder) {
             $builder->sortedBy($sortOrder);
@@ -52,7 +51,7 @@ trait Searchable
      * @param  string $searchTerm
      * @return string
      */
-    private function buildQuery(array $array, string $searchTerm)
+    private function buildQuery(array $array, string $searchTerm): string
     {
         $first = true;
         $queryString = '';

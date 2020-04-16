@@ -25,7 +25,7 @@ class SearchableTest extends TestCase
     {
         $contact = factory(Contact::class)->create(['first_name' => 'FirstName']);
         $searchResults = $contact->search($contact->first_name, $contact->account_id, 'created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         $this->assertTrue($searchResults->contains($contact));
     }
@@ -35,7 +35,7 @@ class SearchableTest extends TestCase
     {
         $contact = factory(Contact::class)->create(['middle_name' => 'MiddleName']);
         $searchResults = $contact->search($contact->middle_name, $contact->account_id, 'created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         $this->assertTrue($searchResults->contains($contact));
     }
@@ -44,9 +44,8 @@ class SearchableTest extends TestCase
     public function testSearchContactsThroughLastNameAndResultContainsContact()
     {
         $contact = factory(Contact::class)->create(['last_name' => 'LastName']);
-
         $searchResults = $contact->search($contact->last_name, $contact->account_id, 'created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         $this->assertTrue($searchResults->contains($contact));
     }
@@ -56,7 +55,7 @@ class SearchableTest extends TestCase
     {
         $contact = factory(Contact::class)->create(['first_name' => 'TestShouldFail']);
         $searchResults = $contact->search('TestWillSucceed', $contact->account_id, 'created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         $this->assertFalse($searchResults->contains($contact));
     }

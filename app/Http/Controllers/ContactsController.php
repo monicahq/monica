@@ -551,9 +551,10 @@ class ContactsController extends Controller
             return;
         }
 
-        $results = SearchHelper::searchContacts($needle, 20, 'created_at');
+        $results = SearchHelper::searchContacts($needle, 'created_at')
+            ->paginate(20);
 
-        if (count($results) !== 0) {
+        if ($results->total() > 0) {
             return ContactResource::collection($results);
         } else {
             return ['noResults' => trans('people.people_search_no_results')];
@@ -695,9 +696,10 @@ class ContactsController extends Controller
             $tags = collect();
 
             while ($request->input('tag'.$count)) {
-                $tag = Tag::where('account_id', $accountId)
-                    ->where('name_slug', $request->input('tag'.$count))
-                    ->get();
+                $tag = Tag::where([
+                    'account_id' => $accountId,
+                    'name_slug' => $request->input('tag'.$count),
+                ])->get();
 
                 if (! ($tags->contains($tag[0]))) {
                     $tags = $tags->concat($tag);
@@ -716,7 +718,7 @@ class ContactsController extends Controller
         $perPage = $request->has('perPage') ? $request->input('perPage') : config('monica.number_of_contacts_pagination');
 
         // search contacts
-        $contacts = $contacts->search($request->input('search', '') ? $request->input('search') : '', $accountId, 'is_starred', 'desc', $sort)
+        $contacts = $contacts->search($request->has('search') ? $request->input('search') : '', $accountId, 'is_starred', 'desc', $sort)
             ->paginate($perPage);
 
         return [
