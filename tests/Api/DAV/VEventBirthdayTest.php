@@ -73,7 +73,7 @@ class VEventBirthdayTest extends ApiTestCase
              '<d:status>HTTP/1.1 200 OK</d:status>'.
            '</d:propstat>'.
           '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>', false);
     }
 
     public function test_caldav_birthdays_report_multiget()
@@ -121,7 +121,7 @@ class VEventBirthdayTest extends ApiTestCase
              '</d:prop>'.
              '<d:status>HTTP/1.1 200 OK</d:status>'.
            '</d:propstat>'.
-          '</d:response>');
+          '</d:response>', false);
         $response->assertSee(
           '<d:response>'.
             "<d:href>/dav/calendars/{$user->email}/birthdays/{$specialDate2->uuid}.ics</d:href>".
@@ -133,6 +133,6 @@ class VEventBirthdayTest extends ApiTestCase
                '<d:status>HTTP/1.1 200 OK</d:status>'.
              '</d:propstat>'.
             '</d:response>'.
-          '</d:multistatus>');
+          '</d:multistatus>', false);
     }
 }

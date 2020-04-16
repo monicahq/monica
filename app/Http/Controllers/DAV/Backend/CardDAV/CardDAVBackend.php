@@ -103,13 +103,13 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
     private function getAddressBookDescription($addressbook)
     {
-        $token = $this->getCurrentSyncToken($addressbook->addressBookId, true);
+        $token = $this->getCurrentSyncToken($addressbook->name, true);
 
         $des = [
-            'id'                => $addressbook->addressBookId,
-            'uri'               => $addressbook->addressBookId,
+            'id'                => $addressbook->name,
+            'uri'               => $addressbook->name,
             'principaluri'      => PrincipalBackend::getPrincipalUser($this->user),
-            '{DAV:}displayname' => $addressbook->name,
+            '{DAV:}displayname' => $addressbook->description,
         ];
 
         if ($token) {
@@ -203,13 +203,16 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     private function prepareCard($contact): array
     {
         try {
-            $vcard = app(ExportVCard::class)
-                ->execute([
-                    'account_id' => $this->user->account_id,
-                    'contact_id' => $contact->id,
-                ]);
+            $carddata = $contact->vcard;
+            if (empty($carddata)) {
+                $vcard = app(ExportVCard::class)
+                    ->execute([
+                        'account_id' => $this->user->account_id,
+                        'contact_id' => $contact->id,
+                    ]);
 
-            $carddata = $vcard->serialize();
+                $carddata = $vcard->serialize();
+            }
 
             return [
                 'id' => $contact->hashID(),
@@ -244,7 +247,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         return Contact::where([
             'account_id' => $this->user->account_id,
             'uuid' => $uuid,
-            'addressbook_id' => $addressBook ? $addressBook->id : null,
+            'address_book_id' => $addressBook ? $addressBook->id : null,
         ])->first();
     }
 
@@ -255,10 +258,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      */
     public function getObjects($addressBookId)
     {
-        return $this->user->account
-                    ->contacts()
-                    ->real()
-                    ->addressBook($this->user->account_id, $addressBookId)
+        return $this->user->account->addressBookContacts($addressBookId)
                     ->active()
                     ->get();
     }
@@ -388,7 +388,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
                     'contact_id' => $contact_id,
                     'entry' => $cardData,
                     'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
-                    'addressBookId' => $addressBookId == $this->backendUri() ? null : $addressBookId,
+                    'addressBookName' => $addressBookId == $this->backendUri() ? null : $addressBookId,
                 ]);
 
             if (! Arr::has($result, 'error')) {
@@ -402,7 +402,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
             throw $e;
         }
 
-        return;
+        return null;
     }
 
     /**

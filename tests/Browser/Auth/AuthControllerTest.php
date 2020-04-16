@@ -5,8 +5,8 @@ namespace Tests\Browser\Auth;
 use GuzzleHttp\Client;
 use Tests\ApiTestCase;
 use App\Models\User\User;
+use Illuminate\Testing\TestResponse;
 use Laravel\Passport\ClientRepository;
-use Illuminate\Foundation\Testing\TestResponse;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
 class AuthControllerTest extends ApiTestCase

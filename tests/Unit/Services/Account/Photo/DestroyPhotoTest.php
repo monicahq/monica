@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Document;
+namespace Tests\Unit\Services\Account\Photo;
 
 use Tests\TestCase;
 use App\Models\Account\Photo;

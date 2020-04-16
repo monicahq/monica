@@ -105,10 +105,10 @@ class Activity extends Model implements IsJournalableInterface
      *
      * @return string|null
      */
-    public function getParsedContentAttribute()
+    public function getParsedContentAttribute(): ?string
     {
         if (is_null($this->description)) {
-            return;
+            return null;
         }
 
         return (new Parsedown())->text($this->description);

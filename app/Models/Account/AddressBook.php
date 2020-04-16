@@ -2,12 +2,10 @@
 
 namespace App\Models\Account;
 
-use App\Models\Contact\Contact;
 use App\Models\User\User;
-use function safe\json_decode;
-use function safe\json_encode;
-use Illuminate\Support\Facades\Crypt;
+use App\Models\Contact\Contact;
 use App\Models\ModelBinding as Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AddressBook extends Model
@@ -23,7 +21,7 @@ class AddressBook extends Model
         'account_id',
         'user_id',
         'name',
-        'addressBookId',
+        'name',
     ];
 
     /**

@@ -124,7 +124,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
      * @param string $calendarData
      * @return string|null
      */
-    public function updateOrCreateCalendarObject($objectUri, $calendarData): ?string
+    public function updateOrCreateCalendarObject($calendarId, $objectUri, $calendarData): ?string
     {
         $task_id = null;
         if ($objectUri) {

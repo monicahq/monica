@@ -99,11 +99,12 @@ interface ICalDAVBackend
      * calendar-data. If the result of a subsequent GET to this object is not
      * the exact same as this request body, you should omit the ETag.
      *
+     * @param string|null $calendarId
      * @param string $objectUri
      * @param string $calendarData
      * @return string|null
      */
-    public function updateOrCreateCalendarObject($objectUri, $calendarData): ?string;
+    public function updateOrCreateCalendarObject($calendarId, $objectUri, $calendarData): ?string;
 
     /**
      * Deletes an existing calendar object.

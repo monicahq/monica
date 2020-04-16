@@ -12,13 +12,15 @@ class SearchHelper
     /**
      * Search contacts by the given query.
      *
-     * @param  string $query
+     * @param  string $needle
      * @param  int $limitPerPage
+     * @param  string $orderByColumn
+     * @param  string $orderByDirection
+     * @param  string|null $addressBookName
      * @return mixed
      */
-    public static function searchContacts($query, $limitPerPage, $order)
+    public static function searchContacts($needle, $limitPerPage, $orderByColumn, $orderByDirection = 'asc', $addressBookName = null)
     {
-        $needle = $query;
         $accountId = Auth::user()->account_id;
 
         if (preg_match('/(.{1,})[:](.{1,})/', $needle, $matches)) {
@@ -37,9 +39,14 @@ class SearchHelper
                     ['data', 'like', "$search_term%"],
                     ['contact_field_type_id', $field_id],
                 ]);
-            })->paginate($limitPerPage);
+            })
+                ->addressBook($accountId, $addressBookName)
+                ->orderBy($orderByColumn, $orderByDirection)
+                ->paginate($limitPerPage);
         } else {
-            $results = Contact::search($needle, $accountId, $limitPerPage, $order, 'AND '.DBHelper::getTable('contacts').'.`is_partial` = FALSE');
+            $results = Contact::search($needle, $accountId, $orderByColumn, $orderByDirection)
+                ->addressBook($accountId, $addressBookName)
+                ->paginate($limitPerPage);
         }
 
         return $results;

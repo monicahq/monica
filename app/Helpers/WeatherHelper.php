@@ -14,10 +14,10 @@ class WeatherHelper
      * @param Address|null $address
      * @return Weather|null
      */
-    public static function getWeatherForAddress($address)
+    public static function getWeatherForAddress($address): ?Weather
     {
         if (is_null($address)) {
-            return;
+            return null;
         }
 
         $weather = $address->place->weathers()->orderBy('created_at', 'desc')->first();
@@ -41,16 +41,14 @@ class WeatherHelper
      * @param Address $address
      * @return Weather|null
      */
-    private static function callWeatherAPI(Address $address)
+    private static function callWeatherAPI(Address $address): ?Weather
     {
         try {
-            $weather = app(GetWeatherInformation::class)->execute([
+            return app(GetWeatherInformation::class)->execute([
                 'place_id' => $address->place->id,
             ]);
         } catch (\Exception $e) {
-            $weather = null;
+            return null;
         }
-
-        return $weather;
     }
 }

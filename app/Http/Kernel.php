@@ -59,7 +59,6 @@ class Kernel extends HttpKernel
         'mfa' => [
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             'webauthn',
-            'u2f',
             '2fa',
         ],
     ];
@@ -86,7 +85,6 @@ class Kernel extends HttpKernel
         'sentry.context' => \App\Http\Middleware\SentryContext::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \App\Http\Middleware\ThrottleRequestsMiddleware::class,
-        'u2f' => \Lahaxearnaud\U2f\Http\Middleware\U2f::class,
         'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         'webauthn' => \LaravelWebauthn\Http\Middleware\WebauthnMiddleware::class,
     ];

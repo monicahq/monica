@@ -75,33 +75,32 @@ class UploadPhoto extends BaseService
      *
      * @return array
      */
-    private function importPhoto($data)
+    private function importPhoto($data): array
     {
         $photo = $data['photo'];
-        $array = [
+
+        return [
             'account_id' => $data['account_id'],
             'original_filename' => $photo->getClientOriginalName(),
             'filesize' => $photo->getSize(),
             'mime_type' => (new \Mimey\MimeTypes)->getMimeType($photo->guessClientExtension()),
+            'new_filename' => $photo->storePublicly('photos', config('filesystems.default')),
         ];
-        $array['new_filename'] = $photo->storePublicly('photos', config('filesystems.default'));
-
-        return $array;
     }
 
     /**
      * Upload the photo.
      *
-     * @return array
+     * @return array|null
      */
-    private function importFile(array $data)
+    private function importFile(array $data): ?array
     {
         $filename = Str::random(40);
 
         try {
             $image = Image::make($data['data']);
         } catch (NotReadableException $e) {
-            return;
+            return null;
         }
 
         $tempfile = $this->storeImage('local', $image, 'temp/'.$filename);

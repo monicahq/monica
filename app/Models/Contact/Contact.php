@@ -2,6 +2,7 @@
 
 namespace App\Models\Contact;
 
+use DateTime;
 use Carbon\Carbon;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
@@ -160,6 +161,26 @@ class Contact extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the address book associated with the contact.
+     *
+     * @return BelongsTo
+     */
+    public function addressBook()
+    {
+        return $this->belongsTo(AddressBook::class);
+    }
+
+    /**
+     * Get the list of contacts from the same address book as this contact.
+     *
+     * @return HasMany|null
+     */
+    public function addressBookContacts()
+    {
+        return $this->account ? $this->account->addressBookContacts($this->addressBook ? $this->addressBook->name : null) : null;
     }
 
     /**
@@ -548,22 +569,24 @@ class Contact extends Model
 
     /**
      * Scope a query to only include contacts from designated address book.
+     * 'null' value for address book is the default address book.
      *
      * @param Builder $query
      * @param int|null $accountId
-     * @param mixed|null $addressBookId
+     * @param string|null $addressBookName
      * @return Builder
      */
-    public function scopeAddressBook($query, $accountId = null, $addressBookId = null)
+    public function scopeAddressBook($query, int $accountId = null, string $addressBookName = null)
     {
         $addressBook = null;
-        if ($accountId && $addressBookId) {
+        if ($accountId && $addressBookName) {
             $addressBook = AddressBook::where([
                 'account_id' => $accountId,
-                'addressBookId' => $addressBookId
+                'name' => $addressBookName,
             ])->first();
         }
-        return $query->where('addressbook_id', $addressBook ? $addressBook->id : null);
+
+        return $query->where('address_book_id', $addressBook ? $addressBook->id : null);
     }
 
     /**
@@ -783,10 +806,10 @@ class Contact extends Model
      *
      * @return \DateTime|null
      */
-    public function getLastActivityDate()
+    public function getLastActivityDate(): ?DateTime
     {
         if ($this->activities->count() === 0) {
-            return;
+            return null;
         }
 
         $lastActivity = $this->activities->sortByDesc('happened_at')->first();
@@ -801,12 +824,12 @@ class Contact extends Model
      * @param  string $type
      * @return Collection|null
      */
-    public function getRelationshipsByRelationshipTypeGroup(string $type)
+    public function getRelationshipsByRelationshipTypeGroup(string $type): ?Collection
     {
         $relationshipTypeGroup = $this->account->getRelationshipTypeGroupByType($type);
 
         if (! $relationshipTypeGroup) {
-            return;
+            return null;
         }
 
         return $this->relationships->filter(function ($item) use ($type) {
@@ -1095,10 +1118,10 @@ class Contact extends Model
      *
      * @return Contact|null
      */
-    public function getIntroducer()
+    public function getIntroducer(): ?self
     {
         if (! $this->first_met_through_contact_id) {
-            return;
+            return null;
         }
 
         try {
@@ -1106,7 +1129,7 @@ class Contact extends Model
             $contact = self::where('account_id', $this->account_id)
                 ->findOrFail($this->first_met_through_contact_id);
         } catch (ModelNotFoundException $e) {
-            return;
+            return null;
         }
 
         return $contact;
@@ -1122,10 +1145,10 @@ class Contact extends Model
      * @param int $day
      * @return SpecialDate|null
      */
-    public function setSpecialDate($occasion, int $year, int $month, int $day)
+    public function setSpecialDate($occasion, int $year, int $month, int $day): ?SpecialDate
     {
         if (empty($occasion)) {
-            return;
+            return null;
         }
 
         $specialDate = new SpecialDate;
@@ -1275,18 +1298,18 @@ class Contact extends Model
      *
      * @return int|null
      */
-    public function getAgeAtDeath()
+    public function getAgeAtDeath(): ?int
     {
         if (! $this->deceasedDate) {
-            return;
+            return null;
         }
 
         if ($this->deceasedDate->is_year_unknown == 1) {
-            return;
+            return null;
         }
 
         if (! $this->birthdate) {
-            return;
+            return null;
         }
 
         return $this->birthdate->date->diffInYears($this->deceasedDate->date);

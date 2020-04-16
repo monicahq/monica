@@ -3,13 +3,29 @@
 ### New features:
 
 * Add addressbook subscriptions (Carddav client)
+* Add the notion of AddressBooks
+* Add Japanese langage
+* Change title of birthday reminder for deceased people
 
 ### Enhancements:
 
+* Improve autocomplete fields on signup and login forms
+* Add cache for S3 storage, and use new standard variables
+* Remove authentication with login+password for carddav
+* Add new command monica:passport to generate encryption if needed
+* Improve nginx config docker examples
+* Remove u2f support (replaced with WebAuthn)
 * Serialize photo content in VCard photo value
 
 ### Fixes:
 
+* Fix authentication with token on basic auth
+* Fix editing multiple notes at the same time only edits one note
+* Fix countries in fake contact seeder
+* Fix docker rsync exclude rules
+* Fix docker cron (legacy) on apache variant
+* Fix login route already set by Laravel now
+* Fix setMe contact controller
 * Fix carddav sync-collection reporting wrong syncToken
 
 

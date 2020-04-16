@@ -18,28 +18,32 @@ trait SyncDAVBackend
      * If null is returned from this function, the plugin assumes there's no
      * sync information available.
      *
-     * @param mixed|null $addressBookId
+     * @param string|null $collectionId
      * @param bool $refresh
      * @return SyncToken|null
      */
-    public function getCurrentSyncToken($addressBookId, $refresh)
+    public function getCurrentSyncToken($collectionId, $refresh)
     {
         $tokens = SyncToken::where([
             'account_id' => $this->user->account_id,
             'user_id' => $this->user->id,
-            'name' => $addressBookId ?? $this->backendUri(),
+            'name' => $collectionId ?? $this->backendUri(),
         ])
             ->orderBy('created_at')
             ->get();
 
         if ($tokens->count() <= 0) {
-            $token = $this->createSyncToken($addressBookId);
+            $token = $this->createSyncToken($collectionId);
         } else {
+            $token = $tokens->last();
+            /*
+        } else if ($refresh) {
             $token = $tokens->last();
 
             if ($refresh && $token->timestamp < $this->getLastModified($addressBookId)) {
-                $token = $this->createSyncToken($addressBookId);
+                $token = $this->createSyncToken($collectionId);
             }
+            */
         }
 
         return $token;
@@ -48,15 +52,15 @@ trait SyncDAVBackend
     /**
      * Get SyncToken by token id.
      *
-     * @param mixed|null $addressBookId
+     * @param string|null $collectionId
      * @return SyncToken|null
      */
-    protected function getSyncToken($addressBookId, $syncToken)
+    protected function getSyncToken($collectionId, $syncToken)
     {
         return SyncToken::where([
             'account_id' => $this->user->account_id,
             'user_id' => $this->user->id,
-            'name' => $addressBookId ?? $this->backendUri(),
+            'name' => $collectionId ?? $this->backendUri(),
         ])
             ->find($syncToken);
     }
@@ -64,18 +68,18 @@ trait SyncDAVBackend
     /**
      * Create a token.
      *
-     * @param mixed|null $addressBookId
+     * @param string|null $collectionId
      * @return SyncToken|null
      */
-    private function createSyncToken($addressBookId)
+    private function createSyncToken($collectionId)
     {
-        $max = $this->getLastModified($addressBookId);
+        $max = $this->getLastModified($collectionId);
 
         return $max ?
             SyncToken::create([
                 'account_id' => $this->user->account_id,
                 'user_id' => $this->user->id,
-                'name' => $addressBookId ?? $this->backendUri(),
+                'name' => $collectionId ?? $this->backendUri(),
                 'timestamp' => $max,
             ])
             : null;
@@ -84,15 +88,15 @@ trait SyncDAVBackend
     /**
      * Create a token with now timestamp.
      *
-     * @param mixed|null $addressBookId
+     * @param string|null $collectionId
      * @return SyncToken
      */
-    private function createSyncTokenNow($addressBookId)
+    private function createSyncTokenNow($collectionId)
     {
         return SyncToken::create([
             'account_id' => $this->user->account_id,
             'user_id' => $this->user->id,
-            'name' => $addressBookId ?? $this->backendUri(),
+            'name' => $collectionId ?? $this->backendUri(),
             'timestamp' => now(),
         ]);
     }
@@ -100,12 +104,12 @@ trait SyncDAVBackend
     /**
      * Returns the last modification date.
      *
-     * @param mixed|null $addressBookId
+     * @param string|null $collectionId
      * @return \Carbon\Carbon|null
      */
-    public function getLastModified($addressBookId)
+    public function getLastModified($collectionId)
     {
-        return $this->getObjects($addressBookId)
+        return $this->getObjects($collectionId)
                     ->max('updated_at');
     }
 
@@ -159,29 +163,29 @@ trait SyncDAVBackend
      *
      * The limit is 'suggestive'. You are free to ignore it.
      *
-     * @param string $addressBookId
+     * @param string $collectionId
      * @param string $syncToken
      * @return array|null
      */
-    public function getChanges($addressBookId, $syncToken)
+    public function getChanges($collectionId, $syncToken): ?array
     {
         $token = null;
         $timestamp = null;
         if (! empty($syncToken)) {
-            $token = $this->getSyncToken($addressBookId, $syncToken);
+            $token = $this->getSyncToken($collectionId, $syncToken);
 
             if (is_null($token)) {
                 // syncToken is not recognized
-                return;
+                return null;
             }
 
             $timestamp = $token->timestamp;
         } else {
-            $token = $this->createSyncTokenNow($addressBookId);
+            $token = $this->createSyncTokenNow($collectionId);
             $timestamp = null;
         }
 
-        $objs = $this->getObjects($addressBookId);
+        $objs = $this->getObjects($collectionId);
 
         $modified = $objs->filter(function ($obj) use ($timestamp) {
             return ! is_null($timestamp) &&
@@ -193,7 +197,7 @@ trait SyncDAVBackend
                    $obj->created_at >= $timestamp;
         });
 
-        $currentSyncToken = $this->getCurrentSyncToken($addressBookId, false);
+        $currentSyncToken = $this->getCurrentSyncToken($collectionId, false);
 
         return [
             'syncToken' => $currentSyncToken->id,
@@ -207,7 +211,7 @@ trait SyncDAVBackend
         ];
     }
 
-    protected function encodeUri($obj) : string
+    protected function encodeUri($obj): string
     {
         if (empty($obj->uuid)) {
             // refresh model from database
@@ -224,7 +228,7 @@ trait SyncDAVBackend
         return urlencode($obj->uuid.$this->getExtension());
     }
 
-    private function decodeUri($uri) : string
+    private function decodeUri($uri): string
     {
         return pathinfo(urldecode($uri), PATHINFO_FILENAME);
     }
@@ -235,7 +239,7 @@ trait SyncDAVBackend
      * @param string  $uri
      * @return string
      */
-    public function getUuid($uri) : string
+    public function getUuid($uri): string
     {
         return $this->decodeUri($uri);
     }
@@ -243,14 +247,14 @@ trait SyncDAVBackend
     /**
      * Returns the contact for the specific uri.
      *
-     * @param mixed|null $addressBookId
+     * @param string|null $collectionId
      * @param string  $uri
      * @return mixed
      */
-    public function getObject($addressBookId, $uri)
+    public function getObject($collectionId, $uri)
     {
         try {
-            return $this->getObjectUuid($addressBookId, $this->getUuid($uri));
+            return $this->getObjectUuid($collectionId, $this->getUuid($uri));
         } catch (\Exception $e) {
             // Object not found
         }
@@ -259,19 +263,19 @@ trait SyncDAVBackend
     /**
      * Returns the object for the specific uuid.
      *
-     * @param mixed|null $addressBookId
+     * @param string|null $collectionId
      * @param string  $uuid
      * @return mixed
      */
-    abstract public function getObjectUuid($addressBookId, $uuid);
+    abstract public function getObjectUuid($collectionId, $uuid);
 
     /**
      * Returns the collection of objects.
      *
-     * @param mixed|null $addressBookId
+     * @param string|null $collectionId
      * @return \Illuminate\Support\Collection
      */
-    abstract public function getObjects($addressBookId);
+    abstract public function getObjects($collectionId);
 
     abstract public function getExtension();
 }

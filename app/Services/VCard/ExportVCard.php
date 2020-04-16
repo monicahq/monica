@@ -289,9 +289,10 @@ class ExportVCard extends BaseService
     private function getContactFieldLabel(LabelInterface $labelProvider): ?array
     {
         $type = null;
-        if ($labelProvider->labels->count() > 0) {
+        $labels = $labelProvider->labels()->get();
+        if ($labels->count() > 0) {
             $type = [];
-            $type['type'] = $labelProvider->labels->map(function ($label) {
+            $type['type'] = $labels->map(function ($label) {
                 return mb_strtoupper($label->label_i18n) ?: $label->label;
             })->join(',');
         }

@@ -14,18 +14,19 @@ interface IDAVBackend
     /**
      * Returns the object for the specific uuid.
      *
-     * @param mixed|null $addressBookId
+     * @param string|null $collectionId
      * @param string  $uuid
      * @return mixed
      */
-    public function getObjectUuid($addressBookId, $uuid);
+    public function getObjectUuid($collectionId, $uuid);
 
     /**
      * Returns the collection of objects.
      *
+     * @param string|null $collectionId
      * @return \Illuminate\Support\Collection
      */
-    public function getObjects($addressBookId);
+    public function getObjects($collectionId);
 
     /**
      * Returns the extension for this backend.

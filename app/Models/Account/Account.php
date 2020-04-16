@@ -97,6 +97,21 @@ class Account extends Model
     }
 
     /**
+     * Get the addressBook's contacts.
+     *
+     * @param string|null $addressBookName
+     * @return HasMany
+     */
+    public function addressBookContacts(string $addressBookName = null)
+    {
+        if ($addressBookName) {
+            return $this->contacts()->real()->addressBook($this->id, $addressBookName);
+        }
+
+        return $this->contacts()->real()->addressBook();
+    }
+
+    /**
      * Get the invitations associated with the account.
      *
      * @return HasMany
@@ -695,12 +710,12 @@ class Account extends Model
      *
      * @throws ModelNotFoundException
      */
-    public function getFirstLocale()
+    public function getFirstLocale(): ?string
     {
         try {
             $user = $this->users()->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            return;
+            return null;
         }
 
         return $user->locale;

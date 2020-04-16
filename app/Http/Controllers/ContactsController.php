@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\DBHelper;
 use Illuminate\View\View;
 use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;
@@ -79,11 +78,11 @@ class ContactsController extends Controller
             ]);
         }
 
-        $contacts = $user->account->contacts()->real()->addressBook();
+        $contacts = $user->account->addressBookContacts();
         if ($active) {
-            $nbArchived = $contacts->count();
-            $contacts = $contacts->active();
-            $nbArchived = $nbArchived - $contacts->count();
+            $archived = (clone $contacts)->notActive();
+            $contacts = (clone $contacts)->active();
+            $nbArchived = $archived->count();
         } else {
             $contacts = $contacts->notActive();
             $nbArchived = $contacts->count();
@@ -99,8 +98,10 @@ class ContactsController extends Controller
             $tags = collect();
 
             while ($request->input('tag'.$count)) {
-                $tag = Tag::where('account_id', auth()->user()->account_id)
-                            ->where('name_slug', $request->input('tag'.$count));
+                $tag = Tag::where([
+                    'account_id' => auth()->user()->account_id,
+                    'name_slug' => $request->input('tag'.$count),
+                ]);
                 if ($tag->count() > 0) {
                     $tag = $tag->get();
 
@@ -550,7 +551,7 @@ class ContactsController extends Controller
             return;
         }
 
-        $results = SearchHelper::searchContacts($needle, 20, DBHelper::getTable('contacts').'.`created_at`');
+        $results = SearchHelper::searchContacts($needle, 20, 'created_at');
 
         if (count($results) !== 0) {
             return ContactResource::collection($results);
@@ -672,13 +673,13 @@ class ContactsController extends Controller
         $url = '';
         $count = 1;
 
-        $contacts = $user->account->contacts()->real()->addressBook();
+        $addressBook = $user->account->addressBookContacts();
 
         // filter out archived contacts if necessary
         if ($request->input('show_archived') != 'true') {
-            $contacts = $contacts->active();
+            $contacts = $addressBook->active();
         } else {
-            $contacts = $contacts->notActive();
+            $contacts = $addressBook->notActive();
         }
 
         // filter out deceased if necessary
@@ -715,7 +716,8 @@ class ContactsController extends Controller
         $perPage = $request->has('perPage') ? $request->input('perPage') : config('monica.number_of_contacts_pagination');
 
         // search contacts
-        $contacts = $contacts->search($request->input('search') ? $request->input('search') : '', $accountId, $perPage, DBHelper::getTable('contacts').'.`is_starred` desc', null, $sort);
+        $contacts = $contacts->search($request->input('search', '') ? $request->input('search') : '', $accountId, 'is_starred', 'desc', $sort)
+            ->paginate($perPage);
 
         return [
             'totalRecords' => $contacts->total(),

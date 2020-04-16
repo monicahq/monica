@@ -51,8 +51,10 @@ class ApiContactController extends ApiController
                 $contacts = SearchHelper::searchContacts(
                     $needle,
                     $this->getLimitPerPage(),
-                    $this->sort.' '.$this->sortDirection
-                );
+                    $this->sort,
+                    $this->sortDirection
+                )
+                    ->real();
             } catch (QueryException $e) {
                 return $this->respondInvalidQuery();
             }
@@ -65,9 +67,7 @@ class ApiContactController extends ApiController
         }
 
         try {
-            $contacts = auth()->user()->account->contacts()
-                            ->real()
-                            ->addressBook()
+            $contacts = auth()->user()->account->addressBookContacts()
                             ->active()
                             ->orderBy($this->sort, $this->sortDirection)
                             ->paginate($this->getLimitPerPage());
