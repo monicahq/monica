@@ -21,7 +21,7 @@ class AddressBook extends Model
         'account_id',
         'user_id',
         'name',
-        'name',
+        'description',
     ];
 
     /**

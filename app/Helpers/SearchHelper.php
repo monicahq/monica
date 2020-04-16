@@ -14,13 +14,12 @@ class SearchHelper
      * Search contacts by the given query.
      *
      * @param  string $needle
-     * @param  int $limitPerPage
      * @param  string $orderByColumn
      * @param  string $orderByDirection
      * @param  string|null $addressBookName
      * @return Builder
      */
-    public static function searchContacts(string $needle, string $orderByColumn, string $orderByDirection = 'asc', $addressBookName = null): Builder
+    public static function searchContacts(string $needle, string $orderByColumn, string $orderByDirection = 'asc', string $addressBookName = null): Builder
     {
         $accountId = Auth::user()->account_id;
 
@@ -41,9 +40,11 @@ class SearchHelper
                     ['contact_field_type_id', $field_id],
                 ]);
             })
+                ->addressBook($accountId, $addressBookName)
                 ->orderBy($orderByColumn, $orderByDirection);
         }
 
-        return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection);
+        return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection)
+            ->addressBook($accountId, $addressBookName);
     }
 }
