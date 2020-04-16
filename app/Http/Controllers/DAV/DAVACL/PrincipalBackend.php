@@ -4,7 +4,6 @@ namespace App\Http\Controllers\DAV\DAVACL;
 
 use Sabre\DAV;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\DAVACL\PrincipalBackend\AbstractBackend;
 

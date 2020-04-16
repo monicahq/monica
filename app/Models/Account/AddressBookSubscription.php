@@ -2,12 +2,11 @@
 
 namespace App\Models\Account;
 
-use App\Models\Contact\Contact;
 use App\Models\User\User;
 use function safe\json_decode;
 use function safe\json_encode;
-use Illuminate\Support\Facades\Crypt;
 use App\Models\ModelBinding as Model;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AddressBookSubscription extends Model

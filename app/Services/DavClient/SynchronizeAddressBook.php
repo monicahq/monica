@@ -38,7 +38,6 @@ class SynchronizeAddressBook extends BaseService
     }
 
     /**
-     *
      * @param array $data
      * @return VCard
      */
@@ -61,17 +60,15 @@ class SynchronizeAddressBook extends BaseService
 
             $this->distantChanges($subscription, $client, $backend)
             ->then(function ($changes) use ($subscription, $client, $backend, $localChanges) {
-
                 $this->getContacts($subscription, $client, $backend, $changes);
-                return $this->pushContacts($subscription->addressbook, $client, $backend, $changes, $localChanges);
 
+                return $this->pushContacts($subscription->addressbook, $client, $backend, $changes, $localChanges);
             })
             ->wait();
 
             $token = $backend->getCurrentSyncToken($subscription->addressbook->addressBookId, false);
             $subscription->localSyncToken = $token->id;
             $subscription->save();
-
         } catch (ClientException $e) {
             //$r = $e->getResponse();
             //$s = (string) $r->getBody();
@@ -82,21 +79,23 @@ class SynchronizeAddressBook extends BaseService
     private function distantChanges(AddressBookSubscription $subscription, Client $client, CardDAVBackend $backend)
     {
         $addressBookId = $subscription->addressbook->addressBookId;
+
         return $this->getContactsList($subscription, $client)
           ->then(function ($collection) use ($addressBookId, $backend) {
-            return collect($collection)
+              return collect($collection)
               ->filter(function ($contact) {
-                return isset($contact[200]) && Str::contains($contact[200]['{DAV:}getcontenttype'], 'text/vcard');
-            })->filter(function ($contact, $href) use ($addressBookId, $backend) {
-                $card = $backend->getCard($addressBookId, $href);
-                return $card === false || $card['etag'] !== $contact[200]['{DAV:}getetag'];
-            })->map(function ($contact, $href) {
-                return [
-                    'href' => $href,
-                    'etag' => $contact[200]['{DAV:}getetag'],
-                ];
-            });
-        });
+                  return isset($contact[200]) && Str::contains($contact[200]['{DAV:}getcontenttype'], 'text/vcard');
+              })->filter(function ($contact, $href) use ($addressBookId, $backend) {
+                  $card = $backend->getCard($addressBookId, $href);
+
+                  return $card === false || $card['etag'] !== $contact[200]['{DAV:}getetag'];
+              })->map(function ($contact, $href) {
+                  return [
+                      'href' => $href,
+                      'etag' => $contact[200]['{DAV:}getetag'],
+                  ];
+              });
+          });
     }
 
     private function getContacts(AddressBookSubscription $subscription, Client $client, CardDAVBackend $backend, Collection $refresh)
@@ -108,9 +107,9 @@ class SynchronizeAddressBook extends BaseService
         }
 
         $addressbook = $subscription->addressbook;
+
         return $refreshContacts->then(function ($contacts) use ($backend, $addressbook) {
-            foreach ($contacts as $contact)
-            {
+            foreach ($contacts as $contact) {
                 $newtag = $backend->updateCard($addressbook->addressBookId, $contact['href'], $contact['vcard']);
 
                 if ($newtag != $contact['etag']) {
@@ -141,7 +140,7 @@ class SynchronizeAddressBook extends BaseService
                 ->filter(function ($contact) {
                     return isset($contact[200]);
                 })
-                ->map(function($contact, $href) {
+                ->map(function ($contact, $href) {
                     return [
                         'href' => $href,
                         'etag' => $contact[200]['{DAV:}getetag'],
@@ -162,12 +161,14 @@ class SynchronizeAddressBook extends BaseService
             'fulfilled' => function (ResponseInterface $response, $index) use ($contacts): array {
                 if ($response->getStatusCode() === 200) {
                     Log::info(__CLASS__.' refreshSimpleGetContacts: GET '.$contacts[$index]['href']);
+
                     return [
                         'href' => $contacts[$index]['href'],
                         'etag' => $contacts[$index]['etag'],
                         'vcard' => $response->getBody()->detach(),
                     ];
                 }
+
                 return [];
             },
         ])->promise();
@@ -199,13 +200,14 @@ class SynchronizeAddressBook extends BaseService
         // All added contact must be pushed
         return collect($contacts)
           ->map(function ($uri) use ($addressbook, $backend) {
-            return tap($backend->getCard($addressbook->addressBookId, $uri), function ($card) use ($uri) {
-                $card['uri'] = $uri;
-            });
-        })->map(function ($contact) {
-            $contact['request'] = new Request('PUT', $contact['uri'], [], $contact['carddata']);
-            return $contact;
-        });
+              return tap($backend->getCard($addressbook->addressBookId, $uri), function ($card) use ($uri) {
+                  $card['uri'] = $uri;
+              });
+          })->map(function ($contact) {
+              $contact['request'] = new Request('PUT', $contact['uri'], [], $contact['carddata']);
+
+              return $contact;
+          });
     }
 
     private function pushChangedContacts(AddressBook $addressbook, CardDAVBackend $backend, Collection $changes, array $contacts): Collection
@@ -215,16 +217,18 @@ class SynchronizeAddressBook extends BaseService
         // We don't push contact that have just been updated
         return collect($contacts)
           ->reject(function ($uri) use ($refreshIds, $backend) {
-            $uuid = $backend->getUuid($uri);
-            return $refreshIds->contains($uuid);
-        })->map(function ($uri) use ($addressbook, $backend) {
-            return tap($backend->getCard($addressbook->addressBookId, $uri), function ($card) use ($uri) {
-                $card['uri'] = $uri;
-            });
-        })->map(function ($contact) {
-            $contact['request'] = new Request('PUT', $contact['uri'], ['If-Match' => '*'], $contact['carddata']);
-            return $contact;
-        });
+              $uuid = $backend->getUuid($uri);
+
+              return $refreshIds->contains($uuid);
+          })->map(function ($uri) use ($addressbook, $backend) {
+              return tap($backend->getCard($addressbook->addressBookId, $uri), function ($card) use ($uri) {
+                  $card['uri'] = $uri;
+              });
+          })->map(function ($contact) {
+              $contact['request'] = new Request('PUT', $contact['uri'], ['If-Match' => '*'], $contact['carddata']);
+
+              return $contact;
+          });
     }
 
     /**
@@ -234,7 +238,6 @@ class SynchronizeAddressBook extends BaseService
     {
         // With sync-collection
         if (Arr::get($subscription->capabilities, 'syncCollection', false)) {
-
             $syncToken = $subscription->syncToken ?? '';
 
             // get the current distant syncToken
@@ -245,6 +248,7 @@ class SynchronizeAddressBook extends BaseService
                 $promise = new Promise(function () use (&$promise) {
                     $promise->resolve([]);
                 });
+
                 return $promise;
             }
 
@@ -269,7 +273,7 @@ class SynchronizeAddressBook extends BaseService
         }
     }
 
-    private function getClient(AddressBookSubscription $subscription, GuzzleClient $client = null) : Client
+    private function getClient(AddressBookSubscription $subscription, GuzzleClient $client = null): Client
     {
         return new Client([
             'base_uri' => $subscription->uri,

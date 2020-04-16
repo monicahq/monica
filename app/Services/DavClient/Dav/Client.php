@@ -37,7 +37,7 @@ class Client
      */
     public function __construct(array $settings, GuzzleClient $client = null)
     {
-        if (is_null($client) && !isset($settings['base_uri'])) {
+        if (is_null($client) && ! isset($settings['base_uri'])) {
             throw new \InvalidArgumentException('A baseUri must be provided');
         }
 
@@ -53,7 +53,7 @@ class Client
     }
 
     /**
-     * Follow rfc6764 to get carddav service url
+     * Follow rfc6764 to get carddav service url.
      *
      * @see https://tools.ietf.org/html/rfc6764
      */
@@ -63,7 +63,7 @@ class Client
         $wkUri = $this->getBaseUri('/.well-known/carddav');
 
         $response = $this->client->get($wkUri, [
-            RequestOptions::ALLOW_REDIRECTS => false
+            RequestOptions::ALLOW_REDIRECTS => false,
         ]);
 
         $code = $response->getStatusCode();
@@ -81,7 +81,7 @@ class Client
     }
 
     /**
-     * Service Discovery via SRV Records
+     * Service Discovery via SRV Records.
      *
      * @see https://tools.ietf.org/html/rfc6352#section-11
      */
@@ -96,10 +96,11 @@ class Client
             if ($target) {
                 if ($port === 443 && $https) {
                     $port = null;
-                } else if ($port === 80 && !$https) {
+                } elseif ($port === 80 && ! $https) {
                     $port = null;
                 }
-                return ($https ? 'https' : 'http') . '://' . $target . (is_null($port) ? '' : ':'.$port);
+
+                return ($https ? 'https' : 'http').'://'.$target.(is_null($port) ? '' : ':'.$port);
             }
         }
     }
@@ -113,6 +114,7 @@ class Client
     public function getBaseUri(?string $path = null): string
     {
         $baseUri = $this->client->getConfig('base_uri');
+
         return is_null($path) ? $baseUri : $baseUri->withPath($path);
     }
 
@@ -155,10 +157,10 @@ class Client
      *
      * @return array
      */
-    public function propFind(string $url, array $properties, int $depth = 0) : array
+    public function propFind(string $url, array $properties, int $depth = 0): array
     {
         return $this->propFindAsync($url, $properties, $depth, [
-            RequestOptions::SYNCHRONOUS => true
+            RequestOptions::SYNCHRONOUS => true,
         ])->wait();
     }
 
@@ -184,7 +186,7 @@ class Client
      *
      * @return PromiseInterface<array>
      */
-    public function propFindAsync(string $url, array $properties, int $depth = 0, array $options = []) : PromiseInterface
+    public function propFindAsync(string $url, array $properties, int $depth = 0, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
@@ -192,7 +194,7 @@ class Client
         $prop = $root->appendChild($dom->createElement('d:prop'));
 
         $namespaces = [
-            'DAV:' => 'd'
+            'DAV:' => 'd',
         ];
 
         $this->fetchProperties($dom, $prop, $properties, $namespaces);
@@ -233,7 +235,7 @@ class Client
      *
      * @see https://tools.ietf.org/html/rfc6578
      */
-    public function syncCollectionAsync(string $url, array $properties, string $syncToken, array $options = []) : PromiseInterface
+    public function syncCollectionAsync(string $url, array $properties, string $syncToken, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
@@ -245,7 +247,7 @@ class Client
         $prop = $root->appendChild($dom->createElement('d:prop'));
 
         $namespaces = [
-            'DAV:' => 'd'
+            'DAV:' => 'd',
         ];
 
         $this->fetchProperties($dom, $prop, $properties, $namespaces);
@@ -271,7 +273,7 @@ class Client
      *
      * @see https://tools.ietf.org/html/rfc6352#section-8.7
      */
-    public function addressbookMultigetAsync(string $url, array $properties, \ArrayAccess $contacts, array $options = []) : PromiseInterface
+    public function addressbookMultigetAsync(string $url, array $properties, \ArrayAccess $contacts, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
@@ -333,17 +335,17 @@ class Client
                 $propertyExt = $property;
                 $property = $propertyExt['name'];
             }
-            list($namespace, $elementName) = Service::parseClarkNotation($property);
+            [$namespace, $elementName] = Service::parseClarkNotation($property);
 
             $value = Arr::get($namespaces, $namespace, null);
-            if (!is_null($value)) {
+            if (! is_null($value)) {
                 $element = $prop->appendChild($dom->createElement("$value:$elementName"));
             } else {
                 $element = $prop->appendChild($dom->createElementNS($namespace, 'x:'.$elementName));
             }
 
             if (isset($propertyExt)) {
-                if (isset($propertyExt['value']) && !is_null($propertyExt['value'])) {
+                if (isset($propertyExt['value']) && ! is_null($propertyExt['value'])) {
                     $element->nodeValue = $propertyExt['value'];
                 }
                 if (isset($propertyExt['attributes'])) {
@@ -366,7 +368,7 @@ class Client
     public function getProperty(string $property, string $url = '')
     {
         return $this->getPropertyAsync($property, $url, [
-            RequestOptions::SYNCHRONOUS => true
+            RequestOptions::SYNCHRONOUS => true,
         ])->wait();
     }
 
@@ -383,16 +385,17 @@ class Client
         return $this->propfindAsync($url, [
             $property,
         ])->then(function (array $properties) use ($property) {
-            if (!isset($properties[$property])) {
-                return null;
+            if (! isset($properties[$property])) {
+                return;
             }
 
             $prop = $properties[$property];
 
             if (is_string($prop)) {
                 return $prop;
-            } else if (is_array($prop)) {
+            } elseif (is_array($prop)) {
                 $value = $prop[0];
+
                 return is_string($value) ? $value : $prop;
             }
 
@@ -405,10 +408,10 @@ class Client
      *
      * @return array
      */
-    public function getSupportedReportSet() : array
+    public function getSupportedReportSet(): array
     {
         return $this->getSupportedReportSetAsync([
-            RequestOptions::SYNCHRONOUS => true
+            RequestOptions::SYNCHRONOUS => true,
         ])->wait();
     }
 
@@ -417,15 +420,16 @@ class Client
      *
      * @return PromiseInterface<array>
      */
-    public function getSupportedReportSetAsync(array $options = []) : PromiseInterface
+    public function getSupportedReportSetAsync(array $options = []): PromiseInterface
     {
         $propName = '{DAV:}supported-report-set';
+
         return $this->propFindAsync('', [$propName], 0, $options)
         ->then(function (array $properties) use ($propName): array {
             return array_map(function ($supportedReportSet) {
                 foreach ($supportedReportSet['value'] as $kind) {
                     if ($kind['name'] == '{DAV:}report') {
-                        foreach($kind['value'] as $type) {
+                        foreach ($kind['value'] as $type) {
                             return $type['name'];
                         }
                     }
@@ -446,7 +450,7 @@ class Client
      *
      * @return bool
      */
-    public function propPatchAsync(string $url, array $properties) : PromiseInterface
+    public function propPatchAsync(string $url, array $properties): PromiseInterface
     {
         $propPatch = new PropPatch();
         $propPatch->properties = $properties;
@@ -491,12 +495,12 @@ class Client
      *
      * @return array
      */
-    public function options() : array
+    public function options(): array
     {
         $response = $this->request('OPTIONS');
 
         $dav = $response->getHeader('Dav');
-        if (!$dav) {
+        if (! $dav) {
             return [];
         }
 
@@ -519,7 +523,7 @@ class Client
      *
      * @throws ClientException, in case a curl error occurred
      */
-    public function request(string $method, string $url = '', array $headers = [], $body = null, array $options = []) : ResponseInterface
+    public function request(string $method, string $url = '', array $headers = [], $body = null, array $options = []): ResponseInterface
     {
         return $this->client->send(new Request($method, $url, $headers, $body), $options);
     }
@@ -536,13 +540,13 @@ class Client
      *
      * @throws ClientException, in case a curl error occurred
      */
-    public function requestAsync(string $method, string $url = '', array $headers = [], $body = null, array $options = []) : PromiseInterface
+    public function requestAsync(string $method, string $url = '', array $headers = [], $body = null, array $options = []): PromiseInterface
     {
         return $this->client->sendAsync(new Request($method, $url, $headers, $body), $options);
     }
 
     /**
-     * Create
+     * Create.
      * @param array $requests
      * @param array $config
      *
@@ -577,7 +581,7 @@ class Client
      * @param string $body xml body
      * @return array
      */
-    public function parseMultiStatus(string $body) : array
+    public function parseMultiStatus(string $body): array
     {
         $multistatus = $this->xml->expect('{DAV:}multistatus', $body);
 

@@ -34,8 +34,7 @@ class DavClientsUpdate extends Command
 
         $subscriptions = AddressBookSubscription::all();
 
-        foreach ($subscriptions as $subscription)
-        {
+        foreach ($subscriptions as $subscription) {
             SynchronizeAddressBooks::dispatch($subscription);
         }
     }

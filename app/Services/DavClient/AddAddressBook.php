@@ -4,8 +4,8 @@ namespace App\Services\DavClient;
 
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\Log;
 use App\Models\Account\AddressBook;
+use Illuminate\Support\Facades\Log;
 use App\Services\DavClient\Dav\Client;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
@@ -51,7 +51,7 @@ class AddAddressBook extends BaseService
         if ($lastAddressBook) {
             $lastId = intval(preg_replace('/\w+(\d+)/i', '$1', $lastAddressBook->addressBookId));
         }
-        $nextAddressBookId = 'contacts'.($lastId+1);
+        $nextAddressBookId = 'contacts'.($lastId + 1);
 
         $addressbook = AddressBook::create([
             'account_id' => $data['account_id'],
@@ -94,11 +94,11 @@ class AddAddressBook extends BaseService
         } catch (ClientException $e) {
             Log::error(__CLASS__.' getAddressBookBaseUri: '.$e->getMessage(), $e);
         }
+
         return null;
     }
 
-
-    private function getAddressBookBaseUri(array $data, Client $client) : string
+    private function getAddressBookBaseUri(array $data, Client $client): string
     {
         $baseUri = $client->getServiceUrl();
         $client->setBaseUri($baseUri);
@@ -123,7 +123,7 @@ class AddAddressBook extends BaseService
         $options = $client->options();
         $options = explode(', ', $options[0]);
 
-        if (!in_array('1', $options) || !in_array('3', $options) || !in_array('addressbook', $options)) {
+        if (! in_array('1', $options) || ! in_array('3', $options) || ! in_array('addressbook', $options)) {
             throw new \Exception('server is not compliant with rfc2518 section 15.1, or rfc6352 section 6.1');
         }
     }
@@ -131,7 +131,7 @@ class AddAddressBook extends BaseService
     /**
      * @see https://tools.ietf.org/html/rfc5397#section-3
      */
-    private function getCurrentUserPrincipal(Client $client) : string
+    private function getCurrentUserPrincipal(Client $client): string
     {
         $prop = $client->getProperty('{DAV:}current-user-principal');
 
@@ -145,7 +145,7 @@ class AddAddressBook extends BaseService
     /**
      * @see https://tools.ietf.org/html/rfc6352#section-7.1.1
      */
-    private function getAddressBookHome(Client $client, string $principal) : string
+    private function getAddressBookHome(Client $client, string $principal): string
     {
         $prop = $client->getProperty('{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-home-set', $principal);
 
@@ -156,7 +156,7 @@ class AddAddressBook extends BaseService
         return $prop[0]['value'];
     }
 
-    private function getAddressBookUrl(Client $client, string $principal) : ?string
+    private function getAddressBookUrl(Client $client, string $principal): ?string
     {
         $home = $this->getAddressBookHome($client, $principal);
 
@@ -200,11 +200,11 @@ class AddAddressBook extends BaseService
         // get the supported card format
         $addressData = collect($client->getProperty('{'.CardDAVPlugin::NS_CARDDAV.'}supported-address-data'));
         $datas = $addressData->firstWhere('attributes.version', '4.0');
-        if (!$datas) {
+        if (! $datas) {
             $datas = $addressData->firstWhere('attributes.version', '3.0');
         }
 
-        if (!$datas) {
+        if (! $datas) {
             // It should not happen !
             $datas = [
                 'attributes' => [
@@ -222,7 +222,7 @@ class AddAddressBook extends BaseService
         ];
     }
 
-    private function getClient(array $data, GuzzleClient $client = null) : Client
+    private function getClient(array $data, GuzzleClient $client = null): Client
     {
         $settings = Arr::only($data, [
             'base_uri',

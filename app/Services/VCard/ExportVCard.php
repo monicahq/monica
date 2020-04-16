@@ -70,14 +70,14 @@ class ExportVCard extends BaseService
         if ($contact->vcard) {
             try {
                 $vcard = Reader::read($contact->vcard, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
-                if (!$vcard->UID) {
+                if (! $vcard->UID) {
                     $vcard->UID = $contact->uuid;
                 }
             } catch (ParseException $e) {
                 // Ignore error
             }
         }
-        if (!isset($vcard)) {
+        if (! isset($vcard)) {
             // Basic information
             $vcard = new VCard([
                 'UID' => $contact->uuid,
