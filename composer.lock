@@ -10873,16 +10873,16 @@
         },
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v3.3.0",
+            "version": "v3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "8fc3d224c39a7996123b45ef05bf8b7518c9cccf"
+                "reference": "67ced7c6a7451b8bb079d92a57d75f1111f3342d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/8fc3d224c39a7996123b45ef05bf8b7518c9cccf",
-                "reference": "8fc3d224c39a7996123b45ef05bf8b7518c9cccf",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/67ced7c6a7451b8bb079d92a57d75f1111f3342d",
+                "reference": "67ced7c6a7451b8bb079d92a57d75f1111f3342d",
                 "shasum": ""
             },
             "require": {
@@ -10937,7 +10937,7 @@
                 "profiler",
                 "webprofiler"
             ],
-            "time": "2020-04-15T18:42:43+00:00"
+            "time": "2020-04-16T09:09:05+00:00"
         },
         {
             "name": "barryvdh/laravel-ide-helper",
