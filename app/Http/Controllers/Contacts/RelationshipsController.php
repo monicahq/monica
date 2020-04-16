@@ -32,7 +32,9 @@ class RelationshipsController extends Controller
      */
     public function create(Request $request, Contact $contact)
     {
-        $existingContacts = Contact::search('', Auth::user()->account_id, 20, 'updated_at', 'AND `id` != '.$contact->id);
+        $existingContacts = Contact::search('', Auth::user()->account_id, 'updated_at')
+            ->whereNotIn('id', [$contact->id])
+            ->paginate(20);
 
         return view('people.relationship.new')
             ->withContact($contact)

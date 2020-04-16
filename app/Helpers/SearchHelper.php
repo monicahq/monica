@@ -6,19 +6,21 @@ use function Safe\preg_match;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Contact\ContactFieldType;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class SearchHelper
 {
     /**
      * Search contacts by the given query.
      *
-     * @param  string $query
+     * @param  string $needle
      * @param  int $limitPerPage
+     * @param  string $orderByColumn
+     * @param  string $orderByDirection
      * @return mixed
      */
-    public static function searchContacts($query, $limitPerPage, $order)
+    public static function searchContacts(string $needle, int $limitPerPage, string $orderByColumn, string $orderByDirection = 'asc'): LengthAwarePaginator
     {
-        $needle = $query;
         $accountId = Auth::user()->account_id;
 
         if (preg_match('/(.{1,})[:](.{1,})/', $needle, $matches)) {
@@ -31,17 +33,18 @@ class SearchHelper
 
             $field_id = is_null($field) ? 0 : $field->id;
 
-            $results = Contact::whereHas('contactFields', function ($query) use ($accountId, $field_id, $search_term) {
+            return Contact::whereHas('contactFields', function ($query) use ($accountId, $field_id, $search_term) {
                 $query->where([
                     ['account_id', $accountId],
                     ['data', 'like', "$search_term%"],
                     ['contact_field_type_id', $field_id],
                 ]);
-            })->paginate($limitPerPage);
-        } else {
-            $results = Contact::search($needle, $accountId, $limitPerPage, $order, 'AND '.DBHelper::getTable('contacts').'.`is_partial` = FALSE');
+            })
+                ->orderBy($orderByColumn, $orderByDirection)
+                ->paginate($limitPerPage);
         }
 
-        return $results;
+        return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection)
+                ->paginate($limitPerPage);
     }
 }

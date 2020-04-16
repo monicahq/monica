@@ -48,10 +48,13 @@ class Tag extends Model
     public static function contactsCount()
     {
         return DB::table('contact_tag')->selectRaw('COUNT(tag_id) AS contact_count, name, name_slug')
-                    ->join('tags', 'tags.id', '=', 'contact_tag.tag_id')
-                    ->where('tags.account_id', auth()->user()->account_id)
-                    ->groupBy('tag_id')
-                    ->get()
-                    ->sortByCollator('name');
+            ->join('tags', function ($join) {
+                $join->on('tags.id', '=', 'contact_tag.tag_id')
+                    ->on('tags.account_id', '=', 'contact_tag.account_id');
+            })
+            ->where('tags.account_id', auth()->user()->account_id)
+            ->groupBy('tag_id')
+            ->get()
+            ->sortByCollator('name');
     }
 }
