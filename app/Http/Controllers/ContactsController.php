@@ -717,7 +717,6 @@ class ContactsController extends Controller
         // get the number of contacts per page
         $perPage = $request->has('perPage') ? $request->input('perPage') : config('monica.number_of_contacts_pagination');
 
-
         // search contacts
         $contacts = $contacts->search($request->input('search') ?? '', $accountId, 'is_starred', 'desc', $sort)
             ->paginate($perPage);
