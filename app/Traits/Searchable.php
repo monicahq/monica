@@ -30,7 +30,8 @@ trait Searchable
 
         $queryString = $this->buildQuery($searchableColumns, $needle);
 
-        $builder->whereRaw('('.$queryString.')')
+        $builder->whereRaw(DBHelper::getTable($this->getTable()).".`account_id` = $accountId")
+            ->whereRaw("( $queryString )")
             ->orderBy($orderByColumn, $orderByDirection);
 
         if ($sortOrder) {
