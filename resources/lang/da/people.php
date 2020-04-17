@@ -52,6 +52,7 @@ return [
     'people_delete_message' => 'Slet kontakt',
     'people_delete_confirmation' => 'Er du sikker på, at du ønsker at slette denne kontakt? Denne handling er permanent.',
     'people_add_birthday_reminder' => 'Ønsk :name tillykke',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
     'people_add_import' => 'Ønsker du at <a href=":url">importere dine kontakter</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
     'people_export' => 'Eksportér som vCard',

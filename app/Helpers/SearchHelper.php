@@ -6,6 +6,7 @@ use function Safe\preg_match;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Contact\ContactFieldType;
+use Illuminate\Database\Eloquent\Builder;
 
 class SearchHelper
 {
@@ -13,13 +14,12 @@ class SearchHelper
      * Search contacts by the given query.
      *
      * @param  string $needle
-     * @param  int $limitPerPage
      * @param  string $orderByColumn
      * @param  string $orderByDirection
      * @param  string|null $addressBookName
-     * @return mixed
+     * @return Builder
      */
-    public static function searchContacts($needle, $limitPerPage, $orderByColumn, $orderByDirection = 'asc', $addressBookName = null)
+    public static function searchContacts(string $needle, string $orderByColumn, string $orderByDirection = 'asc', string $addressBookName = null): Builder
     {
         $accountId = Auth::user()->account_id;
 
@@ -33,7 +33,7 @@ class SearchHelper
 
             $field_id = is_null($field) ? 0 : $field->id;
 
-            $results = Contact::whereHas('contactFields', function ($query) use ($accountId, $field_id, $search_term) {
+            return Contact::whereHas('contactFields', function ($query) use ($accountId, $field_id, $search_term) {
                 $query->where([
                     ['account_id', $accountId],
                     ['data', 'like', "$search_term%"],
@@ -41,14 +41,10 @@ class SearchHelper
                 ]);
             })
                 ->addressBook($accountId, $addressBookName)
-                ->orderBy($orderByColumn, $orderByDirection)
-                ->paginate($limitPerPage);
-        } else {
-            $results = Contact::search($needle, $accountId, $orderByColumn, $orderByDirection)
-                ->addressBook($accountId, $addressBookName)
-                ->paginate($limitPerPage);
+                ->orderBy($orderByColumn, $orderByDirection);
         }
 
-        return $results;
+        return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection)
+            ->addressBook($accountId, $addressBookName);
     }
 }
