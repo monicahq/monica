@@ -59,6 +59,7 @@ class AddressBookSynchronizer
                 if ($this->subscription->readonly) {
                     return;
                 }
+
                 return $this->pushContacts($changes, $localChanges);
             })
             ->wait();
@@ -91,6 +92,7 @@ class AddressBookSynchronizer
                 if ($this->subscription->readonly) {
                     return;
                 }
+
                 return $this->pushContacts(collect(), $localChanges, $distContacts, $localContacts);
             })
             ->wait();
@@ -243,7 +245,7 @@ class AddressBookSynchronizer
      */
     private function pushContacts(Collection $changes, ?array $localChanges, ?Collection $distContacts = null, ?Collection $localContacts = null): PromiseInterface
     {
-        if (!$localChanges) {
+        if (! $localChanges) {
             $localChanges = [
                 'modified' => [],
                 'added' => [],

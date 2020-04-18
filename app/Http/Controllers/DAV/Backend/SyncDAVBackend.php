@@ -202,10 +202,12 @@ trait SyncDAVBackend
             })->values()->toArray(),
             'modified' => $modified->map(function ($obj) {
                 $this->refreshObject($obj);
+
                 return $this->encodeUri($obj);
             })->values()->toArray(),
             'deleted' => [],
         ];
+
         return $x;
     }
 
