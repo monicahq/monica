@@ -21,8 +21,14 @@ class IntroductionsController extends Controller
      */
     public function edit(Contact $contact)
     {
+        $contacts = auth()->user()->account->contacts()
+                        ->real()
+                        ->active()
+                        ->get();
+
         return view('people.introductions.edit')
-            ->withContact($contact);
+            ->withContact($contact)
+            ->withContacts($contacts);
     }
 
     /**
