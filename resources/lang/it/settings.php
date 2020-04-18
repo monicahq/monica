@@ -12,13 +12,13 @@ return [
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'Risorse DAV',
     'sidebar_settings_security' => 'Sicurezza',
-    'sidebar_settings_auditlogs' => 'Audit logs',
+    'sidebar_settings_auditlogs' => 'Verifica logs',
 
-    'title_general' => 'General Information',
-    'title_i18n' => 'International settings',
-    'title_layout' => 'Layout',
+    'title_general' => 'Informazioni generali',
+    'title_i18n' => 'Impostazioni internazionali',
+    'title_layout' => 'Impaginazione',
 
-    'me_title' => 'My contact',
+    'me_title' => 'Mio contatto',
     'me_help' => 'This is the contact that represents <em>you</em> in Monica',
     'me_select' => 'Select a contact',
     'me_no_contact' => 'No contact selected yet.',
