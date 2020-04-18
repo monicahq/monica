@@ -187,10 +187,12 @@ class AddAddressBook extends BaseService
         $supportedReportSet = $client->getSupportedReportSet();
 
         $addressbookMultiget = in_array('{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-multiget', $supportedReportSet);
+        $addressbookQuery = in_array('{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-query', $supportedReportSet);
         $syncCollection = in_array('{DAV:}sync-collection', $supportedReportSet);
 
         return [
             'addressbookMultiget' => $addressbookMultiget,
+            'addressbookQuery' => $addressbookQuery,
             'syncCollection' => $syncCollection,
         ];
     }
