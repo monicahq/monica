@@ -110,7 +110,7 @@ class SynchronizeAddressBook extends BaseService
 
         return $refreshContacts->then(function ($contacts) use ($backend, $addressbook) {
             foreach ($contacts as $contact) {
-                $newtag = $backend->updateCard($addressbook->addressBookId, $contact['href'], $contact['vcard']);
+                $newtag = $backend->updateCard($addressbook->name, $contact['href'], $contact['vcard']);
 
                 if ($newtag != $contact['etag']) {
                     Log::warning(__CLASS__.' getContacts: wrong etag. Expected '.$contact['etag'].', get '.$newtag);
@@ -200,7 +200,7 @@ class SynchronizeAddressBook extends BaseService
         // All added contact must be pushed
         return collect($contacts)
           ->map(function ($uri) use ($addressbook, $backend) {
-              return tap($backend->getCard($addressbook->addressBookId, $uri), function ($card) use ($uri) {
+              return tap($backend->getCard($addressbook->name, $uri), function ($card) use ($uri) {
                   $card['uri'] = $uri;
               });
           })->map(function ($contact) {
@@ -221,11 +221,11 @@ class SynchronizeAddressBook extends BaseService
 
               return $refreshIds->contains($uuid);
           })->map(function ($uri) use ($addressbook, $backend) {
-              return tap($backend->getCard($addressbook->addressBookId, $uri), function ($card) use ($uri) {
+              return tap($backend->getCard($addressbook->name, $uri), function ($card) use ($uri) {
                   $card['uri'] = $uri;
               });
           })->map(function ($contact) {
-              $contact['request'] = new Request('PUT', $contact['uri'], ['If-Match' => '*'], $contact['carddata']);
+              $contact['request'] = new Request('PUT', $contact['uri'], ['If-Match' => $contact['etag']], $contact['carddata']);
 
               return $contact;
           });
