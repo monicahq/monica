@@ -391,7 +391,7 @@ return [
     'personalization_module_desc' => 'Alcune persone non hanno bisogno di tutte le funzioni. Qui sotto puoi decidere quali funzioni attivare per le pagine dei contatti. Questi cambiamenti riguardano TUTTI i contatti. Nota: se disattivi una funzione non elimineremo nessun dato - verranno semplicemente nascosti.',
 
     'personalisation_paid_upgrade' => 'Questa è una funzionalità premium che richiede un abbonamento a pagamento per essere attivo. Aggiorna il tuo account visitando <a href=":url">Impostazioni > Abbonamento</a>.',
-    'personalisation_paid_upgrade_vue' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href="{url}">Settings > Subscription</a>.',
+    'personalisation_paid_upgrade_vue' => 'Questa è una funzionalità premium che richiede un abbonamento a pagamento per essere attiva. Aggiorna il tuo account visitando <a href="{url}">Impostazioni > Abbonamento</a>.',
 
     'reminder_time_to_send' => 'Ora del giorno in cui inviare i promemoria',
     'reminder_time_to_send_help' => 'Per informazione, il tuo prossimo promemoria verrà inviato il <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
@@ -487,7 +487,7 @@ return [
     'dav_caldav_birthdays_export' => 'Esporta tutti i compleanni in un file',
     'dav_caldav_tasks_export' => 'Esporta tutte le attività in un file',
 
-    'archive_title' => 'Archive all your contacts in your account',
+    'archive_title' => 'Archivia tutti i tuoi contatti nel tuo account',
     'archive_desc' => 'Questo archivierà tutti i contatti del tuo account.',
     'archive_cta' => 'Archivia tutti i tuoi contatti',
 
