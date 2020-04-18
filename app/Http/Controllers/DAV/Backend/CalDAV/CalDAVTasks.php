@@ -84,13 +84,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
     {
         if ($task instanceof Task) {
             try {
-                $vcal = app(ExportTask::class)
-                    ->execute([
-                        'account_id' => $this->user->account_id,
-                        'task_id' => $task->id,
-                    ]);
-
-                $calendardata = $vcal->serialize();
+                $calendardata = $this->refreshObject($task);
 
                 return [
                     'id' => $task->id,
@@ -105,6 +99,17 @@ class CalDAVTasks extends AbstractCalDAVBackend
         }
 
         return [];
+    }
+
+    protected function refreshObject($task): string
+    {
+        $vcal = app(ExportTask::class)
+            ->execute([
+                'account_id' => $this->user->account_id,
+                'task_id' => $task->id,
+            ]);
+
+        return $vcal->serialize();
     }
 
     /**

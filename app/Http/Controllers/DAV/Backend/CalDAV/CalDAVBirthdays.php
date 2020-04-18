@@ -55,13 +55,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
     {
         if ($date instanceof SpecialDate) {
             try {
-                $vcal = app(ExportVCalendar::class)
-                    ->execute([
-                        'account_id' => $this->user->account_id,
-                        'special_date_id' => $date->id,
-                    ]);
-
-                $calendardata = $vcal->serialize();
+                $calendardata = $this->refreshObject($date);
 
                 return [
                     'id' => $date->id,
@@ -76,6 +70,17 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
         }
 
         return [];
+    }
+
+    protected function refreshObject($date): string
+    {
+        $vcal = app(ExportVCalendar::class)
+            ->execute([
+                'account_id' => $this->user->account_id,
+                'special_date_id' => $date->id,
+            ]);
+
+        return $vcal->serialize();
     }
 
     private function hasBirthday($contact)
