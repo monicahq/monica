@@ -304,6 +304,43 @@ class Client
     }
 
     /**
+     * Run a REPORT card:addressbook-query.
+     *
+     * @param string $url
+     * @param array $properties
+     * @param \ArrayAccess $contacts
+     *
+     * @return PromiseInterface<array>
+     *
+     * @see https://tools.ietf.org/html/rfc6352#section-8.6
+     */
+    public function addressbookQueryAsync(string $url, array $properties, array $options = []): PromiseInterface
+    {
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+        $root = $dom->appendChild($dom->createElementNS(CardDAVPlugin::NS_CARDDAV, 'card:addressbook-query'));
+        $dom->createAttributeNS('DAV:', 'd:e');
+
+        $prop = $root->appendChild($dom->createElement('d:prop'));
+
+        $namespaces = [
+            'DAV:' => 'd',
+            CardDAVPlugin::NS_CARDDAV => 'card',
+        ];
+
+        $this->fetchProperties($dom, $prop, $properties, $namespaces);
+
+        $body = $dom->saveXML();
+
+        return $this->requestAsync('REPORT', $url, [
+            'Depth' => '1',
+            'Content-Type' => 'application/xml; charset=utf-8',
+        ], $body, $options)->then(function (ResponseInterface $response) {
+            return $this->parseMultiStatus((string) $response->getBody());
+        });
+    }
+
+    /**
      * Add properties to the prop object.
      *
      * Properties must follow:

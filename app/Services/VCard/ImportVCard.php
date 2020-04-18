@@ -408,7 +408,9 @@ class ImportVCard extends BaseService
             $contact = $this->existingContactWithName($entry);
         }
 
-        $contact->timestamps = false;
+        if ($contact) {
+            $contact->timestamps = false;
+        }
 
         return $contact;
     }

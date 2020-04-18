@@ -36,14 +36,10 @@ trait SyncDAVBackend
             $token = $this->createSyncToken($collectionId);
         } else {
             $token = $tokens->last();
-            /*
-        } else if ($refresh) {
-            $token = $tokens->last();
 
-            if ($refresh && $token->timestamp < $this->getLastModified($addressBookId)) {
+            if ($refresh && $token->timestamp < $this->getLastModified($collectionId)) {
                 $token = $this->createSyncToken($collectionId);
             }
-            */
         }
 
         return $token;
@@ -197,18 +193,20 @@ trait SyncDAVBackend
                    $obj->created_at >= $timestamp;
         });
 
-        $currentSyncToken = $this->getCurrentSyncToken($collectionId, false);
+        $currentSyncToken = $this->getCurrentSyncToken($collectionId, true);
 
-        return [
+        $x = [
             'syncToken' => $currentSyncToken->id,
             'added' => $added->map(function ($obj) {
                 return $this->encodeUri($obj);
-            })->toArray(),
+            })->values()->toArray(),
             'modified' => $modified->map(function ($obj) {
+                $this->refreshObject($obj);
                 return $this->encodeUri($obj);
-            })->toArray(),
+            })->values()->toArray(),
             'deleted' => [],
         ];
+        return $x;
     }
 
     protected function encodeUri($obj): string
@@ -276,6 +274,8 @@ trait SyncDAVBackend
      * @return \Illuminate\Support\Collection
      */
     abstract public function getObjects($collectionId);
+
+    abstract protected function refreshObject($object): string;
 
     abstract public function getExtension();
 }

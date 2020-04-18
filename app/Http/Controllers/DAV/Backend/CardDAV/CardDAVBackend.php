@@ -187,9 +187,9 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * @param string $syncToken
      * @param int $syncLevel
      * @param int $limit
-     * @return array
+     * @return array|null
      */
-    public function getChangesForAddressBook($addressBookId, $syncToken, $syncLevel, $limit = null)
+    public function getChangesForAddressBook($addressBookId, $syncToken, $syncLevel, $limit = null): ?array
     {
         return $this->getChanges($addressBookId, $syncToken);
     }
@@ -205,13 +205,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         try {
             $carddata = $contact->vcard;
             if (empty($carddata)) {
-                $vcard = app(ExportVCard::class)
-                    ->execute([
-                        'account_id' => $this->user->account_id,
-                        'contact_id' => $contact->id,
-                    ]);
-
-                $carddata = $vcard->serialize();
+                $carddata = $this->refreshObject($contact);
             }
 
             return [
@@ -225,6 +219,17 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
             Log::debug(__CLASS__.' prepareCard: '.(string) $e);
             throw $e;
         }
+    }
+
+    protected function refreshObject($object): string
+    {
+        $vcard = app(ExportVCard::class)
+            ->execute([
+                'account_id' => $this->user->account_id,
+                'contact_id' => $object->id,
+            ]);
+
+        return $vcard->serialize();
     }
 
     /**

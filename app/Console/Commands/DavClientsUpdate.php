@@ -29,9 +29,6 @@ class DavClientsUpdate extends Command
      */
     public function handle()
     {
-        //app(AddAddressBook::class)->execute([]);
-        //return;
-
         $subscriptions = AddressBookSubscription::all();
 
         foreach ($subscriptions as $subscription) {
