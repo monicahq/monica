@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\DavClient\Dav;
+namespace App\Http\Controllers\DAVClient\Dav;
 
 use Exception;
 

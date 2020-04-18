@@ -37,6 +37,13 @@ class AddressBookSubscription extends Model
     protected $guarded = ['id'];
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['lastsync'];
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array

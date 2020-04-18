@@ -4,21 +4,13 @@ namespace App\Services\DavClient;
 
 use App\Models\User\User;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use GuzzleHttp\Psr7\Request;
 use App\Services\BaseService;
-use GuzzleHttp\Promise\Promise;
-use Illuminate\Support\Collection;
-use Sabre\VObject\Component\VCard;
-use App\Models\Account\AddressBook;
 use Illuminate\Support\Facades\Log;
-use App\Services\DavClient\Dav\Client;
 use GuzzleHttp\Client as GuzzleClient;
-use Psr\Http\Message\ResponseInterface;
-use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Exception\ClientException;
-use Sabre\CardDAV\Plugin as CardDAVPlugin;
+use App\Http\Controllers\DAVClient\Dav\Client;
 use App\Models\Account\AddressBookSubscription;
+use App\Http\Controllers\DAVClient\AddressBookSynchronizer;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 
 class SynchronizeAddressBook extends BaseService
@@ -34,12 +26,13 @@ class SynchronizeAddressBook extends BaseService
             'account_id' => 'required|integer|exists:accounts,id',
             'user_id' => 'required|integer|exists:users,id',
             'addressbook_subscription_id' => 'required|integer|exists:addressbook_subscriptions,id',
+            'force' => 'nullable|boolean',
         ];
     }
 
     /**
      * @param array $data
-     * @return VCard
+     * @return void
      */
     public function execute(array $data, GuzzleClient $httpClient = null)
     {
@@ -54,20 +47,26 @@ class SynchronizeAddressBook extends BaseService
         $backend = new CardDAVBackend($user);
 
         try {
-            $this->sync($subscription, $backend, $httpClient);
+            $this->sync($data, $subscription, $backend, $httpClient);
         } catch (ClientException $e) {
             Log::error(__CLASS__.' execute: '.$e->getMessage(), $e);
         }
     }
 
-    private function sync($subscription, $backend, $httpClient)
+    private function sync(array $data, AddressBookSubscription $subscription, CardDAVBackend $backend, ?GuzzleClient $httpClient)
     {
         $client = $this->getClient($subscription, $httpClient);
 
-        (new AddressBookSynchronizer($subscription, $client, $backend))->sync();
+        $synchronizer = new AddressBookSynchronizer($subscription, $client, $backend);
+
+        if (! Arr::has($data, 'force') || ! $data['force']) {
+            $synchronizer->sync();
+        } else {
+            $synchronizer->forcesync();
+        }
     }
 
-    private function getClient(AddressBookSubscription $subscription, GuzzleClient $client = null): Client
+    private function getClient(AddressBookSubscription $subscription, ?GuzzleClient $client): Client
     {
         return new Client([
             'base_uri' => $subscription->uri,

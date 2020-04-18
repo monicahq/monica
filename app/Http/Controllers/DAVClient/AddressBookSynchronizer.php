@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\DavClient;
+namespace App\Http\Controllers\DAVClient;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -8,10 +8,10 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Promise\Promise;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
-use App\Services\DavClient\Dav\Client;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
+use App\Http\Controllers\DAVClient\Dav\Client;
 use App\Models\Account\AddressBookSubscription;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 
@@ -39,7 +39,40 @@ class AddressBookSynchronizer
         $this->backend = $backend;
     }
 
+    /**
+     * Sync the address book.
+     */
     public function sync()
+    {
+        // Get changes to sync
+        $localChanges = $this->backend->getChangesForAddressBook($this->subscription->addressbook->name, $this->subscription->localSyncToken, 1);
+
+        // Get distant changes to sync
+        $this->getDistantChanges()
+            ->then(function ($changes) {
+                // Get distant contacts
+                $this->updateContacts($changes);
+
+                return $changes;
+            })
+            ->then(function ($changes) use ($localChanges) {
+                if ($this->subscription->readonly) {
+                    return;
+                }
+                return $this->pushContacts($changes, $localChanges);
+            })
+            ->wait();
+
+        $token = $this->backend->getCurrentSyncToken($this->subscription->addressbook->name, false);
+
+        $this->subscription->localSyncToken = $token->id;
+        $this->subscription->save();
+    }
+
+    /**
+     * Sync the address book.
+     */
+    public function forcesync()
     {
         // Get changes to sync
         $localChanges = $this->backend->getChangesForAddressBook($this->subscription->addressbook->name, $this->subscription->localSyncToken, 1);
@@ -47,33 +80,24 @@ class AddressBookSynchronizer
         $localContacts = $this->backend->getObjects($this->subscription->addressbook->name);
 
         // Get distant changes to sync
-        $this->getDistantChanges()
-            ->then(function ($changes) use ($localContacts) {
-                // Get distant contacts
-                $this->updateContacts($changes);
-
-                // Get all contacts etag
-                $distContacts = $this->getAllContactsEtag()->wait();
-
+        $this->getAllContactsEtag()
+            ->then(function ($distContacts) use ($localContacts) {
                 // Get missed contacts
                 $this->updateMissedContacts($localContacts, $distContacts);
 
-                return [$changes, $distContacts];
+                return $distContacts;
             })
-            ->then(function ($input) use ($localChanges, $localContacts) {
-
-                [$changes, $distContacts] = $input;
-
-                return $this->pushContacts($changes, $localChanges, $distContacts, $localContacts);
+            ->then(function ($distContacts) use ($localChanges, $localContacts) {
+                if ($this->subscription->readonly) {
+                    return;
+                }
+                return $this->pushContacts(collect(), $localChanges, $distContacts, $localContacts);
             })
             ->wait();
-
-        $token = $this->backend->getCurrentSyncToken($this->subscription->addressbook->name, false);
-        $this->subscription->localSyncToken = $token->id;
-        $this->subscription->save();
     }
 
     /**
+     * Get distant changes to sync.
      *
      * @return PromiseInterface<array>
      */
@@ -101,7 +125,9 @@ class AddressBookSynchronizer
     }
 
     /**
-     * Update local contacts
+     * Update local contacts.
+     *
+     * @param Collection $refresh
      */
     private function updateContacts(Collection $refresh)
     {
@@ -123,9 +149,12 @@ class AddressBookSynchronizer
     }
 
     /**
-     * Update local missed contacts
+     * Update local missed contacts.
+     *
+     * @param Collection $localContacts
+     * @param Collection $distContacts
      */
-    private function updateMissedContacts($localContacts, $distContacts)
+    private function updateMissedContacts(Collection $localContacts, Collection $distContacts)
     {
         $localUuids = $localContacts->pluck('uuid');
 
@@ -136,6 +165,12 @@ class AddressBookSynchronizer
         $this->updateContacts($missed);
     }
 
+    /**
+     * Get contacts data with addressbook-multiget request.
+     *
+     * @param Collection $refresh
+     * @return PromiseInterface<array>
+     */
     private function refreshMultigetContacts(Collection $refresh): PromiseInterface
     {
         $addressDataAttributes = Arr::get($this->subscription->capabilities, 'addressData', [
@@ -167,6 +202,12 @@ class AddressBookSynchronizer
         });
     }
 
+    /**
+     * Get contacts data with request.
+     *
+     * @param Collection $contacts
+     * @return PromiseInterface<array>
+     */
     private function refreshSimpleGetContacts(Collection $contacts): PromiseInterface
     {
         $requests = $contacts->map(function ($uri) {
@@ -192,9 +233,15 @@ class AddressBookSynchronizer
     }
 
     /**
+     * Push contacts to the distant server.
      *
+     * @param Collection $changes
+     * @param array|null $localChanges
+     * @param Collection|null $distContacts
+     * @param Collection|null $localContacts
+     * @return PromiseInterface
      */
-    private function pushContacts(Collection $changes, ?array $localChanges, $distContacts, $localContacts): PromiseInterface
+    private function pushContacts(Collection $changes, ?array $localChanges, ?Collection $distContacts = null, ?Collection $localContacts = null): PromiseInterface
     {
         if (!$localChanges) {
             $localChanges = [
@@ -203,10 +250,13 @@ class AddressBookSynchronizer
             ];
         }
         $requestsChanges = $this->preparePushChangedContacts($changes, $localChanges['modified']);
-        $requestsMissed = $this->preparePushMissedContacts($localChanges['added'], $distContacts, $localContacts);
         $requestsAdded = $this->preparePushAddedContacts($localChanges['added']);
+        $requests = $requestsChanges->union($requestsAdded);
 
-        $requests = $requestsChanges->union($requestsAdded)->union($requestsMissed);
+        if ($distContacts && $localContacts) {
+            $requestsMissed = $this->preparePushMissedContacts($localChanges['added'], $distContacts, $localContacts);
+            $requests = $requests->union($requestsMissed);
+        }
 
         $urls = $requests->pluck('request')->toArray();
 
@@ -222,6 +272,12 @@ class AddressBookSynchronizer
         ])->promise();
     }
 
+    /**
+     * Get list of requests to push new contacts.
+     *
+     * @param array $contacts
+     * @return Collection
+     */
     private function preparePushAddedContacts(array $contacts): Collection
     {
         // All added contact must be pushed
@@ -237,6 +293,13 @@ class AddressBookSynchronizer
           });
     }
 
+    /**
+     * Get list of requests to push modified contacts.
+     *
+     * @param Collection $changes
+     * @param array $contacts
+     * @return Collection
+     */
     private function preparePushChangedContacts(Collection $changes, array $contacts): Collection
     {
         $refreshIds = $changes->pluck('href');
@@ -258,7 +321,15 @@ class AddressBookSynchronizer
           });
     }
 
-    private function preparePushMissedContacts(array $added, $distContacts, $localContacts): Collection
+    /**
+     * Get list of requests of missed contacts.
+     *
+     * @param array $added
+     * @param Collection $distContacts
+     * @param Collection $localContacts
+     * @return Collection
+     */
+    private function preparePushMissedContacts(array $added, Collection $distContacts, Collection $localContacts): Collection
     {
         $distContacts = $distContacts->map(function ($c) {
             return $this->backend->getUuid($c['href']);
@@ -267,7 +338,7 @@ class AddressBookSynchronizer
             return $this->backend->getUuid($c);
         });
 
-        return collect($localContacts)
+        return $localContacts
           ->filter(function ($contact) use ($distContacts, $added) {
               return ! $distContacts->contains($contact->uuid)
                 && ! $added->contains($contact->uuid);
@@ -282,6 +353,8 @@ class AddressBookSynchronizer
     }
 
     /**
+     * Get refreshed etags.
+     *
      * @return PromiseInterface<array>
      */
     private function getDistantEtags(): PromiseInterface
@@ -298,7 +371,9 @@ class AddressBookSynchronizer
         }
     }
 
-        /**
+    /**
+     * Make sync-collection request.
+     *
      * @return PromiseInterface<array>
      */
     private function callSyncCollection(): PromiseInterface
@@ -328,7 +403,7 @@ class AddressBookSynchronizer
     }
 
     /**
-     * Get all contacts etag
+     * Get all contacts etag.
      *
      * @return PromiseInterface<array>
      */
@@ -354,6 +429,11 @@ class AddressBookSynchronizer
         });
     }
 
+    /**
+     * Get an empty Promise.
+     *
+     * @return PromiseInterface
+     */
     private function emptyPromise(): PromiseInterface
     {
         $promise = new Promise(function () use (&$promise) {
