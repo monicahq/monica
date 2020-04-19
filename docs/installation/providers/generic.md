@@ -1,4 +1,19 @@
-# Installing Monica (Generic)
+# Installing Monica (Generic) <!-- omit in toc -->
+
+- [Prerequisites](#prerequisites)
+  - [Types of databases](#types-of-databases)
+- [Installation steps](#installation-steps)
+  - [1. Clone the repository](#1-clone-the-repository)
+  - [2. Setup the database](#2-setup-the-database)
+  - [3. Configure Monica](#3-configure-monica)
+  - [4. Configure cron job](#4-configure-cron-job)
+  - [5. Configure Apache webserver](#5-configure-apache-webserver)
+  - [6. Optional: Setup the queues with Redis, Beanstalk or Amazon SQS](#6-optional-setup-the-queues-with-redis-beanstalk-or-amazon-sqs)
+  - [7. Optional: Setup the access tokens to use the API](#7-optional-setup-the-access-tokens-to-use-the-api)
+    - [Generate the encryption keys](#generate-the-encryption-keys)
+    - [Optional: Save the encryption keys as variable](#optional-save-the-encryption-keys-as-variable)
+    - [Optional: Generate a Password grant client](#optional-generate-a-password-grant-client)
+  - [Final step](#final-step)
 
 ## Prerequisites
 
@@ -14,20 +29,21 @@ If you don't want to use Docker, the best way to setup the project is to use the
 
 **PHP:** Install php7.2 minimum, with these extensions:
 
-- json
+- curl
+- bcmath
+- gd
+- gmp
 - iconv
 - intl
-- opcache
-- mbstring
-- xml
-- mysqli
+- json
 - pdo_mysql
-- bcmath
-- curl
-- gmp
-- zip
-- gd
+- mbstring
+- mysqli
+- opcache
+- redis
 - sodium
+- xml
+- zip
 
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager. It is not enough to just install Composer, you also need to make sure it is installed globally for Monica's installation to run smoothly:
 
@@ -75,6 +91,10 @@ Create a database called 'monica'.
 ```sql
 CREATE DATABASE monica;
 ```
+or if you want to support all character (like emojis):
+```sql
+CREATE DATABASE monica CHARACTER SET utf8 COLLATE utf8_general_ci;
+```
 
 Create a user called 'monica' and its password 'strongpassword'.
 ```sql
@@ -97,13 +117,13 @@ exit
 `cd /var/www/monica` then run these steps:
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
-1. Update `.env` to your specific needs
+2. Update `.env` to your specific needs
    - set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
    - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
    - set the `APP_ENV` variable to `production`, `local` is only used for the development version.
-1. Run `composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs` to install all packages.
-1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-1. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
+3. Run `composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs` to install all packages.
+4. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
+5. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
 
 The `setup:production` command will run migrations scripts for database, and flush all cache for config, route, and view, as an optimization process.
 As the configuration of the application is cached, any update on the `.env` file will not be detected after that. You may have to run `php artisan config:cache` manually after every update of `.env` file.
@@ -226,6 +246,9 @@ Instead of keeping the encryption keys as files, you can add them as environment
 sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' storage/oauth-private.key
 ```
    Copy the output to an environment variable called `PASSPORT_PRIVATE_KEY` in your `.env` file.
+```
+PASSPORT_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\nMIIJKAIBAAKCAgEAsC..."
+```
 
 * Do the same thing with the contents of the public key:
 
@@ -233,6 +256,9 @@ sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' storage/oauth-private.key
 sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' storage/oauth-public.key
 ```
    Copy the output to an environment variable called `PASSPORT_PUBLIC_KEY` in your `.env` file.
+```
+PASSPORT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhki..."
+```
 
 
 #### Optional: Generate a Password grant client
