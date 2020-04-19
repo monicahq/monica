@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Models\User\User;
 use Illuminate\Http\Request;
-use App\Helpers\StringHelper;
 use Illuminate\Auth\AuthManager;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
@@ -129,9 +128,6 @@ class AuthenticateWithTokenOnBasicAuth
     {
         if (! $request->bearerToken()) {
             $password = $request->getPassword();
-            if (StringHelper::isNullOrWhitespace($password)) {
-                return false;
-            }
             $request->headers->set('Authorization', 'Bearer '.$password);
         }
 
