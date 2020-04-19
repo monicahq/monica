@@ -49,7 +49,7 @@ return [
 
     'header_settings_link' => '設定',
     'header_logout_link' => 'ログアウト',
-    'header_changelog_link' => 'Product changes',
+    'header_changelog_link' => '機能の変更',
 
     'main_nav_cta' => '人を追加します',
     'main_nav_dashboard' => 'ダッシュボード',
