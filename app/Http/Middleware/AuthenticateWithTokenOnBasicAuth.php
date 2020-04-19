@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Helpers\StringHelper;
+use App\Models\User\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Auth\AuthManager;
@@ -94,9 +95,9 @@ class AuthenticateWithTokenOnBasicAuth
      * Authenticate user.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Contracts\Auth\Authenticatable
+     * @return User|null
      */
-    private function authUser(Request $request): Authenticatable
+    private function authUser(Request $request): ?User
     {
         $headerUser = $request->getUser();
         $user = null;
@@ -104,11 +105,12 @@ class AuthenticateWithTokenOnBasicAuth
             // Remove User from header request as Laravel auth will not authenticate using Bearer token
             $request->headers->set('PHP_AUTH_USER', '');
 
+            /** @var \Illuminate\Auth\RequestGuard */
             $guard = $this->auth->guard('api');
 
-            if (method_exists($guard, 'setRequest')) {
-                $user = $guard->setRequest($request)->user();
-            }
+            /** @var ?User */
+            $user = $guard->setRequest($request)
+                ->user();
         } finally {
             $request->headers->set('PHP_AUTH_USER', $headerUser);
         }
