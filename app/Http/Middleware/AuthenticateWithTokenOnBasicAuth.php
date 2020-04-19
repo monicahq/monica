@@ -129,9 +129,6 @@ class AuthenticateWithTokenOnBasicAuth
     {
         if (! $request->bearerToken()) {
             $password = $request->getPassword();
-            if (StringHelper::isNullOrWhitespace($password)) {
-                return false;
-            }
             $request->headers->set('Authorization', 'Bearer '.$password);
         }
 
