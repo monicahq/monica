@@ -40,6 +40,10 @@ class DAVServiceProvider extends ServiceProvider
             return $this->plugins();
         });
         LaravelSabre::auth(function (\Illuminate\Http\Request $request): bool {
+            if (! $request->user()) {
+                return false;
+            }
+
             if ($request->user()->admin ||
                 config('laravelsabre.users') == null) {
                 return true;

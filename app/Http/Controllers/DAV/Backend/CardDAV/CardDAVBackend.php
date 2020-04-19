@@ -245,7 +245,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         if ($addressBookId && $addressBookId != $this->backendUri()) {
             $addressBook = AddressBook::where([
                 'account_id' => $this->user->account_id,
-                'addressBookId' => $addressBookId,
+                'name' => $addressBookId,
             ])->first();
         }
 
