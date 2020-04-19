@@ -8,7 +8,7 @@ return [
 
     'notes_title' => 'You don’t have any starred notes yet.',
 
-    'tab_recent_calls' => 'Recent calls',
+    'tab_recent_calls' => '最近の通話：',
     'tab_favorite_notes' => 'Favorite notes',
     'tab_calls_blank' => 'You haven’t logged a call yet.',
     'tab_debts' => 'Debts',
@@ -31,6 +31,6 @@ return [
     'reminders_next_months' => 'Events in the next 3 months',
     'reminders_none' => 'No reminder for this month',
 
-    'product_changes' => 'Product changes',
+    'product_changes' => '機能の変更',
     'product_view_details' => 'View details',
 ];
