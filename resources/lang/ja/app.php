@@ -8,7 +8,7 @@ return [
     'add' => '追加',
     'cancel' => 'キャンセル',
     'confirm' => '確定する',
-    'delete_confirm' => 'Sure?',
+    'delete_confirm' => 'はい',
     'delete' => '削除',
     'edit' => '編集',
     'upload' => 'アップロード',
@@ -454,6 +454,6 @@ return [
     'dav_contacts_description' => ':name’s contacts',
     'dav_birthdays' => 'Birthdays',
     'dav_birthdays_description' => ':name’s contact’s birthdays',
-    'dav_tasks' => 'Tasks',
+    'dav_tasks' => 'タスク',
     'dav_tasks_description' => ':name’s tasks',
 ];
