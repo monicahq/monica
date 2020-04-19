@@ -98,7 +98,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
             $email = Auth::user()->email;
             $me = $this->encodeUri($me);
             $des += [
-                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card' => "/$path/addressbooks/$email/contacts/$me",
+                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card' => '/'.$path.'/addressbooks/'.$email.'/contacts/'.$me,
             ];
         }
 
