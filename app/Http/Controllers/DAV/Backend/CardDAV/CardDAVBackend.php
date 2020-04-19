@@ -55,7 +55,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     public function getAddressBooksForUser($principalUri)
     {
         $result = [];
-        $result[] = $this->getDefaultAddressBook($principalUri);
+        $result[] = $this->getDefaultAddressBook();
 
         $addressbooks = AddressBook::where('account_id', Auth::user()->account_id)
             ->get();
@@ -72,7 +72,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         return $result;
     }
 
-    private function getDefaultAddressBook($principalUri)
+    private function getDefaultAddressBook()
     {
         $id = $this->backendUri();
         $token = $this->getCurrentSyncToken(null);
@@ -94,8 +94,11 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
         $me = auth()->user()->me;
         if ($me) {
+            $path = config('laravelsabre.path');
+            $email = Auth::user()->email;
+            $me = $this->encodeUri($me);
             $des += [
-                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card' => '/'.config('laravelsabre.path').'/addressbooks/'.Auth::user()->email.'/contacts/'.$this->encodeUri($me),
+                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card' => "/$path/addressbooks/$email/contacts/$me",
             ];
         }
 
