@@ -155,12 +155,12 @@ return [
     'information_edit_birthdate_label' => '誕生日',
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => 'at :company',
-    'work_add_cta' => 'Update work information',
+    'work_add_cta' => '仕事の情報を更新する',
     'work_edit_success' => 'Work information have been updated with success',
     'work_edit_title' => 'Update :name’s job information',
     'work_edit_job' => 'Job title (optional)',
     'work_edit_company' => 'Company (optional)',
-    'work_information' => 'Work information',
+    'work_information' => '仕事',
 
     // food preferences
     'food_preferences_add_success' => 'Food preferences have been saved',
@@ -224,11 +224,11 @@ return [
     'relationship_form_deletion_success' => 'The relationship has been deleted.',
 
     // tasks
-    'tasks_title' => 'Tasks',
+    'tasks_title' => 'タスク',
     'tasks_blank_title' => 'You don’t have any tasks yet.',
     'tasks_form_title' => 'Title',
     'tasks_form_description' => 'Description (optional)',
-    'tasks_add_task' => 'Add a task',
+    'tasks_add_task' => 'タスクの追加',
     'tasks_delete_success' => 'The task has been deleted successfully',
     'tasks_complete_success' => 'The task has changed status successfully',
 
