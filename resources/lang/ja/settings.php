@@ -72,7 +72,7 @@ return [
     'locale_help' => 'Do you want to help translating Monica or add a new language? Please follow <a href=":url" target="_blank" lang="en">this link for more information</a>.',
     'locale_ar' => 'Arabic',
     'locale_cs' => 'Czech',
-    'locale_de' => 'German',
+    'locale_de' => 'ドイツ語',
     'locale_en' => 'English',
     'locale_es' => 'Spanish',
     'locale_fr' => 'French',
