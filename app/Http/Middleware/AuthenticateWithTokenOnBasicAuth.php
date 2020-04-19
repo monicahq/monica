@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Helpers\StringHelper;
-use App\Models\User\User;
 use Closure;
+use App\Models\User\User;
 use Illuminate\Http\Request;
+use App\Helpers\StringHelper;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -85,6 +85,7 @@ class AuthenticateWithTokenOnBasicAuth
         // match User header if present
         if ($user && (! $request->getUser() || $request->getUser() === $user->email)) {
             $this->auth->guard()->setUser($user);
+
             return true;
         }
 
