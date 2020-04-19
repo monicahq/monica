@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\User\User;
 use Illuminate\Console\Command;
-use GuzzleHttp\Client as GuzzleClient;
 use App\Services\DavClient\AddAddressBook;
 
 class AddAddressBookSubscription extends Command

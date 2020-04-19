@@ -116,6 +116,7 @@ class Client
             $code = $response->getStatusCode();
             if (($code === 301 || $code === 302) && $response->hasHeader('Location')) {
                 $location = $response->getHeader('Location')[0];
+
                 return $this->getBaseUri($location);
             }
         } catch (ClientException $e) {
@@ -511,7 +512,6 @@ class Client
 
         return $this->propFindAsync('', [$propName], 0, $options)
         ->then(function (array $properties) use ($propName): array {
-
             if (! in_array($propName, $properties)) {
                 return [];
             }

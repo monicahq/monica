@@ -9,7 +9,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\SynchronizeAddressBook;
-use GuzzleHttp\Client;
 
 class SynchronizeAddressBooks implements ShouldQueue
 {
