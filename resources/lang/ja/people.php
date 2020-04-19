@@ -53,7 +53,7 @@ return [
     'people_delete_confirmation' => 'Are you sure you want to delete this contact? Deletion is permanent.',
     'people_add_birthday_reminder' => 'Wish happy birthday to :name',
     'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
-    'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
+    'people_add_import' => '連絡先を <a href=":url">インポートしますか</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
     'people_export' => 'Export as vCard',
     'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
@@ -167,9 +167,9 @@ return [
     'food_preferences_edit_description' => 'Perhaps :firstname or someone in the :family’s family has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferences_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferences_edit_title' => 'Indicate food preferences',
-    'food_preferences_edit_cta' => 'Save food preferences',
-    'food_preferences_title' => 'Food preferences',
-    'food_preferences_cta' => 'Add food preferences',
+    'food_preferences_edit_cta' => '「食べ物の好み」を保存する',
+    'food_preferences_title' => '食べ物の好み',
+    'food_preferences_cta' => '「食べ物の好み」を追加する',
 
     // reminders
     'reminders_blank_title' => 'Is there something you want to be reminded of about :name?',
