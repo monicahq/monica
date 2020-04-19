@@ -59,25 +59,69 @@ class Client
      */
     public function getServiceUrl()
     {
-        // Get well-known register (section 9.1)
-        $wkUri = $this->getBaseUri('/.well-known/carddav');
+        $target = $this->standardServiceUrl();
 
-        $response = $this->client->get($wkUri, [
-            RequestOptions::ALLOW_REDIRECTS => false,
-        ]);
-
-        $code = $response->getStatusCode();
-        if (($code === 301 || $code === 302) && $response->hasHeader('Location')) {
-            return $response->getHeader('Location')[0];
+        if (! $target) {
+            // second attempt for non standard server, like Google API
+            $target = $this->nonStandardServiceUrl();
         }
 
-        // Get service name register (section 9.2)
-        $target = $this->getServiceUrlSrv('_carddavs._tcp', true);
-        if (is_null($target)) {
-            $target = $this->getServiceUrlSrv('_carddav._tcp', false);
+        if (! $target) {
+            // Get service name register (section 9.2)
+            $target = $this->getServiceUrlSrv('_carddavs._tcp', true);
+            if (is_null($target)) {
+                $target = $this->getServiceUrlSrv('_carddav._tcp', false);
+            }
         }
 
         return $target;
+    }
+
+    private function standardServiceUrl(): ?string
+    {
+        // Get well-known register (section 9.1)
+        $wkUri = $this->getBaseUri('/.well-known/carddav');
+
+        try {
+            $response = $this->client->get($wkUri, [
+                RequestOptions::ALLOW_REDIRECTS => false,
+            ]);
+
+            $code = $response->getStatusCode();
+            if (($code === 301 || $code === 302) && $response->hasHeader('Location')) {
+                return $response->getHeader('Location')[0];
+            }
+        } catch (ClientException $e) {
+            if ($e->hasResponse()) {
+                $code = $e->getResponse()->getStatusCode();
+                if ($code !== 400 && $code !== 401 && $code !== 404) {
+                    throw $e;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private function nonStandardServiceUrl(): ?string
+    {
+        $wkUri = $this->getBaseUri('/.well-known/carddav');
+
+        try {
+            $response = $this->requestAsync('PROPFIND', $wkUri, [], null, [
+                RequestOptions::ALLOW_REDIRECTS => false,
+                RequestOptions::SYNCHRONOUS => true,
+            ])->wait();
+
+            $code = $response->getStatusCode();
+            if (($code === 301 || $code === 302) && $response->hasHeader('Location')) {
+                $location = $response->getHeader('Location')[0];
+                return $this->getBaseUri($location);
+            }
+        } catch (ClientException $e) {
+        }
+
+        return null;
     }
 
     /**
@@ -103,6 +147,8 @@ class Client
                 return ($https ? 'https' : 'http').'://'.$target.(is_null($port) ? '' : ':'.$port);
             }
         }
+
+        return null;
     }
 
     /**
@@ -444,6 +490,7 @@ class Client
      * Get a {DAV:}supported-report-set propfind.
      *
      * @return array
+     * @see https://tools.ietf.org/html/rfc3253#section-3.1.5
      */
     public function getSupportedReportSet(): array
     {
@@ -456,6 +503,7 @@ class Client
      * Get a {DAV:}supported-report-set propfind.
      *
      * @return PromiseInterface<array>
+     * @see https://tools.ietf.org/html/rfc3253#section-3.1.5
      */
     public function getSupportedReportSetAsync(array $options = []): PromiseInterface
     {
@@ -463,6 +511,11 @@ class Client
 
         return $this->propFindAsync('', [$propName], 0, $options)
         ->then(function (array $properties) use ($propName): array {
+
+            if (! in_array($propName, $properties)) {
+                return [];
+            }
+
             return array_map(function ($supportedReportSet) {
                 foreach ($supportedReportSet['value'] as $kind) {
                     if ($kind['name'] == '{DAV:}report') {

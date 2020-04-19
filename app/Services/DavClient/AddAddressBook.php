@@ -35,13 +35,20 @@ class AddAddressBook extends BaseService
      *
      * @param array $data
      * @param GuzzleClient|null $httpClient
-     * @return AddressBookSubscription
+     * @return AddressBookSubscription|null
      */
-    public function execute(array $data, GuzzleClient $httpClient = null): AddressBookSubscription
+    public function execute(array $data, GuzzleClient $httpClient = null): ?AddressBookSubscription
     {
         $this->validate($data);
 
-        $addressbookData = $this->getAddressBookData($data, $httpClient);
+        try {
+            $addressbookData = $this->getAddressBookData($data, $httpClient);
+        } catch (\Exception $e) {
+        }
+
+        if (! $addressbookData) {
+            return null;
+        }
 
         $lastAddressBook = AddressBook::where('account_id', $data['account_id'])
             ->get()
@@ -80,7 +87,7 @@ class AddAddressBook extends BaseService
 
             return (new AddressBookGetter($client))->getAddressBookData();
         } catch (ClientException $e) {
-            Log::error(__CLASS__.' getAddressBookBaseUri: '.$e->getMessage(), $e);
+            Log::error(__CLASS__.' getAddressBookBaseUri: '.$e->getMessage(), [$e]);
         }
 
         return null;

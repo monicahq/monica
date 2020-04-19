@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\SynchronizeAddressBook;
+use GuzzleHttp\Client;
 
 class SynchronizeAddressBooks implements ShouldQueue
 {
@@ -38,7 +39,7 @@ class SynchronizeAddressBooks implements ShouldQueue
             'account_id' => $this->addressBookSubscription->account_id,
             'user_id' => $this->addressBookSubscription->user_id,
             'addressbook_subscription_id' => $this->addressBookSubscription->id,
-
+            //'force' => true,
         ]);
         $this->addressBookSubscription->lastsync = now();
         $this->addressBookSubscription->save();

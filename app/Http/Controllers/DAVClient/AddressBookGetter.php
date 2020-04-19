@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\DAVClient;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Exception\ClientException;
@@ -34,7 +35,20 @@ class AddressBookGetter extends BaseService
 
             $this->client->setBaseUri($uri);
 
-            $capabilities = $this->getCapabilities();
+            if (Str::contains($uri, 'https://www.googleapis.com')) {
+                // Google API sucks
+                $capabilities = [
+                    'addressbookMultiget' => true,
+                    'addressbookQuery' => true,
+                    'syncCollection' => true,
+                    'addressData' => [
+                        'content-type' => 'text/vcard',
+                        'version' => '3.0',
+                    ],
+                ];
+            } else {
+                $capabilities = $this->getCapabilities();
+            }
 
             $name = $this->client->getProperty('{DAV:}displayname');
 
@@ -44,7 +58,7 @@ class AddressBookGetter extends BaseService
                 'name' => $name,
             ];
         } catch (ClientException $e) {
-            Log::error(__CLASS__.' getAddressBookBaseUri: '.$e->getMessage(), $e);
+            Log::error(__CLASS__.' getAddressBookBaseUri: '.$e->getMessage(), [$e]);
         }
 
         return null;
@@ -58,10 +72,16 @@ class AddressBookGetter extends BaseService
     private function getAddressBookBaseUri(): string
     {
         $baseUri = $this->client->getServiceUrl();
-        $this->client->setBaseUri($baseUri);
+        if ($baseUri) {
+            $this->client->setBaseUri($baseUri);
+        }
 
-        // Check the OPTIONS of the server
-        $this->checkOptions();
+        if (! Str::contains($baseUri, 'https://www.googleapis.com')) {
+            // Google API does not follow rfc2518 section-15 !
+
+            // Check the OPTIONS of the server
+            $this->checkOptions();
+        }
 
         // Get the principal of this account
         $principal = $this->getCurrentUserPrincipal();
@@ -99,7 +119,7 @@ class AddressBookGetter extends BaseService
         $prop = $this->client->getProperty('{DAV:}current-user-principal');
 
         if (is_null($prop) || count($prop) == 0) {
-            throw new \Exception('Server does not support rfc 5397 section 3 (DAV:current-user-principal)');
+            throw new DavClientException('Server does not support rfc 5397 section 3 (DAV:current-user-principal)');
         }
 
         return $prop[0]['value'];
@@ -116,7 +136,7 @@ class AddressBookGetter extends BaseService
         $prop = $this->client->getProperty('{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-home-set', $principal);
 
         if (is_null($prop) || count($prop) == 0) {
-            throw new \Exception('Server does not support rfc 6352 section 7.1.1 (CARD:addressbook-home-set)');
+            throw new DavClientException('Server does not support rfc 6352 section 7.1.1 (CARD:addressbook-home-set)');
         }
 
         return $prop[0]['value'];
@@ -131,7 +151,7 @@ class AddressBookGetter extends BaseService
     {
         $home = $this->getAddressBookHome($principal);
 
-        $books = $this->client->propfind($home, [], 1);
+        $books = $this->client->propfind($home, ['{DAV:}resourcetype'], 1);
 
         foreach ($books as $book => $properties) {
             if ($book == $home) {

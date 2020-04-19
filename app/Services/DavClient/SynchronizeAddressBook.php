@@ -49,7 +49,10 @@ class SynchronizeAddressBook extends BaseService
         try {
             $this->sync($data, $subscription, $backend, $httpClient);
         } catch (ClientException $e) {
-            Log::error(__CLASS__.' execute: '.$e->getMessage(), $e);
+            Log::error(__CLASS__.' execute: '.$e->getMessage(), [$e]);
+            if ($e->hasResponse()) {
+                Log::error(__CLASS__.' execute: '.$e->getResponse()->getBody());
+            }
         }
     }
 

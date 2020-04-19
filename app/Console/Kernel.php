@@ -26,6 +26,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\CalculateStatistics;
 use App\Console\Commands\OneTime\MoveAvatars;
 use App\Console\Commands\MigrateDatabaseCollation;
+use App\Console\Commands\AddAddressBookSubscription;
 use App\Console\Commands\Tests\SetupFrontEndTestUser;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\OneTime\MoveAvatarsToPhotosDirectory;
@@ -72,6 +73,7 @@ class Kernel extends ConsoleKernel
     {
         if ($this->app->environment() != 'production') {
             $this->commands[] = SetupFrontEndTestUser::class;
+            $this->commands[] = AddAddressBookSubscription::class;
         }
     }
 
