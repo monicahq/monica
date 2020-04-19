@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Models\User\User;
 use Illuminate\Http\Request;
-use App\Helpers\StringHelper;
 use Illuminate\Auth\AuthManager;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
