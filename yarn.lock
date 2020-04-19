@@ -8608,10 +8608,10 @@ snyk-try-require@1.3.1, snyk-try-require@^1.1.1, snyk-try-require@^1.3.1:
     lru-cache "^4.0.0"
     then-fs "^2.0.0"
 
-snyk@^1.305.1:
-  version "1.305.1"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.305.1.tgz#1094439756ce7dda37096d2707cb5b21e0298eea"
-  integrity sha512-ThBDMwaVybu0aIXDjm5ecJUVxJePaf3qgv9g8Ocoldk7q9QJXBTvp+piAtyJlkGsWeWhCZAWATBxOcPRF30XcA==
+snyk@^1.306.0:
+  version "1.306.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.306.0.tgz#a4fafcdfc593cbc5f8201fbe5cfea2a2f417ee99"
+  integrity sha512-YwfJED2TxC7O0aWygpXzXs8IXzEQBAOTpFT/rXt9UuizKEPftzHE2EoV3Xp0O1yGwYS8wtAqRUqLedN6YKf0AA==
   dependencies:
     "@snyk/cli-interface" "2.3.2"
     "@snyk/configstore" "^3.2.0-rc1"
