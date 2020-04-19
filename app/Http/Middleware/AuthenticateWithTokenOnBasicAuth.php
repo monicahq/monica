@@ -7,7 +7,6 @@ use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Helpers\StringHelper;
 use Illuminate\Auth\AuthManager;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 /**
