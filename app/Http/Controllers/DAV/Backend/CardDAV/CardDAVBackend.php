@@ -15,7 +15,6 @@ use Sabre\CardDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
-use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
 use App\Services\Contact\Contact\SetMeContact;
 use App\Http\Controllers\DAV\Backend\IDAVBackend;
 use App\Http\Controllers\DAV\Backend\SyncDAVBackend;
