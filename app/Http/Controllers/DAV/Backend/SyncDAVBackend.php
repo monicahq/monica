@@ -17,7 +17,7 @@ trait SyncDAVBackend
      * @param string|null $collectionId
      * @return SyncToken|null
      */
-    protected function getCurrentSyncToken($collectionId)
+    protected function getCurrentSyncToken($collectionId, $refresh)
     {
         $tokens = SyncToken::where([
             'account_id' => Auth::user()->account_id,
@@ -31,14 +31,10 @@ trait SyncDAVBackend
             $token = $this->createSyncToken($collectionId);
         } else {
             $token = $tokens->last();
-            /*
-        } else if ($refresh) {
-            $token = $tokens->last();
 
-            if ($token->timestamp < $this->getLastModified($collectionId)) {
+            if ($refresh && $token->timestamp < $this->getLastModified($collectionId)) {
                 $token = $this->createSyncToken($collectionId);
             }
-            */
         }
 
         return $token;
@@ -176,6 +172,7 @@ trait SyncDAVBackend
 
             $timestamp = $token->timestamp;
         } else {
+            $token = $this->createSyncTokenNow($collectionId);
             $timestamp = null;
         }
 
@@ -191,14 +188,20 @@ trait SyncDAVBackend
                    $obj->created_at >= $timestamp;
         });
 
+        $currentSyncToken = $this->getCurrentSyncToken($collectionId, true);
+
         return [
-            'syncToken' => $this->getCurrentSyncToken($collectionId)->id,
+            'syncToken' => $currentSyncToken->id,
             'added' => $added->map(function ($obj) {
                 return $this->encodeUri($obj);
-            })->toArray(),
+            })
+                ->values()
+                ->toArray(),
             'modified' => $modified->map(function ($obj) {
                 return $this->encodeUri($obj);
-            })->toArray(),
+            })
+                ->values()
+                ->toArray(),
             'deleted' => [],
         ];
     }

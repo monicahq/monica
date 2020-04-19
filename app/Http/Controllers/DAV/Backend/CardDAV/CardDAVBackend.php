@@ -61,12 +61,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
             ->get();
 
         foreach ($addressbooks as $addressbook) {
-            $result[] = [
-                'id'                => $addressbook->name,
-                'uri'               => $addressbook->name,
-                'principaluri'      => PrincipalBackend::getPrincipalUser(),
-                '{DAV:}displayname' => $addressbook->description,
-            ];
+            $result[] = $this->getAddressBookDetails($addressbook);
         }
 
         return $result;
@@ -74,31 +69,35 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
     private function getDefaultAddressBook()
     {
-        $id = $this->backendUri();
-        $token = $this->getCurrentSyncToken(null);
+        $des = $this->getAddressBookDetails(null);
+
+        $me = auth()->user()->me;
+        if ($me) {
+            $des += [
+                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card' => '/'.config('laravelsabre.path').'/addressbooks/'.Auth::user()->email.'/contacts/'.$this->encodeUri($me),
+            ];
+        }
+
+        return $des;
+    }
+
+    private function getAddressBookDetails($addressbook)
+    {
+        $id = $addressbook ? $addressbook->name : $this->backendUri();
+        $token = $this->getCurrentSyncToken($addressbook, true);
 
         $des = [
             'id'                => $id,
             'uri'               => $id,
             'principaluri'      => PrincipalBackend::getPrincipalUser(),
             '{DAV:}displayname' => trans('app.dav_contacts'),
-            '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => trans('app.dav_contacts_description', ['name' => Auth::user()->name]),
+            '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $addressbook ? $addressbook->description : trans('app.dav_contacts_description', ['name' => Auth::user()->name]),
         ];
         if ($token) {
             $des += [
                 '{DAV:}sync-token'  => $token->id,
                 '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token->id,
-                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => DAVSyncPlugin::SYNCTOKEN_PREFIX.$token->id,
-            ];
-        }
-
-        $me = auth()->user()->me;
-        if ($me) {
-            $path = config('laravelsabre.path');
-            $email = Auth::user()->email;
-            $me = $this->encodeUri($me);
-            $des += [
-                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card' => '/'.$path.'/addressbooks/'.$email.'/contacts/'.$me,
+                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => $token->id,
             ];
         }
 
