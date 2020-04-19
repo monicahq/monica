@@ -1,4 +1,11 @@
-# Configuring a Mail Server
+# Configuring a Mail Server <!-- omit in toc -->
+
+- [Use SMTP with Monica](#use-smtp-with-monica)
+- [Use Amazon SES with Monica](#use-amazon-ses-with-monica)
+  - [1. Obtain SES Credentials](#1-obtain-ses-credentials)
+  - [2. Verify the Address You'll be Sending From](#2-verify-the-address-youll-be-sending-from)
+  - [3. Allow SES to Send Emails Out](#3-allow-ses-to-send-emails-out)
+  - [4. Configure Monica to Use SES SMTP Server](#4-configure-monica-to-use-ses-smtp-server)
 
 The Monica registration flow will send a validation email to the user who sent it. Whilst this is not required by default (see `APP_SIGNUP_DOUBLE_OPTIN` in your `.env` file), setting up a mail server is encouraged so that you can receive reminders.
 

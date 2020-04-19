@@ -1,43 +1,38 @@
-# Contribute as a developer
+# Contribute as a developer  <!-- omit in toc -->
 
-<!-- TOC -->
-
-- [Contribute as a developer](#contribute-as-a-developer)
-  - [Considerations](#considerations)
-  - [Design rules](#design-rules)
-  - [Install Monica locally](#install-monica-locally)
-    - [Homestead (macOS, Linux, Windows)](#homestead-macos-linux-windows)
-    - [Valet (macOS)](#valet-macos)
-    - [Instructions](#instructions)
-  - [Testing environment](#testing-environment)
-    - [Setup](#setup)
-    - [Run the test suite](#run-the-test-suite)
-    - [Run browser tests](#run-browser-tests)
-    - [Mocking HTTP calls](#mocking-http-calls)
-  - [Coding guidelines](#coding-guidelines)
-    - [Feature branch](#feature-branch)
-    - [Conventional commits](#conventional-commits)
-  - [Backend](#backend)
-    - [Things to consider when adding new code](#things-to-consider-when-adding-new-code)
-      - [Add a new table to the database schema](#add-a-new-table-to-the-database-schema)
-      - [Manipulating data during a migration](#manipulating-data-during-a-migration)
-    - [Email testing](#email-testing)
-    - [Email reminders](#email-reminders)
-    - [Statistics](#statistics)
-  - [Database](#database)
-    - [Connecting to mySQL](#connecting-to-mysql)
-  - [Front-end](#front-end)
-    - [Considerations](#considerations-1)
-    - [Mix](#mix)
-    - [Watching and compiling assets](#watching-and-compiling-assets)
-    - [CSS](#css)
-    - [JS and Vue](#js-and-vue)
-    - [Localization (i18n)](#localization-i18n)
-      - [Application](#application)
-        - [Laravel](#laravel)
-        - [VueJS](#vuejs)
-
-<!-- /TOC -->
+- [Considerations](#considerations)
+- [Design rules](#design-rules)
+- [Install Monica locally](#install-monica-locally)
+  - [Homestead (macOS, Linux, Windows)](#homestead-macos-linux-windows)
+  - [Valet (macOS)](#valet-macos)
+  - [Instructions](#instructions)
+- [Testing environment](#testing-environment)
+  - [Setup](#setup)
+  - [Run the test suite](#run-the-test-suite)
+  - [Run browser tests](#run-browser-tests)
+  - [Mocking HTTP calls](#mocking-http-calls)
+- [Coding guidelines](#coding-guidelines)
+  - [Feature branch](#feature-branch)
+  - [Conventional commits](#conventional-commits)
+- [Backend](#backend)
+  - [Things to consider when adding new code](#things-to-consider-when-adding-new-code)
+    - [Add a new table to the database schema](#add-a-new-table-to-the-database-schema)
+    - [Manipulating data during a migration](#manipulating-data-during-a-migration)
+  - [Email testing](#email-testing)
+  - [Email reminders](#email-reminders)
+  - [Statistics](#statistics)
+- [Database](#database)
+  - [Connecting to mySQL](#connecting-to-mysql)
+- [Front-end](#front-end)
+  - [Considerations](#considerations-1)
+  - [Mix](#mix)
+  - [Watching and compiling assets](#watching-and-compiling-assets)
+  - [CSS](#css)
+  - [JS and Vue](#js-and-vue)
+  - [Localization (i18n)](#localization-i18n)
+    - [Application](#application)
+      - [Laravel](#laravel)
+      - [VueJS](#vuejs)
 
 Are you interested in giving a hand? We can't be more excited about it. Thanks in advance!
 
@@ -148,7 +143,7 @@ To run the test suite:
 Browsers tests simulate user interactions in a live browser.
 
 * To run browser tests, first you need to install chrome
-```
+```sh
 curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add
 echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
 sudo apt -y update
@@ -343,7 +338,7 @@ For everything that is in VueJS though, things are a bit different. We have to u
 You can use these replacements instead of the regular (php) definition:
 * `trans('file.string')` is writen `$t('file.string')`.
 * `trans('file.string', ['param' => $value])` is writen `$t('file.string', {param: value})`.
-* `trans_choice('file.string', $count)` is writen `$tc('file.string', count)`.
+* `trans_choice('file.string', $count)` is writen `$tc('file.string', count)` or `$tc('file.string', count, {param: value})`.
 
 Important note: every time a string changes in a translation file, you need to regenerate all the strings so they can be made available in JS. To do this,
 * use `php artisan lang:generate`
