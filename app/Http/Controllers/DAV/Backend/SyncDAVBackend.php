@@ -17,7 +17,7 @@ trait SyncDAVBackend
      * @param string|null $collectionId
      * @return SyncToken|null
      */
-    protected function getCurrentSyncToken($collectionId, $refresh)
+    protected function getCurrentSyncToken($collectionId)
     {
         $tokens = SyncToken::where([
             'account_id' => Auth::user()->account_id,
@@ -32,7 +32,7 @@ trait SyncDAVBackend
         } else {
             $token = $tokens->last();
 
-            if ($refresh && $token->timestamp < $this->getLastModified($collectionId)) {
+            if ($token->timestamp < $this->getLastModified($collectionId)) {
                 $token = $this->createSyncToken($collectionId);
             }
         }
@@ -188,7 +188,7 @@ trait SyncDAVBackend
                    $obj->created_at >= $timestamp;
         });
 
-        $currentSyncToken = $this->getCurrentSyncToken($collectionId, true);
+        $currentSyncToken = $this->getCurrentSyncToken($collectionId);
 
         return [
             'syncToken' => $currentSyncToken->id,
