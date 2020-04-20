@@ -168,7 +168,7 @@ class CardDAVTest extends ApiTestCase
             "<d:href>/dav/addressbooks/{$user->email}/contacts/</d:href>".
             '<d:propstat>'.
                 '<d:prop>'.
-                    "<cs:getctag>$token->id</cs:getctag>".
+                    "<cs:getctag>http://sabre.io/ns/sync/{$token->id}</cs:getctag>".
                     "<d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>".
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
@@ -287,7 +287,7 @@ class CardDAVTest extends ApiTestCase
             "<d:href>/dav/addressbooks/{$user->email}/contacts/</d:href>".
             '<d:propstat>'.
                 '<d:prop>'.
-                    "<cs:getctag>$token->id</cs:getctag>".
+                    "<cs:getctag>http://sabre.io/ns/sync/{$token->id}</cs:getctag>".
                     "<d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>".
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
