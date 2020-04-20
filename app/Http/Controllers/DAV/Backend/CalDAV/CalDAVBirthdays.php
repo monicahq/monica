@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\DAV\Backend\CalDAV;
 
-use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Log;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;

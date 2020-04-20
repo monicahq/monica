@@ -17,7 +17,7 @@ trait SyncDAVBackend
      * @param string|null $collectionId
      * @return SyncToken|null
      */
-    protected function getCurrentSyncToken($collectionId)
+    protected function getCurrentSyncToken($collectionId): ?SyncToken
     {
         $tokens = SyncToken::where([
             'account_id' => Auth::user()->account_id,
@@ -27,14 +27,21 @@ trait SyncDAVBackend
             ->orderBy('created_at')
             ->get();
 
-        if ($tokens->count() <= 0) {
-            $token = $this->createSyncToken($collectionId);
-        } else {
-            $token = $tokens->last();
+        return $tokens->count() > 0 ? $tokens->last() : null;
+    }
 
-            if ($token->timestamp < $this->getLastModified($collectionId)) {
-                $token = $this->createSyncToken($collectionId);
-            }
+    /**
+     * Create or refresh the token if a change happened.
+     *
+     * @param string|null $collectionId
+     * @return SyncToken
+     */
+    public function refreshSyncToken($collectionId): SyncToken
+    {
+        $token = $this->getCurrentSyncToken($collectionId);
+
+        if (! $token || $token->timestamp < $this->getLastModified($collectionId)) {
+            $token = $this->createSyncTokenNow($collectionId);
         }
 
         return $token;
@@ -54,26 +61,6 @@ trait SyncDAVBackend
             'name' => $collectionId ?? $this->backendUri(),
         ])
             ->find($syncToken);
-    }
-
-    /**
-     * Create a token.
-     *
-     * @param string|null $collectionId
-     * @return SyncToken|null
-     */
-    private function createSyncToken($collectionId)
-    {
-        $max = $this->getLastModified($collectionId);
-
-        return $max ?
-            SyncToken::create([
-                'account_id' => Auth::user()->account_id,
-                'user_id' => Auth::user()->id,
-                'name' => $collectionId ?? $this->backendUri(),
-                'timestamp' => $max,
-            ])
-            : null;
     }
 
     /**
@@ -171,9 +158,6 @@ trait SyncDAVBackend
             }
 
             $timestamp = $token->timestamp;
-        } else {
-            $token = $this->createSyncTokenNow($collectionId);
-            $timestamp = null;
         }
 
         $objs = $this->getObjects($collectionId);
@@ -188,20 +172,14 @@ trait SyncDAVBackend
                    $obj->created_at >= $timestamp;
         });
 
-        $currentSyncToken = $this->getCurrentSyncToken($collectionId);
-
         return [
-            'syncToken' => $currentSyncToken->id,
+            'syncToken' => $this->refreshSyncToken($collectionId)->id,
             'added' => $added->map(function ($obj) {
                 return $this->encodeUri($obj);
-            })
-                ->values()
-                ->toArray(),
+            })->values()->toArray(),
             'modified' => $modified->map(function ($obj) {
                 return $this->encodeUri($obj);
-            })
-                ->values()
-                ->toArray(),
+            })->values()->toArray(),
             'deleted' => [],
         ];
     }

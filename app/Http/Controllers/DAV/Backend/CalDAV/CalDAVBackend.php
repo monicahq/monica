@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\DAV\Backend\CalDAV;
 
 use Sabre\DAV;
-use App\Models\User\SyncToken;
 use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Backend\AbstractBackend;
 
