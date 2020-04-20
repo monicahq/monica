@@ -88,13 +88,13 @@ class AddressBook extends BaseAddressBook
      *
      * @return string|null
      */
-    public function getSyncToken()
+    public function getSyncToken(): ?string
     {
         $carddavBackend = $this->carddavBackend;
         if ($carddavBackend instanceof CardDAVBackend) {
             return (string) $carddavBackend->refreshSyncToken()->id;
         }
 
-        return;
+        return null;
     }
 }
