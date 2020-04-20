@@ -144,7 +144,7 @@ return [
     'information_edit_title' => 'Edit :name’s personal information',
     'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_max_size2' => 'Max {size} Kb.',
-    'information_edit_firstname' => 'First name',
+    'information_edit_firstname' => '名',
     'information_edit_lastname' => 'Last name (Optional)',
     'information_edit_description' => 'Description (Optional)',
     'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
@@ -163,10 +163,10 @@ return [
     'work_information' => '仕事',
 
     // food preferences
-    'food_preferences_add_success' => 'Food preferences have been saved',
+    'food_preferences_add_success' => '「食べ物の好み」は保存されました。',
     'food_preferences_edit_description' => 'Perhaps :firstname or someone in the :family’s family has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferences_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
-    'food_preferences_edit_title' => 'Indicate food preferences',
+    'food_preferences_edit_title' => '「食べ物の好み」を記述する',
     'food_preferences_edit_cta' => '「食べ物の好み」を保存する',
     'food_preferences_title' => '食べ物の好み',
     'food_preferences_cta' => '「食べ物の好み」を追加する',
