@@ -34,7 +34,7 @@ return [
     'export_sql_cta' => 'Export to SQL',
     'export_sql_link_instructions' => 'Note: <a href=":url">read the instructions</a> to learn more about importing this file to your instance.',
 
-    'firstname' => 'First name',
+    'firstname' => '名',
     'lastname' => '姓',
     'name_order' => '姓と名の並び',
     'name_order_firstname_lastname' => '<First name> <Last name> - John Doe',
@@ -46,7 +46,7 @@ return [
     'name_order_nickname' => '<Nickname> - Rambo',
     'currency' => '通貨',
     'name' => 'Your name: :name',
-    'email' => 'Email address',
+    'email' => 'メールアドレス',
     'email_placeholder' => 'Enter email',
     'email_help' => 'This is the email used to login, and this is where you’ll receive your reminders.',
     'timezone' => 'Timezone',
