@@ -68,13 +68,31 @@ class AddressBook extends BaseAddressBook
      */
     public function getLastModified(): ?int
     {
-        if ($this->carddavBackend instanceof CardDAVBackend) {
-            $date = $this->carddavBackend->getLastModified();
+        $carddavBackend = $this->carddavBackend;
+        if ($carddavBackend instanceof CardDAVBackend) {
+            $date = $carddavBackend->getLastModified();
             if (! is_null($date)) {
                 return $date->timestamp;
             }
         }
 
         return null;
+    }
+
+    /**
+     * This method returns the current sync-token for this collection.
+     * This can be any string.
+     *
+     * If null is returned from this function, the plugin assumes there's no
+     * sync information available.
+     *
+     * @return string|null
+     */
+    public function getSyncToken()
+    {
+        $carddavBackend = $this->carddavBackend;
+        if ($carddavBackend instanceof CardDAVBackend) {
+            return $carddavBackend->refreshSyncToken()->id;
+        }
     }
 }
