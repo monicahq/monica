@@ -94,6 +94,7 @@ class AddressBook extends BaseAddressBook
         if ($carddavBackend instanceof CardDAVBackend) {
             return (string) $carddavBackend->refreshSyncToken()->id;
         }
-        return null;
+
+        return;
     }
 }
