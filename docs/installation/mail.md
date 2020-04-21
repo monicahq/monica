@@ -23,7 +23,7 @@ The generic way to send emails with Monica is to provide a SMTP server, each one
 
 You need to add few environment variables in your configuration (working in generic installation and Docker):
 ```
-MAIL_DRIVER: smtp
+MAIL_MAILER: smtp
 MAIL_HOST: smtp.service.com # ex: smtp.sendgrid.net
 MAIL_PORT: 587 # is using tls, as you should
 MAIL_USERNAME: my_service_username # ex: apikey
@@ -74,7 +74,7 @@ You now simply need to configure your `.env` file to use the SES SMTP server. Ma
 
 ```
 # Mail credentials used to send emails from the application.
-MAIL_DRIVER=smtp
+MAIL_MAILER=smtp
 MAIL_HOST=email-smtp.us-east-1.amazonaws.com
 MAIL_PORT=25
 MAIL_USERNAME=<Step 1>
