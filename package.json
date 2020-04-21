@@ -57,7 +57,7 @@
     "laravel-mix-purgecss": "^4.2.0",
     "list.js": "^1.5.0",
     "lodash": "^4.17.14",
-    "marked": "^0.8.2",
+    "marked": "^1.0.0",
     "moment": "^2.22.1",
     "moment-timezone": "^0.5.28",
     "popper.js": "^1.16.1",
