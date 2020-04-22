@@ -386,10 +386,10 @@ return [
     'contact_address_form_street' => 'Street (optional)',
     'contact_address_form_city' => 'City (optional)',
     'contact_address_form_province' => 'Province (optional)',
-    'contact_address_form_postal_code' => 'Postal code (optional)',
-    'contact_address_form_country' => 'Country (optional)',
-    'contact_address_form_latitude' => 'Latitude (numbers only) (optional)',
-    'contact_address_form_longitude' => 'Longitude (numbers only) (optional)',
+    'contact_address_form_postal_code' => '郵便番号（任意）',
+    'contact_address_form_country' => '国名（任意）',
+    'contact_address_form_latitude' => '緯度（数字のみ、任意）',
+    'contact_address_form_longitude' => '経度（数字のみ、任意）',
 
     // Pets
     'pets_kind' => 'Kind of pet',
@@ -482,9 +482,9 @@ return [
 
     // Photos
     'photo_title' => '写真',
-    'photo_list_title' => 'Related photos',
+    'photo_list_title' => '関連する写真',
     'photo_list_cta' => '写真をアップロード',
-    'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
+    'photo_list_blank_desc' => 'この連絡先ページに写真を保存することができます。',
     'photo_upload_zone_cta' => '写真をアップロード',
     'photo_current_profile_pic' => 'Current profile picture',
     'photo_make_profile_pic' => 'Make profile picture',
