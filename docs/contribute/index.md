@@ -240,7 +240,7 @@ For development purposes, you have two choices to test emails:
 Note: if you want to use mailhog, you need the following settings in your `.env` file:
 
 ```
-MAIL_DRIVER=smtp
+MAIL_MAILER=smtp
 MAIL_HOST=0.0.0.0
 MAIL_PORT=1025
 MAIL_USERNAME=
