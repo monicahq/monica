@@ -8515,15 +8515,17 @@ snyk-mvn-plugin@2.10.0:
     tmp "^0.1.0"
     tslib "1.11.0"
 
-snyk-nodejs-lockfile-parser@1.18.0:
-  version "1.18.0"
-  resolved "https://registry.yarnpkg.com/snyk-nodejs-lockfile-parser/-/snyk-nodejs-lockfile-parser-1.18.0.tgz#be049a89514795dacb0b7058668b74253f58f663"
-  integrity sha512-QGb6HBtnqefbVtrDyUqA3vXGo2DZJAlDxrsgIpKxFalhxmxmWQE3Fxx44V3aRq9H8iZ1eXb7s/drTsa/s9qGJQ==
+snyk-nodejs-lockfile-parser@1.21.0:
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/snyk-nodejs-lockfile-parser/-/snyk-nodejs-lockfile-parser-1.21.0.tgz#231b360726dbcb0246050a1c912c597abbf9debd"
+  integrity sha512-U9uCMqA8+72KHD4/ONaAIvmb27C3J927Jtirda8dOkoxpS7Wy6ubsz4kl+rNkeJXfkLV1H7E8n52pzPH2bjXZA==
   dependencies:
     "@yarnpkg/lockfile" "^1.0.2"
+    event-loop-spinner "^1.1.0"
     graphlib "^2.1.5"
     lodash "^4.17.14"
     p-map "2.1.0"
+    snyk-config "^3.0.0"
     source-map-support "^0.5.7"
     tslib "^1.9.3"
     uuid "^3.3.2"
@@ -8639,10 +8641,10 @@ snyk-try-require@1.3.1, snyk-try-require@^1.1.1, snyk-try-require@^1.3.1:
     lru-cache "^4.0.0"
     then-fs "^2.0.0"
 
-snyk@^1.309.0:
-  version "1.309.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.309.0.tgz#ad8f71212290b732a93ac1b11ad81efc4964c8cc"
-  integrity sha512-NVizsLhGNhgjI+wCy1TajQoko+GVjop3r10BxX12KKxj3bUE9cDhqzkXmngHzuyFhTfdhED6yOzdg+jDvm1VpA==
+snyk@^1.310.0:
+  version "1.310.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.310.0.tgz#bebde01d57d4184528d47a1ca48f95237205125e"
+  integrity sha512-I6bO5zgkrmJEKcyGaPhCJu+S5h8Njrdvgjk+HOTWQAJBjMPgfMfrpmyG8bzCexYm1cOHOoGq9oCuY/cTPBCqxA==
   dependencies:
     "@snyk/cli-interface" "^2.4.0"
     "@snyk/configstore" "^3.2.0-rc1"
@@ -8675,7 +8677,7 @@ snyk@^1.309.0:
     snyk-gradle-plugin "3.2.5"
     snyk-module "1.9.1"
     snyk-mvn-plugin "2.10.0"
-    snyk-nodejs-lockfile-parser "1.18.0"
+    snyk-nodejs-lockfile-parser "1.21.0"
     snyk-nuget-plugin "1.16.0"
     snyk-php-plugin "1.7.0"
     snyk-policy "1.13.5"
