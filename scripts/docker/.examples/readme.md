@@ -57,7 +57,7 @@ Don't forget to set:
 - `LETSENCRYPT_EMAIL` with a valid email
 - `APP_URL` in your `.env` file with the right domain url
 
-You may want to set `APP_ENV=production` to force the use of `https` mode.
+You may want to set `APP_ENV=production` to force the use of `https` scheme.
 
 This example add a `redis` container, that can be used too, adding these variables to your `.env` file:
 - `REDIS_HOST=redis`: mandatory
