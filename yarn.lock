@@ -833,10 +833,10 @@
     temp-dir "^2.0.0"
     tslib "^1.9.3"
 
-"@snyk/ruby-semver@^2.0.4":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@snyk/ruby-semver/-/ruby-semver-2.0.4.tgz#457686ea7a4d60b10efddde99587efb3a53ba884"
-  integrity sha512-ceMD4CBS3qtAg+O0BUvkKdsheUNCqi+/+Rju243Ul8PsUgZnXmGiqfk/2z7DCprRQnxUTra4+IyeDQT7wAheCQ==
+"@snyk/ruby-semver@2.1.2", "@snyk/ruby-semver@^2.0.4":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@snyk/ruby-semver/-/ruby-semver-2.1.2.tgz#5c85a388d927a86c6ea3022b02ba77c4cac1098b"
+  integrity sha512-hYiNnwzNJ5DYM9JydeK3d2rd0lupgB/r5Nh154uazsV6EJn+lcba49X8+pdMMQIBhGQNvLtWLqYpeGfG07WcGQ==
   dependencies:
     lodash "^4.17.14"
 
@@ -8641,15 +8641,16 @@ snyk-try-require@1.3.1, snyk-try-require@^1.1.1, snyk-try-require@^1.3.1:
     lru-cache "^4.0.0"
     then-fs "^2.0.0"
 
-snyk@^1.310.0:
-  version "1.310.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.310.0.tgz#bebde01d57d4184528d47a1ca48f95237205125e"
-  integrity sha512-I6bO5zgkrmJEKcyGaPhCJu+S5h8Njrdvgjk+HOTWQAJBjMPgfMfrpmyG8bzCexYm1cOHOoGq9oCuY/cTPBCqxA==
+snyk@^1.311.0:
+  version "1.311.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.311.0.tgz#644f2d12b95bf628a6e02e9a702354bb92af2c62"
+  integrity sha512-eH+JFzgCU4qqmEeY9CXJq+XUtlOAVuXv0XtzRnIhWloBX9HaXDALsIjGyR87UPj0PpARrwkXd0uIwsSYM9x2mg==
   dependencies:
     "@snyk/cli-interface" "^2.4.0"
     "@snyk/configstore" "^3.2.0-rc1"
     "@snyk/dep-graph" "1.16.1"
     "@snyk/gemfile" "1.2.0"
+    "@snyk/ruby-semver" "2.1.2"
     "@snyk/snyk-cocoapods-plugin" "2.1.1"
     "@snyk/update-notifier" "^2.5.1-rc2"
     "@types/agent-base" "^4.2.0"
