@@ -211,7 +211,16 @@ class ImportVCard extends BaseService
             ];
         }
 
+        if ($contact) {
+            $timestamps = $contact->timestamps;
+            $contact->timestamps = false;
+        }
+
         $contact = $this->importEntry($contact, $entry);
+
+        if (isset($timestamps)) {
+            $contact->timestamps = $timestamps;
+        }
 
         return [
             'contact_id' => $contact->id,
