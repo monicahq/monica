@@ -29,6 +29,7 @@ class DashboardController extends Controller
             ->first();
 
         $numberOfContacts = $account->addressBookContacts()
+            ->real()
             ->active()
             ->count();
 
@@ -39,6 +40,7 @@ class DashboardController extends Controller
         // Fetch last updated contacts
         $lastUpdatedContactsCollection = collect([]);
         $lastUpdatedContacts = $account->addressBookContacts()
+            ->real()
             ->active()
             ->alive()
             ->latest('last_consulted_at')

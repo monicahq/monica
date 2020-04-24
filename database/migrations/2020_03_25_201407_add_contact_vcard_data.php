@@ -14,7 +14,7 @@ class AddContactVcardData extends Migration
     public function up()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->string('vcard', 65536)->after('gravatar_url')->nullable();
+            $table->mediumText('vcard')->after('gravatar_url')->nullable();
         });
     }
 

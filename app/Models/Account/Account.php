@@ -104,7 +104,7 @@ class Account extends Model
      */
     public function addressBookContacts(string $addressBookName = null)
     {
-        $contacts = $this->contacts()->real();
+        $contacts = $this->contacts();
 
         return $addressBookName
             ? $contacts->addressBook($this->id, $addressBookName)

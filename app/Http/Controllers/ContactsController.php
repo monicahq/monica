@@ -78,7 +78,7 @@ class ContactsController extends Controller
             ]);
         }
 
-        $contacts = $user->account->addressBookContacts();
+        $contacts = $user->account->addressBookContacts()->real();
         if ($active) {
             $archived = (clone $contacts)->notActive();
             $contacts = (clone $contacts)->active();
@@ -674,7 +674,7 @@ class ContactsController extends Controller
         $url = '';
         $count = 1;
 
-        $addressBook = $user->account->addressBookContacts();
+        $addressBook = $user->account->addressBookContacts()->real();
 
         // filter out archived contacts if necessary
         if ($request->input('show_archived') != 'true') {

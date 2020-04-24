@@ -178,9 +178,15 @@ class Contact extends Model
      *
      * @return HasMany|null
      */
-    public function addressBookContacts()
+    public function similarContactsInAddressBook()
     {
-        return $this->account ? $this->account->addressBookContacts($this->addressBook ? $this->addressBook->name : null) : null;
+        if ($this->account) {
+            if ($this->addressBook) {
+                return $this->account->addressBookContacts($this->addressBook->name);
+            }
+
+            return $this->account->addressBookContacts();
+        }
     }
 
     /**

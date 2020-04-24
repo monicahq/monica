@@ -439,12 +439,13 @@ class ImportVCard extends BaseService
                 'contact_field_type_id' => $this->getContactFieldTypeId(ContactFieldType::EMAIL),
             ])->whereIn('data', iterator_to_array($entry->EMAIL))->first();
 
-            if ($contactField &&
-                    (
-                    $this->addressBook && $contactField->contact->address_book_id == $this->addressBook->id
-                    || ! $this->addressBook
-                    )
-                ) {
+            // filter contact field
+            //  - if no address book selected
+            //  - if the address book match the contact's contact field address book
+            if ($contactField && (
+                    ! $this->addressBook
+                    || $contactField->contact->address_book_id === $this->addressBook->id
+                )) {
                 return $contactField->contact;
             }
         }
