@@ -1,10 +1,8 @@
 <?php
 
-use App\Models\Settings\Currency;
 use App\Models\User\User;
+use App\Models\Settings\Currency;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 class RemoveDuplicateCurrency extends Migration
 {
