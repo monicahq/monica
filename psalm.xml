@@ -133,6 +133,7 @@
         <UndefinedMagicMethod>
             <errorLevel type="suppress">
                 <file name="app/Traits/Searchable.php" />
+                <file name="app/Http/Controllers/Api/ApiContactController.php" />
             </errorLevel>
         </UndefinedMagicMethod>
 

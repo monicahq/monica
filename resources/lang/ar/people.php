@@ -52,6 +52,7 @@ return [
     'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'هل أنت متأكد من أنك تريد حذف جهة الاتصال هذه؟ الحذف دائم.',
     'people_add_birthday_reminder' => 'تمنى :name عيد ميلاد سعيد',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
     'people_add_import' => 'هل تريد <a href=":url">استيراد جهات الاتصال الخاصة بك</a>؟',
     'people_edit_email_error' => 'يوجد جهة اتصال في حسابك بنفس عنوان البريد الالكتروني. الرجاء اختيار عنوان آخر.',
     'people_export' => 'تصدير ك vCard',

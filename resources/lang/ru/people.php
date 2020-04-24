@@ -52,6 +52,7 @@ return [
     'people_delete_message' => 'Удалить контакт',
     'people_delete_confirmation' => 'Вы уверены что хотите удалить этот контакт? Восстановление невозможно.',
     'people_add_birthday_reminder' => 'Поздравить :name с днём рождения',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
     'people_add_import' => 'Вы хотите <a href=":url">импортировать ваши контакты</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
     'people_export' => 'Экспортировать как vCard',

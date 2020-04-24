@@ -1,8 +1,18 @@
-# Installing Monica on Ubuntu
+# Installing Monica on Ubuntu <!-- omit in toc -->
 
 <img alt="Ubuntu" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Logo-ubuntu_cof-orange-hex.svg/120px-Logo-ubuntu_cof-orange-hex.svg.png" width="120" height="120" />
 
 Monica can run on [Ubuntu 18.04 (Bionic Beaver)](http://releases.ubuntu.com/18.04/).
+
+- [Prerequisites](#prerequisites)
+  - [Types of databases](#types-of-databases)
+- [Installation steps](#installation-steps)
+  - [1. Clone the repository](#1-clone-the-repository)
+  - [2. Setup the database](#2-setup-the-database)
+  - [3. Configure Monica](#3-configure-monica)
+  - [4. Configure cron job](#4-configure-cron-job)
+  - [5. Configure Apache webserver](#5-configure-apache-webserver)
+  - [Final step](#final-step)
 
 ## Prerequisites
 
@@ -10,7 +20,7 @@ Monica depends on the following:
 
 * [Apache httpd webserver](https://httpd.apache.org/) 
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-* PHP 7.3+
+* PHP 7.2+
 * [Composer](https://getcomposer.org/)
 * [MySQL](https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/)
 

@@ -19,6 +19,6 @@ return [
     'user' => 'Ссылка на сброс пароля была отправлена.',
     'changed' => 'Password changed successfully.',
     'invalid' => 'Current password you entered is not correct.',
-    'throttled' => 'Please wait before retrying.',
+    'throttled' => 'Пожалуйста, подождите перед повторной попыткой.',
 
 ];

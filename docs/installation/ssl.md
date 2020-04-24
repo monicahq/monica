@@ -1,4 +1,8 @@
-# Using monica with HTTPS
+# Using monica with HTTPS <!-- omit in toc -->
+
+- [Local Installation](#local-installation)
+- [With a proxy](#with-a-proxy)
+  - [Example: Docker Compose](#example-docker-compose)
 
 When Monica is run with `APP_ENV=production`, it is required that Monica is running
 with HTTPS. In order to satisfy this requirement, some additional configuration
@@ -53,19 +57,30 @@ events { worker_connections 1024; }
 
 http {
   server {
-    listen 443 ssl;
+    listen [::]:443;
+    listen 443;
     server_name monica.example.com;
+    ssl on;
     ssl_certificate /https-cert.pem;
     ssl_certificate_key /https-key.pem;
     ssl_protocols TLSv1.2;
 
     location / {
-        proxy_pass http://monica:80;
-        proxy_set_header Host monica.example.com;
+        proxy_pass http://localhost:3001;
+        proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
+  }
+  server {
+    if ($host = monica.example.com) {
+        return 301 https://$host$request_uri;
+    }
+	listen 80 ;
+	listen [::]:80;
+    server_name monica.example.com;
+    return 404;
   }
 }
 ```
@@ -106,27 +121,25 @@ Or an apache.conf file similar to:
 And a `docker-compose.yml` like:
 
 ``` yaml
-version: '3'
+version: '3.4'
 services:
   monica:
-    container_name: monica
+    image: monicahq/monicahq
     expose:
-      - 80
+      - 3001:80
     volumes:
       - '/var/monica-storage:/var/www/monica/storage'
-    image: monicahq/monicahq
     env_file: /etc/monica/monica.env
     restart: unless-stopped
 
   nginx:
-    container_name: nginx
+    image: nginx:alpine
     volumes:
       - '/etc/monica/nginx.conf:/etc/nginx/nginx.conf:ro'
       - '/etc/monica/https-cert.pem:/https-cert.pem:ro'
       - '/etc/monica/https-key.pem:/https-key.pem:ro'
     ports:
-      - '443:443'
-    image: nginx:latest
+      - 443:443
     depends_on:
       - monica
     restart: unless-stopped
