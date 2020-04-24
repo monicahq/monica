@@ -568,7 +568,7 @@ class Contact extends Model
     }
 
     /**
-     * Scope a query to only include contacts from designated address book.
+     * Scope a query to only include contacts from given address book.
      * 'null' value for address book is the default address book.
      *
      * @param Builder $query
