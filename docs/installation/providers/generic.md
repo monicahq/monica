@@ -1,49 +1,49 @@
 # Installing Monica (Generic) <!-- omit in toc -->
 
-- [Prerequisites](#prerequisites)
-  - [Types of databases](#types-of-databases)
-- [Installation steps](#installation-steps)
-  - [1. Clone the repository](#1-clone-the-repository)
-  - [2. Setup the database](#2-setup-the-database)
-  - [3. Configure Monica](#3-configure-monica)
-  - [4. Configure cron job](#4-configure-cron-job)
-  - [5. Configure Apache webserver](#5-configure-apache-webserver)
-  - [6. Optional: Setup the queues with Redis, Beanstalk or Amazon SQS](#6-optional-setup-the-queues-with-redis-beanstalk-or-amazon-sqs)
-  - [7. Optional: Setup the access tokens to use the API](#7-optional-setup-the-access-tokens-to-use-the-api)
-    - [Generate the encryption keys](#generate-the-encryption-keys)
-    - [Optional: Save the encryption keys as variable](#optional-save-the-encryption-keys-as-variable)
-    - [Optional: Generate a Password grant client](#optional-generate-a-password-grant-client)
-  - [Final step](#final-step)
+-   [Prerequisites](#prerequisites)
+    -   [Types of databases](#types-of-databases)
+-   [Installation steps](#installation-steps)
+    -   [1. Clone the repository](#1-clone-the-repository)
+    -   [2. Setup the database](#2-setup-the-database)
+    -   [3. Configure Monica](#3-configure-monica)
+    -   [4. Configure cron job](#4-configure-cron-job)
+    -   [5. Configure Apache webserver](#5-configure-apache-webserver)
+    -   [6. Optional: Setup the queues with Redis, Beanstalk or Amazon SQS](#6-optional-setup-the-queues-with-redis-beanstalk-or-amazon-sqs)
+    -   [7. Optional: Setup the access tokens to use the API](#7-optional-setup-the-access-tokens-to-use-the-api)
+        -   [Generate the encryption keys](#generate-the-encryption-keys)
+        -   [Optional: Save the encryption keys as variable](#optional-save-the-encryption-keys-as-variable)
+        -   [Optional: Generate a Password grant client](#optional-generate-a-password-grant-client)
+    -   [Final step](#final-step)
 
 ## Prerequisites
 
 If you don't want to use Docker, the best way to setup the project is to use the same configuration that [Homestead](https://laravel.com/docs/homestead) uses. Basically, Monica depends on the following:
 
-* [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-* PHP 7.2+
-* [Composer](https://getcomposer.org/)
-* [MySQL](https://www.mysql.com/)
-* Optional: Redis or Beanstalk
+-   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+-   PHP 7.2+
+-   [Composer](https://getcomposer.org/)
+-   [MySQL](https://www.mysql.com/)
+-   Optional: Redis or Beanstalk
 
 **Git:** Git should come pre-installed with your server. If it doesn't - use the installation instructions in the link.
 
 **PHP:** Install php7.2 minimum, with these extensions:
 
-- curl
-- bcmath
-- gd
-- gmp
-- iconv
-- intl
-- json
-- pdo_mysql
-- mbstring
-- mysqli
-- opcache
-- redis
-- sodium
-- xml
-- zip
+-   curl
+-   bcmath
+-   gd
+-   gmp
+-   iconv
+-   intl
+-   json
+-   pdo_mysql
+-   mbstring
+-   mysqli
+-   opcache
+-   redis
+-   sodium
+-   xml
+-   zip
 
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager. It is not enough to just install Composer, you also need to make sure it is installed globally for Monica's installation to run smoothly:
 
@@ -54,7 +54,6 @@ php -r "unlink('composer-setup.php');"
 ```
 
 **Mysql:** Install Mysql 5.7+
-
 
 ### Types of databases
 
@@ -83,30 +82,37 @@ git checkout tags/v2.2.1
 ### 2. Setup the database
 
 Log in with the root account to configure the database.
+
 ```sh
 mysql -u root -p
 ```
 
 Create a database called 'monica'.
+
 ```sql
 CREATE DATABASE monica;
 ```
+
 or if you want to support all character (like emojis):
+
 ```sql
 CREATE DATABASE monica CHARACTER SET utf8 COLLATE utf8_general_ci;
 ```
 
 Create a user called 'monica' and its password 'strongpassword'.
+
 ```sql
 CREATE USER 'monica'@'localhost' IDENTIFIED BY 'strongpassword';
 ```
 
 We have to authorize the new user on the monica db so that he is allowed to change the database.
+
 ```sql
 GRANT ALL ON monica.* TO 'monica'@'localhost';
 ```
 
 And finally we apply the changes and exit the database.
+
 ```sql
 FLUSH PRIVILEGES;
 exit
@@ -118,9 +124,9 @@ exit
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
 2. Update `.env` to your specific needs
-   - set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
-   - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
-   - set the `APP_ENV` variable to `production`, `local` is only used for the development version.
+    - set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
+    - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
+    - set the `APP_ENV` variable to `production`, `local` is only used for the development version. Beware: setting `APP_ENV` to `production` will force HTTPS. Skip this if you're running Monica locally.
 3. Run `composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs` to install all packages.
 4. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 5. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
@@ -135,10 +141,13 @@ Basically those crons are needed to send reminder emails and check if a new vers
 To do this, setup a cron that runs every minute that triggers the following command `php artisan schedule:run`.
 
 1. Open crontab edit for the apache user:
+
 ```sh
 crontab -u www-data -e
 ```
+
 2. Then, in the text editor window you just opened, copy the following:
+
 ```
 * * * * *   /usr/bin/php /var/www/monica/artisan schedule:run
 ```
@@ -153,6 +162,7 @@ chmod -R 775 /var/www/monica/storage
 ```
 
 2. Enable the rewrite module of the Apache webserver:
+
 ```sh
 a2enmod rewrite
 ```
@@ -192,6 +202,7 @@ service apache2 restart
 ```
 
 <a id="setup-queues"></a>
+
 ### 6. Optional: Setup the queues with Redis, Beanstalk or Amazon SQS
 
 Monica can work with a queue mechanism to handle different events, so we don't block the main thread while processing stuff that can be run asynchronously, like sending emails. By default, Monica does not use a queue mechanism but can be setup to do so.
@@ -203,10 +214,11 @@ This is why we suggest to use `QUEUE_CONNECTION=sync` in your .env file. This wi
 That being said, if you still want to make your life more complicated, here is what you can do.
 
 There are several choices for the queue mechanism:
-* Database (this will use the database used by the application to act as a queue)
-* Redis
-* Beanstalk
-* Amazon SQS
+
+-   Database (this will use the database used by the application to act as a queue)
+-   Redis
+-   Beanstalk
+-   Amazon SQS
 
 The simplest queue is the database driver. To set it up, simply change in your `.env` file the following `QUEUE_CONNECTION=sync` by `QUEUE_CONNECTION=database`.
 
@@ -220,13 +232,14 @@ php artisan queue:work --sleep=3 --tries=3
 
 Some process monitor such as [Supervisor](https://laravel.com/docs/master/queues#supervisor-configuration) could be useful to monitor the queue worker.
 
-
 <a id="setup-access-tokens"></a>
+
 ### 7. Optional: Setup the access tokens to use the API
 
 In order to use the Monica API for your instance, you will have to instanciate encryption keys first.
 
 #### Generate the encryption keys
+
 Run this command:
 
 ```sh
@@ -238,50 +251,57 @@ This command will generate encryption keys in the `storage` directory.
 Be sure to backup the `oauth-private.key` and `oauth-public.key` files to maintain futur access.
 
 #### Optional: Save the encryption keys as variable
+
 Instead of keeping the encryption keys as files, you can add them as environment variable. This is very useful for any environment where you cannot deploy these file in each server (heroku, fortrabbit, etc.).
 
-* Output the private key:
+-   Output the private key:
 
 ```sh
 sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' storage/oauth-private.key
 ```
-   Copy the output to an environment variable called `PASSPORT_PRIVATE_KEY` in your `.env` file.
+
+Copy the output to an environment variable called `PASSPORT_PRIVATE_KEY` in your `.env` file.
+
 ```
 PASSPORT_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\nMIIJKAIBAAKCAgEAsC..."
 ```
 
-* Do the same thing with the contents of the public key:
+-   Do the same thing with the contents of the public key:
 
 ```sh
 sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' storage/oauth-public.key
 ```
-   Copy the output to an environment variable called `PASSPORT_PUBLIC_KEY` in your `.env` file.
+
+Copy the output to an environment variable called `PASSPORT_PUBLIC_KEY` in your `.env` file.
+
 ```
 PASSPORT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhki..."
 ```
 
-
 #### Optional: Generate a Password grant client
+
 A [password grant client](https://laravel.com/docs/master/passport#creating-a-password-grant-client) can be generated in order to use the OAuth access (used in the mobile application for instance).
 
-* Run this command to generate a password grant client:
+-   Run this command to generate a password grant client:
+
 ```sh
 php artisan passport:client --password --no-interaction
 ```
 
-* This will display a client ID and secret:
+-   This will display a client ID and secret:
+
 ```
 Password grant client created successfully.
 Client ID: 5
 Client secret: zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq
 ```
 
-* Copy the two values into two new environment variables of your `.env` file:
-   - The value of `Client ID` in a `MOBILE_CLIENT_ID` variable
-   - The value of `Client secret` in a `MOBILE_CLIENT_SECRET` variable
+-   Copy the two values into two new environment variables of your `.env` file:
 
-* OAuth login can be access on `http://localhost/oauth/login`.
+    -   The value of `Client ID` in a `MOBILE_CLIENT_ID` variable
+    -   The value of `Client secret` in a `MOBILE_CLIENT_SECRET` variable
 
+-   OAuth login can be access on `http://localhost/oauth/login`.
 
 ### Final step
 
