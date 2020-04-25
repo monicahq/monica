@@ -7,6 +7,7 @@
 
 ### Enhancements:
 
+* Stores amount as integer-ish values, and fix debts and gifts amount forms
 * Improve autocomplete fields on signup and login forms
 * Add cache for S3 storage, and use new standard variables
 * Remove authentication with login+password for carddav

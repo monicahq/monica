@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Contacts;
 
 use App\Models\Contact\Debt;
 use App\Helpers\AccountHelper;
+use App\Helpers\MoneyHelper;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\DebtRequest;
@@ -48,17 +49,19 @@ class DebtController extends Controller
      */
     public function store(DebtRequest $request, Contact $contact)
     {
-        $contact->debts()->create(
+
+        $debt = Debt::create(
             $request->only([
                 'in_debt',
-                'amount',
                 'reason',
+                'amount',
             ])
             + [
                 'account_id' => $contact->account_id,
                 'status' => 'inprogress',
             ]
         );
+        $contact->debts()->attach($debt);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.debt_add_success'));

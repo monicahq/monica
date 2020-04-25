@@ -7,9 +7,11 @@ use App\Models\Account\Photo;
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingWithContact as Model;
+use App\Models\Settings\Currency;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @property Account $account
@@ -19,7 +21,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $comment
  * @property string $url
  * @property Contact $is_for
- * @property int $value
  * @method static Builder offered()
  * @method static Builder isIdea()
  */
@@ -90,6 +91,16 @@ class Gift extends Model
     }
 
     /**
+     * Get the currency record associated with the debt.
+     *
+     * @return BelongsTo
+     */
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
+
+    /**
      * Limit results to already offered gifts.
      *
      * @param Builder $query
@@ -152,12 +163,50 @@ class Gift extends Model
     }
 
     /**
-     * Get amount with currency.
+     * Set exchange value.
+     *
+     * @return string
+     */
+    public function setAmountAttribute($value)
+    {
+        $currency = $this->currency()->first();
+        if (! $currency) {
+            $currency = Auth::user()->currency;
+        }
+        $this->attributes['amount'] =  MoneyHelper::formatInput($value, $currency);
+    }
+
+    /**
+     * Get value of amount (without currency).
      *
      * @return string
      */
     public function getAmountAttribute(): string
     {
-        return $this->value ? MoneyHelper::format($this->value) : '';
+        if (! $this->attributes['amount']) {
+            return '';
+        }
+        $currency = $this->currency()->first();
+        if (! $currency) {
+            $currency = Auth::user()->currency;
+        }
+        return MoneyHelper::exchangeValue($this->attributes['amount'], $currency);
+    }
+
+    /**
+     * Get display value: amount with currency.
+     *
+     * @return string
+     */
+    public function getDisplayValueAttribute(): string
+    {
+        if (! $this->attributes['amount']) {
+            return '';
+        }
+        $currency = $this->currency()->first();
+        if (! $currency) {
+            $currency = Auth::user()->currency;
+        }
+        return MoneyHelper::format($this->attributes['amount'], $currency);
     }
 }

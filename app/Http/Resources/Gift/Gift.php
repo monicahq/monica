@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Gift;
 
 use App\Helpers\DateHelper;
+use App\Helpers\MoneyHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Photo\Photo as PhotoResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
@@ -26,8 +27,8 @@ class Gift extends JsonResource
             'name' => $this->name,
             'comment' => $this->comment,
             'url' => $this->url,
-            'amount' => $this->value,
-            'amount_with_currency' => $this->amount,
+            'amount' => $this->amount,
+            'amount_with_currency' => $this->displayValue,
             'status' => $this->status,
             'date' => DateHelper::getDate($this->date),
             'recipient' => new ContactShortResource($this->recipient),

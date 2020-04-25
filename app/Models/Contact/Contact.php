@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use IlluminateAgnostic\Arr\Support\Arr;
 
 /**
  * @property \App\Models\Instance\SpecialDate $birthdate
@@ -1038,6 +1039,7 @@ class Contact extends Model
 
     /**
      * Is this contact owed money?
+     *
      * @return bool
      */
     public function isOwedMoney()
@@ -1050,14 +1052,18 @@ class Contact extends Model
      *
      * @return int
      */
-    public function totalOutstandingDebtAmount()
+    public function totalOutstandingDebtAmount(): int
     {
         return $this
             ->debts()
-            ->where('status', '=', 'inprogress')
+            ->inProgress()
             ->getResults()
+            ->filter(function ($d) {
+                return Arr::has( $d->attributes, 'amount');
+            })
             ->sum(function ($d) {
-                return $d->in_debt === 'yes' ? -$d->amount : $d->amount;
+                $amount = $d->attributes['amount'];
+                return $d->in_debt === 'yes' ? -$amount : $amount;
             });
     }
 

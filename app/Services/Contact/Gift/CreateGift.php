@@ -5,6 +5,7 @@ namespace App\Services\Contact\Gift;
 use App\Models\Contact\Gift;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class CreateGift extends BaseService
@@ -61,7 +62,8 @@ class CreateGift extends BaseService
             'status' => $data['status'],
             'comment' => $this->nullOrvalue($data, 'comment'),
             'url' => $this->nullOrvalue($data, 'url'),
-            'value' => $this->nullOrvalue($data, 'amount'),
+            'amount' => $this->nullOrvalue($data, 'amount'),
+            'currency_id' => Auth::user()->currency()->first()->id,
             'date' => $this->nullOrvalue($data, 'date'),
             'recipient' => $this->nullOrvalue($data, 'recipient_id'),
         ];
