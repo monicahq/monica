@@ -9724,9 +9724,9 @@ vue-hot-reload-api@^2.3.0:
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
 
 vue-i18n@^8.17:
-  version "8.17.2"
-  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.17.2.tgz#9ad15f5506ff012f6f770ec0474dcb714d96cd2d"
-  integrity sha512-YIW0aXW/dzxI0rk9qYttvISv+Tt+w5WVjengswTLK0mKhwIfrAyMssbawohIn9tsmoxcHcA0G20bU7e/t2JATA==
+  version "8.17.3"
+  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.17.3.tgz#f366082d5784c3c35e8ffda733cb3f3990a3900d"
+  integrity sha512-sWjGOL7dXo6rYcPQmlY8FN/beLxq2aCnTZMSxfW0yW78rRGpqWrqXJURH56kvMYCnyNCepBjGWEEW0rbFiig5Q==
 
 vue-js-toggle-button@^1.2.2:
   version "1.3.3"
