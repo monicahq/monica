@@ -36,16 +36,16 @@ return [
     'upgrade' => 'アップグレードしてロックを解除する',
     'percent_uploaded' => '{percent}% アップロード',
     'retry' => '再試行',
-    'filter' => 'Filter the list',
+    'filter' => 'リストをフィルタ',
     'go_back' => '戻る',
     'file_selected' => '1 file selected...|{count} files selected...',
 
     'application_title' => 'Monica – personal relationship manager',
-    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
+    'application_description' => 'Monica（モニカ）はあなたの交流・家族・友人の情報を記録するツールです。',
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
-    'markdown_link' => 'Read documentation',
+    'markdown_link' => 'ドキュメントを読む',
 
     'header_settings_link' => '設定',
     'header_logout_link' => 'ログアウト',
@@ -62,12 +62,12 @@ return [
     'footer_send_email' => '開発者にメールを送信',
     'footer_privacy' => 'プライバシーポリシー',
     'footer_release' => '更新情報',
-    'footer_newsletter' => 'Newsletter',
+    'footer_newsletter' => 'ニュースレター',
     'footer_source_code' => 'Contribute',
     'footer_version' => 'バージョン: :version',
     'footer_new_version' => '新しいバージョンが利用可能です',
 
-    'footer_modal_version_whats_new' => 'What’s new',
+    'footer_modal_version_whats_new' => '新着情報',
     'footer_modal_version_release_away' => 'You are 1 release behind the latest version available. You should update your instance.|You are :number releases behind the latest version available. You should update your instance.',
 
     'breadcrumb_dashboard' => 'ダッシュボード',
@@ -89,7 +89,7 @@ return [
     'breadcrumb_edit_note' => 'Edit a note',
     'breadcrumb_api' => 'API',
     'breadcrumb_dav' => 'DAV Resources',
-    'breadcrumb_edit_introductions' => 'How did you meet',
+    'breadcrumb_edit_introductions' => 'どうやって会いましたか?',
     'breadcrumb_settings_personalization' => 'Personalization',
     'breadcrumb_settings_security' => 'セキュリティ',
     'breadcrumb_settings_security_2fa' => 'Two Factor Authentication',
