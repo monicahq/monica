@@ -64,7 +64,7 @@ return [
     'section_personal_reminders' => 'リマインダー',
     'section_personal_tasks' => 'タスク',
     'section_personal_gifts' => 'ギフト',
-    'section_personal_notes' => 'Notes',
+    'section_personal_notes' => 'ノート',
 
     // archived contacts
     'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
@@ -156,9 +156,9 @@ return [
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => 'at :company',
     'work_add_cta' => '仕事の情報を更新する',
-    'work_edit_success' => 'Work information have been updated with success',
-    'work_edit_title' => 'Update :name’s job information',
-    'work_edit_job' => 'Job title (optional)',
+    'work_edit_success' => '職業の更新が成功しました。',
+    'work_edit_title' => '更新する :name’s の職業',
+    'work_edit_job' => '職業（任意）',
     'work_edit_company' => 'Company (optional)',
     'work_information' => '仕事',
 
