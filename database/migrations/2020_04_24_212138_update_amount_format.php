@@ -3,8 +3,6 @@
 use App\Helpers\MoneyHelper;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gift;
-use Money\Currencies\ISOCurrencies;
-use Money\Currency as MoneyCurrency;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;

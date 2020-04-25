@@ -5,13 +5,13 @@ namespace App\Models\Contact;
 use App\Helpers\MoneyHelper;
 use App\Models\Account\Photo;
 use App\Models\Account\Account;
+use App\Models\Settings\Currency;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingWithContact as Model;
-use App\Models\Settings\Currency;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * @property Account $account
@@ -173,7 +173,7 @@ class Gift extends Model
         if (! $currency) {
             $currency = Auth::user()->currency;
         }
-        $this->attributes['amount'] =  MoneyHelper::formatInput($value, $currency);
+        $this->attributes['amount'] = MoneyHelper::formatInput($value, $currency);
     }
 
     /**
@@ -190,6 +190,7 @@ class Gift extends Model
         if (! $currency) {
             $currency = Auth::user()->currency;
         }
+
         return MoneyHelper::exchangeValue($this->attributes['amount'], $currency);
     }
 
@@ -207,6 +208,7 @@ class Gift extends Model
         if (! $currency) {
             $currency = Auth::user()->currency;
         }
+
         return MoneyHelper::format($this->attributes['amount'], $currency);
     }
 }

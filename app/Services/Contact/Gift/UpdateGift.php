@@ -5,8 +5,8 @@ namespace App\Services\Contact\Gift;
 use App\Models\Contact\Gift;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateGift extends BaseService
 {

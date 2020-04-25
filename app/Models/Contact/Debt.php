@@ -4,11 +4,11 @@ namespace App\Models\Contact;
 
 use App\Helpers\MoneyHelper;
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Builder;
-use App\Models\ModelBindingHasherWithContact as Model;
 use App\Models\Settings\Currency;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\ModelBindingHasherWithContact as Model;
 
 /**
  * @property Account $account
@@ -109,7 +109,7 @@ class Debt extends Model
         if (! $currency) {
             $currency = Auth::user()->currency;
         }
-        $this->attributes['amount'] =  MoneyHelper::formatInput($value, $currency);
+        $this->attributes['amount'] = MoneyHelper::formatInput($value, $currency);
     }
 
     /**
@@ -126,6 +126,7 @@ class Debt extends Model
         if (! $currency) {
             $currency = Auth::user()->currency;
         }
+
         return MoneyHelper::exchangeValue($this->attributes['amount'], $currency);
     }
 
@@ -143,6 +144,7 @@ class Debt extends Model
         if (! $currency) {
             $currency = Auth::user()->currency;
         }
+
         return MoneyHelper::format($this->attributes['amount'], $currency);
     }
 }

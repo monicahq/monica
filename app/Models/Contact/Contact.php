@@ -21,6 +21,7 @@ use Illuminate\Support\Collection;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use IlluminateAgnostic\Arr\Support\Arr;
 use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
@@ -32,7 +33,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use IlluminateAgnostic\Arr\Support\Arr;
 
 /**
  * @property \App\Models\Instance\SpecialDate $birthdate
@@ -1059,10 +1059,11 @@ class Contact extends Model
             ->inProgress()
             ->getResults()
             ->filter(function ($d) {
-                return Arr::has( $d->attributes, 'amount');
+                return Arr::has($d->attributes, 'amount');
             })
             ->sum(function ($d) {
                 $amount = $d->attributes['amount'];
+
                 return $d->in_debt === 'yes' ? -$amount : $amount;
             });
     }

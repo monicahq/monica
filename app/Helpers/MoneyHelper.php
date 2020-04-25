@@ -6,9 +6,7 @@ use Money\Money;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\App;
 use Money\Currencies\ISOCurrencies;
-use Illuminate\Support\Facades\Auth;
 use Money\Currency as MoneyCurrency;
-use Money\Formatter\DecimalMoneyFormatter;
 use Money\Formatter\IntlMoneyFormatter;
 
 class MoneyHelper
@@ -82,7 +80,7 @@ class MoneyHelper
     /**
      * Format a monetary amount in exchange value with currency symbol.
      *
-     * @param double|null $exchange
+     * @param float|null $exchange
      * @param Currency|int|null $currency
      * @return string
      */
@@ -94,7 +92,7 @@ class MoneyHelper
     /**
      * Format a monetary exchange value as storable integer.
      *
-     * @param double|null $exchange
+     * @param float|null $exchange
      * @param Currency|int $currency
      * @return int
      */

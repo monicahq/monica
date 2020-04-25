@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Contacts;
 
 use App\Models\Contact\Debt;
 use App\Helpers\AccountHelper;
-use App\Helpers\MoneyHelper;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\DebtRequest;
@@ -49,7 +48,6 @@ class DebtController extends Controller
      */
     public function store(DebtRequest $request, Contact $contact)
     {
-
         $debt = Debt::create(
             $request->only([
                 'in_debt',

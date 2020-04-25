@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Gift;
 
 use App\Helpers\DateHelper;
-use App\Helpers\MoneyHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Photo\Photo as PhotoResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
