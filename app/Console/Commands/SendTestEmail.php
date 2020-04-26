@@ -37,6 +37,13 @@ class SendTestEmail extends Command
             $email = $this->ask('What email address should I send the test email to?');
         }
 
+        // only perform basic validation, the mail server can handle the rest
+        if (strpos($email, '@') === false) {
+            $this->error('Invalid email address - missing "@" symbol!');
+
+            return -1;
+        }
+
         $this->info("Preparing and sending email to '".$email."'");
 
         // immediately deliver the test email (bypassing the queue)
@@ -49,5 +56,7 @@ class SendTestEmail extends Command
         );
 
         $this->info('Email sent!');
+
+        return 0;
     }
 }
