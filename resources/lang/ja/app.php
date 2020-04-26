@@ -105,9 +105,9 @@ return [
     'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'We had an error trying to save the data.',
     'error_try_again' => 'Something went wrong. Please try again.',
-    'error_id' => 'Error ID: :id',
+    'error_id' => 'エラー ID: :id',
     'error_unavailable' => 'サービスを利用できません',
-    'error_maintenance' => 'Maintenance in progress. Be right back.',
+    'error_maintenance' => 'メンテナンス中です。お戻りください。',
     'error_help' => 'メンテナンスはすぐに終わります。',
     'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
     'error_no_term' => 'There is no policy for this instance yet.',
@@ -137,8 +137,8 @@ return [
     'relationship_type_partner_with_name' => ':name’s significant other',
     'relationship_type_partner_female_with_name' => ':name’s significant other',
 
-    'relationship_type_spouse' => 'spouse',
-    'relationship_type_spouse_female' => 'spouse',
+    'relationship_type_spouse' => '配偶者',
+    'relationship_type_spouse_female' => '配偶者',
     'relationship_type_spouse_with_name' => ':name’s spouse',
     'relationship_type_spouse_female_with_name' => ':name’s spouse',
 
@@ -147,8 +147,8 @@ return [
     'relationship_type_date_with_name' => ':name’s date',
     'relationship_type_date_female_with_name' => ':name’s date',
 
-    'relationship_type_lover' => 'lover',
-    'relationship_type_lover_female' => 'lover',
+    'relationship_type_lover' => '恋人',
+    'relationship_type_lover_female' => '恋人',
     'relationship_type_lover_with_name' => ':name’s lover',
     'relationship_type_lover_female_with_name' => ':name’s lover',
 
