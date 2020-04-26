@@ -25,7 +25,7 @@ return [
     'before_or_equal' => ':attribute 必須在 :date 或之前',
     'between' => [
         'numeric' => ':attribute 必須在 :min 和 :max 之間。',
-        'file' => ':attribute 必須在 :min 千位元組到 :max 千位元組之間。',
+        'file' => ':attribute 必須在 :min KB 到 :max KB 之間。',
         'string' => ':attribute 必須在 :min 到 :max 字元之間',
         'array' => ':attribute 必須在 :min 到 :max 個數目之間',
     ],
@@ -60,9 +60,9 @@ return [
     'in' => '選擇的 :attribute 無效',
     'in_array' => ':attribute 不在 :other 中。',
     'integer' => ':attribute 必須是整數',
-    'ip' => ':attribute 必須是一個有效的 IP 地址',
-    'ipv4' => ':attribute 必須是一個有效的 IPv4 地址',
-    'ipv6' => ':attribute 必須是一個有效的 IPv6 地址',
+    'ip' => ':attribute 必須是一個有效的 IP 位址',
+    'ipv4' => ':attribute 必須是一個有效的 IPv4 位址',
+    'ipv6' => ':attribute 必須是一個有效的 IPv6 位址',
     'json' => '：屬性必須是有效的JSON字串。',
     'lt' => [
         'numeric' => ':attribute 必須小於 :value。',
@@ -82,8 +82,8 @@ return [
         'string' => ':attribute 不大於 :max 字元',
         'array' => ':attribute 的數量不能超過 :max 個。',
     ],
-    'mimes' => ':attribute 檔案型別必須是 :values。',
-    'mimetypes' => ':attribute 檔案型別必須是 :values。',
+    'mimes' => ':attribute 檔案類型必須是 :values。',
+    'mimetypes' => ':attribute 檔案類型必須是 :values。',
     'min' => [
         'numeric' => ':attribute 最少是 :min',
         'file' => ':attribute 最小是 :min 千位元組',
@@ -114,7 +114,7 @@ return [
     'string' => ':attribute 必須是一個字串。',
     'timezone' => ':attribute 必須是個有效的區域。',
     'unique' => ':attribute 已經被佔用',
-    'uploaded' => ':attribute上傳失敗.',
+    'uploaded' => ':attribute 上傳失敗.',
     'url' => ':attribute 格式不對',
     'uuid' => ':attribute 必須是有效的 UUID。',
 

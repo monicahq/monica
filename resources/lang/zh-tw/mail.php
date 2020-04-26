@@ -12,7 +12,7 @@ return [
     'footer_contact_info2_link' => '看看:name的個人資料: :url',
 
     'notification_subject_line' => '您有一個即將進行的活動',
-    'notification_description' => '在:count天后(:date),將有以下事件發生：',
+    'notification_description' => '在:count天後(:date),將有以下事件發生：',
 
     'stay_in_touch_subject_line' => '您的『常聯絡』提醒 :name',
     'stay_in_touch_subject_description' => '您的常聯絡提醒： 每 :frequency 天 與 :name 聯絡.',
@@ -38,5 +38,5 @@ return [
     'invitation_intro' => '您已被:name (:email)邀請使用 Monica, 個人社交關係管理工具。',
     'invitation_link' => '要接受邀請，請點選下面的連結：',
     'invitation_button' => '接受邀請',
-    'invitation_expiration' => '此連結將在 :count 天后過期',
+    'invitation_expiration' => '此連結將在 :count 天後過期',
 ];

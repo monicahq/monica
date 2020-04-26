@@ -44,7 +44,7 @@ return [
     'change_language' => '更改語言至：:lang',
 
     'password_reset_title' => '重置密碼',
-    'password_reset_email' => '電子郵箱',
+    'password_reset_email' => '電子信箱',
     'password_reset_send_link' => '傳送重置連結',
     'password_reset_password' => '密碼',
     'password_reset_password_confirm' => '確認密碼',
@@ -52,10 +52,10 @@ return [
     'password_reset_email_content' => '單擊此處來重置密碼:',
 
     'register_title_welcome' => '歡迎註冊您的私人社交關係管家 - Monica',
-    'register_create_account' => '您需要一個賬號來使用Monica',
-    'register_title_create' => '建立您的Monica賬號',
-    'register_login' => '已經有賬號了？<a href=":url">點此登入</a>',
-    'register_email' => '請輸入一個有效的郵箱',
+    'register_create_account' => '您需要一個帳號來使用Monica',
+    'register_title_create' => '建立您的Monica帳號',
+    'register_login' => '已經有帳號了？<a href=":url">點此登入</a>',
+    'register_email' => '請輸入一個有效的信箱',
     'register_email_example' => 'example@example.com',
     'register_firstname' => '名字',
     'register_firstname_example' => '例: 小明',
@@ -69,8 +69,8 @@ return [
     'register_invitation_email' => '為了安全，請您輸入邀請人的電子郵件地址。這可以在受邀郵件中找到',
 
     'confirmation_title' => '驗證您的電子郵件地址',
-    'confirmation_fresh' => '一條新的驗證連結已經發送到您的郵箱',
-    'confirmation_check' => '在您繼續之前，請檢查您的郵箱以獲得驗證連結。',
+    'confirmation_fresh' => '一條新的驗證連結已經發送到您的信箱',
+    'confirmation_check' => '在您繼續之前，請檢查您的信箱以獲得驗證連結。',
     'confirmation_request_another' => '如果您沒有收到電子郵件 <a :action>, 請點擊此處重新發送</a>。',
 
     'confirmation_again' => '如果要更改電子郵件地址, 可以 <a href=":url" class="alert-link">點擊此處</a>。',
