@@ -13,12 +13,12 @@ return [
     |
     */
 
-    'reset' => '您的密码已重置！',
-    'sent' => '如果您输入的电子邮件存在于我们的记录中, 密码重置链接将被发送至改邮箱。',
-    'token' => '密码重置秘钥无效。',
-    'user' => '如果您输入的电子邮件存在于我们的记录中, 密码重置链接将被发送至该邮箱。',
-    'changed' => '密码修改成功',
-    'invalid' => '您输入的密码不正确。',
-    'throttled' => '请稍候再试',
+    'reset' => 'Your password has been reset!',
+    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
+    'token' => 'This password reset token is invalid.',
+    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
+    'changed' => 'Password changed successfully.',
+    'invalid' => 'Current password you entered is not correct.',
+    'throttled' => 'Please wait before retrying.',
 
 ];
