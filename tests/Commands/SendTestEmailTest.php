@@ -43,14 +43,22 @@ class SendTestEmailTest extends TestCase
         $this->assertEquals(-1, $exitCode);
     }
 
-    /** @test */
+    /**
+
+    @test
+
+    Required to prevent alias mock breaking other tests:
+    @runInSeparateProcess
+    @preserveGlobalState disabled
+
+    */
     public function command_attempts_to_send_email()
     {
         $this->withoutMockingConsoleOutput();
 
         $exampleEmail = 'test@example.org';
 
-        $externalMock = m::mock('overload:\Illuminate\Support\Facades\Mail');
+        $externalMock = m::mock('alias:\Illuminate\Support\Facades\Mail');
         $externalMock
             ->shouldReceive('raw')
             ->once()
