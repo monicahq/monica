@@ -37,7 +37,7 @@
     "eslint-plugin-standard": ">=4.0.0",
     "eslint-plugin-vue": "^6.2.2",
     "faker": "^4.1.0",
-    "mocha": "^7.1.1",
+    "mocha": "^7.1.2",
     "mocha-junit-reporter": "^1.23.3",
     "mocha-multi-reporters": "^1.1.7",
     "moment-locales-webpack-plugin": "^1.2.0",
