@@ -833,10 +833,10 @@
     temp-dir "^2.0.0"
     tslib "^1.9.3"
 
-"@snyk/ruby-semver@^2.0.4":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@snyk/ruby-semver/-/ruby-semver-2.0.4.tgz#457686ea7a4d60b10efddde99587efb3a53ba884"
-  integrity sha512-ceMD4CBS3qtAg+O0BUvkKdsheUNCqi+/+Rju243Ul8PsUgZnXmGiqfk/2z7DCprRQnxUTra4+IyeDQT7wAheCQ==
+"@snyk/ruby-semver@2.1.2", "@snyk/ruby-semver@^2.0.4":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@snyk/ruby-semver/-/ruby-semver-2.1.2.tgz#5c85a388d927a86c6ea3022b02ba77c4cac1098b"
+  integrity sha512-hYiNnwzNJ5DYM9JydeK3d2rd0lupgB/r5Nh154uazsV6EJn+lcba49X8+pdMMQIBhGQNvLtWLqYpeGfG07WcGQ==
   dependencies:
     lodash "^4.17.14"
 
@@ -8165,10 +8165,10 @@ sass-loader@^8.0.2:
     schema-utils "^2.6.1"
     semver "^6.3.0"
 
-sass@^1.26.3:
-  version "1.26.3"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.26.3.tgz#412df54486143b76b5a65cdf7569e86f44659f46"
-  integrity sha512-5NMHI1+YFYw4sN3yfKjpLuV9B5l7MqQ6FlkTcC4FT+oHbBRUZoSjHrrt/mE0nFXJyY2kQtU9ou9HxvFVjLFuuw==
+sass@^1.26.5:
+  version "1.26.5"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.26.5.tgz#2d7aecfbbabfa298567c8f06615b6e24d2d68099"
+  integrity sha512-FG2swzaZUiX53YzZSjSakzvGtlds0lcbF+URuU9mxOv7WBh7NhXEVDa4kPKN4hN6fC2TkOTOKqiqp6d53N9X5Q==
   dependencies:
     chokidar ">=2.0.0 <4.0.0"
 
@@ -8641,15 +8641,16 @@ snyk-try-require@1.3.1, snyk-try-require@^1.1.1, snyk-try-require@^1.3.1:
     lru-cache "^4.0.0"
     then-fs "^2.0.0"
 
-snyk@^1.310.0:
-  version "1.310.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.310.0.tgz#bebde01d57d4184528d47a1ca48f95237205125e"
-  integrity sha512-I6bO5zgkrmJEKcyGaPhCJu+S5h8Njrdvgjk+HOTWQAJBjMPgfMfrpmyG8bzCexYm1cOHOoGq9oCuY/cTPBCqxA==
+snyk@^1.311.0:
+  version "1.311.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.311.0.tgz#644f2d12b95bf628a6e02e9a702354bb92af2c62"
+  integrity sha512-eH+JFzgCU4qqmEeY9CXJq+XUtlOAVuXv0XtzRnIhWloBX9HaXDALsIjGyR87UPj0PpARrwkXd0uIwsSYM9x2mg==
   dependencies:
     "@snyk/cli-interface" "^2.4.0"
     "@snyk/configstore" "^3.2.0-rc1"
     "@snyk/dep-graph" "1.16.1"
     "@snyk/gemfile" "1.2.0"
+    "@snyk/ruby-semver" "2.1.2"
     "@snyk/snyk-cocoapods-plugin" "2.1.1"
     "@snyk/update-notifier" "^2.5.1-rc2"
     "@types/agent-base" "^4.2.0"
@@ -9723,9 +9724,9 @@ vue-hot-reload-api@^2.3.0:
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
 
 vue-i18n@^8.17:
-  version "8.17.2"
-  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.17.2.tgz#9ad15f5506ff012f6f770ec0474dcb714d96cd2d"
-  integrity sha512-YIW0aXW/dzxI0rk9qYttvISv+Tt+w5WVjengswTLK0mKhwIfrAyMssbawohIn9tsmoxcHcA0G20bU7e/t2JATA==
+  version "8.17.3"
+  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.17.3.tgz#f366082d5784c3c35e8ffda733cb3f3990a3900d"
+  integrity sha512-sWjGOL7dXo6rYcPQmlY8FN/beLxq2aCnTZMSxfW0yW78rRGpqWrqXJURH56kvMYCnyNCepBjGWEEW0rbFiig5Q==
 
 vue-js-toggle-button@^1.2.2:
   version "1.3.3"
@@ -9748,10 +9749,10 @@ vue-notification@^1.3.6:
   resolved "https://registry.yarnpkg.com/vue-notification/-/vue-notification-1.3.20.tgz#d85618127763b46f3e25b8962b857947d5a97cbe"
   integrity sha512-vPj67Ah72p8xvtyVE8emfadqVWguOScAjt6OJDEUdcW5hW189NsqvfkOrctxHUUO9UYl9cTbIkzAEcPnHu+zBQ==
 
-vue-select@^3.1.0, vue-select@^3.10.1:
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/vue-select/-/vue-select-3.10.1.tgz#3731af25c9ab59ff9d6122dbda3dee628f07ddfa"
-  integrity sha512-rmE19MPS8emN8eLWg6YSqAhrVO4nwD9cr9jeA4LjnJY0QPxqQTNHLl38ovCz23yttvBns57gjiOddsf/pxwPjQ==
+vue-select@^3.1.0, vue-select@^3.10.2:
+  version "3.10.2"
+  resolved "https://registry.yarnpkg.com/vue-select/-/vue-select-3.10.2.tgz#24ca56540df8fed163861836eabbdf50ee333ac5"
+  integrity sha512-LN4LGMFkB/BEsS3/vcsSzXlCphg16WAz5dsnHOuNcIMDSoEXthlKM8ynFX9azVuNXyrVw/TzD7FrHPEZBM+iRg==
 
 vue-style-loader@^4.1.0:
   version "4.1.2"
