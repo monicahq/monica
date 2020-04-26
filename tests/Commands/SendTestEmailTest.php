@@ -19,11 +19,11 @@ class SendTestEmailTest extends TestCase
         $command
             ->shouldReceive('error')
             ->once()
-            ->with("Invalid email address: '$exampleEmail'.");
+            ->with('Invalid email address: "'.$exampleEmail.'".');
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
-        $exitCode = $this->artisan("monica:test-email --email $exampleEmail");
+        $exitCode = $this->artisan('monica:test-email --email "'.$exampleEmail.'"');
         $this->assertEquals(-1, $exitCode);
     }
 
