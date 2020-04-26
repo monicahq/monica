@@ -43,6 +43,7 @@ return [
             'ru',
             'tr',
             'zh',
+            'zh-TW' => 'zh-TW',
         ])
     ),
 

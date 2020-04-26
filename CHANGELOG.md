@@ -4,6 +4,7 @@
 
 * Add Japanese langage
 * Change title of birthday reminder for deceased people
+* Add Traditional Chinese language
 
 ### Enhancements:
 
