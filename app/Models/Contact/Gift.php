@@ -2,12 +2,9 @@
 
 namespace App\Models\Contact;
 
-use App\Helpers\MoneyHelper;
 use App\Models\Account\Photo;
 use App\Models\Account\Account;
 use App\Traits\AmountFormatter;
-use App\Models\Settings\Currency;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;

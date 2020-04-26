@@ -2,11 +2,8 @@
 
 namespace App\Models\Contact;
 
-use App\Helpers\MoneyHelper;
-use App\Traits\AmountFormatter;
 use App\Models\Account\Account;
-use App\Models\Settings\Currency;
-use Illuminate\Support\Facades\Auth;
+use App\Traits\AmountFormatter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;

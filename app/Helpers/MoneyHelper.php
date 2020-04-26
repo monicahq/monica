@@ -64,7 +64,7 @@ class MoneyHelper
     {
         $currency = self::getCurrency($currency);
 
-        if (!$currency) {
+        if (! $currency) {
             return (string) ($amount / 100);
         }
 
@@ -139,7 +139,7 @@ class MoneyHelper
     {
         $currency = self::getCurrency($currency);
 
-        if (!$currency) {
+        if (! $currency) {
             return 100;
         }
 
