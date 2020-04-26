@@ -12,16 +12,18 @@ class SendTestEmailTest extends TestCase
     {
         $this->withoutMockingConsoleOutput();
 
+        $exampleEmail = 'no.at.symbol';
+
         $command = m::mock('\App\Console\Commands\SendTestEmail[error]');
 
         $command
             ->shouldReceive('error')
             ->once()
-            ->with('Invalid email address - missing "@" symbol!');
+            ->with("Invalid email address: '$exampleEmail'.");
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
-        $exitCode = $this->artisan('monica:test-email --email no.at.symbol');
+        $exitCode = $this->artisan("monica:test-email --email $exampleEmail");
         $this->assertEquals(-1, $exitCode);
     }
 
