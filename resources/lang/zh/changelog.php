@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'title' => '更新日志',
-    'note' => '注：很抱歉，当前页面只支持英文展示。',
+    'title' => 'Product changes',
+    'note' => 'Note: unfortunately, this page is only in English.',
 ];
