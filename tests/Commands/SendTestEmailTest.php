@@ -44,14 +44,12 @@ class SendTestEmailTest extends TestCase
     }
 
     /**
-
-    @test
-
-    Required to prevent alias mock breaking other tests:
-    @runInSeparateProcess
-    @preserveGlobalState disabled
-
-    */
+     * @test
+     *
+     * Required to prevent alias mock breaking other tests:
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function command_attempts_to_send_email()
     {
         $this->withoutMockingConsoleOutput();
