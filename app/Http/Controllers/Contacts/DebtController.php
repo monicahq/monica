@@ -48,18 +48,17 @@ class DebtController extends Controller
      */
     public function store(DebtRequest $request, Contact $contact)
     {
-        $debt = Debt::create(
+        $contact->debts()->create(
             $request->only([
                 'in_debt',
-                'reason',
                 'amount',
+                'reason',
             ])
             + [
                 'account_id' => $contact->account_id,
                 'status' => 'inprogress',
             ]
         );
-        $contact->debts()->attach($debt);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.debt_add_success'));

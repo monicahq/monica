@@ -19,8 +19,8 @@ class MoneyHelperTest extends TestCase
         $currency = new Currency();
         $currency->iso = 'EUR';
 
-        $this->assertEquals('€500.00', MoneyHelper::format(500, $currency));
-        $this->assertEquals('€5,038.29', MoneyHelper::format(5038.29, $currency));
+        $this->assertEquals('€500.00', MoneyHelper::display(500, $currency));
+        $this->assertEquals('€5,038.29', MoneyHelper::display(5038.29, $currency));
     }
 
     /** @test */
@@ -31,7 +31,7 @@ class MoneyHelperTest extends TestCase
         $currency = new Currency();
         $currency->iso = 'EUR';
 
-        $this->assertEquals('500,00 €', MoneyHelper::format(500, $currency));
+        $this->assertEquals('500,00 €', MoneyHelper::display(500, $currency));
     }
 
     /** @test */
@@ -40,8 +40,8 @@ class MoneyHelperTest extends TestCase
         $currency = new Currency();
         $currency->iso = 'JPY'; // minorUnit value is zero "0"
 
-        $this->assertEquals('¥500', MoneyHelper::format(500, $currency));
-        $this->assertEquals('¥5,038', MoneyHelper::format(5038, $currency));
+        $this->assertEquals('¥500', MoneyHelper::display(500, $currency));
+        $this->assertEquals('¥5,038', MoneyHelper::display(5038, $currency));
     }
 
     /** @test */
@@ -53,8 +53,8 @@ class MoneyHelperTest extends TestCase
         ]);
         $this->actingAs($user);
 
-        $this->assertEquals('£75.00', MoneyHelper::format(75));
-        $this->assertEquals('£2,734.12', MoneyHelper::format(2734.12));
+        $this->assertEquals('£75.00', MoneyHelper::display(75, $currency));
+        $this->assertEquals('£2,734.12', MoneyHelper::display(2734.12, $currency));
     }
 
     /** @test */
@@ -80,6 +80,6 @@ class MoneyHelperTest extends TestCase
         ]);
         $this->actingAs($user);
 
-        $this->assertEquals('R$12,345.67', MoneyHelper::format(12345.67));
+        $this->assertEquals('R$12,345.67', MoneyHelper::display(12345.67, $currency));
     }
 }

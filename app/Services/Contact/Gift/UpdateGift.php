@@ -66,10 +66,13 @@ class UpdateGift extends BaseService
             'comment' => $this->nullOrvalue($data, 'comment'),
             'url' => $this->nullOrvalue($data, 'url'),
             'amount' => $this->nullOrvalue($data, 'amount'),
-            'currency_id' => Auth::user()->currency()->first()->id,
             'date' => $this->nullOrvalue($data, 'date'),
             'recipient' => $this->nullOrvalue($data, 'recipient_id'),
         ];
+
+        if (Auth::check()) {
+            $array['currency_id'] = Auth::user()->currency->id;
+        }
 
         return tap($gift)
             ->update($array);

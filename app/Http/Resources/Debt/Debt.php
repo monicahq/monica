@@ -25,6 +25,7 @@ class Debt extends JsonResource
             'in_debt' => $this->in_debt,
             'status' => $this->status,
             'amount' => $this->amount,
+            'value' => $this->value,
             'amount_with_currency' => $this->displayValue,
             'reason' => $this->reason,
             'account' => [

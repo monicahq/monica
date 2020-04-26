@@ -107,7 +107,7 @@ class GiftTest extends TestCase
     public function it_gets_the_value()
     {
         $gift = factory(Gift::class)->make([
-            'value' => 100,
+            'amount' => 100,
         ]);
 
         $this->assertEquals(

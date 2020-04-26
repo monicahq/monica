@@ -5,6 +5,7 @@ namespace App\Models\Contact;
 use App\Helpers\MoneyHelper;
 use App\Models\Account\Photo;
 use App\Models\Account\Account;
+use App\Traits\AmountFormatter;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Gift extends Model
 {
+    use AmountFormatter;
+
     /**
      * The attributes that aren't mass assignable.
      *
@@ -91,16 +94,6 @@ class Gift extends Model
     }
 
     /**
-     * Get the currency record associated with the debt.
-     *
-     * @return BelongsTo
-     */
-    public function currency()
-    {
-        return $this->belongsTo(Currency::class);
-    }
-
-    /**
      * Limit results to already offered gifts.
      *
      * @param Builder $query
@@ -160,55 +153,5 @@ class Gift extends Model
         }
 
         return null;
-    }
-
-    /**
-     * Set exchange value.
-     *
-     * @return string
-     */
-    public function setAmountAttribute($value)
-    {
-        $currency = $this->currency()->first();
-        if (! $currency) {
-            $currency = Auth::user()->currency;
-        }
-        $this->attributes['amount'] = MoneyHelper::formatInput($value, $currency);
-    }
-
-    /**
-     * Get value of amount (without currency).
-     *
-     * @return string
-     */
-    public function getAmountAttribute(): string
-    {
-        if (! $this->attributes['amount']) {
-            return '';
-        }
-        $currency = $this->currency()->first();
-        if (! $currency) {
-            $currency = Auth::user()->currency;
-        }
-
-        return MoneyHelper::exchangeValue($this->attributes['amount'], $currency);
-    }
-
-    /**
-     * Get display value: amount with currency.
-     *
-     * @return string
-     */
-    public function getDisplayValueAttribute(): string
-    {
-        if (! $this->attributes['amount']) {
-            return '';
-        }
-        $currency = $this->currency()->first();
-        if (! $currency) {
-            $currency = Auth::user()->currency;
-        }
-
-        return MoneyHelper::format($this->attributes['amount'], $currency);
     }
 }

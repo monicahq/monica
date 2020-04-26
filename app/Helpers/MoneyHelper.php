@@ -6,8 +6,11 @@ use Money\Money;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\App;
 use Money\Currencies\ISOCurrencies;
+use Illuminate\Support\Facades\Auth;
 use Money\Currency as MoneyCurrency;
+use Money\Parser\DecimalMoneyParser;
 use Money\Formatter\IntlMoneyFormatter;
+use Money\Formatter\DecimalMoneyFormatter;
 
 class MoneyHelper
 {
@@ -31,9 +34,7 @@ class MoneyHelper
             $amount = 0;
         }
 
-        if (is_int($currency)) {
-            $currency = Currency::find($currency);
-        }
+        $currency = self::getCurrency($currency);
 
         if (! $currency) {
             $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::DECIMAL);
@@ -42,9 +43,7 @@ class MoneyHelper
         }
 
         $moneyCurrency = new MoneyCurrency($currency->iso);
-
         $money = new Money($amount, $moneyCurrency);
-
         $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::CURRENCY);
         $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
 
@@ -52,7 +51,7 @@ class MoneyHelper
     }
 
     /**
-     * Format a monetary amount as exchange value.
+     * Format a monetary amount (without the currency).
      *
      * Amount must be an integer, in exchange format.
      * i.e. '100' for 1,00€
@@ -61,17 +60,17 @@ class MoneyHelper
      * @param Currency|int|null $currency
      * @return string
      */
-    public static function exchangeValue($amount, $currency = null): string
+    public static function formatValue($amount, $currency = null): string
     {
-        if (is_int($currency)) {
-            $currency = Currency::find($currency);
+        $currency = self::getCurrency($currency);
+
+        if (!$currency) {
+            return (string) ($amount / 100);
         }
 
         $moneyCurrency = new MoneyCurrency($currency->iso);
-
         $money = new Money($amount ?? 0, $moneyCurrency);
-
-        $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::DECIMAL);
+        $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::PATTERN_DECIMAL);
         $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
 
         return $moneyFormatter->format($money);
@@ -86,38 +85,86 @@ class MoneyHelper
      */
     public static function display($exchange, $currency = null): string
     {
+        $currency = self::getCurrency($currency);
+
         return self::format(self::formatInput($exchange, $currency), $currency);
     }
 
     /**
      * Format a monetary exchange value as storable integer.
      *
-     * @param float|null $exchange
-     * @param Currency|int $currency
+     * @param mixed|null $exchange
+     * @param Currency|int|null $currency
      * @return int
      */
     public static function formatInput($exchange, $currency): int
     {
-        $minorUnitAdjustment = self::unitAdjustment($currency);
+        $currency = self::getCurrency($currency);
 
-        return (int) (($exchange ?? 0) * $minorUnitAdjustment);
+        if (! $currency) {
+            return (int) ((float) $exchange * 100);
+        }
+
+        $moneyParser = new DecimalMoneyParser(new ISOCurrencies());
+        $money = $moneyParser->parse((string) $exchange, $currency->iso);
+
+        return (int) $money->getAmount();
+    }
+
+    /**
+     * Format a monetary value as exchange value.
+     *
+     * @param int|null $amount
+     * @param Currency|int|null $currency
+     * @return float
+     */
+    public static function exchangeValue($amount, $currency): float
+    {
+        $currency = self::getCurrency($currency);
+
+        $moneyCurrency = new MoneyCurrency($currency->iso);
+        $money = new Money($amount ?? 0, $moneyCurrency);
+        $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
+
+        return (float) $moneyFormatter->format($money);
     }
 
     /**
      * Get unit adjustement value for the currency.
      *
-     * @param Currency|int $currency
+     * @param Currency|int|null $currency
      * @return int
      */
     public static function unitAdjustment($currency): int
     {
-        if (is_int($currency)) {
-            $currency = Currency::find($currency);
+        $currency = self::getCurrency($currency);
+
+        if (!$currency) {
+            return 100;
         }
 
         $moneyCurrency = new MoneyCurrency($currency->iso);
         $currencies = new ISOCurrencies();
 
-        return pow(10, $currencies->subunitFor($moneyCurrency));
+        return (int) pow(10, $currencies->subunitFor($moneyCurrency));
+    }
+
+    /**
+     * Get currency object.
+     *
+     * @param Currency|int|null $currency
+     * @return Currency|null
+     */
+    private static function getCurrency($currency): ?Currency
+    {
+        if (is_int($currency)) {
+            $currency = Currency::find($currency);
+        }
+
+        if (! $currency && Auth::check()) {
+            $currency = Auth::user()->currency;
+        }
+
+        return $currency;
     }
 }

@@ -27,6 +27,7 @@ class Gift extends JsonResource
             'comment' => $this->comment,
             'url' => $this->url,
             'amount' => $this->amount,
+            'value' => $this->value,
             'amount_with_currency' => $this->displayValue,
             'status' => $this->status,
             'date' => DateHelper::getDate($this->date),
