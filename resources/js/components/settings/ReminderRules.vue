@@ -35,8 +35,8 @@
         <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2">
             <form-toggle
-              :iclass="'reminder-rule-' + reminderRule.number_of_days_before"
               v-model="reminderRule.active"
+              :iclass="'reminder-rule-' + reminderRule.number_of_days_before"
               :labels="true"
               @change="toggle(reminderRule, $event)"
             />
@@ -48,13 +48,7 @@
 </template>
 
 <script>
-import { ToggleButton } from 'vue-js-toggle-button';
-
 export default {
-
-  components: {
-    ToggleButton
-  },
 
   data() {
     return {
@@ -93,7 +87,7 @@ export default {
             text: '',
             type: 'success'
           });
-          this.$set(reminderRule, 'active', response.data.data.active)
+          this.$set(reminderRule, 'active', response.data.data.active);
         });
     }
   }

@@ -48,8 +48,8 @@
         <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2">
             <form-toggle
-              :iclass="'module-'"
               v-model="module.active"
+              :iclass="'module-'"
               :disabled="limited"
               :labels="true"
               @change="toggle(module, $event)"
@@ -62,13 +62,7 @@
 </template>
 
 <script>
-import { ToggleButton } from 'vue-js-toggle-button';
-
 export default {
-
-  components: {
-    ToggleButton
-  },
 
   props: {
     limited: {
