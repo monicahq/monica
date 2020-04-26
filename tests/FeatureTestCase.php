@@ -4,10 +4,12 @@ namespace Tests;
 
 use Tests\Traits\SignIn;
 use Illuminate\Testing\TestResponse;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class FeatureTestCase extends TestCase
 {
-    use SignIn;
+    use SignIn,
+        DatabaseTransactions;
 
     /**
      * Test that the response contains a not found notification.

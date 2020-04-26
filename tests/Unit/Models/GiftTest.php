@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use Tests\TestCase;
+use App\Models\User\User;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -106,7 +107,10 @@ class GiftTest extends TestCase
     /** @test */
     public function it_gets_the_value()
     {
+        $user = factory(User::class)->create();
+        $this->be($user);
         $gift = factory(Gift::class)->make([
+            'account_id' => $user->account_id,
             'amount' => 100,
         ]);
 

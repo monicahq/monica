@@ -4,10 +4,12 @@ namespace Tests;
 
 use Tests\Traits\ApiSignIn;
 use Illuminate\Testing\TestResponse;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiTestCase extends TestCase
 {
-    use ApiSignIn;
+    use ApiSignIn,
+        DatabaseTransactions;
 
     /**
      * Test that the response contains a not found notification.
