@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "30f99a29085b0cc8ec619cf29823334c",
+    "content-hash": "1e739a28a339842963a2b9074fd08a92",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -2387,40 +2387,40 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v10.7.1",
+            "version": "v11.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "80eac34ae0db3dcd922278f981c403f1e271bd25"
+                "reference": "4b001588228487c61d10281f065126f48f1da171"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/80eac34ae0db3dcd922278f981c403f1e271bd25",
-                "reference": "80eac34ae0db3dcd922278f981c403f1e271bd25",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/4b001588228487c61d10281f065126f48f1da171",
+                "reference": "4b001588228487c61d10281f065126f48f1da171",
                 "shasum": ""
             },
             "require": {
                 "dompdf/dompdf": "^0.8.0",
                 "ext-json": "*",
-                "illuminate/contracts": "~5.8.0|^6.0|^7.0",
-                "illuminate/database": "~5.8.0|^6.0|^7.0",
-                "illuminate/http": "~5.8.0|^6.0|^7.0",
-                "illuminate/log": "~5.8.0|^6.0|^7.0",
-                "illuminate/notifications": "~5.8.0|^6.0|^7.0",
-                "illuminate/routing": "~5.8.0|^6.0|^7.0",
-                "illuminate/support": "~5.8.0|^6.0|^7.0",
-                "illuminate/view": "~5.8.0|^6.0|^7.0",
+                "illuminate/contracts": "^6.0|^7.0",
+                "illuminate/database": "^6.0|^7.0",
+                "illuminate/http": "^6.0|^7.0",
+                "illuminate/log": "^6.0|^7.0",
+                "illuminate/notifications": "^6.0|^7.0",
+                "illuminate/routing": "^6.0|^7.0",
+                "illuminate/support": "^6.0|^7.0",
+                "illuminate/view": "^6.0|^7.0",
                 "moneyphp/money": "^3.2",
                 "nesbot/carbon": "^2.0",
-                "php": "^7.1.3",
+                "php": "^7.2",
                 "stripe/stripe-php": "^7.0",
                 "symfony/http-kernel": "^4.3|^5.0",
                 "symfony/intl": "^4.3|^5.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
-                "orchestra/testbench": "^3.8|^4.0|^5.0",
-                "phpunit/phpunit": "^7.5|^8.0"
+                "orchestra/testbench": "^4.0|^5.0",
+                "phpunit/phpunit": "^8.0|^9.0"
             },
             "suggest": {
                 "ext-intl": "Allows for more locales besides the default \"en\" when formatting money values."
@@ -2428,7 +2428,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "10.x-dev"
+                    "dev-master": "11.x-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -2457,7 +2457,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2020-03-24T16:10:05+00:00"
+            "time": "2020-04-21T19:08:02+00:00"
         },
         {
             "name": "laravel/framework",
@@ -4884,20 +4884,20 @@
         },
         {
             "name": "phenx/php-font-lib",
-            "version": "0.5.1",
+            "version": "0.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhenX/php-font-lib.git",
-                "reference": "760148820110a1ae0936e5cc35851e25a938bc97"
+                "reference": "ca6ad461f032145fff5971b5985e5af9e7fa88d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/760148820110a1ae0936e5cc35851e25a938bc97",
-                "reference": "760148820110a1ae0936e5cc35851e25a938bc97",
+                "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/ca6ad461f032145fff5971b5985e5af9e7fa88d8",
+                "reference": "ca6ad461f032145fff5971b5985e5af9e7fa88d8",
                 "shasum": ""
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8"
+                "phpunit/phpunit": "^4.8.35 || ^5 || ^6 || ^7"
             },
             "type": "library",
             "autoload": {
@@ -4917,7 +4917,7 @@
             ],
             "description": "A library to read, parse, export and make subsets of different types of font files.",
             "homepage": "https://github.com/PhenX/php-font-lib",
-            "time": "2017-09-13T16:14:37+00:00"
+            "time": "2020-03-08T15:31:32+00:00"
         },
         {
             "name": "phenx/php-svg-lib",
@@ -7804,16 +7804,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v7.27.3",
+            "version": "v7.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "a6bbc392248f892123aed515b18a6360447cd658"
+                "reference": "657c8ec888d8bcb58dd8f4fa227809108b406a44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/a6bbc392248f892123aed515b18a6360447cd658",
-                "reference": "a6bbc392248f892123aed515b18a6360447cd658",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/657c8ec888d8bcb58dd8f4fa227809108b406a44",
+                "reference": "657c8ec888d8bcb58dd8f4fa227809108b406a44",
                 "shasum": ""
             },
             "require": {
@@ -7823,7 +7823,7 @@
                 "php": ">=5.6.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.15",
+                "friendsofphp/php-cs-fixer": "2.16.1",
                 "php-coveralls/php-coveralls": "^2.1",
                 "phpunit/phpunit": "^5.7",
                 "squizlabs/php_codesniffer": "^3.3",
@@ -7857,7 +7857,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2020-03-18T20:32:13+00:00"
+            "time": "2020-04-22T19:35:10+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
