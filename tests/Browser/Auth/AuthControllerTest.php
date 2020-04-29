@@ -30,7 +30,7 @@ class AuthControllerTest extends TestCase
         'expires_in',
     ];
 
-    private const OAUTH_LOGIN_URL = 'http://monica.test/oauth/login';
+    private const OAUTH_LOGIN_URL = 'http://localhost:8001/oauth/login';
 
     public function test_oauth_login()
     {
