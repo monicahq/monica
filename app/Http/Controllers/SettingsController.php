@@ -46,6 +46,7 @@ class SettingsController
             'lastname_firstname_nickname',
             'lastname_nickname_firstname',
             'nickname_firstname_lastname',
+            'nickname_lastname_firstname',
             'nickname',
         ];
 

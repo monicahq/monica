@@ -704,6 +704,22 @@ class Contact extends Model
                     $completeName = $this->nickname.' ('.$completeName.')';
                 }
                 break;
+            case 'nickname_lastname_firstname':
+                $completeName = '';
+                if (! is_null($this->last_name)) {
+                    $completeName = $this->last_name;
+                }
+
+                $completeName = $completeName.' '.$this->first_name;
+
+                if (! is_null($this->middle_name)) {
+                    $completeName = $completeName.' '.$this->middle_name;
+                }
+
+                if (! is_null($this->nickname)) {
+                    $completeName = $this->nickname.' ('.$completeName.')';
+                }
+                break;
             case 'lastname_nickname_firstname':
                 $completeName = '';
                 if (! is_null($this->last_name)) {
