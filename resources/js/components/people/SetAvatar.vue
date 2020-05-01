@@ -93,6 +93,10 @@
           <small class="form-text text-muted">
             {{ $t('people.information_edit_max_size2', { size: maxUploadSize }) }}
           </small>
+          <clipper-upload v-model="imgUrl">upload image</clipper-upload>
+          <clipper-basic class="my-clipper" :src="imgUrl">
+            <div class="placeholder" slot="placeholder">No image</div>
+          </clipper-basic>
         </div>
       </form-radio>
     </div>
@@ -100,8 +104,14 @@
 </template>
 
 <script>
+import { clipperBasic, clipperUpload } from 'vuejs-clipper';
+
 export default {
 
+  components: {
+    clipperBasic,
+    clipperUpload,
+  },
   props: {
     avatar: {
       type: String,
@@ -120,6 +130,10 @@ export default {
       default: '',
     },
     photoUrl: {
+      type: String,
+      default: '',
+    },
+    imgUrl: {
       type: String,
       default: '',
     },
