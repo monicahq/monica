@@ -21,7 +21,7 @@
     "lint:all": "yarn lint & yarn lint:cypress",
     "lint:fix": "yarn lint --fix & yarn lint:cypress --fix",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect",
+    "prepublish": "yarn run snyk-protect",
     "delete:reports": "rm results/cypress/* || true",
     "pree2e": "npm run delete:reports"
   },
