@@ -89,7 +89,13 @@
           </span>
         </template>
         <div slot="extra">
-          <input type="file" ref="uploadImg" class="form-control-file" name="photo" :disabled="hasReachedAccountStorageLimit" @change="uploadImg($event)" />
+          <input ref="uploadedImg"
+                 type="file"
+                 class="form-control-file"
+                 name="photo"
+                 :disabled="hasReachedAccountStorageLimit"
+                 @change="uploadImg($event)"
+          />
           <small class="form-text text-muted">
             {{ $t('people.information_edit_max_size2', { size: maxUploadSize }) }}
           </small>
@@ -98,7 +104,7 @@
       </form-radio>
     </div>
     <sweet-modal ref="cropModal" :title="$t('people.avatar_crop_new_avatar_photo')" :blocking="true" :hide-close-button="true">
-      <clipper-basic ref="clipper" :src="uploadedImgUrl" :ratio="1" :init-width="100" :init-height="100"/>
+      <clipper-basic ref="clipper" :src="uploadedImgUrl" :ratio="1" :init-width="100" :init-height="100" />
       <div slot="button">
         <a class="btn" href="" @click.prevent="cancelCrop()">
           {{ $t('app.cancel') }}
@@ -109,9 +115,6 @@
       </div>
     </sweet-modal>
   </div>
-
-
-  
 </template>
 
 <script>
@@ -176,7 +179,9 @@ export default {
   methods: {
     uploadImg: function(e){
       if (e.target.files.length !== 0) {
-        if(this.uploadedImgUrl) URL.revokeObjectURL(this.uploadedImgUrl)
+        if(this.uploadedImgUrl) {
+          URL.revokeObjectURL(this.uploadedImgUrl);
+        }
         this.uploadedImgUrl = window.URL.createObjectURL(e.target.files[0]);
         this.$refs.cropModal.open();
       }
@@ -186,7 +191,7 @@ export default {
       const canvas = this.$refs.clipper.clip();
       
       canvas.toBlob((blob) => {
-        const input = this.$refs.uploadImg;
+        const input = this.$refs.uploadedImg;
         const file = new File([blob], input.files[0].name, { type: 'image/jpeg' });
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
@@ -200,7 +205,7 @@ export default {
 
     cancelCrop() {
       const dataTransfer = new DataTransfer();
-      this.$refs.uploadImg.files = dataTransfer.files;
+      this.$refs.uploadedImg.files = dataTransfer.files;
       this.croppedImgUrl = '';
       this.$refs.cropModal.close();
     },

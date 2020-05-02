@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Crop contact photos on upload
 * Add console command to test email delivery
 * Add Japanese langage
 * Change title of birthday reminder for deceased people
