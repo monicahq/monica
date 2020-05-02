@@ -26,6 +26,7 @@ hooks:
     curl -sL https://sentry.io/get-cli/ | INSTALL_DIR=${SENTRY_ROOT:-/app/vendor/bin} bash
   deploy: |
     set -evx
+    rm -f bootstrap/cache/*.php
     php artisan monica:update --force --skip-storage-link -vvv
 
 # The relationships of the application with services or other applications.

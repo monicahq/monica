@@ -47,13 +47,12 @@
         </div>
         <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2">
-            <toggle-button
-              :class="'module-'"
-              :value="module.active"
+            <form-toggle
+              :iclass="'module-'"
+              v-model="module.active"
               :disabled="limited"
-              :sync="true"
               :labels="true"
-              @change="toggle(module)"
+              @change="toggle(module, $event)"
             />
           </div>
         </div>
@@ -118,9 +117,7 @@ export default {
             text: '',
             type: 'success'
           });
-
-          var id = this.modules.findIndex(x => x.id === module.id);
-          this.$set(this.modules, id, response.data.data);
+          this.$set(module, 'active', response.data.data.active);
         });
     }
   }

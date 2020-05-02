@@ -33,7 +33,7 @@
               {{-- email address --}}
               <div class="form-group">
                 <label for="newmail">{{ trans('auth.email_change_new') }}</label>
-                <input type="email" class="form-control" name="newmail" id="newmail" placeholder="{{ trans('settings.email_placeholder') }}" required>
+                <input type="email" class="form-control" name="newmail" id="newmail" placeholder="{{ trans('settings.email_placeholder') }}" required autocomplete="email" autofocus>
                 <small id="emailHelp" class="form-text text-muted">{{ trans('settings.email_help') }}</small>
               </div>
 

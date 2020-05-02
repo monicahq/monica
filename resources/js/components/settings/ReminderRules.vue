@@ -34,12 +34,11 @@
         </div>
         <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2">
-            <toggle-button
-              :class="'reminder-rule-' + reminderRule.number_of_days_before"
-              :value="reminderRule.active"
-              :sync="true"
+            <form-toggle
+              :iclass="'reminder-rule-' + reminderRule.number_of_days_before"
+              v-model="reminderRule.active"
               :labels="true"
-              @change="toggle(reminderRule)"
+              @change="toggle(reminderRule, $event)"
             />
           </div>
         </div>
@@ -85,7 +84,7 @@ export default {
         });
     },
 
-    toggle(reminderRule) {
+    toggle(reminderRule, event) {
       axios.post('settings/personalization/reminderrules/' + reminderRule.id)
         .then(response => {
           this.$notify({
@@ -94,9 +93,7 @@ export default {
             text: '',
             type: 'success'
           });
-
-          var id = this.reminderRules.findIndex(x => x.id === reminderRule.id);
-          this.$set(this.reminderRules, id, response.data.data);
+          this.$set(reminderRule, 'active', response.data.data.active)
         });
     }
   }

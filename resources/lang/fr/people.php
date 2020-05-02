@@ -52,6 +52,7 @@ return [
     'people_delete_message' => 'Supprimer le contact',
     'people_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer ce contact ? La suppression est permanente.',
     'people_add_birthday_reminder' => 'Souhaiter un bon anniversaire à :name',
+    'people_add_birthday_reminder_deceased' => 'À cette date, :name aurait célébré son anniversaire',
     'people_add_import' => 'Souhaitez-vous <a href=":url">importer vos contacts</a> ?',
     'people_edit_email_error' => 'Il y a déjà quelqu’un dans votre compte avec cette adresse courriel. Merci d’en choisir une autre.',
     'people_export' => 'Exporter en tant que vCard',

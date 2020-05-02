@@ -28,7 +28,7 @@
         <li v-for="note in notes" :key="note.id" class="note">
           <div v-show="!note.edit" v-cy-name="'note-body-' + note.id" class="ba br2 b--black-10 br--top w-100 mb2">
             <div class="pa2 markdown">
-              <span dir="auto" v-html="note.parsed_body"></span>
+              <span dir="auto" v-html="compiledMarkdown(note.body)"></span>
             </div>
             <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
               <div class="fl w-50">
@@ -185,8 +185,7 @@ export default {
     update(note) {
       axios.put('people/' + this.hash + '/notes/' + note.id, note)
         .then(response => {
-          Vue.set(note, 'edit', note.edit);
-          this.getNotes();
+          Vue.set(note, 'edit', false);
 
           this.$notify({
             group: 'main',
@@ -220,6 +219,10 @@ export default {
             type: 'success'
           });
         });
+    },
+
+    compiledMarkdown (text) {
+      return marked(text, { sanitize: true });
     },
   }
 };

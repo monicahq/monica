@@ -3,9 +3,18 @@
 # Each route describes how an incoming URL is going
 # to be processed by Platform.sh.
 
-"https://www.{default}/":
+"https://{default}/":
     type: upstream
     upstream: "app:http"
-"https://{default}/":
+"https://www.{default}/":
     type: redirect
-    to: "https://www.{default}/"
+    to: "https://{default}/"
+"https://{default}/.well-known/carddav":
+    type: redirect
+    to: "https://{default}/dav"
+"https://{default}/.well-known/caldav":
+    type: redirect
+    to: "https://{default}/dav"
+"https://{default}/.well-known/security.txt":
+    type: redirect
+    to: "https://{default}/security.txt"

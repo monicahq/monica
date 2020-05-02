@@ -5,28 +5,22 @@ namespace App\Http\Controllers\Settings;
 use App\Models\User\Module;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Traits\JsonRespondController;
 
 class ModulesController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Get all the reminder rules.
      */
     public function index()
     {
-        $modulesData = collect([]);
         $modules = auth()->user()->account->modules;
 
-        foreach ($modules as $module) {
-            $data = [
-                'id' => $module->id,
-                'key' => $module->key,
-                'name' => trans($module->translation_key),
-                'active' => $module->active,
-            ];
-            $modulesData->push($data);
-        }
-
-        return $modulesData;
+        return $modules->map(function ($module) {
+            return $this->format($module);
+        });
     }
 
     public function toggle(Request $request, Module $module)
@@ -34,13 +28,18 @@ class ModulesController extends Controller
         $module->active = ! $module->active;
         $module->save();
 
-        return response()->json([
-            'data' => [
-                'id' => $module->id,
-                'key' => $module->key,
-                'name' => trans($module->translation_key),
-                'active' => $module->active,
-            ],
-        ], 200);
+        return $this->respond([
+            'data' => $this->format($module),
+        ]);
+    }
+
+    private function format(Module $module)
+    {
+        return [
+            'id' => $module->id,
+            'key' => $module->key,
+            'name' => trans($module->translation_key),
+            'active' => $module->active,
+        ];
     }
 }

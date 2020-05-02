@@ -8,7 +8,7 @@ Cloudron makes it easy to run web apps on your server and keep them up-to-date.
 When you visit the app for the first time, you will be prompted to register a new account. Put in your email address
 and password and you will be logged into the app. This is the only account that has access unless you invite other people.
 
-There is a demo available at https://my-demo.cloudron.me (username: cloudron password: cloudron)
+There is a demo available at https://my.demo.cloudron.io (username: cloudron password: cloudron)
 
 # Package source
 

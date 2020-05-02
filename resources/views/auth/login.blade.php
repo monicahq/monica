@@ -39,12 +39,12 @@
 
               <div class="form-group">
                 <label for="email">{{ trans('auth.email') }}</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
+                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
               </div>
 
               <div class="form-group">
                 <label for="password">{{ trans('auth.password') }}</label>
-                <input type="password" class="form-control" id="password" name="password">
+                <input type="password" class="form-control" id="password" name="password" required autocomplete="current-password">
               </div>
 
               <div class="form-group actions">

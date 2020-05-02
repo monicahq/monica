@@ -5,12 +5,12 @@
 return [
 
     // contact creation
-    'contact_log_contact_created' => 'Created the contact.',
-    'settings_log_contact_created_with_name' => 'Added :name as a contact.',
-    'settings_log_contact_created_with_name_with_link' => 'Added <a href=":link">:name</a> as a contact.',
+    'contact_log_contact_created' => 'Kontakt wurde erstellt.',
+    'settings_log_contact_created_with_name' => ':name als Kontakt hinzugefügt.',
+    'settings_log_contact_created_with_name_with_link' => '<a href=":link">:name</a> als Kontakt hinzugefügt.',
 
     // contat description update
-    'contact_log_contact_description_updated' => 'Updated the description.',
+    'contact_log_contact_description_updated' => 'Beschreibung wurde aktualisiert.',
     'settings_log_contact_description_updated_with_name' => 'Updated the description of :name.',
     'settings_log_contact_description_updated_with_name_with_link' => 'Updated the description of <a href=":link">:name</a>.',
 

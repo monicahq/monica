@@ -34,7 +34,7 @@ services:
   db:
     image: mysql:5.7
     environment:
-      - MYSQL_ROOT_PASSWORD=sekret_root_password
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_DATABASE=monica
       - MYSQL_USER=homestead
       - MYSQL_PASSWORD=secret
@@ -52,6 +52,7 @@ services:
     restart: always
     volumes:
       - data:/var/www/monica/storage
+      - www:/var/www/monica:ro
     command: cron.sh
     depends_on:
       - db
@@ -63,6 +64,7 @@ services:
     restart: always
     volumes:
       - data:/var/www/monica/storage
+      - www:/var/www/monica:ro
     command: queue.sh
     depends_on:
       - db
