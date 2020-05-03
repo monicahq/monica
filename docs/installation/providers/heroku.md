@@ -112,7 +112,7 @@ Client secret: zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq
   * Upgrade mailgun by entering a credit card (there is no charge, but they do require you enter it so you'll be upgraded to some other   tier that enables you to actually send messages).
   * Verify the custom domain via DNS (there are instructions on their site)
   * In Heroku, go to your app, then to the Settings tab. In it, you will have a button that reads "Reveal Config Vars". Click it, and change the following vars:
-    * `MAIL_DRIVER`: `mailgun`
+    * `MAIL_MAILER`: `mailgun`
     * `MAILGUN_DOMAIN`: your Mailgun domain
     * `MAILGUN_SECRET`: your Mailgun API key — find it [here](https://app.mailgun.com/app/account/security)
     * `MAIL_FROM_ADDRESS`: email address to use for 'from' email (could just use your own)
