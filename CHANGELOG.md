@@ -18,6 +18,7 @@
 
 ### Fixes:
 
+* Fix errors display for api
 * Fix currency in double
 * Fix authentication with token on basic auth
 * Fix editing multiple notes at the same time only edits one note
