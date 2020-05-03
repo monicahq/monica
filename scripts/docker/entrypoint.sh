@@ -74,7 +74,7 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
     if [ -n "${SENTRY_SUPPORT:-}" -a "$SENTRY_SUPPORT" = "true" -a -z "${SENTRY_NORELEASE:-}" -a -n "${SENTRY_ENV:-}" ]; then
         commit=$(cat .sentry-commit)
         release=$(cat .sentry-release)
-        ${ARTISAN} sentry:release --release="$release" --commit="$commit" --environment="$SENTRY_ENV" -v || true
+        ${ARTISAN} sentry:release --release="$release" --commit="$commit" --environment="$SENTRY_ENV" --force -v || true
     fi
 
     # Run cron
