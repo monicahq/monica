@@ -48,19 +48,19 @@ class SettingsController
             'nickname',
         ];
 
-        $filter = null;
         $meContact = null;
-        if (auth()->user()->me_contact_id) {
-            $meContact = Contact::where('account_id', auth()->user()->account_id)->find(auth()->user()->me_contact_id);
-            $filter = 'AND `id` != '.$meContact->id;
-        }
 
         $search = auth()->user()->first_name.' '.
             auth()->user()->last_name.' '.
             auth()->user()->email;
-        $existingContacts = Contact::search($search, auth()->user()->account_id, 20, 'id', $filter);
+        $existingContacts = Contact::search($search, auth()->user()->account_id, 'id')
+            ->real()
+            ->whereNotIn('id', [auth()->user()->me_contact_id])
+            ->paginate(20);
 
-        if ($meContact) {
+        if (auth()->user()->me_contact_id) {
+            $meContact = Contact::where('account_id', auth()->user()->account_id)
+                ->find(auth()->user()->me_contact_id);
             $existingContacts->prepend($meContact);
         }
 

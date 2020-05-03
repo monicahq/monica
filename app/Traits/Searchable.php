@@ -3,9 +3,7 @@
 namespace App\Traits;
 
 use App\Helpers\DBHelper;
-use App\Helpers\StringHelper;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 trait Searchable
 {
@@ -15,13 +13,12 @@ trait Searchable
      * @param  Builder $builder query builder
      * @param  string $needle
      * @param  int  $accountId
-     * @param  int $limitPerPage
+     * @param  string $orderByColumn
+     * @param  string $orderByDirection
      * @param  string $sortOrder
-     * @param  string $whereCondition
-     *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|null
+     * @return Builder|null
      */
-    public function scopeSearch(Builder $builder, $needle, $accountId, $limitPerPage, $orderBy, $whereCondition = null, $sortOrder = null): ?LengthAwarePaginator
+    public function scopeSearch(Builder $builder, string $needle, int $accountId, string $orderByColumn, string $orderByDirection = 'asc', string $sortOrder = null): ?Builder
     {
         if ($this->searchable_columns == null) {
             return null;
@@ -31,10 +28,11 @@ trait Searchable
             return DBHelper::getTable($this->getTable()).".`$column`";
         }, $this->searchable_columns);
 
-        $queryString = StringHelper::buildQuery($searchableColumns, $needle);
+        $queryString = $this->buildQuery($searchableColumns, $needle);
 
-        $builder->whereRaw(DBHelper::getTable($this->getTable()).".`account_id` = $accountId AND ($queryString) $whereCondition");
-        $builder->orderByRaw($orderBy);
+        $builder->whereRaw(DBHelper::getTable($this->getTable()).".`account_id` = $accountId")
+            ->whereRaw("( $queryString )")
+            ->orderBy($orderByColumn, $orderByDirection);
 
         if ($sortOrder) {
             $builder->sortedBy($sortOrder);
@@ -44,6 +42,35 @@ trait Searchable
             return "{$this->getTable()}.$column";
         }, $this->return_from_search));
 
-        return $builder->paginate($limitPerPage);
+        return $builder;
+    }
+
+    /**
+     * Build a query based on the array that contains column names.
+     *
+     * @param  array  $array
+     * @param  string $searchTerm
+     * @return string
+     */
+    private function buildQuery(array $array, string $searchTerm): string
+    {
+        $first = true;
+        $queryString = '';
+        $searchTerms = explode(' ', $searchTerm);
+
+        foreach ($searchTerms as $searchTerm) {
+            $searchTerm = DBHelper::connection()->getPdo()->quote('%'.$searchTerm.'%');
+
+            foreach ($array as $column) {
+                if ($first) {
+                    $first = false;
+                } else {
+                    $queryString .= ' OR ';
+                }
+                $queryString .= $column.' LIKE '.$searchTerm;
+            }
+        }
+
+        return $queryString;
     }
 }

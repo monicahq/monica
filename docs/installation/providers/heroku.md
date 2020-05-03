@@ -1,8 +1,17 @@
-# Installing Monica on Heroku
+# Installing Monica on Heroku <!-- omit in toc -->
 
 Monica can be deployed on Heroku using the button below:
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/monicahq/monica/tree/master)
+
+- [Installation](#installation)
+  - [Configuration](#configuration)
+  - [Optional: Setup the access tokens to use the API](#optional-setup-the-access-tokens-to-use-the-api)
+    - [Optional: Generate a Password grant client for OAuth access](#optional-generate-a-password-grant-client-for-oauth-access)
+- [Limitations](#limitations)
+- [Updating Heroku instance](#updating-heroku-instance)
+
+## Installation
 
 Before deployment, Heroku will ask you to define a few variables.
 - Please ensure to enter a custom `APP_KEY` when asked (if, for example, you have the `pwgen` utility installed, you could copy and paste the output of `pwgen -s 32 1`).
@@ -64,8 +73,8 @@ sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' ~/storage/oauth-public.key
 Once Heroku is re-deploy, you should be able to use the 'Create new token' function in https://XXX.herokuapp.com/settings/api
 
 Once you have the token, you can use the API with a command line:
-```
-curl -H "Authorization: Bearer API_TOKEN" https://XXX.herokuapp.com/api
+```sh
+curl -H "Authorization: Bearer $API_TOKEN" https://XXX.herokuapp.com/api
 ```
 
 If everything is well, this call will return:
@@ -77,7 +86,7 @@ If everything is well, this call will return:
 #### Optional: Generate a Password grant client for OAuth access
 
 * Still in the Heroku CLI, run this command to generate a password grant client:
-```
+```sh
 php artisan passport:client --password --no-interaction
 ```
 * This will display a client ID and secret:
@@ -93,15 +102,17 @@ Client secret: zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq
 
 ## Limitations
 
-* No upload of photos for your contacts. Heroku doesn't support storage.
-* No email by default - email configuration isn't required to use Monica on Heroku, but it's recommended.  You can configure your own [mailserver](/docs/installation/mail.md), though the easiest way to go about this is to use Mailgun's [free email add-on on Heroku](https://elements.heroku.com/addons/mailgun):
-  * [Sign up for Mailgun](https://signup.mailgun.com/new/signup) (the [free plan](https://www.mailgun.com/pricing) should be sufficient)
+* No storage by default. It means you will not be able to upload photos, document, avatars for your contacts.
+  Follow [this documentation](/docs/installation/storage.md) to set an external storage.
+
+* No email by default - email configuration isn't required to use Monica on Heroku, but it's useful for reminders.  You can configure your own [mailserver](/docs/installation/mail.md), though the easiest way to go about this is to use Mailgun's [free email add-on on Heroku](https://elements.heroku.com/addons/mailgun):
+  * [Sign up for Mailgun](https://signup.mailgun.com/new/signup) (the [free plan](https://www.mailgun.com/pricing) is sufficient)
   * Add a custom domain in mailgun.
   * Add the "To" and "From" e-mail addresses you're going to use as verified e-mail addresses on mailgun, and then actually verifying them.
   * Upgrade mailgun by entering a credit card (there is no charge, but they do require you enter it so you'll be upgraded to some other   tier that enables you to actually send messages).
   * Verify the custom domain via DNS (there are instructions on their site)
   * In Heroku, go to your app, then to the Settings tab. In it, you will have a button that reads "Reveal Config Vars". Click it, and change the following vars:
-    * `MAIL_DRIVER`: `mailgun`
+    * `MAIL_MAILER`: `mailgun`
     * `MAILGUN_DOMAIN`: your Mailgun domain
     * `MAILGUN_SECRET`: your Mailgun API key — find it [here](https://app.mailgun.com/app/account/security)
     * `MAIL_FROM_ADDRESS`: email address to use for 'from' email (could just use your own)

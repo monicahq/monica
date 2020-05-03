@@ -1,18 +1,28 @@
-# Installing Monica on Ubuntu
+# Installing Monica on Ubuntu <!-- omit in toc -->
 
 <img alt="Ubuntu" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Logo-ubuntu_cof-orange-hex.svg/120px-Logo-ubuntu_cof-orange-hex.svg.png" width="120" height="120" />
 
 Monica can run on [Ubuntu 18.04 (Bionic Beaver)](http://releases.ubuntu.com/18.04/).
 
+-   [Prerequisites](#prerequisites)
+    -   [Types of databases](#types-of-databases)
+-   [Installation steps](#installation-steps)
+    -   [1. Clone the repository](#1-clone-the-repository)
+    -   [2. Setup the database](#2-setup-the-database)
+    -   [3. Configure Monica](#3-configure-monica)
+    -   [4. Configure cron job](#4-configure-cron-job)
+    -   [5. Configure Apache webserver](#5-configure-apache-webserver)
+    -   [Final step](#final-step)
+
 ## Prerequisites
 
 Monica depends on the following:
 
-* [Apache httpd webserver](https://httpd.apache.org/) 
-* [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-* PHP 7.3+
-* [Composer](https://getcomposer.org/)
-* [MySQL](https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/)
+-   [Apache httpd webserver](https://httpd.apache.org/)
+-   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+-   PHP 7.2+
+-   [Composer](https://getcomposer.org/)
+-   [MySQL](https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/)
 
 **Apache:** If it doesn't come pre-installed with your server, follow the [instructions here](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04#step-1-install-apache-and-allow-in-firewall) to setup Apache and config the firewall.
 
@@ -26,12 +36,14 @@ sudo apt install -y git
 **PHP 7.3+:**
 
 First add this PPA repository:
+
 ```sh
 sudo apt-get install -y software-properties-common
 sudo add-apt-repository ppa:ondrej/php
 ```
 
 Then install php 7.3 with these extensions:
+
 ```sh
 sudo apt update
 sudo apt install -y php7.3 php7.3-cli php7.3-common php7.3-fpm \
@@ -47,6 +59,7 @@ curl -s https://getcomposer.org/installer -o composer-setup.php
 sudo php composer-setup.php --install-dir=/usr/local/bin/ --filename=composer
 rm -f composer-setup.php
 ```
+
 (or you can follow instruction on [getcomposer.org](https://getcomposer.org/download/) page)
 
 **Mysql:** Install Mysql 5.7. Note that this only installs the package, but does not setup Mysql. This is done later in the instructions:
@@ -83,26 +96,31 @@ git checkout tags/v2.2.1
 ### 2. Setup the database
 
 Log in with the root account to configure the database.
+
 ```sh
 mysql -u root -p
 ```
 
 Create a database called 'monica'.
+
 ```sql
 CREATE DATABASE monica;
 ```
 
 Create a user called 'monica' and its password 'strongpassword'.
+
 ```sql
 CREATE USER 'monica'@'localhost' IDENTIFIED BY 'strongpassword';
 ```
 
 We have to authorize the new user on the monica db so that he is allowed to change the database.
+
 ```sql
 GRANT ALL ON monica.* TO 'monica'@'localhost';
 ```
 
 And finally we apply the changes and exit the database.
+
 ```sql
 FLUSH PRIVILEGES;
 exit
@@ -114,14 +132,15 @@ exit
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
 1. Update `.env` to your specific needs
-   - set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
-   - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
-   - set the `APP_ENV` variable to `production`, `local` is only used for the development version.
+    - set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
+    - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
+    - set the `APP_ENV` variable to `production`, `local` is only used for the development version. Beware: setting `APP_ENV` to `production` will force HTTPS. Skip this if you're running Monica locally.
 1. Run `composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs` to install all packages.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
-1. *Optional*: Setup the queues with Redis, Beanstalk or Amazon SQS: see optional instruction of [generic installation](generic.md#setup-queues)
-1. *Optional*: Setup the access tokens to use the API follow optional instruction of [generic installation](generic.md#setup-access-tokens)
+    - You can use `email` and `password` parameter to setup a first account directly: `php artisan setup:production --email=your@email.com --password=yourpassword -v`
+1. _Optional_: Setup the queues with Redis, Beanstalk or Amazon SQS: see optional instruction of [generic installation](generic.md#setup-queues)
+1. _Optional_: Setup the access tokens to use the API follow optional instruction of [generic installation](generic.md#setup-access-tokens)
 
 ### 4. Configure cron job
 
@@ -130,6 +149,7 @@ Basically those crons are needed to send reminder emails and check if a new vers
 To do this, setup a cron that runs every minute that triggers the following command `php artisan schedule:run`.
 
 Create a new `/etc/cron.d/monica` file with:
+
 ```sh
 echo "* * * * * sudo -u www-data php /var/www/monica/artisan schedule:run" | sudo tee /etc/cron.d/monica
 ```
@@ -144,6 +164,7 @@ sudo chmod -R 775 /var/www/monica/storage
 ```
 
 2. Enable the rewrite module of the Apache webserver:
+
 ```sh
 sudo a2enmod rewrite
 ```

@@ -1,4 +1,13 @@
-# Update your server
+# Update your server <!-- omit in toc -->
+
+- [Generic instructions](#generic-instructions)
+- [Updating Heroku instance](#updating-heroku-instance)
+- [Importing vCards (CLI only)](#importing-vcards-cli-only)
+- [Importing SQL from the exporter feature](#importing-sql-from-the-exporter-feature)
+  - [Importing SQL into Heroku](#importing-sql-into-heroku)
+    - [WARNING: This will delete your current database. Only use on fresh installations, or if you know what you're doing.](#warning-this-will-delete-your-current-database-only-use-on-fresh-installations-or-if-you-know-what-youre-doing)
+
+## Generic instructions
 
 Monica uses the concept of releases and tries to follow
 [Semantic Versioning](http://semver.org/) as much as possible. If you run the project locally,
@@ -20,17 +29,20 @@ or if you have installed Monica on your own server, you need to follow the steps
        ```sh
        git pull origin master
        ```
-1. Then, run the following command at the root of the project:
+1. Update the dependencies of the project:
    ```sh
    composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs
+   ```
+1. Then, run the following command to make the proper update:
+   ```sh
    php artisan monica:update --force
    ```
 
-The `monica:update` command will run migrations scripts for database, and flush all cache for config, route, and view, as an optimization process.
-As the configuration of the application is cached, any update on the `.env` file will not be detected after that. You may have to run `php artisan config:cache` manually after every update of `.env` file.
+The `monica:update` command will run migrations scripts for database, and flush all cache for config, route, and view, as an optimization process. It's easier than run every need command independently.
 
 
-Your instance should be updated.
+Note: if you have just change some setting in your `.env` file, as the configuration of the application is cached, any update on the `.env` file will not be detected after that. You may have to run `php artisan config:cache` manually after every update of `.env` file.
+
 
 ## Updating Heroku instance
 

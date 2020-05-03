@@ -5,13 +5,12 @@ This doc is the main source of documentation for developers working with (or con
 
 ## Table of content
 
-* [Use Monica](/docs/user/index.md)
+* [Use Monica](/docs/user/readme.md)
 * Install Monica on your server
-    * [Install a new instance](/docs/installation/index.md)
+    * [Install a new instance](/docs/installation/readme.md)
     * [Maintain your server](/docs/installation/update.md)
-    * [Enable mobile application connection](/docs/installation/mobile.md)
 * Contribute to Monica
-    * [Contribute as a developer](/docs/contribute/index.md)
+    * [Contribute as a developer](/docs/contribute/readme.md)
     * [Help translate the application](/docs/contribute/translate.md)
 
 **Specific to Monica's core contributors**
@@ -30,6 +29,7 @@ Those companies have graciously offered a paid plan for free.
 |----------------------------------|-----------------------------------------------------------------------------------------------|
 | Sentry | [Sentry](https://sentry.io) is a cross-platform crash reporting and aggregation platform. We use it to analyze what's going on in production. |
 | Crowdin | [Crowdin](https://crowdin.com/project/monicahq) is a translation platform. |
+| Cypress | [Cypress](https://dashboard.cypress.io/projects/q8h6k9/runs) is an end-to-end test platform. |
 
 ### Open source projects
 

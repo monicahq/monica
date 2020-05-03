@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Add console command to test email delivery
 * Add Japanese langage
 * Change title of birthday reminder for deceased people
 
@@ -17,6 +18,7 @@
 
 ### Fixes:
 
+* Fix currency in double
 * Fix authentication with token on basic auth
 * Fix editing multiple notes at the same time only edits one note
 * Fix countries in fake contact seeder
