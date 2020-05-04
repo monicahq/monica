@@ -43,6 +43,8 @@ return [
     'name_order_firstname_nickname_lastname' => '<Vorname> (<Spitzname>) <Nachname> - Maximilian (Max) Mustermann',
     'name_order_lastname_firstname_nickname' => '<Nachname> <Vorname> (<Spitzname>) - Mustermann Maximilian (Max)',
     'name_order_lastname_nickname_firstname' => '<Nachname> (<Spitzname>) <Vorname> - Mustermann (Max) Maximilian',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<First name> <Last name>) - Rambo (John Doe)',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<Lasst name> <First name>) - Rambo (Doe John)',
     'name_order_nickname' => '<Spitzname> - Max',
     'currency' => 'Währung',
     'name' => 'Dein Name: :name',
