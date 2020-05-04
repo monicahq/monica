@@ -43,6 +43,8 @@ return [
     'name_order_firstname_nickname_lastname' => '<Nome> (<Soprannome>) <Cognome> - Giovanni (Rambo) Bianchi',
     'name_order_lastname_firstname_nickname' => '<Cognome> <Nome> (<Soprannome>) - Bianchi Giovanni (Rambo)',
     'name_order_lastname_nickname_firstname' => '<Cognome> (<Soprannome>) <Nome> - Bianchi (Rambo) Giovanni',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<First name> <Last name>) - Rambo (John Doe)',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<Lasst name> <First name>) - Rambo (Doe John)',
     'name_order_nickname' => '<Soprannome> - Rambo',
     'currency' => 'Valuta',
     'name' => 'Il tuo nome: :name',
