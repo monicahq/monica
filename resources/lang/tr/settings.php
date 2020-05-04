@@ -43,6 +43,8 @@ return [
     'name_order_firstname_nickname_lastname' => '<Ad> (<Takma Ad>) <Soyad> - Mehmet (Sarı Çizmeli) Ağa',
     'name_order_lastname_firstname_nickname' => '<Soyadı> <Adı> (<Takma Adı>) - Ağa Mehmet (Sarı Çizmeli)',
     'name_order_lastname_nickname_firstname' => '<Soyad> (<Takma Ad>) <Ad> - Ağa (Sarı Çizmeli) Mehmet',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<First name> <Last name>) - Rambo (John Doe)',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<Lasst name> <First name>) - Rambo (Doe John)',
     'name_order_nickname' => '<Nickname> - Ahmet',
     'currency' => 'Para Birimi',
     'name' => 'Adınız: :name',
