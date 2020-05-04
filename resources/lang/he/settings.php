@@ -43,6 +43,8 @@ return [
     'name_order_firstname_nickname_lastname' => '<שם פרטי> (<כינוי>) <שם משפחה> - ישראל (שרוליק) ישראלי',
     'name_order_lastname_firstname_nickname' => '<שם משפחה> <שם פרטי> (<כינוי>) - ישראלי ישראל (שרוליק)',
     'name_order_lastname_nickname_firstname' => '<שם משפחה> (<כינוי>) <שם פרטי> - ישראלי (שרוליק) ישראל',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<First name> <Last name>) - Rambo (John Doe)',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<Lasst name> <First name>) - Rambo (Doe John)',
     'name_order_nickname' => '<כינוי> - שרוליק',
     'currency' => 'מטבע',
     'name' => 'שמך: :name',
