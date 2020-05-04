@@ -707,10 +707,10 @@ class Contact extends Model
             case 'nickname_lastname_firstname':
                 $completeName = '';
                 if (! is_null($this->last_name)) {
-                    $completeName = $this->last_name;
+                    $completeName = $this->last_name.' ';
                 }
 
-                $completeName = $completeName.' '.$this->first_name;
+                $completeName = $completeName.$this->first_name;
 
                 if (! is_null($this->middle_name)) {
                     $completeName = $completeName.' '.$this->middle_name;
