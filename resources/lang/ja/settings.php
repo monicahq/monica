@@ -44,7 +44,7 @@ return [
     'name_order_lastname_firstname_nickname' => '<Last name> <First name> (<Nickname>) - Doe John (Rambo)',
     'name_order_lastname_nickname_firstname' => '<Last name> (<Nickname>) <First name> - Doe (Rambo) John',
     'name_order_nickname_firstname_lastname' => '<Nickname> (<First name> <Last name>) - Rambo (John Doe)',
-    'name_order_nickname_firstname_lastname' => '<Nickname> (<Lasst name> <First name>) - Rambo (Doe John)',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<Last name> <First name>) - Rambo (Doe John)',
     'name_order_nickname' => '<Nickname> - Rambo',
     'currency' => '通貨',
     'name' => 'Your name: :name',
