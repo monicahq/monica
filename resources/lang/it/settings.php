@@ -87,6 +87,7 @@ return [
     'locale_pt-BR' => 'Portoghese (Brasile)',
     'locale_ru' => 'Russo',
     'locale_zh' => 'Cinese semplificato',
+    'locale_zh-TW' => 'Chinese Traditional',
     'locale_tr' => 'Turco',
     'locale_en-GB' => 'Inglese (Regno Unito)',
 
