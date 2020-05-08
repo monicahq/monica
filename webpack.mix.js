@@ -5,7 +5,7 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 mix.webpackConfig({
     plugins: [
         new MomentLocalesPlugin({
-            localesToKeep: ['en', 'ar', 'cs', 'de', 'en-GB', 'es', 'fr', 'he', 'hr', 'it', 'nl', 'pt', 'pt-BR', 'ru', 'tr', 'zh-cn'],
+            localesToKeep: ['en', 'ar', 'cs', 'de', 'en-GB', 'es', 'fr', 'he', 'hr', 'it', 'nl', 'pt', 'pt-BR', 'ru', 'tr', 'zh-cn', 'zh-tw'],
         }),
     ],
 });
