@@ -18,6 +18,7 @@
 
 ### Fixes:
 
+* Fix google2fa column size
 * Fix errors display for api
 * Fix currency in double
 * Fix authentication with token on basic auth
