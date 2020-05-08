@@ -106,10 +106,10 @@
     <sweet-modal ref="cropModal" :title="$t('people.avatar_crop_new_avatar_photo')" :blocking="true" :hide-close-button="true">
       <clipper-basic ref="clipper" :src="uploadedImgUrl" :ratio="1" :init-width="100" :init-height="100" />
       <div slot="button">
-        <a class="btn" href="" @click.prevent="cancelCrop()">
+        <a class="btn" href="" @click.prevent="cancelCrop">
           {{ $t('app.cancel') }}
         </a>
-        <a class="btn btn-primary" href="" @click.prevent="setCroppedImg()">
+        <a class="btn btn-primary" href="" @click.prevent="setCroppedImg">
           {{ $t('app.done') }}
         </a>
       </div>
@@ -177,7 +177,7 @@ export default {
   },
 
   methods: {
-    uploadImg: function(e){
+    uploadImg: function(e) {
       if (e.target.files.length !== 0) {
         if(this.uploadedImgUrl) {
           URL.revokeObjectURL(this.uploadedImgUrl);
@@ -189,7 +189,7 @@ export default {
 
     setCroppedImg: function () {
       const canvas = this.$refs.clipper.clip();
-      
+
       canvas.toBlob((blob) => {
         const input = this.$refs.uploadedImg;
         const file = new File([blob], input.files[0].name, { type: 'image/jpeg' });

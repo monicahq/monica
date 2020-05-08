@@ -24,7 +24,7 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/stripe.scss', 'public/css')
 
     // global commands
-    .purgeCss(purgeCssOptions)
+    //.purgeCss(purgeCssOptions)
     .extract()
     .setResourceRoot('../')
     .sourceMaps(false)
