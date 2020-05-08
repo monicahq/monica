@@ -87,7 +87,7 @@ return [
     'locale_pt-BR' => 'פורטוגלית ברזילאית',
     'locale_ru' => 'רוסית',
     'locale_zh' => 'סינית מפושטת',
-    'locale_zh-TW' => 'Chinese Traditional',
+    'locale_zh-TW' => 'סינית מסורתית',
     'locale_tr' => 'טורקית',
     'locale_en-GB' => 'אנגלית בריטית',
 
