@@ -87,6 +87,7 @@ return [
     'locale_pt-BR' => 'Portekizce (Brezilya)',
     'locale_ru' => 'Rusça',
     'locale_zh' => 'Çince (Basitleştirilmiş)',
+    'locale_zh-TW' => 'Chinese Traditional',
     'locale_tr' => 'Türkçe',
     'locale_en-GB' => 'İngilizce (Birleşik Krallık)',
 
