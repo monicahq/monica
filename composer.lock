@@ -2464,16 +2464,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v7.10.2",
+            "version": "v7.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "4110965660ffc459206a5f1e5c3b40354347cd08"
+                "reference": "6e927e78aafd578d59c99608e7f0e23a5f7bfc5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/4110965660ffc459206a5f1e5c3b40354347cd08",
-                "reference": "4110965660ffc459206a5f1e5c3b40354347cd08",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/6e927e78aafd578d59c99608e7f0e23a5f7bfc5a",
+                "reference": "6e927e78aafd578d59c99608e7f0e23a5f7bfc5a",
                 "shasum": ""
             },
             "require": {
@@ -2612,7 +2612,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2020-05-05T22:17:38+00:00"
+            "time": "2020-05-06T15:36:00+00:00"
         },
         {
             "name": "laravel/passport",
@@ -13219,12 +13219,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "f46390d28af4fdb07c09d9aabf4c4e35149a7a08"
+                "reference": "640c8c23f8b02baa49527f8e17b54aca5168b8cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/f46390d28af4fdb07c09d9aabf4c4e35149a7a08",
-                "reference": "f46390d28af4fdb07c09d9aabf4c4e35149a7a08",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/640c8c23f8b02baa49527f8e17b54aca5168b8cf",
+                "reference": "640c8c23f8b02baa49527f8e17b54aca5168b8cf",
                 "shasum": ""
             },
             "conflict": {
@@ -13369,7 +13369,7 @@
                 "socalnick/scn-social-auth": "<1.15.2",
                 "spoonity/tcpdf": "<6.2.22",
                 "squizlabs/php_codesniffer": ">=1,<2.8.1|>=3,<3.0.1",
-                "ssddanbrown/bookstack": "<0.25.3",
+                "ssddanbrown/bookstack": "<0.29.2",
                 "stormpath/sdk": ">=0,<9.9.99",
                 "studio-42/elfinder": "<2.1.49",
                 "swiftmailer/swiftmailer": ">=4,<5.4.5",
@@ -13478,7 +13478,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2020-05-04T14:37:25+00:00"
+            "time": "2020-05-08T00:01:32+00:00"
         },
         {
             "name": "sebastian/code-unit",
