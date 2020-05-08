@@ -3974,16 +3974,16 @@
         },
         {
             "name": "monicahq/laravel-cloudflare",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-cloudflare.git",
-                "reference": "f76dd54e8bab4824adeee3c54e726acaff78a3fe"
+                "reference": "cf16f397ee394c9ada8b5d03453e19d404f3854c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/f76dd54e8bab4824adeee3c54e726acaff78a3fe",
-                "reference": "f76dd54e8bab4824adeee3c54e726acaff78a3fe",
+                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/cf16f397ee394c9ada8b5d03453e19d404f3854c",
+                "reference": "cf16f397ee394c9ada8b5d03453e19d404f3854c",
                 "shasum": ""
             },
             "require": {
@@ -3997,8 +3997,10 @@
             "require-dev": {
                 "laravel/framework": ">5.6",
                 "mockery/mockery": "^1.2",
+                "nunomaduro/larastan": "^0.5",
                 "orchestra/testbench": "^5.0",
                 "phpunit/phpunit": "^9.0",
+                "thecodingmachine/phpstan-safe-rule": "^1.0",
                 "vimeo/psalm": "^3.9"
             },
             "type": "library",
@@ -4031,7 +4033,7 @@
                 "php",
                 "proxies"
             ],
-            "time": "2020-03-07T11:56:26+00:00"
+            "time": "2020-05-08T10:00:03+00:00"
         },
         {
             "name": "monicahq/laravel-sabre",
