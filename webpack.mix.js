@@ -11,8 +11,9 @@ mix.webpackConfig({
 });
 
 let purgeCssOptions = {
-  whitelistPatterns: [/^fa-/, /^vdp-datepicker/, /^StripeElement/, /^vgt/, /^vue-tooltip/, /^pretty/, /^sweet-/],
-  whitelistPatternsChildren: [/^vdp-datepicker/, /^vgt/, /^vue-tooltip/, /^pretty/]
+  whitelistPatterns: [/^fa-/, /^vdp-datepicker/, /^StripeElement/, /^vgt/, /^vue-tooltip/, /^pretty/, /^sweet-/,
+     /^clip/, /canvas$/, /^img/, /^in-pad$/, /scale$/, /^zoom/, /^shadow$/, /^extend$/, /^inner$/, /^outer$/, /^drag/, /^corner/, /^grid/],
+  whitelistPatternsChildren: [/^vdp-datepicker/, /^vgt/, /^vue-tooltip/, /^pretty/, /^sweet-/, /^clip/, /^vertical$/]
 };
 
 mix.js('resources/js/app.js', 'public/js')
@@ -24,7 +25,7 @@ mix.js('resources/js/app.js', 'public/js')
   .sass('resources/sass/stripe.scss', 'public/css')
 
   // global commands
-  //.purgeCss(purgeCssOptions)
+  .purgeCss(purgeCssOptions)
   .extract()
   .setResourceRoot('../')
   .sourceMaps(false)
