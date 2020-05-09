@@ -3,11 +3,11 @@
 namespace App\Models\User;
 
 use Carbon\Carbon;
+use App\Jobs\SendVerifyEmail;
 use App\Models\Settings\Term;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Helpers\ComplianceHelper;
-use App\Jobs\SendVerifyEmail;
 use App\Models\Settings\Currency;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;

@@ -2,9 +2,9 @@
 
 namespace App\Services\User;
 
-use App\Models\Account\Account;
 use App\Models\User\User;
 use App\Services\BaseService;
+use App\Models\Account\Account;
 
 class EmailChange extends BaseService
 {
