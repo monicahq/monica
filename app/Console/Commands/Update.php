@@ -67,16 +67,12 @@ class Update extends Command
                     $this->commandExecutor->artisan('✓ Resetting application cache', 'cache:clear');
                 }
 
+                $this->commandExecutor->artisan('✓ Clear config cache', 'config:clear');
+
                 if ($this->getLaravel()->environment() == 'production') {
-                    $this->commandExecutor->artisan('✓ Clear config cache', 'config:clear');
                     $this->commandExecutor->artisan('✓ Resetting route cache', 'route:cache');
-                    if ($this->getLaravel()->version() > '5.6') {
-                        $this->commandExecutor->artisan('✓ Resetting view cache', 'view:cache');
-                    } else {
-                        $this->commandExecutor->artisan('✓ Resetting view cache', 'view:clear');
-                    }
+                    $this->commandExecutor->artisan('✓ Resetting view cache', 'view:cache');
                 } else {
-                    $this->commandExecutor->artisan('✓ Clear config cache', 'config:clear');
                     $this->commandExecutor->artisan('✓ Clear route cache', 'route:clear');
                     $this->commandExecutor->artisan('✓ Clear view cache', 'view:clear');
                 }
@@ -93,7 +89,7 @@ class Update extends Command
                     $this->commandExecutor->artisan('✓ Performing collation migrations', 'migrate:collation', ['--force']);
                 }
 
-                $this->commandExecutor->artisan('✓ Performing migrations', 'migrate', ['--force']);
+                $this->commandExecutor->artisan('✓ Performing database migrations', 'migrate', ['--force']);
 
                 $this->commandExecutor->artisan('✓ Check for encryption keys', 'monica:passport', ['--force']);
 
@@ -107,6 +103,8 @@ class Update extends Command
             } finally {
                 $this->commandExecutor->artisan('✓ Maintenance mode: off', 'up');
             }
+
+            $this->commandExecutor->artisan('✓ Restart queue worker', 'queue:restart');
 
             $this->line('Monica v'.config('monica.app_version').' is set up, enjoy.');
         }

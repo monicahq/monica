@@ -9,6 +9,7 @@
 
 ### Enhancements:
 
+* Add a queue restart command in monica:update command
 * Improve autocomplete fields on signup and login forms
 * Add cache for S3 storage, and use new standard variables
 * Remove authentication with login+password for carddav
