@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\Models\Account\Account;
 use App\Models\User\User;
 use App\Services\BaseService;
 
@@ -37,7 +38,9 @@ class EmailChange extends BaseService
         // Change email of the user
         $user->email = $data['email'];
 
-        if (config('monica.signup_double_optin')) {
+        /** @var int $count */
+        $count = Account::count();
+        if (config('monica.signup_double_optin') && $count > 1) {
             // Resend validation token
             $user->email_verified_at = null;
             $user->save();
@@ -45,6 +48,7 @@ class EmailChange extends BaseService
             $user->sendEmailVerificationNotification();
         } else {
             $user->save();
+            $user->markEmailAsVerified();
         }
 
         return $user;
