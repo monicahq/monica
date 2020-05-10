@@ -4,11 +4,6 @@ on:
   push:
     branches-ignore:
       - 'l10n_master*'
-  pull_request:
-    types: [opened, synchronize, reopened]
-  release:
-    types:
-      - created
 
 jobs:
   cypress-run:
@@ -100,11 +95,9 @@ jobs:
     - name: Cypress verify
       run: npm run cy:verify
 
-    - name: debug info
+    - name: which google-chrome
       run: |
-        which chrome || true
         which google-chrome || true
-        which google-chrome-stable || true
     - uses: cypress-io/github-action@v1
       with:
         start: php artisan serve
