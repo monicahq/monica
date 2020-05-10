@@ -9800,10 +9800,10 @@ vue-eslint-parser@^7.0.0:
     esquery "^1.0.1"
     lodash "^4.17.15"
 
-vue-good-table@^2.19.1:
-  version "2.19.1"
-  resolved "https://registry.yarnpkg.com/vue-good-table/-/vue-good-table-2.19.1.tgz#b18e199c7e04fc3ba4cfa7b0eea8f126716ca9ab"
-  integrity sha512-Bfd9RO+vHSvdosw/Jo7MkwIuP/x8BM173PB8fe4mhm2yPMLIH+WlGNzYbsiF2VTekj7K7QfE8WfGpc7lO6nCnQ==
+vue-good-table@^2.19.2:
+  version "2.19.2"
+  resolved "https://registry.yarnpkg.com/vue-good-table/-/vue-good-table-2.19.2.tgz#6f6238f1c609a4248569d3efdb5e7aa286f75ad7"
+  integrity sha512-TBVRgZVPN91X5APch2x5RNz58feq8/UOyZxSpm/QfGsKfiExFF6zsdUN9nO8kEhUKd+LFKdAH27zhDe0fOeYyA==
   dependencies:
     date-fns "^2.0.0-beta.4"
     diacriticless "1.0.1"
