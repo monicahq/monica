@@ -4,7 +4,6 @@ namespace App\Helpers;
 
 use DateTimeZone;
 use function Safe\substr;
-use Illuminate\Support\Arr;
 
 class TimezoneHelper
 {
