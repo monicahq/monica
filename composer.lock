@@ -3974,30 +3974,31 @@
         },
         {
             "name": "monicahq/laravel-cloudflare",
-            "version": "1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-cloudflare.git",
-                "reference": "cf16f397ee394c9ada8b5d03453e19d404f3854c"
+                "reference": "40a94665c387a6cccef80d49c267d700787d4450"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/cf16f397ee394c9ada8b5d03453e19d404f3854c",
-                "reference": "cf16f397ee394c9ada8b5d03453e19d404f3854c",
+                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/40a94665c387a6cccef80d49c267d700787d4450",
+                "reference": "40a94665c387a6cccef80d49c267d700787d4450",
                 "shasum": ""
             },
             "require": {
                 "fideloper/proxy": "~4.0",
                 "guzzlehttp/guzzle": "^6.3",
-                "illuminate/console": ">5.5",
-                "illuminate/http": ">5.5",
-                "illuminate/support": ">5.5",
+                "illuminate/console": "^5.5 || ^6.0 || ^7.0",
+                "illuminate/http": "^5.5 || ^6.0 || ^7.0",
+                "illuminate/support": "^5.5 || ^6.0 || ^7.0",
                 "php": ">= 7.2.0"
             },
             "require-dev": {
-                "laravel/framework": ">5.6",
+                "laravel/framework": "^5.6 || ^6.0 || ^7.0",
                 "mockery/mockery": "^1.2",
                 "nunomaduro/larastan": "^0.5",
+                "ocramius/package-versions": "1.5.1",
                 "orchestra/testbench": "^5.0",
                 "phpunit/phpunit": "^9.0",
                 "thecodingmachine/phpstan-safe-rule": "^1.0",
@@ -4033,7 +4034,7 @@
                 "php",
                 "proxies"
             ],
-            "time": "2020-05-08T10:00:03+00:00"
+            "time": "2020-05-09T20:54:46+00:00"
         },
         {
             "name": "monicahq/laravel-sabre",
@@ -13221,12 +13222,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "640c8c23f8b02baa49527f8e17b54aca5168b8cf"
+                "reference": "ec1a75b10126327b351fdea7c2b9bfb94e2f6f35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/640c8c23f8b02baa49527f8e17b54aca5168b8cf",
-                "reference": "640c8c23f8b02baa49527f8e17b54aca5168b8cf",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/ec1a75b10126327b351fdea7c2b9bfb94e2f6f35",
+                "reference": "ec1a75b10126327b351fdea7c2b9bfb94e2f6f35",
                 "shasum": ""
             },
             "conflict": {
@@ -13239,6 +13240,7 @@
                 "asymmetricrypt/asymmetricrypt": ">=0,<9.9.99",
                 "aws/aws-sdk-php": ">=3,<3.2.1",
                 "bagisto/bagisto": "<0.1.5",
+                "barrelstrength/sprout-base-email": "<3.9",
                 "bolt/bolt": "<3.6.10",
                 "brightlocal/phpwhois": "<=4.2.5",
                 "buddypress/buddypress": "<5.1.2",
@@ -13480,7 +13482,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2020-05-08T00:01:32+00:00"
+            "time": "2020-05-09T00:00:21+00:00"
         },
         {
             "name": "sebastian/code-unit",
