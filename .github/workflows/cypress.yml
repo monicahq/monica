@@ -75,7 +75,7 @@ jobs:
 
     # step-prepare-db
     - name: Prepare db
-      run: mysql -u root monica < scripts/database.test.sql
+      run: mysql -u root -P 3306 monica < scripts/database.test.sql
     - name: Run migration scripts
       run: php artisan migrate --no-interaction -vvv
 
