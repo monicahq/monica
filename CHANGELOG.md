@@ -2,12 +2,15 @@
 
 ### New features:
 
+* Add Traditional Chinese language
+* Add console command to test email delivery
 * Add Japanese langage
 * Change title of birthday reminder for deceased people
 
 ### Enhancements:
 
 * Stores amount as integer-ish values, and fix debts and gifts amount forms
+* Use queue to send email verification
 * Improve autocomplete fields on signup and login forms
 * Add cache for S3 storage, and use new standard variables
 * Remove authentication with login+password for carddav
@@ -18,6 +21,8 @@
 
 ### Fixes:
 
+* Fix google2fa column size
+* Fix errors display for api
 * Fix currency in double
 * Fix authentication with token on basic auth
 * Fix editing multiple notes at the same time only edits one note
@@ -53,6 +58,7 @@
 * Contacts displayed in the activity list are now clickable again
 * Gift are now added and updated inline
 * Add a link in the downgrade process to archive all contacts in the account
+* Add new name orders \<nickname> (\<First name> \<Last name>) & \<nickname> (\<Last name> \<First name>)
 
 ### Fixes:
 
