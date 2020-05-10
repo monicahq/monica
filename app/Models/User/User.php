@@ -3,7 +3,7 @@
 namespace App\Models\User;
 
 use Carbon\Carbon;
-use App\Models\Journal\Day;
+use App\Jobs\SendVerifyEmail;
 use App\Models\Settings\Term;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -11,7 +11,6 @@ use App\Helpers\ComplianceHelper;
 use App\Models\Settings\Currency;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -245,7 +244,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         /** @var int $count */
         $count = Account::count();
         if (config('monica.signup_double_optin') && $count > 1) {
-            $this->notify(new VerifyEmail());
+            SendVerifyEmail::dispatch($this);
         }
     }
 
