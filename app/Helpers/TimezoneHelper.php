@@ -35,9 +35,9 @@ class TimezoneHelper
 
         $result = [];
         foreach ($collect as $item) {
-            $values = array_values(Arr::sort($item, function ($value) {
+            $values = $item->sortByCollator(function ($value) {
                 return $value['name'];
-            }));
+            });
             foreach ($values as $val) {
                 array_push($result, $val);
             }
