@@ -101,7 +101,10 @@ jobs:
       run: npm run cy:verify
 
     - name: debug info
-      run: cat /etc/hosts
+      run: |
+        which chrome
+        which google-chrome
+        which google-chrome-stable
     - uses: cypress-io/github-action@v1
       with:
         start: php artisan serve
