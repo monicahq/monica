@@ -2,8 +2,6 @@ name: Chrome headless
 
 on:
   push:
-    branches:
-      - master
     branches-ignore:
       - 'l10n_master*'
   pull_request:
