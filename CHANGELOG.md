@@ -9,8 +9,8 @@
 
 ### Enhancements:
 
-* In the top search input, if the option "add new person" is chosen, the current text from the search bar is copied as the first name and last name of the new person.
-* In the top search input, leave the "Add New Person" dialog option, even if substrings have been found.
+* Use current text from search bar to create a new person
+* Always allow to add a new person from search bar
 * Use queue to send email verification
 * Improve autocomplete fields on signup and login forms
 * Add cache for S3 storage, and use new standard variables
