@@ -102,9 +102,9 @@ jobs:
 
     - name: debug info
       run: |
-        which chrome
-        which google-chrome
-        which google-chrome-stable
+        which chrome || true
+        which google-chrome || true
+        which google-chrome-stable || true
     - uses: cypress-io/github-action@v1
       with:
         start: php artisan serve
