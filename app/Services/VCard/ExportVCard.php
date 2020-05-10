@@ -256,9 +256,9 @@ class ExportVCard extends BaseService
             $type = [];
             $type['type'] = $labels->map(function ($label) {
                 /** @var ContactFieldLabel */
-                $label = $label;
+                $cflabel = $label;
 
-                return mb_strtoupper($label->label_i18n) ?: $label->label;
+                return mb_strtoupper($cflabel->label_i18n) ?: $cflabel->label;
             })->join(',');
         }
 
