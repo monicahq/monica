@@ -4,20 +4,36 @@ on:
   push:
     branches-ignore:
       - 'l10n_master*'
+  pull_request:
+    types: [opened, synchronize, reopened]
+  release:
+    types:
+      - created
 
 jobs:
   cypress-run:
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: monica
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ubuntu-latest]
-        php-version: ['7.3']
+        php-version: [7.3]
+        browser: [chrome]
         containers: [1, 2, 3, 4, 5, 6, 7, 8]
       max-parallel: 10
+    name: Cypress Test with PHP ${{ matrix.php-version }} browser ${{ matrix.browser }}
 
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout sources
+      uses: actions/checkout@v2
 
     - name: Setup PHP ${{ matrix.php-version }}
       uses: shivammathur/setup-php@master
@@ -35,10 +51,9 @@ jobs:
     - name: Prepare environment
       run: |
         mkdir -p results/coverage
-        sed 's/DB_TEST_PASSWORD=/DB_TEST_PASSWORD=root/' scripts/ci/.env.mysql > .env
+        cp scripts/ci/.env.mysql .env
         touch .sentry-release
-
-    - run: echo "REQUIRES_SUBSCRIPTION=true" >> .env
+        echo "REQUIRES_SUBSCRIPTION=true" >> .env
 
     - name: Validate composer.json and composer.lock
       run: composer validate
@@ -59,12 +74,8 @@ jobs:
       run: composer install --no-interaction --no-suggest --ignore-platform-reqs
 
     # step-prepare-db
-    - name: Start Mysql
-      run: sudo service mysql start
-    - name: Create db
-      run: mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
     - name: Prepare db
-      run: mysql -u root -proot monica < scripts/database.test.sql
+      run: mysql -h 127.0.0.1 -u root -P 3306 monica < scripts/database.test.sql
     - name: Run migration scripts
       run: php artisan migrate --no-interaction -vvv
 
@@ -89,14 +100,19 @@ jobs:
     - name: Cypress verify
       run: npm run cy:verify
 
+    - name: debug info
+      run: |
+        which chrome || true
+        which google-chrome || true
+        which google-chrome-stable || true
     - uses: cypress-io/github-action@v1
       with:
         start: php artisan serve
-        browser: chrome
+        browser: ${{ matrix.browser }}
         headless: true
         record: true
         parallel: true
-        group: Azure DevOps CI
+        group: Azure DevOps CI ${{ matrix.browser }}
         config: baseUrl=http://localhost:8000
         wait-on: http://localhost:8000
       env:
