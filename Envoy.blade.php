@@ -1,5 +1,5 @@
 // See Envoy doc: https://laravel.com/docs/5.8/envoy
-// 
+//
 // Configure with: `envoy run git-config --host=my-host --site=site-conf`
 // Deploy with: `envoy run deploy`
 
@@ -19,6 +19,8 @@
 
 @task('push', ['on' => 'local'])
     git push -u deploy {{ $branch ?? 'master' }} --force
+    git reset --hard {{ $commit }}
+    git branch --set-upstream-to=origin/master master
 @endtask
 
 @task('pull', ['on' => 'local'])
