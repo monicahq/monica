@@ -10588,7 +10588,7 @@
         },
         {
             "name": "web-token/jwt-signature-algorithm-eddsa",
-            "version": "v2.1.5",
+            "version": "v2.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-eddsa.git",
