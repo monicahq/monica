@@ -10351,7 +10351,7 @@
         },
         {
             "name": "web-token/jwt-key-mgmt",
-            "version": "v2.1.5",
+            "version": "v2.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-key-mgmt.git",
