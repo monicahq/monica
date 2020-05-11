@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Crop contact photos on upload
 * Add Traditional Chinese language
 * Add console command to test email delivery
 * Add Japanese langage
