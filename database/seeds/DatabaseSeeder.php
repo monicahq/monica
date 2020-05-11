@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             case 'testing':
                 $this->call(FakeUserTableSeeder::class);
             break;
+            case 'production':
+            break;
         }
-        $this->call(CurrenciesTableSeeder::class);
     }
 }
