@@ -10,6 +10,9 @@
 
 ### Enhancements:
 
+* Use current text from search bar to create a new person
+* Always allow to add a new person from search bar
+* Use queue to send email verification
 * Improve autocomplete fields on signup and login forms
 * Add cache for S3 storage, and use new standard variables
 * Remove authentication with login+password for carddav
