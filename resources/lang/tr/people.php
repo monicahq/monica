@@ -498,6 +498,7 @@ return [
     'avatar_gravatar' => 'Bu kişinin e-posta adresiyle ilişkili Gravatar.<a href="https://gravatar.com/">Gravatar</a>, kullanıcıların e-posta adreslerini fotoğraflarla ilişkilendirmelerini sağlayan global bir sistemdir.',
     'avatar_current' => 'Mevcut avatarı kullanın',
     'avatar_photo' => 'Yüklediğiniz bir fotoğraftan',
+    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
     // emotions
     'emotion_this_made_me_feel' => 'Bu size … hissettirdi',
