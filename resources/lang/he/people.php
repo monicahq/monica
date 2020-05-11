@@ -498,7 +498,7 @@ return [
     'avatar_gravatar' => 'ה־Gravatar שמשויך לכתובת הדוא״ל של משתמש זה. <a href="https://gravatar.com/">Gravatar</a> היא מערכת גלובלית שמאפשרת למשתמשים לשייך כתובות דוא״ל לתמונות.',
     'avatar_current' => 'להשאיר את התמונה הייצוגית הנוכחית',
     'avatar_photo' => 'מתמונה שהעלית',
-    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
+    'avatar_crop_new_avatar_photo' => 'חיתוך התמונה הייצוגית החדשה',
 
     // emotions
     'emotion_this_made_me_feel' => 'התחושה שקיבלת היא…',
