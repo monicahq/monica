@@ -498,6 +498,7 @@ return [
     'avatar_gravatar' => 'Den Gravatar, welcher der E-Mail-Adresse dieser Person zugeordnet ist. <a href="https://gravatar.com/">Gravatar</a> ist ein globales System, mit dem Benutzer E-Mail-Adressen mit Fotos verknüpfen können.',
     'avatar_current' => 'Aktuellen Avatar beibehalten',
     'avatar_photo' => 'Ein Foto hochladen',
+    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
     // emotions
     'emotion_this_made_me_feel' => 'Dadurch fühlen sie sich…',
