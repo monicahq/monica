@@ -498,6 +498,7 @@ return [
     'avatar_gravatar' => 'The Gravatar dat geassocieerd is met dit contact. <a href="https://gravatar.com/">Gravatar</a> is een wereldwijd systeem dat gebruikers hun emailadres laat associëren met hun foto\'s.',
     'avatar_current' => 'Huidige avatar houden',
     'avatar_photo' => 'Van een foto die je upload',
+    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
     // emotions
     'emotion_this_made_me_feel' => 'Je voelde je…',
