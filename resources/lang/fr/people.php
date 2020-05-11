@@ -498,6 +498,7 @@ return [
     'avatar_gravatar' => 'Le Gravatar associé à l’adresse courriel de cette personne. <a href="https://gravatar.com/">Gravatar</a> est un système global qui permet aux utilisateurs d’associer des adresses courriel avec des photos.',
     'avatar_current' => 'Conserver la photo de profil actuelle',
     'avatar_photo' => 'À partir d’une photo que vous téléchargez',
+    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
     // emotions
     'emotion_this_made_me_feel' => 'Cela vous fait sentir …',
