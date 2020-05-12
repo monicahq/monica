@@ -49,7 +49,7 @@
     "@hokify/vuejs-datepicker": "^2.0.2",
     "animate.css": "^4.1.0",
     "axios": "^0.19.2",
-    "bootstrap": "^4.0.0",
+    "bootstrap": "^4.5.0",
     "font-awesome": "^4.7.0",
     "hint.css": "^2.3.2",
     "jquery": "^3.5.1",
