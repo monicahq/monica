@@ -13,11 +13,16 @@
     @endif
 
     {{-- AGE --}}
-    @if ($relationship->ofContact->birthday_special_date_id)
-      @if ($relationship->ofContact->birthdate->getAge())
-        <span class="{{ htmldir() == 'ltr' ? '' : 'fr' }}">({{ $relationship->ofContact->birthdate->getAge() }})</span>
+    @if ($relationship->ofContact->is_dead)
+      @if ($relationship->ofContact->deceasedDate)
+        <span class="{{ htmldir() == 'ltr' ? '' : 'fr' }}">({{ $relationship->ofContact->getAgeAtDeath() }})</span>
+      @endif
+    @elseif ($relationship->ofContact->birthday_special_date_id)
+      @if ($relationship->ofContact->birthdate)
+<span class="{{ htmldir() == 'ltr' ? '' : 'fr' }}">({{ $relationship->ofContact->birthdate->getAge() }})</span>
       @endif
     @endif
+
 
     {{-- ACTIONS: EDIT/DELETE --}}
     <a href="{{ route('people.relationships.edit', [$contact, $relationship]) }}" class="action-link {{ $contact->hashID() }}-edit-relationship">
