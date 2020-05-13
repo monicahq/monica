@@ -13,29 +13,30 @@
 
 Monica is a great open source personal relationship management system.
 
-* [Introduction](#introduction)
-  * [Purpose](#purpose)
-  * [Features](#features)
-  * [Who is it for?](#who-is-it-for)
-  * [What Monica isn't](#what-monica-isnt)
-  * [Where does this tool come from?](#where-does-this-tool-come-from)
-* [Get started](#get-started)
-  * [Requirements](#requirements)
-  * [Update your instance](#update-your-instance)
-* [Contribute](#contribute)
-  * [As a community](#as-a-community)
-* [Contribute as a developer](#contribute-as-a-developer)
-* [Principles, vision, goals and strategy](#principles-vision-goals-and-strategy)
-  * [Principles](#principles)
-  * [Vision](#vision)
-  * [Goals](#goals)
-  * [Strategy](#strategy)
-  * [Monetization](#monetization)
-  * [Why Open Source?](#why-open-source)
-  * [Patreon](#patreon)
-* [Contact](#contact)
-* [Thank you, open source](#thank-you-open-source)
-* [License](#license)
+- [Introduction](#introduction)
+  - [Purpose](#purpose)
+  - [Features](#features)
+  - [Who is it for?](#who-is-it-for)
+  - [What Monica isn't](#what-monica-isnt)
+  - [Where does this tool come from?](#where-does-this-tool-come-from)
+- [Get started](#get-started)
+  - [Requirements](#requirements)
+  - [Update your instance](#update-your-instance)
+- [Contribute](#contribute)
+  - [As a community](#as-a-community)
+- [Contribute as a developer](#contribute-as-a-developer)
+- [Principles, vision, goals and strategy](#principles-vision-goals-and-strategy)
+  - [Principles](#principles)
+  - [Vision](#vision)
+  - [Goals](#goals)
+  - [Strategy](#strategy)
+  - [Monetization](#monetization)
+  - [Why Open Source?](#why-open-source)
+  - [Patreon](#patreon)
+- [Contact](#contact)
+- [Team](#team)
+- [Thank you, open source](#thank-you-open-source)
+- [License](#license)
 
 ## Introduction
 
@@ -104,7 +105,7 @@ After a few months, I decided to open source the project so it would help other 
 There are multiple ways of getting started with Monica.
 
 1. You can use our hosted-version (this is the simplest way to use the product) on [https://monicahq.com](https://monicahq.com).
-1. You can install it on your server: follow installation instructions ([here](/docs/installation/index.md)).
+1. You can install it on your server: follow installation instructions ([here](/docs/installation/readme.md)).
 
 Note: while the .com version has a paid plan, there is no limitations on Monica if you install it on a server that you own.
 
@@ -134,7 +135,7 @@ Do you want to help? That's awesome. Here are simple things you can do.
 ## Contribute as a developer
 
 * Read our [Contribution Guide](/CONTRIBUTING.md).
-* Install the developer version locally so you can start contributing [instructions](/docs/contribute/index.md).
+* Install the developer version locally so you can start contributing [instructions](/docs/contribute/readme.md).
 * Look for [issues labelled bugs](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) if you are looking to have an immediate impact on the project.
 * Look for [issues labelled Help wanted](https://github.com/monicahq/monica/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) These are issues that you can solve relatively easily.
 * Look for [issues labelled Good first issue](https://github.com/monicahq/monica/labels/good%20first%20issue) These issues are for people who want to contribute, but try to work on a small feature first.

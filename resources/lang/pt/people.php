@@ -52,6 +52,7 @@ return [
     'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Você tem certeza de que deseja excluir esse contato? A exclusão é permanente.',
     'people_add_birthday_reminder' => 'Desejar feliz aniversário a :name',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
     'people_add_import' => 'Deseja <a href=":url">importar os seus contatos</a>?',
     'people_edit_email_error' => 'Já existe um contacto na sua conta com este endereço de e-mail. Por favor escolha outro.',
     'people_export' => 'Export as vCard',

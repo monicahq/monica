@@ -1,13 +1,4 @@
-# Use Monica
-
-Monica is a personal relationship manager platform.
-It helps you organize the social interactions with your loved ones.
-
-You can use a bunch of nice [features](https://www.monicahq.com/features), or use our [API](https://www.monicahq.com/api).
-See the recent [changelog](https://www.monicahq.com/changelog) to track every changes with it.
-
-
-## Security
+# Security
 
 If the option is set, you can add a [Multi Factor Authentication](https://en.wikipedia.org/wiki/Multi-factor_authentication) device to secure your connection.
 

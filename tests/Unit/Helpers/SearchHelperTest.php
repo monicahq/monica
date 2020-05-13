@@ -19,7 +19,8 @@ class SearchHelperTest extends FeatureTestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
         ]);
-        $searchResults = SearchHelper::searchContacts($contact->first_name, 1, 'created_at');
+        $searchResults = SearchHelper::searchContacts($contact->first_name, 'created_at')
+            ->paginate(1);
 
         $this->assertNotNull($searchResults);
         $this->assertInstanceOf('Illuminate\Pagination\LengthAwarePaginator', $searchResults);
@@ -34,7 +35,8 @@ class SearchHelperTest extends FeatureTestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
         ]);
-        $searchResults = SearchHelper::searchContacts('wrongsearchfield:1', 1, 'created_at');
+        $searchResults = SearchHelper::searchContacts('wrongsearchfield:1', 'created_at')
+            ->paginate(1);
 
         $this->assertNotNull($searchResults);
         $this->assertInstanceOf('Illuminate\Pagination\LengthAwarePaginator', $searchResults);

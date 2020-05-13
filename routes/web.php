@@ -140,9 +140,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::resource('people/{contact}/reminders', 'Contacts\\RemindersController')->except(['index', 'show']);
 
         // Tasks
-        Route::resource('people/{contact}/tasks', 'Contacts\\TasksController')->only([
-            'index',
-        ]);
+        Route::get('people/{contact}/tasks', 'Contacts\\TasksController@index')->name('tasks.get');
         Route::resource('tasks', 'TasksController')->only([
             'index', 'store', 'update', 'destroy',
         ]);

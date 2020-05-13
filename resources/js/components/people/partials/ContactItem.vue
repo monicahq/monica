@@ -72,11 +72,9 @@
     </a>
   </div>
   <div v-else class="item-search-result">
-    <a href="people/add">
-      <div class="avatar avatar-initials avatar-new">+</div>
-      {{ $t('people.people_add_new') }}
-      <span></span>
-    </a>
+    <div class="avatar avatar-initials avatar-new">+</div>
+    {{ $t('people.people_add_new') }}
+    <span></span>
   </div>
 </template>
 

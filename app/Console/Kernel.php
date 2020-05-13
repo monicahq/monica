@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\Clean;
 use App\Console\Commands\Update;
+use App\Console\Commands\Passport;
 use App\Console\Commands\ExportAll;
 use App\Console\Commands\ImportCSV;
 use App\Console\Commands\SetupTest;
@@ -14,6 +15,7 @@ use App\Console\Commands\LangGenerate;
 use App\Console\Commands\SetUserAdmin;
 use App\Console\Commands\Deactivate2FA;
 use App\Console\Commands\SendReminders;
+use App\Console\Commands\SendTestEmail;
 use App\Console\Commands\SentryRelease;
 use App\Console\Commands\SendStayInTouch;
 use App\Console\Commands\SetupProduction;
@@ -47,9 +49,11 @@ class Kernel extends ConsoleKernel
         MigrateDatabaseCollation::class,
         MoveAvatars::class,
         MoveAvatarsToPhotosDirectory::class,
+        Passport::class,
         PingVersionServer::class,
         SendReminders::class,
         SendStayInTouch::class,
+        SendTestEmail::class,
         SentryRelease::class,
         SetPremiumAccount::class,
         SetupProduction::class,

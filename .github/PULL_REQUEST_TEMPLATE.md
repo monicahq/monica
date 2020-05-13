@@ -11,7 +11,7 @@ Please read the list below. Feel free to delete this text after but we need you 
 
 ### General checks
 - [ ] Make sure that the change you propose is the smallest possible.
-- [ ] The name of the PR should follow the [conventional commits guideline](https://github.com/monicahq/monica/blob/master/docs/contribute/index.md#conventional-commits) that the project follows.
+- [ ] The name of the PR should follow the [conventional commits guideline](https://github.com/monicahq/monica/blob/master/docs/contribute/readme.md#conventional-commits) that the project follows.
 
 ### Front-end changes
 - [ ] If you change the UI, make sure to ask repositories administrators first about your changes by pinging djaiss or asbiin in this PR.

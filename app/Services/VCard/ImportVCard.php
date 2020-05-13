@@ -211,7 +211,16 @@ class ImportVCard extends BaseService
             ];
         }
 
+        if ($contact) {
+            $timestamps = $contact->timestamps;
+            $contact->timestamps = false;
+        }
+
         $contact = $this->importEntry($contact, $entry);
+
+        if (isset($timestamps)) {
+            $contact->timestamps = $timestamps;
+        }
 
         return [
             'contact_id' => $contact->id,
@@ -713,6 +722,7 @@ class ImportVCard extends BaseService
                     'month' => $birthdate->month,
                     'year' => $is_year_unknown ? null : $birthdate->year,
                     'add_reminder' => true,
+                    'is_deceased' => false,
                 ]);
             }
         }

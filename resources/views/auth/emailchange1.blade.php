@@ -28,12 +28,12 @@
               <div class="form-group">
                 <label>{{ trans('auth.email_change_current_email') }}</label>
                 {{ $email }}
-                <input type="hidden" class="form-control" id="email" name="email" value="{{ $email }}">
+                <input type="hidden" class="form-control" id="email" name="email" value="{{ $email }}" required autocomplete="email" autofocus>
               </div>
 
               <div class="form-group">
                 <label for="password">{{ trans('auth.password') }}</label>
-                <input type="password" class="form-control" id="password" name="password">
+                <input type="password" class="form-control" id="password" name="password" required autocomplete="current-password">
               </div>
 
               <div class="form-group actions">

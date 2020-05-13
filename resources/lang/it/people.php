@@ -52,6 +52,7 @@ return [
     'people_delete_message' => 'Elimina contatto',
     'people_delete_confirmation' => 'Rimuovere questo contatto? Questo cambio è permanente.',
     'people_add_birthday_reminder' => 'Fai gli auguri di compleanno a :name',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
     'people_add_import' => 'Vuoi <a href=":url">importare i tuoi contatti</a>?',
     'people_edit_email_error' => 'Esiste già un contatto nel tuo account con questo indirizzo email. Scegline un altro, per favore.',
     'people_export' => 'Esporta in formato vCard',

@@ -52,6 +52,7 @@ return [
     'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Jeste li sigurni da želite izbrisati kontakt? Brisanje je trajno.',
     'people_add_birthday_reminder' => 'Zaželi sretan rođendan :name',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
     'people_add_import' => 'Želite li <a href=":url">uvesti svoje kontakte</a>?',
     'people_edit_email_error' => 'Već postoji kontakt s ovom email adresom. Molimo unesite drugu.',
     'people_export' => 'Izvezi kao vCard',

@@ -28,7 +28,12 @@ class DashboardController extends Controller
             )->with('debts.contact')
             ->first();
 
-        if ($account->contacts()->real()->active()->count() === 0) {
+        $numberOfContacts = $account->contacts()
+                                    ->real()
+                                    ->active()
+                                    ->count();
+
+        if ($numberOfContacts === 0) {
             return view('dashboard.blank');
         }
 
@@ -53,14 +58,14 @@ class DashboardController extends Controller
             $lastUpdatedContactsCollection->push(json_encode($data));
         }
 
-        $debt = $account->debts->where('status', 'inprogress');
+        $debts = $account->debts()->inProgress();
 
-        $debt_due = $debt->where('in_debt', 'yes')
+        $debt_due = $debts->due()->get()
             ->reduce(function ($totalDueDebt, Debt $debt) {
                 return $totalDueDebt + $debt->amount;
             }, 0);
 
-        $debt_owed = $debt->where('in_debt', 'no')
+        $debt_owed = $debts->owed()->get()
             ->reduce(function ($totalOwedDebt, Debt $debt) {
                 return $totalOwedDebt + $debt->amount;
             }, 0);
@@ -77,7 +82,7 @@ class DashboardController extends Controller
 
         $data = [
             'lastUpdatedContacts' => $lastUpdatedContactsCollection,
-            'number_of_contacts' => $account->contacts()->real()->active()->count(),
+            'number_of_contacts' => $numberOfContacts,
             'number_of_reminders' => $account->reminders_count,
             'number_of_notes' => $account->notes_count,
             'number_of_activities' => $account->activities_count,
@@ -85,7 +90,7 @@ class DashboardController extends Controller
             'number_of_tasks' => $account->tasks_count,
             'debt_due' => $debt_due,
             'debt_owed' => $debt_owed,
-            'debts' => $debt,
+            'debts' => $debts,
             'user' => auth()->user(),
             'changelogs' => $changelogs,
             'reminderOutboxes' => $reminderOutboxes,
