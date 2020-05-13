@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\URL;
 use App\Exceptions\WrongIdException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Config;
 
 class RouteServiceProvider extends ServiceProvider
 {
