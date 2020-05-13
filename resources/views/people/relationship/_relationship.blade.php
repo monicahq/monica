@@ -18,7 +18,7 @@
         <span class="{{ htmldir() == 'ltr' ? '' : 'fr' }}">({{ $relationship->ofContact->getAgeAtDeath() }})</span>
       @endif
     @elseif ($relationship->ofContact->birthday_special_date_id)
-      @if ($relationship->ofContact->birthdate)
+      @if ($relationship->ofContact->birthdate->getAge())
 <span class="{{ htmldir() == 'ltr' ? '' : 'fr' }}">({{ $relationship->ofContact->birthdate->getAge() }})</span>
       @endif
     @endif
