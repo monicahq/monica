@@ -19,6 +19,6 @@ return [
     'user' => 'لم يتم العثور على أيّ حسابٍ بهذا العنوان الإلكتروني',
     'changed' => 'Password changed successfully.',
     'invalid' => 'كلمة السر الحالية التي أدخلتها غير صحيحة.',
-    'throttled' => 'Please wait before retrying.',
+    'throttled' => 'الرجاء الانتظار قبل إعادة المحاولة.',
 
 ];

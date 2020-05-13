@@ -34,7 +34,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /**
- * @property \App\Models\Instance\SpecialDate $birthdate
+ * @property \App\Models\Instance\SpecialDate|null $birthdate
  */
 class Contact extends Model
 {
@@ -689,6 +689,37 @@ class Contact extends Model
                     $completeName = $completeName.' ('.$this->nickname.')';
                 }
                 break;
+            case 'nickname_firstname_lastname':
+                $completeName = $this->first_name;
+
+                if (! is_null($this->middle_name)) {
+                    $completeName = $completeName.' '.$this->middle_name;
+                }
+
+                if (! is_null($this->last_name)) {
+                    $completeName = $completeName.' '.$this->last_name;
+                }
+
+                if (! is_null($this->nickname)) {
+                    $completeName = $this->nickname.' ('.$completeName.')';
+                }
+                break;
+            case 'nickname_lastname_firstname':
+                $completeName = '';
+                if (! is_null($this->last_name)) {
+                    $completeName = $this->last_name.' ';
+                }
+
+                $completeName = $completeName.$this->first_name;
+
+                if (! is_null($this->middle_name)) {
+                    $completeName = $completeName.' '.$this->middle_name;
+                }
+
+                if (! is_null($this->nickname)) {
+                    $completeName = $this->nickname.' ('.$completeName.')';
+                }
+                break;
             case 'lastname_nickname_firstname':
                 $completeName = '';
                 if (! is_null($this->last_name)) {
@@ -964,7 +995,7 @@ class Contact extends Model
                 $avatarURL = $this->avatar_gravatar_url;
                 break;
             case 'photo':
-                $avatarURL = $this->avatarPhoto()->get()->first()->url();
+                $avatarURL = $this->avatarPhoto()->first()->url();
                 break;
             case 'default':
             default:

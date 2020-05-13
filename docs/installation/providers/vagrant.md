@@ -1,10 +1,16 @@
-# Installing Monica on Vagrant
+# Installing Monica on Vagrant <!-- omit in toc -->
 
 <img width="96" height="117" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Vagrant.png/197px-Vagrant.png" />
 
 Monicahq vagrant box is available on [Vagrant Cloud](https://app.vagrantup.com/monicahq/boxes/monicahq).
 
 The only provider for this box is virtualbox.
+
+- [Run the monicahq vagrant box](#run-the-monicahq-vagrant-box)
+- [Default Monica configuration in the VM](#default-monica-configuration-in-the-vm)
+  - [Database users](#database-users)
+  - [Apache configuration](#apache-configuration)
+- [Build your own image](#build-your-own-image)
 
 ## Run the monicahq vagrant box
 
@@ -20,9 +26,7 @@ curl -sS https://raw.githubusercontent.com/monicahq/monica/master/scripts/vagran
 ```
 4. Edit Vagrantfile to set the appropriate host port number (default: 8080)
 ```
-...
 config.vm.network "forwarded_port", guest: 80, host: 8080
-...
 ```
 5. Launch the virtual machine with
 ```sh

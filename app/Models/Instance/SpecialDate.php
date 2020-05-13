@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property bool $is_age_based
  * @property bool $is_year_unknown
- * @property \Illuminate\Support\Carbon|null $date
+ * @property \Carbon\Carbon|null $date
  */
 class SpecialDate extends Model
 {

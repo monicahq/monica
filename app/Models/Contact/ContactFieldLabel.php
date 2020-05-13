@@ -6,6 +6,10 @@ use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property string $label
+ * @property string $label_i18n
+ */
 class ContactFieldLabel extends Model
 {
     /**
