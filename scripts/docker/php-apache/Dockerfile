@@ -15,17 +15,22 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0"
 
-RUN apt-get update && \
+RUN set -ex; \
+    \
+    apt-get update; \
     apt-get -y --no-install-recommends install \
       git cron netcat apt apt-transport-https \
       locales sudo openssh-client ca-certificates \
-      curl unzip zip tar bzip2 supervisor rsync && \
-    mkdir /var/log/supervisord /var/run/supervisord && \
+      curl unzip zip tar bzip2 supervisor rsync \
+    ; \
+    mkdir /var/log/supervisord /var/run/supervisord; \
     rm -rf /var/lib/apt/lists/*
 
 # Install common extensions
-RUN apt-get update && \
-    apt-get -y autoremove && \
+RUN set -ex; \
+    \
+    apt-get update; \
+    apt-get -y autoremove; \
     apt-get -y --no-install-recommends install \
                 libicu-dev \
                 zlib1g-dev \
@@ -35,9 +40,10 @@ RUN apt-get update && \
                 libfreetype6-dev \
                 libjpeg62-turbo-dev \
                 libgmp-dev \
-                libsodium-dev && \
-    docker-php-ext-configure intl && \
-    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
+                libsodium-dev \
+    ; \
+    docker-php-ext-configure intl; \
+    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/; \
     docker-php-ext-install -j$(nproc) \
                 intl \
                 zip \
@@ -51,7 +57,8 @@ RUN apt-get update && \
                 soap \
                 sodium \
                 mbstring \
-                opcache && \
+                opcache \
+    ; \
     apt-get -y remove \
                 icu-devtools \
                 libicu-dev \
@@ -62,21 +69,22 @@ RUN apt-get update && \
                 libfreetype6-dev \
                 libjpeg62-turbo-dev \
                 libgmp-dev \
-                libsodium-dev && \
-    apt-get -y clean && \
+                libsodium-dev; \
+    apt-get -y clean; \
     rm -rf /var/lib/apt/lists/*
 
 # Create a user to own all the code and assets and give them a working
 # directory
-RUN mkdir -p /usr/src/monica && \
-    addgroup --gid 1001 monica && \
-    adduser --uid 1001 --ingroup monica --home /usr/src/monica --shell /bin/bash --no-create-home monica && \
-    adduser monica www-data && \
-    chown -R monica:www-data /usr/src/monica && \
-    echo 'monica ALL=NOPASSWD: ALL' >> /etc/sudoers.d/50-monica && \
+RUN set -ex; \
+    \
+    mkdir -p /var/www/monica; \
+    addgroup --gid 1001 monica; \
+    adduser --uid 1001 --ingroup monica --home /var/www/monica --shell /bin/bash --no-create-home monica; \
+    adduser monica www-data; \
+    chown -R monica:www-data /var/www/monica; \
+    echo 'monica ALL=NOPASSWD: ALL' >> /etc/sudoers.d/50-monica; \
     echo 'Defaults    env_keep += "DEBIAN_FRONTEND"' >> /etc/sudoers.d/env_keep
-WORKDIR /usr/src/monica
-VOLUME /var/www/monica
+WORKDIR /var/www/monica
 
 
 # Copy the local (outside Docker) source into the working directory,
@@ -100,7 +108,9 @@ COPY --chown=monica:www-data public ./public
 COPY --chown=monica:www-data resources ./resources
 COPY --chown=monica:www-data routes ./routes
 
-RUN mkdir -p bootstrap/cache; \
+RUN set -ex; \
+    \
+    mkdir -p bootstrap/cache; \
     mkdir -p storage; \
     chown -R monica:www-data bootstrap/cache storage; \
     chmod -R g+w bootstrap/cache storage
@@ -114,9 +124,11 @@ ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
 COPY scripts/docker/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 # Sentry
-RUN echo $VCS_REF > .sentry-release; \
+RUN set -ex; \
+    \
+    echo $VCS_REF > .sentry-release; \
     echo $COMMIT > .sentry-commit; \
-    mkdir -p /root/.local/bin && \
+    mkdir -p /root/.local/bin; \
     curl -sL https://sentry.io/get-cli/ | INSTALL_DIR=/root/.local/bin bash
 
 # Composer installation
@@ -125,26 +137,28 @@ RUN install-composer.sh
 
 # Install composer dependencies
 USER monica
-RUN composer global require hirak/prestissimo; \
+RUN set -ex; \
+    \
+    composer global require hirak/prestissimo; \
+    mkdir -p storage/framework/views; \
     composer install --no-interaction --no-suggest --no-progress --no-dev --ignore-platform-reqs; \
     composer global remove hirak/prestissimo; \
+    \
     composer clear-cache; \
     rm -rf .composer
 
 USER root
-WORKDIR /var/www/monica
 
 # Set crontab for schedules
-RUN set -ex && \
-	cd /etc/cron.hourly && \
-	{ \
-		echo '#!/bin/sh'; \
-		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v > /proc/1/fd/1 2> /proc/1/fd/2'; \
-	} | tee monica && \
-	chmod a+x monica
+RUN set -ex; \
+    \
+    cd /etc/cron.hourly; \
+    { \
+        echo '#!/bin/sh'; \
+        echo '/usr/bin/php /var/www/monica/artisan schedule:run -v > /proc/1/fd/1 2> /proc/1/fd/2'; \
+    } | tee monica; \
+    chmod a+x monica
 
-COPY scripts/docker/upgrade.exclude \
-    /usr/local/share/
 COPY scripts/docker/entrypoint.sh \
     scripts/docker/php-apache/cron.sh \
     scripts/docker/queue.sh \
@@ -154,9 +168,11 @@ ENTRYPOINT ["entrypoint.sh"]
 
 # Apache2
 COPY scripts/docker/000-default.conf /etc/apache2/sites-available/
-RUN echo 'ServerName "monica"' > /etc/apache2/conf-available/hostname.conf
-RUN a2enconf hostname
-RUN a2enmod rewrite cache headers
+RUN set -ex; \
+    \
+    echo 'ServerName "monica"' > /etc/apache2/conf-available/hostname.conf; \
+    a2enconf hostname; \
+    a2enmod rewrite cache headers
 
 EXPOSE 80
 

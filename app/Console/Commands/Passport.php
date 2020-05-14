@@ -80,7 +80,7 @@ class Passport extends Command
     {
         $this->info('Checking Personal Access Client...', OutputInterface::VERBOSITY_VERBOSE);
 
-        if (PersonalAccessClient::all()->count() > 0) {
+        if (PersonalAccessClient::count() > 0) {
             $this->info('✓ Personal Access Client already created.', OutputInterface::VERBOSITY_VERBOSE);
 
             return;

@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /**
- * @property \App\Models\Instance\SpecialDate $birthdate
+ * @property \App\Models\Instance\SpecialDate|null $birthdate
  */
 class Contact extends Model
 {
@@ -996,7 +996,7 @@ class Contact extends Model
                 $avatarURL = $this->avatar_gravatar_url;
                 break;
             case 'photo':
-                $avatarURL = $this->avatarPhoto()->get()->first()->url();
+                $avatarURL = $this->avatarPhoto()->first()->url();
                 break;
             case 'default':
             default:

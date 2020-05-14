@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * @property Account $account
  * @property Contact $contact
- * @property Contact $recipient
+ * @property Contact|null $recipient
  * @property string $name
  * @property string $comment
  * @property string $url
@@ -145,7 +145,7 @@ class Gift extends Model
         if ($this->hasParticularRecipient()) {
             $recipient = $this->recipient;
             if (! is_null($recipient)) {
-                return $this->recipient->first_name;
+                return $recipient->first_name;
             }
         }
 
