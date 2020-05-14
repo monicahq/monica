@@ -15,10 +15,14 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0"
 
-RUN apk update && apk upgrade
-RUN apk add --virtual .build-deps \
-        curl openssl bash
-RUN apk add supervisor netcat-openbsd rsync \
+RUN set -ex; \
+    \
+    apk update; \
+    apk upgrade; \
+    apk add --virtual .build-deps \
+        curl openssl bash \
+    ; \
+    apk add supervisor netcat-openbsd rsync \
         #- base
         php7 php7-intl php7-openssl php7-ctype \
         php7-zip php7-zlib php7-opcache \
@@ -54,11 +58,12 @@ RUN apk add supervisor netcat-openbsd rsync \
 
 # Create a user to own all the code and assets and give them a working
 # directory
-RUN mkdir -p /usr/src/monica; \
+RUN set -ex; \
+    \
+    mkdir -p /var/www/monica; \
     grep -q apache /etc/group || addgroup -S apache; \
-    adduser -D monica apache -h /usr/src/monica
-WORKDIR /usr/src/monica
-VOLUME /var/www/monica
+    adduser -D monica apache -h /var/www/monica
+WORKDIR /var/www/monica
 
 
 # Copy the local (outside Docker) source into the working directory,
@@ -82,7 +87,9 @@ COPY --chown=monica:monica public ./public
 COPY --chown=monica:monica resources ./resources
 COPY --chown=monica:monica routes ./routes
 
-RUN mkdir -p bootstrap/cache; \
+RUN set -ex; \
+    \
+    mkdir -p bootstrap/cache; \
     mkdir -p storage; \
     chown -R monica:apache bootstrap/cache storage; \
     chmod -R g+w bootstrap/cache storage
@@ -95,42 +102,40 @@ ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
     PHP_OPCACHE_MAX_WASTED_PERCENTAGE="10"
 COPY scripts/docker/opcache.ini /usr/php7/conf.d/opcache.ini
 
-# Sentry
-RUN echo $VCS_REF > .sentry-release; \
-    echo $COMMIT > .sentry-commit; \
-    mkdir -p /root/.local/bin && \
-    curl -sL https://sentry.io/get-cli/ | INSTALL_DIR=/root/.local/bin bash
-
 # Composer installation
 COPY scripts/docker/install-composer.sh /usr/local/sbin/
 RUN install-composer.sh
 
 # Install composer dependencies
 USER monica
-RUN composer global require hirak/prestissimo; \
+RUN set -ex; \
+    \
+    composer global require hirak/prestissimo; \
+    mkdir -p storage/framework/views; \
     composer install --no-interaction --no-suggest --no-progress --no-dev --ignore-platform-reqs; \
     composer global remove hirak/prestissimo; \
+    \
     composer clear-cache; \
     rm -rf .composer
 
 USER root
-WORKDIR /var/www/monica
 
 # Set crontab for schedules
-RUN set -ex && \
-	cd /etc/periodic/hourly/ && \
+RUN set -ex; \
+    \
+	cd /etc/periodic/hourly/; \
 	{ \
 		echo '#!/bin/sh'; \
 		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v > /proc/1/fd/1 2> /proc/1/fd/2'; \
-	} | tee monica && \
+	} | tee monica; \
 	chmod a+x monica
 
 # Cleanup
-RUN apk del .build-deps && \
+RUN set -ex; \
+    \
+    apk del .build-deps; \
     rm -rf /var/cache/apk/*
 
-COPY scripts/docker/upgrade.exclude \
-    /usr/local/share/
 COPY scripts/docker/entrypoint.sh \
     scripts/docker/cron.sh \
     scripts/docker/queue.sh \
@@ -139,8 +144,9 @@ ENTRYPOINT ["entrypoint.sh"]
 
 # FPM
 RUN apk add php7-fpm
-RUN set -ex && \
-	cd /etc/php7/php-fpm.d && \
+RUN set -ex; \
+    \
+	cd /etc/php7/php-fpm.d; \
 	{ \
 		echo '[global]'; \
 		echo 'error_log = /dev/stderr'; \
@@ -149,7 +155,8 @@ RUN set -ex && \
 		echo 'access.log = /dev/stdout'; \
 		echo 'catch_workers_output = yes'; \
         echo 'clear_env = no'; \
-	} | tee docker.conf && \
+	} | tee docker.conf; \
+    \
 	{ \
 		echo '[global]'; \
 		echo 'daemonize = no'; \

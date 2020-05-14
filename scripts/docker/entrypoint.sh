@@ -31,25 +31,8 @@ waitfordb() {
 
 if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
 
-    MONICASRC=/usr/src/monica
     MONICADIR=/var/www/monica
     ARTISAN="php ${MONICADIR}/artisan"
-
-    # Update application sources
-    echo "Syncing sources..."
-    if [ "$(id -u)" = 0 ]; then
-        rsync_options="-rlDog --chown monica:monica"
-    else
-        rsync_options="-rlD"
-    fi
-    rsync $rsync_options --delete --exclude-from=/usr/local/share/upgrade.exclude $MONICASRC/ $MONICADIR/
-
-    for dir in storage; do
-        if [ ! -d "$MONICADIR/$dir" ] || directory_empty "$MONICADIR/$dir"; then
-            rsync $rsync_options --include "/$dir/" --exclude '/*' $MONICASRC/ $MONICADIR/
-        fi
-    done
-    echo "...done!"
 
     # Ensure storage directories are present
     STORAGE=${MONICADIR}/storage

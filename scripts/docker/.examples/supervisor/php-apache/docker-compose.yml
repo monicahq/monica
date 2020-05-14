@@ -10,7 +10,6 @@ services:
       - 80:80
     volumes:
       - data:/var/www/monica/storage
-      - www:/var/www/monica
     restart: always
 
   db:
@@ -27,7 +26,5 @@ services:
 volumes:
   data:
     name: data
-  www:
-    name: www
   mysql:
     name: mysql

@@ -25,7 +25,6 @@ services:
     env_file: .env
     volumes:
       - data:/var/www/monica/storage
-      - www:/var/www/monica
     restart: always
     depends_on:
       - db
@@ -52,7 +51,6 @@ services:
     restart: always
     volumes:
       - data:/var/www/monica/storage
-      - www:/var/www/monica:ro
     command: cron.sh
     depends_on:
       - db
@@ -64,7 +62,6 @@ services:
     restart: always
     volumes:
       - data:/var/www/monica/storage
-      - www:/var/www/monica:ro
     command: queue.sh
     depends_on:
       - db
@@ -79,7 +76,6 @@ services:
       - LETSENCRYPT_EMAIL=
     volumes:
       - data:/var/www/monica/storage:ro
-      - www:/var/www/monica:ro
     depends_on:
       - app
     networks:
@@ -118,8 +114,6 @@ services:
 volumes:
   data:
     name: data
-  www:
-    name: www
   mysql:
     name: mysql
   certs:
