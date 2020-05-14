@@ -8,7 +8,6 @@ services:
     env_file: .env
     volumes:
       - data:/var/www/monica/storage
-      - www:/var/www/monica
     restart: always
 
   web:
@@ -18,7 +17,6 @@ services:
       - 80:80
     volumes:
       - data:/var/www/monica/storage:ro
-      - www:/var/www/monica:ro
     depends_on:
       - app
 
@@ -36,7 +34,5 @@ services:
 volumes:
   data:
     name: data
-  www:
-    name: www
   mysql:
     name: mysql
