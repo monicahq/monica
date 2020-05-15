@@ -18,9 +18,11 @@ pr:
     - '*'
 
 variables:
-  phpVersion: 7.3
-  COMPOSER_HOME: $(Pipeline.Workspace)/.composer
-  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+- group: Monica
+- name: COMPOSER_HOME
+  value: $(Pipeline.Workspace)/.composer
+- name: YARN_CACHE_FOLDER
+  value: $(Pipeline.Workspace)/.yarn
 
 stages:
 - stage: build
@@ -36,7 +38,7 @@ stages:
 
 - ${{ if in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI') }}:
   - stage: deploy
-    displayName: 'Deploy'
+    displayName: Deploy
     dependsOn: build
 
     jobs:
@@ -44,7 +46,7 @@ stages:
       - deployment: deploy_dist
         pool:
           vmImage: 'ubuntu-latest'
-        environment: 'monica'
+        environment: monica
         strategy:
           runOnce:
             deploy:
@@ -53,7 +55,7 @@ stages:
               - checkout: self
               - template: .azure/step-composer-install.yml
                 parameters:
-                  no_dev: 'true'
+                  no_dev: true
               - template: .azure/step-deploy-dist.yml
 
     - ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/tags/')) }}:
