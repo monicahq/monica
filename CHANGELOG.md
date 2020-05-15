@@ -23,6 +23,7 @@
 
 ### Fixes:
 
+* Fix age of deceased person in relationship sidebar
 * Fix google2fa column size
 * Fix errors display for api
 * Fix currency in double
