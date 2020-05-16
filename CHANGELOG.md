@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Display age of death to relationship sidebar if the person is dead
 * Crop contact photos on upload
 * Add Traditional Chinese language
 * Add console command to test email delivery
