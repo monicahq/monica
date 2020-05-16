@@ -2,6 +2,8 @@
 
 ### New features:
 
+* Display age of death to relationship sidebar if the person is dead
+* Fix age of deceased person in relationship sidebar
 * Crop contact photos on upload
 * Add Traditional Chinese language
 * Add console command to test email delivery
@@ -23,7 +25,6 @@
 
 ### Fixes:
 
-* Fix age of deceased person in relationship sidebar
 * Fix google2fa column size
 * Fix errors display for api
 * Fix currency in double
