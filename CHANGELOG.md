@@ -24,6 +24,7 @@
 
 ### Fixes:
 
+* Fix subdirectory config url
 * Fix google2fa column size
 * Fix errors display for api
 * Fix currency in double
