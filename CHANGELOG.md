@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Display age of death to relationship sidebar if the person is dead
 * Crop contact photos on upload
 * Add Traditional Chinese language
 * Add console command to test email delivery
@@ -24,6 +25,8 @@
 
 ### Fixes:
 
+* Fix life event categories and types are not translated when adding new life event
+* Fix subdirectory config url
 * Fix google2fa column size
 * Fix errors display for api
 * Fix currency in double

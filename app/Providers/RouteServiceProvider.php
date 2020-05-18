@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\URL;
 use App\Exceptions\WrongIdException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -32,6 +33,10 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
+
+        if (Config::get('app.force_url')) {
+            URL::forceRootUrl(config('app.url'));
+        }
 
         if (App::environment('production')) {
             URL::forceScheme('https');
