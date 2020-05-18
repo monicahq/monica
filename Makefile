@@ -151,18 +151,6 @@ docker_push: docker_tag
 	docker push $(DOCKER_IMAGE):$(BUILD)-alpine-fpm
 	docker push $(DOCKER_IMAGE):$(BUILD)-php-apache
 
-docker_push_bintray: docker_push_bintray_apache docker_push_bintray_fpm
-
-docker_push_bintray_apache: .deploy.json
-	docker tag $(DOCKER_IMAGE) monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
-	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
-	BUILD=$(BUILD) scripts/ci/fix-bintray.sh
-
-docker_push_bintray_fpm: .deploy.json
-	docker tag $(DOCKER_IMAGE):fpm monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)-fpm
-	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)-fpm
-	BUILD=$(BUILD)-fpm scripts/ci/fix-bintray.sh
-
 docker_push_github: docker_push_github_apache docker_push_github_fpm
 
 docker_push_github_apache:
@@ -174,7 +162,6 @@ docker_push_github_fpm:
 	docker push docker.pkg.github.com/monicahq/monica/monica:$(BUILD)-fpm
 
 .PHONY: docker docker_build docker_build_master docker_build_apache docker_build_fpm docker_build_php_apache docker_tag
-.PHONY: docker_push docker_push_bintray docker_push_bintray_apache docker_push_bintray_fpm
 .PHONY: docker_push_github docker_push_github_apache docker_push_github_fpm
 
 build:
@@ -298,10 +285,3 @@ update: .env build-dev
 
 vagrant_build:
 	make -C scripts/vagrant/build package
-
-push_bintray_assets: results/$(ASSETS).tar.bz2 .deploy.json
-	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/ci/bintray-upload.sh
-
-push_bintray_dist: results/$(DESTDIR).tar.bz2 results/$(ASSETS).tar.bz2 .deploy.json
-	INPUT=results/$(DESTDIR).tar.bz2 FILE=$(DESTDIR).tar.bz2 scripts/ci/bintray-upload.sh
-	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/ci/bintray-upload.sh

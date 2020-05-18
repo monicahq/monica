@@ -26,7 +26,6 @@ services:
     env_file: .env
     volumes:
       - data:/var/www/monica/storage
-      - www:/var/www/monica
     restart: always
     depends_on:
       - db
@@ -35,7 +34,7 @@ services:
   db:
     image: mysql:5.7
     environment:
-      - MYSQL_ROOT_PASSWORD=sekret_root_password
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_DATABASE=monica
       - MYSQL_USER=homestead
       - MYSQL_PASSWORD=secret
@@ -53,7 +52,6 @@ services:
     restart: always
     volumes:
       - data:/var/www/monica/storage
-      - www:/var/www/monica:ro
     command: cron.sh
     depends_on:
       - db
@@ -65,7 +63,6 @@ services:
     restart: always
     volumes:
       - data:/var/www/monica/storage
-      - www:/var/www/monica:ro
     command: queue.sh
     depends_on:
       - db
@@ -78,7 +75,6 @@ services:
       - VIRTUAL_HOST=monica.local
     volumes:
       - data:/var/www/monica/storage:ro
-      - www:/var/www/monica:ro
     depends_on:
       - app
     networks:
@@ -116,8 +112,6 @@ services:
 volumes:
   data:
     name: data
-  www:
-    name: www
   db:
     name: db
   certs:

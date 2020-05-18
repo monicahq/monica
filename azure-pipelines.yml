@@ -18,9 +18,11 @@ pr:
     - '*'
 
 variables:
-  phpVersion: 7.3
-  COMPOSER_HOME: $(Pipeline.Workspace)/.composer
-  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+- group: Monica
+- name: COMPOSER_HOME
+  value: $(Pipeline.Workspace)/.composer
+- name: YARN_CACHE_FOLDER
+  value: $(Pipeline.Workspace)/.yarn
 
 stages:
 - stage: build
@@ -34,53 +36,40 @@ stages:
   - template: .azure/job-reporting.yml
   - template: .azure/job-test-migrations.yml
 
-- stage: deploy
-  displayName: 'Deploy'
-  dependsOn: build
-  condition: in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI')
+- ${{ if in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI') }}:
+  - stage: deploy
+    displayName: Deploy
+    dependsOn: build
 
-  jobs:
-  - deployment: deploy_dist
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
-    pool:
-      vmImage: 'ubuntu-latest'
-    environment: 'monica'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: none
-          - checkout: self
-          - template: .azure/step-composer-install.yml
-            parameters:
-              no_dev: 'true'
-          - template: .azure/step-deploy-dist.yml
+    jobs:
+    - ${{ if startsWith(variables['Build.SourceBranch'], 'refs/tags/') }}:
+      - deployment: deploy_dist
+        pool:
+          vmImage: 'ubuntu-latest'
+        environment: monica
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - download: none
+              - checkout: self
+              - template: .azure/step-composer-install.yml
+                parameters:
+                  no_dev: true
+              - template: .azure/step-deploy-dist.yml
 
-  - deployment: deploy_docker_master
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
-    pool:
-      vmImage: 'ubuntu-latest'
-    environment: 'monica'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: none
-          - checkout: self
-          - template: .azure/step-docker-build.yml
-          - template: .azure/step-docker-push-github.yml
-
-  - deployment: deploy_docker
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
-    pool:
-      vmImage: 'ubuntu-latest'
-    environment: 'monica'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: none
-          - checkout: self
-          - template: .azure/step-docker-build.yml
-          - template: .azure/step-docker-push-github.yml
-          - template: .azure/step-docker-push.yml
+    - ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/tags/')) }}:
+      - deployment: deploy_docker
+        pool:
+          vmImage: 'ubuntu-latest'
+        environment: 'monica'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - download: none
+              - checkout: self
+              - template: .azure/step-docker-build.yml
+              - template: .azure/step-docker-push-github.yml
+              - ${{ if startsWith(variables['Build.SourceBranch'], 'refs/tags/') }}:
+                - template: .azure/step-docker-push.yml

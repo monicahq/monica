@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\DBHelper;
 use Illuminate\View\View;
 use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;
@@ -81,9 +80,9 @@ class ContactsController extends Controller
 
         $contacts = $user->account->contacts()->real();
         if ($active) {
-            $nbArchived = $contacts->count();
-            $contacts = $contacts->active();
-            $nbArchived = $nbArchived - $contacts->count();
+            $archived = (clone $contacts)->notActive();
+            $contacts = (clone $contacts)->active();
+            $nbArchived = $archived->count();
         } else {
             $contacts = $contacts->notActive();
             $nbArchived = $contacts->count();
@@ -99,8 +98,10 @@ class ContactsController extends Controller
             $tags = collect();
 
             while ($request->input('tag'.$count)) {
-                $tag = Tag::where('account_id', auth()->user()->account_id)
-                            ->where('name_slug', $request->input('tag'.$count));
+                $tag = Tag::where([
+                    'account_id' => auth()->user()->account_id,
+                    'name_slug' => $request->input('tag'.$count),
+                ]);
                 if ($tag->count() > 0) {
                     $tag = $tag->get();
 
@@ -148,30 +149,33 @@ class ContactsController extends Controller
     /**
      * Show the form to add a new contact.
      *
+     * @param Request $request
      * @return View|Factory|RedirectResponse
      */
-    public function create()
+    public function create(Request $request)
     {
-        return $this->createForm(false);
+        return $this->createForm($request, false);
     }
 
     /**
      * Show the form in case the contact is missing.
      *
+     * @param Request $request
      * @return View|Factory|RedirectResponse
      */
-    public function missing()
+    public function missing(Request $request)
     {
-        return $this->createForm(true);
+        return $this->createForm($request, true);
     }
 
     /**
      * Show the Add user form unless the contact has limitations.
      *
+     * @param Request $request
      * @param  bool $isContactMissing
      * @return View|Factory|RedirectResponse
      */
-    private function createForm($isContactMissing = false)
+    private function createForm(Request $request, bool $isContactMissing = false)
     {
         if (AccountHelper::hasReachedContactLimit(auth()->user()->account)
             && AccountHelper::hasLimitations(auth()->user()->account)
@@ -186,7 +190,9 @@ class ContactsController extends Controller
             ->withIsContactMissing($isContactMissing)
             ->withGenders(GenderHelper::getGendersInput())
             ->withDefaultGender(auth()->user()->account->default_gender_id)
-            ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()));
+            ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()))
+            ->withFirstName($request->input('first_name'))
+            ->withLastName($request->input('last_name'));
     }
 
     /**
@@ -550,9 +556,10 @@ class ContactsController extends Controller
             return;
         }
 
-        $results = SearchHelper::searchContacts($needle, 20, DBHelper::getTable('contacts').'.`created_at`');
+        $results = SearchHelper::searchContacts($needle, 'created_at')
+            ->paginate(20);
 
-        if (count($results) !== 0) {
+        if ($results->total() > 0) {
             return ContactResource::collection($results);
         } else {
             return ['noResults' => trans('people.people_search_no_results')];
@@ -694,9 +701,10 @@ class ContactsController extends Controller
             $tags = collect();
 
             while ($request->input('tag'.$count)) {
-                $tag = Tag::where('account_id', $accountId)
-                    ->where('name_slug', $request->input('tag'.$count))
-                    ->get();
+                $tag = Tag::where([
+                    'account_id' => $accountId,
+                    'name_slug' => $request->input('tag'.$count),
+                ])->get();
 
                 if (! ($tags->contains($tag[0]))) {
                     $tags = $tags->concat($tag);
@@ -715,7 +723,8 @@ class ContactsController extends Controller
         $perPage = $request->has('perPage') ? $request->input('perPage') : config('monica.number_of_contacts_pagination');
 
         // search contacts
-        $contacts = $contacts->search($request->input('search') ? $request->input('search') : '', $accountId, $perPage, DBHelper::getTable('contacts').'.`is_starred` desc', null, $sort);
+        $contacts = $contacts->search($request->input('search') ?? '', $accountId, 'is_starred', 'desc', $sort)
+            ->paginate($perPage);
 
         return [
             'totalRecords' => $contacts->total(),

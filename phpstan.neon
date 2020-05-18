@@ -37,6 +37,8 @@ parameters:
           path: */Http/Controllers/DAV/Backend/CardDAV/AddressBookHome.php
         - message: '#Access to an undefined property object::\$action\.#'
           path: */Helpers/AuditLogHelper.php
+        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::real\(\)\.#'
+          path: */Http/Controllers/Api/ApiContactController.php
 
     excludes_analyse:
         - */app/Helpers/ComposerScripts.php

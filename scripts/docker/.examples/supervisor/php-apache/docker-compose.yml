@@ -10,13 +10,12 @@ services:
       - 80:80
     volumes:
       - data:/var/www/monica/storage
-      - www:/var/www/monica
     restart: always
 
   db:
     image: mysql:5.7
     environment:
-      - MYSQL_ROOT_PASSWORD=sekret_root_password
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_DATABASE=monica
       - MYSQL_USER=homestead
       - MYSQL_PASSWORD=secret
@@ -27,7 +26,5 @@ services:
 volumes:
   data:
     name: data
-  www:
-    name: www
   mysql:
     name: mysql

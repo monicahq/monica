@@ -2,11 +2,18 @@
 
 ### New features:
 
+* Display age of death to relationship sidebar if the person is dead
+* Crop contact photos on upload
+* Add Traditional Chinese language
+* Add console command to test email delivery
 * Add Japanese langage
 * Change title of birthday reminder for deceased people
 
 ### Enhancements:
 
+* Use current text from search bar to create a new person
+* Always allow to add a new person from search bar
+* Use queue to send email verification
 * Improve autocomplete fields on signup and login forms
 * Add cache for S3 storage, and use new standard variables
 * Remove authentication with login+password for carddav
@@ -17,6 +24,11 @@
 
 ### Fixes:
 
+* Fix life event categories and types are not translated when adding new life event
+* Fix subdirectory config url
+* Fix google2fa column size
+* Fix errors display for api
+* Fix currency in double
 * Fix authentication with token on basic auth
 * Fix editing multiple notes at the same time only edits one note
 * Fix countries in fake contact seeder
@@ -51,6 +63,7 @@
 * Contacts displayed in the activity list are now clickable again
 * Gift are now added and updated inline
 * Add a link in the downgrade process to archive all contacts in the account
+* Add new name orders \<nickname> (\<First name> \<Last name>) & \<nickname> (\<Last name> \<First name>)
 
 ### Fixes:
 

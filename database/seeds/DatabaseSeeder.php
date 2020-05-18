@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\App;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,17 +12,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        switch (\Illuminate\Support\Facades\App::environment()) {
+        switch (App::environment()) {
             case 'local':
                 $this->call(FakeUserTableSeeder::class);
-                $this->call(CurrenciesTableSeeder::class);
             break;
             case 'testing':
                 $this->call(FakeUserTableSeeder::class);
-                $this->call(CurrenciesTableSeeder::class);
             break;
             case 'production':
-                $this->call(CurrenciesTableSeeder::class);
             break;
         }
     }

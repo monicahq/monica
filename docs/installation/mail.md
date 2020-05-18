@@ -1,4 +1,11 @@
-# Configuring a Mail Server
+# Configuring a Mail Server <!-- omit in toc -->
+
+- [Use SMTP with Monica](#use-smtp-with-monica)
+- [Use Amazon SES with Monica](#use-amazon-ses-with-monica)
+  - [1. Obtain SES Credentials](#1-obtain-ses-credentials)
+  - [2. Verify the Address You'll be Sending From](#2-verify-the-address-youll-be-sending-from)
+  - [3. Allow SES to Send Emails Out](#3-allow-ses-to-send-emails-out)
+  - [4. Configure Monica to Use SES SMTP Server](#4-configure-monica-to-use-ses-smtp-server)
 
 The Monica registration flow will send a validation email to the user who sent it. Whilst this is not required by default (see `APP_SIGNUP_DOUBLE_OPTIN` in your `.env` file), setting up a mail server is encouraged so that you can receive reminders.
 
@@ -16,7 +23,7 @@ The generic way to send emails with Monica is to provide a SMTP server, each one
 
 You need to add few environment variables in your configuration (working in generic installation and Docker):
 ```
-MAIL_DRIVER: smtp
+MAIL_MAILER: smtp
 MAIL_HOST: smtp.service.com # ex: smtp.sendgrid.net
 MAIL_PORT: 587 # is using tls, as you should
 MAIL_USERNAME: my_service_username # ex: apikey
@@ -67,7 +74,7 @@ You now simply need to configure your `.env` file to use the SES SMTP server. Ma
 
 ```
 # Mail credentials used to send emails from the application.
-MAIL_DRIVER=smtp
+MAIL_MAILER=smtp
 MAIL_HOST=email-smtp.us-east-1.amazonaws.com
 MAIL_PORT=25
 MAIL_USERNAME=<Step 1>
