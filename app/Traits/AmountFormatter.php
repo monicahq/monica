@@ -2,10 +2,10 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Arr;
 use App\Helpers\MoneyHelper;
 use App\Models\Settings\Currency;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Arr;
 
 trait AmountFormatter
 {
