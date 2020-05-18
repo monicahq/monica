@@ -6,6 +6,7 @@ files:
       two_letters_code:
         'en-GB' : 'en-GB'
         'pt-BR' : 'pt-BR'
+        'zh-CN' : 'zh'
         'zh-TW' : 'zh-TW'
   - source: /resources/lang/vendor/confirmation/en/*.php
     translation: /resources/lang/vendor/confirmation/%two_letters_code%/%original_file_name%
@@ -13,6 +14,7 @@ files:
       two_letters_code:
         'en-GB' : 'en-GB'
         'pt-BR' : 'pt-BR'
+        'zh-CN' : 'zh'
         'zh-TW' : 'zh-TW'
   - source: /resources/lang/vendor/webauthn/en/*.php
     translation: /resources/lang/vendor/webauthn/%two_letters_code%/%original_file_name%
@@ -20,4 +22,5 @@ files:
       two_letters_code:
         'en-GB' : 'en-GB'
         'pt-BR' : 'pt-BR'
+        'zh-CN' : 'zh'
         'zh-TW' : 'zh-TW'
