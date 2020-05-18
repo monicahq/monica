@@ -43,6 +43,8 @@ return [
     'name_order_firstname_nickname_lastname' => '<First name> (<Nickname>) <Last name> - Klaas (Broodje) Bakker',
     'name_order_lastname_firstname_nickname' => '<Last name> <First name> (<Nickname>) - Bakker Klaas (Broodje)',
     'name_order_lastname_nickname_firstname' => '<Last name> (<Nickname>) <First name> - Bakker (Broodje) Klaas',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<First name> <Last name>) - Rambo (John Doe)',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<Last name> <First name>) - Rambo (Doe John)',
     'name_order_nickname' => '<Nickname> - Broodje',
     'currency' => 'Valuta',
     'name' => 'Jouw naam: :name',
@@ -85,6 +87,7 @@ return [
     'locale_pt-BR' => 'Portugees (Brazilië)',
     'locale_ru' => 'Russisch',
     'locale_zh' => 'Chinees (vereenvoudigd)',
+    'locale_zh-TW' => 'Chinese Traditional',
     'locale_tr' => 'Turks',
     'locale_en-GB' => 'Engels (Verenigd Koninkrijk)',
 

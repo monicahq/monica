@@ -43,6 +43,8 @@ return [
     'name_order_firstname_nickname_lastname' => '<名> (<昵称>) <姓> - 小明 (狗蛋) 王',
     'name_order_lastname_firstname_nickname' => '<姓> <名> (<昵称>) - 王 小明 (狗蛋)',
     'name_order_lastname_nickname_firstname' => '<姓> (<昵称>) <名> - 王 (狗蛋) 小明',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<First name> <Last name>) - Rambo (John Doe)',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<Last name> <First name>) - Rambo (Doe John)',
     'name_order_nickname' => '<昵称> - 狗蛋',
     'currency' => '货币',
     'name' => '您的姓名: :name',
@@ -85,6 +87,7 @@ return [
     'locale_pt-BR' => '葡萄牙语 (巴西)',
     'locale_ru' => '俄文',
     'locale_zh' => '简体中文',
+    'locale_zh-TW' => 'Chinese Traditional',
     'locale_tr' => '土耳其文',
     'locale_en-GB' => '英语 (英国)',
 

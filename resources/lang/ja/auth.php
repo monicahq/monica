@@ -26,7 +26,7 @@ return [
     '2fa_recuperation_code' => 'Enter a two factor recovery code',
     '2fa_otp_help' => 'Open up your two factor authentication mobile app and copy the code',
 
-    'login_to_account' => 'Login to your account',
+    'login_to_account' => '貴方のアカウントにログインしてください。',
     'login_with_recovery' => 'Login with a recovery code',
     'login_again' => 'Please login again to your account',
     'email' => 'Email',

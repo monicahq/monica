@@ -7,7 +7,7 @@ return [
     'save' => 'Salva',
     'add' => 'Aggiungi',
     'cancel' => 'Annulla',
-    'confirm' => 'Confirm',
+    'confirm' => 'Conferma',
     'delete_confirm' => 'Sei sicuro?',
     'delete' => 'Elimina',
     'edit' => 'Modifica',
@@ -102,15 +102,15 @@ return [
 
     'error_title' => 'Ops! Qualcosa è andato storto.',
     'error_unauthorized' => 'Non hai il permesso di aggiornare questa risorsa.',
-    'error_user_account' => 'This user does not belong to the given account.',
+    'error_user_account' => 'Questo utente non appartiene all\'account corrente.',
     'error_save' => 'Abbiamo avuto un errore cercando di salvare i dati.',
     'error_try_again' => 'Qualcosa è andato storto. Riprova.',
     'error_id' => 'ID errore: :id',
-    'error_unavailable' => 'Service unavailable',
+    'error_unavailable' => 'Servizio non disponibile',
     'error_maintenance' => 'Manutenzione in corso. Torneremo presto.',
     'error_help' => 'Torneremo presto.',
     'error_twitter' => 'Seguici sul <a href="https://twitter.com/:twitter">nostro account Twitter</a> per venire notificato quando saremo di nuovo online.',
-    'error_no_term' => 'There is no policy for this instance yet.',
+    'error_no_term' => 'Non ci sono ancora regole per questa istanza.',
 
     'default_save_success' => 'I dati sono stati salvati.',
 
