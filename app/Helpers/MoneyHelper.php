@@ -110,32 +110,12 @@ class MoneyHelper
     }
 
     /**
-     * Get unit adjustement value for the currency.
-     *
-     * @param Currency|int|null $currency
-     * @return int
-     */
-    public static function unitAdjustment($currency): int
-    {
-        $currency = self::getCurrency($currency);
-
-        if (! $currency) {
-            return 100;
-        }
-
-        $moneyCurrency = new MoneyCurrency($currency->iso);
-        $currencies = new ISOCurrencies();
-
-        return (int) pow(10, $currencies->subunitFor($moneyCurrency));
-    }
-
-    /**
      * Get currency object.
      *
      * @param Currency|int|null $currency
      * @return Currency|null
      */
-    private static function getCurrency($currency): ?Currency
+    public static function getCurrency($currency): ?Currency
     {
         if (is_int($currency)) {
             $currency = Currency::find($currency);
