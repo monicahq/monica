@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Helpers\MoneyHelper;
 use App\Models\Settings\Currency;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Arr;
 
 trait AmountFormatter
 {
@@ -35,11 +36,11 @@ trait AmountFormatter
      */
     public function getAmountAttribute(): ?float
     {
-        if (! in_array('amount', $this->attributes) || ! $this->attributes['amount']) {
+        if (! ($amount = Arr::get($this->attributes, 'amount', null))) {
             return null;
         }
 
-        return MoneyHelper::exchangeValue($this->attributes['amount'], $this->currency);
+        return MoneyHelper::exchangeValue($amount, $this->currency);
     }
 
     /**
@@ -49,11 +50,11 @@ trait AmountFormatter
      */
     public function getValueAttribute(): string
     {
-        if (! in_array('amount', $this->attributes) || ! $this->attributes['amount']) {
+        if (! ($amount = Arr::get($this->attributes, 'amount', null))) {
             return '';
         }
 
-        return MoneyHelper::formatValue($this->attributes['amount'], $this->currency);
+        return MoneyHelper::formatValue($amount, $this->currency);
     }
 
     /**
@@ -63,10 +64,10 @@ trait AmountFormatter
      */
     public function getDisplayValueAttribute(): string
     {
-        if (! in_array('amount', $this->attributes) || ! $this->attributes['amount']) {
+        if (! ($amount = Arr::get($this->attributes, 'amount', null))) {
             return '';
         }
 
-        return MoneyHelper::format($this->attributes['amount'], $this->currency);
+        return MoneyHelper::format($amount, $this->currency);
     }
 }
