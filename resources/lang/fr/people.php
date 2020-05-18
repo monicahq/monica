@@ -428,7 +428,7 @@ return [
     'life_event_delete_description' => 'Êtes-vous sûr de vouloir supprimer cet évènement marquant ? La suppression est permanente.',
     'life_event_delete_success' => 'L’évènement marquant a été supprimé',
     'life_event_date_it_happened' => 'Date de l’évènement',
-    'life_event_category_work_education' => 'Work & education',
+    'life_event_category_work_education' => 'Travail & formation',
     'life_event_category_family_relationships' => 'Family & relationships',
     'life_event_category_home_living' => 'Home & living',
     'life_event_category_health_wellness' => 'Health & wellness',
