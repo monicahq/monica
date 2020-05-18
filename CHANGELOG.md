@@ -24,6 +24,7 @@
 
 ### Fixes:
 
+* Fix life event categories and types are not translated when adding new life event
 * Fix subdirectory config url
 * Fix google2fa column size
 * Fix errors display for api

@@ -74,7 +74,7 @@ export default {
           params.set('last_name', last_name);
         }
 
-        window.location = 'people/add' + (params != "" ? '?' + params : "");
+        window.location = 'people/add' + (params != '' ? '?' + params : '');
       }
     },
 
