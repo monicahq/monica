@@ -54,7 +54,7 @@ trait AmountFormatter
             return '';
         }
 
-        return MoneyHelper::formatValue($amount, $this->currency);
+        return MoneyHelper::getValue($amount, $this->currency);
     }
 
     /**

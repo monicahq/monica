@@ -17,16 +17,13 @@ class MoneyHelper
     /**
      * Format a monetary amount with currency symbol.
      *
-     * Amount must be an integer, in exchange format.
-     * i.e. '100' for 1,00€
-     *
      * If the currency parameter is not passed, then the currency specified in
      * the users's settings will be used. If the currency setting is not
      * defined, then the amount will be returned without a currency symbol.
      *
-     * @param  int|null $amount   Amount to format.
+     * @param  int|null $amount  Amount value in storable format (ex: 100 for 1,00€).
      * @param  Currency|int|null $currency Currency of amount.
-     * @return string Amount formatted with currency symbol.
+     * @return string Formatted amount for display with currency symbol (ex '1,235.87 €').
      */
     public static function format($amount, $currency = null): string
     {
@@ -53,14 +50,11 @@ class MoneyHelper
     /**
      * Format a monetary amount (without the currency).
      *
-     * Amount must be an integer, in exchange format.
-     * i.e. '100' for 1,00€
-     *
-     * @param int|null $amount
+     * @param int|null $amount  Amount value in storable format (ex: 100 for 1,00€).
      * @param Currency|int|null $currency
-     * @return string
+     * @return string  Formatted amount for display without currency symbol (ex: '1234.50').
      */
-    public static function formatValue($amount, $currency = null): string
+    public static function getValue($amount, $currency = null): string
     {
         $currency = self::getCurrency($currency);
 
@@ -77,25 +71,11 @@ class MoneyHelper
     }
 
     /**
-     * Format a monetary amount in exchange value with currency symbol.
-     *
-     * @param float|null $exchange
-     * @param Currency|int|null $currency
-     * @return string
-     */
-    public static function display($exchange, $currency = null): string
-    {
-        $currency = self::getCurrency($currency);
-
-        return self::format(self::formatInput($exchange, $currency), $currency);
-    }
-
-    /**
      * Format a monetary exchange value as storable integer.
      *
-     * @param mixed|null $exchange
+     * @param mixed|null $exchange  Amount value in exchange format (ex: 1.00).
      * @param Currency|int|null $currency
-     * @return int
+     * @return int  Amount as storable format (ex: 14500).
      */
     public static function formatInput($exchange, $currency): int
     {
@@ -114,9 +94,9 @@ class MoneyHelper
     /**
      * Format a monetary value as exchange value.
      *
-     * @param int|null $amount
+     * @param int|null $amount  Amount value in storable format (ex: 100 for 1,00€).
      * @param Currency|int|null $currency
-     * @return float
+     * @return float  Real value of amount in exchange format (ex: 1.24).
      */
     public static function exchangeValue($amount, $currency): float
     {
