@@ -16,6 +16,7 @@ class MoneyHelper
 {
     /**
      * Format a monetary amount with currency symbol.
+     * The value is formatted using current langage, as per the currency symbol.
      *
      * If the currency parameter is not passed, then the currency specified in
      * the users's settings will be used. If the currency setting is not
@@ -48,7 +49,8 @@ class MoneyHelper
     }
 
     /**
-     * Format a monetary amount (without the currency).
+     * Format a monetary amount, without the currency.
+     * The value is formatted using current langage.
      *
      * @param int|null $amount  Amount value in storable format (ex: 100 for 1,00€).
      * @param Currency|int|null $currency
@@ -71,13 +73,14 @@ class MoneyHelper
     }
 
     /**
-     * Format a monetary exchange value as storable integer.
+     * Parse a monetary exchange value as storable integer.
+     * Currency is used to know the precision of this currency.
      *
      * @param mixed|null $exchange  Amount value in exchange format (ex: 1.00).
      * @param Currency|int|null $currency
      * @return int  Amount as storable format (ex: 14500).
      */
-    public static function formatInput($exchange, $currency): int
+    public static function parseInput($exchange, $currency): int
     {
         $currency = self::getCurrency($currency);
 
@@ -93,10 +96,12 @@ class MoneyHelper
 
     /**
      * Format a monetary value as exchange value.
+     * Exchange value is the amount to be entered in an input by a user,
+     * using ordinary format.
      *
      * @param int|null $amount  Amount value in storable format (ex: 100 for 1,00€).
      * @param Currency|int|null $currency
-     * @return float  Real value of amount in exchange format (ex: 1.24).
+     * @return string  Real value of amount in exchange format (ex: 1.24).
      */
     public static function exchangeValue($amount, $currency): float
     {
@@ -106,7 +111,7 @@ class MoneyHelper
         $money = new Money($amount ?? 0, $moneyCurrency);
         $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
 
-        return (float) $moneyFormatter->format($money);
+        return $moneyFormatter->format($money);
     }
 
     /**

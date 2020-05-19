@@ -26,13 +26,13 @@ trait AmountFormatter
      */
     public function setAmountAttribute($value)
     {
-        $this->attributes['amount'] = MoneyHelper::formatInput($value, $this->currency);
+        $this->attributes['amount'] = MoneyHelper::parseInput($value, $this->currency);
     }
 
     /**
-     * Get value of amount.
+     * Get exchange value.
      *
-     * @return float|null
+     * @return string
      */
     public function getAmountAttribute(): ?float
     {

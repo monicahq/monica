@@ -103,12 +103,12 @@ class MoneyHelperTest extends TestCase
     }
 
     /** @test */
-    public function it_format_an_input_value()
+    public function it_parse_an_input_value()
     {
         $currency = new Currency();
         $currency->iso = 'EUR';
 
-        $this->assertEquals(50000, MoneyHelper::formatInput('500.00', $currency));
-        $this->assertEquals(503829, MoneyHelper::formatInput('5038.29', $currency));
+        $this->assertEquals(50000, MoneyHelper::parseInput('500.00', $currency));
+        $this->assertEquals(503829, MoneyHelper::parseInput('5038.29', $currency));
     }
 }
