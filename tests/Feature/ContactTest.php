@@ -674,7 +674,7 @@ class ContactTest extends FeatureTestCase
         $gift = factory(Gift::class)->make();
         $gift->amount = '100';
 
-        $this->assertEquals('100', $gift->amount);
+        $this->assertEquals('100.00', $gift->amount);
         $this->assertEquals('$100.00', $gift->displayValue);
     }
 }

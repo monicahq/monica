@@ -115,7 +115,7 @@ class GiftTest extends TestCase
         ]);
 
         $this->assertEquals(
-            '100',
+            '100.00',
             $gift->amount
         );
     }

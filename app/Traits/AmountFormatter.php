@@ -32,9 +32,9 @@ trait AmountFormatter
     /**
      * Get exchange value.
      *
-     * @return string
+     * @return string|null
      */
-    public function getAmountAttribute(): ?float
+    public function getAmountAttribute(): ?string
     {
         if (! ($amount = Arr::get($this->attributes, 'amount', null))) {
             return null;

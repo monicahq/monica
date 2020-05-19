@@ -103,7 +103,7 @@ class MoneyHelper
      * @param Currency|int|null $currency
      * @return string  Real value of amount in exchange format (ex: 1.24).
      */
-    public static function exchangeValue($amount, $currency): float
+    public static function exchangeValue($amount, $currency): string
     {
         $currency = self::getCurrency($currency);
 
