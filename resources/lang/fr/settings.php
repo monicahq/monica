@@ -43,6 +43,8 @@ return [
     'name_order_firstname_nickname_lastname' => '<Prénom> (<Surnom>) <Nom> – Jean (Jojo) Dupont',
     'name_order_lastname_firstname_nickname' => '<Nom> <Prénom> (<Surnom>) – Dupont Jean (Jojo)',
     'name_order_lastname_nickname_firstname' => '<Nom> (<Surnom>) <Prénom> – Dupont (Jojo) Jean',
+    'name_order_nickname_firstname_lastname' => '<Surnom> (<Prénom> <Nom>) – Jojo (Jean Dupont)',
+    'name_order_nickname_firstname_lastname' => '<Surnom> (<Nom> <Prénom>) – Jojo (Dupont Jean)',
     'name_order_nickname' => '<Surnom> – Jojo',
     'currency' => 'Devise',
     'name' => 'Votre nom : :name',
@@ -85,6 +87,7 @@ return [
     'locale_pt-BR' => 'Portugais (Brésil)',
     'locale_ru' => 'Russe',
     'locale_zh' => 'Chinois Simplifié',
+    'locale_zh-TW' => 'Chinois Traditionnel',
     'locale_tr' => 'Turc',
     'locale_en-GB' => 'Anglais (Royaume-Uni)',
 

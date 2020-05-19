@@ -428,6 +428,11 @@ return [
     'life_event_delete_description' => 'Weet je zeker dat je deze levensgebeurtenis wil verwijderen? Dit is permanent.',
     'life_event_delete_success' => 'De levensgebeurtenis is verwijderd',
     'life_event_date_it_happened' => 'Datum van de gebeurtenis',
+    'life_event_category_work_education' => 'Work & education',
+    'life_event_category_family_relationships' => 'Family & relationships',
+    'life_event_category_home_living' => 'Home & living',
+    'life_event_category_health_wellness' => 'Health & wellness',
+    'life_event_category_travel_experiences' => 'Travel & experiences',
     'life_event_sentence_new_job' => 'Nieuwe baan gekregen',
     'life_event_sentence_retirement' => 'Met pensioen gegaan',
     'life_event_sentence_new_school' => 'Begonnen met school',
@@ -498,6 +503,7 @@ return [
     'avatar_gravatar' => 'The Gravatar dat geassocieerd is met dit contact. <a href="https://gravatar.com/">Gravatar</a> is een wereldwijd systeem dat gebruikers hun emailadres laat associëren met hun foto\'s.',
     'avatar_current' => 'Huidige avatar houden',
     'avatar_photo' => 'Van een foto die je upload',
+    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
     // emotions
     'emotion_this_made_me_feel' => 'Je voelde je…',

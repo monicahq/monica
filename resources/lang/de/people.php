@@ -428,6 +428,11 @@ return [
     'life_event_delete_description' => 'Möchten Sie das Lebensereignis löschen? Dies kann nicht rückgängig gemacht werden.',
     'life_event_delete_success' => 'Das Ereignis wurde gelöscht',
     'life_event_date_it_happened' => 'Tag an dem es passierte',
+    'life_event_category_work_education' => 'Work & education',
+    'life_event_category_family_relationships' => 'Family & relationships',
+    'life_event_category_home_living' => 'Home & living',
+    'life_event_category_health_wellness' => 'Health & wellness',
+    'life_event_category_travel_experiences' => 'Travel & experiences',
     'life_event_sentence_new_job' => 'Neuen Arbeitsplatz angetreten',
     'life_event_sentence_retirement' => 'Im Ruhestand',
     'life_event_sentence_new_school' => 'Schulbeginn',
@@ -498,6 +503,7 @@ return [
     'avatar_gravatar' => 'Den Gravatar, welcher der E-Mail-Adresse dieser Person zugeordnet ist. <a href="https://gravatar.com/">Gravatar</a> ist ein globales System, mit dem Benutzer E-Mail-Adressen mit Fotos verknüpfen können.',
     'avatar_current' => 'Aktuellen Avatar beibehalten',
     'avatar_photo' => 'Ein Foto hochladen',
+    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
     // emotions
     'emotion_this_made_me_feel' => 'Dadurch fühlen sie sich…',

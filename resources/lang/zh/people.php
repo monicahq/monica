@@ -428,6 +428,11 @@ return [
     'life_event_delete_description' => '确实要删除此生活事件吗？删除是永久性的。',
     'life_event_delete_success' => '事件已删除',
     'life_event_date_it_happened' => '发生日期',
+    'life_event_category_work_education' => 'Work & education',
+    'life_event_category_family_relationships' => 'Family & relationships',
+    'life_event_category_home_living' => 'Home & living',
+    'life_event_category_health_wellness' => 'Health & wellness',
+    'life_event_category_travel_experiences' => 'Travel & experiences',
     'life_event_sentence_new_job' => '开始了新的工作',
     'life_event_sentence_retirement' => '退休',
     'life_event_sentence_new_school' => '开始上学',
@@ -498,6 +503,7 @@ return [
     'avatar_gravatar' => '此用户的电子邮件地址 与Gravatar关联 。 <a href="https://gravatar.com/">Gravatar</a> 是全球通用的头像服务。',
     'avatar_current' => '保持当前头像',
     'avatar_photo' => '从您上传的照片',
+    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
     // emotions
     'emotion_this_made_me_feel' => '这让你觉得...',
