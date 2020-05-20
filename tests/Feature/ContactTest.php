@@ -332,11 +332,13 @@ class ContactTest extends FeatureTestCase
             'reason' => $this->faker->sentence(),
         ];
 
-        $this->post(
+        $response = $this->post(
             route('people.debts.store', $contact),
             $debt
         );
+        $response->assertStatus(302);
 
+        $debt['amount'] = $debt['amount'] * 100;
         $this->assertDatabaseHas('debts',
             $debt + [
                 'contact_id' => $contact->id,
@@ -354,11 +356,13 @@ class ContactTest extends FeatureTestCase
             'reason' => $this->faker->sentence(),
         ];
 
-        $this->post(
+        $response = $this->post(
             route('people.debts.store', $contact),
             $debt
         );
+        $response->assertStatus(302);
 
+        $debt['amount'] = $debt['amount'] * 100;
         $this->assertDatabaseHas('debts',
             $debt + [
                 'contact_id' => $contact->id,
@@ -668,11 +672,9 @@ class ContactTest extends FeatureTestCase
         $user->save();
 
         $gift = factory(Gift::class)->make();
-        $gift->value = '100';
+        $gift->amount = '100';
 
-        $this->assertEquals(
-            '$100.00',
-            $gift->amount
-        );
+        $this->assertEquals('100.00', $gift->amount);
+        $this->assertEquals('$100.00', $gift->displayValue);
     }
 }

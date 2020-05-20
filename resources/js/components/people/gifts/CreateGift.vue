@@ -118,6 +118,7 @@
             :class="'dtc pr2'"
             :title="$t('people.gifts_add_value')"
             :required="displayAmount"
+            step=".01"
             @submit="store"
           />
         </div>
@@ -330,7 +331,7 @@ export default {
       }
       this.displayComment = this.gift ? this.gift.comment : false;
       this.displayUrl = this.gift ? this.gift.url : false;
-      this.displayAmount = this.gift ? this.gift.amount : false;
+      this.displayAmount = this.gift ? this.gift.amount != '' : false;
       this.displayRecipient = this.gift ? (this.gift.recipient ? this.gift.recipient.id !== 0 : false) : false;
       this.displayUpload= this.gift ? this.gift.photos.length > 0 : false;
 
@@ -363,6 +364,7 @@ export default {
           return vm.storePhoto(response);
         })
         .then(response => {
+          //this.update(response);
           vm.close();
           vm.$emit('update', response.data.data);
           return response;
@@ -378,6 +380,21 @@ export default {
         .catch(error => {
           vm._errorHandle(error);
         });
+    },
+
+    update() {
+      this.newGift.contact_id = this.contactId;
+      if (this.newGift) {
+        this.gift.contact_id = this.newGift.contact.id;
+        this.gift.name = this.newGift.name;
+        this.gift.comment = this.newGift.comment;
+        this.gift.url = this.newGift.url;
+        this.gift.amount = this.newGift.amount;
+        this.gift.status = this.newGift.status;
+        this.gift.recipient_id = this.newGift.recipient ? this.newGift.recipient.id : null;
+        this.hasRecipient = this.gift.recipient_id != null;
+        this.gift.date = this.newGift.date;
+      }
     },
 
     storePhoto(response) {

@@ -623,7 +623,7 @@ class ContactTest extends FeatureTestCase
             'contact_id' => $contact->id,
         ]));
 
-        $this->assertEquals(200, $contact->totalOutstandingDebtAmount());
+        $this->assertEquals(20000, $contact->totalOutstandingDebtAmount());
 
         $contact->debts()->save(new Debt([
             'in_debt' => 'yes',
@@ -632,7 +632,7 @@ class ContactTest extends FeatureTestCase
             'contact_id' => $contact->id,
         ]));
 
-        $this->assertEquals(100, $contact->totalOutstandingDebtAmount());
+        $this->assertEquals(10000, $contact->totalOutstandingDebtAmount());
     }
 
     /** @test */

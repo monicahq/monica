@@ -157,6 +157,7 @@ class ApiDebtsTest extends ApiTestCase
     public function it_creates_a_debt()
     {
         $user = $this->signin();
+        $user->locale = 'fr';
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
         ]);
@@ -185,8 +186,9 @@ class ApiDebtsTest extends ApiTestCase
             'id' => $debt_id,
             'in_debt' => 'yes',
             'status' => 'inprogress',
-            'amount' => 42,
-            'amount_with_currency' => '$42.00',
+            'amount' => '42.00',
+            'value' => '42,00',
+            'amount_with_currency' => '42,00'.chr(0xA0).'$US',
             'reason' => 'that\'s why',
         ]);
 
@@ -197,7 +199,7 @@ class ApiDebtsTest extends ApiTestCase
             'id' => $debt_id,
             'in_debt' => 'yes',
             'status' => 'inprogress',
-            'amount' => 42,
+            'amount' => 4200,
             'reason' => 'that\'s why',
         ]);
     }
@@ -246,6 +248,7 @@ class ApiDebtsTest extends ApiTestCase
     public function it_updates_a_debt()
     {
         $user = $this->signin();
+        $user->locale = 'fr';
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
         ]);
@@ -258,7 +261,7 @@ class ApiDebtsTest extends ApiTestCase
             'contact_id' => $contact->id,
             'in_debt' => 'yes',
             'status' => 'completed',
-            'amount' => 142,
+            'amount' => 142.01,
             'reason' => 'voilà',
         ]);
 
@@ -273,7 +276,9 @@ class ApiDebtsTest extends ApiTestCase
             'id' => $debt_id,
             'in_debt' => 'yes',
             'status' => 'completed',
-            'amount' => 142,
+            'amount' => '142.01',
+            'value' => '142,01',
+            'amount_with_currency' => '142,01'.chr(0xA0).'$US',
             'reason' => 'voilà',
         ]);
 
@@ -284,7 +289,7 @@ class ApiDebtsTest extends ApiTestCase
             'id' => $debt_id,
             'in_debt' => 'yes',
             'status' => 'completed',
-            'amount' => 142,
+            'amount' => 14201,
             'reason' => 'voilà',
         ]);
     }

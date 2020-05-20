@@ -2,15 +2,20 @@
 
 namespace Tests\Browser\Auth;
 
+use Tests\TestCase;
 use GuzzleHttp\Client;
-use Tests\ApiTestCase;
 use App\Models\User\User;
+use Tests\Traits\Asserts;
+use Tests\Traits\ApiSignIn;
 use Illuminate\Testing\TestResponse;
 use Laravel\Passport\ClientRepository;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
-class AuthControllerTest extends ApiTestCase
+class AuthControllerTest extends TestCase
 {
+    use ApiSignIn,
+        Asserts;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -29,28 +34,39 @@ class AuthControllerTest extends ApiTestCase
 
     public function test_oauth_login()
     {
-        $client = (new ClientRepository())->createPasswordGrantClient(
-            null, config('app.name'), config('app.url')
-        );
+        $repository = new ClientRepository();
+        $client = null;
+        try {
+            $client = $repository->createPasswordGrantClient(
+                null, config('app.name'), config('app.url')
+            );
 
-        $this->setEnvironmentValue([
-            'MOBILE_CLIENT_ID' => $client->id,
-            'MOBILE_CLIENT_SECRET' => $client->secret,
-        ]);
+            $this->setEnvironmentValue([
+                'MOBILE_CLIENT_ID' => $client->id,
+                'MOBILE_CLIENT_SECRET' => $client->secret,
+            ]);
 
-        $userPassword = 'password';
-        $user = factory(User::class)->create([
-            'password' => bcrypt($userPassword),
-        ]);
+            $userPassword = 'password';
+            $user = factory(User::class)->create([
+                'password' => bcrypt($userPassword),
+            ]);
 
-        $response = $this->postClient(self::OAUTH_LOGIN_URL, [
-            'email' => $user->email,
-            'password' => $userPassword,
-        ]);
+            $response = $this->postClient(self::OAUTH_LOGIN_URL, [
+                'email' => $user->email,
+                'password' => $userPassword,
+            ]);
 
-        $response->assertStatus(200);
+            $response->assertStatus(200);
 
-        $response->assertJsonStructure($this->jsonStructureOAuthLogin);
+            $response->assertJsonStructure($this->jsonStructureOAuthLogin);
+        } finally {
+            if ($client) {
+                $repository->delete($client);
+            }
+            if ($user) {
+                $user->account->delete();
+            }
+        }
     }
 
     public function test_oauth_login_wrong_mail()
@@ -76,29 +92,40 @@ class AuthControllerTest extends ApiTestCase
 
     public function test_oauth_login_2fa()
     {
-        $client = (new ClientRepository())->createPasswordGrantClient(
-            null, config('app.name'), config('app.url')
-        );
+        $repository = new ClientRepository();
+        $client = null;
+        try {
+            $client = $repository->createPasswordGrantClient(
+                null, config('app.name'), config('app.url')
+            );
 
-        $this->setEnvironmentValue([
-            'MOBILE_CLIENT_ID' => $client->id,
-            'MOBILE_CLIENT_SECRET' => $client->secret,
-        ]);
+            $this->setEnvironmentValue([
+                'MOBILE_CLIENT_ID' => $client->id,
+                'MOBILE_CLIENT_SECRET' => $client->secret,
+            ]);
 
-        $userPassword = 'password';
-        $user = factory(User::class)->create([
-            'password' => bcrypt($userPassword),
-            'google2fa_secret' => 'UFKZDTYO64WDEZPPQEO4HF3PC5UUTFLE',
-        ]);
+            $userPassword = 'password';
+            $user = factory(User::class)->create([
+                'password' => bcrypt($userPassword),
+                'google2fa_secret' => 'UFKZDTYO64WDEZPPQEO4HF3PC5UUTFLE',
+            ]);
 
-        $response = $this->postClient(self::OAUTH_LOGIN_URL, [
-            'email' => $user->email,
-            'password' => $userPassword,
-        ]);
+            $response = $this->postClient(self::OAUTH_LOGIN_URL, [
+                'email' => $user->email,
+                'password' => $userPassword,
+            ]);
 
-        $response->assertStatus(200);
+            $response->assertStatus(200);
 
-        $response->assertSee('Two Factor Authentication');
+            $response->assertSee('Two Factor Authentication');
+        } finally {
+            if ($client) {
+                $repository->delete($client);
+            }
+            if ($user) {
+                $user->account->delete();
+            }
+        }
     }
 
     private function getActualConnection()
