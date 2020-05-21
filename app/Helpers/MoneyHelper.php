@@ -107,6 +107,10 @@ class MoneyHelper
     {
         $currency = self::getCurrency($currency);
 
+        if (! $currency) {
+            return (string) ($amount / 100);
+        }
+
         $moneyCurrency = new MoneyCurrency($currency->iso);
         $money = new Money($amount ?? 0, $moneyCurrency);
         $moneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies());
