@@ -2,6 +2,23 @@
 
 ### New features:
 
+* 
+
+### Enhancements:
+
+* 
+
+### Fixes:
+
+* 
+
+
+# RELEASED VERSIONS:
+
+## v2.18.0 - 2019-05-21
+
+### New features:
+
 * Display age of death to relationship sidebar if the person is dead
 * Crop contact photos on upload
 * Add Traditional Chinese language
@@ -39,8 +56,6 @@
 * Fix setMe contact controller
 * Fix carddav sync-collection reporting wrong syncToken
 
-
-# RELEASED VERSIONS:
 
 ## v2.17.0 - 2019-03-22
 
