@@ -22,7 +22,7 @@ return [
     'done' => 'סיום',
     'back' => 'חזרה',
     'verify' => 'אימות',
-    'new' => 'new',
+    'new' => 'חדש/ה',
     'unknown' => 'לא ידוע לי',
     'load_more' => 'לטעון עוד',
     'loading' => 'בטעינה…',
