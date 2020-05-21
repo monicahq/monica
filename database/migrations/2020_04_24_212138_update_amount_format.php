@@ -33,21 +33,21 @@ class UpdateAmountFormat extends Migration
         DB::table('debts')
             ->orderBy('id')
             ->chunk(500, function ($debts) {
-            foreach ($debts as $debt) {
-                try {
-                    $account = Account::findOrFail($debt->account_id);
-                    $user = $account->users()->firstOrFail();
-                } catch (ModelNotFoundException $e) {
-                    continue;
-                }
+                foreach ($debts as $debt) {
+                    try {
+                        $account = Account::findOrFail($debt->account_id);
+                        $user = $account->users()->firstOrFail();
+                    } catch (ModelNotFoundException $e) {
+                        continue;
+                    }
 
-                DB::update('update debts set amount = ?, currency_id = ? where id = ?', [
-                    floatval($debt->amount) * self::unitAdjustment($user->currency),
-                    $user->currency_id,
-                    $debt->id,
-                ]);
-            }
-        });
+                    DB::update('update debts set amount = ?, currency_id = ? where id = ?', [
+                        floatval($debt->amount) * self::unitAdjustment($user->currency),
+                        $user->currency_id,
+                        $debt->id,
+                    ]);
+                }
+            });
 
         Schema::table('debts', function (Blueprint $table) {
             $table->integer('amount')->change();
@@ -65,21 +65,21 @@ class UpdateAmountFormat extends Migration
             ->where('value', '!=', 'null')
             ->orderBy('id')
             ->chunk(500, function ($gifts) {
-            foreach ($gifts as $gift) {
-                try {
-                    $account = Account::findOrFail($gift->account_id);
-                    $user = $account->users()->firstOrFail();
-                } catch (ModelNotFoundException $e) {
-                    continue;
-                }
+                foreach ($gifts as $gift) {
+                    try {
+                        $account = Account::findOrFail($gift->account_id);
+                        $user = $account->users()->firstOrFail();
+                    } catch (ModelNotFoundException $e) {
+                        continue;
+                    }
 
-                DB::update('update gifts set value = ?, currency_id = ? where id = ?', [
-                    floatval($gift->value) * self::unitAdjustment($user->currency),
-                    $user->currency_id,
-                    $gift->id,
-                ]);
-            }
-        });
+                    DB::update('update gifts set value = ?, currency_id = ? where id = ?', [
+                        floatval($gift->value) * self::unitAdjustment($user->currency),
+                        $user->currency_id,
+                        $gift->id,
+                    ]);
+                }
+            });
 
         Schema::table('gifts', function (Blueprint $table) {
             $table->integer('value')->change()->nullable();
