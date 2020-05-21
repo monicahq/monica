@@ -11,6 +11,7 @@
 
 ### Enhancements:
 
+* Stores amount as integer-ish values, and fix debts and gifts amount forms
 * Use current text from search bar to create a new person
 * Always allow to add a new person from search bar
 * Use queue to send email verification

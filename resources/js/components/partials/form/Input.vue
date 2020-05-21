@@ -32,6 +32,7 @@
       :style="inputStyle"
       :value="value"
       :maxlength="maxlength"
+      :step="step"
       @input="onInput($event)"
       @blur="onBlur($event)"
       @change="onChange($event)"
@@ -78,6 +79,10 @@ export default {
       default: true,
     },
     inputType: {
+      type: String,
+      default: '',
+    },
+    step: {
       type: String,
       default: '',
     },

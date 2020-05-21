@@ -14,6 +14,11 @@ $factory->define(App\Models\User\User::class, function (Faker\Generator $faker) 
         'timezone' => config('app.timezone'),
         'name_order' => 'firstname_lastname',
         'locale' => 'en',
+        'currency_id' => function (array $data) {
+            return factory(App\Models\Settings\Currency::class)->create([
+                'iso' => 'USD',
+            ])->id;
+        },
     ];
 });
 

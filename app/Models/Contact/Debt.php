@@ -3,7 +3,9 @@
 namespace App\Models\Contact;
 
 use App\Models\Account\Account;
+use App\Traits\AmountFormatter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
 
 /**
@@ -16,6 +18,8 @@ use App\Models\ModelBindingHasherWithContact as Model;
  */
 class Debt extends Model
 {
+    use AmountFormatter;
+
     /**
      * The attributes that aren't mass assignable.
      *
@@ -33,6 +37,8 @@ class Debt extends Model
 
     /**
      * Get the account record associated with the debt.
+     *
+     * @return BelongsTo
      */
     public function account()
     {
@@ -41,6 +47,8 @@ class Debt extends Model
 
     /**
      * Get the contact record associated with the debt.
+     *
+     * @return BelongsTo
      */
     public function contact()
     {

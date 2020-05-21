@@ -21,6 +21,7 @@ use Illuminate\Support\Collection;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use IlluminateAgnostic\Arr\Support\Arr;
 use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
@@ -1069,6 +1070,7 @@ class Contact extends Model
 
     /**
      * Is this contact owed money?
+     *
      * @return bool
      */
     public function isOwedMoney()
@@ -1079,16 +1081,21 @@ class Contact extends Model
     /**
      * How much is the debt.
      *
-     * @return int
+     * @return int amount in storage value
      */
-    public function totalOutstandingDebtAmount()
+    public function totalOutstandingDebtAmount(): int
     {
         return $this
             ->debts()
-            ->where('status', '=', 'inprogress')
+            ->inProgress()
             ->getResults()
+            ->filter(function ($d) {
+                return Arr::has($d->attributes, 'amount');
+            })
             ->sum(function ($d) {
-                return $d->in_debt === 'yes' ? -$d->amount : $d->amount;
+                $amount = $d->attributes['amount'];
+
+                return $d->in_debt === 'yes' ? -$amount : $amount;
             });
     }
 
