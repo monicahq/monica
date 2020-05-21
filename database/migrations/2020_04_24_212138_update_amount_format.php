@@ -1,8 +1,7 @@
 <?php
 
 use App\Helpers\MoneyHelper;
-use App\Models\Contact\Debt;
-use App\Models\Contact\Gift;
+use App\Models\Account\Account;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency as MoneyCurrency;
 use Illuminate\Support\Facades\Schema;
@@ -31,17 +30,21 @@ class UpdateAmountFormat extends Migration
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('set null');
         });
 
-        Debt::chunk(500, function ($debts) {
+        DB::table('debts')
+            ->orderBy('id')
+            ->chunk(500, function ($debts) {
             foreach ($debts as $debt) {
                 try {
-                    $user = $debt->account->users()->firstOrFail();
+                    $account = Account::findOrFail($debt->account_id);
+                    $user = $account->users()->firstOrFail();
                 } catch (ModelNotFoundException $e) {
                     continue;
                 }
 
-                $debt->update([
-                    'amount' => $debt->amount * self::unitAdjustment($user->currency),
-                    'currency_id' => $user->currency_id,
+                DB::update('update debts set amount = ?, currency_id = ? where id = ?', [
+                    floatval($debt->amount) * self::unitAdjustment($user->currency),
+                    $user->currency_id,
+                    $debt->id,
                 ]);
             }
         });
@@ -58,17 +61,22 @@ class UpdateAmountFormat extends Migration
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('set null');
         });
 
-        Gift::where('value', '!=', 'null')->chunk(500, function ($gifts) {
+        DB::table('gifts')
+            ->where('value', '!=', 'null')
+            ->orderBy('id')
+            ->chunk(500, function ($gifts) {
             foreach ($gifts as $gift) {
                 try {
-                    $user = $gift->account->users()->firstOrFail();
+                    $account = Account::findOrFail($gift->account_id);
+                    $user = $account->users()->firstOrFail();
                 } catch (ModelNotFoundException $e) {
                     continue;
                 }
 
-                $gift->update([
-                    'value' => $gift->value * self::unitAdjustment($user->currency),
-                    'currency_id' => $user->currency_id,
+                DB::update('update gifts set value = ?, currency_id = ? where id = ?', [
+                    floatval($gift->value) * self::unitAdjustment($user->currency),
+                    $user->currency_id,
+                    $gift->id,
                 ]);
             }
         });
