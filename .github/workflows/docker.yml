@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        variant: [apache]
+        variant: [apache, php-apache, fpm]
     name: Docker generate ${{ matrix.variant }}
 
     steps:
@@ -24,8 +24,8 @@ jobs:
         echo "::set-output name=build_date::$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
         echo "::set-output name=vcs_ref::$(git rev-parse --short ${{ github.sha }})"
 
-
-    - uses: docker/build-push-action@v1
+    - name: Build image
+      uses: docker/build-push-action@v1
       with:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -33,7 +33,5 @@ jobs:
         registry: docker.pkg.github.com
         dockerfile: scripts/docker/${{ matrix.variant }}/Dockerfile
         build_args: BUILD_DATE=${{ steps.vars.outputs.build_date }},VCS_REF=${{ steps.vars.outputs.vcs_ref }},COMMIT=${{ github.sha }},VERSION=${{ github.ref }}
-        tags: ${{ matrix.variant }}
+        tags: ${{ matrix.variant }}, ${{ github.ref }}-${{ matrix.variant }}
         push: false
-        tag_with_ref: true
-        tag_with_sha: true
