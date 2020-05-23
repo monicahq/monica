@@ -2,6 +2,23 @@
 
 ### New features:
 
+* 
+
+### Enhancements:
+
+* 
+
+### Fixes:
+
+* 
+
+
+# RELEASED VERSIONS:
+
+## v2.18.0 - 2019-05-23
+
+### New features:
+
 * Display age of death to relationship sidebar if the person is dead
 * Crop contact photos on upload
 * Add new name orders \<nickname> (\<First name> \<Last name>) & \<nickname> (\<Last name> \<First name>)
@@ -41,8 +58,6 @@
 * Fix setMe contact controller
 * Fix carddav sync-collection reporting wrong syncToken
 
-
-# RELEASED VERSIONS:
 
 ## v2.17.0 - 2019-03-22
 
