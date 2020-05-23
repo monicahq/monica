@@ -24,7 +24,7 @@ jobs:
         set -ex
         echo "::set-output name=build_date::$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
         echo "::set-output name=vcs_ref::$(git rev-parse --short ${{ github.sha }})"
-        tag=$(git describe --abbrev=0 --tags --exact-match ${{ github.sha }} 2>/dev/null)
+        tag=$(git describe --abbrev=0 --tags --exact-match ${{ github.sha }} 2>/dev/null || true)
         if [ -z "$tag" ]; then tag=$(git rev-parse --abbrev-ref HEAD); fi
         echo "::set-output name=tag::$tag"
 
