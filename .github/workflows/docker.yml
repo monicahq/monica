@@ -30,6 +30,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         repository: docker.pkg.github.com/monicahq/monica/monica
+        registry: docker.pkg.github.com
         dockerfile: scripts/docker/${{ matrix.variant }}
         build_args: BUILD_DATE=${{ steps.vars.outputs.build_date }},VCS_REF=${{ steps.vars.outputs.vcs_ref }},COMMIT=${{ github.sha }},VERSION=${{ github.ref }}
         tags: ${{ matrix.variant }}
