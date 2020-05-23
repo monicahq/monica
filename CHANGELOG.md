@@ -15,7 +15,7 @@
 
 # RELEASED VERSIONS:
 
-## v2.18.0 - 2019-05-21
+## v2.18.0 - 2019-05-23
 
 ### New features:
 
