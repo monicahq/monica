@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "May 11, 2020",
+            "title": "New feature: crop an avatar photo",
+            "description": "When uploading a new avatar for a contact, you are now invited to crop it to keep a square format.\n\n Choose a new file to upload, then select the zone to keep: ![image](img/changelogs/2020-05-11-crop-avatar-1.png) After validation, you can now save the new avatar: ![image](img/changelogs/2020-05-11-crop-avatar-2.png)"
+        },
+        {
             "date": "Mar 22, 2020",
             "title": "New feature: define yourself as a contact",
             "description": "In your Settings panel, you can now indicate who you are as a contact in the application."
