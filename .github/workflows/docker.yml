@@ -21,6 +21,7 @@ jobs:
     - name: Set some variables
       id: vars
       run: |
+        set -ex
         echo "::set-output name=build_date::$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
         vcs_ref=$(git rev-parse --short ${{ github.sha }})
         echo "::set-output name=vcs_ref::$vcs_ref"
