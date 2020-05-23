@@ -1,0 +1,38 @@
+name: Docker
+
+on:
+  push:
+#    branches:
+#      - 'master'
+
+jobs:
+  docker-run:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [apache]
+    name: Docker generate ${{ matrix.variant }}
+
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v2
+
+    - name: Set some variables
+      id: vars
+      run: |
+        echo "::set-output name=build_date::$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+        echo "::set-output name=vcs_ref::$(git rev-parse --short ${{ github.sha }})"
+
+
+    - uses: docker/build-push-action@v1
+      with:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        repository: docker.pkg.github.com/monicahq/monica/monica
+        dockerfile: scripts/docker/${{ matrix.variant }}
+        build_args: BUILD_DATE=${{ steps.vars.outputs.build_date }},VCS_REF=${{ steps.vars.outputs.vcs_ref }},COMMIT=${{ github.sha }},VERSION=${{ github.ref }}
+        tags: ${{ matrix.variant }}
+        push: false
+        tag_with_ref: true
+        tag_with_sha: true
