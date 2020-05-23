@@ -23,6 +23,7 @@ jobs:
       run: |
         echo "::set-output name=build_date::$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
         echo "::set-output name=vcs_ref::$(git rev-parse --short ${{ github.sha }})"
+        echo "::set-output name=tag::$(shell git describe --abbrev=0 --tags --exact-match ${{ github.sha }} 2>/dev/null)"
 
     - name: Build image
       uses: docker/build-push-action@v1
@@ -32,6 +33,6 @@ jobs:
         repository: monicahq/monica/monica
         registry: docker.pkg.github.com
         dockerfile: scripts/docker/${{ matrix.variant }}/Dockerfile
-        build_args: BUILD_DATE=${{ steps.vars.outputs.build_date }},VCS_REF=${{ steps.vars.outputs.vcs_ref }},COMMIT=${{ github.sha }},VERSION=${{ github.ref }}
-        tags: ${{ matrix.variant }}, ${{ github.ref }}-${{ matrix.variant }}
+        build_args: BUILD_DATE=${{ steps.vars.outputs.build_date }},VCS_REF=${{ steps.vars.outputs.vcs_ref }},COMMIT=${{ github.sha }},VERSION=${{ steps.vars.outputs.tag }}
+        tags: ${{ matrix.variant }}, ${{ steps.vars.outputs.tag }}-${{ matrix.variant }}
         push: false
