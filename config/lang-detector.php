@@ -25,7 +25,6 @@ return [
      * You could use parse_langs_to_array to use the string syntax
      * or just use the array of languages with its aliases.
      *
-     * ⚠️ Do not add a new language here.
      * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
      */
     'languages' => parse_langs_to_array(
