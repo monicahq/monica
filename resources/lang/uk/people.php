@@ -60,20 +60,20 @@ return [
 
     // show
     'section_contact_information' => 'Контактна інформація',
-    'section_personal_activities' => 'Activities',
-    'section_personal_reminders' => 'Reminders',
-    'section_personal_tasks' => 'Tasks',
-    'section_personal_gifts' => 'Gifts',
-    'section_personal_notes' => 'Notes',
+    'section_personal_activities' => 'Активності',
+    'section_personal_reminders' => 'Нагадування',
+    'section_personal_tasks' => 'Завдання',
+    'section_personal_gifts' => 'Подарунки',
+    'section_personal_notes' => 'Нотатки',
 
     // archived contacts
-    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
-    'list_link_to_archived_contacts' => 'List of archived contacts',
+    'list_link_to_active_contacts' => 'Ви переглядаєте архівовані контакти. Подивіться <a href=":url">список активних контактів</a>.',
+    'list_link_to_archived_contacts' => 'Список архівованих контактів',
 
     // Header
-    'me' => 'This is you',
-    'edit_contact_information' => 'Edit contact information',
-    'contact_archive' => 'Archive contact',
+    'me' => 'Це ви',
+    'edit_contact_information' => 'Редагувати контактну інформацію',
+    'contact_archive' => 'Архівувати контакт',
     'contact_unarchive' => 'Unarchive contact',
     'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Log a call',
