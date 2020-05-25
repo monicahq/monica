@@ -55,11 +55,11 @@ return [
     'people_add_birthday_reminder_deceased' => 'У цей день :name відсвяткував би свій день народження',
     'people_add_import' => 'Ви хочете <a href=":url">імпортувати ваші контакти</a>?',
     'people_edit_email_error' => 'Обліковий запис з цією електронною адресою вже існує. Будь ласка, оберіть іншу.',
-    'people_export' => 'Export as vCard',
-    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
+    'people_export' => 'Експортувати як vCard',
+    'people_add_reminder_for_birthday' => 'Створити щорічне нагадування для дня народження',
 
     // show
-    'section_contact_information' => 'Contact information',
+    'section_contact_information' => 'Контактна інформація',
     'section_personal_activities' => 'Activities',
     'section_personal_reminders' => 'Reminders',
     'section_personal_tasks' => 'Tasks',
@@ -166,7 +166,7 @@ return [
     'food_preferences_add_success' => 'Вподобання у їжі збережено',
     'food_preferences_edit_description' => 'Можливо, :firstname або хтось у родині :family має алергію або не любить конкретну пляшку вина. Вкажіть їх тут, щоб ви пам\'ятали наступного разу, коли запросите їх на вечерю',
     'food_preferences_edit_description_no_last_name' => 'Можливо, :firstname або хтось у родині :family має алергію або не любить конкретну пляшку вина. Вкажіть їх тут, щоб ви пам\'ятали наступного разу, коли запросите їх на вечерю',
-    'food_preferences_edit_title' => 'Indicate food preferences',
+    'food_preferences_edit_title' => 'Вкажіть вподобання у їжі',
     'food_preferences_edit_cta' => 'Save food preferences',
     'food_preferences_title' => 'Food preferences',
     'food_preferences_cta' => 'Add food preferences',
