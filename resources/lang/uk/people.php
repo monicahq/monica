@@ -3,14 +3,14 @@
 return [
 
     //index
-    'people_not_found' => 'Contact not found',
-    'people_list_number_kids' => '1 kid|:count kids',
-    'people_list_last_updated' => 'Last consulted:',
-    'people_list_number_reminders' => '1 reminder|:count reminders',
-    'people_list_blank_title' => 'You don’t have anyone in your account yet',
-    'people_list_blank_cta' => 'Add someone',
+    'people_not_found' => 'Контакт не знайдено',
+    'people_list_number_kids' => '1 дитина|:count дітей',
+    'people_list_last_updated' => 'Остання консультація:',
+    'people_list_number_reminders' => '1 нагадування|:count нагадувань',
+    'people_list_blank_title' => 'У вас ще нікого немає',
+    'people_list_blank_cta' => 'Додати когось',
     'people_list_sort' => 'Sort',
-    'people_list_stats' => '1 contact|:count contacts',
+    'people_list_stats' => '1 контакт|:count контактів',
     'people_list_firstnameAZ' => 'Sort by first name A → Z',
     'people_list_firstnameZA' => 'Sort by first name Z → A',
     'people_list_lastnameAZ' => 'Sort by last name A → Z',
