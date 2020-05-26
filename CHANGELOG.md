@@ -15,7 +15,7 @@
 
 # RELEASED VERSIONS:
 
-## v2.18.0 - 2019-05-23
+## v2.18.0 - 2020-05-23
 
 ### New features:
 
@@ -59,7 +59,7 @@
 * Fix carddav sync-collection reporting wrong syncToken
 
 
-## v2.17.0 - 2019-03-22
+## v2.17.0 - 2020-03-22
 
 ### New features:
 
