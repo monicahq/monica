@@ -5011,7 +5011,7 @@ ipaddr.js@1.9.0:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.0.tgz#37df74e430a0e47550fe54a2defe30d8acd95f65"
   integrity sha512-M4Sjn6N/+O6/IXSJseKqHoFc+5FdGJ22sXqnjTpdZweHK64MzEPAyQZyEU3R/KRv2GLoa7nNtg/C2Ev6m7z+eA==
 
-ipaddr.js@^1.9.0:
+ipaddr.js@^1.9.0, ipaddr.js@^1.9.1:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
@@ -6343,10 +6343,10 @@ nconf@^0.10.0:
     secure-keys "^1.0.0"
     yargs "^3.19.0"
 
-needle@^2.2.4, needle@^2.3.3, needle@^2.4.0:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/needle/-/needle-2.4.1.tgz#14af48732463d7475696f937626b1b993247a56a"
-  integrity sha512-x/gi6ijr4B7fwl6WYL9FwlCvRQKGlUNvnceho8wxkwXqN8jvVmmmATTmZPRRG7b/yC1eode26C2HO9jl78Du9g==
+needle@^2.3.3, needle@^2.4.0, needle@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/needle/-/needle-2.5.0.tgz#e6fc4b3cc6c25caed7554bd613a5cf0bac8c31c0"
+  integrity sha512-o/qITSDR0JCyCKEQ1/1bnUXMmznxabbwi/Y4WwJElf+evwJNFNwIDMCCt5IigFVxgeGBJESLohGtIS9gEzo1fA==
   dependencies:
     debug "^3.2.6"
     iconv-lite "^0.4.4"
@@ -8678,10 +8678,10 @@ snyk-try-require@1.3.1, snyk-try-require@^1.1.1, snyk-try-require@^1.3.1:
     lru-cache "^4.0.0"
     then-fs "^2.0.0"
 
-snyk@^1.329.0:
-  version "1.329.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.329.0.tgz#76304c54cd69abd3a5237ba1ad73521caff97507"
-  integrity sha512-eDHfnLYgxVSuAzIJPBBhPqRN+6c5eWsQA+ff67OR9Qn4JUgI3MSuyxPJ3o6JPoyE/qYZfKhdFnyqBBz1eUu3oQ==
+snyk@^1.330.0:
+  version "1.330.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.330.0.tgz#a9ae9ad87e74ccc184371bc979e90b77e321180e"
+  integrity sha512-WNlyCmttVK1n61uOIoArUBHm7g1WExTHSHW5o4sFzsV13HZ/b1PaQKEFTuT9Tvj+qRmQi87Qg8VIMxFrW5vObw==
   dependencies:
     "@snyk/cli-interface" "2.6.0"
     "@snyk/dep-graph" "1.18.3"
@@ -8699,7 +8699,8 @@ snyk@^1.329.0:
     debug "^3.1.0"
     diff "^4.0.1"
     glob "^7.1.3"
-    needle "^2.2.4"
+    ipaddr.js "^1.9.1"
+    needle "^2.5.0"
     open "^7.0.3"
     os-name "^3.0.0"
     proxy-agent "^3.1.1"
