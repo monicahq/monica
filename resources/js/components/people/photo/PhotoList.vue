@@ -2,6 +2,22 @@
     .photo {
         height: 250px;
     }
+    .photo-arrow {
+      cursor: pointer;
+    }
+    .photo-arrow:hover {
+      background: none;
+      font-size: 14px;
+    }
+
+    .photo-arrow-left {
+      float:left;
+    }
+
+    .photo-arrow-right {
+      float:right;
+    }
+
 </style>
 
 <template>
@@ -88,11 +104,15 @@
       <div class="modal-mask">
         <div class="modal-wrapper">
           <div class="modal-container">
+
             <img :src="url" :alt="$t('people.photo_title')" class="mw-90 h-auto mb3" />
+
             <div class="tc">
+              <a class="fa fa-chevron-left photo-arrow photo-arrow-left" @click="displayPrev" v-if="canShowPrev"></a>
               <button class="btn" @click="showModal = false">
                 {{ $t('app.close') }}
               </button>
+                <a class="fa fa-chevron-right photo-arrow photo-arrow-right" @click="displayNext" v-if="canShowNext"></a>
             </div>
           </div>
         </div>
@@ -139,6 +159,8 @@ export default {
       showModal: false,
       url: '',
       onUpload: false,
+      canShowPrev: false,
+      canShowNext: false
     };
   },
 
@@ -193,9 +215,71 @@ export default {
     },
 
     modalPhoto(photo) {
+      this.modal_photo = photo;
       this.url = photo.link;
+
+      if(this.modalHasNext()) {
+        this.canShowNext = true;
+      } else {
+        this.canShowNext = false;
+      }
+
+      if(this.modalHasPrev()) {
+        this.canShowPrev = true;
+      } else {
+        this.canShowPrev = false;
+      }
+
       this.showModal = true;
     },
+
+    /**
+     * checks whether the there is a photo to the left of the current
+     * photo shown in the modal
+     *
+     * @return {Boolean}
+     */
+    modalHasNext() {
+      let index = this.photos.indexOf(this.modal_photo);
+
+      return index < this.photos.length-1;
+    },
+
+    /**
+     * checks whether the there is a photo to the right of the current
+     * photo shown in the modal
+     *
+     * @return {Boolean}
+     */
+    modalHasPrev() {
+      let index = this.photos.indexOf(this.modal_photo);
+
+      return index > 0;
+    },
+
+    /**
+     * set photo in modal located to the right of current modal photo
+     * from our photos list
+     */
+    displayNext() {
+      let index = this.photos.indexOf(this.modal_photo);
+
+      let photo = this.photos[index+1];
+
+      this.modalPhoto(photo);
+    },
+
+    /**
+     * set photo in modal located to the left of current modal photo
+     * from our photos list
+     */
+    displayPrev() {
+      let index = this.photos.indexOf(this.modal_photo);
+
+      let photo = this.photos[index-1];
+
+      this.modalPhoto(photo);
+    }
   }
 };
 </script>
