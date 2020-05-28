@@ -242,6 +242,7 @@ export default {
       this.$set(gift, 'comment', response.comment);
       this.$set(gift, 'url', response.url);
       this.$set(gift, 'amount', response.amount);
+      this.$set(gift, 'amount_with_currency', response.amount_with_currency);
       this.$set(gift, 'status', response.status);
       this.$set(gift, 'recipient', response.recipient);
       this.$set(gift, 'date', response.date);

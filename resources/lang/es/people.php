@@ -428,6 +428,11 @@ return [
     'life_event_delete_description' => '¿Estás seguro que quieres eliminar este evento notable? Esta acción es permanente.',
     'life_event_delete_success' => 'El evento notable ha sido eliminado',
     'life_event_date_it_happened' => 'Fecha cuando ocurrió',
+    'life_event_category_work_education' => 'Work & education',
+    'life_event_category_family_relationships' => 'Family & relationships',
+    'life_event_category_home_living' => 'Home & living',
+    'life_event_category_health_wellness' => 'Health & wellness',
+    'life_event_category_travel_experiences' => 'Travel & experiences',
     'life_event_sentence_new_job' => 'Comenzó un nuevo trabajo',
     'life_event_sentence_retirement' => 'Jubilado',
     'life_event_sentence_new_school' => 'Comenzó la escuela',
@@ -498,6 +503,7 @@ return [
     'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
     'avatar_current' => 'Keep the current avatar',
     'avatar_photo' => 'From a photo that you upload',
+    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
     // emotions
     'emotion_this_made_me_feel' => 'Esto te hizo sentir…',
