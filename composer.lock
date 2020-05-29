@@ -10526,16 +10526,16 @@
         },
         {
             "name": "web-token/jwt-signature-algorithm-ecdsa",
-            "version": "v2.1.6",
+            "version": "v2.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-ecdsa.git",
-                "reference": "2415c5ac44f4aad66ef90ad0904aa8a46526b3c2"
+                "reference": "340cd45a092440b407e6af43373664d8c6318ab9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-ecdsa/zipball/2415c5ac44f4aad66ef90ad0904aa8a46526b3c2",
-                "reference": "2415c5ac44f4aad66ef90ad0904aa8a46526b3c2",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-ecdsa/zipball/340cd45a092440b407e6af43373664d8c6318ab9",
+                "reference": "340cd45a092440b407e6af43373664d8c6318ab9",
                 "shasum": ""
             },
             "require": {
@@ -10595,7 +10595,7 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-12-27T22:22:20+00:00"
+            "time": "2020-05-29T20:21:59+00:00"
         },
         {
             "name": "web-token/jwt-signature-algorithm-eddsa",
