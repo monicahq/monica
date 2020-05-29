@@ -10362,16 +10362,16 @@
         },
         {
             "name": "web-token/jwt-key-mgmt",
-            "version": "v2.1.6",
+            "version": "v2.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-key-mgmt.git",
-                "reference": "27d5e3e2281ae1f9bbe1ab2e1664f871111fb3e2"
+                "reference": "9d9ce13b8060136d412e8a49dbc38fd69962069e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-key-mgmt/zipball/27d5e3e2281ae1f9bbe1ab2e1664f871111fb3e2",
-                "reference": "27d5e3e2281ae1f9bbe1ab2e1664f871111fb3e2",
+                "url": "https://api.github.com/repos/web-token/jwt-key-mgmt/zipball/9d9ce13b8060136d412e8a49dbc38fd69962069e",
+                "reference": "9d9ce13b8060136d412e8a49dbc38fd69962069e",
                 "shasum": ""
             },
             "require": {
@@ -10442,7 +10442,7 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-12-27T22:22:20+00:00"
+            "time": "2020-05-29T20:21:59+00:00"
         },
         {
             "name": "web-token/jwt-signature",
