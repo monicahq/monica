@@ -10672,20 +10672,19 @@
         },
         {
             "name": "web-token/jwt-signature-algorithm-rsa",
-            "version": "v2.1.6",
+            "version": "v2.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-rsa.git",
-                "reference": "871f3cbcaa5cd8c7856cf1269056f6039586521f"
+                "reference": "2732e6d12bb84f41c2f000ca822e03b6a1e76531"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-rsa/zipball/871f3cbcaa5cd8c7856cf1269056f6039586521f",
-                "reference": "871f3cbcaa5cd8c7856cf1269056f6039586521f",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-rsa/zipball/2732e6d12bb84f41c2f000ca822e03b6a1e76531",
+                "reference": "2732e6d12bb84f41c2f000ca822e03b6a1e76531",
                 "shasum": ""
             },
             "require": {
-                "ext-gmp": "*",
                 "lib-openssl": "*",
                 "web-token/jwt-signature": "^2.1"
             },
@@ -10745,7 +10744,7 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-12-27T22:22:20+00:00"
+            "time": "2020-05-29T20:21:59+00:00"
         }
     ],
     "packages-dev": [
