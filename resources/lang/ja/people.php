@@ -141,7 +141,7 @@ return [
 
     // additional information
     'information_edit_success' => 'プロフィールを更新しました',
-    'information_edit_title' => 'Edit :name’s personal information',
+    'information_edit_title' => ':name の個人情報の編集',
     'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => '名',
