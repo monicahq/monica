@@ -41,7 +41,7 @@ return [
     'people_add_title' => '新しく人を作成する',
     'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => '名',
-    'people_add_middlename' => 'Middle name (Optional)',
+    'people_add_middlename' => 'ミドルネーム（オプション）',
     'people_add_lastname' => '姓（オプション）',
     'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => '追加',
@@ -377,7 +377,7 @@ return [
     'contact_info_title' => 'Contact information',
     'contact_info_form_content' => 'Content',
     'contact_info_form_contact_type' => 'Contact type',
-    'contact_info_form_personalize' => 'Personalize',
+    'contact_info_form_personalize' => '個人設定',
     'contact_info_address' => 'Lives in',
 
     // Addresses
