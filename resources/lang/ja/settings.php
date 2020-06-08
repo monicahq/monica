@@ -334,7 +334,7 @@ return [
     'api_authorized_clients_name' => 'Name',
     'api_authorized_clients_scopes' => 'Scopes',
 
-    'personalization_tab_title' => 'Personalize your account',
+    'personalization_tab_title' => 'アカウントをカスタマイズ',
 
     'personalization_title' => 'Here you can find different settings to configure your account. These features are more for “power users” who want maximum control over Monica.',
     'personalization_contact_field_type_title' => 'Contact field types',
