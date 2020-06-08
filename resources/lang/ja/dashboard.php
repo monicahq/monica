@@ -29,7 +29,7 @@ return [
     'statistics_gifts' => 'Gifts',
 
     'reminders_next_months' => 'Events in the next 3 months',
-    'reminders_none' => 'No reminder for this month',
+    'reminders_none' => '今月のリマインダーはありません',
 
     'product_changes' => '機能の変更',
     'product_view_details' => 'View details',
