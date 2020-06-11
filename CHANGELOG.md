@@ -6,7 +6,7 @@
 
 ### Enhancements:
 
-* 
+* Added date field to journal API.
 
 ### Fixes:
 
