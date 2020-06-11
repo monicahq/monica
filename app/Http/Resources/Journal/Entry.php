@@ -21,6 +21,7 @@ class Entry extends JsonResource
         return [
             'id' => $this->id,
             'object' => 'entry',
+            'date' => $this->date,
             'title' => $this->title,
             'post' => $this->post,
             'url' => route('api.entry', $this->id),
