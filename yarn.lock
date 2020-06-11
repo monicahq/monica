@@ -888,13 +888,12 @@
   resolved "https://registry.yarnpkg.com/@snyk/lodash/-/lodash-4.17.15-patch.tgz#fb61af14b75d10a20015b40af5d0423944af89dc"
   integrity sha512-e4+t34bGyjjRnwXwI14hqye9J/nRbG9iwaqTgXWHskm5qC+iK0UrjgYdWXiHJCf3Plbpr+1rpW+4LPzZnCGMhQ==
 
-"@snyk/rpm-parser@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@snyk/rpm-parser/-/rpm-parser-1.1.0.tgz#cf9aaee87bc85133d2d791c293e5e590d1206346"
-  integrity sha512-+DyCagvnpyBjwYTxaPMQGLW4rkpKAw1Jrh8YbZCg7Ix172InBxdve/0zud18Lu2H6xWtDDdMvRDdfl82wlTBvA==
+"@snyk/rpm-parser@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@snyk/rpm-parser/-/rpm-parser-2.0.0.tgz#4ded7fa4b0a8efca7699359e4ca7a79bfbe38bc1"
+  integrity sha512-bWjQY5Xk3TcfVpeo8M5BhhSUEdPr2P19AWW13CHPu6sFZkckLWEcjQycnBsVD6RBmxGXecJ1YNui8dq6soHoYQ==
   dependencies:
-    event-loop-spinner "1.1.0"
-    typescript "3.8.3"
+    event-loop-spinner "^2.0.0"
 
 "@snyk/ruby-semver@2.2.0", "@snyk/ruby-semver@^2.0.4":
   version "2.2.0"
@@ -3720,10 +3719,17 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
-event-loop-spinner@1.1.0, event-loop-spinner@^1.1.0:
+event-loop-spinner@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/event-loop-spinner/-/event-loop-spinner-1.1.0.tgz#96de9c70e6e2b0b3e257b0901e25e792e3c9c8d0"
   integrity sha512-YVFs6dPpZIgH665kKckDktEVvSBccSYJmoZUfhNUdv5d3Xv+Q+SKF4Xis1jolq9aBzuW1ZZhQh/m/zU/TPdDhw==
+  dependencies:
+    tslib "^1.10.0"
+
+event-loop-spinner@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/event-loop-spinner/-/event-loop-spinner-2.0.0.tgz#3aa949264a7d80be45d6cb782ab5e97ffc87b9e1"
+  integrity sha512-1y4j/Mhttr8ordvHkbDsGzGrlQaSYJoXD/3YKUxiOXIk7myEn9UPfybEk/lLtrcU3D4QvCNmVUxVQaPtvAIaUw==
   dependencies:
     tslib "^1.10.0"
 
@@ -8561,12 +8567,12 @@ snyk-config@3.1.0, snyk-config@^3.0.0:
     debug "^4.1.1"
     nconf "^0.10.0"
 
-snyk-docker-plugin@3.6.3:
-  version "3.6.3"
-  resolved "https://registry.yarnpkg.com/snyk-docker-plugin/-/snyk-docker-plugin-3.6.3.tgz#91d52417a4de010071b739d8900e3f0f7a98ab98"
-  integrity sha512-+9pQc9+tetzMiUIV42WA3LAUkrZh6hhkhURv1X4kKyo2c1C8PSbCmpvycx/irilzfmH7dqBv0RXmb4vONPBXHA==
+snyk-docker-plugin@3.11.0:
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/snyk-docker-plugin/-/snyk-docker-plugin-3.11.0.tgz#8f1c169f30a917c3e853c05e72766013efb8928f"
+  integrity sha512-DTUJoPvLPJ5VxVi+vq2EUgKS2GkfpsbJOqrvNx37f6SCjJAk5+9pMqmTguOaYs+tB0losJqwrxP6fk5UJPco6g==
   dependencies:
-    "@snyk/rpm-parser" "^1.1.0"
+    "@snyk/rpm-parser" "^2.0.0"
     debug "^4.1.1"
     docker-modem "2.1.3"
     dockerfile-ast "0.0.19"
@@ -8773,10 +8779,10 @@ snyk-try-require@1.3.1, snyk-try-require@^1.1.1, snyk-try-require@^1.3.1:
     lru-cache "^4.0.0"
     then-fs "^2.0.0"
 
-snyk@^1.337.0:
-  version "1.337.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.337.0.tgz#af645077f76a37c7942b4b57853063402b216a12"
-  integrity sha512-FzyZYsdF4BDHOpQuIFKi41uETqmqgofsdGZMa1nF2ouGcpHJ6zKEb1JCA4IFIlPiKPNfkhh/NtPicjevTBNdwQ==
+snyk@^1.339.0:
+  version "1.339.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.339.0.tgz#0a9512e423939e9c28c3f46e263be98efd6e3b10"
+  integrity sha512-tAiZPGcLBofN/Q4pZs1U8dKSh8u8qW/3aW6gj6uWA7JUZ3WHTafUzKGhVoatk6cko6l9Rpy/ZInpzMLHsiUUMA==
   dependencies:
     "@snyk/cli-interface" "2.6.0"
     "@snyk/dep-graph" "1.18.3"
@@ -8802,7 +8808,7 @@ snyk@^1.337.0:
     proxy-from-env "^1.0.0"
     semver "^6.0.0"
     snyk-config "3.1.0"
-    snyk-docker-plugin "3.6.3"
+    snyk-docker-plugin "3.11.0"
     snyk-go-plugin "1.14.2"
     snyk-gradle-plugin "3.4.0"
     snyk-module "3.1.0"
@@ -9611,11 +9617,6 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
-
-typescript@3.8.3:
-  version "3.8.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
-  integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
 
 uglify-js@3.4.x:
   version "3.4.10"
