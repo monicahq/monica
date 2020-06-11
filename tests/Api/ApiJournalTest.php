@@ -43,12 +43,12 @@ class ApiJournalTest extends ApiTestCase
         $response->assertJsonFragment([
             'object' => 'entry',
             'id' => $firstEntry->id,
-            'date' => $firstEntry->date
+            'date' => $firstEntry->date,
         ]);
         $response->assertJsonFragment([
             'object' => 'entry',
             'id' => $secondEntry->id,
-            'date' => $secondEntry->date
+            'date' => $secondEntry->date,
         ]);
     }
 
@@ -72,12 +72,12 @@ class ApiJournalTest extends ApiTestCase
         $response->assertJsonFragment([
             'object' => 'entry',
             'id' => $firstEntry->id,
-            'date' => $firstEntry->date
+            'date' => $firstEntry->date,
         ]);
         $response->assertJsonMissingExact([
             'object' => 'entry',
             'id' => $secondEntry->id,
-            'date' => $secondEntry->date
+            'date' => $secondEntry->date,
         ]);
     }
 
@@ -111,7 +111,7 @@ class ApiJournalTest extends ApiTestCase
             'id' => $entryId,
             'title' => 'my title',
             'post' => '<p>content post</p>',
-            'date' => '2020-01-01T00:00:00.000000Z'
+            'date' => '2020-01-01T00:00:00.000000Z',
         ]);
 
         $this->assertGreaterThan(0, $entryId);
@@ -120,7 +120,7 @@ class ApiJournalTest extends ApiTestCase
             'id' => $entryId,
             'title' => 'my title',
             'post' => 'content post',
-            'date' => '2020-01-01T00:00:00.000000Z'
+            'date' => '2020-01-01T00:00:00.000000Z',
         ]);
     }
 
@@ -149,7 +149,7 @@ class ApiJournalTest extends ApiTestCase
         $response = $this->json('PUT', '/api/journal/'.$entry->id, [
             'title' => 'my title',
             'post' => 'content post',
-            'date' => '2020-02-01T00:00:00.000000Z'
+            'date' => '2020-02-01T00:00:00.000000Z',
         ]);
 
         $response->assertStatus(200);
@@ -163,7 +163,7 @@ class ApiJournalTest extends ApiTestCase
             'id' => $entryId,
             'title' => 'my title',
             'post' => '<p>content post</p>',
-            'date' => '2020-02-01T00:00:00.000000Z'
+            'date' => '2020-02-01T00:00:00.000000Z',
         ]);
 
         $this->assertGreaterThan(0, $entryId);
@@ -172,7 +172,7 @@ class ApiJournalTest extends ApiTestCase
             'id' => $entryId,
             'title' => 'my title',
             'post' => 'content post',
-            'date' => '2020-02-01T00:00:00.000000Z'
+            'date' => '2020-02-01T00:00:00.000000Z',
         ]);
     }
 
