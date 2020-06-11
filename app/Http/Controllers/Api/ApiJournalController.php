@@ -99,7 +99,7 @@ class ApiJournalController extends ApiController
         }
 
         try {
-            $entry->update($request->only(['title', 'post']));
+            $entry->update($request->only(['title', 'post', 'date']));
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
@@ -119,6 +119,7 @@ class ApiJournalController extends ApiController
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
             'post' => 'required|max:1000000',
+            'date' => 'nullable|date',
         ]);
 
         if ($validator->fails()) {
