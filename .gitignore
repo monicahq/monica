@@ -23,3 +23,5 @@ monicadump.sql
 .phpunit.result.cache
 .composer
 .idea
+*.iml
+/public/messages.js
