@@ -7,7 +7,7 @@ return [
     'want_reminded_of' => 'You wanted to be reminded of :reason',
     'for' => 'For: :name',
     'comment' => 'Comment: :comment',
-    'footer_contact_info' => 'Add, view, complete, and change information about this contact:',
+    'footer_contact_info' => '連絡を取る方法',
     'footer_contact_info2' => 'See :name’s profile',
     'footer_contact_info2_link' => 'See :name’s profile: :url',
 
