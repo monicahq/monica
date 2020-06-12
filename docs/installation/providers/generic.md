@@ -149,7 +149,7 @@ crontab -u www-data -e
 2. Then, in the text editor window you just opened, copy the following:
 
 ```
-* * * * *   /usr/bin/php /var/www/monica/artisan schedule:run
+* * * * *   /usr/bin/php /var/www/monica/artisan schedule:run >> /dev/null 2>&1
 ```
 
 ### 5. Configure Apache webserver
