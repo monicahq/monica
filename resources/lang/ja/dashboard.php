@@ -26,7 +26,7 @@ return [
 
     'statistics_contacts' => '連絡先',
     'statistics_activities' => 'Activities',
-    'statistics_gifts' => 'Gifts',
+    'statistics_gifts' => 'ギフト',
 
     'reminders_next_months' => '3ヶ月以内のイベント',
     'reminders_none' => '今月のリマインダーはありません',
