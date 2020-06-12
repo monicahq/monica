@@ -124,7 +124,7 @@ return [
     'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Messages',
     'conversation_list_table_content' => 'Partial content (last message)',
-    'conversation_list_title' => 'Conversations',
+    'conversation_list_title' => '会話',
     'conversation_list_cta' => 'Log conversation',
 
     // age - birthday
@@ -318,7 +318,7 @@ return [
     'gifts_ideas' => 'Gift ideas',
     'gifts_offered' => 'Gifts offered',
     'gifts_offered_as_an_idea' => 'Mark as an idea',
-    'gifts_received' => 'Gifts received',
+    'gifts_received' => 'ギフトの受け取り',
     'gifts_view_comment' => 'View comment',
     'gifts_mark_offered' => 'Mark as offered',
     'gifts_update_success' => 'The gift has been updated successfully',
@@ -478,7 +478,7 @@ return [
     'life_event_sentence_first_kiss' => 'Kissed for the first time',
 
     // documents
-    'document_list_title' => 'Documents',
+    'document_list_title' => 'ドキュメント',
     'document_list_cta' => 'Upload document',
     'document_list_blank_desc' => 'Here you can store documents related to this person.',
     'document_upload_zone_cta' => 'Upload a file',
