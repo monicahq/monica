@@ -32,5 +32,5 @@ return [
     'reminders_none' => '今月のリマインダーはありません',
 
     'product_changes' => '機能の変更',
-    'product_view_details' => 'View details',
+    'product_view_details' => '詳細を表示',
 ];
