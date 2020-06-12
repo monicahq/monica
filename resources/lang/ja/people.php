@@ -292,7 +292,7 @@ return [
     'notes_delete_confirmation' => 'Are you sure you want to delete this note? Deletion is permanent',
 
     // gifts
-    'gifts_title' => 'Gifts',
+    'gifts_title' => 'ギフト',
     'gifts_add_success' => 'The gift has been added successfully',
     'gifts_delete_success' => 'The gift has been deleted successfully',
     'gifts_delete_confirmation' => 'Are you sure you want to delete this gift?',
@@ -301,7 +301,7 @@ return [
     'gifts_for' => 'For: {name}',
     'gifts_delete_cta' => 'Delete',
     'gifts_add_title' => 'Gift management for :name',
-    'gifts_add_gift_idea' => 'Gift idea',
+    'gifts_add_gift_idea' => 'ギフトのアイデア',
     'gifts_add_gift_already_offered' => 'Gift offered',
     'gifts_add_gift_received' => 'Gift received',
     'gifts_add_gift_title' => 'What is this gift?',
