@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'yes' => 'Yes',
+    'yes' => 'Ja',
     'no' => 'No',
     'update' => 'Update',
     'save' => 'Save',
