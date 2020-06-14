@@ -206,7 +206,7 @@ class ContactsController extends Controller
         try {
             $contact = app(CreateContact::class)->execute([
                 'account_id' => auth()->user()->account_id,
-                'author_id' => auth()->user()->id,
+                'author_id' => auth()->id(),
                 'first_name' => $request->input('first_name'),
                 'middle_name' => $request->input('middle_name', null),
                 'last_name' => $request->input('last_name', null),
@@ -372,8 +372,7 @@ class ContactsController extends Controller
         // TODO: remove this part entirely when we redo this whole SpecialDate
         // thing
         if ($request->input('birthdate') == 'exact') {
-            $birthdate = $request->input('birthdayDate');
-            $birthdate = DateHelper::parseDate($birthdate);
+            $birthdate = DateHelper::parseDate( $request ->input('birthdayDate') );
             $day = $birthdate->day;
             $month = $birthdate->month;
             $year = $birthdate->year;
@@ -497,7 +496,7 @@ class ContactsController extends Controller
     {
         $contact = app(UpdateWorkInformation::class)->execute([
             'account_id' => auth()->user()->account_id,
-            'author_id' => auth()->user()->id,
+            'author_id' => auth()->id(),
             'contact_id' => $contact->id,
             'job' => $request->input('job'),
             'company' => $request->input('company'),

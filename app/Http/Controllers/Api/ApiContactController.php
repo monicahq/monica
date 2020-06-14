@@ -116,7 +116,7 @@ class ApiContactController extends ApiController
                     +
                     [
                         'account_id' => auth()->user()->account_id,
-                        'author_id' => auth()->user()->id,
+                        'author_id' => auth()->id(),
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -190,7 +190,7 @@ class ApiContactController extends ApiController
         $data = [
             'contact_id' => $contactId,
             'account_id' => auth()->user()->account_id,
-            'user_id' => auth()->user()->id,
+            'user_id' => auth()->id(),
         ];
 
         try {
@@ -215,7 +215,7 @@ class ApiContactController extends ApiController
     {
         $data = [
             'account_id' => auth()->user()->account_id,
-            'user_id' => auth()->user()->id,
+            'user_id' => auth()->id(),
         ];
 
         app(DeleteMeContact::class)->execute($data);
@@ -239,7 +239,7 @@ class ApiContactController extends ApiController
                 + [
                     'contact_id' => $contactId,
                     'account_id' => auth()->user()->account_id,
-                    'author_id' => auth()->user()->id,
+                    'author_id' => auth()->id(),
                 ]
             );
         } catch (ModelNotFoundException $e) {
