@@ -7,8 +7,8 @@ use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class TaskTest extends FeatureTestCase
-{
+class TaskTest extends FeatureTestCase {
+
     use DatabaseTransactions, WithFaker;
 
     /**
@@ -29,26 +29,21 @@ class TaskTest extends FeatureTestCase
 
     public function test_user_can_add_a_task()
     {
-        [$user, $contact] = $this->fetchUser();
-
-        $taskTitle = $this->faker->realText();
-        $taskDescription = $this->faker->realText();
-
+        [$user, $contact] = $this -> fetchUser();
+        $taskTitle       = $this -> faker -> realText(191);
+        $taskDescription = $this -> faker -> realText();
         $params = [
-            'title' => $taskTitle,
+            'title'       => $taskTitle,
             'description' => $taskDescription,
-            'completed' => 0,
-            'contact_id' => $contact->id,
+            'completed'   => 0,
+            'contact_id'  => $contact -> id,
         ];
-
-        $response = $this->post('/tasks', $params);
-
+        $response = $this -> post( '/tasks', $params );
         // Assert the note has been added for the correct user.
-        $params['account_id'] = $user->account_id;
-        $params['contact_id'] = $contact->id;
-        $params['title'] = $taskTitle;
+        $params['account_id']  = $user -> account_id;
+        $params['contact_id']  = $contact -> id;
+        $params['title']       = $taskTitle;
         $params['description'] = $taskDescription;
-
-        $this->assertDatabaseHas('tasks', $params);
+        $this -> assertDatabaseHas( 'tasks', $params );
     }
 }
