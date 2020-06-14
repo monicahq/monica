@@ -1310,16 +1310,16 @@
         },
         {
             "name": "facade/ignition",
-            "version": "2.0.6",
+            "version": "2.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facade/ignition.git",
-                "reference": "5261c488a1e8a7c3ebdf6a4037c34f5ddeb33922"
+                "reference": "e6bedc1e74507d584fbcb041ebe0f7f215109cf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facade/ignition/zipball/5261c488a1e8a7c3ebdf6a4037c34f5ddeb33922",
-                "reference": "5261c488a1e8a7c3ebdf6a4037c34f5ddeb33922",
+                "url": "https://api.github.com/repos/facade/ignition/zipball/e6bedc1e74507d584fbcb041ebe0f7f215109cf2",
+                "reference": "e6bedc1e74507d584fbcb041ebe0f7f215109cf2",
                 "shasum": ""
             },
             "require": {
@@ -1377,7 +1377,7 @@
                 "laravel",
                 "page"
             ],
-            "time": "2020-06-01T09:04:48+00:00"
+            "time": "2020-06-08T09:14:08+00:00"
         },
         {
             "name": "facade/ignition-contracts",
@@ -3916,16 +3916,16 @@
         },
         {
             "name": "maxmind/web-service-common",
-            "version": "v0.6.0",
+            "version": "v0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maxmind/web-service-common-php.git",
-                "reference": "40c928bb0194c45088b369a17f9baef9c3fc7460"
+                "reference": "74c996c218ada5c639c8c2f076756e059f5552fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maxmind/web-service-common-php/zipball/40c928bb0194c45088b369a17f9baef9c3fc7460",
-                "reference": "40c928bb0194c45088b369a17f9baef9c3fc7460",
+                "url": "https://api.github.com/repos/maxmind/web-service-common-php/zipball/74c996c218ada5c639c8c2f076756e059f5552fc",
+                "reference": "74c996c218ada5c639c8c2f076756e059f5552fc",
                 "shasum": ""
             },
             "require": {
@@ -3958,7 +3958,7 @@
             ],
             "description": "Internal MaxMind Web Service API",
             "homepage": "https://github.com/maxmind/web-service-common-php",
-            "time": "2019-12-12T15:56:05+00:00"
+            "time": "2020-05-06T14:07:26+00:00"
         },
         {
             "name": "moneyphp/money",
@@ -7771,16 +7771,16 @@
         },
         {
             "name": "stevebauman/location",
-            "version": "v5.0.2",
+            "version": "v5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stevebauman/location.git",
-                "reference": "9858b9a5bb1d2a4005daa5c84a644e0934433a59"
+                "reference": "38dedeb028cdc8f7d5c55f92c04b04ca5fffccff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stevebauman/location/zipball/9858b9a5bb1d2a4005daa5c84a644e0934433a59",
-                "reference": "9858b9a5bb1d2a4005daa5c84a644e0934433a59",
+                "url": "https://api.github.com/repos/stevebauman/location/zipball/38dedeb028cdc8f7d5c55f92c04b04ca5fffccff",
+                "reference": "38dedeb028cdc8f7d5c55f92c04b04ca5fffccff",
                 "shasum": ""
             },
             "require": {
@@ -7830,7 +7830,7 @@
                 "location",
                 "php"
             ],
-            "time": "2020-03-03T18:20:29+00:00"
+            "time": "2020-06-08T17:26:20+00:00"
         },
         {
             "name": "stripe/stripe-php",
@@ -13290,16 +13290,16 @@
         },
         {
             "name": "phpunit/php-timer",
-            "version": "4.0.0",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-timer.git",
-                "reference": "d6359824fc9bd2a4f90383b224906a1884aa56ca"
+                "reference": "b0d089de001ba60ffa3be36b23e1b8150d072238"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/d6359824fc9bd2a4f90383b224906a1884aa56ca",
-                "reference": "d6359824fc9bd2a4f90383b224906a1884aa56ca",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/b0d089de001ba60ffa3be36b23e1b8150d072238",
+                "reference": "b0d089de001ba60ffa3be36b23e1b8150d072238",
                 "shasum": ""
             },
             "require": {
@@ -13311,7 +13311,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0-dev"
+                    "dev-master": "5.0-dev"
                 }
             },
             "autoload": {
@@ -13335,7 +13335,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2020-06-01T12:18:17+00:00"
+            "time": "2020-06-07T12:05:53+00:00"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -13440,16 +13440,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.2.1",
+            "version": "9.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3b50c1ad9dd021062c76f678f59fa38b6bd09b15"
+                "reference": "8fd0d8f80029682da89516a554f4d5f5a030345c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3b50c1ad9dd021062c76f678f59fa38b6bd09b15",
-                "reference": "3b50c1ad9dd021062c76f678f59fa38b6bd09b15",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/8fd0d8f80029682da89516a554f4d5f5a030345c",
+                "reference": "8fd0d8f80029682da89516a554f4d5f5a030345c",
                 "shasum": ""
             },
             "require": {
@@ -13469,7 +13469,7 @@
                 "phpunit/php-file-iterator": "^3.0",
                 "phpunit/php-invoker": "^3.0",
                 "phpunit/php-text-template": "^2.0",
-                "phpunit/php-timer": "^4.0",
+                "phpunit/php-timer": "^5.0",
                 "sebastian/code-unit": "^1.0.2",
                 "sebastian/comparator": "^4.0",
                 "sebastian/diff": "^4.0",
@@ -13524,7 +13524,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2020-06-05T06:43:37+00:00"
+            "time": "2020-06-07T14:14:21+00:00"
         },
         {
             "name": "psalm/plugin-laravel",
