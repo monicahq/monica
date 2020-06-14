@@ -23,3 +23,4 @@ monicadump.sql
 .phpunit.result.cache
 .composer
 .idea
+_ide_helper.php
