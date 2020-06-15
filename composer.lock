@@ -9695,7 +9695,7 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v5.1.0",
+            "version": "v5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
@@ -13575,12 +13575,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "de6fda3af9b36c77fdeb62b968157032f7111b09"
+                "reference": "59f3050bcd5dab238c9ac3eada55269cc2fcfaa8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/de6fda3af9b36c77fdeb62b968157032f7111b09",
-                "reference": "de6fda3af9b36c77fdeb62b968157032f7111b09",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/59f3050bcd5dab238c9ac3eada55269cc2fcfaa8",
+                "reference": "59f3050bcd5dab238c9ac3eada55269cc2fcfaa8",
                 "shasum": ""
             },
             "conflict": {
@@ -13595,7 +13595,7 @@
                 "bagisto/bagisto": "<0.1.5",
                 "barrelstrength/sprout-base-email": "<1.2.7",
                 "barrelstrength/sprout-forms": "<3.9",
-                "bolt/bolt": "<3.6.10",
+                "bolt/bolt": "<3.7.1",
                 "brightlocal/phpwhois": "<=4.2.5",
                 "buddypress/buddypress": "<5.1.2",
                 "bugsnag/bugsnag-laravel": ">=2,<2.0.2",
@@ -13687,6 +13687,7 @@
                 "pear/archive_tar": "<1.4.4",
                 "phpfastcache/phpfastcache": ">=5,<5.0.13",
                 "phpmailer/phpmailer": "<6.1.6",
+                "phpmussel/phpmussel": ">=1,<1.6",
                 "phpmyadmin/phpmyadmin": "<4.9.2",
                 "phpoffice/phpexcel": "<1.8.2",
                 "phpoffice/phpspreadsheet": "<1.8",
@@ -13840,7 +13841,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2020-06-04T00:00:55+00:00"
+            "time": "2020-06-11T00:01:52+00:00"
         },
         {
             "name": "sebastian/code-unit",
