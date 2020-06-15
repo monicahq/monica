@@ -8225,21 +8225,7 @@ rx-js@^0.0.0:
   resolved "https://registry.yarnpkg.com/rx-js/-/rx-js-0.0.0.tgz#5d99a2416971722633eddedf0baa3c672445e49f"
   integrity sha1-XZmiQWlxciYz7d7fC6o8ZyRF5J8=
 
-rxjs@^6.3.3:
-  version "6.5.4"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.4.tgz#e0777fe0d184cec7872df147f303572d414e211c"
-  integrity sha512-naMQXcgEo3csAEGvw/NydRA0fuS2nDZJiw1YUWFKU7aPPAPGZEsD4Iimit96qwCieH6y614MCLYwdkrWx7z/7Q==
-  dependencies:
-    tslib "^1.9.0"
-
-rxjs@^6.4.0, rxjs@^6.5.3:
-  version "6.5.3"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.3.tgz#510e26317f4db91a7eb1de77d9dd9ba0a4899a3a"
-  integrity sha512-wuYsAYYFdWTAnAaPoKGNhfpWwKZbJW+HgAJ+mImp+Epl7BG8oNWBCTyRM8gba9k4lk8BgWdoYm21Mo/RYhhbgA==
-  dependencies:
-    tslib "^1.9.0"
-
-rxjs@^6.5.2:
+rxjs@^6.3.3, rxjs@^6.4.0, rxjs@^6.5.2, rxjs@^6.5.3:
   version "6.5.5"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.5.tgz#c5c884e3094c8cfee31bf27eb87e54ccfc87f9ec"
   integrity sha512-WfQI+1gohdf0Dai/Bbmk5L5ItH5tYqm3ki2c5GdWhKjalzjg93N3avFjVStyZZz+A2Em+ZxKH5bNghw9UeylGQ==
@@ -9987,10 +9973,10 @@ vue@^2.5.21:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"
   integrity sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ==
 
-vuejs-clipper@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/vuejs-clipper/-/vuejs-clipper-2.0.0.tgz#c88ef51016a59d777e9a1fa03467c3137236bd78"
-  integrity sha512-8TEMAf4ekyH2or+FMRAKm8bzUtheGr0R+wGuHa9nQpO7oKB39XVQerzZRtDXvrtdqLJ7uDYP1Ms2DpbciE0NEw==
+vuejs-clipper@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/vuejs-clipper/-/vuejs-clipper-2.1.0.tgz#05001c33579d8dfa5925672c8463a19e50b6cc4b"
+  integrity sha512-2vyqcRgPfps4U2+C7xg38ODtKwnhHlG0N7B7+F2C9sly7/rJE7MeOUk0vk4nKUpvY/+Y1PtIqm6zNq/cQWLFkQ==
   dependencies:
     core-js "^3.6.4"
     exif-js "^2.3.0"
