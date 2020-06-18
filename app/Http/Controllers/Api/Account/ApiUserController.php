@@ -43,10 +43,7 @@ class ApiUserController extends ApiController {
         } catch( ModelNotFoundException $e ) {
             return $this -> respondNotFound();
         }
-        $termUser = DB ::table( 'term_user' ) -> where( 'user_id', auth() -> id() )
-                       -> where( 'account_id', auth() -> user() -> account_id )
-                       -> where( 'term_id', $term -> id )
-                       -> first();
+        $termUser = $this -> getUserTerm( $term );
         if( $termUser ) {
             $data = [
                 'signed'      => TRUE,
@@ -62,6 +59,18 @@ class ApiUserController extends ApiController {
         return $this -> respond( [
             'data' => $data,
         ] );
+    }
+
+    /**
+     * @param $term
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
+     */
+    protected function getUserTerm( $term )
+    {
+        return DB ::table( 'term_user' ) -> where( 'user_id', auth() -> id() )
+                  -> where( 'account_id', auth() -> user() -> account_id )
+                  -> where( 'term_id', $term -> id )
+                  -> first();
     }
 
     /**
@@ -97,6 +106,7 @@ class ApiUserController extends ApiController {
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \Exception
      */
     public function set( Request $request )
     {
@@ -116,10 +126,7 @@ class ApiUserController extends ApiController {
             return $this -> respondInvalidQuery();
         }
         try {
-            $termUser = DB ::table( 'term_user' ) -> where( 'user_id', auth() -> id() )
-                           -> where( 'account_id', auth() -> user() -> account_id )
-                           -> where( 'term_id', $term -> id )
-                           -> first();
+            $termUser = $this -> getUserTerm( $term );
         } catch( ModelNotFoundException $e ) {
             return $this -> respondInvalidQuery();
         }
