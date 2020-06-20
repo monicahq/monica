@@ -421,7 +421,7 @@ return [
     'emotion_fear' => 'פחד',
     'emotion_fright' => 'בעתה',
     'emotion_horror' => 'אימה',
-    'emotion_terror' => 'Terror',
+    'emotion_terror' => 'טרור',
     'emotion_panic' => 'פאניקה',
     'emotion_hysteria' => 'היסטריה',
     'emotion_mortification' => 'המתה',
