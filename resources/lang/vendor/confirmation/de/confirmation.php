@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'message' => 'Vielen Dank für deine Anmeldung! Bitte überprüfe deine E-Mail-Postfach, um deine E-Mail-Adresse zu bestätigen.',
     'success' => 'Du hast dein Konto erfolgreich verifiziert. Du kannst dich ab sofort anmelden.',
