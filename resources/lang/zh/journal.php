@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'journal_rate' => '今天过得怎么样？你可以每天给它一次评价。',
     'journal_come_back' => '谢谢. 明天再来给你的一天评价一下。',
