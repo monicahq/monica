@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'message' => 'Tak for din tilmelding. Tjek venligst din e-mail for at bekræfte din konto.',
     'success' => 'Du har bekræftet din konto! Du kan nu logge ind.',
