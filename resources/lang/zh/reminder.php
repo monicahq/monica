@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'type_birthday' => '祝此人生日快乐',
     'type_phone_call' => '呼叫',
