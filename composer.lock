@@ -10610,16 +10610,16 @@
         },
         {
             "name": "thecodingmachine/safe",
-            "version": "v1.1.1",
+            "version": "v1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/safe.git",
-                "reference": "04f9ffae372a9816d4472dfb7bcf6126b623a9df"
+                "reference": "85e21ee4c4118fd0cb85e9f2c778dfcb781acd1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/safe/zipball/04f9ffae372a9816d4472dfb7bcf6126b623a9df",
-                "reference": "04f9ffae372a9816d4472dfb7bcf6126b623a9df",
+                "url": "https://api.github.com/repos/thecodingmachine/safe/zipball/85e21ee4c4118fd0cb85e9f2c778dfcb781acd1b",
+                "reference": "85e21ee4c4118fd0cb85e9f2c778dfcb781acd1b",
                 "shasum": ""
             },
             "require": {
@@ -10739,7 +10739,7 @@
                 "MIT"
             ],
             "description": "PHP core functions that throw exceptions instead of returning FALSE on error",
-            "time": "2020-05-04T15:25:36+00:00"
+            "time": "2020-06-11T08:39:56+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
