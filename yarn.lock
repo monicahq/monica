@@ -5071,7 +5071,7 @@ ipaddr.js@1.9.0:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.0.tgz#37df74e430a0e47550fe54a2defe30d8acd95f65"
   integrity sha512-M4Sjn6N/+O6/IXSJseKqHoFc+5FdGJ22sXqnjTpdZweHK64MzEPAyQZyEU3R/KRv2GLoa7nNtg/C2Ev6m7z+eA==
 
-ipaddr.js@^1.9.0, ipaddr.js@^1.9.1:
+ipaddr.js@^1.9.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
@@ -8808,10 +8808,10 @@ snyk-try-require@1.3.1, snyk-try-require@^1.1.1, snyk-try-require@^1.3.1:
     lru-cache "^4.0.0"
     then-fs "^2.0.0"
 
-snyk@^1.352.1:
-  version "1.352.1"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.352.1.tgz#ba75bc7c8f5a4cce6f38d01c5b3dfe843d2a1f75"
-  integrity sha512-POeDo6rcTTeWgGNdWcSluzGnvpPc6/4tiZezyMNCFsxhIozL+0uvUkBJ2HFYwm+F+6UyiJB5JK8q4zoZoUWVQg==
+snyk@^1.353.1:
+  version "1.353.1"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.353.1.tgz#ded84b31a75447997972c00f283fb671758de1c1"
+  integrity sha512-JcA649PIMDGHoM+jlktzXdgqKwtT5MMDviMrD9VaotB13a8rmI3wNkL+RN8cTB8KXKG4wtbrnsaJT9r4KsPJUQ==
   dependencies:
     "@snyk/cli-interface" "2.8.0"
     "@snyk/dep-graph" "1.18.3"
@@ -8829,7 +8829,6 @@ snyk@^1.352.1:
     debug "^4.1.1"
     diff "^4.0.1"
     glob "^7.1.3"
-    ipaddr.js "^1.9.1"
     needle "^2.5.0"
     open "^7.0.3"
     os-name "^3.0.0"
