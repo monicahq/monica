@@ -9295,10 +9295,10 @@ snyk-try-require@1.3.1, snyk-try-require@^1.1.1, snyk-try-require@^1.3.1:
     lru-cache "^4.0.0"
     then-fs "^2.0.0"
 
-snyk@^1.359.0:
-  version "1.359.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.359.0.tgz#88a936e7b898ad1def4bba2dfe30dc53a760c4d8"
-  integrity sha512-FkEtEUbuENZyhscXybO9Dej66P7sKwmEOnVZCCXRT7GDGclsTMaLUfedGmj1xvYic4fj5MRqBPS+khS7yOErcg==
+snyk@^1.359.1:
+  version "1.359.1"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.359.1.tgz#5c7c285bc3a12055d49818417209789e10ed2e4e"
+  integrity sha512-BSoDyJkkyN1OUzgVR3V6xgfyRTheEPgE7fPQCa3AfQs6JBKpy+7gDVmi8Puc49c3HCXLHJUOCyDzVj3ANw0ihQ==
   dependencies:
     "@snyk/cli-interface" "2.8.0"
     "@snyk/dep-graph" "1.18.3"
