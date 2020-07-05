@@ -148,10 +148,16 @@ Monica requires some background processes to continuously run. The list of thing
 Basically those crons are needed to send reminder emails and check if a new version is available.
 To do this, setup a cron that runs every minute that triggers the following command `php artisan schedule:run`.
 
-Create a new `/etc/cron.d/monica` file with:
+Run the crontab command:
 
 ```sh
-echo "* * * * * sudo -u www-data php /var/www/monica/artisan schedule:run" | sudo tee /etc/cron.d/monica
+crontab -u www-data -e
+```
+
+Then, in the `crontab` editor window you just opened, paste the following at the end of the document:
+
+```sh
+* * * * * php /var/www/monica/artisan schedule:run >> /dev/null 2>&1
 ```
 
 ### 5. Configure Apache webserver
