@@ -56,7 +56,7 @@
     "laravel-mix": "^5.0.4",
     "laravel-mix-purgecss": "^5.0.0",
     "list.js": "^1.5.0",
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.17",
     "marked": "^0.8.2",
     "moment": "^2.26.0",
     "moment-timezone": "^0.5.31",
