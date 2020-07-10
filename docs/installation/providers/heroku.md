@@ -44,11 +44,11 @@ Note that when you deploy with the "Deploy to Heroku" purple button, only 1 dyno
 In order to generate personal access tokens from the UI, you need to:
 
 * Install the [Heroku CLI](https://devcenter.heroku.com/categories/command-line) and log in.
-* From your command line, run
+* From your command line, run:
 ```sh
 heroku run bash -a <APP-ID>
 ```
-* Run
+* Run:
 ```sh
 php artisan passport:keys
 php artisan passport:client --personal --no-interaction
