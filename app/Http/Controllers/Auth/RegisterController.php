@@ -111,9 +111,9 @@ class RegisterController extends Controller
 
             return $user;
         } catch (\Exception $e) {
-            Log::warning($e);
+            Log::error($e);
 
-            return null;
+            abort(500, trans('auth.signup_error'));
         }
     }
 
