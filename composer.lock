@@ -523,16 +523,16 @@
         },
         {
             "name": "creativeorange/gravatar",
-            "version": "v1.0.14",
+            "version": "v1.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/creativeorange/gravatar.git",
-                "reference": "e53513eb12673c8c97663a7d430fe14fce38fb8d"
+                "reference": "6ca1b8029123d3ba0994262cf1102525ad7f6355"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/e53513eb12673c8c97663a7d430fe14fce38fb8d",
-                "reference": "e53513eb12673c8c97663a7d430fe14fce38fb8d",
+                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/6ca1b8029123d3ba0994262cf1102525ad7f6355",
+                "reference": "6ca1b8029123d3ba0994262cf1102525ad7f6355",
                 "shasum": ""
             },
             "require": {
@@ -573,7 +573,7 @@
                 "gravatar",
                 "laravel"
             ],
-            "time": "2020-03-03T09:01:46+00:00"
+            "time": "2020-07-14T08:31:54+00:00"
         },
         {
             "name": "defuse/php-encryption",
