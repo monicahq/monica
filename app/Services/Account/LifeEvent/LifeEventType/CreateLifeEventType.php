@@ -41,7 +41,7 @@ class CreateLifeEventType extends BaseService
             'name' => $data['name'],
             'default_life_event_type_key' => null,
             'core_monica_data' => false,
-            'specific_information_structure' => null
+            'specific_information_structure' => null,
         ]);
 
         return LifeEventType::find($lifeEventType->id);
