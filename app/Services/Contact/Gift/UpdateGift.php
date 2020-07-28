@@ -49,7 +49,7 @@ class UpdateGift extends BaseService
         $this->validate($data);
 
         $gift = Gift::where('account_id', $data['account_id'])
-                    ->findOrFail($data['gift_id']);
+                    ->findOrFail((int) $data['gift_id']);
 
         Contact::where('account_id', $data['account_id'])
         ->findOrFail($data['contact_id']);
