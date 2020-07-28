@@ -114,6 +114,8 @@ class RegisterController extends Controller
             Log::error($e);
 
             abort(500, trans('auth.signup_error'));
+            
+            return null;
         }
     }
 
