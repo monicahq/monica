@@ -33,6 +33,13 @@ sudo apt update
 sudo apt install -y git
 ```
 
+**Apache:** Apache should come pre-installed with your server. If it's not, install it with:
+
+```sh
+sudo apt update
+sudo apt install -y apache2
+```
+
 **PHP 7.3+:**
 
 First add this PPA repository:
