@@ -126,7 +126,7 @@ RUN set -ex; \
 	cd /etc/periodic/hourly/; \
 	{ \
 		echo '#!/bin/sh'; \
-		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v > /proc/1/fd/1 2> /proc/1/fd/2'; \
+		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v > /proc/1/fd/2 2> /proc/1/fd/2'; \
 	} | tee monica; \
 	chmod a+x monica
 
@@ -149,10 +149,10 @@ RUN set -ex; \
 	cd /etc/php7/php-fpm.d; \
 	{ \
 		echo '[global]'; \
-		echo 'error_log = /dev/stderr'; \
+		echo 'error_log = /proc/1/fd/2'; \
 		echo; \
 		echo '[www]'; \
-		echo 'access.log = /dev/stdout'; \
+		echo 'access.log = /proc/1/fd/2'; \
 		echo 'catch_workers_output = yes'; \
         echo 'clear_env = no'; \
 	} | tee docker.conf; \
