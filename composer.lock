@@ -6643,20 +6643,20 @@
         },
         {
             "name": "psr/http-client",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-client.git",
-                "reference": "496a823ef742b632934724bf769560c2a5c7c44e"
+                "reference": "2dfb5f6c5eff0e91e20e913f8c5452ed95b86621"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-client/zipball/496a823ef742b632934724bf769560c2a5c7c44e",
-                "reference": "496a823ef742b632934724bf769560c2a5c7c44e",
+                "url": "https://api.github.com/repos/php-fig/http-client/zipball/2dfb5f6c5eff0e91e20e913f8c5452ed95b86621",
+                "reference": "2dfb5f6c5eff0e91e20e913f8c5452ed95b86621",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.0",
+                "php": "^7.0 || ^8.0",
                 "psr/http-message": "^1.0"
             },
             "type": "library",
@@ -6688,7 +6688,7 @@
                 "psr",
                 "psr-18"
             ],
-            "time": "2018-10-30T23:29:13+00:00"
+            "time": "2020-06-29T06:28:15+00:00"
         },
         {
             "name": "psr/http-factory",
@@ -7868,31 +7868,31 @@
         },
         {
             "name": "spomky-labs/base64url",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spomky-Labs/base64url.git",
-                "reference": "3eb46a1de803f0078962d910e3a2759224a68c61"
+                "reference": "69e77e7d7c5407a253dacdd7bfe6b8978b7a4fb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spomky-Labs/base64url/zipball/3eb46a1de803f0078962d910e3a2759224a68c61",
-                "reference": "3eb46a1de803f0078962d910e3a2759224a68c61",
+                "url": "https://api.github.com/repos/Spomky-Labs/base64url/zipball/69e77e7d7c5407a253dacdd7bfe6b8978b7a4fb2",
+                "reference": "69e77e7d7c5407a253dacdd7bfe6b8978b7a4fb2",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1"
+                "php": ">=7.1"
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.0",
-                "phpunit/phpunit": "^7.0"
+                "phpstan/phpstan": "^0.11",
+                "phpstan/phpstan-beberlei-assert": "^0.11.0",
+                "phpstan/phpstan-deprecation-rules": "^0.11",
+                "phpstan/phpstan-phpunit": "^0.11",
+                "phpstan/phpstan-strict-rules": "^0.11",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Base64Url\\": "src/"
@@ -7916,7 +7916,7 @@
                 "safe",
                 "url"
             ],
-            "time": "2018-08-16T15:44:20+00:00"
+            "time": "2020-08-01T14:15:43+00:00"
         },
         {
             "name": "spomky-labs/cbor-php",
@@ -11413,23 +11413,23 @@
         },
         {
             "name": "web-token/jwt-core",
-            "version": "v2.1.7",
+            "version": "v2.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-core.git",
-                "reference": "c5f73d1992ce8cff1f9b59c755d95ce2f01fa28a"
+                "reference": "0e854694db55dea94453e7a7f3f2b42c333d724e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-core/zipball/c5f73d1992ce8cff1f9b59c755d95ce2f01fa28a",
-                "reference": "c5f73d1992ce8cff1f9b59c755d95ce2f01fa28a",
+                "url": "https://api.github.com/repos/web-token/jwt-core/zipball/0e854694db55dea94453e7a7f3f2b42c333d724e",
+                "reference": "0e854694db55dea94453e7a7f3f2b42c333d724e",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "fgrosse/phpasn1": "^2.0",
-                "php": "^7.2",
+                "php": ">=7.2",
                 "spomky-labs/base64url": "^1.0|^2.0"
             },
             "conflict": {
@@ -11494,20 +11494,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-05-29T20:21:59+00:00"
+            "time": "2020-08-01T15:57:28+00:00"
         },
         {
             "name": "web-token/jwt-key-mgmt",
-            "version": "v2.1.7",
+            "version": "v2.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-key-mgmt.git",
-                "reference": "9d9ce13b8060136d412e8a49dbc38fd69962069e"
+                "reference": "46aca79ea75cf4c9fe134e026f6b2d7eb865edd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-key-mgmt/zipball/9d9ce13b8060136d412e8a49dbc38fd69962069e",
-                "reference": "9d9ce13b8060136d412e8a49dbc38fd69962069e",
+                "url": "https://api.github.com/repos/web-token/jwt-key-mgmt/zipball/46aca79ea75cf4c9fe134e026f6b2d7eb865edd0",
+                "reference": "46aca79ea75cf4c9fe134e026f6b2d7eb865edd0",
                 "shasum": ""
             },
             "require": {
@@ -11584,7 +11584,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-05-29T20:21:59+00:00"
+            "time": "2020-05-29T20:46:31+00:00"
         },
         {
             "name": "web-token/jwt-signature",
