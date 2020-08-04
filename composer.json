@@ -24,7 +24,7 @@
         "intervention/image": "^2.3",
         "laravel/cashier": "~10.0",
         "laravel/framework": "^7.0",
-        "laravel/passport": "^8.0",
+        "laravel/passport": "^9.0",
         "laravel/socialite": "^4.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
@@ -67,10 +67,10 @@
         "nunomaduro/larastan": "^0.6",
         "phpunit/phpcov": "^7.0",
         "phpunit/phpunit": "^9.0",
-        "psalm/plugin-laravel": "^1.0",
+        "psalm/plugin-laravel": "1.1.1",
         "roave/security-advisories": "dev-master",
         "thecodingmachine/phpstan-safe-rule": "^1.0",
-        "vimeo/psalm": "^3.10"
+        "vimeo/psalm": "3.11.2"
     },
     "suggest": {
         "ext-apcu": "*"
