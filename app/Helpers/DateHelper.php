@@ -51,7 +51,7 @@ class DateHelper
      *
      * @param Carbon|string $date
      * @param string $timezone
-     * @return Carbon|false|null
+     * @return Carbon|null
      */
     public static function parseDate($date, $timezone = null): ?Carbon
     {
@@ -71,7 +71,7 @@ class DateHelper
             $date->setTimezone($appTimezone);
         }
 
-        return $date;
+        return $date === false ? null : $date;
     }
 
     /**
