@@ -54,7 +54,9 @@ RUN set -ex; \
         #- cbor-php (webauthn)
         php7-gmp \
         #- web-token/jwt-signature-algorithm-eddsa
-        php7-sodium
+        php7-sodium \
+        #- bacon/bacon-qr-code
+        php7-imagick
 
 # Create a user to own all the code and assets and give them a working
 # directory
