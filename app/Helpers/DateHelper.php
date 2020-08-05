@@ -71,7 +71,7 @@ class DateHelper
             $date->setTimezone($appTimezone);
         }
 
-        return $date;
+        return $date === false ? null : $date;
     }
 
     /**
