@@ -11,7 +11,7 @@
 
 ### Fixes:
 
-* 
+* Fix vue-select usage
 
 
 # RELEASED VERSIONS:
