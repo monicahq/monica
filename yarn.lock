@@ -10727,9 +10727,9 @@ vscode-languageserver-types@^3.5.0:
   integrity sha512-+a9MPUQrNGRrGU630OGbYVQ+11iOIovjCkqxajPa9w57Sd5ruK8WQNsslzpa0x/QJqC8kRc2DUxWjIFwoNm4ZQ==
 
 vue-autosuggest@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/vue-autosuggest/-/vue-autosuggest-2.1.1.tgz#09db0d5cc7ce5747564b9013fa307706c6beacc3"
-  integrity sha512-yolTny/xbDQwyJ4n8w7+hh069yGsvHZRUuuxYuap5SqYkMCrbbavScQ35j2N6l6pChCcRMu5McpHENCKgfg9EA==
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/vue-autosuggest/-/vue-autosuggest-2.2.0.tgz#0202b9aaeeef6a3a4357bf401a73be2ecbe166f1"
+  integrity sha512-cHgEakpoRUOaqXXEo8RcRrbSTM3eAaCu9b55ZXiKbaS6IUD8ewqffQrMy/A1DXqHSQbyEEGui4oAsCbRge29Jg==
 
 vue-checkbox-radio@^0.6.0:
   version "0.6.0"
