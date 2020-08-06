@@ -11,6 +11,7 @@
 
 ### Fixes:
 
+* Fix exception when registering in certain cases
 * Fix vue-select usage
 
 
