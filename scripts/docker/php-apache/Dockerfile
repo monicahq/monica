@@ -41,6 +41,7 @@ RUN set -ex; \
                 libjpeg62-turbo-dev \
                 libgmp-dev \
                 libsodium-dev \
+                libmagickwand-dev \
     ; \
     docker-php-ext-configure intl; \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/; \
@@ -59,6 +60,10 @@ RUN set -ex; \
                 mbstring \
                 opcache \
     ; \
+    \
+    printf "\n" | pecl install imagick ; \
+    docker-php-ext-enable imagick ; \
+    \
     apt-get -y remove \
                 icu-devtools \
                 libicu-dev \
@@ -69,7 +74,9 @@ RUN set -ex; \
                 libfreetype6-dev \
                 libjpeg62-turbo-dev \
                 libgmp-dev \
-                libsodium-dev; \
+                libsodium-dev \
+                libmagickwand-dev \
+    ; \
     apt-get -y clean; \
     rm -rf /var/lib/apt/lists/*
 

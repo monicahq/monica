@@ -41,7 +41,7 @@ The preferred OS distribution is Ubuntu 18.04, simply because all the developmen
 
 ### Other documentation
 
-* [Mail settings](/docs/installations/mail.md): allowing your instance to send mails. Useful for reminders.
-* [Storage](/docs/installations/storage.md): define an external storage for your instance.
-* [Ssl](/docs/installations/ssl.md): how to set ssl for your production-level instance.
+* [Mail settings](/docs/installation/mail.md): allowing your instance to send mails. Useful for reminders.
+* [Storage](/docs/installation/storage.md): define an external storage for your instance.
+* [Ssl](/docs/installation/ssl.md): how to set ssl for your production-level instance.
 * [FAQ](/docs/installation/faq.md): a list of common problems and solutions.
