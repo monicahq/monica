@@ -23,6 +23,7 @@ return [
     'throttle' => 'ログインの試行回数が多すぎます。:seconds 秒後にお試しください。',
     'not_authorized' => 'You are not authorized to execute this action',
     'signup_disabled' => 'Registration is currently disabled',
+    'signup_error' => 'An error occured trying to register the user',
     'back_homepage' => 'Back to homepage',
     'mfa_auth_otp' => 'Authenticate with your two factor device',
     'mfa_auth_webauthn' => 'Authenticate with a security key (WebAuthn)',
