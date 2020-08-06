@@ -23,6 +23,7 @@ return [
     'throttle' => 'عدد كبير جدا من محاولات الدخول. يرجى المحاولة مرة أخرى بعد :seconds ثانية.',
     'not_authorized' => 'ليس لديك الصلاحية لتنفيذ هذا الأمر',
     'signup_disabled' => 'تسجيل الإشتراك معطل حالياً',
+    'signup_error' => 'An error occured trying to register the user',
     'back_homepage' => 'العودة إلى الصفحة الرئيسية',
     'mfa_auth_otp' => 'المصادقة مع جهاز العامل الثنائي الخاص بك',
     'mfa_auth_webauthn' => 'Authenticate with a security key (WebAuthn)',
