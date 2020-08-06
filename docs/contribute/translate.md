@@ -17,6 +17,8 @@ All translations are done with [crowdin](https://crowdin.com/project/monicahq) -
 
 You can [open an issue](https://github.com/monicahq/monica/issues/new) to request a new language.
 
+⚠️ Do not edit languages file directly.
+
 To enable a new language in Monica:
 * we have to configure it in Crowdin first. This is something we must do ourselves (we: members of the project). To do it, we need to go to Settings > Translations > Target Languages and add the new locale here.
 * add the name of the language in [the main English settings file](https://github.com/monicahq/monica/blob/master/resources/lang/en/settings.php).

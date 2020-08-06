@@ -137,6 +137,12 @@
             </errorLevel>
         </UndefinedMagicMethod>
 
+        <InvalidReturnType>
+            <errorLevel type="suppress">
+                <file name="app/Http/Controllers/Auth/RegisterController.php" />
+            </errorLevel>
+        </InvalidReturnType>
+
         <TooManyTemplateParams errorLevel="info" />
 
     </issueHandlers>
