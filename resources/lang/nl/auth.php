@@ -23,6 +23,7 @@ return [
     'throttle' => 'Te veel inlogpogingen. Probeer opnieuw in :seconds seconden.',
     'not_authorized' => 'Je bent niet gemachtigd om dit te doen',
     'signup_disabled' => 'Registratie is momenteel uitgeschakeld',
+    'signup_error' => 'An error occured trying to register the user',
     'back_homepage' => 'Terug naar homepage',
     'mfa_auth_otp' => 'Verifieer met je tweestapsverificatie apparaat',
     'mfa_auth_webauthn' => 'Authenticeer met een beveiligingssleutel (WebAuthn)',
