@@ -23,6 +23,7 @@ return [
     'throttle' => 'Demasiados intentos de acceso. Por favor intente nuevamente en :seconds segundos.',
     'not_authorized' => 'Usted no esta autorizado para ejecutar esta acción',
     'signup_disabled' => 'La registración se encuentra actualmente deshabilitada',
+    'signup_error' => 'An error occured trying to register the user',
     'back_homepage' => 'Volver al inicio',
     'mfa_auth_otp' => 'Autentícate con tú dispositivo de dos pasos',
     'mfa_auth_webauthn' => 'Authenticate with a security key (WebAuthn)',
