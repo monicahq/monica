@@ -23,6 +23,7 @@ return [
     'throttle' => 'Слишком много попыток входа. Пожалуйста, попробуйте еще раз через :seconds секунд.',
     'not_authorized' => 'Вам не разрешено выполнять это действие.',
     'signup_disabled' => 'Регистрация сейчас выключена.',
+    'signup_error' => 'An error occured trying to register the user',
     'back_homepage' => 'Вернуться на главную страницу',
     'mfa_auth_otp' => 'Authenticate with your two factor device',
     'mfa_auth_webauthn' => 'Authenticate with a security key (WebAuthn)',
