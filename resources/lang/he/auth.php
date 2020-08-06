@@ -23,6 +23,7 @@ return [
     'throttle' => 'בוצעו יותר מדי ניסיונות כניסה כושלים. נא לנסות שוב בעוד :seconds שניות.',
     'not_authorized' => 'אין לך הרשאה להריץ את הפעולה הזאת',
     'signup_disabled' => 'ההרשמה מושבתת כרגע',
+    'signup_error' => 'An error occured trying to register the user',
     'back_homepage' => 'חזרה לדף הבית',
     'mfa_auth_otp' => 'אימות עם ההתקן שלך לאימות דו־שלבי',
     'mfa_auth_webauthn' => 'אימות עם מפתח אבטחה (WebAuthn)',
