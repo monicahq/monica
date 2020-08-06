@@ -97,8 +97,8 @@ Client secret: zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq
 ```
 
 * Copy the two values into two new environment variable of your `.env` file:
-   - The value of client ID in a `MOBILE_CLIENT_ID` variable
-   - The value of client secret in a `MOBILE_CLIENT_SECRET` variable
+   - The value of client ID in a `PASSPORT_PERSONAL_ACCESS_CLIENT_ID` variable
+   - The value of client secret in a `PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET` variable
 
 ## Limitations
 
