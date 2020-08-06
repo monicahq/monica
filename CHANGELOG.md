@@ -6,16 +6,18 @@
 
 ### Enhancements:
 
-* 
+* Add dependency to php imagick module
+* Renamed MOBILE_CLIENT_ID and MOBILE_CLIENT_SECRET variables to PASSPORT_PERSONAL_ACCESS_CLIENT_ID and PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET
 
 ### Fixes:
 
-* 
+* Fix exception when registering in certain cases
+* Fix vue-select usage
 
 
 # RELEASED VERSIONS:
 
-## v2.18.0 - 2019-05-23
+## v2.18.0 - 2020-05-23
 
 ### New features:
 
@@ -59,7 +61,7 @@
 * Fix carddav sync-collection reporting wrong syncToken
 
 
-## v2.17.0 - 2019-03-22
+## v2.17.0 - 2020-03-22
 
 ### New features:
 
