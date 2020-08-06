@@ -23,6 +23,7 @@ return [
     'throttle' => 'Çok fazla oturum açma girişiminde bulundunuz. Lütfen :seconds saniye içerisinde tekrar deneyiz.',
     'not_authorized' => 'Bu işlemi yürütme yetkiniz yok',
     'signup_disabled' => 'Kayıt şu anda devre dışı',
+    'signup_error' => 'An error occured trying to register the user',
     'back_homepage' => 'Ana sayfaya dön',
     'mfa_auth_otp' => 'İki faktörlü cihazınızla kimlik doğrulaması',
     'mfa_auth_webauthn' => 'Bir güvenlik anahtarıyla (WebAuthn) kimlik doğrulaması',
