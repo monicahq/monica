@@ -76,7 +76,7 @@ You should check out a tagged version of Monica since `master` branch may not al
 
 ```sh
 cd /var/www/monica
-git checkout tags/v2.2.1
+git checkout tags/v2.18.0
 ```
 
 ### 2. Setup the database
