@@ -1123,10 +1123,10 @@
     strip-ansi "^5.0.0"
     through "^2.3.6"
 
-"@snyk/java-call-graph-builder@1.12.3":
-  version "1.12.3"
-  resolved "https://registry.yarnpkg.com/@snyk/java-call-graph-builder/-/java-call-graph-builder-1.12.3.tgz#f0be2c2acb1df900bbd52c0a4d2e6efbbdb0dbac"
-  integrity sha512-eN32RcCq5J0Veo5NIbDUSb2KRNiVsZMt1w94bFYKxFt6F1tIoiv1CraXdTHSlgQosZ7tw93e8qdOKmQXOtK88Q==
+"@snyk/java-call-graph-builder@1.13.1":
+  version "1.13.1"
+  resolved "https://registry.yarnpkg.com/@snyk/java-call-graph-builder/-/java-call-graph-builder-1.13.1.tgz#641d0f929baa95cd30f8e16f938b4d21499a1e9b"
+  integrity sha512-oOCSIyOMplV73a1agcXKXlFYQftK5esUUaFRTf90GOxQwKy8R9tZtKdP+CdutlgvjRP286DQ+7GlvKYsGGZbWg==
   dependencies:
     "@snyk/graphlib" "2.1.9-patch"
     ci-info "^2.0.0"
@@ -9420,13 +9420,13 @@ snyk-module@^2.0.2:
     debug "^3.1.0"
     hosted-git-info "^2.7.1"
 
-snyk-mvn-plugin@2.18.2:
-  version "2.18.2"
-  resolved "https://registry.yarnpkg.com/snyk-mvn-plugin/-/snyk-mvn-plugin-2.18.2.tgz#d35e825ccfc2807c26bf6776116d46de03d3f115"
-  integrity sha512-A36YmfpeEXGsKoChm644DysKG40d5y5MZnldkpsbrLz37R3JMxkt4igMACZ9QJZAkiWjVs28hOKyyT1vuMPlHg==
+snyk-mvn-plugin@2.19.1:
+  version "2.19.1"
+  resolved "https://registry.yarnpkg.com/snyk-mvn-plugin/-/snyk-mvn-plugin-2.19.1.tgz#00b68a459a4da9e39b0d8c416ae05496b3b03ee3"
+  integrity sha512-VXYJSdhUmOQAyxdsv5frAKbi3UOcHPabWEQxQ9wxhVBEEmx2lP5ajv1a+ntxwWwL7u3jdc+rnCIKHpLlQJ5nyw==
   dependencies:
     "@snyk/cli-interface" "2.8.1"
-    "@snyk/java-call-graph-builder" "1.12.3"
+    "@snyk/java-call-graph-builder" "1.13.1"
     debug "^4.1.1"
     needle "^2.5.0"
     tmp "^0.1.0"
@@ -9587,10 +9587,10 @@ snyk-try-require@1.3.1, snyk-try-require@^1.1.1, snyk-try-require@^1.3.1:
     lru-cache "^4.0.0"
     then-fs "^2.0.0"
 
-snyk@^1.367.0:
-  version "1.369.3"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.369.3.tgz#8c0e980334bd3927573e11072518750c063bbbdc"
-  integrity sha512-I54pQeG7i/fLQfBQYK+hL/Yr3g9FPuSnVWKroRFdEaB6vfNSRBA2nd3cKPz9iTVm8v72dSZvixsvR6s+7iDi6g==
+snyk@^1.370.0:
+  version "1.370.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.370.0.tgz#6890c0f05fff81bd82f69b17c701c51f00a23458"
+  integrity sha512-Q02SgsIyELQCMV6SwxOJcF20ix75N9PWluJ6dx2Cem29xF5wE/2gGDDPIZpSt7rXJmrb12R5UsVl3r3/Ws3R2Q==
   dependencies:
     "@snyk/cli-interface" "2.8.1"
     "@snyk/dep-graph" "1.18.3"
@@ -9619,7 +9619,7 @@ snyk@^1.367.0:
     snyk-go-plugin "1.16.0"
     snyk-gradle-plugin "3.5.1"
     snyk-module "3.1.0"
-    snyk-mvn-plugin "2.18.2"
+    snyk-mvn-plugin "2.19.1"
     snyk-nodejs-lockfile-parser "1.26.3"
     snyk-nuget-plugin "1.18.1"
     snyk-php-plugin "1.9.0"
