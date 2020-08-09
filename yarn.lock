@@ -10766,10 +10766,10 @@ vue-eslint-parser@^7.0.0:
     esquery "^1.0.1"
     lodash "^4.17.15"
 
-vue-good-table@^2.19.4:
-  version "2.20.0"
-  resolved "https://registry.yarnpkg.com/vue-good-table/-/vue-good-table-2.20.0.tgz#fb2e70758cd86b4ec1aa985369a8b58528cbe81c"
-  integrity sha512-KBOX0GUOOgpT5CPTr2HD0Po/j+GNjGiutF2OCaxhgB/897x40t1M5JlxUjHp2+F/0iZ9YtCZqc123e4CR6rC6w==
+vue-good-table@^2.21.0:
+  version "2.21.0"
+  resolved "https://registry.yarnpkg.com/vue-good-table/-/vue-good-table-2.21.0.tgz#78f90ee4e40696b72545e2a198c9398c45f0ba45"
+  integrity sha512-e384AGlmEBG0CfTkZXN/OZe1O58V2mbxQafsKqzVrqvROcMZsa9iSyK11D4YS2JzlJo9mRqsad4/vrV/U/Xbdw==
   dependencies:
     date-fns "^2.0.0-beta.4"
     diacriticless "1.0.1"
@@ -10778,7 +10778,6 @@ vue-good-table@^2.19.4:
     lodash.filter "^4.6.0"
     lodash.foreach "^4.5.0"
     lodash.isequal "^4.5.0"
-    vue-select "^3.1.0"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
@@ -10816,7 +10815,7 @@ vue-rx@^6.0.1, vue-rx@^6.2.0:
   resolved "https://registry.yarnpkg.com/vue-rx/-/vue-rx-6.2.0.tgz#c3b86462b252626edd16417385bb9054a3a23acb"
   integrity sha512-tpKUcqS5IUYS+HsdbR5TlE5LL9PK4zwlplEtmMeydnbqaUTa9ciLMplJXAtFSiQw1vuURoyEJmCXqMxaVEIloQ==
 
-vue-select@^3.1.0, vue-select@^3.10.3:
+vue-select@^3.10.3:
   version "3.10.7"
   resolved "https://registry.yarnpkg.com/vue-select/-/vue-select-3.10.7.tgz#58d756a7159bf923ce99abf74c5d6309ea998136"
   integrity sha512-6rvIYBNEp9y0xK/sq2ZzDCxKA2BoVNliyctOeMtzarQzvpLlab7l8zvqr2jhGZOxozp7jd2AvZxpF3Ivems2wQ==
