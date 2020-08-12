@@ -12399,29 +12399,30 @@
         },
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v3.3.3",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "57f2219f6d9efe41ed1bc880d86701c52f261bf5"
+                "reference": "9e785aa5584e8839fd43070202dd7f2e912db51c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/57f2219f6d9efe41ed1bc880d86701c52f261bf5",
-                "reference": "57f2219f6d9efe41ed1bc880d86701c52f261bf5",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/9e785aa5584e8839fd43070202dd7f2e912db51c",
+                "reference": "9e785aa5584e8839fd43070202dd7f2e912db51c",
                 "shasum": ""
             },
             "require": {
                 "illuminate/routing": "^5.5|^6|^7",
                 "illuminate/session": "^5.5|^6|^7",
                 "illuminate/support": "^5.5|^6|^7",
-                "maximebf/debugbar": "^1.15.1",
+                "maximebf/debugbar": "^1.16.3",
                 "php": ">=7.0",
                 "symfony/debug": "^3|^4|^5",
                 "symfony/finder": "^3|^4|^5"
             },
             "require-dev": {
-                "laravel/framework": "5.5.x"
+                "orchestra/testbench": "^3.5|^4.0|^5.0",
+                "phpunit/phpunit": "^6.0|^7.0|^8.5|^9.0"
             },
             "type": "library",
             "extra": {
@@ -12469,7 +12470,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-05-05T10:53:32+00:00"
+            "time": "2020-08-11T10:30:51+00:00"
         },
         {
             "name": "barryvdh/laravel-ide-helper",
