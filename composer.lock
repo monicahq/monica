@@ -1949,16 +1949,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.12.7.1",
+            "version": "8.12.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "fda8a51ad0769d82ce7023255e52e9c45efc1e75"
+                "reference": "5a6e4e730de52f55882d2db27016e2916f8791e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/fda8a51ad0769d82ce7023255e52e9c45efc1e75",
-                "reference": "fda8a51ad0769d82ce7023255e52e9c45efc1e75",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/5a6e4e730de52f55882d2db27016e2916f8791e9",
+                "reference": "5a6e4e730de52f55882d2db27016e2916f8791e9",
                 "shasum": ""
             },
             "require": {
@@ -2013,7 +2013,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2020-07-25T15:34:01+00:00"
+            "time": "2020-08-13T17:48:08+00:00"
         },
         {
             "name": "giggsey/locale",
@@ -6647,12 +6647,12 @@
             "version": "v1.1.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nrk/predis.git",
+                "url": "https://github.com/predishq/predis.git",
                 "reference": "82eb18c6c3860849cb6e2ff34b0c4b39d5daee46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/82eb18c6c3860849cb6e2ff34b0c4b39d5daee46",
+                "url": "https://api.github.com/repos/predishq/predis/zipball/82eb18c6c3860849cb6e2ff34b0c4b39d5daee46",
                 "reference": "82eb18c6c3860849cb6e2ff34b0c4b39d5daee46",
                 "shasum": ""
             },
@@ -14733,6 +14733,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": true,
             "time": "2020-08-04T08:28:15+00:00"
         },
         {
@@ -15640,6 +15641,7 @@
             ],
             "description": "FinderFacade is a convenience wrapper for Symfony's Finder component.",
             "homepage": "https://github.com/sebastianbergmann/finder-facade",
+            "abandoned": true,
             "time": "2020-02-08T06:07:58+00:00"
         },
         {
