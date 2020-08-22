@@ -23,7 +23,7 @@ return [
     'sent' => 'Ссылка на сброс пароля была отправлена.',
     'token' => 'Ошибочный код сброса пароля.',
     'user' => 'Ссылка на сброс пароля была отправлена.',
-    'changed' => 'Password changed successfully.',
+    'changed' => 'Пароль успешно изменен.',
     'invalid' => 'Current password you entered is not correct.',
     'throttled' => 'Пожалуйста, подождите перед повторной попыткой.',
 
