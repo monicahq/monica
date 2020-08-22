@@ -18,7 +18,7 @@ return [
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'Ресурсы DAV',
     'sidebar_settings_security' => 'Безопасность',
-    'sidebar_settings_auditlogs' => 'Audit logs',
+    'sidebar_settings_auditlogs' => 'Журнал аудита',
 
     'title_general' => 'Общая информация',
     'title_i18n' => 'Международные настройки',
