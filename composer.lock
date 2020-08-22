@@ -84,16 +84,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.149.2",
+            "version": "3.150.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "e8a0d608e8379ad8b283812064136229ba2c1d11"
+                "reference": "1aef7e270f15347df82279f05d85f551f85c8b87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e8a0d608e8379ad8b283812064136229ba2c1d11",
-                "reference": "e8a0d608e8379ad8b283812064136229ba2c1d11",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1aef7e270f15347df82279f05d85f551f85c8b87",
+                "reference": "1aef7e270f15347df82279f05d85f551f85c8b87",
                 "shasum": ""
             },
             "require": {
@@ -165,7 +165,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2020-08-17T18:11:59+00:00"
+            "time": "2020-08-20T18:12:35+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -3521,16 +3521,16 @@
         },
         {
             "name": "league/flysystem-aws-s3-v3",
-            "version": "1.0.26",
+            "version": "1.0.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-aws-s3-v3.git",
-                "reference": "580838fd732838c0d2e8751c403e5a415363da79"
+                "reference": "090ae8f00a5af90dbda1f1751738a8f64b2c89fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/580838fd732838c0d2e8751c403e5a415363da79",
-                "reference": "580838fd732838c0d2e8751c403e5a415363da79",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/090ae8f00a5af90dbda1f1751738a8f64b2c89fa",
+                "reference": "090ae8f00a5af90dbda1f1751738a8f64b2c89fa",
                 "shasum": ""
             },
             "require": {
@@ -3564,7 +3564,7 @@
                 }
             ],
             "description": "Flysystem adapter for the AWS S3 SDK v3.x",
-            "time": "2020-08-18T10:54:07+00:00"
+            "time": "2020-08-22T08:17:59+00:00"
         },
         {
             "name": "league/flysystem-cached-adapter",
@@ -14951,12 +14951,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "b7e8c8916bca1758da0105979774ea6cb49072f7"
+                "reference": "89bed6788d61977969b89d912b5844e8beee09f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/b7e8c8916bca1758da0105979774ea6cb49072f7",
-                "reference": "b7e8c8916bca1758da0105979774ea6cb49072f7",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/89bed6788d61977969b89d912b5844e8beee09f0",
+                "reference": "89bed6788d61977969b89d912b5844e8beee09f0",
                 "shasum": ""
             },
             "conflict": {
@@ -15064,6 +15064,7 @@
                 "onelogin/php-saml": "<2.10.4",
                 "oneup/uploader-bundle": "<1.9.3|>=2,<2.1.5",
                 "openid/php-openid": "<2.3",
+                "openmage/magento-lts": "<19.4.6|>=20,<20.0.2",
                 "oro/crm": ">=1.7,<1.7.4",
                 "oro/platform": ">=1.7,<1.7.4",
                 "padraic/humbug_get_contents": "<1.1.2",
@@ -15238,7 +15239,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-08-18T07:47:20+00:00"
+            "time": "2020-08-19T19:01:52+00:00"
         },
         {
             "name": "sebastian/code-unit",
