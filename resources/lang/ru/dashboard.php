@@ -34,7 +34,7 @@ return [
     'statistics_activities' => 'Активности',
     'statistics_gifts' => 'Подарки',
 
-    'reminders_next_months' => 'Events in the next 3 months',
+    'reminders_next_months' => 'События в ближайшие 3 месяца',
     'reminders_none' => 'Нет напоминаний в этом месяце',
 
     'product_changes' => 'Product changes',
