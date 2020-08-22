@@ -69,7 +69,7 @@ return [
     'register_lastname' => 'Фамилия',
     'register_lastname_example' => 'например, Иванов',
     'register_password' => 'Пароль',
-    'register_password_example' => 'Enter a secure password',
+    'register_password_example' => 'Введите сложный пароль',
     'register_password_confirmation' => 'Password confirmation',
     'register_action' => 'Register',
     'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url" hreflang=":hreflang">Privacy Policy</a> and <a href=":urlterm" hreflang=":hreflang">Terms of use</a>.',
