@@ -96,7 +96,7 @@ return [
     'breadcrumb_api' => 'API',
     'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'How did you meet',
-    'breadcrumb_settings_personalization' => 'Personalization',
+    'breadcrumb_settings_personalization' => 'Персонализация',
     'breadcrumb_settings_security' => 'Безопасность',
     'breadcrumb_settings_security_2fa' => 'Двухфакторная аутентификация',
     'breadcrumb_profile' => 'Профиль :name',
@@ -106,7 +106,7 @@ return [
     'gender_none' => 'Неизвестно',
     'gender_no_gender' => 'No gender',
 
-    'error_title' => 'Whoops! Something went wrong.',
+    'error_title' => 'Ой, что-то пошло не так.',
     'error_unauthorized' => 'У вас нет прав для редактирования этого ресурса.',
     'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'We had an error trying to save the data.',
