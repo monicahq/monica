@@ -77,7 +77,7 @@ return [
     'delete_cta' => 'Удалить аккаунт',
     'settings_success' => 'Preferences updated!',
     'locale' => 'Язык',
-    'locale_help' => 'Do you want to help translating Monica or add a new language? Please follow <a href=":url" target="_blank" lang="en">this link for more information</a>.',
+    'locale_help' => 'Хотите помочь с переводом Monica или добавить новый язык? Перейдите по <a href=":url" target="_blank" lang="en">этой ссылке для получения дополнительной информации</a>.',
     'locale_ar' => 'Арабский',
     'locale_cs' => 'Чешский',
     'locale_de' => 'немецкий',
