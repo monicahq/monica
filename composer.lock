@@ -11756,16 +11756,16 @@
         },
         {
             "name": "web-token/jwt-core",
-            "version": "v2.1.9",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-core.git",
-                "reference": "0e854694db55dea94453e7a7f3f2b42c333d724e"
+                "reference": "0909efa4fe2c3e2d537922b3ea1b65eb8203686c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-core/zipball/0e854694db55dea94453e7a7f3f2b42c333d724e",
-                "reference": "0e854694db55dea94453e7a7f3f2b42c333d724e",
+                "url": "https://api.github.com/repos/web-token/jwt-core/zipball/0909efa4fe2c3e2d537922b3ea1b65eb8203686c",
+                "reference": "0909efa4fe2c3e2d537922b3ea1b65eb8203686c",
                 "shasum": ""
             },
             "require": {
@@ -11837,7 +11837,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-08-01T15:57:28+00:00"
+            "time": "2020-08-22T13:17:25+00:00"
         },
         {
             "name": "web-token/jwt-key-mgmt",
@@ -11931,16 +11931,16 @@
         },
         {
             "name": "web-token/jwt-signature",
-            "version": "v2.1.9",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature.git",
-                "reference": "41da248b6a7a4e98bd6fb8ffa5b74ac4dece280e"
+                "reference": "f4d83f77031c9d27edebbea053931074030d3b09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature/zipball/41da248b6a7a4e98bd6fb8ffa5b74ac4dece280e",
-                "reference": "41da248b6a7a4e98bd6fb8ffa5b74ac4dece280e",
+                "url": "https://api.github.com/repos/web-token/jwt-signature/zipball/f4d83f77031c9d27edebbea053931074030d3b09",
+                "reference": "f4d83f77031c9d27edebbea053931074030d3b09",
                 "shasum": ""
             },
             "require": {
@@ -12013,24 +12013,24 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-05-29T20:21:59+00:00"
+            "time": "2020-08-01T11:48:26+00:00"
         },
         {
             "name": "web-token/jwt-signature-algorithm-ecdsa",
-            "version": "v2.1.9",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-ecdsa.git",
-                "reference": "340cd45a092440b407e6af43373664d8c6318ab9"
+                "reference": "3ae6e56ccf34e8b7b65ec988497d5d1bceca9864"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-ecdsa/zipball/340cd45a092440b407e6af43373664d8c6318ab9",
-                "reference": "340cd45a092440b407e6af43373664d8c6318ab9",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-ecdsa/zipball/3ae6e56ccf34e8b7b65ec988497d5d1bceca9864",
+                "reference": "3ae6e56ccf34e8b7b65ec988497d5d1bceca9864",
                 "shasum": ""
             },
             "require": {
-                "lib-openssl": "*",
+                "ext-openssl": "*",
                 "web-token/jwt-signature": "^2.0"
             },
             "require-dev": {
@@ -12092,7 +12092,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-05-29T20:21:59+00:00"
+            "time": "2020-08-22T13:17:25+00:00"
         },
         {
             "name": "web-token/jwt-signature-algorithm-eddsa",
