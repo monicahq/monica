@@ -8,16 +8,16 @@
 
 return [
     'sidebar_settings' => 'настройки аккаунта',
-    'sidebar_personalization' => 'Personalization',
-    'sidebar_settings_storage' => 'Storage',
+    'sidebar_personalization' => 'Персонализация',
+    'sidebar_settings_storage' => 'Хранилище',
     'sidebar_settings_export' => 'Экспортировать данные',
     'sidebar_settings_users' => 'Пользователи',
     'sidebar_settings_subscriptions' => 'Подписка',
     'sidebar_settings_import' => 'Импортировать данные',
     'sidebar_settings_tags' => 'Управление тегами',
     'sidebar_settings_api' => 'API',
-    'sidebar_settings_dav' => 'DAV Resources',
-    'sidebar_settings_security' => 'Security',
+    'sidebar_settings_dav' => 'Ресурсы DAV',
+    'sidebar_settings_security' => 'Безопасность',
     'sidebar_settings_auditlogs' => 'Audit logs',
 
     'title_general' => 'General Information',
