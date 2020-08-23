@@ -61,7 +61,7 @@
           </ul>
         </div>
 
-        <a class="pointer" href="" @click.prevent="store()">
+        <a class="pointer" href="" @click.prevent="editMode = false">
           {{ $t('app.close') }}
         </a>
       </li>
@@ -140,6 +140,7 @@ export default {
 
     removeTag(tag) {
       this.contactTags.splice(this.contactTags.indexOf(tag), 1);
+      this.store();
     },
 
     onChange() {
@@ -183,6 +184,7 @@ export default {
       this.search = null;
       this.isOpen = false;
       this.contactTags.push(result);
+      this.store();
     },
 
     filterResults() {
@@ -199,7 +201,6 @@ export default {
     store() {
       axios.post('people/' + this.hash + '/tags/update', this.contactTags)
         .then(response => {
-          this.editMode = false;
           this.getExistingTags();
         });
     },
