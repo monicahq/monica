@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => 'תמונת פרופיל נוכחית',
     'photo_make_profile_pic' => 'הכנת תמונת פרופיל',
     'photo_delete' => 'מחיקת תמונה',
-    'photo_next' => 'Next photo',
-    'photo_previous' => 'Previous photo',
+    'photo_next' => 'לתמונה הבאה',
+    'photo_previous' => 'לתמונה הקודמת',
 
     // Avatars
     'avatar_change_title' => 'החלפת התמונה הייצוגית שלך',
