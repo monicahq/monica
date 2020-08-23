@@ -500,6 +500,8 @@ return [
     'photo_current_profile_pic' => 'Mevcut profil resmi',
     'photo_make_profile_pic' => 'Profil resmi yapın',
     'photo_delete' => 'Fotoğrafı sil',
+    'photo_next' => 'Next photo',
+    'photo_previous' => 'Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Avatarınızı değiştirin',
