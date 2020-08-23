@@ -1,23 +1,7 @@
 <style scoped>
-    .photo {
-        height: 250px;
-    }
-    .photo-arrow {
-      cursor: pointer;
-    }
-    .photo-arrow:hover {
-      background: none;
-      font-size: 14px;
-    }
-
-    .photo-arrow-left {
-      float:left;
-    }
-
-    .photo-arrow-right {
-      float:right;
-    }
-
+.photo {
+  height: 250px;
+}
 </style>
 
 <template>
@@ -63,7 +47,7 @@
     <!-- LIST OF PHOTO -->
     <div class="db mt3">
       <div class="flex flex-wrap">
-        <div v-for="photo in photos" :key="photo.id" class="w-third-ns w-100">
+        <div v-for="photo in photos" :key="photo.id" class="w-third-ns w-100 pointer">
           <div class="pa3 mb3 br2 ba b--gray-monica" :class="dirltr ? 'mr3' : 'ml3'">
             <div class="cover bg-center photo w-100 h-100 br2 bb b--gray-monica pb2"
                  :style="'background-image: url(' + photo.link + ');'"
@@ -107,13 +91,11 @@
 
             <img :src="url" :alt="$t('people.photo_title')" class="mw-90 h-auto mb3" />
 
-            <div class="tc">
-              <a class="fa fa-chevron-left photo-arrow photo-arrow-left" @click="displayPrev" v-if="canShowPrev"></a>
-              <button class="btn" @click="showModal = false">
-                {{ $t('app.close') }}
-              </button>
-                <a class="fa fa-chevron-right photo-arrow photo-arrow-right" @click="displayNext" v-if="canShowNext"></a>
-            </div>
+            <ul class="list pl0 tc">
+              <li class="di mr3"><a class="pointer" @click="displayPrev" v-if="canShowPrev">< {{ $t('people.photo_previous') }}</a></li>
+              <li class="di mr3"><button class="btn" @click="showModal = false">{{ $t('app.close') }}</button></li>
+              <li class="di"><a class="pointer" @click="displayNext" v-if="canShowNext">{{ $t('people.photo_next') }} ></a></li>
+            </ul>
           </div>
         </div>
       </div>
