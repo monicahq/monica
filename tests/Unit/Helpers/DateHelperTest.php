@@ -631,7 +631,6 @@ class DateHelperTest extends FeatureTestCase
             'Canada/Newfoundland',
             'America/Sao_Paulo',
             'America/Argentina/Buenos_Aires',
-            'America/Godthab',
             'America/Noronha',
             'Atlantic/Azores',
             'Atlantic/Cape_Verde',
@@ -753,7 +752,7 @@ class DateHelperTest extends FeatureTestCase
         foreach ($oldTimezones as $timezone) {
             $timezone = TimezoneHelper::adjustEquivalentTimezone($timezone);
             if ($list->firstWhere('timezone', $timezone) == null) {
-                $missed .= ', '.$timezone;
+                $missed .= $timezone.',';
             }
         }
 

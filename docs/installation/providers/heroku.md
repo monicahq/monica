@@ -17,8 +17,8 @@ Before deployment, Heroku will ask you to define a few variables.
 - Please ensure to enter a custom `APP_KEY` when asked (if, for example, you have the `pwgen` utility installed, you could copy and paste the output of `pwgen -s 32 1`).
 - In addition, you can edit the email address Monica will send emails to (`MAIL_FROM_ADDRESS`), the name of the sender (`MAIL_FROM_NAME`) and some other important variables on that screen.
 
-After deployment, click on ![Manage App](../images/heroku_manage_app.png) to open the dashboard of your new application:
-![Heroku Dashbord](../images/heroku_dashboard.png)
+After deployment, click on ![Manage App](../../images/heroku_manage_app.png) to open the dashboard of your new application:
+![Heroku Dashbord](../../images/heroku_dashboard.png)
 
 Click on **Heroku Scheduler** to open scheduler dashboard. Create a new job, and define a new job to run this command every 10 minutes or every hour at 00 minutes:
 ```sh
@@ -44,11 +44,11 @@ Note that when you deploy with the "Deploy to Heroku" purple button, only 1 dyno
 In order to generate personal access tokens from the UI, you need to:
 
 * Install the [Heroku CLI](https://devcenter.heroku.com/categories/command-line) and log in.
-* From your command line, run
+* From your command line, run:
 ```sh
 heroku run bash -a <APP-ID>
 ```
-* Run
+* Run:
 ```sh
 php artisan passport:keys
 php artisan passport:client --personal --no-interaction
@@ -97,8 +97,8 @@ Client secret: zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq
 ```
 
 * Copy the two values into two new environment variable of your `.env` file:
-   - The value of client ID in a `MOBILE_CLIENT_ID` variable
-   - The value of client secret in a `MOBILE_CLIENT_SECRET` variable
+   - The value of client ID in a `PASSPORT_PERSONAL_ACCESS_CLIENT_ID` variable
+   - The value of client secret in a `PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET` variable
 
 ## Limitations
 

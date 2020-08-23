@@ -121,6 +121,7 @@
                 v-model="updateForm.latitude"
                 :title="$t('people.contact_address_form_latitude')"
                 input-type="number"
+                step="0.0000001"
                 :required="false"
               />
             </div>
@@ -130,6 +131,7 @@
                 v-model="updateForm.longitude"
                 :title="$t('people.contact_address_form_longitude')"
                 input-type="number"
+                step="0.0000001"
                 :required="false"
               />
             </div>
@@ -218,6 +220,7 @@
             v-model="createForm.latitude"
             :title="$t('people.contact_address_form_latitude')"
             input-type="number"
+            step="0.0000001"
             :required="false"
           />
         </div>
@@ -227,6 +230,7 @@
             v-model="createForm.longitude"
             :title="$t('people.contact_address_form_longitude')"
             input-type="number"
+            step="0.0000001"
             :required="false"
           />
         </div>

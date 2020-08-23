@@ -76,7 +76,7 @@ You should check out a tagged version of Monica since `master` branch may not al
 
 ```sh
 cd /var/www/monica
-git checkout tags/v2.2.1
+git checkout tags/v2.18.0
 ```
 
 ### 2. Setup the database
@@ -149,7 +149,7 @@ crontab -u www-data -e
 2. Then, in the text editor window you just opened, copy the following:
 
 ```
-* * * * *   /usr/bin/php /var/www/monica/artisan schedule:run
+* * * * *   /usr/bin/php /var/www/monica/artisan schedule:run >> /dev/null 2>&1
 ```
 
 ### 5. Configure Apache webserver
@@ -298,8 +298,8 @@ Client secret: zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq
 
 -   Copy the two values into two new environment variables of your `.env` file:
 
-    -   The value of `Client ID` in a `MOBILE_CLIENT_ID` variable
-    -   The value of `Client secret` in a `MOBILE_CLIENT_SECRET` variable
+    -   The value of `Client ID` in a `PASSPORT_PERSONAL_ACCESS_CLIENT_ID` variable
+    -   The value of `Client secret` in a `PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET` variable
 
 -   OAuth login can be access on `http://localhost/oauth/login`.
 
