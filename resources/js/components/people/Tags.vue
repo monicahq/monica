@@ -49,7 +49,7 @@
                 @input="onChange"
           />
 
-          <ul v-show="isOpen" class="autocomplete-results ba b--gray-monica absolute bg-white left-0 z-9999">
+          <ul v-show="isOpen" v-if="results.length > 0" class="autocomplete-results ba b--gray-monica absolute bg-white left-0 z-9999">
             <li v-for="(result, i) in results"
                 :key="i"
                 class="autocomplete-result"
@@ -157,6 +157,7 @@ export default {
         this.arrowCounter = -1;
         this.isOpen = false;
         this.search = null;
+        this.store();
       }
     },
 
