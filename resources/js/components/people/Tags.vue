@@ -30,7 +30,7 @@
 
       <!-- edit button -->
       <li v-show="contactTags.length > 0" class="di">
-        <a v-show="!editMode" class="pointer" href="" @click.prevent="editMode = true">
+        <a v-show="!editMode" class="pointer" href="" @click.prevent="search = ''; editMode = true">
           {{ $t('app.edit') }}
         </a>
       </li>
@@ -49,7 +49,7 @@
                 @input="onChange"
           />
 
-          <ul v-show="isOpen" class="autocomplete-results ba b--gray-monica absolute bg-white left-0 z-9999">
+          <ul v-show="isOpen" v-if="results.length > 0" class="autocomplete-results ba b--gray-monica absolute bg-white left-0 z-9999">
             <li v-for="(result, i) in results"
                 :key="i"
                 class="autocomplete-result"
@@ -157,6 +157,7 @@ export default {
         this.arrowCounter = -1;
         this.isOpen = false;
         this.search = null;
+        this.store();
       }
     },
 
@@ -188,7 +189,10 @@ export default {
     },
 
     filterResults() {
-      this.results = this.allTags.filter(item => item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
+      var me = this.contactTags;
+      var search = _.toLower(this.search);
+      this.results = this.allTags.filter(item => _.toLower(item.name).indexOf(search) > -1
+                                                  && _.findIndex(me, t => t.name == item.name) < 0);
     },
 
     filterAllTags() {
