@@ -2,10 +2,12 @@
 
 ### New features:
 
-* 
+*
 
 ### Enhancements:
 
+* Update tag management on the contact profile
+* Add next and previous arrows when viewing photos
 * Add dependency to php imagick module
 * Renamed MOBILE_CLIENT_ID and MOBILE_CLIENT_SECRET variables to PASSPORT_PERSONAL_ACCESS_CLIENT_ID and PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET
 
