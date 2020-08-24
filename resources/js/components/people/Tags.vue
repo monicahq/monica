@@ -30,7 +30,7 @@
 
       <!-- edit button -->
       <li v-show="contactTags.length > 0" class="di">
-        <a v-show="!editMode" class="pointer" href="" @click.prevent="editMode = true">
+        <a v-show="!editMode" class="pointer" href="" @click.prevent="search = ''; editMode = true">
           {{ $t('app.edit') }}
         </a>
       </li>
@@ -189,7 +189,10 @@ export default {
     },
 
     filterResults() {
-      this.results = this.allTags.filter(item => item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
+      var me = this.contactTags;
+      var search = _.toLower(this.search);
+      this.results = this.allTags.filter(item => _.toLower(item.name).indexOf(search) > -1
+                                                  && _.findIndex(me, t => t.name == item.name) < 0);
     },
 
     filterAllTags() {
