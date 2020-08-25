@@ -486,7 +486,7 @@ return [
     'dav_clipboard_copied' => 'הערך הועתק ללוח הגזירים שלך',
     'dav_url_base' => 'כתובת בסיס לכל המשאבים מסוג CardDAV ו־CalDAV:',
     'dav_connect_help' => 'ניתן להתחבר לאנשי הקשר ו/או ללוחות השנה שלך עם כתובת בסיס זו מהטלפון או המחשב שלך.',
-    'dav_connect_help2' => 'ניתן להשתמש בפרטי הכניסה שלך (דוא״ל) וססמה או ליצור אסימון API לטובת אימות.',
+    'dav_connect_help2' => 'Use your login (email) and create an API token as the password to authenticate.',
     'dav_url_carddav' => 'כתובת CardDAV למשאבי אנשי קשר:',
     'dav_url_caldav_birthdays' => 'כתובת CalDAV למשאבי ימי הולדת:',
     'dav_url_caldav_tasks' => 'כתובת CalDAV עבור משאבי משימות:',
