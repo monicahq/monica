@@ -3099,27 +3099,27 @@
         },
         {
             "name": "laravel/ui",
-            "version": "v2.1.0",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/ui.git",
-                "reference": "da9350533d0da60d5dc42fb7de9c561c72129bba"
+                "reference": "fb1404f04ece6eee128e3fb750d3a1e064238b33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/ui/zipball/da9350533d0da60d5dc42fb7de9c561c72129bba",
-                "reference": "da9350533d0da60d5dc42fb7de9c561c72129bba",
+                "url": "https://api.github.com/repos/laravel/ui/zipball/fb1404f04ece6eee128e3fb750d3a1e064238b33",
+                "reference": "fb1404f04ece6eee128e3fb750d3a1e064238b33",
                 "shasum": ""
             },
             "require": {
-                "illuminate/console": "^7.0",
-                "illuminate/filesystem": "^7.0",
-                "illuminate/support": "^7.0",
+                "illuminate/console": "^7.0|^8.0",
+                "illuminate/filesystem": "^7.0|^8.0",
+                "illuminate/support": "^7.0|^8.0",
                 "php": "^7.2.5"
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
-                "phpunit/phpunit": "^8.0"
+                "phpunit/phpunit": "^8.0|^9.0"
             },
             "type": "library",
             "extra": {
@@ -3150,7 +3150,7 @@
                 "laravel",
                 "ui"
             ],
-            "time": "2020-06-30T20:56:33+00:00"
+            "time": "2020-08-25T18:30:43+00:00"
         },
         {
             "name": "laravolt/avatar",
