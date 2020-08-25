@@ -486,7 +486,7 @@ return [
     'dav_clipboard_copied' => '值已复制到剪贴板',
     'dav_url_base' => '所有CardDAV和CalDAV资源的基本 url:',
     'dav_connect_help' => '您可以在手机或计算机上使用此基本 url 连接您的联系人和/或日历。',
-    'dav_connect_help2' => '使用您的登录名 (电子邮件) 和密码, 或创建 api 令牌进行身份验证。',
+    'dav_connect_help2' => 'Use your login (email) and create an API token as the password to authenticate.',
     'dav_url_carddav' => '用于联系资源的CardDAV',
     'dav_url_caldav_birthdays' => '用于生日资源的 caldav url:',
     'dav_url_caldav_tasks' => '用于任务资源的 caldav url:',
