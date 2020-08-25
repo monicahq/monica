@@ -4633,16 +4633,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.38.0",
+            "version": "2.39.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "d8f6a6a91d1eb9304527b040500f61923e97674b"
+                "reference": "0a41ea7f7fedacf307b7a339800e10356a042918"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/d8f6a6a91d1eb9304527b040500f61923e97674b",
-                "reference": "d8f6a6a91d1eb9304527b040500f61923e97674b",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/0a41ea7f7fedacf307b7a339800e10356a042918",
+                "reference": "0a41ea7f7fedacf307b7a339800e10356a042918",
                 "shasum": ""
             },
             "require": {
@@ -4718,7 +4718,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-08-04T19:12:46+00:00"
+            "time": "2020-08-24T12:35:58+00:00"
         },
         {
             "name": "nette/caching",
@@ -13268,23 +13268,23 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v6.4.1",
+            "version": "v6.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "db10ac70d01f332614a54cd7f1fe4757066db7cc"
+                "reference": "a004d4cc3f1fbaa92f372cbe3e9ced5387a60383"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/db10ac70d01f332614a54cd7f1fe4757066db7cc",
-                "reference": "db10ac70d01f332614a54cd7f1fe4757066db7cc",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/a004d4cc3f1fbaa92f372cbe3e9ced5387a60383",
+                "reference": "a004d4cc3f1fbaa92f372cbe3e9ced5387a60383",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-zip": "*",
-                "illuminate/console": "^6.0|^7.0",
-                "illuminate/support": "^6.0|^7.0",
+                "illuminate/console": "^6.0|^7.0|^8.0",
+                "illuminate/support": "^6.0|^7.0|^8.0",
                 "nesbot/carbon": "^2.0",
                 "php": "^7.2",
                 "php-webdriver/webdriver": "^1.8.1",
@@ -13332,7 +13332,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2020-07-14T18:02:46+00:00"
+            "time": "2020-08-25T17:30:13+00:00"
         },
         {
             "name": "matthiasnoback/live-code-coverage",
