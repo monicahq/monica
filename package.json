@@ -42,7 +42,7 @@
     "mocha-multi-reporters": "^1.1.7",
     "moment-locales-webpack-plugin": "^1.2.0",
     "resolve-url-loader": "^3.1.1",
-    "sass-loader": "^10.0.0",
+    "sass-loader": "^10.0.1",
     "vue-template-compiler": "^2.5.21"
   },
   "dependencies": {
