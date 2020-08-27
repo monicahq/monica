@@ -116,21 +116,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Specific to the official Monica mobile application
-    |--------------------------------------------------------------------------
-    |
-    | We need to pass a specific client ID and client secret that only the
-    | official mobile application can access - in order to protect the privacy
-    | of the instance (which has a lot of data).
-    | You can check what we do with this data on the mobile application on the
-    | official repository: https://github.com/monicahq/chandler.
-    |
-    */
-    'mobile_client_id' => env('MOBILE_CLIENT_ID', null),
-    'mobile_client_secret' => env('MOBILE_CLIENT_SECRET', null),
-
-    /*
-    |--------------------------------------------------------------------------
     | Access to paid features
     |--------------------------------------------------------------------------
     |

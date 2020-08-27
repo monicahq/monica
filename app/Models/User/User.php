@@ -154,11 +154,11 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         if ($this->name_order == 'firstname_lastname' || $this->name_order == 'firstname_lastname_nickname') {
             $completeName = $this->first_name;
 
-            if (! is_null($this->last_name)) {
+            if ($this->last_name !== '') {
                 $completeName = $completeName.' '.$this->last_name;
             }
         } else {
-            if (! is_null($this->last_name)) {
+            if ($this->last_name !== '') {
                 $completeName = $this->last_name;
             }
 

@@ -76,6 +76,7 @@ ENTRYPOINT ["scripts/docker/entrypoint.sh"]
 # Apache2
 COPY scripts/docker/apache2-foreground /usr/local/sbin/
 COPY scripts/docker/000-default.conf /etc/apache2/conf.d/
+RUN echo 'LoadModule rewrite_module modules/mod_rewrite.so' > /etc/apache2/conf.d/rewrite.conf
 
 EXPOSE 80
 CMD ["apache2-foreground"]
