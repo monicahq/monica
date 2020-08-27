@@ -13602,16 +13602,16 @@
         },
         {
             "name": "nunomaduro/collision",
-            "version": "v5.0.0",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/collision.git",
-                "reference": "a8a1ef97ffa8c41bccff4318036e5e14a76bd87f"
+                "reference": "4a343299054e9368d0db4a982a780cc4ffa12707"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/a8a1ef97ffa8c41bccff4318036e5e14a76bd87f",
-                "reference": "a8a1ef97ffa8c41bccff4318036e5e14a76bd87f",
+                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/4a343299054e9368d0db4a982a780cc4ffa12707",
+                "reference": "4a343299054e9368d0db4a982a780cc4ffa12707",
                 "shasum": ""
             },
             "require": {
@@ -13682,7 +13682,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-08-25T17:59:40+00:00"
+            "time": "2020-08-27T18:58:22+00:00"
         },
         {
             "name": "nunomaduro/larastan",
