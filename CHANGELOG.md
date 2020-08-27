@@ -6,6 +6,19 @@
 
 ### Enhancements:
 
+*
+
+### Fixes:
+
+*
+
+
+# RELEASED VERSIONS:
+
+## v2.19.0 - 2020-08-27
+
+### Enhancements:
+
 * Update tag management on the contact profile
 * Add next and previous arrows when viewing photos
 * Add dependency to php imagick module
@@ -17,8 +30,6 @@
 * Fix exception when registering in certain cases
 * Fix vue-select usage
 
-
-# RELEASED VERSIONS:
 
 ## v2.18.0 - 2020-05-23
 
