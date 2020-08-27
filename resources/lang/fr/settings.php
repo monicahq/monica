@@ -486,7 +486,7 @@ return [
     'dav_clipboard_copied' => 'Valeur copiée dans le presse-papier',
     'dav_url_base' => 'Url de base pour toutes les ressources CardDAV et CalDAV :',
     'dav_connect_help' => 'Vous pouvez connecter vos contacts et/ou calendriers avec cette url de base sur votre téléphone ou ordinateur.',
-    'dav_connect_help2' => 'Use your login (email) and create an API token as the password to authenticate.',
+    'dav_connect_help2' => 'Utilisez votre login (email) et créez un jeton API en tant que mot de passe pour vous authentifier.',
     'dav_url_carddav' => 'Url CardDAV pour les Contacts :',
     'dav_url_caldav_birthdays' => 'Url CalDAV pour les Anniversaires :',
     'dav_url_caldav_tasks' => 'Url CalDAV pour les Tâches :',
