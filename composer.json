@@ -48,7 +48,7 @@
         "stevebauman/location": "^5.0",
         "symfony/translation": "^5.0",
         "thecodingmachine/safe": "^1.0",
-        "vectorface/whip": "^0.3.2",
+        "vectorface/whip": "^0.4.0",
         "vinkla/hashids": "^8.1",
         "vluzrmos/language-detector": "^2.1",
         "web-token/jwt-key-mgmt": "^2.1",

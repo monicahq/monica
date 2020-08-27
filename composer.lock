@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "29c79d65116462f8ba089aee8378589f",
+    "content-hash": "9934878ac4b9c024a19d35f023af4ff7",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -11211,33 +11211,32 @@
         },
         {
             "name": "vectorface/whip",
-            "version": "v0.3.2",
+            "version": "v0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Vectorface/whip.git",
-                "reference": "c3cdf71f532c83c3ab512cfa57130dad36fdbc83"
+                "reference": "daa06bad325cff3fca5b870a5f167173ac88f4ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Vectorface/whip/zipball/c3cdf71f532c83c3ab512cfa57130dad36fdbc83",
-                "reference": "c3cdf71f532c83c3ab512cfa57130dad36fdbc83",
+                "url": "https://api.github.com/repos/Vectorface/whip/zipball/daa06bad325cff3fca5b870a5f167173ac88f4ad",
+                "reference": "daa06bad325cff3fca5b870a5f167173ac88f4ad",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=5.6.0",
+                "psr/http-message": "^1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0",
-                "psr/http-message": "~1.0",
+                "codeclimate/php-test-reporter": "dev-master",
+                "phpunit/phpunit": "^4.8",
                 "squizlabs/php_codesniffer": "~2.0",
                 "vectorface/dunit": "~2.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Vectorface\\Whip\\": "./src",
-                    "VectorFace\\Whip\\": "./src",
-                    "Vectorface\\WhipTests\\": "./tests"
+                    "Vectorface\\Whip\\": "./src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -11263,7 +11262,7 @@
                 "cdn",
                 "cloudflare"
             ],
-            "time": "2017-10-30T14:05:31+00:00"
+            "time": "2020-08-25T13:45:06+00:00"
         },
         {
             "name": "vinkla/hashids",
