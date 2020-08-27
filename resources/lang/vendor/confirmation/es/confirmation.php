@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'message' => '¡Gracias por registrarte! Por favor, revisa tus correos para confirmar tu dirección de correo electrónico.',
     'success' => '¡Has verificado tu cuenta con éxito! Ya puedes iniciar sesión.',

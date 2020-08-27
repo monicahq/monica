@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     /*
@@ -17,6 +23,7 @@ return [
     'throttle' => 'Příliš mnoho pokusů o přihlášení. Zkuste to prosím znovu za :seconds vteřin.',
     'not_authorized' => 'Nejste oprávněni provést tuto akci',
     'signup_disabled' => 'Nové registrace jsou aktuálně zastaveny',
+    'signup_error' => 'An error occured trying to register the user',
     'back_homepage' => 'Zpět na domovskou stránku',
     'mfa_auth_otp' => 'Authenticate with your two factor device',
     'mfa_auth_webauthn' => 'Authenticate with a security key (WebAuthn)',

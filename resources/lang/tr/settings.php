@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'sidebar_settings' => 'Hesap ayarları',
     'sidebar_personalization' => 'Kişiselleştirme',
@@ -480,7 +486,7 @@ return [
     'dav_clipboard_copied' => 'Değer panonuza kopyalandı',
     'dav_url_base' => 'Tüm CardDAV ve CalDAV kaynakları için temel URL:',
     'dav_connect_help' => 'Telefonunuzda veya bilgisayarınızda kişilerinizi ve/veya takvimlerinizi, bu temel URL ile bağlayabilirsiniz.',
-    'dav_connect_help2' => 'Giriş bilgilerinizi (e-posta adresinizi) ve şifrenizi kullanın, veya yetkilendirmek için bir API belirteci oluşturun.',
+    'dav_connect_help2' => 'Use your login (email) and create an API token as the password to authenticate.',
     'dav_url_carddav' => 'Kişiler kaynağı için CardDAV URL\'si:',
     'dav_url_caldav_birthdays' => 'Doğum günleri kaynağı için CalDAV URL\'si:',
     'dav_url_caldav_tasks' => 'Görevler kaynağı için CalDAV URL\'si:',

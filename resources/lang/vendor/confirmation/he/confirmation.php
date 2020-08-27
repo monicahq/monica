@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'message' => 'תודה לך על ההרשמה! נא לבדוק את תיבת הדוא״ל שלך כדי לאמת את אותה.',
     'success' => 'החשבון שלך אומת בהצלחה! כעת יתאפשר לך להיכנס אליו.',

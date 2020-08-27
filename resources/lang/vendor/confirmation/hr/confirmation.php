@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'message' => 'Hvala za prijavu! Molimo vas provjerite e-mail kako biste potvrdili vašu e-mail adresu.',
     'success' => 'Uspješno ste potvrdili vaš račun! Možete se ulogirati.',

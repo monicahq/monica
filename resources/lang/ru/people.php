@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     //index
@@ -152,7 +158,7 @@ return [
     'information_edit_probably' => 'Этому человеку примерно',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Я знаю точную дату рождения этого человека, которая',
-    'information_edit_birthdate_label' => 'Birthdate',
+    'information_edit_birthdate_label' => 'Дата рождения',
     'information_no_work_defined' => 'Рабочая информация не указана',
     'information_work_at' => 'работает в :company',
     'work_add_cta' => 'Обновите информацию о работе',
@@ -224,7 +230,7 @@ return [
     'relationship_form_deletion_success' => 'The relationship has been deleted.',
 
     // tasks
-    'tasks_title' => 'Tasks',
+    'tasks_title' => 'Задачи',
     'tasks_blank_title' => 'У вас пока нет задач.',
     'tasks_form_title' => 'Title',
     'tasks_form_description' => 'Описание (необязательно)',
@@ -310,9 +316,9 @@ return [
     'gifts_add_value' => 'Стоимость (не обязательно)',
     'gifts_add_comment' => 'Комментарий (не обязательно)',
     'gifts_add_recipient' => 'Recipient (optional)',
-    'gifts_add_recipient_field' => 'Recipient',
+    'gifts_add_recipient_field' => 'Получатель',
     'gifts_add_photo' => 'Photo (optional)',
-    'gifts_add_photo_title' => 'Add a photo for this gift',
+    'gifts_add_photo_title' => 'Добавить фото этого подарка',
     'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
     'gifts_delete_title' => 'Delete a gift',
     'gifts_ideas' => 'Идеи подарка',
@@ -369,7 +375,7 @@ return [
     'deceased_know_date' => 'Я знаю когда этот человек умер',
     'deceased_add_reminder' => 'Добавить напоминание на эту дату',
     'deceased_label' => 'Умерший',
-    'deceased_date_label' => 'Deceased date',
+    'deceased_date_label' => 'Дата смерти',
     'deceased_label_with_date' => 'Дата смерти :date',
     'deceased_age' => 'Возраст смерти',
 
@@ -381,7 +387,7 @@ return [
     'contact_info_address' => 'Lives in',
 
     // Addresses
-    'contact_address_title' => 'Addresses',
+    'contact_address_title' => 'Адреса',
     'contact_address_form_name' => 'Label (optional)',
     'contact_address_form_street' => 'Street (optional)',
     'contact_address_form_city' => 'City (optional)',
@@ -392,19 +398,19 @@ return [
     'contact_address_form_longitude' => 'Долгота (только цифры) (необязательно)',
 
     // Pets
-    'pets_kind' => 'Kind of pet',
+    'pets_kind' => 'Вид питомца',
     'pets_name' => 'Name (optional)',
-    'pets_create_success' => 'The pet has been successfully added',
+    'pets_create_success' => 'Питомец был успешно добавлен',
     'pets_update_success' => 'The pet has been updated',
     'pets_delete_success' => 'The pet has been deleted',
     'pets_title' => 'Питомцы',
     'pets_reptile' => 'Reptile',
-    'pets_bird' => 'Bird',
-    'pets_cat' => 'Cat',
-    'pets_dog' => 'Dog',
-    'pets_fish' => 'Fish',
-    'pets_hamster' => 'Hamster',
-    'pets_horse' => 'Horse',
+    'pets_bird' => 'Птица',
+    'pets_cat' => 'Кошка',
+    'pets_dog' => 'Собака',
+    'pets_fish' => 'Рыбка',
+    'pets_hamster' => 'Хомяк',
+    'pets_horse' => 'Лошадь',
     'pets_rabbit' => 'Rabbit',
     'pets_rat' => 'Rat',
     'pets_small_animal' => 'Small animal',
@@ -494,6 +500,8 @@ return [
     'photo_current_profile_pic' => 'Current profile picture',
     'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Delete photo',
+    'photo_next' => 'Next photo',
+    'photo_previous' => 'Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Change your avatar',

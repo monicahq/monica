@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'dashboard_blank_title' => '歡迎登入帳號',
     'dashboard_blank_description' => 'Monica 是一個記錄你所有關心的人及與其互動資訊的地方',

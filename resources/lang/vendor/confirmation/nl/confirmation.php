@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'message' => 'Bedankt voor het aanmelden! Controleer je e-mail om je e-mailadres bevestigen.',
     'success' => 'Je hebt je account met succes geverifieerd! Je kunt nu inloggen.',

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     /*
@@ -17,6 +23,7 @@ return [
     'throttle' => '登录失败次数太多。请 :seconds 后再试。',
     'not_authorized' => '您无权执行此操作',
     'signup_disabled' => '注册当前已停用',
+    'signup_error' => 'An error occured trying to register the user',
     'back_homepage' => '回到主页',
     'mfa_auth_otp' => '使用二次验证设备进行认证',
     'mfa_auth_webauthn' => '使用安全钥匙验证(WebAuthn)',

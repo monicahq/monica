@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     //index
@@ -81,7 +87,7 @@ return [
 
     // Stay in touch
     'stay_in_touch' => 'לשמור על קשר',
-    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
+    'stay_in_touch_frequency' => 'להישאר בקשר כל יום|להישאר בקשר כל יומיים|להישאר בקשר כל {count} ימים',
     'stay_in_touch_invalid' => 'התדירות חייבת להיות מספר גדול מ־0.',
     'stay_in_touch_premium' => 'עליך לשדרג את החשבון שלך כדי להשתמש בתכונה זו',
     'stay_in_touch_modal_title' => 'לשמור על קשר',
@@ -494,6 +500,8 @@ return [
     'photo_current_profile_pic' => 'תמונת פרופיל נוכחית',
     'photo_make_profile_pic' => 'הכנת תמונת פרופיל',
     'photo_delete' => 'מחיקת תמונה',
+    'photo_next' => 'לתמונה הבאה',
+    'photo_previous' => 'לתמונה הקודמת',
 
     // Avatars
     'avatar_change_title' => 'החלפת התמונה הייצוגית שלך',

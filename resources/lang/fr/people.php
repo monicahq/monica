@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     //index
@@ -494,6 +500,8 @@ return [
     'photo_current_profile_pic' => 'Photo de profil actuelle',
     'photo_make_profile_pic' => 'Utiliser comme photo de profil',
     'photo_delete' => 'Supprimer la photo',
+    'photo_next' => 'Photo suivante',
+    'photo_previous' => 'Photo précédente',
 
     // Avatars
     'avatar_change_title' => 'Changer de photo de profil',

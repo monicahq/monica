@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     /*
@@ -17,6 +23,7 @@ return [
     'throttle' => 'Troppi tentativi di accesso. Ti preghiamo di ritentare in :seconds secondi.',
     'not_authorized' => 'Non sei autorizzato a eseguire questa azione.',
     'signup_disabled' => 'La registrazione è al momento disattivata',
+    'signup_error' => 'An error occured trying to register the user',
     'back_homepage' => 'Ritorna alla Home',
     'mfa_auth_otp' => 'Autenticati con il tuo dispositivo secondo fattore',
     'mfa_auth_webauthn' => 'Autenticazione con una chiave di sicurezza (WebAuthn)',
