@@ -13267,16 +13267,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v6.5.0",
+            "version": "v6.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "a004d4cc3f1fbaa92f372cbe3e9ced5387a60383"
+                "reference": "ebf081d312bc1e702337668e13831d25ab324ce3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/a004d4cc3f1fbaa92f372cbe3e9ced5387a60383",
-                "reference": "a004d4cc3f1fbaa92f372cbe3e9ced5387a60383",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/ebf081d312bc1e702337668e13831d25ab324ce3",
+                "reference": "ebf081d312bc1e702337668e13831d25ab324ce3",
                 "shasum": ""
             },
             "require": {
@@ -13290,7 +13290,7 @@
                 "symfony/console": "^4.3|^5.0",
                 "symfony/finder": "^4.3|^5.0",
                 "symfony/process": "^4.3|^5.0",
-                "vlucas/phpdotenv": "^3.0|^4.0"
+                "vlucas/phpdotenv": "^3.0|^4.0|^5.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
@@ -13331,7 +13331,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2020-08-25T17:30:13+00:00"
+            "time": "2020-08-28T14:37:02+00:00"
         },
         {
             "name": "matthiasnoback/live-code-coverage",
