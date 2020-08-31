@@ -22,7 +22,7 @@
         "giggsey/libphonenumber-for-php": "^8.9",
         "guzzlehttp/guzzle": "^6.2",
         "intervention/image": "^2.3",
-        "laravel/cashier": "~10.0",
+        "laravel/cashier": "~12.3",
         "laravel/framework": "^7.0",
         "laravel/passport": "^9.0",
         "laravel/socialite": "^4.0",
