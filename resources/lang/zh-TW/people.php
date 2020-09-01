@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => '目前頭像',
     'photo_make_profile_pic' => '製作頭像',
     'photo_delete' => '刪除照片',
-    'photo_next' => 'Next photo',
-    'photo_previous' => 'Previous photo',
+    'photo_next' => '下一張照片',
+    'photo_previous' => '上一張照片',
 
     // Avatars
     'avatar_change_title' => '更換頭像',
