@@ -8158,16 +8158,16 @@
         },
         {
             "name": "spomky-labs/base64url",
-            "version": "v2.0.2",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spomky-Labs/base64url.git",
-                "reference": "69e77e7d7c5407a253dacdd7bfe6b8978b7a4fb2"
+                "reference": "48ea8ff600cefe56b82d3d5b768b6f4f3bfe05a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spomky-Labs/base64url/zipball/69e77e7d7c5407a253dacdd7bfe6b8978b7a4fb2",
-                "reference": "69e77e7d7c5407a253dacdd7bfe6b8978b7a4fb2",
+                "url": "https://api.github.com/repos/Spomky-Labs/base64url/zipball/48ea8ff600cefe56b82d3d5b768b6f4f3bfe05a1",
+                "reference": "48ea8ff600cefe56b82d3d5b768b6f4f3bfe05a1",
                 "shasum": ""
             },
             "require": {
@@ -8206,7 +8206,7 @@
                 "safe",
                 "url"
             ],
-            "time": "2020-08-01T14:15:43+00:00"
+            "time": "2020-08-30T13:35:33+00:00"
         },
         {
             "name": "spomky-labs/cbor-php",
@@ -11759,7 +11759,7 @@
         },
         {
             "name": "web-token/jwt-core",
-            "version": "v2.2.1",
+            "version": "v2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-core.git",
@@ -11934,7 +11934,7 @@
         },
         {
             "name": "web-token/jwt-signature",
-            "version": "v2.2.1",
+            "version": "v2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature.git",
@@ -12020,7 +12020,7 @@
         },
         {
             "name": "web-token/jwt-signature-algorithm-ecdsa",
-            "version": "v2.2.1",
+            "version": "v2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-ecdsa.git",
