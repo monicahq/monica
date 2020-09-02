@@ -989,10 +989,19 @@
     "@snyk/graphlib" "2.1.9-patch"
     tslib "^1.9.3"
 
-"@snyk/cli-interface@2.8.1", "@snyk/cli-interface@^2.0.3":
+"@snyk/cli-interface@2.8.1":
   version "2.8.1"
   resolved "https://registry.yarnpkg.com/@snyk/cli-interface/-/cli-interface-2.8.1.tgz#67a0c34e8473dd433d6c206c41fa8b0e12426621"
   integrity sha512-pALcfgoY0hAavy/pBlDIqEu+FFC5m+D4bMnCwlQ26mObL/zzxp2+Ohx+HykCIom62u2J94SzAtRLFdm/2TgoOw==
+  dependencies:
+    "@snyk/dep-graph" "1.19.0"
+    "@snyk/graphlib" "2.1.9-patch"
+    tslib "^1.9.3"
+
+"@snyk/cli-interface@2.9.0", "@snyk/cli-interface@^2.0.3":
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/@snyk/cli-interface/-/cli-interface-2.9.0.tgz#09325161b59992c071b4fc5c99c138b2a6de93a4"
+  integrity sha512-KDVHsU71apUPHK1PiIUXVW7stGZilbwKIoi0ffz1Qa0Er03fm3aV602scnOinbTtVy5UTm3L4WmdCdQrRoBYOQ==
   dependencies:
     "@snyk/dep-graph" "1.19.0"
     "@snyk/graphlib" "2.1.9-patch"
@@ -7167,7 +7176,7 @@ nconf@^0.10.0:
     secure-keys "^1.0.0"
     yargs "^3.19.0"
 
-needle@^2.3.3, needle@^2.5.0:
+needle@2.5.0, needle@^2.3.3, needle@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/needle/-/needle-2.5.0.tgz#e6fc4b3cc6c25caed7554bd613a5cf0bac8c31c0"
   integrity sha512-o/qITSDR0JCyCKEQ1/1bnUXMmznxabbwi/Y4WwJElf+evwJNFNwIDMCCt5IigFVxgeGBJESLohGtIS9gEzo1fA==
@@ -9596,12 +9605,12 @@ snyk-try-require@1.3.1, snyk-try-require@^1.1.1, snyk-try-require@^1.3.1:
     lru-cache "^4.0.0"
     then-fs "^2.0.0"
 
-snyk@^1.386.0:
-  version "1.386.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.386.0.tgz#c0f87231f1e254ebb78b5b64194d4c3046eef919"
-  integrity sha512-qPe/EWMhFQEoWhrTYXPCE5fGT2g3EiGD72mi+VA9gX+5rik7wdGBmcV5FETWRJEjmKd6UjLksQBJstGluzphRw==
+snyk@^1.387.1:
+  version "1.387.1"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.387.1.tgz#4fc5c70ace8dc798e482f6a34bfc476b90c4c53b"
+  integrity sha512-a925xz73f4V4DEPJgKK58eTt7QwpqAMS5Q9+MqNNRYCYUfF6PRIGshKf3tDRCVF26hexxHQHaZRqa5uHiy9aAw==
   dependencies:
-    "@snyk/cli-interface" "2.8.1"
+    "@snyk/cli-interface" "2.9.0"
     "@snyk/dep-graph" "1.19.3"
     "@snyk/gemfile" "1.2.0"
     "@snyk/graphlib" "2.1.9-patch"
@@ -9617,7 +9626,7 @@ snyk@^1.386.0:
     debug "^4.1.1"
     diff "^4.0.1"
     glob "^7.1.3"
-    needle "^2.5.0"
+    needle "2.5.0"
     open "^7.0.3"
     os-name "^3.0.0"
     proxy-agent "^3.1.1"
