@@ -67,7 +67,6 @@ endif
 
 DESTDIR := monica-$(BUILD)
 ASSETS := monica-assets-$(BUILD)
-DOCKER_IMAGE := monicahq/monicahq
 BUILD_DATE := $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 default: build
@@ -76,93 +75,6 @@ all:
 	$(MAKE) fullclean
 	$(MAKE) build
 	$(MAKE) dist
-
-docker:
-	$(MAKE) docker_build
-	$(MAKE) docker_tag
-	$(MAKE) docker_push
-
-docker_build: docker_build_apache docker_build_fpm docker_build_php_apache
-docker_build_master: docker_build_apache docker_build_fpm
-
-docker_build_apache:
-	docker build \
-		--build-arg BUILD_DATE=$(BUILD_DATE) \
-		--build-arg VCS_REF=$(GIT_REF) \
-		--build-arg COMMIT=$(GIT_COMMIT) \
-		--build-arg VERSION=$(BUILD) \
-		-f scripts/docker/apache/Dockerfile \
-		-t $(DOCKER_IMAGE) .
-	docker images
-
-docker_build_php_apache:
-	docker build \
-		--build-arg BUILD_DATE=$(BUILD_DATE) \
-		--build-arg VCS_REF=$(GIT_REF) \
-		--build-arg COMMIT=$(GIT_COMMIT) \
-		--build-arg VERSION=$(BUILD) \
-		-f scripts/docker/php-apache/Dockerfile \
-		-t $(DOCKER_IMAGE):php-apache .
-	docker images
-
-docker_build_fpm:
-	docker build \
-		--build-arg BUILD_DATE=$(BUILD_DATE) \
-		--build-arg VCS_REF=$(GIT_REF) \
-		--build-arg COMMIT=$(GIT_COMMIT) \
-		--build-arg VERSION=$(BUILD) \
-		-f scripts/docker/fpm/Dockerfile \
-		-t $(DOCKER_IMAGE):fpm .
-	docker images
-
-DOCKER_SQUASH := $(shell which docker-squash)
-ifeq ($(DOCKER_SQUASH),)
-  DOCKER_SQUASH := ~/.local/bin/docker-squash
-endif
-
-docker_squash:
-	$(DOCKER_SQUASH) -f $(shell docker image ls -q `head -n 1 scripts/docker/apache/Dockerfile | cut -d ' ' -f 2`) -t $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):latest
-	$(DOCKER_SQUASH) -f $(shell docker image ls -q `head -n 1 scripts/docker/fpm/Dockerfile | cut -d ' ' -f 2`) -t $(DOCKER_IMAGE):fpm $(DOCKER_IMAGE):fpm
-	docker images
-
-docker_tag:
-	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)
-	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):apache
-	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):alpine
-	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)-apache
-	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)-alpine
-	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)-alpine-apache
-	docker tag $(DOCKER_IMAGE):fpm $(DOCKER_IMAGE):$(BUILD)-fpm
-	docker tag $(DOCKER_IMAGE):fpm $(DOCKER_IMAGE):$(BUILD)-alpine-fpm
-	docker tag $(DOCKER_IMAGE):php-apache $(DOCKER_IMAGE):$(BUILD)-php-apache
-	docker images
-
-docker_push: docker_tag
-	docker push $(DOCKER_IMAGE):latest
-	docker push $(DOCKER_IMAGE):fpm
-	docker push $(DOCKER_IMAGE):php-apache
-	docker push $(DOCKER_IMAGE):$(BUILD)
-	docker push $(DOCKER_IMAGE):apache
-	docker push $(DOCKER_IMAGE):alpine
-	docker push $(DOCKER_IMAGE):$(BUILD)-apache
-	docker push $(DOCKER_IMAGE):$(BUILD)-alpine
-	docker push $(DOCKER_IMAGE):$(BUILD)-alpine-apache
-	docker push $(DOCKER_IMAGE):$(BUILD)-fpm
-	docker push $(DOCKER_IMAGE):$(BUILD)-alpine-fpm
-	docker push $(DOCKER_IMAGE):$(BUILD)-php-apache
-
-docker_push_github: docker_push_github_apache docker_push_github_fpm
-
-docker_push_github_apache:
-	docker tag $(DOCKER_IMAGE) docker.pkg.github.com/monicahq/monica/monica:$(BUILD)
-	docker push docker.pkg.github.com/monicahq/monica/monica:$(BUILD)
-
-docker_push_github_fpm:
-	docker tag $(DOCKER_IMAGE):fpm docker.pkg.github.com/monicahq/monica/monica:$(BUILD)-fpm
-	docker push docker.pkg.github.com/monicahq/monica/monica:$(BUILD)-fpm
-
-.PHONY: docker docker_build docker_build_master docker_build_apache docker_build_fpm docker_build_php_apache docker_tag
-.PHONY: docker_push_github docker_push_github_apache docker_push_github_fpm
 
 build:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs
