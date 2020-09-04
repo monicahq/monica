@@ -42,18 +42,17 @@ stages:
         dependsOn: build
 
         jobs:
-          - ${{ if startsWith(variables['Build.SourceBranch'], 'refs/tags/') }}:
-              - deployment: deploy_dist
-                pool:
-                  vmImage: 'ubuntu-latest'
-                environment: monica
-                strategy:
-                  runOnce:
-                    deploy:
-                      steps:
-                        - download: none
-                        - checkout: self
-                        - template: .azure/step-composer-install.yml
-                          parameters:
-                            no_dev: true
-                        - template: .azure/step-deploy-dist.yml
+          - deployment: deploy_dist
+            pool:
+              vmImage: 'ubuntu-latest'
+            environment: monica
+            strategy:
+              runOnce:
+                deploy:
+                  steps:
+                    - download: none
+                    - checkout: self
+                    - template: .azure/step-composer-install.yml
+                      parameters:
+                        no_dev: true
+                    - template: .azure/step-deploy-dist.yml
