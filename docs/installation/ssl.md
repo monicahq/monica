@@ -124,11 +124,11 @@ And a `docker-compose.yml` like:
 version: '3.4'
 services:
   monica:
-    image: monicahq/monicahq
+    image: monica
     expose:
       - 3001:80
     volumes:
-      - '/var/monica-storage:/var/www/monica/storage'
+      - '/var/monica-storage:/var/www/html/storage'
     env_file: /etc/monica/monica.env
     restart: unless-stopped
 

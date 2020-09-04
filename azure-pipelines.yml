@@ -57,19 +57,3 @@ stages:
                 parameters:
                   no_dev: true
               - template: .azure/step-deploy-dist.yml
-
-    - ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/tags/')) }}:
-      - deployment: deploy_docker
-        pool:
-          vmImage: 'ubuntu-latest'
-        environment: 'monica'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-              - download: none
-              - checkout: self
-              - template: .azure/step-docker-build.yml
-              - template: .azure/step-docker-push-github.yml
-              - ${{ if startsWith(variables['Build.SourceBranch'], 'refs/tags/') }}:
-                - template: .azure/step-docker-push.yml
