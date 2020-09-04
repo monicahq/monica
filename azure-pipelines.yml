@@ -7,53 +7,53 @@ trigger:
   batch: 'true'
   branches:
     include:
-    - master
+      - master
   tags:
     include:
-    - '*'
+      - '*'
 pr:
   autoCancel: 'true'
   branches:
     include:
-    - '*'
+      - '*'
 
 variables:
-- group: Monica
-- name: COMPOSER_HOME
-  value: $(Pipeline.Workspace)/.composer
-- name: YARN_CACHE_FOLDER
-  value: $(Pipeline.Workspace)/.yarn
+  - group: Monica
+  - name: COMPOSER_HOME
+    value: $(Pipeline.Workspace)/.composer
+  - name: YARN_CACHE_FOLDER
+    value: $(Pipeline.Workspace)/.yarn
 
 stages:
-- stage: build
-  displayName: 'Build'
-  condition: not(startsWith(variables['System.PullRequest.SourceBranch'], 'l10n_master'))
-  jobs:
-  - template: .azure/job-build.yml
-  - template: .azure/job-tests.yml
-  - template: .azure/job-analyzers.yml
-  - template: .azure/job-test-browser.yml
-  - template: .azure/job-reporting.yml
-  - template: .azure/job-test-migrations.yml
-
-- ${{ if in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI') }}:
-  - stage: deploy
-    displayName: Deploy
-    dependsOn: build
-
+  - stage: build
+    displayName: 'Build'
+    condition: not(startsWith(variables['System.PullRequest.SourceBranch'], 'l10n_master'))
     jobs:
-    - ${{ if startsWith(variables['Build.SourceBranch'], 'refs/tags/') }}:
-      - deployment: deploy_dist
-        pool:
-          vmImage: 'ubuntu-latest'
-        environment: monica
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-              - download: none
-              - checkout: self
-              - template: .azure/step-composer-install.yml
-                parameters:
-                  no_dev: true
-              - template: .azure/step-deploy-dist.yml
+      - template: .azure/job-build.yml
+      - template: .azure/job-tests.yml
+      - template: .azure/job-analyzers.yml
+      - template: .azure/job-test-browser.yml
+      - template: .azure/job-reporting.yml
+      - template: .azure/job-test-migrations.yml
+
+  - ${{ if and(in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'), startsWith(variables['Build.SourceBranch'], 'refs/tags/')) }}:
+      - stage: deploy
+        displayName: Deploy
+        dependsOn: build
+
+        jobs:
+          - ${{ if startsWith(variables['Build.SourceBranch'], 'refs/tags/') }}:
+              - deployment: deploy_dist
+                pool:
+                  vmImage: 'ubuntu-latest'
+                environment: monica
+                strategy:
+                  runOnce:
+                    deploy:
+                      steps:
+                        - download: none
+                        - checkout: self
+                        - template: .azure/step-composer-install.yml
+                          parameters:
+                            no_dev: true
+                        - template: .azure/step-deploy-dist.yml
