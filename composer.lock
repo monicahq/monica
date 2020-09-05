@@ -587,21 +587,26 @@
         },
         {
             "name": "creativeorange/gravatar",
-            "version": "v1.0.17",
+            "version": "v1.0.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/creativeorange/gravatar.git",
-                "reference": "6ca1b8029123d3ba0994262cf1102525ad7f6355"
+                "reference": "9057d98b51f023746740398d725afe9650e66f19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/6ca1b8029123d3ba0994262cf1102525ad7f6355",
-                "reference": "6ca1b8029123d3ba0994262cf1102525ad7f6355",
+                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/9057d98b51f023746740398d725afe9650e66f19",
+                "reference": "9057d98b51f023746740398d725afe9650e66f19",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^5|^6|^7",
+                "illuminate/support": "^5|^6|^7|^8",
                 "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "nunomaduro/larastan": "^0.6.2",
+                "orchestra/testbench": "^5.4",
+                "php": ">=7.2"
             },
             "type": "library",
             "extra": {
@@ -637,7 +642,7 @@
                 "gravatar",
                 "laravel"
             ],
-            "time": "2020-07-14T08:31:54+00:00"
+            "time": "2020-08-27T12:18:30+00:00"
         },
         {
             "name": "dasprid/enum",
