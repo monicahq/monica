@@ -70,7 +70,7 @@
         "psalm/plugin-laravel": "1.1.1",
         "roave/security-advisories": "dev-master",
         "thecodingmachine/phpstan-safe-rule": "^1.0",
-        "vimeo/psalm": "3.11.2"
+        "vimeo/psalm": "3.15"
     },
     "suggest": {
         "ext-apcu": "*"
