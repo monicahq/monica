@@ -64,13 +64,15 @@ class CreateGift extends BaseService
             'url' => $this->nullOrvalue($data, 'url'),
             'amount' => $this->nullOrvalue($data, 'amount'),
             'date' => $this->nullOrvalue($data, 'date'),
-            'recipient' => $this->nullOrvalue($data, 'recipient_id'),
         ];
 
         if (Auth::check()) {
             $array['currency_id'] = Auth::user()->currency->id;
         }
 
-        return Gift::create($array);
+        return tap(Gift::create($array), function ($gift) use ($data): void {
+            $gift->recipient = $this->nullOrvalue($data, 'recipient_id');
+            $gift->save();
+        });
     }
 }
