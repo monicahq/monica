@@ -4,6 +4,7 @@ on:
   push:
     branches-ignore:
       - 'l10n_master*'
+      - '3.x*'
 
 jobs:
   cypress-run:

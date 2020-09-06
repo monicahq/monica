@@ -1,32 +1,15 @@
-let mix = require('laravel-mix');
-require('laravel-mix-purgecss');
+const mix = require('laravel-mix');
 
-const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
-mix.webpackConfig({
-  plugins: [
-    new MomentLocalesPlugin({
-      localesToKeep: ['en', 'ar', 'cs', 'de', 'en-GB', 'es', 'fr', 'he', 'hr', 'it', 'nl', 'pt', 'pt-BR', 'ru', 'tr', 'zh-cn', 'zh-tw'],
-    }),
-  ],
-});
-
-let purgeCssOptions = {
-  enabled: true,
-  whitelistPatterns: [/^autosuggest/, /^fa-/, /^vdp-datepicker/, /^StripeElement/, /^vgt/, /^vue-tooltip/, /^pretty/, /^sweet-/, /^vuejs-clipper-basic/, /^vs__/],
-  whitelistPatternsChildren: [/^vdp-datepicker/, /^vgt/, /^vue-tooltip/, /^pretty/, /^sweet-/, /^vs-/]
-};
+/*
+ |--------------------------------------------------------------------------
+ | Mix Asset Management
+ |--------------------------------------------------------------------------
+ |
+ | Mix provides a clean, fluent API for defining some Webpack build steps
+ | for your Laravel application. By default, we are compiling the Sass
+ | file for the application as well as bundling up all the JS files.
+ |
+ */
 
 mix.js('resources/js/app.js', 'public/js')
-  .sass('resources/sass/app-ltr.scss', 'public/css')
-  .sass('resources/sass/app-rtl.scss', 'public/css')
-
-  // stripe
-  .js('resources/js/stripe.js', 'public/js')
-  .sass('resources/sass/stripe.scss', 'public/css')
-
-  // global commands
-  .purgeCss(purgeCssOptions)
-  .extract()
-  .setResourceRoot('../')
-  .sourceMaps(false)
-  .version();
+    .sass('resources/sass/app.scss', 'public/css');
