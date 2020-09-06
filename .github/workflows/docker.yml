@@ -2,8 +2,8 @@ name: Docker
 
 on:
   push:
-#    branches:
-#      - 'master'
+    branches:
+      - 'master'
 
 jobs:
   docker-run:
@@ -27,4 +27,3 @@ jobs:
         add_git_labels: true
         labels: org.opencontainers.image.version="master"
         tags: master
-        push: false
