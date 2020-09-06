@@ -1,9 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-# return true if specified directory is empty
-directory_empty() {
-    [ -z "$(ls -A "$1/")" ]
-}
+set -Eeo pipefail
 
 # wait for the database to start
 waitfordb() {
@@ -14,7 +11,7 @@ waitfordb() {
     attempts=0
     max_attempts=30
     while [ $attempts -lt $max_attempts ]; do
-        nc -z "${HOST}" "${PORT}" && break
+        busybox nc -w 1 "${HOST}:${PORT}" && break
         echo "Waiting for ${HOST}:${PORT}..."
         sleep 1
         let "attempts=attempts+1"
@@ -29,9 +26,9 @@ waitfordb() {
     sleep 3
 }
 
-if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
+if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ]; then
 
-    MONICADIR=/var/www/monica
+    MONICADIR=/var/www/html
     ARTISAN="php ${MONICADIR}/artisan"
 
     # Ensure storage directories are present
@@ -41,7 +38,7 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
     mkdir -p ${STORAGE}/framework/views
     mkdir -p ${STORAGE}/framework/cache
     mkdir -p ${STORAGE}/framework/sessions
-    chown -R monica:apache ${STORAGE}
+    chown -R www-data:www-data ${STORAGE}
     chmod -R g+rw ${STORAGE}
 
     if [ -z "${APP_KEY:-}" -o "$APP_KEY" = "ChangeMeBy32KeyLengthOrGenerated" ]; then
@@ -60,15 +57,13 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
         ${ARTISAN} sentry:release --release="$release" --commit="$commit" --environment="$SENTRY_ENV" --force -v || true
     fi
 
-    # Run cron
-    if [ -f "/usr/sbin/crond" ]; then
-        if [ "$CRON_LEGACY" = "true" ]; then
-            crond -b -l 0
-        else
-            echo "cron is not launched by default. Add CRON_LEGACY=true, use another container, or use supervisor."
-        fi
+    if [ ! -f "${STORAGE}/oauth-public.key" -o ! -f "${STORAGE}/oauth-private.key" ]; then
+        echo "Passport keys creation ..."
+        ${ARTISAN} passport:keys
+        ${ARTISAN} passport:client --personal --no-interaction
+        echo "! Please be careful to backup $MONICADIR/storage/oauth-public.key and $MONICADIR/storage/oauth-private.key files !"
     fi
 
 fi
 
-exec $@
+exec "$@"
