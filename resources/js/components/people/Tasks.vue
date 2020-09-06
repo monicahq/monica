@@ -265,7 +265,7 @@ export default {
     },
 
     formatDate(dateAsString) {
-      let moment = require('moment-timezone');
+      const moment = require('moment-timezone');
       moment.locale(this._i18n.locale);
       moment.tz.setDefault('UTC');
 

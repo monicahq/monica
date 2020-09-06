@@ -122,18 +122,18 @@ class RegisterController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $user
+     * @return mixed
      */
     protected function registered(Request $request, $user)
     {
-        if (is_null($user)) {
-            return $user;
+        if (! is_null($user)) {
+            /** @var int $count */
+            $count = Account::count();
+            if (! config('monica.signup_double_optin') || $count == 1) {
+                // if signup_double_optin is disabled, skip the confirm email part
+                $user->markEmailAsVerified();
+            }
         }
-
-        /** @var int $count */
-        $count = Account::count();
-        if (! config('monica.signup_double_optin') || $count == 1) {
-            // if signup_double_optin is disabled, skip the confirm email part
-            $user->markEmailAsVerified();
-        }
+        return $user;
     }
 }

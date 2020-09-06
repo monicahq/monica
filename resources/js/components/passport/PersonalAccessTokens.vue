@@ -230,7 +230,7 @@ export default {
      * Focus on modal open.
      */
     _focusInput() {
-      let vm = this;
+      const vm = this;
       setTimeout(function() {
         vm.$refs.createTokenName.focus();
       }, 10);

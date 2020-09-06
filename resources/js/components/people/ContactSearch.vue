@@ -64,9 +64,9 @@ export default {
           first_name = names.slice(1).join(' ');
           last_name = names[0];
         }
-        
-        
-        let params = new URLSearchParams();
+
+
+        const params = new URLSearchParams();
         if (first_name) {
           params.set('first_name', first_name);
         }

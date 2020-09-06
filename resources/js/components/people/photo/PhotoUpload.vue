@@ -136,7 +136,7 @@ export default {
     },
 
     forceFileUpload(){
-      let f = this.$refs.file !== undefined ? this.$refs.file.files[0] : undefined;
+      const f = this.$refs.file !== undefined ? this.$refs.file.files[0] : undefined;
       if (f === undefined) {
         return Promise.resolve();
       }
@@ -148,7 +148,7 @@ export default {
       this.displayUploadZone = false;
       this.displayUploadProgress = true;
 
-      let formData = new FormData();
+      const formData = new FormData();
       formData.append('contact_id', this.contactId);
       formData.append('photo', this.file);
 

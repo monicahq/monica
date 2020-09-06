@@ -255,8 +255,8 @@ export default {
     },
 
     store() {
-      let method = this.activity ? 'put' : 'post';
-      let url = this.activity ? 'api/activities/'+this.activity.id : 'api/activities';
+      const method = this.activity ? 'put' : 'post';
+      const url = this.activity ? 'api/activities/'+this.activity.id : 'api/activities';
 
       if (! this.newActivity.contacts.includes(this.contactId)) {
         this.newActivity.contacts.push(this.contactId);

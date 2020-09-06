@@ -375,7 +375,7 @@ export default {
      * Focus on modal open.
      */
     _focusCreateInput() {
-      let vm = this;
+      const vm = this;
       setTimeout(function() {
         vm.$refs.createName.focus();
       }, 10);
@@ -385,7 +385,7 @@ export default {
      * Focus on modal open.
      */
     _focusEditInput() {
-      let vm = this;
+      const vm = this;
       setTimeout(function() {
         vm.$refs.editName.focus();
       }, 10);

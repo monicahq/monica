@@ -177,8 +177,8 @@ let StayInTouchLabel = Vue.component('stay-in-touch-label', {
     },
   },
   render(createElement) {
-    let text = this.$tc('people.stay_in_touch_modal_label', this.value, {count: '[slot]'});
-    let texts = _.split(text, '[slot]');
+    const text = this.$tc('people.stay_in_touch_modal_label', this.value, {count: '[slot]'});
+    const texts = _.split(text, '[slot]');
     return createElement('div', [
       createElement('span', texts[0]),
       this.$slots.default,

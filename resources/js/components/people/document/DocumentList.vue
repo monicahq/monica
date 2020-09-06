@@ -302,7 +302,7 @@ export default {
       this.displayUploadZone = false;
       this.displayUploadProgress = true;
 
-      let formData = new FormData();
+      const formData = new FormData();
 
       formData.append('document', this.file);
 

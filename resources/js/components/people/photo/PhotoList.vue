@@ -222,7 +222,7 @@ export default {
      * @return {Boolean}
      */
     modalHasNext() {
-      let index = this.photos.indexOf(this.modal_photo);
+      const index = this.photos.indexOf(this.modal_photo);
 
       return index < this.photos.length-1;
     },
@@ -234,7 +234,7 @@ export default {
      * @return {Boolean}
      */
     modalHasPrev() {
-      let index = this.photos.indexOf(this.modal_photo);
+      const index = this.photos.indexOf(this.modal_photo);
 
       return index > 0;
     },
@@ -244,9 +244,9 @@ export default {
      * from our photos list
      */
     displayNext() {
-      let index = this.photos.indexOf(this.modal_photo);
+      const index = this.photos.indexOf(this.modal_photo);
 
-      let photo = this.photos[index+1];
+      const photo = this.photos[index+1];
 
       this.modalPhoto(photo);
     },
@@ -256,9 +256,9 @@ export default {
      * from our photos list
      */
     displayPrev() {
-      let index = this.photos.indexOf(this.modal_photo);
+      const index = this.photos.indexOf(this.modal_photo);
 
-      let photo = this.photos[index-1];
+      const photo = this.photos[index-1];
 
       this.modalPhoto(photo);
     }
