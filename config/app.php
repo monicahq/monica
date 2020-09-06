@@ -17,23 +17,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Display Name
-    |--------------------------------------------------------------------------
-    |
-    | This is the name of the application that will be displayed in the notification emails.
-    |
-    */
-
-    'display_name' => env('APP_DISPLAY_NAME', env('APP_NAME', 'Monica')),
-
-    /*
-    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
     | This value determines the "environment" your application is currently
     | running in. This may determine how you prefer to configure various
-    | services your application utilizes. Set this in your ".env" file.
+    | services the application utilizes. Set this in your ".env" file.
     |
     */
 
@@ -67,15 +56,14 @@ return [
 
     'asset_url' => env('ASSET_URL', null),
 
-    'force_url' => (bool) env('APP_FORCE_URL', false),
-
     /*
     |--------------------------------------------------------------------------
-    | TIMEZONE
+    | Application Timezone
     |--------------------------------------------------------------------------
     |
-    | Timezone is not configurable in the .env file as everything is stored in
-    | UTC.
+    | Here you may specify the default timezone for your application, which
+    | will be used by the PHP date and date-time functions. We have gone
+    | ahead and set this to a sensible default for you out of the box.
     |
     */
 
@@ -92,7 +80,7 @@ return [
     |
     */
 
-    'locale' => env('APP_DEFAULT_LOCALE', 'en'),
+    'locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -106,6 +94,19 @@ return [
     */
 
     'fallback_locale' => 'en',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Faker Locale
+    |--------------------------------------------------------------------------
+    |
+    | This locale will be used by the Faker PHP library when generating fake
+    | data for your database seeds. For example, this will be used to get
+    | localized telephone numbers, street address information and more.
+    |
+    */
+
+    'faker_locale' => 'en_US',
 
     /*
     |--------------------------------------------------------------------------
@@ -132,6 +133,7 @@ return [
     | this array to grant expanded functionality to your applications.
     |
     */
+
     'providers' => [
 
         /*
@@ -149,6 +151,7 @@ return [
         Illuminate\Foundation\Providers\FoundationServiceProvider::class,
         Illuminate\Hashing\HashServiceProvider::class,
         Illuminate\Mail\MailServiceProvider::class,
+        Illuminate\Notifications\NotificationServiceProvider::class,
         Illuminate\Pagination\PaginationServiceProvider::class,
         Illuminate\Pipeline\PipelineServiceProvider::class,
         Illuminate\Queue\QueueServiceProvider::class,
@@ -158,23 +161,20 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Illuminate\Notifications\NotificationServiceProvider::class,
+
+        /*
+         * Package Service Providers...
+         */
 
         /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        App\Providers\MacroServiceProvider::class,
-        Vluzrmos\LanguageDetector\Providers\LanguageDetectorServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Laravel\Socialite\SocialiteServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
-        Laravel\Cashier\CashierServiceProvider::class,
-        Laravel\Passport\PassportServiceProvider::class,
-        Creativeorange\Gravatar\GravatarServiceProvider::class,
-        App\Providers\DAVServiceProvider::class,
+
     ],
 
     /*
@@ -207,6 +207,7 @@ return [
         'File' => Illuminate\Support\Facades\File::class,
         'Gate' => Illuminate\Support\Facades\Gate::class,
         'Hash' => Illuminate\Support\Facades\Hash::class,
+        'Http' => Illuminate\Support\Facades\Http::class,
         'Lang' => Illuminate\Support\Facades\Lang::class,
         'Log' => Illuminate\Support\Facades\Log::class,
         'Mail' => Illuminate\Support\Facades\Mail::class,
@@ -225,11 +226,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Debugbar' => Barryvdh\Debugbar\Facade::class,
-        'Notification' => Illuminate\Support\Facades\Notification::class,
-        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-        'Image' => Intervention\Image\Facades\Image::class,
-        'Gravatar' => Creativeorange\Gravatar\Facades\Gravatar::class,
+
     ],
 
 ];

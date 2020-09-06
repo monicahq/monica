@@ -25,19 +25,9 @@ return [
     ],
 
     'ses' => [
-        'key' => env('AWS_ACCESS_KEY_ID', env('SES_KEY')),
-        'secret' => env('AWS_SECRET_ACCESS_KEY', env('SES_SECRET')),
+        'key' => env('AWS_ACCESS_KEY_ID'),
+        'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
-    ],
-
-    'stripe' => [
-        'model' => App\Models\Account\Account::class,
-        'key' => env('STRIPE_KEY', null),
-        'secret' => env('STRIPE_SECRET', null),
-        'webhook' => [
-            'secret' => env('STRIPE_WEBHOOK_SECRET', null),
-            'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
-        ],
     ],
 
 ];

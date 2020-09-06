@@ -1,45 +1,28 @@
 <?php
 
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+
+use App\User;
+use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
-$factory->define(App\Models\User\User::class, function (Faker\Generator $faker) {
+/*
+|--------------------------------------------------------------------------
+| Model Factories
+|--------------------------------------------------------------------------
+|
+| This directory should contain each of the model factory definitions for
+| your application. Factories provide a convenient way to generate new
+| model instances for testing / seeding your application's database.
+|
+*/
+
+$factory->define(User::class, function (Faker $faker) {
     return [
-        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
-        'first_name' => $faker->firstName,
-        'last_name' => $faker->lastName,
+        'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
-        'password' => bcrypt(Str::random(10)),
+        'email_verified_at' => now(),
+        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
-        'timezone' => config('app.timezone'),
-        'name_order' => 'firstname_lastname',
-        'locale' => 'en',
-        'currency_id' => function (array $data) {
-            return factory(App\Models\Settings\Currency::class)->create([
-                'iso' => 'USD',
-            ])->id;
-        },
-    ];
-});
-
-$factory->define(App\Models\User\Changelog::class, function (Faker\Generator $faker) {
-    return [];
-});
-
-$factory->define(App\Models\User\Module::class, function (Faker\Generator $faker) {
-    return [
-        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
-    ];
-});
-
-$factory->define(App\Models\User\SyncToken::class, function (Faker\Generator $faker) {
-    return [
-        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
-        'user_id' => function (array $data) {
-            return factory(App\Models\User\User::class)->create([
-                'account_id' => $data['account_id'],
-            ])->id;
-        },
-        'timestamp' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });

@@ -1,11 +1,5 @@
 <?php
 
-/**
- * ⚠️ Edition not allowed except for 'en' language.
- *
- * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
- */
-
 return [
 
     /*
@@ -20,11 +14,9 @@ return [
     */
 
     'reset' => 'Your password has been reset!',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'token' => 'This password reset token is invalid.',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'changed' => 'Password changed successfully.',
-    'invalid' => 'Current password you entered is not correct.',
+    'sent' => 'We have emailed your password reset link!',
     'throttled' => 'Please wait before retrying.',
+    'token' => 'This password reset token is invalid.',
+    'user' => "We can't find a user with that email address.",
 
 ];

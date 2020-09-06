@@ -2,17 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Routing\Router;
-use App\Models\Contact\Contact;
-use App\Services\Instance\IdHasher;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\URL;
-use App\Exceptions\WrongIdException;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -26,57 +17,36 @@ class RouteServiceProvider extends ServiceProvider
     protected $namespace = 'App\Http\Controllers';
 
     /**
+     * The path to the "home" route for your application.
+     *
+     * @var string
+     */
+    public const HOME = '/home';
+
+    /**
      * Define your route model bindings, pattern filters, etc.
      *
      * @return void
      */
     public function boot()
     {
+        //
+
         parent::boot();
-
-        if (Config::get('app.force_url')) {
-            URL::forceRootUrl(config('app.url'));
-        }
-
-        if (App::environment('production')) {
-            URL::forceScheme('https');
-        }
-
-        Route::bind('contact', function ($value) {
-            // In case the user is logged out
-            if (! Auth::check()) {
-                redirect()->route('loginRedirect')->send();
-
-                return;
-            }
-
-            try {
-                $id = app(IdHasher::class)->decodeId($value);
-
-                return Contact::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($id);
-            } catch (WrongIdException $ex) {
-                redirect()->route('people.missing')->send();
-            } catch (ModelNotFoundException $ex) {
-                redirect()->route('people.missing')->send();
-            }
-        });
-
-        Route::model('otherContact', Contact::class);
     }
 
     /**
      * Define the routes for the application.
      *
-     * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
-    public function map(Router $router)
+    public function map()
     {
-        $this->mapApiRoutes($router);
-        $this->mapWebRoutes($router);
-        $this->mapOAuthRoutes($router);
-        $this->mapSpecialRoutes($router);
+        $this->mapApiRoutes();
+
+        $this->mapWebRoutes();
+
+        //
     }
 
     /**
@@ -84,33 +54,13 @@ class RouteServiceProvider extends ServiceProvider
      *
      * These routes all receive session state, CSRF protection, etc.
      *
-     * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
-    protected function mapWebRoutes(Router $router)
+    protected function mapWebRoutes()
     {
-        $router->group([
-            'middleware' => 'web',
-            'namespace' => $this->namespace,
-        ], function () {
-            require base_path('routes/web.php');
-        });
-    }
-
-    /**
-     * Define the custom oauth routes for the API.
-     *
-     * @param  \Illuminate\Routing\Router  $router
-     * @return void
-     */
-    protected function mapOAuthRoutes(Router $router)
-    {
-        $router->group([
-            'prefix' => 'oauth',
-            'namespace' => $this->namespace.'\Api',
-        ], function () {
-            require base_path('routes/oauth.php');
-        });
+        Route::middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web.php'));
     }
 
     /**
@@ -120,31 +70,11 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapApiRoutes(Router $router)
+    protected function mapApiRoutes()
     {
-        $router->group([
-            'prefix' => 'api',
-            'middleware' => 'api',
-            'namespace' => $this->namespace.'\Api',
-        ], function () {
-            require base_path('routes/api.php');
-        });
-    }
-
-    /**
-     * Define the "special" routes for the application.
-     *
-     * These routes are typically stateless.
-     *
-     * @return void
-     */
-    protected function mapSpecialRoutes(Router $router)
-    {
-        $router->group([
-            'middleware' => 'web',
-            'namespace' => $this->namespace,
-        ], function () {
-            require base_path('routes/special.php');
-        });
+        Route::prefix('api')
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/api.php'));
     }
 }
