@@ -74,6 +74,7 @@ class UpdateGift extends BaseService
         }
 
         $gift->update($array);
+
         return tap($gift, function ($gift) use ($data): void {
             $gift->recipient = $this->nullOrvalue($data, 'recipient_id');
             $gift->save();
