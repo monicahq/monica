@@ -13,17 +13,17 @@ jobs:
     name: Docker build master
 
     steps:
-    - name: Checkout sources
-      uses: actions/checkout@v2
+      - name: Checkout sources
+        uses: actions/checkout@v2
 
-    - name: Build image
-      uses: docker/build-push-action@v1
-      with:
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-        repository: monicahq/monica/monica
-        registry: docker.pkg.github.com
-        dockerfile: scripts/docker/Dockerfile
-        add_git_labels: true
-        labels: org.opencontainers.image.version="master"
-        tags: master
+      - name: Build image
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          repository: monicahq/monica/monica
+          registry: docker.pkg.github.com
+          dockerfile: scripts/docker/Dockerfile
+          add_git_labels: true
+          labels: org.opencontainers.image.version="master"
+          tags: master
