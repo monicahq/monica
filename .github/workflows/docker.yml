@@ -1,0 +1,30 @@
+name: Docker
+
+on:
+  push:
+#    branches:
+#      - 'master'
+
+jobs:
+  docker-run:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    name: Docker build master
+
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v2
+
+    - name: Build image
+      uses: docker/build-push-action@v1
+      with:
+        username: ${{ secrets.CR_USER }}
+        password: ${{ secrets.CR_PAT }}
+        repository: monicahq/monica/monica
+        registry: ghcr.io
+        dockerfile: scripts/docker/Dockerfile
+        add_git_labels: true
+        labels: org.opencontainers.image.version="master"
+        tags: master
+        push: false

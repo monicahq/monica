@@ -1,21 +1,29 @@
+###
+### ~ Monica dev docker-compose
+###
+### This file is used for dev purpose.
+### The standard monica image definition will be found here: https://github.com/monicahq/docker
+###
+
 version: '3'
 
 services:
-  monicahq:
+  app:
     build:
       context: .
-      dockerfile: Dockerfile.dev
-    image: monicahq/monicahq:dev
+      dockerfile: scripts/docker/Dockerfile
+    image: monica:dev
     depends_on:
       - mysql
     ports:
       - 8080:80
     env_file: .env.dev
     volumes:
-      - /var/www/monica/storage
-      - ./app:/var/www/monica/app
-      - ./routes:/var/www/monica/routes
-      - ./database:/var/www/monica/database
+      - /var/www/html/storage
+      - ./app:/var/www/html/app
+      - ./database:/var/www/html/database
+      - ./resources:/var/www/html/resources
+      - ./routes:/var/www/html/routes
 
   mysql:
     image: mysql:8
@@ -29,7 +37,7 @@ services:
       - /var/lib/mysql
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin
     depends_on:
       - mysql
     environment:
@@ -38,13 +46,13 @@ services:
       PMA_PASSWORD: sekret_root_password
     restart: always
     ports:
-      - "3000:80"
+      - 3000:80
     volumes:
-      - "/sessions"
+      - /sessions
 
   mail:
     container_name: fake_mail
     image: mailhog/mailhog
     ports:
-      - "8025:8025"
-      - "1025:1025"
+      - 8025:8025
+      - 1025:1025
