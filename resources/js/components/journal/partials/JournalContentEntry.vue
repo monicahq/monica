@@ -85,10 +85,12 @@ export default {
     },
 
     trash() {
-      axios.delete('journal/' + this.entry.id)
-        .then(response => {
-          this.$emit('deleteJournalEntry', this.journalEntry.id);
-        });
+      if(confirm(this.$t('app.delete_confirm'))){
+        axios.delete('journal/' + this.entry.id)
+          .then(response => {
+            this.$emit('deleteJournalEntry', this.journalEntry.id);
+          });
+      }
     }
   }
 };
