@@ -168,7 +168,7 @@ import { ToggleButton } from 'vue-js-toggle-button';
 import { validationMixin } from 'vuelidate';
 import { required, numeric } from 'vuelidate/lib/validators';
 
-let StayInTouchLabel = Vue.component('stay-in-touch-label', {
+const StayInTouchLabel = Vue.component('stay-in-touch-label', {
 
   props: {
     value: {

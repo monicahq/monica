@@ -7,10 +7,6 @@ use App\Models\Settings\Currency;
 
 class CurrencySelectViewComposer
 {
-    public function __construct()
-    {
-    }
-
     /**
      * Bind data to the view.
      *
