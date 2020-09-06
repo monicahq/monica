@@ -19,10 +19,10 @@ jobs:
     - name: Build image
       uses: docker/build-push-action@v1
       with:
-        username: ${{ secrets.CR_USER }}
-        password: ${{ secrets.CR_PAT }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
         repository: monicahq/monica/monica
-        registry: ghcr.io
+        registry: docker.pkg.github.com
         dockerfile: scripts/docker/Dockerfile
         add_git_labels: true
         labels: org.opencontainers.image.version="master"
