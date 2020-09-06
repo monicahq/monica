@@ -28,91 +28,91 @@ jobs:
     name: Cypress Test with PHP ${{ matrix.php-version }} browser ${{ matrix.browser }}
 
     steps:
-    - name: Checkout sources
-      uses: actions/checkout@v2
+      - name: Checkout sources
+        uses: actions/checkout@v2
 
-    - name: Setup PHP ${{ matrix.php-version }}
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-version }}
-        extensions: imagick
-        coverage: none
-    - name: Check PHP Version
-      run: php -v
-    - name: Check Composer Version
-      run: composer -V
-    - name: Check PHP Extensions
-      run: php -m
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: imagick
+          coverage: none
+      - name: Check PHP Version
+        run: php -v
+      - name: Check Composer Version
+        run: composer -V
+      - name: Check PHP Extensions
+        run: php -m
 
-    # step-prepare-environment
-    - name: Prepare environment
-      run: |
-        mkdir -p results/coverage
-        cp scripts/ci/.env.mysql .env
-        touch .sentry-release
-        echo "REQUIRES_SUBSCRIPTION=true" >> .env
+      # step-prepare-environment
+      - name: Prepare environment
+        run: |
+          mkdir -p results/coverage
+          cp scripts/ci/.env.mysql .env
+          touch .sentry-release
+          echo "REQUIRES_SUBSCRIPTION=true" >> .env
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
-    - name: Get Composer Cache Directory
-      id: composer-cache-dir-path
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-    - name: Cache composer files
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.composer-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          ${{ runner.os }}-composer-
+      - name: Get Composer Cache Directory
+        id: composer-cache-dir-path
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer files
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-
 
-    - name: Install dependencies
-      run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+      - name: Install dependencies
+        run: composer install --no-interaction --no-suggest --ignore-platform-reqs
 
-    # step-prepare-db
-    - name: Prepare db
-      run: mysql -h 127.0.0.1 -u root -P 3306 monica < scripts/database.test.sql
-    - name: Run migration scripts
-      run: php artisan migrate --no-interaction -vvv
+      # step-prepare-db
+      - name: Prepare db
+        run: mysql -h 127.0.0.1 -u root -P 3306 monica < scripts/database.test.sql
+      - name: Run migration scripts
+        run: php artisan migrate --no-interaction -vvv
 
-    # step-seed-test-db
-    - name: Seed database
-      run: |
-        php artisan db:seed --no-interaction -vvv
-        php artisan passport:keys --no-interaction -vvv
+      # step-seed-test-db
+      - name: Seed database
+        run: |
+          php artisan db:seed --no-interaction -vvv
+          php artisan passport:keys --no-interaction -vvv
 
-    - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
-      run: echo "::set-output name=dir::$(yarn cache dir)"
-    - uses: actions/cache@v1
-      with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-yarn-
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
-    - name: yarn install
-      run: yarn inst
-    - name: Cypress verify
-      run: npm run cy:verify
+      - name: yarn install
+        run: yarn inst
+      - name: Cypress verify
+        run: npm run cy:verify
 
-    - name: which google-chrome
-      run: |
-        which google-chrome || true
-    - uses: cypress-io/github-action@v1
-      with:
-        start: php artisan serve
-        browser: ${{ matrix.browser }}
-        headless: true
-        record: true
-        parallel: true
-        group: Azure DevOps CI ${{ matrix.browser }}
-        config: baseUrl=http://localhost:8000
-        wait-on: http://localhost:8000
-      env:
-        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: which google-chrome
+        run: |
+          which google-chrome || true
+      - uses: cypress-io/github-action@v1
+        with:
+          start: php artisan serve
+          browser: ${{ matrix.browser }}
+          headless: true
+          record: true
+          parallel: true
+          group: Azure DevOps CI ${{ matrix.browser }}
+          config: baseUrl=http://localhost:8000
+          wait-on: http://localhost:8000
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 #    - name: Store results
 #      uses: actions/upload-artifact@v1
