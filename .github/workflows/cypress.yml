@@ -23,7 +23,7 @@ jobs:
       matrix:
         php-version: [7.3]
         browser: [chrome]
-        containers: [1, 2, 3, 4, 5, 6, 7, 8]
+        containers: [1]
       max-parallel: 10
     name: Cypress Test with PHP ${{ matrix.php-version }} browser ${{ matrix.browser }}
 
@@ -35,7 +35,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: imagick
           coverage: none
       - name: Check PHP Version
         run: php -v
@@ -43,14 +42,6 @@ jobs:
         run: composer -V
       - name: Check PHP Extensions
         run: php -m
-
-      # step-prepare-environment
-      - name: Prepare environment
-        run: |
-          mkdir -p results/coverage
-          cp scripts/ci/.env.mysql .env
-          touch .sentry-release
-          echo "REQUIRES_SUBSCRIPTION=true" >> .env
 
       - name: Validate composer.json and composer.lock
         run: composer validate
@@ -69,6 +60,16 @@ jobs:
 
       - name: Install dependencies
         run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+
+      # step-prepare-environment
+      - name: Prepare environment
+        run: |
+          mkdir -p results/coverage
+          cp tests/.env.ci.sqlite .env
+          - name: Create SQLite database
+          run: |
+            mkdir -p database
+            touch database/database.sqlite
 
       # step-prepare-db
       - name: Prepare db
