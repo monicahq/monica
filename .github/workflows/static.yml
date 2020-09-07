@@ -2,8 +2,6 @@ name: Static analysis
 
 on:
   push:
-    branches-ignore:
-      - '3.x*'
 
 jobs:
   psalm:
@@ -13,7 +11,8 @@ jobs:
         php-version: ['7.4']
 
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout sources
+        uses: actions/checkout@v2
 
       - name: Setup PHP ${{ matrix.php-version }}
         uses: shivammathur/setup-php@v2
@@ -46,7 +45,8 @@ jobs:
         php-version: ['7.4']
 
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout sources
+        uses: actions/checkout@v2
 
       - name: Setup PHP ${{ matrix.php-version }}
         uses: shivammathur/setup-php@v2
@@ -70,4 +70,4 @@ jobs:
         run: composer install --no-interaction --no-suggest --ignore-platform-reqs
 
       - name: Run phpstan
-        run: vendor/bin/phpstan analyse src
+        run: vendor/bin/phpstan analyse

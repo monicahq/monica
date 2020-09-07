@@ -17,7 +17,11 @@
         "fzaninotto/faker": "^1.9.1",
         "mockery/mockery": "^1.3.1",
         "nunomaduro/collision": "^4.1",
-        "phpunit/phpunit": "^8.5"
+        "nunomaduro/larastan": "^0.6",
+        "phpunit/phpunit": "^8.5",
+        "psalm/plugin-laravel": "^1.4",
+        "thecodingmachine/phpstan-safe-rule": "^1.0",
+        "vimeo/psalm": "^3.15"
     },
     "suggest": {
         "ext-apcu": "*"
