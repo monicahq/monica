@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "@hokify/vuejs-datepicker": "^2.0.2",
-    "animate.css": "^4.1.0",
+    "animate.css": "^4.1.1",
     "axios": "^0.20",
     "bootstrap": "^4.5.2",
     "font-awesome": "^4.7.0",
