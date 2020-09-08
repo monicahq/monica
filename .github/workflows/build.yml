@@ -53,7 +53,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: '7.4'
+        php-version: [7.4]
 
     steps:
       - name: Checkout sources
@@ -174,7 +174,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: '7.4'
+        php-version: [7.4]
         browser: [chrome, firefox]
         containers: [1, 2]
       max-parallel: 10
