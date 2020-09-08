@@ -1,0 +1,268 @@
+name: Build and test
+
+on:
+  push:
+    branches:
+      - 'master'
+  pull_request:
+
+jobs:
+  ######################
+  # Build node.js assets
+  ######################
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+    # Node.js
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+      - name: Install npm dependencies
+        run: npm install
+      - name: Build npm assets
+        run: npm run prod
+
+      - name: Store assets
+        uses: actions/upload-artifact@v2
+        with:
+          name: assets
+          path: |
+            public/js
+            public/css
+            public/mix-manifest.json
+
+
+  ######################
+  # Tests with sqlite
+  ######################
+  tests:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: 7.4
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+      - name: Check PHP Version
+        run: php -v
+      - name: Check Composer Version
+        run: composer -V
+      - name: Check PHP Extensions
+        run: php -m
+
+    # Composer
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer files
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-
+
+      - name: Install composer dependencies
+        run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+
+    # Node.js
+      - name: Download assets
+        uses: actions/download-artifact@v2
+        with:
+          name: assets
+          path: public
+      - run: ls -AlF public
+
+    # Prepare
+      - name: Prepare environment
+        run: cp tests/.env.ci.sqlite .env
+      - name: Create SQLite database
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Run migrations
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+        run: php artisan migrate
+      - name: Run seeds
+        run: php artisan db:seed --no-interaction -vvv
+
+    # Test
+      - name: Run test suite
+        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/results.xml --coverage-clover ./results/coverage.xml
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+
+      - name: Store results
+        uses: actions/upload-artifact@v2
+        with:
+          name: results
+          path: results
+
+
+  ######################
+  # Reporting to sonarcloud
+  ######################
+  reporting:
+    needs: tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: 7.4
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # If this run was triggered by a pull request event, then checkout
+      # the head of the pull request instead of the merge commit.
+      - run: git checkout HEAD^2
+        if: ${{ github.event_name == 'pull_request' }}
+
+      - name: Download results
+        uses: actions/download-artifact@v1
+        with:
+          name: results
+
+      - name: Fix coverage
+        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/coverage.xml
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+
+  ######################
+  # Run cypress tests
+  ######################
+  cypress:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: 7.4
+        browser: [chrome, firefox]
+        containers: [1, 2]
+      max-parallel: 10
+    name: Cypress Test with PHP ${{ matrix.php-version }} browser ${{ matrix.browser }}
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+      - name: Check PHP Version
+        run: php -v
+      - name: Check Composer Version
+        run: composer -V
+      - name: Check PHP Extensions
+        run: php -m
+
+    # Composer
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer files
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-
+
+      - name: Install composer dependencies
+        run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+
+    # Node.js
+      - name: Download assets
+        uses: actions/download-artifact@v2
+        with:
+          name: assets
+          path: public
+      - run: ls -AlF public
+
+    # Prepare
+      - name: Prepare environment
+        run: |
+          mkdir -p results/coverage
+          cp tests/.env.ci.sqlite .env
+      - name: Create SQLite database
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Run migrations
+        run: php artisan migrate
+      - name: Run seeds
+        run: php artisan db:seed --no-interaction -vvv
+
+    # Cypress
+      - name: Cypress verify
+        run: npm run cy:verify
+
+      - uses: cypress-io/github-action@v1
+        with:
+          start: php artisan serve
+          browser: ${{ matrix.browser }}
+          headless: true
+          record: true
+          parallel: true
+          group: Azure DevOps CI ${{ matrix.browser }}
+          config: baseUrl=http://localhost:8000
+          wait-on: http://localhost:8000
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Store results
+        uses: actions/upload-artifact@v2
+        with:
+          name: results
+          path: results/junit/cypress/results*.xml

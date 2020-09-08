@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['7.4']
+        php-version: 7.4
 
     steps:
       - name: Checkout sources
@@ -36,13 +36,14 @@ jobs:
         run: composer install --no-interaction --no-suggest --ignore-platform-reqs
 
       - name: Run psalm
-        run: vendor/bin/psalm --output-format=github --shepherd
+        run: vendor/bin/psalm --output-format=github
+
 
   phpstan:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['7.4']
+        php-version: 7.4
 
     steps:
       - name: Checkout sources
