@@ -53,7 +53,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: 7.4
+        php-version: '7.4'
 
     steps:
       - name: Checkout sources
@@ -137,9 +137,6 @@ jobs:
   reporting:
     needs: tests
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php-version: 7.4
 
     steps:
       - name: Checkout repository
@@ -153,9 +150,10 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
 
       - name: Download results
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: results
+          path: results
 
       - name: Fix coverage
         run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/coverage.xml
@@ -176,7 +174,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: 7.4
+        php-version: '7.4'
         browser: [chrome, firefox]
         containers: [1, 2]
       max-parallel: 10
