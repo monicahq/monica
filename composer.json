@@ -25,7 +25,7 @@
         "laravel/cashier": "~10.0",
         "laravel/framework": "^7.0",
         "laravel/passport": "^9.0",
-        "laravel/socialite": "^4.0",
+        "laravel/socialite": "^5.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "laravolt/avatar": "^3.0",
