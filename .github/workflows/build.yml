@@ -183,7 +183,7 @@ jobs:
       matrix:
         php-version: [7.4]
         browser: [chrome, firefox]
-        containers: [1, 2]
+        containers: [1]
       max-parallel: 10
     name: Cypress Test with PHP ${{ matrix.php-version }} browser ${{ matrix.browser }}
 
