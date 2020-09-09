@@ -3,8 +3,12 @@ name: Build and test
 on:
   push:
     branches:
-      - 'master'
+      - master
   pull_request:
+    types: [opened, synchronize, reopened]
+  release:
+    types:
+      - created
 
 jobs:
   ######################
@@ -155,11 +159,14 @@ jobs:
           name: results
           path: results
 
-      - name: Fix coverage
-        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/coverage.xml
+      - name: Fix results files
+        run: |
+          sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/results.xml
+          sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/coverage.xml
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+        if: env.SONAR_TOKEN != ''
+        uses: SonarSource/sonarcloud-github-action@v1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
