@@ -92,7 +92,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install composer dependencies
-        run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+        run: composer install --no-progress --no-interaction --no-suggest --prefer-dist --optimize-autoloader
 
     # Assets
       - name: Download assets
@@ -220,7 +220,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install composer dependencies
-        run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+        run: composer install --no-progress --no-interaction --no-suggest --prefer-dist --optimize-autoloader
 
     # Node.js
       - name: Use Node.js

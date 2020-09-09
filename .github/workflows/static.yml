@@ -33,7 +33,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+        run: composer install --no-progress --no-interaction --no-suggest --prefer-dist --optimize-autoloader
 
       - name: Run psalm
         run: vendor/bin/psalm --output-format=github
@@ -68,7 +68,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+        run: composer install --no-progress --no-interaction --no-suggest --prefer-dist --optimize-autoloader
 
       - name: Run phpstan
         run: vendor/bin/phpstan analyse
