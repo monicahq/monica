@@ -9013,12 +9013,13 @@ snyk-config@^3.0.0:
     lodash.merge "^4.6.2"
     nconf "^0.10.0"
 
-snyk-cpp-plugin@1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/snyk-cpp-plugin/-/snyk-cpp-plugin-1.4.1.tgz#f7f4b5a26c108b7f5bb70a463993ee440f1ed60c"
-  integrity sha512-akhVFsuGBD5yyQtTNoItzG8M6k7dd6A16cHBSoTsP8TgnQdm0QIJMrE2zj0Ak1wgyTCiZeGkI6NE9TDwvvfKLw==
+snyk-cpp-plugin@1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/snyk-cpp-plugin/-/snyk-cpp-plugin-1.4.3.tgz#ec90e1208cfe917d55646afc93da26a71d526c6f"
+  integrity sha512-dHnYm6SVk+LGDqXaVwZqg6+0dMNjjPgJ3S3XUhjTWtGHqvokAdK5iGqSvwbQbJGOikEqt0rjnkorsgnGD/TbjQ==
   dependencies:
     "@snyk/dep-graph" "^1.19.3"
+    chalk "^4.1.0"
     debug "^4.1.1"
     tslib "^2.0.0"
 
@@ -9274,10 +9275,10 @@ snyk-try-require@1.3.1, snyk-try-require@^1.1.1, snyk-try-require@^1.3.1:
     lru-cache "^4.0.0"
     then-fs "^2.0.0"
 
-snyk@^1.391.1:
-  version "1.391.1"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.391.1.tgz#26f6c434f6e76e3d927b0619fb0bdc68185476e5"
-  integrity sha512-3qb+RKXY4IM6u5ZVRk2CmSQXBK5BjACb8YmQTSeLOnrFTn7Dzj0w8YKtjCA4Uoql68ua1OxTr12qJuq0YlApwg==
+snyk@^1.392.1:
+  version "1.392.1"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.392.1.tgz#5a798ef1e7574053d05df1a44c260762dccdea03"
+  integrity sha512-jf4ciryZEw5suq2w93K4J9pTkbpBRYP2tLGMHBw40wg/CD8B6SvqiUOI182rI0/j8xhy1i5rmk+GV5CxbkYKeA==
   dependencies:
     "@snyk/cli-interface" "2.9.0"
     "@snyk/dep-graph" "1.19.3"
@@ -9302,7 +9303,7 @@ snyk@^1.391.1:
     proxy-from-env "^1.0.0"
     semver "^6.0.0"
     snyk-config "3.1.0"
-    snyk-cpp-plugin "1.4.1"
+    snyk-cpp-plugin "1.4.3"
     snyk-docker-plugin "3.19.0"
     snyk-go-plugin "1.16.0"
     snyk-gradle-plugin "3.6.2"
