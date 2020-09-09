@@ -160,7 +160,7 @@ class JournalController extends Controller
 
         $entry = new Entry;
         $entry->account_id = $request->user()->account_id;
-        $entry->post = $request->input('entry');
+        $entry->post = htmlentities($request->input('entry'), ENT_QUOTES, 'utf-8');
 
         if ($request->input('title') != '') {
             $entry->title = $request->input('title');
@@ -206,7 +206,7 @@ class JournalController extends Controller
                 ->withErrors($validator);
         }
 
-        $entry->post = $request->input('entry');
+        $entry->post = htmlentities($request->input('entry'), ENT_QUOTES, 'utf-8');
 
         if ($request->input('title') != '') {
             $entry->title = $request->input('title');
