@@ -587,16 +587,16 @@
         },
         {
             "name": "creativeorange/gravatar",
-            "version": "v1.0.19",
+            "version": "v1.0.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/creativeorange/gravatar.git",
-                "reference": "ae24b2108f4806cba3d5b8c20a6e94c83fe253f3"
+                "reference": "8c2c1a3a59fdf05f50c9d9413dd9d2d50835e017"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/ae24b2108f4806cba3d5b8c20a6e94c83fe253f3",
-                "reference": "ae24b2108f4806cba3d5b8c20a6e94c83fe253f3",
+                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/8c2c1a3a59fdf05f50c9d9413dd9d2d50835e017",
+                "reference": "8c2c1a3a59fdf05f50c9d9413dd9d2d50835e017",
                 "shasum": ""
             },
             "require": {
@@ -642,7 +642,7 @@
                 "gravatar",
                 "laravel"
             ],
-            "time": "2020-09-05T13:53:15+00:00"
+            "time": "2020-09-09T14:53:57+00:00"
         },
         {
             "name": "dasprid/enum",
