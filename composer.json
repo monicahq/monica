@@ -12,7 +12,7 @@
         "ext-imagick": "*",
         "ext-intl": "*",
         "ext-redis": "*",
-        "asbiin/laravel-webauthn": "^0.8",
+        "asbiin/laravel-webauthn": "^0.9",
         "bacon/bacon-qr-code": "^2.0",
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "2.9.3",
