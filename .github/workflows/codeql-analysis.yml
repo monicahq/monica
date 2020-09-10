@@ -3,6 +3,8 @@ name: "Code scanning - action"
 on:
   push:
     branches-ignore:
+      - 'l10n_master*'
+      - 'master'
       - '3.x*'
   pull_request:
   schedule:
