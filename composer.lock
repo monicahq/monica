@@ -4442,16 +4442,16 @@
         },
         {
             "name": "monicahq/laravel-sabre",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-sabre.git",
-                "reference": "e1da6354c991512e492b165d0d5f782cf21ed75e"
+                "reference": "92b3cede35146ba7050a08dff4fc6975776b73f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/e1da6354c991512e492b165d0d5f782cf21ed75e",
-                "reference": "e1da6354c991512e492b165d0d5f782cf21ed75e",
+                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/92b3cede35146ba7050a08dff4fc6975776b73f3",
+                "reference": "92b3cede35146ba7050a08dff4fc6975776b73f3",
                 "shasum": ""
             },
             "require": {
@@ -4462,7 +4462,7 @@
             "require-dev": {
                 "nunomaduro/larastan": "^0.6",
                 "ocramius/package-versions": "^1.9 || ^2.0",
-                "orchestra/testbench": "^5.0",
+                "orchestra/testbench": "^5.0 || ^6.0",
                 "phpunit/phpunit": "^9.0",
                 "thecodingmachine/phpstan-safe-rule": "^1.0",
                 "vimeo/psalm": "^3.0"
@@ -4503,7 +4503,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-09T15:03:54+00:00"
+            "time": "2020-09-10T15:54:01+00:00"
         },
         {
             "name": "monolog/monolog",
