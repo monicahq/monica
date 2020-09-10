@@ -114,19 +114,13 @@ jobs:
         run: php artisan key:generate
 
       - name: Run migrations
-        env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
         run: php artisan migrate
       - name: Run seeds
         run: php artisan db:seed --no-interaction -vvv
 
     # Test
       - name: Run test suite
-        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/results.xml --coverage-clover ./results/coverage.xml
-        env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
+        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/results.xml --coverage-clover ./results/coverage.xml
 
       - name: Store results
         uses: actions/upload-artifact@v2
