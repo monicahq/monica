@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['7.4']
+        php-version: [7.4]
 
     steps:
       - name: Checkout sources
@@ -24,7 +24,7 @@ jobs:
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache composer files
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -33,16 +33,17 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+        run: composer install --no-progress --no-interaction --no-suggest --prefer-dist --optimize-autoloader
 
       - name: Run psalm
-        run: vendor/bin/psalm --output-format=github --shepherd
+        run: vendor/bin/psalm --output-format=github
+
 
   phpstan:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['7.4']
+        php-version: [7.4]
 
     steps:
       - name: Checkout sources
@@ -58,7 +59,7 @@ jobs:
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache composer files
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -67,7 +68,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+        run: composer install --no-progress --no-interaction --no-suggest --prefer-dist --optimize-autoloader
 
       - name: Run phpstan
         run: vendor/bin/phpstan analyse

@@ -1,15 +1,15 @@
 <p align="center"><img src="https://user-images.githubusercontent.com/61099/37693034-5783b3d6-2c93-11e8-80ea-bd78438dcd51.png"></p>
 <h1 align="center">Personal Relationship Manager</h1>
 
-<p align="center">
-<a href="https://dev.azure.com/monicahq/monica"><img src="https://dev.azure.com/monicahq/monica/_apis/build/status/monicahq.monica?branchName=master" alt="Build Status"></a>
-<a href="https://styleci.io/repos/82238168"><img src="https://styleci.io/repos/82238168/shield?branch=master" alt="StyleCI"></a>
-<a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/monicahq/monica.svg" /></a>
-<a href="https://sonarcloud.io/project/activity?custom_metrics=coverage&amp;graph=custom&amp;id=monica"><img src="https://sonarcloud.io/api/project_badges/measure?project=monica&amp;metric=coverage" alt="Code coverage"/></a>
-<a href="https://sonarcloud.io/dashboard?id=monica"><img src="https://sonarcloud.io/api/project_badges/measure?project=monica&amp;metric=alert_status" alt="Quality gate" /></a>
-<a href="https://github.com/monicahq/monica/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-AGPL-blue.svg" alt="License"></a>
-<a class="badge-align" href="https://slack.monicahq.com"><img src="https://slack.monicahq.com/badge.svg"></a>
-</p>
+[![Build and test](https://github.com/monicahq/monica/workflows/Build%20and%20test/badge.svg)](https://github.com/monicahq/monica/actions?query=workflow%3A%22Build+and+test%22)
+[![StyleCI](https://styleci.io/repos/82238168/shield?branch=master")](https://styleci.io/repos/82238168)
+[![Code coverage](https://sonarcloud.io/api/project_badges/measure?project=monica&amp;metric=coverage)](https://sonarcloud.io/project/activity?custom_metrics=coverage&amp;graph=custom&amp;id=monica)
+[![Quality gate](https://sonarcloud.io/api/project_badges/measure?project=monica&amp;metric=alert_status)](https://sonarcloud.io/dashboard?id=monica)
+
+[![License](https://img.shields.io/badge/License-AGPL-blue.svg)](https://github.com/monicahq/monica/blob/master/LICENSE)
+[![Slack](https://slack.monicahq.com/badge.svg)](https://slack.monicahq.com)
+
+
 
 Monica is a great open source personal relationship management system.
 
