@@ -4,6 +4,16 @@
     "license": "AGPL",
     "keywords": ["prm", "crm", "social"],
     "type": "project",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/asbiin/laravel-language-detector"
+        },
+        {
+	    "type": "vcs",
+            "url": "https://github.com/asbiin/Laravel-JS-Localization"
+        }
+    ],
     "require": {
         "php": "^7.2.5",
         "ext-bcmath": "*",
@@ -12,7 +22,7 @@
         "ext-imagick": "*",
         "ext-intl": "*",
         "ext-redis": "*",
-        "asbiin/laravel-webauthn": "^0.8",
+        "asbiin/laravel-webauthn": "^0.9",
         "bacon/bacon-qr-code": "^2.0",
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "2.9.3",
@@ -22,16 +32,16 @@
         "giggsey/libphonenumber-for-php": "^8.9",
         "guzzlehttp/guzzle": "^6.2",
         "intervention/image": "^2.3",
-        "laravel/cashier": "~10.0",
-        "laravel/framework": "^7.0",
-        "laravel/passport": "^9.0",
+        "laravel/cashier": "^12.0",
+        "laravel/framework": "^8.0",
+        "laravel/passport": "^10.0",
         "laravel/socialite": "^5.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
-        "laravolt/avatar": "^3.0",
+        "laravolt/avatar": "dev-master",
         "league/flysystem-aws-s3-v3": "~1.0",
         "league/flysystem-cached-adapter": "^1.0",
-        "mariuzzo/laravel-js-localization": "^1.6",
+        "mariuzzo/laravel-js-localization": "dev-update-laravel8",
         "matriphe/iso-639": "^1.0",
         "moneyphp/money": "^3.1",
         "monicahq/laravel-cloudflare": "^1.0",
@@ -45,12 +55,12 @@
         "ralouphie/mimey": "^2.0",
         "sabre/dav": "^4.0",
         "sentry/sentry-laravel": "^1.0",
-        "stevebauman/location": "^5.0",
+        "stevebauman/location": "dev-master",
         "symfony/translation": "^5.0",
         "thecodingmachine/safe": "^1.0",
         "vectorface/whip": "^0.4.0",
-        "vinkla/hashids": "^8.1",
-        "vluzrmos/language-detector": "^2.1",
+        "vinkla/hashids": "^9.0",
+        "vluzrmos/language-detector": "dev-update-laravel8",
         "web-token/jwt-key-mgmt": "^2.1",
         "web-token/jwt-signature-algorithm-ecdsa": "^2.1",
         "web-token/jwt-signature-algorithm-eddsa": "^2.1",
@@ -67,10 +77,10 @@
         "nunomaduro/larastan": "^0.6",
         "phpunit/phpcov": "^7.0",
         "phpunit/phpunit": "^9.0",
-        "psalm/plugin-laravel": "1.1.1",
+        "psalm/plugin-laravel": "dev-master",
         "roave/security-advisories": "dev-master",
         "thecodingmachine/phpstan-safe-rule": "^1.0",
-        "vimeo/psalm": "3.11.2"
+        "vimeo/psalm": "^3.13"
     },
     "suggest": {
         "ext-apcu": "*"
