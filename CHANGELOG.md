@@ -2,20 +2,36 @@
 
 ### New features:
 
-* 
+*
 
 ### Enhancements:
 
-* 
+*
 
 ### Fixes:
 
-* 
+* Fix journal entry XSS vulnerability
 
 
 # RELEASED VERSIONS:
 
-## v2.18.0 - 2019-05-23
+## v2.19.0 - 2020-08-27
+
+### Enhancements:
+
+* Update tag management on the contact profile
+* Add next and previous arrows when viewing photos
+* Add dependency to php imagick module
+* Renamed MOBILE_CLIENT_ID and MOBILE_CLIENT_SECRET variables to PASSPORT_PERSONAL_ACCESS_CLIENT_ID and PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET
+
+### Fixes:
+
+* Fix amount display on subscription account settings
+* Fix exception when registering in certain cases
+* Fix vue-select usage
+
+
+## v2.18.0 - 2020-05-23
 
 ### New features:
 
@@ -59,7 +75,7 @@
 * Fix carddav sync-collection reporting wrong syncToken
 
 
-## v2.17.0 - 2019-03-22
+## v2.17.0 - 2020-03-22
 
 ### New features:
 

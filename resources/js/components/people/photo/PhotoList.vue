@@ -1,7 +1,7 @@
 <style scoped>
-    .photo {
-        height: 250px;
-    }
+.photo {
+  height: 250px;
+}
 </style>
 
 <template>
@@ -47,7 +47,7 @@
     <!-- LIST OF PHOTO -->
     <div class="db mt3">
       <div class="flex flex-wrap">
-        <div v-for="photo in photos" :key="photo.id" class="w-third-ns w-100">
+        <div v-for="photo in photos" :key="photo.id" class="w-third-ns w-100 pointer">
           <div class="pa3 mb3 br2 ba b--gray-monica" :class="dirltr ? 'mr3' : 'ml3'">
             <div class="cover bg-center photo w-100 h-100 br2 bb b--gray-monica pb2"
                  :style="'background-image: url(' + photo.link + ');'"
@@ -88,12 +88,14 @@
       <div class="modal-mask">
         <div class="modal-wrapper">
           <div class="modal-container">
+
             <img :src="url" :alt="$t('people.photo_title')" class="mw-90 h-auto mb3" />
-            <div class="tc">
-              <button class="btn" @click="showModal = false">
-                {{ $t('app.close') }}
-              </button>
-            </div>
+
+            <ul class="list pl0 tc">
+              <li class="di mr3"><a class="pointer" @click="displayPrev" v-if="canShowPrev">< {{ $t('people.photo_previous') }}</a></li>
+              <li class="di mr3"><button class="btn" @click="showModal = false">{{ $t('app.close') }}</button></li>
+              <li class="di"><a class="pointer" @click="displayNext" v-if="canShowNext">{{ $t('people.photo_next') }} ></a></li>
+            </ul>
           </div>
         </div>
       </div>
@@ -139,6 +141,8 @@ export default {
       showModal: false,
       url: '',
       onUpload: false,
+      canShowPrev: false,
+      canShowNext: false
     };
   },
 
@@ -193,9 +197,71 @@ export default {
     },
 
     modalPhoto(photo) {
+      this.modal_photo = photo;
       this.url = photo.link;
+
+      if(this.modalHasNext()) {
+        this.canShowNext = true;
+      } else {
+        this.canShowNext = false;
+      }
+
+      if(this.modalHasPrev()) {
+        this.canShowPrev = true;
+      } else {
+        this.canShowPrev = false;
+      }
+
       this.showModal = true;
     },
+
+    /**
+     * checks whether the there is a photo to the left of the current
+     * photo shown in the modal
+     *
+     * @return {Boolean}
+     */
+    modalHasNext() {
+      let index = this.photos.indexOf(this.modal_photo);
+
+      return index < this.photos.length-1;
+    },
+
+    /**
+     * checks whether the there is a photo to the right of the current
+     * photo shown in the modal
+     *
+     * @return {Boolean}
+     */
+    modalHasPrev() {
+      let index = this.photos.indexOf(this.modal_photo);
+
+      return index > 0;
+    },
+
+    /**
+     * set photo in modal located to the right of current modal photo
+     * from our photos list
+     */
+    displayNext() {
+      let index = this.photos.indexOf(this.modal_photo);
+
+      let photo = this.photos[index+1];
+
+      this.modalPhoto(photo);
+    },
+
+    /**
+     * set photo in modal located to the left of current modal photo
+     * from our photos list
+     */
+    displayPrev() {
+      let index = this.photos.indexOf(this.modal_photo);
+
+      let photo = this.photos[index-1];
+
+      this.modalPhoto(photo);
+    }
   }
 };
 </script>

@@ -105,7 +105,7 @@ class ApiJournalTest extends ApiTestCase
             'object' => 'entry',
             'id' => $entryId,
             'title' => 'my title',
-            'post' => '<p>content post</p>',
+            'post' => 'content post',
         ]);
 
         $this->assertGreaterThan(0, $entryId);
@@ -154,7 +154,7 @@ class ApiJournalTest extends ApiTestCase
             'object' => 'entry',
             'id' => $entryId,
             'title' => 'my title',
-            'post' => '<p>content post</p>',
+            'post' => 'content post',
         ]);
 
         $this->assertGreaterThan(0, $entryId);

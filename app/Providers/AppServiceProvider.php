@@ -60,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
         Cashier::formatCurrencyUsing(function ($amount, $currency) {
             $currency = \App\Models\Settings\Currency::where('iso', strtoupper($currency ?? config('cashier.currency')))->first();
 
-            return \App\Helpers\MoneyHelper::format($amount / 100, $currency);
+            return \App\Helpers\MoneyHelper::format($amount, $currency);
         });
     }
 
