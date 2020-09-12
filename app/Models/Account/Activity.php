@@ -2,7 +2,6 @@
 
 namespace App\Models\Account;
 
-use Parsedown;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Contact\Contact;
