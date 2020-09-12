@@ -24,7 +24,7 @@ class EntryTest extends TestCase
             'type' => 'entry',
             'id' => 1,
             'title' => 'This is the title',
-            'post' => '<p>this is a post</p>',
+            'post' => 'this is a post',
             'day' => 1,
             'day_name' => 'Sun',
             'month' => 1,
