@@ -101,20 +101,6 @@ class Activity extends Model implements IsJournalableInterface
     }
 
     /**
-     * Return the markdown parsed body.
-     *
-     * @return string|null
-     */
-    public function getParsedContentAttribute(): ?string
-    {
-        if (is_null($this->description)) {
-            return null;
-        }
-
-        return (new Parsedown())->text($this->description);
-    }
-
-    /**
      * Get the summary for this activity.
      *
      * @return string or null

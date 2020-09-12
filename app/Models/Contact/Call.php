@@ -76,18 +76,4 @@ class Call extends Model
                     ->withPivot('account_id', 'contact_id')
                     ->withTimestamps();
     }
-
-    /**
-     * Return the markdown parsed body.
-     *
-     * @return string|null
-     */
-    public function getParsedContentAttribute(): ?string
-    {
-        if (is_null($this->content)) {
-            return null;
-        }
-
-        return (new Parsedown())->text($this->content);
-    }
 }

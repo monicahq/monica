@@ -10,7 +10,7 @@
 
 ### Fixes:
 
-*
+* Fix journal entry XSS vulnerability
 
 
 # RELEASED VERSIONS:

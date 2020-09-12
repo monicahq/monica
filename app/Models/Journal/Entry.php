@@ -60,17 +60,6 @@ class Entry extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get the Entry post.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getPostAttribute($value)
-    {
-        return (new Parsedown())->text($value);
-    }
-
-    /**
      * Get all the information of the Entry for the journal.
      * @return array
      */
