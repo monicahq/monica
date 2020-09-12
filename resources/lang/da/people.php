@@ -364,8 +364,8 @@ return [
     'introductions_no_first_met_date' => 'Jeg kender ikke den dato, vi mødte',
     'introductions_first_met_date_known' => 'Dette er den dato, vi mødtes',
     'introductions_add_reminder' => 'Tilføj en påmindelse for at fejre dette møde på årsdagen denne begivenhed fandt sted',
-    'introductions_update_success' => 'You’ve successfully updated the information about how you met this person',
-    'introductions_met_through' => 'Met through <a href=":url">:name</a>',
+    'introductions_update_success' => 'Du har opdateret oplysningerne om, hvordan du har mødt denne person',
+    'introductions_met_through' => 'Mødtes gennem <a href=":url">:name</a>',
     'introductions_met_date' => 'Mødtes den :date',
     'introductions_reminder_title' => 'Årsdag for første gang i mødtes',
 
