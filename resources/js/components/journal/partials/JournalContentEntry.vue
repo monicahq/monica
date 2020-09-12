@@ -31,7 +31,7 @@
               {{ entry.title }}
             </h3>
 
-            <div dir="auto" class="markdown" v-html="entry.post"></div>
+            <span dir="auto" class="markdown" v-html="compiledMarkdown(entry.post)"></span>
 
             <ul class="f7">
               <li class="di">
@@ -89,6 +89,10 @@ export default {
         .then(response => {
           this.$emit('deleteJournalEntry', this.journalEntry.id);
         });
+    },
+
+    compiledMarkdown (text) {
+      return marked(text, { sanitize: true });
     }
   }
 };
