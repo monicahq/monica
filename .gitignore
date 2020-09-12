@@ -5,6 +5,7 @@
 /public/css
 /public/*.json
 /storage/*.key
+/storage/*.sqlite
 /vendor
 .env
 .env.backup
