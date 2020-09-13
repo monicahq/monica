@@ -49,15 +49,25 @@ jobs:
 
 
   ######################
-  # Tests with sqlite
+  # Unit tests
   ######################
   tests:
     needs: build
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_DATABASE: monica
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     strategy:
       fail-fast: false
       matrix:
         php-version: [7.4]
+        connection: [sqlite, mysql]
 
     steps:
       - name: Checkout sources
@@ -100,12 +110,12 @@ jobs:
         with:
           name: assets
           path: public
-      - run: ls -AlF public
 
     # Prepare
       - name: Prepare environment
-        run: cp tests/.env.ci.sqlite .env
+        run: cp tests/.env.ci-${{ matrix.connection }} .env
       - name: Create SQLite database
+        if: matrix.connection == 'sqlite'
         run: |
           mkdir -p database
           touch database/database.sqlite
@@ -120,7 +130,7 @@ jobs:
 
     # Test
       - name: Run test suite
-        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/results.xml --coverage-clover ./results/coverage.xml
+        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/${{ matrix.connection }}/results.xml --coverage-clover ./results/${{ matrix.connection }}/coverage.xml
 
       - name: Store results
         uses: actions/upload-artifact@v2
@@ -155,8 +165,8 @@ jobs:
 
       - name: Fix results files
         run: |
-          sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/results.xml
-          sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/coverage.xml
+          sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/sqlite/results.xml
+          sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/sqlite/coverage.xml
 
       - name: SonarCloud Scan
         if: env.SONAR_TOKEN != ''
@@ -238,7 +248,6 @@ jobs:
         with:
           name: assets
           path: public
-      - run: ls -AlF public
 
     # Prepare
       - name: Prepare environment
