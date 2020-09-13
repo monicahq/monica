@@ -3,10 +3,9 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Account;
-use App\Models\Information;
-use App\Models\Template;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Assert;
 use Tests\TestCase;
 
 class AccountTest extends TestCase
@@ -16,11 +15,11 @@ class AccountTest extends TestCase
     /** @test */
     public function it_has_many_users()
     {
-        $account = factory(Account::class)->create();
-        factory(User::class, 2)->create([
+        $account = Account::factory()->create();
+        User::factory()->count(2)->create([
             'account_id' => $account->id,
         ]);
 
-        $this->assertTrue($account->users()->exists());
+        Assert::assertTrue($account->users()->exists());
     }
 }

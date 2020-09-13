@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Assert;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -13,8 +14,8 @@ class UserTest extends TestCase
     /** @test */
     public function it_has_one_account()
     {
-        $michael = factory(User::class)->create();
+        $michael = User::factory()->make();
 
-        $this->assertTrue($michael->account()->exists());
+        Assert::assertTrue($michael->account()->exists());
     }
 }
