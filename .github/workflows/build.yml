@@ -125,7 +125,7 @@ jobs:
         run: php artisan key:generate
 
       - name: Run migrations
-        run: php artisan migrate
+        run: php artisan migrate -v
       - name: Run seeds
         run: php artisan db:seed --no-interaction -vvv
 
