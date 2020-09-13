@@ -68,6 +68,7 @@ jobs:
       matrix:
         php-version: [7.4]
         connection: [sqlite, mysql]
+    name: PHP ${{ matrix.php-version }} Test with ${{ matrix.connection }}
 
     steps:
       - name: Checkout sources
@@ -253,7 +254,7 @@ jobs:
       - name: Prepare environment
         run: |
           mkdir -p results/coverage
-          cp tests/.env.ci.sqlite .env
+          cp tests/.env.ci-sqlite .env
       - name: Create SQLite database
         run: |
           mkdir -p database
@@ -263,7 +264,7 @@ jobs:
         run: php artisan key:generate
 
       - name: Run migrations
-        run: php artisan migrate
+        run: php artisan migrate -v
       - name: Run seeds
         run: php artisan db:seed --no-interaction -vvv
 
