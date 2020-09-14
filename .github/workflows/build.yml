@@ -68,7 +68,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: [7.4, 8.0]
+        php-version: ['7.4', '8.0']
         connection: [sqlite, mysql]
     name: Test on ${{ matrix.connection }} (PHP ${{ matrix.php-version }})
 
