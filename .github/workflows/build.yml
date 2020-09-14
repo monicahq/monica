@@ -68,7 +68,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['7.4', '8.0']
+        php-version: [7.4, 8.0]
         connection: [sqlite, mysql]
     name: Test on ${{ matrix.connection }} (PHP ${{ matrix.php-version }})
 
@@ -106,7 +106,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Set Composer command line options
-        if: matrix.php-version == "8.0"
+        if: matrix.php-version == 8.0
         id: composer-option
         run: echo "::set-output name=option::--ignore-platform-reqs"
       - name: Install composer dependencies
