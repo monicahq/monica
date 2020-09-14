@@ -4192,29 +4192,29 @@
         },
         {
             "name": "maxmind-db/reader",
-            "version": "v1.6.0",
+            "version": "v1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maxmind/MaxMind-DB-Reader-php.git",
-                "reference": "febd4920bf17c1da84cef58e56a8227dfb37fbe4"
+                "reference": "942553da239f12051275f9c666538b5dd09e2908"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maxmind/MaxMind-DB-Reader-php/zipball/febd4920bf17c1da84cef58e56a8227dfb37fbe4",
-                "reference": "febd4920bf17c1da84cef58e56a8227dfb37fbe4",
+                "url": "https://api.github.com/repos/maxmind/MaxMind-DB-Reader-php/zipball/942553da239f12051275f9c666538b5dd09e2908",
+                "reference": "942553da239f12051275f9c666538b5dd09e2908",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6"
+                "php": ">=7.2"
             },
             "conflict": {
-                "ext-maxminddb": "<1.6.0,>=2.0.0"
+                "ext-maxminddb": "<1.7.0,>=2.0.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "2.*",
                 "php-coveralls/php-coveralls": "^2.1",
-                "phpunit/phpcov": "^3.0",
-                "phpunit/phpunit": "5.*",
+                "phpunit/phpcov": ">=6.0.0",
+                "phpunit/phpunit": ">=8.0.0,<10.0.0",
                 "squizlabs/php_codesniffer": "3.*"
             },
             "suggest": {
@@ -4248,7 +4248,7 @@
                 "geolocation",
                 "maxmind"
             ],
-            "time": "2019-12-19T22:59:03+00:00"
+            "time": "2020-08-07T22:10:05+00:00"
         },
         {
             "name": "maxmind/web-service-common",
@@ -8308,28 +8308,28 @@
         },
         {
             "name": "stevebauman/location",
-            "version": "v5.1.0",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stevebauman/location.git",
-                "reference": "38dedeb028cdc8f7d5c55f92c04b04ca5fffccff"
+                "reference": "7be60fd319fe5e62a13b6d427a16f6b1ff2daf0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stevebauman/location/zipball/38dedeb028cdc8f7d5c55f92c04b04ca5fffccff",
-                "reference": "38dedeb028cdc8f7d5c55f92c04b04ca5fffccff",
+                "url": "https://api.github.com/repos/stevebauman/location/zipball/7be60fd319fe5e62a13b6d427a16f6b1ff2daf0b",
+                "reference": "7be60fd319fe5e62a13b6d427a16f6b1ff2daf0b",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
                 "geoip2/geoip2": "2.8.*",
-                "illuminate/support": "~5.0|~6.0|~7.0",
+                "illuminate/support": "~5.0|~6.0|~7.0|~8.0",
                 "php": ">=5.6.0"
             },
             "require-dev": {
-                "mockery/mockery": "~0.9",
-                "orchestra/testbench": "~3.2|~4.0"
+                "mockery/mockery": "~0.9|^1.0",
+                "orchestra/testbench": "~3.2|~4.0|^6.0"
             },
             "type": "library",
             "extra": {
@@ -8367,7 +8367,7 @@
                 "location",
                 "php"
             ],
-            "time": "2020-06-08T17:26:20+00:00"
+            "time": "2020-09-14T14:30:26+00:00"
         },
         {
             "name": "stripe/stripe-php",
@@ -14990,12 +14990,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "425be18066a07ae07112a0aec85bf16f9cd02ed1"
+                "reference": "5ae6aa6482b72946bc0d279c3b54dc1dbeae68d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/425be18066a07ae07112a0aec85bf16f9cd02ed1",
-                "reference": "425be18066a07ae07112a0aec85bf16f9cd02ed1",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/5ae6aa6482b72946bc0d279c3b54dc1dbeae68d8",
+                "reference": "5ae6aa6482b72946bc0d279c3b54dc1dbeae68d8",
                 "shasum": ""
             },
             "conflict": {
@@ -15282,7 +15282,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-11T17:02:36+00:00"
+            "time": "2020-09-13T17:11:14+00:00"
         },
         {
             "name": "sebastian/code-unit",
