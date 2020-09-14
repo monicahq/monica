@@ -106,13 +106,9 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Set Composer command line options
+        if: matrix.php-version == "8.0"
         id: composer-option
-        run: |
-          if [ "${{ matrix.php-version }}" == "8.0" ]; then \
-            echo "::set-output name=option::--ignore-platform-reqs"; \
-          else \
-            echo "::set-output name=option::"; \
-          fi
+        run: echo "::set-output name=option::--ignore-platform-reqs"
       - name: Install composer dependencies
         run: composer install --no-progress --no-interaction --no-suggest --prefer-dist --optimize-autoloader ${{ steps.composer-option.outputs.option }}
 
