@@ -16,6 +16,8 @@ jobs:
   ######################
   build:
     runs-on: ubuntu-latest
+    name: Build assets
+
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
@@ -66,9 +68,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: [7.4]
+        php-version: [7.4, 8.0]
         connection: [sqlite, mysql]
-    name: PHP ${{ matrix.php-version }} Test with ${{ matrix.connection }}
+    name: Test on ${{ matrix.connection }} (PHP ${{ matrix.php-version }})
 
     steps:
       - name: Checkout sources
@@ -147,6 +149,7 @@ jobs:
   reporting:
     needs: tests
     runs-on: ubuntu-latest
+    name: Sonarcloud
 
     steps:
       - name: Checkout repository
@@ -191,7 +194,7 @@ jobs:
         browser: [chrome, firefox]
         containers: [1]
       max-parallel: 10
-    name: Cypress Test with PHP ${{ matrix.php-version }} browser ${{ matrix.browser }}
+    name: Cypress Test on ${{ matrix.browser }} (PHP ${{ matrix.php-version }})
 
     steps:
       - name: Checkout sources
