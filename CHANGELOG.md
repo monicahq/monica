@@ -10,7 +10,7 @@
 
 ### Fixes:
 
-*
+* Fix update activity with emotions
 
 
 # RELEASED VERSIONS:
