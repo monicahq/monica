@@ -9,7 +9,7 @@
 return [
 
     'subject_line' => 'Reminder for :contact',
-    'greetings' => 'Hi :username',
+    'greetings' => 'Chào :username',
     'want_reminded_of' => 'You wanted to be reminded of :reason',
     'for' => 'For: :name',
     'comment' => 'Comment: :comment',
@@ -24,19 +24,19 @@ return [
     'stay_in_touch_subject_description' => 'You asked to be reminded to stay in touch with :name every :frequency day.|You asked to be reminded to stay in touch with :name every :frequency days.',
 
     'notifications_whoops' => 'Whoops!',
-    'notifications_hello' => 'Hello!',
-    'notifications_regards' => 'Regards',
+    'notifications_hello' => 'Xin chào!',
+    'notifications_regards' => 'Thân',
     'notifications_footer' => 'If you’re having trouble clicking the ":actionText" button, copy and paste the URL below into your web browser: [:actionURL](:actionURL)',
-    'notifications_rights' => 'All rights reserved',
+    'notifications_rights' => 'Bản quyền đã được bảo hộ',
 
     'confirmation_email_title' => 'Monica – Email verification',
     'confirmation_email_intro'=> 'To validate your email click on the button below',
-    'confirmation_email_button' => 'Verify email address',
+    'confirmation_email_button' => 'Xác thực địa chỉ email',
     'confirmation_email_bottom' => 'If you did not create an account, no further action is required.',
 
     'password_reset_title' => 'Monica – Reset Password Notification',
     'password_reset_intro' => 'You are receiving this email because we received a password reset request for your account.',
-    'password_reset_button' => 'Reset Password',
+    'password_reset_button' => 'Đặt lại mật khẩu',
     'password_reset_expiration' => 'This password reset link will expire in :count minutes.',
     'password_reset_bottom' => 'If you did not request a password reset, no further action is required.',
 
