@@ -14,7 +14,7 @@ return [
 
     'notes_title' => 'You don’t have any starred notes yet.',
 
-    'tab_recent_calls' => 'Recent calls',
+    'tab_recent_calls' => 'Cuộc gọi gần đây',
     'tab_favorite_notes' => 'Favorite notes',
     'tab_calls_blank' => 'You haven’t logged a call yet.',
     'tab_debts' => 'Debts',
@@ -31,10 +31,10 @@ return [
     'debts_you_owe' => 'You owe',
 
     'statistics_contacts' => 'Contacts',
-    'statistics_activities' => 'Activities',
-    'statistics_gifts' => 'Gifts',
+    'statistics_activities' => 'Hoạt động',
+    'statistics_gifts' => 'Quà tặng',
 
-    'reminders_next_months' => 'Events in the next 3 months',
+    'reminders_next_months' => 'Sự kiện trong 3 tháng tới',
     'reminders_none' => 'No reminder for this month',
 
     'product_changes' => 'Product changes',
