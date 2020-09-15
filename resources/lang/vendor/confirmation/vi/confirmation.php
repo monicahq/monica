@@ -7,10 +7,10 @@
  */
 
 return [
-    'message' => 'Thanks for signing up! Please check your emails to confirm your email address.',
-    'success' => 'You have successfully verified your account! You can now login.',
-    'again' => 'You must verify your email before you can access the site.
-                <br/>If you have not received the confirmation email check your spam folder.
-                <br/>To get a new confirmation email please <a href=":url" class="alert-link">click here</a>.',
-    'resend' => 'A confirmation message has been sent. Please check your mailbox.'
+    'message' => 'Cảm ơn bạn đã đăng kí! Vui lòng kiểm tra email để xác thực địa chỉ email của bạn.',
+    'success' => 'Xác thực tài khoản thành công. Bạn có thể đăng nhập ngay bây giờ.',
+    'again' => 'Bạn phải xác thực email trước khi có thể truy cập website.
+                <br/>Nếu bạn không nhận được email xác thực, hãy kiểm tra trong hòm thư rác.
+                <br/>Để lấy email xác thực mới, hãy <a href=":url" class="alert-link">bấm vào đây</a>.',
+    'resend' => 'Tin nhắn xác thực đã được gửi. Hãy kiểm tra hộp thư đến của bạn.'
 ];
