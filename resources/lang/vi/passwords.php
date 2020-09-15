@@ -19,12 +19,12 @@ return [
     |
     */
 
-    'reset' => 'Your password has been reset!',
+    'reset' => 'Mật khẩu của bạn đã được đặt lại!',
     'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'token' => 'This password reset token is invalid.',
+    'token' => 'Token đặt lại mật khẩu không hợp lệ.',
     'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
     'changed' => 'Password changed successfully.',
-    'invalid' => 'Current password you entered is not correct.',
+    'invalid' => 'Mật khẩu hiện tại không đúng.',
     'throttled' => 'Please wait before retrying.',
 
 ];
