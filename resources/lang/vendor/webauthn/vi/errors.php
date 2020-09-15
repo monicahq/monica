@@ -7,9 +7,9 @@
  */
 
 return [
-    'user_unauthenticated' => 'You need to log in before doing a Webauthn authentication',
-    'auth_data_not_found' => 'Authentication data not found',
-    'create_data_not_found' => 'Register data not found',
-    'object_not_found' => 'Object not found',
+    'user_unauthenticated' => 'Bạn cần đăng nhập trước khi thực hiện xác thực Webauthn',
+    'auth_data_not_found' => 'Không tìm thấy dữ liệu xác thực',
+    'create_data_not_found' => 'Không tìm thấy dữ liệu đăng kí',
+    'object_not_found' => 'Không tìm thấy đối tượng',
 
 ];
