@@ -31,17 +31,16 @@ class AuditLogHelper
                         'logs.settings_log_'.$log->action.'_with_name_with_link',
                         [
                             'link' => '/people/'.$contact->hashId(),
-                            'name' => $contact->name,
+                            'name' => htmlentities($contact->name, ENT_QUOTES, 'utf-8'),
                         ]
                     );
                 } catch (ModelNotFoundException $e) {
                     // the contact doesn't exist anymore, we don't need a link, we'll only display a name
-                    $description = trans('logs.settings_log_'.$log->action.'_with_name', ['name' => $log->object->{'contact_name'}]);
+                    $description = trans('logs.settings_log_'.$log->action.'_with_name', ['name' =>  htmlentities($log->object->{'contact_name'}, ENT_QUOTES, 'utf-8')]);
                 }
             } else {
                 $description = trans('logs.settings_log_'.$log->action, ['name' => $log->object->{'name'}]);
             }
-
             $logsCollection->push([
                 'author_name' => ($log->author) ? $log->author->name : $log->author_name,
                 'description' => $description,
