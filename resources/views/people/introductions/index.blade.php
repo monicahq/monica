@@ -13,7 +13,7 @@
       @if ($introducer = $contact->getIntroducer())
       <li>
         <i class="fa fa-sign-language"></i>
-        {!! trans('people.introductions_met_through', ['url' => route('people.show', $introducer), 'name' => $introducer->name]) !!}
+        {!! trans('people.introductions_met_through', ['url' => route('people.show', $introducer), 'name' => htmlentities($introducer->name, ENT_QUOTES, 'utf-8')]) !!}
       </li>
       @endif
 
