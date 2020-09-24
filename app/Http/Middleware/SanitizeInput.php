@@ -4,25 +4,20 @@ namespace App\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\TransformsRequest as Middleware;
 
-use Illuminate\Support\Facades\Log;
-
 class SanitizeInput extends Middleware
 {
     /**
-     * Handle an incoming request.
+     * Extends TransformsRequest to clean input from XSS
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
      */
     protected function transform($key, $value)
     {
-
-        Log::critical($key);
-
+        // Ignore excepted ones
         if (in_array($key, $this->except, true)) {
             return $value;
         }
+
+        // Strip Html tags and encode missed ones
         if (is_string($value) && $value !== '') {
             $value = strip_tags($value);
             $value = htmlentities($value, ENT_QUOTES, 'utf-8');
