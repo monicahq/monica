@@ -238,8 +238,8 @@ return [
     'relationship_type_friend_with_name' => ':name’s vriend',
     'relationship_type_friend_female_with_name' => ':name’s vriend',
 
-    'relationship_type_bestfriend' => 'beste Vriend',
-    'relationship_type_bestfriend_female' => 'beste Vriend',
+    'relationship_type_bestfriend' => 'beste vriend',
+    'relationship_type_bestfriend_female' => 'beste vriend',
     'relationship_type_bestfriend_with_name' => ':name’s beste vriend',
     'relationship_type_bestfriend_female_with_name' => ':name’s beste vriend',
 
