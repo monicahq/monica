@@ -406,10 +406,10 @@ return [
     'reminder_time_to_send_help' => 'Für Ihre Informationen wird Ihre nächste Erinnerung auf <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span> gesendet.',
 
     'personalization_activity_type_category_title' => 'Aktivitätstyp Kategorien',
-    'personalization_activity_type_category_add' => 'Add a new activity type category',
+    'personalization_activity_type_category_add' => 'Neue Aktivitätstyp Kategorie hinzufügen',
     'personalization_activity_type_category_table_name' => 'Name',
-    'personalization_activity_type_category_description' => 'An activity done with one of your contact can have a type and a category type. Your account comes by default with a set of predefined category types, but you can customize everything here.',
-    'personalization_activity_type_category_table_actions' => 'Actions',
+    'personalization_activity_type_category_description' => 'Eine Aktivität mit einem Ihrer Kontakte kann einen Typ und einen Kategorietyp haben. Ihr Konto kommt standardmäßig mit einer Reihe vordefinierter Kategorietypen, aber Sie können hier alles anpassen.',
+    'personalization_activity_type_category_table_actions' => 'Aktionen',
     'personalization_activity_type_category_modal_add' => 'Add a new activity type category',
     'personalization_activity_type_category_modal_edit' => 'Edit an activity type category',
     'personalization_activity_type_category_modal_question' => 'How should we name this new category?',
