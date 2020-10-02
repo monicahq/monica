@@ -20,7 +20,7 @@ return [
     'sidebar_settings_security' => 'Sicherheit',
     'sidebar_settings_auditlogs' => 'Audit logs',
 
-    'title_general' => 'General Information',
+    'title_general' => 'Allgemeine Information',
     'title_i18n' => 'International settings',
     'title_layout' => 'Layout',
 
