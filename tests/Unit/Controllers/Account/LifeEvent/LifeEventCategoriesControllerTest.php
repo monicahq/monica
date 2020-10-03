@@ -14,7 +14,7 @@ class LifeEventCategoriesControllerTest extends FeatureTestCase
     {
         $user = $this->signin();
 
-        $response = $this->get("settings/personalization/lifeeventcategories");
+        $response = $this->get('settings/personalization/lifeeventcategories');
 
         $response->assertStatus(200);
     }
