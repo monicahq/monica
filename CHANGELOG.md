@@ -15,6 +15,13 @@
 
 # RELEASED VERSIONS:
 
+## v2.19.1 - 2020-09-12
+
+### Fixes:
+
+* Fix journal entry XSS vulnerability
+
+
 ## v2.19.0 - 2020-08-27
 
 ### Enhancements:
