@@ -44,7 +44,7 @@
         "predis/predis": "^1.1",
         "ralouphie/mimey": "^2.0",
         "sabre/dav": "^4.0",
-        "sentry/sentry-laravel": "^1.0",
+        "sentry/sentry-laravel": "^2.0",
         "stevebauman/location": "^5.0",
         "symfony/translation": "^5.0",
         "thecodingmachine/safe": "^1.0",
