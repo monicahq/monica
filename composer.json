@@ -61,6 +61,7 @@
         "fzaninotto/faker": "^1.6",
         "khanamiryan/qrcode-detector-decoder": "1.0.3",
         "laravel/dusk": "^6.0",
+        "laravel/legacy-factories": "^1.0",
         "matthiasnoback/live-code-coverage": "^1.0",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^5.0",

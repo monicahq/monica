@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "34f8c3292038ad5540294dd85b34d360",
+    "content-hash": "757c959fcc6639e006116bc4e31ca9fe",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -13443,6 +13443,58 @@
                 "webdriver"
             ],
             "time": "2020-09-29T17:25:34+00:00"
+        },
+        {
+            "name": "laravel/legacy-factories",
+            "version": "v1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/legacy-factories.git",
+                "reference": "8bedd3d537c7e648085cc8532701df1fa81ae012"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/legacy-factories/zipball/8bedd3d537c7e648085cc8532701df1fa81ae012",
+                "reference": "8bedd3d537c7e648085cc8532701df1fa81ae012",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/macroable": "^8.0",
+                "php": "^7.3",
+                "symfony/finder": "^3.4|^4.0|^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Illuminate\\Database\\Eloquent\\LegacyFactoryServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "helpers.php"
+                ],
+                "psr-4": {
+                    "Illuminate\\Database\\Eloquent\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "The legacy version of the Laravel Eloquent factories.",
+            "homepage": "http://laravel.com",
+            "time": "2020-09-21T13:31:44+00:00"
         },
         {
             "name": "matthiasnoback/live-code-coverage",
