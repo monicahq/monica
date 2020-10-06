@@ -11,7 +11,7 @@ return [
     //index
     'people_not_found' => 'Không tìm thấy liên hệ',
     'people_list_number_kids' => '1 con|:count con',
-    'people_list_last_updated' => 'Last consulted:',
+    'people_list_last_updated' => 'Danh sách liên hệ mới cập nhật:',
     'people_list_number_reminders' => '1 lời nhắc|:count lời nhắc',
     'people_list_blank_title' => 'Bạn không có ai trong tài khoản',
     'people_list_blank_cta' => 'Thêm ai đó',
@@ -90,7 +90,7 @@ return [
     'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
     'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
     'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
-    'stay_in_touch_modal_title' => 'Stay in touch',
+    'stay_in_touch_modal_title' => 'Giữ liên lạc',
     'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
     'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
 
@@ -123,7 +123,7 @@ return [
     'conversation_add_when' => 'When did you have this conversation?',
     'conversation_add_who_wrote' => 'Who said this message?',
     'conversation_add_how' => 'How did you communicate?',
-    'conversation_add_you' => 'You',
+    'conversation_add_you' => 'bạn',
     'conversation_add_content' => 'Write down what was said',
     'conversation_add_what_was_said' => 'What did you say?',
     'conversation_add_another' => 'Thêm tin nhắn khác',
