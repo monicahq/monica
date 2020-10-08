@@ -5933,10 +5933,10 @@ laravel-mix-purgecss@^5.0.0:
   dependencies:
     postcss-purgecss-laravel "^0.1.1"
 
-laravel-mix@^5.0.4:
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/laravel-mix/-/laravel-mix-5.0.5.tgz#1da6488ac3af79f248bcbc2e589dcaeb03f3dafc"
-  integrity sha512-ruogwsrTsmUpZU9x1Whgxh+gcEB/6IFJlL+ZTSrYt1SXfOsi8BgMI2R9RWvQpOyR+40VYl7n7Gsr+sHjfFb90Q==
+laravel-mix@^5.0.6:
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/laravel-mix/-/laravel-mix-5.0.6.tgz#74c92052e44d6c5e265f374a8a7ca3173cf2f9a9"
+  integrity sha512-yeX23rnpUUs7LXZlDMQMh2yg5nOkizlvUjwir8d54yhIqDec7Btnkg935Pxeo81kq/JONssHEaVPrwp1/TsPsQ==
   dependencies:
     "@babel/core" "^7.2.0"
     "@babel/plugin-proposal-object-rest-spread" "^7.2.0"
