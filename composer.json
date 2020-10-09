@@ -28,7 +28,7 @@
         "laravel/socialite": "^5.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
-        "laravolt/avatar": "^3.0",
+        "laravolt/avatar": "^4.0",
         "league/flysystem-aws-s3-v3": "~1.0",
         "league/flysystem-cached-adapter": "^1.0",
         "mariuzzo/laravel-js-localization": "^1.6",
