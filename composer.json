@@ -15,7 +15,7 @@
         "asbiin/laravel-webauthn": "^0.9",
         "bacon/bacon-qr-code": "^2.0",
         "creativeorange/gravatar": "~1.0",
-        "doctrine/dbal": "2.9.3",
+        "doctrine/dbal": "2.11.1",
         "erusev/parsedown": "^1.7",
         "facade/ignition": "^2.0",
         "fideloper/proxy": "^4.0",
