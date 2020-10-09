@@ -5933,10 +5933,10 @@ laravel-mix-purgecss@^5.0.0:
   dependencies:
     postcss-purgecss-laravel "^0.1.1"
 
-laravel-mix@^5.0.4:
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/laravel-mix/-/laravel-mix-5.0.5.tgz#1da6488ac3af79f248bcbc2e589dcaeb03f3dafc"
-  integrity sha512-ruogwsrTsmUpZU9x1Whgxh+gcEB/6IFJlL+ZTSrYt1SXfOsi8BgMI2R9RWvQpOyR+40VYl7n7Gsr+sHjfFb90Q==
+laravel-mix@^5.0.6:
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/laravel-mix/-/laravel-mix-5.0.6.tgz#74c92052e44d6c5e265f374a8a7ca3173cf2f9a9"
+  integrity sha512-yeX23rnpUUs7LXZlDMQMh2yg5nOkizlvUjwir8d54yhIqDec7Btnkg935Pxeo81kq/JONssHEaVPrwp1/TsPsQ==
   dependencies:
     "@babel/core" "^7.2.0"
     "@babel/plugin-proposal-object-rest-spread" "^7.2.0"
@@ -8603,10 +8603,10 @@ sass-loader@^10.0.2:
     schema-utils "^2.7.1"
     semver "^7.3.2"
 
-sass@^1.26.11:
-  version "1.26.11"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.26.11.tgz#0f22cc4ab2ba27dad1d4ca30837beb350b709847"
-  integrity sha512-W1l/+vjGjIamsJ6OnTe0K37U2DBO/dgsv2Z4c89XQ8ZOO6l/VwkqwLSqoYzJeJs6CLuGSTRWc91GbQFL3lvrvw==
+sass@^1.27.0:
+  version "1.27.0"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.27.0.tgz#0657ff674206b95ec20dc638a93e179c78f6ada2"
+  integrity sha512-0gcrER56OkzotK/GGwgg4fPrKuiFlPNitO7eUJ18Bs+/NBlofJfMxmxqpqJxjae9vu0Wq8TZzrSyxZal00WDig==
   dependencies:
     chokidar ">=2.0.0 <4.0.0"
 
@@ -9152,10 +9152,10 @@ snyk-try-require@1.3.1, snyk-try-require@^1.1.1, snyk-try-require@^1.3.1:
     lru-cache "^4.0.0"
     then-fs "^2.0.0"
 
-snyk@^1.409.1:
-  version "1.409.1"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.409.1.tgz#d1c4d8483878a1910ebc0ac39322d6368b854e2c"
-  integrity sha512-u084+YgqtQbrWmgHlAkFBl79qlDkI8YD3Q7ME71kgOVMJ8d4FZw+1Mu6JhhQ6iB9KjX8z0c9xaBGxthKEBgW8w==
+snyk@^1.410.3:
+  version "1.410.3"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.410.3.tgz#740d9ed2cecbe4ef27aa532658eebd1b54ece336"
+  integrity sha512-BZ2w1uPCDyjgM2Y6XW071ZlVa1RAVU0xEe7oFY93cdf6ccjCZLyfDqsnbf0ahxAZJp8BZOrq/HsFAfEhm3P8hg==
   dependencies:
     "@snyk/cli-interface" "2.9.2"
     "@snyk/dep-graph" "1.19.4"
