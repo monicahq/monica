@@ -19,11 +19,13 @@ return [
      */
     'segment' => env('LANG_DETECTOR_SEGMENT', 0),
 
-    /*
+    /**
      * Languages available on the application.
      *
      * You could use parse_langs_to_array to use the string syntax
      * or just use the array of languages with its aliases.
+     *
+     * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
      */
     'languages' => parse_langs_to_array(
         env('LANG_DETECTOR_LANGUAGES', [
@@ -31,6 +33,7 @@ return [
             'ar',
             'cs',
             'de',
+            'en-GB' => 'en-GB',
             'es',
             'fr',
             'he',
@@ -42,6 +45,7 @@ return [
             'ru',
             'tr',
             'zh',
+            'zh-TW' => 'zh-TW',
         ])
     ),
 

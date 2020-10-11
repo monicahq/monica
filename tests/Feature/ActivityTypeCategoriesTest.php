@@ -35,8 +35,8 @@ class ActivityTypeCategoriesTest extends FeatureTestCase
         $user = $this->signin();
 
         $response = $this->json('POST', '/settings/personalization/activitytypecategories', [
-                            'name' => 'Movies',
-                        ]);
+            'name' => 'Movies',
+        ]);
 
         $response->assertStatus(200);
 
@@ -50,7 +50,7 @@ class ActivityTypeCategoriesTest extends FeatureTestCase
         $user = $this->signin();
 
         $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/settings/personalization/activitytypecategories/'.$activityTypeCategory->id, [
@@ -88,7 +88,7 @@ class ActivityTypeCategoriesTest extends FeatureTestCase
         $user = $this->signin();
 
         $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('DELETE', '/settings/personalization/activitytypecategories/'.$activityTypeCategory->id);

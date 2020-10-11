@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     /*
@@ -17,16 +23,15 @@ return [
     'throttle' => 'בוצעו יותר מדי ניסיונות כניסה כושלים. נא לנסות שוב בעוד :seconds שניות.',
     'not_authorized' => 'אין לך הרשאה להריץ את הפעולה הזאת',
     'signup_disabled' => 'ההרשמה מושבתת כרגע',
+    'signup_error' => 'אירעה שגיאה בעת רישום המשתמש',
     'back_homepage' => 'חזרה לדף הבית',
     'mfa_auth_otp' => 'אימות עם ההתקן שלך לאימות דו־שלבי',
-    'mfa_auth_u2f' => 'אימות עם התקן U2F',
     'mfa_auth_webauthn' => 'אימות עם מפתח אבטחה (WebAuthn)',
     '2fa_title' => 'אימות דו־שלבי',
     '2fa_wrong_validation' => 'האימות הדו־שלבי נכשל.',
     '2fa_one_time_password' => 'קוד אימות דו־שלבי',
     '2fa_recuperation_code' => 'נא להקליד את קוד השחזור לאימות הדו־שלבי',
     '2fa_otp_help' => 'יש לפתוח את יישומון האימות הדו־שלבי שלך ולהעתיק את הקוד',
-    'u2f_otp_extension' => 'ב־Chrome, ב־<a href="{urlquantum}" lang="en">Firefox</a> וב־Opera קיימת תמיכה מובנית ב־U2F. בגרסאות ישנות של Firefox יש להתקין את <a href="{urlext}">תוספת התמיכה ב־U2F</a>.',
 
     'login_to_account' => 'כניסה לחשבון שלך',
     'login_with_recovery' => 'כניסה עם קוד שחזור',
@@ -73,7 +78,7 @@ return [
     'confirmation_title' => 'אימות כתובת הדוא״ל שלך',
     'confirmation_fresh' => 'נשלח קישור אימות טרי לכתובת הדוא״ל שלך.',
     'confirmation_check' => 'בטרם המשך התהליך, נא לחפש את קישור האימות בתיבת הדוא״ל שלך.',
-    'confirmation_request_another' => 'אם לא קיבלת את ההודעה <a href=":url">נא ללחוץ כאן כדי לבקש אחת נוספת</a>.',
+    'confirmation_request_another' => 'אם לא קיבלת את ההודעה בדוא״ל <a :action>יש ללחוץ כאן כדי לבקש אחת נוספת</a>.',
 
     'confirmation_again' => 'כדי לשנות את כתובת הדוא״ל שלך נא <a href=":url" class="alert-link">ללחוץ כאן</a>.',
     'email_change_current_email' => 'כתובת הדוא״ל הנוכחית:',

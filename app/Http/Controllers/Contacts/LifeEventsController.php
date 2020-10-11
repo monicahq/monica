@@ -85,15 +85,15 @@ class LifeEventsController extends Controller
     public function store(Request $request, Contact $contact)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
-            'life_event_type_id' => $request->get('life_event_type_id'),
-            'happened_at' => $request->get('happened_at'),
-            'name' => $request->get('name'),
-            'note' => $request->get('note'),
-            'has_reminder' => $request->get('has_reminder'),
-            'happened_at_month_unknown' => $request->get('happened_at_month_unknown'),
-            'happened_at_day_unknown' => $request->get('happened_at_day_unknown'),
+            'life_event_type_id' => $request->input('life_event_type_id'),
+            'happened_at' => $request->input('happened_at'),
+            'name' => $request->input('name'),
+            'note' => $request->input('note'),
+            'has_reminder' => $request->input('has_reminder'),
+            'happened_at_month_unknown' => $request->input('happened_at_month_unknown'),
+            'happened_at_day_unknown' => $request->input('happened_at_day_unknown'),
         ];
 
         // create the conversation
@@ -119,7 +119,7 @@ class LifeEventsController extends Controller
     public function destroy(Request $request, LifeEvent $lifeEvent)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'life_event_id' => $lifeEvent->id,
         ];
 

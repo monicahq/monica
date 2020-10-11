@@ -3,7 +3,9 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+//use PragmaRX\Countries\Package\Support\Collection;
 use PragmaRX\CountriesLaravel\Package\Facade as Countries;
 use PragmaRX\Countries\Package\Support\Collection as Country;
 
@@ -12,18 +14,19 @@ class CountriesHelper
     /**
      * Get list of countries.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection<Country>
      */
-    public static function getAll()
+    public static function getAll(): Collection
     {
-        $countries = Countries::all()->map(function ($item) {
+        $x = Countries::all();
+        $countries = $x->map(function ($item) {
             return [
                 'id' => $item->cca2,
                 'country' => static::getCommonNameLocale($item),
             ];
         });
 
-        return $countries->sortByCollator('country');
+        return collect($countries->sortByCollator('country'));
     }
 
     /**
@@ -32,7 +35,7 @@ class CountriesHelper
      * @param string $iso code of the country
      * @return string common name (localized) of the country
      */
-    public static function get($iso)
+    public static function get($iso): string
     {
         $country = self::getCountry($iso);
         if (is_null($country)) {
@@ -48,7 +51,7 @@ class CountriesHelper
      * @param string $name  Common name of a country
      * @return string  cca2 code of the country
      */
-    public static function find($name)
+    public static function find($name): string
     {
         $country = Countries::where('name.common', $name)->first();
         if ($country->count() === 0) {
@@ -67,7 +70,7 @@ class CountriesHelper
      * @param \ArrayAccess $country
      * @return string
      */
-    private static function getCommonNameLocale($country)
+    private static function getCommonNameLocale($country): string
     {
         $locale = App::getLocale();
         $lang = LocaleHelper::getLocaleAlpha($locale);
@@ -83,14 +86,14 @@ class CountriesHelper
      * @param string $iso
      * @return Country|null  the Country element
      */
-    public static function getCountry($iso)
+    public static function getCountry($iso): ?Country
     {
         $country = Countries::where('cca2', mb_strtoupper($iso))->first();
         if ($country->count() === 0) {
             $country = Countries::where('alt_spellings', mb_strtoupper($iso))->first();
         }
         if ($country->count() === 0) {
-            return;
+            return null;
         }
 
         return $country;
@@ -102,7 +105,7 @@ class CountriesHelper
      * @param string $locale  language code (iso)
      * @return Country|null  the Country element
      */
-    public static function getCountryFromLocale($locale)
+    public static function getCountryFromLocale($locale): ?Country
     {
         $countryCode = LocaleHelper::extractCountry($locale);
         if (empty($countryCode)) {
@@ -113,7 +116,7 @@ class CountriesHelper
             $lang = LocaleHelper::getLocaleAlpha($locale);
             $country = Countries::whereISO639_3($lang);
             if ($country->count() === 0) {
-                return;
+                return null;
             }
         } else {
             $country = Countries::where('cca2', $countryCode);
@@ -128,7 +131,7 @@ class CountriesHelper
      * @param string $locale   language code (iso)
      * @return string|null  cca2 code
      */
-    private static function getDefaultCountryFromLocale($locale)
+    private static function getDefaultCountryFromLocale($locale): ?string
     {
         switch (mb_strtolower($locale)) {
             case 'cs':
@@ -168,7 +171,7 @@ class CountriesHelper
      * @param mixed $country  Country element
      * @return string  timezone fo this sountry
      */
-    public static function getDefaultTimezone($country)
+    public static function getDefaultTimezone($country): string
     {
         // https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
         // https://en.wikipedia.org/wiki/List_of_time_zones_by_country

@@ -35,7 +35,7 @@ class CreatePlace extends BaseService
      * @param GuzzleClient $client the Guzzle client, only needed when unit testing
      * @return Place
      */
-    public function execute(array $data, GuzzleClient $client = null) : Place
+    public function execute(array $data, GuzzleClient $client = null): Place
     {
         $this->validate($data);
 

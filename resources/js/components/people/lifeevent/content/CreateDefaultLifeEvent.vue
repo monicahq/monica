@@ -16,11 +16,12 @@
       </label>
       <form-textarea
         id="description"
+        v-model="defaultEvent.note"
         :required="false"
         :no-label="true"
         :rows="4"
         :placeholder="$t('people.life_event_create_default_description')"
-        @contentChange="updateNote($event)"
+        @input="broadcastContentChange"
       />
     </div>
   </div>
@@ -53,11 +54,6 @@ export default {
   methods: {
     prepareComponent() {
       this.defaultEvent.happened_at = moment().format('YYYY-MM-DD');
-    },
-
-    updateNote(event) {
-      this.defaultEvent.note = event;
-      this.broadcastContentChange();
     },
 
     broadcastContentChange() {

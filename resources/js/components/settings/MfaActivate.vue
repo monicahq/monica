@@ -46,15 +46,13 @@
           />
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a id="verify1" class="btn btn-primary" href="" @click.prevent="register()">
-            {{ $t('app.verify') }}
-          </a>
-          <a class="btn" href="" @click.prevent="closeEnableModal()">
-            {{ $t('app.cancel') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a id="verify1" class="btn btn-primary" href="" @click.prevent="register()">
+          {{ $t('app.verify') }}
+        </a>
+        <a class="btn" href="" @click.prevent="closeEnableModal()">
+          {{ $t('app.cancel') }}
+        </a>
       </div>
     </sweet-modal>
 
@@ -73,15 +71,13 @@
           />
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a id="verify2" class="btn btn-primary" href="" @click.prevent="unregister()">
-            {{ $t('app.verify') }}
-          </a>
-          <a class="btn" href="" @click.prevent="closeDisableModal()">
-            {{ $t('app.cancel') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a id="verify2" class="btn btn-primary" href="" @click.prevent="unregister()">
+          {{ $t('app.verify') }}
+        </a>
+        <a class="btn" href="" @click.prevent="closeDisableModal()">
+          {{ $t('app.cancel') }}
+        </a>
       </div>
     </sweet-modal>
   </div>

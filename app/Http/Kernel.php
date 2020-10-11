@@ -14,10 +14,11 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
-        \Illuminate\Foundation\Http\Middleware\TrimStrings::class,
-        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \Monicahq\Cloudflare\Http\Middleware\TrustProxies::class,
+        \App\Http\Middleware\CheckForMaintenanceMode::class,
+        \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
+        \App\Http\Middleware\TrimStrings::class,
+        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
 
     /**
@@ -37,6 +38,7 @@ class Kernel extends HttpKernel
             'locale',
             \App\Http\Middleware\CheckVersion::class,
             \App\Http\Middleware\CheckCompliance::class,
+            \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
         ],
 
         'api' => [
@@ -47,17 +49,16 @@ class Kernel extends HttpKernel
 
         'oauth' => [
             'throttle:5,1',
-            \Illuminate\Session\Middleware\StartSession::class,
+            \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
             'sentry.context',
             'locale',
         ],
 
         'mfa' => [
-            \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             'webauthn',
-            'u2f',
             '2fa',
         ],
     ];
@@ -70,22 +71,22 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
+        '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
+        'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.tokenonbasic' => \App\Http\Middleware\AuthenticateWithTokenOnBasicAuth::class,
-        'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'throttle' => \App\Http\Middleware\ThrottleRequestsMiddleware::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
-        '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
-        'u2f' => \Lahaxearnaud\U2f\Http\Middleware\U2f::class,
-        'webauthn' => \LaravelWebauthn\Http\Middleware\WebauthnMiddleware::class,
+        'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'limitations' => \App\Http\Middleware\CheckAccountLimitations::class,
         'locale' => \App\Http\Middleware\CheckLocale::class,
+        'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'sentry.context' => \App\Http\Middleware\SentryContext::class,
-        'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
+        'throttle' => \App\Http\Middleware\ThrottleRequestsMiddleware::class,
+        'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
+        'webauthn' => \LaravelWebauthn\Http\Middleware\WebauthnMiddleware::class,
     ];
 
     /**
@@ -100,6 +101,7 @@ class Kernel extends HttpKernel
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\Authenticate::class,
         \App\Http\Middleware\AuthenticateWithTokenOnBasicAuth::class,
+        \Illuminate\Routing\Middleware\ThrottleRequests::class,
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,

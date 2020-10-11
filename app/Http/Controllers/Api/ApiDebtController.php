@@ -67,7 +67,7 @@ class ApiDebtController extends ApiController
 
         try {
             $debt = Debt::create(
-                $request->all()
+                $request->except(['account_id'])
                 + ['account_id' => auth()->user()->account_id]
             );
         } catch (QueryException $e) {
@@ -101,7 +101,7 @@ class ApiDebtController extends ApiController
         }
 
         try {
-            $debt->update($request->all());
+            $debt->update($request->only(['in_debt', 'status', 'amount', 'reason', 'contact_id']));
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }

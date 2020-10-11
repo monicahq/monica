@@ -15,7 +15,8 @@ class UpdateActivityTypeTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_a_activity_type()
+    /** @test */
+    public function it_updates_an_activity_type()
     {
         $activityType = factory(ActivityType::class)->create([]);
         $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
@@ -46,7 +47,8 @@ class UpdateActivityTypeTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $activityType = factory(ActivityType::class)->create([]);
         $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
@@ -64,7 +66,8 @@ class UpdateActivityTypeTest extends TestCase
         app(UpdateActivityType::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_activity_is_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_activity_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create([]);
         $activityType = factory(ActivityType::class)->create([]);

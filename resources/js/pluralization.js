@@ -30,11 +30,17 @@ function pluralE (choice, choicesLength) {
   number = (number == 0) ? 0 : ((number == 1) ? 1 : ((number == 2) ? 2 : (((number % 100 >= 3) && (number % 100 <= 10)) ? 3 : (((number % 100 >= 11) && (number % 100 <= 99)) ? 4 : 5))));
   return Math.min(number, choicesLength - 1);
 }
+function pluralF (choice, choicesLength) {
+  let number = Math.abs(choice);
+  number = (number == 1) ? 0 : ((number == 2) ? 1 : (number < 10 && number % 10 == 0) ? 2 : 3);
+  return Math.min(number, choicesLength - 1);
+}
 
 export default {
   'ar': pluralE,
   'cs': pluralC,
   'fr': pluralB,
+  'he': pluralF,
   'hr': pluralD,
   'ru': pluralD,
   'tr': pluralA,

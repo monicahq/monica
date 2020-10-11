@@ -66,14 +66,14 @@ class ApiNoteController extends ApiController
 
         try {
             $note = Note::create(
-                $request->all()
+                $request->except(['account_id'])
                 + ['account_id' => auth()->user()->account_id]
             );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
 
-        if ($request->get('is_favorited')) {
+        if ($request->input('is_favorited')) {
             $note->favorited_at = now();
             $note->save();
         }
@@ -105,12 +105,12 @@ class ApiNoteController extends ApiController
         }
 
         try {
-            $note->update($request->all());
+            $note->update($request->only(['body', 'contact_id', 'is_favorited']));
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
 
-        if ($request->get('is_favorited')) {
+        if ($request->input('is_favorited')) {
             $note->favorited_at = now();
         } else {
             $note->favorited_at = null;

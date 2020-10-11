@@ -102,6 +102,8 @@ class CalDAVTasks extends AbstractCalDAVBackend
                 Log::debug(__CLASS__.' prepareData: '.(string) $e);
             }
         }
+
+        return [];
     }
 
     /**
@@ -121,7 +123,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
      * @param string $calendarData
      * @return string|null
      */
-    public function updateOrCreateCalendarObject($objectUri, $calendarData)
+    public function updateOrCreateCalendarObject($objectUri, $calendarData): ?string
     {
         $task_id = null;
         if ($objectUri) {
@@ -151,6 +153,8 @@ class CalDAVTasks extends AbstractCalDAVBackend
         } catch (\Exception $e) {
             Log::debug(__CLASS__.' updateOrCreateCalendarObject: '.(string) $e);
         }
+
+        return null;
     }
 
     /**

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     //index
@@ -52,6 +58,7 @@ return [
     'people_delete_message' => 'מחיקת איש קשר',
     'people_delete_confirmation' => 'למחוק את איש הקשר הזה? מחיקה היא לצמיתות.',
     'people_add_birthday_reminder' => 'נא לאחל יום הולדת שמח ל־:name',
+    'people_add_birthday_reminder_deceased' => 'בתאריך הזה, אמור היה להחגג יום ההולדת של :name',
     'people_add_import' => 'ברצונך <a href=":url">לייבא את אנשי הקשר שלך</a>?',
     'people_edit_email_error' => 'כבר יש איש קשר בחשבון שלך עם כתובת הדוא״ל הזו. נא לבחור באחד אחר.',
     'people_export' => 'ייצוא כ־vCard',
@@ -80,12 +87,12 @@ return [
 
     // Stay in touch
     'stay_in_touch' => 'לשמור על קשר',
-    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
+    'stay_in_touch_frequency' => 'להישאר בקשר כל יום|להישאר בקשר כל יומיים|להישאר בקשר כל {count} ימים',
     'stay_in_touch_invalid' => 'התדירות חייבת להיות מספר גדול מ־0.',
     'stay_in_touch_premium' => 'עליך לשדרג את החשבון שלך כדי להשתמש בתכונה זו',
     'stay_in_touch_modal_title' => 'לשמור על קשר',
     'stay_in_touch_modal_desc' => 'נוכל להזכיר לך בהודעה בדוא״ל לשמור על קשר עם {firstname} במרווחי זמן קבועים.',
-    'stay_in_touch_modal_label' => 'לשלוח לי הודעה בדוא״ל בכל…',
+    'stay_in_touch_modal_label' => 'לשלוח לי הודעה בדוא״ל כל יום|לשלוח לי הודעה בדוא״ל כל יומיים|לשלוח לי הודעה בדוא״ל כל… {count} ימים|לשלוח לי הודעה בדוא״ל כל… {count} ימים',
 
     // Calls
     'modal_call_title' => 'תיעוד שיחה',
@@ -151,6 +158,7 @@ return [
     'information_edit_probably' => 'הגיל של איש הקשר הוא כנראה…',
     'information_edit_not_year' => 'ידועים לי היום והחודש של הולדת איש הקשר, אך לא השנה…',
     'information_edit_exact' => 'מועד הלידה המדויק של אדם זה ידוע לי…',
+    'information_edit_birthdate_label' => 'תאריך לידה',
     'information_no_work_defined' => 'לא צוינו פרטי עבודה',
     'information_work_at' => 'ב:company',
     'work_add_cta' => 'עדכון פרטי עבודה',
@@ -184,6 +192,7 @@ return [
     'reminders_create_success' => 'התזכורת נוספה בהצלחה',
     'reminders_delete_success' => 'התזכורת נמחקה בהצלחה',
     'reminders_update_success' => 'התזכורת עודכנה בהצלחה',
+    'reminders_add_optional_comment' => 'הערת רשות',
 
     'reminder_frequency_day' => '{1} כל יום|{2} כל יומיים|[3,*] כל :number ימים',
     'reminder_frequency_week' => '{1} כל שבוע| {2} כל שבועיים|[3,*] כל :number שבועות',
@@ -221,6 +230,7 @@ return [
     'relationship_form_deletion_success' => 'הקשר נמחק.',
 
     // tasks
+    'tasks_title' => 'משימות',
     'tasks_blank_title' => 'אין לך משימות עדיין.',
     'tasks_form_title' => 'כותרת',
     'tasks_form_description' => 'תיאור (רשות)',
@@ -237,28 +247,29 @@ return [
     'activity_type_just_hung_out' => 'בילוי משותף',
     'activity_type_watched_movie_at_home' => 'צפיתם בסרט בבית',
     'activity_type_talked_at_home' => 'דיברתם בבית',
-    'activity_type_did_sport_activities_together' => 'עשיתם ספורט יחד',
+    'activity_type_did_sport_activities_together' => 'עסקתם בפעילות ספורטיבית משותפת',
     'activity_type_ate_at_his_place' => 'אכלתם אצלם',
     'activity_type_went_bar' => 'הלכת לבר',
     'activity_type_ate_at_home' => 'אכלתם בבית',
-    'activity_type_picknicked' => 'יצאתם לפיקניק',
+    'activity_type_picnicked' => 'פיקניק',
     'activity_type_ate_restaurant' => 'אכלתם במסעדה',
     'activity_type_went_theater' => 'הלכתם לתיאטרון',
     'activity_type_went_concert' => 'הלכתם להופעה',
     'activity_type_went_play' => 'הלכתם להצגה',
     'activity_type_went_museum' => 'הלכתם למוזיאון',
     'activities_add_activity' => 'הוספת פעילות',
-    'activities_more_details' => 'פרטים נוספים',
-    'activities_hide_details' => 'הסתרת פרטים',
-    'activities_delete_confirmation' => 'למחוק את הפעילות הזאת?',
+    'activities_add_more_details' => 'הוספת פרטים נוספים',
+    'activities_add_emotions' => 'הוספת רגשות',
+    'activities_add_category' => 'ציון קטגוריה',
+    'activities_add_participants_cta' => 'הוספת משתתפים',
     'activities_item_information' => ':Activity. התקיימה ב־:date',
-    'activities_add_title' => 'מה עשית עם :name?',
+    'activities_add_title' => 'מה עשית עם {name}?',
     'activities_summary' => 'נא לתאר את אופן הפעילות',
     'activities_add_pick_activity' => '(רשות) האם ברצונך לסווג את הפעילות הזאת? לא חובה אך סיווג יאפשר לך לערוך סטטיסטיקה בהמשך',
-    'activities_add_date_occured' => 'המועד בו התרחש האירוע',
-    'activities_add_optional_comment' => 'הערת רשות',
-    'activities_add_cta' => 'תיעוד פעילות',
-    'activities_blank_title' => 'מעקב אחר מה שעשית עם :name בעבר ועל מה דיברתם',
+    'activities_add_date_occured' => 'הפעילות התרחשה ב…',
+    'activities_add_participants' => 'מי, למעט {name}, השתתף בפעילות הזאת? (רשות)',
+    'activities_add_emotions_title' => 'מעניין אותך לתעד איך הרגשת במהלך הפעילות? (רשות)',
+    'activities_blank_title' => 'מעקב אחר מה שעשית עם {name} בעבר ועל מה דיברתם',
     'activities_blank_add_activity' => 'הוספת פעילות',
     'activities_add_success' => 'הפעילות נוספה בהצלחה',
     'activities_add_error' => 'אירעה שגיאה בעת הוספת הפעילות',
@@ -272,6 +283,10 @@ return [
     'activities_profile_year_summary_activity_types' => 'להלן פילוח של סוגי הפעילויות אותן ביצעתם יחדיו ב־:year',
     'activities_profile_year_summary' => 'הנה מה שעשיתם יחד ב־:year',
     'activities_profile_number_occurences' => 'פעילות אחת|:value פעילויות',
+    'activities_list_participants' => 'משתתפים:',
+    'activities_list_emotions' => 'רגשות שהרגשת:',
+    'activities_list_date' => 'מועד הפעילות',
+    'activities_list_category' => 'קטגוריה:',
 
     // notes
     'notes_create_success' => 'ההערה נוצרה בהצלחה',
@@ -289,17 +304,23 @@ return [
     'gifts_delete_confirmation' => 'למחוק את המתנה הזאת?',
     'gifts_add_gift' => 'הוספת מתנה',
     'gifts_link' => 'קישור',
-    'gifts_for' => 'עבור:',
+    'gifts_for' => 'עבור: {name}',
     'gifts_delete_cta' => 'מחיקה',
     'gifts_add_title' => 'ניהול מתנות עבור :name',
     'gifts_add_gift_idea' => 'רעיון למתנה',
     'gifts_add_gift_already_offered' => 'מתנה שהוצעה',
     'gifts_add_gift_received' => 'מתנה שהתקבלה',
     'gifts_add_gift_title' => 'מה זו המתנה הזו?',
+    'gifts_add_gift_name' => 'שם המתנה',
     'gifts_add_link' => 'קישור לאתר אינטרנט (רשות)',
     'gifts_add_value' => 'ערך (רשות)',
     'gifts_add_comment' => 'הערה (רשות)',
-    'gifts_add_someone' => 'מתנה זו מיועדת במיוחד למישהו במשפחה של :name',
+    'gifts_add_recipient' => 'למי מיועדת המתנה (רשות)',
+    'gifts_add_recipient_field' => 'נמען',
+    'gifts_add_photo' => 'תמונה (רשות)',
+    'gifts_add_photo_title' => 'הוספת תמונה למתנה הזאת',
+    'gifts_add_someone' => 'מתנה זו מיועדת במיוחד למישהו מהמשפחה של {name}',
+    'gifts_delete_title' => 'מחיקת מתנה',
     'gifts_ideas' => 'רעיונות למתנות',
     'gifts_offered' => 'מתנות שהוצעו',
     'gifts_offered_as_an_idea' => 'סימון כרעיון',
@@ -354,6 +375,7 @@ return [
     'deceased_know_date' => 'מועד הפטירה של האדם הזה ידוע לי',
     'deceased_add_reminder' => 'הוספת תזכורת לתאריך הזה',
     'deceased_label' => 'פטירה',
+    'deceased_date_label' => 'מועד הפטירה',
     'deceased_label_with_date' => 'פטירה ב־:date',
     'deceased_age' => 'גיל בעת הפטירה',
 
@@ -412,6 +434,11 @@ return [
     'life_event_delete_description' => 'למחוק את האירוע המשמעותי הזה? מחיקה היא לצמיתות.',
     'life_event_delete_success' => 'האירוע המשמעותי נמחק',
     'life_event_date_it_happened' => 'התאריך בו זה התרחש',
+    'life_event_category_work_education' => 'עבודה והשכלה',
+    'life_event_category_family_relationships' => 'משפחה ויחסים',
+    'life_event_category_home_living' => 'בית ומחייה',
+    'life_event_category_health_wellness' => 'בריאות ורווחה',
+    'life_event_category_travel_experiences' => 'טיול וחוויות',
     'life_event_sentence_new_job' => 'התחלת עבודה חדשה',
     'life_event_sentence_retirement' => 'יציאה לפנסיה',
     'life_event_sentence_new_school' => 'התחלת לימודים',
@@ -442,7 +469,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'הרכבת משקפיים או עדשות מגע לראשונה',
     'life_event_sentence_broken_bone' => 'שבירת עצם',
     'life_event_sentence_removed_braces' => 'הסרת גשר',
-    'life_event_sentence_surgery' => 'ניתוח',
+    'life_event_sentence_surgery' => 'לאחר ניתוח',
     'life_event_sentence_dentist' => 'טיפול שיניים',
     'life_event_sentence_new_sport' => 'התחלה של ספורט',
     'life_event_sentence_new_hobby' => 'התחלת תחביב',
@@ -465,6 +492,7 @@ return [
     'document_upload_zone_error' => 'אירעה שגיאה בעת העלאת המסמך. נא לנסות שוב להלן.',
 
     // Photos
+    'photo_title' => 'תמונות',
     'photo_list_title' => 'תמונות קשורות',
     'photo_list_cta' => 'העלאת תמונה',
     'photo_list_blank_desc' => 'ניתן לאחסן תמונות של איש הקשר הזה. אפילו ממש ברגע זה!',
@@ -472,6 +500,8 @@ return [
     'photo_current_profile_pic' => 'תמונת פרופיל נוכחית',
     'photo_make_profile_pic' => 'הכנת תמונת פרופיל',
     'photo_delete' => 'מחיקת תמונה',
+    'photo_next' => 'לתמונה הבאה',
+    'photo_previous' => 'לתמונה הקודמת',
 
     // Avatars
     'avatar_change_title' => 'החלפת התמונה הייצוגית שלך',
@@ -481,7 +511,24 @@ return [
     'avatar_gravatar' => 'ה־Gravatar שמשויך לכתובת הדוא״ל של משתמש זה. <a href="https://gravatar.com/">Gravatar</a> היא מערכת גלובלית שמאפשרת למשתמשים לשייך כתובות דוא״ל לתמונות.',
     'avatar_current' => 'להשאיר את התמונה הייצוגית הנוכחית',
     'avatar_photo' => 'מתמונה שהעלית',
+    'avatar_crop_new_avatar_photo' => 'חיתוך התמונה הייצוגית החדשה',
 
     // emotions
     'emotion_this_made_me_feel' => 'התחושה שקיבלת היא…',
+
+    // logs
+    'auditlogs_link' => 'היסטוריה',
+    'auditlogs_title' => 'כלה מה שקרה ל:name',
+    'auditlogs_breadcrumb' => 'היסטוריה',
+    'auditlogs_author' => 'מאת :name ב־:date',
+
+    // contact field label
+    'contact_field_label_home' => 'בית',
+    'contact_field_label_work' => 'עבודה',
+    'contact_field_label_cell' => 'נייד',
+    'contact_field_label_fax' => 'פקס',
+    'contact_field_label_pager' => 'זימונית',
+    'contact_field_label_main' => 'עיקרי',
+    'contact_field_label_other' => 'אחר',
+    'contact_field_label_personal' => 'אישי',
 ];

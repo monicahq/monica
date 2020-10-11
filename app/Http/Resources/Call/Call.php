@@ -3,11 +3,14 @@
 namespace App\Http\Resources\Call;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Emotion\Emotion as EmotionResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Call extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\Call>
+ */
+class Call extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -24,8 +27,9 @@ class Call extends Resource
             'content' => $this->content,
             'contact_called' => $this->contact_called,
             'emotions' => EmotionResource::collection($this->emotions),
+            'url' => route('api.call', $this->id),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'contact' => new ContactShortResource($this->contact),
             'created_at' => DateHelper::getTimestamp($this->created_at),

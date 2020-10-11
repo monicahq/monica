@@ -4,7 +4,6 @@ namespace Tests\Unit\Models;
 
 use Tests\TestCase;
 use App\Models\Contact\Contact;
-use App\Models\Account\Activity;
 use App\Services\Instance\IdHasher;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -12,7 +11,8 @@ class IdHasherTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testPrependH()
+    /** @test */
+    public function it_prepends_the_id_with_the_letter_h()
     {
         $idHasher = new IdHasher();
 
@@ -25,7 +25,8 @@ class IdHasherTest extends TestCase
         $this->assertEquals('h', $value);
     }
 
-    public function testGetIDback()
+    /** @test */
+    public function it_returns_the_id_back()
     {
         $idHasher = new IdHasher();
 
@@ -38,7 +39,8 @@ class IdHasherTest extends TestCase
         $this->assertEquals($test_id, $result_id);
     }
 
-    public function test_bad_id_get_exception()
+    /** @test */
+    public function it_gets_an_exception_when_the_id_is_not_valid()
     {
         $idHasher = new IdHasher();
 
@@ -49,7 +51,8 @@ class IdHasherTest extends TestCase
         $idHasher->decodeId($test_id);
     }
 
-    public function testHashIDContact()
+    /** @test */
+    public function it_decodes_the_hash_and_returns_the_right_id()
     {
         $idHasher = new IdHasher();
 
@@ -58,16 +61,5 @@ class IdHasherTest extends TestCase
         $value = $idHasher->decodeId($contact->hashID());
 
         $this->assertEquals($contact->id, $value);
-    }
-
-    public function testHashIDActivity()
-    {
-        $idHasher = new IdHasher();
-
-        $activity = factory(Activity::class)->create();
-
-        $value = $idHasher->decodeId($activity->hashID());
-
-        $this->assertEquals($activity->id, $value);
     }
 }

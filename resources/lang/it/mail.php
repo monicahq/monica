@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     'subject_line' => 'Promemoria per :contact',
@@ -26,4 +32,17 @@ return [
     'confirmation_email_title' => 'Monica – Verifica Email',
     'confirmation_email_intro'=> 'Per verificare il tuo indirizzo email clicca il bottone qui sotto',
     'confirmation_email_button' => 'Verifica indirizzo email',
+    'confirmation_email_bottom' => 'Se non hai creato un account, non è richiesta alcuna azione ulteriore.',
+
+    'password_reset_title' => 'Monica – Reimposta la tua password',
+    'password_reset_intro' => 'Hai ricevuto questa email perché dal tuo account é partita una richiesta di reimpostazione della password.',
+    'password_reset_button' => 'Reimposta Password',
+    'password_reset_expiration' => 'Il link per reimpostare la password scadrà tra :count minuti.',
+    'password_reset_bottom' => 'Se non hai richiesto di reimpostare la password, non sono necessarie ulteriori azioni.',
+
+    'invitation_title' => 'Monica – Sei stato invitato da :name',
+    'invitation_intro' => 'Sei stato invitato da :name (:email) a usare Monica, un buon strumento per la gestione delle relazioni personali.',
+    'invitation_link' => 'Per accettare l\'invito, clicca sul link sottostante:',
+    'invitation_button' => 'Accetta l\'invito',
+    'invitation_expiration' => 'Questo link scadrà tra :count giorni.',
 ];

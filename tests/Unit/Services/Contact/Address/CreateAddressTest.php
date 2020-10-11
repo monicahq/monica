@@ -15,7 +15,8 @@ class CreateAddressTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_stores_an_address()
+    /** @test */
+    public function it_stores_an_address()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -51,7 +52,8 @@ class CreateAddressTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $account = factory(Account::class)->create([]);
 
@@ -63,7 +65,8 @@ class CreateAddressTest extends TestCase
         app(CreateAddress::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_contact_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create();

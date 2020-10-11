@@ -16,7 +16,8 @@ class ScheduleStayInTouchTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_dispatches_an_email()
+    /** @test */
+    public function it_dispatches_an_email()
     {
         NotificationFacade::fake();
 
@@ -56,7 +57,8 @@ class ScheduleStayInTouchTest extends TestCase
         ]);
     }
 
-    public function test_it_doesnt_dispatches_an_email_if_free_account()
+    /** @test */
+    public function it_doesnt_dispatches_an_email_if_free_account()
     {
         NotificationFacade::fake();
 
@@ -89,7 +91,8 @@ class ScheduleStayInTouchTest extends TestCase
         ]);
     }
 
-    public function test_it_reschedule_missed_stayintouch()
+    /** @test */
+    public function it_reschedule_missed_stayintouch()
     {
         NotificationFacade::fake();
 

@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>@yield('title', trans('app.application_title'))</title>
     <link rel="manifest" href="manifest.webmanifest">
 
@@ -22,12 +21,13 @@
           'htmldir' => htmldir(),
           'profileDefaultView' => auth()->user()->profile_active_tab,
           'timezone' => auth()->user()->timezone,
+          'env' => \App::environment(),
       ]); !!}
     </script>
   </head>
-  <body data-account-id="{{ auth()->user()->account_id }}" class="bg-gray-monica">
+  <body data-account-id="{{ auth()->user()->account_id }}" class="bg-gray-monica min-vh-100 flex flex-column">
 
-    <div id="app">
+    <div id="app" class="flex-grow-1">
       @if (Route::currentRouteName() != 'settings.subscriptions.confirm')
         @include('partials.header')
         @include('partials.subscription')

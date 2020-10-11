@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Contacts;
 use App\Models\Contact\Call;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use App\Services\Contact\Call\CreateCall;
@@ -39,12 +40,12 @@ class CallsController extends Controller
     public function store(Request $request, Contact $contact)
     {
         return app(CreateCall::class)->execute([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
-            'content' => $request->get('content'),
-            'called_at' => $request->get('called_at'),
-            'contact_called' => $request->get('contact_called'),
-            'emotions' => $request->get('emotions'),
+            'content' => $request->input('content'),
+            'called_at' => $request->input('called_at'),
+            'contact_called' => $request->input('contact_called'),
+            'emotions' => $request->input('emotions'),
         ]);
     }
 
@@ -58,12 +59,12 @@ class CallsController extends Controller
     public function update(Request $request, Contact $contact, Call $call)
     {
         return app(UpdateCall::class)->execute([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'call_id' => $call->id,
-            'content' => $request->get('content'),
-            'called_at' => $request->get('called_at'),
-            'contact_called' => $request->get('contact_called'),
-            'emotions' => $request->get('emotions'),
+            'content' => $request->input('content'),
+            'called_at' => $request->input('called_at'),
+            'contact_called' => $request->input('contact_called'),
+            'emotions' => $request->input('emotions'),
         ]);
     }
 
@@ -76,10 +77,10 @@ class CallsController extends Controller
      *
      * @return null|\Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, Contact $contact, Call $call)
+    public function destroy(Request $request, Contact $contact, Call $call): ?JsonResponse
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'call_id' => $call->id,
         ];
 
@@ -90,5 +91,7 @@ class CallsController extends Controller
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }
+
+        return null;
     }
 }

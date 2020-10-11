@@ -57,13 +57,19 @@
       'title' => 'settings.sidebar_settings_api'])
     @endcomponent
 
-    @if (config('laravelsabre.enabled') && ! auth()->user()->account->hasLimitations())
+    @if (config('laravelsabre.enabled') && ! $accountHasLimitations)
       @component('components.sidebar', [
         'route' => 'settings.dav',
         'icon' => 'fa fa-calendar',
         'title' => 'settings.sidebar_settings_dav'])
       @endcomponent
     @endif
+
+    @component('components.sidebar', [
+      'route' => 'settings.auditlog.index',
+      'icon' => 'fa fa-id-card-o',
+      'title' => 'settings.sidebar_settings_auditlogs'])
+    @endcomponent
 
     @component('components.sidebar', [
       'route' => 'settings.security.index',

@@ -6,6 +6,7 @@ use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
 use Illuminate\Http\Request;
 use App\Models\Journal\Entry;
+use App\Helpers\JournalHelper;
 use App\Models\Journal\JournalEntry;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -38,7 +39,7 @@ class JournalController extends Controller
         $previousEntryYear = 0;
         $showCalendar = true;
 
-        foreach ($journalEntries as $journalEntry) {
+        foreach ($journalEntries->items() as $journalEntry) {
             if ($previousEntryMonth == $journalEntry->date->month && $previousEntryYear == $journalEntry->date->year) {
                 $showCalendar = false;
             }
@@ -87,8 +88,8 @@ class JournalController extends Controller
     {
         $day = auth()->user()->account->days()->create([
             'date' => now(DateHelper::getTimezone()),
-            'rate' => $request->get('rate'),
-            'comment' => $request->get('comment'),
+            'rate' => $request->input('rate'),
+            'comment' => $request->input('comment'),
         ]);
 
         // Log a journal entry
@@ -121,7 +122,7 @@ class JournalController extends Controller
      */
     public function hasRated()
     {
-        if (auth()->user()->hasAlreadyRatedToday()) {
+        if (JournalHelper::hasAlreadyRatedToday(auth()->user())) {
             return 'true';
         }
 

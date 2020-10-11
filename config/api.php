@@ -25,6 +25,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Format of the date timestamp
+    |--------------------------------------------------------------------------
+    |
+    | This defines the format of the date that is returned on some API calls
+    | when it requires a date only.
+    |
+    */
+    'date_timestamp_format' => env('API_DATE_TIMESTAMP_FORMAT', 'Y-m-d'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Error codes for the API
     |--------------------------------------------------------------------------
     */
@@ -43,4 +54,12 @@ return [
         '41' => 'Invalid parameters.',
         '42' => 'Not authorized',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | The API documentation link
+    |--------------------------------------------------------------------------
+    */
+    'help' => 'https://www.monicahq.com/api',
+
 ];

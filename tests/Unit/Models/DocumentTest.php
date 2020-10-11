@@ -12,7 +12,8 @@ class DocumentTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
         $document = factory(Document::class)->create([
@@ -22,7 +23,8 @@ class DocumentTest extends TestCase
         $this->assertTrue($document->account()->exists());
     }
 
-    public function test_it_belongs_to_a_contact()
+    /** @test */
+    public function it_belongs_to_a_contact()
     {
         $contact = factory(Contact::class)->create();
         $document = factory(Document::class)->create([
@@ -32,7 +34,8 @@ class DocumentTest extends TestCase
         $this->assertTrue($document->contact()->exists());
     }
 
-    public function test_it_gets_the_download_link()
+    /** @test */
+    public function it_gets_the_download_link()
     {
         $document = factory(Document::class)->create();
 

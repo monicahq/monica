@@ -3,9 +3,15 @@
 namespace App\Http\Resources\Contact;
 
 use App\Helpers\DateHelper;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class ContactShort extends Contact
+/**
+ * @extends JsonResource<\App\Models\Contact\Contact>
+ */
+class ContactShort extends JsonResource
 {
+    use ContactBase;
+
     /**
      * Transform the resource into an array.
      *
@@ -25,7 +31,9 @@ class ContactShort extends Contact
             'initials' => $this->getInitials(),
             'gender' => is_null($this->gender) ? null : $this->gender->name,
             'gender_type' => is_null($this->gender) ? null : $this->gender->type,
+            'is_starred' => (bool) $this->is_starred,
             'is_partial' => (bool) $this->is_partial,
+            'is_active' => (bool) $this->is_active,
             'is_dead' => (bool) $this->is_dead,
             'is_me' => $this->isMe(),
             'information' => [
@@ -45,8 +53,9 @@ class ContactShort extends Contact
                     'default_avatar_color' => $this->default_avatar_color,
                 ],
             ],
+            'url' => $this->when(! $this->is_partial, route('api.contact', $this->id)),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
         ];
     }

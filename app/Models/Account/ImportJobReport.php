@@ -8,7 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property Account $account
+ * @property int $account_id
  * @property User $user
+ * @property int $user_id
+ * @property int $import_job_id
+ * @property string $contact_information
+ * @property bool $skipped
+ * @property string $skip_reason
  */
 class ImportJobReport extends Model
 {

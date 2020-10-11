@@ -5,20 +5,22 @@
   <div>
     <label
       v-if="title"
-      :for="realid"
+      :for="realId"
       class="mb2"
       :class="{ b: required }"
     >
       {{ title }}
     </label>
     <toggle-button
-      :id="realid"
+      :id="realId"
       :name="id"
       :class="inputClass"
       :sync="true"
       :labels="labels"
+      :disabled="disabled"
       :value="selectedOption"
-      @input="event => { $emit('input', event) }"
+      @input="$emit('input', $event)"
+      @change="$emit('change', $event)"
     />
   </div>
 </template>
@@ -53,6 +55,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     iclass: {
       type: String,
       default: ''
@@ -66,7 +72,7 @@ export default {
   },
 
   computed: {
-    realid() {
+    realId() {
       return this.id + this._uid;
     },
     inputClass() {

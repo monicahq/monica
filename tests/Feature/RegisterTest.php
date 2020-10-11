@@ -4,7 +4,10 @@ namespace Tests\Feature;
 
 use App\Models\User\User;
 use Tests\FeatureTestCase;
+use App\Jobs\SendNewUserAlert;
+use App\Notifications\NewUserAlert;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class RegisterTest extends FeatureTestCase
@@ -57,5 +60,27 @@ class RegisterTest extends FeatureTestCase
 
         $response->assertStatus(302);
         $response->assertRedirect('/register');
+    }
+
+    public function test_it_dispatches_an_email()
+    {
+        $route = Notification::route('mail', 'test@test.com');
+        Notification::fake();
+
+        config(['monica.email_new_user_notification' => 'test@test.com']);
+
+        $user = factory(User::class)->create();
+
+        dispatch(new SendNewUserAlert($user));
+
+        Notification::assertSentTo($route, NewUserAlert::class);
+
+        $notifications = Notification::sent($route, NewUserAlert::class);
+        $message = $notifications[0]->toMail();
+
+        $this->assertStringContainsString('New registration', $message->subject);
+        $this->assertStringContainsString($user->first_name, implode('', $message->introLines));
+        $this->assertStringContainsString($user->last_name, implode('', $message->introLines));
+        $this->assertStringContainsString($user->email, implode('', $message->introLines));
     }
 }

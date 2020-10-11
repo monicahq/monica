@@ -36,6 +36,10 @@ export default {
       type: String,
       default: '',
     },
+    formNameOrder : {
+      type: String,
+      default: 'firstname',
+    },
   },
 
   computed: {
@@ -49,7 +53,28 @@ export default {
       if (contact.item.id > 0) {
         window.location = contact.item.route;
       } else {
-        window.location = 'people/add';
+        const names = contact.item.keyword.split(' ').map(name => _.capitalize(name));
+
+        let first_name;
+        let last_name;
+        if (this.formNameOrder == 'firstname') {
+          first_name = names[0];
+          last_name = names.slice(1).join(' ');
+        } else {
+          first_name = names.slice(1).join(' ');
+          last_name = names[0];
+        }
+        
+        
+        let params = new URLSearchParams();
+        if (first_name) {
+          params.set('first_name', first_name);
+        }
+        if (last_name) {
+          params.set('last_name', last_name);
+        }
+
+        window.location = 'people/add' + (params != '' ? '?' + params : '');
       }
     },
 

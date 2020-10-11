@@ -39,6 +39,13 @@
       <h1 class="tc mb2 mt4">
         <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
         <contact-favorite hash="{{ $contact->hashID() }}" :starred="{{ \Safe\json_encode($contact->is_starred) }}"></contact-favorite>
+        @if ($contact->job)
+        <span class="db f5 normal">{{ $contact->job }}
+          @if ($contact->company)
+            ({{ $contact->company }})
+          @endif
+        </span>
+        @endif
       </h1>
 
       <ul class="tc-ns mb3 {{ htmldir() == 'ltr' ? 'tl' : 'tr' }}">
@@ -84,10 +91,10 @@
         @if (! $contact->isMe())
         <li class="mb2 mb0-ns dn di-ns tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
           <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">@include('partials.icons.header_call')</span>
-          @if (is_null($contact->getLastCalled()))
+          @if (is_null($contact->last_talked_to))
             {{ trans('people.last_called_empty') }}
           @else
-            {{ trans('people.last_called', ['date' => \App\Helpers\DateHelper::getShortDate($contact->getLastCalled())]) }}
+            {{ trans('people.last_called', ['date' => \App\Helpers\DateHelper::getShortDate($contact->last_talked_to)]) }}
           @endif
         </li>
         @endif
@@ -101,10 +108,10 @@
         @endif
 
         {{-- STAY IN TOUCH --}}
-        @if(!$contact->is_dead)
+        @if(!$contact->is_dead && ! $contact->isMe())
           <li class="mb2 mb0-ns di-ns db tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
             @include('partials.icons.header_stayintouch')
-            <stay-in-touch :contact="{{ $contact }}" hash="{{ $contact->hashID() }}" :limited="{{ \Safe\json_encode(auth()->user()->account->hasLimitations()) }}"></stay-in-touch>
+            <stay-in-touch :contact="{{ $contact }}" hash="{{ $contact->hashID() }}" :limited="{{ \Safe\json_encode($accountHasLimitations) }}"></stay-in-touch>
           </li>
         @endif
       </ul>

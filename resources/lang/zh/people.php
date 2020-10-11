@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     //index
@@ -52,6 +58,7 @@ return [
     'people_delete_message' => '删除联系人',
     'people_delete_confirmation' => '确实要删除此联系人吗？删除是永久性的。',
     'people_add_birthday_reminder' => '祝: name生日快乐',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
     'people_add_import' => '是否要 <a href=":url">导入您的联系人</a>？',
     'people_edit_email_error' => '您的联系人中已经有人使用此电子邮件，请更换一个',
     'people_export' => '导出为 vCard',
@@ -85,7 +92,7 @@ return [
     'stay_in_touch_premium' => '您需要升级到高级账户来使用这个功能！',
     'stay_in_touch_modal_title' => '常联系*',
     'stay_in_touch_modal_desc' => '我们将会用邮件提醒您与{firstname}保持联系。',
-    'stay_in_touch_modal_label' => '每几天发送一封提醒邮件...？',
+    'stay_in_touch_modal_label' => '每 {count} 天给我发送邮件|每 {count} 天给我发送邮件',
 
     // Calls
     'modal_call_title' => '记录通话',
@@ -151,6 +158,7 @@ return [
     'information_edit_probably' => '此人可能是...',
     'information_edit_not_year' => '我知道这个人的生日的日期和月份, 但不知道哪一年。',
     'information_edit_exact' => '我知道这个人的确切出生日期...',
+    'information_edit_birthdate_label' => '生日',
     'information_no_work_defined' => '未定义工作信息',
     'information_work_at' => '在 :company工作',
     'work_add_cta' => '更新工作信息',
@@ -184,11 +192,12 @@ return [
     'reminders_create_success' => '已成功添加提醒',
     'reminders_delete_success' => '已成功删除提醒',
     'reminders_update_success' => '已成功更新提醒',
+    'reminders_add_optional_comment' => '可选备注',
 
-    'reminder_frequency_day' => '每天 | 每:number天',
-    'reminder_frequency_week' => '每周 | 每:number星期',
-    'reminder_frequency_month' => '每月 | 每:number月',
-    'reminder_frequency_year' => '每年 | 每:number年',
+    'reminder_frequency_day' => '每:number天',
+    'reminder_frequency_week' => ' 每:number星期',
+    'reminder_frequency_month' => ' 每:number月',
+    'reminder_frequency_year' => '每:number年',
     'reminder_frequency_one_time' => '在:date',
     'reminders_delete_confirmation' => '确实要删除此提醒吗？',
     'reminders_delete_cta' => '删除',
@@ -221,6 +230,7 @@ return [
     'relationship_form_deletion_success' => '此关系已删除',
 
     // tasks
+    'tasks_title' => '任务',
     'tasks_blank_title' => '您暂时还没任务。',
     'tasks_form_title' => '标题',
     'tasks_form_description' => '描述 (可选)',
@@ -237,28 +247,29 @@ return [
     'activity_type_just_hung_out' => '约会',
     'activity_type_watched_movie_at_home' => '看电影',
     'activity_type_talked_at_home' => '谈心',
-    'activity_type_did_sport_activities_together' => '一起运动',
+    'activity_type_did_sport_activities_together' => '一起打球',
     'activity_type_ate_at_his_place' => '在对方家里做客',
     'activity_type_went_bar' => '泡吧',
     'activity_type_ate_at_home' => '在家吃饭',
-    'activity_type_picknicked' => '野餐',
+    'activity_type_picnicked' => '已选择',
     'activity_type_ate_restaurant' => '在饭店吃',
     'activity_type_went_theater' => '看戏',
     'activity_type_went_concert' => '去音乐会',
     'activity_type_went_play' => '出去玩',
     'activity_type_went_museum' => '去博物馆',
     'activities_add_activity' => '添加活动',
-    'activities_more_details' => '更多详情',
-    'activities_hide_details' => '隐藏详情',
-    'activities_delete_confirmation' => '确实要删除此活动吗?',
+    'activities_add_more_details' => '添加更多详情',
+    'activities_add_emotions' => '添加情绪',
+    'activities_add_category' => '指定类别',
+    'activities_add_participants_cta' => '添加参与者',
     'activities_item_information' => ':Activity，发生于:date',
-    'activities_add_title' => '你与:name做了什么？',
+    'activities_add_title' => '您与 {name} 一起做了什么?',
     'activities_summary' => '描述你做了什么',
     'activities_add_pick_activity' => '活动分类(可选)',
-    'activities_add_date_occured' => '活动日期',
-    'activities_add_optional_comment' => '备注（可选）',
-    'activities_add_cta' => '记录活动',
-    'activities_blank_title' => '记录您与 :name 之间的点滴',
+    'activities_add_date_occured' => '活动发生于...',
+    'activities_add_participants' => '除了 {name} 之外，谁参与了这个活动？(可选)',
+    'activities_add_emotions_title' => '您想记录您在此通话中的感受吗？(可选)',
+    'activities_blank_title' => '记录您与 {name} 之间的点滴',
     'activities_blank_add_activity' => '添加活动',
     'activities_add_success' => '已成功添加活动',
     'activities_add_error' => '添加活动时出现错误',
@@ -268,10 +279,14 @@ return [
     'activities_activity' => '活动类别',
     'activities_view_activities_report' => '查看活动报告',
     'activities_profile_title' => ':name 与您之间的活动报告',
-    'activities_profile_subtitle' => '截至目前为止您与:name的活动记录如下：近一年共 :activities_last_twelve_months次，总共 :total_activities次|截至目前为止您与:name的活动记录如下：近一年共 :activities_last_twelve_months次，总共 :total_activities次',
+    'activities_profile_subtitle' => '截至目前为止您与:name的活动记录如下：近一年共 :activities_last_twelve_months次，总共 :total_activities次',
     'activities_profile_year_summary_activity_types' => ':year年活动类型汇总',
     'activities_profile_year_summary' => ':year年你们一起进行的活动',
-    'activities_profile_number_occurences' => ':value 次活动|:value 次活动',
+    'activities_profile_number_occurences' => ':value 次活动',
+    'activities_list_participants' => '参与者：',
+    'activities_list_emotions' => '我感觉:',
+    'activities_list_date' => '发生于',
+    'activities_list_category' => '分类：',
 
     // notes
     'notes_create_success' => '便签已成功创建',
@@ -289,17 +304,23 @@ return [
     'gifts_delete_confirmation' => '是否确实要删除此礼物？',
     'gifts_add_gift' => '添加礼物',
     'gifts_link' => '链接',
-    'gifts_for' => '给：',
+    'gifts_for' => '赠予：{name}',
     'gifts_delete_cta' => '删除',
     'gifts_add_title' => '与:name的礼物来往',
     'gifts_add_gift_idea' => '礼品创意',
     'gifts_add_gift_already_offered' => '送出的礼物',
     'gifts_add_gift_received' => '收到的礼物',
     'gifts_add_gift_title' => '这是什么礼物？',
+    'gifts_add_gift_name' => '礼品名称',
     'gifts_add_link' => '礼物链接 (可选)',
     'gifts_add_value' => '值 (可选)',
     'gifts_add_comment' => '备注 (可选)',
-    'gifts_add_someone' => '这个礼物是送给:name的家人',
+    'gifts_add_recipient' => '收件人(可选)',
+    'gifts_add_recipient_field' => '收件人',
+    'gifts_add_photo' => '相片(可选)',
+    'gifts_add_photo_title' => '为此礼物添加一张照片',
+    'gifts_add_someone' => '这份礼物特别是给{name}的家人',
+    'gifts_delete_title' => '删除礼物',
     'gifts_ideas' => '心愿单',
     'gifts_offered' => '送出的礼物',
     'gifts_offered_as_an_idea' => '标记为心愿单',
@@ -354,6 +375,7 @@ return [
     'deceased_know_date' => '我知道这个人去世日期',
     'deceased_add_reminder' => '为此日期添加提醒',
     'deceased_label' => '逝者',
+    'deceased_date_label' => '死亡日期',
     'deceased_label_with_date' => '在:date去世',
     'deceased_age' => '享年',
 
@@ -412,6 +434,11 @@ return [
     'life_event_delete_description' => '确实要删除此生活事件吗？删除是永久性的。',
     'life_event_delete_success' => '事件已删除',
     'life_event_date_it_happened' => '发生日期',
+    'life_event_category_work_education' => 'Work & education',
+    'life_event_category_family_relationships' => 'Family & relationships',
+    'life_event_category_home_living' => 'Home & living',
+    'life_event_category_health_wellness' => 'Health & wellness',
+    'life_event_category_travel_experiences' => 'Travel & experiences',
     'life_event_sentence_new_job' => '开始了新的工作',
     'life_event_sentence_retirement' => '退休',
     'life_event_sentence_new_school' => '开始上学',
@@ -465,6 +492,7 @@ return [
     'document_upload_zone_error' => '上传文件时出错，请再试一次 ！',
 
     // Photos
+    'photo_title' => '照片',
     'photo_list_title' => '相关照片',
     'photo_list_cta' => '上传照片',
     'photo_list_blank_desc' => '您可以存储有关此联系人的图像。立即上传一个!',
@@ -472,6 +500,8 @@ return [
     'photo_current_profile_pic' => '目前头像',
     'photo_make_profile_pic' => '制作头像',
     'photo_delete' => '删除照片',
+    'photo_next' => 'Next photo',
+    'photo_previous' => 'Previous photo',
 
     // Avatars
     'avatar_change_title' => '更换头像',
@@ -481,7 +511,24 @@ return [
     'avatar_gravatar' => '此用户的电子邮件地址 与Gravatar关联 。 <a href="https://gravatar.com/">Gravatar</a> 是全球通用的头像服务。',
     'avatar_current' => '保持当前头像',
     'avatar_photo' => '从您上传的照片',
+    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
     // emotions
     'emotion_this_made_me_feel' => '这让你觉得...',
+
+    // logs
+    'auditlogs_link' => '历史',
+    'auditlogs_title' => ':name 发生的所有事件',
+    'auditlogs_breadcrumb' => '历史',
+    'auditlogs_author' => ':name 于 :date ',
+
+    // contact field label
+    'contact_field_label_home' => '家庭',
+    'contact_field_label_work' => '工作',
+    'contact_field_label_cell' => '手机',
+    'contact_field_label_fax' => '传真',
+    'contact_field_label_pager' => '寻呼机',
+    'contact_field_label_main' => '主要',
+    'contact_field_label_other' => '其它',
+    'contact_field_label_personal' => '个人',
 ];

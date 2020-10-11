@@ -27,21 +27,22 @@ class ApiCallControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_it_gets_a_list_of_calls()
+    /** @test */
+    public function it_gets_a_list_of_calls()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $call1 = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $call2 = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -61,21 +62,22 @@ class ApiCallControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_the_calls_of_a_contact()
+    /** @test */
+    public function it_gets_the_calls_of_a_contact()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $call1 = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $call2 = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -95,7 +97,8 @@ class ApiCallControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_calling_calls_get_error()
+    /** @test */
+    public function calling_calls_get_error()
     {
         $user = $this->signin();
 
@@ -104,18 +107,19 @@ class ApiCallControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_gets_one_call()
+    /** @test */
+    public function it_gets_one_call()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $call1 = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $call2 = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
 
@@ -135,7 +139,8 @@ class ApiCallControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_calling_one_call_gets_an_error()
+    /** @test */
+    public function calling_one_call_gets_an_error()
     {
         $user = $this->signin();
 
@@ -144,11 +149,12 @@ class ApiCallControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_creates_a_call()
+    /** @test */
+    public function it_creates_a_call()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/calls', [
@@ -169,7 +175,7 @@ class ApiCallControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $callId);
         $this->assertDatabaseHas('calls', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $callId,
             'content' => 'the call',
@@ -177,11 +183,12 @@ class ApiCallControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_create_calls_gets_an_error_if_fields_are_missing()
+    /** @test */
+    public function create_calls_gets_an_error_if_fields_are_missing()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/calls', [
@@ -193,7 +200,8 @@ class ApiCallControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_cant_create_a_call_if_account_is_wrong()
+    /** @test */
+    public function it_cant_create_a_call_if_account_is_wrong()
     {
         $user = $this->signin();
 
@@ -211,14 +219,15 @@ class ApiCallControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_updates_a_call()
+    /** @test */
+    public function it_updates_a_call()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $call = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -241,7 +250,7 @@ class ApiCallControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $callId);
         $this->assertDatabaseHas('calls', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $callId,
             'content' => 'the call',
@@ -249,11 +258,16 @@ class ApiCallControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_updating_call_generates_an_error()
+    /** @test */
+    public function updating_call_generates_an_error()
     {
         $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
         $call = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
+            'contact_id' => $contact->id,
         ]);
 
         $response = $this->json('PUT', '/api/calls/'.$call->id, [
@@ -265,13 +279,14 @@ class ApiCallControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_cant_update_a_call_if_account_is_not_linked_to_call()
+    /** @test */
+    public function it_cant_update_a_call_if_account_is_not_linked_to_call()
     {
         $user = $this->signin();
 
         $contact = factory(Contact::class)->create([]);
         $call = factory(Call::class)->create([
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -283,18 +298,19 @@ class ApiCallControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_deletes_a_call()
+    /** @test */
+    public function it_deletes_a_call()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $call = factory(Call::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
         $this->assertDatabaseHas('calls', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $call->id,
         ]);
@@ -303,13 +319,14 @@ class ApiCallControllerTest extends ApiTestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('calls', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $call->id,
         ]);
     }
 
-    public function test_it_cant_delete_a_call_if_call_doesnt_exist()
+    /** @test */
+    public function it_cant_delete_a_call_if_call_doesnt_exist()
     {
         $user = $this->signin();
 
@@ -318,12 +335,13 @@ class ApiCallControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_cant_delete_a_call_if_account_is_not_linked()
+    /** @test */
+    public function it_cant_delete_a_call_if_account_is_not_linked()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([]);
         $call = factory(Call::class)->create([
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
         ]);
 

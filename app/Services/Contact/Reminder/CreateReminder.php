@@ -37,7 +37,7 @@ class CreateReminder extends BaseService
      * @param array $data
      * @return Reminder
      */
-    public function execute(array $data) : Reminder
+    public function execute(array $data): Reminder
     {
         $this->validate($data);
 

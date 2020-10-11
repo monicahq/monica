@@ -24,8 +24,8 @@ class CardDAVTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee('<d:response><d:href>/dav/addressbooks/</d:href>');
-        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/</d:href>");
+        $response->assertSee('<d:response><d:href>/dav/addressbooks/</d:href>', false);
+        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/</d:href>", false);
     }
 
     /**
@@ -40,8 +40,8 @@ class CardDAVTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/</d:href>");
-        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/contacts/</d:href>");
+        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/</d:href>", false);
+        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/contacts/</d:href>", false);
     }
 
     /**
@@ -51,7 +51,7 @@ class CardDAVTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->call('PROPFIND', "/dav/addressbooks/{$user->email}/contacts");
@@ -59,9 +59,9 @@ class CardDAVTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/contacts/</d:href>");
+        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/contacts/</d:href>", false);
         $contactId = urlencode($contact->uuid);
-        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/contacts/{$contactId}.vcf</d:href>");
+        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/contacts/{$contactId}.vcf</d:href>", false);
     }
 
     public function test_carddav_propfind_contacts_with_props()
@@ -92,7 +92,7 @@ class CardDAVTest extends ApiTestCase
               '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
           '</d:response>'.
-        '</d:multistatus');
+        '</d:multistatus', false);
     }
 
     /**
@@ -102,7 +102,7 @@ class CardDAVTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->call('PROPFIND', "/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf");
@@ -110,7 +110,7 @@ class CardDAVTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>");
+        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>", false);
     }
 
     /**
@@ -120,7 +120,7 @@ class CardDAVTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->call('PROPFIND', "/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}");
@@ -128,14 +128,14 @@ class CardDAVTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}</d:href>");
+        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}</d:href>", false);
     }
 
     public function test_carddav_getctag()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->call('PROPFIND', "/dav/addressbooks/{$user->email}/", [], [], [],
@@ -163,7 +163,7 @@ class CardDAVTest extends ApiTestCase
         $this->assertGreaterThan(0, $tokens->count());
         $token = $tokens->last();
 
-        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">');
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">', false);
         $response->assertSee('<d:response>'.
             "<d:href>/dav/addressbooks/{$user->email}/contacts/</d:href>".
             '<d:propstat>'.
@@ -173,15 +173,14 @@ class CardDAVTest extends ApiTestCase
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
-        '</d:response>'
-        );
+        '</d:response>', false);
     }
 
     public function test_carddav_get_me_card()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $user->me_contact_id = $contact->id;
         $user->save();
@@ -209,15 +208,14 @@ class CardDAVTest extends ApiTestCase
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
-        '</d:response>'
-        );
+        '</d:response>', false);
     }
 
     public function test_carddav_set_me_card()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->call('PROPPATCH', "/dav/addressbooks/{$user->email}/contacts", [], [], [],
@@ -235,7 +233,7 @@ class CardDAVTest extends ApiTestCase
             </propertyupdate>"
         );
 
-        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">');
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">', false);
         $response->assertSee('<d:response>'.
             "<d:href>/dav/addressbooks/{$user->email}/contacts</d:href>".
             '<d:propstat>'.
@@ -244,8 +242,7 @@ class CardDAVTest extends ApiTestCase
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
-        '</d:response>'
-        );
+        '</d:response>', false);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -257,8 +254,8 @@ class CardDAVTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
-          ]);
+            'account_id' => $user->account_id,
+        ]);
 
         $response = $this->call('PROPFIND', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
             [
@@ -285,7 +282,7 @@ class CardDAVTest extends ApiTestCase
         $this->assertGreaterThan(0, $tokens->count());
         $token = $tokens->last();
 
-        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">');
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">', false);
         $response->assertSee('<d:response>'.
             "<d:href>/dav/addressbooks/{$user->email}/contacts/</d:href>".
             '<d:propstat>'.
@@ -295,8 +292,7 @@ class CardDAVTest extends ApiTestCase
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
-        '</d:response>'
-        );
+        '</d:response>', false);
     }
 
     public function test_carddav_sync_collection_with_token()
@@ -305,12 +301,12 @@ class CardDAVTest extends ApiTestCase
 
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-          'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 8, 0, 0));
         $token = factory(SyncToken::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'name' => 'contacts',
             'timestamp' => now(),
@@ -331,6 +327,15 @@ class CardDAVTest extends ApiTestCase
 
         $response->assertStatus(207);
 
+        $token = SyncToken::where([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'name' => 'contacts',
+        ])
+            ->orderBy('created_at')
+            ->get()
+            ->last();
+
         $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\" xmlns:cal=\"urn:ietf:params:xml:ns:caldav\" xmlns:cs=\"http://calendarserver.org/ns/\">
  <d:response>
   <d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>
@@ -342,14 +347,14 @@ class CardDAVTest extends ApiTestCase
   </d:propstat>
  </d:response>
  <d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>
-</d:multistatus>");
+</d:multistatus>", false);
     }
 
     public function test_carddav_sync_collection_init()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->call('REPORT', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
@@ -388,6 +393,6 @@ class CardDAVTest extends ApiTestCase
   </d:propstat>
  </d:response>
  <d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>
-</d:multistatus>");
+</d:multistatus>", false);
     }
 }

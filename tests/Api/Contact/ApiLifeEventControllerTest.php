@@ -54,7 +54,8 @@ class ApiLifeEventControllerTest extends ApiTestCase
         return $lifeEvent;
     }
 
-    public function test_it_gets_a_list_of_life_events()
+    /** @test */
+    public function it_gets_a_list_of_life_events()
     {
         $user = $this->signin();
 
@@ -83,7 +84,8 @@ class ApiLifeEventControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_applies_the_limit_parameter_in_search()
+    /** @test */
+    public function it_applies_the_limit_parameter_in_search()
     {
         $user = $this->signin();
 
@@ -110,7 +112,8 @@ class ApiLifeEventControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_a_life_event()
+    /** @test */
+    public function it_gets_a_life_event()
     {
         $user = $this->signin();
 
@@ -125,7 +128,8 @@ class ApiLifeEventControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_getting_a_life_event_doesnt_work_if_life_event_doesnt_exist()
+    /** @test */
+    public function getting_a_life_event_doesnt_work_if_life_event_doesnt_exist()
     {
         $user = $this->signin();
 
@@ -134,12 +138,13 @@ class ApiLifeEventControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_creates_a_life_event()
+    /** @test */
+    public function it_creates_a_life_event()
     {
         $user = $this->signin();
 
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $lifeEventType = factory(LifeEventType::class)->create([
             'account_id' => $contact->account_id,
@@ -163,12 +168,13 @@ class ApiLifeEventControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_creating_a_life_event_doesnt_work_if_ids_are_not_found()
+    /** @test */
+    public function creating_a_life_event_doesnt_work_if_ids_are_not_found()
     {
         $user = $this->signin();
 
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/lifeevents', [
@@ -202,12 +208,13 @@ class ApiLifeEventControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_creating_a_life_event_doesnt_work_if_parameters_are_not_right()
+    /** @test */
+    public function creating_a_life_event_doesnt_work_if_parameters_are_not_right()
     {
         $user = $this->signin();
 
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $lifeEventType = factory(LifeEventType::class)->create([
             'account_id' => $contact->account_id,
@@ -228,13 +235,14 @@ class ApiLifeEventControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_updates_a_life_event()
+    /** @test */
+    public function it_updates_a_life_event()
     {
         $user = $this->signin();
 
         $lifeEvent = $this->createLifeEvent($user);
         $lifeEventType = factory(LifeEventType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/lifeevents/'.$lifeEvent->id, [
@@ -251,13 +259,14 @@ class ApiLifeEventControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_updating_a_life_event_doesnt_work_if_ids_are_not_found()
+    /** @test */
+    public function updating_a_life_event_doesnt_work_if_ids_are_not_found()
     {
         $user = $this->signin();
 
         $lifeEvent = $this->createLifeEvent($user);
         $lifeEventType = factory(LifeEventType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/lifeevents/23929390', [
@@ -279,13 +288,14 @@ class ApiLifeEventControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_updating_a_life_event_doesnt_work_if_parameters_are_not_right()
+    /** @test */
+    public function updating_a_life_event_doesnt_work_if_parameters_are_not_right()
     {
         $user = $this->signin();
 
         $lifeEvent = $this->createLifeEvent($user);
         $lifeEventType = factory(LifeEventType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/lifeevents/'.$lifeEvent->id, [
@@ -299,7 +309,8 @@ class ApiLifeEventControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_destroys_a_life_event()
+    /** @test */
+    public function it_destroys_a_life_event()
     {
         $user = $this->signin();
 
@@ -315,7 +326,8 @@ class ApiLifeEventControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_deleting_a_life_event_doesnt_work_if_ids_are_not_found()
+    /** @test */
+    public function deleting_a_life_event_doesnt_work_if_ids_are_not_found()
     {
         $user = $this->signin();
 

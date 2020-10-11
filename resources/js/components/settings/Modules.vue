@@ -21,9 +21,7 @@
             </g>
           </svg>
         </div>
-        <div>
-          {{ $t('settings.personalisation_paid_upgrade') }}
-        </div>
+        <div v-html="$t('settings.personalisation_paid_upgrade_vue', {url: 'settings/subscriptions' })"></div>
       </div>
     </div>
 
@@ -49,8 +47,12 @@
         </div>
         <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2">
-            <toggle-button :class="'module-'" :value="module.active" :disabled="limited" :sync="true" :labels="true"
-                           @change="toggle(module)"
+            <form-toggle
+              v-model="module.active"
+              :iclass="'module-'"
+              :disabled="limited"
+              :labels="true"
+              @change="toggle(module, $event)"
             />
           </div>
         </div>
@@ -60,13 +62,7 @@
 </template>
 
 <script>
-import { ToggleButton } from 'vue-js-toggle-button';
-
 export default {
-
-  components: {
-    ToggleButton
-  },
 
   props: {
     limited: {
@@ -111,10 +107,11 @@ export default {
         .then(response => {
           this.$notify({
             group: 'main',
-            title: response.data,
+            title: this.$t('settings.personalization_module_save'),
             text: '',
             type: 'success'
           });
+          this.$set(module, 'active', response.data.data.active);
         });
     }
   }

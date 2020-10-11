@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     /*
@@ -17,16 +23,15 @@ return [
     'throttle' => 'Troppi tentativi di accesso. Ti preghiamo di ritentare in :seconds secondi.',
     'not_authorized' => 'Non sei autorizzato a eseguire questa azione.',
     'signup_disabled' => 'La registrazione è al momento disattivata',
+    'signup_error' => 'An error occured trying to register the user',
     'back_homepage' => 'Ritorna alla Home',
     'mfa_auth_otp' => 'Autenticati con il tuo dispositivo secondo fattore',
-    'mfa_auth_u2f' => 'Autenticati con un dispositivo U2F',
     'mfa_auth_webauthn' => 'Autenticazione con una chiave di sicurezza (WebAuthn)',
     '2fa_title' => 'Autenticazione due fattori',
     '2fa_wrong_validation' => 'Autenticazione due fattori fallita.',
     '2fa_one_time_password' => 'Codice di autenticazione a due fattori',
     '2fa_recuperation_code' => 'Inserisci il codice di recupero dell\'Autenticazione a due Fattori',
     '2fa_otp_help' => 'Apri la tua app di autenticazione a due fattori e copia il codice',
-    'u2f_otp_extension' => 'U2F è supportato su Chrome, <a href="{urlquantum}" lang="en">Firefox</a> e Opera. Per le versione più vecchie di Firefox, installa l\'<a href="{urlext}">estensione di supporto</a>.',
 
     'login_to_account' => 'Accedi al tuo conto',
     'login_with_recovery' => 'Login con un codice di recupero',
@@ -73,7 +78,7 @@ return [
     'confirmation_title' => 'Verifica il tuo indirizzo Email',
     'confirmation_fresh' => 'Un nuovo link di verifica è stato mandato al tuo indirizzo email.',
     'confirmation_check' => 'Prima di procedere, controlla il link che ti abbiamo mandato al tuo indirizzo email.',
-    'confirmation_request_another' => 'Se non hai ricevuto la mail <a href=":url">clicca per richiederne un\'altra</a>.',
+    'confirmation_request_another' => 'Se non hai ricevuto l\'email <a :action>clicca qui per richiederne un\'altra</a>.',
 
     'confirmation_again' => 'Se vuoi cambiare il tuo indirizzo email <a href=":url" class="alert-link">clicca qui</a>.',
     'email_change_current_email' => 'Indirizzo email attuale:',

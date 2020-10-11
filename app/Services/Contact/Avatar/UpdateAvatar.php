@@ -31,7 +31,7 @@ class UpdateAvatar extends BaseService
                     'photo',
                 ]),
             ],
-            'photo_id' => 'required_if:source,photo|integer',
+            'photo_id' => 'required_if:source,photo|integer|exists:photos,id',
         ];
     }
 
@@ -41,7 +41,7 @@ class UpdateAvatar extends BaseService
      * @param array $data
      * @return Contact
      */
-    public function execute(array $data) : Contact
+    public function execute(array $data): Contact
     {
         $this->validate($data);
 
@@ -54,12 +54,15 @@ class UpdateAvatar extends BaseService
         }
 
         $contact->avatar_source = $data['source'];
-        $contact->avatar_photo_id = null;
-
-        // in case of a photo, set the photo as the avatar
-        if ($data['source'] === 'photo') {
-            $contact->avatar_photo_id = $data['photo_id'];
-            $contact->photos()->syncWithoutDetaching([$data['photo_id']]);
+        switch ($contact->avatar_source) {
+            case 'photo':
+            // in case of a photo, set the photo as the avatar
+                $contact->avatar_photo_id = $this->nullOrValue($data, 'photo_id');
+                $contact->photos()->syncWithoutDetaching([$this->nullOrValue($data, 'photo_id')]);
+                break;
+            default:
+                $contact->avatar_photo_id = null;
+                break;
         }
 
         $contact->save();

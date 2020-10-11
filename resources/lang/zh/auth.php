@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     /*
@@ -17,16 +23,15 @@ return [
     'throttle' => '登录失败次数太多。请 :seconds 后再试。',
     'not_authorized' => '您无权执行此操作',
     'signup_disabled' => '注册当前已停用',
+    'signup_error' => 'An error occured trying to register the user',
     'back_homepage' => '回到主页',
     'mfa_auth_otp' => '使用二次验证设备进行认证',
-    'mfa_auth_u2f' => '使用U2F设备进行认证',
     'mfa_auth_webauthn' => '使用安全钥匙验证(WebAuthn)',
     '2fa_title' => '二次验证',
     '2fa_wrong_validation' => '二次验证失败',
     '2fa_one_time_password' => '验证码',
     '2fa_recuperation_code' => '输入二次验证恢复码',
     '2fa_otp_help' => '打开您的二次验证APP并复制验证码',
-    'u2f_otp_extension' => 'U2F验证已受Chrome、<a href="{urlquantum}" lang="en">FireFox</a>、Opera支持。如果您用的是旧版FireFox，请您安装<a href="{urlext}">U2F支持</a>插件。',
 
     'login_to_account' => '登录您的账号',
     'login_with_recovery' => '使用恢复代码登录',
@@ -73,7 +78,7 @@ return [
     'confirmation_title' => '验证您的电子邮件地址',
     'confirmation_fresh' => '一条新的验证链接已经发送到您的邮箱',
     'confirmation_check' => '在您继续之前，请检查您的邮箱以获得验证链接。',
-    'confirmation_request_another' => '如果您没有收到电子邮件 <a href=":url">, 请单击此处重新发送</a>。',
+    'confirmation_request_another' => '如果您没有收到电子邮件 <a :action>, 请单击此处重新发送</a>。',
 
     'confirmation_again' => '如果要更改电子邮件地址, 可以 <a href=":url" class="alert-link">单击此处</a>。',
     'email_change_current_email' => '当前邮件地址：',

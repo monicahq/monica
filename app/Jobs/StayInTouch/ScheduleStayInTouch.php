@@ -3,6 +3,7 @@
 namespace App\Jobs\StayInTouch;
 
 use Illuminate\Bus\Queueable;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Queue\SerializesModels;
 use App\Notifications\StayInTouchEmail;
@@ -39,7 +40,7 @@ class ScheduleStayInTouch implements ShouldQueue
         $users = [];
         foreach ($account->users as $user) {
             if ($user->isTheRightTimeToBeReminded($this->contact->stay_in_touch_trigger_date)
-                && ! $account->hasLimitations()) {
+                && ! AccountHelper::hasLimitations($account)) {
                 array_push($users, $user);
             }
         }

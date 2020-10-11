@@ -3,10 +3,13 @@
 namespace App\Http\Resources\Reminder;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Reminder extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\Reminder>
+ */
+class Reminder extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -24,7 +27,7 @@ class Reminder extends Resource
             'frequency_type' => $this->frequency_type,
             'frequency_number' => $this->frequency_number,
             'initial_date' => DateHelper::getTimestamp($this->initial_date),
-            'delible' => DateHelper::getTimestamp($this->delible),
+            'delible' => (bool) $this->delible,
             'account' => [
                 'id' => $this->account_id,
             ],

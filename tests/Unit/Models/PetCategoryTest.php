@@ -10,7 +10,8 @@ class PetCategoryTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_gets_only_common_pets()
+    /** @test */
+    public function it_gets_only_common_pets()
     {
         $petCategory = new PetCategory;
 
@@ -20,7 +21,8 @@ class PetCategoryTest extends TestCase
         );
     }
 
-    public function test_it_gets_pet_category_name()
+    /** @test */
+    public function it_gets_pet_category_name()
     {
         $petCategory = new PetCategory;
         $petCategory->name = 'Rgis';

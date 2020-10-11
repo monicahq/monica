@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\DBHelper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,7 +16,7 @@ class ChangeGiftColumnStructure extends Migration
     public function up()
     {
         Schema::table('gifts', function (Blueprint $table) {
-            if (DB::connection()->getDriverName() == 'pgsql') {
+            if (DBHelper::connection()->getDriverName() == 'pgsql') {
                 //Postgresql does not implicitly convert varchar's to integers, therefore add USING ...
                 DB::statement('ALTER TABLE gifts ALTER about_object_id TYPE INT USING about_object_id::integer');
             } else {

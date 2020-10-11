@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\DAV\Backend\CalDAV;
 
-use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Log;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
@@ -76,6 +75,8 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
                 Log::debug(__CLASS__.' prepareData: '.(string) $e);
             }
         }
+
+        return [];
     }
 
     private function hasBirthday($contact)
@@ -126,8 +127,12 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
         });
     }
 
-    public function updateOrCreateCalendarObject($objectUri, $calendarData)
+    /**
+     * @return string|null
+     */
+    public function updateOrCreateCalendarObject($objectUri, $calendarData): ?string
     {
+        return null;
     }
 
     public function deleteCalendarObject($objectUri)

@@ -39,12 +39,12 @@
 
               <div class="form-group">
                 <label for="email">{{ trans('auth.email') }}</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
+                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
               </div>
 
               <div class="form-group">
                 <label for="password">{{ trans('auth.password') }}</label>
-                <input type="password" class="form-control" id="password" name="password">
+                <input type="password" class="form-control" id="password" name="password" required autocomplete="current-password">
               </div>
 
               <div class="form-group actions">
@@ -57,20 +57,17 @@
                 </label>
               </div>
 
-              @if (isset($errors))
-                @if (count($errors) > 0)
-                  <div class="form-group links">
-                    <ul>
-                      <li>{{ trans('auth.password_forget') }}&nbsp;<a href="{{ route('password.request') }}">{{ trans('auth.password_reset') }}</a></li>
-                    </ul>
-                  </div>
-                @endif
-              @endif
+              <div class="form-group links">
+                <ul>
+                  <li>{{ trans('auth.password_forget') }}&nbsp;<a href="{{ route('password.request') }}">{{ trans('auth.password_reset') }}</a></li>
+                </ul>
+              </div>
+
               <div class="form-group links">
                 <ul>
                   @if(! config('monica.disable_signup'))
                     <li>{{ trans('auth.signup_no_account') }}&nbsp;<a href="register">{{ trans('auth.signup') }}</a></li>
-                  @elseif(! \App\Models\Account\Account::hasAny())
+                  @elseif(! \App\Helpers\InstanceHelper::hasAtLeastOneAccount())
                     <li>{!! trans('auth.create_account', ['url' => 'register']) !!}</li>
                   @endif
                 </ul>

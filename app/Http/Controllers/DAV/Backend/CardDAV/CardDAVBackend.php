@@ -159,9 +159,9 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * Prepare datas for this contact.
      *
      * @param Contact $contact
-     * @return array|null
+     * @return array
      */
-    private function prepareCard($contact)
+    private function prepareCard($contact): array
     {
         try {
             $vcard = app(ExportVCard::class)
@@ -319,7 +319,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * @param string $cardData
      * @return string|null
      */
-    public function updateCard($addressBookId, $cardUri, $cardData)
+    public function updateCard($addressBookId, $cardUri, $cardData): ?string
     {
         $contact_id = null;
         if ($cardUri) {
@@ -351,6 +351,8 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
             Log::debug(__CLASS__.' updateCard: '.(string) $e);
             throw $e;
         }
+
+        return null;
     }
 
     /**
@@ -381,14 +383,14 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * @param \Sabre\DAV\PropPatch $propPatch
      * @return bool|null
      */
-    public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch)
+    public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch): ?bool
     {
         $propPatch->handle('{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card', function ($props) {
             $contact = $this->getObject($props->getHref());
 
             $data = [
                 'contact_id' => $contact->id,
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'user_id' => auth()->user()->id,
             ];
 
@@ -396,6 +398,8 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
             return true;
         });
+
+        return null;
     }
 
     /**

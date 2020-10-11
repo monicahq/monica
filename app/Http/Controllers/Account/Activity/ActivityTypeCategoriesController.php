@@ -54,9 +54,9 @@ class ActivityTypeCategoriesController extends Controller
     public function store(Request $request)
     {
         $type = app(CreateActivityTypeCategory::class)->execute([
-            'account_id' => auth()->user()->account->id,
-            'name' => $request->get('name'),
-            'translation_key' => $request->get('translation_key'),
+            'account_id' => auth()->user()->account_id,
+            'name' => $request->input('name'),
+            'translation_key' => $request->input('translation_key'),
         ]);
 
         return new ActivityTypeCategoryResource($type);
@@ -72,10 +72,10 @@ class ActivityTypeCategoriesController extends Controller
     public function update(Request $request, $activityTypeCategoryId)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'activity_type_category_id' => $activityTypeCategoryId,
-            'name' => $request->get('name'),
-            'translation_key' => $request->get('translation_key'),
+            'name' => $request->input('name'),
+            'translation_key' => $request->input('translation_key'),
         ];
 
         $type = app(UpdateActivityTypeCategory::class)->execute($data);
@@ -94,7 +94,7 @@ class ActivityTypeCategoriesController extends Controller
     public function destroy(Request $request, $activityTypeCategoryId)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'activity_type_category_id' => $activityTypeCategoryId,
         ];
 

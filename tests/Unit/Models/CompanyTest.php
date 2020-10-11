@@ -12,7 +12,8 @@ class CompanyTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
         $company = factory(Company::class)->create([
@@ -22,7 +23,8 @@ class CompanyTest extends TestCase
         $this->assertTrue($company->account()->exists());
     }
 
-    public function test_it_has_many_occupations()
+    /** @test */
+    public function it_has_many_occupations()
     {
         $company = factory(Company::class)->create([]);
         $occupations = factory(Occupation::class)->create([

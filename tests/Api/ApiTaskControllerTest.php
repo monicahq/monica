@@ -29,21 +29,22 @@ class ApiTaskControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_tasks_get_all()
+    /** @test */
+    public function it_gets_all_the_tasks()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task1 = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task2 = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -63,21 +64,22 @@ class ApiTaskControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_get_contact_all()
+    /** @test */
+    public function it_gets_all_the_tasks_of_a_contact()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task1 = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task2 = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -97,7 +99,8 @@ class ApiTaskControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_get_contact_all_error()
+    /** @test */
+    public function it_cant_get_the_tasks_of_a_contact_with_an_invalid_id()
     {
         $user = $this->signin();
 
@@ -106,18 +109,19 @@ class ApiTaskControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_tasks_get_one()
+    /** @test */
+    public function it_gets_a_specific_task()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task1 = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $task2 = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
 
@@ -137,7 +141,8 @@ class ApiTaskControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_get_one_error()
+    /** @test */
+    public function it_cant_get_a_task_with_an_invalid_id()
     {
         $user = $this->signin();
 
@@ -146,11 +151,12 @@ class ApiTaskControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_create_a_task_associated_to_a_contact()
+    /** @test */
+    public function it_create_a_task_associated_to_a_contact()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/tasks', [
@@ -172,7 +178,7 @@ class ApiTaskControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $taskId);
         $this->assertDatabaseHas('tasks', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $taskId,
             'title' => 'the task',
@@ -180,11 +186,12 @@ class ApiTaskControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_create_a_task_not_associated_to_a_contact()
+    /** @test */
+    public function it_create_a_task_not_associated_to_a_contact()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/tasks', [
@@ -206,7 +213,7 @@ class ApiTaskControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $taskId);
         $this->assertDatabaseHas('tasks', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $taskId,
             'title' => 'the task',
@@ -214,11 +221,12 @@ class ApiTaskControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_creating_a_task_triggers_invalid_parameter_error()
+    /** @test */
+    public function creating_a_task_triggers_invalid_parameter_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/tasks', [
@@ -230,7 +238,8 @@ class ApiTaskControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_creating_a_task_with_a_wrong_account_id_triggers_an_error()
+    /** @test */
+    public function creating_a_task_with_a_wrong_account_id_triggers_an_error()
     {
         $user = $this->signin();
 
@@ -248,14 +257,15 @@ class ApiTaskControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_updates_a_task()
+    /** @test */
+    public function it_updates_a_task()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -278,7 +288,7 @@ class ApiTaskControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $taskId);
         $this->assertDatabaseHas('tasks', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $taskId,
             'title' => 'the task',
@@ -286,11 +296,12 @@ class ApiTaskControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_updating_a_task_with_missing_parameters_triggers_an_error()
+    /** @test */
+    public function updating_a_task_with_missing_parameters_triggers_an_error()
     {
         $user = $this->signin();
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/tasks/'.$task->id, [
@@ -303,7 +314,8 @@ class ApiTaskControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_updating_a_task_with_wrong_account_triggers_an_error()
+    /** @test */
+    public function updating_a_task_with_wrong_account_triggers_an_error()
     {
         $user = $this->signin();
 
@@ -322,14 +334,15 @@ class ApiTaskControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_deletes_a_task()
+    /** @test */
+    public function it_deletes_a_task()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -338,13 +351,14 @@ class ApiTaskControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $this->assertDatabaseMissing('tasks', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $task->id,
         ]);
     }
 
-    public function test_it_cant_delete_a_task_if_wrong_task_id()
+    /** @test */
+    public function it_cant_delete_a_task_if_wrong_task_id()
     {
         $user = $this->signin();
 

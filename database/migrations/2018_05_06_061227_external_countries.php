@@ -22,7 +22,7 @@ class ExternalCountries extends Migration
         Address::chunk(200, function ($addresses) {
             foreach ($addresses as $addresse) {
                 $iso = DB::table('countries')->where('id', $addresse->country_id)->value('iso');
-                $addresse->update(['country' => mb_strtoupper(CountriesSeederTable::fixIso($iso))]);
+                $addresse->update(['country' => mb_strtoupper($this->fixIso($iso))]);
             }
         });
 
@@ -30,6 +30,18 @@ class ExternalCountries extends Migration
             $table->dropColumn('country_id');
         });
         Schema::dropIfExists('countries');
+    }
+
+    private function fixIso($iso)
+    {
+        switch ($iso) {
+            case 'ct':
+                // Cyprus
+                return 'CY';
+                break;
+        }
+
+        return $iso;
     }
 
     /**
@@ -48,7 +60,6 @@ class ExternalCountries extends Migration
             $table->string('iso');
             $table->string('country');
         });
-        (new CountriesSeederTable)->run();
 
         Address::chunk(200, function ($addresses) {
             foreach ($addresses as $addresse) {

@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use Tests\TestCase;
+use App\Models\User\User;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -11,51 +12,8 @@ class GiftTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_toggle_a_gift_idea()
-    {
-        $gift = factory(Gift::class)->make();
-        $gift->is_an_idea = true;
-        $gift->toggle();
-
-        $this->assertEquals(
-            false,
-            $gift->is_an_idea
-        );
-
-        $this->assertEquals(
-            true,
-            $gift->has_been_offered
-        );
-
-        $this->assertEquals(
-            false,
-            $gift->has_been_received
-        );
-    }
-
-    public function test_toggle_a_gift_offered()
-    {
-        $gift = factory(Gift::class)->make();
-        $gift->has_been_offered = true;
-        $gift->toggle();
-
-        $this->assertEquals(
-            true,
-            $gift->is_an_idea
-        );
-
-        $this->assertEquals(
-            false,
-            $gift->has_been_offered
-        );
-
-        $this->assertEquals(
-            false,
-            $gift->has_been_received
-        );
-    }
-
-    public function test_has_particular_recipient_returns_false_if_it_s_for_no_specific_recipient()
+    /** @test */
+    public function has_particular_recipient_returns_false_if_it_s_for_no_specific_recipient()
     {
         $gift = factory(Gift::class)->make();
 
@@ -65,10 +23,12 @@ class GiftTest extends TestCase
         );
     }
 
-    public function test_has_particular_recipient_returns_true_if_it_s_for_a_specific_recipient()
+    /** @test */
+    public function has_particular_recipient_returns_true_if_it_s_for_a_specific_recipient()
     {
-        $gift = factory(Gift::class)->make();
-        $gift->is_for = 1;
+        $gift = factory(Gift::class)->make([
+            'is_for' => 1,
+        ]);
 
         $this->assertEquals(
             true,
@@ -76,10 +36,12 @@ class GiftTest extends TestCase
         );
     }
 
-    public function test_it_sets_is_for_attribute()
+    /** @test */
+    public function it_sets_is_for_attribute()
     {
-        $gift = factory(Gift::class)->make();
-        $gift->is_for = 1;
+        $gift = factory(Gift::class)->make([
+            'is_for' => 1,
+        ]);
 
         $this->assertEquals(
             1,
@@ -87,13 +49,15 @@ class GiftTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_recipient_name()
+    /** @test */
+    public function it_gets_the_recipient_name()
     {
-        $gift = factory(Gift::class)->make();
-        $gift->is_for = 1;
-        $gift->contact_id = 1;
-
-        $contact = factory(Contact::class)->create(['id' => 1, 'first_name' => 'Regis']);
+        $contact = factory(Contact::class)->create(['first_name' => 'Regis']);
+        $gift = factory(Gift::class)->make([
+            'account_id' => $contact->account_id,
+            'is_for' => $contact->id,
+            'contact_id' =>  $contact->id,
+        ]);
 
         $this->assertEquals(
             'Regis',
@@ -101,10 +65,12 @@ class GiftTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_gift_name()
+    /** @test */
+    public function it_gets_the_gift_name()
     {
-        $gift = factory(Gift::class)->make();
-        $gift->name = 'Maison de folie';
+        $gift = factory(Gift::class)->make([
+            'name' => 'Maison de folie',
+        ]);
 
         $this->assertEquals(
             'Maison de folie',
@@ -112,10 +78,12 @@ class GiftTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_gift_url()
+    /** @test */
+    public function it_gets_the_gift_url()
     {
-        $gift = factory(Gift::class)->make();
-        $gift->url = 'https://facebook.com';
+        $gift = factory(Gift::class)->make([
+            'url' => 'https://facebook.com',
+        ]);
 
         $this->assertEquals(
             'https://facebook.com',
@@ -123,10 +91,12 @@ class GiftTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_comment()
+    /** @test */
+    public function it_gets_the_comment()
     {
-        $gift = factory(Gift::class)->make();
-        $gift->comment = 'This is just a comment';
+        $gift = factory(Gift::class)->make([
+            'comment' => 'This is just a comment',
+        ]);
 
         $this->assertEquals(
             'This is just a comment',
@@ -134,14 +104,19 @@ class GiftTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_value()
+    /** @test */
+    public function it_gets_the_value()
     {
-        $gift = factory(Gift::class)->make();
-        $gift->value = '100$';
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $gift = factory(Gift::class)->make([
+            'account_id' => $user->account_id,
+            'amount' => 100,
+        ]);
 
         $this->assertEquals(
-            '100$',
-            $gift->value
+            '100.00',
+            $gift->amount
         );
     }
 }

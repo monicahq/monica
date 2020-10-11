@@ -3,10 +3,13 @@
 namespace App\Http\Resources\Place;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Country\Country as CountryResource;
 
-class Place extends Resource
+/**
+ * @extends JsonResource<\App\Models\Account\Place>
+ */
+class Place extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -27,7 +30,7 @@ class Place extends Resource
             'longitude' => $this->longitude,
             'country' => new CountryResource($this->country),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

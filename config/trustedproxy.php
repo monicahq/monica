@@ -21,13 +21,13 @@ return [
      * To trust one or more specific proxies that connect
      * directly to your server, use an array of IP addresses:
      */
-     // 'proxies' => ['192.168.1.1'],
+    // 'proxies' => ['192.168.1.1'],
 
     /*
      * Or, to trust all proxies that connect
      * directly to your server, use a "*"
      */
-     // 'proxies' => '*',
+    // 'proxies' => '*',
 
     /*
      * Which headers to use to detect proxy related data (For, Host, Proto, Port)

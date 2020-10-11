@@ -1,11 +1,17 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     //index
     'people_not_found' => 'Contatto non trovato',
     'people_list_number_kids' => '1 bambino|:count bambini',
-    'people_list_last_updated' => 'Consultati per ultimi:',
+    'people_list_last_updated' => 'Ultimo contatto:',
     'people_list_number_reminders' => ':count promemoria',
     'people_list_blank_title' => 'Non ci sono contatti nel tuo account',
     'people_list_blank_cta' => 'Aggiungi qualcuno',
@@ -18,7 +24,7 @@ return [
     'people_list_lastactivitydateNewtoOld' => 'Ordina per data dell\'ultima attività, più recente → meno recente',
     'people_list_lastactivitydateOldtoNew' => 'Ordina per data dell\'ultima attività, meno recente → più recente',
     'people_list_filter_tag' => 'Tutti i contatti etichettati con',
-    'people_list_clear_filter' => 'Reimposta filtro',
+    'people_list_clear_filter' => 'Rimuovi filtro',
     'people_list_contacts_per_tags' => '1 contatto|:count contatti',
     'people_list_show_dead' => 'Mostra persone decedute (:count)',
     'people_list_hide_dead' => 'Nascondi persone decedute (:count)',
@@ -38,7 +44,7 @@ return [
     'people_list_filter_untag' => 'Tutti i contatti senza etichette',
 
     // people add
-    'people_add_title' => 'Aggiungi una persona',
+    'people_add_title' => 'Aggiungi una nuova persona',
     'people_add_missing' => 'Nessuna persona trovata, aggiungine una',
     'people_add_firstname' => 'Nome',
     'people_add_middlename' => 'Secondo nome (facoltativo)',
@@ -52,6 +58,7 @@ return [
     'people_delete_message' => 'Elimina contatto',
     'people_delete_confirmation' => 'Rimuovere questo contatto? Questo cambio è permanente.',
     'people_add_birthday_reminder' => 'Fai gli auguri di compleanno a :name',
+    'people_add_birthday_reminder_deceased' => 'In questa data, :name. avrebbe celebrato il suo compleanno',
     'people_add_import' => 'Vuoi <a href=":url">importare i tuoi contatti</a>?',
     'people_edit_email_error' => 'Esiste già un contatto nel tuo account con questo indirizzo email. Scegline un altro, per favore.',
     'people_export' => 'Esporta in formato vCard',
@@ -85,7 +92,7 @@ return [
     'stay_in_touch_premium' => 'Devi fare l\'upgrade al tuo account per usare questa funzione',
     'stay_in_touch_modal_title' => 'Rimani in contatto',
     'stay_in_touch_modal_desc' => 'Possiamo ricordarti di rimanere in contatto con {firstname} tramite email a intervalli regolari.',
-    'stay_in_touch_modal_label' => 'Inviami una mail ogni...',
+    'stay_in_touch_modal_label' => 'Mandami una email ogni... {count} giorno|Mandami una email ogni... {count} giorni',
 
     // Calls
     'modal_call_title' => 'Aggiungi chiamata',
@@ -151,6 +158,7 @@ return [
     'information_edit_probably' => 'Questa persona probabilmente ha',
     'information_edit_not_year' => 'Conosco il giorno e il mese della data di nascita, ma non l\'anno…',
     'information_edit_exact' => 'Conosco la data di nascita esatta di questa persona, che è il',
+    'information_edit_birthdate_label' => 'Data di nascita',
     'information_no_work_defined' => 'Nessuna informazione professionale',
     'information_work_at' => 'alla :company',
     'work_add_cta' => 'Aggiorna informazioni professionali',
@@ -184,6 +192,7 @@ return [
     'reminders_create_success' => 'Il promemoria è stato creato',
     'reminders_delete_success' => 'Il promemoria è stato rimosso',
     'reminders_update_success' => 'Il promemoria è stato aggiornato',
+    'reminders_add_optional_comment' => 'Informazioni aggiuntive',
 
     'reminder_frequency_day' => 'ogni giorno|ogni :number giorni',
     'reminder_frequency_week' => 'ogni settimana|ogni :number settimane',
@@ -221,6 +230,7 @@ return [
     'relationship_form_deletion_success' => 'La relazione è stata eliminata.',
 
     // tasks
+    'tasks_title' => 'Cose da fare',
     'tasks_blank_title' => 'Nulla da fare.',
     'tasks_form_title' => 'Titolo',
     'tasks_form_description' => 'Descrizione (facoltativa)',
@@ -237,28 +247,29 @@ return [
     'activity_type_just_hung_out' => 'siamo usciti',
     'activity_type_watched_movie_at_home' => 'visto un film, a casa',
     'activity_type_talked_at_home' => 'parlato, a casa',
-    'activity_type_did_sport_activities_together' => 'fatto sport assieme',
+    'activity_type_did_sport_activities_together' => 'giocato uno sport insieme',
     'activity_type_ate_at_his_place' => 'mangiato a casa sua/loro',
     'activity_type_went_bar' => 'andati al bar',
     'activity_type_ate_at_home' => 'mangiato a casa',
-    'activity_type_picknicked' => 'fatto un picnic',
+    'activity_type_picnicked' => 'abbiamo fatto un picnic',
     'activity_type_ate_restaurant' => 'mangiato al ristorante',
     'activity_type_went_theater' => 'andati a teatro',
     'activity_type_went_concert' => 'andati a un concerto',
     'activity_type_went_play' => 'andati a una rappresentazione teatrale',
     'activity_type_went_museum' => 'andati al museo',
     'activities_add_activity' => 'Aggiungi attività',
-    'activities_more_details' => 'Mostra dettagli',
-    'activities_hide_details' => 'Nascondi dettagli',
-    'activities_delete_confirmation' => 'Rimuovere questa attività?',
+    'activities_add_more_details' => 'Aggiungi ulteriori dettagli',
+    'activities_add_emotions' => 'Aggiungi Umori/emozioni',
+    'activities_add_category' => 'Indica una categoria',
+    'activities_add_participants_cta' => 'Aggiungi partecipanti',
     'activities_item_information' => ':Activity il :date',
-    'activities_add_title' => 'Cosa hai fatto con :name?',
+    'activities_add_title' => 'Cosa hai fatto con {name}?',
     'activities_summary' => 'Descrivi cosa avete fatto',
     'activities_add_pick_activity' => '(Facoltativo) Vorresti assegnare una categoria a questa attività? Non è obbligatorio, ma più avanti ti permetterà di vedere delle statistiche',
-    'activities_add_date_occured' => 'Data dell\'attività',
-    'activities_add_optional_comment' => 'Commenti aggiuntivi',
-    'activities_add_cta' => 'Salva attività',
-    'activities_blank_title' => 'Tieni traccia di quello che tu e :name avete fatto, e ciò di cui avete parlato',
+    'activities_add_date_occured' => 'Data dell\'attività...',
+    'activities_add_participants' => 'Chi, a parte {name}, ha partecipato a questa attività? (opzionale)',
+    'activities_add_emotions_title' => 'Vuoi registrare come ti sei sentito durante questa attivitá? (facoltativo)',
+    'activities_blank_title' => 'Tieni traccia di quello che tu e {name} avete fatto, e ciò di cui avete parlato',
     'activities_blank_add_activity' => 'Agginugi attività',
     'activities_add_success' => 'Attività aggiunta',
     'activities_add_error' => 'Errore durante l\'aggiunta dell\'attività',
@@ -272,6 +283,10 @@ return [
     'activities_profile_year_summary_activity_types' => 'Ecco un resoconto dei tipi di attività svolte nel :year',
     'activities_profile_year_summary' => 'Ecco cosa avete fatto insieme nel :year',
     'activities_profile_number_occurences' => ':value attività|:value attività',
+    'activities_list_participants' => 'Partecipanti:',
+    'activities_list_emotions' => 'Emozioni provate:',
+    'activities_list_date' => 'Accaduto il',
+    'activities_list_category' => 'Categoria:',
 
     // notes
     'notes_create_success' => 'Nota creata',
@@ -289,17 +304,23 @@ return [
     'gifts_delete_confirmation' => 'Rimuovere regalo?',
     'gifts_add_gift' => 'Aggiungi regalo',
     'gifts_link' => 'Collegamento',
-    'gifts_for' => 'Per:',
+    'gifts_for' => 'Per: {name}',
     'gifts_delete_cta' => 'Rimuovi',
     'gifts_add_title' => 'Gestione dei regali a :name',
     'gifts_add_gift_idea' => 'Idea regalo',
     'gifts_add_gift_already_offered' => 'Regalo già consegnato',
     'gifts_add_gift_received' => 'Regalo ricevuto',
     'gifts_add_gift_title' => 'Cos\'è questo regalo?',
+    'gifts_add_gift_name' => 'Nome del regalo',
     'gifts_add_link' => 'Link alla pagina web (facoltativo)',
     'gifts_add_value' => 'Valore (facoltativo)',
     'gifts_add_comment' => 'Commenti (facoltativo)',
-    'gifts_add_someone' => 'Questo regalo è per qualcuno in particolare nella famiglia di :name',
+    'gifts_add_recipient' => 'Destinatario (opzionale)',
+    'gifts_add_recipient_field' => 'Destinatario',
+    'gifts_add_photo' => 'Foto (opzionale)',
+    'gifts_add_photo_title' => 'Aggiungi una foto per questo regalo',
+    'gifts_add_someone' => 'Questo regalo é per qualcuno in particolare nella famiglia di {name}',
+    'gifts_delete_title' => 'Rimuovi un regalo',
     'gifts_ideas' => 'Idee regalo',
     'gifts_offered' => 'Regali offerti',
     'gifts_offered_as_an_idea' => 'Segna come idea',
@@ -354,6 +375,7 @@ return [
     'deceased_know_date' => 'Conosco il giorno in cui questa persona é deceduta',
     'deceased_add_reminder' => 'Aggiungi un promemoria per questa data',
     'deceased_label' => 'Deceduto/a',
+    'deceased_date_label' => 'Data morte',
     'deceased_label_with_date' => 'Decesso il :date',
     'deceased_age' => 'Età di decesso',
 
@@ -398,7 +420,7 @@ return [
     'life_event_list_tab_life_events' => 'Eventi della vita',
     'life_event_list_tab_other' => 'Note, promemoria, ...',
     'life_event_list_title' => 'Eventi della vita',
-    'life_event_blank' => 'Memorizza gli eventi importanti della vita di {name} per riferimento futuro',
+    'life_event_blank' => 'Memorizza gli eventi importanti della vita di {name} per riferimento futuro.',
     'life_event_list_cta' => 'Aggiungi evento',
     'life_event_create_category' => 'Tutte le categorie',
     'life_event_create_life_event' => 'Aggiungi evento',
@@ -410,8 +432,13 @@ return [
     'life_event_create_success' => 'Evento aggiunto',
     'life_event_delete_title' => 'Elimina un evento',
     'life_event_delete_description' => 'Sei sicuro di eliminare questo evento? Non si può annullare.',
-    'life_event_delete_success' => 'Evento eliminato con successo.',
+    'life_event_delete_success' => 'Evento eliminato con successo',
     'life_event_date_it_happened' => 'Data di avvenimento',
+    'life_event_category_work_education' => 'Work & education',
+    'life_event_category_family_relationships' => 'Family & relationships',
+    'life_event_category_home_living' => 'Home & living',
+    'life_event_category_health_wellness' => 'Health & wellness',
+    'life_event_category_travel_experiences' => 'Travel & experiences',
     'life_event_sentence_new_job' => 'Inizio di un nuovo lavoro',
     'life_event_sentence_retirement' => 'Pensionamento',
     'life_event_sentence_new_school' => 'Inizio scuola',
@@ -442,8 +469,8 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'Occhiali o lenti a contatto',
     'life_event_sentence_broken_bone' => 'Rotto un osso',
     'life_event_sentence_removed_braces' => 'Levato l\'apparecchio',
-    'life_event_sentence_surgery' => 'Subito un intervento',
-    'life_event_sentence_dentist' => 'Andato dal denstista',
+    'life_event_sentence_surgery' => 'Ha subito un intervento',
+    'life_event_sentence_dentist' => 'Andato dal dentista',
     'life_event_sentence_new_sport' => 'Iniziato uno sport',
     'life_event_sentence_new_hobby' => 'Iniziato un hobby',
     'life_event_sentence_new_instrument' => 'Imparato un nuovo strumento',
@@ -459,12 +486,13 @@ return [
     // documents
     'document_list_title' => 'Documenti',
     'document_list_cta' => 'Carica documento',
-    'document_list_blank_desc' => 'Qui puoi salvre documenti relativi a questa persona.',
+    'document_list_blank_desc' => 'Qui puoi archiviare documenti relativi a questa persona.',
     'document_upload_zone_cta' => 'Carica un file',
     'document_upload_zone_progress' => 'Caricamento in corso...',
     'document_upload_zone_error' => 'Si è verificato un errore. Per favore, riprova a caricare il documento.',
 
     // Photos
+    'photo_title' => 'Foto',
     'photo_list_title' => 'Foto',
     'photo_list_cta' => 'Carica foto',
     'photo_list_blank_desc' => 'Qui puoi salvare foto relative a questa persona, caricane una adesso!',
@@ -472,6 +500,8 @@ return [
     'photo_current_profile_pic' => 'Attuale immagine del profilo',
     'photo_make_profile_pic' => 'Rendi questa foto immagine del profilo',
     'photo_delete' => 'Elimina foto',
+    'photo_next' => 'Next photo',
+    'photo_previous' => 'Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Cambia il tuo avatar',
@@ -481,7 +511,24 @@ return [
     'avatar_gravatar' => 'Il Gravatar associato all\'indirizzo email di questa persona. <a href="https://gravatar.com/">Gravatar</a> è un sistema globale che permette agli utenti di associare indirizzi email con foto.',
     'avatar_current' => 'Mantieni l\'avatar attuale',
     'avatar_photo' => 'Da una foto che carichi',
+    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
     // emotions
-    'emotion_this_made_me_feel' => 'Questo mi ha fatto sentire.',
+    'emotion_this_made_me_feel' => 'Questo mi ha fatto sentire…',
+
+    // logs
+    'auditlogs_link' => 'Storico',
+    'auditlogs_title' => 'Tutto ciò che è accaduto a :name',
+    'auditlogs_breadcrumb' => 'Storico',
+    'auditlogs_author' => 'Da :name il :date',
+
+    // contact field label
+    'contact_field_label_home' => 'Casa',
+    'contact_field_label_work' => 'Lavoro',
+    'contact_field_label_cell' => 'Cellulare',
+    'contact_field_label_fax' => 'Fax',
+    'contact_field_label_pager' => 'Cercapersone',
+    'contact_field_label_main' => 'Principale',
+    'contact_field_label_other' => 'Altro',
+    'contact_field_label_personal' => 'Personale',
 ];

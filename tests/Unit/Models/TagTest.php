@@ -12,7 +12,8 @@ class TagTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -23,7 +24,8 @@ class TagTest extends TestCase
         $this->assertTrue($tag->account()->exists());
     }
 
-    public function test_it_belongs_to_many_contacts()
+    /** @test */
+    public function it_belongs_to_many_contacts()
     {
         $account = factory(Account::class)->create([]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);

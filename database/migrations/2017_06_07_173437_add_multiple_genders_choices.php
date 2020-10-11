@@ -13,7 +13,7 @@ class AddMultipleGendersChoices extends Migration
      */
     public function up()
     {
-        $driverName = DB::connection()->getDriverName();
+        $driverName = DBHelper::connection()->getDriverName();
         switch ($driverName) {
             case 'mysql':
                 DB::statement('ALTER TABLE '.DBHelper::getTable('contacts')." CHANGE COLUMN gender gender ENUM('male', 'female', 'none')");
@@ -45,7 +45,7 @@ class AddMultipleGendersChoices extends Migration
             $enumList[] = sprintf("'%s'::CHARACTER VARYING", $option);
         }
         $enumString = implode(', ', $enumList);
-        DB::transaction(function () use ($table, $field, $check, $options, $enumString) {
+        DB::transaction(function () use ($table, $field, $check, $enumString) {
             DB::statement(sprintf('ALTER TABLE %s DROP CONSTRAINT %s;', $table, $check));
             DB::statement(sprintf('ALTER TABLE %s ADD CONSTRAINT %s CHECK (%s::TEXT = ANY (ARRAY[%s]::TEXT[]))', $table, $check, $field, $enumString));
         });

@@ -16,22 +16,23 @@ class UpdateMessageTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_a_conversation()
+    /** @test */
+    public function it_updates_a_conversation()
     {
         $conversation = factory(Conversation::class)->create([]);
 
         $message = factory(Message::class)->create([
             'conversation_id' => $conversation->id,
-            'account_id' => $conversation->account->id,
-            'contact_id' => $conversation->contact->id,
+            'account_id' => $conversation->account_id,
+            'contact_id' => $conversation->contact_id,
             'content' => 'tititi',
             'written_at' => '2009-01-01',
             'written_by_me' => false,
         ]);
 
         $request = [
-            'account_id' => $conversation->account->id,
-            'contact_id' => $conversation->contact->id,
+            'account_id' => $conversation->account_id,
+            'contact_id' => $conversation->contact_id,
             'conversation_id' => $conversation->id,
             'message_id' => $message->id,
             'written_at' => now(),
@@ -43,8 +44,8 @@ class UpdateMessageTest extends TestCase
 
         $this->assertDatabaseHas('messages', [
             'id' => $message->id,
-            'account_id' => $conversation->account->id,
-            'contact_id' => $conversation->contact->id,
+            'account_id' => $conversation->account_id,
+            'contact_id' => $conversation->contact_id,
             'conversation_id' => $conversation->id,
             'written_by_me' => true,
             'content' => 'lorem',
@@ -56,7 +57,8 @@ class UpdateMessageTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [
             'account_id' => 1,
@@ -72,7 +74,8 @@ class UpdateMessageTest extends TestCase
         app(UpdateMessage::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_message_does_not_exist()
+    /** @test */
+    public function it_throws_an_exception_if_message_does_not_exist()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([

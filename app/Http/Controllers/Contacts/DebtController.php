@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Models\Contact\Debt;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\DebtRequest;
@@ -33,6 +34,7 @@ class DebtController extends Controller
     {
         return view('people.debt.add')
             ->withContact($contact)
+            ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account))
             ->withDebt(new Debt);
     }
 
@@ -87,6 +89,7 @@ class DebtController extends Controller
     {
         return view('people.debt.edit')
             ->withContact($contact)
+            ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account))
             ->withDebt($debt);
     }
 

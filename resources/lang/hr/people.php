@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     //index
@@ -52,6 +58,7 @@ return [
     'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Jeste li sigurni da želite izbrisati kontakt? Brisanje je trajno.',
     'people_add_birthday_reminder' => 'Zaželi sretan rođendan :name',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
     'people_add_import' => 'Želite li <a href=":url">uvesti svoje kontakte</a>?',
     'people_edit_email_error' => 'Već postoji kontakt s ovom email adresom. Molimo unesite drugu.',
     'people_export' => 'Izvezi kao vCard',
@@ -85,7 +92,7 @@ return [
     'stay_in_touch_premium' => 'Potrebno je nadograditi račun za korištenje ove opcije',
     'stay_in_touch_modal_title' => 'Ostani u kontaktu',
     'stay_in_touch_modal_desc' => 'Možemo vas mailom podsjetiti da radovito ostenete u kontaktu sa {firstname}.',
-    'stay_in_touch_modal_label' => 'Pošalji mi mail svakih...',
+    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
 
     // Calls
     'modal_call_title' => 'Zabilježi poziv',
@@ -151,6 +158,7 @@ return [
     'information_edit_probably' => 'Ova osoba je otprilike...',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'I know the exact birthdate of this person...',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => 'at :company',
     'work_add_cta' => 'Update work information',
@@ -184,6 +192,7 @@ return [
     'reminders_create_success' => 'The reminder has been added successfully',
     'reminders_delete_success' => 'The reminder has been deleted successfully',
     'reminders_update_success' => 'The reminder has been updated successfully',
+    'reminders_add_optional_comment' => 'Optional comment',
 
     'reminder_frequency_day' => 'every day|every :number days',
     'reminder_frequency_week' => 'every week|every :number weeks',
@@ -221,6 +230,7 @@ return [
     'relationship_form_deletion_success' => 'The relationship has been deleted.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'You don’t have any tasks yet.',
     'tasks_form_title' => 'Title',
     'tasks_form_description' => 'Description (optional)',
@@ -237,28 +247,29 @@ return [
     'activity_type_just_hung_out' => 'druženje',
     'activity_type_watched_movie_at_home' => 'gledali film doma',
     'activity_type_talked_at_home' => 'razgovarali doma',
-    'activity_type_did_sport_activities_together' => 'bavili se sportom skupa',
+    'activity_type_did_sport_activities_together' => 'played a sport together',
     'activity_type_ate_at_his_place' => 'jeli u gostima',
     'activity_type_went_bar' => 'bili u kafiću',
     'activity_type_ate_at_home' => 'jeli doma',
-    'activity_type_picknicked' => 'picknicked',
+    'activity_type_picnicked' => 'picnicked',
     'activity_type_ate_restaurant' => 'ate at a restaurant',
     'activity_type_went_theater' => 'went to the theater',
     'activity_type_went_concert' => 'went to a concert',
     'activity_type_went_play' => 'went to a play',
     'activity_type_went_museum' => 'went to the museum',
     'activities_add_activity' => 'Add activity',
-    'activities_more_details' => 'More details',
-    'activities_hide_details' => 'Hide details',
-    'activities_delete_confirmation' => 'Are you sure you want to delete this activity?',
+    'activities_add_more_details' => 'Add more details',
+    'activities_add_emotions' => 'Add emotions',
+    'activities_add_category' => 'Indicate a category',
+    'activities_add_participants_cta' => 'Add participants',
     'activities_item_information' => ':Activity. Happened on :date',
-    'activities_add_title' => 'What did you do with :name?',
+    'activities_add_title' => 'What did you do with {name}?',
     'activities_summary' => 'Describe what you did',
     'activities_add_pick_activity' => '(Optional) Would you like to categorize this activity? You don’t have to, but it will give you statistics later on',
-    'activities_add_date_occured' => 'Date this activity occurred',
-    'activities_add_optional_comment' => 'Optional comment',
-    'activities_add_cta' => 'Record activity',
-    'activities_blank_title' => 'Keep track of what you’ve done with :name in the past, and what you’ve talked about',
+    'activities_add_date_occured' => 'The activity happened on...',
+    'activities_add_participants' => 'Who, apart from {name}, participated in this activity? (optional)',
+    'activities_add_emotions_title' => 'Do you want to log how you felt during this activity? (optional)',
+    'activities_blank_title' => 'Keep track of what you’ve done with {name} in the past, and what you’ve talked about',
     'activities_blank_add_activity' => 'Add an activity',
     'activities_add_success' => 'The activity has been added successfully',
     'activities_add_error' => 'Error when adding the activity',
@@ -272,6 +283,10 @@ return [
     'activities_profile_year_summary_activity_types' => 'Here is a breakdown of the type of activities you’ve done together in :year',
     'activities_profile_year_summary' => 'Pregled aktivnosti u godini :year',
     'activities_profile_number_occurences' => ':value aktivnost|:value aktivnosti',
+    'activities_list_participants' => 'Participants:',
+    'activities_list_emotions' => 'Emotions felt:',
+    'activities_list_date' => 'Happened on',
+    'activities_list_category' => 'Category:',
 
     // notes
     'notes_create_success' => 'Uspješno dodavanje bilješke',
@@ -289,17 +304,23 @@ return [
     'gifts_delete_confirmation' => 'Jeste li sigurni da želite izbrisati ovaj poklon?',
     'gifts_add_gift' => 'Dodaj poklon',
     'gifts_link' => 'Poveznica',
-    'gifts_for' => 'Za:',
+    'gifts_for' => 'For: {name}',
     'gifts_delete_cta' => 'Obriši',
     'gifts_add_title' => 'Uređivanje poklona za osobu: :name',
     'gifts_add_gift_idea' => 'Ideja za poklon',
     'gifts_add_gift_already_offered' => 'Već poklonjeno',
     'gifts_add_gift_received' => 'Primljen poklon',
     'gifts_add_gift_title' => 'Što je bio ovaj poklon?',
+    'gifts_add_gift_name' => 'Gift name',
     'gifts_add_link' => 'Poveznica na web stranicu (opcionalno)',
     'gifts_add_value' => 'Vrijednost (opcionalno)',
     'gifts_add_comment' => 'Komentar (opcionalno)',
-    'gifts_add_someone' => 'Ovaj poklon je za nekoga u obitelji osobe :name',
+    'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
+    'gifts_add_photo' => 'Photo (optional)',
+    'gifts_add_photo_title' => 'Add a photo for this gift',
+    'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
+    'gifts_delete_title' => 'Delete a gift',
     'gifts_ideas' => 'Ideje za poklone',
     'gifts_offered' => 'Već poklonjeno',
     'gifts_offered_as_an_idea' => 'Označi kao ideju',
@@ -354,6 +375,7 @@ return [
     'deceased_know_date' => 'I know the date this person died',
     'deceased_add_reminder' => 'Add a reminder for this date',
     'deceased_label' => 'Deceased',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => 'Deceased on :date',
     'deceased_age' => 'Age at death',
 
@@ -412,6 +434,11 @@ return [
     'life_event_delete_description' => 'Are you sure you want to delete this life event? Deletion is permanent.',
     'life_event_delete_success' => 'The life event has been deleted',
     'life_event_date_it_happened' => 'Date it happened',
+    'life_event_category_work_education' => 'Work & education',
+    'life_event_category_family_relationships' => 'Family & relationships',
+    'life_event_category_home_living' => 'Home & living',
+    'life_event_category_health_wellness' => 'Health & wellness',
+    'life_event_category_travel_experiences' => 'Travel & experiences',
     'life_event_sentence_new_job' => 'Started a new job',
     'life_event_sentence_retirement' => 'Retired',
     'life_event_sentence_new_school' => 'Started school',
@@ -442,7 +469,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'Started to wear glass or contact lenses',
     'life_event_sentence_broken_bone' => 'Broke a bone',
     'life_event_sentence_removed_braces' => 'Removed braces',
-    'life_event_sentence_surgery' => 'Got a surgery',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => 'Went to the dentist',
     'life_event_sentence_new_sport' => 'Started a sport',
     'life_event_sentence_new_hobby' => 'Started a hobby',
@@ -465,6 +492,7 @@ return [
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Related photos',
     'photo_list_cta' => 'Upload photo',
     'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
@@ -472,6 +500,8 @@ return [
     'photo_current_profile_pic' => 'Current profile picture',
     'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Delete photo',
+    'photo_next' => 'Next photo',
+    'photo_previous' => 'Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Change your avatar',
@@ -481,7 +511,24 @@ return [
     'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
     'avatar_current' => 'Keep the current avatar',
     'avatar_photo' => 'From a photo that you upload',
+    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',
+
+    // logs
+    'auditlogs_link' => 'History',
+    'auditlogs_title' => 'Everything that happened to :name',
+    'auditlogs_breadcrumb' => 'History',
+    'auditlogs_author' => 'By :name on :date',
+
+    // contact field label
+    'contact_field_label_home' => 'Home',
+    'contact_field_label_work' => 'Work',
+    'contact_field_label_cell' => 'Mobile',
+    'contact_field_label_fax' => 'Fax',
+    'contact_field_label_pager' => 'Pager',
+    'contact_field_label_main' => 'Main',
+    'contact_field_label_other' => 'Other',
+    'contact_field_label_personal' => 'Personal',
 ];

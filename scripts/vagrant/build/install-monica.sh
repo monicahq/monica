@@ -39,7 +39,7 @@ apt-get install -y mysql-server mysql-client >/dev/null
 
 echo -e "\n\033[4;32mInstalling PHP 7.2\033[0;40m"
 apt install -y curl gnupg2 apt-transport-https apt-transport-https lsb-release ca-certificates
-curl -s https://packages.sury.org/php/apt.gpg -o /etc/apt/trusted.gpg.d/php.gpg 
+curl -s https://packages.sury.org/php/apt.gpg -o /etc/apt/trusted.gpg.d/php.gpg
 echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list
 apt-get update >/dev/null
 apt-get install -y php7.3 >/dev/null
@@ -68,7 +68,7 @@ cd $DESTDIR
 if [ -n "${GIT_TAG:-}" ]; then
   git checkout tags/$GIT_TAG
 fi
-composer install --no-interaction --no-suggest --no-dev --no-progress  >/dev/null
+composer install --no-interaction --no-suggest --no-dev --no-progress --ignore-platform-reqs  >/dev/null
 composer clear-cache
 
 echo -e "\n\033[4;32mConfiguring Monica\033[0;40m"

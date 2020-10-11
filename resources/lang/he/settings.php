@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'sidebar_settings' => 'הגדרות חשבון',
     'sidebar_personalization' => 'התאמה אישית',
@@ -12,6 +18,20 @@ return [
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'משאבי DAV',
     'sidebar_settings_security' => 'אבטחה',
+    'sidebar_settings_auditlogs' => 'יומני ביקורת',
+
+    'title_general' => 'מידע כללי',
+    'title_i18n' => 'הגדרות בינלאומיות',
+    'title_layout' => 'פריסה',
+
+    'me_title' => 'פרטי הקשר שלי',
+    'me_help' => 'איש קשר זה או הייצוג <em>שלך</em> במוניקה',
+    'me_select' => 'נא לבחור איש קשר',
+    'me_no_contact' => 'טרם נבחרו אנשי קשר.',
+    'me_select_click' => 'יש ללחוץ כאן כדי לבחור אנשי קשר.',
+    'me_remove_contact' => 'הסרת השיוך',
+    'me_choose' => 'בחירה עצמית',
+    'me_choose_placeholder' => 'בחירה עצמית',
 
     'export_title' => 'יצוא נתוני החשבון שלך',
     'export_be_patient' => 'יש ללחוץ על הכפתור כדי להתחיל את הייצוא. עיבוד הייצוא עשוי לארוך מספר דקות - נא להתאזר בסבלנות ולא ללחוץ על הכפתור שוב.',
@@ -29,6 +49,8 @@ return [
     'name_order_firstname_nickname_lastname' => '<שם פרטי> (<כינוי>) <שם משפחה> - ישראל (שרוליק) ישראלי',
     'name_order_lastname_firstname_nickname' => '<שם משפחה> <שם פרטי> (<כינוי>) - ישראלי ישראל (שרוליק)',
     'name_order_lastname_nickname_firstname' => '<שם משפחה> (<כינוי>) <שם פרטי> - ישראלי (שרוליק) ישראל',
+    'name_order_nickname_firstname_lastname' => '<כינוי>‏ (<שם פרטי> <שם משפחה>) - סחבק (ישראל ישראלי)',
+    'name_order_nickname_firstname_lastname' => '<כינוי>‏ (<שם משפחה> <שם פרטי>) - סחבק (ישראלי ישראל)',
     'name_order_nickname' => '<כינוי> - שרוליק',
     'currency' => 'מטבע',
     'name' => 'שמך: :name',
@@ -44,7 +66,8 @@ return [
     'layout_big' => 'הרוחב המלא של הדפדפן',
     'save' => 'עדכון העדפות',
     'delete_title' => 'מחיקת החשבון שלך',
-    'delete_desc' => 'למחוק את החשבון שלך? אזהרה: מחיקה היא לצמיתות וכל הנתונים שלך יימחקו לצמיתות.',
+    'delete_desc' => 'האם רצונך הוא לסגור את החשבון? אזהרה: מחיקה היא לצמיתות וכל הנתונים שלך יימחקו לצמיתות. המינויים שלך (אם יש לך כאלה) יבוטלו באופן מיידי גם כן.',
+    'delete_other_desc' => 'לצורך הבהרה: הנתונים במסד הנתונים הראשי יימחקו מיד. עם זאת, כפי שצוין במדיניות הפרטיות שלנו, אנו עורכים גיבויים יומיים של מסד הנתונים למקרה של תקלה ומסד נתונים זה נשמר למשך 30 יום - לאחר מכן הנתונים שלך יימחקו לגמרי. מחיקת הנתונים שלך באופן נקודתי מכל אחד ואחד מהגיבויים היא בגדר הזיה. דרך אגב, נתונים אלו מוצפנים בשרת מאובטח מאוד שמתאחסן בשרתים של Amazon ולאף אחד אין את מפתח ההפצנה חוץ מאתנו. לכן, הנתונים שלך יימחקו לגמרי תוך 30 יום מכל הגיבויים ואף אחד לא יוכל לדעת שהנתונים האלו אי פעם היו קיימים מלכתחילה.',
     'reset_desc' => 'לאפס את החשבון שלך? פעולה זו תסיר את כל אנשי הקשר שלך ואת כל המידע המשויך להם. החשבון שלך לא יימחק.',
     'reset_title' => 'איפוס החשבון שלך',
     'reset_cta' => 'איפוס חשבון',
@@ -54,6 +77,7 @@ return [
     'delete_cta' => 'מחיקת חשבון',
     'settings_success' => 'ההעדפות עודכנו!',
     'locale' => 'שפה בה נעשה שימוש ביישום',
+    'locale_help' => 'מעניין אותך לסייע בתרגום מוניקה לשפה חדשה? נא להיכנס <a href=":url" target="_blank" lang="he">לקישור הבא לקבלת מידע נוסף</a>.',
     'locale_ar' => 'ערבית',
     'locale_cs' => 'צ׳כית',
     'locale_de' => 'גרמנית',
@@ -63,12 +87,15 @@ return [
     'locale_he' => 'עברית',
     'locale_hr' => 'קרואטית',
     'locale_it' => 'איטלקית',
+    'locale_ja' => 'יפנית',
     'locale_nl' => 'הולנדית',
     'locale_pt' => 'פורטוגלית',
-    'locale_pt-BR' => 'ברזילאית',
+    'locale_pt-BR' => 'פורטוגלית ברזילאית',
     'locale_ru' => 'רוסית',
     'locale_zh' => 'סינית מפושטת',
+    'locale_zh-TW' => 'סינית מסורתית',
     'locale_tr' => 'טורקית',
+    'locale_en-GB' => 'אנגלית בריטית',
 
     'security_title' => 'אבטחה',
     'security_help' => 'שינוי נדבכי האבטחה של החשבון שלך.',
@@ -94,22 +121,6 @@ return [
     '2fa_disable_description' => 'האימות הדו־שלבי הושבת בחשבון שלך. כדאי לנקוט במשנה זהירות מעתה כיוון שהחשבון שלך אינו מאובטח!',
     '2fa_disable_success' => 'אימות דו־שלבי מושבת',
     '2fa_disable_error' => 'אירעה שגיאה בעת הניסיון להשבית את האימות הדו־שלבי',
-    'u2f_title' => 'מפתח אבטחה U2F',
-    'u2f_enable_description' => 'הוספת מפתח אבטחה חדש מסוג U2F',
-    'u2f_key_name_help' => 'נא להעניק שם למפתח שלך.',
-    'u2f_key_name' => 'שם מפתח:',
-    'u2f_buttonAdvise' => 'אם למפתח האבטחה שלך יש כפתור, יש ללחוץ עליו.',
-    'u2f_noButtonAdvise' => 'אם אין לו, יש להסיר אותו ולהכניס שוב.',
-    'u2f_success' => 'המפתח שלך מזוהה ומאומת.',
-    'u2f_insertKey' => 'נא להכניס את מפתח האבטחה שלך.',
-    'u2f_error_other_error' => 'אירעה שגיאה.',
-    'u2f_error_bad_request' => 'הכתובת המבוקשת אינה תואמת את מזהה היישום או שהחיבור שלך אינו HTTPS',
-    'u2f_error_configuration_unsupported' => 'אין תמיכה בתצורת לקוח.',
-    'u2f_error_device_ineligible' => 'ההתקן שהוצג אינו מתאים לבקשה זו. עבור בקשת רישום יתכן שהאסימון כבר רשום ולבקשת כניסה יכול להיות שהאסימון לא מכיר את מנגנון המפתח שהוצג.',
-    'u2f_error_timeout' => 'המתנת זמן רב מדי והמענה לבקשה לא הגיע.',
-    'u2f_last_use' => 'שימוש אחרון: {timestamp}',
-    'u2f_delete_confirmation' => 'למחוק את המפתח הזה?',
-    'u2f_delete_success' => 'המפתח נמחק',
 
     'webauthn_title' => 'מפתח אבטחה — פרוטוקול WebAuthn',
     'webauthn_enable_description' => 'הוספת מפתח אבטחה חדש',
@@ -187,7 +198,7 @@ return [
     'subscriptions_downgrade_rule_users_constraint' => 'יש לך <a href=":url">משתמש אחד</a> בחשבון כרגע.|יש לך <a href=":url">:count משתמשים</a> בחשבון כרגע.',
     'subscriptions_downgrade_rule_invitations' => 'אסור שתהיינה לך הזמנות ממתינות',
     'subscriptions_downgrade_rule_invitations_constraint' => 'יש לך כרגע <a href=":url">הזמנה אחת בהמתנה</a> שנשלחה למישהו.|יש לך כרגע <a href=":url">:count הזמנות בהמתנה</a> שנשלחו לאנשים.',
-    'subscriptions_downgrade_rule_contacts' => 'לא יכולים להיות לך יותר מ־:number אנשי קשר',
+    'subscriptions_downgrade_rule_contacts' => 'לא יכולים להיות לך יותר מ־:number אנשי קשר פעילים',
     'subscriptions_downgrade_rule_contacts_constraint' => 'כרגע יש לך <a href=":url">איש קשר יחיד</a>.|כרגע יש לך <a href=":url">:count אנשי קשר</a>.',
     'subscriptions_downgrade_cta' => 'שנמוך',
     'subscriptions_downgrade_success' => 'חזרת לתכנית החינמית!',
@@ -292,21 +303,25 @@ return [
 
     'api_title' => 'גישת API',
     'api_description' => 'ניתן להשתמש ב־API כדי לשנות את הנתונים של מוניקה דרך יישום חיצוני, כגון יישומון לנייד למשל.',
+    'api_help' => 'כדי להשתמש ב־API, חובה להשתמש באסימון. ניתן ליצור אסימון גישה אישי (אימות חשוף יותר) או לאמת לקוח OAuth כדי שייצור אותו עבורך. כדאי לעיין <a href=":url">בתיעוד של ה־API</a>.',
+    'api_endpoint' => 'נקודת הגישה ל־API של העותק הזה של מוניקה היא:',
 
     'api_personal_access_tokens' => 'אסימון לגישה אישית',
     'api_pao_description' => 'נא לוודא שהאסימון הזה מועבר לידיים מהימנות - כיוון שהאסימון מעניק גישה לכל הנתונים שלך.',
-    'api_token_title' => 'אסימון לגישה אישית',
+    'api_token_title' => 'אסימונים לגישה אישית',
     'api_token_create_new' => 'יצירת אסימון חדש',
     'api_token_not_created' => 'לא יצרת אסימונים לגישה אישית.',
-    'api_token_name' => 'שם',
+    'api_token_name' => 'שם האסימון',
+    'api_token_expire' => 'יפוג ב־{date}',
     'api_token_delete' => 'מחיקה',
     'api_token_create' => 'יצירת אסימון',
     'api_token_scopes' => 'תחומים',
     'api_token_help' => 'הנה אסימון הגישה האישית החדש שלך. זאת הפעם היחידה שהוא יופיע כך שעדיף לא לאבד אותו! כעת ניתן להשתמש באסימון הזה כדי לבצע בקשות API.',
 
-    'api_oauth_clients' => 'לקוחות ה־Oauth שלך',
+    'api_oauth_clients' => 'לקוחות ה־OAuth שלך',
     'api_oauth_clients_desc' => 'אגף זה מסייע לך לרשום לקוחות OAuth משלך.',
-    'api_oauth_title' => 'לקוחות Oauth',
+    'api_oauth_clients_desc2' => 'יש להשתמש במזהה לקוח זה כדי לבקש אסימון חדש ולהמיר את הקודים למטרת גישה לאסימוני גישה. יש לעיין ב<a href="{url}">תיעוד שלLaravel Passport</a> לקבלת מידע נוסף.',
+    'api_oauth_title' => 'לקוחות OAuth',
     'api_oauth_create_new' => 'יצירת לקוח חדש',
     'api_oauth_edit' => 'עריכת לקוח',
     'api_oauth_not_created' => 'לא יצרת לקוחות OAuth כלשהם.',
@@ -319,8 +334,9 @@ return [
     'api_oauth_redirecturl_help' => 'כתובת הקריאה החוזרת לאימות היישום שלך.',
 
     'api_authorized_clients' => 'רשימת לקוחות מורשים',
-    'api_authorized_clients_desc' => 'אגף זה מציג את כל הלקוחות להם אישרת גישה ליישום שלך. ניתן לשלול את האישור הזה בכל עת.',
+    'api_authorized_clients_desc' => 'אגף זה מציג את כל הלקוחות להם הענקת גישה לנתוני היישומונים שלך. ניתן לשלול את האישור הזה בכל עת.',
     'api_authorized_clients_title' => 'יישומים מאושרים',
+    'api_authorized_clients_none' => 'עדיין אין לקוחות מאומתים.',
     'api_authorized_clients_name' => 'שם',
     'api_authorized_clients_scopes' => 'תחומים',
 
@@ -355,7 +371,7 @@ return [
     'personalization_genders_modal_name_help' => 'השם המשמש להצגת המגדר בעמוד יצירת הקשר.',
     'personalization_genders_modal_sex' => 'מגדר',
     'personalization_genders_modal_sex_help' => 'משמש לציון יחסים ומהלך ייבוא/ייצוא של כרטיס ביקור - vCard.',
-    'personalization_genders_modal_default' => 'האם המגדר החדש הזה מיועד לאיש קשר חדש?',
+    'personalization_genders_modal_default' => 'נא לבחור את מגדר בררת המחדל לאנשי קשר חדשים',
     'personalization_genders_modal_delete' => 'מחיקת סוג מגדר',
     'personalization_genders_modal_delete_desc' => 'למחוק את {name}?',
     'personalization_genders_modal_delete_question' => 'לאחד מאנשי הקשר שלך מוגדר המגדר הזה. אם המגדר יימחק, לאיזה מגדר לשייך את איש הקשר?|ל־{count} מאנשי הקשר שלך מוגדר המגדר הזה. אם המגדר יימחק, לאיזה מגדר לשייך את אנשי הקשר?',
@@ -383,7 +399,8 @@ return [
     'personalization_module_title' => 'תכונות',
     'personalization_module_desc' => 'חלק מהאנשים לא זקוקים לכל התכונות. להלן ניתן לכבות או להפעיל תכונות בהן נעשה שימוש בגיליון אנשי הקשר. השינוי הזה ישפיע על כל אנשי הקשר שלך. נא לשים לב שכיבוי של תכונה אחת או יותר לא יגרום לאבדן מידע, התכונה פשוט תוסתר.',
 
-    'personalisation_paid_upgrade' => 'תכונה זו היא תכונת פרמיום שדורשת הפעלת מינוי בתשלום. ניתן לשדרג את החשבון שלך על ידי מעבר להגדרות > מינוי.',
+    'personalisation_paid_upgrade' => 'תכונה זו היא תכונת פרמיום שדורשת הפעלת מינוי בתשלום. ניתן לשדרג את החשבון שלך על ידי מעבר ל<a href=":url">הגדרות > מינוי</a>.',
+    'personalisation_paid_upgrade_vue' => 'תכונה זו היא תכונת פרמיום שדורשת הפעלת מינוי בתשלום. ניתן לשדרג את החשבון שלך על ידי מעבר ל<a href="{url}">הגדרות > מינוי</a>.',
 
     'reminder_time_to_send' => 'השעה ביום בה אמורות להישלח התזכורות',
     'reminder_time_to_send_help' => 'לידיעתך, התזכורת הבאה שלך תישלח ב־<span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
@@ -436,7 +453,7 @@ return [
     'personalization_life_event_type_home_improvement' => 'שיפוץ הבית',
     'personalization_life_event_type_holidays' => 'חגים',
     'personalization_life_event_type_new_vehicle' => 'כלי רכב חדש',
-    'personalization_life_event_type_new_roommate' => 'New roommate',
+    'personalization_life_event_type_new_roommate' => 'שותף/שותפה חדש/ה',
     'personalization_life_event_type_overcame_an_illness' => 'החלמה ממחלה',
     'personalization_life_event_type_quit_a_habit' => 'גמילה',
     'personalization_life_event_type_new_eating_habits' => 'הרגלי אכילה חדשים',
@@ -469,7 +486,7 @@ return [
     'dav_clipboard_copied' => 'הערך הועתק ללוח הגזירים שלך',
     'dav_url_base' => 'כתובת בסיס לכל המשאבים מסוג CardDAV ו־CalDAV:',
     'dav_connect_help' => 'ניתן להתחבר לאנשי הקשר ו/או ללוחות השנה שלך עם כתובת בסיס זו מהטלפון או המחשב שלך.',
-    'dav_connect_help2' => 'ניתן להשתמש בפרטי הכניסה שלך (דוא״ל) וססמה או ליצור אסימון API לטובת אימות.',
+    'dav_connect_help2' => 'עליך להשתמש בשם הכניסה שלך (כתובת דוא״ל) וליצור אסימון API בתור ססמה לאימות.',
     'dav_url_carddav' => 'כתובת CardDAV למשאבי אנשי קשר:',
     'dav_url_caldav_birthdays' => 'כתובת CalDAV למשאבי ימי הולדת:',
     'dav_url_caldav_tasks' => 'כתובת CalDAV עבור משאבי משימות:',
@@ -478,4 +495,11 @@ return [
     'dav_carddav_export' => 'ייצוא כל אנשי הקשר בקובץ אחד',
     'dav_caldav_birthdays_export' => 'ייצוא כל ימי ההולדת בקובץ אחד',
     'dav_caldav_tasks_export' => 'ייצוא כל המשימות בקובץ אחד',
+
+    'archive_title' => 'העברת כל אנשי הקשר בחשבון שלך לארכיון',
+    'archive_desc' => 'פעולה זו תעביר את כל אנשי הקשר בחשבון שלך לארכיון.',
+    'archive_cta' => 'העברת כל אנשי הקשר לארכיון',
+
+    'logs_title' => 'כל מה שקרה לחשבון הזה',
+    'logs_author' => 'מאת :name ב־:date',
 ];

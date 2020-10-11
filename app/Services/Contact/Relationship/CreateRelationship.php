@@ -31,7 +31,7 @@ class CreateRelationship extends BaseService
      *
      * @return Relationship
      */
-    public function execute(array $data) : Relationship
+    public function execute(array $data): Relationship
     {
         $this->validate($data);
 
@@ -65,7 +65,7 @@ class CreateRelationship extends BaseService
      *
      * @return Relationship
      */
-    public function setRelationship(Contact $contact, Contact $otherContact, RelationshipType $relationshipType) : Relationship
+    public function setRelationship(Contact $contact, Contact $otherContact, RelationshipType $relationshipType): Relationship
     {
         return Relationship::create([
             'account_id' => $relationshipType->account_id,

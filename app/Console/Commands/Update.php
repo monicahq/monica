@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\DBHelper;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -21,6 +22,7 @@ class Update extends Command
     protected $signature = 'monica:update
                             {--force : Force the operation to run when in production.}
                             {--composer-install : Updating composer dependencies.}
+                            {--skip-storage-link : Skip storage link create.}
                             {--dev : Install dev dependencies too.}';
 
     /**
@@ -58,7 +60,7 @@ class Update extends Command
                 $this->commandExecutor->artisan('✓ Maintenance mode: on', 'down', [
                     '--message' => 'Upgrading Monica v'.config('monica.app_version'),
                     '--retry' => '10',
-                    ]);
+                ]);
 
                 // Clear or rebuild all cache
                 if (config('cache.default') != 'database' || Schema::hasTable(config('cache.stores.database.table'))) {
@@ -83,7 +85,7 @@ class Update extends Command
                     $this->commandExecutor->exec('✓ Updating composer dependencies', 'composer install --no-interaction --no-suggest --ignore-platform-reqs'.($this->option('dev') === false ? ' --no-dev' : ''));
                 }
 
-                if ($this->getLaravel()->environment() != 'testing' && ! file_exists(public_path('storage'))) {
+                if ($this->option('skip-storage-link') !== true && $this->getLaravel()->environment() != 'testing' && ! file_exists(public_path('storage'))) {
                     $this->commandExecutor->artisan('✓ Symlink the storage folder', 'storage:link');
                 }
 
@@ -92,6 +94,8 @@ class Update extends Command
                 }
 
                 $this->commandExecutor->artisan('✓ Performing migrations', 'migrate', ['--force']);
+
+                $this->commandExecutor->artisan('✓ Check for encryption keys', 'monica:passport', ['--force']);
 
                 $this->commandExecutor->artisan('✓ Ping for new version', 'monica:ping', ['--force']);
 
@@ -110,7 +114,7 @@ class Update extends Command
 
     private function migrateCollationTest()
     {
-        $connection = DB::connection();
+        $connection = DBHelper::connection();
 
         if ($connection->getDriverName() != 'mysql') {
             return false;

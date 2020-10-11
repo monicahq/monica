@@ -29,7 +29,7 @@ class UpdateTag extends BaseService
      * @param array $data
      * @return Tag
      */
-    public function execute(array $data) : Tag
+    public function execute(array $data): Tag
     {
         $this->validate($data);
 

@@ -13,7 +13,7 @@ class FixJsonColumn extends Migration
      */
     public function up()
     {
-        $connection = DB::connection();
+        $connection = DBHelper::connection();
 
         if ($connection->getDriverName() != 'mysql') {
             return;

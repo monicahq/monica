@@ -8,7 +8,7 @@
       <p><a href="{{ route('people.show', $contact) }}">< {{ $contact->name }}</a></p>
       <h3 class="f3 fw5">{{ trans('people.information_edit_title', ['name' => $contact->first_name]) }}</h3>
 
-      @if (! auth()->user()->account->hasLimitations())
+      @if (! $accountHasLimitations)
       <p class="import">{!! trans('people.people_add_import', ['url' => 'settings/import']) !!}</p>
       @endif
     </div>
@@ -24,7 +24,7 @@
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           {{-- This check is for the cultures that are used to say the last name first --}}
           <div class="mb3 mb0-ns">
-            @if (auth()->user()->getNameOrderForForms() == 'firstname')
+            @if ($formNameOrder == 'firstname')
 
             <div class="dt-ns dt--fixed di">
               <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
@@ -34,6 +34,15 @@
                   :id="'firstname'"
                   :required="true"
                   :title="'{{ trans('people.people_add_firstname') }}'">
+                </form-input>
+              </div>
+              <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
+                <form-input
+                  value="{{ $contact->middle_name }}"
+                  :input-type="'text'"
+                  :id="'middlename'"
+                  :required="false"
+                  :title="'{{ trans('people.people_add_middlename') }}'">
                 </form-input>
               </div>
               <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
@@ -153,9 +162,4 @@
       </form>
     </div>
   </div>
-
-  <form method="POST" action="{{ route('people.destroy', $contact) }}" id="contact-delete-form" class="hidden">
-    @method('DELETE')
-    @csrf
-  </form>
 @endsection

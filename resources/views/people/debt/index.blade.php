@@ -22,7 +22,7 @@
 
   <div class="col-12 debts-list">
 
-    <ul class="table">
+    <ul class="table" cy-name="debts-body" cy-items="{{ $contact->debts->implode('id', ',') }}">
       @foreach($contact->debts as $debt)
       <li class="table-row" cy-name="debt-item-{{ $debt->id }}">
         <div class="table-cell date">
@@ -31,12 +31,12 @@
         <div class="table-cell debt-nature">
           @if ($debt->in_debt == 'yes')
             {{ trans('people.debt_you_owe', [
-                'amount' => App\Helpers\MoneyHelper::format($debt->amount)
+                'amount' => $debt->displayValue
             ]) }}
           @else
             {{ trans('people.debt_they_owe', [
                 'name' => $contact->first_name,
-                'amount' => App\Helpers\MoneyHelper::format($debt->amount)
+                'amount' => $debt->displayValue
             ]) }}
           @endif
         </div>
@@ -49,15 +49,15 @@
           <a href="{{ route('people.debts.edit', [$contact, $debt]) }}" cy-name="edit-debt-button-{{ $debt->id }}">
             <i class="fa fa-pencil" aria-hidden="true"></i>
           </a>
-          <a href="#" cy-name="delete-debt-button-{{ $debt->id }}" onclick="if (confirm('{{ trans('people.debt_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
-            <i class="fa fa-trash-o" aria-hidden="true"></i>
-          </a>
+          <form method="POST" action="{{ route('people.debts.destroy', [$contact, $debt]) }}">
+            @method('DELETE')
+            @csrf
+            <confirm message="{{ trans('people.debt_delete_confirmation') }}" cy-name="delete-debt-button-{{ $debt->id }}" :name="'delete-debt'">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </confirm>
+          </form>
         </div>
 
-        <form method="POST" action="{{ route('people.debts.destroy', [$contact, $debt]) }}" class="entry-delete-form hidden">
-          @method('DELETE')
-          @csrf
-        </form>
       </li>
       @endforeach
       <li class="table-row">
@@ -67,11 +67,11 @@
             @if ($contact->isOwedMoney())
               {{ trans('people.debt_they_owe', [
                   'name' => $contact->first_name,
-                  'amount' => App\Helpers\MoneyHelper::format($contact->totalOutstandingDebtAmount())
+                  'amount' => App\Helpers\MoneyHelper::format($contact->totalOutstandingDebtAmount(), Auth::user()->currency)
               ]) }}
             @else
               {{ trans('people.debt_you_owe', [
-                  'amount' => App\Helpers\MoneyHelper::format(-$contact->totalOutstandingDebtAmount())
+                  'amount' => App\Helpers\MoneyHelper::format(-$contact->totalOutstandingDebtAmount(), Auth::user()->currency)
               ]) }}
             @endif
           </strong>

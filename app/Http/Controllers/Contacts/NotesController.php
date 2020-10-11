@@ -22,7 +22,6 @@ class NotesController extends Controller
         foreach ($notes as $note) {
             $data = [
                 'id' => $note->id,
-                'parsed_body' => $note->parsedbody,
                 'body' => $note->body,
                 'is_favorited' => $note->is_favorited,
                 'favorited_at' => $note->favorited_at,
@@ -44,7 +43,7 @@ class NotesController extends Controller
     {
         return $contact->notes()->create([
             'account_id' => auth()->user()->account_id,
-            'body' => $request->get('body'),
+            'body' => $request->input('body'),
         ]);
     }
 

@@ -13,7 +13,11 @@
     @endif
 
     {{-- AGE --}}
-    @if ($relationship->ofContact->birthday_special_date_id)
+    @if ($relationship->ofContact->is_dead)
+      @if ($relationship->ofContact->deceasedDate)
+        <span class="{{ htmldir() == 'ltr' ? '' : 'fr' }}">({{ $relationship->ofContact->getAgeAtDeath() }})</span>
+      @endif
+    @elseif ($relationship->ofContact->birthday_special_date_id)
       @if ($relationship->ofContact->birthdate->getAge())
         <span class="{{ htmldir() == 'ltr' ? '' : 'fr' }}">({{ $relationship->ofContact->birthdate->getAge() }})</span>
       @endif
@@ -21,15 +25,14 @@
 
     {{-- ACTIONS: EDIT/DELETE --}}
     <a href="{{ route('people.relationships.edit', [$contact, $relationship]) }}" class="action-link {{ $contact->hashID() }}-edit-relationship">
-        {{ trans('app.edit') }}
-      </a>
-      <a href="#" onclick="if (confirm('{{ trans('people.relationship_unlink_confirmation') }}')) { $(this).closest('.sidebar-box-paragraph').find('.entry-delete-form').submit(); } return false;" class="action-link">
-      {{ trans('app.delete') }}
+      {{ trans('app.edit') }}
     </a>
-
-    <form method="POST" action="{{ route('people.relationships.destroy', [$contact, $relationship]) }}" class="entry-delete-form hidden">
+    <form method="POST" action="{{ route('people.relationships.destroy', [$contact, $relationship]) }}">
       @method('DELETE')
       @csrf
+      <confirm message="{{ trans('people.relationship_unlink_confirmation') }}" link-class="action-link">
+        {{ trans('app.delete') }}
+      </confirm>
     </form>
   </div>
   <div class="cb"></div>

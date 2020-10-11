@@ -65,10 +65,10 @@ class ApiAddressController extends ApiController
     {
         try {
             $address = app(CreateAddress::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account_id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -94,12 +94,12 @@ class ApiAddressController extends ApiController
     {
         try {
             $address = app(UpdateAddress::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'address_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'address_id' => $addressId,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                        'address_id' => $addressId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -123,7 +123,7 @@ class ApiAddressController extends ApiController
     {
         try {
             app(DestroyAddress::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'address_id' => $addressId,
             ]);
         } catch (ModelNotFoundException $e) {

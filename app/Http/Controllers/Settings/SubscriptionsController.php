@@ -2,48 +2,56 @@
 
 namespace App\Http\Controllers\Settings;
 
+use Illuminate\View\View;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use Laravel\Cashier\Cashier;
 use Laravel\Cashier\Payment;
+use App\Helpers\AccountHelper;
 use App\Helpers\InstanceHelper;
 use App\Exceptions\StripeException;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\Factory;
+use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent as StripePaymentIntent;
 use Laravel\Cashier\Exceptions\IncompletePayment;
+use App\Services\Account\Settings\ArchiveAllContacts;
 
 class SubscriptionsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @return View|Factory|RedirectResponse
      */
     public function index()
     {
+        $account = auth()->user()->account;
+
         if (! config('monica.requires_subscription')) {
             return redirect()->route('settings.index');
         }
 
-        $subscription = auth()->user()->account->getSubscribedPlan();
-        if (! auth()->user()->account->isSubscribed() && (! $subscription || $subscription->ended())) {
+        $subscription = $account->getSubscribedPlan();
+        if (! $account->isSubscribed() && (! $subscription || $subscription->ended())) {
             return view('settings.subscriptions.blank', [
                 'numberOfCustomers' => InstanceHelper::getNumberOfPaidSubscribers(),
             ]);
         }
 
-        $planId = auth()->user()->account->getSubscribedPlanId();
+        $planId = $account->getSubscribedPlanId();
         try {
-            $nextBillingDate = auth()->user()->account->getNextBillingDate();
+            $nextBillingDate = $account->getNextBillingDate();
         } catch (StripeException $e) {
             $nextBillingDate = trans('app.unknown');
         }
 
-        $hasInvoices = auth()->user()->account->hasStripeId() && auth()->user()->account->hasInvoices();
+        $hasInvoices = $account->hasStripeId() && $account->hasInvoices();
         $invoices = null;
         if ($hasInvoices) {
-            $invoices = auth()->user()->account->invoices();
+            $invoices = $account->invoices();
         }
 
         return view('settings.subscriptions.account', [
@@ -52,13 +60,15 @@ class SubscriptionsController extends Controller
             'subscription' => $subscription,
             'hasInvoices' => $hasInvoices,
             'invoices' => $invoices,
+            'accountHasLimitations' => AccountHelper::hasLimitations($account),
         ]);
     }
 
     /**
      * Display the upgrade view page.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return View|Factory|RedirectResponse
      */
     public function upgrade(Request $request)
     {
@@ -82,7 +92,8 @@ class SubscriptionsController extends Controller
     /**
      * Display the confirm view page.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @return View|Factory|RedirectResponse
+     * @throws ApiErrorException
      */
     public function confirmPayment($id)
     {
@@ -97,9 +108,9 @@ class SubscriptionsController extends Controller
     /**
      * Display the upgrade success page.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @return View|Factory|RedirectResponse
      */
-    public function upgradeSuccess(Request $request)
+    public function upgradeSuccess()
     {
         if (! config('monica.requires_subscription')) {
             return redirect()->route('settings.index');
@@ -111,7 +122,8 @@ class SubscriptionsController extends Controller
     /**
      * Display the downgrade success page.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return View|Factory|RedirectResponse
      */
     public function downgradeSuccess(Request $request)
     {
@@ -123,32 +135,64 @@ class SubscriptionsController extends Controller
     }
 
     /**
+     * Display the archive all your contacts page.
+     *
+     * @return View|Factory|RedirectResponse
+     */
+    public function archive()
+    {
+        return view('settings.subscriptions.archive');
+    }
+
+    /**
+     * Process the Archive process.
+     *
+     * @return RedirectResponse
+     */
+    public function processArchive()
+    {
+        app(ArchiveAllContacts::class)->execute([
+            'account_id' => auth()->user()->account_id,
+        ]);
+
+        return redirect()->route('settings.subscriptions.downgrade');
+    }
+
+    /**
      * Display the downgrade view page.
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     * @return View|Factory|RedirectResponse
      */
     public function downgrade()
     {
+        $account = auth()->user()->account;
+
         if (! config('monica.requires_subscription')) {
             return redirect()->route('settings.index');
         }
 
-        $subscription = auth()->user()->account->getSubscribedPlan();
-        if (! auth()->user()->account->isSubscribed() && ! $subscription) {
+        $subscription = $account->getSubscribedPlan();
+        if (! $account->isSubscribed() && ! $subscription) {
             return redirect()->route('settings.index');
         }
 
-        return view('settings.subscriptions.downgrade-checklist');
+        return view('settings.subscriptions.downgrade-checklist')
+            ->with('numberOfActiveContacts', $account->contacts()->active()->count())
+            ->with('numberOfPendingInvitations', $account->invitations()->count())
+            ->with('numberOfUsers', $account->users()->count())
+            ->with('accountHasLimitations', AccountHelper::hasLimitations($account))
+            ->with('hasReachedContactLimit', AccountHelper::hasReachedContactLimit($account))
+            ->with('canDowngrade', AccountHelper::canDowngrade($account));
     }
 
     /**
      * Process the downgrade process.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function processDowngrade()
     {
-        if (! auth()->user()->account->canDowngrade()) {
+        if (! AccountHelper::canDowngrade(auth()->user()->account)) {
             return redirect()->route('settings.subscriptions.downgrade');
         }
 
@@ -171,7 +215,8 @@ class SubscriptionsController extends Controller
     /**
      * Process the upgrade payment.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function processPayment(Request $request)
     {
@@ -199,9 +244,10 @@ class SubscriptionsController extends Controller
     /**
      * Download the invoice as PDF.
      *
-     * @return \Illuminate\Http\Response
+     * @param mixed $invoiceId
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function downloadInvoice(Request $request, $invoiceId)
+    public function downloadInvoice($invoiceId)
     {
         return auth()->user()->account->downloadInvoice($invoiceId, [
             'vendor'  => 'Monica',
@@ -212,13 +258,13 @@ class SubscriptionsController extends Controller
     /**
      * Download the invoice as PDF.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|null
      */
-    public function forceCompletePaymentOnTesting(Request $request)
+    public function forceCompletePaymentOnTesting(Request $request): ?RedirectResponse
     {
         if (App::environment('production')) {
-            return;
+            return null;
         }
         $subscription = auth()->user()->account->getSubscribedPlan();
         $subscription->stripe_status = 'active';

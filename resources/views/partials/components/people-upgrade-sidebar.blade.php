@@ -1,4 +1,4 @@
-@if (auth()->user()->account->hasLimitations())
+@if ($accountHasLimitations)
   <div class="mb4">
     <img src="img/people/upgrade_account.png">
     <div class="pa3 br bl bb br2 b--black-10 br--bottom bg-white">

@@ -36,7 +36,7 @@ class ImportTask extends BaseService
      * @param array $data
      * @return array
      */
-    public function execute(array $data) : array
+    public function execute(array $data): array
     {
         $this->validate($data);
 
@@ -57,7 +57,7 @@ class ImportTask extends BaseService
      * @param Task $task
      * @return array
      */
-    private function process(array $data, Task $task) : array
+    private function process(array $data, Task $task): array
     {
         $entry = $this->getEntry($data);
 
@@ -87,7 +87,7 @@ class ImportTask extends BaseService
      * @param VCalendar $entry
      * @return bool
      */
-    private function canImportCurrentEntry(VCalendar $entry) : bool
+    private function canImportCurrentEntry(VCalendar $entry): bool
     {
         return ! is_null($entry->VTODO);
     }
@@ -115,7 +115,7 @@ class ImportTask extends BaseService
      * @param array $data
      * @return VCalendar|null
      */
-    private function getEntry($data)
+    private function getEntry($data): ?VCalendar
     {
         try {
             $entry = Reader::read($data['entry'], Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
@@ -125,6 +125,8 @@ class ImportTask extends BaseService
         } catch (ParseException $e) {
             // catch parse errors
         }
+
+        return null;
     }
 
     /**

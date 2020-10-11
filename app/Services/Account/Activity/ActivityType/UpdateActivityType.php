@@ -30,7 +30,7 @@ class UpdateActivityType extends BaseService
      * @param array $data
      * @return ActivityType
      */
-    public function execute(array $data) : ActivityType
+    public function execute(array $data): ActivityType
     {
         $this->validate($data);
 

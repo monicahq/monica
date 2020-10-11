@@ -14,12 +14,13 @@ class UpdateGenderTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_a_gender()
+    /** @test */
+    public function it_updates_a_gender()
     {
         $gender = factory(Gender::class)->create([]);
 
         $request = [
-            'account_id' => $gender->account->id,
+            'account_id' => $gender->account_id,
             'gender_id' => $gender->id,
             'name' => 'man',
             'type' => 'M',
@@ -40,7 +41,8 @@ class UpdateGenderTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $gender = factory(Gender::class)->create([]);
 
@@ -53,7 +55,8 @@ class UpdateGenderTest extends TestCase
         app(UpdateGender::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_place_is_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_place_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create([]);
         $gender = factory(Gender::class)->create([]);

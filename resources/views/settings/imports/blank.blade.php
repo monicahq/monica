@@ -45,7 +45,7 @@
 
             <p class="cta"><a href="{{ route('settings.upload') }}" class="btn">{{ trans('settings.import_blank_cta') }}</a></p>
 
-            @if (config('monica.requires_subscription') && auth()->user()->account->hasLimitations())
+            @if (config('monica.requires_subscription') && $accountHasLimitations)
               <p class="requires-subscription">{{ trans('settings.import_need_subscription') }}</p>
             @endif
           </div>

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\DAV\Backend\CalDAV;
 
 use Sabre\DAV;
-use App\Models\User\SyncToken;
 use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Backend\AbstractBackend;
 
@@ -128,6 +127,8 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
         if ($backend) {
             return $backend->getChanges($syncToken);
         }
+
+        return [];
     }
 
     /**
@@ -176,6 +177,8 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
                 })
                 ->toArray();
         }
+
+        return [];
     }
 
     /**
@@ -204,6 +207,8 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
                 return $backend->prepareData($obj);
             }
         }
+
+        return [];
     }
 
     /**
@@ -247,12 +252,13 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      * @param string $calendarData
      * @return string|null
      */
-    public function updateCalendarObject($calendarId, $objectUri, $calendarData)
+    public function updateCalendarObject($calendarId, $objectUri, $calendarData): ?string
     {
         $backend = $this->getBackend($calendarId);
-        if ($backend) {
-            return $backend->updateOrCreateCalendarObject($objectUri, $calendarData);
-        }
+
+        return $backend ?
+            $backend->updateOrCreateCalendarObject($objectUri, $calendarData)
+            : null;
     }
 
     /**

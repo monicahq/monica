@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Conversation;
+namespace Tests\Unit\Services\Contact\Tag;
 
 use Tests\TestCase;
 use App\Models\Contact\Tag;
@@ -15,12 +15,13 @@ class DestroyTagTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_a_tag()
+    /** @test */
+    public function it_destroys_a_tag()
     {
         $contact = factory(Contact::class)->create([]);
 
         $tag = factory(Tag::class)->create([
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ]);
 
         $contact->tags()->syncWithoutDetaching([
@@ -30,13 +31,13 @@ class DestroyTagTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('contact_tag', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'tag_id' => $tag->id,
         ]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'tag_id' => $tag->id,
         ];
@@ -44,17 +45,18 @@ class DestroyTagTest extends TestCase
         app(DestroyTag::class)->execute($request);
 
         $this->assertDatabaseMissing('contact_tag', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
         ]);
 
         $this->assertDatabaseMissing('tags', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'id' => $tag->id,
         ]);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [
             'account_id' => 1,
@@ -65,7 +67,8 @@ class DestroyTagTest extends TestCase
         app(DestroyTag::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_tag_does_not_exist()
+    /** @test */
+    public function it_throws_an_exception_if_tag_does_not_exist()
     {
         $account = factory(Account::class)->create();
 

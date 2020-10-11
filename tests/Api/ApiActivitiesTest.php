@@ -3,7 +3,6 @@
 namespace Tests\Api;
 
 use Tests\ApiTestCase;
-use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use App\Models\Account\ActivityType;
@@ -13,12 +12,12 @@ class ApiActivitiesTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
-    protected $jsonActivityFull = [
+    protected $jsonActivity = [
         'id',
         'object',
         'summary',
         'description',
-        'date_it_happened',
+        'happened_at',
         'activity_type' => [
             'id',
             'object',
@@ -45,7 +44,18 @@ class ApiActivitiesTest extends ApiTestCase
             'contacts' => [
                 '*' => [
                     'id',
+                    'object',
+                    'first_name',
+                    'last_name',
+                    'complete_name',
                 ],
+            ],
+        ],
+        'emotions' => [
+            '*' => [
+                'id',
+                'object',
+                'name',
             ],
         ],
         'account' => [
@@ -55,20 +65,8 @@ class ApiActivitiesTest extends ApiTestCase
         'updated_at',
     ];
 
-    protected $jsonActivityLight = [
-        'id',
-        'object',
-        'summary',
-        'description',
-        'date_it_happened',
-        'account' => [
-            'id',
-        ],
-        'created_at',
-        'updated_at',
-    ];
-
-    public function test_activities_get_all()
+    /** @test */
+    public function activities_get_all()
     {
         $user = $this->signin();
         $activity1 = factory(Activity::class)->create([
@@ -82,7 +80,7 @@ class ApiActivitiesTest extends ApiTestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonActivityLight],
+            'data' => ['*' => $this->jsonActivity],
         ]);
         $response->assertJsonFragment([
             'object' => 'activity',
@@ -94,7 +92,8 @@ class ApiActivitiesTest extends ApiTestCase
         ]);
     }
 
-    public function test_activities_get_contact_all()
+    /** @test */
+    public function activities_get_contact_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -117,7 +116,7 @@ class ApiActivitiesTest extends ApiTestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonActivityFull],
+            'data' => ['*' => $this->jsonActivity],
         ]);
         $response->assertJsonFragment([
             'object' => 'activity',
@@ -129,16 +128,29 @@ class ApiActivitiesTest extends ApiTestCase
         ]);
     }
 
-    public function test_activities_get_contact_all_error()
+    /** @test */
+    public function activities_get_contact_all_error()
     {
-        $user = $this->signin();
+        $this->signin();
 
         $response = $this->json('GET', '/api/contacts/0/activities');
 
         $this->expectNotFound($response);
     }
 
-    public function test_activities_get_one()
+    /** @test */
+    public function activities_get_contact_all_error_wrong_account()
+    {
+        $this->signin();
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->json('GET', '/api/contacts/'.$contact->id.'/activities');
+
+        $this->expectNotFound($response);
+    }
+
+    /** @test */
+    public function activities_get_one()
     {
         $user = $this->signin();
         $activity1 = factory(Activity::class)->create([
@@ -152,7 +164,7 @@ class ApiActivitiesTest extends ApiTestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonActivityLight,
+            'data' => $this->jsonActivity,
         ]);
         $response->assertJsonFragment([
             'object' => 'activity',
@@ -164,16 +176,29 @@ class ApiActivitiesTest extends ApiTestCase
         ]);
     }
 
-    public function test_activities_get_one_error()
+    /** @test */
+    public function activities_get_one_error()
     {
-        $user = $this->signin();
+        $this->signin();
 
         $response = $this->json('GET', '/api/activities/0');
 
         $this->expectNotFound($response);
     }
 
-    public function test_activities_create()
+    /** @test */
+    public function activities_get_one_error_wrong_account()
+    {
+        $this->signin();
+        $activity = factory(Activity::class)->create();
+
+        $response = $this->json('GET', '/api/activities/'.$activity->id);
+
+        $this->expectNotFound($response);
+    }
+
+    /** @test */
+    public function activities_create()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -187,13 +212,13 @@ class ApiActivitiesTest extends ApiTestCase
             'contacts' => [$contact->id],
             'description' => 'the description',
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
             'activity_type_id' => $activityType->id,
         ]);
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
-            'data' => $this->jsonActivityFull,
+            'data' => $this->jsonActivity,
         ]);
         $activity_id = $response->json('data.id');
         $response->assertJsonFragment([
@@ -207,7 +232,7 @@ class ApiActivitiesTest extends ApiTestCase
             'id' => $activity_id,
             'summary' => 'the activity',
             'description' => 'the description',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
         ]);
         $this->assertDatabaseHas('activity_contact', [
             'account_id' => $user->account_id,
@@ -216,7 +241,8 @@ class ApiActivitiesTest extends ApiTestCase
         ]);
     }
 
-    public function test_activities_create_error()
+    /** @test */
+    public function activities_create_error_wrong_parameter()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -229,55 +255,50 @@ class ApiActivitiesTest extends ApiTestCase
 
         $this->expectDataError($response, [
             'The summary field is required.',
-            'The description field is required.',
-            'The date it happened field is required.',
-            'The contacts field is required.',
+            'The happened at field is required.',
         ]);
     }
 
-    public function test_activities_create_error_bad_account()
+    /** @test */
+    public function activities_create_error_bad_account()
     {
-        $user = $this->signin();
+        $this->signin();
 
-        $account = factory(Account::class)->create();
-        $contact = factory(Contact::class)->create([
-            'account_id' => $account->id,
-        ]);
+        $contact = factory(Contact::class)->create();
 
         $response = $this->json('POST', '/api/activities', [
             'contacts' => [$contact->id],
             'description' => 'the description',
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
         ]);
 
         $this->expectNotFound($response);
     }
 
-    public function test_activities_create_error_bad_account2()
+    /** @test */
+    public function activities_create_error_bad_account2()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
         ]);
 
-        $account = factory(Account::class)->create();
-        $activityType = factory(ActivityType::class)->create([
-            'account_id' => $account->id,
-        ]);
+        $activityType = factory(ActivityType::class)->create();
 
         $response = $this->json('POST', '/api/activities', [
             'contacts' => [$contact->id],
             'description' => 'the description',
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
             'activity_type_id' => $activityType->id,
         ]);
 
         $this->expectNotFound($response);
     }
 
-    public function test_activities_update()
+    /** @test */
+    public function activities_update()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -291,12 +312,12 @@ class ApiActivitiesTest extends ApiTestCase
             'contacts' => [$contact->id],
             'description' => 'the description',
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
         ]);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonActivityFull,
+            'data' => $this->jsonActivity,
         ]);
         $activity_id = $response->json('data.id');
         $this->assertEquals($activity->id, $activity_id);
@@ -310,7 +331,7 @@ class ApiActivitiesTest extends ApiTestCase
             'account_id' => $user->account_id,
             'id' => $activity_id,
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
         ]);
         $this->assertDatabaseHas('activity_contact', [
             'account_id' => $user->account_id,
@@ -319,7 +340,8 @@ class ApiActivitiesTest extends ApiTestCase
         ]);
     }
 
-    public function test_activities_update_existing()
+    /** @test */
+    public function activities_update_existing()
     {
         $user = $this->signin();
         $activity = factory(Activity::class)->create([
@@ -352,12 +374,12 @@ class ApiActivitiesTest extends ApiTestCase
             'contacts' => [$contact->id],
             'description' => 'the description',
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
         ]);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonActivityFull,
+            'data' => $this->jsonActivity,
         ]);
         $activity_id = $response->json('data.id');
         $this->assertEquals($activity->id, $activity_id);
@@ -371,7 +393,7 @@ class ApiActivitiesTest extends ApiTestCase
             'account_id' => $user->account_id,
             'id' => $activity_id,
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
         ]);
         $this->assertDatabaseHas('activity_contact', [
             'account_id' => $user->account_id,
@@ -385,23 +407,48 @@ class ApiActivitiesTest extends ApiTestCase
         ]);
     }
 
-    public function test_activities_update_error()
+    /** @test */
+    public function activities_update_error_wrong_parameter()
     {
         $user = $this->signin();
 
-        $response = $this->json('PUT', '/api/activities/0', []);
+        $response = $this->json('PUT', '/api/activities/0', [
+            'description' => 'the description',
+            'summary' => 'the activity',
+            'happened_at' => '2018-05-01',
+        ]);
+
+        $this->expectDataError($response, [
+            'The selected activity id is invalid.',
+        ]);
+    }
+
+    /** @test */
+    public function activities_update_error_wrong_account_for_activity()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $activity = factory(Activity::class)->create();
+
+        $response = $this->json('PUT', '/api/activities/'.$activity->id, [
+            'contacts' => [$contact->id],
+            'description' => 'the description',
+            'summary' => 'the activity',
+            'happened_at' => '2018-05-01',
+        ]);
 
         $this->expectNotFound($response);
     }
 
-    public function test_activities_update_error_bad_account()
+    /** @test */
+    public function activities_update_error_wrong_account_for_contacts()
     {
         $user = $this->signin();
 
-        $account = factory(Account::class)->create();
-        $contact = factory(Contact::class)->create([
-            'account_id' => $account->id,
-        ]);
+        $contact = factory(Contact::class)->create();
         $activity = factory(Activity::class)->create([
             'account_id' => $user->account_id,
         ]);
@@ -410,13 +457,14 @@ class ApiActivitiesTest extends ApiTestCase
             'contacts' => [$contact->id],
             'description' => 'the description',
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
         ]);
 
         $this->expectNotFound($response);
     }
 
-    public function test_activities_delete()
+    /** @test */
+    public function activities_delete()
     {
         $user = $this->signin();
         $activity = factory(Activity::class)->create([
@@ -435,11 +483,25 @@ class ApiActivitiesTest extends ApiTestCase
         ]);
     }
 
-    public function test_activities_delete_error()
+    /** @test */
+    public function activities_delete_error()
     {
-        $user = $this->signin();
+        $this->signin();
 
         $response = $this->json('DELETE', '/api/activities/0');
+
+        $this->expectDataError($response, [
+            'The selected activity id is invalid.',
+        ]);
+    }
+
+    /** @test */
+    public function activities_delete_with_wrong_account()
+    {
+        $this->signin();
+        $activity = factory(Activity::class)->create();
+
+        $response = $this->json('DELETE', '/api/activities/'.$activity->id);
 
         $this->expectNotFound($response);
     }

@@ -28,7 +28,7 @@ class DestroyContact extends BaseService
      * @param array $data
      * @return bool
      */
-    public function execute(array $data) : bool
+    public function execute(array $data): bool
     {
         $this->validate($data);
 
@@ -38,7 +38,7 @@ class DestroyContact extends BaseService
         $this->destroyRelationships($data, $contact);
 
         $contact->deleteAvatars();
-        $contact->deleteEverything();
+        $contact->delete();
 
         return true;
     }

@@ -10,7 +10,8 @@ class DayTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_get_info_for_journal_entry_that_doesnt_happen_today()
+    /** @test */
+    public function get_info_for_journal_entry_that_doesnt_happen_today()
     {
         $day = factory(Day::class)->make();
         $day->id = 1;
@@ -39,7 +40,8 @@ class DayTest extends TestCase
         );
     }
 
-    public function test_get_info_for_journal_entry_that_happen_today()
+    /** @test */
+    public function get_info_for_journal_entry_that_happen_today()
     {
         $date = now();
 

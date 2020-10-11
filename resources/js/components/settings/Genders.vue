@@ -111,15 +111,13 @@
           </div>
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="store()">
-            {{ $t('app.save') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="store()">
+          {{ $t('app.save') }}
+        </a>
       </div>
     </sweet-modal>
 
@@ -162,15 +160,13 @@
           </div>
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeUpdateModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="update(updatedGender)">
-            {{ $t('app.update') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeUpdateModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="update(updatedGender)">
+          {{ $t('app.update') }}
+        </a>
       </div>
     </sweet-modal>
 
@@ -206,22 +202,20 @@
           </div>
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeDeleteModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a v-if="deleteForm.numberOfContacts === 0 && ! deleteForm.isDefault"
-             class="btn btn-primary"
-             href=""
-             @click.prevent="trash()"
-          >
-            {{ $t('app.delete') }}
-          </a>
-          <a v-else class="btn btn-primary" href="" @click.prevent="trashAndReplace()">
-            {{ $t('app.delete') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeDeleteModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a v-if="deleteForm.numberOfContacts === 0 && ! deleteForm.isDefault"
+           class="btn btn-primary"
+           href=""
+           @click.prevent="trash()"
+        >
+          {{ $t('app.delete') }}
+        </a>
+        <a v-else class="btn btn-primary" href="" @click.prevent="trashAndReplace()">
+          {{ $t('app.delete') }}
+        </a>
       </div>
     </sweet-modal>
 
@@ -240,15 +234,13 @@
           </div>
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeDefaultGenderModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="updateDefaultGender()">
-            {{ $t('app.save') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeDefaultGenderModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="updateDefaultGender()">
+          {{ $t('app.save') }}
+        </a>
       </div>
     </sweet-modal>
   </div>

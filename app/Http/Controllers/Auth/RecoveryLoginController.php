@@ -48,7 +48,7 @@ class RecoveryLoginController extends Controller
         ])->validate();
 
         $user = auth()->user();
-        $recovery = $request->get('recovery');
+        $recovery = $request->input('recovery');
 
         if ($user instanceof \App\Models\User\User &&
             $this->recoveryLogin($user, $recovery)) {

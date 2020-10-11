@@ -14,7 +14,8 @@ class PopulateContactFieldTypesTableTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [
             'account_id' => 1,
@@ -31,7 +32,8 @@ class PopulateContactFieldTypesTableTest extends TestCase
         app(PopulateContactFieldTypesTable::class)->execute($request);
     }
 
-    public function test_it_populate_contact_field_types_tables()
+    /** @test */
+    public function it_populate_contact_field_types_tables()
     {
         $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create([
@@ -59,7 +61,8 @@ class PopulateContactFieldTypesTableTest extends TestCase
         );
     }
 
-    public function test_it_only_populates_partially()
+    /** @test */
+    public function it_only_populates_partially()
     {
         $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create([

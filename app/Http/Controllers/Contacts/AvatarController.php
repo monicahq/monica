@@ -31,14 +31,14 @@ class AvatarController extends Controller
     {
         // update the avatar
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
-            'source' => $request->get('avatar'),
+            'source' => $request->input('avatar'),
         ];
 
-        switch ($request->get('avatar')) {
+        switch ($request->input('avatar')) {
             case 'upload':
-            // if it's a new photo, we need to upload it
+                // if it's a new photo, we need to upload it
                 $validator = Validator::make($request->all(), [
                     'file' => 'image|max:'.config('monica.max_upload_size'),
                 ]);
@@ -50,7 +50,8 @@ class AvatarController extends Controller
                 }
 
                 $photo = app(UploadPhoto::class)->execute([
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
+                    'contact_id' => $contact->id,
                     'photo' => $request->photo,
                 ]);
 
@@ -79,7 +80,7 @@ class AvatarController extends Controller
     {
         // update the avatar
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'source' => 'photo',
             'photo_id' => $photoId,

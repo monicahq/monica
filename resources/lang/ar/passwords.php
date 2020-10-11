@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     /*
@@ -13,12 +19,12 @@ return [
     |
     */
 
-    'password' => 'يجب أن لا يقل طول كلمة المرور عن ستة أحرف، كما يجب أن تتطابق مع حقل التأكيد',
     'reset' => 'تمت إعادة تعيين كلمة المرور',
     'sent' => 'تم إرسال تفاصيل استعادة كلمة المرور الخاصة بك إلى بريدك الإلكتروني',
     'token' => '.رمز استعادة كلمة المرور الذي أدخلته غير صحيح',
     'user' => 'لم يتم العثور على أيّ حسابٍ بهذا العنوان الإلكتروني',
     'changed' => 'Password changed successfully.',
     'invalid' => 'كلمة السر الحالية التي أدخلتها غير صحيحة.',
+    'throttled' => 'الرجاء الانتظار قبل إعادة المحاولة.',
 
 ];

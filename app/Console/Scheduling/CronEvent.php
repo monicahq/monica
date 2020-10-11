@@ -39,7 +39,7 @@ class CronEvent
      * @param string $command
      * @return self
      */
-    public static function command(string $command) : self
+    public static function command(string $command): self
     {
         /** @var \App\Models\Instance\Cron $cron */
         $cron = Cron::firstOrCreate(['command' => $command]);
@@ -62,7 +62,7 @@ class CronEvent
      *
      * @return self
      */
-    public function hourly() : self
+    public function hourly(): self
     {
         $this->minutes = 60;
         $this->days = 0;
@@ -75,10 +75,23 @@ class CronEvent
      *
      * @return self
      */
-    public function daily() : self
+    public function daily(): self
     {
         $this->minutes = 0;
         $this->days = 1;
+
+        return $this;
+    }
+
+    /**
+     * Run the command once a week.
+     *
+     * @return self
+     */
+    public function weekly(): self
+    {
+        $this->minutes = 0;
+        $this->days = 7;
 
         return $this;
     }
@@ -88,7 +101,7 @@ class CronEvent
      *
      * @return bool
      */
-    public function isDue() : bool
+    public function isDue(): bool
     {
         $now = now();
 

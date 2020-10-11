@@ -4,7 +4,6 @@ namespace App\Http\Controllers\DAV\Backend;
 
 use Illuminate\Support\Str;
 use App\Models\User\SyncToken;
-use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
 
 trait SyncDAVBackend
@@ -17,7 +16,7 @@ trait SyncDAVBackend
      *
      * @return SyncToken|null
      */
-    protected function getCurrentSyncToken()
+    protected function getCurrentSyncToken(): ?SyncToken
     {
         $tokens = SyncToken::where([
             'account_id' => Auth::user()->account_id,
@@ -27,14 +26,20 @@ trait SyncDAVBackend
             ->orderBy('created_at')
             ->get();
 
-        if ($tokens->count() <= 0) {
-            $token = $this->createSyncToken();
-        } else {
-            $token = $tokens->last();
+        return $tokens->count() > 0 ? $tokens->last() : null;
+    }
 
-            if ($token->timestamp < $this->getLastModified()) {
-                $token = $this->createSyncToken();
-            }
+    /**
+     * Create or refresh the token if a change happened.
+     *
+     * @return SyncToken
+     */
+    public function refreshSyncToken(): SyncToken
+    {
+        $token = $this->getCurrentSyncToken();
+
+        if (! $token || $token->timestamp < $this->getLastModified()) {
+            $token = $this->createSyncTokenNow();
         }
 
         return $token;
@@ -53,25 +58,6 @@ trait SyncDAVBackend
             'name' => $this->backendUri(),
         ])
             ->find($syncToken);
-    }
-
-    /**
-     * Create a token.
-     *
-     * @return SyncToken|null
-     */
-    private function createSyncToken()
-    {
-        $max = $this->getLastModified();
-
-        if ($max) {
-            return SyncToken::create([
-                'account_id' => Auth::user()->account_id,
-                'user_id' => Auth::user()->id,
-                'name' => $this->backendUri(),
-                'timestamp' => $max,
-            ]);
-        }
     }
 
     /**
@@ -153,7 +139,7 @@ trait SyncDAVBackend
      * @param string $syncToken
      * @return array|null
      */
-    public function getChanges($syncToken)
+    public function getChanges($syncToken): ?array
     {
         $token = null;
         $timestamp = null;
@@ -162,13 +148,10 @@ trait SyncDAVBackend
 
             if (is_null($token)) {
                 // syncToken is not recognized
-                return;
+                return null;
             }
 
             $timestamp = $token->timestamp;
-        } else {
-            $token = $this->createSyncTokenNow();
-            $timestamp = null;
         }
 
         $objs = $this->getObjects();
@@ -184,13 +167,13 @@ trait SyncDAVBackend
         });
 
         return [
-            'syncToken' => $token->id,
+            'syncToken' => $this->refreshSyncToken()->id,
             'added' => $added->map(function ($obj) {
                 return $this->encodeUri($obj);
-            })->toArray(),
+            })->values()->toArray(),
             'modified' => $modified->map(function ($obj) {
                 return $this->encodeUri($obj);
-            })->toArray(),
+            })->values()->toArray(),
             'deleted' => [],
         ];
     }

@@ -33,14 +33,13 @@
       <div v-for="message in messages" :key="message.uid" class="relative">
         <div :class="message.author + ' absolute'"></div>
         <message
+          v-model="message.content"
           :class="{ 'mb3 ml5': message.author == 'me', 'mb3 mr5': message.author == 'other' }"
           :author="message.author"
-          :content="message.content"
           :uid="message.uid"
           :participant-name="participantName"
           :display-trash="displayTrash"
           @updateAuthor="updateAuthor($event, message)"
-          @contentChange="updateContent($event, message)"
           @deleteMessage="deleteMessage($event, message)"
         />
       </div>
@@ -98,10 +97,6 @@ export default {
       if (this.messages.length > 1) {
         this.displayTrash = true;
       }
-    },
-
-    updateContent(updatedContent, message) {
-      message.content = updatedContent;
     },
 
     updateAuthor(updatedAuthor, message) {

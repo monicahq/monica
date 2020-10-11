@@ -116,10 +116,10 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
      * @param string|null $avatarFileName
      * @return Photo|null
      */
-    private function createPhotoObject($avatarFileName)
+    private function createPhotoObject($avatarFileName): ?Photo
     {
         if (is_null($avatarFileName)) {
-            return;
+            return null;
         }
 
         $newAvatarFilename = str_replace('avatars/', '', $avatarFileName);
@@ -189,7 +189,7 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
         return $avatarFileName;
     }
 
-    private function fileExists($avatarFileName) : bool
+    private function fileExists($avatarFileName): bool
     {
         return $this->storage->exists($avatarFileName);
     }

@@ -13,7 +13,8 @@ class PetTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -25,7 +26,8 @@ class PetTest extends TestCase
         $this->assertTrue($pet->account()->exists());
     }
 
-    public function test_it_belongs_to_a_contact()
+    /** @test */
+    public function it_belongs_to_a_contact()
     {
         $contact = factory(Contact::class)->create([]);
         $pet = factory(Pet::class)->create([
@@ -36,7 +38,8 @@ class PetTest extends TestCase
         $this->assertTrue($pet->contact()->exists());
     }
 
-    public function test_it_belongs_to_a_pet_category()
+    /** @test */
+    public function it_belongs_to_a_pet_category()
     {
         $petCategory = factory(PetCategory::class)->create([]);
         $pet = factory(Pet::class)->create([
@@ -46,7 +49,8 @@ class PetTest extends TestCase
         $this->assertTrue($pet->petCategory()->exists());
     }
 
-    public function test_it_sets_name()
+    /** @test */
+    public function it_sets_name()
     {
         $pet = new Pet;
         $this->assertNull($pet->name);

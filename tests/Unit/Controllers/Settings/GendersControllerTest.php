@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Controllers\Contact;
+namespace Tests\Unit\Controllers\Settings;
 
 use Tests\FeatureTestCase;
 use App\Models\Contact\Gender;
@@ -24,7 +24,8 @@ class GendersControllerTest extends FeatureTestCase
         'name',
     ];
 
-    public function test_it_gets_the_list_of_genders()
+    /** @test */
+    public function it_gets_the_list_of_genders()
     {
         $user = $this->signin();
 
@@ -42,7 +43,8 @@ class GendersControllerTest extends FeatureTestCase
         );
     }
 
-    public function test_it_gets_the_list_of_genderTypes()
+    /** @test */
+    public function it_gets_the_list_of_genderTypes()
     {
         $user = $this->signin();
 
@@ -60,7 +62,8 @@ class GendersControllerTest extends FeatureTestCase
         );
     }
 
-    public function test_it_store_a_new_gender()
+    /** @test */
+    public function it_stores_a_new_gender()
     {
         $user = $this->signin();
 
@@ -79,7 +82,8 @@ class GendersControllerTest extends FeatureTestCase
         ]);
     }
 
-    public function test_it_update_a_gender()
+    /** @test */
+    public function it_updates_a_gender()
     {
         $user = $this->signin();
 
@@ -99,7 +103,8 @@ class GendersControllerTest extends FeatureTestCase
         ]);
     }
 
-    public function test_it_replace_a_gender()
+    /** @test */
+    public function it_replaces_a_gender()
     {
         $user = $this->signin();
 
@@ -127,7 +132,8 @@ class GendersControllerTest extends FeatureTestCase
         ]);
     }
 
-    public function test_it_replace_a_gender_with_error()
+    /** @test */
+    public function it_replaces_a_gender_with_error()
     {
         $user = $this->signin();
         $gender1 = factory(Gender::class)->create([
@@ -143,7 +149,8 @@ class GendersControllerTest extends FeatureTestCase
         ]);
     }
 
-    public function test_it_destroy_a_gender()
+    /** @test */
+    public function it_destroys_a_gender()
     {
         $user = $this->signin();
 
@@ -159,7 +166,8 @@ class GendersControllerTest extends FeatureTestCase
         ]);
     }
 
-    public function test_it_update_the_default_gender()
+    /** @test */
+    public function it_updates_the_default_gender()
     {
         $user = $this->signin();
 

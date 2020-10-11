@@ -6,7 +6,7 @@
 
 @section('content')
   @if(isset($exception) && $exception->getMessage())
-    <p>{{ $exception->getMessage() }}</p>
+    <p class="message">{{ $exception->getMessage() }}</p>
   @endif
 
   @if(Auth::check() && app()->bound('sentry') && config('monica.sentry_support') && ! empty(app('sentry')->getLastEventID()))

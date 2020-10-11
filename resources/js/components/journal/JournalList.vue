@@ -13,12 +13,14 @@
       <journal-rate-day @hasRated="hasRated" />
 
       <!-- Logs -->
-      <div v-for="journalEntry in journalEntries.data" :key="journalEntry.id" class="cf" :cy-name="'entry-body-' + journalEntry.id">
-        <journal-content-rate v-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Day'" :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
+      <div v-if="journalEntries.data" v-cy-name="'journal-entries-body'" v-cy-items="journalEntries.data.map(j => j.id)" :cy-object-items="journalEntries.data.map(j => j.object.id)">
+        <div v-for="journalEntry in journalEntries.data" :key="journalEntry.id" v-cy-name="'entry-body-' + journalEntry.id" class="cf">
+          <journal-content-rate v-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Day'" :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
 
-        <journal-content-activity v-else-if="journalEntry.journalable_type == 'App\\Models\\Account\\Activity'" :journal-entry="journalEntry" />
+          <journal-content-activity v-else-if="journalEntry.journalable_type == 'App\\Models\\Account\\Activity'" :journal-entry="journalEntry" />
 
-        <journal-content-entry v-else-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Entry'" :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
+          <journal-content-entry v-else-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Entry'" :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
+        </div>
       </div>
 
       <div v-if="(journalEntries.per_page * journalEntries.current_page) <= journalEntries.total" class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc">
@@ -32,7 +34,7 @@
         </p>
       </div>
 
-      <div v-if="journalEntries.total === 0" class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc" cy-name="journal-blank-state">
+      <div v-if="journalEntries.total === 0" v-cy-name="'journal-blank-state'" class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc">
         <div class="tc mb4">
           <img src="img/journal/blank.svg" :alt="$t('journal.journal_empty')" />
         </div>
@@ -45,7 +47,7 @@
 
     <!-- Right sidebar -->
     <div :class="[ dirltr ? 'fl' : 'fr' ]" class="w-30 pa2">
-      <a href="journal/add" class="btn btn-primary w-100 mb4" cy-name="add-entry-button">
+      <a v-cy-name="'add-entry-button'" href="journal/add" class="btn btn-primary w-100 mb4">
         {{ $t('journal.journal_add') }}
       </a>
       <p>{{ $t('journal.journal_description') }}</p>

@@ -30,7 +30,7 @@ class ExportVCalendar extends BaseService
      * @param array $data
      * @return VCalendar
      */
-    public function execute(array $data) : VCalendar
+    public function execute(array $data): VCalendar
     {
         $this->validate($data);
 
@@ -44,7 +44,7 @@ class ExportVCalendar extends BaseService
      * @param SpecialDate $date
      * @return VCalendar
      */
-    private function export(SpecialDate $date) : VCalendar
+    private function export(SpecialDate $date): VCalendar
     {
         // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc5545
         if (! $date->uuid) {

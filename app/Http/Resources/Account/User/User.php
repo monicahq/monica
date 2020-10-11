@@ -3,11 +3,14 @@
 namespace App\Http\Resources\Account\User;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\Settings\Currency\Currency as CurrencyResource;
 
-class User extends Resource
+/**
+ * @extends JsonResource<\App\Models\User\User>
+ */
+class User extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -27,9 +30,9 @@ class User extends Resource
             'timezone' => $this->timezone,
             'currency' => new CurrencyResource($this->currency),
             'locale' => $this->locale,
-            'is_policy_compliant' => $this->isPolicyCompliant(),
+            'is_policy_compliant' => $this->policy_compliant,
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),

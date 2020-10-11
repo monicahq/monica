@@ -15,7 +15,8 @@ class UpdateReminderTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_a_reminder()
+    /** @test */
+    public function it_updates_a_reminder()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
         $user = factory(User::class)->create([]);
@@ -29,7 +30,7 @@ class UpdateReminderTest extends TestCase
         ]);
 
         $request = [
-            'contact_id' => $reminder->contact->id,
+            'contact_id' => $reminder->contact_id,
             'account_id' => $reminder->contact->account_id,
             'reminder_id' => $reminder->id,
             'initial_date' => '2017-10-01',
@@ -42,7 +43,7 @@ class UpdateReminderTest extends TestCase
 
         $this->assertDatabaseHas('reminders', [
             'id' => $reminder->id,
-            'contact_id' => $reminder->contact->id,
+            'contact_id' => $reminder->contact_id,
             'account_id' => $reminder->contact->account_id,
             'initial_date' => '2017-10-01',
         ]);
@@ -60,7 +61,8 @@ class UpdateReminderTest extends TestCase
         ]);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -74,7 +76,8 @@ class UpdateReminderTest extends TestCase
         app(UpdateReminder::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_frequency_type_is_not_right()
+    /** @test */
+    public function it_throws_an_exception_if_frequency_type_is_not_right()
     {
         $reminder = factory(Reminder::class)->create([
             'initial_date' => '2017-02-02',
@@ -85,7 +88,7 @@ class UpdateReminderTest extends TestCase
         ]);
 
         $request = [
-            'contact_id' => $reminder->contact->id,
+            'contact_id' => $reminder->contact_id,
             'account_id' => $reminder->contact->account_id,
             'reminder_id' => $reminder->id,
             'initial_date' => '2017-02-02',

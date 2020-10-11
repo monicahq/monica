@@ -10,19 +10,22 @@ class ReminderOutboxTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $reminderOutbox = factory(ReminderOutbox::class)->create([]);
         $this->assertTrue($reminderOutbox->account()->exists());
     }
 
-    public function test_it_belongs_to_a_reminder()
+    /** @test */
+    public function it_belongs_to_a_reminder()
     {
         $reminderOutbox = factory(ReminderOutbox::class)->create([]);
         $this->assertTrue($reminderOutbox->reminder()->exists());
     }
 
-    public function test_it_belongs_to_a_user()
+    /** @test */
+    public function it_belongs_to_a_user()
     {
         $reminderOutbox = factory(ReminderOutbox::class)->create([]);
         $this->assertTrue($reminderOutbox->user()->exists());

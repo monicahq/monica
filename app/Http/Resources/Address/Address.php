@@ -3,11 +3,14 @@
 namespace App\Http\Resources\Address;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Country\Country as CountryResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Address extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\Address>
+ */
+class Address extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -28,6 +31,7 @@ class Address extends Resource
             'latitude' => $this->place->latitude,
             'longitude' => $this->place->longitude,
             'country' => new CountryResource($this->place->country),
+            'url' => route('api.address', $this->id),
             'account' => [
                 'id' => $this->account_id,
             ],

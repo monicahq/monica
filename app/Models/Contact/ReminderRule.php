@@ -35,15 +35,4 @@ class ReminderRule extends Model
     {
         return $this->belongsTo(Account::class);
     }
-
-    /**
-     * Toggle the active status.
-     *
-     * @return void
-     */
-    public function toggle(): void
-    {
-        $this->active = ! $this->active;
-        $this->save();
-    }
 }

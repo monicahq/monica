@@ -64,11 +64,11 @@ class ApiPlaceController extends ApiController
     {
         try {
             $place = app(CreatePlace::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -93,12 +93,12 @@ class ApiPlaceController extends ApiController
     {
         try {
             $place = app(UpdatePlace::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'place_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'place_id' => $placeId,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                        'place_id' => $placeId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -122,7 +122,7 @@ class ApiPlaceController extends ApiController
     {
         try {
             app(DestroyPlace::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'place_id' => $placeId,
             ]);
         } catch (ModelNotFoundException $e) {

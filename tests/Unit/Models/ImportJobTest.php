@@ -44,31 +44,51 @@ ADR:;;17 Shakespeare Ave.;Southampton;;SO17 2HB;United Kingdom
 END:VCARD
 ';
 
-    public function test_it_belongs_to_a_user()
+    /** @test */
+    public function it_belongs_to_a_user()
     {
-        $user = factory(User::class)->create([]);
-        $importJob = factory(ImportJob::class)->create(['user_id' => $user->id]);
+        $importJob = factory(ImportJob::class)->create();
 
         $this->assertTrue($importJob->user()->exists());
     }
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
-        $importJob = factory(ImportJob::class)->create(['account_id' => $account->id]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $importJob = factory(ImportJob::class)->create([
+            'account_id' => $account->id,
+            'user_id' => $user->id,
+        ]);
 
         $this->assertTrue($importJob->account()->exists());
     }
 
-    public function test_it_belongs_to_many_reports()
+    /** @test */
+    public function it_belongs_to_many_reports()
     {
-        $importJob = factory(ImportJob::class)->create([]);
-        $importJobReport = factory(ImportJobReport::class, 100)->create(['import_job_id' => $importJob->id]);
+        $account = factory(Account::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $importJob = factory(ImportJob::class)->create([
+            'account_id' => $account->id,
+            'user_id' => $user->id,
+        ]);
+        factory(ImportJobReport::class, 100)->create([
+            'import_job_id' => $importJob->id,
+            'account_id' => $account->id,
+            'user_id' => $user->id,
+        ]);
 
         $this->assertTrue($importJob->importJobReports()->exists());
     }
 
-    public function test_it_initiates_the_job()
+    /** @test */
+    public function it_initiates_the_job()
     {
         $importJob = factory(ImportJob::class)->make([]);
 
@@ -79,7 +99,8 @@ END:VCARD
         $this->assertNotNull($importJob->started_at);
     }
 
-    public function test_it_finalizes_the_job()
+    /** @test */
+    public function it_finalizes_the_job()
     {
         $importJob = factory(ImportJob::class)->make([]);
 
@@ -90,7 +111,8 @@ END:VCARD
         $this->assertNotNull($importJob->ended_at);
     }
 
-    public function test_it_fails_and_throws_an_exception()
+    /** @test */
+    public function it_fails_and_throws_an_exception()
     {
         $importJob = factory(ImportJob::class)->create([]);
         $this->invokePrivateMethod($importJob, 'fail', [
@@ -104,7 +126,8 @@ END:VCARD
         );
     }
 
-    public function test_it_gets_the_physical_file()
+    /** @test */
+    public function it_gets_the_physical_file()
     {
         Storage::fake('public');
         $importJob = factory(ImportJob::class)->create([
@@ -127,7 +150,8 @@ END:VCARD
         );
     }
 
-    public function test_it_throws_an_exception_if_file_doesnt_exist()
+    /** @test */
+    public function it_throws_an_exception_if_file_doesnt_exist()
     {
         Storage::fake('public');
         $importJob = factory(ImportJob::class)->create([
@@ -142,7 +166,8 @@ END:VCARD
         );
     }
 
-    public function test_it_deletes_the_file()
+    /** @test */
+    public function it_deletes_the_file()
     {
         Storage::fake('public');
         $importJob = factory(ImportJob::class)->create([
@@ -159,7 +184,8 @@ END:VCARD
         Storage::disk('public')->assertMissing($importJob->filename);
     }
 
-    public function test_it_throws_an_exception_if_file_cant_be_deleted()
+    /** @test */
+    public function it_throws_an_exception_if_file_cant_be_deleted()
     {
         Storage::fake('public');
         $importJob = factory(ImportJob::class)->create([
@@ -173,7 +199,8 @@ END:VCARD
         );
     }
 
-    public function test_it_calculates_how_many_entries_there_are_and_populate_the_entries_array()
+    /** @test */
+    public function it_calculates_how_many_entries_there_are_and_populate_the_entries_array()
     {
         Storage::fake('public');
         $importJob = $this->createImportJob();
@@ -195,7 +222,8 @@ END:VCARD
         );
     }
 
-    public function test_it_doesnt_process_an_entry_if_import_is_not_feasible()
+    /** @test */
+    public function it_doesnt_process_an_entry_if_import_is_not_feasible()
     {
         $importJob = $this->createImportJob();
 
@@ -213,18 +241,19 @@ END:VCARD
         );
     }
 
-    public function test_it_doesnt_process_an_entry_if_contact_already_exists()
+    /** @test */
+    public function it_doesnt_process_an_entry_if_contact_already_exists()
     {
         $importJob = $this->createImportJob();
         $contact = factory(Contact::class)->create([
-            'account_id' => $importJob->account->id,
+            'account_id' => $importJob->account_id,
         ]);
         $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $importJob->account->id,
+            'account_id' => $importJob->account_id,
             'type' => 'email',
         ]);
         $contactField = factory(ContactField::class)->create([
-            'account_id' => $importJob->account->id,
+            'account_id' => $importJob->account_id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
             'data' => 'john@doe.com',
@@ -243,7 +272,8 @@ END:VCARD
         );
     }
 
-    public function test_skipping_entries_increments_counter_and_file_job_report()
+    /** @test */
+    public function skipping_entries_increments_counter_and_file_job_report()
     {
         $importJob = $this->createImportJob();
 
@@ -257,12 +287,13 @@ END:VCARD
         );
 
         $this->assertDatabaseHas('import_job_reports', [
-            'account_id' => $importJob->account->id,
+            'account_id' => $importJob->account_id,
             'import_job_id' => $importJob->id,
         ]);
     }
 
-    public function test_it_files_an_import_job_report()
+    /** @test */
+    public function it_files_an_import_job_report()
     {
         $importJob = $this->createImportJob();
         $vcard = new VCard([

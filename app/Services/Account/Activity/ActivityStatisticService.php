@@ -4,6 +4,7 @@ namespace App\Services\Account\Activity;
 
 use Carbon\Carbon;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Collection;
 use App\Models\Account\ActivityType;
 
 class ActivityStatisticService
@@ -14,14 +15,14 @@ class ActivityStatisticService
      * @param Contact $contact
      * @param Carbon $startDate
      * @param Carbon $endDate
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function activitiesWithContactInTimeRange(Contact $contact, Carbon $startDate, Carbon $endDate)
     {
         return $contact->activities()
-                            ->where('date_it_happened', '>=', $startDate)
-                            ->where('date_it_happened', '<=', $endDate)
-                            ->orderBy('date_it_happened', 'desc')
+                            ->where('happened_at', '>=', $startDate)
+                            ->where('happened_at', '<=', $endDate)
+                            ->orderBy('happened_at', 'desc')
                             ->get();
     }
 
@@ -30,11 +31,11 @@ class ActivityStatisticService
      * the contact.
      *
      * @param  Contact $contact
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Database\Eloquent\Collection<\App\Models\Account\ActivityStatistic>
      */
     public function activitiesPerYearWithContact(Contact $contact)
     {
-        return $contact->activityStatistics;
+        return $contact->activityStatistics()->get();
     }
 
     /**
@@ -42,7 +43,7 @@ class ActivityStatisticService
      *
      * @param  Contact $contact
      * @param  int     $year
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function activitiesPerMonthForYear(Contact $contact, int $year)
     {
@@ -56,7 +57,7 @@ class ActivityStatisticService
             $activitiesInMonth = collect([]);
 
             foreach ($activities as $activity) {
-                if ($activity->date_it_happened->month === $month) {
+                if ($activity->happened_at->month === $month) {
                     $activitiesInMonth->push($activity);
                 }
             }
@@ -90,7 +91,7 @@ class ActivityStatisticService
      * @param Contact $contact
      * @param Carbon $startDate
      * @param Carbon $endDate
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function uniqueActivityTypesInTimeRange(Contact $contact, Carbon $startDate, Carbon $endDate)
     {

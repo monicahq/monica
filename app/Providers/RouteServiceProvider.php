@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\URL;
 use App\Exceptions\WrongIdException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -33,6 +34,10 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
+        if (Config::get('app.force_url')) {
+            URL::forceRootUrl(config('app.url'));
+        }
+
         if (App::environment('production')) {
             URL::forceScheme('https');
         }
@@ -40,7 +45,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('contact', function ($value) {
             // In case the user is logged out
             if (! Auth::check()) {
-                redirect()->route('login')->send();
+                redirect()->route('loginRedirect')->send();
 
                 return;
             }

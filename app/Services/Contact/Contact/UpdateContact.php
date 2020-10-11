@@ -48,7 +48,7 @@ class UpdateContact extends BaseService
      * @param array $data
      * @return Contact
      */
-    public function execute(array $data) : Contact
+    public function execute(array $data): Contact
     {
         $this->validate($data);
 
@@ -125,6 +125,7 @@ class UpdateContact extends BaseService
             'is_age_based' => $this->nullOrvalue($data, 'birthdate_is_age_based'),
             'age' => $this->nullOrvalue($data, 'birthdate_age'),
             'add_reminder' => $this->nullOrvalue($data, 'birthdate_add_reminder'),
+            'is_deceased' => $data['is_deceased'],
         ]);
     }
 

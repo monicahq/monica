@@ -14,6 +14,9 @@ use App\Models\ModelBindingHasherWithContact as Model;
  * A reminder has two states: active and inactive.
  * An inactive reminder is basically a one_time reminder that has already be
  * sent once and has been marked inactive so we don't schedule it again.
+ *
+ * @property string $next_expected_date_human_readable
+ * @property string $next_expected_date
  */
 class Reminder extends Model
 {

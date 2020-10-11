@@ -3,8 +3,6 @@
 namespace App\Services\Contact\Tag;
 
 use App\Models\Contact\Tag;
-use Illuminate\Support\Str;
-use App\Helpers\LocaleHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 
@@ -30,7 +28,7 @@ class AssociateTag extends BaseService
      * @param array $data
      * @return Tag
      */
-    public function execute(array $data) : Tag
+    public function execute(array $data): Tag
     {
         $this->validate($data);
 
@@ -53,10 +51,12 @@ class AssociateTag extends BaseService
      *
      * @return Tag
      */
-    private function tagExistOrCreate(array $data) : Tag
+    private function tagExistOrCreate(array $data): Tag
     {
-        $tag = Tag::where('name', $data['name'])
-                ->where('account_id', $data['account_id'])
+        $tag = Tag::where([
+            'account_id' => $data['account_id'],
+            'name' => $data['name'],
+        ])
                 ->first();
 
         if (! $tag) {
@@ -71,19 +71,12 @@ class AssociateTag extends BaseService
      *
      * @return Tag
      */
-    private function createTag(array $data) : Tag
+    private function createTag(array $data): Tag
     {
-        $array = [
+        return app(CreateTag::class)->execute([
             'account_id' => $data['account_id'],
             'name' => $data['name'],
-            'name_slug' => Str::slug($data['name'], '-', LocaleHelper::getLang()),
-        ];
-
-        if (empty($array['name_slug'])) {
-            $array['name_slug'] = htmlentities($data['name']);
-        }
-
-        return Tag::create($array);
+        ]);
     }
 
     /**

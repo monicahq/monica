@@ -33,12 +33,12 @@ class ApiMessageController extends ApiController
 
         try {
             app(AddMessageToConversation::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'conversation_id', 'contact_id'])
                 +
                 [
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                     'conversation_id' => $conversation->id,
-                    'contact_id' => $conversation->contact->id,
+                    'contact_id' => $conversation->contact_id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -72,13 +72,13 @@ class ApiMessageController extends ApiController
 
         try {
             app(UpdateMessage::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'conversation_id', 'message_id', 'contact_id'])
                 +
                 [
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                     'conversation_id' => $conversationId,
                     'message_id' => $message->id,
-                    'contact_id' => $conversation->contact->id,
+                    'contact_id' => $conversation->contact_id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -112,7 +112,7 @@ class ApiMessageController extends ApiController
 
         try {
             app(DestroyMessage::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'conversation_id' => $conversationId,
                 'message_id' => $messageId,
             ]);

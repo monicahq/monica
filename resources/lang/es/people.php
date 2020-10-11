@@ -1,9 +1,15 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     //index
-    'people_not_found' => 'Contact not found',
+    'people_not_found' => 'Contacto no encontrado',
     'people_list_number_kids' => '1 niño|:count niños',
     'people_list_last_updated' => 'Última consulta:',
     'people_list_number_reminders' => '1 recordatorio|:count recordatorios',
@@ -30,7 +36,7 @@ return [
     'people_search_of' => 'of',
     'people_search_page' => 'Page',
     'people_search_all' => 'All',
-    'people_add_new' => 'Add new person',
+    'people_add_new' => 'Añadir a una nueva persona',
     'people_list_account_usage' => 'Es uso de tu cuenta: :current/:limit contactos',
     'people_list_account_upgrade_title' => 'Actualiza tu cuenta para desbloquear todo su potencial.',
     'people_list_account_upgrade_cta' => 'Actualizar ahora',
@@ -52,6 +58,7 @@ return [
     'people_delete_message' => 'Borrar contacto',
     'people_delete_confirmation' => '¿Estás seguro que quieres eliminar este usuario? Esta acción es permanente.',
     'people_add_birthday_reminder' => 'Desearle feliz cumpleaños a :name',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
     'people_add_import' => '¿Quieres <a href=":url">importar tus contactos</a>?',
     'people_edit_email_error' => 'Ya existe un contacto en tu cuenta con esta dirección de correo electrónico. Por favor, elije otro.',
     'people_export' => 'Exportar como vCard',
@@ -85,7 +92,7 @@ return [
     'stay_in_touch_premium' => 'Necesitas actualizar tu cuenta para hacer uso de esta característica',
     'stay_in_touch_modal_title' => 'Mantenerse en contacto',
     'stay_in_touch_modal_desc' => 'Podemos recordarte que te mantengas en contacto con {firstname} regularmente por correo electrónico.',
-    'stay_in_touch_modal_label' => 'Envíame un correo electrónico cada...',
+    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
 
     // Calls
     'modal_call_title' => 'Registrar una llamada',
@@ -151,6 +158,7 @@ return [
     'information_edit_probably' => 'Esta persona probablemente tiene...',
     'information_edit_not_year' => 'Sé el día y mes de la fecha de nacimiento de esta persona, pero no el año…',
     'information_edit_exact' => 'Sé la fecha exacta de nacimiento de esta persona...',
+    'information_edit_birthdate_label' => 'Birthdate',
     'information_no_work_defined' => 'Información de trabajo no definida',
     'information_work_at' => 'en: company',
     'work_add_cta' => 'Actualizar la información de trabajo',
@@ -184,6 +192,7 @@ return [
     'reminders_create_success' => 'El recordatorio ha sido añadido exitosamente',
     'reminders_delete_success' => 'El recordatorio ha sido eliminado exitosamente',
     'reminders_update_success' => 'El recordatorio ha sido actualizado exitosamente',
+    'reminders_add_optional_comment' => 'Optional comment',
 
     'reminder_frequency_day' => 'cada día|cada :number días',
     'reminder_frequency_week' => 'cada semana|cada :number semanas',
@@ -221,6 +230,7 @@ return [
     'relationship_form_deletion_success' => 'La relación ha sido eliminada.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'Aún no tienes tareas.',
     'tasks_form_title' => 'Título',
     'tasks_form_description' => 'Descripción (opcional)',
@@ -237,28 +247,29 @@ return [
     'activity_type_just_hung_out' => 'solo pasamos el rato',
     'activity_type_watched_movie_at_home' => 'vimos una película en casa',
     'activity_type_talked_at_home' => 'solo hablamos en casa',
-    'activity_type_did_sport_activities_together' => 'hicimos deporte juntos',
+    'activity_type_did_sport_activities_together' => 'played a sport together',
     'activity_type_ate_at_his_place' => 'comimos en su casa',
     'activity_type_went_bar' => 'fuimos al bar',
     'activity_type_ate_at_home' => 'comimos en casa',
-    'activity_type_picknicked' => 'fuimos de picknick',
+    'activity_type_picnicked' => 'picnicked',
     'activity_type_ate_restaurant' => 'comimos en un restaurante',
     'activity_type_went_theater' => 'fuimos al teatro',
     'activity_type_went_concert' => 'fuimos a un concierto',
     'activity_type_went_play' => 'fuimos a jugar',
     'activity_type_went_museum' => 'fuimos al museo',
     'activities_add_activity' => 'Añadir actividad',
-    'activities_more_details' => 'Más detalles',
-    'activities_hide_details' => 'Ocultar detalles',
-    'activities_delete_confirmation' => '¿Está seguro que desea eliminar esta actividad?',
+    'activities_add_more_details' => 'Add more details',
+    'activities_add_emotions' => 'Add emotions',
+    'activities_add_category' => 'Indicate a category',
+    'activities_add_participants_cta' => 'Add participants',
     'activities_item_information' => ':Activity. Sucedió el :date',
-    'activities_add_title' => '¿Qué hiciste con :name?',
+    'activities_add_title' => '¿Qué hiciste con {name}?',
     'activities_summary' => 'Describe lo que hiciste',
     'activities_add_pick_activity' => '(Opcional) ¿Te gustaría categorizar esta actividad? No tienes que hacerlo, pero esto te dará estadísticas en el futuro',
-    'activities_add_date_occured' => 'Date this activity occurred',
-    'activities_add_optional_comment' => 'Comentario opcional',
-    'activities_add_cta' => 'Registra actividad',
-    'activities_blank_title' => 'Dale seguimiento a lo que has hecho con :name en el pasado, y de que han hablado',
+    'activities_add_date_occured' => 'The activity happened on...',
+    'activities_add_participants' => 'Who, apart from {name}, participated in this activity? (optional)',
+    'activities_add_emotions_title' => 'Do you want to log how you felt during this activity? (optional)',
+    'activities_blank_title' => 'Dale seguimiento a lo que has hecho con {name} en el pasado, y de que han hablado',
     'activities_blank_add_activity' => 'Añadir una actividad',
     'activities_add_success' => 'La actividad ha sido añadida exitosamente',
     'activities_add_error' => 'Ocurrió un error al añadir la actividad',
@@ -272,6 +283,10 @@ return [
     'activities_profile_year_summary_activity_types' => 'Aquí tienes un desglose del tipo de actvidades que han tenido juntos en :year',
     'activities_profile_year_summary' => 'Aquí tienes lo que han hecho en :year',
     'activities_profile_number_occurences' => ':value actividad|:value actividades',
+    'activities_list_participants' => 'Participants:',
+    'activities_list_emotions' => 'Emotions felt:',
+    'activities_list_date' => 'Happened on',
+    'activities_list_category' => 'Category:',
 
     // notes
     'notes_create_success' => 'La nota ha sido creada exitosamente',
@@ -289,17 +304,23 @@ return [
     'gifts_delete_confirmation' => '¿Estás seguro que deseas eliminar este regalo?',
     'gifts_add_gift' => 'Añadir un regalo',
     'gifts_link' => 'Enlace',
-    'gifts_for' => 'Para:',
+    'gifts_for' => 'For: {name}',
     'gifts_delete_cta' => 'Eliminar',
     'gifts_add_title' => 'Gestión de regalos para :name',
     'gifts_add_gift_idea' => 'Idea de regalo',
     'gifts_add_gift_already_offered' => 'Regalo ofrecido',
     'gifts_add_gift_received' => 'Regalos recibidos',
     'gifts_add_gift_title' => '¿Qué es este regalo?',
+    'gifts_add_gift_name' => 'Gift name',
     'gifts_add_link' => 'Enlace al sitio web (opcional)',
     'gifts_add_value' => 'Valor (opcional)',
     'gifts_add_comment' => 'Comentario (opcional)',
-    'gifts_add_someone' => 'Este regalo es para alguien en particular de la familia de :name',
+    'gifts_add_recipient' => 'Recipient (optional)',
+    'gifts_add_recipient_field' => 'Recipient',
+    'gifts_add_photo' => 'Photo (optional)',
+    'gifts_add_photo_title' => 'Add a photo for this gift',
+    'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
+    'gifts_delete_title' => 'Delete a gift',
     'gifts_ideas' => 'Idea de regalo',
     'gifts_offered' => 'Regalos ofrecidos',
     'gifts_offered_as_an_idea' => 'Marcar como una idea',
@@ -354,6 +375,7 @@ return [
     'deceased_know_date' => 'Conozco la fecha que esta persona falleció',
     'deceased_add_reminder' => 'Añadir un recordatorio para esta fecha',
     'deceased_label' => 'Fallecido',
+    'deceased_date_label' => 'Deceased date',
     'deceased_label_with_date' => 'Fallecido el',
     'deceased_age' => 'Edad al momento del fallecimiento',
 
@@ -412,6 +434,11 @@ return [
     'life_event_delete_description' => '¿Estás seguro que quieres eliminar este evento notable? Esta acción es permanente.',
     'life_event_delete_success' => 'El evento notable ha sido eliminado',
     'life_event_date_it_happened' => 'Fecha cuando ocurrió',
+    'life_event_category_work_education' => 'Work & education',
+    'life_event_category_family_relationships' => 'Family & relationships',
+    'life_event_category_home_living' => 'Home & living',
+    'life_event_category_health_wellness' => 'Health & wellness',
+    'life_event_category_travel_experiences' => 'Travel & experiences',
     'life_event_sentence_new_job' => 'Comenzó un nuevo trabajo',
     'life_event_sentence_retirement' => 'Jubilado',
     'life_event_sentence_new_school' => 'Comenzó la escuela',
@@ -442,7 +469,7 @@ return [
     'life_event_sentence_wear_glass_or_contact' => 'Empezó a llevar gafas o lentillas',
     'life_event_sentence_broken_bone' => 'Se rompió un hueso',
     'life_event_sentence_removed_braces' => 'Se quitó los brackets',
-    'life_event_sentence_surgery' => 'Se sometió a una operación',
+    'life_event_sentence_surgery' => 'Had surgery',
     'life_event_sentence_dentist' => 'Fue al dentista',
     'life_event_sentence_new_sport' => 'Inició la práctica de un deporte',
     'life_event_sentence_new_hobby' => 'Comenzó un hobby',
@@ -465,13 +492,16 @@ return [
     'document_upload_zone_error' => 'Se produjo un error al subir el archivo. Por favor inténtelo de nuevo.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Fotos relacionadas',
     'photo_list_cta' => 'Subir foto',
     'photo_list_blank_desc' => 'Puede almacenar imágenes acerca de este contacto. ¡Suba una ahora!',
     'photo_upload_zone_cta' => 'Carga una foto',
-    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_current_profile_pic' => 'Foto de perfil actual',
     'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Eliminar foto',
+    'photo_next' => 'Next photo',
+    'photo_previous' => 'Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Change your avatar',
@@ -481,7 +511,24 @@ return [
     'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
     'avatar_current' => 'Keep the current avatar',
     'avatar_photo' => 'From a photo that you upload',
+    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
     // emotions
     'emotion_this_made_me_feel' => 'Esto te hizo sentir…',
+
+    // logs
+    'auditlogs_link' => 'History',
+    'auditlogs_title' => 'Everything that happened to :name',
+    'auditlogs_breadcrumb' => 'History',
+    'auditlogs_author' => 'By :name on :date',
+
+    // contact field label
+    'contact_field_label_home' => 'Home',
+    'contact_field_label_work' => 'Work',
+    'contact_field_label_cell' => 'Mobile',
+    'contact_field_label_fax' => 'Fax',
+    'contact_field_label_pager' => 'Pager',
+    'contact_field_label_main' => 'Main',
+    'contact_field_label_other' => 'Other',
+    'contact_field_label_personal' => 'Personal',
 ];

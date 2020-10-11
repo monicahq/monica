@@ -15,12 +15,13 @@ class UpdateAvatarTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_the_avatar_with_gravatar()
+    /** @test */
+    public function it_updates_the_avatar_with_gravatar()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'source' => 'gravatar',
         ];
@@ -38,12 +39,13 @@ class UpdateAvatarTest extends TestCase
         );
     }
 
-    public function test_it_updates_the_avatar_with_default_avatar()
+    /** @test */
+    public function it_updates_the_avatar_with_default_avatar()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'source' => 'default',
         ];
@@ -61,12 +63,13 @@ class UpdateAvatarTest extends TestCase
         );
     }
 
-    public function test_it_updates_the_avatar_with_adorable()
+    /** @test */
+    public function it_updates_the_avatar_with_adorable()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'source' => 'adorable',
         ];
@@ -84,7 +87,8 @@ class UpdateAvatarTest extends TestCase
         );
     }
 
-    public function test_it_updates_the_avatar_with_existing_photo()
+    /** @test */
+    public function it_updates_the_avatar_with_existing_photo()
     {
         $contact = factory(Contact::class)->create([]);
         $photo = factory(Photo::class)->create([
@@ -92,7 +96,7 @@ class UpdateAvatarTest extends TestCase
         ]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'source' => 'photo',
             'photo_id' => $photo->id,
@@ -112,12 +116,13 @@ class UpdateAvatarTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
         ];
 
@@ -125,7 +130,8 @@ class UpdateAvatarTest extends TestCase
         app(UpdateAvatar::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_contact_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_contact_not_linked_to_account()
     {
         $account = factory(Account::class)->create([]);
         $contact = factory(Contact::class)->create([]);
@@ -140,27 +146,26 @@ class UpdateAvatarTest extends TestCase
         app(UpdateAvatar::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_photo_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_photo_not_linked_to_account()
     {
         // Case: photo doesn't exist
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'source' => 'photo',
-            'photo_id' => 1234,
+            'photo_id' => 0,
         ];
 
-        $this->expectException(ModelNotFoundException::class);
+        $this->expectException(ValidationException::class);
         $contact = app(UpdateAvatar::class)->execute($request);
 
         // Case: photo exists but belongs to another account
-        $photo = factory(Photo::class)->create([
-            'account_id' => 1234,
-        ]);
+        $photo = factory(Photo::class)->create();
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'source' => 'photo',
             'photo_id' => $photo->id,

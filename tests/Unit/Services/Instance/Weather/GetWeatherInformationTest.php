@@ -18,7 +18,8 @@ class GetWeatherInformationTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_gets_weather_information()
+    /** @test */
+    public function it_gets_weather_information()
     {
         $place = factory(Place::class)->create([
             'latitude' => '34.112456',
@@ -56,7 +57,8 @@ class GetWeatherInformationTest extends TestCase
         );
     }
 
-    public function test_it_cant_get_weather_info_if_weather_not_enabled()
+    /** @test */
+    public function it_cant_get_weather_info_if_weather_not_enabled()
     {
         $place = factory(Place::class)->create([
             'latitude' => '34.112456',
@@ -73,7 +75,8 @@ class GetWeatherInformationTest extends TestCase
         app(GetWeatherInformation::class)->execute($request);
     }
 
-    public function test_it_cant_get_weather_info_if_darksky_api_key_not_provided()
+    /** @test */
+    public function it_cant_get_weather_info_if_darksky_api_key_not_provided()
     {
         $place = factory(Place::class)->create([
             'latitude' => '34.112456',
@@ -91,7 +94,8 @@ class GetWeatherInformationTest extends TestCase
         app(GetWeatherInformation::class)->execute($request);
     }
 
-    public function test_it_cant_get_weather_info_if_latitude_longitude_are_null()
+    /** @test */
+    public function it_cant_get_weather_info_if_latitude_longitude_are_null()
     {
         $place = factory(Place::class)->create([]);
 
@@ -106,7 +110,8 @@ class GetWeatherInformationTest extends TestCase
         $this->assertNull(app(GetWeatherInformation::class)->execute($request));
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         config(['monica.enable_weather' => true]);
         config(['monica.darksky_api_key' => 'test']);

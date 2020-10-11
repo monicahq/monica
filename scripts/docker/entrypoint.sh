@@ -1,5 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
+set -Eeo pipefail
+
+# wait for the database to start
 waitfordb() {
     HOST=${DB_HOST:-mysql}
     PORT=${DB_PORT:-3306}
@@ -8,7 +11,7 @@ waitfordb() {
     attempts=0
     max_attempts=30
     while [ $attempts -lt $max_attempts ]; do
-        nc -z "${HOST}" "${PORT}" && break
+        busybox nc -w 1 "${HOST}:${PORT}" && break
         echo "Waiting for ${HOST}:${PORT}..."
         sleep 1
         let "attempts=attempts+1"
@@ -23,9 +26,9 @@ waitfordb() {
     sleep 3
 }
 
-if expr "$1" : "supervisord" 1>/dev/null; then
+if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ]; then
 
-    MONICADIR=/var/www/monica
+    MONICADIR=/var/www/html
     ARTISAN="php ${MONICADIR}/artisan"
 
     # Ensure storage directories are present
@@ -35,7 +38,7 @@ if expr "$1" : "supervisord" 1>/dev/null; then
     mkdir -p ${STORAGE}/framework/views
     mkdir -p ${STORAGE}/framework/cache
     mkdir -p ${STORAGE}/framework/sessions
-    chown -R monica:apache ${STORAGE}
+    chown -R www-data:www-data ${STORAGE}
     chmod -R g+rw ${STORAGE}
 
     if [ -z "${APP_KEY:-}" -o "$APP_KEY" = "ChangeMeBy32KeyLengthOrGenerated" ]; then
@@ -51,16 +54,16 @@ if expr "$1" : "supervisord" 1>/dev/null; then
     if [ -n "${SENTRY_SUPPORT:-}" -a "$SENTRY_SUPPORT" = "true" -a -z "${SENTRY_NORELEASE:-}" -a -n "${SENTRY_ENV:-}" ]; then
         commit=$(cat .sentry-commit)
         release=$(cat .sentry-release)
-        ${ARTISAN} sentry:release --release="$release" --commit="$commit" --environment="$SENTRY_ENV" -v || true
+        ${ARTISAN} sentry:release --release="$release" --commit="$commit" --environment="$SENTRY_ENV" --force -v || true
     fi
 
     if [ ! -f "${STORAGE}/oauth-public.key" -o ! -f "${STORAGE}/oauth-private.key" ]; then
         echo "Passport keys creation ..."
         ${ARTISAN} passport:keys
         ${ARTISAN} passport:client --personal --no-interaction
-        echo "! Please be careful to backup /var/www/monica/storage/oauth-public.key and /var/www/monica/storage/oauth-private.key files !"
+        echo "! Please be careful to backup $MONICADIR/storage/oauth-public.key and $MONICADIR/storage/oauth-private.key files !"
     fi
 
 fi
 
-exec $@
+exec "$@"

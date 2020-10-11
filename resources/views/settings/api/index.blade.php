@@ -25,27 +25,35 @@
     </div>
   </div>
 
-  <div class="{{ auth()->user()->getFluidLayout() }}">
+  <div class="{{ Auth::user()->getFluidLayout() }}">
     <div class="row">
 
       @include('settings._sidebar')
 
-      <div class="col-12 col-md-9">
+      <div class="col-12 col-sm-9">
 
-        <h3 class="with-actions">{{ trans('settings.api_title') }}</h3>
-        <p>{{ trans('settings.api_description') }}</p>
+        <div class="mb3">
+          <h2 class="f3 fw5">{{ trans('settings.api_title') }}</h2  >
+          <p>{{ trans('settings.api_description') }}</p>
+          <p>{!! trans('settings.api_help', ['url' => config('api.help')]) !!}</p>
+          <p>
+            {{ trans('settings.api_endpoint') }}
+            <input value="{{ route('api') }}" class="url form-control" type="text" readonly />
+          </p>
+        </div>
 
-        <h3>{{ trans('settings.api_personal_access_tokens') }}</h3>
-        <p>{{ trans('settings.api_pao_description') }}</p>
-        <passport-personal-access-tokens></passport-personal-access-tokens>
+        <div class="br3 ba b--gray-monica bg-white mb4">
+          <div class="pa3 bb b--gray-monica">
+            <passport-personal-access-tokens></passport-personal-access-tokens>
+          </div>
+        </div>
 
-        <h3>{{ trans('settings.api_oauth_clients') }}</h3>
-        <p>{{ trans('settings.api_oauth_clients_desc') }}</p>
-        <passport-clients></passport-clients>
-
-        <h3>{{ trans('settings.api_authorized_clients') }}</h3>
-        <p>{{ trans('settings.api_authorized_clients_desc') }}</p>
-        <passport-authorized-clients></passport-authorized-clients>
+        <div class="br3 ba b--gray-monica bg-white mb4">
+          <div class="pa3 bb b--gray-monica">
+            <passport-clients></passport-clients>
+            <passport-authorized-clients class="mt4"></passport-authorized-clients>
+          </div>
+        </div>
 
       </div>
     </div>

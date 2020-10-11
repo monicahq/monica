@@ -3,10 +3,13 @@
 namespace App\Http\Resources\Conversation;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Message extends Resource
+/**
+ * @extends JsonResource<\App\Models\Contact\Message>
+ */
+class Message extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -23,7 +26,7 @@ class Message extends Resource
             'written_at' => DateHelper::getTimestamp($this->written_at),
             'written_by_me' => (bool) $this->written_by_me,
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
             'contact' => new ContactShortResource($this->contact),
             'conversation' => [

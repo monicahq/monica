@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\Contact;
 
+use App\Helpers\DateHelper;
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
@@ -105,12 +106,10 @@ class UpdateBirthdayInformation extends BaseService
      */
     private function clearRelatedSpecialDate(Contact $contact)
     {
-        if (is_null($contact->birthday_special_date_id)) {
-            return;
-        }
-
         $specialDate = SpecialDate::find($contact->birthday_special_date_id);
-        $specialDate->delete();
+        if (! is_null($specialDate)) {
+            $specialDate->delete();
+        }
     }
 
     /**
@@ -184,11 +183,12 @@ class UpdateBirthdayInformation extends BaseService
             $reminder = app(CreateReminder::class)->execute([
                 'account_id' => $data['account_id'],
                 'contact_id' => $data['contact_id'],
-                'initial_date' => $specialDate->date->toDateString(),
+                'initial_date' => DateHelper::getDate($specialDate),
                 'frequency_type' => 'year',
                 'frequency_number' => 1,
                 'title' => trans(
-                    'people.people_add_birthday_reminder',
+                    ($data['is_deceased'] ?
+                        'people.people_add_birthday_reminder_deceased' : 'people.people_add_birthday_reminder'),
                     ['name' => $contact->first_name]
                 ),
                 'delible' => false,

@@ -164,13 +164,6 @@ export default {
       var datas = this.cache[text];
 
       datas = datas.filter(this.filter);
-      if (datas.length === 0) {
-        datas = [{
-          id: -1,
-          name: 'no_result',
-          keyword: text,
-        }];
-      }
 
       this.items = [{ data: datas }];
     },
@@ -180,26 +173,18 @@ export default {
         needle: keyword
       }).then(function(response) {
         let data = [];
-        if (response.data.noResults != null) {
-          data.push({
-            id: -1,
-            name: 'no_result',
-            keyword: keyword,
-          });
-        } else {
+        if (response.data.noResults == null) {
           response.data.data
             .forEach(function (contact) {
               contact.keyword = keyword;
               data.push(contact);
             });
         }
-        if (! vm.addNoResult && data.length === 0) {
-          data.push({
-            id: -1,
-            name: 'no_result',
-            keyword: keyword,
-          });
-        }
+        data.push({
+          id: -1,
+          name: 'add_new_contact',
+          keyword: keyword,
+        });
         return data;
       });
     },

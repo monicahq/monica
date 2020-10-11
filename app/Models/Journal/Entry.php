@@ -2,7 +2,6 @@
 
 namespace App\Models\Journal;
 
-use Parsedown;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Account\Account;
@@ -10,6 +9,9 @@ use App\Models\ModelBinding as Model;
 use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property \Carbon\Carbon $date
+ */
 class Entry extends Model implements IsJournalableInterface
 {
     use Journalable;
@@ -54,17 +56,6 @@ class Entry extends Model implements IsJournalableInterface
     {
         // Default to created_at, but show journalEntry->date if the entry type is JournalEntry
         return $this->journalEntry ? $this->journalEntry->date : $this->created_at;
-    }
-
-    /**
-     * Get the Entry post.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getPostAttribute($value)
-    {
-        return (new Parsedown())->text($value);
     }
 
     /**

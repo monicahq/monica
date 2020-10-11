@@ -20,7 +20,7 @@ class CalDAVTasksTest extends ApiTestCase
     {
         $user = $this->signin();
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => null,
             'created_at' => now(),
             'updated_at' => now(),
@@ -31,8 +31,8 @@ class CalDAVTasksTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/tasks/</d:href>");
-        $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/tasks/{$task->uuid}.ics</d:href>");
+        $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/tasks/</d:href>", false);
+        $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/tasks/{$task->uuid}.ics</d:href>", false);
     }
 
     public function test_caldav_tasks_propfind_with_props()
@@ -63,7 +63,7 @@ class CalDAVTasksTest extends ApiTestCase
               '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
           '</d:response>'.
-        '</d:multistatus');
+        '</d:multistatus', false);
     }
 
     /**
@@ -73,7 +73,7 @@ class CalDAVTasksTest extends ApiTestCase
     {
         $user = $this->signin();
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -83,17 +83,17 @@ class CalDAVTasksTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/tasks/{$task->uuid}.ics</d:href>");
+        $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/tasks/{$task->uuid}.ics</d:href>", false);
     }
 
     public function test_caldav_tasks_getctag()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -123,7 +123,7 @@ class CalDAVTasksTest extends ApiTestCase
         $this->assertGreaterThan(0, $tokens->count());
         $token = $tokens->last();
 
-        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">');
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">', false);
         $response->assertSee('<d:response>'.
             "<d:href>/dav/calendars/{$user->email}/tasks/</d:href>".
             '<d:propstat>'.
@@ -134,18 +134,17 @@ class CalDAVTasksTest extends ApiTestCase
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
-        '</d:response>'
-        );
+        '</d:response>', false);
     }
 
     public function test_caldav_tasks_getctag_task()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'created_at' => now(),
             'updated_at' => now(),
@@ -177,7 +176,7 @@ class CalDAVTasksTest extends ApiTestCase
         $this->assertGreaterThan(0, $tokens->count());
         $token = $tokens->last();
 
-        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">');
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">', false);
         $response->assertSee('<d:response>'.
             "<d:href>/dav/calendars/{$user->email}/tasks/</d:href>".
             '<d:propstat>'.
@@ -188,8 +187,7 @@ class CalDAVTasksTest extends ApiTestCase
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
-        '</d:response>'
-        );
+        '</d:response>', false);
     }
 
     public function test_caldav_tasks_sync_collection_with_token()
@@ -198,10 +196,10 @@ class CalDAVTasksTest extends ApiTestCase
 
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-          'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'created_at' => now(),
             'updated_at' => now(),
@@ -209,7 +207,7 @@ class CalDAVTasksTest extends ApiTestCase
 
         Carbon::setTestNow(Carbon::create(2019, 1, 1, 8, 0, 0));
         $token = factory(SyncToken::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'name' => 'tasks',
             'timestamp' => now(),
@@ -229,6 +227,14 @@ class CalDAVTasksTest extends ApiTestCase
         );
         $response->assertStatus(207);
 
+        $token = SyncToken::where([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'name' => 'tasks',
+        ])
+            ->orderBy('created_at')
+            ->get()
+            ->last();
         $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\" xmlns:cal=\"urn:ietf:params:xml:ns:caldav\" xmlns:cs=\"http://calendarserver.org/ns/\">
  <d:response>
   <d:href>/dav/calendars/{$user->email}/tasks/{$task->uuid}.ics</d:href>
@@ -240,17 +246,17 @@ class CalDAVTasksTest extends ApiTestCase
   </d:propstat>
  </d:response>
  <d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>
-</d:multistatus>");
+</d:multistatus>", false);
     }
 
     public function test_caldav_tasks_sync_collection_init()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $task = factory(Task::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'created_at' => now(),
             'updated_at' => now(),
@@ -292,6 +298,6 @@ class CalDAVTasksTest extends ApiTestCase
   </d:propstat>
  </d:response>
  <d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>
-</d:multistatus>");
+</d:multistatus>", false);
     }
 }

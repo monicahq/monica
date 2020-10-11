@@ -6,18 +6,172 @@
 
 ### Enhancements:
 
-* Use supervisor in docker images
-* Use JawsDB by default on heroku instances
-* Add pluralization forms for non-english-like-plural languages, for vue.js translations
+*
 
 ### Fixes:
 
-* Fix currencies seeder by accounting for defaults
-* Fix search when prefix table is used
-* Fix storage page not being displayed if a contact does not exist anymore
+*
 
 
 # RELEASED VERSIONS:
+
+## v2.19.1 - 2020-09-12
+
+### Fixes:
+
+* Fix journal entry XSS vulnerability
+
+
+## v2.19.0 - 2020-08-27
+
+### Enhancements:
+
+* Update tag management on the contact profile
+* Add next and previous arrows when viewing photos
+* Add dependency to php imagick module
+* Renamed MOBILE_CLIENT_ID and MOBILE_CLIENT_SECRET variables to PASSPORT_PERSONAL_ACCESS_CLIENT_ID and PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET
+
+### Fixes:
+
+* Fix amount display on subscription account settings
+* Fix exception when registering in certain cases
+* Fix vue-select usage
+
+
+## v2.18.0 - 2020-05-23
+
+### New features:
+
+* Display age of death to relationship sidebar if the person is dead
+* Crop contact photos on upload
+* Add new name orders \<nickname> (\<First name> \<Last name>) & \<nickname> (\<Last name> \<First name>)
+* Add console command to test email delivery
+* Add Traditional Chinese language
+* Add Japanese language
+* Change title of birthday reminder for deceased people
+
+### Enhancements:
+
+* Change docker image sync
+* Stores amount as integer-ish values, and fix debts and gifts amount forms
+* Use current text from search bar to create a new person
+* Always allow to add a new person from search bar
+* Use queue to send email verification
+* Improve autocomplete fields on signup and login forms
+* Add cache for S3 storage, and use new standard variables
+* Remove authentication with login+password for carddav
+* Add new command monica:passport to generate encryption if needed
+* Improve nginx config docker examples
+* Remove u2f support (replaced with WebAuthn)
+* Serialize photo content in VCard photo value
+
+### Fixes:
+
+* Fix life event categories and types are not translated when adding new life event
+* Fix subdirectory config url
+* Fix google2fa column size
+* Fix errors display for api
+* Fix currency in double
+* Fix authentication with token on basic auth
+* Fix editing multiple notes at the same time only edits one note
+* Fix countries in fake contact seeder
+* Fix docker rsync exclude rules
+* Fix docker cron (legacy) on apache variant
+* Fix login route already set by Laravel now
+* Fix setMe contact controller
+* Fix carddav sync-collection reporting wrong syncToken
+
+
+## v2.17.0 - 2020-03-22
+
+### New features:
+
+* Add a weekly job to update gravatars
+* Add ability to set 'me' contact
+* Add middle name field to new contact and edit contact
+* Add backend and api for contact field labels
+* Add audit log when setting a contact's description
+* Add support for audit logs on a contact page
+* Add support for audit logs in the Settings page
+* Add vue data validations
+* Add ability to edit activities
+* Associate a photo to a gift
+* New API method: get all the contacts for a given tag
+
+### Enhancements:
+
+* Use Carbon v2 library as translator for dates
+* Contacts displayed in the activity list are now clickable again
+* Gift are now added and updated inline
+* Add a link in the downgrade process to archive all contacts in the account
+
+### Fixes:
+
+* Fix dates being off by one day
+* Fix wrong untagged contacts counter when viewing untagged contacts
+* Fix markdown doesn't work on journal activity entries
+* Fix markdown doesn't work on Activity entries
+* Fix summary of activities showing the same date for every entry
+* Fix vcard categories import/export as tags
+* Fix resend email verification feature not sending email
+* Fix edit conversation date not being editable
+* Fix display of the toggle buttons in the Settings page
+* Fix how you met date not being deleted upon save
+* Fix description not being saved when creating/editing activity
+* Markdown is now properly applied for a phone call description
+* Fix contacts list UX with 2 tabs opened
+* Fix activity mock data seeder
+* Fix ordering of contact tags to be alphabetical
+
+
+## v2.16.0 - 2019-12-31
+
+### New features:
+
+* Save contact tags in vCard 'CATEGORIES' field
+
+### Enhancements:
+
+* Activities are now added inline
+* Improve modals bottom buttons display
+* Add foreign keys to all tables
+* Add English (UK) locale
+* Add API methods to destroy and store documents
+* Add API methods to manage photos and avatars
+* Add emotions and participants to activities
+* Enable API web navigation
+* Enhance UI of API's Settings to add comprehension and documentation
+* Improve trim string middleware to not trim password text
+* Upgrade to Laravel 6.x
+* Enhance user invitation mail
+* Add job information next to the contact name on profile page
+* Use supervisor in docker images
+* Use JawsDB by default on heroku instances
+* Add pluralization forms for non-english-like-plural languages, for vue.js translations
+* Upload master docker image to GitHub packages
+
+### Fixes:
+
+* Fix contact list cells link
+* Fix birthdate selection UX
+* Fix OAuth login process with WebAuthn activated
+* Fix journal entry edit
+* Fix register in case country is not detected from ip address
+* Fix Photo->contact relation
+* Fix subscription page
+* Fix relationship create and destroy with partial contact
+* Fix 2fa route on webauthn page
+* Fix tooltip on favorite icon
+* Fix icons disappeared on contact information
+* Fix CSV uploads with weird photo files
+* Ensure disable_signup is checked on form register validation
+* Fix password resetting page
+* Fix email verification sending on test environments
+* Fix contact export
+* Fix currencies seeder by accounting for defaults
+* Fix search when prefix table is used
+* Fix storage page not being displayed if a contact does not exist anymore
+* Fix API requests for Reminders failing with internal server error
 
 ## v2.15.2 - 2019-09-26
 

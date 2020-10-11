@@ -6,6 +6,7 @@ use App\Models\Contact\Task;
 use Illuminate\Http\Request;
 use App\Services\Task\CreateTask;
 use App\Services\Task\UpdateTask;
+use Illuminate\Http\JsonResponse;
 use App\Services\Task\DestroyTask;
 use App\Traits\JsonRespondController;
 use App\Http\Resources\Task\Task as TaskResource;
@@ -30,13 +31,13 @@ class TasksController extends Controller
      * @param Request $request
      * @return Task
      */
-    public function store(Request $request) : Task
+    public function store(Request $request): Task
     {
         return app(CreateTask::class)->execute([
-            'account_id' => auth()->user()->account->id,
-            'contact_id' => ($request->get('contact_id') == '' ? null : $request->get('contact_id')),
-            'title' => $request->get('title'),
-            'description' => ($request->get('description') == '' ? null : $request->get('description')),
+            'account_id' => auth()->user()->account_id,
+            'contact_id' => ($request->input('contact_id') == '' ? null : $request->input('contact_id')),
+            'title' => $request->input('title'),
+            'description' => ($request->input('description') == '' ? null : $request->input('description')),
         ]);
     }
 
@@ -47,15 +48,15 @@ class TasksController extends Controller
      * @param Task $task
      * @return Task
      */
-    public function update(Request $request, Task $task) : Task
+    public function update(Request $request, Task $task): Task
     {
         return app(UpdateTask::class)->execute([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'task_id' => $task->id,
-            'contact_id' => ($request->get('contact_id') == '' ? null : $request->get('contact_id')),
-            'title' => $request->get('title'),
-            'description' => ($request->get('description') == '' ? null : $request->get('description')),
-            'completed' => $request->get('completed'),
+            'contact_id' => ($request->input('contact_id') == '' ? null : $request->input('contact_id')),
+            'title' => $request->input('title'),
+            'description' => ($request->input('description') == '' ? null : $request->input('description')),
+            'completed' => $request->input('completed'),
         ]);
     }
 
@@ -66,13 +67,19 @@ class TasksController extends Controller
      *
      * @return null|\Illuminate\Http\JsonResponse
      */
-    public function destroy(Task $task)
+    public function destroy(Task $task): ?JsonResponse
     {
-        if (app(DestroyTask::class)->execute([
-            'task_id' => $task->id,
-            'account_id' => auth()->user()->account->id,
-        ])) {
-            return $this->respondObjectDeleted($task->id);
+        try {
+            if (app(DestroyTask::class)->execute([
+                'task_id' => $task->id,
+                'account_id' => auth()->user()->account_id,
+            ])) {
+                return $this->respondObjectDeleted($task->id);
+            }
+        } catch (\Exception $e) {
+            return $this->respondNotFound();
         }
+
+        return null;
     }
 }

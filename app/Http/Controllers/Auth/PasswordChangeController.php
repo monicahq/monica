@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User\User;
 use Illuminate\Support\Str;
-use App\Http\Requests\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
 use App\Http\Requests\PasswordChangeRequest;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\RedirectsUsers;
@@ -63,7 +61,7 @@ class PasswordChangeController extends Controller
             return $user;
         }
 
-        if ($user instanceof Authenticatable) {
+        if ($user instanceof User) {
             $this->setNewPassword($user, $credentials['password']);
         }
 
@@ -85,10 +83,6 @@ class PasswordChangeController extends Controller
             return 'passwords.invalid';
         }
 
-        if (! Password::broker()->validateNewPassword($credentials)) {
-            return 'passwords.password';
-        }
-
         return $user;
     }
 
@@ -99,17 +93,18 @@ class PasswordChangeController extends Controller
      *
      * @return null|Authenticatable
      */
-    protected function getUser(array $credentials)
+    protected function getUser(array $credentials): ?Authenticatable
     {
+        /** @var User */
         $user = Auth::user();
 
         // Using current email from user, and current password sent with the request to authenticate the user
         if (! Auth::attempt([
-                'email' => $user->getEmailForPasswordReset(),
-                'password' => $credentials['password_current'],
-            ])) {
+            'email' => $user->getEmailForPasswordReset(),
+            'password' => $credentials['password_current'],
+        ])) {
             // authentication fails
-            return;
+            return null;
         }
 
         return $user;
@@ -137,7 +132,7 @@ class PasswordChangeController extends Controller
      * Get the response for a successful password change.
      *
      * @param string $response
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     protected function sendChangedResponse($response)
     {
@@ -149,7 +144,7 @@ class PasswordChangeController extends Controller
      * Get the response for a failed password change.
      *
      * @param string $response
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     protected function sendChangedFailedResponse($response)
     {

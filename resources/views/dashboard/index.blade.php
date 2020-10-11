@@ -14,7 +14,7 @@
               {{ trans('people.people_list_last_updated') }}
             </div>
             @foreach($lastUpdatedContacts as $contact)
-            <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} pr2 pointer avatars">
+            <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} pr2 pointer">
               <avatar :contact="{{ $contact }}" :clickable="true"></avatar>
             </div>
             @endforeach

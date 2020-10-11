@@ -45,7 +45,7 @@
 
             <p class="cta"><a href="{{ route('settings.users.create') }}" class="btn">{{ trans('settings.users_blank_cta') }}</a></p>
 
-            @if (config('monica.requires_subscription') && auth()->user()->account->hasLimitations())
+            @if (config('monica.requires_subscription') && $accountHasLimitations)
               <p class="requires-subscription">{{ trans('settings.users_invitation_need_subscription') }}</p>
             @endif
           </div>

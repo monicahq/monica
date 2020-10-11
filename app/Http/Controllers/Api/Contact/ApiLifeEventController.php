@@ -58,10 +58,10 @@ class ApiLifeEventController extends ApiController
     {
         try {
             $lifeEvent = app(CreateLifeEvent::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                 +
                 [
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -85,12 +85,12 @@ class ApiLifeEventController extends ApiController
     {
         try {
             $lifeEvent = app(UpdateLifeEvent::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'life_event_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'life_event_id' => $lifeEventId,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                        'life_event_id' => $lifeEventId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -113,7 +113,7 @@ class ApiLifeEventController extends ApiController
     {
         try {
             app(DestroyLifeEvent::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'life_event_id' => $lifeEventId,
             ]);
         } catch (ModelNotFoundException $e) {

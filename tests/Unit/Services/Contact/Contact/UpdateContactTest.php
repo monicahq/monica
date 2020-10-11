@@ -12,17 +12,18 @@ class UpdateContactTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_a_contact()
+    /** @test */
+    public function it_updates_a_contact()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'first_name' => 'john',
             'middle_name' => 'franck',
             'last_name' => 'doe',
-            'gender_id' => $contact->gender->id,
+            'gender_id' => $contact->gender_id,
             'description' => 'this is a test',
             'is_partial' => false,
             'is_birthdate_known' => true,
@@ -44,7 +45,7 @@ class UpdateContactTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'first_name' => 'john',
         ]);
 
@@ -54,16 +55,17 @@ class UpdateContactTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'middle_name' => 'franck',
             'last_name' => 'doe',
-            'gender_id' => $contact->gender->id,
+            'gender_id' => $contact->gender_id,
             'description' => 'this is a test',
             'is_partial' => false,
             'is_birthdate_known' => true,
@@ -85,7 +87,8 @@ class UpdateContactTest extends TestCase
         app(UpdateContact::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_account_doesnt_exist()
+    /** @test */
+    public function it_throws_an_exception_if_account_doesnt_exist()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -95,7 +98,7 @@ class UpdateContactTest extends TestCase
             'first_name' => 'john',
             'middle_name' => 'franck',
             'last_name' => 'doe',
-            'gender_id' => $contact->gender->id,
+            'gender_id' => $contact->gender_id,
             'description' => 'this is a test',
             'is_partial' => false,
             'is_birthdate_known' => true,

@@ -10,7 +10,8 @@ class ContactFieldTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_fetches_data_field()
+    /** @test */
+    public function it_fetches_data_field()
     {
         $contactField = new ContactField;
         $contactField->data = 'this is a test';

@@ -1,11 +1,18 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'journal_rate' => 'איך עבר עליך היום? ניתן לדרג פעם ביום.',
     'journal_come_back' => 'תודה. מזמינים אותך לדרג את יומך גם מחר.',
     'journal_description' => 'לתשומת לבך: ביומן מופיעים רשומות ידניות לצד רשומות אוטומטיות כגון פעילויות שקיימת עם אנשי הקשר שלך. בעוד שניתן למחוק רשומות ביומן ידנית, יהיה עליך למחוק את הפעילות ישירות בעמוד של איש הקשר.',
     'journal_add' => 'הוספת רשומה ביומן',
     'journal_edit' => 'עריכת רשומה ביומן',
+    'journal_empty' => 'יומן ריק',
     'journal_created_automatically' => 'נוצרה אוטומטית',
     'journal_entry_type_journal' => 'רשומה ביומן',
     'journal_entry_type_activity' => 'פעילות',

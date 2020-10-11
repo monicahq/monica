@@ -28,7 +28,7 @@ class CreateTag extends BaseService
      * @param array $data
      * @return Tag
      */
-    public function execute(array $data) : Tag
+    public function execute(array $data): Tag
     {
         $this->validate($data);
 
@@ -37,6 +37,10 @@ class CreateTag extends BaseService
             'name' => $data['name'],
             'name_slug' => Str::slug($data['name'], '-', LocaleHelper::getLang()),
         ];
+
+        if (empty($array['name_slug'])) {
+            $array['name_slug'] = htmlentities($data['name']);
+        }
 
         return Tag::create($array);
     }

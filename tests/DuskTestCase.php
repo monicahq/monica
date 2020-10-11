@@ -3,7 +3,10 @@
 namespace Tests;
 
 use Tests\Traits\SignIn;
+use App\Models\User\User;
 use Laravel\Dusk\Browser;
+use App\Services\User\AcceptPolicy;
+use Tests\Traits\CreatesApplication;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -12,6 +15,14 @@ use Facebook\WebDriver\Remote\DesiredCapabilities;
 abstract class DuskTestCase extends BaseTestCase
 {
     use CreatesApplication, SignIn;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Browser::$storeScreenshotsAt = base_path('results/screenshots');
+        Browser::$storeConsoleLogAt = base_path('results/console');
+        Browser::$storeSourceAt = base_path('results/source');
+    }
 
     /**
      * Prepare for Dusk test execution.
@@ -24,31 +35,6 @@ abstract class DuskTestCase extends BaseTestCase
         if (env('SAUCELABS') != '1') {
             static::startChromeDriver();
         }
-    }
-
-    /**
-     * Register the base URL and some macro with Dusk.
-     *
-     * @return void
-     *
-     * @psalm-suppress UndefinedThisPropertyFetch
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        /*
-         * Macro scrollTo to scroll down/up, until the selector is visible
-         */
-        Browser::macro('scrollTo', function ($selector) {
-            //$element = $this->element($selector);
-            //$this->driver->executeScript("arguments[0].scrollIntoView(true);",[$element]);
-
-            $selectorby = $this->resolver->format($selector);
-            $this->driver->executeScript("$(\"html, body\").animate({scrollTop: $(\"$selectorby\").offset().top}, 0);");
-
-            return $this;
-        });
     }
 
     /**
@@ -74,6 +60,26 @@ abstract class DuskTestCase extends BaseTestCase
                 'http://localhost:9515', $capabilities
             );
         }
+    }
+
+    /**
+     * Return the default user to authenticate.
+     *
+     * @return \App\User|int|null
+     */
+    protected function user()
+    {
+        $user = factory(User::class)->create();
+        $user->account->populateDefaultFields();
+        $user->account->update(['has_access_to_paid_version_for_free' => true]);
+
+        app(AcceptPolicy::class)->execute([
+            'account_id' => $user->account->id,
+            'user_id' => $user->id,
+            'ip_address' => null,
+        ]);
+
+        return $user;
     }
 
     public function hasDivAlert(Browser $browser)

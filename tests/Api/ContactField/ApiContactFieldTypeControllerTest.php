@@ -25,14 +25,15 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_contact_field_type_get_one()
+    /** @test */
+    public function contact_field_type_get_one()
     {
         $user = $this->signin();
         $contactFieldType1 = factory(ContactFieldType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contactFieldType2 = factory(ContactFieldType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/contactfieldtypes/'.$contactFieldType1->id);
@@ -51,7 +52,8 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_field_type_get_one_error()
+    /** @test */
+    public function contact_field_type_get_one_error()
     {
         $user = $this->signin();
 
@@ -60,7 +62,8 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_contact_field_type_create()
+    /** @test */
+    public function contact_field_type_create()
     {
         $user = $this->signin();
 
@@ -82,7 +85,7 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $contactFieldTypeId);
         $this->assertDatabaseHas('contact_field_types', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $contactFieldTypeId,
             'name' => 'Email',
             'protocol' => 'mailto:',
@@ -90,7 +93,8 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_field_type_create_error()
+    /** @test */
+    public function contact_field_type_create_error()
     {
         $user = $this->signin();
 
@@ -102,11 +106,12 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_field_type_update()
+    /** @test */
+    public function contact_field_type_update()
     {
         $user = $this->signin();
         $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/contactfieldtypes/'.$contactFieldType->id, [
@@ -128,7 +133,7 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $contactFieldTypeId);
         $this->assertDatabaseHas('contact_field_types', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $contactFieldType->id,
             'name' => 'Email2',
             'protocol' => 'mailto:',
@@ -136,11 +141,12 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_field_type_update_error()
+    /** @test */
+    public function contact_field_type_update_error()
     {
         $user = $this->signin();
         $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/contactfieldtypes/'.$contactFieldType->id, []);
@@ -150,7 +156,8 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_field_type_update_error_bad_account()
+    /** @test */
+    public function contact_field_type_update_error_bad_account()
     {
         $user = $this->signin();
 
@@ -168,14 +175,15 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_contact_field_type_delete()
+    /** @test */
+    public function contact_field_type_delete()
     {
         $user = $this->signin();
         $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $this->assertDatabaseHas('contact_field_types', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $contactFieldType->id,
         ]);
 
@@ -183,12 +191,13 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('contact_field_types', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $contactFieldType->id,
         ]);
     }
 
-    public function test_contact_field_type_delete_error()
+    /** @test */
+    public function contact_field_type_delete_error()
     {
         $user = $this->signin();
 
@@ -197,7 +206,8 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_contact_field_type_delete_bad_account()
+    /** @test */
+    public function contact_field_type_delete_bad_account()
     {
         $user = $this->signin();
 

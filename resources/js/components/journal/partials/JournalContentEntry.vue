@@ -31,18 +31,18 @@
               {{ entry.title }}
             </h3>
 
-            <div class="markdown" v-html="entry.post"></div>
+            <span dir="auto" class="markdown" v-html="compiledMarkdown(entry.post)"></span>
 
             <ul class="f7">
               <li class="di">
-                <a class="pointer" :cy-name="'entry-edit-button-' + entry.id" :href="'journal/entries/' + entry.id + '/edit'">
+                <a v-cy-name="'entry-edit-button-' + entry.id" class="pointer" :href="'journal/entries/' + entry.id + '/edit'">
                   {{ $t('app.edit') }}
                 </a>
               </li>
               <li class="di">
-                <a class="pointer" :cy-name="'entry-delete-button-' + entry.id" href="" @click.prevent="trash()">
+                <confirm :message="$t('journal.delete_confirmation')" @confirm="trash()" v-cy-name="'entry-delete-button-' + entry.id">
                   {{ $t('app.delete') }}
-                </a>
+                </confirm>
               </li>
             </ul>
           </div>
@@ -53,7 +53,13 @@
 </template>
 
 <script>
+import Confirm from '../../partials/Confirm.vue';
+
 export default {
+
+  components: {
+    Confirm,
+  },
 
   props: {
     journalEntry: {
@@ -89,6 +95,10 @@ export default {
         .then(response => {
           this.$emit('deleteJournalEntry', this.journalEntry.id);
         });
+    },
+
+    compiledMarkdown (text) {
+      return marked(text, { sanitize: true });
     }
   }
 };

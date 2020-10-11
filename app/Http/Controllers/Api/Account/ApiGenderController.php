@@ -64,11 +64,11 @@ class ApiGenderController extends ApiController
     {
         try {
             $gender = app(CreateGender::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -93,12 +93,12 @@ class ApiGenderController extends ApiController
     {
         try {
             $gender = app(UpdateGender::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'gender_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'gender_id' => $genderId,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                        'gender_id' => $genderId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -122,7 +122,7 @@ class ApiGenderController extends ApiController
     {
         try {
             app(DestroyGender::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'gender_id' => $genderId,
             ]);
         } catch (ModelNotFoundException $e) {

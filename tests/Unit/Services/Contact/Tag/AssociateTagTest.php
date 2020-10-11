@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Conversation;
+namespace Tests\Unit\Services\Contact\Tag;
 
 use Tests\TestCase;
 use App\Models\Contact\Tag;
@@ -15,12 +15,13 @@ class AssociateTagTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_sets_a_non_english_tag_to_a_contact_when_tag_doesnt_exist_yet()
+    /** @test */
+    public function it_sets_a_non_english_tag_to_a_contact_when_tag_doesnt_exist_yet()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'name' => '朋友',
         ];
@@ -28,13 +29,13 @@ class AssociateTagTest extends TestCase
         $tag = app(AssociateTag::class)->execute($request);
 
         $this->assertDatabaseHas('tags', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'name' => '朋友',
             'name_slug' => '朋友',
         ]);
 
         $this->assertDatabaseHas('contact_tag', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'tag_id' => $tag->id,
         ]);
@@ -45,12 +46,13 @@ class AssociateTagTest extends TestCase
         );
     }
 
-    public function test_it_sets_a_tag_to_a_contact_when_tag_doesnt_exist_yet()
+    /** @test */
+    public function it_sets_a_tag_to_a_contact_when_tag_doesnt_exist_yet()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'name' => 'Central Perk',
         ];
@@ -58,13 +60,13 @@ class AssociateTagTest extends TestCase
         $tag = app(AssociateTag::class)->execute($request);
 
         $this->assertDatabaseHas('tags', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'name' => 'Central Perk',
             'name_slug' => 'central-perk',
         ]);
 
         $this->assertDatabaseHas('contact_tag', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'tag_id' => $tag->id,
         ]);
@@ -75,7 +77,8 @@ class AssociateTagTest extends TestCase
         );
     }
 
-    public function test_it_sets_a_tag_to_a_contact_when_tag_does_exist_yet()
+    /** @test */
+    public function it_sets_a_tag_to_a_contact_when_tag_does_exist_yet()
     {
         $contact = factory(Contact::class)->create([]);
         $tag = factory(Tag::class)->create([
@@ -83,19 +86,19 @@ class AssociateTagTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('tags', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'name' => $tag->name,
             'name_slug' => $tag->name_slug,
         ]);
 
         $this->assertDatabaseMissing('contact_tag', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'tag_id' => $tag->id,
         ]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'name' => 'Central Perk',
         ];
@@ -103,13 +106,13 @@ class AssociateTagTest extends TestCase
         $tag = app(AssociateTag::class)->execute($request);
 
         $this->assertDatabaseHas('tags', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'name' => 'Central Perk',
             'name_slug' => 'central-perk',
         ]);
 
         $this->assertDatabaseHas('contact_tag', [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'tag_id' => $tag->id,
         ]);
@@ -120,7 +123,8 @@ class AssociateTagTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [
             'account_id' => 1,
@@ -132,7 +136,8 @@ class AssociateTagTest extends TestCase
         app(AssociateTag::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_contact_does_not_exist()
+    /** @test */
+    public function it_throws_an_exception_if_contact_does_not_exist()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create();
