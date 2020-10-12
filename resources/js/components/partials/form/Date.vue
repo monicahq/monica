@@ -111,12 +111,12 @@ export default {
     },
 
     requiredMessage() {
-      return this.$t('validation.vue.required', { field: this.label });
+      return this.$t('validation.required', { attribute: this.label });
     },
 
     beforeMessage() {
-      return this.$t('validation.vue.max.numeric', {
-        field: this.label,
+      return this.$t('validation.max.numeric', {
+        attribute: this.label,
         max: this.displayValue(this.validator.$params.before.date)
       });
     },

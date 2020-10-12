@@ -124,7 +124,7 @@ export default {
       return this.label && this.label.length > 0 ? this.label : this.title;
     },
     requiredMessage() {
-      return this.$t('validation.vue.required', { field: this.field });
+      return this.$t('validation.required', { attribute: this.field });
     },
   },
 

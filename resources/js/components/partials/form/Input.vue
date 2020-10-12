@@ -124,10 +124,10 @@ export default {
       return this.label && this.label.length > 0 ? this.label : this.title;
     },
     requiredMessage() {
-      return this.$t('validation.vue.required', { field: this.field });
+      return this.$t('validation.required', { attribute: this.field });
     },
     urlMessage() {
-      return this.$t('validation.vue.url', { field: this.field });
+      return this.$t('validation.url', { attribute: this.field });
     },
     maxLengthMessage() {
       var type = 'string';
@@ -136,8 +136,8 @@ export default {
         type = 'numeric';
         break;
       }
-      return this.$t('validation.vue.max.'.type, {
-        field: this.field,
+      return this.$t('validation.max.'.type, {
+        attribute: this.field,
         max: this.validator ? this.validator.$params.maxLength.max : '',
       });
     },
