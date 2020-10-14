@@ -274,6 +274,21 @@ ul {
   }
 }
 
+.pretty {
+  white-space: inherit;
+  &.form-check-input {
+    margin-left: 0;
+  }
+  .state label{
+    text-indent: 0;
+    padding-left: 2rem;
+    line-height: 1.4em;
+    &:after, &:before {
+      top: 0;
+    }
+  }
+}
+
 .markdown {
   ul {
     list-style-type: disc;
