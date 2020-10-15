@@ -3,6 +3,7 @@
 namespace App\Models\Account;
 
 use App\Models\ModelBinding as Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ActivityType extends Model
@@ -33,6 +34,8 @@ class ActivityType extends Model
 
     /**
      * Get the activity type category record associated with the activity types.
+     *
+     * @return BelongsTo
      */
     public function category()
     {
@@ -41,6 +44,8 @@ class ActivityType extends Model
 
     /**
      * Get the activity records associated with the activity type.
+     *
+     * @return HasMany
      */
     public function activities()
     {
