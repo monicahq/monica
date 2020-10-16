@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Settings;
 
 use App\Http\Requests\AuthorizedRequest;
+use App\Models\Contact\Gender;
+use Illuminate\Validation\Rule;
 
 class GendersRequest extends AuthorizedRequest
 {
@@ -14,6 +16,7 @@ class GendersRequest extends AuthorizedRequest
     public function rules()
     {
         return [
+            'type' => ['required', Rule::in(Gender::LIST)],
             'name' => 'max:255',
             'id' => 'integer',
         ];

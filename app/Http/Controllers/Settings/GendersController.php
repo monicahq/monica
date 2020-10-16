@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use Illuminate\Http\Request;
 use App\Helpers\GenderHelper;
 use App\Models\Contact\Gender;
+use Illuminate\Validation\Rule;
 use App\Helpers\CollectionHelper;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
@@ -63,6 +64,7 @@ class GendersController extends Controller
     {
         Validator::make($request->all(), [
             'name' => 'required|max:255',
+            'type' => ['required', Rule::in(Gender::LIST)],
         ])->validate();
 
         $gender = auth()->user()->account->genders()->create(
