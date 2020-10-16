@@ -270,7 +270,7 @@ export default {
 
       createForm: {
         name: '',
-        type: '',
+        type: 'M',
         isDefault: false,
         errors: []
       },
