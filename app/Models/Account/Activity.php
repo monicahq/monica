@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
+/**
+ * @property int|null $activity_type_id
+ */
 class Activity extends Model implements IsJournalableInterface
 {
     use Journalable;
