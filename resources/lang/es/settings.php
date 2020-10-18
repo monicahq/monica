@@ -20,12 +20,12 @@ return [
     'sidebar_settings_security' => 'Seguridad',
     'sidebar_settings_auditlogs' => 'Audit logs',
 
-    'title_general' => 'General Information',
-    'title_i18n' => 'International settings',
+    'title_general' => 'Información general',
+    'title_i18n' => 'Configuración internacional',
     'title_layout' => 'Layout',
 
-    'me_title' => 'My contact',
-    'me_help' => 'This is the contact that represents <em>you</em> in Monica',
+    'me_title' => 'Mi contacto',
+    'me_help' => 'Este es el contacto que te representa <em>a ti</em> en Monica',
     'me_select' => 'Select a contact',
     'me_no_contact' => 'No contact selected yet.',
     'me_select_click' => 'Click here to select a contact.',
