@@ -50,7 +50,7 @@ return [
     'application_description' => 'Monica es una herramienta para gestionar tus interacciones con tus seres queridos, amigos y familiares.',
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
-    'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
+    'markdown_description' => '¿Quieres dar formato al texto de una manera agradable? Soportamos el uso de Markdown para añadir negrita, cursiva, listas y más.',
     'markdown_link' => 'Leer documentación',
 
     'header_settings_link' => 'Configuración',
