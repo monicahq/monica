@@ -26,10 +26,10 @@ return [
 
     'me_title' => 'Mi contacto',
     'me_help' => 'Este es el contacto que te representa <em>a ti</em> en Monica',
-    'me_select' => 'Select a contact',
+    'me_select' => 'Selecciona un contacto',
     'me_no_contact' => 'No contact selected yet.',
-    'me_select_click' => 'Click here to select a contact.',
-    'me_remove_contact' => 'Remove the association',
+    'me_select_click' => 'Haz clic aquí para seleccionar un contacto.',
+    'me_remove_contact' => 'Eliminar la asociación',
     'me_choose' => 'Choose yourself',
     'me_choose_placeholder' => 'Choose yourself',
 
