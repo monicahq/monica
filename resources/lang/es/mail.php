@@ -8,8 +8,8 @@
 
 return [
 
-    'subject_line' => 'Reminder for :contact',
-    'greetings' => 'Hi :username',
+    'subject_line' => 'Recordatorio para :contact',
+    'greetings' => 'Hola, :username',
     'want_reminded_of' => 'You wanted to be reminded of :reason',
     'for' => 'Para: :name',
     'comment' => 'Comment: :comment',
