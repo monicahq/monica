@@ -136,7 +136,7 @@ return [
     'relationship_type_group_family' => 'Relaciones familiares',
     'relationship_type_group_friend' => 'Relaciones de amistad',
     'relationship_type_group_work' => 'Relaciones laborales',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_other' => 'Otro tipo de relaciones',
 
     'relationship_type_partner' => 'pareja',
     'relationship_type_partner_female' => 'pareja',
