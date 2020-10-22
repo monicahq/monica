@@ -109,6 +109,14 @@ There are multiple ways of getting started with Monica.
 
 Note: while the .com version has a paid plan, there is no limitations on Monica if you install it on a server that you own.
 
+You can also deploy Monica on [Platform.sh](https://platform.sh.) using the button below.
+
+<p align="center">
+<a href="https://console.platform.sh/projects/create-project?template=https://github.com/monicahq/monica.git&utm_content=monica3&utm_source=github&utm_medium=button&utm_campaign=deploy_on_platform">
+    <img src="https://platform.sh/images/deploy/lg-blue.svg" alt="Deploy on Platform.sh" width="180px" />
+</a>
+</p>
+
 ### Requirements
 
 If you want to host it yourself, you need
