@@ -403,7 +403,7 @@ return [
     'personalisation_paid_upgrade_vue' => 'Dies ist eine Premium-Funktion, die nur im kostenpflichtigen Abo aktiv ist. Upgrade deinen Account unter Einstellungen > Abonnement.',
 
     'reminder_time_to_send' => 'Zeitpunkt für den Versand von Erinnerungen',
-    'reminder_time_to_send_help' => 'Für Ihre Informationen wird Ihre nächste Erinnerung auf <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span> gesendet.',
+    'reminder_time_to_send_help' => 'Zur Information: Ihre nächste Erinnerung am <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span> gesendet.',
 
     'personalization_activity_type_category_title' => 'Aktivitätstyp Kategorien',
     'personalization_activity_type_category_add' => 'Neue Aktivitätstyp Kategorie hinzufügen',
