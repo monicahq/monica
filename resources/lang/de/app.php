@@ -13,7 +13,7 @@ return [
     'save' => 'Speichern',
     'add' => 'Hinzufügen',
     'cancel' => 'Abbrechen',
-    'confirm' => 'Confirm',
+    'confirm' => 'Bestätigen',
     'delete_confirm' => 'Sicher?',
     'delete' => 'Löschen',
     'edit' => 'Bearbeiten',
