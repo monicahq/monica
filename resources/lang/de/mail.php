@@ -37,11 +37,11 @@ Sie wollten alle :frequency Tage erinnert werden um in Kontakt zu bleiben mit :n
 
     'password_reset_title' => 'Monica – Reset Password Notification',
     'password_reset_intro' => 'You are receiving this email because we received a password reset request for your account.',
-    'password_reset_button' => 'Reset Password',
+    'password_reset_button' => 'Passwort zurücksetzen',
     'password_reset_expiration' => 'This password reset link will expire in :count minutes.',
     'password_reset_bottom' => 'If you did not request a password reset, no further action is required.',
 
-    'invitation_title' => 'Monica – You are invited by :name',
+    'invitation_title' => 'Monica – Du wurdest von :name eingeladen',
     'invitation_intro' => 'You’ve been invited by :name (:email) to use Monica, a nice Personal Relationship Management tool.',
     'invitation_link' => 'To accept the invitation, click on the link below:',
     'invitation_button' => 'Accept invitation',
