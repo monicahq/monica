@@ -183,7 +183,7 @@ The benefits are:
 * a way to quickly see and understand what the commit does and what it affects,
 * automatic changelog creation based on those keywords.
 
-The keywords that support (heavily inspired by [config-conventional](https://github.com/marionebl/commitlint/tree/master/%40commitlint/config-conventional)):
+The keywords that support (heavily inspired by [config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional)):
 * `ci`,
 * `chore`,
 * `docs`,

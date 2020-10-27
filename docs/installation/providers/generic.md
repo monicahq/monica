@@ -29,17 +29,18 @@ If you don't want to use Docker, the best way to setup the project is to use the
 
 **PHP:** Install php7.2 minimum, with these extensions:
 
--   curl
 -   bcmath
+-   curl
+-   dom
 -   gd
 -   gmp
 -   iconv
 -   intl
 -   json
--   pdo_mysql
 -   mbstring
 -   mysqli
 -   opcache
+-   pdo_mysql
 -   redis
 -   sodium
 -   xml

@@ -35,6 +35,8 @@ class LifeEventType extends Model
 
     /**
      * Get the life event category record associated with the life event type.
+     *
+     * @return BelongsTo
      */
     public function lifeEventCategory()
     {
