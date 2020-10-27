@@ -53,7 +53,7 @@ We use the [vue-i18n](https://www.npmjs.com/package/vue-i18n) package.
   - Example: `{name}’s birthday` => `anniversaire de {name}`
   - Other example: `{{ $t('people.stay_in_touch_frequency', { count: frequency }) }}`
 - **plural forms**: See [vue-i18n doc](http://kazupon.github.io/vue-i18n/en/pluralization.html).
-  Pluralization is customized in the [pluralization.js](https://github.com/monicahq/monica/blob/master/resources/js/pluralization.js) file. This should fit your language pluralization form. Messages must be separated by a pipe, but you cannot define the number of occurences it applies to like with Laravel translation (no brackets or braces).
+  Pluralization is customized in the [pluralization.js](https://github.com/monicahq/monica/blob/master/resources/js/pluralization.js) file. This should fit your language pluralization form. Messages must be separated by a pipe, but you cannot define the number of occurrences it applies to like with Laravel translation (no brackets or braces).
     Example: `1 message|{count} messages` => `{count} message|{count} messages` in French, or: `{count}条消息` in Chinese (only 1 form)
 
 ## Rules for translation

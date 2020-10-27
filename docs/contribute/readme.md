@@ -337,8 +337,8 @@ For everything that is in VueJS though, things are a bit different. We have to u
 
 You can use these replacements instead of the regular (php) definition:
 * `trans('file.string')` is writen `$t('file.string')`.
-* `trans('file.string', ['param' => $value])` is writen `$t('file.string', {param: value})`.
-* `trans_choice('file.string', $count)` is writen `$tc('file.string', count)` or `$tc('file.string', count, {param: value})`.
+* `trans('file.string', ['param' => $value])` is written `$t('file.string', {param: value})`.
+* `trans_choice('file.string', $count)` is written `$tc('file.string', count)` or `$tc('file.string', count, {param: value})`.
 
 Important note: every time a string changes in a translation file, you need to regenerate all the strings so they can be made available in JS. To do this,
 * use `php artisan lang:generate`
