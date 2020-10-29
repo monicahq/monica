@@ -1,19 +1,19 @@
 # Installing Monica (Generic) <!-- omit in toc -->
 
--   [Prerequisites](#prerequisites)
-    -   [Types of databases](#types-of-databases)
--   [Installation steps](#installation-steps)
-    -   [1. Clone the repository](#1-clone-the-repository)
-    -   [2. Setup the database](#2-setup-the-database)
-    -   [3. Configure Monica](#3-configure-monica)
-    -   [4. Configure cron job](#4-configure-cron-job)
-    -   [5. Configure Apache webserver](#5-configure-apache-webserver)
-    -   [6. Optional: Setup the queues with Redis, Beanstalk or Amazon SQS](#6-optional-setup-the-queues-with-redis-beanstalk-or-amazon-sqs)
-    -   [7. Optional: Setup the access tokens to use the API](#7-optional-setup-the-access-tokens-to-use-the-api)
-        -   [Generate the encryption keys](#generate-the-encryption-keys)
-        -   [Optional: Save the encryption keys as variable](#optional-save-the-encryption-keys-as-variable)
-        -   [Optional: Generate a Password grant client](#optional-generate-a-password-grant-client)
-    -   [Final step](#final-step)
+- [Prerequisites](#prerequisites)
+  - [Types of databases](#types-of-databases)
+- [Installation steps](#installation-steps)
+  - [1. Clone the repository](#1-clone-the-repository)
+  - [2. Setup the database](#2-setup-the-database)
+  - [3. Configure Monica](#3-configure-monica)
+  - [4. Configure cron job](#4-configure-cron-job)
+  - [5. Configure Apache webserver](#5-configure-apache-webserver)
+  - [6. Optional: Setup the queues with Redis, Beanstalk or Amazon SQS](#6-optional-setup-the-queues-with-redis-beanstalk-or-amazon-sqs)
+  - [7. Optional: Setup the access tokens to use the API](#7-optional-setup-the-access-tokens-to-use-the-api)
+    - [Generate the encryption keys](#generate-the-encryption-keys)
+    - [Optional: Save the encryption keys as variable](#optional-save-the-encryption-keys-as-variable)
+    - [Optional: Generate a Password grant client](#optional-generate-a-password-grant-client)
+  - [Final step](#final-step)
 
 ## Prerequisites
 
@@ -237,7 +237,7 @@ Some process monitor such as [Supervisor](https://laravel.com/docs/master/queues
 
 ### 7. Optional: Setup the access tokens to use the API
 
-In order to use the Monica API for your instance, you will have to instanciate encryption keys first.
+In order to use the Monica API for your instance, you will have to instantiate encryption keys first.
 
 #### Generate the encryption keys
 
