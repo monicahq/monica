@@ -274,6 +274,29 @@ ul {
   }
 }
 
+.pretty {
+  white-space: inherit;
+  &.form-check-input {
+    @if $htmldir == ltr {
+      margin-left: 0;
+    } @else {
+      margin-right: 0;
+    }
+  }
+  .state label{
+    text-indent: 0;
+    @if $htmldir == ltr {
+      padding-left: 2rem;
+    } @else {
+      padding-right: 2rem;
+    }
+    line-height: 1.4em;
+    &:after, &:before {
+      top: 0;
+    }
+  }
+}
+
 .markdown {
   ul {
     list-style-type: disc;
