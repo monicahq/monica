@@ -70,8 +70,7 @@
         "phpunit/phpunit": "^9.0",
         "psalm/plugin-laravel": "dev-master",
         "roave/security-advisories": "dev-master",
-        "thecodingmachine/phpstan-safe-rule": "^1.0",
-        "vimeo/psalm": "^3.13"
+        "thecodingmachine/phpstan-safe-rule": "^1.0"
     },
     "suggest": {
         "ext-apcu": "*"

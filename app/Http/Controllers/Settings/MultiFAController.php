@@ -88,6 +88,7 @@ class MultiFAController extends Controller
      */
     public function disableTwoFactor(Request $request)
     {
+        // @phpstan-ignore-next-line
         return view('settings.security.2fa-disable');
     }
 
