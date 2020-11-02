@@ -224,6 +224,9 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
 
             Route::apiResource('settings/personalization/activitytypecategories', 'Account\\Activity\\ActivityTypeCategoriesController');
             Route::apiResource('settings/personalization/activitytypes', 'Account\\Activity\\ActivityTypesController', ['except' => ['index']]);
+
+            Route::get('settings/personalization/lifeeventcategories', 'Account\\LifeEvent\\LifeEventCategoriesController@index');
+            Route::apiResource('settings/personalization/lifeeventtypes', 'Account\\LifeEvent\\LifeEventTypesController', ['except' => ['index']]);
         });
 
         Route::get('/settings/export', 'SettingsController@export')->name('export');
