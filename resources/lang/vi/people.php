@@ -70,7 +70,7 @@ return [
     'section_personal_reminders' => 'Lời nhắc',
     'section_personal_tasks' => 'Tasks',
     'section_personal_gifts' => 'Quà tặng',
-    'section_personal_notes' => 'Notes',
+    'section_personal_notes' => 'Ghi chú',
 
     // archived contacts
     'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
