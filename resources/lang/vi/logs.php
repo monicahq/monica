@@ -24,10 +24,10 @@ return [
     'settings_log_contact_description_cleared_with_name_with_link' => 'Cleared the description of <a href=":link">:name</a>.',
 
     // contact work information update
-    'contact_log_contact_work_updated' => 'Updated work information.',
+    'contact_log_contact_work_updated' => 'Đã cập nhật thông tin công việc.',
     'settings_log_contact_work_updated_with_name' => 'Updated work information of :name.',
     'settings_log_contact_work_updated_with_name_with_link' => 'Updated work information of <a href=":link">:name</a>.',
 
     // company created
-    'settings_log_company_created' => 'Created a company called :name.',
+    'settings_log_company_created' => 'Đã tạo công ty tên :name.',
 ];
