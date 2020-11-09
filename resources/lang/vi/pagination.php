@@ -19,7 +19,7 @@ return [
     |
     */
 
-    'previous' => '❮ Previous',
-    'next'     => 'Next ❯',
+    'previous' => '❮ Trước',
+    'next'     => 'Kế tiếp ❯',
 
 ];
