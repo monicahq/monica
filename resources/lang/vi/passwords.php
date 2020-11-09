@@ -20,11 +20,11 @@ return [
     */
 
     'reset' => 'Mật khẩu của bạn đã được đặt lại!',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
+    'sent' => 'Nếu bạn nhập email đã có trong hệ thống, bạn sẽ nhận được 1 liên kết đặt lại mật khẩu.',
     'token' => 'Token đặt lại mật khẩu không hợp lệ.',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'changed' => 'Password changed successfully.',
+    'user' => 'Nếu bạn nhập email đã có trong hệ thống, bạn sẽ nhận được 1 liên kết đặt lại mật khẩu.',
+    'changed' => 'Thay đổi mật khẩu thành công.',
     'invalid' => 'Mật khẩu hiện tại không đúng.',
-    'throttled' => 'Please wait before retrying.',
+    'throttled' => 'Vui lòng chờ trước khi thử lại.',
 
 ];
