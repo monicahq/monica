@@ -44,7 +44,7 @@ return [
     'retry' => 'Wiederholen',
     'filter' => 'Liste filtern',
     'go_back' => 'Zurück',
-    'file_selected' => '1 file selected...|{count} files selected...',
+    'file_selected' => '1 Datei ausgewählt...|{count} Dateien ausgewählt...',
 
     'application_title' => 'Monica – persönlicher Beziehungsmanager',
     'application_description' => 'Monica ist ein Werkzeug, um Ihre Interaktionen mit Ihren Lieben, Freunden und Familie zu verwalten.',
@@ -108,7 +108,7 @@ return [
 
     'error_title' => 'Whoops! Da lief etwas falsch.',
     'error_unauthorized' => 'Du darfst das leider nicht, da du nicht angemeldet bist.',
-    'error_user_account' => 'This user does not belong to the given account.',
+    'error_user_account' => 'Dieser Benutzer gehört nicht zum angegebenen Konto.',
     'error_save' => 'Beim Versuch die Daten zu speichern ist ein Fehler aufgetreten.',
     'error_try_again' => 'Etwas ist schiefgegangen. Bitte versuche es noch mal.',
     'error_id' => 'Fehler Nr: :id',
