@@ -42,7 +42,7 @@ return [
     'upgrade' => 'Zum Freischalten aktualisieren',
     'percent_uploaded' => '{percent}% hochgeladen',
     'retry' => 'Wiederholen',
-    'filter' => 'Filter the list',
+    'filter' => 'Liste filtern',
     'go_back' => 'Zurück',
     'file_selected' => '1 file selected...|{count} files selected...',
 
