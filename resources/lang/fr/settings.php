@@ -433,8 +433,8 @@ return [
     'personalization_life_event_type_modal_question' => 'Comment nommer ce nouveau type d’évènement ?',
     'personalization_life_event_type_modal_edit' => 'Éditer un type d’évènement',
     'personalization_life_event_type_modal_delete' => 'Supprimer un type d’évènement',
-    'personalization_life_event_type_modal_delete_desc' => 'Are you sure you want to delete this life event type? Life events that belong to this type will be deleted by performing this action.',
-    'personalization_life_event_type_modal_delete_error' => 'We can’t find this life event type.',
+    'personalization_life_event_type_modal_delete_desc' => 'Êtes-vous sûr de vouloir supprimer ce type d’événement ? Les évènements qui appartiennent à ce type seront supprimés en effectuant cette action.',
+    'personalization_life_event_type_modal_delete_error' => 'Impossible de trouver ce type d’évènement.',
 
     'personalization_life_event_category_work_education' => 'Travail & formation',
     'personalization_life_event_category_family_relationships' => 'Famille & relations',
