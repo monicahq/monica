@@ -134,7 +134,5 @@ class RegisterController extends Controller
                 $user->markEmailAsVerified();
             }
         }
-
-        return $user;
     }
 }

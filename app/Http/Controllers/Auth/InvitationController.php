@@ -144,7 +144,5 @@ class InvitationController extends Controller
             // if signup_double_optin is disabled, skip the confirm email part
             $user->markEmailAsVerified();
         }
-
-        return $user;
     }
 }
