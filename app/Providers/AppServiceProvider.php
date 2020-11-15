@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Helpers\DBHelper;
 use Laravel\Cashier\Cashier;
+use Laravel\Passport\Passport;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use App\Notifications\EmailMessaging;
@@ -56,6 +57,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        Passport::ignoreMigrations();
         Cashier::ignoreMigrations();
         Cashier::formatCurrencyUsing(function ($amount, $currency) {
             $currency = \App\Models\Settings\Currency::where('iso', strtoupper($currency ?? config('cashier.currency')))->first();
