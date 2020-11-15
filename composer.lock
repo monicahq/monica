@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ce64df9d62a0058dc4d24411562c576",
+    "content-hash": "c45c706db073937e89780bd3584e14ea",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -957,31 +957,32 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.9.3",
+            "version": "2.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "7345cd59edfa2036eb0fa4264b77ae2576842035"
+                "reference": "adce7a954a1c2f14f85e94aed90c8489af204086"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/7345cd59edfa2036eb0fa4264b77ae2576842035",
-                "reference": "7345cd59edfa2036eb0fa4264b77ae2576842035",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/adce7a954a1c2f14f85e94aed90c8489af204086",
+                "reference": "adce7a954a1c2f14f85e94aed90c8489af204086",
                 "shasum": ""
             },
             "require": {
                 "doctrine/cache": "^1.0",
                 "doctrine/event-manager": "^1.0",
                 "ext-pdo": "*",
-                "php": "^7.1"
+                "php": "^7.3 || ^8"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^5.0",
-                "jetbrains/phpstorm-stubs": "^2018.1.2",
-                "phpstan/phpstan": "^0.10.1",
-                "phpunit/phpunit": "^7.4",
-                "symfony/console": "^2.0.5|^3.0|^4.0",
-                "symfony/phpunit-bridge": "^3.4.5|^4.0.5"
+                "doctrine/coding-standard": "^8.1",
+                "jetbrains/phpstorm-stubs": "^2019.1",
+                "phpstan/phpstan": "^0.12.40",
+                "phpunit/phpunit": "^9.4",
+                "psalm/plugin-phpunit": "^0.10.0",
+                "symfony/console": "^2.0.5|^3.0|^4.0|^5.0",
+                "vimeo/psalm": "^3.17.2"
             },
             "suggest": {
                 "symfony/console": "For helpful console commands such as SQL execution and import of files."
@@ -992,8 +993,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.9.x-dev",
-                    "dev-develop": "3.0.x-dev"
+                    "dev-master": "4.0.x-dev"
                 }
             },
             "autoload": {
@@ -1028,18 +1028,43 @@
             "keywords": [
                 "abstraction",
                 "database",
+                "db2",
                 "dbal",
+                "mariadb",
+                "mssql",
                 "mysql",
-                "persistence",
+                "oci8",
+                "oracle",
+                "pdo",
                 "pgsql",
-                "php",
-                "queryobject"
+                "postgresql",
+                "queryobject",
+                "sasql",
+                "sql",
+                "sqlanywhere",
+                "sqlite",
+                "sqlserver",
+                "sqlsrv"
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/2.9"
+                "source": "https://github.com/doctrine/dbal/tree/2.12.1"
             },
-            "time": "2019-11-02T22:19:34+00:00"
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fdbal",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-11-14T20:26:58+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -2325,37 +2350,43 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.5.5",
+            "version": "7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "9d4290de1cfd701f38099ef7e183b64b4b7b0c5e"
+                "reference": "0aa74dfb41ae110835923ef10a9d803a22d50e79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/9d4290de1cfd701f38099ef7e183b64b4b7b0c5e",
-                "reference": "9d4290de1cfd701f38099ef7e183b64b4b7b0c5e",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/0aa74dfb41ae110835923ef10a9d803a22d50e79",
+                "reference": "0aa74dfb41ae110835923ef10a9d803a22d50e79",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "guzzlehttp/promises": "^1.0",
-                "guzzlehttp/psr7": "^1.6.1",
-                "php": ">=5.5",
-                "symfony/polyfill-intl-idn": "^1.17.0"
+                "guzzlehttp/promises": "^1.4",
+                "guzzlehttp/psr7": "^1.7",
+                "php": "^7.2.5 || ^8.0",
+                "psr/http-client": "^1.0"
+            },
+            "provide": {
+                "psr/http-client-implementation": "1.0"
             },
             "require-dev": {
                 "ext-curl": "*",
-                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4 || ^7.0",
+                "php-http/client-integration-tests": "^3.0",
+                "phpunit/phpunit": "^8.5.5 || ^9.3.5",
                 "psr/log": "^1.1"
             },
             "suggest": {
+                "ext-curl": "Required for CURL handler support",
+                "ext-intl": "Required for Internationalized Domain Name (IDN) support",
                 "psr/log": "Required for using the Log middleware"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "6.5-dev"
+                    "dev-master": "7.1-dev"
                 }
             },
             "autoload": {
@@ -2375,6 +2406,11 @@
                     "name": "Michael Dowling",
                     "email": "mtdowling@gmail.com",
                     "homepage": "https://github.com/mtdowling"
+                },
+                {
+                    "name": "Márk Sági-Kazár",
+                    "email": "mark.sagikazar@gmail.com",
+                    "homepage": "https://sagikazarmark.hu"
                 }
             ],
             "description": "Guzzle is a PHP HTTP client library",
@@ -2385,14 +2421,34 @@
                 "framework",
                 "http",
                 "http client",
+                "psr-18",
+                "psr-7",
                 "rest",
                 "web service"
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/6.5"
+                "source": "https://github.com/guzzle/guzzle/tree/7.2.0"
             },
-            "time": "2020-06-16T21:01:06+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/GrahamCampbell",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/Nyholm",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/alexeyshockov",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/gmponos",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-10-10T11:47:56+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -6352,16 +6408,16 @@
         },
         {
             "name": "pragmarx/countries-laravel",
-            "version": "v0.6.3",
+            "version": "v0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/countries-laravel.git",
-                "reference": "577eeac8a5ceb47221f0babbed18c4179dab29cd"
+                "reference": "02dd4745d6cee3d4dd3a71dd2e0160c8edbb5d6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/countries-laravel/zipball/577eeac8a5ceb47221f0babbed18c4179dab29cd",
-                "reference": "577eeac8a5ceb47221f0babbed18c4179dab29cd",
+                "url": "https://api.github.com/repos/antonioribeiro/countries-laravel/zipball/02dd4745d6cee3d4dd3a71dd2e0160c8edbb5d6f",
+                "reference": "02dd4745d6cee3d4dd3a71dd2e0160c8edbb5d6f",
                 "shasum": ""
             },
             "require": {
@@ -6374,8 +6430,8 @@
             "require-dev": {
                 "colinodell/json5": "^1.0",
                 "gasparesganga/php-shapefile": "^2.3",
-                "orchestra/testbench": "~3.0",
-                "phpunit/phpunit": "~6.0",
+                "orchestra/testbench": "~3.0|~4.0|~5.0",
+                "phpunit/phpunit": "~6.0|~7.0|~8.0|~9.0",
                 "squizlabs/php_codesniffer": "^2.3"
             },
             "type": "library",
@@ -6421,9 +6477,9 @@
             ],
             "support": {
                 "issues": "https://github.com/antonioribeiro/countries-laravel/issues",
-                "source": "https://github.com/antonioribeiro/countries-laravel/tree/v0.6.3"
+                "source": "https://github.com/antonioribeiro/countries-laravel/tree/master"
             },
-            "time": "2019-09-24T20:21:26+00:00"
+            "time": "2020-03-26T09:17:39+00:00"
         },
         {
             "name": "pragmarx/google2fa",
@@ -8281,21 +8337,21 @@
         },
         {
             "name": "sentry/sdk",
-            "version": "2.2.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php-sdk.git",
-                "reference": "089858b1b27d3705a5fd1c32d8d10beb55980190"
+                "reference": "908ea3fd0e7a19ccf4b53d1c247c44231595d008"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php-sdk/zipball/089858b1b27d3705a5fd1c32d8d10beb55980190",
-                "reference": "089858b1b27d3705a5fd1c32d8d10beb55980190",
+                "url": "https://api.github.com/repos/getsentry/sentry-php-sdk/zipball/908ea3fd0e7a19ccf4b53d1c247c44231595d008",
+                "reference": "908ea3fd0e7a19ccf4b53d1c247c44231595d008",
                 "shasum": ""
             },
             "require": {
                 "http-interop/http-factory-guzzle": "^1.0",
-                "sentry/sentry": "^2.5",
+                "sentry/sentry": "^3.0",
                 "symfony/http-client": "^4.3|^5.0"
             },
             "type": "metapackage",
@@ -8321,7 +8377,7 @@
                 "sentry"
             ],
             "support": {
-                "source": "https://github.com/getsentry/sentry-php-sdk/tree/2.2.0"
+                "source": "https://github.com/getsentry/sentry-php-sdk/tree/3.0.0"
             },
             "funding": [
                 {
@@ -8333,20 +8389,20 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-09-14T09:30:55+00:00"
+            "time": "2020-09-28T07:49:07+00:00"
         },
         {
             "name": "sentry/sentry",
-            "version": "2.5.0",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "bab5b73dbaf5f0ff62317e1611d952764d5514a9"
+                "reference": "745b3faafdc865ea8de75e0dc61ddfdd36a31d9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/bab5b73dbaf5f0ff62317e1611d952764d5514a9",
-                "reference": "bab5b73dbaf5f0ff62317e1611d952764d5514a9",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/745b3faafdc865ea8de75e0dc61ddfdd36a31d9c",
+                "reference": "745b3faafdc865ea8de75e0dc61ddfdd36a31d9c",
                 "shasum": ""
             },
             "require": {
@@ -8354,8 +8410,9 @@
                 "ext-mbstring": "*",
                 "guzzlehttp/promises": "^1.3",
                 "guzzlehttp/psr7": "^1.6",
-                "jean85/pretty-package-versions": "^1.2",
-                "php": "^7.1",
+                "jean85/pretty-package-versions": "^1.5",
+                "ocramius/package-versions": "^1.8",
+                "php": "^7.2",
                 "php-http/async-client-implementation": "^1.0",
                 "php-http/client-common": "^1.5|^2.0",
                 "php-http/discovery": "^1.6.1",
@@ -8364,7 +8421,8 @@
                 "psr/http-factory": "^1.0",
                 "psr/http-message-implementation": "^1.0",
                 "psr/log": "^1.0",
-                "symfony/options-resolver": "^2.7|^3.0|^4.0|^5.0",
+                "symfony/options-resolver": "^3.4.4|^4.0|^5.0",
+                "symfony/polyfill-php80": "^1.17",
                 "symfony/polyfill-uuid": "^1.13.1"
             },
             "conflict": {
@@ -8373,6 +8431,7 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.16",
+                "http-interop/http-factory-guzzle": "^1.0",
                 "monolog/monolog": "^1.3|^2.0",
                 "php-http/mock-client": "^1.3",
                 "phpstan/extension-installer": "^1.0",
@@ -8388,7 +8447,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5.x-dev"
+                    "dev-master": "3.0.x-dev"
                 }
             },
             "autoload": {
@@ -8422,7 +8481,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-php/issues",
-                "source": "https://github.com/getsentry/sentry-php/tree/2.5.0"
+                "source": "https://github.com/getsentry/sentry-php/tree/3.0.4"
             },
             "funding": [
                 {
@@ -8434,42 +8493,44 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-09-14T07:02:40+00:00"
+            "time": "2020-11-06T11:58:00+00:00"
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "1.9.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "8567e70d03081cbc04e35eb3fa7389d06816196e"
+                "reference": "f4c663b6510e793a180dee6b3a7c95c339f7fd8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/8567e70d03081cbc04e35eb3fa7389d06816196e",
-                "reference": "8567e70d03081cbc04e35eb3fa7389d06816196e",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/f4c663b6510e793a180dee6b3a7c95c339f7fd8a",
+                "reference": "f4c663b6510e793a180dee6b3a7c95c339f7fd8a",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": "5.0 - 5.8 | ^6.0 | ^7.0 | ^8.0",
-                "php": "^7.1",
-                "sentry/sdk": "^2.1"
+                "php": "^7.2",
+                "sentry/sdk": "^3.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "2.16.*",
                 "laravel/framework": "^7.0",
+                "mockery/mockery": "1.3.*",
                 "orchestra/testbench": "^5.0",
                 "phpunit/phpunit": "^8.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.x-dev",
+                    "dev-master": "2.x-dev",
                     "dev-0.x": "0.x-dev"
                 },
                 "laravel": {
                     "providers": [
-                        "Sentry\\Laravel\\ServiceProvider"
+                        "Sentry\\Laravel\\ServiceProvider",
+                        "Sentry\\Laravel\\Tracing\\ServiceProvider"
                     ],
                     "aliases": {
                         "Sentry": "Sentry\\Laravel\\Facade"
@@ -8505,7 +8566,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-laravel/issues",
-                "source": "https://github.com/getsentry/sentry-laravel/tree/release/1.9.0"
+                "source": "https://github.com/getsentry/sentry-laravel/tree/2.2.0"
             },
             "funding": [
                 {
@@ -8517,7 +8578,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-09-07T07:16:41+00:00"
+            "time": "2020-11-04T14:56:24+00:00"
         },
         {
             "name": "spomky-labs/base64url",
@@ -13589,33 +13650,27 @@
         },
         {
             "name": "fakerphp/faker",
-            "version": "v1.9.1",
+            "version": "v1.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FakerPHP/Faker.git",
-                "reference": "b07d15b7f196f2eba51e70ac1bd7352918c8bf2f"
+                "reference": "f2713a5016faaf6ffc60e9d456dedb5ebf0efcae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/b07d15b7f196f2eba51e70ac1bd7352918c8bf2f",
-                "reference": "b07d15b7f196f2eba51e70ac1bd7352918c8bf2f",
+                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/f2713a5016faaf6ffc60e9d456dedb5ebf0efcae",
+                "reference": "f2713a5016faaf6ffc60e9d456dedb5ebf0efcae",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3.3 || ^7.0"
+                "php": "^7.1 || ^8.0"
             },
             "conflict": {
-                "ergebnis/faker": "!=1.9.1",
-                "fzaninotto/faker": "!=1.9.1"
-            },
-            "replace": {
-                "ergebnis/faker": "1.9.1",
-                "fzaninotto/faker": "1.9.1"
+                "fzaninotto/faker": "*"
             },
             "require-dev": {
                 "ext-intl": "*",
-                "phpunit/phpunit": "^4.8.35 || ^5.7",
-                "squizlabs/php_codesniffer": "^2.9.2"
+                "phpunit/phpunit": "^7.5.20 || ^8.5.8 || ^9.4.2"
             },
             "type": "library",
             "autoload": {
@@ -13640,9 +13695,9 @@
             ],
             "support": {
                 "issues": "https://github.com/FakerPHP/Faker/issues",
-                "source": "https://github.com/FakerPHP/Faker/tree/v1.9.1"
+                "source": "https://github.com/FakerPHP/Faker/tree/v1.10.1"
             },
-            "time": "2020-10-27T12:08:29+00:00"
+            "time": "2020-10-28T09:32:46+00:00"
         },
         {
             "name": "felixfbecker/advanced-json-rpc",
@@ -15731,16 +15786,16 @@
         },
         {
             "name": "psalm/plugin-laravel",
-            "version": "dev-master",
+            "version": "v1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/psalm-plugin-laravel.git",
-                "reference": "833a85543de25a33c238c369a1b70e62797788b9"
+                "reference": "71a93c472c398fe62bf0d3c0d6ad1e281320f87f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/psalm-plugin-laravel/zipball/833a85543de25a33c238c369a1b70e62797788b9",
-                "reference": "833a85543de25a33c238c369a1b70e62797788b9",
+                "url": "https://api.github.com/repos/psalm/psalm-plugin-laravel/zipball/71a93c472c398fe62bf0d3c0d6ad1e281320f87f",
+                "reference": "71a93c472c398fe62bf0d3c0d6ad1e281320f87f",
                 "shasum": ""
             },
             "require": {
@@ -15763,7 +15818,6 @@
                 "squizlabs/php_codesniffer": "*",
                 "weirdan/codeception-psalm-module": "^0.8"
             },
-            "default-branch": true,
             "type": "psalm-plugin",
             "extra": {
                 "branch-alias": {
@@ -15791,9 +15845,9 @@
             "description": "A Laravel plugin for Psalm",
             "support": {
                 "issues": "https://github.com/psalm/psalm-plugin-laravel/issues",
-                "source": "https://github.com/psalm/psalm-plugin-laravel/tree/master"
+                "source": "https://github.com/psalm/psalm-plugin-laravel/tree/v1.4.1"
             },
-            "time": "2020-10-22T17:42:07+00:00"
+            "time": "2020-10-20T00:24:26+00:00"
         },
         {
             "name": "react/promise",
@@ -17680,13 +17734,12 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "psalm/plugin-laravel": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.2.5",
+        "php": "^7.3",
         "ext-bcmath": "*",
         "ext-gd": "*",
         "ext-gmp": "*",
