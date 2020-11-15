@@ -2,7 +2,6 @@
 
 namespace App\Models\Account;
 
-use Parsedown;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Contact\Contact;
@@ -14,6 +13,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
+/**
+ * @property int|null $activity_type_id
+ */
 class Activity extends Model implements IsJournalableInterface
 {
     use Journalable;
@@ -98,20 +100,6 @@ class Activity extends Model implements IsJournalableInterface
         return $this->belongsToMany(Emotion::class, 'emotion_activity', 'activity_id', 'emotion_id')
             ->withPivot('account_id')
             ->withTimestamps();
-    }
-
-    /**
-     * Return the markdown parsed body.
-     *
-     * @return string|null
-     */
-    public function getParsedContentAttribute(): ?string
-    {
-        if (is_null($this->description)) {
-            return null;
-        }
-
-        return (new Parsedown())->text($this->description);
     }
 
     /**

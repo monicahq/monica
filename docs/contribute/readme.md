@@ -183,7 +183,7 @@ The benefits are:
 * a way to quickly see and understand what the commit does and what it affects,
 * automatic changelog creation based on those keywords.
 
-The keywords that support (heavily inspired by [config-conventional](https://github.com/marionebl/commitlint/tree/master/%40commitlint/config-conventional)):
+The keywords that support (heavily inspired by [config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional)):
 * `ci`,
 * `chore`,
 * `docs`,
@@ -337,8 +337,8 @@ For everything that is in VueJS though, things are a bit different. We have to u
 
 You can use these replacements instead of the regular (php) definition:
 * `trans('file.string')` is writen `$t('file.string')`.
-* `trans('file.string', ['param' => $value])` is writen `$t('file.string', {param: value})`.
-* `trans_choice('file.string', $count)` is writen `$tc('file.string', count)` or `$tc('file.string', count, {param: value})`.
+* `trans('file.string', ['param' => $value])` is written `$t('file.string', {param: value})`.
+* `trans_choice('file.string', $count)` is written `$tc('file.string', count)` or `$tc('file.string', count, {param: value})`.
 
 Important note: every time a string changes in a translation file, you need to regenerate all the strings so they can be made available in JS. To do this,
 * use `php artisan lang:generate`

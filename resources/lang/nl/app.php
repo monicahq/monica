@@ -13,7 +13,7 @@ return [
     'save' => 'Opslaan',
     'add' => 'Toevoegen',
     'cancel' => 'Annuleren',
-    'confirm' => 'Confirm',
+    'confirm' => 'Bevestigen',
     'delete_confirm' => 'Weet je het zeker?',
     'delete' => 'Verwijderen',
     'edit' => 'Bewerken',
@@ -44,7 +44,7 @@ return [
     'retry' => 'Opnieuw Proberen',
     'filter' => 'Filter de lijst',
     'go_back' => 'Terug',
-    'file_selected' => '1 file selected...|{count} files selected...',
+    'file_selected' => '1 bestand geselecteerd...|{count} bestanden geselecteerd...',
 
     'application_title' => 'Monica – persoonlijke relatie manager',
     'application_description' => 'Monica is een app voor het beheren van interacties met uw geliefden, vrienden en familie.',
