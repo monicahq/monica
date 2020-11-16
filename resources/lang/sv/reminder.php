@@ -7,7 +7,7 @@
  */
 
 return [
-    'type_birthday' => 'Wish happy birthday to',
+    'type_birthday' => 'Önskar gärna födelsedag till',
     'type_phone_call' => 'Ring',
     'type_lunch' => 'Lunch med',
     'type_hangout' => 'Umgås med',
