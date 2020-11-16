@@ -122,7 +122,7 @@ return [
 
     'compliance_title' => 'Με συγχωρείτε για την διακοπή.',
     'compliance_desc' => 'Έχουμε αλλάξει τους <a href=":urlterm" hreflang=":hreflang">Όρους Χρήσης</a> και την <a href=":url" hreflang=":hreflang">Πολιτική Απορρήτου</a>. Σύμφωνα με το νόμο πρέπει να σας ζητήσουμε να ελέγξετε και να αποδεχτείτε για να συνεχίσετε να χρησιμοποιείτε τον λογαριασμό σας.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
+    'compliance_desc_end' => 'Δεν κάνουμε τίποτα κακό με τα δεδομένα σας ή το λογαριασμό σας και δεν θα κάνουμε ποτέ.',
     'compliance_terms' => 'Αποδεχτείτε τους νέους όρους και πολιτική απορρήτου',
 
     // Relationship types
@@ -160,7 +160,7 @@ return [
 
     'relationship_type_inlovewith' => 'ερωτευμένος με',
     'relationship_type_inlovewith_female' => 'ερωτευμένος με',
-    'relationship_type_inlovewith_with_name' => 'someone :name is in love with',
+    'relationship_type_inlovewith_with_name' => 'κάποιος με τον οποίο ο :name είναι ερωτευμένος',
     'relationship_type_inlovewith_female_with_name' => 'κάποιος με τον οποίο ο :name είναι ερωτευμένος',
 
     'relationship_type_lovedby' => 'αγαπημένος του',
@@ -186,15 +186,15 @@ return [
     'relationship_type_stepparent' => 'πατριός',
     'relationship_type_stepparent_female' => 'μητριά',
     'relationship_type_stepparent_with_name' => 'πατρίος :name',
-    'relationship_type_stepparent_female_with_name' => ':name’s stepmother',
+    'relationship_type_stepparent_female_with_name' => 'πατριός :name',
 
-    'relationship_type_stepchild' => 'stepson',
-    'relationship_type_stepchild_female' => 'stepdaughter',
-    'relationship_type_stepchild_with_name' => ':name’s stepson',
-    'relationship_type_stepchild_female_with_name' => ':name’s stepdaughter',
+    'relationship_type_stepchild' => 'γιός εξ\' αγχιστείας',
+    'relationship_type_stepchild_female' => 'κόρη εξ\' αγχιστείας',
+    'relationship_type_stepchild_with_name' => 'γιός εξ\' αγχιστείας :name',
+    'relationship_type_stepchild_female_with_name' => 'κόρη εξ\' αγχιστείας :name',
 
-    'relationship_type_sibling' => 'brother',
-    'relationship_type_sibling_female' => 'sister',
+    'relationship_type_sibling' => 'αδερφός',
+    'relationship_type_sibling_female' => 'αδερφή',
     'relationship_type_sibling_with_name' => ':name’s brother',
     'relationship_type_sibling_female_with_name' => ':name’s sister',
 
@@ -243,7 +243,7 @@ return [
     'relationship_type_bestfriend_with_name' => ':name’s best friend',
     'relationship_type_bestfriend_female_with_name' => ':name’s best friend',
 
-    'relationship_type_colleague' => 'colleague',
+    'relationship_type_colleague' => 'συνάδελφος',
     'relationship_type_colleague_female' => 'colleague',
     'relationship_type_colleague_with_name' => ':name’s colleague',
     'relationship_type_colleague_female_with_name' => ':name’s colleague',
@@ -259,12 +259,12 @@ return [
     'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
 
     'relationship_type_mentor' => 'mentor',
-    'relationship_type_mentor_female' => 'mentor',
+    'relationship_type_mentor_female' => 'μέντορας',
     'relationship_type_mentor_with_name' => ':name’s mentor',
     'relationship_type_mentor_female_with_name' => ':name’s mentor',
 
-    'relationship_type_protege' => 'protege',
-    'relationship_type_protege_female' => 'protege',
+    'relationship_type_protege' => 'προστατευόμενος',
+    'relationship_type_protege_female' => 'προστατευόμενη',
     'relationship_type_protege_with_name' => ':name’s protege',
     'relationship_type_protege_female_with_name' => ':name’s protege',
 
