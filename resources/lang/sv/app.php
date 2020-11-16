@@ -120,10 +120,10 @@ return [
 
     'default_save_success' => 'The data has been saved.',
 
-    'compliance_title' => 'Sorry for the interruption.',
-    'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
-    'compliance_terms' => 'Accept new terms and privacy policy',
+    'compliance_title' => 'Ledsen för avbrottet.',
+    'compliance_desc' => 'Vi har ändrat våra <a href=":urlterm" hreflang=":hreflang">användarvillkor</a> och <a href=":url" hreflang=":hreflang">sekretesspolicy</a>. Enligt lag måste vi be dig granska dem och acceptera dem så att du kan fortsätta använda ditt konto.',
+    'compliance_desc_end' => 'Vi gör inget otäckt med dina uppgifter eller ditt konto och vi kommer aldrig att göra det.',
+    'compliance_terms' => 'Acceptera nya villkor och sekretesspolicy',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
@@ -132,29 +132,29 @@ return [
     // and then, the feminine version of the string. Finally, in some sentences
     // in the UI, we need to include the name of the person we add the relationship
     // to.
-    'relationship_type_group_love' => 'Love relationships',
-    'relationship_type_group_family' => 'Family relationships',
-    'relationship_type_group_friend' => 'Friend relationships',
-    'relationship_type_group_work' => 'Work relationships',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_love' => 'Kärleksrelationer',
+    'relationship_type_group_family' => 'Familjerelationer',
+    'relationship_type_group_friend' => 'Vänrelationer',
+    'relationship_type_group_work' => 'Arbetsrelationer',
+    'relationship_type_group_other' => 'Annan typ av relationer',
 
-    'relationship_type_partner' => 'significant other',
-    'relationship_type_partner_female' => 'significant other',
-    'relationship_type_partner_with_name' => ':name’s significant other',
-    'relationship_type_partner_female_with_name' => ':name’s significant other',
+    'relationship_type_partner' => 'partner',
+    'relationship_type_partner_female' => 'partner',
+    'relationship_type_partner_with_name' => '.name\'s partner',
+    'relationship_type_partner_female_with_name' => ':name\'s partner',
 
-    'relationship_type_spouse' => 'spouse',
-    'relationship_type_spouse_female' => 'spouse',
-    'relationship_type_spouse_with_name' => ':name’s spouse',
-    'relationship_type_spouse_female_with_name' => ':name’s spouse',
+    'relationship_type_spouse' => 'make',
+    'relationship_type_spouse_female' => 'maka',
+    'relationship_type_spouse_with_name' => ':name\'s make',
+    'relationship_type_spouse_female_with_name' => ':name\'s maka',
 
-    'relationship_type_date' => 'date',
-    'relationship_type_date_female' => 'date',
+    'relationship_type_date' => 'dejt',
+    'relationship_type_date_female' => 'dejt',
     'relationship_type_date_with_name' => ':name’s date',
     'relationship_type_date_female_with_name' => ':name’s date',
 
-    'relationship_type_lover' => 'lover',
-    'relationship_type_lover_female' => 'lover',
+    'relationship_type_lover' => 'älskare',
+    'relationship_type_lover_female' => 'älskare',
     'relationship_type_lover_with_name' => ':name’s lover',
     'relationship_type_lover_female_with_name' => ':name’s lover',
 
@@ -168,12 +168,12 @@ return [
     'relationship_type_lovedby_with_name' => ':name’s secret lover',
     'relationship_type_lovedby_female_with_name' => ':name’s secret lover',
 
-    'relationship_type_ex' => 'ex-boyfriend',
-    'relationship_type_ex_female' => 'ex-girlfriend',
-    'relationship_type_ex_with_name' => ':name’s ex-boyfriend',
-    'relationship_type_ex_female_with_name' => ':name’s ex-girlfriend',
+    'relationship_type_ex' => 'ex-pojkvän',
+    'relationship_type_ex_female' => 'ex-flickvän',
+    'relationship_type_ex_with_name' => ':name\'s ex-pojkvän',
+    'relationship_type_ex_female_with_name' => ':name\'s ex-flickvän',
 
-    'relationship_type_parent' => 'father',
+    'relationship_type_parent' => 'far',
     'relationship_type_parent_female' => 'mother',
     'relationship_type_parent_with_name' => ':name’s father',
     'relationship_type_parent_female_with_name' => ':name’s mother',
