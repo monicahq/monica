@@ -285,7 +285,7 @@ return [
     'emotion_secondary_lust' => 'Lust',
     'emotion_secondary_longing' => 'Längtar',
     'emotion_secondary_cheerfulness' => 'Glädjande',
-    'emotion_secondary_zest' => 'Zest',
+    'emotion_secondary_zest' => 'Iver',
     'emotion_secondary_contentment' => 'Belåtenhet',
     'emotion_secondary_pride' => 'Stolthet',
     'emotion_secondary_optimism' => 'Optimism',
