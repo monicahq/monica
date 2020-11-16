@@ -7,10 +7,10 @@
  */
 
 return [
-    'message' => 'Thanks for signing up! Please check your emails to confirm your email address.',
-    'success' => 'You have successfully verified your account! You can now login.',
-    'again' => 'You must verify your email before you can access the site.
-                <br/>If you have not received the confirmation email check your spam folder.
-                <br/>To get a new confirmation email please <a href=":url" class="alert-link">click here</a>.',
-    'resend' => 'A confirmation message has been sent. Please check your mailbox.'
+    'message' => 'Tack för att du registrerar dig! Kontrollera dina e-postmeddelanden för att bekräfta din e-postadress.',
+    'success' => 'Du har verifierat ditt konto! Du kan nu logga in.',
+    'again' => 'Du måste verifiera din e-post innan du kan komma åt webbplatsen.
+                <br/>Om du inte har fått bekräftelsemail kontrollera din skräppostmapp.
+                <br/>För att få ett nytt bekräftelsemail vänligen <a href=":url" class="alert-link">klicka här</a>.',
+    'resend' => 'Ett verifieringsmail har skickats. Vänligen kontrollera din e-post.'
 ];
