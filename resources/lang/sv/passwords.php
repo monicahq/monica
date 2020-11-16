@@ -19,12 +19,12 @@ return [
     |
     */
 
-    'reset' => 'Your password has been reset!',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'token' => 'This password reset token is invalid.',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'changed' => 'Password changed successfully.',
-    'invalid' => 'Current password you entered is not correct.',
-    'throttled' => 'Please wait before retrying.',
+    'reset' => 'Ditt lösenord har återställts!',
+    'sent' => 'Om e-postmeddelandet du angav finns i våra register, har du fått en länk för att återställa lösenordet.',
+    'token' => 'Denna återställningstoken för lösenord är ogiltig.',
+    'user' => 'Om e-postmeddelandet du angav finns i våra register, har du fått en länk för att återställa lösenordet.',
+    'changed' => 'Lösenordet har ändrats.',
+    'invalid' => 'Nuvarande lösenord du angav är inte korrekt.',
+    'throttled' => 'Vänta innan du försöker igen.',
 
 ];
