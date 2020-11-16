@@ -9,25 +9,25 @@
 return [
 
     // contact creation
-    'contact_log_contact_created' => 'Created the contact.',
-    'settings_log_contact_created_with_name' => 'Added :name as a contact.',
-    'settings_log_contact_created_with_name_with_link' => 'Added <a href=":link">:name</a> as a contact.',
+    'contact_log_contact_created' => 'Skapade kontakten.',
+    'settings_log_contact_created_with_name' => 'Lade till :name som en kontakt.',
+    'settings_log_contact_created_with_name_with_link' => 'Lade till <a href=":link">:name</a> som en kontakt.',
 
     // contat description update
-    'contact_log_contact_description_updated' => 'Updated the description.',
-    'settings_log_contact_description_updated_with_name' => 'Updated the description of :name.',
-    'settings_log_contact_description_updated_with_name_with_link' => 'Updated the description of <a href=":link">:name</a>.',
+    'contact_log_contact_description_updated' => 'Uppdaterade beskrivningen.',
+    'settings_log_contact_description_updated_with_name' => 'Uppdaterade beskrivningen av :name.',
+    'settings_log_contact_description_updated_with_name_with_link' => 'Uppdaterad beskrivning av <a href=":link">:name</a>.',
 
     // contact description clear
-    'contact_log_contact_description_cleared' => 'Cleared the description.',
-    'settings_log_contact_description_cleared_with_name' => 'Cleared the description of :name.',
-    'settings_log_contact_description_cleared_with_name_with_link' => 'Cleared the description of <a href=":link">:name</a>.',
+    'contact_log_contact_description_cleared' => 'Rensade beskrivningen.',
+    'settings_log_contact_description_cleared_with_name' => 'Rensade beskrivningen av :name.',
+    'settings_log_contact_description_cleared_with_name_with_link' => 'Rensade beskrivningen av <a href=":link">:name</a>.',
 
     // contact work information update
-    'contact_log_contact_work_updated' => 'Updated work information.',
-    'settings_log_contact_work_updated_with_name' => 'Updated work information of :name.',
-    'settings_log_contact_work_updated_with_name_with_link' => 'Updated work information of <a href=":link">:name</a>.',
+    'contact_log_contact_work_updated' => 'Uppdaterade jobb information.',
+    'settings_log_contact_work_updated_with_name' => 'Uppdaterade jobb information för :name.',
+    'settings_log_contact_work_updated_with_name_with_link' => 'Uppdaterade jobb information för <a href=":link">:name</a>.',
 
     // company created
-    'settings_log_company_created' => 'Created a company called :name.',
+    'settings_log_company_created' => 'Skapade ett företag som heter :name.',
 ];
