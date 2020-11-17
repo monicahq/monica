@@ -8,7 +8,7 @@
 
 return [
     'journal_rate' => 'Hôm nay của bạn thế nào? Bạn có thể đánh giá mỗi ngày một lần.',
-    'journal_come_back' => 'Thanks. Come back tomorrow to rate your day again.',
+    'journal_come_back' => 'Cảm ơn. Quay lại vào ngày mai để đánh giá lại một ngày của bạn.',
     'journal_description' => 'Note: the journal lists both manual journal entries, and automatic entries like Activities done with your contacts. While you can delete journal entries manually, you’ll have to delete the activity directly on the contact page.',
     'journal_add' => 'Add a journal entry',
     'journal_edit' => 'Edit a journal entry',
