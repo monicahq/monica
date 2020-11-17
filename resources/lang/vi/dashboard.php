@@ -7,8 +7,8 @@
  */
 
 return [
-    'dashboard_blank_title' => 'Welcome to your account!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
+    'dashboard_blank_title' => 'Chào mừng đến với tài khoản của bạn!',
+    'dashboard_blank_description' => 'Monica là nơi sắp xếp tất cả tương tác của bạn với người mà bạn quan tâm.',
     'dashboard_blank_cta' => 'Add your first contact',
     'dashboard_blank_illustration' => 'Illustration by <a href=":url">Freepik</a>',
 
