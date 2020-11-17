@@ -10,15 +10,15 @@ return [
     'dashboard_blank_title' => 'Chào mừng đến với tài khoản của bạn!',
     'dashboard_blank_description' => 'Monica là nơi sắp xếp tất cả tương tác của bạn với người mà bạn quan tâm.',
     'dashboard_blank_cta' => 'Add your first contact',
-    'dashboard_blank_illustration' => 'Illustration by <a href=":url">Freepik</a>',
+    'dashboard_blank_illustration' => 'Minh họa bởi <a href=":url">Freepik</a>',
 
-    'notes_title' => 'You don’t have any starred notes yet.',
+    'notes_title' => 'Bạn chưa có ghi chú gắn dấu sao nào.',
 
     'tab_recent_calls' => 'Cuộc gọi gần đây',
-    'tab_favorite_notes' => 'Favorite notes',
-    'tab_calls_blank' => 'You haven’t logged a call yet.',
-    'tab_debts' => 'Debts',
-    'tab_debts_blank' => 'You haven’t logged any debt yet.',
+    'tab_favorite_notes' => 'Ghi chú ưa thích',
+    'tab_calls_blank' => 'Bạn chưa ghi nhật ký cuộc gọi nào.',
+    'tab_debts' => 'Khoản nợ',
+    'tab_debts_blank' => 'Bạn chưa ghi khoản nợ nào.',
     'tab_tasks' => 'Tasks',
     'tab_tasks_blank' => 'You haven’t any task yet.',
 
@@ -35,8 +35,8 @@ return [
     'statistics_gifts' => 'Quà tặng',
 
     'reminders_next_months' => 'Sự kiện trong 3 tháng tới',
-    'reminders_none' => 'No reminder for this month',
+    'reminders_none' => 'Không có nhắc nhở nào trong tháng này',
 
-    'product_changes' => 'Product changes',
-    'product_view_details' => 'View details',
+    'product_changes' => 'Cập nhật sản phẩm',
+    'product_view_details' => 'Xem chi tiết',
 ];
