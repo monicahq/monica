@@ -7,11 +7,11 @@
  */
 
 return [
-    'type_birthday' => 'Wish happy birthday to',
+    'type_birthday' => 'Chúc mừng sinh nhật tới',
     'type_phone_call' => 'Gọi',
-    'type_lunch' => 'Lunch with',
+    'type_lunch' => 'Ăn trưa với',
     'type_hangout' => 'Hangout with',
     'type_email' => 'Email',
-    'type_birthday_kid' => 'Wish happy birthday to the kid of',
+    'type_birthday_kid' => 'Chúc mừng sinh nhật tới những đứa trẻ của',
 
 ];
