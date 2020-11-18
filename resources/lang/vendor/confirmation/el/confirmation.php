@@ -12,5 +12,5 @@ return [
     'again' => 'Πρέπει να επιβεβαιώσετε το email σας προτού σας επιτραπεί η είσοδος στον ιστότοπο.
                 <br/>Αν δεν έχετε λάβει το email επιβεβαίωσης ελέγξτε τον φάκελο spam.
                 <br/>Για να σας αποστείλουμε νέο email επιβεβαίωσης παρακαλώ <a href=":url" class="alert-link">πατήστε εδώ</a>.',
-    'resend' => 'A confirmation message has been sent. Please check your mailbox.'
+    'resend' => 'Σας έχουμε αποστείλει ένα email επιβεβαίωσης. Παρακαλώ ελέγξτε το mailbox σας.'
 ];
