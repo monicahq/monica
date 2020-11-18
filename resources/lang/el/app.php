@@ -166,11 +166,11 @@ return [
     'relationship_type_lovedby' => 'αγαπημένος του',
     'relationship_type_lovedby_female' => 'αγαπημένος του',
     'relationship_type_lovedby_with_name' => 'κρυφός εραστής :name',
-    'relationship_type_lovedby_female_with_name' => 'κρυφός εραστής :name',
+    'relationship_type_lovedby_female_with_name' => 'κρυφός εραστής της :name',
 
     'relationship_type_ex' => 'πρώην φίλος',
     'relationship_type_ex_female' => 'πρώην φίλη',
-    'relationship_type_ex_with_name' => 'πρώην φίλος :name',
+    'relationship_type_ex_with_name' => 'πρώην φίλος της :name',
     'relationship_type_ex_female_with_name' => 'πρώην φίλη :name',
 
     'relationship_type_parent' => 'πατέρας',
@@ -190,8 +190,8 @@ return [
 
     'relationship_type_stepchild' => 'γιός εξ\' αγχιστείας',
     'relationship_type_stepchild_female' => 'κόρη εξ\' αγχιστείας',
-    'relationship_type_stepchild_with_name' => 'γιός εξ\' αγχιστείας :name',
-    'relationship_type_stepchild_female_with_name' => 'κόρη εξ\' αγχιστείας :name',
+    'relationship_type_stepchild_with_name' => 'γιος εξ\' αγχιστείας του :name',
+    'relationship_type_stepchild_female_with_name' => 'κόρη εξ\' αγχιστείας του :name',
 
     'relationship_type_sibling' => 'αδερφός',
     'relationship_type_sibling_female' => 'αδερφή',
