@@ -7,6 +7,6 @@
  */
 
 return [
-    'title' => 'Product changes',
-    'note' => 'Note: unfortunately, this page is only in English.',
+    'title' => 'Αλλαγές προϊόντος',
+    'note' => 'Σημείωση: Δυστυχώς αυτή η σελίδα είναι διαθέσιμη μόνο στα Αγγλικά.',
 ];
