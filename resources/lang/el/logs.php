@@ -9,25 +9,25 @@
 return [
 
     // contact creation
-    'contact_log_contact_created' => 'Created the contact.',
-    'settings_log_contact_created_with_name' => 'Added :name as a contact.',
-    'settings_log_contact_created_with_name_with_link' => 'Added <a href=":link">:name</a> as a contact.',
+    'contact_log_contact_created' => 'Δημιουργήθηκε νέα επαφή.',
+    'settings_log_contact_created_with_name' => 'Προστέθηκε :name ως επαφή.',
+    'settings_log_contact_created_with_name_with_link' => 'Προστέθηκε <a href=":link">:name</a> ως επαφή.',
 
     // contat description update
-    'contact_log_contact_description_updated' => 'Updated the description.',
-    'settings_log_contact_description_updated_with_name' => 'Updated the description of :name.',
-    'settings_log_contact_description_updated_with_name_with_link' => 'Updated the description of <a href=":link">:name</a>.',
+    'contact_log_contact_description_updated' => 'Ενημερώθηκε η περιγραφή.',
+    'settings_log_contact_description_updated_with_name' => 'Ενημερώθηκε η περιγραφή του :name.',
+    'settings_log_contact_description_updated_with_name_with_link' => 'Ενημερώθηκε η περιγραφή του <a href=":link">:name</a>.',
 
     // contact description clear
-    'contact_log_contact_description_cleared' => 'Cleared the description.',
-    'settings_log_contact_description_cleared_with_name' => 'Cleared the description of :name.',
-    'settings_log_contact_description_cleared_with_name_with_link' => 'Cleared the description of <a href=":link">:name</a>.',
+    'contact_log_contact_description_cleared' => 'Διαγράφηκε η περιγραφή.',
+    'settings_log_contact_description_cleared_with_name' => 'Διαγράφηκε η περιγραφή του :name.',
+    'settings_log_contact_description_cleared_with_name_with_link' => 'Διαγράφηκε η περιγραφή του <a href=":link">:name</a>.',
 
     // contact work information update
-    'contact_log_contact_work_updated' => 'Updated work information.',
-    'settings_log_contact_work_updated_with_name' => 'Updated work information of :name.',
-    'settings_log_contact_work_updated_with_name_with_link' => 'Updated work information of <a href=":link">:name</a>.',
+    'contact_log_contact_work_updated' => 'Ενημέρωση πληροφοριών εργασίας.',
+    'settings_log_contact_work_updated_with_name' => 'Ενημέρωση πληροφοριών εργασίας του :name.',
+    'settings_log_contact_work_updated_with_name_with_link' => 'Ενημέρωση πληροφοριών εργασίας του <a href=":link">:name</a>.',
 
     // company created
-    'settings_log_company_created' => 'Created a company called :name.',
+    'settings_log_company_created' => 'Δημιουργήθηκε εταιρεία με όνομα :name.',
 ];
