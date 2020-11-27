@@ -93,7 +93,7 @@ return [
     'locale_pt-BR' => 'Portugees (Brazilië)',
     'locale_ru' => 'Russisch',
     'locale_zh' => 'Chinees (vereenvoudigd)',
-    'locale_zh-TW' => 'Chinese Traditional',
+    'locale_zh-TW' => 'Traditioneel Chinees',
     'locale_tr' => 'Turks',
     'locale_en-GB' => 'Engels (Verenigd Koninkrijk)',
 
@@ -512,6 +512,6 @@ return [
     'archive_desc' => 'This will archive all the contacts in your account.',
     'archive_cta' => 'Archiveer al je contacten',
 
-    'logs_title' => 'Everything that happened to this account',
-    'logs_author' => 'By :name on :date',
+    'logs_title' => 'Alles wat met dit account is gebeurd',
+    'logs_author' => 'Door :name op :date',
 ];
