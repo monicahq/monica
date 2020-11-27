@@ -106,6 +106,7 @@ There are multiple ways of getting started with Monica.
 
 1. You can use our hosted-version (this is the simplest way to use the product) on [https://monicahq.com](https://monicahq.com).
 1. You can install it on your server: follow installation instructions ([here](/docs/installation/readme.md)).
+1. Deploy straight on Platform.Sh <a href="https://console.platform.sh/projects/create-project/?template=https://github.com/monicahq/monica&utm_campaign=deploy_on_platform?utm_medium=button&utm_source=affiliate_links&utm_content=https://github.com/monicahq/monica" target="_blank" title="Deploy with Platform.sh"><img src="https://platform.sh/images/deploy/deploy-button-lg-blue.svg"></a>
 
 Note: while the .com version has a paid plan, there is no limitations on Monica if you install it on a server that you own.
 
