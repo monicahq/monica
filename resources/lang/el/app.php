@@ -84,7 +84,7 @@ return [
     'breadcrumb_settings_export' => 'Εξαγωγή',
     'breadcrumb_settings_users' => 'Χρήστες',
     'breadcrumb_settings_users_add' => 'Προσθήκη χρήστη',
-    'breadcrumb_settings_subscriptions' => 'Subscription',
+    'breadcrumb_settings_subscriptions' => 'Συνδρομή',
     'breadcrumb_settings_import' => 'Εισαγωγή',
     'breadcrumb_settings_import_report' => 'Αναφορά εισαγωγής',
     'breadcrumb_settings_import_upload' => 'Μεταφόρτωση',
