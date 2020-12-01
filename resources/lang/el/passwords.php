@@ -19,12 +19,12 @@ return [
     |
     */
 
-    'reset' => 'Your password has been reset!',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'token' => 'This password reset token is invalid.',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'changed' => 'Password changed successfully.',
-    'invalid' => 'Current password you entered is not correct.',
-    'throttled' => 'Please wait before retrying.',
+    'reset' => 'Έχει γίνει επαναφορά του κωδικού πρόσβασης σας!',
+    'sent' => 'Αν το email που πληκτρολογήσατε υπάρχει στις εγγραφές μας, θα σας έχουμε στείλει έναν σύνδεσμο για επαναφορά κωδικού πρόσβασης.',
+    'token' => 'Αυτό το διακριτικό επαναφοράς κωδικού πρόσβασης δεν είναι έγκυρο.',
+    'user' => 'Αν το email που πληκτρολογήσατε υπάρχει στις εγγραφές μας, θα σας έχουμε στείλει έναν σύνδεσμο για επαναφορά κωδικού πρόσβασης.',
+    'changed' => 'Ο κωδικός πρόσβασης άλλαξε επιτυχώς.',
+    'invalid' => 'Ο τρέχων κωδικός πρόσβασης που εισάγατε δεν είναι σωστός.',
+    'throttled' => 'Παρακαλώ περιμένετε πριν ξαναπροσπαθήσετε.',
 
 ];
