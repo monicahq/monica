@@ -458,8 +458,8 @@ return [
     // dav
     'dav_contacts' => 'Επαφές',
     'dav_contacts_description' => 'Επαφές του :name',
-    'dav_birthdays' => 'Birthdays',
-    'dav_birthdays_description' => ':name’s contact’s birthdays',
-    'dav_tasks' => 'Tasks',
-    'dav_tasks_description' => ':name’s tasks',
+    'dav_birthdays' => 'Γενέθλια',
+    'dav_birthdays_description' => 'Γενέθλια επαφών του :name',
+    'dav_tasks' => 'Εργασίες',
+    'dav_tasks_description' => 'εργασίες του :name',
 ];
