@@ -96,7 +96,7 @@ We've also received numerous feedback of users who suffer from Asperger's syndro
 
 ### Where does this tool come from?
 
-I originally built this tool to help me in my private life: I've been living away of my own country for a long time now. I want to keep notes and remember the life of my friends in my home country and be able to ask the relevant questions when I email them or talk to them over the phone. Moreover, as a foreigner in my new country, I met a lot of other foreigners - and most come back to their countries. I still want to remember the names or ages of their kids. Call it cheating but considering my poor memory, I call it caring.
+I originally built this tool to help me in my private life: I've been living outside my own country for a long time now. I want to keep notes and remember the life of my friends in my home country and be able to ask the relevant questions when I email them or talk to them over the phone. Moreover, as a foreigner in my new country, I met a lot of other foreigners - and most come back to their countries. I still want to remember the names or ages of their kids. Call it cheating but considering my poor memory, I call it caring.
 
 After a few months, I decided to open source the project so it would help other people as well.
 
