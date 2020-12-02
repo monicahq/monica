@@ -26,7 +26,7 @@ return [
     'notifications_whoops' => 'Ουπς!',
     'notifications_hello' => 'Γειά!',
     'notifications_regards' => 'Με εκτίμηση,',
-    'notifications_footer' => 'If you’re having trouble clicking the ":actionText" button, copy and paste the URL below into your web browser: [:actionURL](:actionURL)',
+    'notifications_footer' => 'Εάν αντιμετωπίζετε προβλήματα κάνοντας κλικ στο κουμπί ":actionText", αντιγράψτε και επικολλήστε την παρακάτω διεύθυνση URL στο πρόγραμμα περιήγησης: [:actionURL] (:actionURL)',
     'notifications_rights' => 'Με επιφύλαξη παντός δικαιώματος',
 
     'confirmation_email_title' => 'Monica – Email επιβεβαίωσης',
