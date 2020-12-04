@@ -36,7 +36,7 @@ Sie wollten alle :frequency Tage erinnert werden um in Kontakt zu bleiben mit :n
     'confirmation_email_bottom' => 'Wenn Sie kein Konto erstellt haben, ist keine weitere Aktion erforderlich.',
 
     'password_reset_title' => 'Monica – Passwort-Benachrichtigung zurücksetzen',
-    'password_reset_intro' => 'You are receiving this email because we received a password reset request for your account.',
+    'password_reset_intro' => 'Sie erhalten diese E-Mail, weil wir eine Anfrage zum Zurücksetzen des Passworts für Ihr Konto erhalten haben.',
     'password_reset_button' => 'Passwort zurücksetzen',
     'password_reset_expiration' => 'This password reset link will expire in :count minutes.',
     'password_reset_bottom' => 'If you did not request a password reset, no further action is required.',
