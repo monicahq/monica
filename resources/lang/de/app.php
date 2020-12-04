@@ -330,7 +330,7 @@ return [
     'emotion_jolliness' => 'Jolliness',
     'emotion_joviality' => 'Joviality',
     'emotion_joy' => 'Freude',
-    'emotion_delight' => 'Delight',
+    'emotion_delight' => 'Freude',
     'emotion_enjoyment' => 'Enjoyment',
     'emotion_gladness' => 'Gladness',
     'emotion_happiness' => 'Glück',
