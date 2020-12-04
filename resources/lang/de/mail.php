@@ -38,12 +38,12 @@ Sie wollten alle :frequency Tage erinnert werden um in Kontakt zu bleiben mit :n
     'password_reset_title' => 'Monica – Passwort-Benachrichtigung zurücksetzen',
     'password_reset_intro' => 'Sie erhalten diese E-Mail, weil wir eine Anfrage zum Zurücksetzen des Passworts für Ihr Konto erhalten haben.',
     'password_reset_button' => 'Passwort zurücksetzen',
-    'password_reset_expiration' => 'This password reset link will expire in :count minutes.',
-    'password_reset_bottom' => 'If you did not request a password reset, no further action is required.',
+    'password_reset_expiration' => 'Dieser Link zum Zurücksetzen des Passworts läuft in :count Minuten ab.',
+    'password_reset_bottom' => 'Wenn Sie keine Passwortzurücksetzung angefordert haben, ist keine weitere Aktion erforderlich.',
 
     'invitation_title' => 'Monica – Du wurdest von :name eingeladen',
-    'invitation_intro' => 'You’ve been invited by :name (:email) to use Monica, a nice Personal Relationship Management tool.',
-    'invitation_link' => 'To accept the invitation, click on the link below:',
-    'invitation_button' => 'Accept invitation',
-    'invitation_expiration' => 'This link will expire in :count days.',
+    'invitation_intro' => 'Sie wurden von :name (:email) eingeladen, um Monica zu verwenden, ein Personal Relationship Management Tool.',
+    'invitation_link' => 'Um die Einladung anzunehmen, klicken Sie auf den folgenden Link:',
+    'invitation_button' => 'Einladung annehmen',
+    'invitation_expiration' => 'Dieser Link läuft in :count Tagen ab.',
 ];
