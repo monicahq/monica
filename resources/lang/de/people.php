@@ -434,7 +434,7 @@ return [
     'life_event_delete_description' => 'Möchten Sie das Lebensereignis löschen? Dies kann nicht rückgängig gemacht werden.',
     'life_event_delete_success' => 'Das Ereignis wurde gelöscht',
     'life_event_date_it_happened' => 'Tag an dem es passierte',
-    'life_event_category_work_education' => 'Arbeit & Bildung',
+    'life_event_category_work_education' => 'Arbeit & Ausbildung',
     'life_event_category_family_relationships' => 'Familie & Beziehungen',
     'life_event_category_home_living' => 'Home & living',
     'life_event_category_health_wellness' => 'Gesundheit & Wellness',
@@ -501,7 +501,7 @@ return [
     'photo_make_profile_pic' => 'Zu Profilbild machen',
     'photo_delete' => 'Bild löschen',
     'photo_next' => 'Nächstes Foto',
-    'photo_previous' => 'Vorheriges Foto',
+    'photo_previous' => 'Vorheriges Bild',
 
     // Avatars
     'avatar_change_title' => 'Avatar ändern',
@@ -528,7 +528,7 @@ return [
     'contact_field_label_cell' => 'Mobil',
     'contact_field_label_fax' => 'Fax',
     'contact_field_label_pager' => 'Pager',
-    'contact_field_label_main' => 'Main',
-    'contact_field_label_other' => 'Other',
-    'contact_field_label_personal' => 'Personal',
+    'contact_field_label_main' => 'Hauptinformationen',
+    'contact_field_label_other' => 'Sonstiges',
+    'contact_field_label_personal' => 'Persönlich',
 ];
