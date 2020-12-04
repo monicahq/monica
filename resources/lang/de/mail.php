@@ -33,9 +33,9 @@ Sie wollten alle :frequency Tage erinnert werden um in Kontakt zu bleiben mit :n
     'confirmation_email_title' => 'Monica – E-Mail-Verifikation',
     'confirmation_email_intro'=> 'Um Ihre E-Mail-Adresse zu validieren, klicken Sie bitte auf den untenstehenden Button',
     'confirmation_email_button' => 'E-Mail-Adresse bestätigen',
-    'confirmation_email_bottom' => 'If you did not create an account, no further action is required.',
+    'confirmation_email_bottom' => 'Wenn Sie kein Konto erstellt haben, ist keine weitere Aktion erforderlich.',
 
-    'password_reset_title' => 'Monica – Reset Password Notification',
+    'password_reset_title' => 'Monica – Passwort-Benachrichtigung zurücksetzen',
     'password_reset_intro' => 'You are receiving this email because we received a password reset request for your account.',
     'password_reset_button' => 'Passwort zurücksetzen',
     'password_reset_expiration' => 'This password reset link will expire in :count minutes.',
