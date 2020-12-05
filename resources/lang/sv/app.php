@@ -44,7 +44,7 @@ return [
     'retry' => 'Försök igen',
     'filter' => 'Filtrera listan',
     'go_back' => 'Gå tillbaka',
-    'file_selected' => '1 fil vald...<unk>{count} valda filer...',
+    'file_selected' => '1 fil vald...|{count} valda filer...',
 
     'application_title' => 'Monica – Personlig Relationsansvarig',
     'application_description' => 'Monica är ett verktyg för att hantera dina interaktioner med dina nära och kära, vänner och familj.',
@@ -74,7 +74,7 @@ return [
     'footer_new_version' => 'En ny version finns tillgänglig',
 
     'footer_modal_version_whats_new' => 'Vad är nytt',
-    'footer_modal_version_release_away' => 'Du är 1 version bakom den senaste versionen. Du bör uppdatera din instans. Du är :number releaser bakom den senaste versionen. Du bör uppdatera din instans.',
+    'footer_modal_version_release_away' => 'Du är 1 version bakom den senaste versionen. Du bör uppdatera din instans.|Du är :number releaser bakom den senaste versionen. Du bör uppdatera din instans.',
 
     'breadcrumb_dashboard' => 'Instrumentpanel',
     'breadcrumb_list_contacts' => 'Lista över personer',
