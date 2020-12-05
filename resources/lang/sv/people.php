@@ -58,7 +58,7 @@ return [
     'people_delete_message' => 'Ta bort kontakt',
     'people_delete_confirmation' => 'Är du säker på att du vill ta bort denna kontakt? Borttagning är permanent.',
     'people_add_birthday_reminder' => 'Önska födelsedag till :name',
-    'people_add_birthday_reminder_deceased' => 'På detta datum, skulle  :name,  ha firat sin födelsedag',
+    'people_add_birthday_reminder_deceased' => 'På detta datum, skulle :name, ha firat sin födelsedag',
     'people_add_import' => 'Vill du <a href=":url">importera dina kontakter</a>?',
     'people_edit_email_error' => 'Det finns redan en kontakt på ditt konto med denna e-postadress. Välj en annan.',
     'people_export' => 'Exportera som vCard',
