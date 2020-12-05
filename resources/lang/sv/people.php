@@ -195,9 +195,9 @@ return [
     'reminders_add_optional_comment' => 'Valfri kommentar',
 
     'reminder_frequency_day' => 'varje dag|var :number dag',
-    'reminder_frequency_week' => 'varje vecka : antal veckor',
+    'reminder_frequency_week' => 'varje vecka|var :number vecka',
     'reminder_frequency_month' => 'varje månad|var :number månad',
-    'reminder_frequency_year' => 'varje år : antal år',
+    'reminder_frequency_year' => 'varje år|vart :number år',
     'reminder_frequency_one_time' => 'den :date',
     'reminders_delete_confirmation' => 'Är du säker på att du vill ta bort denna påminnelse?',
     'reminders_delete_cta' => 'Radera',
