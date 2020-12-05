@@ -4957,16 +4957,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.10.2",
+            "version": "v4.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "658f1be311a230e0907f5dfe0213742aff0596de"
+                "reference": "dbe56d23de8fcb157bbc0cfb3ad7c7de0cfb0984"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/658f1be311a230e0907f5dfe0213742aff0596de",
-                "reference": "658f1be311a230e0907f5dfe0213742aff0596de",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/dbe56d23de8fcb157bbc0cfb3ad7c7de0cfb0984",
+                "reference": "dbe56d23de8fcb157bbc0cfb3ad7c7de0cfb0984",
                 "shasum": ""
             },
             "require": {
@@ -5005,7 +5005,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2020-09-26T10:30:38+00:00"
+            "time": "2020-12-03T17:45:45+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -16626,16 +16626,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "4.1.1",
+            "version": "4.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "16bfbd9224698bd738c665f33039fade2a1a3977"
+                "reference": "2feba22a005a18bf31d4c7b9bdb9252c73897476"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/16bfbd9224698bd738c665f33039fade2a1a3977",
-                "reference": "16bfbd9224698bd738c665f33039fade2a1a3977",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/2feba22a005a18bf31d4c7b9bdb9252c73897476",
+                "reference": "2feba22a005a18bf31d4c7b9bdb9252c73897476",
                 "shasum": ""
             },
             "require": {
@@ -16723,7 +16723,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2020-11-02T05:54:12+00:00"
+            "time": "2020-12-03T16:44:10+00:00"
         },
         {
             "name": "webmozart/path-util",
