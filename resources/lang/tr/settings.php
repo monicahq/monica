@@ -94,7 +94,7 @@ return [
     'locale_ru' => 'Rusça',
     'locale_sv' => 'İsveççe',
     'locale_zh' => 'Çince (Basitleştirilmiş)',
-    'locale_zh-TW' => 'Chinese Traditional',
+    'locale_zh-TW' => 'Geleneksel Çince',
     'locale_tr' => 'Türkçe',
     'locale_en-GB' => 'İngilizce (Birleşik Krallık)',
 
@@ -426,9 +426,9 @@ return [
     'personalization_activity_type_category_modal_delete_error' => 'Bu aktivite türü kategorisini bulamıyoruz.',
 
     'personalization_life_event_category_title' => 'Life event categories',
-    'personalization_live_event_category_table_name' => 'Name',
+    'personalization_live_event_category_table_name' => 'İsim',
     'personalization_life_event_category_description' => 'A life event can have a type and a category. Your account comes by default with a set of predefined categories and types, but you can customize life event types here.',
-    'personalization_live_event_category_table_actions' => 'Actions',
+    'personalization_live_event_category_table_actions' => 'Eylemler',
     'personalization_life_event_type_add_button' => 'Add a new life event type',
     'personalization_life_event_type_modal_add' => 'Add a new life event type',
     'personalization_life_event_type_modal_question' => 'How should we name this new life event type?',
