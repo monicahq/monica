@@ -92,7 +92,7 @@ return [
     'locale_pt' => 'Portekizce',
     'locale_pt-BR' => 'Portekizce (Brezilya)',
     'locale_ru' => 'Rusça',
-    'locale_sv' => 'Swedish',
+    'locale_sv' => 'İsveççe',
     'locale_zh' => 'Çince (Basitleştirilmiş)',
     'locale_zh-TW' => 'Chinese Traditional',
     'locale_tr' => 'Türkçe',
