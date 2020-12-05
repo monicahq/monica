@@ -208,7 +208,7 @@ return [
     'reminders_type_week' => 'week',
     'reminders_type_month' => 'maand',
     'reminders_type_year' => 'jaar',
-    'reminders_birthday' => 'Verjaardag van :naam',
+    'reminders_birthday' => 'Verjaardag van :name',
     'reminders_free_plan_warning' => 'Je hebt een gratis abonnement. Hiermee worden geen e-mails verzonden. Als je herinneringen per e-mail wilt ontvangen, upgrade dan je account.',
 
     // relationships
