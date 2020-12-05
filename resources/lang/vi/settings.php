@@ -92,6 +92,7 @@ return [
     'locale_pt' => 'Tiếng Bồ Đào Nha',
     'locale_pt-BR' => 'Tiếng Bồ Đào Nha (Brazil)',
     'locale_ru' => 'Tiếng Nga',
+    'locale_sv' => 'Swedish',
     'locale_zh' => 'Tiếng Trung Giản thể',
     'locale_zh-TW' => 'Tiếng Trung phồn thể',
     'locale_tr' => 'Tiếng Thổ Nhĩ Kỳ',
