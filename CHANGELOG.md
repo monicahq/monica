@@ -2,7 +2,7 @@
 
 ### New features:
 
-*
+* Allow customization of life event types
 
 ### Enhancements:
 

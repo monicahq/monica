@@ -172,11 +172,8 @@ RUN install-composer.sh
 # Install composer dependencies
 RUN set -ex; \
     \
-    composer global require hirak/prestissimo; \
     mkdir -p storage/framework/views; \
     composer install --no-interaction --no-suggest --no-progress --no-dev --ignore-platform-reqs; \
-    composer global remove hirak/prestissimo; \
-    \
     composer clear-cache; \
     rm -rf .composer
 
