@@ -92,6 +92,7 @@ return [
     'locale_pt' => '葡萄牙文',
     'locale_pt-BR' => '葡萄牙語 (巴西)',
     'locale_ru' => '俄文',
+    'locale_sv' => 'Swedish',
     'locale_zh' => '簡體中文',
     'locale_zh-TW' => '繁體中文（台灣）',
     'locale_tr' => '土耳其文',
