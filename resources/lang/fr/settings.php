@@ -92,6 +92,7 @@ return [
     'locale_pt' => 'Portugais',
     'locale_pt-BR' => 'Portugais (Brésil)',
     'locale_ru' => 'Russe',
+    'locale_sv' => 'Swedish',
     'locale_zh' => 'Chinois Simplifié',
     'locale_zh-TW' => 'Chinois Traditionnel',
     'locale_tr' => 'Turc',
