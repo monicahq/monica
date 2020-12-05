@@ -49,11 +49,11 @@ class Reminder extends Model
 
     /**
      * Valid value for calendar type.
-     * 
+     *
      * @var array
      */
     public static $calendarTypes = [
-        'solar', 'lunar'
+        'solar', 'lunar',
     ];
 
     public static function getListOfCalendarTypes()
@@ -62,7 +62,7 @@ class Reminder extends Model
         for ($i = 0; $i < count(Reminder::$calendarTypes); $i++) {
             $collect->push([
                 'id' => Reminder::$calendarTypes[$i],
-                'name' => trans('people.reminders_calendar_' . Reminder::$calendarTypes[$i]),
+                'name' => trans('reminders_calendar_' . Reminder::$calendarTypes[$i]),
             ]);
         }
         return $collect;

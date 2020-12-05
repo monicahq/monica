@@ -127,7 +127,7 @@ class UpdateBirthdayInformation extends BaseService
      */
     private function manageBirthday(array $data, Contact $contact): void
     {
-        if (!$data['is_date_known']) {
+        if (! $data['is_date_known']) {
             return;
         }
 

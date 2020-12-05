@@ -530,13 +530,13 @@ class LunarCalendarHelper
      */
     protected function getColor($ganZhi)
     {
-        if (!$ganZhi) {
+        if (! $ganZhi) {
             return null;
         }
 
         $gan = substr($ganZhi, 0, 3);
 
-        if (!$gan) {
+        if (! $gan) {
             return null;
         }
 
@@ -552,14 +552,14 @@ class LunarCalendarHelper
      */
     protected function getWuXing($ganZhi)
     {
-        if (!$ganZhi) {
+        if (! $ganZhi) {
             return null;
         }
 
         $gan = substr($ganZhi, 0, 3);
         $zhi = substr($ganZhi, 3);
 
-        if (!$gan || !$zhi) {
+        if (! $gan || ! $zhi) {
             return null;
         }
 
@@ -621,7 +621,7 @@ class LunarCalendarHelper
         // 用当年的天数 offset,逐个减去每月（农历）的天数，求出当天是本月的第几天
         for ($i = 1; $i < 13 && $offset > 0; ++$i) {
             // 闰月
-            if ($leap > 0 && $i == ($leap + 1) && !$isLeap) {
+            if ($leap > 0 && $i == ($leap + 1) && ! $isLeap) {
                 --$i;
                 $isLeap = true;
                 $daysOfMonth = $this->leapDays($lunarYear); // 计算农历月天数
@@ -764,7 +764,7 @@ class LunarCalendarHelper
         $isAdd = false;
         for ($i = 1; $i < $month; ++$i) {
             $leap = $this->leapMonth($year);
-            if (!$isAdd) { // 处理闰月
+            if (! $isAdd) { // 处理闰月
                 if ($leap <= $i && $leap > 0) {
                     $offset += $this->leapDays($year);
                     $isAdd = true;
@@ -844,9 +844,9 @@ class LunarCalendarHelper
 
         $monthAdjustFactor = $greaterLunar['lunar_day'] >= $lessLunar['lunar_day'] ? 0 : 1;
         if ($greaterLunar['lunar_month'] == $lessLunar['lunar_month']) {
-            if ($greaterLunar['is_leap'] && !$lessLunar['is_leap']) {
+            if ($greaterLunar['is_leap'] && ! $lessLunar['is_leap']) {
                 $monthAdjustFactor = 0;
-            } elseif (!$greaterLunar['is_leap'] && $lessLunar['is_leap']) {
+            } elseif (! $greaterLunar['is_leap'] && $lessLunar['is_leap']) {
                 $monthAdjustFactor = 1;
             }
         }
@@ -900,7 +900,7 @@ class LunarCalendarHelper
             $greaterLunarLeapMonth = $this->leapMonth($greaterLunar['lunar_year']);
 
             $lessLunarAdjustFactor =
-                (!$lessLunar['is_leap'] && $lessLunarLeapMonth == $lessLunar['lunar_month']) || $lessLunarLeapMonth > $lessLunar['lunar_month'] ? 1 : 0;
+                (! $lessLunar['is_leap'] && $lessLunarLeapMonth == $lessLunar['lunar_month']) || $lessLunarLeapMonth > $lessLunar['lunar_month'] ? 1 : 0;
             $diff += 12 + $lessLunarAdjustFactor - $lessLunar['lunar_month'];
             for ($i = $lessLunar['lunar_year'] + 1; $i < $greaterLunar['lunar_year']; ++$i) {
                 $diff += $this->monthsOfYear($i);
@@ -1013,7 +1013,7 @@ class LunarCalendarHelper
                     $currentIsLeap = $isLeap;
                     $isLeap = $newMonth + $value == $leapMonth + ($isLeap ? 0 : 1);
 
-                    if ((!$currentIsLeap && $leapMonth == $newMonth) || ($newMonth < $leapMonth && $newMonth + $value > $leapMonth)) {
+                    if ((! $currentIsLeap && $leapMonth == $newMonth) || ($newMonth < $leapMonth && $newMonth + $value > $leapMonth)) {
                         --$value;
                     }
                 } else {

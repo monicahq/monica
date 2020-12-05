@@ -38,7 +38,7 @@
         <div class="{{ auth()->user()->getFluidLayout() }}">
           <div class="row">
 
-            @if ($hasArchived and !$active)
+            @if ($hasArchived and ! $active)
             <div class="col-12">
               <div class="ba mb3 br3 pa3 tc b--gray-monica bg-gray-monica">
                 {!! trans('people.list_link_to_active_contacts', ['url' => route('people.index')]) !!}

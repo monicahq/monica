@@ -218,7 +218,7 @@ class RelationshipsController extends Controller
             'birthdate_age' => $request->input('age'),
             'calendar_type' => $request->input('calendar_type'),
             'birthdate_add_reminder' => !empty($request->input('addReminder')),
-            'is_partial' => !$request->input('realContact'),
+            'is_partial' => ! $request->input('realContact'),
             'is_deceased' => false,
             'is_deceased_date_known' => false,
         ];

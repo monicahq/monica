@@ -106,7 +106,7 @@ class ContactsController extends Controller
                 if ($tag->count() > 0) {
                     $tag = $tag->get();
 
-                    if (!$tags->contains($tag[0])) {
+                    if (! $tags->contains($tag[0])) {
                         $tags = $tags->concat($tag);
                     }
 
@@ -613,12 +613,12 @@ class ContactsController extends Controller
         }
 
         // if not active, set frequency to 0
-        if (!$state) {
+        if (! $state) {
             $frequency = 0;
         }
         $result = $contact->updateStayInTouchFrequency($frequency);
 
-        if (!$result) {
+        if (! $result) {
             throw new \LogicException(trans('people.stay_in_touch_invalid'));
         }
 
@@ -654,7 +654,7 @@ class ContactsController extends Controller
      */
     public function archive(Request $request, Contact $contact)
     {
-        $contact->is_active = !$contact->is_active;
+        $contact->is_active = ! $contact->is_active;
         $contact->save();
 
         return [

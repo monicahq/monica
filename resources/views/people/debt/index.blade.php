@@ -9,7 +9,7 @@
   </h3>
 </div>
 
-@if (!$contact->hasDebt())
+@if (! $contact->hasDebt())
 
   <div class="col-12" cy-name="debt-blank-state">
     <div class="section-blank">

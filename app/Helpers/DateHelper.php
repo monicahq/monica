@@ -55,7 +55,7 @@ class DateHelper
      */
     public static function parseDate($date, $timezone = null): ?Carbon
     {
-        if (!$date instanceof Carbon) {
+        if (! $date instanceof Carbon) {
             try {
                 $date = Carbon::parse($date);
             } catch (\Exception $e) {
@@ -88,7 +88,7 @@ class DateHelper
         if ($date instanceof \App\Models\Instance\SpecialDate) {
             $date = $date->date;
         }
-        if (!$date instanceof Carbon) {
+        if (! $date instanceof Carbon) {
             $date = Carbon::parse($date);
         }
 
@@ -109,7 +109,7 @@ class DateHelper
         if ($date instanceof \App\Models\Instance\SpecialDate) {
             $date = $date->date;
         }
-        if (!$date instanceof Carbon) {
+        if (! $date instanceof Carbon) {
             $date = Carbon::parse($date);
         }
 

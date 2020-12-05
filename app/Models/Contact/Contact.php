@@ -818,7 +818,7 @@ class Contact extends Model
     {
         $relationshipTypeGroup = $this->account->getRelationshipTypeGroupByType($type);
 
-        if (!$relationshipTypeGroup) {
+        if (! $relationshipTypeGroup) {
             return null;
         }
 
@@ -879,7 +879,7 @@ class Contact extends Model
      */
     public function getBirthdayState()
     {
-        if (!$this->birthday_special_date_id) {
+        if (! $this->birthday_special_date_id) {
             return 'unknown';
         }
 
@@ -1014,7 +1014,7 @@ class Contact extends Model
      */
     public function deleteAvatars()
     {
-        if (!$this->has_avatar || $this->avatar_location == 'external') {
+        if (! $this->has_avatar || $this->avatar_location == 'external') {
             return;
         }
 
@@ -1116,7 +1116,7 @@ class Contact extends Model
      */
     public function getIntroducer(): ?self
     {
-        if (!$this->first_met_through_contact_id) {
+        if (! $this->first_met_through_contact_id) {
             return null;
         }
 
@@ -1296,7 +1296,7 @@ class Contact extends Model
      */
     public function getAgeAtDeath(): ?int
     {
-        if (!$this->deceasedDate) {
+        if (! $this->deceasedDate) {
             return null;
         }
 
@@ -1304,7 +1304,7 @@ class Contact extends Model
             return null;
         }
 
-        if (!$this->birthdate) {
+        if (! $this->birthdate) {
             return null;
         }
 
