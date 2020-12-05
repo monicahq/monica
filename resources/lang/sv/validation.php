@@ -36,7 +36,7 @@ return [
         'array' => ':attribute måste vara mellan :min och :max föremål.',
     ],
     'boolean' => ':attribute måste vara sant eller falskt.',
-    'confirmed' => ':attribute-bekräftelsen matchar inte.',
+    'confirmed' => ':attribute bekräftelsen matchar inte.',
     'date' => ':attribute är inte ett giltigt datum.',
     'date_equals' => ':attribute måste vara ett datum efter :date.',
     'date_format' => ':attribute matchar inte formatet :format.',
