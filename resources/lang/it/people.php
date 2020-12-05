@@ -12,7 +12,7 @@ return [
     'people_not_found' => 'Contatto non trovato',
     'people_list_number_kids' => '1 bambino|:count bambini',
     'people_list_last_updated' => 'Ultimo contatto:',
-    'people_list_number_reminders' => ':count promemoria',
+    'people_list_number_reminders' => '1 promemoria|:count promemoria',
     'people_list_blank_title' => 'Non ci sono contatti nel tuo account',
     'people_list_blank_cta' => 'Aggiungi qualcuno',
     'people_list_sort' => 'Ordina',
