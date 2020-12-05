@@ -9,7 +9,7 @@
 return [
 
     'subject_line' => 'Påminnelse om :contact',
-    'greetings' => 'Hej %(user_name)',
+    'greetings' => 'Hej :username',
     'want_reminded_of' => 'Du ville bli påmind om :reason',
     'for' => 'För: :name',
     'comment' => 'Kommentar: :comment',
