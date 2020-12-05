@@ -55,7 +55,7 @@ class DateHelper
      */
     public static function parseDate($date, $timezone = null): ?Carbon
     {
-        if (! $date instanceof Carbon) {
+        if (!$date instanceof Carbon) {
             try {
                 $date = Carbon::parse($date);
             } catch (\Exception $e) {
@@ -88,7 +88,7 @@ class DateHelper
         if ($date instanceof \App\Models\Instance\SpecialDate) {
             $date = $date->date;
         }
-        if (! $date instanceof Carbon) {
+        if (!$date instanceof Carbon) {
             $date = Carbon::parse($date);
         }
 
@@ -109,7 +109,7 @@ class DateHelper
         if ($date instanceof \App\Models\Instance\SpecialDate) {
             $date = $date->date;
         }
-        if (! $date instanceof Carbon) {
+        if (!$date instanceof Carbon) {
             $date = Carbon::parse($date);
         }
 
@@ -222,28 +222,59 @@ class DateHelper
         return $date->translatedFormat($format) ?: '';
     }
 
+    public static function convertToSolarCalendarDate(Carbon $from, $calendarType)
+    {
+        switch ($calendarType) {
+            case 'lunar':
+                $lunar = new LunarCalendarHelper();
+                $to = $lunar->lunar2solar($from->year, $from->month, $from->day);
+                return Carbon::create($to['solar_year'], $to['solar_month'], $to['solar_day']);
+            default:
+                return $from;
+        }
+    }
+
     /**
      * Add a given number of week/month/year to a date.
-     * @param Carbon $date      the start date
+     * @param Carbon $solarDate      the start date in solar calendar
+     * @param string $calendarType solar/lunar
      * @param string $frequency week/month/year
      * @param int $number    the number of week/month/year to increment to
      * @return Carbon
      */
-    public static function addTimeAccordingToFrequencyType(Carbon $date, string $frequency, int $number): Carbon
+    public static function addTimeAccordingToFrequencyType(Carbon $solarDate, string $calendarType, string $frequency, int $number): Carbon
     {
+        if ($calendarType == 'lunar') {
+            $lunar = new LunarCalendarHelper();
+            $lunarDate = $lunar->solar2lunar($solarDate->year, $solarDate->month, $solarDate->day);
+            switch ($frequency) {
+                case 'week':
+                    $lunarDate = $lunar->addDays($lunarDate, $number * 7);
+                    break;
+                case 'month':
+                    $lunarDate = $lunar->addMonths($lunarDate, $number);
+                    break;
+                case 'year':
+                    $lunarDate = $lunar->addYears($lunarDate, $number);
+                    break;
+            }
+            $solarDate = $lunar->lunar2solar($lunarDate['lunar_year'], $lunarDate['lunar_month'], $lunarDate['lunar_day']);
+            return Carbon::create($solarDate['solar_year'], $solarDate['solar_month'], $solarDate['solar_day']);
+        }
+
         switch ($frequency) {
             case 'week':
-                $date->addWeeks($number);
+                $solarDate->addWeeks($number);
                 break;
             case 'month':
-                $date->addMonths($number);
+                $solarDate->addMonths($number);
                 break;
-            default:
-                $date->addYears($number);
+            case 'year':
+                $solarDate->addYears($number);
                 break;
         }
 
-        return $date;
+        return $solarDate;
     }
 
     /**

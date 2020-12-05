@@ -20,50 +20,65 @@
       @clearDate="onSelected('')"
     />
     <input :name="id" type="hidden" :value="exchange" />
-    <small v-if="validator && (validator.$error && validator.required !== undefined && !validator.required)" class="error">
+    <small
+      v-if="
+        validator &&
+        validator.$error &&
+        validator.required !== undefined &&
+        !validator.required
+      "
+      class="error"
+    >
       {{ requiredMessage }}
     </small>
-    <small v-if="validator && (validator.$error && validator.before !== undefined && !validator.before)" class="error">
+    <small
+      v-if="
+        validator &&
+        validator.$error &&
+        validator.before !== undefined &&
+        !validator.before
+      "
+      class="error"
+    >
       {{ beforeMessage }}
     </small>
   </div>
 </template>
 
 <script>
-import Datepicker from '@hokify/vuejs-datepicker';
-import moment from 'moment';
+import Datepicker from "@hokify/vuejs-datepicker";
+import moment from "moment";
 
 export default {
-
   components: {
-    Datepicker
+    Datepicker,
   },
 
   model: {
-    prop: 'value',
-    event: 'input'
+    prop: "value",
+    event: "input",
   },
 
   props: {
     id: {
       type: String,
-      default: '',
+      default: "",
     },
     value: {
       type: String,
-      default: '',
+      default: "",
     },
     label: {
       type: String,
-      default: '',
+      default: "",
     },
     defaultDate: {
       type: String,
-      default: '',
+      default: "",
     },
     locale: {
       type: String,
-      default: '',
+      default: "",
     },
     showCalendarOnFocus: {
       type: Boolean,
@@ -80,10 +95,10 @@ export default {
       /**
        * Value of the date in exchange format
        */
-      exchange: '',
+      exchange: "",
 
-      selectedDate: '',
-      mondayFirst: false
+      selectedDate: "",
+      mondayFirst: false,
     };
   },
 
@@ -92,32 +107,32 @@ export default {
      * Exchange format with controller (moment format type).
      */
     exchangeFormat() {
-      return 'YYYY-MM-DD';
+      return "YYYY-MM-DD";
     },
 
     /**
      * Display format (moment format type).
      */
     displayFormat() {
-      return 'L';
+      return "L";
     },
 
     inputClass() {
-      var c = ['br2 f5 ba b--black-40 pa2 outline-0'];
+      var c = ["br2 f5 ba b--black-40 pa2 outline-0"];
       if (this.validator) {
-        c.push({ 'error': this.validator.$error });
+        c.push({ error: this.validator.$error });
       }
       return c;
     },
 
     requiredMessage() {
-      return this.$t('validation.vue.required', { field: this.label });
+      return this.$t("validation.vue.required", { field: this.label });
     },
 
     beforeMessage() {
-      return this.$t('validation.vue.max.numeric', {
+      return this.$t("validation.vue.max.numeric", {
         field: this.label,
-        max: this.displayValue(this.validator.$params.before.date)
+        max: this.displayValue(this.validator.$params.before.date),
       });
     },
   },
@@ -125,11 +140,11 @@ export default {
   watch: {
     value: function (newValue) {
       this.updateExchange(newValue);
-    }
+    },
   },
 
   mounted() {
-    this.updateExchange(this.value === '' ? this.defaultDate : this.value);
+    this.updateExchange(this.value === "" ? this.defaultDate : this.value);
     this.mondayFirst = moment.localeData().firstDayOfWeek() == 1;
   },
 
@@ -140,7 +155,9 @@ export default {
      * @return string date in display format
      */
     displayValue(date) {
-      return date !== '' && date !== null ? moment(date).format(this.displayFormat) : '';
+      return date !== "" && date !== null
+        ? moment(date).format(this.displayFormat)
+        : "";
     },
 
     /**
@@ -149,7 +166,9 @@ export default {
      * @return string date in exchange format
      */
     exchangeValue(date) {
-      return date !== '' && date !== null ? moment(date).format(this.exchangeFormat) : '';
+      return date !== "" && date !== null
+        ? moment(date).format(this.exchangeFormat)
+        : "";
     },
 
     /**
@@ -157,11 +176,11 @@ export default {
      * Store it in exchange format value.
      */
     update(date) {
-      if (date === '' || date === null) {
-        this.exchange = '';
+      if (date === "" || date === null) {
+        this.exchange = "";
       } else {
         var mdate = moment(date);
-        if (! mdate.isValid()) {
+        if (!mdate.isValid()) {
           mdate = moment();
         }
         this.exchange = mdate.format(this.exchangeFormat);
@@ -170,9 +189,9 @@ export default {
 
     updateExchange(date) {
       this.exchange = date;
-      if (this.exchange !== '') {
+      if (this.exchange !== "") {
         var mdate = moment(this.exchange, this.exchangeFormat);
-        if (! mdate.isValid()) {
+        if (!mdate.isValid()) {
           mdate = moment();
         }
         this.selectedDate = mdate.toDate();
@@ -186,7 +205,9 @@ export default {
      * @return date value
      */
     formatTypedValue(date) {
-      return date !== '' && date !== null ? moment(date, this.displayFormat).toDate() : '';
+      return date !== "" && date !== null
+        ? moment(date, this.displayFormat).toDate()
+        : "";
     },
 
     focus() {
@@ -197,13 +218,13 @@ export default {
       if (this.validator) {
         this.validator.$touch();
       }
-      this.$emit('input', this.exchangeValue(event));
+      this.$emit("input", this.exchangeValue(event));
     },
 
     onSelected(event) {
       this.update(event);
       this.onInput(event);
-    }
-  }
+    },
+  },
 };
 </script>

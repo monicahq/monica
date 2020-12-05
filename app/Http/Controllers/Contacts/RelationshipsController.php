@@ -20,6 +20,7 @@ use App\Services\Contact\Relationship\CreateRelationship;
 use App\Services\Contact\Relationship\UpdateRelationship;
 use App\Services\Contact\Relationship\DestroyRelationship;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
+use App\Models\Contact\Reminder;
 
 class RelationshipsController extends Controller
 {
@@ -44,6 +45,8 @@ class RelationshipsController extends Controller
             ->withDefaultGender(auth()->user()->account->default_gender_id)
             ->withDays(DateHelper::getListOfDays())
             ->withMonths(DateHelper::getListOfMonths())
+            ->withCalendarTypes(Reminder::getListOfCalendarTypes())
+            ->withCalendarType('solar')
             ->withBirthdate(now(DateHelper::getTimezone())->toDateString())
             ->withExistingContacts(ContactResource::collection($existingContacts))
             ->withType($request->input('type'))
@@ -102,10 +105,10 @@ class RelationshipsController extends Controller
         $otherContact = $relationship->ofContact;
 
         $now = now();
-        $age = (string) (! is_null($otherContact->birthdate) ? $otherContact->birthdate->getAge() : 0);
-        $birthdate = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->toDateString() : $now->toDateString();
-        $day = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->day : $now->day;
-        $month = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->month : $now->month;
+        $age = (string) (!is_null($otherContact->birthdate) ? $otherContact->birthdate->getAge() : 0);
+        $birthdate = !is_null($otherContact->birthdate) ? $otherContact->birthdate->date->toDateString() : $now->toDateString();
+        $day = !is_null($otherContact->birthdate) ? $otherContact->birthdate->date->day : $now->day;
+        $month = !is_null($otherContact->birthdate) ? $otherContact->birthdate->date->month : $now->month;
 
         $hasBirthdayReminder = is_null($otherContact->birthday_reminder_id) ? 0 : 1;
 
@@ -117,6 +120,8 @@ class RelationshipsController extends Controller
             ->withDays(DateHelper::getListOfDays())
             ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdate($birthdate)
+            ->withCalendarTypes(Reminder::getListOfCalendarTypes())
+            ->withCalendarType($otherContact->calendar_type)
             ->withRelationshipId($relationship->id)
             ->withType($relationship->relationship_type_id)
             ->withBirthdayState($otherContact->getBirthdayState())
@@ -140,6 +145,7 @@ class RelationshipsController extends Controller
     public function update(Request $request, Contact $contact, Relationship $relationship)
     {
         $otherContact = $relationship->ofContact;
+
 
         if ($otherContact->is_partial) {
             $datas = $this->validateAndGetDatas($request);
@@ -204,14 +210,15 @@ class RelationshipsController extends Controller
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'gender_id' => $request->input('gender_id'),
-            'is_birthdate_known' => ! empty($request->input('birthdate')) && $request->input('birthdate') !== 'unknown',
+            'is_birthdate_known' => !empty($request->input('birthdate')) && $request->input('birthdate') !== 'unknown',
             'birthdate_day' => $day,
             'birthdate_month' => $month,
             'birthdate_year' => $year,
             'birthdate_is_age_based' => $request->input('birthdate') === 'approximate',
             'birthdate_age' => $request->input('age'),
-            'birthdate_add_reminder' => ! empty($request->input('addReminder')),
-            'is_partial' => ! $request->input('realContact'),
+            'calendar_type' => $request->input('calendar_type'),
+            'birthdate_add_reminder' => !empty($request->input('addReminder')),
+            'is_partial' => !$request->input('realContact'),
             'is_deceased' => false,
             'is_deceased_date_known' => false,
         ];
@@ -255,7 +262,7 @@ class RelationshipsController extends Controller
         $relationshipTypes = collect();
         foreach (auth()->user()->account->relationshipTypes as $relationshipType) {
             $types = $relationshipTypes->get($relationshipType->relationshipTypeGroup->name, [
-                'name' => trans('app.relationship_type_group_'.$relationshipType->relationshipTypeGroup->name),
+                'name' => trans('app.relationship_type_group_' . $relationshipType->relationshipTypeGroup->name),
                 'options' => [],
             ]);
 

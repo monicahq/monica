@@ -183,6 +183,7 @@ return [
     'reminders_add_title' => 'What would you like to be reminded of about :name?',
     'reminders_add_description' => 'Please remind me to...',
     'reminders_add_next_time' => 'When is the next time you would like to be reminded about this?',
+    'reminders_calendar_type' => 'Is this a special calendar type?',
     'reminders_add_once' => 'Remind me about this just once',
     'reminders_add_recurrent' => 'Remind me about this every',
     'reminders_add_starting_from' => 'starting from the date specified above',
@@ -210,6 +211,8 @@ return [
     'reminders_type_year' => 'year',
     'reminders_birthday' => 'Birthday of :name',
     'reminders_free_plan_warning' => 'You are on the Free plan. No emails are sent on this plan. To receive your reminders by email, upgrade your account.',
+    'reminders_calendar_lunar' => 'Lunar Calendar',
+    'reminders_calendar_solar' => 'Solar Calendar',
 
     // relationships
     'relationship_form_add' => 'Add a new relationship',

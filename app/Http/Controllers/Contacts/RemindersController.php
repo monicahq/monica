@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Contacts;
 
 use Illuminate\Http\Request;
 use App\Helpers\AccountHelper;
+use App\Helpers\DateHelper;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Http\Controllers\Controller;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\UpdateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
+use Carbon\Carbon;
+use Carbon\Traits\Date;
 
 class RemindersController extends Controller
 {
@@ -43,6 +46,7 @@ class RemindersController extends Controller
             'contact_id' => $contact->id,
             'initial_date' => $request->input('initial_date'),
             'frequency_type' => $request->input('frequency_type'),
+            'calendar_type' => $request->input('calendar_type'),
             'frequency_number' => is_null($request->input('frequency_number')) ? 1 : $request->input('frequency_number'),
             'title' => $request->input('title'),
             'description' => $request->input('description'),
@@ -87,6 +91,7 @@ class RemindersController extends Controller
             'reminder_id' => $reminder->id,
             'initial_date' => $request->input('initial_date'),
             'frequency_type' => $request->input('frequency_type'),
+            'calendar_type' => $request->input('calendar_type'),
             'frequency_number' => is_null($request->input('frequency_number')) ? 1 : $request->input('frequency_number'),
             'title' => $request->input('title'),
             'description' => $request->input('description'),

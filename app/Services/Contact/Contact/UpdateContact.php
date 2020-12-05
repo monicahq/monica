@@ -6,6 +6,8 @@ use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
+use App\Models\Contact\Reminder;
+use Illuminate\Validation\Rule;
 
 class UpdateContact extends BaseService
 {
@@ -30,6 +32,9 @@ class UpdateContact extends BaseService
             'birthdate_day' => 'nullable|integer',
             'birthdate_month' => 'nullable|integer',
             'birthdate_year' => 'nullable|integer',
+            'calendar_type' => [
+                Rule::in(Reminder::$calendarTypes),
+            ],
             'birthdate_is_age_based' => 'nullable|boolean',
             'birthdate_age' => 'nullable|integer',
             'birthdate_add_reminder' => 'nullable|boolean',
@@ -125,6 +130,7 @@ class UpdateContact extends BaseService
             'is_age_based' => $this->nullOrvalue($data, 'birthdate_is_age_based'),
             'age' => $this->nullOrvalue($data, 'birthdate_age'),
             'add_reminder' => $this->nullOrvalue($data, 'birthdate_add_reminder'),
+            'calendar_type' => $data['calendar_type'],
             'is_deceased' => $data['is_deceased'],
         ]);
     }

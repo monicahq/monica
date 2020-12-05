@@ -24,6 +24,10 @@ class CreateReminder extends BaseService
                 'required',
                 Rule::in(Reminder::$frequencyTypes),
             ],
+            'calendar_type' => [
+                'required',
+                Rule::in(Reminder::$calendarTypes),
+            ],
             'frequency_number' => 'required|integer',
             'title' => 'required|string|max:100000',
             'description' => 'nullable|max:1000000',
@@ -51,6 +55,7 @@ class CreateReminder extends BaseService
             'description' => $this->nullOrValue($data, 'description'),
             'initial_date' => $data['initial_date'],
             'frequency_type' => $data['frequency_type'],
+            'calendar_type' => $data['calendar_type'],
             'frequency_number' => $data['frequency_number'],
             'delible' => (isset($data['delible']) ? $data['delible'] : true),
         ]);

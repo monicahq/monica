@@ -35,14 +35,14 @@ class UpdateBirthdayInformation extends BaseService
                 'integer',
                 'nullable',
                 Rule::requiredIf(function () {
-                    return Arr::get($this->data, 'is_date_known', false) && ! Arr::get($this->data, 'is_age_based', false);
+                    return Arr::get($this->data, 'is_date_known', false) && !Arr::get($this->data, 'is_age_based', false);
                 }),
             ],
             'month' => [
                 'integer',
                 'nullable',
                 Rule::requiredIf(function () {
-                    return Arr::get($this->data, 'is_date_known', false) && ! Arr::get($this->data, 'is_age_based', false);
+                    return Arr::get($this->data, 'is_date_known', false) && !Arr::get($this->data, 'is_age_based', false);
                 }),
             ],
             'year' => 'nullable|integer',
@@ -52,6 +52,11 @@ class UpdateBirthdayInformation extends BaseService
                 Rule::requiredIf(function () {
                     return Arr::get($this->data, 'is_date_known', false) && Arr::get($this->data, 'is_age_based', false);
                 }),
+            ],
+            'calendar_type' => [
+                'string',
+                'nullable',
+                Rule::in(Reminder::$calendarTypes),
             ],
             'add_reminder' => 'nullable|boolean',
         ];
@@ -107,7 +112,7 @@ class UpdateBirthdayInformation extends BaseService
     private function clearRelatedSpecialDate(Contact $contact)
     {
         $specialDate = SpecialDate::find($contact->birthday_special_date_id);
-        if (! is_null($specialDate)) {
+        if (!is_null($specialDate)) {
             $specialDate->delete();
         }
     }
@@ -122,7 +127,7 @@ class UpdateBirthdayInformation extends BaseService
      */
     private function manageBirthday(array $data, Contact $contact): void
     {
-        if (! $data['is_date_known']) {
+        if (!$data['is_date_known']) {
             return;
         }
 
@@ -185,6 +190,7 @@ class UpdateBirthdayInformation extends BaseService
                 'contact_id' => $data['contact_id'],
                 'initial_date' => DateHelper::getDate($specialDate),
                 'frequency_type' => 'year',
+                'calendar_type' => $data['calendar_type'],
                 'frequency_number' => 1,
                 'title' => trans(
                     ($data['is_deceased'] ?

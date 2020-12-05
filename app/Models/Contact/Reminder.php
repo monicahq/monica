@@ -48,6 +48,27 @@ class Reminder extends Model
     ];
 
     /**
+     * Valid value for calendar type.
+     * 
+     * @var array
+     */
+    public static $calendarTypes = [
+        'solar', 'lunar'
+    ];
+
+    public static function getListOfCalendarTypes()
+    {
+        $collect = collect([]);
+        for ($i = 0; $i < count(Reminder::$calendarTypes); $i++) {
+            $collect->push([
+                'id' => Reminder::$calendarTypes[$i],
+                'name' => trans('people.reminders_calendar_' . Reminder::$calendarTypes[$i]),
+            ]);
+        }
+        return $collect;
+    }
+
+    /**
      * Get the account record associated with the reminder.
      *
      * @return BelongsTo
@@ -93,18 +114,19 @@ class Reminder extends Model
      *
      * @return Carbon
      */
-    public function calculateNextExpectedDate($date = null)
+    public function calculateNextExpectedDate($date = null, $calendarType = null)
     {
         if (is_null($date)) {
             $date = $this->initial_date;
         }
 
-        while ($date->isPast()) {
-            $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
+        if (is_null($calendarType)) {
+            $calendarType = $this->calendar_type;
+            $date = DateHelper::convertToSolarCalendarDate($date, $calendarType);
         }
 
-        if ($date->isToday()) {
-            $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
+        while ($date->isPast() || $date->isToday()) {
+            $date = DateHelper::addTimeAccordingToFrequencyType($date, $calendarType, $this->frequency_type, $this->frequency_number);
         }
 
         return $date;
@@ -118,8 +140,15 @@ class Reminder extends Model
     public function calculateNextExpectedDateOnTimezone()
     {
         $date = $this->initial_date;
-        $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0,
-                    DateHelper::getTimezone() ?? config('app.timezone'));
+        $date = Carbon::create(
+            $date->year,
+            $date->month,
+            $date->day,
+            0,
+            0,
+            0,
+            DateHelper::getTimezone() ?? config('app.timezone')
+        );
 
         return $this->calculateNextExpectedDate($date);
     }

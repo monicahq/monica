@@ -1,5 +1,4 @@
 <style scoped>
-
 </style>
 
 <template>
@@ -11,11 +10,15 @@
           :name="'birthdate'"
           :value="'unknown'"
           :dclass="'flex mb3'"
-          :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
-          @change="event => { _saveOption(); }"
+          :iclass="[dirltr ? 'mr2' : 'ml2']"
+          @change="
+            (event) => {
+              _saveOption();
+            }
+          "
         >
           <template slot="label">
-            {{ $t('people.information_edit_unknown') }}
+            {{ $t("people.information_edit_unknown") }}
           </template>
         </form-radio>
         <form-radio
@@ -23,11 +26,18 @@
           :name="'birthdate'"
           :value="'approximate'"
           :dclass="'flex mb3'"
-          :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
-          @change="event => { if (selectedOptionSave !== 'approximate') {_focusAge();} _saveOption(); }"
+          :iclass="[dirltr ? 'mr2' : 'ml2']"
+          @change="
+            (event) => {
+              if (selectedOptionSave !== 'approximate') {
+                _focusAge();
+              }
+              _saveOption();
+            }
+          "
         >
           <template slot="label">
-            {{ $t('people.information_edit_probably') }}
+            {{ $t("people.information_edit_probably") }}
           </template>
           <div v-if="selectedOption == 'approximate'" slot="extra">
             <form-input
@@ -46,11 +56,18 @@
           :name="'birthdate'"
           :value="'almost'"
           :dclass="'flex mb3'"
-          :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
-          @change="event => { if (selectedOptionSave !== 'almost') {_focusMonth();} _saveOption(); }"
+          :iclass="[dirltr ? 'mr2' : 'ml2']"
+          @change="
+            (event) => {
+              if (selectedOptionSave !== 'almost') {
+                _focusMonth();
+              }
+              _saveOption();
+            }
+          "
         >
           <template slot="label">
-            {{ $t('people.information_edit_not_year') }}
+            {{ $t("people.information_edit_not_year") }}
           </template>
           <div v-if="selectedOption == 'almost'" slot="extra" class="mt2">
             <div class="flex">
@@ -60,14 +77,14 @@
                 v-model="selectedMonth"
                 :options="months"
                 :title="''"
-                :class="[ dirltr ? 'mr3' : '' ]"
+                :class="[dirltr ? 'mr3' : '']"
               />
               <form-select
                 :id="'day'"
                 v-model="selectedDay"
                 :options="days"
                 :title="''"
-                :class="[ dirltr ? '' : 'mr3' ]"
+                :class="[dirltr ? '' : 'mr3']"
               />
             </div>
           </div>
@@ -77,37 +94,57 @@
           :name="'birthdate'"
           :value="'exact'"
           :dclass="'flex mb3'"
-          :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
-          @change="event => { if (selectedOptionSave !== 'exact') {_focusBirthday();} _saveOption(); }"
+          :iclass="[dirltr ? 'mr2' : 'ml2']"
+          @change="
+            (event) => {
+              if (selectedOptionSave !== 'exact') {
+                _focusBirthday();
+              }
+              _saveOption();
+            }
+          "
         >
           <template slot="label">
-            {{ $t('people.information_edit_exact') }}
+            {{ $t("people.information_edit_exact") }}
           </template>
           <div v-if="selectedOption == 'exact'" slot="extra" class="mt2">
-            <form-date
-              :id="'birthdayDate'"
-              ref="birthday"
-              v-model="selectedDate"
-              :show-calendar-on-focus="true"
-              :locale="locale"
-              :label="$t('people.information_edit_birthdate_label')"
-              :class="[ dirltr ? 'fl' : 'fr' ]"
-              :validator="$v.selectedDate"
-            />
+            <div class="flex">
+              <form-date
+                :id="'birthdayDate'"
+                ref="birthday"
+                v-model="selectedDate"
+                :show-calendar-on-focus="true"
+                :locale="locale"
+                :label="$t('people.information_edit_birthdate_label')"
+                :class="[dirltr ? 'fl' : 'fr']"
+                :validator="$v.selectedDate"
+              />
+              <form-select
+                :id="'calendar_type'"
+                v-model="selectedCalendarType"
+                :options="calendarTypes"
+                :class="['ml3', dirltr ? 'mr3' : 'mr1']"
+              />
+            </div>
           </div>
         </form-radio>
       </div>
     </div>
 
-    <div v-if="selectedOption == 'exact' || selectedOption == 'almost'" class="pa4-ns ph3 pv2 bb b--gray-monica">
+    <div
+      v-if="selectedOption == 'exact' || selectedOption == 'almost'"
+      class="pa4-ns ph3 pv2 bb b--gray-monica"
+    >
       <div class="mb2 mb0-ns">
         <form-checkbox
           v-model.lazy="hasBirthdayReminder"
           :name="'addReminder'"
           :value="'addReminder'"
-          :dclass="[ dirltr ? 'mr2' : 'ml2' ]"
+          :dclass="['flex', dirltr ? 'mr2' : 'ml2']"
         >
-          {{ $t('people.people_add_reminder_for_birthday') }}
+          <template slot="label">
+            {{ $t("people.people_add_reminder_for_birthday") }}
+          </template>
         </form-checkbox>
       </div>
     </div>
@@ -115,24 +152,23 @@
 </template>
 
 <script>
-import moment from 'moment';
-import { validationMixin } from 'vuelidate';
-import { required, numeric, helpers } from 'vuelidate/lib/validators';
+import moment from "moment";
+import { validationMixin } from "vuelidate";
+import { required, numeric, helpers } from "vuelidate/lib/validators";
 
 const before = (param) =>
   helpers.withParams(
-    { type: 'before', date: param },
+    { type: "before", date: param },
     (value) => !helpers.req(value) || moment(value).isBefore(param)
   );
 
 export default {
-
   mixins: [validationMixin],
 
   props: {
     value: {
       type: String,
-      default: '',
+      default: "",
     },
     days: {
       type: Array,
@@ -142,9 +178,17 @@ export default {
       type: Array,
       default: () => [],
     },
+    calendarTypes: {
+      type: Array,
+      default: () => [],
+    },
     day: {
       type: Number,
       default: 0,
+    },
+    calendarType: {
+      type: String,
+      default: "",
     },
     month: {
       type: Number,
@@ -152,7 +196,7 @@ export default {
     },
     birthdate: {
       type: String,
-      default: '',
+      default: "",
     },
     age: {
       type: Number,
@@ -171,26 +215,27 @@ export default {
       selectedOptionSave: null,
       selectedAge: 0,
       selectedMonth: 0,
+      selectedCalendarType: "",
       selectedDay: 0,
-      hasBirthdayReminder: false
+      hasBirthdayReminder: false,
     };
   },
 
   validations() {
     switch (this.selectedOption) {
-      case 'approximate':
+      case "approximate":
         return {
           selectedAge: {
             required,
             numeric,
-          }
+          },
         };
-      case 'exact':
+      case "exact":
         return {
           selectedDate: {
             required,
-            before: before(moment())
-          }
+            before: before(moment()),
+          },
         };
     }
     return null;
@@ -198,11 +243,11 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir == "ltr";
     },
     locale() {
       return this.$root.locale;
-    }
+    },
   },
 
   watch: {
@@ -221,11 +266,12 @@ export default {
 
   mounted() {
     this.selectedDate = this.birthdate;
-    this.selectedOption = this.value != '' ? this.value : 'unknown';
+    this.selectedOption = this.value != "" ? this.value : "unknown";
     this.selectedOptionSave = this.selectedOption;
     this.selectedAge = this.age;
     this.selectedMonth = this.month;
     this.selectedDay = this.day;
+    this.selectedCalendarType = this.calendarType;
     this.hasBirthdayReminder = this.reminder;
   },
 
@@ -248,6 +294,6 @@ export default {
     _saveOption() {
       this.selectedOptionSave = this.selectedOption;
     },
-  }
+  },
 };
 </script>

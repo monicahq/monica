@@ -30,6 +30,7 @@ use App\Services\Contact\Contact\DestroyContact;
 use App\Services\Contact\Contact\UpdateWorkInformation;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactSearch as ContactResource;
+use App\Models\Contact\Reminder;
 
 class ContactsController extends Controller
 {
@@ -97,19 +98,19 @@ class ContactsController extends Controller
             // get contacts with selected tags
             $tags = collect();
 
-            while ($request->input('tag'.$count)) {
+            while ($request->input('tag' . $count)) {
                 $tag = Tag::where([
                     'account_id' => auth()->user()->account_id,
-                    'name_slug' => $request->input('tag'.$count),
+                    'name_slug' => $request->input('tag' . $count),
                 ]);
                 if ($tag->count() > 0) {
                     $tag = $tag->get();
 
-                    if (! $tags->contains($tag[0])) {
+                    if (!$tags->contains($tag[0])) {
                         $tags = $tags->concat($tag);
                     }
 
-                    $url .= 'tag'.$count.'='.$tag[0]->name_slug.'&';
+                    $url .= 'tag' . $count . '=' . $tag[0]->name_slug . '&';
                 }
                 $count++;
             }
@@ -177,9 +178,11 @@ class ContactsController extends Controller
      */
     private function createForm(Request $request, bool $isContactMissing = false)
     {
-        if (AccountHelper::hasReachedContactLimit(auth()->user()->account)
+        if (
+            AccountHelper::hasReachedContactLimit(auth()->user()->account)
             && AccountHelper::hasLimitations(auth()->user()->account)
-            && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
+            && !auth()->user()->account->legacy_free_plan_unlimited_contacts
+        ) {
             return redirect()->route('settings.subscriptions.index');
         }
 
@@ -211,6 +214,7 @@ class ContactsController extends Controller
                 'middle_name' => $request->input('middle_name', null),
                 'last_name' => $request->input('last_name', null),
                 'nickname' => $request->input('nickname', null),
+                'calendar_type' => $request->input('calendar_type', null),
                 'gender_id' => $request->input('gender'),
                 'is_birthdate_known' => false,
                 'is_deceased' => false,
@@ -223,11 +227,11 @@ class ContactsController extends Controller
         }
 
         // Did the user press "Save" or "Submit and add another person"
-        if (! is_null($request->input('save'))) {
+        if (!is_null($request->input('save'))) {
             return redirect()->route('people.show', $contact);
         } else {
             return redirect()->route('people.create')
-                            ->with('status', trans('people.people_add_success', ['name' => $contact->name]));
+                ->with('status', trans('people.people_add_success', ['name' => $contact->name]));
         }
     }
 
@@ -330,14 +334,15 @@ class ContactsController extends Controller
     public function edit(Contact $contact)
     {
         $now = now();
-        $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
-        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->toDateString() : $now->toDateString();
-        $deceaseddate = ! is_null($contact->deceasedDate) ? $contact->deceasedDate->date->toDateString() : '';
-        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : $now->day;
-        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : $now->month;
+        $age = (string) (!is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
+        $birthdate = !is_null($contact->birthdate) ? $contact->birthdate->date->toDateString() : $now->toDateString();
+        $deceaseddate = !is_null($contact->deceasedDate) ? $contact->deceasedDate->date->toDateString() : '';
+        $day = !is_null($contact->birthdate) ? $contact->birthdate->date->day : $now->day;
+        $month = !is_null($contact->birthdate) ? $contact->birthdate->date->month : $now->month;
+        $calendarType = !is_null($contact->calendar_type) ? $contact->calendar_type : 'solar';
 
-        $hasBirthdayReminder = ! is_null($contact->birthday_reminder_id);
-        $hasDeceasedReminder = ! is_null($contact->deceased_reminder_id);
+        $hasBirthdayReminder = !is_null($contact->birthday_reminder_id);
+        $hasDeceasedReminder = !is_null($contact->deceased_reminder_id);
 
         $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
 
@@ -348,6 +353,8 @@ class ContactsController extends Controller
             ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdayState($contact->getBirthdayState())
             ->withBirthdate($birthdate)
+            ->withCalendarTypes(Reminder::getListOfCalendarTypes())
+            ->withCalendarType($calendarType)
             ->withDeceaseddate($deceaseddate)
             ->withDay($day)
             ->withMonth($month)
@@ -393,7 +400,7 @@ class ContactsController extends Controller
         } else {
             $deceased_date_day = $deceased_date_month = $deceased_date_year = null;
         }
-        if (! empty($request->input('is_deceased'))) {
+        if (!empty($request->input('is_deceased'))) {
             //if the contact has died, disable StayInTouch
             $contact->updateStayInTouchFrequency(0);
             $contact->setStayInTouchTriggerDate(0);
@@ -408,19 +415,20 @@ class ContactsController extends Controller
             'nickname' => $request->input('nickname', null),
             'gender_id' => $request->input('gender'),
             'description' => $request->input('description', null),
-            'is_birthdate_known' => ! empty($request->input('birthdate')) && $request->input('birthdate') !== 'unknown',
+            'is_birthdate_known' => !empty($request->input('birthdate')) && $request->input('birthdate') !== 'unknown',
             'birthdate_day' => $day,
             'birthdate_month' => $month,
             'birthdate_year' => $year,
+            'calendar_type' => $request->input('calendar_type'),
             'birthdate_is_age_based' => $request->input('birthdate') === 'approximate',
             'birthdate_age' => $request->input('age'),
-            'birthdate_add_reminder' => ! empty($request->input('addReminder')),
-            'is_deceased' => ! empty($request->input('is_deceased')),
+            'birthdate_add_reminder' => !empty($request->input('addReminder')),
+            'is_deceased' => !empty($request->input('is_deceased')),
             'is_deceased_date_known' => $is_deceased_date_known,
             'deceased_date_day' => $deceased_date_day,
             'deceased_date_month' => $deceased_date_month,
             'deceased_date_year' => $deceased_date_year,
-            'deceased_date_add_reminder' => ! empty($request->input('add_reminder_deceased')),
+            'deceased_date_add_reminder' => !empty($request->input('add_reminder_deceased')),
         ];
 
         $contact = app(UpdateContact::class)->execute($data);
@@ -430,7 +438,7 @@ class ContactsController extends Controller
                 try {
                     $contact->deleteAvatars();
                 } catch (\Exception $e) {
-                    Log::warning(__CLASS__.' update: Failed to delete avatars', [
+                    Log::warning(__CLASS__ . ' update: Failed to delete avatars', [
                         'contact' => $contact,
                         'exception' => $e,
                     ]);
@@ -584,7 +592,7 @@ class ContactsController extends Controller
 
         return response($vcard->serialize())
             ->header('Content-type', 'text/x-vcard')
-            ->header('Content-Disposition', 'attachment; filename='.Str::slug($contact->name, '-', LocaleHelper::getLang()).'.vcf');
+            ->header('Content-Disposition', 'attachment; filename=' . Str::slug($contact->name, '-', LocaleHelper::getLang()) . '.vcf');
     }
 
     /**
@@ -605,12 +613,12 @@ class ContactsController extends Controller
         }
 
         // if not active, set frequency to 0
-        if (! $state) {
+        if (!$state) {
             $frequency = 0;
         }
         $result = $contact->updateStayInTouchFrequency($frequency);
 
-        if (! $result) {
+        if (!$result) {
             throw new \LogicException(trans('people.stay_in_touch_invalid'));
         }
 
@@ -646,7 +654,7 @@ class ContactsController extends Controller
      */
     public function archive(Request $request, Contact $contact)
     {
-        $contact->is_active = ! $contact->is_active;
+        $contact->is_active = !$contact->is_active;
         $contact->save();
 
         return [
@@ -700,17 +708,17 @@ class ContactsController extends Controller
             // get contacts with selected tags
             $tags = collect();
 
-            while ($request->input('tag'.$count)) {
+            while ($request->input('tag' . $count)) {
                 $tag = Tag::where([
                     'account_id' => $accountId,
-                    'name_slug' => $request->input('tag'.$count),
+                    'name_slug' => $request->input('tag' . $count),
                 ])->get();
 
-                if (! ($tags->contains($tag[0]))) {
+                if (!($tags->contains($tag[0]))) {
                     $tags = $tags->concat($tag);
                 }
 
-                $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
+                $url = $url . 'tag' . $count . '=' . $tag[0]->name_slug . '&';
 
                 $count++;
             }

@@ -148,19 +148,19 @@ class DateHelperTest extends FeatureTestCase
         $testDate = DateHelper::parseDateTime($date);
         $this->assertEquals(
             '2017-01-29',
-            DateHelper::addTimeAccordingToFrequencyType($testDate, 'week', 1)->toDateString()
+            DateHelper::addTimeAccordingToFrequencyType($testDate, 'solar', 'week', 1)->toDateString()
         );
 
         $testDate = DateHelper::parseDateTime($date);
         $this->assertEquals(
             '2017-02-22',
-            DateHelper::addTimeAccordingToFrequencyType($testDate, 'month', 1)->toDateString()
+            DateHelper::addTimeAccordingToFrequencyType($testDate, 'solar', 'month', 1)->toDateString()
         );
 
         $testDate = DateHelper::parseDateTime($date);
         $this->assertEquals(
             '2018-01-22',
-            DateHelper::addTimeAccordingToFrequencyType($testDate, 'year', 1)->toDateString()
+            DateHelper::addTimeAccordingToFrequencyType($testDate, 'solar', 'year', 1)->toDateString()
         );
     }
 
@@ -752,10 +752,10 @@ class DateHelperTest extends FeatureTestCase
         foreach ($oldTimezones as $timezone) {
             $timezone = TimezoneHelper::adjustEquivalentTimezone($timezone);
             if ($list->firstWhere('timezone', $timezone) == null) {
-                $missed .= $timezone.',';
+                $missed .= $timezone . ',';
             }
         }
 
-        $this->assertTrue(empty($missed), 'Missed timezones : '.$missed);
+        $this->assertTrue(empty($missed), 'Missed timezones : ' . $missed);
     }
 }

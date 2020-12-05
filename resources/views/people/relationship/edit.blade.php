@@ -98,6 +98,8 @@
           :months="{{ $months }}"
           :days="{{ $days }}"
           :month="{{ $month }}"
+          :calendar-types="{{ $calendarTypes }}"
+          calendar-type="{{ $calendarType }}"
           :day="{{ $day }}"
           :age="{{ $age ?: 0 }}"
           :birthdate="'{{ $birthdate }}'"

@@ -20,17 +20,9 @@
         <label for="initial_date">{{ trans('people.reminders_add_next_time') }}</label>
 
         @if (is_null($reminder->initial_date))
-        <input type="date" id="initial_date" name="initial_date" class="form-control"
-               value="{{ old('initial_date') ?? now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
-               min="{{ now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
-               max="{{ now(\App\Helpers\DateHelper::getTimezone())->addYears(10)->toDateString() }}"
-        >
+        <input type="date" id="initial_date" name="initial_date" class="form-control" value="{{ old('initial_date') ?? now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}" min="{{ now(\App\Helpers\DateHelper::getTimezone())->addYears(-10)->toDateString() }}" max="{{ now(\App\Helpers\DateHelper::getTimezone())->addYears(10)->toDateString() }}">
         @else
-        <input type="date" id="initial_date" name="initial_date" class="form-control"
-               value="{{ old('initial_date') ?? $reminder->initial_date->toDateString() }}"
-               min="{{ now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
-               max="{{ now(\App\Helpers\DateHelper::getTimezone())->addYears(10)->toDateString() }}"
-        >
+        <input type="date" id="initial_date" name="initial_date" class="form-control" value="{{ old('initial_date') ?? $reminder->initial_date->toDateString() }}" min="{{ now(\App\Helpers\DateHelper::getTimezone())->addYears(-10)->toDateString() }}" max="{{ now(\App\Helpers\DateHelper::getTimezone())->addYears(10)->toDateString() }}">
         @endif
 
         <fieldset class="form-group frequency{{ $errors->has('frequency_type') ? ' has-error' : '' }}">
@@ -38,11 +30,7 @@
             {{-- One time reminder --}}
             <div class="form-check">
                 <label class="form-check-label" for="frequency_type_once">
-                    <input type="radio" id="frequency_type_once" class="form-check-input" name="frequency_type" value="one_time"
-                           v-model="reminders_frequency"
-                           :value="'one_time'"
-                           :checked="'one_time'"
-                    >
+                    <input type="radio" id="frequency_type_once" class="form-check-input" name="frequency_type" value="one_time" v-model="reminders_frequency" :value="'one_time'" :checked="'one_time'">
                     {{ trans('people.reminders_add_once') }}
                 </label>
             </div>
@@ -50,19 +38,11 @@
             {{-- Recurring reminder --}}
             <div class="form-check">
                 <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="reminderRecurringFrequency" value="recurring"
-                           v-model="reminders_frequency"
-                           :value="'recurrent'"
-                           :checked="'recurrent'"
-                    >
+                    <input type="radio" class="form-check-input" name="reminderRecurringFrequency" value="recurring" v-model="reminders_frequency" :value="'recurrent'" :checked="'recurrent'">
 
                     {{ trans('people.reminders_add_recurrent') }}
 
-                    <input type="number" class="form-control frequency-type" name="frequency_number"
-                           value="1"
-                           min="1"
-                           max="115"
-                           :disabled="reminders_frequency == 'one_time'">
+                    <input type="number" class="form-control frequency-type" name="frequency_number" value="1" min="1" max="115" :disabled="reminders_frequency == 'one_time'">
 
                     <select name="frequency_type" :disabled="reminders_frequency == 'one_time'">
                         <option value="week">{{ trans('people.reminders_type_week') }}</option>
@@ -75,6 +55,22 @@
                 </label>
             </div>
         </fieldset>
+    </div>
+
+    {{-- Calendar Type --}}
+    <div class="form-group">
+        <label for="initial_date">{{ trans('people.reminders_calendar_type') }}</label>
+        <label class="form-check-label">
+            <select name="calendar_type">
+                @if ($reminder->calendar_type == 'solar')
+                <option value="solar" selected>{{ trans('people.reminders_calendar_solar') }}</option>
+                <option value="lunar">{{ trans('people.reminders_calendar_lunar') }}</option>
+                @else
+                <option value="solar">{{ trans('people.reminders_calendar_solar') }}</option>
+                <option value="lunar" selected>{{ trans('people.reminders_calendar_lunar') }}</option>
+                @endif
+            </select>
+        </label>
     </div>
 
     <div class="form-group">

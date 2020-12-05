@@ -94,6 +94,7 @@ class Contact extends Model
         'description',
         'account_id',
         'is_partial',
+        'calendar_type',
         'job',
         'company',
         'food_preferences',
@@ -623,130 +624,130 @@ class Contact extends Model
             case 'firstname_lastname':
                 $completeName = $this->first_name;
 
-                if (! is_null($this->middle_name)) {
-                    $completeName = $completeName.' '.$this->middle_name;
+                if (!is_null($this->middle_name)) {
+                    $completeName = $completeName . ' ' . $this->middle_name;
                 }
 
-                if (! is_null($this->last_name)) {
-                    $completeName = $completeName.' '.$this->last_name;
+                if (!is_null($this->last_name)) {
+                    $completeName = $completeName . ' ' . $this->last_name;
                 }
                 break;
             case 'lastname_firstname':
                 $completeName = '';
-                if (! is_null($this->last_name)) {
-                    $completeName = $completeName.' '.$this->last_name;
+                if (!is_null($this->last_name)) {
+                    $completeName = $completeName . ' ' . $this->last_name;
                 }
 
-                if (! is_null($this->middle_name)) {
-                    $completeName = $completeName.' '.$this->middle_name;
+                if (!is_null($this->middle_name)) {
+                    $completeName = $completeName . ' ' . $this->middle_name;
                 }
 
-                $completeName .= ' '.$this->first_name;
+                $completeName .= ' ' . $this->first_name;
                 break;
             case 'firstname_lastname_nickname':
                 $completeName = $this->first_name;
 
-                if (! is_null($this->middle_name)) {
-                    $completeName = $completeName.' '.$this->middle_name;
+                if (!is_null($this->middle_name)) {
+                    $completeName = $completeName . ' ' . $this->middle_name;
                 }
 
-                if (! is_null($this->last_name)) {
-                    $completeName = $completeName.' '.$this->last_name;
+                if (!is_null($this->last_name)) {
+                    $completeName = $completeName . ' ' . $this->last_name;
                 }
 
-                if (! is_null($this->nickname)) {
-                    $completeName = $completeName.' ('.$this->nickname.')';
+                if (!is_null($this->nickname)) {
+                    $completeName = $completeName . ' (' . $this->nickname . ')';
                 }
                 break;
             case 'firstname_nickname_lastname':
                 $completeName = $this->first_name;
 
-                if (! is_null($this->middle_name)) {
-                    $completeName = $completeName.' '.$this->middle_name;
+                if (!is_null($this->middle_name)) {
+                    $completeName = $completeName . ' ' . $this->middle_name;
                 }
 
-                if (! is_null($this->nickname)) {
-                    $completeName = $completeName.' ('.$this->nickname.')';
+                if (!is_null($this->nickname)) {
+                    $completeName = $completeName . ' (' . $this->nickname . ')';
                 }
 
-                if (! is_null($this->last_name)) {
-                    $completeName = $completeName.' '.$this->last_name;
+                if (!is_null($this->last_name)) {
+                    $completeName = $completeName . ' ' . $this->last_name;
                 }
 
                 break;
             case 'lastname_firstname_nickname':
                 $completeName = '';
-                if (! is_null($this->last_name)) {
+                if (!is_null($this->last_name)) {
                     $completeName = $this->last_name;
                 }
 
-                $completeName = $completeName.' '.$this->first_name;
+                $completeName = $completeName . ' ' . $this->first_name;
 
-                if (! is_null($this->middle_name)) {
-                    $completeName = $completeName.' '.$this->middle_name;
+                if (!is_null($this->middle_name)) {
+                    $completeName = $completeName . ' ' . $this->middle_name;
                 }
 
-                if (! is_null($this->nickname)) {
-                    $completeName = $completeName.' ('.$this->nickname.')';
+                if (!is_null($this->nickname)) {
+                    $completeName = $completeName . ' (' . $this->nickname . ')';
                 }
                 break;
             case 'nickname_firstname_lastname':
                 $completeName = $this->first_name;
 
-                if (! is_null($this->middle_name)) {
-                    $completeName = $completeName.' '.$this->middle_name;
+                if (!is_null($this->middle_name)) {
+                    $completeName = $completeName . ' ' . $this->middle_name;
                 }
 
-                if (! is_null($this->last_name)) {
-                    $completeName = $completeName.' '.$this->last_name;
+                if (!is_null($this->last_name)) {
+                    $completeName = $completeName . ' ' . $this->last_name;
                 }
 
-                if (! is_null($this->nickname)) {
-                    $completeName = $this->nickname.' ('.$completeName.')';
+                if (!is_null($this->nickname)) {
+                    $completeName = $this->nickname . ' (' . $completeName . ')';
                 }
                 break;
             case 'nickname_lastname_firstname':
                 $completeName = '';
-                if (! is_null($this->last_name)) {
-                    $completeName = $this->last_name.' ';
+                if (!is_null($this->last_name)) {
+                    $completeName = $this->last_name . ' ';
                 }
 
-                $completeName = $completeName.$this->first_name;
+                $completeName = $completeName . $this->first_name;
 
-                if (! is_null($this->middle_name)) {
-                    $completeName = $completeName.' '.$this->middle_name;
+                if (!is_null($this->middle_name)) {
+                    $completeName = $completeName . ' ' . $this->middle_name;
                 }
 
-                if (! is_null($this->nickname)) {
-                    $completeName = $this->nickname.' ('.$completeName.')';
+                if (!is_null($this->nickname)) {
+                    $completeName = $this->nickname . ' (' . $completeName . ')';
                 }
                 break;
             case 'lastname_nickname_firstname':
                 $completeName = '';
-                if (! is_null($this->last_name)) {
+                if (!is_null($this->last_name)) {
                     $completeName = $this->last_name;
                 }
 
-                if (! is_null($this->nickname)) {
-                    $completeName = $completeName.' ('.$this->nickname.')';
+                if (!is_null($this->nickname)) {
+                    $completeName = $completeName . ' (' . $this->nickname . ')';
                 }
 
-                $completeName = $completeName.' '.$this->first_name;
+                $completeName = $completeName . ' ' . $this->first_name;
 
-                if (! is_null($this->middle_name)) {
-                    $completeName = $completeName.' '.$this->middle_name;
+                if (!is_null($this->middle_name)) {
+                    $completeName = $completeName . ' ' . $this->middle_name;
                 }
                 break;
             case 'nickname':
-                if (! is_null($this->nickname)) {
+                if (!is_null($this->nickname)) {
                     $completeName = $this->nickname;
                 }
 
                 if ($completeName == '') {
                     $completeName = $this->first_name;
 
-                    if (! is_null($this->last_name)) {
-                        $completeName = $completeName.' '.$this->last_name;
+                    if (!is_null($this->last_name)) {
+                        $completeName = $completeName . ' ' . $this->last_name;
                     }
                 }
                 break;
@@ -769,8 +770,8 @@ class Contact extends Model
         $incompleteName = '';
         $incompleteName = $this->first_name;
 
-        if (! is_null($this->last_name)) {
-            $incompleteName .= ' '.mb_substr($this->last_name, 0, 1);
+        if (!is_null($this->last_name)) {
+            $incompleteName .= ' ' . mb_substr($this->last_name, 0, 1);
         }
 
         if ($this->is_dead) {
@@ -817,7 +818,7 @@ class Contact extends Model
     {
         $relationshipTypeGroup = $this->account->getRelationshipTypeGroupByType($type);
 
-        if (! $relationshipTypeGroup) {
+        if (!$relationshipTypeGroup) {
             return null;
         }
 
@@ -878,7 +879,7 @@ class Contact extends Model
      */
     public function getBirthdayState()
     {
-        if (! $this->birthday_special_date_id) {
+        if (!$this->birthday_special_date_id) {
             return 'unknown';
         }
 
@@ -965,7 +966,7 @@ class Contact extends Model
             $matches = preg_split('/\?/', $this->avatar_default_url);
             $url = asset(StorageHelper::disk(config('filesystems.default'))->url($matches[0]));
             if (count($matches) > 1) {
-                $url .= '?'.$matches[1];
+                $url .= '?' . $matches[1];
             }
 
             return $url;
@@ -1013,7 +1014,7 @@ class Contact extends Model
      */
     public function deleteAvatars()
     {
-        if (! $this->has_avatar || $this->avatar_location == 'external') {
+        if (!$this->has_avatar || $this->avatar_location == 'external') {
             return;
         }
 
@@ -1033,10 +1034,10 @@ class Contact extends Model
     {
         $avatarFileName = $this->avatar_file_name;
 
-        if (! is_null($size)) {
+        if (!is_null($size)) {
             $filename = pathinfo($avatarFileName, PATHINFO_FILENAME);
             $extension = pathinfo($avatarFileName, PATHINFO_EXTENSION);
-            $avatarFileName = 'avatars/'.$filename.'_'.$size.'.'.$extension;
+            $avatarFileName = 'avatars/' . $filename . '_' . $size . '.' . $extension;
         }
 
         try {
@@ -1105,7 +1106,7 @@ class Contact extends Model
      */
     public function hasFirstMetInformation()
     {
-        return ! is_null($this->first_met_additional_info) || ! is_null($this->firstMetDate) || ! is_null($this->first_met_through_contact_id);
+        return !is_null($this->first_met_additional_info) || !is_null($this->firstMetDate) || !is_null($this->first_met_through_contact_id);
     }
 
     /**
@@ -1115,7 +1116,7 @@ class Contact extends Model
      */
     public function getIntroducer(): ?self
     {
-        if (! $this->first_met_through_contact_id) {
+        if (!$this->first_met_through_contact_id) {
             return null;
         }
 
@@ -1210,8 +1211,8 @@ class Contact extends Model
     public function getBirthdayRemindersAboutRelatedContacts()
     {
         $relationships = $this->relationships->filter(function ($item) {
-            return ! is_null($item->ofContact) &&
-                   ! is_null($item->ofContact->birthday_special_date_id);
+            return !is_null($item->ofContact) &&
+                !is_null($item->ofContact->birthday_special_date_id);
         });
 
         $reminders = collect();
@@ -1240,12 +1241,12 @@ class Contact extends Model
         return self::setEagerLoads([])->where('account_id', $this->account_id)
             ->where('id', function ($query) use ($contact) {
                 $query->select('of_contact')
-                        ->from('relationships')
-                        ->where([
-                            'account_id' => $contact->account_id,
-                            'contact_is' => $contact->id,
-                        ])
-                        ->first();
+                    ->from('relationships')
+                    ->where([
+                        'account_id' => $contact->account_id,
+                        'contact_is' => $contact->id,
+                    ])
+                    ->first();
             })
             ->first();
     }
@@ -1276,7 +1277,7 @@ class Contact extends Model
         if ($tags == 'NONE') {
             // get tagless contacts
             $query = $query->has('tags', '<', 1);
-        } elseif (! empty($tags)) {
+        } elseif (!empty($tags)) {
             // gets users who have all the tags
             foreach ($tags as $tag) {
                 $query = $query->whereHas('tags', function (Builder $query) use ($tag) {
@@ -1295,7 +1296,7 @@ class Contact extends Model
      */
     public function getAgeAtDeath(): ?int
     {
-        if (! $this->deceasedDate) {
+        if (!$this->deceasedDate) {
             return null;
         }
 
@@ -1303,7 +1304,7 @@ class Contact extends Model
             return null;
         }
 
-        if (! $this->birthdate) {
+        if (!$this->birthdate) {
             return null;
         }
 
@@ -1319,7 +1320,7 @@ class Contact extends Model
      */
     public function updateStayInTouchFrequency($frequency)
     {
-        if (! is_int($frequency)) {
+        if (!is_int($frequency)) {
             return false;
         }
 
