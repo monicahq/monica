@@ -471,7 +471,7 @@ class Contact extends Model
      * @param string $criteria
      * @return Builder
      */
-    public function scopeSortedBy(Builder $builder, $criteria)
+    public function scopeSortedBy(Builder $builder, string $criteria): Builder
     {
         switch ($criteria) {
             case 'firstnameAZ':
@@ -483,24 +483,29 @@ class Contact extends Model
             case 'lastnameZA':
                 return $builder->orderBy('last_name', 'desc');
             case 'lastactivitydateNewtoOld':
-                $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
-                $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
-                $builder->groupBy('contacts.id');
-                $builder->orderBy('activities.happened_at', 'desc');
-                $builder->select(['*', 'contacts.id as id']);
-
-                return $builder;
+                return $this->sortedByLastActivity($builder, 'desc');
             case 'lastactivitydateOldtoNew':
-                $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
-                $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
-                $builder->groupBy('contacts.id');
-                $builder->orderBy('activities.happened_at', 'asc');
-                $builder->select(['*', 'contacts.id as id']);
-
-                return $builder;
+                return $this->sortedByLastActivity($builder, 'asc');
             default:
-                return $builder->orderBy('first_name', 'asc');
+                return $builder;
         }
+    }
+
+    /**
+     * Sort the contacts using last activity.
+     * @param Builder $builder
+     * @param string $order
+     * @return Builder
+     */
+    private function sortedByLastActivity(Builder $builder, string $order): Builder
+    {
+        $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
+        $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
+        $builder->groupBy('contacts.id');
+        $builder->orderBy('activities.happened_at', $order);
+        $builder->select(['*', 'contacts.id as id']);
+
+        return $builder;
     }
 
     /**
