@@ -15,7 +15,7 @@ class Command
      *
      * @return CommandCallerContract
      */
-    public static function fake() : CommandCallerContract
+    public static function fake(): CommandCallerContract
     {
         static::setBackend($fake = app(CommandCallerFake::class));
 
@@ -34,7 +34,7 @@ class Command
      *
      * @return CommandCallerContract
      */
-    private static function getBackend() : CommandCallerContract
+    private static function getBackend(): CommandCallerContract
     {
         if (! static::$commandCaller) {
             static::$commandCaller = app(CommandCaller::class); // @codeCoverageIgnore
@@ -48,7 +48,7 @@ class Command
      *
      * @param CommandCallerContract $executor
      */
-    public static function setBackend(CommandCallerContract $executor) : void
+    public static function setBackend(CommandCallerContract $executor): void
     {
         static::$commandCaller = $executor;
     }
