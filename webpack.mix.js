@@ -5,7 +5,21 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 mix.webpackConfig({
   plugins: [
     new MomentLocalesPlugin({
-      localesToKeep: ['en', 'ar', 'cs', 'de', 'en-GB', 'es', 'fr', 'he', 'hr', 'it', 'nl', 'pt', 'pt-BR', 'ru', 'tr', 'zh-cn', 'zh-tw'],
+      localesToKeep: [
+        'en',
+        'ar',
+        'de',
+        'en-GB',
+        'es',
+        'fr',
+        'he',
+        'it',
+        'nl',
+        'sv',
+        'tr',
+        'zh-CN',
+        'zh-TW',
+        ],
     }),
   ],
 });

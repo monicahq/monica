@@ -12,8 +12,11 @@
   @if(Auth::check() && app()->bound('sentry') && config('monica.sentry_support') && ! empty(app('sentry')->getLastEventID()))
     <div class="subtitle">@lang('app.error_id', ['id' => app('sentry')->getLastEventID()])</div>
 
-    <!-- Sentry JS SDK 2.1.+ required -->
-    <script src="https://browser.sentry-cdn.com/4.6.4/bundle.min.js" crossorigin="anonymous"></script>
+    <script
+      src="https://browser.sentry-cdn.com/5.27.4/bundle.min.js"
+      integrity="sha384-yUnxX3o5D7+yEEIKDXlpygg+0Q2LdyklXwZVWUjc6fohGisYvhpyQbRvNYaDGtvU"
+      crossorigin="anonymous"
+    ></script>
     <script>
       Sentry.init({ dsn: '{{ config('sentry.dsn') }}' });
       Sentry.showReportDialog({
