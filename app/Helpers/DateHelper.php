@@ -177,7 +177,7 @@ class DateHelper
      * Return the day of the date according to the timezone of the user
      * like "Mon", or "Wed".
      *
-     * @param Carbon $date
+     * @param \Carbon\Carbon $date
      * @return string
      */
     public static function getShortDay($date): string
@@ -189,7 +189,7 @@ class DateHelper
      * Return a date according to the timezone of the user, in a short format
      * like "Oct 29".
      *
-     * @param Carbon $date
+     * @param \Carbon\Carbon $date
      * @return string
      */
     public static function getShortDateWithoutYear($date): string
@@ -201,7 +201,7 @@ class DateHelper
      * Return a date and the time according to the timezone of the user, in a short format
      * like "Oct 29, 1981 19:32".
      *
-     * @param Carbon $date
+     * @param \Carbon\Carbon $date
      * @return string
      */
     public static function getShortDateWithTime($date): string
