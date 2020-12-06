@@ -39,11 +39,15 @@ class ImportJob extends Model
 
     /**
      * The physical vCard file on disk.
+     *
+     * @var string
      */
     public $physicalFile;
 
     /**
      * All individual entries in the vCard file.
+     *
+     * @var VCardReader
      */
     public $entries;
 

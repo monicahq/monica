@@ -14,15 +14,23 @@ class AddContactFromVCard implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /**
+     * @var ImportJob
+     */
     protected $importJob;
+    /**
+     * @var string
+     */
     protected $behaviour;
 
     /**
      * Create a new job instance.
      *
+     * @param ImportJob $importJob
+     * @param string $behaviour
      * @return void
      */
-    public function __construct(ImportJob $importJob, $behaviour = ImportVCard::BEHAVIOUR_ADD)
+    public function __construct(ImportJob $importJob, string $behaviour = ImportVCard::BEHAVIOUR_ADD)
     {
         $this->importJob = $importJob;
         $this->behaviour = $behaviour;

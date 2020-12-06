@@ -151,6 +151,8 @@ class LocaleHelper
 
     /**
      * Association ISO-639-1 => ISO-639-2.
+     *
+     * @var array<string,string>
      */
     private static $locales = [];
 

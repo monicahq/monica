@@ -26,11 +26,11 @@ class CommandExecutor implements CommandExecutorInterface
     /**
      * @codeCoverageIgnore
      */
-    public function exec($message, $commandline)
+    public function exec($message, $command)
     {
         $this->command->info($message);
-        $this->command->line($commandline, null, OutputInterface::VERBOSITY_VERBOSE);
-        exec($commandline.' 2>&1', $output);
+        $this->command->line($command, null, OutputInterface::VERBOSITY_VERBOSE);
+        exec($command.' 2>&1', $output);
         foreach ($output as $line) {
             $this->command->line($line, null, OutputInterface::VERBOSITY_VERY_VERBOSE);
         }
@@ -40,7 +40,7 @@ class CommandExecutor implements CommandExecutorInterface
     /**
      * @codeCoverageIgnore
      */
-    public function artisan($message, $commandline, array $arguments = [])
+    public function artisan($message, $command, array $arguments = [])
     {
         $info = '';
         foreach ($arguments as $key => $value) {
@@ -50,6 +50,6 @@ class CommandExecutor implements CommandExecutorInterface
                 $info .= ' '.$value;
             }
         }
-        $this->exec($message, Application::formatCommandString($commandline.$info));
+        $this->exec($message, Application::formatCommandString($command.$info));
     }
 }

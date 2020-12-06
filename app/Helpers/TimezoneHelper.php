@@ -86,6 +86,7 @@ class TimezoneHelper
     /**
      * Equivalent timezone to convert deprecated timezone.
      *
+     * @var array<string>
      * @see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
      */
     protected static $equivalentTimezone = [
