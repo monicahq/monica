@@ -33,6 +33,7 @@ class UpdateContact extends BaseService
             'birthdate_month' => 'nullable|integer',
             'birthdate_year' => 'nullable|integer',
             'calendar_type' => [
+                'nullable',
                 Rule::in(Reminder::$calendarTypes),
             ],
             'birthdate_is_age_based' => 'nullable|boolean',

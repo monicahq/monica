@@ -25,7 +25,7 @@ class UpdateReminder extends BaseService
                 Rule::in(Reminder::$frequencyTypes),
             ],
             'calendar_type' => [
-                'required',
+                'nullable',
                 Rule::in(Reminder::$calendarTypes),
             ],
             'frequency_number' => 'nullable|integer',
