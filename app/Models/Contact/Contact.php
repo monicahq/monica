@@ -480,6 +480,7 @@ class Contact extends Model
     }
 
     /**
+     * Sort the contacts using last activity.
      * @param Builder $builder
      * @param string $order
      * @return Builder
