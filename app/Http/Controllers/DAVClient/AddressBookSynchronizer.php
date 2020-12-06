@@ -64,7 +64,7 @@ class AddressBookSynchronizer
             })
             ->wait();
 
-        $token = $this->backend->getCurrentSyncToken($this->subscription->addressbook->name, false);
+        $token = $this->backend->getCurrentSyncToken($this->subscription->addressbook->name);
 
         $this->subscription->localSyncToken = $token->id;
         $this->subscription->save();
@@ -101,7 +101,7 @@ class AddressBookSynchronizer
     /**
      * Get distant changes to sync.
      *
-     * @return PromiseInterface<array>
+     * @return PromiseInterface
      */
     private function getDistantChanges(): PromiseInterface
     {
@@ -171,7 +171,7 @@ class AddressBookSynchronizer
      * Get contacts data with addressbook-multiget request.
      *
      * @param Collection $refresh
-     * @return PromiseInterface<array>
+     * @return PromiseInterface
      */
     private function refreshMultigetContacts(Collection $refresh): PromiseInterface
     {
@@ -208,7 +208,7 @@ class AddressBookSynchronizer
      * Get contacts data with request.
      *
      * @param Collection $contacts
-     * @return PromiseInterface<array>
+     * @return PromiseInterface
      */
     private function refreshSimpleGetContacts(Collection $contacts): PromiseInterface
     {
@@ -357,7 +357,7 @@ class AddressBookSynchronizer
     /**
      * Get refreshed etags.
      *
-     * @return PromiseInterface<array>
+     * @return PromiseInterface
      */
     private function getDistantEtags(): PromiseInterface
     {
@@ -376,7 +376,7 @@ class AddressBookSynchronizer
     /**
      * Make sync-collection request.
      *
-     * @return PromiseInterface<array>
+     * @return PromiseInterface
      */
     private function callSyncCollection(): PromiseInterface
     {
@@ -407,7 +407,7 @@ class AddressBookSynchronizer
     /**
      * Get all contacts etag.
      *
-     * @return PromiseInterface<array>
+     * @return PromiseInterface
      */
     private function getAllContactsEtag(): PromiseInterface
     {

@@ -4,6 +4,7 @@ namespace App\Services\DavClient;
 
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
+use function Safe\preg_replace;
 use App\Models\Account\AddressBook;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
@@ -41,6 +42,7 @@ class AddAddressBook extends BaseService
     {
         $this->validate($data);
 
+        $addressbookData = null;
         try {
             $addressbookData = $this->getAddressBookData($data, $httpClient);
         } catch (\Exception $e) {
@@ -51,7 +53,6 @@ class AddAddressBook extends BaseService
         }
 
         $lastAddressBook = AddressBook::where('account_id', $data['account_id'])
-            ->get()
             ->last();
 
         $lastId = 0;

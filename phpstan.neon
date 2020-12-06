@@ -23,10 +23,6 @@ parameters:
           path: */Services/Contact/Avatar/GetGravatarURL.php
         - message: '#Access to an undefined property App\\Interfaces\\IsJournalableInterface::\$account_id\.#'
           path: */app/Models/Journal/JournalEntry.php
-        - message: '#Call to function is_null\(\) with Carbon\\Carbon will always evaluate to false\.#'
-          path: */Models/Instance/SpecialDate.php
-        - message: '#Call to function is_null\(\) with string will always evaluate to false\.#'
-          path: */Models/User/User.php
         - message: '#Cannot assign offset ''VALUE'' to string\.#'
           path: */Services/VCalendar/ExportVCalendar.php
         - message: '#Property App\\Models\\Contact\\Contact::\$deceased_special_date_id \(int\) does not accept null\.#'
@@ -39,6 +35,8 @@ parameters:
           path: */Models/Contact/Reminder.php
         - message: '#Property App\\Models\\Contact\\Contact::\$avatar_photo_id \(int\) does not accept null\.#'
           path: */Services/Contact/Avatar/UpdateAvatar.php
+        - message: '#Parameter \#2 \$callback of function tap expects \(callable\(mixed\): void\)\|null, Closure\(mixed\): mixed given\.#'
+          path: */Http/Controllers/DAVClient/AddressBookSynchronizer.php
 
     excludes_analyse:
         - */app/Helpers/ComposerScripts.php

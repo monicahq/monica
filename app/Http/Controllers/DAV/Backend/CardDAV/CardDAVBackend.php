@@ -74,7 +74,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     private function getDefaultAddressBook($principalUri)
     {
         $id = $this->backendUri();
-        $token = $this->getCurrentSyncToken(null, true);
+        $token = $this->getCurrentSyncToken($principalUri);
 
         $des = [
             'id'                => $id,
@@ -103,7 +103,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
     private function getAddressBookDescription($addressbook)
     {
-        $token = $this->getCurrentSyncToken($addressbook->name, true);
+        $token = $this->getCurrentSyncToken($addressbook->name);
 
         $des = [
             'id'                => $addressbook->name,

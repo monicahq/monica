@@ -6,7 +6,9 @@ use GuzzleHttp\Pool;
 use Sabre\DAV\Xml\Service;
 use Illuminate\Support\Arr;
 use GuzzleHttp\Psr7\Request;
+use function Safe\parse_url;
 use GuzzleHttp\RequestOptions;
+use function Safe\dns_get_record;
 use Sabre\DAV\Xml\Request\PropPatch;
 use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Message\ResponseInterface;
@@ -132,21 +134,29 @@ class Client
      */
     private function getServiceUrlSrv(string $name, bool $https): ?string
     {
-        $host = parse_url($this->getBaseUri(), PHP_URL_HOST);
-        $entry = dns_get_record($name.'.'.$host, DNS_SRV);
+        try {
+            $host = parse_url($this->getBaseUri(), PHP_URL_HOST);
+            $entry = dns_get_record($name.'.'.$host, DNS_SRV);
 
-        if ($entry && count($entry) > 0) {
-            $target = isset($entry[0]['target']) ? $entry[0]['target'] : null;
-            $port = isset($entry[0]['port']) ? $entry[0]['port'] : null;
-            if ($target) {
-                if ($port === 443 && $https) {
-                    $port = null;
-                } elseif ($port === 80 && ! $https) {
-                    $port = null;
+            if ($entry) {
+                $target = isset($entry[0]['target']) ? $entry[0]['target'] : null;
+                $port = isset($entry[0]['port']) ? $entry[0]['port'] : null;
+                if ($target) {
+                    if ($port === 443 && $https) {
+                        $port = null;
+                    } elseif ($port === 80 && ! $https) {
+                        $port = null;
+                    }
+
+                    return ($https ? 'https' : 'http').'://'.$target.(is_null($port) ? '' : ':'.$port);
                 }
-
-                return ($https ? 'https' : 'http').'://'.$target.(is_null($port) ? '' : ':'.$port);
             }
+        }
+        catch (\Safe\Exceptions\UrlException $e) {
+            // catch exception and return null
+        }
+        catch (\Safe\Exceptions\NetworkException $e) {
+            // catch exception and return null
         }
 
         return null;
@@ -231,7 +241,7 @@ class Client
      * @param array  $properties
      * @param int    $depth
      *
-     * @return PromiseInterface<array>
+     * @return PromiseInterface
      */
     public function propFindAsync(string $url, array $properties, int $depth = 0, array $options = []): PromiseInterface
     {
@@ -278,7 +288,7 @@ class Client
      * @param array $properties
      * @param string $syncToken
      *
-     * @return PromiseInterface<array>
+     * @return PromiseInterface
      *
      * @see https://tools.ietf.org/html/rfc6578
      */
@@ -314,13 +324,13 @@ class Client
      *
      * @param string $url
      * @param array $properties
-     * @param \ArrayAccess $contacts
+     * @param iterable $contacts
      *
-     * @return PromiseInterface<array>
+     * @return PromiseInterface
      *
      * @see https://tools.ietf.org/html/rfc6352#section-8.7
      */
-    public function addressbookMultigetAsync(string $url, array $properties, \ArrayAccess $contacts, array $options = []): PromiseInterface
+    public function addressbookMultigetAsync(string $url, array $properties, iterable $contacts, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
@@ -355,9 +365,8 @@ class Client
      *
      * @param string $url
      * @param array $properties
-     * @param \ArrayAccess $contacts
      *
-     * @return PromiseInterface<array>
+     * @return PromiseInterface
      *
      * @see https://tools.ietf.org/html/rfc6352#section-8.6
      */
@@ -434,7 +443,7 @@ class Client
                 }
                 if (isset($propertyExt['attributes'])) {
                     foreach ($propertyExt['attributes'] as $name => $property) {
-                        $element->appendChild($dom->createAttribute($name))->value = $property;
+                        $element->appendChild($dom->createAttribute($name))->nodeValue = $property;
                     }
                 }
             }
@@ -462,13 +471,13 @@ class Client
      * @param string $property
      * @param string $url
      *
-     * @return PromiseInterface<string|array|null>
+     * @return PromiseInterface
      */
-    public function getPropertyAsync(string $property, string $url = ''): PromiseInterface
+    public function getPropertyAsync(string $property, string $url = '', array $options = []): PromiseInterface
     {
         return $this->propfindAsync($url, [
             $property,
-        ])->then(function (array $properties) use ($property) {
+        ], 0, $options)->then(function (array $properties) use ($property) {
             if (! isset($properties[$property])) {
                 return;
             }
@@ -503,7 +512,7 @@ class Client
     /**
      * Get a {DAV:}supported-report-set propfind.
      *
-     * @return PromiseInterface<array>
+     * @return PromiseInterface
      * @see https://tools.ietf.org/html/rfc3253#section-3.1.5
      */
     public function getSupportedReportSetAsync(array $options = []): PromiseInterface
@@ -538,7 +547,7 @@ class Client
      * @param string $url
      * @param array  $properties
      *
-     * @return bool
+     * @return PromiseInterface
      */
     public function propPatchAsync(string $url, array $properties): PromiseInterface
     {
@@ -606,7 +615,7 @@ class Client
      *
      * @param string $method
      * @param string $url
-     * @param string|null|resource|\Psr\Http\MessageStreamInterface $body
+     * @param string|null|resource|\Psr\Http\Message\StreamInterface $body
      * @param array $headers
      *
      * @return ResponseInterface
@@ -623,7 +632,7 @@ class Client
      *
      * @param string $method
      * @param string $url
-     * @param string|null|resource|\Psr\Http\MessageStreamInterface $body
+     * @param string|null|resource|\Psr\Http\Message\StreamInterface $body
      * @param array $headers
      *
      * @return PromiseInterface
