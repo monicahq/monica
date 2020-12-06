@@ -44,6 +44,7 @@ class UpdateAddress extends BaseService
     {
         $this->validate($data);
 
+        /** @var Address */
         $address = Address::where('account_id', $data['account_id'])
             ->where('contact_id', $data['contact_id'])
             ->findOrFail($data['address_id']);

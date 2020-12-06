@@ -36,6 +36,7 @@ class UpdateLifeEventType extends BaseService
         LifeEventCategory::where('account_id', $data['account_id'])
             ->findOrFail($data['life_event_category_id']);
 
+        /** @var LifeEventType */
         $lifeEventType = LifeEventType::where('account_id', $data['account_id'])
             ->findOrFail($data['life_event_type_id']);
 

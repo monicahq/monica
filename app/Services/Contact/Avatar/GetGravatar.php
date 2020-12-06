@@ -27,6 +27,7 @@ class GetGravatar extends BaseService
     {
         $this->validate($data);
 
+        /** @var Contact */
         $contact = Contact::findOrFail($data['contact_id']);
 
         // prevent timestamp update

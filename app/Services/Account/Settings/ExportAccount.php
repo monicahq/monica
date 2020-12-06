@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ExportAccount extends BaseService
 {
+    /** @var string */
     protected $tempFileName;
 
     /**

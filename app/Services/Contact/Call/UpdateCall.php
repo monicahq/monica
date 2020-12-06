@@ -35,6 +35,7 @@ class UpdateCall extends BaseService
     {
         $this->validate($data);
 
+        /** @var Call */
         $call = Call::where('account_id', $data['account_id'])
             ->findOrFail($data['call_id']);
 

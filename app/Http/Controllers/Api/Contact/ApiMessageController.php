@@ -124,6 +124,6 @@ class ApiMessageController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $messageId);
+        return $this->respondObjectDeleted($messageId);
     }
 }

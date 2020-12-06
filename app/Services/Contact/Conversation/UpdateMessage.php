@@ -49,6 +49,7 @@ class UpdateMessage extends BaseService
                     ->where('account_id', $data['account_id'])
                     ->findOrFail($data['conversation_id']);
 
+        /** @var Message */
         $message = Message::where('contact_id', $data['contact_id'])
                             ->where('conversation_id', $data['conversation_id'])
                             ->where('account_id', $data['account_id'])

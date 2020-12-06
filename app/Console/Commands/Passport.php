@@ -5,9 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Laravel\Passport\PersonalAccessClient;
-use App\Console\Commands\Helpers\CommandExecutor;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Console\Commands\Helpers\CommandExecutorInterface;
 
 class Passport extends Command
 {
@@ -26,22 +24,6 @@ class Passport extends Command
      * @var string
      */
     protected $description = 'Check if encryption keys and Personal Access Client are present, and create them if not.';
-
-    /**
-     * The Command Executor.
-     *
-     * @var CommandExecutorInterface
-     */
-    public $commandExecutor;
-
-    /**
-     * Create a new command.
-     */
-    public function __construct()
-    {
-        $this->commandExecutor = new CommandExecutor($this);
-        parent::__construct();
-    }
 
     /**
      * Execute the console command.
@@ -72,7 +54,7 @@ class Passport extends Command
             return;
         }
 
-        $this->commandExecutor->artisan('✓ Creating encryption keys', 'passport:keys', ['--no-interaction']);
+        $this->artisan('✓ Creating encryption keys', 'passport:keys', ['--no-interaction']);
         $this->warn('! Please be careful to backup '.base_path('storage/oauth-public.key').' and '.base_path('storage/oauth-private.key').' files !', OutputInterface::VERBOSITY_VERBOSE);
     }
 
@@ -86,6 +68,6 @@ class Passport extends Command
             return;
         }
 
-        $this->commandExecutor->artisan('✓ Creating personal access client', 'passport:client', ['--personal', '--no-interaction']);
+        $this->artisan('✓ Creating personal access client', 'passport:client', ['--personal', '--no-interaction']);
     }
 }
