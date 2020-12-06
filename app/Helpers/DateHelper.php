@@ -3,9 +3,9 @@
 namespace App\Helpers;
 
 use Carbon\Carbon;
-use function Safe\strtotime;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use function Safe\strtotime;
 
 class DateHelper
 {
@@ -228,6 +228,7 @@ class DateHelper
             case 'lunar':
                 $lunar = new LunarCalendarHelper();
                 $to = $lunar->lunar2solar($from->year, $from->month, $from->day);
+
                 return Carbon::create($to['solar_year'], $to['solar_month'], $to['solar_day']);
             default:
                 return $from;
@@ -259,6 +260,7 @@ class DateHelper
                     break;
             }
             $solarDate = $lunar->lunar2solar($lunarDate['lunar_year'], $lunarDate['lunar_month'], $lunarDate['lunar_day']);
+
             return Carbon::create($solarDate['solar_year'], $solarDate['solar_month'], $solarDate['solar_day']);
         }
 

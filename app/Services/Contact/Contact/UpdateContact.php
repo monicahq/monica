@@ -2,11 +2,11 @@
 
 namespace App\Services\Contact\Contact;
 
-use Illuminate\Support\Arr;
-use App\Services\BaseService;
-use App\Models\Contact\Contact;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
+use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
+use App\Services\BaseService;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 
 class UpdateContact extends BaseService

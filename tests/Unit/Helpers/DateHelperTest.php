@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Helpers;
 
-use Carbon\Carbon;
-use Tests\FeatureTestCase;
 use App\Helpers\DateHelper;
 use App\Helpers\TimezoneHelper;
-use Illuminate\Support\Facades\App;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\App;
+use Tests\FeatureTestCase;
 
 class DateHelperTest extends FeatureTestCase
 {
@@ -752,10 +752,10 @@ class DateHelperTest extends FeatureTestCase
         foreach ($oldTimezones as $timezone) {
             $timezone = TimezoneHelper::adjustEquivalentTimezone($timezone);
             if ($list->firstWhere('timezone', $timezone) == null) {
-                $missed .= $timezone . ',';
+                $missed .= $timezone.',';
             }
         }
 
-        $this->assertTrue(empty($missed), 'Missed timezones : ' . $missed);
+        $this->assertTrue(empty($missed), 'Missed timezones : '.$missed);
     }
 }

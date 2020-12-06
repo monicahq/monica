@@ -3,14 +3,14 @@
 namespace App\Services\Contact\Contact;
 
 use App\Helpers\DateHelper;
-use Illuminate\Support\Arr;
-use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
+use App\Services\BaseService;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
+use Illuminate\Support\Arr;
+use Illuminate\Validation\Rule;
 
 class UpdateBirthdayInformation extends BaseService
 {
@@ -35,14 +35,14 @@ class UpdateBirthdayInformation extends BaseService
                 'integer',
                 'nullable',
                 Rule::requiredIf(function () {
-                    return Arr::get($this->data, 'is_date_known', false) && !Arr::get($this->data, 'is_age_based', false);
+                    return Arr::get($this->data, 'is_date_known', false) && ! Arr::get($this->data, 'is_age_based', false);
                 }),
             ],
             'month' => [
                 'integer',
                 'nullable',
                 Rule::requiredIf(function () {
-                    return Arr::get($this->data, 'is_date_known', false) && !Arr::get($this->data, 'is_age_based', false);
+                    return Arr::get($this->data, 'is_date_known', false) && ! Arr::get($this->data, 'is_age_based', false);
                 }),
             ],
             'year' => 'nullable|integer',
@@ -112,7 +112,7 @@ class UpdateBirthdayInformation extends BaseService
     private function clearRelatedSpecialDate(Contact $contact)
     {
         $specialDate = SpecialDate::find($contact->birthday_special_date_id);
-        if (!is_null($specialDate)) {
+        if (! is_null($specialDate)) {
             $specialDate->delete();
         }
     }

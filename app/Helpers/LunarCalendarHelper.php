@@ -228,9 +228,9 @@ class LunarCalendarHelper
                 'gregorian_year' => (string) $year,
                 'gregorian_month' => sprintf('%02d', $month),
                 'gregorian_day' => sprintf('%02d', $day),
-                'gregorian_hour' => !is_numeric($hour) || $hour < 0 || $hour > 23 ? null : sprintf('%02d', $hour),
+                'gregorian_hour' => ! is_numeric($hour) || $hour < 0 || $hour > 23 ? null : sprintf('%02d', $hour),
                 'week_no' => $week, // 在周日时将会传回 0
-                'week_name' => '星期' . $this->weekdayAlias[$week],
+                'week_name' => '星期'.$this->weekdayAlias[$week],
                 'is_today' => 0 === $this->makeDate('now')->diff($date)->days,
                 'constellation' => $this->toConstellation($month, $day),
                 'is_same_year' => $lunar['lunar_year'] == $year ?: false,
@@ -379,7 +379,7 @@ class LunarCalendarHelper
         $ganKey = ($lunarYear + $adjust - 4) % 10;
         $zhiKey = ($lunarYear + $adjust - 4) % 12;
 
-        return $this->gan[$ganKey] . $this->zhi[$zhiKey];
+        return $this->gan[$ganKey].$this->zhi[$zhiKey];
     }
 
     /**
@@ -412,7 +412,7 @@ class LunarCalendarHelper
      */
     public function toGanZhi($offset)
     {
-        return $this->gan[$offset % 10] . $this->zhi[$offset % 12];
+        return $this->gan[$offset % 10].$this->zhi[$offset % 12];
     }
 
     /**
@@ -444,19 +444,19 @@ class LunarCalendarHelper
             3 => [4, 2],
         ];
         $group = intval(($no - 1) / 4);
-        list($offset, $length) = $positions[($no - 1) % 4];
+        [$offset, $length] = $positions[($no - 1) % 4];
 
         return substr($solarTermsOfYear[$group], $offset, $length);
     }
 
     public function toChinaYear($year)
     {
-        if (!is_numeric($year)) {
+        if (! is_numeric($year)) {
             throw new InvalidArgumentException("错误的年份:{$year}");
         }
         $lunarYear = '';
         $year = (string) $year;
-        for ($i = 0, $l = strlen($year); $i < $l; ++$i) {
+        for ($i = 0, $l = strlen($year); $i < $l; $i++) {
             $lunarYear .= '0' !== $year[$i] ? $this->weekdayAlias[$year[$i]] : '零';
         }
 
@@ -477,7 +477,7 @@ class LunarCalendarHelper
             throw new InvalidArgumentException("错误的月份:{$month}");
         }
 
-        return $this->monthAlias[abs($month) - 1] . '月';
+        return $this->monthAlias[abs($month) - 1].'月';
     }
 
     /**
@@ -497,7 +497,7 @@ class LunarCalendarHelper
             case 30:
                 return '三十';
             default:
-                return $this->dateAlias[intval($day / 10)] . $this->weekdayAlias[$day % 10];
+                return $this->dateAlias[intval($day / 10)].$this->weekdayAlias[$day % 10];
         }
     }
 
@@ -531,13 +531,13 @@ class LunarCalendarHelper
     protected function getColor($ganZhi)
     {
         if (! $ganZhi) {
-            return null;
+            return;
         }
 
         $gan = substr($ganZhi, 0, 3);
 
         if (! $gan) {
-            return null;
+            return;
         }
 
         return $this->colors[array_search($gan, $this->gan)];
@@ -553,20 +553,20 @@ class LunarCalendarHelper
     protected function getWuXing($ganZhi)
     {
         if (! $ganZhi) {
-            return null;
+            return;
         }
 
         $gan = substr($ganZhi, 0, 3);
         $zhi = substr($ganZhi, 3);
 
         if (! $gan || ! $zhi) {
-            return null;
+            return;
         }
 
         $wGan = $this->wuXing[array_search($gan, $this->gan)];
         $wZhi = $this->zhiWuxing[array_search($zhi, $this->zhi)];
 
-        return $wGan . $wZhi;
+        return $wGan.$wZhi;
     }
 
     /**
@@ -588,7 +588,7 @@ class LunarCalendarHelper
             $date = $this->makeDate("{$year}-{$month}-{$day}");
         }
 
-        list($year, $month, $day) = explode('-', $date->format('Y-n-j'));
+        [$year, $month, $day] = explode('-', $date->format('Y-n-j'));
 
         // 参数区间1900.1.31~2100.12.31
         if ($year < 1900 || $year > 2100) {
@@ -602,14 +602,14 @@ class LunarCalendarHelper
 
         $offset = $this->dateDiff($date, '1900-01-31')->days;
 
-        for ($i = 1900; $i < 2101 && $offset > 0; ++$i) {
+        for ($i = 1900; $i < 2101 && $offset > 0; $i++) {
             $daysOfYear = $this->daysOfYear($i);
             $offset -= $daysOfYear;
         }
 
         if ($offset < 0) {
             $offset += $daysOfYear;
-            --$i;
+            $i--;
         }
 
         // 农历年
@@ -619,10 +619,10 @@ class LunarCalendarHelper
         $isLeap = false;
 
         // 用当年的天数 offset,逐个减去每月（农历）的天数，求出当天是本月的第几天
-        for ($i = 1; $i < 13 && $offset > 0; ++$i) {
+        for ($i = 1; $i < 13 && $offset > 0; $i++) {
             // 闰月
             if ($leap > 0 && $i == ($leap + 1) && ! $isLeap) {
-                --$i;
+                $i--;
                 $isLeap = true;
                 $daysOfMonth = $this->leapDays($lunarYear); // 计算农历月天数
             } else {
@@ -642,13 +642,13 @@ class LunarCalendarHelper
                 $isLeap = false;
             } else {
                 $isLeap = true;
-                --$i;
+                $i--;
             }
         }
 
         if ($offset < 0) {
             $offset += $daysOfMonth;
-            --$i;
+            $i--;
         }
 
         // 农历月
@@ -686,7 +686,7 @@ class LunarCalendarHelper
         $ganZhiDay = $this->toGanZhi($dayCyclical);
 
         // 时柱和时辰
-        list($ganZhiHour, $lunarHour, $hour) = $this->ganZhiHour($hour, $dayCyclical);
+        [$ganZhiHour, $lunarHour, $hour] = $this->ganZhiHour($hour, $dayCyclical);
 
         $ganZhiYear = $this->ganZhiYear($lunarYear, $termIndex);
 
@@ -696,7 +696,7 @@ class LunarCalendarHelper
             'lunar_day' => sprintf('%02d', $lunarDay),
             'lunar_hour' => $hour,
             'lunar_year_chinese' => $this->toChinaYear($lunarYear),
-            'lunar_month_chinese' => ($isLeap ? '闰' : '') . $this->toChinaMonth($lunarMonth),
+            'lunar_month_chinese' => ($isLeap ? '闰' : '').$this->toChinaMonth($lunarMonth),
             'lunar_day_chinese' => $this->toChinaDay($lunarDay),
             'lunar_hour_chinese' => $lunarHour,
             'ganzhi_year' => $ganZhiYear,
@@ -757,12 +757,12 @@ class LunarCalendarHelper
         // 计算农历的时间差
         $offset = 0;
 
-        for ($i = 1900; $i < $year; ++$i) {
+        for ($i = 1900; $i < $year; $i++) {
             $offset += $this->daysOfYear($i);
         }
 
         $isAdd = false;
-        for ($i = 1; $i < $month; ++$i) {
+        for ($i = 1; $i < $month; $i++) {
             $leap = $this->leapMonth($year);
             if (! $isAdd) { // 处理闰月
                 if ($leap <= $i && $leap > 0) {
@@ -783,7 +783,7 @@ class LunarCalendarHelper
         $startTimestamp = -2206483200;
         $date = date('Y-m-d', ($offset + $day) * 86400 + $startTimestamp);
 
-        list($solarYear, $solarMonth, $solarDay) = explode('-', $date);
+        [$solarYear, $solarMonth, $solarDay] = explode('-', $date);
 
         return [
             'solar_year' => $solarYear,
@@ -802,11 +802,11 @@ class LunarCalendarHelper
      */
     public function dateDiff($date1, $date2)
     {
-        if (!($date1 instanceof DateTime)) {
+        if (! ($date1 instanceof DateTime)) {
             $date1 = $this->makeDate($date1);
         }
 
-        if (!($date2 instanceof DateTime)) {
+        if (! ($date2 instanceof DateTime)) {
             $date2 = $this->makeDate($date2);
         }
 
@@ -902,7 +902,7 @@ class LunarCalendarHelper
             $lessLunarAdjustFactor =
                 (! $lessLunar['is_leap'] && $lessLunarLeapMonth == $lessLunar['lunar_month']) || $lessLunarLeapMonth > $lessLunar['lunar_month'] ? 1 : 0;
             $diff += 12 + $lessLunarAdjustFactor - $lessLunar['lunar_month'];
-            for ($i = $lessLunar['lunar_year'] + 1; $i < $greaterLunar['lunar_year']; ++$i) {
+            for ($i = $lessLunar['lunar_year'] + 1; $i < $greaterLunar['lunar_year']; $i++) {
                 $diff += $this->monthsOfYear($i);
             }
             $greaterLunarAdjustFactor =
@@ -1014,7 +1014,7 @@ class LunarCalendarHelper
                     $isLeap = $newMonth + $value == $leapMonth + ($isLeap ? 0 : 1);
 
                     if ((! $currentIsLeap && $leapMonth == $newMonth) || ($newMonth < $leapMonth && $newMonth + $value > $leapMonth)) {
-                        --$value;
+                        $value--;
                     }
                 } else {
                     $isLeap = false;
@@ -1025,7 +1025,7 @@ class LunarCalendarHelper
                     $value = 0;
                 } else {
                     $value = $value + $newMonth - 13;
-                    ++$newYear;
+                    $newYear++;
                     $newMonth = 1;
                 }
 
@@ -1034,7 +1034,7 @@ class LunarCalendarHelper
                     if ($newDay > $maxDays) {
                         if ($overFlow) {
                             $newDay = 1;
-                            ++$value;
+                            $value++;
                         } else {
                             $newDay = $maxDays;
                         }
@@ -1073,7 +1073,7 @@ class LunarCalendarHelper
                     $isLeap = $newMonth - $value == $leapMonth;
 
                     if ($newMonth >= $leapMonth && $newMonth - $value < $leapMonth) {
-                        --$value;
+                        $value--;
                     }
                 } else {
                     $isLeap = false;
@@ -1084,7 +1084,7 @@ class LunarCalendarHelper
                     $value = 0;
                 } else {
                     $value = $value - $newMonth;
-                    --$newYear;
+                    $newYear--;
                     $newMonth = 12;
                 }
 
@@ -1119,7 +1119,7 @@ class LunarCalendarHelper
         $solar =
             $this->lunar2solar($lunar['lunar_year'], $lunar['lunar_month'], $lunar['lunar_day'], $lunar['is_leap']);
         $date = $this->makeDate("{$solar['solar_year']}-{$solar['solar_month']}-{$solar['solar_day']}");
-        $date->modify($value . ' day');
+        $date->modify($value.' day');
 
         return $this->solar2lunar($date->format('Y'), $date->format('m'), $date->format('d'));
     }
@@ -1162,7 +1162,7 @@ class LunarCalendarHelper
      */
     protected function ganZhiHour($hour, $ganZhiDay)
     {
-        if (!is_numeric($hour) || $hour < 0 || $hour > 23) {
+        if (! is_numeric($hour) || $hour < 0 || $hour > 23) {
             return [null, null, null];
         }
 
@@ -1170,8 +1170,8 @@ class LunarCalendarHelper
         $zhiHour = 12 === $zhiHour ? 0 : $zhiHour;
 
         return [
-            $this->gan[($ganZhiDay % 10 % 5 * 2 + $zhiHour) % 10] . $this->zhi[$zhiHour],
-            $this->zhi[$zhiHour] . '时',
+            $this->gan[($ganZhiDay % 10 % 5 * 2 + $zhiHour) % 10].$this->zhi[$zhiHour],
+            $this->zhi[$zhiHour].'时',
             sprintf('%02d', $hour),
         ];
     }
