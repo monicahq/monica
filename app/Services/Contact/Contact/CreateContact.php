@@ -89,7 +89,7 @@ class CreateContact extends BaseService
         $this->updateBirthDayInformation($data, $contact);
 
         $this->updateDeceasedInformation($data, $contact);
-
+        
         $this->generateUUID($contact);
 
         $this->addAvatars($contact);
@@ -150,7 +150,7 @@ class CreateContact extends BaseService
             'month' => $this->nullOrvalue($data, 'birthdate_month'),
             'year' => $this->nullOrvalue($data, 'birthdate_year'),
             'is_age_based' => $this->nullOrvalue($data, 'birthdate_is_age_based'),
-            'calendar_type' => $data['calendar_type'],
+            'calendar_type' => $this->nullOrvalue($data, 'calendar_type'),
             'age' => $this->nullOrvalue($data, 'birthdate_age'),
             'add_reminder' => $this->nullOrvalue($data, 'birthdate_add_reminder'),
             'is_deceased' => $data['is_deceased'],

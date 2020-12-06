@@ -14,7 +14,7 @@ class LunarCalendarSupport extends Migration
     public function up()
     {
         Schema::table('reminders', function (Blueprint $table) {
-            $table->string('calendar_type');
+            $table->string('calendar_type')->nullable();
         });
         Schema::table('contacts', function (Blueprint $table) {
             $table->string('calendar_type')->nullable();

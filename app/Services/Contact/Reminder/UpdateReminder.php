@@ -54,7 +54,7 @@ class UpdateReminder extends BaseService
             'description' => $this->nullOrValue($data, 'description'),
             'initial_date' => $data['initial_date'],
             'frequency_type' => $data['frequency_type'],
-            'calendar_type' => $data['calendar_type'],
+            'calendar_type' => $this->nullOrValue($data, 'calendar_type'),
             'frequency_number' => $this->nullOrValue($data, 'frequency_number'),
             'delible' => (isset($data['delible']) ? $data['delible'] : true),
         ]);

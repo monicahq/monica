@@ -59,7 +59,7 @@ class UpdateContact extends BaseService
         $this->validate($data);
 
         $contact = Contact::where('account_id', $data['account_id'])
-            ->findOrFail($data['contact_id']);
+        ->findOrFail($data['contact_id']);
 
         $this->updateGeneralInformation($data, $contact);
 
@@ -131,7 +131,7 @@ class UpdateContact extends BaseService
             'is_age_based' => $this->nullOrvalue($data, 'birthdate_is_age_based'),
             'age' => $this->nullOrvalue($data, 'birthdate_age'),
             'add_reminder' => $this->nullOrvalue($data, 'birthdate_add_reminder'),
-            'calendar_type' => $data['calendar_type'],
+            'calendar_type' => $this->nullOrvalue($data, 'calendar_type'),
             'is_deceased' => $data['is_deceased'],
         ]);
     }

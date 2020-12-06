@@ -77,9 +77,9 @@ class UpdateBirthdayInformation extends BaseService
             ->findOrFail($data['contact_id']);
 
         $this->clearRelatedReminder($contact);
-
+        
         $this->clearRelatedSpecialDate($contact);
-
+        
         $this->manageBirthday($data, $contact);
 
         return $contact;
@@ -190,7 +190,7 @@ class UpdateBirthdayInformation extends BaseService
                 'contact_id' => $data['contact_id'],
                 'initial_date' => DateHelper::getDate($specialDate),
                 'frequency_type' => 'year',
-                'calendar_type' => $data['calendar_type'],
+                'calendar_type' => $this->nullOrValue($data, 'calendar_type'),
                 'frequency_number' => 1,
                 'title' => trans(
                     ($data['is_deceased'] ?
