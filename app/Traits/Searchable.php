@@ -42,7 +42,6 @@ trait Searchable
             return "{$this->getTable()}.$column";
         }, $this->return_from_search));
 
-        /** @var Builder */
         return $builder;
     }
 

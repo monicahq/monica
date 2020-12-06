@@ -225,12 +225,12 @@ class DateHelper
 
     /**
      * Add a given number of week/month/year to a date.
-     * @param Carbon $date      the start date
+     * @param \Carbon\Carbon $date      the start date
      * @param string $frequency week/month/year
      * @param int $number    the number of week/month/year to increment to
-     * @return Carbon
+     * @return \Carbon\Carbon
      */
-    public static function addTimeAccordingToFrequencyType(Carbon $date, string $frequency, int $number): Carbon
+    public static function addTimeAccordingToFrequencyType(\Carbon\Carbon $date, string $frequency, int $number): \Carbon\Carbon
     {
         switch ($frequency) {
             case 'week':

@@ -44,7 +44,6 @@ class SearchHelper
             return $b->orderBy($orderByColumn, $orderByDirection);
         }
 
-        /** @var Builder */
         return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection);
     }
 }

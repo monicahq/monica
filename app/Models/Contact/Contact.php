@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /**
- * @method Builder search()
+ * @method static \Illuminate\Database\Eloquent\Builder search()
  * @property \App\Models\Instance\SpecialDate|null $birthdate
  */
 class Contact extends Model
