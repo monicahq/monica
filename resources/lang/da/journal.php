@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'journal_rate' => 'How was your day? You can rate it once a day.',
     'journal_come_back' => 'Thanks. Come back tomorrow to rate your day again.',
@@ -9,10 +15,10 @@ return [
     'journal_empty' => 'Empty journal',
     'journal_created_automatically' => 'Created automatically',
     'journal_entry_type_journal' => 'Journal entry',
-    'journal_entry_type_activity' => 'Activity',
+    'journal_entry_type_activity' => 'Aktivitet',
     'journal_entry_rate' => 'You rated your day.',
     'journal_add_comment' => 'Care to add a comment (optional)?',
-    'journal_show_comment' => 'Show comment',
+    'journal_show_comment' => 'Vis kommentar',
     'entry_delete_success' => 'The journal entry has been successfully deleted.',
     'journal_add_title' => 'Title (optional)',
     'journal_add_date' => 'Date',

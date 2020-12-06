@@ -35,6 +35,7 @@ class UpdateLifeEvent extends BaseService
     {
         $this->validate($data);
 
+        /** @var LifeEvent */
         $lifeEvent = LifeEvent::where('account_id', $data['account_id'])
             ->findOrFail($data['life_event_id']);
 

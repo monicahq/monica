@@ -42,6 +42,7 @@ class ImportVCard extends BaseService
     public const BEHAVIOUR_ADD = 'behaviour_add';
     public const BEHAVIOUR_REPLACE = 'behaviour_replace';
 
+    /** @var array<string,string> */
     protected $errorResults = [
         'ERROR_PARSER' => 'import_vcard_parse_error',
         'ERROR_CONTACT_EXIST' => 'import_vcard_contact_exist',
@@ -81,7 +82,7 @@ class ImportVCard extends BaseService
     /**
      * The genders that will be associated with imported contacts.
      *
-     * @var array[Gender]
+     * @var array<Gender>
      */
     protected $genders;
 
@@ -232,7 +233,16 @@ class ImportVCard extends BaseService
             ];
         }
 
+        if ($contact) {
+            $timestamps = $contact->timestamps;
+            $contact->timestamps = false;
+        }
+
         $contact = $this->importEntry($contact, $entry);
+
+        if (isset($timestamps)) {
+            $contact->timestamps = $timestamps;
+        }
 
         return [
             'contact_id' => $contact->id,

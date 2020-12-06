@@ -21,7 +21,7 @@ class ComposerScripts
                 \Illuminate\Foundation\ComposerScripts::postInstall($event);
             }
             static::clear();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             // catch all
         }
     }
@@ -41,7 +41,7 @@ class ComposerScripts
                 \Illuminate\Foundation\ComposerScripts::postUpdate($event);
             }
             static::clear();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             // catch all
         }
     }

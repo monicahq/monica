@@ -84,6 +84,9 @@ class EmailChangeTest extends TestCase
         NotificationFacade::fake();
         config(['monica.signup_double_optin' => true]);
 
+        // Creating a fake account
+        factory(Account::class)->create();
+
         $user = factory(User::class)->create([]);
 
         $request = [
@@ -113,6 +116,9 @@ class EmailChangeTest extends TestCase
     {
         NotificationFacade::fake();
         config(['monica.signup_double_optin' => true]);
+
+        // Creating a fake account
+        factory(Account::class)->create();
 
         $user = factory(User::class)->create([]);
 

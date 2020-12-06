@@ -10,12 +10,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property int $id
  * @property Account $account
- * @property Contact $contact
+ * @property Contact|null $contact
  * @property string $title
  * @property string $description
  * @property string $uuid
  * @property bool $completed
- * @property \Illuminate\Support\Carbon|null $completed_at
+ * @property \Carbon\Carbon|null $completed_at
  * @method static Builder completed()
  * @method static Builder inProgress()
  */

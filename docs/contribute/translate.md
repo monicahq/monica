@@ -17,6 +17,8 @@ All translations are done with [crowdin](https://crowdin.com/project/monicahq) -
 
 You can [open an issue](https://github.com/monicahq/monica/issues/new) to request a new language.
 
+⚠️ Do not edit languages file directly.
+
 To enable a new language in Monica:
 * we have to configure it in Crowdin first. This is something we must do ourselves (we: members of the project). To do it, we need to go to Settings > Translations > Target Languages and add the new locale here.
 * add the name of the language in [the main English settings file](https://github.com/monicahq/monica/blob/master/resources/lang/en/settings.php).
@@ -51,7 +53,7 @@ We use the [vue-i18n](https://www.npmjs.com/package/vue-i18n) package.
   - Example: `{name}’s birthday` => `anniversaire de {name}`
   - Other example: `{{ $t('people.stay_in_touch_frequency', { count: frequency }) }}`
 - **plural forms**: See [vue-i18n doc](http://kazupon.github.io/vue-i18n/en/pluralization.html).
-  Pluralization is customized in the [pluralization.js](https://github.com/monicahq/monica/blob/master/resources/js/pluralization.js) file. This should fit your language pluralization form. Messages must be separated by a pipe, but you cannot define the number of occurences it applies to like with Laravel translation (no brackets or braces).
+  Pluralization is customized in the [pluralization.js](https://github.com/monicahq/monica/blob/master/resources/js/pluralization.js) file. This should fit your language pluralization form. Messages must be separated by a pipe, but you cannot define the number of occurrences it applies to like with Laravel translation (no brackets or braces).
     Example: `1 message|{count} messages` => `{count} message|{count} messages` in French, or: `{count}条消息` in Chinese (only 1 form)
 
 ## Rules for translation

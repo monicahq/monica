@@ -2,7 +2,6 @@
 
 namespace App\Models\Journal;
 
-use App\Models\Contact\Entry;
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
 use App\Interfaces\IsJournalableInterface;
@@ -17,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property IsJournalableInterface $journalable
  * @property int $journalable_id
  * @property string $journalable_type
- * @property \Illuminate\Support\Carbon|null $date
+ * @property \Carbon\Carbon|null $date
  */
 class JournalEntry extends Model
 {

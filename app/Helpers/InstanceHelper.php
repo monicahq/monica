@@ -34,7 +34,7 @@ class InstanceHelper
         }
 
         $currency = Currency::where('iso', strtoupper(config('cashier.currency')))->first();
-        $amount = MoneyHelper::format(config('monica.paid_plan_'.$timePeriod.'_price') / 100, $currency);
+        $amount = MoneyHelper::format(config('monica.paid_plan_'.$timePeriod.'_price'), $currency);
 
         return [
             'type' => $timePeriod,

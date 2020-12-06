@@ -122,7 +122,7 @@ class ApiCallController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $callId)
+    public function destroy(Request $request, int $callId)
     {
         try {
             app(DestroyCall::class)->execute([
@@ -137,7 +137,7 @@ class ApiCallController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $callId);
+        return $this->respondObjectDeleted($callId);
     }
 
     /**

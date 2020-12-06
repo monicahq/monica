@@ -178,22 +178,20 @@ export default {
 
   validations() {
     switch (this.selectedOption) {
-    case 'approximate':
-      return {
-        selectedAge: {
-          required,
-          numeric,
-        }
-      };
-      break;
-    case 'exact':
-      return {
-        selectedDate: {
-          required,
-          before: before(moment())
-        }
-      };
-      break;
+      case 'approximate':
+        return {
+          selectedAge: {
+            required,
+            numeric,
+          }
+        };
+      case 'exact':
+        return {
+          selectedDate: {
+            required,
+            before: before(moment())
+          }
+        };
     }
     return null;
   },

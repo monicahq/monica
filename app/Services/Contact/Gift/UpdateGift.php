@@ -6,6 +6,7 @@ use App\Models\Contact\Gift;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateGift extends BaseService
 {
@@ -48,7 +49,7 @@ class UpdateGift extends BaseService
         $this->validate($data);
 
         $gift = Gift::where('account_id', $data['account_id'])
-                    ->findOrFail($data['gift_id']);
+                    ->findOrFail((int) $data['gift_id']);
 
         Contact::where('account_id', $data['account_id'])
         ->findOrFail($data['contact_id']);
@@ -64,12 +65,19 @@ class UpdateGift extends BaseService
             'status' => $data['status'],
             'comment' => $this->nullOrvalue($data, 'comment'),
             'url' => $this->nullOrvalue($data, 'url'),
-            'value' => $this->nullOrvalue($data, 'amount'),
+            'amount' => $this->nullOrvalue($data, 'amount'),
             'date' => $this->nullOrvalue($data, 'date'),
-            'recipient' => $this->nullOrvalue($data, 'recipient_id'),
         ];
 
-        return tap($gift)
-            ->update($array);
+        if (Auth::check()) {
+            $array['currency_id'] = Auth::user()->currency->id;
+        }
+
+        $gift->update($array);
+
+        return tap($gift, function ($gift) use ($data): void {
+            $gift->recipient = $this->nullOrvalue($data, 'recipient_id');
+            $gift->save();
+        });
     }
 }

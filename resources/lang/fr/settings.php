@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'sidebar_settings' => 'Paramètres du compte',
     'sidebar_personalization' => 'Personnalisation',
@@ -43,6 +49,8 @@ return [
     'name_order_firstname_nickname_lastname' => '<Prénom> (<Surnom>) <Nom> – Jean (Jojo) Dupont',
     'name_order_lastname_firstname_nickname' => '<Nom> <Prénom> (<Surnom>) – Dupont Jean (Jojo)',
     'name_order_lastname_nickname_firstname' => '<Nom> (<Surnom>) <Prénom> – Dupont (Jojo) Jean',
+    'name_order_nickname_firstname_lastname' => '<Surnom> (<Prénom> <Nom>) – Jojo (Jean Dupont)',
+    'name_order_nickname_firstname_lastname' => '<Surnom> (<Nom> <Prénom>) – Jojo (Dupont Jean)',
     'name_order_nickname' => '<Surnom> – Jojo',
     'currency' => 'Devise',
     'name' => 'Votre nom : :name',
@@ -85,6 +93,7 @@ return [
     'locale_pt-BR' => 'Portugais (Brésil)',
     'locale_ru' => 'Russe',
     'locale_zh' => 'Chinois Simplifié',
+    'locale_zh-TW' => 'Chinois Traditionnel',
     'locale_tr' => 'Turc',
     'locale_en-GB' => 'Anglais (Royaume-Uni)',
 
@@ -477,7 +486,7 @@ return [
     'dav_clipboard_copied' => 'Valeur copiée dans le presse-papier',
     'dav_url_base' => 'Url de base pour toutes les ressources CardDAV et CalDAV :',
     'dav_connect_help' => 'Vous pouvez connecter vos contacts et/ou calendriers avec cette url de base sur votre téléphone ou ordinateur.',
-    'dav_connect_help2' => 'Utilisez votre login (email) et mot de passe ou créez un jeton d’API pour vous authentifier.',
+    'dav_connect_help2' => 'Utilisez votre login (email) et créez un jeton API en tant que mot de passe pour vous authentifier.',
     'dav_url_carddav' => 'Url CardDAV pour les Contacts :',
     'dav_url_caldav_birthdays' => 'Url CalDAV pour les Anniversaires :',
     'dav_url_caldav_tasks' => 'Url CalDAV pour les Tâches :',

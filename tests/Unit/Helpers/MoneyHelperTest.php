@@ -19,8 +19,12 @@ class MoneyHelperTest extends TestCase
         $currency = new Currency();
         $currency->iso = 'EUR';
 
-        $this->assertEquals('€500.00', MoneyHelper::format(500, $currency));
-        $this->assertEquals('€5,038.29', MoneyHelper::format(5038.29, $currency));
+        $this->assertEquals('€500.00', MoneyHelper::format(50000, $currency));
+        $this->assertEquals('€5,038.29', MoneyHelper::format(503829, $currency));
+        $this->assertEquals('500.00', MoneyHelper::getValue(50000, $currency));
+        $this->assertEquals('5038.29', MoneyHelper::getValue(503829, $currency));
+        $this->assertEquals(500, MoneyHelper::exchangeValue(50000, $currency));
+        $this->assertEquals(5038.29, MoneyHelper::exchangeValue(503829, $currency));
     }
 
     /** @test */
@@ -31,7 +35,12 @@ class MoneyHelperTest extends TestCase
         $currency = new Currency();
         $currency->iso = 'EUR';
 
-        $this->assertEquals('500,00 €', MoneyHelper::format(500, $currency));
+        $this->assertEquals('500,00 €', MoneyHelper::format(50000, $currency));
+        $this->assertEquals('5 038,29 €', MoneyHelper::format(503829, $currency));
+        $this->assertEquals('500,00', MoneyHelper::getValue(50000, $currency));
+        $this->assertEquals('5038,29', MoneyHelper::getValue(503829, $currency));
+        $this->assertEquals(500, MoneyHelper::exchangeValue(50000, $currency));
+        $this->assertEquals(5038.29, MoneyHelper::exchangeValue(503829, $currency));
     }
 
     /** @test */
@@ -42,6 +51,10 @@ class MoneyHelperTest extends TestCase
 
         $this->assertEquals('¥500', MoneyHelper::format(500, $currency));
         $this->assertEquals('¥5,038', MoneyHelper::format(5038, $currency));
+        $this->assertEquals('500', MoneyHelper::getValue(500, $currency));
+        $this->assertEquals('5038', MoneyHelper::getValue(5038, $currency));
+        $this->assertEquals(500, MoneyHelper::exchangeValue(500, $currency));
+        $this->assertEquals(5038, MoneyHelper::exchangeValue(5038, $currency));
     }
 
     /** @test */
@@ -53,8 +66,12 @@ class MoneyHelperTest extends TestCase
         ]);
         $this->actingAs($user);
 
-        $this->assertEquals('£75.00', MoneyHelper::format(75));
-        $this->assertEquals('£2,734.12', MoneyHelper::format(2734.12));
+        $this->assertEquals('£75.00', MoneyHelper::format(7500, $currency));
+        $this->assertEquals('£2,734.12', MoneyHelper::format(273412, $currency));
+        $this->assertEquals('75.00', MoneyHelper::getValue(7500, $currency));
+        $this->assertEquals('2734.12', MoneyHelper::getValue(273412, $currency));
+        $this->assertEquals(75, MoneyHelper::exchangeValue(7500, $currency));
+        $this->assertEquals(2734.12, MoneyHelper::exchangeValue(273412, $currency));
     }
 
     /** @test */
@@ -80,6 +97,18 @@ class MoneyHelperTest extends TestCase
         ]);
         $this->actingAs($user);
 
-        $this->assertEquals('R$12,345.67', MoneyHelper::format(12345.67));
+        $this->assertEquals('R$12,345.67', MoneyHelper::format(1234567, $currency));
+        $this->assertEquals('12345.67', MoneyHelper::getValue(1234567, $currency));
+        $this->assertEquals(12345.67, MoneyHelper::exchangeValue(1234567, $currency));
+    }
+
+    /** @test */
+    public function it_parse_an_input_value()
+    {
+        $currency = new Currency();
+        $currency->iso = 'EUR';
+
+        $this->assertEquals(50000, MoneyHelper::parseInput('500.00', $currency));
+        $this->assertEquals(503829, MoneyHelper::parseInput('5038.29', $currency));
     }
 }

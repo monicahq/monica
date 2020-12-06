@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ExportAccount extends BaseService
 {
+    /** @var string */
     protected $tempFileName;
 
     /**
@@ -562,6 +563,7 @@ SET FOREIGN_KEY_CHECKS=0;
             'in_debt',
             'status',
             'amount',
+            'currency_id',
             'reason',
             'created_at',
             'updated_at',
@@ -675,7 +677,8 @@ SET FOREIGN_KEY_CHECKS=0;
             'name',
             'comment',
             'url',
-            'value',
+            'amount',
+            'currency_id',
             'status',
             'date',
             'created_at',

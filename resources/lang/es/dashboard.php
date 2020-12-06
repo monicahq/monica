@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'dashboard_blank_title' => '¡Bienvenido/a a tu cuenta!',
     'dashboard_blank_description' => 'Monica es el lugar donde organizar todas las interacciones con los que te importan.',

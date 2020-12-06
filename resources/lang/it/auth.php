@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     /*
@@ -17,6 +23,7 @@ return [
     'throttle' => 'Troppi tentativi di accesso. Ti preghiamo di ritentare in :seconds secondi.',
     'not_authorized' => 'Non sei autorizzato a eseguire questa azione.',
     'signup_disabled' => 'La registrazione è al momento disattivata',
+    'signup_error' => 'An error occured trying to register the user',
     'back_homepage' => 'Ritorna alla Home',
     'mfa_auth_otp' => 'Autenticati con il tuo dispositivo secondo fattore',
     'mfa_auth_webauthn' => 'Autenticazione con una chiave di sicurezza (WebAuthn)',
@@ -71,7 +78,7 @@ return [
     'confirmation_title' => 'Verifica il tuo indirizzo Email',
     'confirmation_fresh' => 'Un nuovo link di verifica è stato mandato al tuo indirizzo email.',
     'confirmation_check' => 'Prima di procedere, controlla il link che ti abbiamo mandato al tuo indirizzo email.',
-    'confirmation_request_another' => 'If you did not receive the email <a :action>click here to request another</a>.',
+    'confirmation_request_another' => 'Se non hai ricevuto l\'email <a :action>clicca qui per richiederne un\'altra</a>.',
 
     'confirmation_again' => 'Se vuoi cambiare il tuo indirizzo email <a href=":url" class="alert-link">clicca qui</a>.',
     'email_change_current_email' => 'Indirizzo email attuale:',

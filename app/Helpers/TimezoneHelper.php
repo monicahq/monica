@@ -4,7 +4,6 @@ namespace App\Helpers;
 
 use DateTimeZone;
 use function Safe\substr;
-use Illuminate\Support\Arr;
 
 class TimezoneHelper
 {
@@ -35,9 +34,9 @@ class TimezoneHelper
 
         $result = [];
         foreach ($collect as $item) {
-            $values = array_values(Arr::sort($item, function ($value) {
+            $values = $item->sortByCollator(function ($value) {
                 return $value['name'];
-            }));
+            });
             foreach ($values as $val) {
                 array_push($result, $val);
             }
@@ -87,6 +86,7 @@ class TimezoneHelper
     /**
      * Equivalent timezone to convert deprecated timezone.
      *
+     * @var array<string>
      * @see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
      */
     protected static $equivalentTimezone = [

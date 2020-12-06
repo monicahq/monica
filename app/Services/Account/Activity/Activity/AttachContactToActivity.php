@@ -53,6 +53,7 @@ class AttachContactToActivity extends BaseService
     {
         $this->validate($data);
 
+        /** @var Activity */
         $activity = Activity::find($data['activity_id']);
 
         $this->attach($data, $activity);

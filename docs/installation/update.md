@@ -89,16 +89,16 @@ There is one caveat with the SQL exporter: you can't get the photos you've uploa
 
 ### Importing SQL into Heroku
 
-If you're running your own Monica Heroku instance as mentioned in the [Heroku Installation Documentation](https://github.com/monicahq/monica/blob/master/docs/installation/heroku.md), you're not actually running your own SQL server, which means that the solutions above might not be of assitance.
+If you're running your own Monica Heroku instance as mentioned in the [Heroku Installation Documentation](https://github.com/monicahq/monica/blob/master/docs/installation/heroku.md), you're not actually running your own SQL server, which means that the solutions above might not be of assistance.
 
 Heroku dynos use a [ClearDB MySQL add-on](https://devcenter.heroku.com/articles/cleardb) as their database. You can still use an SQL admin tool (like phpMyAdmin or Sequel Pro) to interact with the database, as well as use the `mysql-client` command line tool, you just need to know where to look for the credentials. 
 
-If you open your app on the Heroku web interface, and click the "Settings" tabk, you'll have an option to reveal your configuration vars. Do so, and look for the `CLEARDB_DATABASE_URL` variable. It's format should look like this:
+If you open your app on the Heroku web interface, and click the "Settings" tab, you'll have an option to reveal your configuration vars. Do so, and look for the `CLEARDB_DATABASE_URL` variable. It's format should look like this:
 
 `mysql://<USERNAME>:<PASSWORD>@<HOST>/<DATABASE>?reconnect=true`
 
 Which are the database's `HOST` URL, its name (i.e. `DATABASE`)  and your `USERNAME` and `PASSWORD`.
-The `HOST` should be the region where the databse is located (i.e. `us-cdbr-iron-east-01.cleardb.net`), the `DATABASE` should be prepended with `heroku_` (i.e. `heroku_xxxx`) and the `USERNAME` and `PASSWORD` should be strings of alphanumeric characters.
+The `HOST` should be the region where the database is located (i.e. `us-cdbr-iron-east-01.cleardb.net`), the `DATABASE` should be prepended with `heroku_` (i.e. `heroku_xxxx`) and the `USERNAME` and `PASSWORD` should be strings of alphanumeric characters.
 
 Now that you have the database's URL and access credentials, you can log into the database from your favorite database management tool. If you'd like to use a command-line tool, here are the step by step instructions for debian-based (e.g. Ubuntu) Linux:
 
@@ -106,7 +106,7 @@ Now that you have the database's URL and access credentials, you can log into th
 
 1. **Update your Monica instance to the same version as the one you're importing into.** This will prevent nasty SQL mismatches later on.
 2. Download your export file as explained above. Make sure you remember the username and password of the instance you **exported from**, as those will be your new sign-in information for the instance you're **importing into**.
-3. Get `mysql-client` by `sudo apt-get install mysql-client`. Note you might need to first add the relevant repositry using the instructions [here](https://downloads.mariadb.org/mariadb/repositories/#mirror=kku) (although don't follow them all the way, or you'll get a full running server on your own machine). If you're going to follow the scripted truncatiobn listed on the steps below, you'll need access to the MySQL socket, which is only available if you also installed `mysql-server`. You can do so by `sudo apt-get install mysql-server`. 
+3. Get `mysql-client` by `sudo apt-get install mysql-client`. Note you might need to first add the relevant repository using the instructions [here](https://downloads.mariadb.org/mariadb/repositories/#mirror=kku) (although don't follow them all the way, or you'll get a full running server on your own machine). If you're going to follow the scripted truncation listed on the steps below, you'll need access to the MySQL socket, which is only available if you also installed `mysql-server`. You can do so by `sudo apt-get install mysql-server`. 
 4. Connect to your database - `mysql --host=<HOST> --user=<USERNAME> --password=<PASSWORD> --reconnect <DATABASE>`. You should see something like this in your terminal:
 
 ```
@@ -115,7 +115,7 @@ Reading table information for completion of table and column names
 You can turn off this feature to get a quicker startup with -A
 ```
 
-We are indeed using the password on the CLI, so disregard the warning. The `Reading table....` part should only take 10-20 seconds or so, wait it out. After that you should be prompted by your instllation's MySQL database:
+We are indeed using the password on the CLI, so disregard the warning. The `Reading table....` part should only take 10-20 seconds or so, wait it out. After that you should be prompted by your installation's MySQL database:
 
 ```
 Welcome to the MySQL monitor.  Commands end with ; or \g.
@@ -160,11 +160,11 @@ ERROR 2006 (HY000): MySQL server has gone away
 No connection. Trying to reconnect...
 ```
 
-This is prefectly fine, and the reason behind the `--reconnect` flag you saw earlier.
+This is perfectly fine, and the reason behind the `--reconnect` flag you saw earlier.
 
 6. **DANGER: This will delete all the things.** Make sure you're not connected to the database anymore (i.e. you entered `quit` and got back to your own machine). 
 
-Empty out all tables by running the following few lines of code (slightly modified from [this SO question](https://stackoverflow.com/questions/1912813/truncate-all-tables-in-a-mysql-database-in-one-command)), where all the credentials are the samen as mentioned earlier. You can also copy and paste it into a `.sh` file, `chmod 777 <FILE_NAME>` and then run it by `./<FILE_NAME>`.
+Empty out all tables by running the following few lines of code (slightly modified from [this SO question](https://stackoverflow.com/questions/1912813/truncate-all-tables-in-a-mysql-database-in-one-command)), where all the credentials are the same as mentioned earlier. You can also copy and paste it into a `.sh` file, `chmod 777 <FILE_NAME>` and then run it by `./<FILE_NAME>`.
 
 ```
 # USAGE: mysql_run_query <QUERY>

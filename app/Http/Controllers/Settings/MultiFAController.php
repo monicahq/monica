@@ -13,10 +13,14 @@ class MultiFAController extends Controller
 {
     use RedirectsUsers, JsonRespondController;
 
+    /**
+     * @var string
+     */
     protected $redirectTo = '/settings/security';
 
     /**
      * Session var name to store secret code.
+     * @var string
      */
     private $SESSION_TFA_SECRET = '2FA_secret';
 
@@ -88,6 +92,7 @@ class MultiFAController extends Controller
      */
     public function disableTwoFactor(Request $request)
     {
+        // @phpstan-ignore-next-line
         return view('settings.security.2fa-disable');
     }
 

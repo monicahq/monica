@@ -37,7 +37,8 @@
             :id="'first_name'"
             :input-type="'text'"
             :required="true"
-            :title="'{{ trans('people.people_add_firstname') }}'">
+            :title="'{{ trans('people.people_add_firstname') }}'"
+            :value="'{{ $firstName }}'">
           </form-input>
         </div>
 
@@ -55,7 +56,8 @@
             :id="'last_name'"
             :input-type="'text'"
             :required="false"
-            :title="'{{ trans('people.people_add_lastname') }}'">
+            :title="'{{ trans('people.people_add_lastname') }}'"
+            :value="'{{ $lastName }}'">
           </form-input>
         </div>
 
@@ -75,7 +77,8 @@
             :id="'last_name'"
             :input-type="'text'"
             :required="false"
-            :title="'{{ trans('people.people_add_lastname') }}'">
+            :title="'{{ trans('people.people_add_lastname') }}'"
+            :value="'{{ $lastName }}'">
           </form-input>
         </div>
 
@@ -84,7 +87,8 @@
             :id="'first_name'"
             :input-type="'text'"
             :required="true"
-            :title="'{{ trans('people.people_add_firstname') }}'">
+            :title="'{{ trans('people.people_add_firstname') }}'"
+            :value="'{{ $firstName }}'">
           </form-input>
         </div>
 

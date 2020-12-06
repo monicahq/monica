@@ -425,6 +425,9 @@ class UserTest extends TestCase
         config(['monica.signup_double_optin' => true]);
         Notification::fake();
 
+        // Creating a fake account
+        factory(Account::class)->create();
+
         $user = factory(User::class)->create([]);
         $user->sendEmailVerificationNotification();
 

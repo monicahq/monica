@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'journal_rate' => 'Hoe was je dag? Je kunt hem eens per dag beoordelen.',
     'journal_come_back' => 'Bedankt. Kom morgen terug om je dag opnieuw te beoordelen.',

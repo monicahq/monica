@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     /*
@@ -17,12 +23,13 @@ return [
     'throttle' => 'Слишком много попыток входа. Пожалуйста, попробуйте еще раз через :seconds секунд.',
     'not_authorized' => 'Вам не разрешено выполнять это действие.',
     'signup_disabled' => 'Регистрация сейчас выключена.',
+    'signup_error' => 'Произошла ошибка при регистрации пользователя',
     'back_homepage' => 'Вернуться на главную страницу',
     'mfa_auth_otp' => 'Authenticate with your two factor device',
     'mfa_auth_webauthn' => 'Authenticate with a security key (WebAuthn)',
-    '2fa_title' => 'Two Factor Authentication',
+    '2fa_title' => 'Двухфакторная аутентификация',
     '2fa_wrong_validation' => 'The two factor authentication has failed.',
-    '2fa_one_time_password' => 'Two factor authentication code',
+    '2fa_one_time_password' => 'Код двухфакторной аутентификации',
     '2fa_recuperation_code' => 'Enter a two factor recovery code',
     '2fa_otp_help' => 'Open up your two factor authentication mobile app and copy the code',
 
@@ -30,14 +37,14 @@ return [
     'login_with_recovery' => 'Login with a recovery code',
     'login_again' => 'Please login again to your account',
     'email' => 'Email',
-    'password' => 'Password',
+    'password' => 'Пароль',
     'recovery' => 'Recovery code',
     'login' => 'Login',
-    'button_remember' => 'Remember Me',
-    'password_forget' => 'Forget your password?',
+    'button_remember' => 'Запомнить меня',
+    'password_forget' => 'Забыли пароль?',
     'password_reset' => 'Reset your password',
     'use_recovery' => 'Or you can use a <a href=":url">recovery code</a>',
-    'signup_no_account' => 'Don’t have an account?',
+    'signup_no_account' => 'Нет аккаунта?',
     'signup' => 'Sign up',
     'create_account' => 'Create the first account by <a href=":url">signing up</a>',
     'change_language_title' => 'Изменить язык:',
@@ -52,7 +59,7 @@ return [
     'password_reset_email_content' => 'Click here to reset your password:',
 
     'register_title_welcome' => 'Welcome to your newly installed Monica instance',
-    'register_create_account' => 'You need to create an account to use Monica',
+    'register_create_account' => 'Для использования Monica вам нужно создать аккаунт',
     'register_title_create' => 'Create your Monica account',
     'register_login' => '<a href=":url">Log in</a> if you already have an account.',
     'register_email' => 'Enter a valid email address',
@@ -62,7 +69,7 @@ return [
     'register_lastname' => 'Фамилия',
     'register_lastname_example' => 'например, Иванов',
     'register_password' => 'Пароль',
-    'register_password_example' => 'Enter a secure password',
+    'register_password_example' => 'Введите сложный пароль',
     'register_password_confirmation' => 'Password confirmation',
     'register_action' => 'Register',
     'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url" hreflang=":hreflang">Privacy Policy</a> and <a href=":urlterm" hreflang=":hreflang">Terms of use</a>.',

@@ -28,6 +28,10 @@ import VueClipboard from 'vue-clipboard2';
 VueClipboard.config.autoSetContainer = true;
 Vue.use(VueClipboard);
 
+// Dependency of vuejs-clipper
+import VueRx from 'vue-rx';
+Vue.use(VueRx);
+
 // Custom components
 Vue.component(
   'passport-clients',
@@ -293,6 +297,10 @@ Vue.component(
 Vue.component(
   'activity-types',
   require('./components/settings/ActivityTypes.vue').default
+);
+Vue.component(
+  'life-event-types',
+  require('./components/settings/LifeEventTypes.vue').default
 );
 Vue.component(
   'dav-resources',

@@ -73,6 +73,8 @@ class LifeEvent extends Model
 
     /**
      * Get the life event type record associated with the life event.
+     *
+     * @return BelongsTo
      */
     public function lifeEventType()
     {
@@ -81,6 +83,8 @@ class LifeEvent extends Model
 
     /**
      * Get the reminder record associated with the life event.
+     *
+     * @return BelongsTo
      */
     public function reminder()
     {

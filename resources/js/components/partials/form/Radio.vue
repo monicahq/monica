@@ -1,7 +1,7 @@
 <script>
-let input = require('./PInput').default;
+const input = require('./PInput').default;
 
-let radio = {
+const radio = {
   name: 'radio',
 
   input_type: 'radio',

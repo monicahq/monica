@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'sidebar_settings' => 'הגדרות חשבון',
     'sidebar_personalization' => 'התאמה אישית',
@@ -43,6 +49,8 @@ return [
     'name_order_firstname_nickname_lastname' => '<שם פרטי> (<כינוי>) <שם משפחה> - ישראל (שרוליק) ישראלי',
     'name_order_lastname_firstname_nickname' => '<שם משפחה> <שם פרטי> (<כינוי>) - ישראלי ישראל (שרוליק)',
     'name_order_lastname_nickname_firstname' => '<שם משפחה> (<כינוי>) <שם פרטי> - ישראלי (שרוליק) ישראל',
+    'name_order_nickname_firstname_lastname' => '<כינוי>‏ (<שם פרטי> <שם משפחה>) - סחבק (ישראל ישראלי)',
+    'name_order_nickname_firstname_lastname' => '<כינוי>‏ (<שם משפחה> <שם פרטי>) - סחבק (ישראלי ישראל)',
     'name_order_nickname' => '<כינוי> - שרוליק',
     'currency' => 'מטבע',
     'name' => 'שמך: :name',
@@ -85,6 +93,7 @@ return [
     'locale_pt-BR' => 'פורטוגלית ברזילאית',
     'locale_ru' => 'רוסית',
     'locale_zh' => 'סינית מפושטת',
+    'locale_zh-TW' => 'סינית מסורתית',
     'locale_tr' => 'טורקית',
     'locale_en-GB' => 'אנגלית בריטית',
 
@@ -477,7 +486,7 @@ return [
     'dav_clipboard_copied' => 'הערך הועתק ללוח הגזירים שלך',
     'dav_url_base' => 'כתובת בסיס לכל המשאבים מסוג CardDAV ו־CalDAV:',
     'dav_connect_help' => 'ניתן להתחבר לאנשי הקשר ו/או ללוחות השנה שלך עם כתובת בסיס זו מהטלפון או המחשב שלך.',
-    'dav_connect_help2' => 'ניתן להשתמש בפרטי הכניסה שלך (דוא״ל) וססמה או ליצור אסימון API לטובת אימות.',
+    'dav_connect_help2' => 'עליך להשתמש בשם הכניסה שלך (כתובת דוא״ל) וליצור אסימון API בתור ססמה לאימות.',
     'dav_url_carddav' => 'כתובת CardDAV למשאבי אנשי קשר:',
     'dav_url_caldav_birthdays' => 'כתובת CalDAV למשאבי ימי הולדת:',
     'dav_url_caldav_tasks' => 'כתובת CalDAV עבור משאבי משימות:',

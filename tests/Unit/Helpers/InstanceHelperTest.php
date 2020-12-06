@@ -16,9 +16,9 @@ class InstanceHelperTest extends TestCase
     /** @test */
     public function it_gets_the_number_of_paid_subscribers()
     {
-        $account = factory(Account::class)->create(['stripe_id' => 'id292839']);
-        $account = factory(Account::class)->create();
-        $account = factory(Account::class)->create(['stripe_id' => 'id2sdf92839']);
+        factory(Account::class)->create(['stripe_id' => 'id292839']);
+        factory(Account::class)->create();
+        factory(Account::class)->create(['stripe_id' => 'id2sdf92839']);
 
         $this->assertEquals(
             2,
