@@ -6,9 +6,7 @@ use function Safe\mkdir;
 use Illuminate\Console\Command;
 use function Safe\file_put_contents;
 use Illuminate\Console\ConfirmableTrait;
-use App\Console\Commands\Helpers\CommandExecutor;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Console\Commands\Helpers\CommandExecutorInterface;
 
 class SentryRelease extends Command
 {
@@ -55,18 +53,10 @@ class SentryRelease extends Command
     private const SENTRY_URL = 'https://sentry.io/get-cli/';
 
     /**
-     * The Command Executor.
-     *
-     * @var CommandExecutorInterface
-     */
-    public $commandExecutor;
-
-    /**
      * Create a new command.
      */
     public function __construct()
     {
-        $this->commandExecutor = new CommandExecutor($this);
         $this->install_dir = env('SENTRY_ROOT', getenv('HOME').'/.local/bin');
         parent::__construct();
     }
@@ -88,7 +78,7 @@ class SentryRelease extends Command
                     (is_dir(__DIR__.'/../../../.git') ? trim(exec('git log --pretty="%H" -n1 HEAD')) : $release);
 
             // Sentry update
-            $this->commandExecutor->exec('Update sentry', $this->getSentryCli().' update');
+            $this->exec('Update sentry', $this->getSentryCli().' update');
 
             // Create a release
             $this->execSentryCli('Create a release', 'releases new '.$release.' --finalize --project '.config('sentry-release.project'));
@@ -138,7 +128,7 @@ class SentryRelease extends Command
     {
         if (! file_exists($this->install_dir.'/'.self::SENTRY_CLI)) {
             mkdir($this->install_dir, 0777, true);
-            $this->commandExecutor->exec('Downloading sentry-cli', 'curl -sL '.self::SENTRY_URL.' | INSTALL_DIR='.$this->install_dir.' bash');
+            $this->exec('Downloading sentry-cli', 'curl -sL '.self::SENTRY_URL.' | INSTALL_DIR='.$this->install_dir.' bash');
         }
 
         return $this->install_dir.'/'.self::SENTRY_CLI;
@@ -146,6 +136,6 @@ class SentryRelease extends Command
 
     private function execSentryCli($message, $command)
     {
-        $this->commandExecutor->exec($message, $this->getSentryCli().' '.$command);
+        $this->exec($message, $this->getSentryCli().' '.$command);
     }
 }
