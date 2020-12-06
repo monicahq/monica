@@ -164,6 +164,7 @@ class AddressBookGetter extends BaseService
                 }
             }
         }
+
         return null;
     }
 

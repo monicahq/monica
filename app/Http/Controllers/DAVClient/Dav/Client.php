@@ -5,8 +5,8 @@ namespace App\Http\Controllers\DAVClient\Dav;
 use GuzzleHttp\Pool;
 use Sabre\DAV\Xml\Service;
 use Illuminate\Support\Arr;
-use GuzzleHttp\Psr7\Request;
 use function Safe\parse_url;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
 use function Safe\dns_get_record;
 use Sabre\DAV\Xml\Request\PropPatch;
@@ -151,11 +151,9 @@ class Client
                     return ($https ? 'https' : 'http').'://'.$target.(is_null($port) ? '' : ':'.$port);
                 }
             }
-        }
-        catch (\Safe\Exceptions\UrlException $e) {
+        } catch (\Safe\Exceptions\UrlException $e) {
             // catch exception and return null
-        }
-        catch (\Safe\Exceptions\NetworkException $e) {
+        } catch (\Safe\Exceptions\NetworkException $e) {
             // catch exception and return null
         }
 
