@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Carbon\Carbon;
+use function Safe\date;
 use function Safe\strtotime;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
