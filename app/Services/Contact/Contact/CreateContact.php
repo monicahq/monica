@@ -89,7 +89,7 @@ class CreateContact extends BaseService
         $this->updateBirthDayInformation($data, $contact);
 
         $this->updateDeceasedInformation($data, $contact);
-        
+
         $this->generateUUID($contact);
 
         $this->addAvatars($contact);

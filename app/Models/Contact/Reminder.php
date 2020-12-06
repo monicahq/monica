@@ -122,7 +122,7 @@ class Reminder extends Model
         }
 
         if (is_null($calendarType)) {
-            $calendarType = $this->calendar_type?$this->calendar_type:'solar';
+            $calendarType = $this->calendar_type ? $this->calendar_type : 'solar';
             $date = DateHelper::convertToSolarCalendarDate($date, $calendarType);
         }
 

@@ -77,9 +77,9 @@ class UpdateBirthdayInformation extends BaseService
             ->findOrFail($data['contact_id']);
 
         $this->clearRelatedReminder($contact);
-        
+
         $this->clearRelatedSpecialDate($contact);
-        
+
         $this->manageBirthday($data, $contact);
 
         return $contact;
