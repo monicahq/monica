@@ -40,6 +40,7 @@ class SearchHelper
                     ['contact_field_type_id', $field_id],
                 ]);
             });
+
             return $b->orderBy($orderByColumn, $orderByDirection);
         }
 

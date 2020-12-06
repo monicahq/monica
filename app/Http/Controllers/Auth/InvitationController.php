@@ -103,6 +103,7 @@ class InvitationController extends Controller
         $guard->login($user);
 
         $this->registered($request, $user);
+
         return redirect($this->redirectPath());
     }
 
