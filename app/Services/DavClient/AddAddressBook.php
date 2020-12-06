@@ -57,15 +57,15 @@ class AddAddressBook extends BaseService
 
         $lastId = 0;
         if ($lastAddressBook) {
-            $lastId = intval(preg_replace('/\w+(\d+)/i', '$1', $lastAddressBook->addressBookId));
+            $lastId = intval(preg_replace('/\w+(\d+)/i', '$1', $lastAddressBook->name));
         }
-        $nextAddressBookId = 'contacts'.($lastId + 1);
+        $nextAddressBookName = 'contacts'.($lastId + 1);
 
         $addressbook = AddressBook::create([
             'account_id' => $data['account_id'],
             'user_id' => $data['user_id'],
-            'addressBookId' => $nextAddressBookId,
-            'name' => $addressbookData['name'],
+            'name' => $nextAddressBookName,
+            'description' => $addressbookData['name'],
         ]);
         $subscription = AddressBookSubscription::create([
             'account_id' => $data['account_id'],
