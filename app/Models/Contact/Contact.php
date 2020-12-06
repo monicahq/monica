@@ -484,7 +484,7 @@ class Contact extends Model
      * @param string $order
      * @return Builder
      */
-    public function sortedByLastActivity(Builder $builder, string $order): Builder
+    private function sortedByLastActivity(Builder $builder, string $order): Builder
     {
         $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
         $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
