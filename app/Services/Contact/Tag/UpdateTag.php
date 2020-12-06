@@ -33,6 +33,7 @@ class UpdateTag extends BaseService
     {
         $this->validate($data);
 
+        /** @var Tag */
         $tag = Tag::where('account_id', $data['account_id'])
                             ->findOrFail($data['tag_id']);
 

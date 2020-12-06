@@ -10,8 +10,8 @@ trait DAVFormat
      * @param null|string $value
      * @return null|string
      */
-    private function formatValue($value)
+    private function formatValue(?string $value): ?string
     {
-        return ! empty($value) ? str_replace('\;', ';', trim((string) $value)) : null;
+        return ! empty($value) ? str_replace('\;', ';', trim($value)) : null;
     }
 }

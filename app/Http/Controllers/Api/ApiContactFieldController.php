@@ -101,7 +101,7 @@ class ApiContactFieldController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $contactFieldId)
+    public function destroy(Request $request, int $contactFieldId)
     {
         try {
             app(DestroyContactField::class)->execute([
@@ -116,7 +116,7 @@ class ApiContactFieldController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $contactFieldId);
+        return $this->respondObjectDeleted($contactFieldId);
     }
 
     /**

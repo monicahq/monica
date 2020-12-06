@@ -2,6 +2,7 @@
 
 use App\Models\User\User;
 use App\Models\Settings\Currency;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 
 class RemoveDuplicateCurrency extends Migration

@@ -118,7 +118,7 @@ class ApiReminderController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $reminderId)
+    public function destroy(Request $request, int $reminderId)
     {
         try {
             app(DestroyReminder::class)->execute([
@@ -133,7 +133,7 @@ class ApiReminderController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $reminderId);
+        return $this->respondObjectDeleted($reminderId);
     }
 
     /**

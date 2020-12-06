@@ -3,7 +3,6 @@
 namespace App\Models\Contact;
 
 use DateTime;
-use Carbon\Carbon;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
@@ -12,6 +11,7 @@ use App\Models\Journal\Entry;
 use function Safe\preg_split;
 use App\Helpers\StorageHelper;
 use App\Helpers\WeatherHelper;
+use Illuminate\Support\Carbon;
 use App\Models\Account\Account;
 use App\Models\Account\Weather;
 use App\Models\Account\Activity;
@@ -35,12 +35,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /**
+ * @method static \Illuminate\Database\Eloquent\Builder search()
  * @property \App\Models\Instance\SpecialDate|null $birthdate
  */
 class Contact extends Model
 {
     use Searchable;
 
+    /** @var array<string> */
     protected $dates = [
         'last_talked_to',
         'last_consulted_at',
@@ -49,7 +51,11 @@ class Contact extends Model
         'updated_at',
     ];
 
-    // The list of columns we want the Searchable trait to use.
+    /**
+     * The list of columns we want the Searchable trait to use.
+     *
+     * @var array<string>
+     */
     protected $searchable_columns = [
         'first_name',
         'middle_name',
@@ -59,7 +65,11 @@ class Contact extends Model
         'job',
     ];
 
-    // The list of columns we want the Searchable trait to select.
+    /**
+     * The list of columns we want the Searchable trait to select.
+     *
+     * @var array<string>
+     */
     protected $return_from_search = [
         'id',
         'first_name',
@@ -83,7 +93,7 @@ class Contact extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'first_name',
@@ -114,6 +124,8 @@ class Contact extends Model
 
     /**
      * Eager load account with every contact.
+     *
+     * @var array<string>
      */
     protected $with = [
         'account',

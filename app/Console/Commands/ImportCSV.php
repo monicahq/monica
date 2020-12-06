@@ -90,8 +90,8 @@ class ImportCSV extends Command
 
         $first = true;
         $imported = 0;
+        $handle = fopen($file, 'r');
         try {
-            $handle = fopen($file, 'r');
             while (($data = fgetcsv($handle)) !== false) {
                 // don't import the columns
                 if ($first) {

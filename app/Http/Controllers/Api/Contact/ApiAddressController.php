@@ -119,7 +119,7 @@ class ApiAddressController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $addressId)
+    public function destroy(Request $request, int $addressId)
     {
         try {
             app(DestroyAddress::class)->execute([
@@ -134,7 +134,7 @@ class ApiAddressController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $addressId);
+        return $this->respondObjectDeleted($addressId);
     }
 
     /**
