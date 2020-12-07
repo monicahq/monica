@@ -120,7 +120,7 @@ class AddressBookGetter extends BaseService
 
         if (is_null($prop) || count($prop) == 0) {
             throw new DavClientException('Server does not support rfc 5397 section 3 (DAV:current-user-principal)');
-        } else if (is_string($prop)) {
+        } elseif (is_string($prop)) {
             return $prop;
         }
 
@@ -139,7 +139,7 @@ class AddressBookGetter extends BaseService
 
         if (is_null($prop) || count($prop) == 0) {
             throw new DavClientException('Server does not support rfc 6352 section 7.1.1 (CARD:addressbook-home-set)');
-        } else if (is_string($prop)) {
+        } elseif (is_string($prop)) {
             return $prop;
         }
 
