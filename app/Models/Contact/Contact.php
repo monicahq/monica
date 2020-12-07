@@ -189,9 +189,9 @@ class Contact extends Model
     /**
      * Get the list of contacts from the same address book as this contact.
      *
-     * @return HasMany|null
+     * @return HasMany<self>|null
      */
-    public function similarContactsInAddressBook()
+    public function similarContactsInAddressBook(): ?HasMany
     {
         if ($this->account) {
             if ($this->addressBook) {
@@ -200,6 +200,7 @@ class Contact extends Model
 
             return $this->account->addressBookContacts();
         }
+        return null;
     }
 
     /**

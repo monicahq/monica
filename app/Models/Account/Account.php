@@ -34,6 +34,7 @@ use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ReminderOutbox;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
+use Illuminate\Database\Eloquent\Builder;
 use App\Models\Contact\LifeEventCategory;
 use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
@@ -100,7 +101,7 @@ class Account extends Model
      * Get the addressBook's contacts.
      *
      * @param string|null $addressBookName
-     * @return HasMany
+     * @return HasMany<Contact>
      */
     public function addressBookContacts(string $addressBookName = null)
     {

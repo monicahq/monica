@@ -142,16 +142,16 @@ trait SyncDAVBackend
      *
      * The limit is 'suggestive'. You are free to ignore it.
      *
-     * @param string $collectionId
+     * @param string $calendarId
      * @param string $syncToken
      * @return array|null
      */
-    public function getChanges($collectionId, $syncToken): ?array
+    public function getChanges($calendarId, $syncToken): ?array
     {
         $token = null;
         $timestamp = null;
         if (! empty($syncToken)) {
-            $token = $this->getSyncToken($collectionId, $syncToken);
+            $token = $this->getSyncToken($calendarId, $syncToken);
 
             if (is_null($token)) {
                 // syncToken is not recognized
@@ -161,7 +161,7 @@ trait SyncDAVBackend
             $timestamp = $token->timestamp;
         }
 
-        $objs = $this->getObjects($collectionId);
+        $objs = $this->getObjects($calendarId);
 
         $modified = $objs->filter(function ($obj) use ($timestamp) {
             return ! is_null($timestamp) &&
@@ -174,7 +174,7 @@ trait SyncDAVBackend
         });
 
         return [
-            'syncToken' => $this->refreshSyncToken($collectionId)->id,
+            'syncToken' => $this->refreshSyncToken($calendarId)->id,
             'added' => $added->map(function ($obj) {
                 return $this->encodeUri($obj);
             })->values()->toArray(),
