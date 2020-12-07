@@ -231,7 +231,7 @@ class AddressBookSynchronizer
 
                 return [];
             },
-        ])->promise();
+        ]);
     }
 
     /**
@@ -271,7 +271,7 @@ class AddressBookSynchronizer
                     Log::warning(__CLASS__.' pushContacts: wrong etag. Expected '.$requests[$index]['etag'].', get '.$etags[0]);
                 }
             },
-        ])->promise();
+        ]);
     }
 
     /**

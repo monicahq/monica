@@ -14,7 +14,6 @@ use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Promise\PromisorInterface;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 
 class Client
@@ -454,7 +453,7 @@ class Client
      * @param string $property
      * @param string $url
      *
-     * @return string|array|null
+     * @return string|array<array>|null
      */
     public function getProperty(string $property, string $url = '')
     {
@@ -618,7 +617,7 @@ class Client
      *
      * @return ResponseInterface
      *
-     * @throws ClientException, in case a curl error occurred
+     * @throws \GuzzleHttp\Exception\ClientException in case a curl error occurred
      */
     public function request(string $method, string $url = '', array $headers = [], $body = null, array $options = []): ResponseInterface
     {
@@ -635,7 +634,7 @@ class Client
      *
      * @return PromiseInterface
      *
-     * @throws ClientException, in case a curl error occurred
+     * @throws \GuzzleHttp\Exception\ClientException in case a curl error occurred
      */
     public function requestAsync(string $method, string $url = '', array $headers = [], $body = null, array $options = []): PromiseInterface
     {
@@ -643,15 +642,16 @@ class Client
     }
 
     /**
-     * Create.
+     * Create multiple request in parallel.
+     *
      * @param array $requests
      * @param array $config
      *
-     * @return PromisorInterface
+     * @return PromiseInterface
      */
-    public function requestPool(array $requests, array $config = []): PromisorInterface
+    public function requestPool(array $requests, array $config = []): PromiseInterface
     {
-        return new Pool($this->client, $requests, $config);
+        return (new Pool($this->client, $requests, $config))->promise();
     }
 
     /**

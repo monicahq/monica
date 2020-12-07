@@ -235,17 +235,17 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Returns the contact for the specific uuid.
      *
-     * @param mixed|null $addressBookId
+     * @param mixed|null $collectionId
      * @param string  $uuid
      * @return Contact
      */
-    public function getObjectUuid($addressBookId, $uuid)
+    public function getObjectUuid($collectionId, $uuid)
     {
         $addressBook = null;
-        if ($addressBookId && $addressBookId != $this->backendUri()) {
+        if ($collectionId && $collectionId != $this->backendUri()) {
             $addressBook = AddressBook::where([
                 'account_id' => $this->user->account_id,
-                'name' => $addressBookId,
+                'name' => $collectionId,
             ])->first();
         }
 
