@@ -100,7 +100,7 @@ class NotifyUserAboutReminderTest extends TestCase
         Notification::assertSentTo(
             $user,
             UserNotified::class,
-            function ($notification, $channels) use ($reminderOutbox, $reminder, $user, $contact) {
+            function ($notification, $channels) use ($reminder, $user, $contact) {
                 $mailData = $notification->toMail($user)->toArray();
                 $this->assertEquals("Reminder for {$contact->name}", $mailData['subject']);
                 $this->assertEquals("Hi {$user->first_name}", $mailData['greeting']);

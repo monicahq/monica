@@ -98,10 +98,13 @@ class InvitationController extends Controller
 
         $invitation->delete();
 
-        Auth::guard()->login($user);
+        /** @var \Illuminate\Contracts\Auth\StatefulGuard */
+        $guard = Auth::guard();
+        $guard->login($user);
 
-        return $this->registered($request, $user)
-                        ?: redirect($this->redirectPath());
+        $this->registered($request, $user);
+
+        return redirect($this->redirectPath());
     }
 
     /**
@@ -136,6 +139,7 @@ class InvitationController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $user
+     * @return void
      */
     protected function registered(Request $request, $user)
     {

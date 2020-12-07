@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'sidebar_settings' => 'アカウントの設定',
     'sidebar_personalization' => 'Personalization',
@@ -334,7 +340,7 @@ return [
     'api_authorized_clients_name' => 'Name',
     'api_authorized_clients_scopes' => 'Scopes',
 
-    'personalization_tab_title' => 'Personalize your account',
+    'personalization_tab_title' => 'アカウントをカスタマイズ',
 
     'personalization_title' => 'Here you can find different settings to configure your account. These features are more for “power users” who want maximum control over Monica.',
     'personalization_contact_field_type_title' => 'Contact field types',
@@ -480,7 +486,7 @@ return [
     'dav_clipboard_copied' => 'Value copied into your clipboard',
     'dav_url_base' => 'Base url for all CardDAV and CalDAV resources:',
     'dav_connect_help' => 'You can connect your contacts and/or calendars with this base url on you phone or computer.',
-    'dav_connect_help2' => 'Use your login (email) and password, or create an API token to authenticate.',
+    'dav_connect_help2' => 'Use your login (email) and create an API token as the password to authenticate.',
     'dav_url_carddav' => 'CardDAV url for Contacts resource:',
     'dav_url_caldav_birthdays' => 'CalDAV url for Birthdays resources:',
     'dav_url_caldav_tasks' => 'CalDAV url for Tasks resources:',

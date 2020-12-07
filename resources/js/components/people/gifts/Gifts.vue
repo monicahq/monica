@@ -176,7 +176,7 @@ export default {
     },
 
     filteredGifts() {
-      let vm = this;
+      const vm = this;
       return this.gifts.filter(gift => gift.status == vm.activeTab);
     },
   },

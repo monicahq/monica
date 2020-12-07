@@ -31,6 +31,7 @@ class DeleteMeContact extends BaseService
     {
         $this->validate($data);
 
+        /** @var User */
         $user = User::where('account_id', $data['account_id'])
             ->findOrFail($data['user_id']);
 

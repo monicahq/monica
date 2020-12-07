@@ -29,7 +29,7 @@ class Document extends Model
      * @var array
      */
     protected $casts = [
-        'number_of_downloads' => 'number',
+        'number_of_downloads' => 'integer',
     ];
 
     /**

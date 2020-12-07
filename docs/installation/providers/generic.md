@@ -1,19 +1,19 @@
 # Installing Monica (Generic) <!-- omit in toc -->
 
--   [Prerequisites](#prerequisites)
-    -   [Types of databases](#types-of-databases)
--   [Installation steps](#installation-steps)
-    -   [1. Clone the repository](#1-clone-the-repository)
-    -   [2. Setup the database](#2-setup-the-database)
-    -   [3. Configure Monica](#3-configure-monica)
-    -   [4. Configure cron job](#4-configure-cron-job)
-    -   [5. Configure Apache webserver](#5-configure-apache-webserver)
-    -   [6. Optional: Setup the queues with Redis, Beanstalk or Amazon SQS](#6-optional-setup-the-queues-with-redis-beanstalk-or-amazon-sqs)
-    -   [7. Optional: Setup the access tokens to use the API](#7-optional-setup-the-access-tokens-to-use-the-api)
-        -   [Generate the encryption keys](#generate-the-encryption-keys)
-        -   [Optional: Save the encryption keys as variable](#optional-save-the-encryption-keys-as-variable)
-        -   [Optional: Generate a Password grant client](#optional-generate-a-password-grant-client)
-    -   [Final step](#final-step)
+- [Prerequisites](#prerequisites)
+  - [Types of databases](#types-of-databases)
+- [Installation steps](#installation-steps)
+  - [1. Clone the repository](#1-clone-the-repository)
+  - [2. Setup the database](#2-setup-the-database)
+  - [3. Configure Monica](#3-configure-monica)
+  - [4. Configure cron job](#4-configure-cron-job)
+  - [5. Configure Apache webserver](#5-configure-apache-webserver)
+  - [6. Optional: Setup the queues with Redis, Beanstalk or Amazon SQS](#6-optional-setup-the-queues-with-redis-beanstalk-or-amazon-sqs)
+  - [7. Optional: Setup the access tokens to use the API](#7-optional-setup-the-access-tokens-to-use-the-api)
+    - [Generate the encryption keys](#generate-the-encryption-keys)
+    - [Optional: Save the encryption keys as variable](#optional-save-the-encryption-keys-as-variable)
+    - [Optional: Generate a Password grant client](#optional-generate-a-password-grant-client)
+  - [Final step](#final-step)
 
 ## Prerequisites
 
@@ -29,21 +29,23 @@ If you don't want to use Docker, the best way to setup the project is to use the
 
 **PHP:** Install php7.2 minimum, with these extensions:
 
--   curl
 -   bcmath
+-   curl
+-   dom
 -   gd
 -   gmp
 -   iconv
 -   intl
 -   json
--   pdo_mysql
 -   mbstring
 -   mysqli
 -   opcache
+-   pdo_mysql
 -   redis
 -   sodium
 -   xml
 -   zip
+-   imagick
 
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager. It is not enough to just install Composer, you also need to make sure it is installed globally for Monica's installation to run smoothly:
 
@@ -76,7 +78,7 @@ You should check out a tagged version of Monica since `master` branch may not al
 
 ```sh
 cd /var/www/monica
-git checkout tags/v2.2.1
+git checkout tags/v2.18.0
 ```
 
 ### 2. Setup the database
@@ -149,7 +151,7 @@ crontab -u www-data -e
 2. Then, in the text editor window you just opened, copy the following:
 
 ```
-* * * * *   /usr/bin/php /var/www/monica/artisan schedule:run
+* * * * *   /usr/bin/php /var/www/monica/artisan schedule:run >> /dev/null 2>&1
 ```
 
 ### 5. Configure Apache webserver
@@ -236,7 +238,7 @@ Some process monitor such as [Supervisor](https://laravel.com/docs/master/queues
 
 ### 7. Optional: Setup the access tokens to use the API
 
-In order to use the Monica API for your instance, you will have to instanciate encryption keys first.
+In order to use the Monica API for your instance, you will have to instantiate encryption keys first.
 
 #### Generate the encryption keys
 
@@ -298,8 +300,8 @@ Client secret: zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq
 
 -   Copy the two values into two new environment variables of your `.env` file:
 
-    -   The value of `Client ID` in a `MOBILE_CLIENT_ID` variable
-    -   The value of `Client secret` in a `MOBILE_CLIENT_SECRET` variable
+    -   The value of `Client ID` in a `PASSPORT_PERSONAL_ACCESS_CLIENT_ID` variable
+    -   The value of `Client secret` in a `PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET` variable
 
 -   OAuth login can be access on `http://localhost/oauth/login`.
 

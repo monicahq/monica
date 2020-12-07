@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'message' => 'Obrigado por se cadastrar! Por favor, verifique seus e-mails para confirmar seu endereço de e-mail.',
     'success' => 'Você verificou com sucesso sua conta! Agora você pode entrar.',

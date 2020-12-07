@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'yes' => 'はい',
     'no' => 'いいえ',
@@ -177,7 +183,7 @@ return [
     'relationship_type_child_with_name' => ':name’s son',
     'relationship_type_child_female_with_name' => ':name’s daughter',
 
-    'relationship_type_stepparent' => 'stepfather',
+    'relationship_type_stepparent' => '義父',
     'relationship_type_stepparent_female' => 'stepmother',
     'relationship_type_stepparent_with_name' => ':name’s stepfather',
     'relationship_type_stepparent_female_with_name' => ':name’s stepmother',
@@ -217,7 +223,7 @@ return [
     'relationship_type_cousin_with_name' => ':name’s cousin',
     'relationship_type_cousin_female_with_name' => ':name’s cousin',
 
-    'relationship_type_godfather' => 'godfather',
+    'relationship_type_godfather' => '名付け親',
     'relationship_type_godfather_female' => 'godmother',
     'relationship_type_godfather_with_name' => ':name’s godfather',
     'relationship_type_godfather_female_with_name' => ':name’s godmother',

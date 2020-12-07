@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     //index
@@ -41,7 +47,7 @@ return [
     'people_add_title' => '新しく人を作成する',
     'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => '名',
-    'people_add_middlename' => 'Middle name (Optional)',
+    'people_add_middlename' => 'ミドルネーム（オプション）',
     'people_add_lastname' => '姓（オプション）',
     'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => '追加',
@@ -124,7 +130,7 @@ return [
     'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Messages',
     'conversation_list_table_content' => 'Partial content (last message)',
-    'conversation_list_title' => 'Conversations',
+    'conversation_list_title' => '会話',
     'conversation_list_cta' => 'Log conversation',
 
     // age - birthday
@@ -141,12 +147,12 @@ return [
 
     // additional information
     'information_edit_success' => 'プロフィールを更新しました',
-    'information_edit_title' => 'Edit :name’s personal information',
+    'information_edit_title' => ':name の個人情報の編集',
     'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => '名',
     'information_edit_lastname' => 'Last name (Optional)',
-    'information_edit_description' => 'Description (Optional)',
+    'information_edit_description' => '説明 (任意)',
     'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_unknown' => '年齢は不明です',
     'information_edit_probably' => 'おそらく年齢は…',
@@ -210,9 +216,9 @@ return [
     'relationship_form_edit' => 'Edit an existing relationship',
     'relationship_form_is_with' => 'This person is...',
     'relationship_form_is_with_name' => ':name is...',
-    'relationship_form_add_choice' => 'Who is the relationship with?',
+    'relationship_form_add_choice' => '関係者を選んでください',
     'relationship_form_create_contact' => '新しく人を作成する',
-    'relationship_form_associate_contact' => 'An existing contact',
+    'relationship_form_associate_contact' => '連絡先から選ぶ',
     'relationship_form_associate_dropdown' => 'Search and select an existing contact from the dropdown below',
     'relationship_form_associate_dropdown_placeholder' => 'Search and select an existing contact',
     'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
@@ -227,7 +233,7 @@ return [
     'tasks_title' => 'タスク',
     'tasks_blank_title' => 'You don’t have any tasks yet.',
     'tasks_form_title' => 'Title',
-    'tasks_form_description' => 'Description (optional)',
+    'tasks_form_description' => '説明 (任意)',
     'tasks_add_task' => 'タスクの追加',
     'tasks_delete_success' => 'The task has been deleted successfully',
     'tasks_complete_success' => 'The task has changed status successfully',
@@ -292,7 +298,7 @@ return [
     'notes_delete_confirmation' => 'Are you sure you want to delete this note? Deletion is permanent',
 
     // gifts
-    'gifts_title' => 'Gifts',
+    'gifts_title' => 'ギフト',
     'gifts_add_success' => 'The gift has been added successfully',
     'gifts_delete_success' => 'The gift has been deleted successfully',
     'gifts_delete_confirmation' => 'Are you sure you want to delete this gift?',
@@ -301,7 +307,7 @@ return [
     'gifts_for' => 'For: {name}',
     'gifts_delete_cta' => 'Delete',
     'gifts_add_title' => 'Gift management for :name',
-    'gifts_add_gift_idea' => 'Gift idea',
+    'gifts_add_gift_idea' => 'ギフトのアイデア',
     'gifts_add_gift_already_offered' => 'Gift offered',
     'gifts_add_gift_received' => 'Gift received',
     'gifts_add_gift_title' => 'What is this gift?',
@@ -318,7 +324,7 @@ return [
     'gifts_ideas' => 'Gift ideas',
     'gifts_offered' => 'Gifts offered',
     'gifts_offered_as_an_idea' => 'Mark as an idea',
-    'gifts_received' => 'Gifts received',
+    'gifts_received' => 'ギフトの受け取り',
     'gifts_view_comment' => 'View comment',
     'gifts_mark_offered' => 'Mark as offered',
     'gifts_update_success' => 'The gift has been updated successfully',
@@ -377,7 +383,7 @@ return [
     'contact_info_title' => 'Contact information',
     'contact_info_form_content' => 'Content',
     'contact_info_form_contact_type' => 'Contact type',
-    'contact_info_form_personalize' => 'Personalize',
+    'contact_info_form_personalize' => '個人設定',
     'contact_info_address' => 'Lives in',
 
     // Addresses
@@ -478,7 +484,7 @@ return [
     'life_event_sentence_first_kiss' => 'Kissed for the first time',
 
     // documents
-    'document_list_title' => 'Documents',
+    'document_list_title' => 'ドキュメント',
     'document_list_cta' => 'Upload document',
     'document_list_blank_desc' => 'Here you can store documents related to this person.',
     'document_upload_zone_cta' => 'Upload a file',
@@ -494,6 +500,8 @@ return [
     'photo_current_profile_pic' => 'Current profile picture',
     'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => '写真を削除',
+    'photo_next' => 'Next photo',
+    'photo_previous' => 'Previous photo',
 
     // Avatars
     'avatar_change_title' => 'アバターを変更',

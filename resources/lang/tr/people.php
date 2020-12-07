@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     //index
@@ -494,6 +500,8 @@ return [
     'photo_current_profile_pic' => 'Mevcut profil resmi',
     'photo_make_profile_pic' => 'Profil resmi yapın',
     'photo_delete' => 'Fotoğrafı sil',
+    'photo_next' => 'Next photo',
+    'photo_previous' => 'Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Avatarınızı değiştirin',

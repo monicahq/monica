@@ -49,7 +49,7 @@ class UpdateGift extends BaseService
         $this->validate($data);
 
         $gift = Gift::where('account_id', $data['account_id'])
-                    ->findOrFail($data['gift_id']);
+                    ->findOrFail((int) $data['gift_id']);
 
         Contact::where('account_id', $data['account_id'])
         ->findOrFail($data['contact_id']);
@@ -67,14 +67,17 @@ class UpdateGift extends BaseService
             'url' => $this->nullOrvalue($data, 'url'),
             'amount' => $this->nullOrvalue($data, 'amount'),
             'date' => $this->nullOrvalue($data, 'date'),
-            'recipient' => $this->nullOrvalue($data, 'recipient_id'),
         ];
 
         if (Auth::check()) {
             $array['currency_id'] = Auth::user()->currency->id;
         }
 
-        return tap($gift)
-            ->update($array);
+        $gift->update($array);
+
+        return tap($gift, function ($gift) use ($data): void {
+            $gift->recipient = $this->nullOrvalue($data, 'recipient_id');
+            $gift->save();
+        });
     }
 }

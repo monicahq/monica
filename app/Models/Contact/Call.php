@@ -2,7 +2,6 @@
 
 namespace App\Models\Contact;
 
-use Parsedown;
 use App\Models\Account\Account;
 use App\Models\Instance\Emotion\Emotion;
 use App\Models\ModelBindingWithContact as Model;
@@ -75,19 +74,5 @@ class Call extends Model
         return $this->belongsToMany(Emotion::class, 'emotion_call', 'call_id', 'emotion_id')
                     ->withPivot('account_id', 'contact_id')
                     ->withTimestamps();
-    }
-
-    /**
-     * Return the markdown parsed body.
-     *
-     * @return string|null
-     */
-    public function getParsedContentAttribute(): ?string
-    {
-        if (is_null($this->content)) {
-            return null;
-        }
-
-        return (new Parsedown())->text($this->content);
     }
 }

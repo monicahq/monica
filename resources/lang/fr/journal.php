@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'journal_rate' => 'Comment s’est passé votre journée ? Vous pouvez voter une fois par jour.',
     'journal_come_back' => 'Merci. Revenez demain pour voter à nouveau.',

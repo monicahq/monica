@@ -42,8 +42,8 @@ class AuthControllerTest extends TestCase
             );
 
             $this->setEnvironmentValue([
-                'MOBILE_CLIENT_ID' => $client->id,
-                'MOBILE_CLIENT_SECRET' => $client->secret,
+                'PASSPORT_PERSONAL_ACCESS_CLIENT_ID' => $client->id,
+                'PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET' => $client->secret,
             ]);
 
             $userPassword = 'password';
@@ -100,8 +100,8 @@ class AuthControllerTest extends TestCase
             );
 
             $this->setEnvironmentValue([
-                'MOBILE_CLIENT_ID' => $client->id,
-                'MOBILE_CLIENT_SECRET' => $client->secret,
+                'PASSPORT_PERSONAL_ACCESS_CLIENT_ID' => $client->id,
+                'PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET' => $client->secret,
             ]);
 
             $userPassword = 'password';

@@ -16,6 +16,9 @@ class PasswordChangeController extends Controller
 {
     use RedirectsUsers;
 
+    /**
+     * @var string
+     */
     protected $redirectTo = '/settings/security';
 
     /**

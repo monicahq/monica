@@ -119,7 +119,7 @@ class ApiPhotoController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $photoId)
+    public function destroy(Request $request, int $photoId)
     {
         try {
             app(DestroyPhoto::class)->execute([
@@ -134,6 +134,6 @@ class ApiPhotoController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $photoId);
+        return $this->respondObjectDeleted($photoId);
     }
 }

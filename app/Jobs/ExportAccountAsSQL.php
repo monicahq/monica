@@ -14,6 +14,9 @@ class ExportAccountAsSQL
 {
     use Dispatchable, SerializesModels;
 
+    /**
+     * @var string
+     */
     protected $path = '';
 
     /**

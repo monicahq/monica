@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'sidebar_settings' => 'Impostazioni accounto',
     'sidebar_personalization' => 'Personalizzazione',
@@ -480,7 +486,7 @@ return [
     'dav_clipboard_copied' => 'Valore copiato negli appunti',
     'dav_url_base' => 'Url di base per tutte le risorse CardDAV e CalDAV:',
     'dav_connect_help' => 'Puoi collegare i tuoi contatti e/o calendari con questo url di base sul tuo telefono o computer.',
-    'dav_connect_help2' => 'Usa il tuo login (email) e la password, o crea un token API per autenticarti.',
+    'dav_connect_help2' => 'Use your login (email) and create an API token as the password to authenticate.',
     'dav_url_carddav' => 'Url CardDAV per la risorsa Contatti:',
     'dav_url_caldav_birthdays' => 'Url CalDAV per le risorse di compleanni:',
     'dav_url_caldav_tasks' => 'Url CalDAV per le risorse di task:',

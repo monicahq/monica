@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'sidebar_settings' => '帳戶設定',
     'sidebar_personalization' => '個性化',
@@ -480,7 +486,7 @@ return [
     'dav_clipboard_copied' => '值已複製到剪貼簿',
     'dav_url_base' => '所有CardDAV和CalDAV資源的基本 url:',
     'dav_connect_help' => '您可以在手機或計算機上使用此基本 url 連線您的聯絡人和/或日曆。',
-    'dav_connect_help2' => '使用您的登入名 (電子郵件) 和密碼, 或建立 api 令牌進行身份驗證。',
+    'dav_connect_help2' => 'Use your login (email) and create an API token as the password to authenticate.',
     'dav_url_carddav' => '用於聯絡資源的 CardDAV',
     'dav_url_caldav_birthdays' => '用於生日資源的 caldav url:',
     'dav_url_caldav_tasks' => '用於任務資源的 caldav url:',

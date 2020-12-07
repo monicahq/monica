@@ -120,7 +120,7 @@ class ApiDocumentController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $documentId)
+    public function destroy(Request $request, int $documentId)
     {
         try {
             app(DestroyDocument::class)->execute([
@@ -135,6 +135,6 @@ class ApiDocumentController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $documentId);
+        return $this->respondObjectDeleted($documentId);
     }
 }

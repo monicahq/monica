@@ -146,7 +146,7 @@ class ApiConversationController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $conversationId)
+    public function destroy(Request $request, int $conversationId)
     {
         try {
             app(DestroyConversation::class)->execute([
@@ -161,6 +161,6 @@ class ApiConversationController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $conversationId);
+        return $this->respondObjectDeleted($conversationId);
     }
 }

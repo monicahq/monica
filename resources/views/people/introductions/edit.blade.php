@@ -67,9 +67,9 @@
                   {{-- You don't know the date you've met --}}
                   <div class="form-check">
                     <label class="form-check-label" for="is_first_met_date_unknown">
-                      <input type="radio" class="form-check-input" name="is_first_met_date_known" id="is_first_met_date_unknown" value="unknown"
-                      v-model="date_met_the_contact" value="unknown"
-                      {{ (is_null($contact->first_met)) ? 'checked' : '' }}
+                      <input type="radio" class="form-check-input" name="is_first_met_date_known" id="is_first_met_date_unknown" value="unknown" 
+                      @click="date_met_the_contact = 'unknown'"
+                      {{ (is_null($contact->first_met_special_date_id)) ? 'checked' : '' }}
                       >
 
                       <div class="form-inline">
@@ -81,8 +81,9 @@
                   {{-- You know the date you've met --}}
                   <div class="form-check">
                     <label class="form-check-label" for="is_first_met_date_known">
-                      <input type="radio" class="form-check-input" name="is_first_met_date_known" id="is_first_met_date_known" value="known" v-model="date_met_the_contact" value="known"
-                      {{ (! is_null($contact->first_met)) ? 'checked' : '' }}
+                      <input type="radio" class="form-check-input" name="is_first_met_date_known" id="is_first_met_date_known" value="known" 
+                      @click="date_met_the_contact = 'known'"
+                      {{ (! is_null($contact->first_met_special_date_id)) ? 'checked' : '' }}
                       >
 
                       {{ trans('people.introductions_first_met_date_known') }}

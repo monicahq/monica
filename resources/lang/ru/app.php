@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'yes' => 'Да',
     'no' => 'Нет',
@@ -90,7 +96,7 @@ return [
     'breadcrumb_api' => 'API',
     'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'How did you meet',
-    'breadcrumb_settings_personalization' => 'Personalization',
+    'breadcrumb_settings_personalization' => 'Персонализация',
     'breadcrumb_settings_security' => 'Безопасность',
     'breadcrumb_settings_security_2fa' => 'Двухфакторная аутентификация',
     'breadcrumb_profile' => 'Профиль :name',
@@ -100,7 +106,7 @@ return [
     'gender_none' => 'Неизвестно',
     'gender_no_gender' => 'No gender',
 
-    'error_title' => 'Whoops! Something went wrong.',
+    'error_title' => 'Ой, что-то пошло не так.',
     'error_unauthorized' => 'У вас нет прав для редактирования этого ресурса.',
     'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'We had an error trying to save the data.',
@@ -286,17 +292,17 @@ return [
     'emotion_secondary_enthrallment' => 'Enthrallment',
     'emotion_secondary_relief' => 'Облегчение',
     'emotion_secondary_surprise' => 'Удивление',
-    'emotion_secondary_irritation' => 'Irritation',
+    'emotion_secondary_irritation' => 'Раздражение',
     'emotion_secondary_exasperation' => 'Exasperation',
     'emotion_secondary_rage' => 'Ярость',
     'emotion_secondary_disgust' => 'Отвращение',
     'emotion_secondary_envy' => 'Зависть',
-    'emotion_secondary_suffering' => 'Suffering',
-    'emotion_secondary_sadness' => 'Sadness',
-    'emotion_secondary_disappointment' => 'Disappointment',
+    'emotion_secondary_suffering' => 'Страдание',
+    'emotion_secondary_sadness' => 'Грусть',
+    'emotion_secondary_disappointment' => 'Разочарование',
     'emotion_secondary_shame' => 'Shame',
     'emotion_secondary_neglect' => 'Neglect',
-    'emotion_secondary_sympathy' => 'Sympathy',
+    'emotion_secondary_sympathy' => 'Симпатия',
     'emotion_secondary_horror' => 'Ужас',
     'emotion_secondary_nervousness' => 'Nervousness',
 

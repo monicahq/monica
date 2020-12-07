@@ -1,9 +1,15 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
-    'dashboard_blank_title' => 'Welcome to your account!',
+    'dashboard_blank_title' => 'あなたのアカウントにようこそ！',
     'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
-    'dashboard_blank_cta' => 'Add your first contact',
+    'dashboard_blank_cta' => 'とりあえず連絡先を追加する',
     'dashboard_blank_illustration' => 'Illustration by <a href=":url">Freepik</a>',
 
     'notes_title' => 'You don’t have any starred notes yet.',
@@ -26,11 +32,11 @@ return [
 
     'statistics_contacts' => '連絡先',
     'statistics_activities' => 'Activities',
-    'statistics_gifts' => 'Gifts',
+    'statistics_gifts' => 'ギフト',
 
-    'reminders_next_months' => 'Events in the next 3 months',
-    'reminders_none' => 'No reminder for this month',
+    'reminders_next_months' => '3ヶ月以内のイベント',
+    'reminders_none' => '今月のリマインダーはありません',
 
     'product_changes' => '機能の変更',
-    'product_view_details' => 'View details',
+    'product_view_details' => '詳細を表示',
 ];
