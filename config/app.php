@@ -67,6 +67,8 @@ return [
 
     'asset_url' => env('ASSET_URL', null),
 
+    'force_url' => (bool) env('APP_FORCE_URL', false),
+
     /*
     |--------------------------------------------------------------------------
     | TIMEZONE

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'sidebar_settings' => 'Accountinstellingen',
     'sidebar_personalization' => 'Personalisatie',
@@ -43,6 +49,8 @@ return [
     'name_order_firstname_nickname_lastname' => '<First name> (<Nickname>) <Last name> - Klaas (Broodje) Bakker',
     'name_order_lastname_firstname_nickname' => '<Last name> <First name> (<Nickname>) - Bakker Klaas (Broodje)',
     'name_order_lastname_nickname_firstname' => '<Last name> (<Nickname>) <First name> - Bakker (Broodje) Klaas',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<First name> <Last name>) - Rambo (John Doe)',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<Last name> <First name>) - Rambo (Doe John)',
     'name_order_nickname' => '<Nickname> - Broodje',
     'currency' => 'Valuta',
     'name' => 'Jouw naam: :name',
@@ -85,6 +93,7 @@ return [
     'locale_pt-BR' => 'Portugees (Brazilië)',
     'locale_ru' => 'Russisch',
     'locale_zh' => 'Chinees (vereenvoudigd)',
+    'locale_zh-TW' => 'Chinese Traditional',
     'locale_tr' => 'Turks',
     'locale_en-GB' => 'Engels (Verenigd Koninkrijk)',
 
@@ -477,7 +486,7 @@ return [
     'dav_clipboard_copied' => 'Waarde gekopieerd naar klembord',
     'dav_url_base' => 'Basis-url voor alle CardDAV en CalDAV bronnen:',
     'dav_connect_help' => 'Je kan jouw contactpersonen en/of kalenders verbinden met deze basis-url op je telefoon of computer.',
-    'dav_connect_help2' => 'Gebruik je login (e-mail) en wachtwoord, of maak een API-toegangscode voor de authenticatie.',
+    'dav_connect_help2' => 'Use your login (email) and create an API token as the password to authenticate.',
     'dav_url_carddav' => 'CardDAV url voor Contacten:',
     'dav_url_caldav_birthdays' => 'CalDAV url voor verjaardagen:',
     'dav_url_caldav_tasks' => 'CalDAV url voor taken:',

@@ -3,11 +3,61 @@
 ### New features:
 
 * Add the notion of AddressBooks
-* Add Japanese langage
+* Allow customization of life event types
+
+### Enhancements:
+
+*
+
+### Fixes:
+
+*
+
+
+# RELEASED VERSIONS:
+
+## v2.19.1 - 2020-09-12
+
+### Fixes:
+
+* Fix journal entry XSS vulnerability
+
+
+## v2.19.0 - 2020-08-27
+
+### Enhancements:
+
+* Update tag management on the contact profile
+* Add next and previous arrows when viewing photos
+* Add dependency to php imagick module
+* Renamed MOBILE_CLIENT_ID and MOBILE_CLIENT_SECRET variables to PASSPORT_PERSONAL_ACCESS_CLIENT_ID and PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET
+
+### Fixes:
+
+* Fix amount display on subscription account settings
+* Fix exception when registering in certain cases
+* Fix vue-select usage
+
+
+## v2.18.0 - 2020-05-23
+
+### New features:
+
+* Display age of death to relationship sidebar if the person is dead
+* Crop contact photos on upload
+* Add new name orders \<nickname> (\<First name> \<Last name>) & \<nickname> (\<Last name> \<First name>)
+* Add console command to test email delivery
+* Add Traditional Chinese language
+* Add Japanese language
 * Change title of birthday reminder for deceased people
 
 ### Enhancements:
 
+* Change docker image sync
+* Stores amount as integer-ish values, and fix debts and gifts amount forms
+* Use current text from search bar to create a new person
+* Always allow to add a new person from search bar
+* Use queue to send email verification
 * Improve autocomplete fields on signup and login forms
 * Add cache for S3 storage, and use new standard variables
 * Remove authentication with login+password for carddav
@@ -18,6 +68,11 @@
 
 ### Fixes:
 
+* Fix life event categories and types are not translated when adding new life event
+* Fix subdirectory config url
+* Fix google2fa column size
+* Fix errors display for api
+* Fix currency in double
 * Fix authentication with token on basic auth
 * Fix editing multiple notes at the same time only edits one note
 * Fix countries in fake contact seeder
@@ -28,9 +83,7 @@
 * Fix carddav sync-collection reporting wrong syncToken
 
 
-# RELEASED VERSIONS:
-
-## v2.17.0 - 2019-03-22
+## v2.17.0 - 2020-03-22
 
 ### New features:
 

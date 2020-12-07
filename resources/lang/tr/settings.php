@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'sidebar_settings' => 'Hesap ayarları',
     'sidebar_personalization' => 'Kişiselleştirme',
@@ -43,6 +49,8 @@ return [
     'name_order_firstname_nickname_lastname' => '<Ad> (<Takma Ad>) <Soyad> - Mehmet (Sarı Çizmeli) Ağa',
     'name_order_lastname_firstname_nickname' => '<Soyadı> <Adı> (<Takma Adı>) - Ağa Mehmet (Sarı Çizmeli)',
     'name_order_lastname_nickname_firstname' => '<Soyad> (<Takma Ad>) <Ad> - Ağa (Sarı Çizmeli) Mehmet',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<First name> <Last name>) - Rambo (John Doe)',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<Last name> <First name>) - Rambo (Doe John)',
     'name_order_nickname' => '<Nickname> - Ahmet',
     'currency' => 'Para Birimi',
     'name' => 'Adınız: :name',
@@ -85,6 +93,7 @@ return [
     'locale_pt-BR' => 'Portekizce (Brezilya)',
     'locale_ru' => 'Rusça',
     'locale_zh' => 'Çince (Basitleştirilmiş)',
+    'locale_zh-TW' => 'Chinese Traditional',
     'locale_tr' => 'Türkçe',
     'locale_en-GB' => 'İngilizce (Birleşik Krallık)',
 
@@ -477,7 +486,7 @@ return [
     'dav_clipboard_copied' => 'Değer panonuza kopyalandı',
     'dav_url_base' => 'Tüm CardDAV ve CalDAV kaynakları için temel URL:',
     'dav_connect_help' => 'Telefonunuzda veya bilgisayarınızda kişilerinizi ve/veya takvimlerinizi, bu temel URL ile bağlayabilirsiniz.',
-    'dav_connect_help2' => 'Giriş bilgilerinizi (e-posta adresinizi) ve şifrenizi kullanın, veya yetkilendirmek için bir API belirteci oluşturun.',
+    'dav_connect_help2' => 'Use your login (email) and create an API token as the password to authenticate.',
     'dav_url_carddav' => 'Kişiler kaynağı için CardDAV URL\'si:',
     'dav_url_caldav_birthdays' => 'Doğum günleri kaynağı için CalDAV URL\'si:',
     'dav_url_caldav_tasks' => 'Görevler kaynağı için CalDAV URL\'si:',

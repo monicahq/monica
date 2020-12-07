@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     /*
@@ -17,7 +23,7 @@ return [
     'sent' => 'Ссылка на сброс пароля была отправлена.',
     'token' => 'Ошибочный код сброса пароля.',
     'user' => 'Ссылка на сброс пароля была отправлена.',
-    'changed' => 'Password changed successfully.',
+    'changed' => 'Пароль успешно изменен.',
     'invalid' => 'Current password you entered is not correct.',
     'throttled' => 'Пожалуйста, подождите перед повторной попыткой.',
 

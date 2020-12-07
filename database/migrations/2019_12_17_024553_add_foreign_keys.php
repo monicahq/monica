@@ -32,8 +32,11 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AddForeignKeys extends Migration
 {
+    /** @var array<array-key,int> */
     private $existingAccounts;
+    /** @var array<array-key,int> */
     private $existingUsers;
+    /** @var array<array-key,int> */
     private $existingContacts;
 
     /**

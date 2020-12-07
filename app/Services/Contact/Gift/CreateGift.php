@@ -6,6 +6,7 @@ use App\Models\Contact\Gift;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class CreateGift extends BaseService
 {
@@ -61,11 +62,17 @@ class CreateGift extends BaseService
             'status' => $data['status'],
             'comment' => $this->nullOrvalue($data, 'comment'),
             'url' => $this->nullOrvalue($data, 'url'),
-            'value' => $this->nullOrvalue($data, 'amount'),
+            'amount' => $this->nullOrvalue($data, 'amount'),
             'date' => $this->nullOrvalue($data, 'date'),
-            'recipient' => $this->nullOrvalue($data, 'recipient_id'),
         ];
 
-        return Gift::create($array);
+        if (Auth::check()) {
+            $array['currency_id'] = Auth::user()->currency->id;
+        }
+
+        return tap(Gift::create($array), function ($gift) use ($data): void {
+            $gift->recipient = $this->nullOrvalue($data, 'recipient_id');
+            $gift->save();
+        });
     }
 }

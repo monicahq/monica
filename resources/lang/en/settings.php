@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'sidebar_settings' => 'Account settings',
     'sidebar_personalization' => 'Personalization',
@@ -43,6 +49,8 @@ return [
     'name_order_firstname_nickname_lastname' => '<First name> (<Nickname>) <Last name> - John (Rambo) Doe',
     'name_order_lastname_firstname_nickname' => '<Last name> <First name> (<Nickname>) - Doe John (Rambo)',
     'name_order_lastname_nickname_firstname' => '<Last name> (<Nickname>) <First name> - Doe (Rambo) John',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<First name> <Last name>) - Rambo (John Doe)',
+    'name_order_nickname_firstname_lastname' => '<Nickname> (<Last name> <First name>) - Rambo (Doe John)',
     'name_order_nickname' => '<Nickname> - Rambo',
     'currency' => 'Currency',
     'name' => 'Your name: :name',
@@ -84,7 +92,9 @@ return [
     'locale_pt' => 'Portuguese',
     'locale_pt-BR' => 'Portuguese (Brazil)',
     'locale_ru' => 'Russian',
+    'locale_sv' => 'Swedish',
     'locale_zh' => 'Chinese Simplified',
+    'locale_zh-TW' => 'Chinese Traditional',
     'locale_tr' => 'Turkish',
     'locale_en-GB' => 'English (United Kingdom)',
 
@@ -415,6 +425,18 @@ return [
     'personalization_activity_type_modal_delete_error' => 'We can’t find this activity type.',
     'personalization_activity_type_category_modal_delete_error' => 'We can’t find this activity type category.',
 
+    'personalization_life_event_category_title' => 'Life event categories',
+    'personalization_live_event_category_table_name' => 'Name',
+    'personalization_life_event_category_description' => 'A life event can have a type and a category. Your account comes by default with a set of predefined categories and types, but you can customize life event types here.',
+    'personalization_live_event_category_table_actions' => 'Actions',
+    'personalization_life_event_type_add_button' => 'Add a new life event type',
+    'personalization_life_event_type_modal_add' => 'Add a new life event type',
+    'personalization_life_event_type_modal_question' => 'How should we name this new life event type?',
+    'personalization_life_event_type_modal_edit' => 'Edit a life event type',
+    'personalization_life_event_type_modal_delete' => 'Delete a life event type',
+    'personalization_life_event_type_modal_delete_desc' => 'Are you sure you want to delete this life event type? Life events that belong to this type will be deleted by performing this action.',
+    'personalization_life_event_type_modal_delete_error' => 'We can’t find this life event type.',
+
     'personalization_life_event_category_work_education' => 'Work & education',
     'personalization_life_event_category_family_relationships' => 'Family & relationships',
     'personalization_life_event_category_home_living' => 'Home & living',
@@ -477,7 +499,7 @@ return [
     'dav_clipboard_copied' => 'Value copied into your clipboard',
     'dav_url_base' => 'Base url for all CardDAV and CalDAV resources:',
     'dav_connect_help' => 'You can connect your contacts and/or calendars with this base url on you phone or computer.',
-    'dav_connect_help2' => 'Use your login (email) and password, or create an API token to authenticate.',
+    'dav_connect_help2' => 'Use your login (email) and create an API token as the password to authenticate.',
     'dav_url_carddav' => 'CardDAV url for Contacts resource:',
     'dav_url_caldav_birthdays' => 'CalDAV url for Birthdays resources:',
     'dav_url_caldav_tasks' => 'CalDAV url for Tasks resources:',

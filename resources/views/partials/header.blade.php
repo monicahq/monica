@@ -8,7 +8,7 @@
           </a>
         </div>
         <div class="dib w-60-l w-100 header-search">
-          <contact-search placeholder="{{ trans('people.people_search') }}">
+          <contact-search placeholder="{{ trans('people.people_search') }}" form-name-order="{{ App\Helpers\FormHelper::getNameOrderForForms(auth()->user()) }}">
           </contact-search>
         </div>
       </div>

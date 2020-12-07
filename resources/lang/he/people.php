@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     //index
@@ -81,7 +87,7 @@ return [
 
     // Stay in touch
     'stay_in_touch' => 'לשמור על קשר',
-    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
+    'stay_in_touch_frequency' => 'להישאר בקשר כל יום|להישאר בקשר כל יומיים|להישאר בקשר כל {count} ימים',
     'stay_in_touch_invalid' => 'התדירות חייבת להיות מספר גדול מ־0.',
     'stay_in_touch_premium' => 'עליך לשדרג את החשבון שלך כדי להשתמש בתכונה זו',
     'stay_in_touch_modal_title' => 'לשמור על קשר',
@@ -428,6 +434,11 @@ return [
     'life_event_delete_description' => 'למחוק את האירוע המשמעותי הזה? מחיקה היא לצמיתות.',
     'life_event_delete_success' => 'האירוע המשמעותי נמחק',
     'life_event_date_it_happened' => 'התאריך בו זה התרחש',
+    'life_event_category_work_education' => 'עבודה והשכלה',
+    'life_event_category_family_relationships' => 'משפחה ויחסים',
+    'life_event_category_home_living' => 'בית ומחייה',
+    'life_event_category_health_wellness' => 'בריאות ורווחה',
+    'life_event_category_travel_experiences' => 'טיול וחוויות',
     'life_event_sentence_new_job' => 'התחלת עבודה חדשה',
     'life_event_sentence_retirement' => 'יציאה לפנסיה',
     'life_event_sentence_new_school' => 'התחלת לימודים',
@@ -489,6 +500,8 @@ return [
     'photo_current_profile_pic' => 'תמונת פרופיל נוכחית',
     'photo_make_profile_pic' => 'הכנת תמונת פרופיל',
     'photo_delete' => 'מחיקת תמונה',
+    'photo_next' => 'לתמונה הבאה',
+    'photo_previous' => 'לתמונה הקודמת',
 
     // Avatars
     'avatar_change_title' => 'החלפת התמונה הייצוגית שלך',
@@ -498,6 +511,7 @@ return [
     'avatar_gravatar' => 'ה־Gravatar שמשויך לכתובת הדוא״ל של משתמש זה. <a href="https://gravatar.com/">Gravatar</a> היא מערכת גלובלית שמאפשרת למשתמשים לשייך כתובות דוא״ל לתמונות.',
     'avatar_current' => 'להשאיר את התמונה הייצוגית הנוכחית',
     'avatar_photo' => 'מתמונה שהעלית',
+    'avatar_crop_new_avatar_photo' => 'חיתוך התמונה הייצוגית החדשה',
 
     // emotions
     'emotion_this_made_me_feel' => 'התחושה שקיבלת היא…',

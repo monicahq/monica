@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     //index
@@ -428,6 +434,11 @@ return [
     'life_event_delete_description' => 'Weet je zeker dat je deze levensgebeurtenis wil verwijderen? Dit is permanent.',
     'life_event_delete_success' => 'De levensgebeurtenis is verwijderd',
     'life_event_date_it_happened' => 'Datum van de gebeurtenis',
+    'life_event_category_work_education' => 'Werk & onderwijs',
+    'life_event_category_family_relationships' => 'Familie & relaties',
+    'life_event_category_home_living' => 'Thuis & leven',
+    'life_event_category_health_wellness' => 'Gezondheid & welzijn',
+    'life_event_category_travel_experiences' => 'Reizen & ervaringen',
     'life_event_sentence_new_job' => 'Nieuwe baan gekregen',
     'life_event_sentence_retirement' => 'Met pensioen gegaan',
     'life_event_sentence_new_school' => 'Begonnen met school',
@@ -489,6 +500,8 @@ return [
     'photo_current_profile_pic' => 'Huidige profielfoto',
     'photo_make_profile_pic' => 'Stel in als profielfoto',
     'photo_delete' => 'Foto verwijderen',
+    'photo_next' => 'Volgende foto',
+    'photo_previous' => 'Vorige foto',
 
     // Avatars
     'avatar_change_title' => 'Change your avatar',
@@ -498,6 +511,7 @@ return [
     'avatar_gravatar' => 'The Gravatar dat geassocieerd is met dit contact. <a href="https://gravatar.com/">Gravatar</a> is een wereldwijd systeem dat gebruikers hun emailadres laat associëren met hun foto\'s.',
     'avatar_current' => 'Huidige avatar houden',
     'avatar_photo' => 'Van een foto die je upload',
+    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
     // emotions
     'emotion_this_made_me_feel' => 'Je voelde je…',

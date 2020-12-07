@@ -509,7 +509,12 @@
             </div>
             <p class="pt2">
               <span class="b">
-                {{ $t('people.life_event_sentence_' + lifeEvent.default_life_event_type_key) }}
+                <template v-if="lifeEvent.life_event_type_name">
+                  {{ lifeEvent.life_event_type_name }}
+                </template>
+                <template v-else>
+                  {{ $t('people.life_event_sentence_' + lifeEvent.default_life_event_type_key) }}
+                </template>
               </span> {{ lifeEvent.name }}
             </p>
             <p>{{ lifeEvent.note }}</p>

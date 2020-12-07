@@ -54,7 +54,7 @@ class PingVersionServer extends Command
         $data = [
             'uuid' => $instance->uuid,
             'version' => $instance->current_version,
-            'contacts' => Contact::all()->count(),
+            'contacts' => Contact::count(),
         ];
 
         // Send the JSON

@@ -33,6 +33,7 @@ class SetMeContact extends BaseService
     {
         $this->validate($data);
 
+        /** @var User */
         $user = User::where('account_id', $data['account_id'])
             ->findOrFail($data['user_id']);
 
@@ -40,6 +41,7 @@ class SetMeContact extends BaseService
             abort(402);
         }
 
+        /** @var Contact */
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 

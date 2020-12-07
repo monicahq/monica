@@ -15,7 +15,7 @@ use App\Models\ModelBindingHasherWithContact as Model;
  * @property Contact $contact
  * @property User $user
  * @property int $user_id
- * @property Reminder $reminder
+ * @property Reminder|null $reminder
  * @property int $reminder_id
  * @property string $nature
  * @property \Illuminate\Support\Carbon|null $planned_date

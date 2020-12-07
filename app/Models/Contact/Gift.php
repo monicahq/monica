@@ -2,9 +2,9 @@
 
 namespace App\Models\Contact;
 
-use App\Helpers\MoneyHelper;
 use App\Models\Account\Photo;
 use App\Models\Account\Account;
+use App\Traits\AmountFormatter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -14,17 +14,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * @property Account $account
  * @property Contact $contact
- * @property Contact $recipient
+ * @property Contact|null $recipient
  * @property string $name
  * @property string $comment
  * @property string $url
  * @property Contact $is_for
- * @property int $value
  * @method static Builder offered()
  * @method static Builder isIdea()
  */
 class Gift extends Model
 {
+    use AmountFormatter;
+
     /**
      * The attributes that aren't mass assignable.
      *
@@ -144,20 +145,10 @@ class Gift extends Model
         if ($this->hasParticularRecipient()) {
             $recipient = $this->recipient;
             if (! is_null($recipient)) {
-                return $this->recipient->first_name;
+                return $recipient->first_name;
             }
         }
 
         return null;
-    }
-
-    /**
-     * Get amount with currency.
-     *
-     * @return string
-     */
-    public function getAmountAttribute(): string
-    {
-        return $this->value ? MoneyHelper::format($this->value) : '';
     }
 }
