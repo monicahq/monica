@@ -68,6 +68,7 @@ class UpdateBirthdayInformation extends BaseService
         $this->data = $data;
         $this->validate($data);
 
+        /** @var Contact */
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 

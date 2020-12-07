@@ -144,10 +144,7 @@ END:VCARD
         $this->assertNull($importJob->physicalFile);
         $this->invokePrivateMethod($importJob, 'getPhysicalFile');
 
-        $this->assertEquals(
-            'fakeContent',
-            $importJob->physicalFile
-        );
+        $this->assertIsResource($importJob->physicalFile);
     }
 
     /** @test */

@@ -119,7 +119,7 @@ class ApiCompanyController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $companyId)
+    public function destroy(Request $request, int $companyId)
     {
         try {
             app(DestroyCompany::class)->execute([
@@ -134,6 +134,6 @@ class ApiCompanyController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $companyId);
+        return $this->respondObjectDeleted($companyId);
     }
 }

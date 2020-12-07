@@ -35,10 +35,12 @@ class UpdateTask extends BaseService
         $this->validate($data);
 
         if (! empty($data['contact_id'])) {
+            /** @var Task */
             $task = Task::where('account_id', $data['account_id'])
                 ->where('contact_id', $data['contact_id'])
                 ->findOrFail($data['task_id']);
         } else {
+            /** @var Task */
             $task = Task::where('account_id', $data['account_id'])
                 ->findOrFail($data['task_id']);
         }

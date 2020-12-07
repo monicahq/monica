@@ -109,7 +109,7 @@ class ApiLifeEventController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $lifeEventId)
+    public function destroy(Request $request, int $lifeEventId)
     {
         try {
             app(DestroyLifeEvent::class)->execute([
@@ -120,6 +120,6 @@ class ApiLifeEventController extends ApiController
             return $this->respondNotFound();
         }
 
-        return $this->respondObjectDeleted((int) $lifeEventId);
+        return $this->respondObjectDeleted($lifeEventId);
     }
 }

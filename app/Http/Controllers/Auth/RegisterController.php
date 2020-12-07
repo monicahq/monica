@@ -102,6 +102,7 @@ class RegisterController extends Controller
                 RequestHelper::ip(),
                 $data['lang']
             );
+            /** @var User */
             $user = $account->users()->first();
 
             if (! $first) {

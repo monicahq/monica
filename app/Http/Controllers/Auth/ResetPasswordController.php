@@ -20,5 +20,8 @@ class ResetPasswordController extends Controller
 
     use ResetsPasswords;
 
+    /**
+     * @var string
+     */
     protected $redirectTo = '/dashboard';
 }

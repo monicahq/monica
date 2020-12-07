@@ -21,6 +21,7 @@ class ContactFieldLabel extends Model
 
     protected $table = 'contact_field_labels';
 
+    /** @var array<string> */
     public static $standardLabels = [
         'home',
         'work',

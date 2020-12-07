@@ -40,6 +40,7 @@ class UpdatePlace extends BaseService
     {
         $this->validate($data);
 
+        /** @var Place */
         $place = Place::where('account_id', $data['account_id'])
             ->findOrFail($data['place_id']);
 

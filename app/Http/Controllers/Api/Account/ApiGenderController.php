@@ -118,7 +118,7 @@ class ApiGenderController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $genderId)
+    public function destroy(Request $request, int $genderId)
     {
         try {
             app(DestroyGender::class)->execute([
@@ -133,6 +133,6 @@ class ApiGenderController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $genderId);
+        return $this->respondObjectDeleted($genderId);
     }
 }
