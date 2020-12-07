@@ -200,6 +200,7 @@ class Contact extends Model
 
             return $this->account->addressBookContacts();
         }
+
         return null;
     }
 
