@@ -195,10 +195,10 @@ class Contact extends Model
     {
         if ($this->account) {
             if ($this->addressBook) {
-                return $this->account->addressBookContacts($this->addressBook->name);
+                return $this->account->contacts($this->addressBook->name);
             }
 
-            return $this->account->addressBookContacts();
+            return $this->account->contacts();
         }
         return null;
     }

@@ -40,7 +40,7 @@ class AccountHelper
      */
     public static function hasReachedContactLimit(Account $account): bool
     {
-        return $account->contacts()->real()->active()->count() >= config('monica.number_of_allowed_contacts_free_account');
+        return $account->allContacts()->real()->active()->count() >= config('monica.number_of_allowed_contacts_free_account');
     }
 
     /**
@@ -54,7 +54,7 @@ class AccountHelper
         $canDowngrade = true;
         $numberOfUsers = $account->users()->count();
         $numberPendingInvitations = $account->invitations()->count();
-        $numberActiveContacts = $account->contacts()->active()->count();
+        $numberActiveContacts = $account->allContacts()->active()->count();
 
         // number of users in the account should be == 1
         if ($numberOfUsers > 1) {

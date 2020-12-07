@@ -28,7 +28,7 @@ class DashboardController extends Controller
             )->with('debts.contact')
             ->first();
 
-        $numberOfContacts = $account->addressBookContacts()
+        $numberOfContacts = $account->contacts()
             ->real()
             ->active()
             ->count();
@@ -39,7 +39,7 @@ class DashboardController extends Controller
 
         // Fetch last updated contacts
         $lastUpdatedContactsCollection = collect([]);
-        $lastUpdatedContacts = $account->addressBookContacts()
+        $lastUpdatedContacts = $account->contacts()
             ->real()
             ->active()
             ->alive()

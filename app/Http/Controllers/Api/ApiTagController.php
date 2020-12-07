@@ -144,7 +144,7 @@ class ApiTagController extends ApiController
     public function contacts(Request $request, int $tagId)
     {
         try {
-            $contacts = auth()->user()->account->addressBookContacts()
+            $contacts = auth()->user()->account->contacts()
                 ->real()
                 ->active()
                 ->whereHas('tags', function (Builder $query) use ($tagId) {

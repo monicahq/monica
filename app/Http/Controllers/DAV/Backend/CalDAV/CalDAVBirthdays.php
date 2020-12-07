@@ -115,7 +115,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
     public function getObjects($collectionId)
     {
         // We only return the birthday of default addressBook
-        $contacts = Auth::user()->account->addressBookContacts()
+        $contacts = Auth::user()->account->contacts()
                     ->real()
                     ->active()
                     ->get();
