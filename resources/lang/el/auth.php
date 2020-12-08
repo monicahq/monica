@@ -83,6 +83,6 @@ return [
     'confirmation_again' => 'Αν θέλετε να αλλάξετε την διεύθυνση email σας <a href=":url" class="alert-link">πατήστε εδώ</a>.',
     'email_change_current_email' => 'Διεύθυνση email αυτή τη στιγμή:',
     'email_change_title' => 'Αλλάξτε την διεύθυνση email σας',
-    'email_change_new' => 'New email address',
+    'email_change_new' => 'Νέα διεύθυνση email',
     'email_changed' => 'Your email address has been changed. Check your mailbox to validate it.',
 ];
