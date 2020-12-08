@@ -52,6 +52,7 @@ trait SyncDAVBackend
      */
     protected function getSyncToken($syncToken)
     {
+        /** @var SyncToken|null */
         return SyncToken::where([
             'account_id' => Auth::user()->account_id,
             'user_id' => Auth::user()->id,

@@ -7,10 +7,6 @@ use App\Helpers\DateHelper;
 
 class DateSelectViewComposer
 {
-    public function __construct()
-    {
-    }
-
     /**
      * Bind data to the view.
      *

@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use App\Helpers\DBHelper;
 use Laravel\Cashier\Cashier;
+use Laravel\Passport\Passport;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use App\Notifications\EmailMessaging;
@@ -21,6 +24,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (App::runningInConsole()) {
+            Command::macro('exec', function (string $message, string $commandline) {
+                // @codeCoverageIgnoreStart
+                /** @var \Illuminate\Console\Command */
+                $command = $this;
+                \App\Console\Commands\Helpers\Command::exec($command, $message, $commandline);
+                // @codeCoverageIgnoreEnd
+            });
+            Command::macro('artisan', function (string $message, string $commandline, array $arguments = []) {
+                /** @var \Illuminate\Console\Command */
+                $command = $this;
+                \App\Console\Commands\Helpers\Command::artisan($command, $message, $commandline, $arguments);
+            });
+        }
+
         View::composer(
             'partials.components.currency-select', 'App\Http\ViewComposers\CurrencySelectViewComposer'
         );
@@ -56,6 +74,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        Passport::ignoreMigrations();
         Cashier::ignoreMigrations();
         Cashier::formatCurrencyUsing(function ($amount, $currency) {
             $currency = \App\Models\Settings\Currency::where('iso', strtoupper($currency ?? config('cashier.currency')))->first();

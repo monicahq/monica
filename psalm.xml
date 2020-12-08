@@ -28,9 +28,8 @@
 
         <MissingClosureReturnType errorLevel="info" />
         <MissingReturnType errorLevel="info" />
-        <MissingPropertyType errorLevel="info" />
-        <InvalidDocblock errorLevel="info" />
-        <MisplacedRequiredParam errorLevel="info" />
+        <MissingPropertyType errorLevel="error" />
+        <InvalidDocblock errorLevel="error" />
 
         <PropertyNotSetInConstructor errorLevel="info" />
         <MissingConstructor errorLevel="info" />
@@ -47,7 +46,7 @@
 
         <MoreSpecificReturnType errorLevel="info" />
         <LessSpecificReturnStatement errorLevel="info" />
-        <TypeCoercion errorLevel="info" />
+        <ArgumentTypeCoercion errorLevel="info" />
         <RedundantCondition errorLevel="info" />
 
         <PossiblyFalseArgument errorLevel="info" />
@@ -85,6 +84,7 @@
         <InvalidOperand errorLevel="info" />
         <LessSpecificImplementedReturnType errorLevel="info" />
         <MoreSpecificImplementedParamType errorLevel="info" />
+        <InternalMethod errorLevel="suppress" />
 
         <!-- level 6 issues - bad stuff here -->
 
@@ -92,13 +92,18 @@
         <NullableReturnStatement errorLevel="info" />
         <ImplementedReturnTypeMismatch errorLevel="info" />
         <UnresolvableInclude errorLevel="info" />
+        <InvalidReturnStatement errorLevel="info" />
+        <InvalidReturnType errorLevel="info" />
 
         <InvalidArgument errorLevel="info" />
 
         <PossiblyUndefinedMethod errorLevel="info" />
         <ReservedWord errorLevel="info" />
+        <UndefinedInterfaceMethod errorLevel="info" />
 
-        <RawObjectIteration errorLevel="suppress" />
+        <!-- Personal fixes -->
+        <UndefinedMagicPropertyFetch errorLevel="suppress" />
+        <InvalidPropertyAssignmentValue errorLevel="suppress" />
 
         <UndefinedPropertyAssignment>
             <errorLevel type="suppress">
@@ -111,18 +116,6 @@
                 <file name="database/migrations/2017_08_06_153253_move_kids_to_contacts.php" />
             </errorLevel>
         </UndefinedMagicPropertyAssignment>
-
-        <UndefinedMagicPropertyFetch>
-            <errorLevel type="suppress">
-                <file name="database/migrations/2017_05_04_164723_remove_contact_encryption.php" />
-            </errorLevel>
-        </UndefinedMagicPropertyFetch>
-
-        <InvalidPropertyAssignmentValue>
-            <errorLevel type="suppress">
-                <file name="database/migrations/2017_08_06_153253_move_kids_to_contacts.php" />
-            </errorLevel>
-        </InvalidPropertyAssignmentValue>
 
         <UndefinedPropertyFetch>
             <errorLevel type="suppress">
@@ -142,6 +135,17 @@
                 <file name="app/Http/Controllers/Auth/RegisterController.php" />
             </errorLevel>
         </InvalidReturnType>
+
+        <PossibleRawObjectIteration>
+            <errorLevel type="suppress">
+                <file name="app/Helpers/AuditLogHelper.php" />
+            </errorLevel>
+        </PossibleRawObjectIteration>
+        <RawObjectIteration>
+            <errorLevel type="suppress">
+                <file name="app/Http/Controllers/Contacts/ContactAuditLogController.php" />
+            </errorLevel>
+        </RawObjectIteration>
 
         <TooManyTemplateParams errorLevel="info" />
 

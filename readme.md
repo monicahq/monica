@@ -96,7 +96,7 @@ We've also received numerous feedback of users who suffer from Asperger's syndro
 
 ### Where does this tool come from?
 
-I originally built this tool to help me in my private life: I've been living away of my own country for a long time now. I want to keep notes and remember the life of my friends in my home country and be able to ask the relevant questions when I email them or talk to them over the phone. Moreover, as a foreigner in my new country, I met a lot of other foreigners - and most come back to their countries. I still want to remember the names or ages of their kids. Call it cheating but considering my poor memory, I call it caring.
+I originally built this tool to help me in my private life: I've been living outside my own country for a long time now. I want to keep notes and remember the life of my friends in my home country and be able to ask the relevant questions when I email them or talk to them over the phone. Moreover, as a foreigner in my new country, I met a lot of other foreigners - and most come back to their countries. I still want to remember the names or ages of their kids. Call it cheating but considering my poor memory, I call it caring.
 
 After a few months, I decided to open source the project so it would help other people as well.
 
@@ -106,6 +106,7 @@ There are multiple ways of getting started with Monica.
 
 1. You can use our hosted-version (this is the simplest way to use the product) on [https://monicahq.com](https://monicahq.com).
 1. You can install it on your server: follow installation instructions ([here](/docs/installation/readme.md)).
+1. Deploy straight on Platform.sh [![Deploy with Platform.sh](https://platform.sh/images/deploy/deploy-button-lg-blue.svg)](https://console.platform.sh/projects/create-project/?template=https%3A%2F%2Fgithub.com%2Fmonicahq%2Fmonica&amp;utm_campaign=deploy_on_platform&amp;utm_medium=button&amp;utm_source=affiliate_links&amp;utm_content=https%3A%2F%2Fgithub.com%2Fmonicahq%2Fmonica)
 
 Note: while the .com version has a paid plan, there is no limitations on Monica if you install it on a server that you own.
 

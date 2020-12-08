@@ -26,6 +26,7 @@ class AddDefaultGender extends Migration
             ->orderBy('id')
             ->chunk(200, function ($genders) {
                 foreach ($genders as $gender) {
+                    /** @var Account */
                     $account = Account::find($gender->account_id);
                     if ($account) {
                         $account->default_gender_id = $gender->id;

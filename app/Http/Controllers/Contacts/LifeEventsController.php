@@ -64,6 +64,7 @@ class LifeEventsController extends Controller
                 'id' => $lifeEvent->id,
                 'life_event_type' => $lifeEvent->lifeEventType->name,
                 'default_life_event_type_key' => $lifeEvent->lifeEventType->default_life_event_type_key,
+                'life_event_type_name' => $lifeEvent->lifeEventType->name,
                 'name' => $lifeEvent->name,
                 'note' => $lifeEvent->note,
                 'happened_at' => DateHelper::getShortDate($lifeEvent->happened_at),

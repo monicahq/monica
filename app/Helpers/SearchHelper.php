@@ -32,14 +32,16 @@ class SearchHelper
 
             $field_id = is_null($field) ? 0 : $field->id;
 
-            return Contact::whereHas('contactFields', function ($query) use ($accountId, $field_id, $search_term) {
+            /** @var Builder */
+            $b = Contact::whereHas('contactFields', function ($query) use ($accountId, $field_id, $search_term) {
                 $query->where([
                     ['account_id', $accountId],
                     ['data', 'like', "$search_term%"],
                     ['contact_field_type_id', $field_id],
                 ]);
-            })
-                ->orderBy($orderByColumn, $orderByDirection);
+            });
+
+            return $b->orderBy($orderByColumn, $orderByDirection);
         }
 
         return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection);

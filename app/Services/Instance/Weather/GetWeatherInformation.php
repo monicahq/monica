@@ -15,6 +15,7 @@ use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 
 class GetWeatherInformation extends BaseService
 {
+    /** @var GuzzleClient */
     protected $client;
 
     /**
