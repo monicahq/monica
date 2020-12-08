@@ -679,13 +679,13 @@ class ContactsController extends Controller
         $url = '';
         $count = 1;
 
-        $addressBook = $user->account->contacts()->real();
+        $contacts = $user->account->contacts()->real();
 
         // filter out archived contacts if necessary
         if ($request->input('show_archived') != 'true') {
-            $contacts = $addressBook->active();
+            $contacts = $contacts->active();
         } else {
-            $contacts = $addressBook->notActive();
+            $contacts = $contacts->notActive();
         }
 
         // filter out deceased if necessary

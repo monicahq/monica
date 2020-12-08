@@ -21,7 +21,7 @@ class IntroductionsController extends Controller
      */
     public function edit(Contact $contact)
     {
-        $contacts = $contact->similarContactsInAddressBook()
+        $contacts = $contact->siblingContacts()
                         ->real()
                         ->active()
                         ->get();

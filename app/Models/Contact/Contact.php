@@ -191,7 +191,7 @@ class Contact extends Model
      *
      * @return HasMany<self>|null
      */
-    public function similarContactsInAddressBook(): ?HasMany
+    public function siblingContacts(): ?HasMany
     {
         if ($this->account) {
             if ($this->addressBook) {
