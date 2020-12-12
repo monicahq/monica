@@ -200,6 +200,6 @@ class ApiController extends Controller
     public function setSQLOrderByQuery($criteria)
     {
         $this->sortDirection = $criteria[0] == '-' ? 'desc' : 'asc';
-        $this->sort = ltrim($criteria, "-");
+        $this->sort = ltrim($criteria, '-');
     }
 }
