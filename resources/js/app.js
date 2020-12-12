@@ -299,6 +299,10 @@ Vue.component(
   require('./components/settings/ActivityTypes.vue').default
 );
 Vue.component(
+  'life-event-types',
+  require('./components/settings/LifeEventTypes.vue').default
+);
+Vue.component(
   'dav-resources',
   require('./components/settings/DAVResources.vue').default
 );

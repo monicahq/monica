@@ -2,7 +2,7 @@
 
 ### New features:
 
-*
+* Allow customization of life event types
 
 ### Enhancements:
 
@@ -10,7 +10,7 @@
 
 ### Fixes:
 
-*
+* Fix update activity with emotions
 
 
 # RELEASED VERSIONS:

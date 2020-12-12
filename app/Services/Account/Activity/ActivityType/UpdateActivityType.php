@@ -37,6 +37,7 @@ class UpdateActivityType extends BaseService
         ActivityTypeCategory::where('account_id', $data['account_id'])
             ->findOrFail($data['activity_type_category_id']);
 
+        /** @var ActivityType */
         $activityType = ActivityType::where('account_id', $data['account_id'])
             ->findOrFail($data['activity_type_id']);
 

@@ -119,7 +119,7 @@ class ApiActivityTypeController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $activityTypeId)
+    public function destroy(Request $request, int $activityTypeId)
     {
         try {
             app(DestroyActivityType::class)->execute([
@@ -134,6 +134,6 @@ class ApiActivityTypeController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $activityTypeId);
+        return $this->respondObjectDeleted($activityTypeId);
     }
 }

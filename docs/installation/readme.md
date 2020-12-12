@@ -11,7 +11,7 @@ Monica can be installed on a variety of platforms. The choice of the platform is
 <a id="markdown-requirements" name="requirements"></a>
 ## Requirements
 
-If you don't want to use Docker, the best way to setup the project is to use the same configuration that [Homestead](https://laravel.com/docs/homestead) uses. Basically, Monica depends on the following:
+If you don't want to use [Docker](/docs/installation/providers/docker.md), the best way to setup the project is to use the same configuration that [Homestead](https://laravel.com/docs/homestead) uses. Basically, Monica depends on the following:
 
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * PHP 7.2+
@@ -38,6 +38,7 @@ The preferred OS distribution is Ubuntu 18.04, simply because all the developmen
 * [Vagrant](/docs/installation/providers/vagrant.md)
 * [YunoHost](https://github.com/YunoHost-Apps/monica_ynh)
 * [Cloudron](/docs/installation/providers/cloudron.md)
+* [cPanel-based Shared Hosting](/docs/installation/providers/cpanel.md)
 
 ### Other documentation
 

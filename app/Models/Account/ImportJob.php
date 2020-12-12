@@ -39,11 +39,15 @@ class ImportJob extends Model
 
     /**
      * The physical vCard file on disk.
+     *
+     * @var resource
      */
     public $physicalFile;
 
     /**
      * All individual entries in the vCard file.
+     *
+     * @var VCardReader
      */
     public $entries;
 
@@ -157,7 +161,7 @@ class ImportJob extends Model
     private function getPhysicalFile()
     {
         try {
-            $this->physicalFile = Storage::disk('public')->get($this->filename);
+            $this->physicalFile = Storage::disk('public')->readStream($this->filename);
         } catch (FileNotFoundException $exception) {
             $this->fail(trans('settings.import_vcard_file_not_found'));
         }
@@ -197,6 +201,7 @@ class ImportJob extends Model
     {
         while (true) {
             try {
+                /** @var VCard|null */
                 $entry = $this->entries->getNext();
                 if (! $entry) {
                     // file end

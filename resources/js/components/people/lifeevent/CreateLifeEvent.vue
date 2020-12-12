@@ -52,7 +52,12 @@
             <div class="dib mr2">
               <img :src="'img/people/life-events/types/' + type.default_life_event_type_key + '.svg'" :alt="type.default_life_event_type_key" style="min-width: 12px;" />
             </div>
-            {{ $t('people.life_event_sentence_' + type.default_life_event_type_key) }}
+            <template v-if="type.name">
+              {{ type.name }}
+            </template>
+            <template v-else>
+              {{ $t('people.life_event_sentence_' + type.default_life_event_type_key) }}
+            </template>
 
             <svg class="absolute life-event-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none"
                  xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +75,12 @@
         </div>
 
         <h3 class="pt3 ph4 f3 fw5 tc">
-          {{ $t('people.life_event_sentence_' + activeType.default_life_event_type_key) }}
+          <template v-if="activeType.name">
+            {{ activeType.name }}
+          </template>
+          <template v-else>
+            {{ $t('people.life_event_sentence_' + activeType.default_life_event_type_key) }}
+          </template>
         </h3>
 
         <!-- This field will be the same for every life event type no matter what, as the date is the only required field -->

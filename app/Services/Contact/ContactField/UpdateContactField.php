@@ -37,6 +37,7 @@ class UpdateContactField extends BaseService
     {
         $this->validate($data);
 
+        /** @var ContactField */
         $contactField = ContactField::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_field_id']);
 

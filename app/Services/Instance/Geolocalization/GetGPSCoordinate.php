@@ -12,6 +12,7 @@ use GuzzleHttp\Exception\ClientException;
 
 class GetGPSCoordinate extends BaseService
 {
+    /** @var GuzzleClient */
     protected $client;
 
     /**

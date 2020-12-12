@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
+use Illuminate\Support\Carbon;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
@@ -156,6 +156,7 @@ class SetupTest extends Command
             $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin0');
 
             // set default admin account to confirmed
+            /** @var User */
             $adminUser = $this->account->users()->first();
             $this->confirmUser($adminUser);
             $this->user = $adminUser;

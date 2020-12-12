@@ -1,7 +1,7 @@
 <script>
-let input = require('./PInput').default;
+const input = require('./PInput').default;
 
-let checkbox = {
+const checkbox = {
   name: 'checkbox',
 
   input_type: 'checkbox',

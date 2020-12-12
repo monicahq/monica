@@ -8,6 +8,14 @@ if [ "$GITHUB_TOKEN" == "\$(GITHUB_TOKEN)" ]; then
     echo -e "\033[0;36mFix GITHUB_TOKEN\033[0;37m"
     export GITHUB_TOKEN=
 fi
+if [ "$ASSETS_USERNAME" == "\$(ASSETS_USERNAME)" ]; then
+    echo -e "\033[0;36mFix ASSETS_USERNAME\033[0;37m"
+    export ASSETS_USERNAME=
+fi
+if [ "$ASSETS_EMAIL" == "\$(ASSETS_EMAIL)" ]; then
+    echo -e "\033[0;36mFix ASSETS_EMAIL\033[0;37m"
+    export ASSETS_EMAIL=
+fi
 if [ "$ASSETS_GITHUB_TOKEN" == "\$(ASSETS_GITHUB_TOKEN)" ]; then
     echo -e "\033[0;36mFix ASSETS_GITHUB_TOKEN\033[0;37m"
     export ASSETS_GITHUB_TOKEN=

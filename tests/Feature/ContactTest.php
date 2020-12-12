@@ -229,7 +229,7 @@ class ContactTest extends FeatureTestCase
         $response->assertSee('1 contact');
     }
 
-    public function test_user_can_see_contacts_sorted_by_lastactivitydateNewtoOld()
+    private function setUpContacts()
     {
         $user = $this->signIn();
 
@@ -242,6 +242,11 @@ class ContactTest extends FeatureTestCase
                 'account_id' => $contact->account_id,
             ]);
         }
+    }
+
+    public function test_user_can_see_contacts_sorted_by_lastactivitydateNewtoOld()
+    {
+        $this->setUpContacts();
 
         $response = $this->get('/people/list?sort=lastactivitydateNewtoOld');
 
@@ -252,17 +257,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_see_contacts_sorted_by_lastactivitydateOldtoNew()
     {
-        $user = $this->signIn();
-
-        $contacts = factory(Contact::class, 10)->create([
-            'account_id' => $user->account_id,
-        ]);
-
-        foreach ($contacts as $contact) {
-            factory(Activity::class)->create([
-                'account_id' => $contact->account_id,
-            ]);
-        }
+        $this->setUpContacts();
 
         $response = $this->get('/people/list?sort=lastactivitydateOldtoNew');
 

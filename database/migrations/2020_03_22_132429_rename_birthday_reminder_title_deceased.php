@@ -13,7 +13,9 @@ class RenameBirthdayReminderTitleDeceased extends Migration
      */
     public function up()
     {
-        $contacts = Contact::cursor()->filter(function ($contact) {
+        /** @var Illuminate\Support\LazyCollection */
+        $cursor = Contact::cursor();
+        $contacts = $cursor->filter(function ($contact) {
             return $contact->is_dead && ! empty($contact->birthday_reminder_id);
         });
 

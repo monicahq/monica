@@ -5,7 +5,7 @@
 name: app
 
 # The type of the application to build.
-type: php:7.3
+type: php:7.4
 build:
   flavor: none
 
@@ -15,6 +15,7 @@ runtime:
     - gmp
     - redis
     - sodium
+    - imagick
 
 # The hooks that will be performed when the package is deployed.
 hooks:
