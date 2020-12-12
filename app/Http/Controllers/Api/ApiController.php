@@ -199,14 +199,7 @@ class ApiController extends Controller
      */
     public function setSQLOrderByQuery($criteria)
     {
-        $this->sortDirection = 'asc';
-        $this->sort = $criteria;
-
-        $firstCharacter = $this->getSortCriteria()[0];
-
-        if ($firstCharacter == '-') {
-            $this->sort = substr($this->getSortCriteria(), 1);
-            $this->sortDirection = 'desc';
-        }
+        $this->sortDirection = $criteria[0] == '-' ? 'desc' : 'asc';
+        $this->sort = ltrim($criteria, "-");
     }
 }
