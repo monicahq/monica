@@ -60,9 +60,9 @@ return [
     'people_add_birthday_reminder' => 'Ευχηθείτε χρόνια πολλά στον :name',
     'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
     'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
-    'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
+    'people_edit_email_error' => 'Μία επαφή με αυτή τη διεύθυνση email υπάρχει ήδη στον λογαριασμό σας. Παρακαλώ διαλέξτε μία άλλη.',
     'people_export' => 'Εξαγωγή ως vCard',
-    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
+    'people_add_reminder_for_birthday' => 'Δημιουργήστε μία ετήσια υπενθύμιση για την ημέρα γενεθλίων',
 
     // show
     'section_contact_information' => 'Πληροφορίες επικοινωνίας',
