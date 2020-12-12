@@ -73,8 +73,8 @@ return [
     'section_personal_notes' => 'Σημειώσεις',
 
     // archived contacts
-    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
-    'list_link_to_archived_contacts' => 'List of archived contacts',
+    'list_link_to_active_contacts' => 'Βλέπετε τις αρχειοθετημένες επαφές. Κάντε κλικ <a href=":url">εδώ</a> για να δείτε τη λίστα με τις ενεργές επαφές.',
+    'list_link_to_archived_contacts' => 'Λίστα αρχειοθετημένων επαφών',
 
     // Header
     'me' => 'Αυτός είσαι εσύ',
@@ -123,21 +123,21 @@ return [
     'conversation_add_when' => 'When did you have this conversation?',
     'conversation_add_who_wrote' => 'Who said this message?',
     'conversation_add_how' => 'How did you communicate?',
-    'conversation_add_you' => 'You',
-    'conversation_add_content' => 'Write down what was said',
-    'conversation_add_what_was_said' => 'What did you say?',
-    'conversation_add_another' => 'Add another message',
-    'conversation_add_error' => 'You must add at least one message.',
-    'conversation_list_table_messages' => 'Messages',
+    'conversation_add_you' => 'Εσείς',
+    'conversation_add_content' => 'Γράψτε τι ειπώθηκε',
+    'conversation_add_what_was_said' => 'Τι είπατε;',
+    'conversation_add_another' => 'Προσθέστε άλλο ένα μήνυμα',
+    'conversation_add_error' => 'Πρέπει να προσθέσετε τουλάχιστον ένα μήνυμα.',
+    'conversation_list_table_messages' => 'Μυνήματα',
     'conversation_list_table_content' => 'Partial content (last message)',
-    'conversation_list_title' => 'Conversations',
-    'conversation_list_cta' => 'Log conversation',
+    'conversation_list_title' => 'Συνομιλίες',
+    'conversation_list_cta' => 'Καταγράψτε μία συνομιλία',
 
     // age - birthday
-    'birthdate_not_set' => 'Birthdate is not set',
-    'age_approximate_in_years' => 'around :age years old',
-    'age_exact_in_years' => ':age years old',
-    'age_exact_birthdate' => 'born :date',
+    'birthdate_not_set' => 'Δεν έχει οριστεί ημέρα γενεθλίων',
+    'age_approximate_in_years' => 'περίπου :age ετών',
+    'age_exact_in_years' => ':age ετών',
+    'age_exact_birthdate' => 'γεννήθηκε :date',
 
     // Last called
     'last_called' => 'Last called: :date',
