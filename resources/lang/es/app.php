@@ -47,14 +47,14 @@ return [
     'file_selected' => '1 file selected...|{count} files selected...',
 
     'application_title' => 'Monica – gestor de relaciones personales',
-    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
+    'application_description' => 'Monica es una herramienta para gestionar tus interacciones con tus seres queridos, amigos y familiares.',
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
-    'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
+    'markdown_description' => '¿Quieres dar formato al texto de una manera agradable? Soportamos el uso de Markdown para añadir negrita, cursiva, listas y más.',
     'markdown_link' => 'Leer documentación',
 
     'header_settings_link' => 'Configuración',
-    'header_logout_link' => 'Logout',
+    'header_logout_link' => 'Salir',
     'header_changelog_link' => 'Cambios del producto',
 
     'main_nav_cta' => 'Añadir personas',
@@ -136,7 +136,7 @@ return [
     'relationship_type_group_family' => 'Relaciones familiares',
     'relationship_type_group_friend' => 'Relaciones de amistad',
     'relationship_type_group_work' => 'Relaciones laborales',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_other' => 'Otro tipo de relaciones',
 
     'relationship_type_partner' => 'pareja',
     'relationship_type_partner_female' => 'pareja',
