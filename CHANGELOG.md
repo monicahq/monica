@@ -11,6 +11,7 @@
 ### Fixes:
 
 * Fix update activity with emotions
+* Fix bad return with wrong credential on oauth/login api
 
 
 # RELEASED VERSIONS:
