@@ -12503,21 +12503,21 @@
         },
         {
             "name": "barryvdh/laravel-ide-helper",
-            "version": "v2.8.1",
+            "version": "v2.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-ide-helper.git",
-                "reference": "affa55122f83575888d4ebf1728992686e8223de"
+                "reference": "5515cabea39b9cf55f98980d0f269dc9d85cfcca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/affa55122f83575888d4ebf1728992686e8223de",
-                "reference": "affa55122f83575888d4ebf1728992686e8223de",
+                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/5515cabea39b9cf55f98980d0f269dc9d85cfcca",
+                "reference": "5515cabea39b9cf55f98980d0f269dc9d85cfcca",
                 "shasum": ""
             },
             "require": {
                 "barryvdh/reflection-docblock": "^2.0.6",
-                "composer/composer": "^1.6 || ^2.0@dev",
+                "composer/composer": "^1.6 || ^2",
                 "doctrine/dbal": "~2.3",
                 "ext-json": "*",
                 "illuminate/console": "^6 || ^7 || ^8",
@@ -12527,13 +12527,14 @@
                 "phpdocumentor/type-resolver": "^1.1.0"
             },
             "require-dev": {
+                "ext-pdo_sqlite": "*",
                 "friendsofphp/php-cs-fixer": "^2",
                 "illuminate/config": "^6 || ^7 || ^8",
                 "illuminate/view": "^6 || ^7 || ^8",
-                "mockery/mockery": "^1.3",
+                "mockery/mockery": "^1.3.3",
                 "orchestra/testbench": "^4 || ^5 || ^6",
                 "phpunit/phpunit": "^8.5 || ^9",
-                "spatie/phpunit-snapshot-assertions": "^1.4 || ^2.2 || ^3",
+                "spatie/phpunit-snapshot-assertions": "^1.4 || ^2.2 || ^3 || ^4",
                 "vimeo/psalm": "^3.12"
             },
             "type": "library",
@@ -12580,7 +12581,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-07T07:36:37+00:00"
+            "time": "2020-12-06T08:55:05+00:00"
         },
         {
             "name": "barryvdh/reflection-docblock",
@@ -13915,22 +13916,22 @@
         },
         {
             "name": "orchestra/testbench",
-            "version": "v6.4.0",
+            "version": "v6.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench.git",
-                "reference": "021e2587f63a75d3629aca990cd8859422815898"
+                "reference": "9e59b54262d6c0aee0a3843d95e3930acad3120f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench/zipball/021e2587f63a75d3629aca990cd8859422815898",
-                "reference": "021e2587f63a75d3629aca990cd8859422815898",
+                "url": "https://api.github.com/repos/orchestral/testbench/zipball/9e59b54262d6c0aee0a3843d95e3930acad3120f",
+                "reference": "9e59b54262d6c0aee0a3843d95e3930acad3120f",
                 "shasum": ""
             },
             "require": {
                 "laravel/framework": "^8.0",
                 "mockery/mockery": "^1.3.1",
-                "orchestra/testbench-core": "^6.6",
+                "orchestra/testbench-core": "^6.8",
                 "php": ">=7.3 || >=8.0",
                 "phpunit/phpunit": "^8.4 || ^9.0"
             },
@@ -13971,20 +13972,20 @@
                     "type": "liberapay"
                 }
             ],
-            "time": "2020-11-07T05:31:05+00:00"
+            "time": "2020-12-09T14:38:58+00:00"
         },
         {
             "name": "orchestra/testbench-core",
-            "version": "v6.6.0",
+            "version": "v6.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench-core.git",
-                "reference": "684ec700cb1fd797be7bedc3b1dc5793c2969ba6"
+                "reference": "7d038b444813cda4ffd637a2008aa487edb5afed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/684ec700cb1fd797be7bedc3b1dc5793c2969ba6",
-                "reference": "684ec700cb1fd797be7bedc3b1dc5793c2969ba6",
+                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/7d038b444813cda4ffd637a2008aa487edb5afed",
+                "reference": "7d038b444813cda4ffd637a2008aa487edb5afed",
                 "shasum": ""
             },
             "require": {
@@ -14051,7 +14052,7 @@
                     "type": "liberapay"
                 }
             ],
-            "time": "2020-11-07T04:36:27+00:00"
+            "time": "2020-12-09T14:20:37+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -14996,16 +14997,16 @@
         },
         {
             "name": "psalm/plugin-laravel",
-            "version": "v1.4.1",
+            "version": "v1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/psalm-plugin-laravel.git",
-                "reference": "71a93c472c398fe62bf0d3c0d6ad1e281320f87f"
+                "reference": "baf53624a2647a887eee3b43e87f4f44f64eb6e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/psalm-plugin-laravel/zipball/71a93c472c398fe62bf0d3c0d6ad1e281320f87f",
-                "reference": "71a93c472c398fe62bf0d3c0d6ad1e281320f87f",
+                "url": "https://api.github.com/repos/psalm/psalm-plugin-laravel/zipball/baf53624a2647a887eee3b43e87f4f44f64eb6e7",
+                "reference": "baf53624a2647a887eee3b43e87f4f44f64eb6e7",
                 "shasum": ""
             },
             "require": {
@@ -15026,7 +15027,7 @@
                 "codeception/module-phpbrowser": "^1.0.0",
                 "slevomat/coding-standard": "^6.2",
                 "squizlabs/php_codesniffer": "*",
-                "weirdan/codeception-psalm-module": "^0.8"
+                "weirdan/codeception-psalm-module": "^0.13.1"
             },
             "type": "psalm-plugin",
             "extra": {
@@ -15053,7 +15054,7 @@
                 }
             ],
             "description": "A Laravel plugin for Psalm",
-            "time": "2020-10-20T00:24:26+00:00"
+            "time": "2020-12-07T14:56:40+00:00"
         },
         {
             "name": "react/promise",
@@ -16431,16 +16432,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v5.1.8",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "f284e032c3cefefb9943792132251b79a6127ca6"
+                "reference": "bb73619b2ae5121bbbcd9f191dfd53ded17ae598"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/f284e032c3cefefb9943792132251b79a6127ca6",
-                "reference": "f284e032c3cefefb9943792132251b79a6127ca6",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/bb73619b2ae5121bbbcd9f191dfd53ded17ae598",
+                "reference": "bb73619b2ae5121bbbcd9f191dfd53ded17ae598",
                 "shasum": ""
             },
             "require": {
@@ -16499,7 +16500,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-24T12:03:25+00:00"
+            "time": "2020-11-28T10:57:20+00:00"
         },
         {
             "name": "thecodingmachine/phpstan-safe-rule",
