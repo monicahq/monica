@@ -11984,7 +11984,7 @@
         },
         {
             "name": "web-token/jwt-signature-algorithm-ecdsa",
-            "version": "v2.2.5",
+            "version": "v2.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-ecdsa.git",
