@@ -21,7 +21,7 @@ class IntroductionsController extends Controller
      */
     public function edit(Contact $contact)
     {
-        $contacts = auth()->user()->account->contacts()
+        $contacts = $contact->siblingContacts()
                         ->real()
                         ->active()
                         ->get();

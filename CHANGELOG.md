@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Add the notion of AddressBooks
 * Allow customization of life event types
 
 ### Enhancements:

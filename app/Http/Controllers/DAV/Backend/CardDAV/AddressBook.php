@@ -70,7 +70,7 @@ class AddressBook extends BaseAddressBook
     {
         $carddavBackend = $this->carddavBackend;
         if ($carddavBackend instanceof CardDAVBackend) {
-            $date = $carddavBackend->getLastModified();
+            $date = $carddavBackend->getLastModified(null);
             if (! is_null($date)) {
                 return (int) $date->timestamp;
             }
@@ -92,7 +92,7 @@ class AddressBook extends BaseAddressBook
     {
         $carddavBackend = $this->carddavBackend;
         if ($carddavBackend instanceof CardDAVBackend) {
-            return (string) $carddavBackend->refreshSyncToken()->id;
+            return (string) $carddavBackend->refreshSyncToken(null)->id;
         }
 
         return null;
