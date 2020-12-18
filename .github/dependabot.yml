@@ -1,0 +1,21 @@
+version: 2
+updates:
+- package-ecosystem: composer
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "07:00"
+  open-pull-requests-limit: 100
+  versioning-strategy: lockfile-only
+  ignore:
+  - dependency-name: doctrine/dbal
+    versions:
+    - ">= 2.10.a"
+    - "< 2.11"
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "07:00"
+  open-pull-requests-limit: 100
+  versioning-strategy: lockfile-only
