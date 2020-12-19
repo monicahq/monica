@@ -2,11 +2,28 @@ version: 2
 
 updates:
   # Maintain dependencies for GitHub Actions
-  - package-ecosystem: "github-actions"
+  - package-ecosystem: github-actions
     directory: "/"
     schedule:
       interval: weekly
       time: "11:00"
+    labels:
+      - actions
+      - dependencies
+      - auto-squash
+
+   # Maintain dependencies for npm
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+      time: "07:00"
+    open-pull-requests-limit: 10
+    versioning-strategy: lockfile-only
+    labels:
+      - javascript
+      - dependencies
+      - auto-squash
 
   # Maintain dependencies for Composer
   - package-ecosystem: composer
@@ -14,19 +31,14 @@ updates:
     schedule:
       interval: weekly
       time: "07:00"
-    open-pull-requests-limit: 100
+    open-pull-requests-limit: 10
     versioning-strategy: lockfile-only
     ignore:
       - dependency-name: doctrine/dbal
         versions:
           - ">= 2.10.a"
           - "< 2.11"
- 
-   # Maintain dependencies for npm
-  - package-ecosystem: npm
-    directory: "/"
-    schedule:
-      interval: weekly
-      time: "07:00"
-    open-pull-requests-limit: 100
-    versioning-strategy: lockfile-only
+    labels:
+      - php
+      - dependencies
+      - auto-squash
