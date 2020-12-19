@@ -13009,16 +13009,16 @@
         },
         {
             "name": "fakerphp/faker",
-            "version": "v1.12.1",
+            "version": "v1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FakerPHP/Faker.git",
-                "reference": "841e8bdde345cc1ea9f98e776959e7531cadea0e"
+                "reference": "ab3f5364d01f2c2c16113442fb987d26e4004913"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/841e8bdde345cc1ea9f98e776959e7531cadea0e",
-                "reference": "841e8bdde345cc1ea9f98e776959e7531cadea0e",
+                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/ab3f5364d01f2c2c16113442fb987d26e4004913",
+                "reference": "ab3f5364d01f2c2c16113442fb987d26e4004913",
                 "shasum": ""
             },
             "require": {
@@ -13053,7 +13053,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2020-12-11T10:39:41+00:00"
+            "time": "2020-12-18T16:50:48+00:00"
         },
         {
             "name": "felixfbecker/advanced-json-rpc",
