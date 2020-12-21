@@ -8,6 +8,7 @@
     "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
     "prod": "yarn run production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "preproduction": "php artisan lang:generate -vvv",
     "e2e": "cypress run",
     "e2e:chrome": "cypress run --browser chrome",
     "e2e:record": "cypress run --record",
@@ -24,7 +25,11 @@
     "prepublish": "yarn run snyk-protect",
     "delete:reports": "rm results/cypress/* || true",
     "pree2e": "npm run delete:reports",
-    "migrate": "DB_CONNECTION=testing php artisan migrate:fresh && DB_CONNECTION=testing php artisan db:seed"
+    "migrate": "DB_CONNECTION=testing php artisan migrate:fresh && DB_CONNECTION=testing php artisan db:seed",
+    "pretest": "yarn run migrate",
+    "test": "vendor/bin/phpunit",
+    "posttest": "vendor/bin/phpstan analyse && vendor/bin/psalm",
+    "composer update": "COMPOSER_MEMORY_LIMIT=-1 composer update"
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
