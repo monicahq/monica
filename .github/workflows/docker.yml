@@ -32,8 +32,10 @@ jobs:
         uses: docker/build-push-action@v2
         with:
 #          push: ${{ github.ref == 'refs/heads/master' }}
+          push: true
           tags: ghcr.io/monicahq/monica:master
           file: scripts/docker/Dockerfile
+          context: .
           labels: org.opencontainers.image.version="master"
 
       - name: Image digest
