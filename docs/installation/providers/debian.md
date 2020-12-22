@@ -113,6 +113,24 @@ We have to authorize the new user on the `monica` db so that he is allowed to ch
 GRANT ALL ON monica.* TO 'monica'@'localhost';
 ```
 
+Additionally, you need to create the 'forge' database.
+
+```sql
+CREATE DATABASE forge;
+```
+
+And the corresponding user.
+
+```sql
+CREATE USER 'forge'@'localhost' IDENTIFIED BY '';
+```
+
+Authorize the new user on the database.
+
+```sql
+GRANT ALL ON forge.* TO 'forge'@'localhost';
+```
+
 And finally we apply the changes and exit the database.
 
 ```sql
