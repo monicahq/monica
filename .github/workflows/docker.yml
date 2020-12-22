@@ -35,7 +35,6 @@ jobs:
           tags: ghcr.io/monicahq/monica:master
           file: scripts/docker/Dockerfile
           labels: org.opencontainers.image.version="master"
-          tags: master
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
