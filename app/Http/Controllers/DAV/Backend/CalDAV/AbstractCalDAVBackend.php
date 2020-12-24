@@ -42,4 +42,12 @@ abstract class AbstractCalDAVBackend implements ICalDAVBackend, IDAVBackend
             '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => $token,
         ];
     }
+
+    /**
+     * Get the new exported version of the object.
+     *
+     * @param mixed $obj
+     * @return string
+     */
+    abstract protected function refreshObject($obj): string;
 }

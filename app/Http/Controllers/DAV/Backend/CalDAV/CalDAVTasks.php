@@ -101,12 +101,18 @@ class CalDAVTasks extends AbstractCalDAVBackend
         return [];
     }
 
-    protected function refreshObject($task): string
+    /**
+     * Get the new exported version of the object.
+     *
+     * @param mixed $obj task
+     * @return string
+     */
+    protected function refreshObject($obj): string
     {
         $vcal = app(ExportTask::class)
             ->execute([
                 'account_id' => $this->user->account_id,
-                'task_id' => $task->id,
+                'task_id' => $obj->id,
             ]);
 
         return $vcal->serialize();

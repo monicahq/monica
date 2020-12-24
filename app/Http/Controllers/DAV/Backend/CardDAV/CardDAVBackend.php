@@ -212,12 +212,18 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         }
     }
 
-    protected function refreshObject($contact): string
+    /**
+     * Get the new exported version of the object.
+     *
+     * @param mixed $obj contact
+     * @return string
+     */
+    protected function refreshObject($obj): string
     {
         $vcard = app(ExportVCard::class)
             ->execute([
                 'account_id' => $this->user->account_id,
-                'contact_id' => $contact->id,
+                'contact_id' => $obj->id,
             ]);
 
         return $vcard->serialize();

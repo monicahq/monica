@@ -72,12 +72,18 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
         return [];
     }
 
-    protected function refreshObject($date): string
+    /**
+     * Get the new exported version of the object.
+     *
+     * @param mixed $obj date
+     * @return string
+     */
+    protected function refreshObject($obj): string
     {
         $vcal = app(ExportVCalendar::class)
             ->execute([
                 'account_id' => $this->user->account_id,
-                'special_date_id' => $date->id,
+                'special_date_id' => $obj->id,
             ]);
 
         return $vcal->serialize();

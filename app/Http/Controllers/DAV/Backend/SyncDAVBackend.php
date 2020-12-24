@@ -21,7 +21,7 @@ trait SyncDAVBackend
      * @param string|null $collectionId
      * @return SyncToken|null
      */
-    protected function getCurrentSyncToken($collectionId): ?SyncToken
+    public function getCurrentSyncToken($collectionId): ?SyncToken
     {
         $tokens = SyncToken::where([
             'account_id' => $this->user->account_id,
@@ -271,4 +271,12 @@ trait SyncDAVBackend
     abstract public function getObjects($collectionId);
 
     abstract public function getExtension();
+
+    /**
+     * Get the new exported version of the object.
+     *
+     * @param mixed $obj
+     * @return string
+     */
+    abstract protected function refreshObject($obj): string;
 }
