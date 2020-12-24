@@ -62,8 +62,7 @@ class ExportAccount
     public function handle()
     {
         $tempFileName = '';
-        switch ($this->format)
-        {
+        switch ($this->format) {
             case self::JSON:
                 $handler = app(JsonExportAccount::class);
                 break;
@@ -73,9 +72,9 @@ class ExportAccount
         }
         try {
             $tempFileName = $handler->execute([
-                        'account_id' => Auth::user()->account_id,
-                        'user_id' => Auth::user()->id,
-                    ]);
+                'account_id' => Auth::user()->account_id,
+                'user_id' => Auth::user()->id,
+            ]);
 
             // get the temp file that we just created
             $tempFilePath = disk_adapter('local')->getPathPrefix().$tempFileName;

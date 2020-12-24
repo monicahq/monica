@@ -3,12 +3,11 @@
 namespace App\Services\Account\Settings;
 
 use App\Models\User\User;
+use Illuminate\Support\Str;
+use App\Services\BaseService;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
-use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class JsonExportAccount extends BaseService
@@ -56,7 +55,7 @@ class JsonExportAccount extends BaseService
      */
     private function writeExport(array $data, User $user)
     {
-        $result = new class{};
+        $result = new class {};
         $result->account = $this->exportAccount($data);
 
         // $this->exportAddress($data);
@@ -99,7 +98,7 @@ class JsonExportAccount extends BaseService
         // $this->exportContactPhoto($data);
         // $this->exportAuditLogs($data);
 
-        $this->writeToTempFile(json_encode($result, JSON_PRETTY_PRINT ));
+        $this->writeToTempFile(json_encode($result, JSON_PRETTY_PRINT));
     }
 
     /**
@@ -112,7 +111,7 @@ class JsonExportAccount extends BaseService
      */
     private function getData($data, array $columns, array $properties = null, callable $callback = null)
     {
-        $result = new class{};
+        $result = new class {};
         $values = [];
 
         if ($data->count() == 0) {
@@ -139,7 +138,7 @@ class JsonExportAccount extends BaseService
      */
     private function getOneData(Model $model, array $columns, array $properties = null, callable $callback = null)
     {
-        $result = new class{};
+        $result = new class {};
 
         if (! $model->exists()) {
             return null;
@@ -156,7 +155,7 @@ class JsonExportAccount extends BaseService
             }
         }
         if ($callback != null) {
-            if (!isset($result->properties)) {
+            if (! isset($result->properties)) {
                 $result->properties = [];
             }
             $callback($result, $model);
@@ -167,7 +166,7 @@ class JsonExportAccount extends BaseService
 
     private function setSimpleProperty(object $obj, string $name, ?Model $model, ?string $prop = null): bool
     {
-        if ($model === null || !$model->exists()) {
+        if ($model === null || ! $model->exists()) {
             return false;
         }
 
@@ -209,6 +208,7 @@ class JsonExportAccount extends BaseService
         }
 
         $obj->properties[$name] = $result;
+
         return true;
     }
 
@@ -343,7 +343,7 @@ class JsonExportAccount extends BaseService
             $this->setComplexProperty($obj, 'deceased_date', $contact, self::$specialDateColumns, 'specialDate', 'deceasedDate');
             $this->setComplexProperty($obj, 'deceased_reminder', $contact, self::$reminderColumns, 'reminder', 'deceased_reminder_id');
 
-            $debts = $this->getData($contact->debts, ['in_debt', 'status', 'amount'],  ['currency'], function (object $obj, $debt) {
+            $debts = $this->getData($contact->debts, ['in_debt', 'status', 'amount'], ['currency'], function (object $obj, $debt) {
                 $obj->in_debt = $obj->in_debt === 'yes';
             });
             if ($debts !== null) {
@@ -389,7 +389,6 @@ class JsonExportAccount extends BaseService
         return $this->getData($account->activities, $columns, $properties, function (object $obj, $activity) {
             $this->setSimpleProperty($obj, 'type', $activity->type, 'uuid', 'uuid');
         });
-
     }
 
     /**
@@ -414,7 +413,6 @@ class JsonExportAccount extends BaseService
         return $this->getData($account->activityTypes, $columns, $properties, function (object $obj, $activityType) {
             $this->setSimpleProperty($obj, 'category', $activityType->category, 'uuid', 'uuid');
         });
-
     }
 
     /**
@@ -436,7 +434,6 @@ class JsonExportAccount extends BaseService
         ];
 
         return $this->getData($account->activityTypeCategories, $columns, $properties);
-
     }
 
     private static $specialDateColumns = [
@@ -459,5 +456,4 @@ class JsonExportAccount extends BaseService
         'created_at' => 'date',
         'updated_at' => 'date',
     ];
-
 }

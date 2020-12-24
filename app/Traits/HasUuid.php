@@ -13,14 +13,15 @@ trait HasUuid
      */
     public function getUuidAttribute()
     {
-        if (!isset($this->attributes['uuid']) || empty($this->attributes['uuid']) || $this->attributes['uuid'] == null) {
+        if (! isset($this->attributes['uuid']) || empty($this->attributes['uuid']) || $this->attributes['uuid'] == null) {
             return tap(Str::uuid()->toString(), function ($uuid) {
                 $this->forceFill([
-                    'uuid' => $uuid
+                    'uuid' => $uuid,
                 ]);
                 $this->save();
             });
         }
+
         return $this->attributes['uuid'];
     }
 }
