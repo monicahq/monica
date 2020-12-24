@@ -91,7 +91,7 @@ class Account extends Model
      *
      * @return HasMany
      */
-    public function contacts()
+    public function allContacts()
     {
         return $this->hasMany(Contact::class);
     }
@@ -100,15 +100,15 @@ class Account extends Model
      * Get the addressBook's contacts.
      *
      * @param string|null $addressBookName
-     * @return HasMany
+     * @return HasMany<Contact>
      */
-    public function addressBookContacts(string $addressBookName = null)
+    public function contacts(string $addressBookName = null)
     {
-        if ($addressBookName) {
-            return $this->contacts()->real()->addressBook($this->id, $addressBookName);
-        }
+        $contacts = $this->allContacts();
 
-        return $this->contacts()->real()->addressBook();
+        return $addressBookName
+            ? $contacts->addressBook($this->id, $addressBookName)
+            : $contacts->addressBook();
     }
 
     /**

@@ -28,7 +28,8 @@ class DashboardController extends Controller
             )->with('debts.contact')
             ->first();
 
-        $numberOfContacts = $account->addressBookContacts()
+        $numberOfContacts = $account->contacts()
+            ->real()
             ->active()
             ->count();
 

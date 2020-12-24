@@ -189,11 +189,19 @@ class Contact extends Model
     /**
      * Get the list of contacts from the same address book as this contact.
      *
-     * @return HasMany|null
+     * @return HasMany<self>|null
      */
-    public function addressBookContacts()
+    public function siblingContacts(): ?HasMany
     {
-        return $this->account ? $this->account->addressBookContacts($this->addressBook ? $this->addressBook->name : null) : null;
+        if ($this->account) {
+            if ($this->addressBook) {
+                return $this->account->contacts($this->addressBook->name);
+            }
+
+            return $this->account->contacts();
+        }
+
+        return null;
     }
 
     /**
@@ -586,7 +594,7 @@ class Contact extends Model
     }
 
     /**
-     * Scope a query to only include contacts from designated address book.
+     * Scope a query to only include contacts from given address book.
      * 'null' value for address book is the default address book.
      *
      * @param Builder $query

@@ -21,7 +21,7 @@ trait SyncDAVBackend
      * @param string|null $collectionId
      * @return SyncToken|null
      */
-    public function getCurrentSyncToken($collectionId): ?SyncToken
+    protected function getCurrentSyncToken($collectionId): ?SyncToken
     {
         $tokens = SyncToken::where([
             'account_id' => $this->user->account_id,
@@ -53,7 +53,7 @@ trait SyncDAVBackend
      * @param string|null $collectionId
      * @return SyncToken
      */
-    public function refreshSyncToken(?string $collectionId = null): SyncToken
+    public function refreshSyncToken($collectionId): SyncToken
     {
         $token = $this->getCurrentSyncToken($collectionId);
 
@@ -159,16 +159,16 @@ trait SyncDAVBackend
      *
      * The limit is 'suggestive'. You are free to ignore it.
      *
-     * @param string $collectionId
+     * @param string $calendarId
      * @param string $syncToken
      * @return array|null
      */
-    public function getChanges($collectionId, $syncToken): ?array
+    public function getChanges($calendarId, $syncToken): ?array
     {
         $token = null;
         $timestamp = null;
         if (! empty($syncToken)) {
-            $token = $this->getSyncToken($collectionId, $syncToken);
+            $token = $this->getSyncToken($calendarId, $syncToken);
 
             if (is_null($token)) {
                 // syncToken is not recognized
@@ -178,7 +178,7 @@ trait SyncDAVBackend
             $timestamp = $token->timestamp;
         }
 
-        $objs = $this->getObjects($collectionId);
+        $objs = $this->getObjects($calendarId);
 
         $modified = $objs->filter(function ($obj) use ($timestamp) {
             return ! is_null($timestamp) &&
@@ -191,7 +191,7 @@ trait SyncDAVBackend
         });
 
         return [
-            'syncToken' => $this->refreshSyncToken($collectionId)->id,
+            'syncToken' => $this->refreshSyncToken($calendarId)->id,
             'added' => $added->map(function ($obj) {
                 return $this->encodeUri($obj);
             })->values()->toArray(),
@@ -269,8 +269,6 @@ trait SyncDAVBackend
      * @return \Illuminate\Support\Collection
      */
     abstract public function getObjects($collectionId);
-
-    abstract protected function refreshObject($object): string;
 
     abstract public function getExtension();
 }
