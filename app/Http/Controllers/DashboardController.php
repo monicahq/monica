@@ -39,7 +39,8 @@ class DashboardController extends Controller
 
         // Fetch last updated contacts
         $lastUpdatedContactsCollection = collect([]);
-        $lastUpdatedContacts = $account->addressBookContacts()
+        $lastUpdatedContacts = $account->contacts()
+            ->real()
             ->active()
             ->alive()
             ->latest('last_consulted_at')
