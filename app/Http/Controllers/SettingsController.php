@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User\User;
+use App\Jobs\ExportAccount;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -10,7 +11,6 @@ use App\Helpers\LocaleHelper;
 use App\Helpers\AccountHelper;
 use App\Helpers\TimezoneHelper;
 use App\Models\Contact\Contact;
-use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
 use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
@@ -189,12 +189,28 @@ class SettingsController
      */
     public function exportToSql()
     {
-        $path = dispatch_now(new ExportAccountAsSQL());
+        $path = dispatch_now(new ExportAccount(ExportAccount::SQL));
 
-        $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
+        $adapter = disk_adapter(ExportAccount::STORAGE);
 
         return response()
             ->download($adapter->getPathPrefix().$path, 'monica.sql')
+            ->deleteFileAfterSend(true);
+    }
+
+    /**
+     * Exports the data of the account in SQL format.
+     *
+     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response|null
+     */
+    public function exportToJson()
+    {
+        $path = dispatch_now(new ExportAccount(ExportAccount::JSON));
+
+        $adapter = disk_adapter(ExportAccount::STORAGE);
+
+        return response()
+            ->download($adapter->getPathPrefix().$path, 'monica.json', ['Content-Type' => 'application/json; charset=utf-8'])
             ->deleteFileAfterSend(true);
     }
 

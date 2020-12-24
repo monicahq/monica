@@ -7,6 +7,7 @@ use App\Traits\AmountFormatter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
+use App\Models\Settings\Currency;
 
 /**
  * @property Account $account
@@ -53,6 +54,16 @@ class Debt extends Model
     public function contact()
     {
         return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * Get the currency record associated with the debt.
+     *
+     * @return BelongsTo
+     */
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Models\Account;
 
+use App\Traits\HasUuid;
 use App\Models\User\User;
 use App\Models\Contact\Tag;
 use App\Models\Journal\Day;
@@ -53,7 +54,7 @@ use App\Services\Auth\Population\PopulateContactFieldTypesTable;
  */
 class Account extends Model
 {
-    use Subscription;
+    use Subscription, HasUuid;
 
     /**
      * The attributes that are mass assignable.

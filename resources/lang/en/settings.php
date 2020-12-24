@@ -39,6 +39,9 @@ return [
     'export_sql_explanation' => 'Exporting your data in SQL format allows you to take your data and import it to your own Monica instance. This is only valuable if you do have your own server.',
     'export_sql_cta' => 'Export to SQL',
     'export_sql_link_instructions' => 'Note: <a href=":url">read the instructions</a> to learn more about importing this file to your instance.',
+    'export_title_json' => 'Export to Json',
+    'export_json_explanation' => 'Exporting your data in Json format for backup.',
+    'export_json_cta' => 'Export to Json',
 
     'firstname' => 'First name',
     'lastname' => 'Last name',
