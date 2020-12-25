@@ -129,7 +129,7 @@ return [
     'conversation_add_another' => 'Προσθέστε άλλο ένα μήνυμα',
     'conversation_add_error' => 'Πρέπει να προσθέσετε τουλάχιστον ένα μήνυμα.',
     'conversation_list_table_messages' => 'Μυνήματα',
-    'conversation_list_table_content' => 'Partial content (last message)',
+    'conversation_list_table_content' => 'Μερικό περιεχόμενο (τελευταίο μήνυμα)',
     'conversation_list_title' => 'Συνομιλίες',
     'conversation_list_cta' => 'Καταγράψτε μία συνομιλία',
 
@@ -140,13 +140,13 @@ return [
     'age_exact_birthdate' => 'γεννήθηκε :date',
 
     // Last called
-    'last_called' => 'Last called: :date',
-    'last_called_empty' => 'Last called: unknown',
-    'last_activity_date' => 'Last activity together: :date',
-    'last_activity_date_empty' => 'Last activity together: unknown',
+    'last_called' => 'Τελευταία κλήση: :date',
+    'last_called_empty' => 'Τελευταία κλήση: άγνωστο',
+    'last_activity_date' => 'Τελευταία δραστηριότητα μαζί: :date',
+    'last_activity_date_empty' => 'Τελευταία δραστηριότητα μαζί: άγνωστο',
 
     // additional information
-    'information_edit_success' => 'The profile has been updated successfully',
+    'information_edit_success' => 'Προφίλ έχει ενημερωθεί με επιτυχία',
     'information_edit_title' => 'Edit :name’s personal information',
     'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_max_size2' => 'Max {size} Kb.',
