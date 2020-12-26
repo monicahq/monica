@@ -460,6 +460,6 @@ return [
     'dav_contacts_description' => 'Contactos de :name',
     'dav_birthdays' => 'Cumpleaños',
     'dav_birthdays_description' => 'Cumpleaños del contacto :name',
-    'dav_tasks' => 'Tasks',
-    'dav_tasks_description' => ':name’s tasks',
+    'dav_tasks' => 'Tareas',
+    'dav_tasks_description' => 'Tareas de :name',
 ];
