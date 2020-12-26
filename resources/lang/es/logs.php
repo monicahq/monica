@@ -9,7 +9,7 @@
 return [
 
     // contact creation
-    'contact_log_contact_created' => 'Created the contact.',
+    'contact_log_contact_created' => 'Contacto creado.',
     'settings_log_contact_created_with_name' => 'Added :name as a contact.',
     'settings_log_contact_created_with_name_with_link' => 'Added <a href=":link">:name</a> as a contact.',
 
