@@ -3,7 +3,6 @@
 namespace App\Console;
 
 use App\Console\Commands\Clean;
-use App\Console\Commands\CreateAccount;
 use App\Console\Commands\Update;
 use App\Console\Commands\Passport;
 use App\Console\Commands\ExportAll;
@@ -14,6 +13,7 @@ use App\Console\Scheduling\CronEvent;
 use App\Console\Commands\ImportVCards;
 use App\Console\Commands\LangGenerate;
 use App\Console\Commands\SetUserAdmin;
+use App\Console\Commands\CreateAccount;
 use App\Console\Commands\Deactivate2FA;
 use App\Console\Commands\SendReminders;
 use App\Console\Commands\SendTestEmail;

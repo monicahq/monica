@@ -2,8 +2,6 @@
 
 namespace App\Console\Commands;
 
-use function Safe\touch;
-use App\Helpers\InstanceHelper;
 use App\Models\Account\Account;
 use Illuminate\Console\Command;
 
@@ -34,13 +32,15 @@ class CreateAccount extends Command
     {
         $email = $this->option('email');
         if (empty($email)) {
-            $this.error('! You must specify an email');
-            return;
+            $this->error('! You must specify an email');
         }
-        
+
         $password = $this->option('password');
         if (empty($password)) {
-            $this.error('! You must specify a password');
+            $this->error('! You must specify a password');
+        }
+
+        if (empty($email) || empty($password)) {
             return;
         }
 
