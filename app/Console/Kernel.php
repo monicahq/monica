@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\Clean;
+use App\Console\Commands\CreateAccount;
 use App\Console\Commands\Update;
 use App\Console\Commands\Passport;
 use App\Console\Commands\ExportAll;
@@ -40,6 +41,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         CalculateStatistics::class,
         Clean::class,
+        CreateAccount::class,
         Deactivate2FA::class,
         ExportAll::class,
         GetVersion::class,

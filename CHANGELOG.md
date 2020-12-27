@@ -7,7 +7,7 @@
 
 ### Enhancements:
 
-*
+* Add an artisan command to create an account
 
 ### Fixes:
 
