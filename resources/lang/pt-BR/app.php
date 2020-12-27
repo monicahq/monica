@@ -13,7 +13,7 @@ return [
     'save' => 'Salvar',
     'add' => 'Adicionar',
     'cancel' => 'Cancelar',
-    'confirm' => 'Confirm',
+    'confirm' => 'Confirmar',
     'delete_confirm' => 'Tem certeza?',
     'delete' => 'Excluir',
     'edit' => 'Editar',
@@ -44,11 +44,11 @@ return [
     'retry' => 'Tentar novamente',
     'filter' => 'Filtrar lista',
     'go_back' => 'Voltar',
-    'file_selected' => '1 file selected...|{count} files selected...',
+    'file_selected' => '1 arquivo selecionado...|{count} arquivos selecionados...',
 
     'application_title' => 'Monica – Gerenciador de relacionamento pessoal',
     'application_description' => 'Monica é uma ferramenta para gerenciar suas interações com seus amigos, familiares e pessoas queridas.',
-    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
+    'application_og_title' => 'Fortaleça suas relações com as pessoas que você ama. CRM online e gratuito para amigos e familiares.',
 
     'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
     'markdown_link' => 'Ler documentação',
