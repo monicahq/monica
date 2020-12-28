@@ -2743,16 +2743,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.19.0",
+            "version": "v8.20.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "f5f331cee60f1bbe672503b7eb9ba5b22b2ceacb"
+                "reference": "b5d8573ab16027867eaa1ac148893833434f9b02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/f5f331cee60f1bbe672503b7eb9ba5b22b2ceacb",
-                "reference": "f5f331cee60f1bbe672503b7eb9ba5b22b2ceacb",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/b5d8573ab16027867eaa1ac148893833434f9b02",
+                "reference": "b5d8573ab16027867eaa1ac148893833434f9b02",
                 "shasum": ""
             },
             "require": {
@@ -2902,7 +2902,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2020-12-15T16:16:31+00:00"
+            "time": "2020-12-22T21:21:19+00:00"
         },
         {
             "name": "laravel/passport",
@@ -4671,16 +4671,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.42.0",
+            "version": "2.43.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "d0463779663437392fe42ff339ebc0213bd55498"
+                "reference": "d32c57d8389113742f4a88725a170236470012e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/d0463779663437392fe42ff339ebc0213bd55498",
-                "reference": "d0463779663437392fe42ff339ebc0213bd55498",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/d32c57d8389113742f4a88725a170236470012e2",
+                "reference": "d32c57d8389113742f4a88725a170236470012e2",
                 "shasum": ""
             },
             "require": {
@@ -4756,7 +4756,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-28T14:25:28+00:00"
+            "time": "2020-12-17T20:55:32+00:00"
         },
         {
             "name": "nette/caching",
@@ -15118,12 +15118,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "d5961914bf7f90e81af509b81e51450bff419815"
+                "reference": "49da07b20a780d3fca9fe12e1db27975a2910c18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/d5961914bf7f90e81af509b81e51450bff419815",
-                "reference": "d5961914bf7f90e81af509b81e51450bff419815",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/49da07b20a780d3fca9fe12e1db27975a2910c18",
+                "reference": "49da07b20a780d3fca9fe12e1db27975a2910c18",
                 "shasum": ""
             },
             "conflict": {
@@ -15280,8 +15280,8 @@
                 "scheb/two-factor-bundle": ">=0,<3.26|>=4,<4.11",
                 "sensiolabs/connect": "<4.2.3",
                 "serluck/phpwhois": "<=4.2.6",
-                "shopware/core": "<=6.3.2",
-                "shopware/platform": "<=6.3.2",
+                "shopware/core": "<=6.3.4",
+                "shopware/platform": "<=6.3.4",
                 "shopware/shopware": "<5.6.9",
                 "silverstripe/admin": ">=1.0.3,<1.0.4|>=1.1,<1.1.1",
                 "silverstripe/assets": ">=1,<1.4.7|>=1.5,<1.5.2",
@@ -15427,7 +15427,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-08T15:02:56+00:00"
+            "time": "2020-12-21T18:11:20+00:00"
         },
         {
             "name": "sebastian/code-unit",
