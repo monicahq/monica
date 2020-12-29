@@ -15,7 +15,6 @@ use App\Helpers\LocaleHelper;
 use App\Services\BaseService;
 use function Safe\preg_split;
 use App\Models\Contact\Gender;
-use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Helpers\CountriesHelper;
@@ -107,8 +106,8 @@ class ImportVCard extends BaseService
             'entry' => [
                 'required',
                 function ($attribute, $value, $fail) {
-                    if (! is_string($value) && ! $value instanceof VCard) {
-                        $fail($attribute.' must be a string or a VCard object.');
+                    if (! is_string($value) && ! is_resource($value) && ! $value instanceof VCard) {
+                        $fail($attribute.' must be a string, a resource, or a VCard object.');
                     }
                 },
             ],
@@ -417,6 +416,10 @@ class ImportVCard extends BaseService
 
         if (! $contact) {
             $contact = $this->existingContactWithName($entry);
+        }
+
+        if ($contact) {
+            $contact->timestamps = false;
         }
 
         return $contact;

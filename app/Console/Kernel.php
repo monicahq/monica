@@ -20,12 +20,14 @@ use App\Console\Commands\SentryRelease;
 use App\Console\Commands\SendStayInTouch;
 use App\Console\Commands\SetupProduction;
 use App\Console\Commands\UpdateGravatars;
+use App\Console\Commands\DavClientsUpdate;
 use App\Console\Commands\PingVersionServer;
 use App\Console\Commands\SetPremiumAccount;
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\CalculateStatistics;
 use App\Console\Commands\OneTime\MoveAvatars;
 use App\Console\Commands\MigrateDatabaseCollation;
+use App\Console\Commands\AddAddressBookSubscription;
 use App\Console\Commands\Tests\SetupFrontEndTestUser;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\OneTime\MoveAvatarsToPhotosDirectory;
@@ -40,6 +42,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         CalculateStatistics::class,
         Clean::class,
+        DavClientsUpdate::class,
         Deactivate2FA::class,
         ExportAll::class,
         GetVersion::class,
@@ -72,6 +75,7 @@ class Kernel extends ConsoleKernel
     {
         if ($this->app->environment() != 'production') {
             $this->commands[] = SetupFrontEndTestUser::class;
+            $this->commands[] = AddAddressBookSubscription::class;
         }
     }
 
@@ -85,6 +89,7 @@ class Kernel extends ConsoleKernel
     {
         $this->scheduleCommand($schedule, 'send:reminders', 'hourly');
         $this->scheduleCommand($schedule, 'send:stay_in_touch', 'hourly');
+        $this->scheduleCommand($schedule, 'monica:davclients', 'hourly');
         $this->scheduleCommand($schedule, 'monica:calculatestatistics', 'daily');
         $this->scheduleCommand($schedule, 'monica:ping', 'daily');
         $this->scheduleCommand($schedule, 'monica:clean', 'daily');

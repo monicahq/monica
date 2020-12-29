@@ -43,7 +43,7 @@ class SearchHelper
             });
 
             return $b->addressBook($accountId, $addressBookName)
-                ->orderBy($orderByColumn, $orderByDirection);
+                     ->orderBy($orderByColumn, $orderByDirection);
         }
 
         return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection)
