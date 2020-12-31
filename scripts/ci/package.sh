@@ -21,6 +21,7 @@ git log --pretty="%H" -n1 HEAD | tee $ROOT/config/.sentry-commit
 # BUILD
 composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --no-dev --working-dir=$ROOT
 yarn install --ignore-engines --frozen-lockfile --cwd $ROOT
+yarn run production --cwd $ROOT
 
 # PACKAGE
 package=monica-$version
