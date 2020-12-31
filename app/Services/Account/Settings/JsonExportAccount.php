@@ -60,15 +60,14 @@ class JsonExportAccount extends BaseService
 
         // $this->exportAddress($data);
         // $this->exportCompany($data);
-        // $this->exportContactFieldType($data);
-        // $this->exportContactField($data);
-        // $this->exportContactTag($data);
+
+        // $this->exportContactFieldType($data); // config
+
         // $this->exportConversation($data);
         // $this->exportDays($data);
         // $this->exportDocument($data);
         // $this->exportEmotionCall($data);
         // $this->exportEntries($data);
-        // $this->exportGift($data);
         // $this->exportInvitation($data);
         // $this->exportJournalEntry($data);
         // $this->exportLifeEventCategory($data);
@@ -236,10 +235,13 @@ class JsonExportAccount extends BaseService
         $columns = [
             'uuid',
             'api_key',
+        ];
+
+        $properties = [
             'number_of_invitations_sent',
         ];
 
-        return $this->getOneData($account, $columns, null, function (object $obj, $account) {
+        return $this->getOneData($account, $columns, $properties, function (object $obj, $account) {
             $obj->users = $this->exportUser($account);
             $obj->contacts = $this->exportContact($account);
             $obj->activities = $this->exportActivity($account);
@@ -336,13 +338,15 @@ class JsonExportAccount extends BaseService
             'number_of_views',
         ];
 
-        return $this->getData($account->contacts, $columns, $properties, function (object $obj, $contact) {
+        return $this->getData($account->contacts, $columns, $properties, function (object $obj, Contact $contact) {
             // $obj->properties['avatar'] = null;
 
+            $obj->properties['tags'] = $contact->getTagsAsString();
             $this->setComplexProperty($obj, 'gender', $contact, ['type', 'name']);
             $this->setComplexProperty($obj, 'deceased_date', $contact, self::$specialDateColumns, 'specialDate', 'deceasedDate');
             $this->setComplexProperty($obj, 'deceased_reminder', $contact, self::$reminderColumns, 'reminder', 'deceased_reminder_id');
 
+            // Debts
             $debts = $this->getData($contact->debts, ['in_debt', 'status', 'amount'], ['currency'], function (object $obj, $debt) {
                 $obj->in_debt = $obj->in_debt === 'yes';
             });
@@ -350,6 +354,7 @@ class JsonExportAccount extends BaseService
                 $obj->properties['debts'] = $debts;
             }
 
+            // Activities
             $activities = $this->getData($contact->activities, ['uuid']);
             if ($activities !== null) {
                 $activities->values = array_map(function ($x) {
@@ -358,11 +363,31 @@ class JsonExportAccount extends BaseService
                 $obj->properties['activities'] = $activities;
             }
 
+            // Calls
             $calls = $this->getData($contact->calls, ['created_at', 'updated_at'], ['called_at', 'content', 'contact_called'], function (object $obj, $call) {
                 $obj->properties['emotions'] = $this->getData($call->emotions, ['name']);
             });
             if ($calls !== null) {
                 $obj->properties['calls'] = $calls;
+            }
+
+            // Contact fields
+            $contactFields = $this->getData($contact->contactFields, ['created_at', 'updated_at'], ['data'], function (object $obj, $contactField) {
+                $type = $this->getOneData($contactField->contactFieldType, ['uuid']);
+                $obj->properties['type'] =$type->uuid;
+            });
+            if ($contactFields !== null) {
+                $obj->properties['contact_fields'] = $contactFields;
+            }
+
+            // Gifts
+            $gifts = $this->getData($contact->gifts, ['created_at', 'updated_at'], ['name', 'comment', 'url', 'amount', 'status', 'date'], function (object $obj, $gift) {
+                if ($gift->recipient) {
+                    $obj->properties['recipient'] = $this->getData($gift->recipient, ['uuid']);
+                }
+            });
+            if ($gifts !== null) {
+                $obj->properties['gifts'] = $gifts;
             }
         });
     }

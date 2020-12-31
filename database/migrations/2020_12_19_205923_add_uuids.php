@@ -11,6 +11,7 @@ class AddUuids extends Migration
         'users',
         'activities',
         'activity_types',
+        'contact_field_types',
     ];
 
     /**
