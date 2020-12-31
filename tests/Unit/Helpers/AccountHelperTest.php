@@ -154,7 +154,7 @@ class AccountHelperTest extends TestCase
         $account = factory(Account::class)->create();
 
         $this->assertEquals(
-            Gender::MALE,
+            Gender::UNKNOWN,
             AccountHelper::getDefaultGender($account)
         );
 

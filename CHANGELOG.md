@@ -7,7 +7,7 @@
 
 ### Enhancements:
 
-*
+* Use Unknown as default gender
 
 ### Fixes:
 
