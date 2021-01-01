@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'Delete',
     'gifts_add_title' => 'Gift management for :name',
     'gifts_add_gift_idea' => 'Gift idea',
-    'gifts_add_gift_already_offered' => 'Gift offered',
+    'gifts_add_gift_already_offered' => 'Gift given',
     'gifts_add_gift_received' => 'Gift received',
     'gifts_add_gift_title' => 'What is this gift?',
     'gifts_add_gift_name' => 'Gift name',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
     'gifts_delete_title' => 'Delete a gift',
     'gifts_ideas' => 'Gift ideas',
-    'gifts_offered' => 'Gifts offered',
+    'gifts_offered' => 'Gifts given',
     'gifts_offered_as_an_idea' => 'Mark as an idea',
     'gifts_received' => 'Gifts received',
     'gifts_view_comment' => 'View comment',
-    'gifts_mark_offered' => 'Mark as offered',
+    'gifts_mark_offered' => 'Mark as given',
     'gifts_update_success' => 'The gift has been updated successfully',
 
     // debts
