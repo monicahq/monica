@@ -42,7 +42,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getObjects()
+    public function getObjects($collectionId)
     {
         return Auth::user()->account
                     ->tasks()
@@ -52,10 +52,11 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Returns the contact for the specific uuid.
      *
+     * @param mixed|null $collectionId
      * @param string  $uuid
      * @return mixed
      */
-    public function getObjectUuid($uuid)
+    public function getObjectUuid($collectionId, $uuid)
     {
         return Task::where([
             'account_id' => Auth::user()->account_id,
@@ -123,11 +124,11 @@ class CalDAVTasks extends AbstractCalDAVBackend
      * @param string $calendarData
      * @return string|null
      */
-    public function updateOrCreateCalendarObject($objectUri, $calendarData): ?string
+    public function updateOrCreateCalendarObject($calendarId, $objectUri, $calendarData): ?string
     {
         $task_id = null;
         if ($objectUri) {
-            $task = $this->getObject($objectUri);
+            $task = $this->getObject($this->backendUri(), $objectUri);
 
             if ($task) {
                 $task_id = $task->id;
@@ -167,7 +168,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
      */
     public function deleteCalendarObject($objectUri)
     {
-        $task = $this->getObject($objectUri);
+        $task = $this->getObject($this->backendUri(), $objectUri);
 
         if ($task) {
             try {

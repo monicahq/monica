@@ -12,7 +12,7 @@ return [
     'people_not_found' => 'Contatto non trovato',
     'people_list_number_kids' => '1 bambino|:count bambini',
     'people_list_last_updated' => 'Ultimo contatto:',
-    'people_list_number_reminders' => ':count promemoria',
+    'people_list_number_reminders' => '1 promemoria|:count promemoria',
     'people_list_blank_title' => 'Non ci sono contatti nel tuo account',
     'people_list_blank_cta' => 'Aggiungi qualcuno',
     'people_list_sort' => 'Ordina',
@@ -247,7 +247,7 @@ return [
     'activity_type_just_hung_out' => 'siamo usciti',
     'activity_type_watched_movie_at_home' => 'visto un film, a casa',
     'activity_type_talked_at_home' => 'parlato, a casa',
-    'activity_type_did_sport_activities_together' => 'giocato uno sport insieme',
+    'activity_type_did_sport_activities_together' => 'giocavano insieme ad uno sport',
     'activity_type_ate_at_his_place' => 'mangiato a casa sua/loro',
     'activity_type_went_bar' => 'andati al bar',
     'activity_type_ate_at_home' => 'mangiato a casa',
@@ -434,11 +434,11 @@ return [
     'life_event_delete_description' => 'Sei sicuro di eliminare questo evento? Non si può annullare.',
     'life_event_delete_success' => 'Evento eliminato con successo',
     'life_event_date_it_happened' => 'Data di avvenimento',
-    'life_event_category_work_education' => 'Work & education',
-    'life_event_category_family_relationships' => 'Family & relationships',
-    'life_event_category_home_living' => 'Home & living',
-    'life_event_category_health_wellness' => 'Health & wellness',
-    'life_event_category_travel_experiences' => 'Travel & experiences',
+    'life_event_category_work_education' => 'Lavoro e Istruzione',
+    'life_event_category_family_relationships' => 'Famiglia e Relazioni',
+    'life_event_category_home_living' => 'Casa e Vita',
+    'life_event_category_health_wellness' => 'Salute e Benessere',
+    'life_event_category_travel_experiences' => 'Viaggi ed Esperienze',
     'life_event_sentence_new_job' => 'Inizio di un nuovo lavoro',
     'life_event_sentence_retirement' => 'Pensionamento',
     'life_event_sentence_new_school' => 'Inizio scuola',
@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => 'Attuale immagine del profilo',
     'photo_make_profile_pic' => 'Rendi questa foto immagine del profilo',
     'photo_delete' => 'Elimina foto',
-    'photo_next' => 'Next photo',
-    'photo_previous' => 'Previous photo',
+    'photo_next' => 'Foto successiva',
+    'photo_previous' => 'Foto precedente',
 
     // Avatars
     'avatar_change_title' => 'Cambia il tuo avatar',
@@ -511,15 +511,15 @@ return [
     'avatar_gravatar' => 'Il Gravatar associato all\'indirizzo email di questa persona. <a href="https://gravatar.com/">Gravatar</a> è un sistema globale che permette agli utenti di associare indirizzi email con foto.',
     'avatar_current' => 'Mantieni l\'avatar attuale',
     'avatar_photo' => 'Da una foto che carichi',
-    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
+    'avatar_crop_new_avatar_photo' => 'Ritaglia nuova foto dell\'avatar',
 
     // emotions
     'emotion_this_made_me_feel' => 'Questo mi ha fatto sentire…',
 
     // logs
-    'auditlogs_link' => 'Storico',
+    'auditlogs_link' => 'Cronologia',
     'auditlogs_title' => 'Tutto ciò che è accaduto a :name',
-    'auditlogs_breadcrumb' => 'Storico',
+    'auditlogs_breadcrumb' => 'Cronologia',
     'auditlogs_author' => 'Da :name il :date',
 
     // contact field label

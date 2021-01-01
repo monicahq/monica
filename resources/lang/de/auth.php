@@ -23,7 +23,7 @@ return [
     'throttle' => 'Zu viele Anmeldeversuche. Bitte in :seconds Sekunden erneut versuchen.',
     'not_authorized' => 'Du hast keine Berechtigung diese Aktion auszuführen',
     'signup_disabled' => 'Neue Registrierungen sind zur Zeit nicht möglich',
-    'signup_error' => 'An error occured trying to register the user',
+    'signup_error' => 'Es ist ein Fehler bei der Registrierung des Benutzers aufgetreten',
     'back_homepage' => 'Zurück zur Seite',
     'mfa_auth_otp' => 'Authentifizieren Sie sich mit Ihrem Zwei-Faktor-Gerät',
     'mfa_auth_webauthn' => 'Authentifizieren mit einem Sicherheitsschlüssel (WebAuthn)',
@@ -78,7 +78,7 @@ return [
     'confirmation_title' => 'E-Mail-Adresse bestätigen',
     'confirmation_fresh' => 'Ein Bestätigungslink wurde an Ihre E-Mail-Adresse geschickt.',
     'confirmation_check' => 'Bevor sie weitermachen, überprüfen sie bitte ihre E-mails nach einem Bestätigungslink.',
-    'confirmation_request_another' => 'If you did not receive the email <a :action>click here to request another</a>.',
+    'confirmation_request_another' => 'Falls Sie keine E-Mail erhalten haben, <a :action>klicken Sie hier um eine neue E-Mail zu erhalten</a>.',
 
     'confirmation_again' => 'Wenn Sie Ihre E-Mail-Adresse ändern möchten, <a href=":url" class="alert-link">klicken Sie bitte hier</a>.',
     'email_change_current_email' => 'Aktuelle E-Mail-Adresse:',

@@ -38,6 +38,7 @@ The preferred OS distribution is Ubuntu 18.04, simply because all the developmen
 * [Vagrant](/docs/installation/providers/vagrant.md)
 * [YunoHost](https://github.com/YunoHost-Apps/monica_ynh)
 * [Cloudron](/docs/installation/providers/cloudron.md)
+* [cPanel-based Shared Hosting](/docs/installation/providers/cpanel.md)
 
 ### Other documentation
 
