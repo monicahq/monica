@@ -26,6 +26,10 @@
       "description": "Please change this to a 32-character string. For example run `pwgen -s 32 1` and copy/paste the value.",
       "value": "change-me-to-a-random-string----"
     },
+    "APP_URL": {
+      "description": "Please change this to your Heroku app's domain.",
+      "value": "https://XXX.herokuapp.com"
+    },
     "APP_ENV": {
       "description": "Use monica in 'production' mode, or set it to 'local' if you want to install Monica as a development version.",
       "value": "production"
