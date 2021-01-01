@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Settings;
 
-use App\Http\Requests\AuthorizedRequest;
 use App\Models\Contact\Gender;
 use Illuminate\Validation\Rule;
+use App\Http\Requests\AuthorizedRequest;
 
 class GendersRequest extends AuthorizedRequest
 {
