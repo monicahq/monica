@@ -2,9 +2,10 @@
 .scannerwork/
 /node_modules
 /persist
+/public/css
+/public/fonts
 /public/hot
 /public/js
-/public/css
 /public/storage
 /public/mix-manifest.json
 /resources/vendor

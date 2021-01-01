@@ -29,7 +29,6 @@ stages:
     displayName: 'Build'
     condition: not(startsWith(variables['System.PullRequest.SourceBranch'], 'l10n_master'))
     jobs:
-      - template: .azure/job-build.yml
       - template: .azure/job-tests.yml
       - template: .azure/job-analyzers.yml
       - template: .azure/job-test-browser.yml
@@ -39,7 +38,6 @@ stages:
   - ${{ if and(in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'), startsWith(variables['Build.SourceBranch'], 'refs/tags/')) }}:
       - stage: deploy
         displayName: Deploy
-        dependsOn: build
 
         jobs:
           - deployment: deploy_dist
