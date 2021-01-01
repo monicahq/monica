@@ -1,14 +1,14 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
 
 return [
     'dashboard_blank_title' => '歡迎登入帳號',
-    'dashboard_blank_description' => 'Monica 是一個記錄你所有關心的人及與其互動資訊的地方',
+    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the people you care about.',
     'dashboard_blank_cta' => '新增您的第一個聯絡人',
     'dashboard_blank_illustration' => '插畫： <a href=":url">Freepik</a>',
 
@@ -16,11 +16,11 @@ return [
 
     'tab_recent_calls' => '最近通話',
     'tab_favorite_notes' => '收藏便籤',
-    'tab_calls_blank' => '您還沒有電話撥打記錄。',
+    'tab_calls_blank' => 'You haven’t logged any calls yet.',
     'tab_debts' => '債務',
-    'tab_debts_blank' => '您還沒有新增債務資訊。',
+    'tab_debts_blank' => 'You haven’t logged any debts yet.',
     'tab_tasks' => '任務',
-    'tab_tasks_blank' => '你還沒有任何任務',
+    'tab_tasks_blank' => 'You haven’t any tasks yet.',
 
     'tasks_add_task_placeholder' => '這個任務是關於什麼的？',
     'tasks_tab_your_contacts' => '與任務相關的聯絡人',
@@ -35,7 +35,7 @@ return [
     'statistics_gifts' => '禮物',
 
     'reminders_next_months' => '近三個月的活動',
-    'reminders_none' => '本月尚無提醒事項',
+    'reminders_none' => 'No reminders for this month.',
 
     'product_changes' => '更新日誌',
     'product_view_details' => '檢視詳情',
