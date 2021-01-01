@@ -4,9 +4,11 @@ namespace App\Console\Commands;
 
 use App\Models\Account\Account;
 use Illuminate\Console\Command;
+use Illuminate\Console\ConfirmableTrait;
 
 class CreateAccount extends Command
 {
+    use ConfirmableTrait;
     /**
      * The name and signature of the console command.
      *
@@ -14,7 +16,9 @@ class CreateAccount extends Command
      */
     protected $signature = 'account:create
                             {--email= : Login email for the account.}
-                            {--password= : Password to set for the account.}';
+                            {--password= : Password to set for the account.}
+                            {--firstname= : First name for the account.}
+                            {--lastname= : Last name for the account.}';
 
     /**
      * The console command description.
@@ -40,14 +44,20 @@ class CreateAccount extends Command
             $this->error('! You must specify a password');
         }
 
+        $firstName = $this->option('firstname') ?? 'John';
+
+        $lastName = $this->option('lastname') ?? 'Doe';
+
         if (empty($email) || empty($password)) {
             return;
         }
 
-        Account::createDefault('John', 'Doe', $email, $password);
+        if ($this->confirmToProceed("This will create a new user for $firstName $lastName with email $email")) {
+            Account::createDefault($firstName, $lastName, $email, $password);
 
-        $this->info('| You can now sign in to your account:');
-        $this->line('| username: '.$email);
-        $this->line('| password: <hidden>');
+            $this->info('| You can now sign in to your account:');
+            $this->line('| username: '.$email);
+            $this->line('| password: <hidden>');
+        }
     }
 }
