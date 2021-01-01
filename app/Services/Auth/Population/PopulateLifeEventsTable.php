@@ -147,7 +147,6 @@ class PopulateLifeEventsTable extends BaseService
         LifeEventType::create([
             'account_id' => $this->data['account_id'],
             'life_event_category_id' => $lifeEventCategory->id,
-            'name' => trans('settings.personalization_life_event_type_'.$defaultLifeEventType->translation_key),
             'core_monica_data' => true,
             'specific_information_structure' => $defaultLifeEventType->specific_information_structure,
             'default_life_event_type_key' => $defaultLifeEventType->translation_key,

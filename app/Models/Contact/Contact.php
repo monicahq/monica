@@ -3,7 +3,6 @@
 namespace App\Models\Contact;
 
 use DateTime;
-use Carbon\Carbon;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
@@ -12,12 +11,14 @@ use App\Models\Journal\Entry;
 use function Safe\preg_split;
 use App\Helpers\StorageHelper;
 use App\Helpers\WeatherHelper;
+use Illuminate\Support\Carbon;
 use App\Models\Account\Account;
 use App\Models\Account\Weather;
 use App\Models\Account\Activity;
 use App\Models\Instance\AuditLog;
 use function Safe\preg_match_all;
 use Illuminate\Support\Collection;
+use App\Models\Account\AddressBook;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -35,12 +36,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /**
+ * @method static \Illuminate\Database\Eloquent\Builder search()
  * @property \App\Models\Instance\SpecialDate|null $birthdate
  */
 class Contact extends Model
 {
     use Searchable;
 
+    /** @var array<string> */
     protected $dates = [
         'last_talked_to',
         'last_consulted_at',
@@ -49,7 +52,11 @@ class Contact extends Model
         'updated_at',
     ];
 
-    // The list of columns we want the Searchable trait to use.
+    /**
+     * The list of columns we want the Searchable trait to use.
+     *
+     * @var array<string>
+     */
     protected $searchable_columns = [
         'first_name',
         'middle_name',
@@ -59,7 +66,11 @@ class Contact extends Model
         'job',
     ];
 
-    // The list of columns we want the Searchable trait to select.
+    /**
+     * The list of columns we want the Searchable trait to select.
+     *
+     * @var array<string>
+     */
     protected $return_from_search = [
         'id',
         'first_name',
@@ -83,7 +94,7 @@ class Contact extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'first_name',
@@ -114,6 +125,8 @@ class Contact extends Model
 
     /**
      * Eager load account with every contact.
+     *
+     * @var array<string>
      */
     protected $with = [
         'account',
@@ -161,6 +174,34 @@ class Contact extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the address book associated with the contact.
+     *
+     * @return BelongsTo
+     */
+    public function addressBook()
+    {
+        return $this->belongsTo(AddressBook::class);
+    }
+
+    /**
+     * Get the list of contacts from the same address book as this contact.
+     *
+     * @return HasMany<self>|null
+     */
+    public function siblingContacts(): ?HasMany
+    {
+        if ($this->account) {
+            if ($this->addressBook) {
+                return $this->account->contacts($this->addressBook->name);
+            }
+
+            return $this->account->contacts();
+        }
+
+        return null;
     }
 
     /**
@@ -459,7 +500,7 @@ class Contact extends Model
      * @param string $criteria
      * @return Builder
      */
-    public function scopeSortedBy(Builder $builder, $criteria)
+    public function scopeSortedBy(Builder $builder, string $criteria): Builder
     {
         switch ($criteria) {
             case 'firstnameAZ':
@@ -471,24 +512,29 @@ class Contact extends Model
             case 'lastnameZA':
                 return $builder->orderBy('last_name', 'desc');
             case 'lastactivitydateNewtoOld':
-                $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
-                $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
-                $builder->groupBy('contacts.id');
-                $builder->orderBy('activities.happened_at', 'desc');
-                $builder->select(['*', 'contacts.id as id']);
-
-                return $builder;
+                return $this->sortedByLastActivity($builder, 'desc');
             case 'lastactivitydateOldtoNew':
-                $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
-                $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
-                $builder->groupBy('contacts.id');
-                $builder->orderBy('activities.happened_at', 'asc');
-                $builder->select(['*', 'contacts.id as id']);
-
-                return $builder;
+                return $this->sortedByLastActivity($builder, 'asc');
             default:
-                return $builder->orderBy('first_name', 'asc');
+                return $builder;
         }
+    }
+
+    /**
+     * Sort the contacts using last activity.
+     * @param Builder $builder
+     * @param string $order
+     * @return Builder
+     */
+    private function sortedByLastActivity(Builder $builder, string $order): Builder
+    {
+        $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
+        $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
+        $builder->groupBy('contacts.id');
+        $builder->orderBy('activities.happened_at', $order);
+        $builder->select(['*', 'contacts.id as id']);
+
+        return $builder;
     }
 
     /**
@@ -545,6 +591,28 @@ class Contact extends Model
     public function scopeNotActive($query)
     {
         return $query->where('is_active', 0);
+    }
+
+    /**
+     * Scope a query to only include contacts from given address book.
+     * 'null' value for address book is the default address book.
+     *
+     * @param Builder $query
+     * @param int|null $accountId
+     * @param string|null $addressBookName
+     * @return Builder
+     */
+    public function scopeAddressBook($query, int $accountId = null, string $addressBookName = null)
+    {
+        $addressBook = null;
+        if ($accountId && $addressBookName) {
+            $addressBook = AddressBook::where([
+                'account_id' => $accountId,
+                'name' => $addressBookName,
+            ])->first();
+        }
+
+        return $query->where('address_book_id', $addressBook ? $addressBook->id : null);
     }
 
     /**

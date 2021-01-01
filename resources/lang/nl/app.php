@@ -108,11 +108,11 @@ return [
 
     'error_title' => 'Oeps! Er is iets misgegaan.',
     'error_unauthorized' => 'Je hebt niet de rechten om dit onderdeel te bewerken.',
-    'error_user_account' => 'This user does not belong to the given account.',
+    'error_user_account' => 'Deze gebruiker behoort niet tot het opgegeven account.',
     'error_save' => 'Er is een fout opgetreden bij het opslaan van de gegevens.',
     'error_try_again' => 'Er ging iets mis. Probeer opnieuw.',
     'error_id' => 'Fout-ID: :id',
-    'error_unavailable' => 'Service unavailable',
+    'error_unavailable' => 'Service niet beschikbaar',
     'error_maintenance' => 'Onderhoud in uitvoering. Zo terug.',
     'error_help' => 'We zijn zo terug.',
     'error_twitter' => '<a href="https://twitter.com/:twitter">Volg ons op Twitter</a> als je gewaarschuwd wilt worden als we terug zijn.',
@@ -238,8 +238,8 @@ return [
     'relationship_type_friend_with_name' => ':name’s vriend',
     'relationship_type_friend_female_with_name' => ':name’s vriend',
 
-    'relationship_type_bestfriend' => 'beste Vriend',
-    'relationship_type_bestfriend_female' => 'beste Vriend',
+    'relationship_type_bestfriend' => 'beste vriend',
+    'relationship_type_bestfriend_female' => 'beste vriend',
     'relationship_type_bestfriend_with_name' => ':name’s beste vriend',
     'relationship_type_bestfriend_female_with_name' => ':name’s beste vriend',
 
@@ -265,8 +265,8 @@ return [
 
     'relationship_type_protege' => 'protege',
     'relationship_type_protege_female' => 'protege',
-    'relationship_type_protege_with_name' => ':name’s protege',
-    'relationship_type_protege_female_with_name' => ':name’s protege',
+    'relationship_type_protege_with_name' => ':name\'s protege',
+    'relationship_type_protege_female_with_name' => ':name\'s protege',
 
     'relationship_type_ex_husband' => 'ex-echtgenoot',
     'relationship_type_ex_husband_female' => 'ex-vrouw',

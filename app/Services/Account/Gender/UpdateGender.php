@@ -36,6 +36,7 @@ class UpdateGender extends BaseService
     {
         $this->validate($data);
 
+        /** @var Gender */
         $gender = Gender::where('account_id', $data['account_id'])
             ->findOrFail($data['gender_id']);
 

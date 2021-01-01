@@ -63,6 +63,12 @@
 
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
+            <life-event-types :limited="{{ \Safe\json_encode($accountHasLimitations) }}"></life-event-types>
+          </div>
+        </div>
+
+        <div class="br3 ba b--gray-monica bg-white mb4">
+          <div class="pa3 bb b--gray-monica">
             <modules :limited="{{ \Safe\json_encode($accountHasLimitations) }}"></modules>
           </div>
         </div>

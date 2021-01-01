@@ -355,10 +355,10 @@ export default {
         return;
       }
 
-      let method = this.gift ? 'put' : 'post';
-      let url = this.gift ? 'api/gifts/'+this.gift.id : 'api/gifts';
+      const method = this.gift ? 'put' : 'post';
+      const url = this.gift ? 'api/gifts/'+this.gift.id : 'api/gifts';
 
-      let vm = this;
+      const vm = this;
       axios[method](url, this.newGift)
         .then(response => {
           return vm.storePhoto(response);
@@ -398,7 +398,7 @@ export default {
     },
 
     storePhoto(response) {
-      let vm = this;
+      const vm = this;
       return this.$refs.upload.forceFileUpload()
         .then(photo => {
           if (photo !== undefined) {

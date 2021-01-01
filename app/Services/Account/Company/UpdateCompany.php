@@ -33,6 +33,7 @@ class UpdateCompany extends BaseService
     {
         $this->validate($data);
 
+        /** @var Company */
         $company = Company::where('account_id', $data['account_id'])
             ->findOrFail($data['company_id']);
 

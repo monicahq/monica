@@ -1,0 +1,58 @@
+# Platform.sh Project Initialization Template
+#
+# This file defines settings and workflow modifications that allow a git
+# repository to be deployed to Platform.sh and its white-label partners. A
+# project template can be a fully functioning ready-made application or a
+# quick-start point for custom development work.
+#
+# It contains elements that affect the behaviour upon the initialisation of
+# a new project (for example minimal plan sizes) as well as elements that
+# allow Platform.sh to present it in a user interface (such as the description
+# of the project, tags, an icon etc.).
+
+# The schema is versioned so that we can establish code paths differently in the future if we need to change this.
+version: 20201127
+
+# Templates are a small amount of information supporting a template URL.
+# Each template is selectable at the project-creation step.
+info:
+    # Unique machine name, prefaced by a vendor or organization identifier.
+    # The vendor should be the lowercase name of your company, organization, or project, and the project name
+    # the lowercase name of the template. This may be the same as the vendor in a single-product case.
+    id: monicahq/monica
+    # The human-readable name of the template.  This is how the template will be named in the user interface.
+    name: Monica Personal Relationship Manager
+    # Human-readable descriptive text for the template. Supports limited HTML.
+    # This field should be 1-3 sentences describing how the project is setup, assuming the reader already knows what
+    # the application is.
+    description: |
+       Monica is an open-source web application to organize the interactions with your loved ones. We call it a PRM, or Personal Relationship Management. Think of it as a CRM (a popular tool used by sales teams in the corporate world) for your friends or family. 
+    # A list of tags associated with the template.  These should be highly generic terms like "CMS", "Framework", and
+    # the language in which the application is written.
+    tags:
+        - PHP
+        - CRM
+
+    # An image URI (either base64-encoded or a URL) representing the template.  Base64-encoded SVG strongly preferred.
+    image: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNTAwIDUwMCI+PHRpdGxlPkFydGJvYXJkIDMuMTwvdGl0bGU+PGRlc2M+Q3JlYXRlZCB1c2luZyBGaWdtYTwvZGVzYz48ZyBpZD0iQ2FudmFzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjk4NCA2OCkiPjxjbGlwUGF0aCBpZD0iY2xpcC0wIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0gMjk4NCAtNjhMIDM0ODQgLTY4TCAzNDg0IDQzMkwgMjk4NCA0MzJMIDI5ODQgLTY4WiIvPjwvY2xpcFBhdGg+PGcgaWQ9IkFydGJvYXJkIDMuMSIgY2xpcC1wYXRoPSJ1cmwoI2NsaXAtMCkiPjxnIGlkPSJHcm91cCAyIj48ZyBpZD0iT3ZhbCI+PHVzZSBmaWxsPSIjMkMyQjI5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMDAyLjUxIC0yNi40Nzg4KSIgeGxpbms6aHJlZj0iI3BhdGgwX2ZpbGwiLz48L2c+PGcgaWQ9Ik92YWwiPjx1c2UgZmlsbD0iI0ZGRiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzA0Ny41NiAxNy4zNDU2KSIgeGxpbms6aHJlZj0iI3BhdGgxX2ZpbGwiLz48L2c+PGcgaWQ9Ik92YWwgMiI+PHVzZSBmaWxsPSIjMkMyQjI5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyOTkwIC0zOSkiIHhsaW5rOmhyZWY9IiNwYXRoMl9maWxsIi8+PC9nPjxnIGlkPSJPdmFsIDIiPjx1c2UgZmlsbD0iIzJDMkIyOSIgdHJhbnNmb3JtPSJtYXRyaXgoLTEgMCAwIDEgMzQ3OCAtMzkpIiB4bGluazpocmVmPSIjcGF0aDJfZmlsbCIvPjwvZz48ZyBpZD0iR3JvdXAiPjxnIGlkPSJPdmFsIDQiPjx1c2UgZmlsbD0iIzJCMkEyOCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzI2NS4zMiAxMjIuNjQ3KSIgeGxpbms6aHJlZj0iI3BhdGgzX2ZpbGwiLz48L2c+PGcgaWQ9Ik92YWwgMyI+PHVzZSBmaWxsPSIjRkZGIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMjkyLjYzIDE1NC43NjgpIiB4bGluazpocmVmPSIjcGF0aDRfZmlsbCIvPjwvZz48L2c+PGcgaWQ9Ikdyb3VwIj48ZyBpZD0iT3ZhbCA0Ij48dXNlIGZpbGw9IiMyQjJBMjgiIHRyYW5zZm9ybT0ibWF0cml4KC0xIDAgMCAxIDMyMDMuOTMgMTIyLjY0NykiIHhsaW5rOmhyZWY9IiNwYXRoM19maWxsIi8+PC9nPjxnIGlkPSJPdmFsIDMiPjx1c2UgZmlsbD0iI0ZGRiIgdHJhbnNmb3JtPSJtYXRyaXgoLTEgMCAwIDEgMzE3Ni42MiAxNTQuNzY4KSIgeGxpbms6aHJlZj0iI3BhdGg0X2ZpbGwiLz48L2c+PC9nPjxnIGlkPSJPdmFsIDUiPjx1c2UgZmlsbD0iIzJDMkIyOSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzIwMC4yMiAyNTYuNTAxKSIgeGxpbms6aHJlZj0iI3BhdGg1X2ZpbGwiLz48L2c+PC9nPjwvZz48L2c+PGRlZnM+PHBhdGggaWQ9InBhdGgwX2ZpbGwiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTSAyMzUuNDI1IDQyOS40NzlDIDM0OS42NCA0MjkuNDc5IDQ3Ni4zNjkgMzU2LjAyMiA0NjAuMzQ1IDIxNC43MzlDIDQ0NC4zMjEgNzMuNDU2NyAzNDkuNjQgMCAyMzUuNDI1IDBDIDEyMS4yMSAwIDI3LjI3MDUgNjQuMzk0OSAyLjc3MDgyIDIxNC43MzlDIC0yMS43Mjg5IDM2NS4wODQgMTIxLjIxIDQyOS40NzkgMjM1LjQyNSA0MjkuNDc5WiIvPjxwYXRoIGlkPSJwYXRoMV9maWxsIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0gMTg4Ljg1IDM0NC4zMzRDIDI4MC40NyAzNDQuMzM0IDM4Mi4xMjggMjg1LjQ0IDM2OS4yNzQgMTcyLjE2N0MgMzU2LjQyIDU4Ljg5MzkgMjgwLjQ3IDAgMTg4Ljg1IDBDIDk3LjIzMTIgMCAyMS44NzU1IDUxLjYyODYgMi4yMjI2NiAxNzIuMTY3QyAtMTcuNDMwMiAyOTIuNzA2IDk3LjIzMTIgMzQ0LjMzNCAxODguODUgMzQ0LjMzNFoiLz48cGF0aCBpZD0icGF0aDJfZmlsbCIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNIDY1LjU4NjUgMTY1LjI4QyA3OC4wMDE0IDE2NS4zMjIgODMuMzk0NSAxMjAuOSAxMDUuNTY1IDEwMC42NzVDIDEyNS45MTkgODIuMTA4MyAxNzIuNjc3IDc1Ljc0MiAxNzIuNjc3IDU0LjI3NjJDIDE3Mi42NzcgOS40MjcyOSAxMjQuMDU1IDAgODEuMTE5OSAwQyAzOC4xODUzIDAgMCA0NS40OTAzIDAgOTAuMzM5MkMgMCAxMzUuMTg4IDQxLjc3NDcgMTY1LjIwMSA2NS41ODY1IDE2NS4yOFoiLz48cGF0aCBpZD0icGF0aDNfZmlsbCIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNIDY5LjYgMTU0LjU3MkMgMTAyLjA5NCAxNDYuODIzIDExNS42NDMgMTMzLjE1NyAxMTUuNjQzIDg4Ljk5N0MgMTE1LjY0MyA0NC44MzY4IDk0Ljk0NCAwIDU5LjMwNDkgMEMgMjMuNjY1NyAwIDAgMzEuODg2MyAwIDc2LjA0NjVDIDAgMTIwLjIwNyAzNy4xMDYgMTYyLjMyIDY5LjYgMTU0LjU3MloiLz48cGF0aCBpZD0icGF0aDRfZmlsbCIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNIDMwLjM4NjMgNjYuNDI4N0MgMzkuMjI4NiA2Ni40Mjg3IDQxLjg1ODYgNjQuMTcxNSA0NS44NTU1IDU5LjEwMzdDIDUwLjMzNzQgNTMuNDIxIDUzLjY3OTcgNDYuODI5NCA1Mi41ODY4IDMzLjIxNDRDIDUwLjc2MDggMTAuNDY1IDQxLjE3MzYgMCAyMi40MTYyIDBDIDMuNjU4NyAwIC0zLjc4MzY1ZS0xNiAxNC40MjI4IDAgMzMuMjE0NEMgLTMuNzgzNjVlLTE2IDUyLjAwNTkgMTEuNjI4OCA2Ni40Mjg3IDMwLjM4NjMgNjYuNDI4N1oiLz48cGF0aCBpZD0icGF0aDVfZmlsbCIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNIDM1LjI5MDYgNTAuMDg1QyA1Mi45NDg3IDUwLjA4NSA3MC4wNzE4IDI0LjA5NTYgNzAuMDcxOCAxMi45NDk5QyA3MC4wNzE4IDEuODA0MTYgNTIuNjkzOSAwIDM1LjAzNTkgMEMgMTcuMzc3OSAwIDAgMS44MDQxNiAwIDEyLjk0OTlDIDAgMjQuMDk1NiAxNy42MzI2IDUwLjA4NSAzNS4yOTA2IDUwLjA4NVoiLz48L2RlZnM+PC9zdmc+
+    # Additional notes displayed in the template's detail view.
+    # Each note object is displayed as a small section heading with content below. Supports limited HTML.
+    # The most important is a section that lists the "Apps and Services" (container images) that the project uses.
+    # These are the name/version of the Platforms.h containers, not including the Nginx router.
+    notes:
+        - heading: "Apps & Services"
+          content: "PHP 7.4<br/>MariaDB 10.4<br/>Redis 5.0"
+
+
+# This key describes the initialization call made to the master environment at
+# project creation time. This is part of the full v2 UI operation mode, which
+# places project schema/options selection early in the creation process, rather
+# than later as it exits now. To allow this schema to be backwards-compatible,
+# this key also gets mapped to the appropriate location in project.settings so
+# that the current UI can have its own workflow overridden as well.
+initialize:
+    repository: git@github.com:monicahq/monica.git@master
+    config: null
+    files: []
+    profile: PHP
+

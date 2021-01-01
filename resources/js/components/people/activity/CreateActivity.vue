@@ -80,7 +80,7 @@
           </label>
           <emotion
             class="pv2"
-            :initial-emotions="newActivity.emotions"
+            :initial-emotions="initialEmotions"
             @update="updateEmotionsList"
           />
         </div>
@@ -219,10 +219,11 @@ export default {
 
     resetFields() {
       if (this.activity) {
+        this.initialEmotions = JSON.parse(JSON.stringify(this.activity.emotions));
         this.newActivity.summary = this.activity.summary;
         this.newActivity.description = this.activity.description;
         this.newActivity.happened_at = this.activity.happened_at;
-        this.newActivity.emotions = this.activity.emotions;
+        this.updateEmotionsList(this.activity.emotions);
         this.newActivity.activity_type_id = this.activity.activity_type ? this.activity.activity_type.id : null;
         this.participants = this.activity.attendees.contacts.map(attendee => {
           return {
@@ -231,6 +232,7 @@ export default {
           };
         });
       } else {
+        this.initialEmotions = [];
         this.newActivity.summary = '';
         this.newActivity.description = '';
         this.newActivity.happened_at = this.todayDate;
@@ -255,8 +257,8 @@ export default {
     },
 
     store() {
-      let method = this.activity ? 'put' : 'post';
-      let url = this.activity ? 'api/activities/'+this.activity.id : 'api/activities';
+      const method = this.activity ? 'put' : 'post';
+      const url = this.activity ? 'api/activities/'+this.activity.id : 'api/activities';
 
       if (! this.newActivity.contacts.includes(this.contactId)) {
         this.newActivity.contacts.push(this.contactId);

@@ -23,7 +23,8 @@
     "snyk-protect": "snyk protect",
     "prepublish": "yarn run snyk-protect",
     "delete:reports": "rm results/cypress/* || true",
-    "pree2e": "npm run delete:reports"
+    "pree2e": "npm run delete:reports",
+    "migrate": "DB_CONNECTION=testing php artisan migrate:fresh && DB_CONNECTION=testing php artisan db:seed"
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
@@ -48,7 +49,7 @@
   "dependencies": {
     "@hokify/vuejs-datepicker": "^2.0.2",
     "animate.css": "^4.1.1",
-    "axios": "^0.20",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.2",
     "font-awesome": "^4.7.0",
     "hint.css": "^2.3.2",

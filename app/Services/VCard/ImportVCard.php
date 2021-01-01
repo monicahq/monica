@@ -21,6 +21,7 @@ use Illuminate\Validation\Rule;
 use App\Helpers\CountriesHelper;
 use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCard;
+use App\Models\Account\AddressBook;
 use App\Models\Contact\ContactField;
 use App\Services\Contact\Tag\DetachTag;
 use App\Models\Contact\ContactFieldType;
@@ -42,6 +43,7 @@ class ImportVCard extends BaseService
     public const BEHAVIOUR_ADD = 'behaviour_add';
     public const BEHAVIOUR_REPLACE = 'behaviour_replace';
 
+    /** @var array<string,string> */
     protected $errorResults = [
         'ERROR_PARSER' => 'import_vcard_parse_error',
         'ERROR_CONTACT_EXIST' => 'import_vcard_contact_exist',
@@ -81,9 +83,14 @@ class ImportVCard extends BaseService
     /**
      * The genders that will be associated with imported contacts.
      *
-     * @var array[Gender]
+     * @var array<Gender>
      */
     protected $genders;
+
+    /**
+     * @var AddressBook|null
+     */
+    protected $addressBook;
 
     /**
      * Get the validation rules that apply to the service.
@@ -109,6 +116,7 @@ class ImportVCard extends BaseService
                 'required',
                 Rule::in(self::$behaviourTypes),
             ],
+            'addressBookName' => 'nullable|string|exists:addressbooks,name',
         ];
     }
 
@@ -130,6 +138,13 @@ class ImportVCard extends BaseService
                 ->findOrFail($contactId);
         }
 
+        if ($addressBookName = Arr::get($data, 'addressBookName')) {
+            AddressBook::where([
+                'account_id' => $data['account_id'],
+                'name' => $addressBookName,
+            ])->firstOrFail();
+        }
+
         return $this->process($data);
     }
 
@@ -139,6 +154,7 @@ class ImportVCard extends BaseService
         $this->genders = [];
         $this->accountId = 0;
         $this->userId = 0;
+        $this->addressBook = null;
     }
 
     /**
@@ -154,6 +170,13 @@ class ImportVCard extends BaseService
             $this->accountId = $data['account_id'];
         }
         $this->userId = $data['user_id'];
+
+        if ($addressBookName = Arr::get($data, 'addressBookName')) {
+            $this->addressBook = AddressBook::where([
+                'account_id' => $data['account_id'],
+                'name' => $addressBookName,
+            ])->first();
+        }
 
         $entry = $this->getEntry($data);
 
@@ -381,7 +404,10 @@ class ImportVCard extends BaseService
     {
         $contact = null;
         if (! is_null($contact_id)) {
-            $contact = Contact::where('account_id', $this->accountId)
+            $contact = Contact::where([
+                'account_id' => $this->accountId,
+                'address_book_id' => $this->addressBook ? $this->addressBook->id : null,
+            ])
                 ->find($contact_id);
         }
 
@@ -414,7 +440,13 @@ class ImportVCard extends BaseService
                 'contact_field_type_id' => $this->getContactFieldTypeId(ContactFieldType::EMAIL),
             ])->whereIn('data', iterator_to_array($entry->EMAIL))->first();
 
-            if ($contactField) {
+            // filter contact field
+            //  - if no address book selected
+            //  - if the address book match the contact's contact field address book
+            if ($contactField && (
+                    ! $this->addressBook
+                    || $contactField->contact->address_book_id === $this->addressBook->id
+                )) {
                 return $contactField->contact;
             }
         }
@@ -438,6 +470,7 @@ class ImportVCard extends BaseService
             'first_name' => $contact->first_name,
             'middle_name' => $contact->middle_name,
             'last_name' => $contact->last_name,
+            'address_book_id' => $this->addressBook ? $this->addressBook->id : null,
         ])->first();
     }
 
@@ -455,8 +488,13 @@ class ImportVCard extends BaseService
             $contact->account_id = $this->accountId;
             $contact->gender_id = $this->getGender('O')->id;
             $contact->setAvatarColor();
-            $contact->uuid = Str::uuid()->toString();
+            $contact->address_book_id = $this->addressBook ? $this->addressBook->id : null;
             $contact->save();
+
+            $this->importUid($contact, $entry);
+            if (empty($contact->uuid)) {
+                $contact->uuid = Str::uuid()->toString();
+            }
         }
 
         $this->importNames($contact, $entry);
@@ -470,6 +508,11 @@ class ImportVCard extends BaseService
         $this->importTel($contact, $entry);
         $this->importSocialProfile($contact, $entry);
         $this->importCategories($contact, $entry);
+
+        // Save vcard content
+        if ($contact->address_book_id) {
+            $contact->vcard = $entry->serialize();
+        }
 
         $contact->save();
 

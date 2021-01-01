@@ -14,7 +14,7 @@ class CountriesHelper
     /**
      * Get list of countries.
      *
-     * @return \Illuminate\Support\Collection<Country>
+     * @return \Illuminate\Support\Collection<Country,mixed>
      */
     public static function getAll(): Collection
     {

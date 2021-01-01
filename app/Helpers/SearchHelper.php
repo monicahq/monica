@@ -16,9 +16,10 @@ class SearchHelper
      * @param  string $needle
      * @param  string $orderByColumn
      * @param  string $orderByDirection
+     * @param  string|null $addressBookName
      * @return Builder
      */
-    public static function searchContacts(string $needle, string $orderByColumn, string $orderByDirection = 'asc'): Builder
+    public static function searchContacts(string $needle, string $orderByColumn, string $orderByDirection = 'asc', string $addressBookName = null): Builder
     {
         $accountId = Auth::user()->account_id;
 
@@ -32,16 +33,20 @@ class SearchHelper
 
             $field_id = is_null($field) ? 0 : $field->id;
 
-            return Contact::whereHas('contactFields', function ($query) use ($accountId, $field_id, $search_term) {
+            /** @var Builder */
+            $b = Contact::whereHas('contactFields', function ($query) use ($accountId, $field_id, $search_term) {
                 $query->where([
                     ['account_id', $accountId],
                     ['data', 'like', "$search_term%"],
                     ['contact_field_type_id', $field_id],
                 ]);
-            })
+            });
+
+            return $b->addressBook($accountId, $addressBookName)
                 ->orderBy($orderByColumn, $orderByDirection);
         }
 
-        return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection);
+        return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection)
+            ->addressBook($accountId, $addressBookName);
     }
 }

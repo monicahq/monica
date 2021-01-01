@@ -172,7 +172,7 @@ export default {
       return axios.post('people/search', {
         needle: keyword
       }).then(function(response) {
-        let data = [];
+        const data = [];
         if (response.data.noResults == null) {
           response.data.data
             .forEach(function (contact) {
