@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'Rimuovi',
     'gifts_add_title' => 'Gestione dei regali a :name',
     'gifts_add_gift_idea' => 'Idea regalo',
-    'gifts_add_gift_already_offered' => 'Gift given',
+    'gifts_add_gift_already_offered' => 'Regalo dato',
     'gifts_add_gift_received' => 'Regalo ricevuto',
     'gifts_add_gift_title' => 'Cos\'è questo regalo?',
     'gifts_add_gift_name' => 'Nome del regalo',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => 'Questo regalo é per qualcuno in particolare nella famiglia di {name}',
     'gifts_delete_title' => 'Rimuovi un regalo',
     'gifts_ideas' => 'Idee regalo',
-    'gifts_offered' => 'Gifts given',
+    'gifts_offered' => 'Regali dati',
     'gifts_offered_as_an_idea' => 'Segna come idea',
     'gifts_received' => 'Regali ricevuti',
     'gifts_view_comment' => 'Visualizza commento',
-    'gifts_mark_offered' => 'Mark as given',
+    'gifts_mark_offered' => 'Segna come dato',
     'gifts_update_success' => 'Regalo modificato',
 
     // debts
