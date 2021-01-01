@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'Löschen',
     'gifts_add_title' => 'Geschenkverwaltung für :name',
     'gifts_add_gift_idea' => 'Geschenkidee',
-    'gifts_add_gift_already_offered' => 'Bereits verschenkt',
+    'gifts_add_gift_already_offered' => 'Gift given',
     'gifts_add_gift_received' => 'Geschenk erhalten',
     'gifts_add_gift_title' => 'Was ist es für ein Geschenk?',
     'gifts_add_gift_name' => 'Geschenkname',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => 'Dieses Geschenk ist insbesondere für jemanden in {name}\'s Familie',
     'gifts_delete_title' => 'Ein Geschenk löschen',
     'gifts_ideas' => 'Geschenkideen',
-    'gifts_offered' => 'Verschenkte Geschenke',
+    'gifts_offered' => 'Gifts given',
     'gifts_offered_as_an_idea' => 'Als Idee markieren',
     'gifts_received' => 'Erhaltene Geschenke',
     'gifts_view_comment' => 'Kommentar anzeigen',
-    'gifts_mark_offered' => 'Als angeboten markieren',
+    'gifts_mark_offered' => 'Mark as given',
     'gifts_update_success' => 'Das Geschenk wurde erfolgreich aktualisiert',
 
     // debts
