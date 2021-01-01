@@ -9,6 +9,7 @@ use Illuminate\Console\ConfirmableTrait;
 class CreateAccount extends Command
 {
     use ConfirmableTrait;
+ 
     /**
      * The name and signature of the console command.
      *
