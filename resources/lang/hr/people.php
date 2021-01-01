@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'Obriši',
     'gifts_add_title' => 'Uređivanje poklona za osobu: :name',
     'gifts_add_gift_idea' => 'Ideja za poklon',
-    'gifts_add_gift_already_offered' => 'Već poklonjeno',
+    'gifts_add_gift_already_offered' => 'Gift given',
     'gifts_add_gift_received' => 'Primljen poklon',
     'gifts_add_gift_title' => 'Što je bio ovaj poklon?',
     'gifts_add_gift_name' => 'Gift name',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
     'gifts_delete_title' => 'Delete a gift',
     'gifts_ideas' => 'Ideje za poklone',
-    'gifts_offered' => 'Već poklonjeno',
+    'gifts_offered' => 'Gifts given',
     'gifts_offered_as_an_idea' => 'Označi kao ideju',
     'gifts_received' => 'Primljeni pokloni',
     'gifts_view_comment' => 'Pogledaj komentar',
-    'gifts_mark_offered' => 'Označi kao poklonjeno',
+    'gifts_mark_offered' => 'Mark as given',
     'gifts_update_success' => 'Uspješno ažuriranje poklona',
 
     // debts
