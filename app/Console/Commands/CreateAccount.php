@@ -35,19 +35,19 @@ class CreateAccount extends Command
      */
     public function handle()
     {
-        $email = $this->option('email');
+        $email = (string) $this->option('email');
         if (empty($email)) {
             $this->error('! You must specify an email');
         }
 
-        $password = $this->option('password');
+        $password = (string) $this->option('password');
         if (empty($password)) {
             $this->error('! You must specify a password');
         }
 
-        $firstName = $this->option('firstname') ?? 'John';
+        $firstName = (string) $this->option('firstname') ?? 'John';
 
-        $lastName = $this->option('lastname') ?? 'Doe';
+        $lastName = (string) $this->option('lastname') ?? 'Doe';
 
         if (empty($email) || empty($password)) {
             return;
