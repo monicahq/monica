@@ -1,14 +1,14 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
 
 return [
     'dashboard_blank_title' => 'Välkommen till ditt konto!',
-    'dashboard_blank_description' => 'Monica är platsen för att organisera alla de interaktioner du har med de du bryr dig om.',
+    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the people you care about.',
     'dashboard_blank_cta' => 'Lägg till din första kontakt',
     'dashboard_blank_illustration' => 'Illustration av <a href=":url">Freepik</a>',
 
@@ -16,11 +16,11 @@ return [
 
     'tab_recent_calls' => 'Senaste samtal',
     'tab_favorite_notes' => 'Favoritanteckningar',
-    'tab_calls_blank' => 'Du har inte loggat ett samtal än.',
+    'tab_calls_blank' => 'You haven’t logged any calls yet.',
     'tab_debts' => 'Skulder',
-    'tab_debts_blank' => 'Du har inte loggat någon skuld ännu.',
+    'tab_debts_blank' => 'You haven’t logged any debts yet.',
     'tab_tasks' => 'Uppgifter',
-    'tab_tasks_blank' => 'Du har inte någon uppgift ännu.',
+    'tab_tasks_blank' => 'You haven’t any tasks yet.',
 
     'tasks_add_task_placeholder' => 'Vad handlar denna uppgift om?',
     'tasks_tab_your_contacts' => 'Uppgifter relaterade till dina kontakter',
@@ -35,7 +35,7 @@ return [
     'statistics_gifts' => 'Gåvor',
 
     'reminders_next_months' => 'Händelser under de kommande 3 månaderna',
-    'reminders_none' => 'Ingen påminnelse för denna månad',
+    'reminders_none' => 'No reminders for this month.',
 
     'product_changes' => 'Produkt ändringar',
     'product_view_details' => 'Visa detaljer',
