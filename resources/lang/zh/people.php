@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => '删除',
     'gifts_add_title' => '与:name的礼物来往',
     'gifts_add_gift_idea' => '礼品创意',
-    'gifts_add_gift_already_offered' => '送出的礼物',
+    'gifts_add_gift_already_offered' => 'Gift given',
     'gifts_add_gift_received' => '收到的礼物',
     'gifts_add_gift_title' => '这是什么礼物？',
     'gifts_add_gift_name' => '礼品名称',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => '这份礼物特别是给{name}的家人',
     'gifts_delete_title' => '删除礼物',
     'gifts_ideas' => '心愿单',
-    'gifts_offered' => '送出的礼物',
+    'gifts_offered' => 'Gifts given',
     'gifts_offered_as_an_idea' => '标记为心愿单',
     'gifts_received' => '收到的礼物',
     'gifts_view_comment' => '查看评论',
-    'gifts_mark_offered' => '标记为提供',
+    'gifts_mark_offered' => 'Mark as given',
     'gifts_update_success' => '礼物已成功更新',
 
     // debts
