@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'Eliminar',
     'gifts_add_title' => 'Gestión de regalos para :name',
     'gifts_add_gift_idea' => 'Idea de regalo',
-    'gifts_add_gift_already_offered' => 'Gift given',
+    'gifts_add_gift_already_offered' => 'Regalo dado',
     'gifts_add_gift_received' => 'Regalos recibidos',
     'gifts_add_gift_title' => '¿Qué es este regalo?',
     'gifts_add_gift_name' => 'Nombre del regalo',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => 'Este regalo es para alguien en particular de la familia de {name}',
     'gifts_delete_title' => 'Borrar un regalo',
     'gifts_ideas' => 'Idea de regalo',
-    'gifts_offered' => 'Gifts given',
+    'gifts_offered' => 'Regalos dados',
     'gifts_offered_as_an_idea' => 'Marcar como una idea',
     'gifts_received' => 'Regalos recibidos',
     'gifts_view_comment' => 'Ver comentario',
-    'gifts_mark_offered' => 'Mark as given',
+    'gifts_mark_offered' => 'Marcar como dado',
     'gifts_update_success' => 'El regalo ha sido actualizado exitosamente',
 
     // debts
@@ -509,9 +509,9 @@ return [
     'avatar_default_avatar' => 'El avatar por defecto',
     'avatar_adorable_avatar' => 'El avatar Adorable',
     'avatar_gravatar' => 'El "Gravatar" asociado con la dirección de correo electrónico de esta persona. <a href="https://gravatar.com/">Gravatar</a> es un sistema global que permite a los usuarios asociar direcciones de correo electrónico con fotos.',
-    'avatar_current' => 'Keep the current avatar',
-    'avatar_photo' => 'From a photo that you upload',
-    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
+    'avatar_current' => 'Mantener el avatar actual',
+    'avatar_photo' => 'De una foto que subes',
+    'avatar_crop_new_avatar_photo' => 'Recortar nueva foto de avatar',
 
     // emotions
     'emotion_this_made_me_feel' => 'Esto te hizo sentir…',
@@ -520,15 +520,15 @@ return [
     'auditlogs_link' => 'Historial',
     'auditlogs_title' => 'Todo lo que le pasó a :name',
     'auditlogs_breadcrumb' => 'Historial',
-    'auditlogs_author' => 'By :name on :date',
+    'auditlogs_author' => 'Por :name el :date',
 
     // contact field label
-    'contact_field_label_home' => 'Home',
-    'contact_field_label_work' => 'Work',
-    'contact_field_label_cell' => 'Mobile',
+    'contact_field_label_home' => 'Casa',
+    'contact_field_label_work' => 'Trabajo',
+    'contact_field_label_cell' => 'Móvil/Celular',
     'contact_field_label_fax' => 'Fax',
-    'contact_field_label_pager' => 'Pager',
-    'contact_field_label_main' => 'Main',
-    'contact_field_label_other' => 'Other',
+    'contact_field_label_pager' => 'Busca',
+    'contact_field_label_main' => 'Principal',
+    'contact_field_label_other' => 'Otro',
     'contact_field_label_personal' => 'Personal',
 ];
