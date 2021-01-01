@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'Sil',
     'gifts_add_title' => ':name için hediye yönetimi',
     'gifts_add_gift_idea' => 'Hediye Fikri',
-    'gifts_add_gift_already_offered' => 'Hediye önerildi',
+    'gifts_add_gift_already_offered' => 'Gift given',
     'gifts_add_gift_received' => 'Hediye alındı',
     'gifts_add_gift_title' => 'Bu hediye nedir?',
     'gifts_add_gift_name' => 'Hediye adı',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => 'Bu hediye özellikle {name}\'nin ailesinden birisi için',
     'gifts_delete_title' => 'Hediye sil',
     'gifts_ideas' => 'Hediye fikirleri',
-    'gifts_offered' => 'Önerilen hediyeler',
+    'gifts_offered' => 'Gifts given',
     'gifts_offered_as_an_idea' => 'Fikir olarak işaretle',
     'gifts_received' => 'Alınan hediyeler',
     'gifts_view_comment' => 'Yorumu görüntüle',
-    'gifts_mark_offered' => 'Önerildi olarak işaretle',
+    'gifts_mark_offered' => 'Mark as given',
     'gifts_update_success' => 'Hediye başarıyla güncellendi',
 
     // debts
