@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'Slet',
     'gifts_add_title' => 'Gavestyring for :name',
     'gifts_add_gift_idea' => 'Gave idé',
-    'gifts_add_gift_already_offered' => 'Gave givet',
+    'gifts_add_gift_already_offered' => 'Gift given',
     'gifts_add_gift_received' => 'Gave modtaget',
     'gifts_add_gift_title' => 'Hvad er gaven?',
     'gifts_add_gift_name' => 'Gavenavn',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => 'Denne gave er til nogen bestemt i {name}s familie',
     'gifts_delete_title' => 'Slet en gave',
     'gifts_ideas' => 'Gave idéer',
-    'gifts_offered' => 'Gaver givet',
+    'gifts_offered' => 'Gifts given',
     'gifts_offered_as_an_idea' => 'Markér som idé',
     'gifts_received' => 'Gave modtaget',
     'gifts_view_comment' => 'Se kommentar',
-    'gifts_mark_offered' => 'Markér som givet',
+    'gifts_mark_offered' => 'Mark as given',
     'gifts_update_success' => 'Gaven er blevet opdateret',
 
     // debts
