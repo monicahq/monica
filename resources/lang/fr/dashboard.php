@@ -1,14 +1,14 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
 
 return [
     'dashboard_blank_title' => 'Bienvenue chez vous !',
-    'dashboard_blank_description' => 'Monica est l’endroit pour organiser toutes les interactions que vous avez avec ceux qui vous sont chers.',
+    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the people you care about.',
     'dashboard_blank_cta' => 'Ajoutez votre premier contact',
     'dashboard_blank_illustration' => 'Illustration par <a href=":url">Freepik</a>',
 
@@ -16,11 +16,11 @@ return [
 
     'tab_recent_calls' => 'Appels récents',
     'tab_favorite_notes' => 'Notes favorites',
-    'tab_calls_blank' => 'Vous n’avez encore enregistré aucun appel.',
+    'tab_calls_blank' => 'You haven’t logged any calls yet.',
     'tab_debts' => 'Dettes',
-    'tab_debts_blank' => 'Vous n’avez encore enregistré aucune dette.',
+    'tab_debts_blank' => 'You haven’t logged any debts yet.',
     'tab_tasks' => 'Tâches',
-    'tab_tasks_blank' => 'Vous n’avez encore aucune tâche.',
+    'tab_tasks_blank' => 'You haven’t any tasks yet.',
 
     'tasks_add_task_placeholder' => 'En quoi consiste cette tâche ?',
     'tasks_tab_your_contacts' => 'Tâches liées à vos contacts',
@@ -35,7 +35,7 @@ return [
     'statistics_gifts' => 'Cadeaux',
 
     'reminders_next_months' => 'Évènements dans les 3 prochains mois',
-    'reminders_none' => 'Aucun rappel pour ce mois-ci',
+    'reminders_none' => 'No reminders for this month.',
 
     'product_changes' => 'Évolutions du produit',
     'product_view_details' => 'Afficher les détails',
