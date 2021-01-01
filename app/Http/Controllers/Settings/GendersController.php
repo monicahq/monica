@@ -146,7 +146,7 @@ class GendersController extends Controller
     /**
      * Update the given gender to the default gender.
      */
-    public function updateDefault(Gender $gender)
+    public function updateDefault(GendersRequest $request, Gender $gender)
     {
         $account = auth()->user()->account;
         $account->default_gender_id = $gender->id;
