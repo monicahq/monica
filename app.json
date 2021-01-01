@@ -10,6 +10,14 @@
     "relationship",
     "PRM"
   ],
+  "buildpacks": [
+    {
+      "url": "heroku/php"
+    },
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
   "addons": [
     {
       "plan": "jawsdb:kitefin"
@@ -23,7 +31,7 @@
   },
   "env": {
     "APP_KEY": {
-      "description": "Please change this to a 32-character string. For example run `pwgen -s 32 1` and copy/paste the value.",
+      "description": "Please change this to a 32-character string. For example run `echo -n 'base64:'; openssl rand -base64 32` and copy/paste the value.",
       "value": "change-me-to-a-random-string----"
     },
     "APP_URL": {

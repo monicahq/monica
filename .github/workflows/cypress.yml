@@ -95,6 +95,8 @@ jobs:
 
       - name: yarn install
         run: yarn inst
+      - name: yarn build
+        run: yarn run production
       - name: Cypress verify
         run: npm run cy:verify
 
