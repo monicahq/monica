@@ -82,7 +82,7 @@ class AccountHelper
      */
     public static function getDefaultGender(Account $account): string
     {
-        $defaultGenderType = Gender::MALE;
+        $defaultGenderType = Gender::UNKNOWN;
 
         if ($account->default_gender_id) {
             $defaultGender = Gender::where([

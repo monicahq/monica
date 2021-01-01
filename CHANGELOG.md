@@ -2,12 +2,13 @@
 
 ### New features:
 
+* Add an artisan command to create an account
 * Add the notion of AddressBooks
 * Allow customization of life event types
 
 ### Enhancements:
 
-* Add an artisan command to create an account
+* Use Unknown as default gender
 
 ### Fixes:
 
