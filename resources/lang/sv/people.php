@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'Radera',
     'gifts_add_title' => 'Gåvohantering för :name',
     'gifts_add_gift_idea' => 'Gåva idé',
-    'gifts_add_gift_already_offered' => 'Erbjuden gåvan',
+    'gifts_add_gift_already_offered' => 'Gift given',
     'gifts_add_gift_received' => 'Gåva mottagen',
     'gifts_add_gift_title' => 'Vad är denna gåva?',
     'gifts_add_gift_name' => 'Gåvans namn',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => 'Denna gåva är till för någon i {name} familj i synnerhet',
     'gifts_delete_title' => 'Ta bort en gåva',
     'gifts_ideas' => 'Gåva idéer',
-    'gifts_offered' => 'Erbjudna gåvor',
+    'gifts_offered' => 'Gifts given',
     'gifts_offered_as_an_idea' => 'Markera som en idé',
     'gifts_received' => 'Gåvor mottagna',
     'gifts_view_comment' => 'Visa kommentar',
-    'gifts_mark_offered' => 'Markera som erbjuden',
+    'gifts_mark_offered' => 'Mark as given',
     'gifts_update_success' => 'Gåvan har uppdaterats',
 
     // debts
