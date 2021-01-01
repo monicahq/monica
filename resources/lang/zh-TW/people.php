@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => '刪除',
     'gifts_add_title' => '與:name的禮物來往',
     'gifts_add_gift_idea' => '禮品創意',
-    'gifts_add_gift_already_offered' => '送出的禮物',
+    'gifts_add_gift_already_offered' => 'Gift given',
     'gifts_add_gift_received' => '收到的禮物',
     'gifts_add_gift_title' => '這是什麼禮物？',
     'gifts_add_gift_name' => '禮品名稱',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => '這份禮物特別是給{name}的家人',
     'gifts_delete_title' => '刪除禮物',
     'gifts_ideas' => '心願單',
-    'gifts_offered' => '送出的禮物',
+    'gifts_offered' => 'Gifts given',
     'gifts_offered_as_an_idea' => '標記為心願單',
     'gifts_received' => '收到的禮物',
     'gifts_view_comment' => '檢視評論',
-    'gifts_mark_offered' => '標記為提供',
+    'gifts_mark_offered' => 'Mark as given',
     'gifts_update_success' => '禮物已成功更新',
 
     // debts
