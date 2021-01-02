@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'Verwijderen',
     'gifts_add_title' => 'Cadeaubeheer voor :name',
     'gifts_add_gift_idea' => 'Cadeau idee',
-    'gifts_add_gift_already_offered' => 'Gift given',
+    'gifts_add_gift_already_offered' => 'Cadeau aangeboden',
     'gifts_add_gift_received' => 'Cadeau ontvangen',
     'gifts_add_gift_title' => 'Wat is dit voor een cadeau?',
     'gifts_add_gift_name' => 'Titel cadeau',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => 'Dit cadeau is voor iemand in {name}\'s familie',
     'gifts_delete_title' => 'Een cadeau verwijderen',
     'gifts_ideas' => 'Cadeau-ideeën',
-    'gifts_offered' => 'Gifts given',
+    'gifts_offered' => 'Cadeau aangeboden',
     'gifts_offered_as_an_idea' => 'Als idee markeren',
     'gifts_received' => 'Ontvangen cadeaus',
     'gifts_view_comment' => 'Opmerking bekijken',
-    'gifts_mark_offered' => 'Mark as given',
+    'gifts_mark_offered' => 'Als aangeboden markeren',
     'gifts_update_success' => 'Het cadeau is succesvol bijgewerkt',
 
     // debts
