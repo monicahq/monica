@@ -21,7 +21,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: ghcr.io/monicahq/monica:master
+          images: ghcr.io/monicahq/monica
           tag-sha: true
 
       - name: Set up Docker Buildx
