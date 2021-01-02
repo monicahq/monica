@@ -26,7 +26,7 @@ variables:
 
 stages:
   - stage: build
-    displayName: 'Build'
+    displayName: Build
     condition: not(startsWith(variables['System.PullRequest.SourceBranch'], 'l10n_master'))
     jobs:
       - template: .azure/job-tests.yml
@@ -36,21 +36,15 @@ stages:
       - template: .azure/job-test-migrations.yml
 
   - ${{ if and(in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'), startsWith(variables['Build.SourceBranch'], 'refs/tags/')) }}:
-      - stage: deploy
-        displayName: Deploy
+      - stage: package
+        displayName: Package
 
         jobs:
-          - deployment: deploy_dist
+          - job: package_dist
+            displayName: Create distributable package
             pool:
               vmImage: 'ubuntu-latest'
-            environment: monica
-            strategy:
-              runOnce:
-                deploy:
-                  steps:
-                    - download: none
-                    - checkout: self
-                    - template: .azure/step-composer-install.yml
-                      parameters:
-                        no_dev: true
-                    - template: .azure/step-deploy-dist.yml
+            steps:
+              - download: none
+              - checkout: self
+              - template: .azure/step-deploy-dist.yml
