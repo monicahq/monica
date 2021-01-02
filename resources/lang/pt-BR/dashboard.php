@@ -8,7 +8,7 @@
 
 return [
     'dashboard_blank_title' => 'Seja bem-vindo à sua conta!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the people you care about.',
+    'dashboard_blank_description' => 'Monica é o lugar para organizar todas as suas interações com pessoas importantes para você.',
     'dashboard_blank_cta' => 'Adicione seu primeiro contato',
     'dashboard_blank_illustration' => 'Ilustração por <a href=":url">Freepik</a>',
 
@@ -16,11 +16,11 @@ return [
 
     'tab_recent_calls' => 'Chamadas recentes',
     'tab_favorite_notes' => 'Notas favoritas',
-    'tab_calls_blank' => 'You haven’t logged any calls yet.',
+    'tab_calls_blank' => 'Você ainda não registrou uma chamada.',
     'tab_debts' => 'Dívidas',
-    'tab_debts_blank' => 'You haven’t logged any debts yet.',
+    'tab_debts_blank' => 'Você ainda não registrou nenhuma dívida.',
     'tab_tasks' => 'Tarefas',
-    'tab_tasks_blank' => 'You haven’t any tasks yet.',
+    'tab_tasks_blank' => 'Você ainda não tem nenhuma tarefa.',
 
     'tasks_add_task_placeholder' => 'De que se trata esta tarefa?',
     'tasks_tab_your_contacts' => 'Tarefas relacionadas aos seus contatos',
@@ -35,7 +35,7 @@ return [
     'statistics_gifts' => 'Presentes',
 
     'reminders_next_months' => 'Eventos nos próximos 3 meses',
-    'reminders_none' => 'No reminders for this month.',
+    'reminders_none' => 'Nenhum lembrete para este mês.',
 
     'product_changes' => 'Atualizações de produtos',
     'product_view_details' => 'Ver detalhes',
