@@ -35,7 +35,7 @@ return [
     'statistics_gifts' => 'الهدايا',
 
     'reminders_next_months' => 'الأحداث التي ستقام في الأشهر الثلاث المقبلة',
-    'reminders_none' => 'No reminders for this month.',
+    'reminders_none' => 'لا يوجد تذكير لهذا الشهر.',
 
     'product_changes' => 'Product changes',
     'product_view_details' => 'View details',
