@@ -17,6 +17,13 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v2
 
+      - name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: ghcr.io/monicahq/monica:master
+          tag-sha: true
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -33,10 +40,10 @@ jobs:
         with:
 #          push: ${{ github.ref == 'refs/heads/master' }}
           push: true
-          tags: ghcr.io/monicahq/monica:master
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
           file: scripts/docker/Dockerfile
           context: .
-          labels: org.opencontainers.image.version="master"
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
