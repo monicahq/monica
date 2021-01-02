@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'Удалить',
     'gifts_add_title' => 'Управление подарками для :name',
     'gifts_add_gift_idea' => 'Идея подарка',
-    'gifts_add_gift_already_offered' => 'Gift given',
+    'gifts_add_gift_already_offered' => 'Подарок уже предложен',
     'gifts_add_gift_received' => 'Получен подарок',
     'gifts_add_gift_title' => 'Что это за подарок?',
     'gifts_add_gift_name' => 'Gift name',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
     'gifts_delete_title' => 'Delete a gift',
     'gifts_ideas' => 'Идеи подарка',
-    'gifts_offered' => 'Gifts given',
+    'gifts_offered' => 'Предложенные подарки',
     'gifts_offered_as_an_idea' => 'Отметить как идею',
     'gifts_received' => 'Полученные подарки',
     'gifts_view_comment' => 'Просмотреть комментарий',
-    'gifts_mark_offered' => 'Mark as given',
+    'gifts_mark_offered' => 'Отметить как предложенный\'',
     'gifts_update_success' => 'Подарок успешно обновлен',
 
     // debts

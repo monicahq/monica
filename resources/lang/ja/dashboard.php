@@ -35,7 +35,7 @@ return [
     'statistics_gifts' => 'ギフト',
 
     'reminders_next_months' => '3ヶ月以内のイベント',
-    'reminders_none' => 'No reminders for this month.',
+    'reminders_none' => '今月のリマインダーはありません.',
 
     'product_changes' => '機能の変更',
     'product_view_details' => '詳細を表示',

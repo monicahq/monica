@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'Deletar',
     'gifts_add_title' => 'Gerenciamento de presentes para :name',
     'gifts_add_gift_idea' => 'Ideia de presente',
-    'gifts_add_gift_already_offered' => 'Gift given',
+    'gifts_add_gift_already_offered' => 'Presente já oferecido',
     'gifts_add_gift_received' => 'Gift received',
     'gifts_add_gift_title' => 'O que é esse presente?',
     'gifts_add_gift_name' => 'Gift name',

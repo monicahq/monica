@@ -8,7 +8,7 @@
 
 return [
     'dashboard_blank_title' => 'Seja bem-vindo à sua conta!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the people you care about.',
+    'dashboard_blank_description' => 'Com Monica pode organizar todas as suas interações com as pessoas que são importantes para si.',
     'dashboard_blank_cta' => 'Adicione o seu primeiro contacto',
     'dashboard_blank_illustration' => 'Illustration by <a href=":url">Freepik</a>',
 
@@ -16,7 +16,7 @@ return [
 
     'tab_recent_calls' => 'Chamadas recentes',
     'tab_favorite_notes' => 'Notas favoritas',
-    'tab_calls_blank' => 'You haven’t logged any calls yet.',
+    'tab_calls_blank' => 'Você ainda não registou chamadas.',
     'tab_debts' => 'Debts',
     'tab_debts_blank' => 'You haven’t logged any debts yet.',
     'tab_tasks' => 'Tasks',

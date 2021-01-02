@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'حذف',
     'gifts_add_title' => 'إدارة الهدايا لـ :name',
     'gifts_add_gift_idea' => 'فكرة هدية',
-    'gifts_add_gift_already_offered' => 'Gift given',
+    'gifts_add_gift_already_offered' => 'هدية تم تقديمها',
     'gifts_add_gift_received' => 'هدية تم استلامها',
     'gifts_add_gift_title' => 'ما هذه الهدية؟',
     'gifts_add_gift_name' => 'Gift name',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
     'gifts_delete_title' => 'Delete a gift',
     'gifts_ideas' => 'أفكار للهدايا',
-    'gifts_offered' => 'Gifts given',
+    'gifts_offered' => 'هدية تم تقديمها',
     'gifts_offered_as_an_idea' => 'وضع علامة كفكرة',
     'gifts_received' => 'استلام هدية',
     'gifts_view_comment' => 'عرض التعليق',
-    'gifts_mark_offered' => 'Mark as given',
+    'gifts_mark_offered' => 'ضع علامة بأنه تم عرضها',
     'gifts_update_success' => 'تم بنجاح تحديث هدية',
 
     // debts

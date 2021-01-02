@@ -20,7 +20,7 @@ return [
     'tab_debts' => 'Долги',
     'tab_debts_blank' => 'You haven’t logged any debts yet.',
     'tab_tasks' => 'Задачи',
-    'tab_tasks_blank' => 'You haven’t any tasks yet.',
+    'tab_tasks_blank' => 'У Вас еще нет задач.',
 
     'tasks_add_task_placeholder' => 'What is this task about?',
     'tasks_tab_your_contacts' => 'Tasks related to your contacts',
@@ -35,7 +35,7 @@ return [
     'statistics_gifts' => 'Подарки',
 
     'reminders_next_months' => 'События в ближайшие 3 месяца',
-    'reminders_none' => 'No reminders for this month.',
+    'reminders_none' => 'Нет напоминаний в этом месяце.',
 
     'product_changes' => 'Product changes',
     'product_view_details' => 'View details',

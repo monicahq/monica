@@ -8,7 +8,7 @@
 
 return [
     'dashboard_blank_title' => 'Welkom bij jouw account!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the people you care about.',
+    'dashboard_blank_description' => 'Monica is de plaats om alle interacties met de mensen waar je om geeft te organiseren.',
     'dashboard_blank_cta' => 'Voeg je eerste contact toe',
     'dashboard_blank_illustration' => 'Illustratie door <a href=":url">Freepik</a>',
 
@@ -16,11 +16,11 @@ return [
 
     'tab_recent_calls' => 'Recente oproepen',
     'tab_favorite_notes' => 'Favoriete notities',
-    'tab_calls_blank' => 'You haven’t logged any calls yet.',
+    'tab_calls_blank' => 'Je hebt nog geen oproepen opgeslagen.',
     'tab_debts' => 'Schulden',
-    'tab_debts_blank' => 'You haven’t logged any debts yet.',
+    'tab_debts_blank' => 'Je hebt nog geen schulden opgegeven.',
     'tab_tasks' => 'Taken',
-    'tab_tasks_blank' => 'You haven’t any tasks yet.',
+    'tab_tasks_blank' => 'Je hebt nog geen taken.',
 
     'tasks_add_task_placeholder' => 'Waar gaat deze taak over?',
     'tasks_tab_your_contacts' => 'Taken met betrekking tot je contacten',
@@ -35,7 +35,7 @@ return [
     'statistics_gifts' => 'Cadeaus',
 
     'reminders_next_months' => 'Gebeurtenissen de komende 3 maanden',
-    'reminders_none' => 'No reminders for this month.',
+    'reminders_none' => 'Geen herinnering voor deze maand.',
 
     'product_changes' => 'Productwijzigingen',
     'product_view_details' => 'Details weergeven',
