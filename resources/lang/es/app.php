@@ -23,7 +23,7 @@ return [
     'close' => 'Cerrar',
     'copy' => 'Copiar',
     'create' => 'Crear',
-    'remove' => 'Remover',
+    'remove' => 'Eliminar',
     'revoke' => 'Revocar',
     'done' => 'Hecho',
     'back' => 'Volver',
@@ -86,7 +86,7 @@ return [
     'breadcrumb_settings_users_add' => 'Añadir un usuario',
     'breadcrumb_settings_subscriptions' => 'Suscripción',
     'breadcrumb_settings_import' => 'Importar',
-    'breadcrumb_settings_import_report' => 'Importar reporte',
+    'breadcrumb_settings_import_report' => 'Informe de importación',
     'breadcrumb_settings_import_upload' => 'Subir',
     'breadcrumb_settings_tags' => 'Etiquetas',
     'breadcrumb_add_significant_other' => 'Añadir relación',
@@ -150,16 +150,16 @@ return [
 
     'relationship_type_date' => 'cita',
     'relationship_type_date_female' => 'cita',
-    'relationship_type_date_with_name' => 'la fecha de :name',
-    'relationship_type_date_female_with_name' => 'la fecha de :name',
+    'relationship_type_date_with_name' => 'la cita de :name',
+    'relationship_type_date_female_with_name' => 'la cita de :name',
 
     'relationship_type_lover' => 'amante',
     'relationship_type_lover_female' => 'amante',
-    'relationship_type_lover_with_name' => 'la amante de :name',
+    'relationship_type_lover_with_name' => 'el amante de :name',
     'relationship_type_lover_female_with_name' => 'la amante de :name',
 
     'relationship_type_inlovewith' => 'enamorado de',
-    'relationship_type_inlovewith_female' => 'enamorado de',
+    'relationship_type_inlovewith_female' => 'enamorada de',
     'relationship_type_inlovewith_with_name' => 'alguien :name está enamorado de',
     'relationship_type_inlovewith_female_with_name' => 'alguien :name está enamorado de',
 
