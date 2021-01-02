@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use Illuminate\Http\Request;
 use App\Helpers\GenderHelper;
 use App\Models\Contact\Gender;
+use Illuminate\Validation\Rule;
 use App\Helpers\CollectionHelper;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
@@ -63,6 +64,7 @@ class GendersController extends Controller
     {
         Validator::make($request->all(), [
             'name' => 'required|max:255',
+            'type' => ['required', Rule::in(Gender::LIST)],
         ])->validate();
 
         $gender = auth()->user()->account->genders()->create(
@@ -90,7 +92,7 @@ class GendersController extends Controller
             ])
         );
         if ($request->input('isDefault')) {
-            $this->updateDefault($request, $gender);
+            $this->updateDefault($gender);
             $gender->refresh();
         } elseif ($gender->isDefault()) {
             // Case of this gender was the default one previously
@@ -106,7 +108,7 @@ class GendersController extends Controller
     /**
      * Destroy a gender type.
      */
-    public function destroyAndReplaceGender(GendersRequest $request, Gender $gender, $genderId)
+    public function destroyAndReplaceGender(Gender $gender, $genderId)
     {
         $account = auth()->user()->account;
         try {
@@ -134,7 +136,7 @@ class GendersController extends Controller
     /**
      * Destroy a gender type.
      */
-    public function destroy(GendersRequest $request, Gender $gender)
+    public function destroy(Gender $gender)
     {
         $gender->delete();
 
@@ -144,7 +146,7 @@ class GendersController extends Controller
     /**
      * Update the given gender to the default gender.
      */
-    public function updateDefault(GendersRequest $request, Gender $gender)
+    public function updateDefault(Gender $gender)
     {
         $account = auth()->user()->account;
         $account->default_gender_id = $gender->id;

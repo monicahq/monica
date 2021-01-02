@@ -18,6 +18,7 @@ use App\Models\Account\Activity;
 use App\Models\Instance\AuditLog;
 use function Safe\preg_match_all;
 use Illuminate\Support\Collection;
+use App\Models\Account\AddressBook;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -173,6 +174,34 @@ class Contact extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the address book associated with the contact.
+     *
+     * @return BelongsTo
+     */
+    public function addressBook()
+    {
+        return $this->belongsTo(AddressBook::class);
+    }
+
+    /**
+     * Get the list of contacts from the same address book as this contact.
+     *
+     * @return HasMany<self>|null
+     */
+    public function siblingContacts(): ?HasMany
+    {
+        if ($this->account) {
+            if ($this->addressBook) {
+                return $this->account->contacts($this->addressBook->name);
+            }
+
+            return $this->account->contacts();
+        }
+
+        return null;
     }
 
     /**
@@ -562,6 +591,28 @@ class Contact extends Model
     public function scopeNotActive($query)
     {
         return $query->where('is_active', 0);
+    }
+
+    /**
+     * Scope a query to only include contacts from given address book.
+     * 'null' value for address book is the default address book.
+     *
+     * @param Builder $query
+     * @param int|null $accountId
+     * @param string|null $addressBookName
+     * @return Builder
+     */
+    public function scopeAddressBook($query, int $accountId = null, string $addressBookName = null)
+    {
+        $addressBook = null;
+        if ($accountId && $addressBookName) {
+            $addressBook = AddressBook::where([
+                'account_id' => $accountId,
+                'name' => $addressBookName,
+            ])->first();
+        }
+
+        return $query->where('address_book_id', $addressBook ? $addressBook->id : null);
     }
 
     /**

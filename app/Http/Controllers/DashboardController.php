@@ -29,9 +29,9 @@ class DashboardController extends Controller
             ->first();
 
         $numberOfContacts = $account->contacts()
-                                    ->real()
-                                    ->active()
-                                    ->count();
+            ->real()
+            ->active()
+            ->count();
 
         if ($numberOfContacts === 0) {
             return view('dashboard.blank');

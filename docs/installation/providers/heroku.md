@@ -15,7 +15,7 @@ Monica can be deployed on Heroku using the button below:
 
 Before deployment, Heroku will ask you to define a few variables.
 - Please ensure to enter a custom `APP_KEY` when asked (if, for example, you have the `pwgen` utility installed, you could copy and paste the output of `pwgen -s 32 1`).
-- In addition, you can edit the email address Monica will send emails to (`MAIL_FROM_ADDRESS`), the name of the sender (`MAIL_FROM_NAME`) and some other important variables on that screen.
+- In addition, you can edit the email address Monica will send emails to (`MAIL_FROM_ADDRESS`), the name of the sender (`MAIL_FROM_NAME`), where emails should link to (`APP_URL`) and some other important variables on that screen.
 
 After deployment, click on ![Manage App](../../images/heroku_manage_app.png) to open the dashboard of your new application:
 ![Heroku Dashbord](../../images/heroku_dashboard.png)

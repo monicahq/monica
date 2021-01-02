@@ -55,7 +55,7 @@ class SearchableTest extends TestCase
     {
         $contact = factory(Contact::class)->create(['first_name' => 'TestShouldFail']);
         $searchResults = $contact->search('TestWillSucceed', $contact->account_id, 'created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         $this->assertFalse($searchResults->contains($contact));
     }

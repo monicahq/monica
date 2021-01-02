@@ -89,7 +89,7 @@ There is one caveat with the SQL exporter: you can't get the photos you've uploa
 
 ### Importing SQL into Heroku
 
-If you're running your own Monica Heroku instance as mentioned in the [Heroku Installation Documentation](https://github.com/monicahq/monica/blob/master/docs/installation/heroku.md), you're not actually running your own SQL server, which means that the solutions above might not be of assistance.
+If you're running your own Monica Heroku instance as mentioned in the [Heroku Installation Documentation](https://github.com/monicahq/monica/blob/master/docs/installation/providers/heroku.md), you're not actually running your own SQL server, which means that the solutions above might not be of assistance.
 
 Heroku dynos use a [ClearDB MySQL add-on](https://devcenter.heroku.com/articles/cleardb) as their database. You can still use an SQL admin tool (like phpMyAdmin or Sequel Pro) to interact with the database, as well as use the `mysql-client` command line tool, you just need to know where to look for the credentials. 
 
