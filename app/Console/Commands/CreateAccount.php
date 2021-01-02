@@ -35,25 +35,25 @@ class CreateAccount extends Command
      */
     public function handle()
     {
-        $email = (string) $this->option('email');
+        $email = $this->option('email');
         if (empty($email)) {
             $this->error('! You must specify an email');
         }
 
-        $password = (string) $this->option('password');
+        $password = $this->option('password');
         if (empty($password)) {
             $this->error('! You must specify a password');
         }
 
-        $firstName = (string) $this->option('firstname') ?? 'John';
+        $firstName = $this->option('firstname') ?? 'John';
 
-        $lastName = (string) $this->option('lastname') ?? 'Doe';
+        $lastName = $this->option('lastname') ?? 'Doe';
 
         if (empty($email) || empty($password)) {
             return;
         }
 
-        if ($this->confirmToProceed("This will create a new user for $firstName $lastName with email $email")) {
+        if ($this->confirmToProceed('This will create a new user for '.$firstName.' '.$lastName.' with email '.$email)) {
             Account::createDefault($firstName, $lastName, $email, $password);
 
             $this->info('| You can now sign in to your account:');
