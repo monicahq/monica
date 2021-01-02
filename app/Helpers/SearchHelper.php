@@ -16,9 +16,10 @@ class SearchHelper
      * @param  string $needle
      * @param  string $orderByColumn
      * @param  string $orderByDirection
+     * @param  string|null $addressBookName
      * @return Builder
      */
-    public static function searchContacts(string $needle, string $orderByColumn, string $orderByDirection = 'asc'): Builder
+    public static function searchContacts(string $needle, string $orderByColumn, string $orderByDirection = 'asc', string $addressBookName = null): Builder
     {
         $accountId = Auth::user()->account_id;
 
@@ -41,9 +42,11 @@ class SearchHelper
                 ]);
             });
 
-            return $b->orderBy($orderByColumn, $orderByDirection);
+            return $b->addressBook($accountId, $addressBookName)
+                ->orderBy($orderByColumn, $orderByDirection);
         }
 
-        return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection);
+        return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection)
+            ->addressBook($accountId, $addressBookName);
     }
 }

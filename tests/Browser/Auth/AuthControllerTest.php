@@ -69,6 +69,41 @@ class AuthControllerTest extends TestCase
         }
     }
 
+    public function test_oauth_login_bad_password()
+    {
+        $repository = new ClientRepository();
+        $client = null;
+        try {
+            $client = $repository->createPasswordGrantClient(
+                null, config('app.name'), config('app.url')
+            );
+
+            $this->setEnvironmentValue([
+                'PASSPORT_PERSONAL_ACCESS_CLIENT_ID' => $client->id,
+                'PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET' => $client->secret,
+            ]);
+
+            $userPassword = 'password';
+            $user = factory(User::class)->create([
+                'password' => bcrypt($userPassword),
+            ]);
+
+            $response = $this->postClient(self::OAUTH_LOGIN_URL, [
+                'email' => $user->email,
+                'password' => 'wrongPassword',
+            ]);
+
+            $this->expectNotAuthorized($response);
+        } finally {
+            if ($client) {
+                $repository->delete($client);
+            }
+            if ($user) {
+                $user->account->delete();
+            }
+        }
+    }
+
     public function test_oauth_login_wrong_mail()
     {
         $response = $this->postClient(self::OAUTH_LOGIN_URL, [

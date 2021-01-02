@@ -88,7 +88,7 @@ class OAuthController extends Controller
             return Route::respondWithRoute('oauth.verify');
         }
 
-        return null;
+        return $this->respondUnauthorized();
     }
 
     /**
