@@ -10,13 +10,13 @@ return [
 
     //index
     'people_not_found' => 'Không tìm thấy liên hệ',
-    'people_list_number_kids' => '1 con|:count con',
+    'people_list_number_kids' => ':count con',
     'people_list_last_updated' => 'Danh sách liên hệ mới cập nhật:',
-    'people_list_number_reminders' => '1 lời nhắc|:count lời nhắc',
+    'people_list_number_reminders' => ':count lời nhắc',
     'people_list_blank_title' => 'Bạn không có ai trong tài khoản',
     'people_list_blank_cta' => 'Thêm ai đó',
     'people_list_sort' => 'Sắp xếp',
-    'people_list_stats' => '1 liên hệ|:count liên hệ',
+    'people_list_stats' => ':count liên hệ',
     'people_list_firstnameAZ' => 'Xếp theo tên A → Z',
     'people_list_firstnameZA' => 'Xếp theo tên Z → A',
     'people_list_lastnameAZ' => 'Xếp theo họ A → Z',
@@ -25,7 +25,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => 'Xếp theo hoạt động lâu nhất',
     'people_list_filter_tag' => 'Hiện tất cả liên hệ được tag với',
     'people_list_clear_filter' => 'Xoá bộ lọc',
-    'people_list_contacts_per_tags' => '1 liên hệ|:count liên hệ',
+    'people_list_contacts_per_tags' => ':count liên hệ',
     'people_list_show_dead' => 'Hiện người đã qua đời (:count)',
     'people_list_hide_dead' => 'Ẩn người đã qua đời (:count)',
     'people_search' => 'Tìm kiếm liên hệ...',
@@ -92,7 +92,7 @@ return [
     'stay_in_touch_premium' => 'Bạn cần nâng cấp tài khoản để sử dụng tính năng này',
     'stay_in_touch_modal_title' => 'Giữ liên lạc',
     'stay_in_touch_modal_desc' => 'Chúng tôi có thể nhắc nhở bạn bằng email để giữ liên lạc với {firstname} đều đặn.',
-    'stay_in_touch_modal_label' => 'Gửi email cho tôi mỗi... {count} ngày|Gửi email cho tôi mỗi... {count} ngày',
+    'stay_in_touch_modal_label' => 'Gửi email cho tôi mỗi... {count} ngày',
 
     // Calls
     'modal_call_title' => 'Log a call',
@@ -140,7 +140,7 @@ return [
     'age_exact_birthdate' => 'sinh ngày :date',
 
     // Last called
-    'last_called' => 'Lần gọi gần đây nhất: date',
+    'last_called' => 'Lần gọi gần đây nhất: :date',
     'last_called_empty' => 'Lần gọi gần đây nhất: không rõ',
     'last_activity_date' => 'Lần hoạt động cùng nhau gần đây nhất: :date',
     'last_activity_date_empty' => 'Lần hoạt động cùng nhau gần đây nhất: không rõ',
@@ -170,8 +170,8 @@ return [
 
     // food preferences
     'food_preferences_add_success' => 'Sở thích ăn uống đã được lưu',
-    'food_preferences_edit_description' => 'Có thể :firtname hoặc ai đó trong gia đình :family bị dị ứng. Hoặc không thích một chai rượu cụ thể. Đánh dấu ở đây để bạn có thể nhớ trong lần tới bạn mời họ ăn tối',
-    'food_preferences_edit_description_no_last_name' => 'Có thể :firtname bị dị ứng. Hoặc không thích một chai rượu cụ thể. Đánh dấu ở đây để bạn có thể nhớ trong lần tới bạn mời họ ăn tối',
+    'food_preferences_edit_description' => 'Có thể :firstname hoặc ai đó trong gia đình :family bị dị ứng. Hoặc không thích một chai rượu cụ thể. Đánh dấu ở đây để bạn có thể nhớ trong lần tới bạn mời họ ăn tối',
+    'food_preferences_edit_description_no_last_name' => 'Có thể :firstname bị dị ứng. Hoặc không thích một chai rượu cụ thể. Đánh dấu ở đây để bạn có thể nhớ trong lần tới bạn mời họ ăn tối',
     'food_preferences_edit_title' => 'Trình bày sở thích ăn uống',
     'food_preferences_edit_cta' => 'Lưu sở thích ăn uống',
     'food_preferences_title' => 'Sở thích ăn uống',
@@ -279,10 +279,10 @@ return [
     'activities_activity' => 'Danh mục hoạt động',
     'activities_view_activities_report' => 'Xem báo cáo hoạt động',
     'activities_profile_title' => 'Báo cáo hoạt động giữa :name và bạn',
-    'activities_profile_subtitle' => 'Bạn đã ghi lại tất cả :total_activities hoạt động với :name và :activities_last_twelve_months hoạt động trong 12 tháng qua.|Bạn đã ghi lại tất cả :total_activities hoạt động với :name và :activities_last_twelve_months hoạt động trong 12 tháng qua.',
+    'activities_profile_subtitle' => 'Bạn đã ghi lại tất cả :total_activities hoạt động với :name và :activities_last_twelve_months hoạt động trong 12 tháng qua.',
     'activities_profile_year_summary_activity_types' => 'Dưới đây là bảng phân tích các loại hoạt động các bạn đã làm cùng nhau trong năm :year',
     'activities_profile_year_summary' => 'Dưới đây là những gì hai bạn đã làm trong năm :year',
-    'activities_profile_number_occurences' => ':value hoạt động|:value hoạt động',
+    'activities_profile_number_occurences' => ':value hoạt động',
     'activities_list_participants' => 'Người tham gia:',
     'activities_list_emotions' => 'Emotions felt:',
     'activities_list_date' => 'Xảy ra vào',

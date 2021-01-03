@@ -87,16 +87,16 @@ return [
     'locale_he' => 'Hebräisch',
     'locale_hr' => 'Kroatisch',
     'locale_it' => 'Italienisch',
-    'locale_ja' => 'Japanese',
+    'locale_ja' => 'Japanisch',
     'locale_nl' => 'Niederländisch',
     'locale_pt' => 'Portugiesisch',
-    'locale_pt-BR' => 'Portuguese (Brazil)',
+    'locale_pt-BR' => 'Portugiesisch (Brasilien)',
     'locale_ru' => 'Russisch',
     'locale_sv' => 'Swedish',
     'locale_zh' => 'Vereinfachtes Chinesisch',
-    'locale_zh-TW' => 'Chinese Traditional',
+    'locale_zh-TW' => 'Chinesisch (Traditionell)',
     'locale_tr' => 'Türkisch',
-    'locale_en-GB' => 'English (United Kingdom)',
+    'locale_en-GB' => 'Englisch (Vereinigtes Königreich)',
 
     'security_title' => 'Sicherheit',
     'security_help' => 'Ändere die Sicherheitseinstellungen für dein Konto.',
@@ -378,7 +378,7 @@ return [
     'personalization_genders_modal_delete_question' => 'Du hast aktuell {count} Kontakt mit diesem Geschlecht. Wenn du dieses Geschlecht löschst, welches Geschlecht soll der Kontakt dann haben?|Du hast aktuell {count} Kontakte mit diesem Geschlecht. Wenn du dieses Geschlecht löschst, welches Geschlecht sollen die Kontakte dann haben?',
     'personalization_genders_modal_delete_question_default' => 'Dieses Geschlecht ist das Standardwert. Wenn Sie dieses Geschlecht löschen, welches wird der nächste Standardwert sein?',
     'personalization_genders_modal_error' => 'Bitte wähle ein gültiges Geschlecht aus der Liste.',
-    'personalization_genders_list_contact_number' => '{count} Kontakt|{count} Kontakte|',
+    'personalization_genders_list_contact_number' => '{count} Kontakt|{count} Kontakte',
     'personalization_genders_table_name' => 'Name',
     'personalization_genders_table_sex' => 'Geschlecht',
     'personalization_genders_table_default' => 'Standard',
@@ -400,8 +400,8 @@ return [
     'personalization_module_title' => 'Funktionen',
     'personalization_module_desc' => 'Manche Menschen brauchen nicht alle Funktionen. Unten kannst du die Felder auswählen, die auf einer Kontaktseite angezeigt werden. Die Änderungen werden für ALLE Kontakte übernommen. Wenn du eine Funktion ausschaltest, so gehen die Daten darin nicht verloren, wir verbergen sie nur.',
 
-    'personalisation_paid_upgrade' => 'Dies ist eine Premium-Funktion, die nur im kostenpflichtigen Abo aktiv ist. Upgrade deinen Account unter Einstellungen > Abonnement.',
-    'personalisation_paid_upgrade_vue' => 'Dies ist eine Premium-Funktion, die nur im kostenpflichtigen Abo aktiv ist. Upgrade deinen Account unter Einstellungen > Abonnement.',
+    'personalisation_paid_upgrade' => 'Dies ist eine Premium-Funktion, die nur im kostenpflichtigen Abo aktiv ist. Upgrade deinen Account unter <a href=":url">Einstellungen > Abonnement</a>.',
+    'personalisation_paid_upgrade_vue' => 'Dies ist eine Premium-Funktion, die nur im kostenpflichtigen Abo aktiv ist. Upgrade deinen Account unter <a href="{url}">Einstellungen > Abonnement</a>.',
 
     'reminder_time_to_send' => 'Zeitpunkt für den Versand von Erinnerungen',
     'reminder_time_to_send_help' => 'Zur Information: Ihre nächste Erinnerung am <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span> gesendet.',
@@ -514,5 +514,5 @@ return [
     'archive_cta' => 'Alle Ihre Kontakte archivieren',
 
     'logs_title' => 'Alles, was mit diesem Konto passiert ist',
-    'logs_author' => 'Mit :name am :Datum',
+    'logs_author' => 'Mit :name am :date',
 ];

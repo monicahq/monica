@@ -163,7 +163,7 @@ return [
     'information_work_at' => 'at :company',
     'work_add_cta' => '仕事の情報を更新する',
     'work_edit_success' => '職業の更新が成功しました。',
-    'work_edit_title' => '更新する :name’s の職業',
+    'work_edit_title' => '更新する :name の職業',
     'work_edit_job' => '職業（任意）',
     'work_edit_company' => 'Company (optional)',
     'work_information' => '仕事',
