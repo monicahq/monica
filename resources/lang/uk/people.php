@@ -10,7 +10,7 @@ return [
 
     //index
     'people_not_found' => 'Контакт не знайдено',
-    'people_list_number_kids' => '1 дитина|:count дітей',
+    'people_list_number_kids' => '1 дитина|:count дітей|:count дітей',
     'people_list_last_updated' => 'Остання консультація:',
     'people_list_number_reminders' => '1 нагадування|:count нагадувань',
     'people_list_blank_title' => 'У вас ще нікого немає',
