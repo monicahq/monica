@@ -28,6 +28,13 @@ class CreateAccount extends Command
      */
     protected $description = 'Create a new account';
 
+
+    /**
+     * Missing argument errors. Exposed for testing
+     */
+    const ERROR_MISSING_EMAIL = '! You must specify an email';
+    const ERROR_MISSING_PASSWORD = '! You must specify a password';
+
     /**
      * Execute the console command.
      *
@@ -37,12 +44,12 @@ class CreateAccount extends Command
     {
         $email = $this->option('email');
         if (empty($email)) {
-            $this->error('! You must specify an email');
+            $this->error($this::ERROR_MISSING_EMAIL);
         }
 
         $password = $this->option('password');
         if (empty($password)) {
-            $this->error('! You must specify a password');
+            $this->error($this::ERROR_MISSING_PASSWORD);
         }
 
         $firstName = $this->option('firstname') ?? 'John';
