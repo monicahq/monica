@@ -116,7 +116,7 @@ return [
         'string' => ':attribute musí být přesně :size znaků dlouhý.',
         'array' => ':attribute musí obsahovat právě :size prvků.',
     ],
-    'starts_with' => ':attribute musí začínat jednou z následujících hodnot: :values',
+    'starts_with' => ':attribute musí začínat jednou z následujících hodnot: :values.',
     'string' => ':attribute musí být řetězec znaků.',
     'timezone' => ':attribute musí být platná časová zóna.',
     'unique' => ':attribute musí být unikátní.',
