@@ -28,7 +28,6 @@ class CreateAccount extends Command
      */
     protected $description = 'Create a new account';
 
-
     /**
      * Missing argument errors. Exposed for testing.
      */

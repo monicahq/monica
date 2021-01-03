@@ -3,7 +3,6 @@
 namespace Tests\Commands;
 
 use Tests\TestCase;
-use App\Models\Account\Account;
 use App\Models\User\User;
 use App\Console\Commands\CreateAccount;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
