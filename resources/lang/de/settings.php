@@ -514,5 +514,5 @@ return [
     'archive_cta' => 'Alle Ihre Kontakte archivieren',
 
     'logs_title' => 'Alles, was mit diesem Konto passiert ist',
-    'logs_author' => 'Mit :name am :Datum',
+    'logs_author' => 'Mit :name am :date',
 ];
