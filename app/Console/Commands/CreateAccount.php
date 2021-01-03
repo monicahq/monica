@@ -30,7 +30,7 @@ class CreateAccount extends Command
 
 
     /**
-     * Missing argument errors. Exposed for testing
+     * Missing argument errors. Exposed for testing.
      */
     const ERROR_MISSING_EMAIL = '! You must specify an email';
     const ERROR_MISSING_PASSWORD = '! You must specify a password';
