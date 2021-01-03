@@ -234,6 +234,9 @@ kbd {
 // Generic styles
 body {
   color: #4a4a4a;
+  @if $htmldir == rtl {
+    text-align: right;
+  }
 }
 
 a {
