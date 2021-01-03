@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'Xóa',
     'gifts_add_title' => 'Quản lý quà cho :name',
     'gifts_add_gift_idea' => 'Ý tưởng quà tặng',
-    'gifts_add_gift_already_offered' => 'Gift offered',
+    'gifts_add_gift_already_offered' => 'Gift given',
     'gifts_add_gift_received' => 'Quà đã nhận',
     'gifts_add_gift_title' => 'What is this gift?',
     'gifts_add_gift_name' => 'Tên quà',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => 'Món quà này đặc biệt dành cho một người nào đó trong gia đình của {name}',
     'gifts_delete_title' => 'Xoá quà tặng',
     'gifts_ideas' => 'Ý tưởng quà tặng',
-    'gifts_offered' => 'Gifts offered',
+    'gifts_offered' => 'Gifts given',
     'gifts_offered_as_an_idea' => 'Đánh dấu là một ý tưởng',
     'gifts_received' => 'Quà đã nhận',
     'gifts_view_comment' => 'Xem bình luận',
-    'gifts_mark_offered' => 'Mark as offered',
+    'gifts_mark_offered' => 'Mark as given',
     'gifts_update_success' => 'Cập nhật quà tặng thành công',
 
     // debts

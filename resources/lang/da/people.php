@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -326,7 +326,7 @@ return [
     'gifts_offered_as_an_idea' => 'Markér som idé',
     'gifts_received' => 'Gave modtaget',
     'gifts_view_comment' => 'Se kommentar',
-    'gifts_mark_offered' => 'Markér som givet',
+    'gifts_mark_offered' => 'Marker som givet',
     'gifts_update_success' => 'Gaven er blevet opdateret',
 
     // debts

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -13,7 +13,7 @@ return [
     'save' => 'Salvar',
     'add' => 'Adicionar',
     'cancel' => 'Cancelar',
-    'confirm' => 'Confirm',
+    'confirm' => 'Confirmar',
     'delete_confirm' => 'Tem certeza?',
     'delete' => 'Excluir',
     'edit' => 'Editar',
@@ -44,11 +44,11 @@ return [
     'retry' => 'Tentar novamente',
     'filter' => 'Filtrar lista',
     'go_back' => 'Voltar',
-    'file_selected' => '1 file selected...|{count} files selected...',
+    'file_selected' => '1 arquivo selecionado...|{count} arquivos selecionados...',
 
     'application_title' => 'Monica – Gerenciador de relacionamento pessoal',
     'application_description' => 'Monica é uma ferramenta para gerenciar suas interações com seus amigos, familiares e pessoas queridas.',
-    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
+    'application_og_title' => 'Fortaleça suas relações com as pessoas que você ama. CRM online e gratuito para amigos e familiares.',
 
     'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
     'markdown_link' => 'Ler documentação',
@@ -108,15 +108,15 @@ return [
 
     'error_title' => 'Ops! Algo deu errado.',
     'error_unauthorized' => 'Você não tem permissão para editar este recurso.',
-    'error_user_account' => 'This user does not belong to the given account.',
+    'error_user_account' => 'Esse usuário não pertence à conta fornecida.',
     'error_save' => 'Ocorreu um erro ao tentar salvar os dados.',
     'error_try_again' => 'Algo deu errado. Por favor, tente novamente.',
     'error_id' => 'Error ID: :id',
-    'error_unavailable' => 'Service unavailable',
+    'error_unavailable' => 'Serviço indisponível',
     'error_maintenance' => 'Manutenção em andamento. Voltaremos em breve.',
     'error_help' => 'Voltaremos em breve.',
     'error_twitter' => 'Siga-nos <a href="https://twitter.com/:twitter">no Twitter </a> para saber quando voltamos.',
-    'error_no_term' => 'There is no policy for this instance yet.',
+    'error_no_term' => 'Não há nenhuma regra para esta instância até o momento.',
 
     'default_save_success' => 'Dados salvos com sucesso!',
 
@@ -136,7 +136,7 @@ return [
     'relationship_type_group_family' => 'Relacionamentos familiares',
     'relationship_type_group_friend' => 'Relacionamentos de amizade',
     'relationship_type_group_work' => 'Relacionamentos profissionais',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_other' => 'Outros tipos de relações',
 
     'relationship_type_partner' => 'companheiro',
     'relationship_type_partner_female' => 'companheira',
@@ -251,12 +251,12 @@ return [
     'relationship_type_boss' => 'chefe',
     'relationship_type_boss_female' => 'chefa',
     'relationship_type_boss_with_name' => 'chefe de :name',
-    'relationship_type_boss_female_with_name' => ':name’s boss',
+    'relationship_type_boss_female_with_name' => ':nome do chefe',
 
-    'relationship_type_subordinate' => 'subordinate',
-    'relationship_type_subordinate_female' => 'subordinate',
-    'relationship_type_subordinate_with_name' => ':name’s subordinate',
-    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate' => 'funcionário',
+    'relationship_type_subordinate_female' => 'funcionário',
+    'relationship_type_subordinate_with_name' => ':nome do funcionário',
+    'relationship_type_subordinate_female_with_name' => ':nome do funcionario',
 
     'relationship_type_mentor' => 'mentor',
     'relationship_type_mentor_female' => 'mentora',

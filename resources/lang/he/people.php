@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'מחיקה',
     'gifts_add_title' => 'ניהול מתנות עבור :name',
     'gifts_add_gift_idea' => 'רעיון למתנה',
-    'gifts_add_gift_already_offered' => 'מתנה שהוצעה',
+    'gifts_add_gift_already_offered' => 'הוענקה מתנה',
     'gifts_add_gift_received' => 'מתנה שהתקבלה',
     'gifts_add_gift_title' => 'מה זו המתנה הזו?',
     'gifts_add_gift_name' => 'שם המתנה',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => 'מתנה זו מיועדת במיוחד למישהו מהמשפחה של {name}',
     'gifts_delete_title' => 'מחיקת מתנה',
     'gifts_ideas' => 'רעיונות למתנות',
-    'gifts_offered' => 'מתנות שהוצעו',
+    'gifts_offered' => 'הוענקו מתנות',
     'gifts_offered_as_an_idea' => 'סימון כרעיון',
     'gifts_received' => 'מתנות שהתקבלו',
     'gifts_view_comment' => 'צפייה בהערה',
-    'gifts_mark_offered' => 'סימון כהוצעה',
+    'gifts_mark_offered' => 'סימון שניתנה',
     'gifts_update_success' => 'המתנה עודכנה בהצלחה',
 
     // debts
