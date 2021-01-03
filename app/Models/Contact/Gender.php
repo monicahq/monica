@@ -62,6 +62,8 @@ class Gender extends Model
      */
     public const NONE = 'N';
 
+    public const LIST = ['M', 'F', 'O', 'U', 'N'];
+
     /**
      * Get the account record associated with the gender.
      *

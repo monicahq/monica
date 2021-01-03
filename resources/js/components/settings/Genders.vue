@@ -305,6 +305,11 @@ export default {
         checked: this.$t('app.yes'),
         unchecked: this.$t('app.no')
       };
+    },
+
+    defaultGenderType() {
+      const defaultGender = _.findIndex(this.genders, ['isDefault', true]);
+      return this.genders[defaultGender >= 0 ? defaultGender : 0];
     }
   },
 
@@ -320,10 +325,15 @@ export default {
       ]);
     },
 
+    setDefaultGenderType() {
+      this.createForm.type = this.defaultGenderType.type;
+    },
+
     getGenders() {
       return axios.get('settings/personalization/genders')
         .then(response => {
           this.genders = _.toArray(response.data);
+          this.setDefaultGenderType();
         });
     },
 
@@ -355,8 +365,7 @@ export default {
     },
 
     showDefaultGenderModal() {
-      var defaultGender = _.findIndex(this.genders, ['isDefault', true]);
-      this.defaultGenderId = this.genders[defaultGender >= 0 ? defaultGender : 0].id;
+      this.defaultGenderId = this.defaultGenderType.id;
       this.$refs.defaultGenderModal.open();
     },
 

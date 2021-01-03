@@ -12,6 +12,7 @@
 
 ### Fixes:
 
+* Fix adding a gender type
 * Fix update activity with emotions
 * Fix bad return with wrong credential on oauth/login api
 
