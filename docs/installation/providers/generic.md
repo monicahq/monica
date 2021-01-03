@@ -129,7 +129,7 @@ exit
     - set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
     - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
     - set the `APP_ENV` variable to `production`, `local` is only used for the development version. Beware: setting `APP_ENV` to `production` will force HTTPS. Skip this if you're running Monica locally.
-3. Run `composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs` to install all packages.
+3. Run `composer install --no-interaction --no-dev --ignore-platform-reqs` to install all packages.
 4. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 5. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
 

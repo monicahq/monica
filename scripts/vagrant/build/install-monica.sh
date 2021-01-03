@@ -68,7 +68,7 @@ cd $DESTDIR
 if [ -n "${GIT_TAG:-}" ]; then
   git checkout tags/$GIT_TAG
 fi
-composer install --no-interaction --no-suggest --no-dev --no-progress --ignore-platform-reqs  >/dev/null
+composer install --no-interaction --no-dev --no-progress --ignore-platform-reqs  >/dev/null
 composer clear-cache
 
 echo -e "\n\033[4;32mConfiguring Monica\033[0;40m"

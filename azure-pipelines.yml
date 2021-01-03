@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/php
 
 trigger:
-  batch: 'true'
+  batch: true
   branches:
     include:
       - master
@@ -12,13 +12,15 @@ trigger:
     include:
       - '*'
 pr:
-  autoCancel: 'true'
+  autoCancel: true
   branches:
     include:
       - '*'
 
 variables:
   - group: Monica
+  - name: phpVersion
+    value: 7.3
   - name: COMPOSER_HOME
     value: $(Pipeline.Workspace)/.composer
   - name: YARN_CACHE_FOLDER
@@ -26,7 +28,7 @@ variables:
 
 stages:
   - stage: build
-    displayName: 'Build'
+    displayName: Build
     condition: not(startsWith(variables['System.PullRequest.SourceBranch'], 'l10n_master'))
     jobs:
       - template: .azure/job-build.yml
