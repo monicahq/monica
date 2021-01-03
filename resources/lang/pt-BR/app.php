@@ -251,12 +251,12 @@ return [
     'relationship_type_boss' => 'chefe',
     'relationship_type_boss_female' => 'chefa',
     'relationship_type_boss_with_name' => 'chefe de :name',
-    'relationship_type_boss_female_with_name' => ':nome do chefe',
+    'relationship_type_boss_female_with_name' => ':name do chefe',
 
     'relationship_type_subordinate' => 'funcionário',
     'relationship_type_subordinate_female' => 'funcionário',
-    'relationship_type_subordinate_with_name' => ':nome do funcionário',
-    'relationship_type_subordinate_female_with_name' => ':nome do funcionario',
+    'relationship_type_subordinate_with_name' => ':name do funcionário',
+    'relationship_type_subordinate_female_with_name' => ':name do funcionario',
 
     'relationship_type_mentor' => 'mentor',
     'relationship_type_mentor_female' => 'mentora',

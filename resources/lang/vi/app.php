@@ -44,7 +44,7 @@ return [
     'retry' => 'Thử lại',
     'filter' => 'Lọc danh sách',
     'go_back' => 'Quay lại',
-    'file_selected' => '1 tệp được chọn...|{count} tệp được chọn...',
+    'file_selected' => '{count} tệp được chọn...',
 
     'application_title' => 'Monica – hệ thống quản trị quan hệ cá nhân',
     'application_description' => 'Monica là công cụ để quản lý tương tác của bạn với người yêu, bạn bè và gia đình.',
@@ -74,7 +74,7 @@ return [
     'footer_new_version' => 'Đã có phiên bản mới',
 
     'footer_modal_version_whats_new' => 'Có gì mới',
-    'footer_modal_version_release_away' => 'Bạn có 1 bản cập nhật. Bạn nên cập nhật hệ thống.|Bạn có :number bản cập nhật. Bạn nên cập nhật hệ thống.',
+    'footer_modal_version_release_away' => 'Bạn có :number bản cập nhật. Bạn nên cập nhật hệ thống.',
 
     'breadcrumb_dashboard' => 'Trang tổng quan',
     'breadcrumb_list_contacts' => 'Danh sách liên hệ',

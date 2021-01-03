@@ -92,7 +92,7 @@ return [
     'stay_in_touch_premium' => 'Você precisa de uma assinatura ativa para utilizar esse recurso',
     'stay_in_touch_modal_title' => 'Manter contato',
     'stay_in_touch_modal_desc' => 'Podemos lembrar você por e-mail para manter contato com {firstname} em um determinado intervalo.',
-    'stay_in_touch_modal_label' => 'Envie-me um e-mail a cada... {count} dia! Envie-me um e-mail a cada... {count} dias',
+    'stay_in_touch_modal_label' => 'Envie-me um e-mail a cada... {count} dia|Envie-me um e-mail a cada... {count} dias',
 
     // Calls
     'modal_call_title' => 'Registrar ligação',

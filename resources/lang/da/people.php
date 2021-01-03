@@ -92,7 +92,7 @@ return [
     'stay_in_touch_premium' => 'Du skal opgradere din konto for at gøre brug af denne funktion',
     'stay_in_touch_modal_title' => 'Hold kontakten',
     'stay_in_touch_modal_desc' => 'Vi kan påminde dig via e-mail for at holde kontakten med {firstname} med jævne mellemrum.',
-    'stay_in_touch_modal_label' => 'Send mig en mail hver... {count} dag- Send mig en mail hver... {count} dage',
+    'stay_in_touch_modal_label' => 'Send mig en mail hver... {count} dag|Send mig en mail hver... {count} dage',
 
     // Calls
     'modal_call_title' => 'Log et opkald',
@@ -170,7 +170,7 @@ return [
 
     // food preferences
     'food_preferences_add_success' => 'Mad preferencer er gemt',
-    'food_preferences_edit_description' => 'Måske :fornavn eller nogen i :familys familie har en allergi. Eller kan ikke lide en bestemt flaske vin. Angiv dem her, så du kan huske det næste gang du inviterer dem til middag',
+    'food_preferences_edit_description' => 'Måske :firstname eller nogen i :family familie har en allergi. Eller kan ikke lide en bestemt flaske vin. Angiv dem her, så du kan huske det næste gang du inviterer dem til middag',
     'food_preferences_edit_description_no_last_name' => 'Måske :firstname har en allergi. Eller kan ikke lide en bestemt flaske vin. Angiv dem her, så du kan huske det næste gang du inviterer dem til middag',
     'food_preferences_edit_title' => 'Indikér mad preferencer',
     'food_preferences_edit_cta' => 'Gem mad preferencer',
@@ -279,7 +279,7 @@ return [
     'activities_activity' => 'Aktivitetskategori',
     'activities_view_activities_report' => 'Vis aktivitetsoversigt',
     'activities_profile_title' => 'Aktivitetsrapport mellem :name og dig',
-    'activities_profile_subtitle' => 'Du har logget :total_activities aktiviteter med :name i alt og :activities_last_twelve_months i de sidste 12 måneder indtil nu.|Du har logget :total_activities med :name i alt og :activities_last_tolv_months i de sidste 12 måneder indtil nu.',
+    'activities_profile_subtitle' => 'Du har logget :total_activities aktiviteter med :name i alt og :activities_last_twelve_months i de sidste 12 måneder indtil nu.|Du har logget :total_activities med :name i alt og :activities_last_twelve_months i de sidste 12 måneder indtil nu.',
     'activities_profile_year_summary_activity_types' => 'Her er en opdeling af den type aktiviteter, I har lavet sammen i :year',
     'activities_profile_year_summary' => 'Her er hvad I to har lavet i :year',
     'activities_profile_number_occurences' => ':value aktivitet|:value aktiviteter',
