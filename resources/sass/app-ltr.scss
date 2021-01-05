@@ -43,7 +43,7 @@ $htmldir: ltr !default;
 $bg-hover-monica: #f1f5fd;
 
 .bg-gray-monica {
-  background-color: #f2f4f8;
+  background-color: #fafafa;
 }
 
 .bg-blue-monica {
@@ -155,7 +155,7 @@ kbd {
   border:1px solid #ccc;
   font-size:11px;
   font-family:Arial,Helvetica,sans-serif;
-  background-color:#f7f7f7;
+  background-color:#fafafa;
   color:#333;
   box-shadow:0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
   border-radius:3px;
@@ -409,7 +409,7 @@ input:disabled {
 }
 
 .breadcrumb {
-  background-color: #f9f9fb;
+  background-color: #fafafa;
 
   ul {
     font-size: 12px;
@@ -454,7 +454,7 @@ input:disabled {
     }
 
     &:hover {
-      background-color: #f6f8fa;
+      background-color: #fafafa;
     }
   }
 
@@ -490,7 +490,7 @@ input:disabled {
 
   .full-page-modal-year-selector {
     &:hover, &.selected {
-      background-color: #f7fbfc;
+      background-color: #fafafa;
     }
   }
 }
@@ -551,7 +551,7 @@ table.vgt-table {
 
 .vgt-wrap__footer {
   padding: 3px 10px!important;
-  background: linear-gradient(#ffffff,#fbfbfb)!important;
+  background: linear-gradient(#ffffff,#fafafa)!important;
 }
 
 footer {
