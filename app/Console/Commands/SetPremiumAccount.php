@@ -30,7 +30,7 @@ class SetPremiumAccount extends Command
     {
         $account = Account::findOrFail($this->argument('accountId'));
         $account->update([
-            'has_access_to_paid_version_for_free' => true
+            'has_access_to_paid_version_for_free' => true,
         ]);
     }
 }
