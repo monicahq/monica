@@ -65,7 +65,6 @@ class JsonExportAccount extends BaseService
 
         // $this->exportConversation($data);
         // $this->exportDays($data);
-        // $this->exportDocument($data);
         // $this->exportEmotionCall($data);
         // $this->exportEntries($data);
         // $this->exportInvitation($data);
@@ -79,7 +78,6 @@ class JsonExportAccount extends BaseService
         // $this->exportNote($data);
         // $this->exportOccupation($data);
         // $this->exportPet($data);
-        // $this->exportPhoto($data);
         // $this->exportPlace($data);
         // $this->exportRecoveryCode($data);
         // $this->exportRelationTypeGroup($data);
@@ -98,117 +96,6 @@ class JsonExportAccount extends BaseService
         // $this->exportAuditLogs($data);
 
         $this->writeToTempFile(json_encode($result, JSON_PRETTY_PRINT));
-    }
-
-    /**
-     * Create the Insert query for the given table.
-     *
-     * @param string $tableName
-     * @param array $foreignKey
-     * @param array $columns
-     * @return mixed
-     */
-    private function getData($data, array $columns, array $properties = null, callable $callback = null)
-    {
-        $result = new class {};
-        $values = [];
-
-        if ($data->count() == 0) {
-            return null;
-        }
-
-        foreach ($data as $singleData) {
-            $values[] = $this->getOneData($singleData, $columns, $properties, $callback);
-        }
-
-        $result->count = count($values);
-        $result->values = $values;
-
-        return $result;
-    }
-
-    /**
-     * Create the Insert query for the given table.
-     *
-     * @param string $tableName
-     * @param array $foreignKey
-     * @param array $columns
-     * @return mixed
-     */
-    private function getOneData(Model $model, array $columns, array $properties = null, callable $callback = null)
-    {
-        $result = new class {};
-
-        if (! $model->exists()) {
-            return null;
-        }
-
-        foreach ($columns as $column) {
-            $result->{$column} = $model->{$column} ?? $model->getAttributeValue($column);
-        }
-
-        if ($properties != null) {
-            $result->properties = [];
-            foreach ($properties as $property) {
-                $this->setSimpleProperty($result, $property, $model);
-            }
-        }
-        if ($callback != null) {
-            if (! isset($result->properties)) {
-                $result->properties = [];
-            }
-            $callback($result, $model);
-        }
-
-        return $result;
-    }
-
-    private function setSimpleProperty(object $obj, string $name, ?Model $model, ?string $prop = null): bool
-    {
-        if ($model === null || ! $model->exists()) {
-            return false;
-        }
-
-        $prop = $prop ?? $name;
-
-        $value = $model->{$prop} ?? $model->getAttributeValue($prop);
-        if ($value === null) {
-            return false;
-        }
-
-        $obj->properties[$name] = $value;
-
-        return true;
-    }
-
-    private function setComplexProperty(object $obj, string $name, ?Model $model, array $values, ?string $type = 'array', ?string $prop = null)
-    {
-        if ($model === null) {
-            return false;
-        }
-
-        $prop = $prop ?? $name;
-
-        $result = new class {};
-        $result->type = $type ?? 'array';
-        $result->properties = [];
-
-        $data = $model->{$prop} ?? $model->getAttributeValue($prop);
-        if ($data === null) {
-            return false;
-        }
-
-        foreach ($values as $value => $type) {
-            if (is_int($value)) {
-                $value = $type;
-                $type = null;
-            }
-            $this->setSimpleProperty($result, $value, $data, $type);
-        }
-
-        $obj->properties[$name] = $result;
-
-        return true;
     }
 
     /**
@@ -342,54 +229,99 @@ class JsonExportAccount extends BaseService
             // $obj->properties['avatar'] = null;
 
             $obj->properties['tags'] = $contact->getTagsAsString();
-            $this->setComplexProperty($obj, 'gender', $contact, ['type', 'name']);
+            //$this->setComplexProperty($obj, 'gender', $contact, ['type', 'name']);
+            $obj->properties['gender'] = $contact->gender->type;
             $this->setComplexProperty($obj, 'deceased_date', $contact, self::$specialDateColumns, 'specialDate', 'deceasedDate');
             $this->setComplexProperty($obj, 'deceased_reminder', $contact, self::$reminderColumns, 'reminder', 'deceased_reminder_id');
 
-            // Debts
-            $debts = $this->getData($contact->debts, ['in_debt', 'status', 'amount'], ['currency'], function (object $obj, $debt) {
-                $obj->in_debt = $obj->in_debt === 'yes';
-            });
-            if ($debts !== null) {
-                $obj->properties['debts'] = $debts;
-            }
+            $this->exportContactDebts($contact, $obj);
+            $this->exportContactActivities($contact, $obj);
+            $this->exportContactCalls($contact, $obj);
+            $this->exportContactContactFields($contact, $obj);
+            $this->exportContactGifts($contact, $obj);
+            $this->exportContactPhotos($contact, $obj);
+            $this->exportContactDocuments($contact, $obj);
+        });
+    }
 
-            // Activities
-            $activities = $this->getData($contact->activities, ['uuid']);
-            if ($activities !== null) {
-                $activities->values = array_map(function ($x) {
-                    return $x->uuid;
-                }, $activities->values);
-                $obj->properties['activities'] = $activities;
-            }
+    private function exportContactDebts(Contact $contact, $obj)
+    {
+        $debts = $this->getData($contact->debts, ['in_debt', 'status', 'amount'], ['currency'], function (object $obj, $debt) {
+            $obj->in_debt = $obj->in_debt === 'yes';
+        });
+        if ($debts !== null) {
+            $obj->properties['debts'] = $debts;
+        }
+    }
 
-            // Calls
-            $calls = $this->getData($contact->calls, ['created_at', 'updated_at'], ['called_at', 'content', 'contact_called'], function (object $obj, $call) {
-                $obj->properties['emotions'] = $this->getData($call->emotions, ['name']);
-            });
-            if ($calls !== null) {
-                $obj->properties['calls'] = $calls;
-            }
+    private function exportContactActivities(Contact $contact, $obj)
+    {
+        $activities = $this->getData($contact->activities, ['uuid']);
+        if ($activities !== null) {
+            $activities->values = array_map(function ($x) {
+                return $x->uuid;
+            }, $activities->values);
+            $obj->properties['activities'] = $activities;
+        }
+    }
 
-            // Contact fields
-            $contactFields = $this->getData($contact->contactFields, ['created_at', 'updated_at'], ['data'], function (object $obj, $contactField) {
-                $type = $this->getOneData($contactField->contactFieldType, ['uuid']);
-                $obj->properties['type'] =$type->uuid;
-            });
-            if ($contactFields !== null) {
-                $obj->properties['contact_fields'] = $contactFields;
-            }
+    private function exportContactCalls(Contact $contact, $obj)
+    {
+        $calls = $this->getData($contact->calls, ['created_at', 'updated_at'], ['called_at', 'content', 'contact_called'], function (object $obj, $call) {
+            $obj->properties['emotions'] = $this->getData($call->emotions, ['name']);
+        });
+        if ($calls !== null) {
+            $obj->properties['calls'] = $calls;
+        }
+    }
 
-            // Gifts
-            $gifts = $this->getData($contact->gifts, ['created_at', 'updated_at'], ['name', 'comment', 'url', 'amount', 'status', 'date'], function (object $obj, $gift) {
-                if ($gift->recipient) {
-                    $obj->properties['recipient'] = $this->getData($gift->recipient, ['uuid']);
-                }
-            });
-            if ($gifts !== null) {
-                $obj->properties['gifts'] = $gifts;
+    private function exportContactContactFields(Contact $contact, $obj)
+    {
+        $contactFields = $this->getData($contact->contactFields, ['created_at', 'updated_at'], ['data'], function (object $obj, $contactField) {
+            $type = $this->getOneData($contactField->contactFieldType, ['uuid']);
+            $obj->properties['type'] =$type->uuid;
+        });
+        if ($contactFields !== null) {
+            $obj->properties['contact_fields'] = $contactFields;
+        }
+    }
+
+    private function exportContactGifts(Contact $contact, $obj)
+    {
+        $gifts = $this->getData($contact->gifts, ['created_at', 'updated_at'], ['name', 'comment', 'url', 'amount', 'status', 'date'], function (object $obj, $gift) {
+            if ($gift->recipient) {
+                $obj->properties['recipient'] = $this->getData($gift->recipient, ['uuid']);
             }
         });
+        if ($gifts !== null) {
+            $obj->properties['gifts'] = $gifts;
+        }
+    }
+
+    private function exportContactPhotos(Contact $contact, $obj)
+    {
+        $photos = $this->getData($contact->photos, ['created_at', 'updated_at'], ['uuid', 'original_filename', 'filesize', 'mime_type'], function (object $obj, $photo) {
+            $dataUrl = $photo->dataUrl();
+            if ($dataUrl) {
+                $obj->properties['dataUrl'] = $dataUrl;
+            }
+        });
+        if ($photos !== null) {
+            $obj->properties['photos'] = $photos;
+        }
+    }
+
+    private function exportContactDocuments(Contact $contact, $obj)
+    {
+        $documents = $this->getData($contact->documents, ['created_at', 'updated_at'], ['uuid', 'original_filename', 'filesize', 'type', 'mime_type', 'number_of_downloads'], function (object $obj, $document) {
+            $dataUrl = $document->dataUrl();
+            if ($dataUrl) {
+                $obj->properties['dataUrl'] = $dataUrl;
+            }
+        });
+        if ($documents !== null) {
+            $obj->properties['documents'] = $documents;
+        }
     }
 
     /**
@@ -481,4 +413,115 @@ class JsonExportAccount extends BaseService
         'created_at' => 'date',
         'updated_at' => 'date',
     ];
+
+    /**
+     * Create the Insert query for the given table.
+     *
+     * @param string $tableName
+     * @param array $foreignKey
+     * @param array $columns
+     * @return mixed
+     */
+    private function getData($data, array $columns, array $properties = null, callable $callback = null)
+    {
+        $result = new class {};
+        $values = [];
+
+        if ($data->count() == 0) {
+            return null;
+        }
+
+        foreach ($data as $singleData) {
+            $values[] = $this->getOneData($singleData, $columns, $properties, $callback);
+        }
+
+        $result->count = count($values);
+        $result->values = $values;
+
+        return $result;
+    }
+
+    /**
+     * Create the Insert query for the given table.
+     *
+     * @param string $tableName
+     * @param array $foreignKey
+     * @param array $columns
+     * @return mixed
+     */
+    private function getOneData(Model $model, array $columns, array $properties = null, callable $callback = null)
+    {
+        $result = new class {};
+
+        if (! $model->exists()) {
+            return null;
+        }
+
+        foreach ($columns as $column) {
+            $result->{$column} = $model->{$column} ?? $model->getAttributeValue($column);
+        }
+
+        if ($properties != null) {
+            $result->properties = [];
+            foreach ($properties as $property) {
+                $this->setSimpleProperty($result, $property, $model);
+            }
+        }
+        if ($callback != null) {
+            if (! isset($result->properties)) {
+                $result->properties = [];
+            }
+            $callback($result, $model);
+        }
+
+        return $result;
+    }
+
+    private function setSimpleProperty(object $obj, string $name, ?Model $model, ?string $prop = null): bool
+    {
+        if ($model === null || ! $model->exists()) {
+            return false;
+        }
+
+        $prop = $prop ?? $name;
+
+        $value = $model->{$prop} ?? $model->getAttributeValue($prop);
+        if ($value === null) {
+            return false;
+        }
+
+        $obj->properties[$name] = $value;
+
+        return true;
+    }
+
+    private function setComplexProperty(object $obj, string $name, ?Model $model, array $values, ?string $type = 'array', ?string $prop = null)
+    {
+        if ($model === null) {
+            return false;
+        }
+
+        $prop = $prop ?? $name;
+
+        $result = new class {};
+        $result->type = $type ?? 'array';
+        $result->properties = [];
+
+        $data = $model->{$prop} ?? $model->getAttributeValue($prop);
+        if ($data === null) {
+            return false;
+        }
+
+        foreach ($values as $value => $type) {
+            if (is_int($value)) {
+                $value = $type;
+                $type = null;
+            }
+            $this->setSimpleProperty($result, $value, $data, $type);
+        }
+
+        $obj->properties[$name] = $result;
+
+        return true;
+    }
 }
