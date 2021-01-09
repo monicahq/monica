@@ -2,12 +2,15 @@
 
 namespace App\Models\Account;
 
+use App\Traits\HasUuid;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ActivityType extends Model
 {
+    use HasUuid;
+
     protected $table = 'activity_types';
 
     /**

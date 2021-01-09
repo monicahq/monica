@@ -8,9 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Services\Account\Settings\ExportAccount;
+use App\Services\Account\Settings\SqlExportAccount;
+use App\Services\Account\Settings\JsonExportAccount;
 
-class ExportAccountAsSQL
+class ExportAccount
 {
     use Dispatchable, SerializesModels;
 
@@ -20,18 +21,38 @@ class ExportAccountAsSQL
     protected $path = '';
 
     /**
+     * Format to use.
+     * @var string
+     */
+    protected $format;
+
+    /**
      * Storage disk used to store the exported file.
      * @var string
      */
     public const STORAGE = 'public';
 
     /**
+     * Export as SQL format.
+     * @var string
+     */
+    public const SQL = 'sql';
+
+    /**
+     * Export as JSON format.
+     * @var string
+     */
+    public const JSON = 'json';
+
+    /**
      * Create a new job instance.
      *
+     * @param string $format
      * @param string|null $path
      */
-    public function __construct($path = null)
+    public function __construct(string $format = self::SQL, $path = null)
     {
+        $this->format = $format;
         $this->path = $path ?? 'exports';
     }
 
@@ -40,13 +61,20 @@ class ExportAccountAsSQL
      */
     public function handle()
     {
-        $tempFileName = null;
+        $tempFileName = '';
+        switch ($this->format) {
+            case self::JSON:
+                $handler = app(JsonExportAccount::class);
+                break;
+            default:
+                $handler = app(SqlExportAccount::class);
+                break;
+        }
         try {
-            $tempFileName = app(ExportAccount::class)
-                    ->execute([
-                        'account_id' => Auth::user()->account_id,
-                        'user_id' => Auth::user()->id,
-                    ]);
+            $tempFileName = $handler->execute([
+                'account_id' => Auth::user()->account_id,
+                'user_id' => Auth::user()->id,
+            ]);
 
             // get the temp file that we just created
             $tempFilePath = disk_adapter('local')->getPathPrefix().$tempFileName;

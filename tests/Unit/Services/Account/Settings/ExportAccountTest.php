@@ -6,10 +6,10 @@ use Tests\TestCase;
 use App\Models\User\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
-use App\Services\Account\Settings\ExportAccount;
+use App\Services\Account\Settings\SqlExportAccount;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ExportAccountTest extends TestCase
+class SqlExportAccountTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -25,7 +25,7 @@ class ExportAccountTest extends TestCase
             'user_id' => $user->id,
         ];
 
-        $filename = app(ExportAccount::class)->execute($request);
+        $filename = app(SqlExportAccount::class)->execute($request);
 
         $this->assertStringStartsWith('temp/', $filename);
         $this->assertStringEndsWith('.sql', $filename);
@@ -38,6 +38,6 @@ class ExportAccountTest extends TestCase
         $request = [];
 
         $this->expectException(ValidationException::class);
-        app(ExportAccount::class)->execute($request);
+        app(SqlExportAccount::class)->execute($request);
     }
 }
