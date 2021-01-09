@@ -279,7 +279,7 @@ class JsonExportAccount extends BaseService
     {
         $contactFields = $this->getData($contact->contactFields, ['created_at', 'updated_at'], ['data'], function (object $obj, $contactField) {
             $type = $this->getOneData($contactField->contactFieldType, ['uuid']);
-            $obj->properties['type'] =$type->uuid;
+            $obj->properties['type'] = $type->uuid;
         });
         if ($contactFields !== null) {
             $obj->properties['contact_fields'] = $contactFields;
