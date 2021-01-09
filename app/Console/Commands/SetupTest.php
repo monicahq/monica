@@ -92,16 +92,16 @@ class SetupTest extends Command
      */
     public function handle()
     {
-        if (! $this->confirm('Are you sure you want to proceed? This will delete ALL data in your environment.')) {
-            return;
-        }
+        // if (! $this->confirm('Are you sure you want to proceed? This will delete ALL data in your environment.')) {
+        //     return;
+        // }
 
         $this->artisan('✓ Performing migrations', 'migrate:fresh');
 
         $this->artisan('✓ Symlink the storage folder', 'storage:link');
 
         if (! $this->option('skipSeed')) {
-            $this->numberOfContacts = $this->ask('How many contacts would you like to have in this test account?');
+            $this->numberOfContacts = 22;
             $this->info('✓ Filling database with fake data');
             $this->seed();
         }

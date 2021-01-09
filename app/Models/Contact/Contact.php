@@ -3,6 +3,7 @@
 namespace App\Models\Contact;
 
 use DateTime;
+use App\Traits\HasUuid;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
@@ -41,7 +42,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
  */
 class Contact extends Model
 {
-    use Searchable;
+    use Searchable, HasUuid;
 
     /** @var array<string> */
     protected $dates = [

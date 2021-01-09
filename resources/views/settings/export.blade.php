@@ -38,8 +38,18 @@
             <h4>{{ trans('settings.export_title_sql') }}</h4>
             <p>{{ trans('settings.export_sql_explanation') }}</p>
             <p>{{ trans('settings.export_be_patient') }}</p>
-            <p><a href="{{ route('settings.sql') }}" class="btn">{{ trans('settings.export_sql_cta') }}</a></p>
+            <form method="POST" action="{{ route('settings.sql') }}">
+              @csrf
+              <p><button type="submit" class="btn">{{ trans('settings.export_sql_cta') }}</button></p>
+            </form>
             <p>{!! trans('settings.export_sql_link_instructions', ['url' => 'https://github.com/monicahq/monica/blob/master/docs/installation/update.md#importing-sql-from-the-exporter-feature']) !!}</p>
+
+            <h4>{{ trans('settings.export_title_json') }}</h4>
+            <p>{{ trans('settings.export_json_explanation') }}</p>
+            <form method="POST" action="{{ route('settings.json') }}">
+              @csrf
+              <p><button type="submit" class="btn">{{ trans('settings.export_json_cta') }}</button></p>
+            </form>
           </div>
         </div>
 

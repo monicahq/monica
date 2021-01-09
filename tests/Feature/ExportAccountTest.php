@@ -3,11 +3,11 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
-use App\Jobs\ExportAccountAsSQL;
+use App\Jobs\ExportAccount;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ExportAccountAsSQLTest extends FeatureTestCase
+class ExportAccountTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
@@ -18,7 +18,7 @@ class ExportAccountAsSQLTest extends FeatureTestCase
 
         $user = $this->signIn();
 
-        $path = dispatch_now(new ExportAccountAsSQL());
+        $path = dispatch_now(new ExportAccount());
 
         $this->assertStringStartsWith('exports/', $path);
         $this->assertStringEndsWith('.sql', $path);
