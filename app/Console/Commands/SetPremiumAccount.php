@@ -29,7 +29,8 @@ class SetPremiumAccount extends Command
     public function handle(): void
     {
         $account = Account::findOrFail($this->argument('accountId'));
-        $account->has_access_to_paid_version_for_free = true;
-        $account->save();
+        $account->update([
+            'has_access_to_paid_version_for_free' => true,
+        ]);
     }
 }

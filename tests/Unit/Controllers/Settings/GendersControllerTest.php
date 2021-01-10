@@ -91,6 +91,7 @@ class GendersControllerTest extends FeatureTestCase
 
         $response = $this->json('PUT', '/settings/personalization/genders/'.$gender->id, [
             'name' => 'gender',
+            'type' => 'U',
         ]);
 
         $response->assertStatus(200);

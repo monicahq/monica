@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -163,7 +163,7 @@ return [
     'information_work_at' => 'at :company',
     'work_add_cta' => '仕事の情報を更新する',
     'work_edit_success' => '職業の更新が成功しました。',
-    'work_edit_title' => '更新する :name’s の職業',
+    'work_edit_title' => '更新する :name の職業',
     'work_edit_job' => '職業（任意）',
     'work_edit_company' => 'Company (optional)',
     'work_information' => '仕事',
@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'Delete',
     'gifts_add_title' => 'Gift management for :name',
     'gifts_add_gift_idea' => 'ギフトのアイデア',
-    'gifts_add_gift_already_offered' => 'Gift offered',
+    'gifts_add_gift_already_offered' => 'Gift given',
     'gifts_add_gift_received' => 'Gift received',
     'gifts_add_gift_title' => 'What is this gift?',
     'gifts_add_gift_name' => 'Gift name',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
     'gifts_delete_title' => 'Delete a gift',
     'gifts_ideas' => 'Gift ideas',
-    'gifts_offered' => 'Gifts offered',
+    'gifts_offered' => 'Gifts given',
     'gifts_offered_as_an_idea' => 'Mark as an idea',
     'gifts_received' => 'ギフトの受け取り',
     'gifts_view_comment' => 'View comment',
-    'gifts_mark_offered' => 'Mark as offered',
+    'gifts_mark_offered' => 'Mark as given',
     'gifts_update_success' => 'The gift has been updated successfully',
 
     // debts

@@ -77,19 +77,22 @@ all:
 	$(MAKE) dist
 
 build:
-	composer install --no-interaction --no-suggest --ignore-platform-reqs
+	composer install --no-interaction --ignore-platform-reqs
+	php artisan lang:generate
 	yarn inst
 	yarn lint --fix
 	yarn run production
 
 build-prod:
-	composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
+	composer install --no-interaction --ignore-platform-reqs --no-dev
+	php artisan lang:generate
 	yarn inst
 	yarn lint --fix
 	yarn run production
 
 build-dev:
-	composer install --no-interaction --no-suggest --ignore-platform-reqs
+	composer install --no-interaction --ignore-platform-reqs
+	php artisan lang:generate
 	yarn inst
 	yarn lint --fix
 	yarn run dev

@@ -1,14 +1,14 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
 
 return [
     'dashboard_blank_title' => 'Velkommen til din konto!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
+    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the people you care about.',
     'dashboard_blank_cta' => 'Tilføj din første kontakt',
     'dashboard_blank_illustration' => 'Illustration af <a href=":url">Freepik</a>',
 
@@ -35,7 +35,7 @@ return [
     'statistics_gifts' => 'Gaver',
 
     'reminders_next_months' => 'Begivenheder de næste 3 måneder',
-    'reminders_none' => 'Ingen påmindelser denne måned',
+    'reminders_none' => 'Ingen påmindelser denne måned.',
 
     'product_changes' => 'Produktændringer',
     'product_view_details' => 'Se detaljer',

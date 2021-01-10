@@ -173,7 +173,7 @@ RUN install-composer.sh
 RUN set -ex; \
     \
     mkdir -p storage/framework/views; \
-    composer install --no-interaction --no-suggest --no-progress --no-dev --ignore-platform-reqs; \
+    composer install --no-interaction --no-progress --no-dev --ignore-platform-reqs; \
     composer clear-cache; \
     rm -rf .composer
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -18,9 +18,9 @@ return [
     'tab_favorite_notes' => 'Notas favoritas',
     'tab_calls_blank' => 'Você ainda não registou chamadas.',
     'tab_debts' => 'Debts',
-    'tab_debts_blank' => 'You haven’t logged any debt yet.',
+    'tab_debts_blank' => 'You haven’t logged any debts yet.',
     'tab_tasks' => 'Tasks',
-    'tab_tasks_blank' => 'You haven’t any task yet.',
+    'tab_tasks_blank' => 'You haven’t any tasks yet.',
 
     'tasks_add_task_placeholder' => 'What is this task about?',
     'tasks_tab_your_contacts' => 'Tasks related to your contacts',
@@ -35,7 +35,7 @@ return [
     'statistics_gifts' => 'Presentes',
 
     'reminders_next_months' => 'Events in the next 3 months',
-    'reminders_none' => 'No reminder for this month',
+    'reminders_none' => 'No reminders for this month.',
 
     'product_changes' => 'Product changes',
     'product_view_details' => 'View details',

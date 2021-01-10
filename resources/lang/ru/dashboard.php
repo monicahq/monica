@@ -1,14 +1,14 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
 
 return [
     'dashboard_blank_title' => 'Добро пожаловать в ваш аккаунт!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
+    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the people you care about.',
     'dashboard_blank_cta' => 'Добавьте ваш первый контакт',
     'dashboard_blank_illustration' => 'Illustration by <a href=":url">Freepik</a>',
 
@@ -16,9 +16,9 @@ return [
 
     'tab_recent_calls' => 'Недавние вызовы',
     'tab_favorite_notes' => 'Избранные заметки',
-    'tab_calls_blank' => 'You haven’t logged a call yet.',
+    'tab_calls_blank' => 'You haven’t logged any calls yet.',
     'tab_debts' => 'Долги',
-    'tab_debts_blank' => 'You haven’t logged any debt yet.',
+    'tab_debts_blank' => 'You haven’t logged any debts yet.',
     'tab_tasks' => 'Задачи',
     'tab_tasks_blank' => 'У Вас еще нет задач.',
 
@@ -35,7 +35,7 @@ return [
     'statistics_gifts' => 'Подарки',
 
     'reminders_next_months' => 'События в ближайшие 3 месяца',
-    'reminders_none' => 'Нет напоминаний в этом месяце',
+    'reminders_none' => 'Нет напоминаний в этом месяце.',
 
     'product_changes' => 'Product changes',
     'product_view_details' => 'View details',
