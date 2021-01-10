@@ -40,7 +40,7 @@ $htmldir: ltr !default;
 // Custom colors
 
 // Extending Tachyions
-$bg-hover-monica: #ecf9ff;
+$bg-hover-monica: #d7e3ec;
 
 .bg-gray-monica {
   background-color: #fafafa;
@@ -81,13 +81,13 @@ $bg-hover-monica: #ecf9ff;
 
 .form-error-message {
   border-top: 1px solid #d9534f;
-  background-color: #fbeae5;
+  background-color: #e9967a;
   box-shadow: inset 0 3px 0 0 #d9534f, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
 }
 
 .form-information-message {
   border-top: 1px solid #47c1bf;
-  background-color: #e0ffff;
+  background-color: #d1ecfa;
   box-shadow: inset 0 3px 0 0 #47c1bf, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
 
   svg {
@@ -508,7 +508,7 @@ input:disabled {
 
 .dt-row.hover {
   &:hover {
-    background-color: #ecf9ff;
+    background-color: #d7e3ec;
   }
 }
 

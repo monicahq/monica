@@ -1,8 +1,8 @@
 .btn {
-  color: #313940;
-  background-color: #ecf9ff;
-  background-image: -webkit-linear-gradient(270deg, #fafafa 0%, #ecf9ff 90%);
-  background-image: linear-gradient(-180deg, #fafafa 0%, #ecf9ff 90%);
+  color: #4a4a4a;
+  background-color: #d7e3ec;
+  background-image: -webkit-linear-gradient(270deg, #fafafa 0%, #d7e3ec 90%);
+  background-image: linear-gradient(-180deg, #fafafa 0%, #d7e3ec 90%);
   position: relative;
   display: inline-block;
   padding: 6px 12px;
@@ -29,12 +29,12 @@
   &:hover, &:focus {
     text-decoration: none;
     background-color: #e5e5e5;
-    background-image: -webkit-linear-gradient(270deg, #ecf9ff 0%, #e5e5e5 90%);
-    background-image: linear-gradient(-180deg, #ecf9ff 0%, #e5e5e5 90%);
+    background-image: -webkit-linear-gradient(270deg, #d7e3ec 0%, #e5e5e5 90%);
+    background-image: linear-gradient(-180deg, #d7e3ec 0%, #e5e5e5 90%);
     background-position: 0 -0.5em;
     background-repeat: repeat-x;
     border-color: rgba(27,31,35,0.35);
-    color: #014c8c;
+    color: #0366d5;
   }
 
   &:active {
@@ -83,7 +83,7 @@
 .btn-add {
   position: relative;
   top: 3px;
-  border: 1px solid #576675;
+  border: 1px solid #4a4a4a;
   border-radius: 50%;
   width: 15px;
   margin-right: 3px;
