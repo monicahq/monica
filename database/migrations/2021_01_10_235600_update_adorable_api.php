@@ -16,8 +16,8 @@ class UpdateAdorableAPI extends Migration
             ->where('avatar_adorable_url', 'like', '%api.adorable.io%')
             ->chunk(1000, function ($contacts) {
                 foreach ($contacts as $contact) {
-                    $contact->avatar_adorable_url = str_replace('api.adorable.io/avatars', 'api.hello-avatar.com/adorables', $contact->avatar_adorable_url)
-                    $contact->save
+                    $contact->avatar_adorable_url = str_replace('api.adorable.io/avatars', 'api.hello-avatar.com/adorables', $contact->avatar_adorable_url);
+                    $contact->save();
                 }
             });
     }
