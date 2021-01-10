@@ -27,6 +27,17 @@
         }
       }
     ],
-    "@semantic-release/github"
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "CHANGELOG.md"
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "assets": ["CHANGELOG.md"]
+      }
+    ]
   ]
 }
