@@ -80,14 +80,14 @@ $bg-hover-monica: #ecf9ff;
 }
 
 .form-error-message {
-  border-top: 1px solid #ed6246;
+  border-top: 1px solid #d9534f;
   background-color: #fbeae5;
-  box-shadow: inset 0 3px 0 0 #ed6347, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
+  box-shadow: inset 0 3px 0 0 #d9534f, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
 }
 
 .form-information-message {
-  border-top: 1px solid #46C1BF;
-  background-color: #E0F5F5;
+  border-top: 1px solid #47c1bf;
+  background-color: #e0ffff;
   box-shadow: inset 0 3px 0 0 #47c1bf, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
 
   svg {
@@ -143,7 +143,7 @@ $bg-hover-monica: #ecf9ff;
 }
 
 .badge-success {
-  background-color: #5cb85c;
+  background-color: #32cd32;
 }
 
 .badge-danger {
@@ -240,12 +240,12 @@ body {
 }
 
 a {
-  color: #0366d6;
+  color: #0366d5;
   padding: 1px;
   text-decoration: underline;
 
   &:hover {
-    background-color: #0366d6;
+    background-color: #0366d5;
     color: #fff;
     text-decoration: none;
   }
@@ -631,8 +631,8 @@ svg {
 }
 
 .form-group-error .error {
-  border-color: #f57f6c !important;
-  color:#f57f6c;
+  border-color: #e9967a !important;
+  color:#e9967a;
 }
 
 // Shake animation
