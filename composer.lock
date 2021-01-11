@@ -11734,16 +11734,16 @@
         },
         {
             "name": "web-token/jwt-core",
-            "version": "v2.2.6",
+            "version": "v2.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-core.git",
-                "reference": "8115d846f3a9ee817dca03024eb4c17a3c0ff81a"
+                "reference": "e68c4940da62682426e78eafb1e3a3ba4c7cbabe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-core/zipball/8115d846f3a9ee817dca03024eb4c17a3c0ff81a",
-                "reference": "8115d846f3a9ee817dca03024eb4c17a3c0ff81a",
+                "url": "https://api.github.com/repos/web-token/jwt-core/zipball/e68c4940da62682426e78eafb1e3a3ba4c7cbabe",
+                "reference": "e68c4940da62682426e78eafb1e3a3ba4c7cbabe",
                 "shasum": ""
             },
             "require": {
@@ -11757,20 +11757,7 @@
             "conflict": {
                 "spomky-labs/jose": "*"
             },
-            "require-dev": {
-                "phpunit/phpunit": "^8.0"
-            },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "v1.0": "1.0.x-dev",
-                    "v1.1": "1.1.x-dev",
-                    "v1.2": "1.2.x-dev",
-                    "v1.3": "1.3.x-dev",
-                    "v2.0": "2.0.x-dev",
-                    "v2.1": "2.1.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Jose\\Component\\Core\\": ""
@@ -11816,7 +11803,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-09-29T21:35:58+00:00"
+            "time": "2020-12-13T16:35:27+00:00"
         },
         {
             "name": "web-token/jwt-key-mgmt",
@@ -11910,23 +11897,20 @@
         },
         {
             "name": "web-token/jwt-signature",
-            "version": "v2.2.6",
+            "version": "v2.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature.git",
-                "reference": "f4d83f77031c9d27edebbea053931074030d3b09"
+                "reference": "cad4f3c51d9e3537c5f45f26ae2c61d08fd5ffd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature/zipball/f4d83f77031c9d27edebbea053931074030d3b09",
-                "reference": "f4d83f77031c9d27edebbea053931074030d3b09",
+                "url": "https://api.github.com/repos/web-token/jwt-signature/zipball/cad4f3c51d9e3537c5f45f26ae2c61d08fd5ffd2",
+                "reference": "cad4f3c51d9e3537c5f45f26ae2c61d08fd5ffd2",
                 "shasum": ""
             },
             "require": {
                 "web-token/jwt-core": "^2.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.0"
             },
             "suggest": {
                 "web-token/jwt-signature-algorithm-ecdsa": "ECDSA Based Signature Algorithms",
@@ -11937,16 +11921,6 @@
                 "web-token/jwt-signature-algorithm-rsa": "RSA Based Signature Algorithms"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "v1.0": "1.0.x-dev",
-                    "v1.1": "1.1.x-dev",
-                    "v1.2": "1.2.x-dev",
-                    "v1.3": "1.3.x-dev",
-                    "v2.0": "2.0.x-dev",
-                    "v2.1": "2.1.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Jose\\Component\\Signature\\": ""
@@ -11992,40 +11966,27 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-08-01T11:48:26+00:00"
+            "time": "2020-12-13T16:35:27+00:00"
         },
         {
             "name": "web-token/jwt-signature-algorithm-ecdsa",
-            "version": "v2.2.6",
+            "version": "v2.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-ecdsa.git",
-                "reference": "3ae6e56ccf34e8b7b65ec988497d5d1bceca9864"
+                "reference": "92f9f19ed9a9428d9835e564a2b9fdd7f8a4bd89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-ecdsa/zipball/3ae6e56ccf34e8b7b65ec988497d5d1bceca9864",
-                "reference": "3ae6e56ccf34e8b7b65ec988497d5d1bceca9864",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-ecdsa/zipball/92f9f19ed9a9428d9835e564a2b9fdd7f8a4bd89",
+                "reference": "92f9f19ed9a9428d9835e564a2b9fdd7f8a4bd89",
                 "shasum": ""
             },
             "require": {
                 "ext-openssl": "*",
                 "web-token/jwt-signature": "^2.0"
             },
-            "require-dev": {
-                "phpunit/phpunit": "^8.0"
-            },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "v1.0": "1.0.x-dev",
-                    "v1.1": "1.1.x-dev",
-                    "v1.2": "1.2.x-dev",
-                    "v1.3": "1.3.x-dev",
-                    "v2.0": "2.0.x-dev",
-                    "v2.1": "2.1.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Jose\\Component\\Signature\\Algorithm\\": ""
@@ -12071,7 +12032,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-08-22T13:17:25+00:00"
+            "time": "2020-12-13T16:35:27+00:00"
         },
         {
             "name": "web-token/jwt-signature-algorithm-eddsa",
