@@ -12115,16 +12115,16 @@
         },
         {
             "name": "web-token/jwt-signature-algorithm-rsa",
-            "version": "v2.2.6",
+            "version": "v2.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-rsa.git",
-                "reference": "ba94b8868bd8fdd481f448097ab900a8cb2c0eed"
+                "reference": "96588136dd01cf842b0c7107fc63aebc8332d97f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-rsa/zipball/ba94b8868bd8fdd481f448097ab900a8cb2c0eed",
-                "reference": "ba94b8868bd8fdd481f448097ab900a8cb2c0eed",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-rsa/zipball/96588136dd01cf842b0c7107fc63aebc8332d97f",
+                "reference": "96588136dd01cf842b0c7107fc63aebc8332d97f",
                 "shasum": ""
             },
             "require": {
@@ -12132,24 +12132,11 @@
                 "ext-openssl": "*",
                 "web-token/jwt-signature": "^2.1"
             },
-            "require-dev": {
-                "phpunit/phpunit": "^8.0"
-            },
             "suggest": {
                 "ext-bcmath": "GMP or BCMath is highly recommended to improve the library performance",
                 "ext-gmp": "GMP or BCMath is highly recommended to improve the library performance"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "v1.0": "1.0.x-dev",
-                    "v1.1": "1.1.x-dev",
-                    "v1.2": "1.2.x-dev",
-                    "v1.3": "1.3.x-dev",
-                    "v2.0": "2.0.x-dev",
-                    "v2.1": "2.1.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Jose\\Component\\Signature\\Algorithm\\": ""
@@ -12195,7 +12182,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-08-22T13:37:56+00:00"
+            "time": "2020-12-13T16:35:27+00:00"
         },
         {
             "name": "webmozart/assert",
