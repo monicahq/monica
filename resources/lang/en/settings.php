@@ -73,9 +73,7 @@ return [
     'reset_cta' => 'Reset account',
     'reset_notice' => 'Are you sure to reset your account? This is permanent and cannot be undone.',
     'reset_success' => 'Your account has been reset successfully.',
-    'delete_notice' => 'Are you sure to delete your account? This is permanent
-    and cannot be undone. All of your data will be deleted and will not be
-    recoverable.',
+    'delete_notice' => 'Are you sure to delete your account? This is permanent and cannot be undone. All of your data will be deleted and will not be recoverable.',
     'delete_cta' => 'Delete account',
     'settings_success' => 'Preferences updated!',
     'locale' => 'Language used in the app',
@@ -163,11 +161,9 @@ return [
     'users_blank_description' => 'This person will have the same access that you have, and will be able to add, edit or delete contact information.',
     'users_blank_cta' => 'Invite someone',
     'users_add_title' => 'Invite a new user to your account by email',
-    'users_add_description' => 'This person will have the same access as you
-    do, including inviting or deleting other users, including you. Make sure
-        you trust this person before giving them access..',
+    'users_add_description' => 'This person will have the same access as you do, including inviting or deleting other users, including you. Make sure you trust this person before giving them access.',
     'users_add_email_field' => 'Enter the email of the person you want to invite',
-    'users_add_confirmation' => 'I confirm that I want to invite this user to my account. This person will access ALL of my data and see exactly what I see.',
+    'users_add_confirmation' => 'I confirm that I want to invite this user to my account. This person will have access to ALL of my data and see exactly what I see.',
     'users_add_cta' => 'Invite user by email',
     'users_accept_title' => 'Accept invitation and create a new account',
     'users_error_please_confirm' => 'Please confirm that you want to invite this user before proceeding with the invitation',
@@ -216,9 +212,7 @@ return [
     'subscriptions_upgrade_zip' => 'ZIP or postal code',
     'subscriptions_upgrade_credit' => 'Credit or debit card',
     'subscriptions_upgrade_submit' => 'Pay {amount}',
-    'subscriptions_upgrade_charge' => 'We’ll charge your card :price now. The
-    next charge will be on :date. If you ever change your mind, you can cancel
-    at any time, no questions asked.',
+    'subscriptions_upgrade_charge' => 'We’ll charge your card :price now. The next charge will be on :date. If you ever change your mind, you can cancel at any time, no questions asked.',
     'subscriptions_upgrade_charge_handled' => 'The payment is handled by <a href=":url">Stripe</a>. No card information touches our server.',
     'subscriptions_upgrade_success' => 'Thank you! You are now subscribed.',
     'subscriptions_upgrade_thanks' => 'Welcome to the community of people who try to make the world a better place.',
@@ -270,8 +264,7 @@ return [
     'import_upload_rules_desc' => 'We do however have some rules:',
     'import_upload_rule_format' => 'We support <code>.vcard</code> and <code>.vcf</code> files.',
     'import_upload_rule_vcard' => 'We support the vCard 3.0 format, which is the default format for macOS’s Contacts.app) and Google Contacts.',
-    'import_upload_rule_instructions' => 'Export instructions for <a
-    href=":url1" target="_blank" rel="noopener noreferrer">macOS Contacts.app</a> and <a href=":url2" target="_blank" rel="noopener noreferrer">Google Contacts</a>.',
+    'import_upload_rule_instructions' => 'Export instructions for <a href=":url1" target="_blank" rel="noopener noreferrer">macOS Contacts.app</a> and <a href=":url2" target="_blank" rel="noopener noreferrer">Google Contacts</a>.',
     'import_upload_rule_multiple' => 'If your contacts have multiple email addresses or phone numbers, only the first entry will be saved.',
     'import_upload_rule_limit' => 'Files are limited to 10MB.',
     'import_upload_rule_time' => 'It might take up to a minute to upload the contacts and process them. Please be patient.',
