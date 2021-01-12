@@ -279,11 +279,9 @@ You can support the development of Monica [on Patreon](https://www.patreon.com/m
 
 ## Team
 
-Our team is made of three core members:
+Our team is made of two core members:
 
 - [Regis Freyd (djaiss)](https://github.com/djaiss)
-
-- [Théo Matthieu (mokto)](https://github.com/mokto)
 
 - [Alexis Saettler (asbiin)](https://github.com/asbiin)
 
@@ -295,6 +293,6 @@ Monica uses a lot of open source projects and we thank them with all our hearts.
 
 ## License
 
-Copyright (c) 2016–2020
+Copyright (c) 2016–2021
 
 Licensed under [the AGPL License](/LICENSE).
