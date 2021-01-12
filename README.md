@@ -14,25 +14,25 @@
 Monica is a great open source personal relationship management system.
 
 - [Introduction](#introduction)
-  - [Purpose](#purpose)
-  - [Features](#features)
-  - [Who is it for?](#who-is-it-for)
-  - [What Monica isn’t](#what-monica-isnt)
-  - [Where does this tool come from?](#where-does-this-tool-come-from)
+    - [Purpose](#purpose)
+    - [Features](#features)
+    - [Who is it for?](#who-is-it-for)
+    - [What Monica isn’t](#what-monica-isnt)
+    - [Where does this tool come from?](#where-does-this-tool-come-from)
 - [Get started](#get-started)
-  - [Requirements](#requirements)
-  - [Update your instance](#update-your-instance)
+    - [Requirements](#requirements)
+    - [Update your instance](#update-your-instance)
 - [Contribute](#contribute)
-  - [As a community](#as-a-community)
-- [Contribute as a developer](#contribute-as-a-developer)
+    - [Contribute as a community](#contribute-as-a-community)
+    - [Contribute as a developer](#contribute-as-a-developer)
 - [Principles, vision, goals and strategy](#principles-vision-goals-and-strategy)
-  - [Principles](#principles)
-  - [Vision](#vision)
-  - [Goals](#goals)
-  - [Strategy](#strategy)
-  - [Monetization](#monetization)
-  - [Why Open Source?](#why-open-source)
-  - [Patreon](#patreon)
+    - [Principles](#principles)
+    - [Vision](#vision)
+    - [Goals](#goals)
+    - [Strategy](#strategy)
+    - [Monetization](#monetization)
+    - [Why Open Source?](#why-open-source)
+    - [Patreon](#patreon)
 - [Contact](#contact)
 - [Team](#team)
 - [Thank you, open source](#thank-you-open-source)
@@ -70,7 +70,7 @@ Monica allows people to keep track of everything that’s important about their 
 * Ability to record how your day went
 * Upload documents and photos
 * Export and import of data
-* Export a contact as vCard
+* Export contacts as vCards
 * Ability to define custom genders
 * Ability to define custom activity types
 * Ability to favorite contacts
@@ -91,12 +91,14 @@ We’ve also received lots of positive feedback from users who suffer from Asper
 ### What Monica isn’t
 
  * Monica is not a social network and **it never will be**. It’s not meant to be social. It’s designed to be the opposite: it’s for your eyes only.
- * Monica is not a smart assistant – it won’t guess what you want to do. It’s actually pretty dumb: it will only send you emails for the things you asked to be reminded of.
+ * Monica is not a smart assistant. It won’t guess what you want to do. It’s actually pretty dumb: it will only send you emails for the things you asked to be reminded of.
  * Monica is not a tool that will scan your data and do nasty things with it. It’s your data, your server, do whatever you want with it. You’re in control of your data.
 
 ### Where does this tool come from?
 
-I originally built this tool to help me in my private life: I’ve been living outside my own country for a long time now. I want to keep notes and remember the life of my friends in my home country and be able to ask the relevant questions when I email them or talk to them over the phone. Moreover, as a foreigner in my new country, I met a lot of other foreigners – and most go back to their countries. I still want to remember the names or ages of their kids. You may call it cheating but considering my poor memory, I call it caring.
+I originally built this tool to help me in my private life: I’ve been living outside my own country for a long time now. I want to keep notes and remember the life of my friends in my home country and be able to ask the relevant questions when I email them or talk to them over the phone.
+
+Moreover, as a foreigner in my new country, I met a lot of other foreigners – and most go back to their countries. I still want to remember the names or ages of their kids. You may call it cheating but considering my poor memory, I call it caring.
 
 After a few months, I decided to open source the project so it could help other people as well.
 
@@ -104,8 +106,11 @@ After a few months, I decided to open source the project so it could help other 
 
 There are multiple ways of getting started with Monica:
 
-1. You can use our hosted-version at [https://monicahq.com](https://monicahq.com).  This is the simplest way to use Monica.
-1. You can install it on your server by following the [installation instructions here](/docs/installation/readme.md). There are no limitations on Monica if you install it on your own server.
+1. You can use [our Hosted version](https://monicahq.com).  This is the simplest way to use Monica.
+1. You can install it on your own server by following the [installation instructions here](/docs/installation/readme.md). There are no limitations on Monica if you install it on your own server.
+    * The downloadable version will always be the most complete version – the same as offered on the paid plan on the Hosted version.
+    * Self-hosted will always be completely free with no strings attached and you will be in complete control.
+
 1. You can deploy straight on Platform.sh [![Deploy with Platform.sh](https://platform.sh/images/deploy/deploy-button-lg-blue.svg)](https://console.platform.sh/projects/create-project/?template=https%3A%2F%2Fgithub.com%2Fmonicahq%2Fmonica&amp;utm_campaign=deploy_on_platform&amp;utm_medium=button&amp;utm_source=affiliate_links&amp;utm_content=https%3A%2F%2Fgithub.com%2Fmonicahq%2Fmonica)
 
 ### Requirements
@@ -123,24 +128,25 @@ Once the software is installed, you’ll need to update it from time to time to 
 
 ## Contribute
 
-Do you want to help? That’s awesome. Here are simple things you can do.
+Do you want to help? That’s awesome. We welcome contributions of all kinds from everyone.
 
-### As a community
+Here are some of the things you can do to help.
+
+### Contribute as a community
 
 * Unlike Fight Club, the best way to help is **to actually talk about the project** as much as you can in blog posts and articles, or on Twitter and  Facebook.
 * You can answer questions in [the issue tracker](https://github.com/monicahq/monica/issues) to help other community members.
-* You can financially support the project [on Patreon](https://www.patreon.com/monicahq) or [by subscribing to an account](https://monicahq.com/pricing).
+* You can financially support the project [on Patreon](https://www.patreon.com/monicahq) or by subscribing to [a paid account](https://monicahq.com/pricing).
 
-## Contribute as a developer
+### Contribute as a developer
 
 * Read our [Contribution Guide](/CONTRIBUTING.md).
-* Install the developer version locally so you can start contributing [instructions](/docs/contribute/readme.md).
-* Look for [issues labelled bugs](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) if you are looking to have an immediate impact on the project.
-* Look for [issues labelled Help wanted](https://github.com/monicahq/monica/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) These are issues that you can solve relatively easily.
-* Look for [issues labelled Good first issue](https://github.com/monicahq/monica/labels/good%20first%20issue) These issues are for people who want to contribute, but try to work on a small feature first.
-* If you are an advanced developer, you can try to tackle [issues labelled feature requests](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3A%22feature+request%22). Beware though – they are harder to do and will require a lot of back and forth with the repository administrator in order to make sure we are going to the right direction with the product.
+* Install [the developer version locally](/docs/contribute/readme.md) so you can start contributing.
+* Look for [issues labelled ‘Bugs’](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) if you are looking to have an immediate impact on the project.
+* Look for [issues labelled ‘Help Wanted’](https://github.com/monicahq/monica/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22). These are issues that you can solve relatively easily.
+* Look for [issues labelled ’Good First Issue’](https://github.com/monicahq/monica/labels/good%20first%20issue). These issues are for people who want to contribute, but try to work on a small feature first.
+* If you are an advanced developer, you can try to tackle [issues labelled ‘Feature Requests’](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3A%22feature+request%22). These are harder to do and will require a lot of back-and-forth with the repository administrator to make sure we are going to the right direction with the product.
 
-We welcome contributions of all kinds from anyone.
 
 ## Principles, vision, goals and strategy
 
@@ -190,27 +196,30 @@ Here what we should do in order to realize our vision:
 
 ### Monetization
 
-While it’s not the driving force behind this project, it would be great if the tool could generate money, so we could work full time on it and sustain it on the long run. We are a big fan of [Sentry](https://sentry.io), Wordpress and GitLab and we believe this kind of business model is inspiring, where everyone wins.
+While it’s not the driving force behind this project, it would be great if the tool could generate money so we could work full time on it and sustain it on the long run. We are big fans of [Sentry](https://sentry.io), Wordpress and GitLab and we believe this kind of business model is an inspiring one where everyone wins.
 
-If you want to have it for free with all the features, run the project yourself on a server you own. However, if you want to support the development of the project, consider taking [a Pro account](https://www.monicahq.com/pricing), or support the project [on Patreon](https://www.patreon.com/monicahq).
+If you want to support the development of the project, consider taking [a paid account](https://www.monicahq.com/pricing), or support the project [on Patreon](https://www.patreon.com/monicahq).
 
-* On https://monicahq.com, Monica will be offered in two versions. Note that this can change anytime as we are trying different business models to see if this project can be sustained in the long run:
-  * a free plan:
-    * 10 contacts
-    * Exporters
-  * a paid plan:
-    * unlimited contacts
-    * Advanced features
-    * Email reminders
-    * Importers
-    * People who substantially contribute to the GitHub repository (with a pull request that adds value, that gets merged – not a typo fix, for instance) will also have access to the Paid version for free.
-* There is a [Patreon account](https://www.patreon.com/monicahq) for those who still want to support the tool. Keep in mind that the best way to support it is to actually talk about it around you.
+* The [Hosted version of Monica](https://monicahq.com) is offered in two versions:
 
-You can also **run it yourself**. This is sometimes also called on-premise. Download the code, run it on your own server, on Heroku, with Docker. The choice is yours.
-  * The downloadable version will always be the most complete version – the same offered on the paid plan on `.com`.
-  * This version will be completely free with no strings attached and you will be in complete control.
+    * a [free plan](https://app.monicahq.com/register) which includes:
+        * 10 contacts
+        * data exporters
+    * a [paid plan](https://www.monicahq.com/pricing) which includes:
+        * unlimited contacts
+        * email reminders
+        * data importers
+        * advanced features
+    * We’re still working on the features included in the paid plan, and these may be subject to change while we work out our business model to make the project sustainable.
 
-There are no ads on the platform and there never will be. We will never resell your data on `.com`. We are like you, and this is why we are on GitHub: we hate big corporations that do not have at heart the best interests of their users, even if they say otherwise. The only way, therefore, to sustain the development of the product is to actually make money in a good old-fashioned way.
+    * People who substantially contribute to the GitHub repository (with a pull request that adds value, that gets merged – not a typo fix, for instance) will also have access to the paid version for free.
+
+* There is a [Patreon account](https://www.patreon.com/monicahq) for those who want to financially support Monica’s development in another way. The best way to support Monica it is to actually talk about it and help grow its userbase.
+
+
+There are no ads on the platform and there never will be. We will never resell your data on [the Hosted version](https://monicahq.com/) and we have no access to it if you self-host.
+
+We are like you, and this is why we are on GitHub: we hate big corporations that do not have at heart the best interests of their users, even if they say otherwise. We believe that the only way to sustain the development of Monica is to actually make money in a good old-fashioned way.
 
 ### Why Open Source?
 
@@ -233,16 +242,16 @@ You can support the development of this tool [on Patreon](https://www.patreon.co
 
 ## Team
 
-Our team is made of 3 core members:
+Our team is made of three core members:
 * [Regis Freyd (djaiss)](https://github.com/djaiss)
 * [Théo Matthieu (mokto)](https://github.com/mokto)
 * [Alexis Saettler (asbiin)](https://github.com/asbiin)
 
-We are also fortunate to have an amazing community of external developers who help us greatly.
+We are also fortunate to have an amazing [community of developers](https://github.com/monicahq/monica/graphs/contributors) who help us greatly.
 
 ## Thank you, open source
 
-Monica use a lot of open source projects and we thank them with all our hearts. We hope that providing Monica as an free, open source project will help other people the same way those softwares have helped us.
+Monica uses a lot of open source projects and we thank them with all our hearts. We hope that providing Monica as an free, open source project will help other people the same way those softwares have helped us.
 
 ## License
 
