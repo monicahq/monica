@@ -149,12 +149,5 @@
 
         <TooManyTemplateParams errorLevel="info" />
 
-        <ParseError>
-            <!-- Fix syntax error -->
-            <errorLevel type="suppress">
-                <file name="vendor/symfony/polyfill-mbstring/bootstrap80.php" />
-            </errorLevel>
-        </ParseError>
-
     </issueHandlers>
 </psalm>
