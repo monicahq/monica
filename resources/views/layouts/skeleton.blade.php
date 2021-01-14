@@ -22,6 +22,9 @@
     <link rel="apple-touch-icon" sizes="180x180" href="img/icons/touch-icon-iphone-retina.png">
     <link rel="apple-touch-icon" sizes="167x167" href="img/icons/touch-icon-ipad-retina.png">
 
+    <meta name="application-name" content="Monica">
+    <link rel="shortcut icon" sizes="196x196" href="img/icons/favicon-196.png">
+
     <script>
       window.Laravel = {!! \Safe\json_encode([
           'locale' => \App::getLocale(),
