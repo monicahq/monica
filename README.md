@@ -214,9 +214,9 @@ Here what we should do in order to realize our vision:
 
 - (**done**) Build importers and exporters of data. We don’t want to have any vendor lock-ins. Data is the property of the users and they should be able to do whatever they want with it.
 
-- Be the central point of contact management, by supporting CardDav protocol.
+- (**done**) Be the central point of contact management, by supporting CardDav protocol.
 
-- Be the central point of calendar events, by supporting CalDav protocol.
+- (**done**) Be the central point of calendar events, by supporting CalDav protocol.
 
 - (**partially done**) Build great reports so people can have interesting insights on how they interact with their loved ones.
 
