@@ -1,14 +1,19 @@
-<p align="center"><img src="https://user-images.githubusercontent.com/61099/37693034-5783b3d6-2c93-11e8-80ea-bd78438dcd51.png"></p>
+<p align="center">
+
+![Monica's Logo](https://user-images.githubusercontent.com/61099/37693034-5783b3d6-2c93-11e8-80ea-bd78438dcd51.png)
+
+<p>
 <h1 align="center">Personal Relationship Manager</h1>
 
-<p align="center">
-<a href="https://dev.azure.com/monicahq/monica"><img src="https://dev.azure.com/monicahq/monica/_apis/build/status/monicahq.monica?branchName=master" alt="Build Status"></a>
-<a href="https://styleci.io/repos/82238168"><img src="https://styleci.io/repos/82238168/shield?branch=master" alt="StyleCI"></a>
-<a href="https://sonarcloud.io/project/activity?custom_metrics=coverage&amp;graph=custom&amp;id=monica"><img src="https://sonarcloud.io/api/project_badges/measure?project=monica&amp;metric=coverage" alt="Code coverage"/></a>
-<a href="https://sonarcloud.io/dashboard?id=monica"><img src="https://sonarcloud.io/api/project_badges/measure?project=monica&amp;metric=alert_status" alt="Quality gate" /></a>
-<a href="https://github.com/monicahq/monica/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-AGPL-blue.svg" alt="License"></a>
-<a class="badge-align" href="https://slack.monicahq.com"><img src="https://slack.monicahq.com/badge.svg"></a>
-</p>
+<div align="center">
+
+[![Build Status](https://img.shields.io/azure-devops/build/monicahq/monica/monica%20CI/master)](https://dev.azure.com/monicahq/monica)
+[![Docker pulls](https://img.shields.io/docker/pulls/library/monica)](https://hub.docker.com/_/monica/)
+![Lines of code](https://img.shields.io/tokei/lines/github/monicahq/monica)
+[![Code coverage](https://img.shields.io/sonar/coverage/monica?server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/project/activity?custom_metrics=coverage&amp;graph=custom&amp;id=monica)
+[![License](https://img.shields.io/github/license/monicahq/monica)](https://github.com/monicahq/monica/blob/master/LICENSE)
+
+</div>
 
 Monica is a great open source personal relationship management system.
 
