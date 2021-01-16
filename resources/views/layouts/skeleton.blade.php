@@ -17,11 +17,13 @@
     <link rel="shortcut icon" href="img/favicon.png">
 
     <meta name="apple-mobile-web-app-title" content="Monica">
-    <link rel="apple-touch-icon" href="touch-icon-iphone.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="touch-icon-iphone-retina.png">
-    <link rel="apple-touch-icon" sizes="167x167" href="touch-icon-ipad-retina.png">
+    <link rel="apple-touch-icon" href="img/icons/touch-icon-iphone.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="img/icons/touch-icon-ipad.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/icons/touch-icon-iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="img/icons/touch-icon-ipad-retina.png">
 
+    <meta name="application-name" content="Monica">
+    <link rel="shortcut icon" sizes="196x196" href="img/icons/favicon-196.png">
 
     <script>
       window.Laravel = {!! \Safe\json_encode([
