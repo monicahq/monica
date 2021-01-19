@@ -18,25 +18,25 @@
 Monica is a great open source personal relationship management system.
 
 - [Introduction](#introduction)
-    * [Purpose](#purpose)
-    * [Features](#features)
-    * [Who is it for?](#who-is-it-for)
-    * [What Monica isn’t](#what-monica-isnt)
-    * [Where does this tool come from?](#where-does-this-tool-come-from)
+  - [Purpose](#purpose)
+  - [Features](#features)
+  - [Who is it for?](#who-is-it-for)
+  - [What Monica isn’t](#what-monica-isnt)
+  - [Where does this tool come from?](#where-does-this-tool-come-from)
 - [Get started](#get-started)
-    * [Requirements](#requirements)
-    * [Update your instance](#update-your-instance)
+  - [Requirements](#requirements)
+  - [Update your instance](#update-your-instance)
 - [Contribute](#contribute)
-    * [Contribute as a community](#contribute-as-a-community)
-    * [Contribute as a developer](#contribute-as-a-developer)
+  - [Contribute as a community](#contribute-as-a-community)
+  - [Contribute as a developer](#contribute-as-a-developer)
 - [Principles, vision, goals and strategy](#principles-vision-goals-and-strategy)
-    * [Principles](#principles)
-    * [Vision](#vision)
-    * [Goals](#goals)
-    * [Strategy](#strategy)
-    * [Monetization](#monetization)
-    * [Why Open Source?](#why-open-source)
-    * [Patreon](#patreon)
+  - [Principles](#principles)
+  - [Vision](#vision)
+  - [Goals](#goals)
+  - [Strategy](#strategy)
+  - [Monetization](#monetization)
+  - [Why Open Source?](#why-open-source)
+  - [Patreon](#patreon)
 - [Contact](#contact)
 - [Team](#team)
 - [Thank you, open source](#thank-you-open-source)
@@ -112,13 +112,18 @@ After a few months, I decided to open source Monica so it could help other peopl
 
 There are multiple ways of getting started with Monica:
 
-1. You can use [our Hosted version](https://monicahq.com).  This is the simplest way to use Monica.
+1. You can use [our Hosted version](https://monicahq.com "Monica website").  This is the simplest way to use Monica.
 1. You can install it on your own server by following the [installation instructions here](/docs/installation/readme.md). There are no limitations on Monica if you install it on your own server.
 
     - The downloadable version will always be the most complete version – the same as offered on the paid plan on the Hosted version.
     - Self-hosted will always be completely free with no strings attached and you will be in complete control.
 
-1. You can deploy straight on Platform.sh [![Deploy with Platform.sh](https://platform.sh/images/deploy/deploy-button-lg-blue.svg)](https://console.platform.sh/projects/create-project/?template=https%3A%2F%2Fgithub.com%2Fmonicahq%2Fmonica&amp;utm_campaign=deploy_on_platform&amp;utm_medium=button&amp;utm_source=affiliate_links&amp;utm_content=https%3A%2F%2Fgithub.com%2Fmonicahq%2Fmonica)
+1. You can deploy straight on a [PaaS platform](https://en.wikipedia.org/wiki/Platform_as_a_service) like:
+   
+    - Platform.sh [![Deploy on Platform.sh](https://platform.sh/images/deploy/deploy-button-lg-blue.svg)](https://console.platform.sh/projects/create-project/?template=https%3A%2F%2Fgithub.com%2Fmonicahq%2Fmonica&amp;utm_campaign=deploy_on_platform&amp;utm_medium=button&amp;utm_source=affiliate_links&amp;utm_content=https%3A%2F%2Fgithub.com%2Fmonicahq%2Fmonica)
+
+    - [Heroku](https://heroku.com) [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/monicahq/monica/tree/master)
+
 
 ### Requirements
 
