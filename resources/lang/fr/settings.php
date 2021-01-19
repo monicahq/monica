@@ -14,7 +14,7 @@ return [
     'sidebar_settings_users' => 'Utilisateurs',
     'sidebar_settings_subscriptions' => 'Abonnement',
     'sidebar_settings_import' => 'Importation de données',
-    'sidebar_settings_tags' => 'Tag management',
+    'sidebar_settings_tags' => 'Gestion des étiquettes',
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'Ressources DAV',
     'sidebar_settings_security' => 'Sécurité',
@@ -34,10 +34,10 @@ return [
     'me_choose_placeholder' => 'Choisissez votre contact',
 
     'export_title' => 'Exporter les données de votre compte',
-    'export_be_patient' => 'Click the button to start the export. It may take several minutes to process the export – please be patient and do not repeatedly click button.',
-    'export_title_sql' => 'Export data to SQL',
-    'export_sql_explanation' => 'Exporting your data in SQL format allows you to take your data and import it to your own Monica instance. This is only useful if you are running Monica on your own server.',
-    'export_sql_cta' => 'Export data to SQL',
+    'export_be_patient' => 'Cliquez sur le bouton pour commencer l’export. Cela peut prendre plusieurs minutes pour préparer l’export – merci d’être patient et de ne pas spammer le bouton.',
+    'export_title_sql' => 'Exporter les données en SQL',
+    'export_sql_explanation' => 'Exporter les données au format SQL vous permet de récupérer vos données et de les importer dans votre propre instance de Monica. Ceci n’a d’intérêt que si vous avez votre propre serveur.',
+    'export_sql_cta' => 'Exporter les données en SQL',
     'export_sql_link_instructions' => '<a href=":url">Read the instructions</a> to learn how to import this file into your instance.',
 
     'firstname' => 'Prénom',
