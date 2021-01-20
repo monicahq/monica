@@ -161,7 +161,7 @@ return [
     'users_blank_description' => 'Cette personne aura le même accès que vous et sera en mesure d’ajouter, modifier ou supprimer les informations de contact.',
     'users_blank_cta' => 'Inviter quelqu’un',
     'users_add_title' => 'Invitez un nouvel utilisateur à votre compte par couriel',
-    'users_add_description' => 'Cette personne aura le même accès que vous, y compris inviter ou la supprimer d’autres utilisateurs, vous compris. Assurez-vous de faire confiance à cette personne avant de lui donner ces accès.',
+    'users_add_description' => 'Cette personne aura le même accès que vous, et pourra également inviter ou supprimer d’autres utilisateurs, vous compris. Assurez-vous de faire confiance à cette personne avant de lui donner ces accès.',
     'users_add_email_field' => 'Entrez le courriel de la personne que vous souhaitez inviter',
     'users_add_confirmation' => 'Je confirme que je veux inviter cet utilisateur dans mon compte. Cette personne aura accès à toutes mes données et verra exactement ce que je vois.',
     'users_add_cta' => 'Inviter l’utilisateur par courriel',
