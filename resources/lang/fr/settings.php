@@ -477,9 +477,9 @@ return [
     'personalization_life_event_type_surgery' => 'A eu une opération chirurgicale',
     'personalization_life_event_type_dentist' => 'A eu un traitement dentaire',
     'personalization_life_event_type_new_sport' => 'A commencé un nouveau sport',
-    'personalization_life_event_type_new_hobby' => 'Took up a new hobby',
-    'personalization_life_event_type_new_instrument' => 'Started learning a new instrument',
-    'personalization_life_event_type_new_language' => 'Started learning a new language',
+    'personalization_life_event_type_new_hobby' => 'A commencé un nouveau passe-temps',
+    'personalization_life_event_type_new_instrument' => 'A commencé à jouer d’un nouvel instrument',
+    'personalization_life_event_type_new_language' => 'A commencé à apprendre une nouvelle langue',
     'personalization_life_event_type_tattoo_or_piercing' => 'Tatouage ou piercing',
     'personalization_life_event_type_new_license' => 'Nouveau permis',
     'personalization_life_event_type_travel' => 'Voyage',
@@ -489,7 +489,7 @@ return [
     'personalization_life_event_type_first_kiss' => 'Premier baiser',
 
     'storage_title' => 'Espace de stockage',
-    'storage_account_info' => 'Your account limit is :accountLimit Mb. Your current usage is :currentAccountSize Mb (about :percentUsage%).',
+    'storage_account_info' => 'La limite de votre compte est : :accountLimit Mo. Votre utilisation actuelle est : :currentAccountSize Mo (environ :percentUsage %).',
     'storage_upgrade_notice' => 'Mettez à niveau votre compte pour pouvoir télécharger des documents et des photos.',
     'storage_description' => 'Ici vous pouvez voir tous les documents et photos téléchargés sur vos contacts.',
 
@@ -509,10 +509,10 @@ return [
     'dav_caldav_birthdays_export' => 'Exporter tous les anniversaires dans un seul fichier',
     'dav_caldav_tasks_export' => 'Exporter toutes les tâches dans un seul fichier',
 
-    'archive_title' => 'Archive all of the contacts in your account',
-    'archive_desc' => 'This will archive all of the contacts in your account.',
-    'archive_cta' => 'Archive all of your contacts',
+    'archive_title' => 'Archiver tous les contacts de votre compte',
+    'archive_desc' => 'Ceci va archiver tous les contacts de votre compte.',
+    'archive_cta' => 'Archiver tous vos contacts',
 
-    'logs_title' => 'Everything that has happened to this account',
+    'logs_title' => 'Tout ce qui est arrivé à ce compte',
     'logs_author' => 'Par :name le :date',
 ];
