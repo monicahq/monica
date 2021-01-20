@@ -337,13 +337,13 @@ return [
     'api_authorized_clients' => 'Liste de clients autorisés',
     'api_authorized_clients_desc' => 'Cette section liste tous les clients que vous avez autorisé à accéder aux données de votre demande. Vous pouvez révoquer cette autorisation à tout moment.',
     'api_authorized_clients_title' => 'Applications autorisées',
-    'api_authorized_clients_none' => 'There are no authorized clients yet.',
+    'api_authorized_clients_none' => 'Il n’y a pas encore de client autorisé.',
     'api_authorized_clients_name' => 'Nom',
     'api_authorized_clients_scopes' => 'Périmètres',
 
     'personalization_tab_title' => 'Personnalisez votre compte',
 
-    'personalization_title' => 'Here you will find different settings to configure your account. These features are intended for “power users” who want maximum control over Monica.',
+    'personalization_title' => 'Ici vous pouvez configurer les différents paramètres de votre compte. Ces fonctionnalités sont pour les « utilisateurs avancés » qui veulent un contrôle maximal sur Monica.',
     'personalization_contact_field_type_title' => 'Types de champs de contact',
     'personalization_contact_field_type_add' => 'Ajouter un nouveau type de champ',
     'personalization_contact_field_type_description' => 'You can configure all the different types of contact fields that you can associate to all your contacts. For example, if a new social network appears in the future, you will be able to add this new way of communicating with your contacts right here.',
