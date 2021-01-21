@@ -19,7 +19,7 @@ return [
     |
     */
 
-    'accepted' => ':attribute חייב להתקבל.',
+    'accepted' => ':attribute חייב להיות מסומן.',
     'active_url' => ':attribute אינה כתובת תקנית.',
     'after' => ':attribute חייב להיות תאריך לאחר :date.',
     'after_or_equal' => ':attribute חייב להיות התאריך :date או אחריו.',
