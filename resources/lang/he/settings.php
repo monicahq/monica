@@ -273,7 +273,7 @@ return [
     'import_upload_behaviour' => 'התנהגות הייבוא:',
     'import_upload_behaviour_add' => 'הוספת אנשי קשר חדשים ודילוג על הקיימים',
     'import_upload_behaviour_replace' => 'החלפת אנשי קשר קיימים',
-    'import_upload_behaviour_help' => 'Replacing will replace all data found in the vCard, but will keep existing contact fields.',
+    'import_upload_behaviour_help' => 'החלפה תוביל להחלפת כל הנתונים שנמצאים ב־vCard אך השדות הקיימים יישמרו.',
     'import_report_title' => 'דוח יבוא',
     'import_report_date' => 'תאריך הייבוא',
     'import_report_type' => 'סוג הייבוא',
@@ -343,7 +343,7 @@ return [
 
     'personalization_tab_title' => 'התאמת החשבון שלך',
 
-    'personalization_title' => 'Here you will find different settings to configure your account. These features are intended for “power users” who want maximum control over Monica.',
+    'personalization_title' => 'להלן ניתן למצוא הגדרות שונות להתאמת החשבון שלך. התכונות האלו מיועדות למשתמשים מתקדמים שרוצים לקבל שליטה מלאה במוניקה.',
     'personalization_contact_field_type_title' => 'סוגי שדות אנשי קשר',
     'personalization_contact_field_type_add' => 'הוספת סוג שדה נתונים חדש',
     'personalization_contact_field_type_description' => 'You can configure all the different types of contact fields that you can associate to all your contacts. For example, if a new social network appears in the future, you will be able to add this new way of communicating with your contacts right here.',
@@ -376,7 +376,7 @@ return [
     'personalization_genders_modal_delete' => 'מחיקת סוג מגדר',
     'personalization_genders_modal_delete_desc' => 'למחוק את המגדר „{name}”?',
     'personalization_genders_modal_delete_question' => 'You currently have {count} contact with this gender. If you delete this gender, what gender should this contact have?|You currently have {count} contacts with this gender. If you delete this gender, what gender should these contacts have?',
-    'personalization_genders_modal_delete_question_default' => 'This gender is the default one. If you delete this gender, which one will be the new default?',
+    'personalization_genders_modal_delete_question_default' => 'מגדר זה הוא בררת המחדל. לאחר מחיקת מגדר זה, איזה מגדר יוגדר כבררת המחדל החדשה?',
     'personalization_genders_modal_error' => 'נא לבחור במגדר מהרשימה.',
     'personalization_genders_list_contact_number' => 'איש קשר אחד|{count} אנשי קשר',
     'personalization_genders_table_name' => 'שם',
@@ -404,7 +404,7 @@ return [
     'personalisation_paid_upgrade_vue' => 'תכונה זו היא תכונת פרמיום שדורשת הפעלת מינוי בתשלום. ניתן לשדרג את החשבון שלך על ידי מעבר ל<a href="{url}">הגדרות > מינוי</a>.',
 
     'reminder_time_to_send' => 'השעה ביום בה תישלחנה התזכורות',
-    'reminder_time_to_send_help' => 'Your next reminder is scheduled to be sent on <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
+    'reminder_time_to_send_help' => 'התזכורת הבאה שלך מתוזמנת להישלח ב־<span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
 
     'personalization_activity_type_category_title' => 'קטגוריות סוגי פעילות',
     'personalization_activity_type_category_add' => 'הוספת קטגוריית סוג פעילות חדשה',
