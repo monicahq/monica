@@ -375,7 +375,7 @@ return [
     'personalization_genders_modal_default' => 'נא לבחור את מגדר בררת המחדל לאנשי קשר חדשים',
     'personalization_genders_modal_delete' => 'מחיקת סוג מגדר',
     'personalization_genders_modal_delete_desc' => 'למחוק את המגדר „{name}”?',
-    'personalization_genders_modal_delete_question' => 'You currently have {count} contact with this gender. If you delete this gender, what gender should this contact have?|You currently have {count} contacts with this gender. If you delete this gender, what gender should these contacts have?',
+    'personalization_genders_modal_delete_question' => 'לאחד מאנשי הקשר שלך מוגדר המגדר הזה. אם המגדר יימחק, לאיזה מגדר לשייך את איש הקשר?|ל־{count} מאנשי הקשר שלך מוגדר המגדר הזה. אם המגדר יימחק, לאיזה מגדר לשייך את אנשי הקשר?',
     'personalization_genders_modal_delete_question_default' => 'מגדר זה הוא בררת המחדל. לאחר מחיקת מגדר זה, איזה מגדר יוגדר כבררת המחדל החדשה?',
     'personalization_genders_modal_error' => 'נא לבחור במגדר מהרשימה.',
     'personalization_genders_list_contact_number' => 'איש קשר אחד|{count} אנשי קשר',
@@ -398,7 +398,7 @@ return [
 
     'personalization_module_save' => 'השינוי נשמר',
     'personalization_module_title' => 'תכונות',
-    'personalization_module_desc' => 'You may not need all of Monica’s features. Below you can toggle specific features that are used on a contact sheet. This change will affect ALL your contacts. Turning off a feature does not delete any data, it simply hides the feature.',
+    'personalization_module_desc' => 'יכול להיות שאין לך צורך בכל התכונות של מוניקה. להלן ניתן לכבות או להפעיל תכונות מסוימות שמשמשות אותך בגיליון אנשי קשר. השינוי הזה ישפיע על כל אנשי הקשר שלך. כיבוי התכונה הזאת לא מוחק נתונים, הוא פשוט מסתיר אותה.',
 
     'personalisation_paid_upgrade' => 'תכונה זו היא תכונת פרמיום שדורשת הפעלת מינוי בתשלום. ניתן לשדרג את החשבון שלך על ידי מעבר ל<a href=":url">הגדרות > מינוי</a>.',
     'personalisation_paid_upgrade_vue' => 'תכונה זו היא תכונת פרמיום שדורשת הפעלת מינוי בתשלום. ניתן לשדרג את החשבון שלך על ידי מעבר ל<a href="{url}">הגדרות > מינוי</a>.',
