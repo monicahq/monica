@@ -346,7 +346,7 @@ return [
     'personalization_title' => 'להלן ניתן למצוא הגדרות שונות להתאמת החשבון שלך. התכונות האלו מיועדות למשתמשים מתקדמים שרוצים לקבל שליטה מלאה במוניקה.',
     'personalization_contact_field_type_title' => 'סוגי שדות אנשי קשר',
     'personalization_contact_field_type_add' => 'הוספת סוג שדה נתונים חדש',
-    'personalization_contact_field_type_description' => 'You can configure all the different types of contact fields that you can associate to all your contacts. For example, if a new social network appears in the future, you will be able to add this new way of communicating with your contacts right here.',
+    'personalization_contact_field_type_description' => 'ניתן להגדיר את כל הסוגים השונים של שדות שניתן לשייך לכל אנשי הקשר שלך. למשל, אם בעתיד תופיע רשת חברתית חדשה, תהיה לך האפשרות להוסיף את דרך התקשורת החדשה הזאת מול אנשי הקשר שלך ממש מכאן.',
     'personalization_contact_field_type_table_name' => 'שם',
     'personalization_contact_field_type_table_protocol' => 'פרוטוקול',
     'personalization_contact_field_type_table_actions' => 'פעולות',
@@ -394,7 +394,7 @@ return [
     'personalization_reminder_rule_save' => 'השינוי נשמר',
     'personalization_reminder_rule_title' => 'כללי תזכורות',
     'personalization_reminder_rule_line' => 'יום לפני|יומיים לפני|{count} ימים לפני',
-    'personalization_reminder_rule_desc' => 'For every reminder that you set, Monica can send you an email a number of days before the event happens.  You can adjust these notification settings here. These notifications only apply to monthly and yearly reminders.',
+    'personalization_reminder_rule_desc' => 'לכל תזכורת שמוגדרת, מוניקה יכולה לשלוח לך הודעה כמה ימים לפני שהאירוע מתרחש. ניתן להתאים את הגדרות ההתראות האלו כאן. ההתראות חלות על תזכורות חודשיות ושנתיות.',
 
     'personalization_module_save' => 'השינוי נשמר',
     'personalization_module_title' => 'תכונות',
