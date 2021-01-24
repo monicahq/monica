@@ -67,7 +67,7 @@ return [
     'save' => 'עדכון העדפות',
     'delete_title' => 'מחיקת החשבון שלך',
     'delete_desc' => 'למחוק את החשבון שלך? מחיקה היא לצמיתות וכל הנתונים שלך יימחקו לצמיתות גם הם. אם יש לך מינוי, הוא יבוטל מיידית.',
-    'delete_other_desc' => 'Your data in the main database will be deleted immediately. As described in our privacy policy, we carry out daily backups, securely encrypted backups of the database and this backup is kept for 30 days after which it is completely deleted. We cannot delete specific data from the backups we hold any earlier than this.  All of your data will be completely deleted within 30 days of your account’s deletion.',
+    'delete_other_desc' => 'הנתונים שלך במסד הנתונים הראשי יימחקו מיידית. כפי שמופיע במדיניות הפרטיות שלנו, אנו עורכים גיבויים יומיים, מוצפנים בבטחה, של מסד הנתונים והם נשמרים למשך 30 ימים לאחר מחיקה מוחלטת. אין לנו אפשרות למחוק נתונים מסוימים מתוך הגיבויים שאנו מחזיקים לפני מועד תפוגת התוקף. כל הנתונים שלך יימחקו לחלוטין תוך 30 ימים ממחיקת החשבון שלך.',
     'reset_desc' => 'לאפס את החשבון שלך? פעולה זו תסיר את כל אנשי הקשר שלך ואת כל המידע המשויך להם. החשבון שלך לא יימחק.',
     'reset_title' => 'איפוס החשבון שלך',
     'reset_cta' => 'איפוס חשבון',
