@@ -1048,10 +1048,10 @@
     tslib "^1.9.3"
     xml-js "^1.6.11"
 
-"@snyk/java-call-graph-builder@1.18.0":
-  version "1.18.0"
-  resolved "https://registry.yarnpkg.com/@snyk/java-call-graph-builder/-/java-call-graph-builder-1.18.0.tgz#f93abeaf347083b9d534a4f94b1468fd97d111a0"
-  integrity sha512-6Mt+Rs2N4HdHICCjxWRwtGXUrSktCsSGnn7HlL6wi+4JXjPWa+rDCzaF6furqRR3aphZAclgved0haFwwmqBxQ==
+"@snyk/java-call-graph-builder@1.19.0":
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/@snyk/java-call-graph-builder/-/java-call-graph-builder-1.19.0.tgz#ed6e80843cc3968b8332c5db52649a9146565069"
+  integrity sha512-in26UkFVEWvGyHmSmVUebvgyubANJB7rfrkE3PKjHDA80NwSLZDSNWOOC2lF2B+4ob4STWjQdMbv+bMqXl5Yew==
   dependencies:
     ci-info "^2.0.0"
     debug "^4.1.1"
@@ -7952,6 +7952,11 @@ promise-inflight@^1.0.1:
   resolved "https://registry.yarnpkg.com/promise-inflight/-/promise-inflight-1.0.1.tgz#98472870bf228132fcbdd868129bad12c3c029e3"
   integrity sha1-mEcocL8igTL8vdhoEputEsPAKeM=
 
+promise-queue@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/promise-queue/-/promise-queue-2.2.5.tgz#2f6f5f7c0f6d08109e967659c79b88a9ed5e93b4"
+  integrity sha1-L29ffA9tCBCelnZZx5uIqe1ek7Q=
+
 "promise@>=3.2 <8":
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/promise/-/promise-7.3.1.tgz#064b72602b18f90f29192b8b1bc418ffd1ebd3bf"
@@ -8942,14 +8947,14 @@ snyk-go-plugin@1.16.4:
     tmp "0.2.1"
     tslib "^1.10.0"
 
-snyk-gradle-plugin@3.11.0:
-  version "3.11.0"
-  resolved "https://registry.yarnpkg.com/snyk-gradle-plugin/-/snyk-gradle-plugin-3.11.0.tgz#4d22704c38875e23a96469ac27d0d43ae746fc70"
-  integrity sha512-OXf1A+kcif+vslm/nsel3bDYWsGwum2PsZLETM28nG4JOgqBLYLWvCHPgH9r2aa0MKTq0nBpimvFkzDm/+2qQQ==
+snyk-gradle-plugin@3.12.0:
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/snyk-gradle-plugin/-/snyk-gradle-plugin-3.12.0.tgz#3721626e0557fd6ea039dfe116df7510b7b45315"
+  integrity sha512-WAmViagNolXsqPO/xmArlnpmisw6j/4xN6FLJ/gl9cDSSrgTh013sZlynkZj0G1v4enkelIMuqfVKXzinthm/Q==
   dependencies:
     "@snyk/cli-interface" "2.9.1"
     "@snyk/dep-graph" "^1.19.4"
-    "@snyk/java-call-graph-builder" "1.18.0"
+    "@snyk/java-call-graph-builder" "1.19.0"
     "@types/debug" "^4.1.4"
     chalk "^3.0.0"
     debug "^4.1.1"
@@ -9147,9 +9152,9 @@ snyk-try-require@1.3.1, snyk-try-require@^1.1.1, snyk-try-require@^1.3.1:
     then-fs "^2.0.0"
 
 snyk@^1.410.3:
-  version "1.437.4"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.437.4.tgz#3fe1201c315053382e17d0f8400f156b9fb7d9d8"
-  integrity sha512-viwMLqeWWfLpE91J1Gh6yI1q90mtYeH9FSoIKOt47RhDhZqOjM5OJXpLKTNXIOyXldjrImRnFpilSN+5drDeFw==
+  version "1.439.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.439.0.tgz#88f3de3b90873152d69be808f6fe6c8b3cd12388"
+  integrity sha512-VHai1FZxbQEH3CKBgJo76FBF5MuLnAVyg4lXxRCOBLOW2vCK8kCZnaMMwvlOCubYCAdnzUOE34qCwJi/zG5RWw==
   dependencies:
     "@snyk/cli-interface" "2.11.0"
     "@snyk/dep-graph" "1.21.0"
@@ -9169,6 +9174,7 @@ snyk@^1.410.3:
     needle "2.5.0"
     open "^7.0.3"
     os-name "^3.0.0"
+    promise-queue "^2.2.5"
     proxy-agent "^3.1.1"
     proxy-from-env "^1.0.0"
     semver "^6.0.0"
@@ -9176,7 +9182,7 @@ snyk@^1.410.3:
     snyk-cpp-plugin "2.2.1"
     snyk-docker-plugin "4.13.1"
     snyk-go-plugin "1.16.4"
-    snyk-gradle-plugin "3.11.0"
+    snyk-gradle-plugin "3.12.0"
     snyk-module "3.1.0"
     snyk-mvn-plugin "2.25.0"
     snyk-nodejs-lockfile-parser "1.30.1"
