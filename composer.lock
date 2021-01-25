@@ -12161,12 +12161,12 @@
             "version": "1.9.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webmozart/assert.git",
+                "url": "https://github.com/webmozarts/assert.git",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "shasum": ""
             },
@@ -13235,16 +13235,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v6.11.0",
+            "version": "v6.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "7e05b3ca4f17afcba528c4c5a2390a2dd9949b38"
+                "reference": "2fb73c87b5805ced07e8ab4487b3c1ace0b65ae9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/7e05b3ca4f17afcba528c4c5a2390a2dd9949b38",
-                "reference": "7e05b3ca4f17afcba528c4c5a2390a2dd9949b38",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/2fb73c87b5805ced07e8ab4487b3c1ace0b65ae9",
+                "reference": "2fb73c87b5805ced07e8ab4487b3c1ace0b65ae9",
                 "shasum": ""
             },
             "require": {
@@ -13299,7 +13299,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2020-12-22T16:57:45+00:00"
+            "time": "2021-01-19T14:58:07+00:00"
         },
         {
             "name": "laravel/legacy-factories",
