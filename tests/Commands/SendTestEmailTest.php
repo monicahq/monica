@@ -46,7 +46,7 @@ class SendTestEmailTest extends TestCase
     }
 
     /**
-     * test deactivated
+     * test deactivated.
      *
      * Required to prevent alias mock breaking other tests:
      * @runInSeparateProcess
