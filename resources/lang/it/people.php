@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -58,7 +58,7 @@ return [
     'people_delete_message' => 'Elimina contatto',
     'people_delete_confirmation' => 'Rimuovere questo contatto? Questo cambio è permanente.',
     'people_add_birthday_reminder' => 'Fai gli auguri di compleanno a :name',
-    'people_add_birthday_reminder_deceased' => 'In questa data, :name. avrebbe celebrato il suo compleanno',
+    'people_add_birthday_reminder_deceased' => 'In questa data, :name, avrebbe celebrato il suo compleanno',
     'people_add_import' => 'Vuoi <a href=":url">importare i tuoi contatti</a>?',
     'people_edit_email_error' => 'Esiste già un contatto nel tuo account con questo indirizzo email. Scegline un altro, per favore.',
     'people_export' => 'Esporta in formato vCard',
@@ -247,7 +247,7 @@ return [
     'activity_type_just_hung_out' => 'siamo usciti',
     'activity_type_watched_movie_at_home' => 'visto un film, a casa',
     'activity_type_talked_at_home' => 'parlato, a casa',
-    'activity_type_did_sport_activities_together' => 'giocavano insieme ad uno sport',
+    'activity_type_did_sport_activities_together' => 'hanno giocato insieme a uno sport',
     'activity_type_ate_at_his_place' => 'mangiato a casa sua/loro',
     'activity_type_went_bar' => 'andati al bar',
     'activity_type_ate_at_home' => 'mangiato a casa',
@@ -308,7 +308,7 @@ return [
     'gifts_delete_cta' => 'Rimuovi',
     'gifts_add_title' => 'Gestione dei regali a :name',
     'gifts_add_gift_idea' => 'Idea regalo',
-    'gifts_add_gift_already_offered' => 'Regalo già consegnato',
+    'gifts_add_gift_already_offered' => 'Regalo dato',
     'gifts_add_gift_received' => 'Regalo ricevuto',
     'gifts_add_gift_title' => 'Cos\'è questo regalo?',
     'gifts_add_gift_name' => 'Nome del regalo',
@@ -322,11 +322,11 @@ return [
     'gifts_add_someone' => 'Questo regalo é per qualcuno in particolare nella famiglia di {name}',
     'gifts_delete_title' => 'Rimuovi un regalo',
     'gifts_ideas' => 'Idee regalo',
-    'gifts_offered' => 'Regali offerti',
+    'gifts_offered' => 'Regali dati',
     'gifts_offered_as_an_idea' => 'Segna come idea',
     'gifts_received' => 'Regali ricevuti',
     'gifts_view_comment' => 'Visualizza commento',
-    'gifts_mark_offered' => 'Segna come offerto',
+    'gifts_mark_offered' => 'Segna come dato',
     'gifts_update_success' => 'Regalo modificato',
 
     // debts

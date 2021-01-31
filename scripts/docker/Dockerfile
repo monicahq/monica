@@ -140,7 +140,7 @@ WORKDIR /var/www/html
 # copy system files into their proper homes, and set file ownership
 # correctly
 COPY --chown=www-data:www-data \
-    readme.md \
+    README.md \
     CONTRIBUTING.md \
     CHANGELOG.md \
     CONTRIBUTORS \
@@ -173,7 +173,7 @@ RUN install-composer.sh
 RUN set -ex; \
     \
     mkdir -p storage/framework/views; \
-    composer install --no-interaction --no-suggest --no-progress --no-dev --ignore-platform-reqs; \
+    composer install --no-interaction --no-progress --no-dev --ignore-platform-reqs; \
     composer clear-cache; \
     rm -rf .composer
 

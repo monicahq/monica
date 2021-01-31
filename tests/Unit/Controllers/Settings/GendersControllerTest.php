@@ -146,7 +146,7 @@ class GendersControllerTest extends FeatureTestCase
 
         $response->assertStatus(403);
         $response->assertJson([
-            'message' => 'Please choose a valid gender from the list.',
+            'message' => 'Please choose a gender from the list.',
         ]);
     }
 

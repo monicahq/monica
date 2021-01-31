@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -23,10 +23,10 @@ return [
     'throttle' => 'Demasiados intentos de acceso. Por favor intente nuevamente en :seconds segundos.',
     'not_authorized' => 'Usted no esta autorizado para ejecutar esta acción',
     'signup_disabled' => 'La registración se encuentra actualmente deshabilitada',
-    'signup_error' => 'An error occured trying to register the user',
+    'signup_error' => 'Se ha producido un error al intentar registrar el usuario',
     'back_homepage' => 'Volver al inicio',
     'mfa_auth_otp' => 'Autentícate con tú dispositivo de dos pasos',
-    'mfa_auth_webauthn' => 'Authenticate with a security key (WebAuthn)',
+    'mfa_auth_webauthn' => 'Autenticar con una clave de seguridad (WebAuthn)',
     '2fa_title' => 'Autenticación en dos pasos',
     '2fa_wrong_validation' => 'La autenticación en dos pasos ha fallado.',
     '2fa_one_time_password' => 'Código de autenticación en dos pasos',
@@ -78,11 +78,11 @@ return [
     'confirmation_title' => 'Verifica tu dirección de correo electrónico',
     'confirmation_fresh' => 'Se ha enviado un correo electrónico con el enlace de verificación a tu dirección de correo electrónico.',
     'confirmation_check' => 'Antes de proceder, por favor comprueba el link de verificación en tu correo electrónico.',
-    'confirmation_request_another' => 'If you did not receive the email <a :action>click here to request another</a>.',
+    'confirmation_request_another' => 'Si no has recibido el correo electrónico <a :action>haz clic aquí para solicitar otro</a>.',
 
-    'confirmation_again' => 'If you want to change your email address you can <a href=":url" class="alert-link">click here</a>.',
-    'email_change_current_email' => 'Current email address:',
-    'email_change_title' => 'Change your email address',
-    'email_change_new' => 'New email address',
-    'email_changed' => 'Your email address has been changed. Check your mailbox to validate it.',
+    'confirmation_again' => 'Si deseas cambiar tu dirección de correo electrónico, puedes <a href=":url" class="alert-link">hacer clic aquí</a>.',
+    'email_change_current_email' => 'Dirección de correo electrónico actual:',
+    'email_change_title' => 'Cambiar tu dirección de correo electrónico',
+    'email_change_new' => 'Nueva dirección de correo electrónico',
+    'email_changed' => 'Tu dirección de correo electrónico ha sido cambiada. Revisa tu bandeja de correo para validarla.',
 ];

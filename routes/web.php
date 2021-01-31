@@ -19,6 +19,11 @@ Route::get('/', 'Auth\LoginController@showLoginOrRegister')->name('loginRedirect
 
 Auth::routes(['verify' => true]);
 
+// Redirect .well-known urls (https://en.wikipedia.org/wiki/List_of_/.well-known/_services_offered_by_webservers)
+Route::permanentRedirect('/.well-known/carddav', '/dav/');
+Route::permanentRedirect('/.well-known/caldav', '/dav/');
+Route::permanentRedirect('/.well-known/security.txt', '/security.txt');
+
 Route::get('/invitations/accept/{key}', 'Auth\InvitationController@show')->name('invitations.accept');
 Route::post('/invitations/accept/{key}', 'Auth\InvitationController@store')->name('invitations.send');
 
