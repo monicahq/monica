@@ -20,7 +20,7 @@ pr:
 variables:
   - group: Monica
   - name: phpVersion
-    value: 7.3
+    value: 7.4
   - name: COMPOSER_HOME
     value: $(Pipeline.Workspace)/.composer
   - name: YARN_CACHE_FOLDER
