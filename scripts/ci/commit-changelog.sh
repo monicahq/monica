@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# GH_TOKEN is mandatory to be able to trigger the Pull Request workflows
+if [ -z "$GH_TOKEN" ]; then
+    echo "Please provide a token in GH_TOKEN variable" >&2
+    exit 1
+fi
+
 repo=monicahq/monica
 base=master
 file=CHANGELOG.md
@@ -14,13 +20,13 @@ github() {
     curl -sSL \
         -X $method \
         -H "Accept: application/vnd.github.v3+json" \
-        -H "Authorization: token $GITHUB_TOKEN" \
+        -H "Authorization: token $GH_TOKEN" \
         https://api.github.com/repos/$repo/$apiurl \
         "$@"
 }
 
 
-# Test if branch already exists"
+# Test if branch already exists
 test=$(github GET git/ref/heads/$newbranch -f 2> /dev/null)
 
 if [ $? = 0 ]; then
@@ -37,7 +43,7 @@ github POST git/refs -d "{\"ref\":\"refs/heads/$newbranch\",\"sha\":\"$GITHUB_SH
 sha=$(github GET "contents/$file?ref=$newbranch" | jq '.sha')
 
 echo "Upload new file content"
-message="chore(changelog): Update Changelog"
+message="chore(changelog): update changelog"
 content=$(base64 -w 0 $file)
 github PUT contents/$file \
     -d "{\"message\":\"$message\",\"sha\":$sha,\"branch\":\"$newbranch\",\"content\":\"$content\"}" > /dev/null

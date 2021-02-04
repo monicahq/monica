@@ -33,15 +33,23 @@ jobs:
         id: semantic
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN_RELEASE }}
         with:
-          semantic_version: 17.1.2
+          semantic_version: 17.3.7
           extra_plugins: |
             @semantic-release/changelog
-            @semantic-release/git
+            @semantic-release/exec
 
       - name: New release published
         if: steps.semantic.outputs.new_release_published == 'true'
         run: echo ${{ steps.semantic.outputs.new_release_version }}
+
+      - name: Store changelog file
+        if: steps.semantic.outputs.new_release_published == 'true'
+        uses: actions/upload-artifact@v2
+        with:
+          name: changelog
+          path: CHANGELOG.md
 
   package:
     needs: semantic-release
@@ -56,6 +64,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          ref: v${{ needs.semantic-release.outputs.new_release_version }}
+      - name: Download changelog file
+        uses: actions/download-artifact@v2
+        with:
+          name: changelog
 
       - name: Setup PHP ${{ matrix.php-version }}
         uses: shivammathur/setup-php@v2
