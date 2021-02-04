@@ -1,0 +1,41 @@
+{
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer", {
+        "preset": "angular",
+        "releaseRules": [
+          {"type": "refactor", "scope": "laravel", "release": "minor"},
+          {"type": "refactor", "release": "patch"},
+          {"scope": "no-release", "release": false}
+        ]
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator", {
+        "preset": "angular",
+        "parserOpts": {
+          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
+        },
+        "writerOpts": {
+          "commitGroupsSort": ["feat"],
+          "commitsSort": ["scope", "subject"]
+        }
+      }
+    ],
+    [
+      "@semantic-release/changelog", {
+        "changelogFile": "CHANGELOG.md"
+      }
+    ],
+    [
+      "@semantic-release/github", {
+        "assets": ["CHANGELOG.md"]
+      }
+    ],
+    [
+      "@semantic-release/exec", {
+        "successCmd": "./scripts/ci/commit-changelog.sh ${nextRelease.version}"
+      }
+    ]
+  ]
+}

@@ -1,0 +1,147 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - next
+      - next-major
+      - beta
+      - alpha
+
+  workflow_dispatch:
+
+jobs:
+  ####################
+  # Semantic release
+  ####################
+  semantic:
+    runs-on: ubuntu-latest
+    name: Semantic release
+    if: github.event_name != 'pull_request'
+
+    outputs:
+      new_release_published: ${{ steps.semantic.outputs.new_release_published }}
+      new_release_version: ${{ steps.semantic.outputs.new_release_version }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Get all tags
+
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v2
+        id: semantic
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN_RELEASE: ${{ secrets.GH_TOKEN_RELEASE }}
+        with:
+          semantic_version: 17.3.7
+          extra_plugins: |
+            @semantic-release/changelog
+            @semantic-release/exec
+
+      - name: New release published
+        if: steps.semantic.outputs.new_release_published == 'true'
+        run: echo ${{ steps.semantic.outputs.new_release_version }}
+
+      - name: Store changelog file
+        if: steps.semantic.outputs.new_release_published == 'true'
+        uses: actions/upload-artifact@v2
+        with:
+          name: changelog
+          path: CHANGELOG.md
+
+  package:
+    needs: semantic-release
+    runs-on: ubuntu-latest
+    name: Package release
+    if: needs.semantic.outputs.new_release_published == 'true'
+
+    env:
+      php-version: 7.4
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          ref: v${{ needs.semantic.outputs.new_release_version }}
+      - name: Download changelog file
+        uses: actions/download-artifact@v2
+        with:
+          name: changelog
+
+      - name: Setup PHP ${{ env.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php-version }}
+          extensions: mbstring, dom, fileinfo
+          coverage: none
+
+    # Composer
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer files
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ env.php-version }}
+
+    # Yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache yarn files
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            ${{ runner.os }}-yarn-
+
+      - name: Create package
+        id: package
+        run: scripts/ci/package.sh 'v${{ needs.semantic.outputs.new_release_version }}'
+
+      - name: Import key
+        run: echo -e "$GPG_KEY" | gpg --batch --yes --import -
+        env:
+          GPG_KEY: ${{ secrets.GPG_KEY }}
+
+      - name: Sign package
+        run: |
+          sha512sum '${{ steps.package.outputs.package }}' > '${{ steps.package.outputs.package }}.sha512'
+          sha512sum '${{ steps.package.outputs.assets }}' > '${{ steps.package.outputs.assets }}.sha512'
+          for f in '${{ steps.package.outputs.package }}{,.sha512}' '${{ steps.package.outputs.assets }}{,.sha512}'; do
+            echo "Signing '$f'..."
+            echo "$GPG_PASSPHRASE" | gpg --batch --yes --passphrase-fd 0 --pinentry-mode=loopback --local-user $GPG_FINGERPRINT --sign --armor --detach-sig --output "$f.asc" "$f"
+            echo -e "\nSigned with key fingerprint $GPG_FINGERPRINT" >> "$f.asc"
+          done
+        env:
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GPG_FINGERPRINT: ${{ secrets.GPG_FINGERPRINT }}
+
+      - name: Publish package
+        run: |
+          for f in '${{ steps.package.outputs.package }}{,.asc,.sha512,.sha512.asc}' '${{ steps.package.outputs.assets }}{,.asc,.sha512,.sha512.asc}'; do
+            echo "Uploading release file '$f'..."
+            gh release upload 'v${{ needs.semantic.outputs.new_release_version }}' "$f" --clobber
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Store package
+        uses: actions/upload-artifact@v2
+        with:
+          name: package
+          path: ${{ steps.package.outputs.package }}
+      - name: Store assets
+        uses: actions/upload-artifact@v2
+        with:
+          name: assets
+          path: ${{ steps.package.outputs.assets }}
