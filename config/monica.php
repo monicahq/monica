@@ -12,7 +12,7 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '2.19.1',
+    'app_version' => trim(is_file(__DIR__.'/.version') ? file_get_contents(__DIR__.'/.version') : (is_dir(__DIR__.'/../.git') ? exec('git describe --abbrev=0 --tags') : ''), 'v \t\n\r'),
 
     /*
     |--------------------------------------------------------------------------
