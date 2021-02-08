@@ -11904,16 +11904,16 @@
         },
         {
             "name": "web-token/jwt-signature",
-            "version": "v2.2.7",
+            "version": "v2.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature.git",
-                "reference": "cad4f3c51d9e3537c5f45f26ae2c61d08fd5ffd2"
+                "reference": "de624b8384b6c1bcbd699de95656181ce255fe39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature/zipball/cad4f3c51d9e3537c5f45f26ae2c61d08fd5ffd2",
-                "reference": "cad4f3c51d9e3537c5f45f26ae2c61d08fd5ffd2",
+                "url": "https://api.github.com/repos/web-token/jwt-signature/zipball/de624b8384b6c1bcbd699de95656181ce255fe39",
+                "reference": "de624b8384b6c1bcbd699de95656181ce255fe39",
                 "shasum": ""
             },
             "require": {
@@ -11973,7 +11973,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-12-13T16:35:27+00:00"
+            "time": "2021-01-21T19:18:03+00:00"
         },
         {
             "name": "web-token/jwt-signature-algorithm-ecdsa",
@@ -12043,16 +12043,16 @@
         },
         {
             "name": "web-token/jwt-signature-algorithm-eddsa",
-            "version": "v2.2.7",
+            "version": "v2.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-eddsa.git",
-                "reference": "f0e4f1ad20cb1e333caa6013eb0ed5f52b9e0b7e"
+                "reference": "b805ecca593c56e60e0463bd2cacc9b1341910f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-eddsa/zipball/f0e4f1ad20cb1e333caa6013eb0ed5f52b9e0b7e",
-                "reference": "f0e4f1ad20cb1e333caa6013eb0ed5f52b9e0b7e",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-eddsa/zipball/b805ecca593c56e60e0463bd2cacc9b1341910f6",
+                "reference": "b805ecca593c56e60e0463bd2cacc9b1341910f6",
                 "shasum": ""
             },
             "require": {
@@ -12105,7 +12105,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-12-13T16:35:27+00:00"
+            "time": "2021-01-21T19:18:03+00:00"
         },
         {
             "name": "web-token/jwt-signature-algorithm-rsa",
