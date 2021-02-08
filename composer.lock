@@ -11977,16 +11977,16 @@
         },
         {
             "name": "web-token/jwt-signature-algorithm-ecdsa",
-            "version": "v2.2.7",
+            "version": "v2.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-ecdsa.git",
-                "reference": "92f9f19ed9a9428d9835e564a2b9fdd7f8a4bd89"
+                "reference": "44cbbb4374c51f1cf48b82ae761efbf24e1a8591"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-ecdsa/zipball/92f9f19ed9a9428d9835e564a2b9fdd7f8a4bd89",
-                "reference": "92f9f19ed9a9428d9835e564a2b9fdd7f8a4bd89",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-ecdsa/zipball/44cbbb4374c51f1cf48b82ae761efbf24e1a8591",
+                "reference": "44cbbb4374c51f1cf48b82ae761efbf24e1a8591",
                 "shasum": ""
             },
             "require": {
@@ -12039,7 +12039,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-12-13T16:35:27+00:00"
+            "time": "2021-01-21T19:18:03+00:00"
         },
         {
             "name": "web-token/jwt-signature-algorithm-eddsa",
