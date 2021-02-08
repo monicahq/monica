@@ -11757,16 +11757,16 @@
         },
         {
             "name": "web-token/jwt-core",
-            "version": "v2.2.7",
+            "version": "v2.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-core.git",
-                "reference": "e68c4940da62682426e78eafb1e3a3ba4c7cbabe"
+                "reference": "1365422ff1f147d2d4c5cb4473c28c9996fca84b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-core/zipball/e68c4940da62682426e78eafb1e3a3ba4c7cbabe",
-                "reference": "e68c4940da62682426e78eafb1e3a3ba4c7cbabe",
+                "url": "https://api.github.com/repos/web-token/jwt-core/zipball/1365422ff1f147d2d4c5cb4473c28c9996fca84b",
+                "reference": "1365422ff1f147d2d4c5cb4473c28c9996fca84b",
                 "shasum": ""
             },
             "require": {
@@ -11826,20 +11826,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-12-13T16:35:27+00:00"
+            "time": "2021-01-21T19:18:03+00:00"
         },
         {
             "name": "web-token/jwt-key-mgmt",
-            "version": "v2.2.7",
+            "version": "v2.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-key-mgmt.git",
-                "reference": "2f9758c7972cca3894fa28f17ceaf9c6db825b31"
+                "reference": "5e9cddfd11230f1d631bc29b6ce9677ddae101e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-key-mgmt/zipball/2f9758c7972cca3894fa28f17ceaf9c6db825b31",
-                "reference": "2f9758c7972cca3894fa28f17ceaf9c6db825b31",
+                "url": "https://api.github.com/repos/web-token/jwt-key-mgmt/zipball/5e9cddfd11230f1d631bc29b6ce9677ddae101e8",
+                "reference": "5e9cddfd11230f1d631bc29b6ce9677ddae101e8",
                 "shasum": ""
             },
             "require": {
@@ -11900,7 +11900,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-12-13T21:05:39+00:00"
+            "time": "2021-01-21T19:18:03+00:00"
         },
         {
             "name": "web-token/jwt-signature",
