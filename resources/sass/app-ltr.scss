@@ -40,10 +40,10 @@ $htmldir: ltr !default;
 // Custom colors
 
 // Extending Tachyions
-$bg-hover-monica: #f1f5fd;
+$bg-hover-monica: #d7e3ec;
 
 .bg-gray-monica {
-  background-color: #f2f4f8;
+  background-color: #fafafa;
 }
 
 .bg-blue-monica {
@@ -51,7 +51,7 @@ $bg-hover-monica: #f1f5fd;
 }
 
 .b--gray-monica {
-  border-color: #dde2e9;
+  border-color: #d0d0d0;
 }
 
 .bg-hover-monica {
@@ -62,7 +62,7 @@ $bg-hover-monica: #f1f5fd;
 
 .box-shadow {
   background: #fff;
-  border: 1px solid #e7e7e7;
+  border: 1px solid #d0d0d0;
   box-shadow: 1px -1px 4px rgba(122, 122, 122, 0.25);
   border-radius: 11px;
 }
@@ -80,14 +80,14 @@ $bg-hover-monica: #f1f5fd;
 }
 
 .form-error-message {
-  border-top: 1px solid #ed6246;
-  background-color: #fbeae5;
-  box-shadow: inset 0 3px 0 0 #ed6347, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
+  border-top: 1px solid #d9534f;
+  background-color: #e9967a;
+  box-shadow: inset 0 3px 0 0 #d9534f, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
 }
 
 .form-information-message {
-  border-top: 1px solid #46C1BF;
-  background-color: #E0F5F5;
+  border-top: 1px solid #47c1bf;
+  background-color: #d1ecfa;
   box-shadow: inset 0 3px 0 0 #47c1bf, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
 
   svg {
@@ -143,7 +143,7 @@ $bg-hover-monica: #f1f5fd;
 }
 
 .badge-success {
-  background-color: #5cb85c;
+  background-color: #32cd32;
 }
 
 .badge-danger {
@@ -155,7 +155,7 @@ kbd {
   border:1px solid #ccc;
   font-size:11px;
   font-family:Arial,Helvetica,sans-serif;
-  background-color:#f7f7f7;
+  background-color:#fafafa;
   color:#333;
   box-shadow:0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
   border-radius:3px;
@@ -240,12 +240,12 @@ body {
 }
 
 a {
-  color: #0366d6;
+  color: #0366d5;
   padding: 1px;
   text-decoration: underline;
 
   &:hover {
-    background-color: #0366d6;
+    background-color: #0366d5;
     color: #fff;
     text-decoration: none;
   }
@@ -409,7 +409,7 @@ input:disabled {
 }
 
 .breadcrumb {
-  background-color: #f9f9fb;
+  background-color: #fafafa;
 
   ul {
     font-size: 12px;
@@ -454,7 +454,7 @@ input:disabled {
     }
 
     &:hover {
-      background-color: #f6f8fa;
+      background-color: #fafafa;
     }
   }
 
@@ -466,17 +466,17 @@ input:disabled {
 
 .profile-selected {
   .profile-selected-left {
-    border-left: 1px solid #dde2e9;
-    border-top: 1px solid #dde2e9;
-    border-bottom: 1px solid #dde2e9;
+    border-left: 1px solid #d0d0d0;
+    border-top: 1px solid #d0d0d0;
+    border-bottom: 1px solid #d0d0d0;
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
   }
 
   .profile-selected-right {
-    border-right: 1px solid #dde2e9;
-    border-top: 1px solid #dde2e9;
-    border-bottom: 1px solid #dde2e9;
+    border-right: 1px solid #d0d0d0;
+    border-top: 1px solid #d0d0d0;
+    border-bottom: 1px solid #d0d0d0;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
   }
@@ -490,7 +490,7 @@ input:disabled {
 
   .full-page-modal-year-selector {
     &:hover, &.selected {
-      background-color: #f7fbfc;
+      background-color: #fafafa;
     }
   }
 }
@@ -508,7 +508,7 @@ input:disabled {
 
 .dt-row.hover {
   &:hover {
-    background-color: #f6fbff;
+    background-color: #d7e3ec;
   }
 }
 
@@ -551,7 +551,7 @@ table.vgt-table {
 
 .vgt-wrap__footer {
   padding: 3px 10px!important;
-  background: linear-gradient(#ffffff,#fbfbfb)!important;
+  background: linear-gradient(#ffffff,#fafafa)!important;
 }
 
 footer {
@@ -631,8 +631,8 @@ svg {
 }
 
 .form-group-error .error {
-  border-color: #f79483 !important;
-  color:#f57f6c;
+  border-color: #e9967a !important;
+  color:#e9967a;
 }
 
 // Shake animation

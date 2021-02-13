@@ -77,11 +77,11 @@
     padding: 10px;
 
     &:hover {
-      background-color: #f7fbfc;
+      background-color: #fafafa;
     }
 
     &.sorting {
-      background-color: #f6f8fa;
+      background-color: #fafafa;
       position: relative;
       padding: 10px;
 
@@ -113,7 +113,7 @@
           }
 
           &:hover {
-            background-color: #0366d6;
+            background-color: #0366d5;
             color: #fff;
           }
 
@@ -215,7 +215,7 @@
       position: relative;
 
       h3 {
-        border-bottom: 1px solid #e1e2e3;
+        border-bottom: 1px solid #d0d0d0;
         font-size: 18px;
         font-weight: 400;
         margin-bottom: 20px;
@@ -372,7 +372,7 @@
     }
 
     .offered {
-      background-color: #5cb85c;
+      background-color: #32cd32;
       border-radius: 10rem;
       display: inline-block;
       font-size: 75%;
@@ -450,7 +450,7 @@
 
     .frequency-type,
     .value {
-      background-color: #ecf9ff;
+      background-color: #d7e3ec;
       border: 1px solid #eee;
       border-radius: 3px;
       display: inline;
