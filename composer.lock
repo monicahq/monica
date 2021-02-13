@@ -12109,16 +12109,16 @@
         },
         {
             "name": "web-token/jwt-signature-algorithm-rsa",
-            "version": "v2.2.7",
+            "version": "v2.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-rsa.git",
-                "reference": "96588136dd01cf842b0c7107fc63aebc8332d97f"
+                "reference": "513ad90eb5ef1886ff176727a769bda4618141b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-rsa/zipball/96588136dd01cf842b0c7107fc63aebc8332d97f",
-                "reference": "96588136dd01cf842b0c7107fc63aebc8332d97f",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-rsa/zipball/513ad90eb5ef1886ff176727a769bda4618141b0",
+                "reference": "513ad90eb5ef1886ff176727a769bda4618141b0",
                 "shasum": ""
             },
             "require": {
@@ -12176,7 +12176,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-12-13T16:35:27+00:00"
+            "time": "2021-01-21T19:18:03+00:00"
         },
         {
             "name": "webmozart/assert",
