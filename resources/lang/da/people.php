@@ -279,7 +279,7 @@ return [
     'activities_activity' => 'Aktivitetskategori',
     'activities_view_activities_report' => 'Vis aktivitetsoversigt',
     'activities_profile_title' => 'Aktivitetsrapport mellem :name og dig',
-    'activities_profile_subtitle' => 'Du har logget :total_activities aktiviteter med :name i alt og :activities_last_twelve_months i de sidste 12 måneder indtil nu.|Du har logget :total_activities med :name i alt og :activities_last_twelve_months i de sidste 12 måneder indtil nu.',
+    'activities_profile_subtitle' => 'Du har logget :total_activities aktivitet med :name i alt og :activities_last_twelve_months i de sidste 12 måneder indtil nu.|Du har logget :total_activities aktiviteter med :name i alt og :activities_last_twelve_months i de sidste 12 måneder indtil nu.',
     'activities_profile_year_summary_activity_types' => 'Her er en opdeling af den type aktiviteter, I har lavet sammen i :year',
     'activities_profile_year_summary' => 'Her er hvad I to har lavet i :year',
     'activities_profile_number_occurences' => ':value aktivitet|:value aktiviteter',

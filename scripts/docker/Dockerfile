@@ -140,7 +140,7 @@ WORKDIR /var/www/html
 # copy system files into their proper homes, and set file ownership
 # correctly
 COPY --chown=www-data:www-data \
-    readme.md \
+    README.md \
     CONTRIBUTING.md \
     CHANGELOG.md \
     CONTRIBUTORS \

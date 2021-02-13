@@ -67,7 +67,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Extension for Calendar objects.
      *
-     * @var string
+     * @return string
      */
     public function getExtension()
     {

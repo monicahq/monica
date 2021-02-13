@@ -22,8 +22,8 @@ return [
     */
 
     'short_date_year_time' => 'M d, Y H:i',
-    'short_date_year' => 'M d, Y',
-    'short_date' => 'M d',
+    'short_date_year' => 'j M Y',
+    'short_date' => 'j M',
     'short_month' => 'M',
     'short_month_year' => 'M Y',
     'short_day' => 'D',
