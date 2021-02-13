@@ -27,14 +27,15 @@
         "changelogFile": "CHANGELOG.md"
       }
     ],
+    "@semantic-release/github",
     [
-      "@semantic-release/github", {
-        "assets": ["CHANGELOG.md"]
-      }
-    ],
-    [
-      "@semantic-release/exec", {
-        "successCmd": "./scripts/ci/commit-changelog.sh ${nextRelease.version}"
+      "semantic-release-github-pullrequest",
+      {
+        "assets": ["CHANGELOG.md"],
+        "labels": [
+          "semantic-release",
+          "auto-squash"
+        ]
       }
     ]
   ]
