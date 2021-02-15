@@ -99,6 +99,7 @@ You should check out a tagged version of Monica since `master` branch may not al
 cd /var/www/monica
 git checkout tags/v2.19.1
 ```
+// See the last release version : https://github.com/monicahq/monica/releases (15 Feb 2021 update : 2.19.1 at the moment)
 
 ### 2. Setup the database
 
