@@ -11406,16 +11406,16 @@
         },
         {
             "name": "vluzrmos/language-detector",
-            "version": "v2.2",
+            "version": "v2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vluzrmos/laravel-language-detector.git",
-                "reference": "ff6c041db4cca739f2d976f6c0cc68b7398c83ea"
+                "reference": "275330d755c85454eaa33821f16069a38378f5c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vluzrmos/laravel-language-detector/zipball/ff6c041db4cca739f2d976f6c0cc68b7398c83ea",
-                "reference": "ff6c041db4cca739f2d976f6c0cc68b7398c83ea",
+                "url": "https://api.github.com/repos/vluzrmos/laravel-language-detector/zipball/275330d755c85454eaa33821f16069a38378f5c1",
+                "reference": "275330d755c85454eaa33821f16069a38378f5c1",
                 "shasum": ""
             },
             "require": {
@@ -11423,7 +11423,7 @@
                 "illuminate/cookie": "~6.0 || ~7.0 || ~8.0",
                 "illuminate/support": "~6.0 || ~7.0 || ~8.0",
                 "illuminate/translation": "~6.0 || ~7.0 || ~8.0",
-                "php": "^7.2"
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.16",
@@ -11457,7 +11457,7 @@
                 "locale",
                 "lumen"
             ],
-            "time": "2020-10-02T14:38:28+00:00"
+            "time": "2021-02-12T13:41:31+00:00"
         },
         {
             "name": "voku/portable-ascii",
@@ -15062,12 +15062,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "f7d723a10c7cb36e11430182f5813ecb1b887da0"
+                "reference": "5f40d4d577a71466f9723122251b46bdaf634709"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/f7d723a10c7cb36e11430182f5813ecb1b887da0",
-                "reference": "f7d723a10c7cb36e11430182f5813ecb1b887da0",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/5f40d4d577a71466f9723122251b46bdaf634709",
+                "reference": "5f40d4d577a71466f9723122251b46bdaf634709",
                 "shasum": ""
             },
             "conflict": {
@@ -15184,7 +15184,7 @@
                 "october/backend": ">=1.0.319,<1.0.470",
                 "october/cms": "= 1.0.469|>=1.0.319,<1.0.469",
                 "october/october": ">=1.0.319,<1.0.466",
-                "october/rain": ">=1.0.319,<1.0.468",
+                "october/rain": "<1.0.472|>=1.1,<1.1.2",
                 "onelogin/php-saml": "<2.10.4",
                 "oneup/uploader-bundle": "<1.9.3|>=2,<2.1.5",
                 "openid/php-openid": "<2.3",
@@ -15228,7 +15228,7 @@
                 "sensiolabs/connect": "<4.2.3",
                 "serluck/phpwhois": "<=4.2.6",
                 "shopware/core": "<=6.3.4",
-                "shopware/platform": "<=6.3.4",
+                "shopware/platform": "<=6.3.5",
                 "shopware/shopware": "<5.6.9",
                 "silverstripe/admin": ">=1.0.3,<1.0.4|>=1.1,<1.1.1",
                 "silverstripe/assets": ">=1,<1.4.7|>=1.5,<1.5.2",
@@ -15375,7 +15375,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-02T10:05:32+00:00"
+            "time": "2021-02-10T03:02:31+00:00"
         },
         {
             "name": "sebastian/code-unit",
