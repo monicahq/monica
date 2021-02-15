@@ -11410,16 +11410,16 @@
         },
         {
             "name": "vluzrmos/language-detector",
-            "version": "v2.2",
+            "version": "v2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vluzrmos/laravel-language-detector.git",
-                "reference": "ff6c041db4cca739f2d976f6c0cc68b7398c83ea"
+                "reference": "275330d755c85454eaa33821f16069a38378f5c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vluzrmos/laravel-language-detector/zipball/ff6c041db4cca739f2d976f6c0cc68b7398c83ea",
-                "reference": "ff6c041db4cca739f2d976f6c0cc68b7398c83ea",
+                "url": "https://api.github.com/repos/vluzrmos/laravel-language-detector/zipball/275330d755c85454eaa33821f16069a38378f5c1",
+                "reference": "275330d755c85454eaa33821f16069a38378f5c1",
                 "shasum": ""
             },
             "require": {
@@ -11427,7 +11427,7 @@
                 "illuminate/cookie": "~6.0 || ~7.0 || ~8.0",
                 "illuminate/support": "~6.0 || ~7.0 || ~8.0",
                 "illuminate/translation": "~6.0 || ~7.0 || ~8.0",
-                "php": "^7.2"
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.16",
@@ -11461,7 +11461,7 @@
                 "locale",
                 "lumen"
             ],
-            "time": "2020-10-02T14:38:28+00:00"
+            "time": "2021-02-12T13:41:31+00:00"
         },
         {
             "name": "voku/portable-ascii",
