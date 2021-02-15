@@ -7454,16 +7454,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "4.1.4",
+            "version": "4.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/dav.git",
-                "reference": "4258420f15425a5f128fe5cad454e00ab4a68ae5"
+                "reference": "c1afdc77a95efea6ee40c03c45f57c3c0c80ec22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/dav/zipball/4258420f15425a5f128fe5cad454e00ab4a68ae5",
-                "reference": "4258420f15425a5f128fe5cad454e00ab4a68ae5",
+                "url": "https://api.github.com/repos/sabre-io/dav/zipball/c1afdc77a95efea6ee40c03c45f57c3c0c80ec22",
+                "reference": "c1afdc77a95efea6ee40c03c45f57c3c0c80ec22",
                 "shasum": ""
             },
             "require": {
@@ -7531,7 +7531,7 @@
                 "framework",
                 "iCalendar"
             ],
-            "time": "2021-01-12T03:39:57+00:00"
+            "time": "2021-02-12T07:54:23+00:00"
         },
         {
             "name": "sabre/event",
@@ -7706,16 +7706,16 @@
         },
         {
             "name": "sabre/vobject",
-            "version": "4.3.3",
+            "version": "4.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/vobject.git",
-                "reference": "58f9f9b46a1080c0130bd86f4df9a568aacb9c79"
+                "reference": "d8a0a9ae215a8acfb51afc29101c7344670b9c83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/vobject/zipball/58f9f9b46a1080c0130bd86f4df9a568aacb9c79",
-                "reference": "58f9f9b46a1080c0130bd86f4df9a568aacb9c79",
+                "url": "https://api.github.com/repos/sabre-io/vobject/zipball/d8a0a9ae215a8acfb51afc29101c7344670b9c83",
+                "reference": "d8a0a9ae215a8acfb51afc29101c7344670b9c83",
                 "shasum": ""
             },
             "require": {
@@ -7724,8 +7724,9 @@
                 "sabre/xml": "^2.1"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "~2.16.7",
+                "friendsofphp/php-cs-fixer": "~2.17.1",
                 "phpstan/phpstan": "^0.12",
+                "phpunit/php-invoker": "^2.0 || ^3.1",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.0"
             },
             "suggest": {
@@ -7800,7 +7801,7 @@
                 "xCal",
                 "xCard"
             ],
-            "time": "2020-11-09T04:31:38+00:00"
+            "time": "2021-02-12T06:28:04+00:00"
         },
         {
             "name": "sabre/xml",
@@ -15062,12 +15063,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "f7d723a10c7cb36e11430182f5813ecb1b887da0"
+                "reference": "5f40d4d577a71466f9723122251b46bdaf634709"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/f7d723a10c7cb36e11430182f5813ecb1b887da0",
-                "reference": "f7d723a10c7cb36e11430182f5813ecb1b887da0",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/5f40d4d577a71466f9723122251b46bdaf634709",
+                "reference": "5f40d4d577a71466f9723122251b46bdaf634709",
                 "shasum": ""
             },
             "conflict": {
@@ -15184,7 +15185,7 @@
                 "october/backend": ">=1.0.319,<1.0.470",
                 "october/cms": "= 1.0.469|>=1.0.319,<1.0.469",
                 "october/october": ">=1.0.319,<1.0.466",
-                "october/rain": ">=1.0.319,<1.0.468",
+                "october/rain": "<1.0.472|>=1.1,<1.1.2",
                 "onelogin/php-saml": "<2.10.4",
                 "oneup/uploader-bundle": "<1.9.3|>=2,<2.1.5",
                 "openid/php-openid": "<2.3",
@@ -15228,7 +15229,7 @@
                 "sensiolabs/connect": "<4.2.3",
                 "serluck/phpwhois": "<=4.2.6",
                 "shopware/core": "<=6.3.4",
-                "shopware/platform": "<=6.3.4",
+                "shopware/platform": "<=6.3.5",
                 "shopware/shopware": "<5.6.9",
                 "silverstripe/admin": ">=1.0.3,<1.0.4|>=1.1,<1.1.1",
                 "silverstripe/assets": ">=1,<1.4.7|>=1.5,<1.5.2",
@@ -15375,7 +15376,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-02T10:05:32+00:00"
+            "time": "2021-02-10T03:02:31+00:00"
         },
         {
             "name": "sebastian/code-unit",
