@@ -4398,16 +4398,16 @@
         },
         {
             "name": "monicahq/laravel-cloudflare",
-            "version": "1.7.0",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-cloudflare.git",
-                "reference": "68b384fcd543cf055940108eb61dcce546b7ae9a"
+                "reference": "3ccdec99a9431de638653af4f693efef12dbe5f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/68b384fcd543cf055940108eb61dcce546b7ae9a",
-                "reference": "68b384fcd543cf055940108eb61dcce546b7ae9a",
+                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/3ccdec99a9431de638653af4f693efef12dbe5f0",
+                "reference": "3ccdec99a9431de638653af4f693efef12dbe5f0",
                 "shasum": ""
             },
             "require": {
@@ -4416,17 +4416,20 @@
                 "illuminate/console": "^5.5 || ^6.0 || ^7.0 || ^8.0",
                 "illuminate/http": "^5.5 || ^6.0 || ^7.0 || ^8.0",
                 "illuminate/support": "^5.5 || ^6.0 || ^7.0 || ^8.0",
-                "php": ">= 7.2.0"
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
-                "laravel/framework": "^5.6 || ^6.0 || ^7.0 || ^8.0",
-                "mockery/mockery": "^1.2",
-                "nunomaduro/larastan": "^0.5 || ^0.6",
-                "ocramius/package-versions": "1.5.1",
-                "orchestra/testbench": "^5.0 || ^6.0",
-                "phpunit/phpunit": "^9.0",
+                "laravel/framework": "^5.5 || ^6.0 || ^7.0 || ^8.0",
+                "mockery/mockery": "^1.4",
+                "nunomaduro/larastan": "^0",
+                "ocramius/package-versions": "^1.5 || ^2.1",
+                "orchestra/testbench": "^3.5 || ^5.0 || ^6.0 || ^4.0",
+                "phpstan/phpstan-deprecation-rules": "^0",
+                "phpstan/phpstan-phpunit": "^0",
+                "phpstan/phpstan-strict-rules": "^0",
+                "phpunit/phpunit": "^6.0 || ^7.0 || ^8.0 || ^9.0",
                 "thecodingmachine/phpstan-safe-rule": "^1.0",
-                "vimeo/psalm": "^3.9"
+                "vimeo/psalm": "^3.9 || ^4.0"
             },
             "type": "library",
             "extra": {
@@ -4464,7 +4467,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-09T08:46:26+00:00"
+            "time": "2021-02-13T19:22:19+00:00"
         },
         {
             "name": "monicahq/laravel-sabre",
