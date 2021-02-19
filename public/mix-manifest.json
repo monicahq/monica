@@ -1,9 +1,9 @@
 {
     "/js/manifest.js": "/js/manifest.js?id=7db827d654313dce4250",
     "/js/vendor.js": "/js/vendor.js?id=51cb953f8199af1ecf6c",
-    "/js/app.js": "/js/app.js?id=4c6f22e4801d6288c3a7",
-    "/css/app-ltr.css": "/css/app-ltr.css?id=71731471a70e00efa5b7",
-    "/css/app-rtl.css": "/css/app-rtl.css?id=f2be1f77bfcee838c94f",
+    "/js/app.js": "/js/app.js?id=4db3a4ef771d3e848649",
+    "/css/app-ltr.css": "/css/app-ltr.css?id=d51337ee0cadca788159",
+    "/css/app-rtl.css": "/css/app-rtl.css?id=c591126e0a4b1194a129",
     "/css/stripe.css": "/css/stripe.css?id=04066fb482310d18299c",
     "/js/stripe.js": "/js/stripe.js?id=31bf2d83f6ef3685ff0b"
 }
