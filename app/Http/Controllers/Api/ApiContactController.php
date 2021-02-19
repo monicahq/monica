@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
-use App\Http\Resources\Contact\Contact as ContactResource;
-use App\Jobs\UpdateLastConsultedDate;
 use App\Models\Contact\Contact;
-use App\Services\Contact\Contact\CreateContact;
-use App\Services\Contact\Contact\DeleteMeContact;
-use App\Services\Contact\Contact\DestroyContact;
+use Illuminate\Http\JsonResponse;
+use App\Jobs\UpdateLastConsultedDate;
+use Illuminate\Database\QueryException;
 use App\Services\Contact\Contact\SetMeContact;
+use Illuminate\Validation\ValidationException;
+use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
-use App\Services\Contact\Contact\UpdateContactFoodPreferences;
-use App\Services\Contact\Contact\UpdateContactIntroduction;
+use App\Services\Contact\Contact\DestroyContact;
+use Illuminate\Http\Resources\Json\JsonResource;
+use App\Services\Contact\Contact\DeleteMeContact;
 use App\Services\Contact\Contact\UpdateWorkInformation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Validation\ValidationException;
+use App\Http\Resources\Contact\Contact as ContactResource;
+use App\Services\Contact\Contact\UpdateContactIntroduction;
+use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 
 class ApiContactController extends ApiController
 {

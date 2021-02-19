@@ -2,12 +2,12 @@
 
 namespace App\Services\Contact\Contact;
 
-use App\Jobs\Avatars\GenerateDefaultAvatar;
-use App\Models\Contact\Contact;
-use App\Services\BaseService;
-use App\Services\Contact\Description\ClearPersonalDescription;
-use App\Services\Contact\Description\SetPersonalDescription;
 use Illuminate\Support\Arr;
+use App\Services\BaseService;
+use App\Models\Contact\Contact;
+use App\Jobs\Avatars\GenerateDefaultAvatar;
+use App\Services\Contact\Description\SetPersonalDescription;
+use App\Services\Contact\Description\ClearPersonalDescription;
 
 class UpdateContact extends BaseService
 {
