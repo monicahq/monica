@@ -5,7 +5,6 @@ namespace App\ViewHelpers\Contact;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Tag;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 

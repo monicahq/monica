@@ -4,7 +4,6 @@ namespace App\Models\Contact;
 
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Tag extends Model
 {
