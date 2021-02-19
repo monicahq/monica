@@ -24,7 +24,7 @@ return [
     'title_i18n' => 'Ρυθμίσεις περιοχής',
     'title_layout' => 'Διάταξη',
 
-    'me_title' => 'Η επαφή μου',
+    'me_title' => 'Me as a contact',
     'me_help' => 'Αυτή είναι η επαφή που <em>σας</em> εκπροσωπεί στην Monica',
     'me_select' => 'Επιλέξτε μια επαφή',
     'me_no_contact' => 'Δεν έχουν επιλεγεί επαφές.',
