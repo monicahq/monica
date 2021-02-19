@@ -1,6 +1,6 @@
 @foreach ($relationships as $relationship)
 @if (! $relationship->ofContact)
-@continue
+  @continue
 @endif
 <div class="sidebar-box-paragraph">
   {{-- NAME --}}
