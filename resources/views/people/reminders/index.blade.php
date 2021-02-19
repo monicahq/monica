@@ -61,7 +61,7 @@
             <a href="{{ route('people.reminders.edit', [$contact, $reminder]) }}" class="edit">
               <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
             </a>
-            <form method="POST" action="{{ route('people.reminders.destroy', [$contact, $reminder]) }}">
+            <form method="POST" action="{{ route('people.reminders.destroy', [$contact, $reminder]) }}" class="di">
               @method('DELETE')
               @csrf
               <confirm message="{{ trans('people.reminders_delete_confirmation') }}">
