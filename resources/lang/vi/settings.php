@@ -24,7 +24,7 @@ return [
     'title_i18n' => 'International settings',
     'title_layout' => 'Giao diện',
 
-    'me_title' => 'Danh bạ của tôi',
+    'me_title' => 'Me as a contact',
     'me_help' => 'Đây là liên hệ đại diện cho <em>bạn</em> trên Monica',
     'me_select' => 'Chọn 1 liên hệ',
     'me_no_contact' => 'Không có liên hệ nào được chọn.',
