@@ -62,6 +62,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/people', 'ContactsController@index')->name('index');
         Route::get('/people/add', 'ContactsController@create')->name('create');
         Route::get('/people/list', 'ContactsController@list')->name('list');
+        Route::get('/people/tags/{tag}', 'ContactsController@tag')->name('tag');
         Route::post('/people', 'ContactsController@store')->name('store');
         Route::get('/people/{contact}', 'ContactsController@show')->name('show');
         Route::get('/people/{contact}/edit', 'ContactsController@edit')->name('edit');

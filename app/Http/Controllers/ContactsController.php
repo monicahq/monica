@@ -2,34 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
+use App\Helpers\AccountHelper;
 use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;
-use App\Models\Contact\Tag;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Helpers\GenderHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
-use App\Helpers\AccountHelper;
 use App\Helpers\StorageHelper;
-use App\Models\Contact\Contact;
-use App\Services\VCard\ExportVCard;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use App\Jobs\UpdateLastConsultedDate;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Contracts\View\Factory;
-use App\Models\Relationship\Relationship;
-use Barryvdh\Debugbar\Facade as Debugbar;
-use App\Services\User\UpdateViewPreference;
-use Illuminate\Validation\ValidationException;
-use App\Services\Contact\Contact\CreateContact;
-use App\Services\Contact\Contact\UpdateContact;
-use App\Services\Contact\Contact\DestroyContact;
-use App\Services\Contact\Contact\UpdateWorkInformation;
-use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactSearch as ContactResource;
+use App\Jobs\UpdateLastConsultedDate;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Tag;
+use App\Models\Relationship\Relationship;
+use App\Services\Contact\Contact\CreateContact;
+use App\Services\Contact\Contact\DestroyContact;
+use App\Services\Contact\Contact\UpdateContact;
+use App\Services\Contact\Contact\UpdateContactFoodPreferences;
+use App\Services\Contact\Contact\UpdateWorkInformation;
+use App\Services\User\UpdateViewPreference;
+use App\Services\VCard\ExportVCard;
+use App\ViewHelpers\Contact\ContactIndexHelper;
+use Barryvdh\Debugbar\Facade as Debugbar;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 class ContactsController extends Controller
 {
@@ -78,72 +79,14 @@ class ContactsController extends Controller
             ]);
         }
 
-        $contacts = $user->account->contacts()->real();
-        if ($active) {
-            $archived = (clone $contacts)->notActive();
-            $contacts = (clone $contacts)->active();
-            $nbArchived = $archived->count();
-        } else {
-            $contacts = $contacts->notActive();
-            $nbArchived = $contacts->count();
-        }
-
-        $tags = null;
-        $url = '';
-        $count = 1;
-
-        if ($request->input('tag1')) {
-
-            // get contacts with selected tags
-            $tags = collect();
-
-            while ($request->input('tag'.$count)) {
-                $tag = Tag::where([
-                    'account_id' => auth()->user()->account_id,
-                    'name_slug' => $request->input('tag'.$count),
-                ]);
-                if ($tag->count() > 0) {
-                    $tag = $tag->get();
-
-                    if (! $tags->contains($tag[0])) {
-                        $tags = $tags->concat($tag);
-                    }
-
-                    $url .= 'tag'.$count.'='.$tag[0]->name_slug.'&';
-                }
-                $count++;
-            }
-            if ($tags->count() === 0) {
-                return redirect()->route('people.index');
-            } else {
-                $contacts = $contacts->tags($tags);
-            }
-        } elseif ($request->input('no_tag')) {
-            $contacts = $contacts->tags('NONE');
-        }
-
-        $contactsCount = (clone $contacts)->alive()->count();
-        $deceasedCount = (clone $contacts)->dead()->count();
-
-        if ($showDeceased === 'true') {
-            $contactsCount += $deceasedCount;
-        }
+        $contacts = ContactIndexHelper::getListOfContactRecentlyViewed($user->account);
+        $tags = ContactIndexHelper::getListOfTags($user->account);
 
         $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
 
         return view('people.index')
-            ->withAccountHasLimitations($accountHasLimitations)
-            ->with('hidingDeceased', $showDeceased != 'true')
-            ->with('deceasedCount', $deceasedCount)
-            ->withActive($active)
-            ->withContactsCount($contactsCount)
-            ->withHasArchived($nbArchived > 0)
-            ->withArchivedContacts($nbArchived)
-            ->withTags($tags)
-            ->withTagsCount(Tag::contactsCount())
-            ->withUrl($url)
-            ->withTagCount($count)
-            ->withTagLess($request->input('no_tag') ?? false);
+            ->with('contacts', $contacts)
+            ->with('tags', $tags);
     }
 
     /**
@@ -177,9 +120,11 @@ class ContactsController extends Controller
      */
     private function createForm(Request $request, bool $isContactMissing = false)
     {
-        if (AccountHelper::hasReachedContactLimit(auth()->user()->account)
+        if (
+            AccountHelper::hasReachedContactLimit(auth()->user()->account)
             && AccountHelper::hasLimitations(auth()->user()->account)
-            && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
+            && ! auth()->user()->account->legacy_free_plan_unlimited_contacts
+        ) {
             return redirect()->route('settings.subscriptions.index');
         }
 
@@ -227,7 +172,7 @@ class ContactsController extends Controller
             return redirect()->route('people.show', $contact);
         } else {
             return redirect()->route('people.create')
-                            ->with('status', trans('people.people_add_success', ['name' => $contact->name]));
+                ->with('status', trans('people.people_add_success', ['name' => $contact->name]));
         }
     }
 
