@@ -32,7 +32,7 @@
       style-class="vgt-table"
       :rtl="!dirltr"
       :sort-options="{
-        enabled: true
+        enabled: false,
       }"
       :pagination-options="{
         enabled: true,
@@ -57,8 +57,6 @@
       @on-search="onSearch"
       @on-row-click="onRowClick"
     >
-      <template slot="table-column">
-      </template>
       <div slot="emptystate" class="tc">
         {{ $t('people.people_search_no_results') }}
       </div>
@@ -147,13 +145,17 @@ export default {
 
       columns: [
         {
+          label: this.$t('app.contact_list_avatar'),
           field: 'avatar',
           width: '70px',
+          sortable: false,
         },
         {
+          label: this.$t('app.contact_list_name'),
           field: 'name',
         },
         {
+          label: this.$t('app.contact_list_description'),
           field: 'description',
         }
       ],
