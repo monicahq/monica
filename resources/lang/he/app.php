@@ -464,8 +464,8 @@ return [
     'dav_tasks_description' => 'המשימות של :name',
 
     // contact list
-    'contact_list_avatar' => 'Avatar',
-    'contact_list_name' => 'Contact',
-    'contact_list_description' => 'Description',
+    'contact_list_avatar' => 'תמונה ייצוגית',
+    'contact_list_name' => 'איש קשר',
+    'contact_list_description' => 'תיאור',
 
 ];
