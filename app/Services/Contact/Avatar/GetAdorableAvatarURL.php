@@ -7,8 +7,6 @@ use App\Services\BaseService;
 
 class GetAdorableAvatarURL extends BaseService
 {
-    private const ADORABLE_API = 'https://api.hello-avatar.com/adorables/';
-
     /**
      * Get the validation rules that apply to the service.
      *
