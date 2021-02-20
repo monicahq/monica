@@ -2,7 +2,6 @@
 
 namespace App\ViewHelpers\Contact;
 
-use App\Helpers\DateHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 

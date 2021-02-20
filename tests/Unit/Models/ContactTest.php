@@ -2,32 +2,32 @@
 
 namespace Tests\Unit\Models;
 
+use Carbon\Carbon;
+use App\Models\User\User;
+use Tests\FeatureTestCase;
 use App\Helpers\DateHelper;
-use App\Jobs\StayInTouch\ScheduleStayInTouch;
-use App\Models\Account\Account;
-use App\Models\Account\Activity;
-use App\Models\Account\Company;
-use App\Models\Account\Photo;
-use App\Models\Contact\Contact;
-use App\Models\Contact\Conversation;
 use App\Models\Contact\Debt;
-use App\Models\Contact\Document;
+use App\Models\Account\Photo;
 use App\Models\Contact\Gender;
-use App\Models\Contact\LifeEvent;
+use App\Models\Account\Account;
+use App\Models\Account\Company;
+use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
-use App\Models\Contact\Occupation;
+use App\Models\Account\Activity;
+use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
+use App\Models\Contact\LifeEvent;
 use App\Models\Instance\AuditLog;
+use App\Models\Contact\Occupation;
+use App\Models\Contact\Conversation;
 use App\Models\Instance\SpecialDate;
+use App\Notifications\StayInTouchEmail;
 use App\Models\Relationship\Relationship;
+use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
-use App\Models\User\User;
-use App\Notifications\StayInTouchEmail;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
-use Tests\FeatureTestCase;
 
 class ContactTest extends FeatureTestCase
 {

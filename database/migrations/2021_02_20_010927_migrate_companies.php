@@ -2,9 +2,9 @@
 
 use App\Models\Account\Company;
 use App\Models\Contact\Contact;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class MigrateCompanies extends Migration
 {
