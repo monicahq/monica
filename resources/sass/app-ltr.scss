@@ -43,7 +43,7 @@ $htmldir: ltr !default;
 $bg-hover-monica: #d7e3ec;
 
 .bg-gray-monica {
-  background-color: #fafafa;
+  background-color: #f2f4f8;
 }
 
 .bg-blue-monica {
@@ -255,8 +255,14 @@ a {
     font-size: 11px;
     text-decoration: underline;
     margin-right: 5px;
+
     @if $htmldir == rtl {
       float: right;
+    }
+
+    &:hover {
+      background-color: #313436;
+      color: #eee;
     }
   }
 }

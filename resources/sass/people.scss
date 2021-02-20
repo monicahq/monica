@@ -283,8 +283,8 @@
       }
     }
 
-    .sidebar-box-paragraph {
-      margin-bottom: 0;
+    .sidebar-box-paragraph:not(:last-child) {
+      margin-bottom: 9px;
     }
 
     .people-list {

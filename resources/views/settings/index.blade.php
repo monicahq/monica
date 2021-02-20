@@ -71,8 +71,7 @@
                     :existing-contacts="{{ \Safe\json_encode($existingContacts) }}"
                     :contact="{{ \Safe\json_encode($meContact) }}"
                     :limited="{{ \Safe\json_encode($accountHasLimitations) }}"
-                  >
-                  </me-contact>
+                  />
                   <small class="form-text text-muted">@lang('settings.me_help')</small>
                 </div>
               </div>
