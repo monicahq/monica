@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => 'Huidige profielfoto',
     'photo_make_profile_pic' => 'Stel in als profielfoto',
     'photo_delete' => 'Foto verwijderen',
-    'photo_next' => 'Volgende foto',
-    'photo_previous' => 'Vorige foto',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Wijzig je profielfoto',
