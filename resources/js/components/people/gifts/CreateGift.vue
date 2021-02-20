@@ -220,6 +220,11 @@ export default {
 
   mixins: [validationMixin],
 
+  model: {
+    prop: 'gift',
+    event: 'update'
+  },
+
   props: {
     contactId: {
       type: Number,
@@ -298,6 +303,12 @@ export default {
         !this.displayAmount ||
         !(this.displayRecipient || this.familyContacts.length == 0) ||
         !(this.displayUpload || this.reachLimit);
+    }
+  },
+
+  watch: {
+    gift: function (val) {
+      this.newGift = val;
     }
   },
 
@@ -380,21 +391,6 @@ export default {
         .catch(error => {
           vm._errorHandle(error);
         });
-    },
-
-    update() {
-      this.newGift.contact_id = this.contactId;
-      if (this.newGift) {
-        this.gift.contact_id = this.newGift.contact.id;
-        this.gift.name = this.newGift.name;
-        this.gift.comment = this.newGift.comment;
-        this.gift.url = this.newGift.url;
-        this.gift.amount = this.newGift.amount;
-        this.gift.status = this.newGift.status;
-        this.gift.recipient_id = this.newGift.recipient ? this.newGift.recipient.id : null;
-        this.hasRecipient = this.gift.recipient_id != null;
-        this.gift.date = this.newGift.date;
-      }
     },
 
     storePhoto(response) {

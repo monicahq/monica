@@ -88,13 +88,20 @@
       <div class="modal-mask">
         <div class="modal-wrapper">
           <div class="modal-container">
-
             <img :src="url" :alt="$t('people.photo_title')" class="mw-90 h-auto mb3" />
 
             <ul class="list pl0 tc">
-              <li class="di mr3"><a class="pointer" @click="displayPrev" v-if="canShowPrev">< {{ $t('people.photo_previous') }}</a></li>
-              <li class="di mr3"><button class="btn" @click="showModal = false">{{ $t('app.close') }}</button></li>
-              <li class="di"><a class="pointer" @click="displayNext" v-if="canShowNext">{{ $t('people.photo_next') }} ></a></li>
+              <li class="di mr3">
+                <a v-if="canShowPrev" class="pointer" @click="displayPrev">&lt;&nbsp;{{ $t('people.photo_previous') }}</a>
+              </li>
+              <li class="di mr3">
+                <button class="btn" @click="showModal = false">
+                  {{ $t('app.close') }}
+                </button>
+              </li>
+              <li class="di">
+                <a v-if="canShowNext" class="pointer" @click="displayNext">{{ $t('people.photo_next') }}&nbsp;&gt;</a>
+              </li>
             </ul>
           </div>
         </div>

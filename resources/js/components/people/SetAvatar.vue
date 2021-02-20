@@ -7,7 +7,7 @@
     <div class="mb3 mb0-ns">
       <!-- Default avatar -->
       <form-radio
-        v-model="avatar"
+        v-model="selectedAvatar"
         :name="'avatar'"
         :value="'default'"
         :dclass="'flex mb1'"
@@ -23,7 +23,7 @@
 
       <!-- Adorable avatar -->
       <form-radio
-        v-model="avatar"
+        v-model="selectedAvatar"
         :name="'avatar'"
         :value="'adorable'"
         :dclass="'flex mb1'"
@@ -40,7 +40,7 @@
       <!-- Gravatar -->
       <form-radio
         v-if="gravatarUrl"
-        v-model="avatar"
+        v-model="selectedAvatar"
         :name="'avatar'"
         :value="'gravatar'"
         :dclass="'flex mb1'"
@@ -57,7 +57,7 @@
       <!-- Existing avatar -->
       <form-radio
         v-if="initialAvatar === 'photo'"
-        v-model="avatar"
+        v-model="selectedAvatar"
         :name="'avatar'"
         :value="'photo'"
         :dclass="'flex mb1'"
@@ -73,7 +73,7 @@
 
       <!-- Upload avatar -->
       <form-radio
-        v-model="avatar"
+        v-model="selectedAvatar"
         :name="'avatar'"
         :value="'upload'"
         :dclass="'flex mb1'"
@@ -160,6 +160,7 @@ export default {
 
   data() {
     return {
+      selectedAvatar: '',
       initialAvatar: '',
       uploadedImgUrl: '',
       croppedImgUrl: '',
@@ -172,8 +173,15 @@ export default {
     }
   },
 
+  watch: {
+    avatar(val) {
+      this.selectedAvatar = val;
+    }
+  },
+
   mounted() {
     this.initialAvatar = this.avatar;
+    this.selectedAvatar = this.avatar;
   },
 
   methods: {
