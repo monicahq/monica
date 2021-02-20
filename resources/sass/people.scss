@@ -248,20 +248,26 @@
 
   .profile {
     .sidebar-box {
-      background-color: #fafafa;
+      background-color: #f2f4f8;
       border: 1px solid #eee;
       border-radius: 3px;
       color: #333;
       margin-bottom: 25px;
       padding: 10px;
       position: relative;
+      font-size: 0.875rem;
+
+      &.edit {
+        background-color: #fffceb;
+        border-color: gold;
+      }
     }
 
     .sidebar-box-title {
       margin-bottom: 4px;
       position: relative;
 
-      strong {
+      h3 {
         font-size: 12px;
         font-weight: 500;
         text-transform: uppercase;
