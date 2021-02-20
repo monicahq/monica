@@ -98,7 +98,7 @@ class UpdateContactTest extends TestCase
 
         $request = [
             'account_id' => 11111,
-            'author_id' => $user()->id,
+            'author_id' => $user->id,
             'contact_id' => $contact->id,
             'first_name' => 'john',
             'middle_name' => 'franck',
