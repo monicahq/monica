@@ -3,7 +3,6 @@
 namespace App\ViewHelpers\Contact;
 
 use App\Models\Contact\Contact;
-use Illuminate\Support\Collection;
 
 class ContactIndexViewHelper
 {
