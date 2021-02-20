@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => 'Nuværende profilbillede',
     'photo_make_profile_pic' => 'Brug som profilbillede',
     'photo_delete' => 'Slet billede',
-    'photo_next' => 'Næste billede',
-    'photo_previous' => 'Forrige billede',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Skift profilbillede',
