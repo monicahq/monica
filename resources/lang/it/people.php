@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => 'Attuale immagine del profilo',
     'photo_make_profile_pic' => 'Rendi questa foto immagine del profilo',
     'photo_delete' => 'Elimina foto',
-    'photo_next' => 'Foto successiva',
-    'photo_previous' => 'Foto precedente',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Cambia il tuo avatar',
