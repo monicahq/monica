@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Ingen resultater fundet',
     'people_search_next' => 'Næste',
     'people_search_prev' => 'Forrige',
-    'people_search_rows_per_page' => 'Rækker per side:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'af',
     'people_search_page' => 'Side',
     'people_search_all' => 'Alle',
