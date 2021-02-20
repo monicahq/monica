@@ -20,7 +20,7 @@ Monica depends on the following:
 
 -   [Apache httpd webserver](https://httpd.apache.org/)
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
--   PHP 7.2+
+-   PHP 7.4+
 -   [Composer](https://getcomposer.org/)
 -   [MySQL](https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/)
 

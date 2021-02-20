@@ -129,7 +129,7 @@ There are multiple ways of getting started with Monica:
 
 If you want to host it yourself, you need
 
-- PHP 7.2+ or newer
+- PHP 7.4+ or newer
 - HTTP server with PHP support (eg: Apache, Nginx, Caddy)
 - Composer
 - MySQL
