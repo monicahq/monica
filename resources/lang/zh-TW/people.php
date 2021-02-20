@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => '未找到任何結果',
     'people_search_next' => '下一頁',
     'people_search_prev' => '上一頁',
-    'people_search_rows_per_page' => '每頁行數:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => '/',
     'people_search_page' => '頁',
     'people_search_all' => '所有',
