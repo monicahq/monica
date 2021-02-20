@@ -14,14 +14,14 @@
 Monica can be configured in shared hosting environments with a little differences that we can remedy easily. In this scenerio, Monica depends on the following:
 
 -   A shared cPanel Server
--   PHP 7.2+
+-   PHP 7.4+
 -   [Composer](https://getcomposer.org/)
 -   [MySQL](https://www.mysql.com/)
 -   SSH Access for an accont on the cPanel server
 
 **Git:** Git should come pre-installed with your server. If it doesn't - use the installation instructions in the link.
 
-**PHP:** Install php7.2 minimum. Generally cPanel will have a PHP 7 version installed, verify unser the 'PHP Version' section from the cPanel section. Make sure these extensions are enabled:
+**PHP:** Install php7.4 minimum. Generally cPanel will have a PHP 7 version installed, verify unser the 'PHP Version' section from the cPanel section. Make sure these extensions are enabled:
 
 -   bcmath
 -   curl
