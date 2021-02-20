@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => 'Ảnh đại diện hiện tại',
     'photo_make_profile_pic' => 'Tạo ảnh đại diện',
     'photo_delete' => 'Delete photo',
-    'photo_next' => 'Next photo',
-    'photo_previous' => 'Previous photo',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Change your avatar',
