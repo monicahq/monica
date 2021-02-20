@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Результатів не знайдено',
     'people_search_next' => 'Далі',
     'people_search_prev' => 'Назад',
-    'people_search_rows_per_page' => 'Рядків на сторінку:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'з',
     'people_search_page' => 'Сторінка',
     'people_search_all' => 'Усі',
