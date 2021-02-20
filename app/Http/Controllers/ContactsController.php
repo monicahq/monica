@@ -2,35 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
+use App\Helpers\AccountHelper;
 use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;
-use App\Models\Contact\Tag;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Helpers\GenderHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
-use App\Helpers\AccountHelper;
 use App\Helpers\StorageHelper;
-use App\Models\Contact\Contact;
-use App\Services\VCard\ExportVCard;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use App\Jobs\UpdateLastConsultedDate;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Contracts\View\Factory;
-use App\Models\Relationship\Relationship;
-use Barryvdh\Debugbar\Facade as Debugbar;
-use App\Services\User\UpdateViewPreference;
-use Illuminate\Validation\ValidationException;
-use App\Services\Contact\Contact\CreateContact;
-use App\Services\Contact\Contact\UpdateContact;
-use App\Services\Contact\Contact\DestroyContact;
-use App\ViewHelpers\Contact\ContactIndexViewHelper;
-use App\Services\Contact\Contact\UpdateWorkInformation;
-use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactSearch as ContactResource;
+use App\Jobs\UpdateLastConsultedDate;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Tag;
+use App\Models\Relationship\Relationship;
+use App\Services\Contact\Contact\CreateContact;
+use App\Services\Contact\Contact\DestroyContact;
+use App\Services\Contact\Contact\UpdateContact;
+use App\Services\Contact\Contact\UpdateContactFoodPreferences;
+use App\Services\Contact\Contact\UpdateWorkInformation;
+use App\Services\User\UpdateViewPreference;
+use App\Services\VCard\ExportVCard;
+use App\ViewHelpers\Contact\ContactEditWorkViewHelper;
+use App\ViewHelpers\Contact\ContactIndexViewHelper;
+use Barryvdh\Debugbar\Facade as Debugbar;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 class ContactsController extends Controller
 {
@@ -485,7 +486,10 @@ class ContactsController extends Controller
      */
     public function editWork(Request $request, Contact $contact)
     {
+        $companies = ContactEditWorkViewHelper::companies($contact->account);
+
         return view('people.work.edit')
+            ->withCompanies($companies)
             ->withContact($contact);
     }
 
@@ -499,6 +503,9 @@ class ContactsController extends Controller
      */
     public function updateWork(Request $request, Contact $contact)
     {
+        if ($request->input('newCompany')) {
+        }
+
         $contact = app(UpdateWorkInformation::class)->execute([
             'account_id' => auth()->user()->account_id,
             'author_id' => auth()->user()->id,

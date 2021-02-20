@@ -31,6 +31,7 @@
             <directory suffix="Test.php">./tests/Unit/Services</directory>
             <directory suffix="Test.php">./tests/Unit/Traits</directory>
             <directory suffix="Test.php">./tests/Unit/Jobs</directory>
+            <directory suffix="Test.php">./tests/Unit/ViewHelpers</directory>
         </testsuite>
     </testsuites>
 

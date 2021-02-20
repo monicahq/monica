@@ -8,17 +8,19 @@ use Illuminate\Support\Collection;
 class ContactIndexViewHelper
 {
     /**
-     * Prepare a collection of audit logs.
+     * Get information about the contact.
      *
-     * @param mixed $logs
+     * @param Contact $contact
      * @return array
      */
     public static function information(Contact $contact): array
     {
+        $company = $contact->company;
+
         return [
             'work' => [
                 'job' => $contact->job,
-                'company' => $contact->company->name,
+                'company' => $company ? $contact->company->name : null,
             ],
         ];
     }

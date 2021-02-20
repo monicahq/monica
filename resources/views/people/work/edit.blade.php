@@ -1,62 +1,58 @@
 @extends('layouts.skeleton')
 
 @section('content')
-  <div class="people-show">
 
-    {{-- Breadcrumb --}}
-    <div class="breadcrumb">
-      <div class="{{ Auth::user()->getFluidLayout() }}">
-        <div class="row">
-          <div class="col-12">
-            <ul class="horizontal">
-              <li>
-                <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
-              </li>
-              <li>
-                <a href="{{ route('people.index') }}">{{ trans('app.breadcrumb_list_contacts') }}</a>
-              </li>
-              <li>
-                {{ $contact->name }}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+<section class="ph3 ph0-ns">
+
+  {{-- Breadcrumb --}}
+  <div class="mt4 mw7 center mb3">
+    <p><a href="{{ route('people.show', $contact) }}">&lt; {{ $contact->name }}</a></p>
+    <div class="mt4 mw7 center mb3">
+      <h3 class="f3 fw5">{{ trans('people.work_edit_title', ['name' => $contact->first_name]) }}</h3>
     </div>
-
-    <!-- Page content -->
-    <div class="main-content central-form">
-      <div class="{{ Auth::user()->getFluidLayout() }}">
-        <div class="row">
-          <div class="col-12 col-sm-6 offset-sm-3 offset-sm-3-right">
-            <form method="POST" action="{{ route('people.work.update', $contact) }}" enctype="multipart/form-data">
-              @csrf
-
-              @include('partials.errors')
-
-              <h2>{{ trans('people.work_edit_title', ['name' => $contact->first_name]) }}</h2>
-
-              {{-- Job --}}
-              <div class="form-group">
-                <label for="job">{{ trans('people.work_edit_job') }}</label>
-                <input type="text" class="form-control" name="job" id="job" value="{{ $contact->job }}" autofocus>
-              </div>
-
-              {{-- Company --}}
-              <div class="form-group">
-                <label for="company">{{ trans('people.work_edit_company') }}</label>
-                <input type="text" class="form-control" name="company" id="company" value="{{ $contact->company }}">
-              </div>
-
-              <div class="form-group actions">
-                <button type="submit" class="btn btn-primary">{{ trans('app.save') }}</button>
-                <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
-              </div> <!-- .form-group -->
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
+
+  <div class="mw7 center br3 ba b--gray-monica bg-white mb6">
+    <form method="POST" action="{{ route('people.work.update', $contact) }}" enctype="multipart/form-data">
+      @csrf
+      @include('partials.errors')
+
+      {{-- Job --}}
+      <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
+        <label for="job">{{ trans('people.work_edit_job') }}</label>
+        <input type="text" class="form-control" name="job" id="job" value="{{ $contact->job }}" autofocus>
+      </div>
+
+      {{-- Company --}}
+      <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
+        <label for="existingCompany">Company</label>
+        <select class="form-control" name="existingCompany" id="existingCompany">
+          <option value="">Choose an existing company</option>
+          @foreach ($companies as $company)
+            <option value="{{ $company['id'] }}">
+              {{ $company['name'] }}
+            </option>
+          @endforeach
+        </select>
+
+        {{-- Create a new company --}}
+        <label for="newCompany">or {{ trans('people.work_edit_company') }}</label>
+        <input type="text" class="form-control" name="newCompany" id="newCompany" value="{{ $contact->company }}">
+      </div>
+
+      {{-- Form actions --}}
+      <div class="ph4-ns ph3 pv3">
+        <div class="flex-ns justify-between">
+          <div>
+            <a href="{{ route ('people.show', $contact) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
+          </div>
+          <div>
+            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">{{ trans('app.save') }}</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
 @endsection

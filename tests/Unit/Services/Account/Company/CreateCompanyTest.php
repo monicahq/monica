@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Services\Account\Company;
 
-use Tests\TestCase;
-use App\Models\User\User;
+use App\Jobs\AuditLog\LogAccountAudit;
 use App\Models\Account\Account;
 use App\Models\Account\Company;
-use Illuminate\Support\Facades\Queue;
-use App\Jobs\AuditLog\LogAccountAudit;
-use Illuminate\Validation\ValidationException;
+use App\Models\User\User;
 use App\Services\Account\Company\CreateCompany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class CreateCompanyTest extends TestCase
 {
@@ -58,6 +58,42 @@ class CreateCompanyTest extends TestCase
                     'name' => 'central perk',
                 ]);
         });
+    }
+
+    /** @test */
+    public function it_doesnt_store_a_company_if_a_company_with_this_name_already_exists()
+    {
+        Queue::fake();
+
+        $account = factory(Account::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $company = factory(Company::class)->create([
+            'account_id' => $account->id,
+            'name' => 'Lawyers Associate',
+        ]);
+
+        $request = [
+            'account_id' => $account->id,
+            'author_id' => $user->id,
+            'name' => 'Lawyers Associate',
+        ];
+
+        $company = app(CreateCompany::class)->execute($request);
+
+        $this->assertDatabaseHas('companies', [
+            'id' => $company->id,
+            'account_id' => $account->id,
+            'name' => 'Lawyers Associate',
+        ]);
+
+        $this->assertInstanceOf(
+            Company::class,
+            $company
+        );
+
+        Queue::assertNotPushed(LogAccountAudit::class);
     }
 
     /** @test */

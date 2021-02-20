@@ -2,9 +2,9 @@
 
 use App\Models\Account\Company;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class MigrateCompanies extends Migration
 {
@@ -20,6 +20,9 @@ class MigrateCompanies extends Migration
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('set null');
         });
 
+        // migrate all company strings to Company object
+        // we also make sure that we don’t create duplicates when creating new
+        // companies Objects
         Contact::whereNotNull('company')->select('id', 'company', 'account_id')->chunk(100, function ($contacts) {
             $contacts->each(function (Contact $contact) {
                 $companyName = $contact->company;
