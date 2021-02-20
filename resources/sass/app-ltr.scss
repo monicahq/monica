@@ -255,8 +255,14 @@ a {
     font-size: 11px;
     text-decoration: underline;
     margin-right: 5px;
+
     @if $htmldir == rtl {
       float: right;
+    }
+
+    &:hover {
+      background-color: #313436;
+      color: #eee;
     }
   }
 }

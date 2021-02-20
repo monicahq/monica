@@ -1,33 +1,32 @@
 @foreach ($relationships as $relationship)
-  @if (! $relationship->ofContact)
-    @continue
-  @endif
-  <div class="sidebar-box-paragraph">
-    <span class="silver fw3 ba br2 ph1 {{ htmldir() == 'ltr' ? '' : 'fr' }}">{{ $relationship->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null) }}</span>
-
-    {{-- NAME --}}
-    @if ($relationship->ofContact->is_partial)
+@if (! $relationship->ofContact)
+  @continue
+@endif
+<div class="sidebar-box-paragraph">
+  {{-- NAME --}}
+  @if ($relationship->ofContact->is_partial)
     <span class="{{ htmldir() == 'ltr' ? '' : 'fr' }}">{{ $relationship->ofContact->name }}</span>
-    @else
+  @else
     <a class="{{ htmldir() == 'ltr' ? '' : 'fr' }}" href="{{ route('people.show', $relationship->ofContact) }}">{{ $relationship->ofContact->name }}</a>
-    @endif
+  @endif
 
-    {{-- AGE --}}
-    @if ($relationship->ofContact->is_dead)
-      @if ($relationship->ofContact->deceasedDate)
-        <span class="{{ htmldir() == 'ltr' ? '' : 'fr' }}">({{ $relationship->ofContact->getAgeAtDeath() }})</span>
-      @endif
-    @elseif ($relationship->ofContact->birthday_special_date_id)
-      @if ($relationship->ofContact->birthdate->getAge())
-        <span class="{{ htmldir() == 'ltr' ? '' : 'fr' }}">({{ $relationship->ofContact->birthdate->getAge() }})</span>
-      @endif
+  {{-- AGE --}}
+  @if ($relationship->ofContact->is_dead)
+    @if ($relationship->ofContact->deceasedDate)
+      <span class="{{ htmldir() == 'ltr' ? '' : 'fr' }}">({{ $relationship->ofContact->getAgeAtDeath() }})</span>
     @endif
+  @elseif ($relationship->ofContact->birthday_special_date_id)
+    @if ($relationship->ofContact->birthdate->getAge())
+      <span class="{{ htmldir() == 'ltr' ? '' : 'fr' }}">({{ $relationship->ofContact->birthdate->getAge() }})</span>
+    @endif
+  @endif
 
+  <span class="silver fw3 ba br2 ph1 {{ htmldir() == 'ltr' ? '' : 'fr' }}">{{ $relationship->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null) }}</span>
+
+  <div class="db mt1">
     {{-- ACTIONS: EDIT/DELETE --}}
-    <a href="{{ route('people.relationships.edit', [$contact, $relationship]) }}" class="action-link {{ $contact->hashID() }}-edit-relationship">
-      {{ trans('app.edit') }}
-    </a>
-    <form method="POST" action="{{ route('people.relationships.destroy', [$contact, $relationship]) }}">
+    <a href="{{ route('people.relationships.edit', [$contact, $relationship]) }}" class="action-link {{ $contact->hashID() }}-edit-relationship">{{ trans('app.edit') }}</a>
+    <form method="POST" action="{{ route('people.relationships.destroy', [$contact, $relationship]) }}" class="di">
       @method('DELETE')
       @csrf
       <confirm message="{{ trans('people.relationship_unlink_confirmation') }}" link-class="action-link">
@@ -35,5 +34,6 @@
       </confirm>
     </form>
   </div>
-  <div class="cb"></div>
+</div>
+<div class="cb"></div>
 @endforeach
