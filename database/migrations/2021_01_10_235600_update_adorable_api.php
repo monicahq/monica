@@ -20,7 +20,7 @@ class UpdateAdorableAPI extends Migration
             ->chunk(1000, function ($contacts) use ($adorable_api) {
                 foreach ($contacts as $contact) {
                     $contact->update([
-                        'avatar_adorable_url' => Str::of($contact->avatar_adorable_url)->replace('https://api.adorable.io/avatars/', $adorable_api)
+                        'avatar_adorable_url' => Str::of($contact->avatar_adorable_url)->replace('https://api.adorable.io/avatars/', $adorable_api),
                     ]);
                 }
             });
