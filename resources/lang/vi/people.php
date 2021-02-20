@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Không tìm thấy kết quả',
     'people_search_next' => 'Kế tiếp',
     'people_search_prev' => 'Trước đó',
-    'people_search_rows_per_page' => 'Số dòng trên mỗi trang:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'của',
     'people_search_page' => 'Trang',
     'people_search_all' => 'Tất cả',
