@@ -8,7 +8,7 @@
     <h3>{{ $t('settings.2fa_otp_title') }}</h3>
 
     <div class="form-group">
-      <a v-if="activated" class="btn btn-warning" href="" @click.prevent="showDisableModal">
+      <a v-if="selectActivated" class="btn btn-warning" href="" @click.prevent="showDisableModal">
         {{ $t('settings.2fa_disable_title') }}
       </a>
       <a v-else class="btn btn-primary" href="" @click.prevent="showEnableModal">
@@ -101,6 +101,7 @@ export default {
 
   data() {
     return {
+      selectActivated: false,
       errorMessage: '',
       infoMessage: '',
       success: false,
@@ -110,12 +111,22 @@ export default {
     };
   },
 
+  watch: {
+    activated: function (val) {
+      this.selectActivated = val;
+    }
+  },
+
+  mounted() {
+    this.selectActivated = this.activated;
+  },
+
   methods: {
     register() {
       axios.post('settings/security/2fa-enable', { one_time_password: this.one_time_password })
         .then(response => {
           this.closeEnableModal();
-          this.activated = response.data.success;
+          this.selectActivated = response.data.success;
           if (response.data.success) {
             this.notify(this.$t('settings.2fa_enable_success'), true);
           } else {
@@ -131,7 +142,7 @@ export default {
       axios.post('settings/security/2fa-disable', { one_time_password: this.one_time_password })
         .then(response => {
           this.closeDisableModal();
-          this.activated = ! response.data.success;
+          this.selectActivated = ! response.data.success;
           if (response.data.success) {
             this.notify(this.$t('settings.2fa_disable_success'), true);
           } else {

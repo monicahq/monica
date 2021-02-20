@@ -40,7 +40,7 @@
                 </a>
               </li>
               <li class="di">
-                <confirm :message="$t('journal.delete_confirmation')" @confirm="trash()" v-cy-name="'entry-delete-button-' + entry.id">
+                <confirm v-cy-name="'entry-delete-button-' + entry.id" :message="$t('journal.delete_confirmation')" @confirm="trash()">
                   {{ $t('app.delete') }}
                 </confirm>
               </li>
