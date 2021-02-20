@@ -92,7 +92,7 @@
 
             <ul class="list pl0 tc">
               <li class="di mr3">
-                <a v-if="canShowPrev" class="pointer" @click="displayPrev">&lt;&nbsp;{{ $t('people.photo_previous') }}</a>
+                <a v-if="canShowPrev" class="pointer" @click="displayPrev">{{ $t('people.photo_previous') }}</a>
               </li>
               <li class="di mr3">
                 <button class="btn" @click="showModal = false">
@@ -100,7 +100,7 @@
                 </button>
               </li>
               <li class="di">
-                <a v-if="canShowNext" class="pointer" @click="displayNext">{{ $t('people.photo_next') }}&nbsp;&gt;</a>
+                <a v-if="canShowNext" class="pointer" @click="displayNext">{{ $t('people.photo_next') }}</a>
               </li>
             </ul>
           </div>
