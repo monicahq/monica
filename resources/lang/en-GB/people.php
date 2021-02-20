@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'No results found',
     'people_search_next' => 'Next',
     'people_search_prev' => 'Prev',
-    'people_search_rows_per_page' => 'Rows per page:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'of',
     'people_search_page' => 'Page',
     'people_search_all' => 'All',
