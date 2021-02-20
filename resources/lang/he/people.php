@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'לא נמצאו תוצאות',
     'people_search_next' => 'הבא',
     'people_search_prev' => 'הקודם',
-    'people_search_rows_per_page' => 'שורות בכל עמוד:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'מתוך',
     'people_search_page' => 'עמוד',
     'people_search_all' => 'הכול',
