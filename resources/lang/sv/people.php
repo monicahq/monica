@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => 'Nuvarande profilbild',
     'photo_make_profile_pic' => 'Skapa profilbild',
     'photo_delete' => 'Ta bort foto',
-    'photo_next' => 'Nästa foto',
-    'photo_previous' => 'Föregående foto',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Ändra din avatar',
