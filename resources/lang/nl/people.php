@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Geen resultaten gevonden',
     'people_search_next' => 'Volgende',
     'people_search_prev' => 'Vorige',
-    'people_search_rows_per_page' => 'Rijen per pagina:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'van',
     'people_search_page' => 'Pagina',
     'people_search_all' => 'Iedereen',
