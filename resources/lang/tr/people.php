@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Sonuç bulunamadı',
     'people_search_next' => 'Sonraki',
     'people_search_prev' => 'Önceki',
-    'people_search_rows_per_page' => 'Sayfa başına satır:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => '/',
     'people_search_page' => 'Sayfa',
     'people_search_all' => 'Hepsi',
