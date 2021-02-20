@@ -77,6 +77,7 @@ class Contact extends Model
         'middle_name',
         'last_name',
         'nickname',
+        'description',
         'gender_id',
         'account_id',
         'created_at',
@@ -155,16 +156,6 @@ class Contact extends Model
      * @var string
      */
     protected $nameOrder = 'firstname_lastname';
-
-    /**
-     * Get Searchable Fields.
-     *
-     * @return array
-     */
-    public function getSearchableFields()
-    {
-        return $this->searchable_columns;
-    }
 
     /**
      * Get the user associated with the contact.
