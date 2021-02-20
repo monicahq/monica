@@ -27,6 +27,7 @@ class Entry extends JsonResource
             'account' => [
                 'id' => $this->account_id,
             ],
+            'date' => $this->date,
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];
