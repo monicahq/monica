@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Δε βρέθηκαν αποτελέσματα',
     'people_search_next' => 'Επόμενο',
     'people_search_prev' => 'Προηγούμενο',
-    'people_search_rows_per_page' => 'Εγγραφές ανά σελίδα:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'από',
     'people_search_page' => 'Σελίδα',
     'people_search_all' => 'Όλα',
