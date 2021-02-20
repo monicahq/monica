@@ -4,14 +4,14 @@
 
 Monica can run on Debian Buster.
 
--   [Prerequisites](#prerequisites)
--   [Installation steps](#installation-steps)
-    -   [1. Clone the repository](#1-clone-the-repository)
-    -   [2. Setup the database](#2-setup-the-database)
-    -   [3. Configure Monica](#3-configure-monica)
-    -   [4. Configure cron job](#4-configure-cron-job)
-    -   [5. Configure Apache webserver](#5-configure-apache-webserver)
-    -   [Final step](#final-step)
+- [Prerequisites](#prerequisites)
+- [Installation steps](#installation-steps)
+  - [1. Clone the repository](#1-clone-the-repository)
+  - [2. Setup the database](#2-setup-the-database)
+  - [3. Configure Monica](#3-configure-monica)
+  - [4. Configure cron job](#4-configure-cron-job)
+  - [5. Configure Apache webserver](#5-configure-apache-webserver)
+  - [Final step](#final-step)
 
 ## Prerequisites
 
@@ -40,7 +40,7 @@ sudo apt install -y git
 
 **PHP:**
 
-Install PHP 7.3 with these extensions:
+Install PHP 7.4 with these extensions:
 
 ```sh
 sudo apt install -y php php-bcmath php-curl php-gd php-gmp php-imagick \
