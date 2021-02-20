@@ -60,7 +60,7 @@
       <div slot="emptystate" class="tc">
         {{ $t('people.people_search_no_results') }}
       </div>
-      <template v-slot:emptystate>
+      <template #emptystate>
         <div v-if="!ready" class="vgt-center-align vgt-text-disabled h3">
           {{ $t('app.loading') }}
         </div>
