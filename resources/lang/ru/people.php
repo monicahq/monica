@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Ничего не найдено',
     'people_search_next' => 'Вперёд',
     'people_search_prev' => 'Назад',
-    'people_search_rows_per_page' => 'Строк на странице:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'из',
     'people_search_page' => 'Страница',
     'people_search_all' => 'Все',
