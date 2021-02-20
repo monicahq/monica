@@ -2,12 +2,12 @@
 
 namespace App\Services\Contact\Contact;
 
-use Illuminate\Support\Arr;
-use App\Services\BaseService;
-use App\Models\Contact\Contact;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
-use App\Services\Contact\Description\SetPersonalDescription;
+use App\Models\Contact\Contact;
+use App\Services\BaseService;
 use App\Services\Contact\Description\ClearPersonalDescription;
+use App\Services\Contact\Description\SetPersonalDescription;
+use Illuminate\Support\Arr;
 
 class UpdateContact extends BaseService
 {
@@ -64,19 +64,13 @@ class UpdateContact extends BaseService
             ->findOrFail($data['contact_id']);
 
         $this->updateGeneralInformation();
-
+        $this->updateDescription();
         $this->updateBirthDayInformation();
-
         $this->updateDeceasedInformation();
 
         return $this->contact->refresh();
     }
 
-    /**
-     * Update general information.
-     *
-     * @return void
-     */
     private function updateGeneralInformation(): void
     {
         // filter out the data that shall not be updated here
@@ -102,39 +96,35 @@ class UpdateContact extends BaseService
         );
 
         $oldName = $this->contact->name;
-        $oldDescription = $this->contact->description;
-
         $this->contact->update($dataOnly);
 
         // only update the avatar if the name has changed
         if ($oldName != $this->contact->name) {
             GenerateDefaultAvatar::dispatch($this->contact);
         }
+    }
 
-        if ($oldDescription != $this->data['description'] && $this->data['description']) {
-            app(SetPersonalDescription::class)->execute([
-                'account_id' => $this->data['account_id'],
-                'contact_id' => $this->data['contact_id'],
-                'author_id' => $this->data['author_id'],
-                'description' => $this->data['description'],
-            ]);
-        }
-
-        if ($oldDescription != $this->data['description'] && ! $this->data['description']) {
+    private function updateDescription(): void
+    {
+        if (is_null($this->nullOrValue($this->data, 'description'))) {
             app(ClearPersonalDescription::class)->execute([
                 'account_id' => $this->data['account_id'],
                 'contact_id' => $this->data['contact_id'],
                 'author_id' => $this->data['author_id'],
             ]);
+        } else {
+            if ($this->contact->description != $this->data['description']) {
+                app(SetPersonalDescription::class)->execute([
+                    'account_id' => $this->data['account_id'],
+                    'contact_id' => $this->data['contact_id'],
+                    'author_id' => $this->data['author_id'],
+                    'description' => $this->data['description'],
+                ]);
+            }
         }
     }
 
-    /**
-     * Update the information about the birthday.
-     *
-     * @return void
-     */
-    private function updateBirthDayInformation()
+    private function updateBirthDayInformation(): void
     {
         app(UpdateBirthdayInformation::class)->execute([
             'account_id' => $this->data['account_id'],
@@ -150,12 +140,7 @@ class UpdateContact extends BaseService
         ]);
     }
 
-    /**
-     * Update the information about the date of death.
-     *
-     * @return void
-     */
-    private function updateDeceasedInformation()
+    private function updateDeceasedInformation(): void
     {
         app(UpdateDeceasedInformation::class)->execute([
             'account_id' => $this->data['account_id'],

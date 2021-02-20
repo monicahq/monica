@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use Tests\FeatureTestCase;
-use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Gender;
 use App\Models\Relationship\Relationship;
-use Illuminate\Foundation\Testing\WithFaker;
 use App\Models\Relationship\RelationshipType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\FeatureTestCase;
 
 class RelationshipTest extends FeatureTestCase
 {
