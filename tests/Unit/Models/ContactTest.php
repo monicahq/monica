@@ -2,31 +2,32 @@
 
 namespace Tests\Unit\Models;
 
-use Carbon\Carbon;
-use App\Models\User\User;
-use Tests\FeatureTestCase;
 use App\Helpers\DateHelper;
-use App\Models\Contact\Debt;
-use App\Models\Account\Photo;
-use App\Models\Contact\Gender;
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
-use App\Models\Contact\Message;
-use App\Models\Account\Activity;
-use App\Models\Contact\Document;
-use App\Models\Contact\Reminder;
-use App\Models\Contact\LifeEvent;
-use App\Models\Instance\AuditLog;
-use App\Models\Contact\Occupation;
-use App\Models\Contact\Conversation;
-use App\Models\Instance\SpecialDate;
-use App\Notifications\StayInTouchEmail;
-use App\Models\Relationship\Relationship;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
+use App\Models\Account\Account;
+use App\Models\Account\Activity;
+use App\Models\Account\Company;
+use App\Models\Account\Photo;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Conversation;
+use App\Models\Contact\Debt;
+use App\Models\Contact\Document;
+use App\Models\Contact\Gender;
+use App\Models\Contact\LifeEvent;
+use App\Models\Contact\Message;
+use App\Models\Contact\Occupation;
+use App\Models\Contact\Reminder;
+use App\Models\Instance\AuditLog;
+use App\Models\Instance\SpecialDate;
+use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
+use App\Models\User\User;
+use App\Notifications\StayInTouchEmail;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
+use Tests\FeatureTestCase;
 
 class ContactTest extends FeatureTestCase
 {
@@ -133,6 +134,20 @@ class ContactTest extends FeatureTestCase
             'contact_id' => $contact->id,
         ]);
         $this->assertTrue($contact->occupations()->exists());
+    }
+
+    /** @test */
+    public function it_belongs_to_a_company()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $company = factory(Company::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $contact->company_id = $company->id;
+        $contact->save();
+
+        $this->assertTrue($contact->company()->exists());
     }
 
     /** @test */

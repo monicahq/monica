@@ -140,3 +140,10 @@ $factory->define(App\Models\Account\Weather::class, function (Faker\Generator $f
         'created_at' => now(),
     ];
 });
+
+$factory->define(App\Models\Account\Company::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'name' => 'Dunder Mifflin',
+    ];
+});

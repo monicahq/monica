@@ -2,38 +2,39 @@
 
 namespace App\Models\Contact;
 
-use DateTime;
-use App\Traits\Searchable;
-use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
-use App\Models\Account\Photo;
-use App\Models\Journal\Entry;
-use function Safe\preg_split;
 use App\Helpers\StorageHelper;
 use App\Helpers\WeatherHelper;
-use Illuminate\Support\Carbon;
 use App\Models\Account\Account;
-use App\Models\Account\Weather;
 use App\Models\Account\Activity;
-use App\Models\Instance\AuditLog;
-use function Safe\preg_match_all;
-use Illuminate\Support\Collection;
+use App\Models\Account\ActivityStatistic;
 use App\Models\Account\AddressBook;
+use App\Models\Account\Company;
+use App\Models\Account\Photo;
+use App\Models\Account\Weather;
+use App\Models\Instance\AuditLog;
 use App\Models\Instance\SpecialDate;
+use App\Models\Journal\Entry;
+use App\Models\ModelBindingHasher as Model;
+use App\Models\Relationship\Relationship;
+use App\Traits\Searchable;
+use DateTime;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use IlluminateAgnostic\Arr\Support\Arr;
-use App\Models\Account\ActivityStatistic;
-use App\Models\Relationship\Relationship;
-use Illuminate\Database\Eloquent\Builder;
-use App\Models\ModelBindingHasher as Model;
-use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use function Safe\preg_match_all;
+use function Safe\preg_split;
 
 /**
  * @method static \Illuminate\Database\Eloquent\Builder search()
@@ -106,7 +107,6 @@ class Contact extends Model
         'account_id',
         'is_partial',
         'job',
-        'company',
         'food_preferences',
         'birthday_reminder_id',
         'birthday_special_date_id',
@@ -114,6 +114,7 @@ class Contact extends Model
         'last_consulted_at',
         'created_at',
         'first_met_additional_info',
+        'company_id',
     ];
 
     /**
@@ -465,13 +466,23 @@ class Contact extends Model
     }
 
     /**
-     * Get the Avatar Photo records associated with the contact.
+     * Get the Avatar Photo record associated with the contact.
      *
      * @return HasOne
      */
     public function avatarPhoto()
     {
         return $this->hasOne(Photo::class, 'id', 'avatar_photo_id');
+    }
+
+    /**
+     * Get the Company record associated with the contact.
+     *
+     * @return belongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
     }
 
     /**

@@ -10,17 +10,17 @@
       {{-- Work information --}}
       <li>
         <i class="fa fa-building-o" aria-hidden="true"></i>
-        @if (is_null($contact->job) and is_null($contact->company))
+        @if (is_null($information['work']['job']) and is_null($information['work']['company']))
           {{ trans('people.information_no_work_defined') }}
         @else
-          @if (!is_null($contact->job))
+          @if (!is_null($information['work']['job']))
             {{ $contact->job }}
 
-            @if (!is_null($contact->company))
-              {{ trans('people.information_work_at', ['company' => $contact->company]) }}
+            @if (!is_null($information['work']['company']))
+              {{ trans('people.information_work_at', ['company' => $information['work']['company']]) }}
             @endif
           @else
-            {{ $contact->company }}
+            {{ $information['work']['company'] }}
           @endif
 
         @endif
