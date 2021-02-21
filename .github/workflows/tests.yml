@@ -82,11 +82,14 @@ jobs:
         run: |
           cp scripts/ci/.env.${{ matrix.connection }} .env
           touch config/.version config/.release .sentry-release .sentry-commit
-          echo '{"/js/app.js": "/js/app.js", "/css/app-ltr.css": "/css/app-ltr.css"}' > public/mix-manifest.json
           mkdir -p public/js
-          echo '' > public/js/app.js
           mkdir -p public/css
-          echo '' > public/css/app-ltr.css
+          echo "{" > public/mix-manifest.json
+          for f in "js/app.js" "js/manifest.js" "js/vendor.js" "css/app-ltr.css "css/app-rtl.css" "js/stripe.js" "css/stripe.css"; do
+            echo "\"/$f\": \"/$f\"," >> public/mix-manifest.json
+            echo '' > public/$f
+          done
+          echo "}" >> public/mix-manifest.json
 
       - name: Generate key
         run: php artisan key:generate
