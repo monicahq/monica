@@ -2,15 +2,16 @@
 
 namespace Tests\Unit\Services\Contact\Contact;
 
-use Tests\TestCase;
-use App\Models\User\User;
-use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Queue;
 use App\Jobs\AuditLog\LogAccountAudit;
-use Illuminate\Validation\ValidationException;
+use App\Models\Account\Company;
+use App\Models\Contact\Contact;
+use App\Models\User\User;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateWorkInformation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class UpdateWorkInformationTest extends TestCase
 {
@@ -39,7 +40,7 @@ class UpdateWorkInformationTest extends TestCase
             'id' => $contact->id,
             'account_id' => $contact->account_id,
             'job' => 'Dunder',
-            'company' => null,
+            'company_id' => null,
         ]);
 
         $this->assertInstanceOf(
@@ -60,11 +61,13 @@ class UpdateWorkInformationTest extends TestCase
 
         $contact = app(UpdateWorkInformation::class)->execute($request);
 
+        $company = Company::where('name', 'Sales')->first();
+
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
             'account_id' => $contact->account_id,
             'job' => null,
-            'company' => 'Sales',
+            'company_id' => $company->id,
         ]);
 
         Queue::assertPushed(LogAccountAudit::class, function ($job) use ($contact, $user) {

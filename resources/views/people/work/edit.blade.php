@@ -29,7 +29,7 @@
         <select class="form-control" name="existingCompany" id="existingCompany">
           <option value="">Choose an existing company</option>
           @foreach ($companies as $company)
-            <option value="{{ $company['id'] }}">
+            <option value="{{ $company['name'] }}">
               {{ $company['name'] }}
             </option>
           @endforeach

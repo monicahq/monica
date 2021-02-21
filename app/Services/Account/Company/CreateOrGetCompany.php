@@ -2,13 +2,13 @@
 
 namespace App\Services\Account\Company;
 
+use App\Jobs\AuditLog\LogAccountAudit;
+use App\Models\Account\Company;
 use App\Models\User\User;
 use App\Services\BaseService;
 use function Safe\json_encode;
-use App\Models\Account\Company;
-use App\Jobs\AuditLog\LogAccountAudit;
 
-class CreateCompany extends BaseService
+class CreateOrGetCompany extends BaseService
 {
     private array $data;
     private ?Company $company;

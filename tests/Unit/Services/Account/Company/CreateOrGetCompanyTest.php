@@ -2,17 +2,17 @@
 
 namespace Tests\Unit\Services\Account\Company;
 
-use Tests\TestCase;
-use App\Models\User\User;
+use App\Jobs\AuditLog\LogAccountAudit;
 use App\Models\Account\Account;
 use App\Models\Account\Company;
-use Illuminate\Support\Facades\Queue;
-use App\Jobs\AuditLog\LogAccountAudit;
-use Illuminate\Validation\ValidationException;
-use App\Services\Account\Company\CreateCompany;
+use App\Models\User\User;
+use App\Services\Account\Company\CreateOrGetCompany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
-class CreateCompanyTest extends TestCase
+class CreateOrGetCompanyTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -34,7 +34,7 @@ class CreateCompanyTest extends TestCase
             'number_of_employees' => 3,
         ];
 
-        $company = app(CreateCompany::class)->execute($request);
+        $company = app(CreateOrGetCompany::class)->execute($request);
 
         $this->assertDatabaseHas('companies', [
             'id' => $company->id,
@@ -80,7 +80,7 @@ class CreateCompanyTest extends TestCase
             'name' => 'Lawyers Associate',
         ];
 
-        $company = app(CreateCompany::class)->execute($request);
+        $company = app(CreateOrGetCompany::class)->execute($request);
 
         $this->assertDatabaseHas('companies', [
             'id' => $company->id,
@@ -106,6 +106,6 @@ class CreateCompanyTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        app(CreateCompany::class)->execute($request);
+        app(CreateOrGetCompany::class)->execute($request);
     }
 }
