@@ -199,7 +199,7 @@ class DAVServerTest extends ApiTestCase
 
         $response = $this->call('PROPFIND', '/dav');
 
-$response->dump();
+        $response->dump();
         $response->assertStatus(403);
     }
 
