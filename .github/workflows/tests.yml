@@ -85,9 +85,10 @@ jobs:
           mkdir -p public/js
           mkdir -p public/css
           echo "{" > public/mix-manifest.json
-          for f in "js/app.js" "js/manifest.js" "js/vendor.js" "css/app-ltr.css "css/app-rtl.css" "js/stripe.js" "css/stripe.css"; do
-            echo "\"/$f\": \"/$f\"," >> public/mix-manifest.json
-            echo '' > public/$f
+          for f in app.js manifest.js vendor.js app-ltr.css app-rtl.css stripe.js stripe.css; do
+            k=${f##*.}/$f
+            echo "\"/$k\": \"/$k\"," >> public/mix-manifest.json
+            echo '' > public/$k
           done
           echo "}" >> public/mix-manifest.json
 
