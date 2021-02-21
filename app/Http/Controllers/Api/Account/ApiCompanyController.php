@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api\Account;
 
-use App\Http\Controllers\Api\ApiController;
-use App\Http\Resources\Company\Company as CompanyResource;
-use App\Models\Account\Company;
-use App\Services\Account\Company\CreateOrGetCompany;
-use App\Services\Account\Company\DestroyCompany;
-use App\Services\Account\Company\UpdateCompany;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use App\Models\Account\Company;
+use Illuminate\Database\QueryException;
+use App\Http\Controllers\Api\ApiController;
 use Illuminate\Validation\ValidationException;
+use App\Services\Account\Company\UpdateCompany;
+use App\Services\Account\Company\DestroyCompany;
+use App\Services\Account\Company\CreateOrGetCompany;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Company\Company as CompanyResource;
 
 class ApiCompanyController extends ApiController
 {

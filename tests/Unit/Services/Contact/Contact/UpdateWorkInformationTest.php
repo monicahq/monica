@@ -2,16 +2,16 @@
 
 namespace Tests\Unit\Services\Contact\Contact;
 
-use App\Jobs\AuditLog\LogAccountAudit;
+use Tests\TestCase;
+use App\Models\User\User;
 use App\Models\Account\Company;
 use App\Models\Contact\Contact;
-use App\Models\User\User;
+use Illuminate\Support\Facades\Queue;
+use App\Jobs\AuditLog\LogAccountAudit;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateWorkInformation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Validation\ValidationException;
-use Tests\TestCase;
 
 class UpdateWorkInformationTest extends TestCase
 {

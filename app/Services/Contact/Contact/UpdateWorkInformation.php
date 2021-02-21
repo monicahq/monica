@@ -2,13 +2,13 @@
 
 namespace App\Services\Contact\Contact;
 
-use App\Jobs\AuditLog\LogAccountAudit;
-use App\Models\Contact\Contact;
 use App\Models\User\User;
-use App\Services\Account\Company\CreateOrGetCompany;
 use App\Services\BaseService;
-use Illuminate\Validation\ValidationException;
 use function Safe\json_encode;
+use App\Models\Contact\Contact;
+use App\Jobs\AuditLog\LogAccountAudit;
+use Illuminate\Validation\ValidationException;
+use App\Services\Account\Company\CreateOrGetCompany;
 
 class UpdateWorkInformation extends BaseService
 {
