@@ -19,7 +19,7 @@ jobs:
   #############
   tests:
     runs-on: ubuntu-latest
-    name: Test on ${{ matrix.connection }} (PHP ${{ matrix.php-version }})
+    name: Test on ${{ matrix.connection }} run ${{ github.run_number }} (PHP ${{ matrix.php-version }})
 
     services:
       mysql:
