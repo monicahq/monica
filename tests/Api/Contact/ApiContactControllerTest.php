@@ -2,14 +2,14 @@
 
 namespace Tests\Api\Contact;
 
+use Carbon\Carbon;
+use Tests\ApiTestCase;
+use App\Models\Contact\Gender;
 use App\Models\Account\Company;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
-use App\Models\Contact\Gender;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\ApiTestCase;
 
 class ApiContactControllerTest extends ApiTestCase
 {
