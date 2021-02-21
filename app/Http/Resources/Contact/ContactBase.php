@@ -3,12 +3,12 @@
 namespace App\Http\Resources\Contact;
 
 use App\Helpers\DateHelper;
-use App\Http\Resources\Tag\Tag as TagResource;
-use App\Http\Resources\Note\Note as NoteResource;
 use App\Http\Resources\Address\Address as AddressResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
+use App\Http\Resources\Note\Note as NoteResource;
 use App\Http\Resources\Relationship\RelationshipShort as RelationshipShortResource;
+use App\Http\Resources\Tag\Tag as TagResource;
 
 trait ContactBase
 {
@@ -68,7 +68,7 @@ trait ContactBase
                 ],
                 'career' => $this->when(! $this->is_partial, [
                     'job' => $this->job,
-                    'company' => $this->company,
+                    'company' => $this->company ? $this->company->name : null,
                 ]),
                 'avatar' => $this->when(! $this->is_partial, [
                     'url' => $this->getAvatarUrl(),

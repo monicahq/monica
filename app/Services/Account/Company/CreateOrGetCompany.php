@@ -2,11 +2,11 @@
 
 namespace App\Services\Account\Company;
 
+use App\Jobs\AuditLog\LogAccountAudit;
+use App\Models\Account\Company;
 use App\Models\User\User;
 use App\Services\BaseService;
 use function Safe\json_encode;
-use App\Models\Account\Company;
-use App\Jobs\AuditLog\LogAccountAudit;
 
 class CreateOrGetCompany extends BaseService
 {
@@ -37,8 +37,8 @@ class CreateOrGetCompany extends BaseService
      */
     public function execute(array $data): Company
     {
-        $this->data = $data;
         $this->validate($data);
+        $this->data = $data;
 
         $this->checkIfCompanyAlreadyExists();
 

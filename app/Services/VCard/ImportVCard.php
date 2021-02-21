@@ -2,39 +2,40 @@
 
 namespace App\Services\VCard;
 
-use Ramsey\Uuid\Uuid;
-use App\Models\User\User;
-use App\Traits\DAVFormat;
-use function Safe\substr;
-use Sabre\VObject\Reader;
+use App\Helpers\CountriesHelper;
 use App\Helpers\DateHelper;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use App\Helpers\VCardHelper;
 use App\Helpers\LocaleHelper;
-use App\Services\BaseService;
-use function Safe\preg_split;
-use App\Models\Contact\Gender;
+use App\Helpers\VCardHelper;
+use App\Models\Account\AddressBook;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
-use Illuminate\Validation\Rule;
-use App\Helpers\CountriesHelper;
-use Sabre\VObject\ParseException;
-use Sabre\VObject\Component\VCard;
-use App\Models\Account\AddressBook;
 use App\Models\Contact\ContactField;
-use App\Services\Contact\Tag\DetachTag;
 use App\Models\Contact\ContactFieldType;
-use App\Services\Contact\Tag\AssociateTag;
+use App\Models\Contact\Gender;
+use App\Models\User\User;
+use App\Services\Account\Company\CreateOrGetCompany;
 use App\Services\Account\Photo\UploadPhoto;
-use App\Services\Contact\Avatar\UpdateAvatar;
+use App\Services\BaseService;
 use App\Services\Contact\Address\CreateAddress;
-use App\Services\Contact\Address\UpdateAddress;
 use App\Services\Contact\Address\DestroyAddress;
-use App\Services\Contact\ContactField\CreateContactField;
-use App\Services\Contact\ContactField\UpdateContactField;
-use App\Services\Contact\ContactField\DestroyContactField;
+use App\Services\Contact\Address\UpdateAddress;
+use App\Services\Contact\Avatar\UpdateAvatar;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
+use App\Services\Contact\ContactField\CreateContactField;
+use App\Services\Contact\ContactField\DestroyContactField;
+use App\Services\Contact\ContactField\UpdateContactField;
+use App\Services\Contact\Tag\AssociateTag;
+use App\Services\Contact\Tag\DetachTag;
+use App\Traits\DAVFormat;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Ramsey\Uuid\Uuid;
+use Sabre\VObject\Component\VCard;
+use Sabre\VObject\ParseException;
+use Sabre\VObject\Reader;
+use function Safe\preg_split;
+use function Safe\substr;
 
 class ImportVCard extends BaseService
 {
@@ -720,7 +721,14 @@ class ImportVCard extends BaseService
     private function importWorkInformation(Contact $contact, VCard $entry): void
     {
         if ($entry->ORG) {
-            $contact->company = $this->formatValue($entry->ORG);
+            $company = app(CreateOrGetCompany::class)->execute([
+                'account_id' => $contact->account_id,
+                'author_id' => $this->userId,
+                'name' => $this->formatValue($entry->ORG),
+                'website' => null,
+                'number_of_employees' => null,
+            ]);
+            $contact->company_id = $company->id;
         }
 
         if ($entry->ROLE) {

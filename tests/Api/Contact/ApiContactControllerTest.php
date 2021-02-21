@@ -2,13 +2,14 @@
 
 namespace Tests\Api\Contact;
 
-use Carbon\Carbon;
-use Tests\ApiTestCase;
-use App\Models\Contact\Gender;
+use App\Models\Account\Company;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
+use App\Models\Contact\Gender;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiContactControllerTest extends ApiTestCase
 {
@@ -1491,11 +1492,12 @@ class ApiContactControllerTest extends ApiTestCase
             ],
         ]);
 
+        $company = Company::where('name', 'NASA')->first();
         $this->assertDatabaseHas('contacts', [
             'account_id' => $user->account_id,
             'id' => $contact->id,
             'job' => 'Astronaut',
-            'company' => 'NASA',
+            'company_id' => $company->id,
         ]);
 
         $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/work', [
@@ -1515,7 +1517,7 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
             'id' => $contact->id,
             'job' => 'Mom',
-            'company' => null,
+            'company_id' => null,
         ]);
     }
 

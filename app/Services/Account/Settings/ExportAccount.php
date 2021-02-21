@@ -3,13 +3,13 @@
 namespace App\Services\Account\Settings;
 
 use App\Helpers\DBHelper;
-use App\Models\User\User;
-use Illuminate\Support\Str;
-use App\Services\BaseService;
 use App\Models\Account\Account;
 use App\Models\Contact\Document;
+use App\Models\User\User;
+use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ExportAccount extends BaseService
 {
@@ -480,7 +480,7 @@ SET FOREIGN_KEY_CHECKS=0;
             'first_met_where',
             'first_met_additional_info',
             'job',
-            'company',
+            'company_id',
             'food_preferences',
             'avatar_source',
             'avatar_gravatar_url',
