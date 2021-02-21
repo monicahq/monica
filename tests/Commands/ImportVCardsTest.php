@@ -5,6 +5,7 @@ namespace Tests\Commands;
 use Mockery as m;
 use Tests\TestCase;
 use App\Models\Account\Account;
+use App\Models\Account\Company;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -81,8 +82,9 @@ class ImportVCardsTest extends TestCase
             'first_name' => 'Johnny',
         ]);
 
+        $company = Company::where('name', 'U2')->first();
         $this->assertDatabaseHas('contacts', [
-            'company' => 'U2',
+            'company_id' => $company->id,
             'job' => 'Lead vocalist',
         ]);
 

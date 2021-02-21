@@ -42,7 +42,7 @@
         @if ($contact->job)
         <span class="db f5 normal">{{ $contact->job }}
           @if ($contact->company)
-            ({{ $contact->company }})
+            ({{ $contact->company->name }})
           @endif
         </span>
         @endif

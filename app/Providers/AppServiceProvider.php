@@ -100,7 +100,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Account\Activity\ActivityType\CreateActivityType::class => \App\Services\Account\Activity\ActivityType\CreateActivityType::class,
         \App\Services\Account\Activity\ActivityType\DestroyActivityType::class => \App\Services\Account\Activity\ActivityType\DestroyActivityType::class,
         \App\Services\Account\Activity\ActivityType\UpdateActivityType::class => \App\Services\Account\Activity\ActivityType\UpdateActivityType::class,
-        \App\Services\Account\Company\CreateCompany::class => \App\Services\Account\Company\CreateCompany::class,
+        \App\Services\Account\Company\CreateOrGetCompany::class => \App\Services\Account\Company\CreateOrGetCompany::class,
         \App\Services\Account\Company\DestroyCompany::class => \App\Services\Account\Company\DestroyCompany::class,
         \App\Services\Account\Company\UpdateCompany::class => \App\Services\Account\Company\UpdateCompany::class,
         \App\Services\Account\Settings\DestroyAllDocuments::class => \App\Services\Account\Settings\DestroyAllDocuments::class,

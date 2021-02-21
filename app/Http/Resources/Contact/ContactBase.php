@@ -68,7 +68,7 @@ trait ContactBase
                 ],
                 'career' => $this->when(! $this->is_partial, [
                     'job' => $this->job,
-                    'company' => $this->company,
+                    'company' => $this->company ? $this->company->name : null,
                 ]),
                 'avatar' => $this->when(! $this->is_partial, [
                     'url' => $this->getAvatarUrl(),

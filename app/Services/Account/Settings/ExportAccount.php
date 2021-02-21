@@ -480,7 +480,7 @@ SET FOREIGN_KEY_CHECKS=0;
             'first_met_where',
             'first_met_additional_info',
             'job',
-            'company',
+            'company_id',
             'food_preferences',
             'avatar_source',
             'avatar_gravatar_url',

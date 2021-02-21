@@ -31,6 +31,7 @@ use App\Services\Contact\Avatar\UpdateAvatar;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
 use App\Services\Contact\Address\DestroyAddress;
+use App\Services\Account\Company\CreateOrGetCompany;
 use App\Services\Contact\ContactField\CreateContactField;
 use App\Services\Contact\ContactField\UpdateContactField;
 use App\Services\Contact\ContactField\DestroyContactField;
@@ -720,7 +721,14 @@ class ImportVCard extends BaseService
     private function importWorkInformation(Contact $contact, VCard $entry): void
     {
         if ($entry->ORG) {
-            $contact->company = $this->formatValue($entry->ORG);
+            $company = app(CreateOrGetCompany::class)->execute([
+                'account_id' => $contact->account_id,
+                'author_id' => $this->userId,
+                'name' => $this->formatValue($entry->ORG),
+                'website' => null,
+                'number_of_employees' => null,
+            ]);
+            $contact->company_id = $company->id;
         }
 
         if ($entry->ROLE) {

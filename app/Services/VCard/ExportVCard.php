@@ -152,7 +152,7 @@ class ExportVCard extends BaseService
     private function exportWorkInformation(Contact $contact, VCard $vcard)
     {
         if (! empty($contact->company)) {
-            $vcard->add('ORG', $this->escape($contact->company));
+            $vcard->add('ORG', $this->escape($contact->company->name));
         }
 
         if (! empty($contact->job)) {

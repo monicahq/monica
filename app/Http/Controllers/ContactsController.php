@@ -27,6 +27,8 @@ use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
+use App\ViewHelpers\Contact\ContactIndexViewHelper;
+use App\ViewHelpers\Contact\ContactEditWorkViewHelper;
 use App\Services\Contact\Contact\UpdateWorkInformation;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactSearch as ContactResource;
@@ -304,6 +306,8 @@ class ContactsController extends Controller
         $hasReachedAccountStorageLimit = StorageHelper::hasReachedAccountStorageLimit($contact->account);
         $accountHasLimitations = AccountHelper::hasLimitations($contact->account);
 
+        $information = ContactIndexViewHelper::information($contact);
+
         return view('people.profile')
             ->withHasReachedAccountStorageLimit($hasReachedAccountStorageLimit)
             ->withAccountHasLimitations($accountHasLimitations)
@@ -317,6 +321,7 @@ class ContactsController extends Controller
             ->withWeather($contact->getWeather())
             ->withDays($days)
             ->withMonths($months)
+            ->withInformation($information)
             ->withYears(DateHelper::getListOfYears());
     }
 
@@ -482,7 +487,10 @@ class ContactsController extends Controller
      */
     public function editWork(Request $request, Contact $contact)
     {
+        $companies = ContactEditWorkViewHelper::companies($contact->account);
+
         return view('people.work.edit')
+            ->withCompanies($companies)
             ->withContact($contact);
     }
 
@@ -496,12 +504,18 @@ class ContactsController extends Controller
      */
     public function updateWork(Request $request, Contact $contact)
     {
+        if ($request->input('newCompany')) {
+            $companyName = $request->input('newCompany');
+        } else {
+            $companyName = $request->input('existingCompany');
+        }
+
         $contact = app(UpdateWorkInformation::class)->execute([
             'account_id' => auth()->user()->account_id,
             'author_id' => auth()->user()->id,
             'contact_id' => $contact->id,
             'job' => $request->input('job'),
-            'company' => $request->input('company'),
+            'company' => $companyName,
         ]);
 
         return redirect()->route('people.show', $contact)

@@ -10,6 +10,7 @@ use App\Models\Contact\Debt;
 use App\Models\Account\Photo;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
+use App\Models\Account\Company;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Account\Activity;
@@ -133,6 +134,20 @@ class ContactTest extends FeatureTestCase
             'contact_id' => $contact->id,
         ]);
         $this->assertTrue($contact->occupations()->exists());
+    }
+
+    /** @test */
+    public function it_belongs_to_a_company()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $company = factory(Company::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $contact->company_id = $company->id;
+        $contact->save();
+
+        $this->assertTrue($contact->company()->exists());
     }
 
     /** @test */
