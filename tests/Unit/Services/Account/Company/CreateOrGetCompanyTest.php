@@ -9,10 +9,10 @@ use App\Models\Account\Company;
 use Illuminate\Support\Facades\Queue;
 use App\Jobs\AuditLog\LogAccountAudit;
 use Illuminate\Validation\ValidationException;
-use App\Services\Account\Company\CreateCompany;
+use App\Services\Account\Company\CreateOrGetCompany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class CreateCompanyTest extends TestCase
+class CreateOrGetCompanyTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -34,7 +34,7 @@ class CreateCompanyTest extends TestCase
             'number_of_employees' => 3,
         ];
 
-        $company = app(CreateCompany::class)->execute($request);
+        $company = app(CreateOrGetCompany::class)->execute($request);
 
         $this->assertDatabaseHas('companies', [
             'id' => $company->id,
@@ -61,6 +61,42 @@ class CreateCompanyTest extends TestCase
     }
 
     /** @test */
+    public function it_doesnt_store_a_company_if_a_company_with_this_name_already_exists()
+    {
+        Queue::fake();
+
+        $account = factory(Account::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $company = factory(Company::class)->create([
+            'account_id' => $account->id,
+            'name' => 'Lawyers Associate',
+        ]);
+
+        $request = [
+            'account_id' => $account->id,
+            'author_id' => $user->id,
+            'name' => 'Lawyers Associate',
+        ];
+
+        $company = app(CreateOrGetCompany::class)->execute($request);
+
+        $this->assertDatabaseHas('companies', [
+            'id' => $company->id,
+            'account_id' => $account->id,
+            'name' => 'Lawyers Associate',
+        ]);
+
+        $this->assertInstanceOf(
+            Company::class,
+            $company
+        );
+
+        Queue::assertNotPushed(LogAccountAudit::class);
+    }
+
+    /** @test */
     public function it_fails_if_wrong_parameters_are_given()
     {
         $account = factory(Account::class)->create([]);
@@ -70,6 +106,6 @@ class CreateCompanyTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        app(CreateCompany::class)->execute($request);
+        app(CreateOrGetCompany::class)->execute($request);
     }
 }

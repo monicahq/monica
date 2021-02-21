@@ -13,6 +13,7 @@ use App\Helpers\StorageHelper;
 use App\Helpers\WeatherHelper;
 use Illuminate\Support\Carbon;
 use App\Models\Account\Account;
+use App\Models\Account\Company;
 use App\Models\Account\Weather;
 use App\Models\Account\Activity;
 use App\Models\Instance\AuditLog;
@@ -107,7 +108,6 @@ class Contact extends Model
         'account_id',
         'is_partial',
         'job',
-        'company',
         'food_preferences',
         'birthday_reminder_id',
         'birthday_special_date_id',
@@ -115,6 +115,7 @@ class Contact extends Model
         'last_consulted_at',
         'created_at',
         'first_met_additional_info',
+        'company_id',
     ];
 
     /**
@@ -456,13 +457,23 @@ class Contact extends Model
     }
 
     /**
-     * Get the Avatar Photo records associated with the contact.
+     * Get the Avatar Photo record associated with the contact.
      *
      * @return HasOne
      */
     public function avatarPhoto()
     {
         return $this->hasOne(Photo::class, 'id', 'avatar_photo_id');
+    }
+
+    /**
+     * Get the Company record associated with the contact.
+     *
+     * @return belongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
     }
 
     /**

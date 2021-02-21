@@ -7,9 +7,9 @@ use App\Models\Account\Company;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
 use Illuminate\Validation\ValidationException;
-use App\Services\Account\Company\CreateCompany;
 use App\Services\Account\Company\UpdateCompany;
 use App\Services\Account\Company\DestroyCompany;
+use App\Services\Account\Company\CreateOrGetCompany;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Company\Company as CompanyResource;
 
@@ -63,7 +63,7 @@ class ApiCompanyController extends ApiController
     public function store(Request $request)
     {
         try {
-            $company = app(CreateCompany::class)->execute(
+            $company = app(CreateOrGetCompany::class)->execute(
                 $request->except(['account_id'])
                     +
                     [

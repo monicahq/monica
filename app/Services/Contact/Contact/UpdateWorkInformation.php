@@ -8,9 +8,13 @@ use function Safe\json_encode;
 use App\Models\Contact\Contact;
 use App\Jobs\AuditLog\LogAccountAudit;
 use Illuminate\Validation\ValidationException;
+use App\Services\Account\Company\CreateOrGetCompany;
 
 class UpdateWorkInformation extends BaseService
 {
+    private array $data;
+    private Contact $contact;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -35,51 +39,71 @@ class UpdateWorkInformation extends BaseService
      */
     public function execute(array $data): Contact
     {
-        $this->validate($data);
+        $this->data = $data;
+        $this->validateData();
 
-        /** @var Contact */
-        $contact = Contact::where('account_id', $data['account_id'])
-            ->findOrFail($data['contact_id']);
+        if (is_null($this->nullOrValue($this->data, 'company'))) {
+            $this->resetCompany();
+        } else {
+            $this->assignCompany();
+        }
 
-        if ($contact->is_partial) {
+        $this->contact->job = empty($data['job']) ? null : $data['job'];
+
+        $this->contact->save();
+        $this->log();
+
+        return $this->contact->refresh();
+    }
+
+    private function validateData(): void
+    {
+        $this->validate($this->data);
+
+        /* @var Contact */
+        $this->contact = Contact::where('account_id', $this->data['account_id'])
+            ->findOrFail($this->data['contact_id']);
+
+        if ($this->contact->is_partial) {
             throw ValidationException::withMessages([
                 'contact_id' => 'The contact can\'t be a partial contact',
             ]);
         }
-
-        $contact->job = empty($data['job']) ? null : $data['job'];
-        $contact->company = empty($data['company']) ? null : $data['company'];
-        $contact->save();
-
-        $this->log($data, $contact);
-
-        $contact->refresh();
-
-        return $contact;
     }
 
-    /**
-     * Add an audit log.
-     *
-     * @param array $data
-     * @param Contact $contact
-     * @return void
-     */
-    private function log(array $data, Contact $contact): void
+    private function assignCompany(): void
     {
-        $author = User::find($data['author_id']);
+        $company = app(CreateOrGetCompany::class)->execute([
+            'account_id' => $this->data['account_id'],
+            'author_id' => $this->data['author_id'],
+            'name' => $this->data['company'],
+            'website' => null,
+            'number_of_employees' => null,
+        ]);
+
+        $this->contact->company_id = $company->id;
+    }
+
+    private function resetCompany(): void
+    {
+        $this->contact->company_id = null;
+    }
+
+    private function log(): void
+    {
+        $author = User::find($this->data['author_id']);
 
         LogAccountAudit::dispatch([
             'action' => 'contact_work_updated',
             'account_id' => $author->account_id,
-            'about_contact_id' => $contact->id,
+            'about_contact_id' => $this->contact->id,
             'author_id' => $author->id,
             'author_name' => $author->name,
             'audited_at' => now(),
             'should_appear_on_dashboard' => true,
             'objects' => json_encode([
-                'contact_name' => $contact->name,
-                'contact_id' => $contact->id,
+                'contact_name' => $this->contact->name,
+                'contact_id' => $this->contact->id,
             ]),
         ]);
     }
