@@ -19,7 +19,7 @@ jobs:
   #############
   tests:
     runs-on: ubuntu-latest
-    name: Test on ${{ matrix.connection }} run ${{ github.run_number }} (PHP ${{ matrix.php-version }})
+    name: Test on ${{ matrix.connection }} Testsuite ${{ matrix.testsuite }} (PHP ${{ matrix.php-version }})
 
     services:
       mysql:
@@ -82,11 +82,11 @@ jobs:
         run: |
           cp scripts/ci/.env.${{ matrix.connection }} .env
           touch config/.version config/.release .sentry-release .sentry-commit
-          echo '{"/js/app.js": "/js/app.js", "/css/app.css": "/css/app.css"}' > public/mix-manifest.json
+          echo '{"/js/app.js": "/js/app.js", "/css/app-ltr.css": "/css/app-ltr.css"}' > public/mix-manifest.json
           mkdir -p public/js
           echo '' > public/js/app.js
           mkdir -p public/css
-          echo '' > public/css/app.css
+          echo '' > public/css/app-ltr.css
 
       - name: Generate key
         run: php artisan key:generate
@@ -105,7 +105,7 @@ jobs:
       - name: Run Unit test suite
         run: |
           php artisan route:cache
-          phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ github.run_number }}.xml --coverage-clover ./results/coverage${{ github.run_number }}.xml
+          phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage${{ matrix.testsuite }}.xml
         env:
           DB_CONNECTION: ${{ matrix.connection }}
 
@@ -116,7 +116,7 @@ jobs:
         if: matrix.php-version == '7.4'
         uses: actions/upload-artifact@v2
         with:
-          name: results${{ github.run_number }}
+          name: results${{ matrix.testsuite }}
           path: results
 
 
