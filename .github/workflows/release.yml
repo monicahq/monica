@@ -90,6 +90,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
             ${{ runner.os }}-composer-${{ env.php-version }}
+            ${{ runner.os }}-composer-
 
     # Yarn
       - name: Get yarn cache directory path

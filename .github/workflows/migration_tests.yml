@@ -1,0 +1,86 @@
+name: Migration tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches-ignore: ['l10n_master*']
+  release:
+    types: [created]
+
+  workflow_run:
+    workflows: ['Compress images']
+    types: [completed]
+
+jobs:
+  #####################
+  # Run tests migration
+  #####################
+  tests_migration:
+    runs-on: ubuntu-latest
+    name: Test migration on ${{ matrix.connection }} (PHP ${{ matrix.php-version }})
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_USER: monica
+          MYSQL_DATABASE: monica
+          MYSQL_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [7.4]
+        connection: [mysql]
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, dom, fileinfo, ${{ matrix.connection }}
+          coverage: none
+      - name: Check PHP Version
+        run: php -v
+      - name: Check Composer Version
+        run: composer -V
+      - name: Check PHP Extensions
+        run: php -m
+
+    # Composer
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer files
+        uses: actions/cache@v2.1.4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-
+
+      - name: Install composer dependencies
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=php
+
+    # Prepare
+      - name: Prepare environment
+        run: cp scripts/ci/.env.${{ matrix.connection }} .env
+
+      - name: Run migrations
+        run: php artisan migrate --no-interaction -vvv
+      - name: Run seeds
+        run: php artisan db:seed --no-interaction -vvv

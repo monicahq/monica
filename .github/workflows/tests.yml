@@ -1,0 +1,304 @@
+name: Tests and report
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches-ignore: ['l10n_master*']
+  release:
+    types: [created]
+
+  workflow_run:
+    workflows: ['Compress images']
+    types: [completed]
+
+jobs:
+  #############
+  # Run tests
+  #############
+  tests:
+    runs-on: ubuntu-latest
+    name: Test on ${{ matrix.connection }} (PHP ${{ matrix.php-version }})
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_USER: monica
+          MYSQL_DATABASE: monica
+          MYSQL_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [7.4, 8.0]
+        connection: [mysql]
+        testsuite: [Api, Feature, Unit-Models, Unit-Services]
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, dom, fileinfo, ${{ matrix.connection }}
+          coverage: none
+      - name: Check PHP Version
+        run: php -v
+      - name: Check Composer Version
+        run: composer -V
+      - name: Check PHP Extensions
+        run: php -m
+
+    # Composer
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer files
+        uses: actions/cache@v2.1.4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-
+
+      - name: Install composer dependencies
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=php
+
+    # Prepare
+      - name: Prepare environment
+        run: |
+          cp scripts/ci/.env.${{ matrix.connection }} .env
+          touch config/.version config/.release .sentry-release .sentry-commit
+          echo '{"/js/app.js": "/js/app.js", "/css/app.css": "/css/app.css"}' > public/mix-manifest.json
+          mkdir -p public/js
+          echo '' > public/js/app.js
+          mkdir -p public/css
+          echo '' > public/css/app.css
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Prepare db
+        run: mysql -h 127.0.0.1 -u monica -psecret -P 3306 monica < scripts/database.test.sql
+      - name: Run migrations
+        run: php artisan migrate --no-interaction -vvv
+
+      - name: Run seeds
+        run: php artisan db:seed --no-interaction -vvv
+      - name: Create passport keys
+        run: php artisan passport:keys --no-interaction -vvv
+
+    # Test
+      - name: Run Unit test suite
+        run: |
+          php artisan route:cache
+          phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ github.run_number }}.xml --coverage-clover ./results/coverage${{ github.run_number }}.xml
+        env:
+          DB_CONNECTION: ${{ matrix.connection }}
+
+      - name: Fix results files
+        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/*/*.xml
+
+      - name: Store results
+        if: matrix.php-version == '7.4'
+        uses: actions/upload-artifact@v2
+        with:
+          name: results${{ github.run_number }}
+          path: results
+
+
+  ###################
+  # Run tests browser
+  ###################
+  tests_browser:
+    runs-on: ubuntu-latest
+    name: Test browser on ${{ matrix.connection }} (PHP ${{ matrix.php-version }})
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_USER: monica
+          MYSQL_DATABASE: monica
+          MYSQL_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [7.4]
+        connection: [mysql]
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, dom, fileinfo, ${{ matrix.connection }}
+          coverage: none
+      - name: Check PHP Version
+        run: php -v
+      - name: Check Composer Version
+        run: composer -V
+      - name: Check PHP Extensions
+        run: php -m
+
+    # Composer
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer files
+        uses: actions/cache@v2.1.4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-
+
+      - name: Install composer dependencies
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=php
+
+    # Yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache yarn files
+        uses: actions/cache@v2.1.4
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            ${{ runner.os }}-yarn-
+
+      - name: Install yarn dependencies
+        run: yarn inst
+      - name: Build assets
+        run: yarn run production
+
+    # Prepare
+      - name: Prepare environment
+        run: |
+          cp scripts/ci/.env.${{ matrix.connection }} .env
+          touch config/.version config/.release .sentry-release .sentry-commit
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Prepare db
+        run: mysql -h 127.0.0.1 -u monica -psecret -P 3306 monica < scripts/database.test.sql
+      - name: Run migrations
+        run: php artisan migrate --no-interaction -vvv
+
+      - name: Run seeds
+        run: php artisan db:seed --no-interaction -vvv
+      - name: Create passport keys
+        run: php artisan passport:keys --no-interaction -vvv
+
+    # Test
+      - name: Launch google chrome
+        run: |
+          echo "##vso[task.setvariable variable=DISPLAY]$DISPLAY"
+          Xvfb ${DISPLAY} -screen 0 1920x1080x24 &
+          php artisan dusk:chrome-driver $(google-chrome -version | awk '{ print $3 }' | cut -d . -f 1)
+          ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+        env:
+          DISPLAY: ':99'
+
+      - name: Run http server
+        run: |
+          php -S localhost:8000 -t public scripts/tests/server-cc.php &
+          php -S localhost:8001 -t public scripts/tests/server-cc.php &
+
+      - name: Run browser tests
+        run: php artisan dusk --log-junit results/junit/results0.xml
+        env:
+          CHROME_DRIVER_OPTS: --headless --disable-gpu --disable-dev-shm-usage --no-sandbox --remote-debugging-port=9222 --window-size=1920,1080
+      - name: Fix coverage
+        run: |
+          vendor/bin/phpcov merge --clover=results/coverage0.xml results/coverage/
+          rm -rf results/coverage
+
+      - name: Store results
+        uses: actions/upload-artifact@v2
+        with:
+          name: results0
+          path: results
+
+
+  ###########################
+  # Reporting to sonarcloud
+  ###########################
+  reporting:
+    needs: [tests, tests_browser]
+    runs-on: ubuntu-latest
+    name: Sonarcloud
+    if: ${{ ! startsWith(github.ref, 'dependabot/') }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      # If this run was triggered by a pull request event, then checkout
+      # the head of the pull request instead of the merge commit.
+      - name: Checkout HEAD
+        if: github.event_name == 'pull_request'
+        run: git checkout HEAD^2
+
+      - name: Download results
+        uses: actions/download-artifact@v2
+        with:
+          path: results
+
+      - name: Fix results paths
+        run: |
+          pushd results
+          for f in $(ls); do cp -rf $f/* .; rm -rf $f; done
+
+      - name: Merge junit files
+        run: |
+          yarn global add junit-merge
+          $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
+
+      - name: Set version parameter
+        id: version
+        run: |
+          version=$(git tag --points-at HEAD)
+          test -z "$version" && version="main"
+          echo "::set-output name=value::$version"
+
+      - name: SonarCloud Scan
+        if: env.SONAR_TOKEN != ''
+        uses: SonarSource/sonarcloud-github-action@v1.5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: |
+            -Dsonar.projectVersion=${{ steps.version.outputs.value }}
