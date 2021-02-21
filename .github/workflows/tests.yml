@@ -231,12 +231,8 @@ jobs:
     # Test
       - name: Launch google chrome
         run: |
-          echo "##vso[task.setvariable variable=DISPLAY]$DISPLAY"
-          Xvfb ${DISPLAY} -screen 0 1920x1080x24 &
           php artisan dusk:chrome-driver $(google-chrome -version | awk '{ print $3 }' | cut -d . -f 1)
           ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
-        env:
-          DISPLAY: ':99'
 
       - name: Run http server
         run: |
@@ -244,9 +240,24 @@ jobs:
           php -S localhost:8001 -t public scripts/tests/server-cc.php &
 
       - name: Run browser tests
-        run: php artisan dusk --log-junit results/junit/results0.xml
+        run: |
+          chmod -R 0755 vendor/laravel/dusk/bin/
+          php artisan dusk --log-junit results/junit/results0.xml
         env:
-          CHROME_DRIVER_OPTS: --headless --disable-gpu --disable-dev-shm-usage --no-sandbox --remote-debugging-port=9222 --window-size=1920,1080
+          APP_URL: "http://127.0.0.1:8000"
+      - name: Upload Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: tests/Browser/screenshots
+      - name: Upload Console Logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: console
+          path: tests/Browser/console
+
       - name: Fix coverage
         run: |
           vendor/bin/phpcov merge --clover=results/coverage0.xml results/coverage/
