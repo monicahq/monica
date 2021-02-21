@@ -21,7 +21,6 @@ class ContactAuditLogControllerTest extends FeatureTestCase
 
         $response = $this->get("/people/{$contact->hashID()}/auditlogs");
 
-        $response->dump();
         $response->assertStatus(200);
     }
 }

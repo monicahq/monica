@@ -21,7 +21,6 @@ class AuditLogControllerTest extends FeatureTestCase
 
         $response = $this->get('/settings/auditlogs');
 
-        $response->dump();
         $response->assertStatus(200);
     }
 }

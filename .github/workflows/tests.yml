@@ -82,6 +82,7 @@ jobs:
         run: |
           cp scripts/ci/.env.${{ matrix.connection }} .env
           touch config/.version config/.release .sentry-release .sentry-commit
+          mkdir -p results/coverage
           mkdir -p public/js
           mkdir -p public/css
           echo "{" > public/mix-manifest.json
@@ -119,7 +120,7 @@ jobs:
         run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/*/*.xml
 
       - name: Store results
-        if: matrix.php-version == '7.4'
+        if: matrix.php-version == '7.4' && always()
         uses: actions/upload-artifact@v2
         with:
           name: results${{ matrix.testsuite }}
@@ -211,6 +212,8 @@ jobs:
         run: |
           cp scripts/ci/.env.${{ matrix.connection }} .env
           touch config/.version config/.release .sentry-release .sentry-commit
+          mkdir -p results/coverage
+          mkdir -p results/console
 
       - name: Generate key
         run: php artisan key:generate
@@ -250,6 +253,7 @@ jobs:
           rm -rf results/coverage
 
       - name: Store results
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: results0
