@@ -152,6 +152,7 @@ class RelationshipsController extends Controller
 
             app(UpdateContact::class)->execute($datas + [
                 'contact_id' => $otherContact->id,
+                'author_id' => auth()->user()->id,
             ]);
         }
 

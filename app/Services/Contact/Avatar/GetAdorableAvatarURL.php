@@ -2,12 +2,11 @@
 
 namespace App\Services\Contact\Avatar;
 
+use Illuminate\Support\Str;
 use App\Services\BaseService;
 
 class GetAdorableAvatarURL extends BaseService
 {
-    private const ADORABLE_API = 'https://api.hello-avatar.com/adorables/';
-
     /**
      * Get the validation rules that apply to the service.
      *
@@ -34,7 +33,7 @@ class GetAdorableAvatarURL extends BaseService
 
         $size = $this->size($data);
 
-        return self::ADORABLE_API.$size.'/'.$data['uuid'].'.png';
+        return Str::finish(config('monica.adorable_api'), '/').$size.'/'.$data['uuid'].'.png';
     }
 
     /**
