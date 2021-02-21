@@ -91,6 +91,7 @@ jobs:
             echo '' > public/$k
           done
           echo "}" >> public/mix-manifest.json
+          cat public/mix-manifest.json
 
       - name: Generate key
         run: php artisan key:generate
