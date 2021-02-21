@@ -23,6 +23,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
+          extensions: imagick, mbstring, dom, fileinfo
           coverage: none
 
       - name: Get Composer Cache Directory
@@ -59,6 +60,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
+          extensions: imagick, mbstring, dom, fileinfo
           coverage: none
 
       - name: Get Composer Cache Directory
