@@ -215,6 +215,7 @@ jobs:
           touch config/.version config/.release .sentry-release .sentry-commit
           mkdir -p results/coverage
           mkdir -p results/console
+          chmod -R 777 storage bootstrap/cache
 
       - name: Generate key
         run: php artisan key:generate
