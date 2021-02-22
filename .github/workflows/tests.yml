@@ -211,6 +211,7 @@ jobs:
       - name: Prepare environment
         run: |
           cp scripts/ci/.env.${{ matrix.connection }} .env
+          echo -e "\nLOG_CHANNEL=single" >> .env
           touch config/.version config/.release .sentry-release .sentry-commit
           mkdir -p results/coverage
           mkdir -p results/console
@@ -240,8 +241,10 @@ jobs:
         run: |
           php -S localhost:8000 -t public scripts/tests/server-cc.php &
           php -S localhost:8001 -t public scripts/tests/server-cc.php &
-        env:
-          LOG_CHANNEL: single
+
+      - name: Test http server
+        run: |
+          curl http://localhost:8000
 
       - name: Run browser tests
         run: php artisan dusk --log-junit results/junit/results0.xml
