@@ -243,8 +243,7 @@ jobs:
           php -S localhost:8001 -t public scripts/tests/server-cc.php &
 
       - name: Test http server
-        run: |
-          curl http://localhost:8000
+        run: curl -v http://localhost:8000
 
       - name: Run browser tests
         run: php artisan dusk --log-junit results/junit/results0.xml
