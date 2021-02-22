@@ -244,7 +244,7 @@ jobs:
       - name: Run browser tests
         run: php artisan dusk --log-junit results/junit/results0.xml
         env:
-          APP_URL: http://127.0.0.1:8000
+          APP_URL: http://localhost:8000
 
       - name: Fix coverage
         run: |
