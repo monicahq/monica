@@ -64,10 +64,6 @@ jobs:
         run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=php
 
     # Yarn
-      - name: Setup Node.js
-	      uses: actions/setup-node@v2
-	      with:
-	        node-version: 14
       - name: Get yarn cache directory path
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
