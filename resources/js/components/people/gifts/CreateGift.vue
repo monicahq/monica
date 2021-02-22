@@ -317,6 +317,7 @@ export default {
       return !this.displayComment ||
         !this.displayUrl ||
         !this.displayAmount ||
+        !this.displayDate ||
         !(this.displayRecipient || this.familyContacts.length == 0) ||
         !(this.displayUpload || this.reachLimit);
     }
@@ -357,6 +358,7 @@ export default {
         this.hasRecipient = false;
       }
       this.displayComment = this.gift ? this.gift.comment : false;
+      this.displayDate = this.gift ? this.gift.date : false;
       this.displayUrl = this.gift ? this.gift.url : false;
       this.displayAmount = this.gift ? this.gift.amount != '' : false;
       this.displayRecipient = this.gift ? (this.gift.recipient ? this.gift.recipient.id !== 0 : false) : false;
