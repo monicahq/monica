@@ -26,6 +26,9 @@ jobs:
       matrix:
         php-version: [7.4]
 
+    env:
+      node-version: 14.x
+
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
@@ -64,6 +67,10 @@ jobs:
         run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=php
 
     # Yarn
+      - name: Setup Node.js
+	      uses: actions/setup-node@v1
+	      with:
+	        node-version: ${{ env.node-version }}
       - name: Get yarn cache directory path
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
