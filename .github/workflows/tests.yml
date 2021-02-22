@@ -240,6 +240,8 @@ jobs:
         run: |
           php -S localhost:8000 -t public scripts/tests/server-cc.php &
           php -S localhost:8001 -t public scripts/tests/server-cc.php &
+        env:
+          LOG_CHANNEL: single
 
       - name: Run browser tests
         run: php artisan dusk --log-junit results/junit/results0.xml
@@ -257,6 +259,13 @@ jobs:
         with:
           name: results0
           path: results
+
+      - name: Store logs
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: logs
+          path: storage/logs
 
 
   ###########################
