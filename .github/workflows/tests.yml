@@ -99,7 +99,7 @@ jobs:
         run: php artisan key:generate
 
       - name: Prepare db
-        run: mysql -h 127.0.0.1 -u monica -psecret -P 3306 monica < scripts/database.test.sql
+        run: mysql -h 127.0.0.1 -P 3306 -u monica -psecret monica < scripts/database.test.sql
       - name: Run migrations
         run: php artisan migrate --no-interaction -vvv
 
@@ -219,7 +219,7 @@ jobs:
         run: php artisan key:generate
 
       - name: Prepare db
-        run: mysql -h 127.0.0.1 -u monica -psecret -P 3306 monica < scripts/database.test.sql
+        run: mysql -h 127.0.0.1 -P 3306 -u monica -psecret monica < scripts/database.test.sql
       - name: Run migrations
         run: php artisan migrate --no-interaction -vvv
 
@@ -229,10 +229,12 @@ jobs:
         run: php artisan passport:keys --no-interaction -vvv
 
     # Test
-      - name: Launch google chrome
+      - name: Upgrade Chrome Driver
+        run: php artisan dusk:chrome-driver $(google-chrome -version | awk '{ print $3 }' | cut -d . -f 1)
+      - name: Start Chrome Driver
         run: |
-          php artisan dusk:chrome-driver $(google-chrome -version | awk '{ print $3 }' | cut -d . -f 1)
-          ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+          chmod -R 0755 vendor/laravel/dusk/bin/
+          ./vendor/laravel/dusk/bin/chromedriver-linux &
 
       - name: Run http server
         run: |
@@ -240,11 +242,9 @@ jobs:
           php -S localhost:8001 -t public scripts/tests/server-cc.php &
 
       - name: Run browser tests
-        run: |
-          chmod -R 0755 vendor/laravel/dusk/bin/
-          php artisan dusk --log-junit results/junit/results0.xml
+        run: php artisan dusk --log-junit results/junit/results0.xml
         env:
-          APP_URL: "http://127.0.0.1:8000"
+          APP_URL: http://127.0.0.1:8000
 
       - name: Fix coverage
         run: |

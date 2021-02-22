@@ -96,7 +96,7 @@ jobs:
         run: php artisan key:generate
 
       - name: Prepare db
-        run: mysql -h 127.0.0.1 -u monica -psecret -P 3306 monica < scripts/database.test.sql
+        run: mysql -h 127.0.0.1 -P 3306 -u monica -psecret monica < scripts/database.test.sql
       - name: Run migration scripts
         run: php artisan migrate --no-interaction -vvv
 
