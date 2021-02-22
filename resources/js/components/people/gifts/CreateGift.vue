@@ -81,6 +81,9 @@
             <li v-if="!reachLimit" v-show="!displayUpload" class="di pointer" :class="dirltr ? 'mr3' : 'ml3'">
               <a href="" @click.prevent="() => { displayUpload = true; $refs.upload.showUploadZone(); }">{{ $t('people.gifts_add_photo') }}</a>
             </li>
+            <li v-show="!displayDate" class="di pointer" :class="dirltr ? 'mr3' : 'ml3'">
+              <a href="" @click.prevent="displayDate = true">{{ $t('people.gifts_add_date') }}</a>
+            </li>
           </ul>
         </div>
 
@@ -105,6 +108,18 @@
             :class="'dtc pr2'"
             :title="$t('people.gifts_add_link')"
             :placeholder="'https://'"
+            @submit="store"
+          />
+        </div>
+
+        <div v-if="displayDate" class="dt dt--fixed pb3 mb3 bb b--gray-monica">
+          <!-- Date -->
+          <form-input
+            :id="'date'"
+            v-model="newGift.date"
+            :input-type="'date'"
+            :class="'dtc pr2'"
+            :title="$t('people.gifts_add_date')"
             @submit="store"
           />
         </div>
@@ -252,6 +267,7 @@ export default {
       displayAmount: false,
       displayRecipient: false,
       displayUpload: false,
+      displayDate: false,
       newGift: {
         name: '',
         status: 'idea',
