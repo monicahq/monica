@@ -218,7 +218,6 @@ jobs:
       - name: Prepare environment
         run: |
           cp scripts/ci/.env.${{ matrix.connection }} .env
-          echo -e "\nLOG_CHANNEL=single" >> .env
           touch config/.version config/.release .sentry-release .sentry-commit
           mkdir -p results/coverage
           mkdir -p results/console
