@@ -54,7 +54,7 @@ jobs:
         run: composer validate
 
       - name: Get Composer Cache Directory
-        id: composer-cache-dir-path
+        id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache composer files
         uses: actions/cache@v2.1.4

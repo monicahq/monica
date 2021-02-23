@@ -44,22 +44,22 @@
     </filter>
 
     <php>
-        <server name="APP_ENV" value="testing"/>
-        <server name="APP_KEY" value="base64:NTrXToqFZJlv48dgPc+kNpc3SBt333TfDnF1mDShsBg="/>
-        <server name="BCRYPT_ROUNDS" value="4"/>
-        <server name="DB_CONNECTION" value="testing"/>
-        <server name="CACHE_DRIVER" value="array"/>
-        <server name="MAIL_MAILER" value="array"/>
-        <server name="QUEUE_CONNECTION" value="sync"/>
-        <server name="SESSION_DRIVER" value="array"/>
-        <server name="DEBUGBAR_ENABLED" value="false"/>
-        <server name="APP_DEFAULT_LOCALE" value="en"/>
-        <server name="LOG_CHANNEL" value="testing"/>
-        <server name="DAV_ENABLED" value="true"/>
-        <server name="REQUIRES_SUBSCRIPTION" value="false"/>
-        <server name="MAIL_HOST" value=""/>
-        <server name="MAIL_PORT" value=""/>
-        <server name="MAIL_ENCRYPTION" value=""/>
-        <server name="APP_EMAIL_NEW_USERS_NOTIFICATION" value=""/>
+        <env name="APP_ENV" value="testing"/>
+        <env name="APP_KEY" value="base64:NTrXToqFZJlv48dgPc+kNpc3SBt333TfDnF1mDShsBg="/>
+        <env name="BCRYPT_ROUNDS" value="4"/>
+        <env name="DB_CONNECTION" value="testing"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="MAIL_MAILER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="DEBUGBAR_ENABLED" value="false"/>
+        <env name="APP_DEFAULT_LOCALE" value="en"/>
+        <env name="LOG_CHANNEL" value="testing"/>
+        <env name="DAV_ENABLED" value="true"/>
+        <env name="REQUIRES_SUBSCRIPTION" value="false"/>
+        <env name="MAIL_HOST" value=""/>
+        <env name="MAIL_PORT" value=""/>
+        <env name="MAIL_ENCRYPTION" value=""/>
+        <env name="APP_EMAIL_NEW_USERS_NOTIFICATION" value=""/>
     </php>
 </phpunit>
