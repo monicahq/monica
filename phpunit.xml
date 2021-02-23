@@ -43,12 +43,6 @@
         </whitelist>
     </filter>
 
-    <coverage processUncoveredFiles="true">
-        <include>
-            <directory suffix=".php">./app</directory>
-        </include>
-    </coverage>
-
     <php>
         <server name="APP_ENV" value="testing"/>
         <server name="APP_KEY" value="base64:NTrXToqFZJlv48dgPc+kNpc3SBt333TfDnF1mDShsBg="/>
