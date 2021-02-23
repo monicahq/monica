@@ -246,8 +246,11 @@ jobs:
 
       - name: Run http server
         run: |
-          php -S localhost:8000 -t public scripts/tests/server-cc.php &
-          php -S localhost:8001 -t public scripts/tests/server-cc.php &
+          php artisan server --port=8000 &
+          php artisan server --port=8001 &
+#        run: |
+#          php -S localhost:8000 -t public scripts/tests/server-cc.php &
+#          php -S localhost:8001 -t public scripts/tests/server-cc.php &
 
       - name: Test http server
         run: curl -v http://localhost:8000
