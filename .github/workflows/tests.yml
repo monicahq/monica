@@ -256,7 +256,7 @@ jobs:
         run: curl -v http://localhost:8000
 
       - name: Test server script
-        run: php scripts/tests/server-cc.php
+        run: REQUEST_URI=/ php scripts/tests/server-cc.php
 
       - name: Run browser tests
         run: php artisan dusk --log-junit results/junit/results0.xml
