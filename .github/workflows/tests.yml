@@ -163,8 +163,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: imagick, mbstring, dom, fileinfo, ${{ matrix.connection }}
-#          coverage: none
+          extensions: imagick, ${{ matrix.connection }}
       - name: Check PHP Version
         run: php -v
       - name: Check Composer Version
@@ -245,9 +244,6 @@ jobs:
           ./vendor/laravel/dusk/bin/chromedriver-linux &
 
       - name: Run http server
-#        run: |
-#          php artisan serve --port=8000 &
-#          php artisan serve --port=8001 &
         run: |
           php -S localhost:8000 -t public scripts/tests/server-cc.php &
           php -S localhost:8001 -t public scripts/tests/server-cc.php &
