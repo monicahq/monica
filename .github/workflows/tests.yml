@@ -19,7 +19,7 @@ jobs:
   #############
   tests:
     runs-on: ubuntu-latest
-    name: Test on ${{ matrix.connection }} Testsuite ${{ matrix.testsuite }} (PHP ${{ matrix.php-version }})
+    name: Unit tests on ${{ matrix.connection }} Testsuite ${{ matrix.testsuite }} (PHP ${{ matrix.php-version }})
 
     services:
       mysql:
@@ -132,7 +132,7 @@ jobs:
   ###################
   tests_browser:
     runs-on: ubuntu-latest
-    name: Test browser on ${{ matrix.connection }} (PHP ${{ matrix.php-version }})
+    name: Tests browser on ${{ matrix.connection }} (PHP ${{ matrix.php-version }})
 
     services:
       mysql:
@@ -248,12 +248,6 @@ jobs:
           php -S localhost:8000 -t public scripts/tests/server-cc.php &
           php -S localhost:8001 -t public scripts/tests/server-cc.php &
 
-      - name: Test http server
-        run: curl -v http://localhost:8000
-
-      - name: Test server script
-        run: REQUEST_URI=/ php scripts/tests/server-cc.php
-
       - name: Run browser tests
         run: php artisan dusk --log-junit results/junit/results0.xml
         env:
@@ -264,27 +258,12 @@ jobs:
           vendor/bin/phpcov merge --clover=results/coverage0.xml results/coverage/
           rm -rf results/coverage
 
-      - name: debug
-        if: always()
-        run: find results
-
-      - name: debug
-        if: always()
-        run: find storage
-
       - name: Store results
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: results0
           path: results
-
-      - name: Store logs
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: logs
-          path: storage/logs
 
 
   ###########################
