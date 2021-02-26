@@ -107,12 +107,18 @@ jobs:
         run: php artisan db:seed --no-interaction -vvv
       - name: Create passport keys
         run: php artisan passport:keys --no-interaction -vvv
+      - name: Cache route
+        run: php artisan route:cache
 
     # Test
       - name: Run Unit test suite
-        run: |
-          php artisan route:cache
-          phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit --debug -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage${{ matrix.testsuite }}.xml
+        if: matrix.php-version == '7.4'
+        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage${{ matrix.testsuite }}.xml
+        env:
+          DB_CONNECTION: ${{ matrix.connection }}
+      - name: Run Unit test suite
+        if: matrix.php-version != '7.4'
+        run: vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }}
         env:
           DB_CONNECTION: ${{ matrix.connection }}
 
@@ -234,6 +240,8 @@ jobs:
         run: php artisan db:seed --no-interaction -vvv
       - name: Create passport keys
         run: php artisan passport:keys --no-interaction -vvv
+      - name: Cache route
+        run: php artisan route:cache
 
     # Test
       - name: Upgrade Chrome Driver
