@@ -112,7 +112,7 @@ jobs:
       - name: Run Unit test suite
         run: |
           php artisan route:cache
-          phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage${{ matrix.testsuite }}.xml
+          phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit --debug -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage${{ matrix.testsuite }}.xml
         env:
           DB_CONNECTION: ${{ matrix.connection }}
 
