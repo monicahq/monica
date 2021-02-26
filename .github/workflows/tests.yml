@@ -123,6 +123,7 @@ jobs:
           DB_CONNECTION: ${{ matrix.connection }}
 
       - name: Fix results files
+        if: matrix.php-version == '7.4'
         run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/*/*.xml
 
       - name: Store results
