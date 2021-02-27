@@ -78,7 +78,7 @@ jobs:
               k=${f##*.}/$f; \
               echo "\"/$k\": \"/$k\""; \
               echo '' > public/$k; \
-            done \
+            done; \
             echo "}"; \
           } | tee public/mix-manifest.json
 
