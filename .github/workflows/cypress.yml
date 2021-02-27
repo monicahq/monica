@@ -10,23 +10,15 @@ jobs:
     if: contains(github.event.pull_request.labels.*.name, 'cypress')
     name: Cypress tests with ${{ matrix.browser }} (PHP ${{ matrix.php-version }})
 
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: monica
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     strategy:
       fail-fast: false
       matrix:
         php-version: [7.4]
         browser: [chrome]
         containers: [1, 2, 3, 4, 5, 6, 7, 8]
-      max-parallel: 10
+
+    env:
+      node-version: 14
 
     steps:
       - name: Checkout sources
@@ -36,7 +28,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: imagick
+          extensions: imagick, mbstring, dom, fileinfo
           coverage: none
       - name: Check PHP Version
         run: php -v
@@ -45,65 +37,83 @@ jobs:
       - name: Check PHP Extensions
         run: php -m
 
-      # step-prepare-environment
-      - name: Prepare environment
-        run: |
-          mkdir -p results/coverage
-          cp scripts/ci/.env.mysql .env
-          touch .sentry-release
-          echo "REQUIRES_SUBSCRIPTION=true" >> .env
-
+    # Composer
       - name: Validate composer.json and composer.lock
         run: composer validate
 
       - name: Get Composer Cache Directory
-        id: composer-cache-dir-path
+        id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache composer files
         uses: actions/cache@v2.1.4
         with:
-          path: ${{ steps.composer-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ matrix.php-version }}
             ${{ runner.os }}-composer-
 
-      - name: Install dependencies
-        run: composer install --no-interaction --ignore-platform-reqs
+      - name: Install composer dependencies
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=php
 
-      # step-prepare-db
-      - name: Prepare db
-        run: mysql -h 127.0.0.1 -u root -P 3306 monica < scripts/database.test.sql
-      - name: Run migration scripts
-        run: php artisan migrate --no-interaction -vvv
-
-      # step-seed-test-db
-      - name: Seed database
-        run: |
-          php artisan db:seed --no-interaction -vvv
-          php artisan passport:keys --no-interaction -vvv
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v2.1.4
+    # Yarn
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          node-version: ${{ env.node-version }}
+      - name: Get yarn cache directory path
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache yarn files
+        uses: actions/cache@v2.1.4
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
             ${{ runner.os }}-yarn-
 
-      - name: yarn install
+      - name: Install yarn dependencies
         run: yarn inst
-      - name: yarn build
+      - name: Build assets
         run: yarn run production
-      - name: Cypress verify
-        run: npm run cy:verify
 
-      - name: which google-chrome
+    # Prepare
+      - name: Prepare environment
         run: |
-          which google-chrome || true
-      - uses: cypress-io/github-action@v1
+          cp scripts/ci/.env.mysql .env
+          touch config/.version config/.release .sentry-release .sentry-commit
+          mkdir -p results/coverage
+          echo "REQUIRES_SUBSCRIPTION=true" >> .env
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Start mysql
+        run: sudo systemctl start mysql.service
+      - name: Create database
+        run: mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+      - name: Prepare database
+        run: mysql --protocol=tcp -u root -proot monica < scripts/database.test.sql
+      - name: Run migrations
+        run: php artisan migrate --no-interaction -vvv
+
+      - name: Run seeds
+        run: php artisan db:seed --no-interaction -vvv
+      - name: Create passport keys
+        run: php artisan passport:keys --no-interaction -vvv
+
+
+    # Cypress
+      - name: Cypress verify
+        run: npx cypress verify
+
+      - name: Find google-chrome
+        run: which google-chrome || true
+      - uses: cypress-io/github-action@v2
+        id: cypress
+        continue-on-error: true
         with:
           start: php artisan serve
           browser: ${{ matrix.browser }}
@@ -111,7 +121,7 @@ jobs:
           record: true
           parallel: true
           install: false
-          group: Azure DevOps CI ${{ matrix.browser }}
+          group: github action ${{ matrix.browser }}
           tag: ${{ github.event_name }}
           config: baseUrl=http://localhost:8000
           wait-on: http://localhost:8000

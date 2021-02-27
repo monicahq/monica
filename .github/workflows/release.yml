@@ -60,6 +60,7 @@ jobs:
 
     env:
       php-version: 7.4
+      node-version: 14
 
     steps:
       - name: Checkout repository
@@ -75,7 +76,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.php-version }}
-          extensions: mbstring, dom, fileinfo
+          extensions: imagick, mbstring, dom, fileinfo
           coverage: none
 
     # Composer
@@ -90,8 +91,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
             ${{ runner.os }}-composer-${{ env.php-version }}
+            ${{ runner.os }}-composer-
 
     # Yarn
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.node-version }}
       - name: Get yarn cache directory path
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
