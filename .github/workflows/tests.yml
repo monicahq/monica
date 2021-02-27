@@ -21,18 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Unit tests on ${{ matrix.connection }} Testsuite ${{ matrix.testsuite }} (PHP ${{ matrix.php-version }})
 
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-          MYSQL_USER: monica
-          MYSQL_DATABASE: monica
-          MYSQL_PASSWORD: secret
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     strategy:
       fail-fast: false
       matrix:
@@ -98,8 +86,15 @@ jobs:
       - name: Generate key
         run: php artisan key:generate
 
-      - name: Prepare db
-        run: mysql -h 127.0.0.1 -P 3306 -u monica -psecret monica < scripts/database.test.sql
+      - name: Start mysql
+        if: matrix.connection == 'mysql'
+        run: sudo systemctl start mysql.service
+      - name: Create database
+        if: matrix.connection == 'mysql'
+        run: mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+      - name: Prepare database
+        if: matrix.connection == 'mysql'
+        run: mysql --protocol=tcp -u root -proot monica < scripts/database.test.sql
       - name: Run migrations
         run: php artisan migrate --no-interaction -vvv
 
@@ -140,18 +135,6 @@ jobs:
   tests_browser:
     runs-on: ubuntu-latest
     name: Tests browser on ${{ matrix.connection }} (PHP ${{ matrix.php-version }})
-
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-          MYSQL_USER: monica
-          MYSQL_DATABASE: monica
-          MYSQL_PASSWORD: secret
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     strategy:
       fail-fast: false
@@ -232,8 +215,15 @@ jobs:
       - name: Generate key
         run: php artisan key:generate
 
-      - name: Prepare db
-        run: mysql -h 127.0.0.1 -P 3306 -u monica -psecret monica < scripts/database.test.sql
+      - name: Start mysql
+        if: matrix.connection == 'mysql'
+        run: sudo systemctl start mysql.service
+      - name: Create database
+        if: matrix.connection == 'mysql'
+        run: mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+      - name: Prepare database
+        if: matrix.connection == 'mysql'
+        run: mysql --protocol=tcp -u root -proot monica < scripts/database.test.sql
       - name: Run migrations
         run: php artisan migrate --no-interaction -vvv
 
