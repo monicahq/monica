@@ -10,18 +10,6 @@ jobs:
     if: contains(github.event.pull_request.labels.*.name, 'cypress')
     name: Cypress tests with ${{ matrix.browser }} (PHP ${{ matrix.php-version }})
 
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-          MYSQL_USER: monica
-          MYSQL_DATABASE: monica
-          MYSQL_PASSWORD: secret
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     strategy:
       fail-fast: false
       matrix:
@@ -94,17 +82,21 @@ jobs:
     # Prepare
       - name: Prepare environment
         run: |
-          mkdir -p results/coverage
           cp scripts/ci/.env.mysql .env
           touch config/.version config/.release .sentry-release .sentry-commit
+          mkdir -p results/coverage
           echo "REQUIRES_SUBSCRIPTION=true" >> .env
 
       - name: Generate key
         run: php artisan key:generate
 
-      - name: Prepare db
-        run: mysql -h 127.0.0.1 -P 3306 -u monica -psecret monica < scripts/database.test.sql
-      - name: Run migration scripts
+      - name: Start mysql
+        run: sudo systemctl start mysql.service
+      - name: Create database
+        run: mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+      - name: Prepare database
+        run: mysql --protocol=tcp -u root -proot monica < scripts/database.test.sql
+      - name: Run migrations
         run: php artisan migrate --no-interaction -vvv
 
       - name: Run seeds

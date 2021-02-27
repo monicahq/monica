@@ -70,18 +70,17 @@ jobs:
         run: |
           cp scripts/ci/.env.${{ matrix.connection }} .env
           touch config/.version config/.release .sentry-release .sentry-commit
-          mkdir -p results/coverage
-          mkdir -p public/js
-          mkdir -p public/css
-          echo "{" > public/mix-manifest.json
-          for f in app.js manifest.js vendor.js app-ltr.css app-rtl.css stripe.js stripe.css; do
-            [[ $first == 1 ]] && echo -n "," >> public/mix-manifest.json || first=1
-            k=${f##*.}/$f
-            echo "\"/$k\": \"/$k\"" >> public/mix-manifest.json
-            echo '' > public/$k
-          done
-          echo "}" >> public/mix-manifest.json
-          cat public/mix-manifest.json
+          mkdir -p public/js public/css results/coverage
+          {\
+            echo "{"; \
+            for f in app.js manifest.js vendor.js app-ltr.css app-rtl.css stripe.js stripe.css; do \
+              [[ $first == 1 ]] && echo -n "," || first=1; \
+              k=${f##*.}/$f; \
+              echo "\"/$k\": \"/$k\""; \
+              echo '' > public/$k; \
+            done \
+            echo "}"; \
+          } | tee public/mix-manifest.json
 
       - name: Generate key
         run: php artisan key:generate
@@ -208,8 +207,7 @@ jobs:
         run: |
           cp scripts/ci/.env.${{ matrix.connection }} .env
           touch config/.version config/.release .sentry-release .sentry-commit
-          mkdir -p results/coverage
-          mkdir -p results/console
+          mkdir -p results/coverage results/console
           chmod -R 777 storage bootstrap/cache
 
       - name: Generate key
