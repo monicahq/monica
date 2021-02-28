@@ -21,7 +21,7 @@ jobs:
   #############
   build:
     runs-on: ubuntu-latest
-    name: Build (PHP ${{ env.php-version }})
+    name: Build Assets
 
     strategy:
       fail-fast: false
