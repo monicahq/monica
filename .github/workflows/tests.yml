@@ -270,7 +270,7 @@ jobs:
     needs: [tests, tests_browser]
     runs-on: ubuntu-latest
     name: Sonarcloud
-    if: ${{ ! startsWith(github.ref, 'dependabot/') && env.SONAR_TOKEN != '' }}
+    if: env.SONAR_TOKEN != '' && (! startsWith(github.ref, 'dependabot/'))
 
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
