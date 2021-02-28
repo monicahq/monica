@@ -270,7 +270,7 @@ jobs:
     needs: [tests, tests_browser]
     runs-on: ubuntu-latest
     name: Sonarcloud
-    if: ${{ secrets.SONAR_TOKEN != '' && ! startsWith(github.ref, 'dependabot/') }}
+    if: ${{ ! startsWith(github.ref, 'dependabot/') }}
 
     steps:
       - name: Checkout repository
@@ -284,9 +284,8 @@ jobs:
           path: results
 
       - name: Fix results paths
-        run: |
-          pushd results
-          for f in $(ls); do cp -rf $f/* .; rm -rf $f; done
+        run: for f in $(ls); do cp -rf $f/* .; rm -rf $f; done
+        working-directory: results
 
       - name: Merge junit files
         run: |
@@ -301,6 +300,7 @@ jobs:
           echo "::set-output name=value::$version"
 
       - name: SonarCloud Scan
+        if: env.SONAR_TOKEN != ''
         uses: SonarSource/sonarcloud-github-action@v1.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
