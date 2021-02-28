@@ -11,22 +11,20 @@ on:
     workflows: ['Compress images']
     types: [completed]
 
+env:
+  php-version: 7.4
+  node-version: 14
+
 jobs:
   #############
   # Build
   #############
   build:
     runs-on: ubuntu-latest
-    name: Build (PHP ${{ matrix.php-version }})
+    name: Build (PHP ${{ env.php-version }})
 
     strategy:
       fail-fast: false
-      matrix:
-        php-version: [7.4]
-
-    env:
-      node-version: 14
-      remote: monica-origin
 
     steps:
       - name: Checkout sources
@@ -34,11 +32,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup PHP ${{ matrix.php-version }}
+      - name: Setup PHP ${{ env.php-version }}
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-version }}
-          extensions: imagick, mbstring, dom, fileinfo, ${{ matrix.connection }}
+          php-version: ${{ env.php-version }}
+          extensions: imagick, mbstring, dom, fileinfo
           coverage: none
       - name: Check PHP Version
         run: php -v
@@ -58,10 +56,10 @@ jobs:
         uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
-            ${{ runner.os }}-composer-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ env.php-version }}
             ${{ runner.os }}-composer-
 
       - name: Install composer dependencies
@@ -99,6 +97,6 @@ jobs:
             echo "Nothing to push, already up to date."
           else
             echo -e "Waiting modifications:\n$status"
-            echo "::error::Assets are not up to date. Please rebuild with: 'yarn run prod' and commit public/ assets."
+            echo "::error::Assets are not up to date. Please rebuild with: 'yarn run lint:all' and 'yarn run prod'."
             exit -1
           fi
