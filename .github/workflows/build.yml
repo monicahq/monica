@@ -31,6 +31,8 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Setup PHP ${{ matrix.php-version }}
         uses: shivammathur/setup-php@v2
