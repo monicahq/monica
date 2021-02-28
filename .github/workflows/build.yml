@@ -106,7 +106,7 @@ jobs:
         run: git checkout HEAD^2
 
       - name: Setup git
-        if: secrets.ASSETS_GITHUB_TOKEN != '' && steps.check.outputs.status == 'ko'
+        if: env.ASSETS_GITHUB_TOKEN != '' && steps.check.outputs.status == 'ko'
         run: |
           remoteurl="https://$ASSETS_USERNAME:$ASSETS_GITHUB_TOKEN@github.com/${{ github.repository }}"
           git remote remove ${{ env.remote }} || true
