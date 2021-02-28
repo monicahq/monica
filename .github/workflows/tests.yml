@@ -270,19 +270,13 @@ jobs:
     needs: [tests, tests_browser]
     runs-on: ubuntu-latest
     name: Sonarcloud
-    if: ${{ ! startsWith(github.ref, 'dependabot/') }}
+    if: ${{ ! startsWith(github.ref, 'dependabot/') && secrets.SONAR_TOKEN != '' }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-
-      # If this run was triggered by a pull request event, then checkout
-      # the head of the pull request instead of the merge commit.
-      - name: Checkout HEAD
-        if: github.event_name == 'pull_request'
-        run: git checkout HEAD^2
 
       - name: Download results
         uses: actions/download-artifact@v2
@@ -307,7 +301,6 @@ jobs:
           echo "::set-output name=value::$version"
 
       - name: SonarCloud Scan
-        if: env.SONAR_TOKEN != ''
         uses: SonarSource/sonarcloud-github-action@v1.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

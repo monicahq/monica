@@ -1,8 +1,6 @@
 name: Build
 
 on:
-  push:
-    branches: [master]
   pull_request:
     types: [opened, synchronize, reopened]
     branches-ignore: ['l10n_master*']
@@ -28,6 +26,7 @@ jobs:
 
     env:
       node-version: 14
+      remote: monica-origin
 
     steps:
       - name: Checkout sources
@@ -91,11 +90,44 @@ jobs:
         run: yarn run production
 
       - name: Check if there is any file update needed
+        id: check
         run: |
           status=$(git status --porcelain)
           if [ -z "$status" ]; then
             echo "Nothing to push, already up to date."
+            echo "::set-output name=status::ok"
           else
             echo -e "Waiting modifications:\n$status"
-            exit -1
+            echo "::set-output name=status::ko"
           fi
+
+      - name: Checkout HEAD
+        if: github.event_name == 'pull_request' && steps.check.outputs.status == 'ko'
+        run: git checkout HEAD^2
+
+      - name: Setup git
+        if: secrets.ASSETS_GITHUB_TOKEN != '' && steps.check.outputs.status == 'ko'
+        run: |
+          remoteurl="https://$ASSETS_USERNAME:$ASSETS_GITHUB_TOKEN@github.com/${{ github.repository }}"
+          git remote remove ${{ env.remote }} || true
+          git remote add -f ${{ env.remote }} $remoteurl || true
+          git config user.email $ASSETS_EMAIL
+          git config user.name $ASSETS_USERNAME
+        env:
+          ASSETS_GITHUB_TOKEN: ${{ secrets.ASSETS_GITHUB_TOKEN }}
+          ASSETS_USERNAME: ${{ secrets.ASSETS_USERNAME }}
+          ASSETS_EMAIL: ${{ secrets.ASSETS_EMAIL }}
+
+      - name: Update assets
+        if: env.ASSETS_GITHUB_TOKEN != '' && steps.check.outputs.status == 'ko'
+        run: |
+          git add public/mix-manifest.json public/js/* public/css/* public/fonts/*
+          git commit -m "chore(assets): Update assets"
+          git push ${{ env.remote }} ${{ github.ref }}
+          git remote remove ${{ env.remote }}
+
+      - name: Action
+        if: steps.check.outputs.status == 'ko'
+        run: |
+          echo -e "Stop CI to fast fail: rebuild needed"
+          exit -1
