@@ -24,7 +24,7 @@ jobs:
   #############
   tests:
     runs-on: ubuntu-latest
-    name: Unit tests on ${{ matrix.connection }} Testsuite ${{ matrix.testsuite }} (PHP ${{ matrix.php-version }})
+    name: Testsuite ${{ matrix.testsuite }} with PHP ${{ matrix.php-version }} (${{ matrix.connection }})
 
     strategy:
       fail-fast: false
@@ -138,12 +138,12 @@ jobs:
   ###################
   tests_browser:
     runs-on: ubuntu-latest
-    name: Tests browser on ${{ matrix.connection }} (PHP ${{ matrix.php-version }})
+    name: Tests browser with PHP ${{ matrix.php-version }} (${{ matrix.connection }})
 
     strategy:
       fail-fast: false
       matrix:
-        php-version: [7.4]
+        php-version: [7.4, 8.0]
         connection: [mysql]
 
     steps:
