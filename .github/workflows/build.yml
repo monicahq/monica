@@ -127,6 +127,8 @@ jobs:
           git commit -m "chore(assets): Update assets"
           git push ${{ env.remote }} ${{ github.ref }}
           git remote remove ${{ env.remote }}
+        env:
+          ASSETS_GITHUB_TOKEN: ${{ secrets.ASSETS_GITHUB_TOKEN }}
 
       - name: Action
         if: steps.check.outputs.status == 'ko'
