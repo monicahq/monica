@@ -296,14 +296,6 @@ jobs:
           yarn global add junit-merge
           $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
 
-      - name: debug
-        run: find results
-      - name: Store results
-        uses: actions/upload-artifact@v2
-        with:
-          name: results-merge
-          path: results
-
       - name: Set version parameter
         id: version
         run: |
@@ -312,9 +304,10 @@ jobs:
           echo "::set-output name=value::$version"
 
       - name: Set coverage list
+        id: coverage
         run: |
           SONAR_COVERAGE=$(ls -m --format=comma results/coverage*.xml | sed -e ':a;N;$!ba;s/\n//g; s/ //g;')
-          echo "SONAR_COVERAGE=$SONAR_COVERAGE" >> $GITHUB_ENV
+          echo "::set-output name=list::$SONAR_COVERAGE"
 
       - name: SonarCloud Scan
         if: env.SONAR_TOKEN != ''
@@ -326,4 +319,4 @@ jobs:
           args: |
             -Dsonar.projectVersion=${{ steps.version.outputs.value }}
             -Dsonar.php.tests.reportPath=./results/results.xml
-            -Dsonar.php.coverage.reportPaths=${{ env.SONAR_COVERAGE }}
+            -Dsonar.php.coverage.reportPaths=${{ steps.coverage.outputs.list }}
