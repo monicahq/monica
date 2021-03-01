@@ -311,6 +311,11 @@ jobs:
           test -z "$version" && version="master"
           echo "::set-output name=value::$version"
 
+      - name: Set coverage list
+        run: |
+          SONAR_COVERAGE=$(ls -m --format=comma ./results/coverage*.xml | sed -e 's/ //g')
+          echo "SONAR_COVERAGE=$SONAR_COVERAGE" >> $GITHUB_ENV
+
       - name: SonarCloud Scan
         if: env.SONAR_TOKEN != ''
         uses: SonarSource/sonarcloud-github-action@v1.5
@@ -321,4 +326,4 @@ jobs:
           args: |
             -Dsonar.projectVersion=${{ steps.version.outputs.value }}
             -Dsonar.php.tests.reportPath=./results/results.xml
-            -Dsonar.php.coverage.reportPaths=./results/coverage*.xml
+            -Dsonar.php.coverage.reportPaths=$SONAR_COVERAGE
