@@ -8,21 +8,21 @@ on:
     workflows: ['Compress images']
     types: [completed]
 
+env:
+  php-version: 7.4
+
+
 jobs:
   psalm:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php-version: [7.4]
-
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
 
-      - name: Setup PHP ${{ matrix.php-version }}
+      - name: Setup PHP ${{ env.php-version }}
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-version }}
+          php-version: ${{ env.php-version }}
           extensions: imagick, mbstring, dom, fileinfo
           coverage: none
 
@@ -33,10 +33,10 @@ jobs:
         uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
-            ${{ runner.os }}-composer-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ env.php-version }}
             ${{ runner.os }}-composer-
 
       - name: Install dependencies
@@ -48,18 +48,14 @@ jobs:
 
   phpstan:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php-version: [7.4]
-
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
 
-      - name: Setup PHP ${{ matrix.php-version }}
+      - name: Setup PHP ${{ env.php-version }}
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-version }}
+          php-version: ${{ env.php-version }}
           extensions: imagick, mbstring, dom, fileinfo
           coverage: none
 
@@ -70,10 +66,10 @@ jobs:
         uses: actions/cache@v2.1.4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
-            ${{ runner.os }}-composer-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ env.php-version }}
             ${{ runner.os }}-composer-
 
       - name: Install dependencies

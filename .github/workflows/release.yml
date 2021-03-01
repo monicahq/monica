@@ -10,6 +10,11 @@ on:
 
   workflow_dispatch:
 
+env:
+  php-version: 7.4
+  node-version: 14
+
+
 jobs:
   ####################
   # Semantic release
@@ -57,10 +62,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Package release
     if: needs.semantic.outputs.new_release_published == 'true'
-
-    env:
-      php-version: 7.4
-      node-version: 14
 
     steps:
       - name: Checkout repository
