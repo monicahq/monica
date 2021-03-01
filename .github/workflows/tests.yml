@@ -112,21 +112,22 @@ jobs:
     # Test
       - name: Run Unit test suite
         if: matrix.php-version == env.default-php-version
-        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage${{ matrix.testsuite }}.xml
+        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/${{ matrix.connection }}/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/${{ matrix.connection }}/coverage${{ matrix.testsuite }}.xml
         env:
           DB_CONNECTION: ${{ matrix.connection }}
       - name: Run Unit test suite
         if: matrix.php-version != env.default-php-version
-        run: vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }}
+        run: vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/${{ matrix.connection }}/junit/results${{ matrix.testsuite }}.xml
         env:
           DB_CONNECTION: ${{ matrix.connection }}
 
       - name: Fix results files
         if: matrix.php-version == env.default-php-version
-        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/*/*.xml
+        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" **/*.xml
+        working-directory: results
 
       - name: Store results
-        if: matrix.php-version == env.default-php-version && always()
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: results
@@ -248,17 +249,18 @@ jobs:
           php -S localhost:8001 -t public scripts/tests/server-cc.php &
 
       - name: Run browser tests
-        run: php artisan dusk --log-junit results/junit/results0.xml
+        run: php artisan dusk --log-junit results/${{ matrix.connection }}/junit/results0.xml
         env:
           APP_URL: http://localhost:8000
 
       - name: Fix coverage
         run: |
-          vendor/bin/phpcov merge --clover=results/coverage0.xml results/coverage/
+          vendor/bin/phpcov merge --clover=results/${{ matrix.connection }}/coverage0.xml results/coverage/
           rm -rf results/coverage
 
       - name: Fix results files
-        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/*/*.xml
+        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" **/*.xml
+        working-directory: results
 
       - name: Store results
         if: always()
@@ -292,13 +294,21 @@ jobs:
       - name: Merge junit files
         run: |
           yarn global add junit-merge
-          $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
+          $(yarn global bin)/junit-merge --recursive --dir results/mysql/junit --out results/results.xml
+
+      - name: debug
+        run: find results
+      - name: Store results
+        uses: actions/upload-artifact@v2
+        with:
+          name: results-merge
+          path: results
 
       - name: Set version parameter
         id: version
         run: |
           version=$(git tag --points-at HEAD)
-          test -z "$version" && version="main"
+          test -z "$version" && version="master"
           echo "::set-output name=value::$version"
 
       - name: SonarCloud Scan
@@ -311,4 +321,4 @@ jobs:
           args: |
             -Dsonar.projectVersion=${{ steps.version.outputs.value }}
             -Dsonar.php.tests.reportPath=./results/results.xml
-            -Dsonar.php.coverage.reportPaths=./results/coverage*.xml
+            -Dsonar.php.coverage.reportPaths=./results/mysql/coverage*.xml
