@@ -123,7 +123,7 @@ jobs:
 
       - name: Fix results files
         if: matrix.php-version == env.default-php-version
-        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" **/*.xml
+        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" *.xml **/*.xml
         working-directory: results
 
       - name: Store results
@@ -259,7 +259,7 @@ jobs:
           rm -rf results/coverage
 
       - name: Fix results files
-        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" **/*.xml
+        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" *.xml **/*.xml
         working-directory: results
 
       - name: Store results
@@ -313,7 +313,7 @@ jobs:
 
       - name: Set coverage list
         run: |
-          SONAR_COVERAGE=$(ls -m --format=comma results/coverage*.xml | sed -e ':a;N;$!ba;s/\n//g' -e 's/ //g')
+          SONAR_COVERAGE=$(ls -m --format=comma results/coverage*.xml | sed -e ':a;N;$!ba;s/\n//g; s/ //g;')
           echo "SONAR_COVERAGE=$SONAR_COVERAGE" >> $GITHUB_ENV
 
       - name: SonarCloud Scan
