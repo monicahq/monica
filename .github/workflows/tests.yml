@@ -1,0 +1,317 @@
+name: Unit tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches-ignore: ['l10n_master*']
+  release:
+    types: [created]
+
+  workflow_run:
+    workflows: ['Compress images']
+    types: [completed]
+
+jobs:
+  #############
+  # Run tests
+  #############
+  tests:
+    runs-on: ubuntu-latest
+    name: Unit tests on ${{ matrix.connection }} Testsuite ${{ matrix.testsuite }} (PHP ${{ matrix.php-version }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [7.4, 8.0]
+        connection: [mysql]
+        testsuite: [Api, Feature, Unit-Models, Unit-Services]
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: imagick, mbstring, dom, fileinfo, ${{ matrix.connection }}
+          coverage: none
+      - name: Check PHP Version
+        run: php -v
+      - name: Check Composer Version
+        run: composer -V
+      - name: Check PHP Extensions
+        run: php -m
+
+    # Composer
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer files
+        uses: actions/cache@v2.1.4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-
+
+      - name: Install composer dependencies
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=php
+
+    # Prepare
+      - name: Prepare environment
+        run: |
+          cp scripts/ci/.env.${{ matrix.connection }} .env
+          touch config/.version config/.release .sentry-release .sentry-commit
+          mkdir -p public/js public/css results/coverage
+          {\
+            echo "{"; \
+            for f in app.js manifest.js vendor.js app-ltr.css app-rtl.css stripe.js stripe.css; do \
+              [[ $first == 1 ]] && echo -n "," || first=1; \
+              k=${f##*.}/$f; \
+              echo "\"/$k\": \"/$k\""; \
+              echo '' > public/$k; \
+            done; \
+            echo "}"; \
+          } | tee public/mix-manifest.json
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Start mysql
+        if: matrix.connection == 'mysql'
+        run: sudo systemctl start mysql.service
+      - name: Create database
+        if: matrix.connection == 'mysql'
+        run: mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+      - name: Prepare database
+        if: matrix.connection == 'mysql'
+        run: mysql --protocol=tcp -u root -proot monica < scripts/database.test.sql
+      - name: Run migrations
+        run: php artisan migrate --no-interaction -vvv
+
+      - name: Run seeds
+        run: php artisan db:seed --no-interaction -vvv
+      - name: Create passport keys
+        run: php artisan passport:keys --no-interaction -vvv
+      - name: Cache route
+        run: php artisan route:cache
+
+    # Test
+      - name: Run Unit test suite
+        if: matrix.php-version == '7.4'
+        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage${{ matrix.testsuite }}.xml
+        env:
+          DB_CONNECTION: ${{ matrix.connection }}
+      - name: Run Unit test suite
+        if: matrix.php-version != '7.4'
+        run: vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }}
+        env:
+          DB_CONNECTION: ${{ matrix.connection }}
+
+      - name: Fix results files
+        if: matrix.php-version == '7.4'
+        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/*/*.xml
+
+      - name: Store results
+        if: matrix.php-version == '7.4' && always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: results${{ matrix.testsuite }}
+          path: results
+
+
+  ###################
+  # Run tests browser
+  ###################
+  tests_browser:
+    runs-on: ubuntu-latest
+    name: Tests browser on ${{ matrix.connection }} (PHP ${{ matrix.php-version }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [7.4]
+        connection: [mysql]
+
+    env:
+      node-version: 14
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: imagick, ${{ matrix.connection }}
+      - name: Check PHP Version
+        run: php -v
+      - name: Check Composer Version
+        run: composer -V
+      - name: Check PHP Extensions
+        run: php -m
+
+    # Composer
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer files
+        uses: actions/cache@v2.1.4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-
+
+      - name: Install composer dependencies
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=php
+
+    # Yarn
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.node-version }}
+      - name: Get yarn cache directory path
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache yarn files
+        uses: actions/cache@v2.1.4
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            ${{ runner.os }}-yarn-
+
+      - name: Install yarn dependencies
+        run: yarn inst
+      - name: Build assets
+        run: yarn run production
+
+    # Prepare
+      - name: Prepare environment
+        run: |
+          cp scripts/ci/.env.${{ matrix.connection }} .env
+          touch config/.version config/.release .sentry-release .sentry-commit
+          mkdir -p results/coverage results/console
+          chmod -R 777 storage bootstrap/cache
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Start mysql
+        if: matrix.connection == 'mysql'
+        run: sudo systemctl start mysql.service
+      - name: Create database
+        if: matrix.connection == 'mysql'
+        run: mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+      - name: Prepare database
+        if: matrix.connection == 'mysql'
+        run: mysql --protocol=tcp -u root -proot monica < scripts/database.test.sql
+      - name: Run migrations
+        run: php artisan migrate --no-interaction -vvv
+
+      - name: Run seeds
+        run: php artisan db:seed --no-interaction -vvv
+      - name: Create passport keys
+        run: php artisan passport:keys --no-interaction -vvv
+      - name: Cache route
+        run: php artisan route:cache
+
+    # Test
+      - name: Upgrade Chrome Driver
+        run: php artisan dusk:chrome-driver $(google-chrome -version | awk '{ print $3 }' | cut -d . -f 1)
+      - name: Start Chrome Driver
+        run: |
+          chmod -R 0755 vendor/laravel/dusk/bin/
+          ./vendor/laravel/dusk/bin/chromedriver-linux &
+
+      - name: Run http server
+        run: |
+          php -S localhost:8000 -t public scripts/tests/server-cc.php &
+          php -S localhost:8001 -t public scripts/tests/server-cc.php &
+
+      - name: Run browser tests
+        run: php artisan dusk --log-junit results/junit/results0.xml
+        env:
+          APP_URL: http://localhost:8000
+
+      - name: Fix coverage
+        run: |
+          vendor/bin/phpcov merge --clover=results/coverage0.xml results/coverage/
+          rm -rf results/coverage
+
+      - name: Store results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: results0
+          path: results
+
+
+  ###########################
+  # Reporting to sonarcloud
+  ###########################
+  reporting:
+    needs: [tests, tests_browser]
+    runs-on: ubuntu-latest
+    name: Sonarcloud
+    if: ${{ ! startsWith(github.ref, 'dependabot/') }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      # If this run was triggered by a pull request event, then checkout
+      # the head of the pull request instead of the merge commit.
+      - name: Checkout HEAD
+        if: github.event_name == 'pull_request'
+        run: git checkout HEAD^2
+
+      - name: Download results
+        uses: actions/download-artifact@v2
+        with:
+          path: results
+
+      - name: Fix results paths
+        run: |
+          pushd results
+          for f in $(ls); do cp -rf $f/* .; rm -rf $f; done
+
+      - name: Merge junit files
+        run: |
+          yarn global add junit-merge
+          $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
+
+      - name: Set version parameter
+        id: version
+        run: |
+          version=$(git tag --points-at HEAD)
+          test -z "$version" && version="main"
+          echo "::set-output name=value::$version"
+
+      - name: SonarCloud Scan
+        if: env.SONAR_TOKEN != ''
+        uses: SonarSource/sonarcloud-github-action@v1.5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: |
+            -Dsonar.projectVersion=${{ steps.version.outputs.value }}
