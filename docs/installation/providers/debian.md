@@ -19,7 +19,7 @@ Monica depends on the following:
 
 -   A Web server, like [Apache httpd webserver](https://httpd.apache.org/)
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
--   PHP 7.2+
+-   PHP 7.4+
 -   [Composer](https://getcomposer.org/)
 -   MySQL / MariaDB
 
@@ -40,7 +40,7 @@ sudo apt install -y git
 
 **PHP:**
 
-Install PHP 7.3 with these extensions:
+Install PHP 7.4 with these extensions:
 
 ```sh
 sudo apt install -y php php-bcmath php-curl php-gd php-gmp php-imagick \
@@ -129,7 +129,7 @@ exit
     - set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
     - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
     - set the `APP_ENV` variable to `production`, `local` is only used for the development version. Beware: setting `APP_ENV` to `production` will force HTTPS. Skip this if you're running Monica locally.
-3. Run `composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs` to install all packages.
+3. Run `composer install --no-interaction --no-dev --ignore-platform-reqs` to install all packages.
 4. Run `yarn install` to install frontend packages, then `yarn run production` to build the assets (js, css).
 5. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 6. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.

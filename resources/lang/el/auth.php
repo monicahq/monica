@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -84,5 +84,5 @@ return [
     'email_change_current_email' => 'Διεύθυνση email αυτή τη στιγμή:',
     'email_change_title' => 'Αλλάξτε την διεύθυνση email σας',
     'email_change_new' => 'Νέα διεύθυνση email',
-    'email_changed' => 'Your email address has been changed. Check your mailbox to validate it.',
+    'email_changed' => 'Η διεύθυνση email σας έχει αλλάξει. Ελέγξτε το γραμματοκιβώτιό σας για να το επικυρώσετε.',
 ];

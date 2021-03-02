@@ -39,14 +39,14 @@
       <li v-show="editMode" class="di mb3">
         <div class="relative di mr2">
           <input v-model="search"
-                type="text"
-                class="di br2 f5 ba b--black-40 pa2 outline-0"
-                :placeholder="$t('people.tag_add_search')"
-                @keydown.down="onArrowDown"
-                @keydown.up="onArrowUp"
-                @keydown.enter="onEnter"
-                @keydown.esc="onEscape"
-                @input="onChange"
+                 type="text"
+                 class="di br2 f5 ba b--black-40 pa2 outline-0"
+                 :placeholder="$t('people.tag_add_search')"
+                 @keydown.down="onArrowDown"
+                 @keydown.up="onArrowUp"
+                 @keydown.enter="onEnter"
+                 @keydown.esc="onEscape"
+                 @input="onChange"
           />
 
           <ul v-show="isOpen" v-if="results.length > 0" class="autocomplete-results ba b--gray-monica absolute bg-white left-0 z-9999">

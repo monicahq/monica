@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -35,7 +35,7 @@ return [
     'statistics_gifts' => '礼物',
 
     'reminders_next_months' => '近三个月的活动',
-    'reminders_none' => '本月尚无提醒事项',
+    'reminders_none' => '本月尚无提醒事项.',
 
     'product_changes' => '更新日志',
     'product_view_details' => '查看详情',

@@ -84,17 +84,10 @@ export default {
   },
 
   mounted() {
-    this.prepareComponent();
+    this.getModules();
   },
 
   methods: {
-    prepareComponent() {
-      this.getModules();
-      if (!this.limited) {
-        this.limited = false;
-      }
-    },
-
     getModules() {
       axios.get('settings/personalization/modules')
         .then(response => {

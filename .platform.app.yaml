@@ -21,7 +21,7 @@ runtime:
 hooks:
   build: |
     set -evx
-    composer install --no-interaction --no-suggest --no-dev
+    composer install --no-interaction --no-dev
     composer require --update-no-dev platformsh/laravel-bridge
     mkdir -p ${SENTRY_ROOT:-/app/vendor/bin}
     curl -sL https://sentry.io/get-cli/ | INSTALL_DIR=${SENTRY_ROOT:-/app/vendor/bin} bash

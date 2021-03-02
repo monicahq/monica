@@ -107,7 +107,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Extension for Calendar objects.
      *
-     * @var string
+     * @return string
      */
     public function getExtension()
     {

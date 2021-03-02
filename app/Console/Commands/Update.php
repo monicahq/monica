@@ -64,7 +64,7 @@ class Update extends Command
                 }
 
                 if ($this->option('composer-install') === true) {
-                    $this->exec('✓ Updating composer dependencies', 'composer install --no-interaction --no-suggest --ignore-platform-reqs'.($this->option('dev') === false ? ' --no-dev' : ''));
+                    $this->exec('✓ Updating composer dependencies', 'composer install --no-interaction --ignore-platform-reqs'.($this->option('dev') === false ? ' --no-dev' : ''));
                 }
 
                 if ($this->option('skip-storage-link') !== true && $this->getLaravel()->environment() != 'testing' && ! file_exists(public_path('storage'))) {

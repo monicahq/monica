@@ -1,8 +1,8 @@
 .btn {
-  color: #24292e;
-  background-color: #eff3f6;
-  background-image: -webkit-linear-gradient(270deg, #fafbfc 0%, #eff3f6 90%);
-  background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%);
+  color: #4a4a4a;
+  background-color: #d7e3ec;
+  background-image: -webkit-linear-gradient(270deg, #fafafa 0%, #d7e3ec 90%);
+  background-image: linear-gradient(-180deg, #fafafa 0%, #d7e3ec 90%);
   position: relative;
   display: inline-block;
   padding: 6px 12px;
@@ -28,24 +28,24 @@
 
   &:hover, &:focus {
     text-decoration: none;
-    background-color: #e6ebf1;
-    background-image: -webkit-linear-gradient(270deg, #f0f3f6 0%, #e6ebf1 90%);
-    background-image: linear-gradient(-180deg, #f0f3f6 0%, #e6ebf1 90%);
+    background-color: #e5e5e5;
+    background-image: -webkit-linear-gradient(270deg, #d7e3ec 0%, #e5e5e5 90%);
+    background-image: linear-gradient(-180deg, #d7e3ec 0%, #e5e5e5 90%);
     background-position: 0 -0.5em;
     background-repeat: repeat-x;
     border-color: rgba(27,31,35,0.35);
-    color: #014c8c;
+    color: #0366d5;
   }
 
   &:active {
-    background-color: #e9ecef;
+    background-color: #d0d0d0;
     background-image: none;
     border-color: rgba(27,31,35,0.35);
     box-shadow: inset 0 0.15em 0.3em rgba(27,31,35,0.15)
   }
 
   &:disabled {
-    background-image: linear-gradient(-180deg, #63b175 0%, #61986e 90%);
+    background-image: linear-gradient(-180deg, #d0d0d0 0%, #d0d0d0 90%);
   }
 
   &:focus {
@@ -56,14 +56,14 @@
 
 .btn-primary {
   color: #fff;
-  background-color: #28a745;
-  background-image: -webkit-linear-gradient(270deg, #34d058 0%, #28a745 90%);
-  background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%);
+  background-color: #228b22;
+  background-image: -webkit-linear-gradient(270deg, #32cd32 0%, #228b22 90%);
+  background-image: linear-gradient(-180deg, #32cd32 0%, #228b22 90%);
 
   &:hover, &:focus {
-    background-color: #269f42;
-    background-image: -webkit-linear-gradient(270deg, #2fcb53 0%, #269f42 90%);
-    background-image: linear-gradient(-180deg, #2fcb53 0%, #269f42 90%);
+    background-color: #228b22;
+    background-image: -webkit-linear-gradient(270deg, #32cd32 0%, #228b22 90%);
+    background-image: linear-gradient(-180deg, #32cd32 0%, #228b22 90%);
     background-position: 0 -0.5em;
     border-color: rgba(27,31,35,0.5);
   }
@@ -73,9 +73,9 @@
   color: #900;
 
   &:hover, &:focus {
-    background-color: #b33630;
-    background-image: linear-gradient(#dc5f59, #b33630);
-    border-color: #cd504a;
+    background-color: #b22222;
+    background-image: linear-gradient(#d9534f, #b22222);
+    border-color: #d9534f;
     color: #fff;
   }
 }
@@ -83,7 +83,7 @@
 .btn-add {
   position: relative;
   top: 3px;
-  border: 1px solid #576675;
+  border: 1px solid #4a4a4a;
   border-radius: 50%;
   width: 15px;
   margin-right: 3px;

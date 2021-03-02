@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -322,7 +322,7 @@ return [
     'gifts_add_someone' => 'Dit cadeau is voor iemand in {name}\'s familie',
     'gifts_delete_title' => 'Een cadeau verwijderen',
     'gifts_ideas' => 'Cadeau-ideeën',
-    'gifts_offered' => 'Cadeaus aangeboden',
+    'gifts_offered' => 'Cadeau aangeboden',
     'gifts_offered_as_an_idea' => 'Als idee markeren',
     'gifts_received' => 'Ontvangen cadeaus',
     'gifts_view_comment' => 'Opmerking bekijken',

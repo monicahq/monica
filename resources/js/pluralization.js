@@ -1,9 +1,9 @@
 /**
  * Pluralization form for every langage not following engl-ish like form.
- * 
+ *
  * 'plurals' functions represent possible plural form transformations.
  * This return a list of lang/plural function to apply.
- * 
+ *
  * @see https://github.com/laravel/framework/blob/master/src/Illuminate/Translation/MessageSelector.php
  */
 
@@ -42,7 +42,11 @@ export default {
   'fr': pluralB,
   'he': pluralF,
   'hr': pluralD,
+  'ja': pluralA,
   'ru': pluralD,
   'tr': pluralA,
+  'uk': pluralD,
+  'vi': pluralA,
   'zh': pluralA,
+  'zh-TW': pluralA,
 };

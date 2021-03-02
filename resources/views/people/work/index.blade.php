@@ -1,8 +1,8 @@
 <div class="sidebar-box">
 
-  <p class="sidebar-box-title">
-    <strong>{{ trans('people.work_information') }}</strong>
-  </p>
+  <div class="sidebar-box-title">
+    <h3>{{ trans('people.work_information') }}</h3>
+  </div>
 
   <div class="work">
     <ul>

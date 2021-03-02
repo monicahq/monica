@@ -37,7 +37,7 @@
           <div class="mb3">
             <form-input
               :id="'cardholder-name'"
-              v-model="name"
+              v-model="selectedName"
               :input-type="'text'"
               :iclass="'br3 b--black-30 ba pa3 w-100 f4'"
               :required="true"
@@ -133,6 +133,7 @@ export default {
 
   data() {
     return {
+      selectedName: '',
       stripe: null,
       zip: '',
       errors: '',
@@ -144,7 +145,14 @@ export default {
     };
   },
 
+  watch: {
+    name() {
+      this.selectedName = this.name;
+    }
+  },
+
   mounted() {
+    this.selectedName = this.name;
     if (this.paymentSucceeded || this.paymentCancelled) {
       this.paymentProcessed = true;
     }
@@ -220,7 +228,7 @@ export default {
         {
           payment_method_data: {
             billing_details: {
-              name: self.name,
+              name: self.selectedName,
               address: {
                 postal_code: self.zip,
               }
@@ -260,7 +268,7 @@ export default {
       this.stripe.handleCardPayment(
         self.clientSecret, self.cardElement, {
           payment_method_data: {
-            billing_details: { name: this.name }
+            billing_details: { name: this.selectedName }
           }
         }
       ).then(function (result) {

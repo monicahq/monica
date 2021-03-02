@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -35,7 +35,7 @@ return [
     'statistics_gifts' => 'Presentes',
 
     'reminders_next_months' => 'Eventos nos próximos 3 meses',
-    'reminders_none' => 'Nenhum lembrete para este mês',
+    'reminders_none' => 'Nenhum lembrete para este mês.',
 
     'product_changes' => 'Atualizações de produtos',
     'product_view_details' => 'Ver detalhes',

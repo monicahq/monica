@@ -24,6 +24,7 @@ class ContactSearch extends JsonResource
             'object' => 'contact',
             'route' => route('people.show', $this),
             'complete_name' => $this->name,
+            'description' => $this->description,
             'initials' => $this->getInitials(),
             'is_me' => $this->isMe(),
             'is_starred' => $this->is_starred,

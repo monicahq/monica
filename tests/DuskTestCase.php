@@ -32,7 +32,7 @@ abstract class DuskTestCase extends BaseTestCase
      */
     public static function prepare()
     {
-        if (env('SAUCELABS') != '1') {
+        if (! static::runningInSail()) {
             static::startChromeDriver();
         }
     }
@@ -44,22 +44,32 @@ abstract class DuskTestCase extends BaseTestCase
      */
     protected function driver()
     {
-        $options = (new ChromeOptions)->addArguments(explode(' ', env('CHROME_DRIVER_OPTS', '')));
-        $capabilities = DesiredCapabilities::chrome()->setCapability(
-            ChromeOptions::CAPABILITY, $options
+        $options = (new ChromeOptions)->addArguments(collect([
+            '--window-size=1920,1080',
+        ])->unless($this->hasHeadlessDisabled(), function ($items) {
+            return $items->merge([
+                '--disable-gpu',
+                '--headless',
+            ]);
+        })->all());
+
+        return RemoteWebDriver::create(
+            $_ENV['DUSK_DRIVER_URL'] ?? 'http://localhost:9515',
+            DesiredCapabilities::chrome()->setCapability(
+                ChromeOptions::CAPABILITY, $options
+            )
         );
+    }
 
-        if (env('SAUCELABS') == '1') {
-            $capabilities->setCapability('tunnel-identifier', env('TRAVIS_JOB_NUMBER'));
-
-            return RemoteWebDriver::create(
-                'http://'.env('SAUCE_USERNAME').':'.env('SAUCE_ACCESS_KEY').'@localhost:4445/wd/hub', $capabilities
-            );
-        } else {
-            return RemoteWebDriver::create(
-                'http://localhost:9515', $capabilities
-            );
-        }
+    /**
+     * Determine whether the Dusk command has disabled headless mode.
+     *
+     * @return bool
+     */
+    protected function hasHeadlessDisabled()
+    {
+        return isset($_SERVER['DUSK_HEADLESS_DISABLED']) ||
+               isset($_ENV['DUSK_HEADLESS_DISABLED']);
     }
 
     /**

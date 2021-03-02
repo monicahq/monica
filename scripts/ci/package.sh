@@ -14,7 +14,7 @@ fi
 
 set -v
 
-echo -n "$version" > $ROOT/config/.version
+echo -n "$version" | tee $ROOT/config/.version
 git log --pretty="%h" -n1 HEAD | tee $ROOT/config/.sentry-release
 git log --pretty="%H" -n1 HEAD | tee $ROOT/config/.sentry-commit
 
@@ -64,7 +64,6 @@ mkdir -p $package/storage/framework/sessions
 tar chfj $ROOT/$package.tar.bz2 --exclude .gitignore --exclude .gitkeep $package
 
 echo "::set-output name=package::$package.tar.bz2"
-echo "##vso[task.setvariable variable=package]$package.tar.bz2"
 
 # ASSETS
 assets=monica-assets-$version
@@ -77,4 +76,3 @@ ln -s $ROOT/public/fonts $assets/public/
 tar chfj $ROOT/$assets.tar.bz2 --exclude .gitignore --exclude .gitkeep $assets
 
 echo "::set-output name=assets::$assets.tar.bz2"
-echo "##vso[task.setvariable variable=assets]$assets.tar.bz2"
