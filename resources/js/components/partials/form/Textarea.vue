@@ -7,6 +7,9 @@ textarea {
 textarea:focus {
   border: 1px solid #5c6ac4;
 }
+textarea:read-only {
+  background-color: #f5f5f5;
+}
 </style>
 
 <template>
@@ -29,6 +32,7 @@ textarea:focus {
       :rows="rows"
       class="br2 f5 w-100 ba b--black-40 pa2 outline-0"
       :style="textareaStyle"
+      :readonly="readonly"
       @input="$emit('input', buffer)"
     ></textarea>
   </div>
@@ -65,6 +69,10 @@ export default {
     rows: {
       type: Number,
       default: 0,
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     }
   },
 

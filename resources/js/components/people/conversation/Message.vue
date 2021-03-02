@@ -30,7 +30,7 @@
     </span>
 
     <!-- AUTHOR -->
-    <div class="mb3">
+    <div class="mb0">
       <span class="di mr3">
         {{ $t('people.conversation_add_who_wrote') }}
       </span>
@@ -53,11 +53,13 @@
     </div>
 
     <!-- ACTUAL COMMENT -->
+    <a :id="'edit-message-button-'+uid" href="" class="pointer" @click.prevent="disableMessage()">{{ readonly ? $t('app.edit') : $t('app.save') }}</a>
     <form-textarea
       :id="'content_' + uid"
       v-model="buffer"
       :required="true"
       :no-label="true"
+      :readonly="readonly"
       :rows="4"
       :placeholder="$t('people.conversation_add_content')"
     />
@@ -106,6 +108,7 @@ export default {
     return {
       buffer: '',
       updatedAuthor: this.author,
+      readonly: true,
     };
   },
 
@@ -134,6 +137,10 @@ export default {
       this.updatedOther = newAuthor;
       this.$emit('updateAuthor', newAuthor);
     },
+
+    disableMessage() {
+      this.readonly = !this.readonly;
+    }
   }
 };
 </script>
