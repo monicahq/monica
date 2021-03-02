@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [labeled, opened, synchronize, reopened]
 
+env:
+  node-version: 14
+
+
 jobs:
   cypress:
     runs-on: ubuntu-latest
@@ -16,9 +20,6 @@ jobs:
         php-version: [7.4]
         browser: [chrome]
         containers: [1, 2, 3, 4, 5, 6, 7, 8]
-
-    env:
-      node-version: 14
 
     steps:
       - name: Checkout sources

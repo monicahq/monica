@@ -13,13 +13,18 @@ on:
     workflows: ['Compress images']
     types: [completed]
 
+env:
+  default-php-version: 7.4
+  node-version: 14
+
+
 jobs:
   #############
   # Run tests
   #############
   tests:
     runs-on: ubuntu-latest
-    name: Unit tests on ${{ matrix.connection }} Testsuite ${{ matrix.testsuite }} (PHP ${{ matrix.php-version }})
+    name: Testsuite ${{ matrix.testsuite }} with PHP ${{ matrix.php-version }} (${{ matrix.connection }})
 
     strategy:
       fail-fast: false
@@ -106,25 +111,26 @@ jobs:
 
     # Test
       - name: Run Unit test suite
-        if: matrix.php-version == '7.4'
-        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage${{ matrix.testsuite }}.xml
+        if: matrix.php-version == env.default-php-version
+        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage/coverage${{ matrix.testsuite }}.xml
         env:
           DB_CONNECTION: ${{ matrix.connection }}
       - name: Run Unit test suite
-        if: matrix.php-version != '7.4'
-        run: vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }}
+        if: matrix.php-version != env.default-php-version
+        run: vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml
         env:
           DB_CONNECTION: ${{ matrix.connection }}
 
       - name: Fix results files
-        if: matrix.php-version == '7.4'
-        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" results/*/*.xml
+        if: matrix.php-version == env.default-php-version
+        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" **/*.xml
+        working-directory: results
 
       - name: Store results
-        if: matrix.php-version == '7.4' && always()
+        if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: results${{ matrix.testsuite }}
+          name: results
           path: results
 
 
@@ -133,16 +139,13 @@ jobs:
   ###################
   tests_browser:
     runs-on: ubuntu-latest
-    name: Tests browser on ${{ matrix.connection }} (PHP ${{ matrix.php-version }})
+    name: Tests browser with PHP ${{ matrix.php-version }} (${{ matrix.connection }})
 
     strategy:
       fail-fast: false
       matrix:
-        php-version: [7.4]
+        php-version: [7.4, 8.0]
         connection: [mysql]
-
-    env:
-      node-version: 14
 
     steps:
       - name: Checkout sources
@@ -207,7 +210,7 @@ jobs:
         run: |
           cp scripts/ci/.env.${{ matrix.connection }} .env
           touch config/.version config/.release .sentry-release .sentry-commit
-          mkdir -p results/coverage results/console
+          mkdir -p results/coverage results/cov results/console
           chmod -R 777 storage bootstrap/cache
 
       - name: Generate key
@@ -252,14 +255,18 @@ jobs:
 
       - name: Fix coverage
         run: |
-          vendor/bin/phpcov merge --clover=results/coverage0.xml results/coverage/
-          rm -rf results/coverage
+          vendor/bin/phpcov merge --clover=results/coverage/coverageBrowser.xml results/cov/
+          rm -rf results/cov
+
+      - name: Fix results files
+        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" **/*.xml
+        working-directory: results
 
       - name: Store results
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: results0
+          name: results
           path: results
 
 
@@ -278,21 +285,11 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
-      # If this run was triggered by a pull request event, then checkout
-      # the head of the pull request instead of the merge commit.
-      - name: Checkout HEAD
-        if: github.event_name == 'pull_request'
-        run: git checkout HEAD^2
-
       - name: Download results
         uses: actions/download-artifact@v2
         with:
           path: results
-
-      - name: Fix results paths
-        run: |
-          pushd results
-          for f in $(ls); do cp -rf $f/* .; rm -rf $f; done
+          name: results
 
       - name: Merge junit files
         run: |
@@ -303,8 +300,14 @@ jobs:
         id: version
         run: |
           version=$(git tag --points-at HEAD)
-          test -z "$version" && version="main"
+          test -z "$version" && version="master"
           echo "::set-output name=value::$version"
+
+      - name: Set coverage list
+        id: coverage
+        run: |
+          SONAR_COVERAGE=$(ls -m --format=comma results/coverage/coverage*.xml | sed -e ':a;N;$!ba;s/\n//g; s/ //g;')
+          echo "::set-output name=list::$SONAR_COVERAGE"
 
       - name: SonarCloud Scan
         if: env.SONAR_TOKEN != ''
@@ -315,3 +318,5 @@ jobs:
         with:
           args: |
             -Dsonar.projectVersion=${{ steps.version.outputs.value }}
+            -Dsonar.php.tests.reportPath=./results/results.xml
+            -Dsonar.php.coverage.reportPaths=${{ steps.coverage.outputs.list }}
