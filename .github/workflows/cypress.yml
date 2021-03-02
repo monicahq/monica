@@ -77,7 +77,7 @@ jobs:
 
       - name: Install yarn dependencies
         run: yarn inst
-      - name: yarn build
+      - name: Build assets
         run: yarn run production
 
     # Prepare

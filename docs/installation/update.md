@@ -23,7 +23,7 @@ or if you have installed Monica on your own server, you need to follow the steps
        # Get latest tags from GitHub
        git fetch
        # Clone the desired version
-       git checkout tags/vX.Y.Z
+       git checkout tags/v2.18.0
        ```
     1. Or check out `master`
        ```sh

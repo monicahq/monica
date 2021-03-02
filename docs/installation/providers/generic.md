@@ -78,6 +78,9 @@ You should check out a tagged version of Monica since `master` branch may not al
 
 ```sh
 cd /var/www/monica
+# Get latest tags from GitHub
+git fetch
+# Clone the desired version
 git checkout tags/v2.18.0
 ```
 

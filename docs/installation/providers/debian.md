@@ -77,8 +77,10 @@ Find the latest official version on the [release page](https://github.com/monica
 
 ```sh
 cd /var/www/monica
+# Get latest tags from GitHub
+sudo git fetch
 # Clone the desired version
-sudo git checkout tags/v1.6.2
+sudo git checkout tags/v2.18.0
 ```
 
 ### 2. Setup the database
