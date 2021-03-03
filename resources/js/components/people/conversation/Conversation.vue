@@ -39,6 +39,7 @@
           :uid="message.uid"
           :participant-name="participantName"
           :display-trash="displayTrash"
+          :created="message.created"
           @updateAuthor="updateAuthor($event, message)"
           @deleteMessage="deleteMessage($event, message)"
         />
@@ -71,7 +72,7 @@ export default {
     return {
       messages: [],
       uid: 1,
-      displayTrash: false,
+      displayTrash: false
     };
   },
 
@@ -92,7 +93,8 @@ export default {
       this.messages.push({
         uid: this.uid++,
         content: '',
-        author: 'me'
+        author: 'me',
+        created: true,
       });
       if (this.messages.length > 1) {
         this.displayTrash = true;

@@ -53,7 +53,7 @@
     </div>
 
     <!-- ACTUAL COMMENT -->
-    <a :id="'edit-message-button-'+uid" href="" class="pointer" @click.prevent="disableMessage()">{{ readonly ? $t('app.edit') : $t('app.save') }}</a>
+    <a v-if="!created" :id="'edit-message-button-'+uid" href="" class="pointer" @click.prevent="disableMessage()">{{ readonly ? $t('app.edit') : $t('app.save') }}</a>
     <form-textarea
       :id="'content_' + uid"
       v-model="buffer"
@@ -102,6 +102,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    created: {
+      type: Boolean,
+      default: false,
+    }
   },
 
   data() {
@@ -126,6 +130,9 @@ export default {
 
   mounted() {
     this.buffer = this.value;
+    if(this.created){
+      this.readonly = false;
+    }
   },
 
   methods: {
