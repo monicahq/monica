@@ -235,6 +235,9 @@ jobs:
       - name: Cache route
         run: php artisan route:cache
 
+      - name: Test default page
+        run: php public/index.php
+
     # Test
       - name: Upgrade Chrome Driver
         run: php artisan dusk:chrome-driver $(google-chrome -version | awk '{ print $3 }' | cut -d . -f 1)
