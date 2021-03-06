@@ -236,7 +236,9 @@ jobs:
         run: php artisan route:cache
 
       - name: Test default page
-        run: php public/index.php
+        run: |
+          php public/index.php
+          php scripts/tests/server-cc.php
 
     # Test
       - name: Upgrade Chrome Driver
