@@ -6,9 +6,14 @@ use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
+use App\Services\Contact\Description\SetPersonalDescription;
+use App\Services\Contact\Description\ClearPersonalDescription;
 
 class UpdateContact extends BaseService
 {
+    private array $data;
+    private Contact $contact;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -18,6 +23,7 @@ class UpdateContact extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
+            'author_id' => 'required|integer|exists:users,id',
             'contact_id' => 'required|integer',
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
@@ -50,37 +56,28 @@ class UpdateContact extends BaseService
      */
     public function execute(array $data): Contact
     {
-        $this->validate($data);
+        $this->data = $data;
+        $this->validate($this->data);
 
-        /** @var Contact */
-        $contact = Contact::where('account_id', $data['account_id'])
+        /* @var Contact */
+        $this->contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
-        $this->updateGeneralInformation($data, $contact);
+        $this->updateGeneralInformation();
+        $this->updateDescription();
+        $this->updateBirthDayInformation();
+        $this->updateDeceasedInformation();
 
-        $this->updateBirthDayInformation($data, $contact);
-
-        $this->updateDeceasedInformation($data, $contact);
-
-        // we query the DB again to fill the object with all the new properties
-        $contact->refresh();
-
-        return $contact;
+        return $this->contact->refresh();
     }
 
-    /**
-     * Update general information.
-     *
-     * @param array $data
-     * @param Contact $contact
-     * @return void
-     */
-    private function updateGeneralInformation(array $data, Contact $contact)
+    private function updateGeneralInformation(): void
     {
         // filter out the data that shall not be updated here
         $dataOnly = Arr::except(
-            $data,
+            $this->data,
             [
+                'author_id',
                 'is_birthdate_known',
                 'birthdate_day',
                 'birthdate_month',
@@ -94,60 +91,66 @@ class UpdateContact extends BaseService
                 'deceased_date_month',
                 'deceased_date_year',
                 'deceased_date_add_reminder',
+                'description',
             ]
         );
 
-        $oldName = $contact->name;
-
-        $contact->update($dataOnly);
+        $oldName = $this->contact->name;
+        $this->contact->update($dataOnly);
 
         // only update the avatar if the name has changed
-        if ($oldName != $contact->name) {
-            GenerateDefaultAvatar::dispatch($contact);
+        if ($oldName != $this->contact->name) {
+            GenerateDefaultAvatar::dispatch($this->contact);
         }
     }
 
-    /**
-     * Update the information about the birthday.
-     *
-     * @param array $data
-     * @param Contact $contact
-     * @return void
-     */
-    private function updateBirthDayInformation(array $data, Contact $contact)
+    private function updateDescription(): void
+    {
+        if (is_null($this->nullOrValue($this->data, 'description'))) {
+            app(ClearPersonalDescription::class)->execute([
+                'account_id' => $this->data['account_id'],
+                'contact_id' => $this->data['contact_id'],
+                'author_id' => $this->data['author_id'],
+            ]);
+        } else {
+            if ($this->contact->description != $this->data['description']) {
+                app(SetPersonalDescription::class)->execute([
+                    'account_id' => $this->data['account_id'],
+                    'contact_id' => $this->data['contact_id'],
+                    'author_id' => $this->data['author_id'],
+                    'description' => $this->data['description'],
+                ]);
+            }
+        }
+    }
+
+    private function updateBirthDayInformation(): void
     {
         app(UpdateBirthdayInformation::class)->execute([
-            'account_id' => $data['account_id'],
-            'contact_id' => $contact->id,
-            'is_date_known' => $data['is_birthdate_known'],
-            'day' => $this->nullOrvalue($data, 'birthdate_day'),
-            'month' => $this->nullOrvalue($data, 'birthdate_month'),
-            'year' => $this->nullOrvalue($data, 'birthdate_year'),
-            'is_age_based' => $this->nullOrvalue($data, 'birthdate_is_age_based'),
-            'age' => $this->nullOrvalue($data, 'birthdate_age'),
-            'add_reminder' => $this->nullOrvalue($data, 'birthdate_add_reminder'),
-            'is_deceased' => $data['is_deceased'],
+            'account_id' => $this->data['account_id'],
+            'contact_id' => $this->contact->id,
+            'is_date_known' => $this->data['is_birthdate_known'],
+            'day' => $this->nullOrvalue($this->data, 'birthdate_day'),
+            'month' => $this->nullOrvalue($this->data, 'birthdate_month'),
+            'year' => $this->nullOrvalue($this->data, 'birthdate_year'),
+            'is_age_based' => $this->nullOrvalue($this->data, 'birthdate_is_age_based'),
+            'age' => $this->nullOrvalue($this->data, 'birthdate_age'),
+            'add_reminder' => $this->nullOrvalue($this->data, 'birthdate_add_reminder'),
+            'is_deceased' => $this->data['is_deceased'],
         ]);
     }
 
-    /**
-     * Update the information about the date of death.
-     *
-     * @param array $data
-     * @param Contact $contact
-     * @return void
-     */
-    private function updateDeceasedInformation(array $data, Contact $contact)
+    private function updateDeceasedInformation(): void
     {
         app(UpdateDeceasedInformation::class)->execute([
-            'account_id' => $data['account_id'],
-            'contact_id' => $contact->id,
-            'is_deceased' => $data['is_deceased'],
-            'is_date_known' => $data['is_deceased_date_known'],
-            'day' => $this->nullOrvalue($data, 'deceased_date_day'),
-            'month' => $this->nullOrvalue($data, 'deceased_date_month'),
-            'year' => $this->nullOrvalue($data, 'deceased_date_year'),
-            'add_reminder' => $this->nullOrvalue($data, 'deceased_date_add_reminder'),
+            'account_id' => $this->data['account_id'],
+            'contact_id' => $this->contact->id,
+            'is_deceased' => $this->data['is_deceased'],
+            'is_date_known' => $this->data['is_deceased_date_known'],
+            'day' => $this->nullOrvalue($this->data, 'deceased_date_day'),
+            'month' => $this->nullOrvalue($this->data, 'deceased_date_month'),
+            'year' => $this->nullOrvalue($this->data, 'deceased_date_year'),
+            'add_reminder' => $this->nullOrvalue($this->data, 'deceased_date_add_reminder'),
         ]);
     }
 }

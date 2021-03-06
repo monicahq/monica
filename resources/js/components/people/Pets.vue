@@ -2,20 +2,18 @@
 </style>
 
 <template>
-  <div class="br2 pa3 mb3 f6" :class="[editMode ? 'bg-washed-yellow b--yellow ba' : 'bg-near-white']">
+  <div class="sidebar-box" :class="[ editMode ? 'edit' : '' ]">
     <notifications group="main" position="bottom right" />
 
     <div class="w-100 dt">
-      <div class="dtc">
-        <h3 class="f6 ttu normal">
-          {{ $t('people.pets_title') }}
-        </h3>
+      <div class="sidebar-box-title">
+        <h3>{{ $t('people.pets_title') }}</h3>
       </div>
       <div v-if="pets.length > 0" class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
         <a v-if="!editMode" class="pointer" href="" @click.prevent="editMode = true">
           {{ $t('app.edit') }}
         </a>
-        <a v-else class="pointer" href="" @click.prevent="[editMode = false, addMode = false]">
+        <a v-else class="pointer" href="" @click.prevent="resetState">
           {{ $t('app.done') }}
         </a>
       </div>
@@ -99,14 +97,14 @@
             {{ $t('people.pets_name') }}
           </label>
           <input id="add-name" v-model="createForm.name" class="pa2 db w-100" type="text" @keyup.enter="store"
-                 @keyup.esc="addMode = false"
+                 @keyup.esc="resetState"
           />
         </div>
         <div class="lh-copy mt3">
           <a class="btn btn-primary" href="" @click.prevent="store">
             {{ $t('app.add') }}
           </a>
-          <a class="btn" href="" @click.prevent="addMode = false">
+          <a class="btn" href="" @click.prevent="resetState">
             {{ $t('app.cancel') }}
           </a>
         </div>
@@ -196,8 +194,14 @@ export default {
         });
     },
 
+    resetState() {
+      this.editMode = false;
+      this.addMode = false;
+    },
+
     toggleAdd() {
       this.addMode = true;
+      this.editMode = true;
       this.createForm.data = '';
       this.createForm.pet_category_id = '';
     },
@@ -240,7 +244,7 @@ export default {
         });
 
       if (this.pets.length <= 1) {
-        this.editMode = false;
+        this.resetState();
       }
     },
   }

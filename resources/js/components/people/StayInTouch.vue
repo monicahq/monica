@@ -167,25 +167,7 @@ import { SweetModal } from 'sweet-modal-vue';
 import { ToggleButton } from 'vue-js-toggle-button';
 import { validationMixin } from 'vuelidate';
 import { required, numeric } from 'vuelidate/lib/validators';
-
-const StayInTouchLabel = Vue.component('stay-in-touch-label', {
-
-  props: {
-    value: {
-      type: Number,
-      default: 0,
-    },
-  },
-  render(createElement) {
-    const text = this.$tc('people.stay_in_touch_modal_label', this.value, {count: '[slot]'});
-    const texts = _.split(text, '[slot]');
-    return createElement('div', [
-      createElement('span', texts[0]),
-      this.$slots.default,
-      createElement('span', texts[1]),
-    ]);
-  },
-});
+import StayInTouchLabel from './StayInTouchLabel';
 
 export default {
 

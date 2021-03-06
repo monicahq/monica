@@ -21,18 +21,18 @@ Vue.use(Notifications);
 
 // Custom components
 Vue.component(
-  'stripe-subscription',
+  'StripeSubscription',
   require('./components/settings/Subscription.vue').default
 );
 
 // Form elements
 Vue.component(
-  'form-input',
+  'FormInput',
   require('./components/partials/form/Input.vue').default
 );
 
 Vue.component(
-  'contact-search',
+  'ContactSearch',
   require('./components/people/ContactSearch.vue').default
 );
 
