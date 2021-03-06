@@ -155,7 +155,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: imagick, ${{ matrix.connection }}
+          extensions: imagick, redis, ${{ matrix.connection }}
       - name: Check PHP Version
         run: php -v
       - name: Check Composer Version
