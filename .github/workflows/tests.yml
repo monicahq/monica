@@ -68,7 +68,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install composer dependencies
-        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=php
 
     # Prepare
       - name: Prepare environment
@@ -182,7 +182,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install composer dependencies
-        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=php
 
     # Yarn
       - name: Setup Node.js

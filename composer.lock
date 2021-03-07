@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e10a52b8b4b81dd738ddafcd1c5d5b90",
+    "content-hash": "9b60d6321d8a526550c576a780689514",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -13868,20 +13868,20 @@
         },
         {
             "name": "matthiasnoback/live-code-coverage",
-            "version": "dev-php8.0",
+            "version": "v1.5.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/asbiin/live-code-coverage.git",
-                "reference": "01007d9c353bb905da9674921e74ad454094b283"
+                "url": "https://github.com/matthiasnoback/live-code-coverage.git",
+                "reference": "04a8fdd4431ff36e017ab982f5d5fbbeac85e315"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/live-code-coverage/zipball/01007d9c353bb905da9674921e74ad454094b283",
-                "reference": "01007d9c353bb905da9674921e74ad454094b283",
+                "url": "https://api.github.com/repos/matthiasnoback/live-code-coverage/zipball/04a8fdd4431ff36e017ab982f5d5fbbeac85e315",
+                "reference": "04a8fdd4431ff36e017ab982f5d5fbbeac85e315",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.3 || ^8.0",
+                "php": "^7.3",
                 "phpunit/php-code-coverage": "^9.0",
                 "phpunit/phpunit": "^9.3",
                 "webmozart/assert": "^1.2"
@@ -13897,14 +13897,16 @@
                     "LiveCodeCoverage\\": "src/LiveCodeCoverage/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Generate code coverage reports on a live server",
             "support": {
-                "source": "https://github.com/asbiin/live-code-coverage/tree/php8.0"
+                "issues": "https://github.com/matthiasnoback/live-code-coverage/issues",
+                "source": "https://github.com/matthiasnoback/live-code-coverage/tree/v1.5.1"
             },
-            "time": "2021-03-07T10:34:15+00:00"
+            "time": "2020-10-14T13:07:34+00:00"
         },
         {
             "name": "maximebf/debugbar",
@@ -18073,7 +18075,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "matthiasnoback/live-code-coverage": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
