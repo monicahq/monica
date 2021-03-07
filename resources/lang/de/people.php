@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Keine Ergebnisse gefunden',
     'people_search_next' => 'Nächste',
     'people_search_prev' => 'Vorherige',
-    'people_search_rows_per_page' => 'Einträge pro Seite:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'von',
     'people_search_page' => 'Seite',
     'people_search_all' => 'Alle',
@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => 'Aktuelles Profilbild',
     'photo_make_profile_pic' => 'Zu Profilbild machen',
     'photo_delete' => 'Bild löschen',
-    'photo_next' => 'Nächstes Foto',
-    'photo_previous' => 'Vorheriges Bild',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Avatar ändern',

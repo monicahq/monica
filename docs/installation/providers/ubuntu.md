@@ -55,7 +55,7 @@ Then install php 7.4 with these extensions:
 sudo apt update
 sudo apt install -y php7.4 php7.4-cli php7.4-common php7.4-fpm \
     php7.4-json php7.4-opcache php7.4-mysql php7.4-mbstring php7.4-zip \
-    php7.4-bcmath php7.4-intl php7.4-xml php7.4-curl php7.4-gd php7.4-gmp php-imagick
+    php7.4-bcmath php7.4-intl php7.4-xml php7.4-curl php7.4-gd php7.4-gmp php7.4-imagick
 ```
 
 **Composer:** After you're done installing PHP, you'll need the [Composer](https://getcomposer.org/download/) dependency manager.
@@ -145,7 +145,7 @@ exit
     - set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
     - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
     - set the `APP_ENV` variable to `production`, `local` is only used for the development version. Beware: setting `APP_ENV` to `production` will force HTTPS. Skip this if you're running Monica locally.
-3. Run `composer install --no-interaction --no-dev --ignore-platform-reqs` to install all packages.
+3. Run `composer install --no-interaction --no-dev` to install all packages.
 4. Run `yarn install` to install frontend packages, then `yarn run production` to build the assets (js, css).
 5. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 6. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.

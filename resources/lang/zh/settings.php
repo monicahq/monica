@@ -24,7 +24,7 @@ return [
     'title_i18n' => '本地化',
     'title_layout' => '布局',
 
-    'me_title' => '通讯录',
+    'me_title' => 'Me as a contact',
     'me_help' => '这个联系人在Monica代表了 <em>你</em>',
     'me_select' => '选择联系人',
     'me_no_contact' => '没有选择联系人',

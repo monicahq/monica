@@ -462,4 +462,10 @@ return [
     'dav_birthdays_description' => 'Γενέθλια επαφών του :name',
     'dav_tasks' => 'Εργασίες',
     'dav_tasks_description' => 'εργασίες του :name',
+
+    // contact list
+    'contact_list_avatar' => 'Avatar',
+    'contact_list_name' => 'Contact',
+    'contact_list_description' => 'Description',
+
 ];

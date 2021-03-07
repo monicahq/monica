@@ -41,13 +41,14 @@ RUN set -ex; \
         libgmp-dev \
         libmemcached-dev \
         libmagickwand-dev \
+        libwebp-dev \
     ; \
     \
     debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
     if [ ! -e /usr/include/gmp.h ]; then ln -s /usr/include/$debMultiarch/gmp.h /usr/include/gmp.h; fi;\
     docker-php-ext-configure intl; \
-    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/; \
-    docker-php-ext-configure gmp --with-gmp="/usr/include/$debMultiarch"; \
+    docker-php-ext-configure gd --with-jpeg --with-freetype --with-webp; \
+    docker-php-ext-configure gmp; \
     docker-php-ext-install -j$(nproc) \
         intl \
         zip \
@@ -173,7 +174,7 @@ RUN install-composer.sh
 RUN set -ex; \
     \
     mkdir -p storage/framework/views; \
-    composer install --no-interaction --no-progress --no-dev --ignore-platform-reqs; \
+    composer install --no-interaction --no-progress --no-dev; \
     composer clear-cache; \
     rm -rf .composer
 
