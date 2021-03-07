@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: [7.4, 8.0]
+        php-version: [7.4, '8.0']
         connection: [mysql]
         testsuite: [Api, Feature, Unit-Models, Unit-Services]
 
@@ -41,7 +41,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: imagick, mbstring, dom, fileinfo, ${{ matrix.connection }}
+          extensions: imagick, redis, ${{ matrix.connection }}
           coverage: none
       - name: Check PHP Version
         run: php -v
@@ -68,7 +68,9 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install composer dependencies
-        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=php
+        run: |
+          test '${{ matrix.php-version }}' == '8.0' && ext='--ignore-platform-req=php'
+          composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader $ext
 
     # Prepare
       - name: Prepare environment
@@ -144,7 +146,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: [7.4, 8.0]
+        php-version: [7.4, '8.0']
         connection: [mysql]
 
     steps:
@@ -155,7 +157,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: imagick, ${{ matrix.connection }}
+          extensions: imagick, redis, ${{ matrix.connection }}
+          coverage: xdebug
       - name: Check PHP Version
         run: php -v
       - name: Check Composer Version
@@ -181,7 +184,9 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install composer dependencies
-        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=php
+        run: |
+          test '${{ matrix.php-version }}' == '8.0' && ext='--ignore-platform-req=php'
+          composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader $ext
 
     # Yarn
       - name: Setup Node.js
@@ -234,6 +239,9 @@ jobs:
         run: php artisan passport:keys --no-interaction -vvv
       - name: Cache route
         run: php artisan route:cache
+
+      - name: Test coverage page
+        run: REQUEST_URI=/ php scripts/tests/server-cc.php
 
     # Test
       - name: Upgrade Chrome Driver
