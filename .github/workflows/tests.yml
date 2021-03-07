@@ -252,6 +252,8 @@ jobs:
         run: |
           php -S localhost:8000 -t public scripts/tests/server-cc.php &
           php -S localhost:8001 -t public scripts/tests/server-cc.php &
+        env:
+          XDEBUG_MODE: coverage
 
       - name: Test http server
         run: curl -v http://localhost:8000
