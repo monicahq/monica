@@ -49,8 +49,8 @@
         "pragmarx/countries-laravel": "^0",
         "pragmarx/google2fa": "^8.0",
         "pragmarx/google2fa-laravel": "^1.3",
+        "pragmarx/random": "^0",
         "predis/predis": "^1.1",
-        "xantios/mimey": "^2.0",
         "sabre/dav": "^4.0",
         "sentry/sentry-laravel": "^2.0",
         "stevebauman/location": "^5.2",
@@ -62,7 +62,8 @@
         "web-token/jwt-key-mgmt": "^2.1",
         "web-token/jwt-signature-algorithm-ecdsa": "^2.1",
         "web-token/jwt-signature-algorithm-eddsa": "^2.1",
-        "web-token/jwt-signature-algorithm-rsa": "^2.1"
+        "web-token/jwt-signature-algorithm-rsa": "^2.1",
+        "xantios/mimey": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3",
