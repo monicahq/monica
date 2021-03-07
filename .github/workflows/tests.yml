@@ -238,7 +238,12 @@ jobs:
       - name: Test default page
         run: |
           php public/index.php
+
+      - name: Test coverage page
+        run: |
           php scripts/tests/server-cc.php
+        env:
+          XDEBUG_MODE: coverage
 
     # Test
       - name: Upgrade Chrome Driver
