@@ -9,6 +9,7 @@
     "prod": "yarn run production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "preproduction": "php artisan lang:generate -vvv",
+    "heroku-postbuild": "yarn run production",
     "e2e": "cypress run",
     "e2e:chrome": "cypress run --browser chrome",
     "e2e:record": "cypress run --record",
