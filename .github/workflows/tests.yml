@@ -112,7 +112,7 @@ jobs:
     # Test
       - name: Run Unit test suite
         if: matrix.php-version == env.default-php-version
-        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage/coverage${{ matrix.testsuite }}.xml
+        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit --debug -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage/coverage${{ matrix.testsuite }}.xml
         env:
           DB_CONNECTION: ${{ matrix.connection }}
       - name: Run Unit test suite
@@ -236,12 +236,10 @@ jobs:
         run: php artisan route:cache
 
       - name: Test default page
-        run: |
-          php public/index.php
+        run: php public/index.php
 
       - name: Test coverage page
-        run: |
-          php scripts/tests/server-cc.php
+        run: REQUEST_URI=/ php scripts/tests/server-cc.php
         env:
           XDEBUG_MODE: coverage
 
