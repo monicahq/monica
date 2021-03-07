@@ -156,6 +156,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           extensions: imagick, redis, ${{ matrix.connection }}
+          coverage: xdebug
       - name: Check PHP Version
         run: php -v
       - name: Check Composer Version
