@@ -112,7 +112,7 @@ jobs:
     # Test
       - name: Run Unit test suite
         if: matrix.php-version == env.default-php-version
-        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit --debug -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage/coverage${{ matrix.testsuite }}.xml
+        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage/coverage${{ matrix.testsuite }}.xml
         env:
           DB_CONNECTION: ${{ matrix.connection }}
       - name: Run Unit test suite
@@ -236,13 +236,8 @@ jobs:
       - name: Cache route
         run: php artisan route:cache
 
-      - name: Test default page
-        run: php public/index.php
-
       - name: Test coverage page
         run: REQUEST_URI=/ php scripts/tests/server-cc.php
-        env:
-          XDEBUG_MODE: coverage
 
     # Test
       - name: Upgrade Chrome Driver
@@ -256,11 +251,6 @@ jobs:
         run: |
           php -S localhost:8000 -t public scripts/tests/server-cc.php &
           php -S localhost:8001 -t public scripts/tests/server-cc.php &
-        env:
-          XDEBUG_MODE: coverage
-
-      - name: Test http server
-        run: curl -v http://localhost:8000
 
       - name: Run browser tests
         run: php artisan dusk --log-junit results/junit/results0.xml
