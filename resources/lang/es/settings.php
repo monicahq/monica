@@ -24,7 +24,7 @@ return [
     'title_i18n' => 'Configuración internacional',
     'title_layout' => 'Layout',
 
-    'me_title' => 'Mi contacto',
+    'me_title' => 'Me as a contact',
     'me_help' => 'Este es el contacto que te representa <em>a ti</em> en Monica',
     'me_select' => 'Selecciona un contacto',
     'me_no_contact' => 'No contact selected yet.',

@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Sonuç bulunamadı',
     'people_search_next' => 'Sonraki',
     'people_search_prev' => 'Önceki',
-    'people_search_rows_per_page' => 'Sayfa başına satır:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => '/',
     'people_search_page' => 'Sayfa',
     'people_search_all' => 'Hepsi',
@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => 'Mevcut profil resmi',
     'photo_make_profile_pic' => 'Profil resmi yapın',
     'photo_delete' => 'Fotoğrafı sil',
-    'photo_next' => 'Sonraki fotoğraf',
-    'photo_previous' => 'Önceki fotoğraf',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Avatarınızı değiştirin',

@@ -24,7 +24,7 @@ return [
     'title_i18n' => 'Impostazioni internazionali',
     'title_layout' => 'Impaginazione',
 
-    'me_title' => 'Mio contatto',
+    'me_title' => 'Me as a contact',
     'me_help' => 'Questo è il contatto che rappresenta <em>te</em> a Monica',
     'me_select' => 'Seleziona un contatto',
     'me_no_contact' => 'Ancora nessun contatto selezionato.',

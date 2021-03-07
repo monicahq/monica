@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'לא נמצאו תוצאות',
     'people_search_next' => 'הבא',
     'people_search_prev' => 'הקודם',
-    'people_search_rows_per_page' => 'שורות בכל עמוד:',
+    'people_search_rows_per_page' => 'שורות בכל עמוד',
     'people_search_of' => 'מתוך',
     'people_search_page' => 'עמוד',
     'people_search_all' => 'הכול',
@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => 'תמונת פרופיל נוכחית',
     'photo_make_profile_pic' => 'הכנת תמונת פרופיל',
     'photo_delete' => 'מחיקת תמונה',
-    'photo_next' => 'לתמונה הבאה',
-    'photo_previous' => 'לתמונה הקודמת',
+    'photo_next' => 'לתמונה הבאה ❯',
+    'photo_previous' => '❮ לתמונה הקודמת',
 
     // Avatars
     'avatar_change_title' => 'החלפת התמונה הייצוגית שלך',

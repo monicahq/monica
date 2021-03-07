@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Geen resultaten gevonden',
     'people_search_next' => 'Volgende',
     'people_search_prev' => 'Vorige',
-    'people_search_rows_per_page' => 'Rijen per pagina:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'van',
     'people_search_page' => 'Pagina',
     'people_search_all' => 'Iedereen',
@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => 'Huidige profielfoto',
     'photo_make_profile_pic' => 'Stel in als profielfoto',
     'photo_delete' => 'Foto verwijderen',
-    'photo_next' => 'Volgende foto',
-    'photo_previous' => 'Vorige foto',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Wijzig je profielfoto',
