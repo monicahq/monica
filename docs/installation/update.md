@@ -31,7 +31,7 @@ or if you have installed Monica on your own server, you need to follow the steps
        ```
 1. Update the dependencies of the project:
    ```sh
-   composer install --no-interaction --no-dev --ignore-platform-reqs
+   composer install --no-interaction --no-dev
    ```
 1. Then, run the following command to make the proper update:
    ```sh
