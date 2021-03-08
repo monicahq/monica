@@ -15,7 +15,7 @@ on:
 
 env:
   default-php-version: 7.4
-  node-version: 14
+  node-version: 15
 
 
 jobs:
@@ -68,9 +68,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install composer dependencies
-        run: |
-          test '${{ matrix.php-version }}' == '8.0' && ext='--ignore-platform-req=php'
-          composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader $ext
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader $ext
 
     # Prepare
       - name: Prepare environment
@@ -184,9 +182,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install composer dependencies
-        run: |
-          test '${{ matrix.php-version }}' == '8.0' && ext='--ignore-platform-req=php'
-          composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader $ext
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader $ext
 
     # Yarn
       - name: Setup Node.js
