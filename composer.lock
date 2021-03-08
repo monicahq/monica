@@ -13868,20 +13868,20 @@
         },
         {
             "name": "matthiasnoback/live-code-coverage",
-            "version": "v1.5.1",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasnoback/live-code-coverage.git",
-                "reference": "04a8fdd4431ff36e017ab982f5d5fbbeac85e315"
+                "reference": "23d04096c01379f16770d96c0cdcf40d2b421743"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasnoback/live-code-coverage/zipball/04a8fdd4431ff36e017ab982f5d5fbbeac85e315",
-                "reference": "04a8fdd4431ff36e017ab982f5d5fbbeac85e315",
+                "url": "https://api.github.com/repos/matthiasnoback/live-code-coverage/zipball/23d04096c01379f16770d96c0cdcf40d2b421743",
+                "reference": "23d04096c01379f16770d96c0cdcf40d2b421743",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.3",
+                "php": "^7.3 || ^8.0",
                 "phpunit/php-code-coverage": "^9.0",
                 "phpunit/phpunit": "^9.3",
                 "webmozart/assert": "^1.2"
@@ -13904,9 +13904,9 @@
             "description": "Generate code coverage reports on a live server",
             "support": {
                 "issues": "https://github.com/matthiasnoback/live-code-coverage/issues",
-                "source": "https://github.com/matthiasnoback/live-code-coverage/tree/v1.5.1"
+                "source": "https://github.com/matthiasnoback/live-code-coverage/tree/v1.6.0"
             },
-            "time": "2020-10-14T13:07:34+00:00"
+            "time": "2021-03-08T07:44:10+00:00"
         },
         {
             "name": "maximebf/debugbar",
