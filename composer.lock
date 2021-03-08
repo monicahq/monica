@@ -8005,16 +8005,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "3.1.5",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "62f6897e1e577de39b366b5c84e19a453da36016"
+                "reference": "899b0de58c1e01feb54829b3094af74252aff385"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/62f6897e1e577de39b366b5c84e19a453da36016",
-                "reference": "62f6897e1e577de39b366b5c84e19a453da36016",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/899b0de58c1e01feb54829b3094af74252aff385",
+                "reference": "899b0de58c1e01feb54829b3094af74252aff385",
                 "shasum": ""
             },
             "require": {
@@ -8059,7 +8059,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.1.x-dev"
+                    "dev-master": "3.2.x-dev"
                 }
             },
             "autoload": {
@@ -8093,7 +8093,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-php/issues",
-                "source": "https://github.com/getsentry/sentry-php/tree/3.1.5"
+                "source": "https://github.com/getsentry/sentry-php/tree/3.2.0"
             },
             "funding": [
                 {
@@ -8105,34 +8105,36 @@
                     "type": "custom"
                 }
             ],
-            "time": "2021-02-18T13:34:31+00:00"
+            "time": "2021-03-03T11:54:34+00:00"
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "2.3.1",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "3c8b6c02fbb6b50cb8e236cd1845155b45fc881e"
+                "reference": "30ff06f586666f51e5cae418beaed566729fb7bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/3c8b6c02fbb6b50cb8e236cd1845155b45fc881e",
-                "reference": "3c8b6c02fbb6b50cb8e236cd1845155b45fc881e",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/30ff06f586666f51e5cae418beaed566729fb7bf",
+                "reference": "30ff06f586666f51e5cae418beaed566729fb7bf",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": "5.0 - 5.8 | ^6.0 | ^7.0 | ^8.0",
+                "nyholm/psr7": "^1.0",
                 "php": "^7.2 | ^8.0",
                 "sentry/sdk": "^3.1",
-                "sentry/sentry": "3.1.*"
+                "sentry/sentry": "3.2.*",
+                "symfony/psr-http-message-bridge": "^1.0 | ^2.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "2.16.*",
-                "laravel/framework": "^8.0",
+                "friendsofphp/php-cs-fixer": "2.18.*",
+                "laravel/framework": "5.0 - 5.8 | ^6.0 | ^7.0 | ^8.0",
                 "mockery/mockery": "1.3.*",
-                "orchestra/testbench": "^6.0",
-                "phpunit/phpunit": "^9.3"
+                "orchestra/testbench": "3.1 - 3.8 | ^4.7 | ^5.1 | ^6.0",
+                "phpunit/phpunit": "^5.7 | ^6.5 | ^7.5 | ^8.4 | ^9.3"
             },
             "type": "library",
             "extra": {
@@ -8179,7 +8181,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-laravel/issues",
-                "source": "https://github.com/getsentry/sentry-laravel/tree/2.3.1"
+                "source": "https://github.com/getsentry/sentry-laravel/tree/2.4.0"
             },
             "funding": [
                 {
@@ -8191,7 +8193,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-12-07T09:19:29+00:00"
+            "time": "2021-03-08T08:32:45+00:00"
         },
         {
             "name": "spomky-labs/base64url",
