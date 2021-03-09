@@ -53,7 +53,6 @@
     </div>
 
     <!-- ACTUAL COMMENT -->
-    <a v-if="!created" :id="'edit-message-button-'+uid" href="" class="pointer" @click.prevent="disableMessage()">{{ readonly ? $t('app.edit') : $t('app.save') }}</a>
     <form-textarea
       :id="'content_' + uid"
       v-model="buffer"
@@ -63,6 +62,7 @@
       :rows="4"
       :placeholder="$t('people.conversation_add_content')"
     />
+    <a v-if="!created" :id="'edit-message-button-'+uid" href="" class="pointer" @click.prevent="disableMessage()">{{ readonly ? $t('app.edit') : $t('app.save') }}</a>
   </div>
 </template>
 
