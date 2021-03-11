@@ -24,7 +24,7 @@ return [
     'title_i18n' => 'International settings',
     'title_layout' => 'Lay-out',
 
-    'me_title' => 'Mijn contact',
+    'me_title' => 'Me as a contact',
     'me_help' => 'Dit is het contact dat <em>jou</em> vertegenwoordigt in Monica',
     'me_select' => 'Selecteer een contactpersoon',
     'me_no_contact' => 'Nog geen contact geselecteerd.',

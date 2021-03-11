@@ -12,7 +12,7 @@ on:
 
 env:
   php-version: 7.4
-  node-version: 14
+  node-version: 15
 
 
 jobs:
@@ -77,7 +77,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.php-version }}
-          extensions: imagick, mbstring, dom, fileinfo
+          extensions: imagick, redis
           coverage: none
 
     # Composer

@@ -24,7 +24,7 @@ return [
     'title_i18n' => 'Международные настройки',
     'title_layout' => 'Layout',
 
-    'me_title' => 'Мой контакт',
+    'me_title' => 'Me as a contact',
     'me_help' => 'Это контакт, который представляет <em>вас</em> в Monica',
     'me_select' => 'Выберите контакт',
     'me_no_contact' => 'Контакт еще не выбран.',

@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Không tìm thấy kết quả',
     'people_search_next' => 'Kế tiếp',
     'people_search_prev' => 'Trước đó',
-    'people_search_rows_per_page' => 'Số dòng trên mỗi trang:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'của',
     'people_search_page' => 'Trang',
     'people_search_all' => 'Tất cả',
@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => 'Ảnh đại diện hiện tại',
     'photo_make_profile_pic' => 'Tạo ảnh đại diện',
     'photo_delete' => 'Delete photo',
-    'photo_next' => 'Next photo',
-    'photo_previous' => 'Previous photo',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Change your avatar',

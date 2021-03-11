@@ -93,8 +93,8 @@ Once the above softwares are installed (or if you've finished the installation o
     1. If you use Homestead (which uses Vagrant under the hood), `vagrant ssh` will let you login as root inside your VM.
 1. Run `make install` in the folder the repository has been cloned. This will run :
     1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
-    1. `composer install --no-interaction --ignore-platform-reqs` to install all packages.
-       - Due to an issue with VirtualBox, you may encounter an error at this step due to a plug-in called `package-versions`. If this happens, delete the /vendor folder that was created and run `composer install --no-interaction --ignore-platform-reqs --no-plugins --no-scripts` instead.
+    1. `composer install --no-interaction` to install all packages.
+       - Due to an issue with VirtualBox, you may encounter an error at this step due to a plug-in called `package-versions`. If this happens, delete the /vendor folder that was created and run `composer install --no-interaction --no-plugins --no-scripts` instead.
        - See this [GitHub Issue](https://github.com/laravel/homestead/issues/1240) for more information.
     1. `yarn install` to install all the front-end dependencies and tools needed to compile assets.
        - If you experience an error related to `EPROTO: protocol error, symlink`, see [here](https://github.com/yarnpkg/yarn/issues/4908).
@@ -112,7 +112,7 @@ If you haven't skipped the seeding of fake data, two accounts are created by def
 * Second account is `blank@blank.com` with the password `blank0`. This account does not contain any data and shall be used to check all the blank states.
 
 To update a current installation with the latest dependencies, just run `make update` to run
-  1. `composer install --no-interaction --ignore-platform-reqs`
+  1. `composer install --no-interaction`
   1. `yarn upgrade`
   1. `yarn run dev`
   1. `php artisan migrate`

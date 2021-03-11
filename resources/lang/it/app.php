@@ -462,4 +462,10 @@ return [
     'dav_birthdays_description' => 'compleanno del contatto di :name',
     'dav_tasks' => 'Compiti',
     'dav_tasks_description' => 'attività di :name',
+
+    // contact list
+    'contact_list_avatar' => 'Avatar',
+    'contact_list_name' => 'Contact',
+    'contact_list_description' => 'Description',
+
 ];

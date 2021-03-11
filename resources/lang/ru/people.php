@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Ничего не найдено',
     'people_search_next' => 'Вперёд',
     'people_search_prev' => 'Назад',
-    'people_search_rows_per_page' => 'Строк на странице:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'из',
     'people_search_page' => 'Страница',
     'people_search_all' => 'Все',
@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => 'Current profile picture',
     'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Delete photo',
-    'photo_next' => 'Next photo',
-    'photo_previous' => 'Previous photo',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Change your avatar',
