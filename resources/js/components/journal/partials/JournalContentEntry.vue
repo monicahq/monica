@@ -30,6 +30,11 @@
             <h3 class="mb1">
               {{ entry.title }}
             </h3>
+            <p class="mb1">
+              <span class="pr2 f6 avenir">
+                {{ $t('journal.journal_created_at') }} {{ entry.created_at }}
+              </span>
+            </p>
 
             <span dir="auto" class="markdown" v-html="compiledMarkdown(entry.post)"></span>
 
