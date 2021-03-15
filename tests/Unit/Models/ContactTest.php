@@ -515,6 +515,8 @@ class ContactTest extends FeatureTestCase
     /** @test */
     public function it_returns_the_url_of_the_avatar()
     {
+        config(['monica.adorable_api' => 'adorable_api']);
+
         // default
         $contact = factory(Contact::class)->create([
             'avatar_default_url' => 'defaultURL',
@@ -528,12 +530,12 @@ class ContactTest extends FeatureTestCase
 
         // adorable
         $contact = factory(Contact::class)->create([
-            'avatar_adorable_url' => 'adorableURL',
+            'avatar_adorable_url' => 'adorable_api/adorableURL',
             'avatar_source' => 'adorable',
         ]);
 
         $this->assertEquals(
-            'adorableURL',
+            'adorable_api/adorableURL',
             $contact->getAvatarURL()
         );
 
