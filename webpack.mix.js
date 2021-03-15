@@ -39,6 +39,7 @@ mix.js('resources/js/app.js', 'public/js')
   .sass('resources/sass/stripe.scss', 'public/css')
 
   // global commands
+  .vue()
   .purgeCss(purgeCssOptions)
   .extract()
   .setResourceRoot('../')
