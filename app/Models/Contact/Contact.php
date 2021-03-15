@@ -1046,6 +1046,7 @@ class Contact extends Model
                 ->ltrim('/')
                 ->start(Str::finish(config('monica.adorable_api'), '/'));
         }
+
         return null;
     }
 

@@ -27,7 +27,7 @@ class UpdateAdorableAPI extends Migration
                     DB::table('contacts')
                         ->where('id', $contact->id)
                         ->update([
-                            'avatar_adorable_url' => (string) $adorable_url
+                            'avatar_adorable_url' => (string) $adorable_url,
                         ]);
                 }
             });
