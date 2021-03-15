@@ -8109,16 +8109,16 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "2.4.0",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "30ff06f586666f51e5cae418beaed566729fb7bf"
+                "reference": "63cca34fefab63af1dfe8474d4417f1df2803fec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/30ff06f586666f51e5cae418beaed566729fb7bf",
-                "reference": "30ff06f586666f51e5cae418beaed566729fb7bf",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/63cca34fefab63af1dfe8474d4417f1df2803fec",
+                "reference": "63cca34fefab63af1dfe8474d4417f1df2803fec",
                 "shasum": ""
             },
             "require": {
@@ -8181,7 +8181,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-laravel/issues",
-                "source": "https://github.com/getsentry/sentry-laravel/tree/2.4.0"
+                "source": "https://github.com/getsentry/sentry-laravel/tree/2.4.1"
             },
             "funding": [
                 {
@@ -8193,7 +8193,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2021-03-08T08:32:45+00:00"
+            "time": "2021-03-08T11:37:22+00:00"
         },
         {
             "name": "spomky-labs/base64url",
