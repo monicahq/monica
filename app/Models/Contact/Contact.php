@@ -1036,12 +1036,13 @@ class Contact extends Model
     /**
      * Get the adorable avatar URL.
      *
+     * @param string|null $value
      * @return string|null
      */
-    public function getAvatarAdorableUrlAttribute(): ?string
+    public function getAvatarAdorableUrlAttribute(?string $value): ?string
     {
-        if ($this->attributes['avatar_adorable_url']) {
-            Str::of($this->attributes['avatar_adorable_url'])
+        if (isset($value) && $value !== '') {
+            return Str::of($value)
                 ->ltrim('/')
                 ->start(Str::finish(config('monica.adorable_api'), '/'));
         }
@@ -1051,11 +1052,15 @@ class Contact extends Model
     /**
      * Set the adorable avatar URL.
      *
+     * @param string|null $value
      * @return void
      */
-    public function setAvatarAdorableUrlAttribute(string $value)
+    public function setAvatarAdorableUrlAttribute(?string $value)
     {
-        $this->attributes['avatar_adorable_url'] = Str::of($value)->replace(Str::finish(config('monica.adorable_api'), '/'), '');
+        if (isset($value) && $value !== '') {
+            $value = Str::of($value)->replace(Str::finish(config('monica.adorable_api'), '/'), '');
+        }
+        $this->attributes['avatar_adorable_url'] = $value;
     }
 
     /**
