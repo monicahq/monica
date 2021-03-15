@@ -1034,6 +1034,31 @@ class Contact extends Model
     }
 
     /**
+     * Get the adorable avatar URL.
+     *
+     * @return string|null
+     */
+    public function getAvatarAdorableUrlAttribute(): ?string
+    {
+        if ($this->attributes['avatar_adorable_url']) {
+            Str::of($this->attributes['avatar_adorable_url'])
+                ->ltrim('/')
+                ->start(Str::finish(config('monica.adorable_api'), '/'));
+        }
+        return null;
+    }
+
+    /**
+     * Set the adorable avatar URL.
+     *
+     * @return void
+     */
+    public function setAvatarAdorableUrlAttribute(string $value)
+    {
+        $this->attributes['avatar_adorable_url'] = Str::of($value)->replace(Str::finish(config('monica.adorable_api'), '/'), '');
+    }
+
+    /**
      * Returns the URL of the avatar, properly sized.
      * The avatar can come from 4 sources:
      *  - default,
