@@ -1043,6 +1043,7 @@ class Contact extends Model
     {
         if (isset($value) && $value !== '') {
             return Str::of($value)
+                ->after('https://api.adorable.io/avatars/')
                 ->ltrim('/')
                 ->start(Str::finish(config('monica.adorable_api'), '/'));
         }
