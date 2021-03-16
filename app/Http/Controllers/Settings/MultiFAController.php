@@ -113,6 +113,7 @@ class MultiFAController extends Controller
 
         $authenticator = app(Authenticator::class)->boot($request);
 
+        // try provided token as a 2FA code
         if ($authenticator->verifyGoogle2FA($secret, $request['one_time_password'])) {
 
             //make secret column blank
@@ -122,6 +123,27 @@ class MultiFAController extends Controller
             $authenticator->logout();
 
             return response()->json(['success' => true]);
+        }
+
+        $recoveryCodes = $user->recoveryCodes()
+            ->where('used', false)
+            ->get();
+
+        // try provided token as a recovery code
+        foreach ($recoveryCodes as $recoveryCode) {
+            if ($recoveryCode->recovery == $request['one_time_password']) {
+                $recoveryCode->forceFill([
+                    'used' => true,
+                ])->save();
+
+                //make secret column blank
+                $user->google2fa_secret = null;
+                $user->save();
+
+                $authenticator->logout();
+
+                return response()->json(['success' => true]);
+            }
         }
 
         return response()->json(['success' => false]);
