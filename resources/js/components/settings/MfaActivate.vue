@@ -57,23 +57,10 @@
     </sweet-modal>
 
     <sweet-modal id="disableModal" ref="disableModal" overlay-theme="dark" :title="$t('settings.2fa_otp_title')">
-      <form @submit.prevent="register()">
-        <p>{{ $t('settings.2fa_disable_description') }}</p>
-
-        <div class="form-group">
-          <form-input
-            :id="'one_time_password2'"
-            v-model="one_time_password"
-            :title="$t('auth.2fa_one_time_password')"
-            :input-type="'number'"
-            :width="100"
-            :required="true"
-          />
-        </div>
-      </form>
+      <p>{{ $t('settings.2fa_disable_description') }}</p>
       <div slot="button">
         <a id="verify2" class="btn btn-primary" href="" @click.prevent="unregister()">
-          {{ $t('app.verify') }}
+          {{ $t('app.confirm') }}
         </a>
         <a class="btn" href="" @click.prevent="closeDisableModal()">
           {{ $t('app.cancel') }}
@@ -139,7 +126,7 @@ export default {
     },
 
     unregister() {
-      axios.post('settings/security/2fa-disable', { one_time_password: this.one_time_password })
+      axios.post('settings/security/2fa-disable')
         .then(response => {
           this.closeDisableModal();
           this.selectActivated = ! response.data.success;
@@ -167,7 +154,6 @@ export default {
     },
 
     showDisableModal() {
-      this.one_time_password = '';
       this.$refs.disableModal.open();
     },
 

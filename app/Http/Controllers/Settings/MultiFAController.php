@@ -102,29 +102,17 @@ class MultiFAController extends Controller
      */
     public function deactivateTwoFactor(Request $request)
     {
-        $this->validate($request, [
-            'one_time_password' => 'required',
-        ]);
-
         $user = $request->user();
-
-        //retrieve secret
-        $secret = $user->google2fa_secret;
 
         $authenticator = app(Authenticator::class)->boot($request);
 
-        if ($authenticator->verifyGoogle2FA($secret, $request['one_time_password'])) {
+        //make secret column blank
+        $user->google2fa_secret = null;
+        $user->save();
 
-            //make secret column blank
-            $user->google2fa_secret = null;
-            $user->save();
+        $authenticator->logout();
 
-            $authenticator->logout();
-
-            return response()->json(['success' => true]);
-        }
-
-        return response()->json(['success' => false]);
+        return response()->json(['success' => true]);
     }
 
     /**
