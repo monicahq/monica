@@ -54,7 +54,7 @@ class SubscriptionsController extends Controller
         }
 
         return view('settings.subscriptions.account', [
-            'planInformation' => InstanceHelper::getPlanInformationFromConfig($subscription),
+            'planInformation' => InstanceHelper::getPlanInformationFromConfig($subscription->name),
             'nextBillingDate' => $nextBillingDate,
             'subscription' => $subscription,
             'hasInvoices' => $hasInvoices,
