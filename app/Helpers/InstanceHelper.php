@@ -29,6 +29,8 @@ class InstanceHelper
      */
     public static function getPlanInformationFromConfig(string $timePeriod): ?array
     {
+        $timePeriod = strtolower($timePeriod);
+
         if ($timePeriod != 'monthly' && $timePeriod != 'annual') {
             return null;
         }
