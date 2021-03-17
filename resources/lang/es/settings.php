@@ -514,5 +514,10 @@ return [
     'archive_cta' => 'Archive all of your contacts',
 
     'logs_title' => 'Everything that has happened to this account',
-    'logs_author' => 'By :name on :date',
+    'logs_actor' => 'Actor',
+    'logs_timestamp' => 'Fecha y Hora',
+    'logs_description' => 'Descripción',
+    'logs_subject' => 'Asunto',
+    'logs_size' => 'Tamaño (kB)',
+    'logs_object' => 'Objeto',
 ];
