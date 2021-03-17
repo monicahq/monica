@@ -58,7 +58,7 @@
                   {{ $log['author_name'] }}
                 </div>
                 <div class="table-cell audit-log-cell date">
-                  {{ $log['audited_at'] }}
+                  {{ \App\Helpers\DateHelper::getShortDateWithTime($log['audited_at']) }}
                 </div>
                 <div class="table-cell audit-log-cell">
                   {{ $log['description'] }}

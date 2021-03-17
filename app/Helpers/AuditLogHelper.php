@@ -45,7 +45,7 @@ class AuditLogHelper
                 'description' => $description,
                 'link' => $link,
                 'object' => $object,
-                'audited_at' => DateHelper::getShortDateWithTime($log->audited_at),
+                'audited_at' => $log->audited_at,
             ]);
         }
 

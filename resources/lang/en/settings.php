@@ -518,4 +518,8 @@ return [
     'logs_timestamp' => 'Timestamp',
     'logs_description' => 'Description',
     'logs_subject' => 'Subject',
+    'logs_size' => 'Size (Kb)',
+    'logs_object' => 'Object',
+
+    'file_size' => ':size Kb'
 ];
