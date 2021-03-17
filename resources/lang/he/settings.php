@@ -514,10 +514,10 @@ return [
     'archive_cta' => 'העברת כל אנשי הקשר לארכיון',
 
     'logs_title' => 'כל מה שקרה לחשבון הזה',
-    'logs_actor' => 'Actor',
-    'logs_timestamp' => 'Timestamp',
-    'logs_description' => 'Description',
-    'logs_subject' => 'Subject',
-    'logs_size' => 'Size (Kb)',
-    'logs_object' => 'Object',
+    'logs_actor' => 'גורם',
+    'logs_timestamp' => 'חותמת זמן',
+    'logs_description' => 'תיאור',
+    'logs_subject' => 'נושא',
+    'logs_size' => 'גודל (ק״ס)',
+    'logs_object' => 'עצם',
 ];
