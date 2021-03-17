@@ -520,6 +520,4 @@ return [
     'logs_subject' => 'Sujet',
     'logs_size' => 'Taille (Ko)',
     'logs_object' => 'Objet',
-
-    'file_size' => ':size Kb',
 ];
