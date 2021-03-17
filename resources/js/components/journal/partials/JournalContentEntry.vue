@@ -32,7 +32,7 @@
             </h3>
             <p class="mb1">
               <span class="pr2 f6 avenir">
-                {{ $t('journal.journal_created_at') }} {{ entry.created_at }}
+                {{ $t('journal.journal_created_at', { date: entry.created_at }) }}
               </span>
             </p>
 
