@@ -20,7 +20,6 @@ class AuditLogHelper
         $logsCollection = collect();
 
         foreach ($logs as $key => $log) {
-
             $object = null;
             $link = null;
 
@@ -32,7 +31,6 @@ class AuditLogHelper
                     $contact = Contact::findOrFail($log->object->{'contact_id'});
                     $object = $contact->name;
                     $link = route('people.show', ['contact' => $contact]);
-
                 } catch (ModelNotFoundException $e) {
                     // the contact doesn't exist anymore, we don't need a link, we'll only display a name
                     $object = $log->object->{'contact_name'};
