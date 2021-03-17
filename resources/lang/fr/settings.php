@@ -514,12 +514,12 @@ return [
     'archive_cta' => 'Archiver tous vos contacts',
 
     'logs_title' => 'Tout ce qui est arrivé à ce compte',
-    'logs_actor' => 'Actor',
-    'logs_timestamp' => 'Timestamp',
+    'logs_actor' => 'Acteur',
+    'logs_timestamp' => 'Horodatage',
     'logs_description' => 'Description',
-    'logs_subject' => 'Subject',
-    'logs_size' => 'Size (Kb)',
-    'logs_object' => 'Object',
+    'logs_subject' => 'Sujet',
+    'logs_size' => 'Taille (Ko)',
+    'logs_object' => 'Objet',
 
     'file_size' => ':size Kb',
 ];
