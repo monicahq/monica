@@ -521,5 +521,5 @@ return [
     'logs_size' => 'Size (Kb)',
     'logs_object' => 'Object',
 
-    'file_size' => ':size Kb'
+    'file_size' => ':size Kb',
 ];
