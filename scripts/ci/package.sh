@@ -38,7 +38,7 @@ ln -s $ROOT/LICENSE $package/
 ln -s $ROOT/nginx_app.conf $package/
 ln -s $ROOT/package.json $package/
 ln -s $ROOT/Procfile $package/
-ln -s $ROOT/readme.md $package/
+ln -s $ROOT/README.md $package/
 ln -s $ROOT/server.php $package/
 ln -s $ROOT/webpack.mix.js $package/
 ln -s $ROOT/yarn.lock $package/
