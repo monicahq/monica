@@ -34,9 +34,8 @@
         <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-50-ns w-100 pa2">
           <div class="br3 ba b--gray-monica bg-white mb4">
             <div class="pa3 bb b--gray-monica">
-              <p class="mb0">
-                📅
-                {{ trans('dashboard.reminders_next_months') }}
+              <p class="mb1 b">
+                📅&#8199;{{ trans('dashboard.reminders_next_months') }}
               </p>
             </div>
             <div class="pt3 pr3 pl3 mb4">
@@ -47,7 +46,7 @@
         <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-50-ns w-100 pa2">
           <div class="br3 ba b--gray-monica bg-white mb3">
             <div class="pa3 bb b--gray-monica">
-              <p class="mb1 b">☀️ {{ trans('dashboard.product_changes') }} <span class="fr normal"><a href="changelog">{{ trans('dashboard.product_view_details') }}</a></span></p>
+              <p class="mb1 b">☀️ &nbsp;{{ trans('dashboard.product_changes') }} <span class="fr normal"><a href="changelog">{{ trans('dashboard.product_view_details') }}</a></span></p>
               <ul>
                 @foreach ($changelogs as $changelog)
                 <li class="mb1">
