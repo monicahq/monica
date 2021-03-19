@@ -91,7 +91,7 @@ class CollectionHelper
     }
 
     /**
-     * Group collection based on a specific property from its items
+     * Group collection based on a specific property from its items.
      *
      * @param  \Illuminate\Support\Collection $collection
      * @param string $property
@@ -101,7 +101,7 @@ class CollectionHelper
     public static function groupByItemsProperty($collection, $property)
     {
         return $collection->mapToGroups(function ($item) use ($property) {
-            return [data_get( $item, $property ) => $item];
+            return [data_get($item, $property) => $item];
         });
     }
 }

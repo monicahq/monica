@@ -15,7 +15,7 @@ class MacroServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if ( ! Collection::hasMacro('sortByCollator')) {
+        if (! Collection::hasMacro('sortByCollator')) {
             Collection::macro('sortByCollator', function ($callback, $options = \Collator::SORT_STRING, $descending = false) {
                 /** @var Collection */
                 $collect = $this;
@@ -24,7 +24,7 @@ class MacroServiceProvider extends ServiceProvider
             });
         }
 
-        if ( ! Collection::hasMacro('groupByItemsProperty')) {
+        if (! Collection::hasMacro('groupByItemsProperty')) {
             Collection::macro('groupByItemsProperty', function ($property) {
                 /** @var Collection */
                 $collect = $this;

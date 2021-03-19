@@ -130,9 +130,9 @@ class CollectionHelperTest extends FeatureTestCase
     /** @test */
     public function group_by_items_property()
     {
-        $object1 = (object) array('name' => 'John');
-        $object2 = (object) array('name' => 'Jack');
-        $object3 = (object) array('name' => 'John');
+        $object1 = (object) ['name' => 'John'];
+        $object2 = (object) ['name' => 'Jack'];
+        $object3 = (object) ['name' => 'John'];
 
         $collection = collect([
             $object1,
@@ -145,7 +145,7 @@ class CollectionHelperTest extends FeatureTestCase
         $this->assertEquals(
             [
                 'John' => [$object1, $object3],
-                'Jack' => [$object2]
+                'Jack' => [$object2],
             ],
             $collection->toArray()
         );
