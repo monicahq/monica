@@ -306,6 +306,6 @@ Monica uses a lot of open source projects and we thank them with all our hearts.
 
 ## License
 
-Copyright (c) 2016–2021
+Copyright © 2016–2021
 
 Licensed under [the AGPL License](/LICENSE).
