@@ -60,6 +60,10 @@ $bg-hover-monica: #d7e3ec;
   }
 }
 
+.bg-pale-red {
+  background-color: #f4c8b9;
+}
+
 .box-shadow {
   background: #fff;
   border: 1px solid #d0d0d0;
@@ -81,7 +85,7 @@ $bg-hover-monica: #d7e3ec;
 
 .form-error-message {
   border-top: 1px solid #d9534f;
-  background-color: #e9967a;
+  background-color: #f4c8b9;
   box-shadow: inset 0 3px 0 0 #d9534f, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
 }
 
@@ -648,8 +652,8 @@ svg {
 }
 
 .form-group-error .error {
-  border-color: #e9967a !important;
-  color:#e9967a;
+  border-color: #d9534f !important;
+  color:#f4c8b9;
 }
 
 // Shake animation
