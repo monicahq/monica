@@ -15,12 +15,21 @@ class MacroServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (! Collection::hasMacro('sortByCollator')) {
+        if ( ! Collection::hasMacro('sortByCollator')) {
             Collection::macro('sortByCollator', function ($callback, $options = \Collator::SORT_STRING, $descending = false) {
                 /** @var Collection */
                 $collect = $this;
 
                 return CollectionHelper::sortByCollator($collect, $callback, $options, $descending);
+            });
+        }
+
+        if ( ! Collection::hasMacro('groupByItemsProperty')) {
+            Collection::macro('groupByItemsProperty', function ($property) {
+                /** @var Collection */
+                $collect = $this;
+
+                return CollectionHelper::groupByItemsProperty($collect, $property);
             });
         }
     }
