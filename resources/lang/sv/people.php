@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Visa kommentar',
     'gifts_mark_offered' => 'Markera som erbjuden',
     'gifts_update_success' => 'Gåvan har uppdaterats',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Är du säker på att du vill ta bort denna skuld?',
