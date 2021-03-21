@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Ver comentario',
     'gifts_mark_offered' => 'Marcar como dado',
     'gifts_update_success' => 'El regalo ha sido actualizado exitosamente',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => '¿Está seguro de que desea eliminar esta deuda?',
