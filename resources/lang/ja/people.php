@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'No results found',
     'people_search_next' => '次',
     'people_search_prev' => '前へ',
-    'people_search_rows_per_page' => '1ページあたりの行数',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'of',
     'people_search_page' => 'ページ',
     'people_search_all' => 'All',
@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => 'Current profile picture',
     'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => '写真を削除',
-    'photo_next' => 'Next photo',
-    'photo_previous' => 'Previous photo',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => 'アバターを変更',

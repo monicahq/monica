@@ -97,7 +97,7 @@ $db = [
         ],
 
         'testing' => [
-            'driver' => 'mysql',
+            'driver' => env('DB_TEST_DRIVER', 'mysql'),
             'host' => env('DB_TEST_HOST'),
             'unix_socket' => env('DB_TEST_UNIX_SOCKET', ''),
             'database' => env('DB_TEST_DATABASE'),

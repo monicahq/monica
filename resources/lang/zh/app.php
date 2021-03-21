@@ -462,4 +462,10 @@ return [
     'dav_birthdays_description' => ':name的名片生日',
     'dav_tasks' => '任务',
     'dav_tasks_description' => ':name的任务',
+
+    // contact list
+    'contact_list_avatar' => 'Avatar',
+    'contact_list_name' => 'Contact',
+    'contact_list_description' => 'Description',
+
 ];

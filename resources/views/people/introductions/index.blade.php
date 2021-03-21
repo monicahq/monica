@@ -1,8 +1,8 @@
 <div class="sidebar-box introductions">
 
-  <p class="sidebar-box-title">
-    <strong>{{ trans('people.introductions_sidebar_title') }}</strong>
-  </p>
+  <div class="sidebar-box-title">
+    <h3>{{ trans('people.introductions_sidebar_title') }}</h3>
+  </div>
 
   @if(! $contact->hasFirstMetInformation())
     <p class="sidebar-box-paragraph">

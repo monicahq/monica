@@ -20,14 +20,14 @@
 If you don't want to use Docker, the best way to setup the project is to use the same configuration that [Homestead](https://laravel.com/docs/homestead) uses. Basically, Monica depends on the following:
 
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
--   PHP 7.2+
+-   PHP 7.4+
 -   [Composer](https://getcomposer.org/)
 -   [MySQL](https://www.mysql.com/)
 -   Optional: Redis or Beanstalk
 
 **Git:** Git should come pre-installed with your server. If it doesn't - use the installation instructions in the link.
 
-**PHP:** Install php7.2 minimum, with these extensions:
+**PHP:** Install php7.4 minimum, with these extensions:
 
 -   bcmath
 -   curl
@@ -129,7 +129,7 @@ exit
     - set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
     - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
     - set the `APP_ENV` variable to `production`, `local` is only used for the development version. Beware: setting `APP_ENV` to `production` will force HTTPS. Skip this if you're running Monica locally.
-3. Run `composer install --no-interaction --no-dev --ignore-platform-reqs` to install all packages.
+3. Run `composer install --no-interaction --no-dev` to install all packages.
 4. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 5. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
 

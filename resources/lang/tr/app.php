@@ -462,4 +462,10 @@ return [
     'dav_birthdays_description' => ':name kişisinin kişilerinin doğum günleri',
     'dav_tasks' => 'Görevler',
     'dav_tasks_description' => ':name kişisinin görevleri',
+
+    // contact list
+    'contact_list_avatar' => 'Avatar',
+    'contact_list_name' => 'Contact',
+    'contact_list_description' => 'Description',
+
 ];

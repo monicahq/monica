@@ -24,7 +24,7 @@ return [
     'title_i18n' => 'International settings',
     'title_layout' => 'Giao diện',
 
-    'me_title' => 'Danh bạ của tôi',
+    'me_title' => 'Me as a contact',
     'me_help' => 'Đây là liên hệ đại diện cho <em>bạn</em> trên Monica',
     'me_select' => 'Chọn 1 liên hệ',
     'me_no_contact' => 'Không có liên hệ nào được chọn.',
@@ -514,5 +514,10 @@ return [
     'archive_cta' => 'Archive all of your contacts',
 
     'logs_title' => 'Everything that has happened to this account',
-    'logs_author' => 'By :name on :date',
+    'logs_actor' => 'Actor',
+    'logs_timestamp' => 'Timestamp',
+    'logs_description' => 'Description',
+    'logs_subject' => 'Subject',
+    'logs_size' => 'Size (Kb)',
+    'logs_object' => 'Object',
 ];

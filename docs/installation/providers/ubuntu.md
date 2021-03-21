@@ -20,7 +20,7 @@ Monica depends on the following:
 
 -   [Apache httpd webserver](https://httpd.apache.org/)
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
--   PHP 7.2+
+-   PHP 7.4+
 -   [Composer](https://getcomposer.org/)
 -   [MySQL](https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/)
 
@@ -40,7 +40,7 @@ sudo apt update
 sudo apt install -y apache2
 ```
 
-**PHP 7.3+:**
+**PHP 7.4+:**
 
 First add this PPA repository:
 
@@ -49,13 +49,13 @@ sudo apt-get install -y software-properties-common
 sudo add-apt-repository ppa:ondrej/php
 ```
 
-Then install php 7.3 with these extensions:
+Then install php 7.4 with these extensions:
 
 ```sh
 sudo apt update
-sudo apt install -y php7.3 php7.3-cli php7.3-common php7.3-fpm \
-    php7.3-json php7.3-opcache php7.3-mysql php7.3-mbstring php7.3-zip \
-    php7.3-bcmath php7.3-intl php7.3-xml php7.3-curl php7.3-gd php7.3-gmp php-imagick
+sudo apt install -y php7.4 php7.4-cli php7.4-common php7.4-fpm \
+    php7.4-json php7.4-opcache php7.4-mysql php7.4-mbstring php7.4-zip \
+    php7.4-bcmath php7.4-intl php7.4-xml php7.4-curl php7.4-gd php7.4-gmp php7.4-imagick
 ```
 
 **Composer:** After you're done installing PHP, you'll need the [Composer](https://getcomposer.org/download/) dependency manager.
@@ -142,7 +142,7 @@ exit
     - set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
     - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
     - set the `APP_ENV` variable to `production`, `local` is only used for the development version. Beware: setting `APP_ENV` to `production` will force HTTPS. Skip this if you're running Monica locally.
-1. Run `composer install --no-interaction --no-dev --ignore-platform-reqs` to install all packages.
+1. Run `composer install --no-interaction --no-dev` to install all packages.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
     - You can use `email` and `password` parameter to setup a first account directly: `php artisan setup:production --email=your@email.com --password=yourpassword -v`
@@ -214,10 +214,10 @@ Then, in the `nano` text editor window you just opened, copy the following - swa
 sudo a2dissite 000-default.conf
 sudo a2ensite monica.conf
 
-# Enable php7.3 fpm, and restart apache
+# Enable php7.4 fpm, and restart apache
 sudo a2enmod proxy_fcgi setenvif
-sudo a2enconf php7.3-fpm
-sudo service php7.3-fpm restart
+sudo a2enconf php7.4-fpm
+sudo service php7.4-fpm restart
 sudo service apache2 restart
 ```
 

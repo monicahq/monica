@@ -10,6 +10,9 @@ use App\Jobs\AuditLog\LogAccountAudit;
 
 class SetPersonalDescription extends BaseService
 {
+    private array $data;
+    private Contact $contact;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -21,7 +24,7 @@ class SetPersonalDescription extends BaseService
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_id' => 'required|integer|exists:contacts,id',
             'author_id' => 'required|integer|exists:users,id',
-            'description' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
         ];
     }
 
@@ -36,42 +39,41 @@ class SetPersonalDescription extends BaseService
      */
     public function execute(array $data): Contact
     {
-        $this->validate($data);
+        $this->data = $data;
+        $this->validate($this->data);
 
-        /** @var Contact */
-        $contact = Contact::where('account_id', $data['account_id'])
+        /* @var Contact */
+        $this->contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
-        $contact->description = $data['description'];
-        $contact->save();
+        $this->contact->description = $data['description'];
+        $this->contact->save();
 
-        $this->log($data, $contact);
+        $this->log();
 
-        return $contact;
+        return $this->contact->refresh();
     }
 
     /**
      * Add an audit log.
      *
-     * @param array $data
-     * @param Contact $contact
      * @return void
      */
-    private function log(array $data, Contact $contact): void
+    private function log(): void
     {
-        $author = User::find($data['author_id']);
+        $author = User::find($this->data['author_id']);
 
         LogAccountAudit::dispatch([
             'action' => 'contact_description_updated',
             'account_id' => $author->account_id,
-            'about_contact_id' => $contact->id,
+            'about_contact_id' => $this->contact->id,
             'author_id' => $author->id,
             'author_name' => $author->name,
             'audited_at' => now(),
             'should_appear_on_dashboard' => true,
             'objects' => json_encode([
-                'contact_name' => $contact->name,
-                'contact_id' => $contact->id,
+                'contact_name' => $this->contact->name,
+                'contact_id' => $this->contact->id,
             ]),
         ]);
     }
