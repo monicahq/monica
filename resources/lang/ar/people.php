@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'عرض التعليق',
     'gifts_mark_offered' => 'ضع علامة بأنه تم عرضها',
     'gifts_update_success' => 'تم بنجاح تحديث هدية',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'هل أنت متأكد من أنك تريد حذف هذا الدين؟',
