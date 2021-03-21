@@ -152,7 +152,7 @@
 
           <h2>{{ trans('settings.reset_title') }}</h2>
           <p>{{ trans('settings.reset_desc') }}</p>
-          <button type="submit" class="btn">{{ trans('settings.reset_cta') }}</button>
+          <button type="submit" class="btn btn-warning">{{ trans('settings.reset_cta') }}</button>
         </form>
 
         <form method="POST" action="{{ route('settings.delete') }}" class="settings-delete bg-pale-red" onsubmit="return confirm('{{ trans('settings.delete_notice') }}')">
