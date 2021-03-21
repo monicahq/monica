@@ -44,7 +44,7 @@ return [
     'retry' => 'לנסות שוב',
     'filter' => 'סינון הרשימה',
     'go_back' => 'חזרה',
-    'file_selected' => 'One file selected…|{count} files selected…',
+    'file_selected' => 'נבחר קובץ אחד…|{count} קבצים נבחרו…',
 
     'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
     'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
