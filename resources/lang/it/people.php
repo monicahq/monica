@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Visualizza commento',
     'gifts_mark_offered' => 'Segna come dato',
     'gifts_update_success' => 'Regalo modificato',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Rimuovere questo debito?',
