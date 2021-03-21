@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Просмотреть комментарий',
     'gifts_mark_offered' => 'Отметить как предложенный\'',
     'gifts_update_success' => 'Подарок успешно обновлен',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Вы уверены что хотите удалить этот долг?',
