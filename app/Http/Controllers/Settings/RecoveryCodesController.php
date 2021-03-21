@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Settings;
 
+use PragmaRX\Random\Random;
 use Illuminate\Http\Request;
 use App\Models\User\RecoveryCode;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
-use PragmaRX\Recovery\Recovery as PragmaRXRecovery;
 
 class RecoveryCodesController extends Controller
 {
@@ -77,12 +77,20 @@ class RecoveryCodesController extends Controller
     private function generate()
     {
         // Generate new codes
-        $recovery = new PragmaRXRecovery();
-        $codes = $recovery->setCount(config('auth.recovery.count'))
-                 ->setBlocks(config('auth.recovery.blocks'))
-                 ->setChars(config('auth.recovery.chars'))
-                 ->uppercase()
-                 ->toArray();
+        $random = new Random();
+        $random->uppercase(true);
+
+        $codes = [];
+
+        for ($i = 1; $i <= (int) config('auth.recovery.count'); $i++) {
+            $blocks = [];
+
+            for ($j = 1; $j <= (int) config('auth.recovery.blocks'); $j++) {
+                $blocks[] = $random->size(config('auth.recovery.chars'))->get();
+            }
+
+            $codes[] = implode('-', $blocks);
+        }
 
         foreach ($codes as $code) {
             RecoveryCode::create([

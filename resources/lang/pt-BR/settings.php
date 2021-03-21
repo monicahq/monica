@@ -24,7 +24,7 @@ return [
     'title_i18n' => 'Configurações internacionais',
     'title_layout' => 'Layout',
 
-    'me_title' => 'Meu contato',
+    'me_title' => 'Me as a contact',
     'me_help' => 'This is the contact that represents <em>you</em> in Monica',
     'me_select' => 'Selecione um contato',
     'me_no_contact' => 'Nenhum contato selecionado.',
@@ -514,5 +514,10 @@ return [
     'archive_cta' => 'Archive all of your contacts',
 
     'logs_title' => 'Everything that has happened to this account',
-    'logs_author' => 'By :name on :date',
+    'logs_actor' => 'Actor',
+    'logs_timestamp' => 'Timestamp',
+    'logs_description' => 'Description',
+    'logs_subject' => 'Subject',
+    'logs_size' => 'Size (Kb)',
+    'logs_object' => 'Object',
 ];

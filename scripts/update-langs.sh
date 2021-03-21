@@ -26,4 +26,7 @@ git add public/js/langs/*.json
 git commit -m "Update jsons"
 
 # Push it to remote
-git push $origin $newbranch
+git push --set-upstream $origin $newbranch
+
+# Create Pull Request
+gh pr create --base master --title "chore(i18n): update translations" --label "auto-squash" --body ""
