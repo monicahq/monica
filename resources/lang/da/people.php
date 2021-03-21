@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Se kommentar',
     'gifts_mark_offered' => 'Marker som givet',
     'gifts_update_success' => 'Gaven er blevet opdateret',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Er du sikker på, at du vil slette denne gæld?',
