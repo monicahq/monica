@@ -14,7 +14,7 @@ return [
     'add' => 'Ekle',
     'cancel' => 'Vazgeç',
     'confirm' => 'Doğrula',
-    'delete_confirm' => 'Are you sure?',
+    'delete_confirm' => 'Emin misiniz?',
     'delete' => 'Sil',
     'edit' => 'Düzenle',
     'upload' => 'Yükle',
@@ -31,7 +31,7 @@ return [
     'new' => 'yeni',
     'unknown' => 'Bilmiyorum',
     'load_more' => 'Daha fazla',
-    'loading' => 'Loading…',
+    'loading' => 'Yükleniyor…',
     'with' => 'ile',
     'today' => 'bugün',
     'yesterday' => 'dün',
@@ -44,11 +44,11 @@ return [
     'retry' => 'Tekrar dene',
     'filter' => 'Listeyi filtrele',
     'go_back' => 'Geri dön',
-    'file_selected' => 'One file selected…|{count} files selected…',
+    'file_selected' => 'Bir dosya seçildi... {count} dosya seçildi…',
 
     'application_title' => 'Monica - kişisel ilişki yöneticisi',
     'application_description' => 'Monica sevdiklerinizle, arkadaşlarınızla ve ailenizle etkileşimlerinizi yönetebileceğiniz bir araçtır.',
-    'application_og_title' => 'Have better relations with your loved ones. Free online CRM for friends and family.',
+    'application_og_title' => 'Sevdiklerinizle daha iyi ilişkiler kurun. Arkadaşlarınız ve aileniz için ücretsiz Online CRM.',
 
     'markdown_description' => 'Metninizi güzel bir şekilde biçimlendirmek mi istiyorsunuz? Kalın, italik, listeler ve daha fazlasını eklemek için Markdown desteğimiz bulunmaktadır.',
     'markdown_link' => 'Dokümantasyonu oku',
@@ -64,14 +64,14 @@ return [
     'main_nav_activities' => 'Aktiviteler',
     'main_nav_tasks' => 'Görevler',
 
-    'footer_remarks' => 'Comments?',
-    'footer_send_email' => 'Send us an email',
+    'footer_remarks' => 'Yorumlar?',
+    'footer_send_email' => 'Bize e-posta gönderin',
     'footer_privacy' => 'Gizlilik politikası',
     'footer_release' => 'Sürüm notları',
     'footer_newsletter' => 'Haber Bülteni',
     'footer_source_code' => 'Katkıda bulun',
     'footer_version' => 'Sürüm: :version',
-    'footer_new_version' => 'A new version of Monica is available',
+    'footer_new_version' => 'Monica\'nın yeni sürümü mevcut',
 
     'footer_modal_version_whats_new' => 'Neler yeni',
     'footer_modal_version_release_away' => 'Mevcut olan son sürümden 1 sürüm aşağıdasın. Uygulamanı güncellemelisin.|Mevcut olan son sürümden :number sürüm aşağıdasın. Uygulamanı güncellemelisin.',
@@ -113,7 +113,7 @@ return [
     'error_try_again' => 'Bir şeyler ters gitti. Lütfen tekrar deneyin.',
     'error_id' => 'Hata kimliği: :id',
     'error_unavailable' => 'Hizmet kullanılamıyor',
-    'error_maintenance' => 'Maintenance in progress. We’ll be right back.',
+    'error_maintenance' => 'Bakım devam ediyor. Birazdan geri döneceğiz.',
     'error_help' => 'Kısa süre sonra geri döneceğiz.',
     'error_twitter' => 'Yeniden çalışır olduğunda haberdar olmak için <a href="https://twitter.com/:twitter">Twitter hesabımızı</a> takip edin.',
     'error_no_term' => 'Bu olay için henüz bir politika yok.',
@@ -464,8 +464,8 @@ return [
     'dav_tasks_description' => ':name kişisinin görevleri',
 
     // contact list
-    'contact_list_avatar' => 'Avatar',
-    'contact_list_name' => 'Contact',
-    'contact_list_description' => 'Description',
+    'contact_list_avatar' => 'Profil Resmi',
+    'contact_list_name' => 'İletişim',
+    'contact_list_description' => 'Açıklama',
 
 ];
