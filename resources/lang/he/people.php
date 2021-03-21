@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'צפייה בהערה',
     'gifts_mark_offered' => 'סימון שניתנה',
     'gifts_update_success' => 'המתנה עודכנה בהצלחה',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'למחוק את החוב הזה?',
