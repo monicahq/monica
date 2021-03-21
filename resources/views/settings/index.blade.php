@@ -161,7 +161,7 @@
           <h2>{{ trans('settings.delete_title') }}</h2>
           <p>{{ trans('settings.delete_desc') }}</p>
           <p>{{ trans('settings.delete_other_desc') }}</p>
-          <button type="submit" class="btn">{{ trans('settings.delete_cta') }}</button>
+          <button type="submit" class="btn btn-danger">{{ trans('settings.delete_cta') }}</button>
         </form>
 
       </div>
