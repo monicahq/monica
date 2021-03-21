@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => '查看评论',
     'gifts_mark_offered' => '标记为提供',
     'gifts_update_success' => '礼物已成功更新',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => '是否确实要删除此债务？',
