@@ -8,7 +8,8 @@
 
     <!-- Right column: showing logs -->
     <div :class="[ dirltr ? 'fl' : 'fr' ]" class="journal-calendar-content">
-      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 journal-line">
+      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 journal-line"
+        v-tooltip.top="$t('journal.journal_created_at', { date: entry.created_at })">
         <div class="flex">
           <!-- Day -->
           <div class="flex-none w-10 tc">
