@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Pogledaj komentar',
     'gifts_mark_offered' => 'Označi kao poklonjeno',
     'gifts_update_success' => 'Uspješno ažuriranje poklona',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Jeste li sigurni da želite izbrisati ovaj dug?',
