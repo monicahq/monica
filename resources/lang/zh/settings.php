@@ -24,7 +24,7 @@ return [
     'title_i18n' => '本地化',
     'title_layout' => '布局',
 
-    'me_title' => '通讯录',
+    'me_title' => 'Me as a contact',
     'me_help' => '这个联系人在Monica代表了 <em>你</em>',
     'me_select' => '选择联系人',
     'me_no_contact' => '没有选择联系人',
@@ -514,5 +514,10 @@ return [
     'archive_cta' => 'Archive all of your contacts',
 
     'logs_title' => 'Everything that has happened to this account',
-    'logs_author' => ':name 于 :date ',
+    'logs_actor' => 'Actor',
+    'logs_timestamp' => 'Timestamp',
+    'logs_description' => 'Description',
+    'logs_subject' => 'Subject',
+    'logs_size' => 'Size (Kb)',
+    'logs_object' => 'Object',
 ];

@@ -24,7 +24,7 @@ return [
     'title_i18n' => 'Ρυθμίσεις περιοχής',
     'title_layout' => 'Διάταξη',
 
-    'me_title' => 'Η επαφή μου',
+    'me_title' => 'Me as a contact',
     'me_help' => 'Αυτή είναι η επαφή που <em>σας</em> εκπροσωπεί στην Monica',
     'me_select' => 'Επιλέξτε μια επαφή',
     'me_no_contact' => 'Δεν έχουν επιλεγεί επαφές.',
@@ -514,5 +514,10 @@ return [
     'archive_cta' => 'Archive all of your contacts',
 
     'logs_title' => 'Everything that has happened to this account',
-    'logs_author' => 'By :name on :date',
+    'logs_actor' => 'Actor',
+    'logs_timestamp' => 'Timestamp',
+    'logs_description' => 'Description',
+    'logs_subject' => 'Subject',
+    'logs_size' => 'Size (Kb)',
+    'logs_object' => 'Object',
 ];

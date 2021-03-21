@@ -30,7 +30,7 @@ class AuditLogHelperTest extends TestCase
         ]);
 
         $logs = $user->account->auditLogs;
-        $collection = AuditLogHelper::getCollectionOfAuditForSettings($logs);
+        $collection = AuditLogHelper::getCollectionOfAudits($logs);
 
         $this->assertEquals(
             2,
@@ -50,7 +50,7 @@ class AuditLogHelperTest extends TestCase
         ]);
 
         $logs = $user->account->auditLogs;
-        $collection = AuditLogHelper::getCollectionOfAuditForSettings($logs);
+        $collection = AuditLogHelper::getCollectionOfAudits($logs);
 
         $this->assertEquals(
             2,

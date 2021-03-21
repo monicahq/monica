@@ -40,7 +40,6 @@ class Update extends Command
         if ($this->confirmToProceed()) {
             try {
                 $this->artisan('✓ Maintenance mode: on', 'down', [
-                    '--message' => 'Upgrading Monica v'.config('monica.app_version'),
                     '--retry' => '10',
                 ]);
 
@@ -64,7 +63,7 @@ class Update extends Command
                 }
 
                 if ($this->option('composer-install') === true) {
-                    $this->exec('✓ Updating composer dependencies', 'composer install --no-interaction --ignore-platform-reqs'.($this->option('dev') === false ? ' --no-dev' : ''));
+                    $this->exec('✓ Updating composer dependencies', 'composer install --no-interaction'.($this->option('dev') === false ? ' --no-dev' : ''));
                 }
 
                 if ($this->option('skip-storage-link') !== true && $this->getLaravel()->environment() != 'testing' && ! file_exists(public_path('storage'))) {

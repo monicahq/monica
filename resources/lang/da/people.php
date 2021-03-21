@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Ingen resultater fundet',
     'people_search_next' => 'Næste',
     'people_search_prev' => 'Forrige',
-    'people_search_rows_per_page' => 'Rækker per side:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'af',
     'people_search_page' => 'Side',
     'people_search_all' => 'Alle',
@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => 'Nuværende profilbillede',
     'photo_make_profile_pic' => 'Brug som profilbillede',
     'photo_delete' => 'Slet billede',
-    'photo_next' => 'Næste billede',
-    'photo_previous' => 'Forrige billede',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Skift profilbillede',

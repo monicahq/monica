@@ -24,7 +24,7 @@ return [
     'title_i18n' => 'Uluslararası ayarlar',
     'title_layout' => 'Görünüm',
 
-    'me_title' => 'Kişilerim',
+    'me_title' => 'Me as a contact',
     'me_help' => 'Bu hesap Monica\'da <em>sizi</em> temsil eden kişidir',
     'me_select' => 'Bir kişi seçin',
     'me_no_contact' => 'Henüz bir kişi seçilmedi.',
@@ -514,5 +514,10 @@ return [
     'archive_cta' => 'Archive all of your contacts',
 
     'logs_title' => 'Everything that has happened to this account',
-    'logs_author' => ':date tarihinde :name adına göre',
+    'logs_actor' => 'Actor',
+    'logs_timestamp' => 'Timestamp',
+    'logs_description' => 'Description',
+    'logs_subject' => 'Subject',
+    'logs_size' => 'Size (Kb)',
+    'logs_object' => 'Object',
 ];

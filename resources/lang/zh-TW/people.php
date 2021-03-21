@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => '未找到任何結果',
     'people_search_next' => '下一頁',
     'people_search_prev' => '上一頁',
-    'people_search_rows_per_page' => '每頁行數:',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => '/',
     'people_search_page' => '頁',
     'people_search_all' => '所有',
@@ -500,8 +500,8 @@ return [
     'photo_current_profile_pic' => '目前頭像',
     'photo_make_profile_pic' => '製作頭像',
     'photo_delete' => '刪除照片',
-    'photo_next' => '下一張照片',
-    'photo_previous' => '上一張照片',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => '更換頭像',

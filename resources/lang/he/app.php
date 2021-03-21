@@ -462,4 +462,10 @@ return [
     'dav_birthdays_description' => 'ימי ההולדת של אנשי הקשר של :name',
     'dav_tasks' => 'משימות',
     'dav_tasks_description' => 'המשימות של :name',
+
+    // contact list
+    'contact_list_avatar' => 'תמונה ייצוגית',
+    'contact_list_name' => 'איש קשר',
+    'contact_list_description' => 'תיאור',
+
 ];
