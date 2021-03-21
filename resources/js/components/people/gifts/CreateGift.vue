@@ -114,12 +114,13 @@
 
         <div v-if="displayDate" class="dt dt--fixed pb3 mb3 bb b--gray-monica">
           <!-- Date -->
-          <form-input
+          <form-date
             :id="'date'"
             v-model="newGift.date"
-            :input-type="'date'"
-            :class="'dtc pr2'"
-            :title="$t('people.gifts_add_date')"
+            :show-calendar-on-focus="true"
+            :locale="locale"
+            :class="[ dirltr ? 'fl dtc pr2' : 'fr dtc pr2' ]"
+            :label="$t('people.gifts_add_date')"
             @submit="store"
           />
         </div>
