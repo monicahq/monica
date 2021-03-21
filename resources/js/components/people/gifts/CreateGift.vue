@@ -81,6 +81,9 @@
             <li v-if="!reachLimit" v-show="!displayUpload" class="di pointer" :class="dirltr ? 'mr3' : 'ml3'">
               <a href="" @click.prevent="() => { displayUpload = true; $refs.upload.showUploadZone(); }">{{ $t('people.gifts_add_photo') }}</a>
             </li>
+            <li v-show="!displayDate" class="di pointer" :class="dirltr ? 'mr3' : 'ml3'">
+              <a href="" @click.prevent="displayDate = true">{{ $t('people.gifts_add_date') }}</a>
+            </li>
           </ul>
         </div>
 
@@ -105,6 +108,19 @@
             :class="'dtc pr2'"
             :title="$t('people.gifts_add_link')"
             :placeholder="'https://'"
+            @submit="store"
+          />
+        </div>
+
+        <div v-if="displayDate" class="dt dt--fixed pb3 mb3 bb b--gray-monica">
+          <!-- Date -->
+          <form-date
+            :id="'date'"
+            v-model="newGift.date"
+            :show-calendar-on-focus="true"
+            :locale="locale"
+            :class="[ dirltr ? 'fl dtc pr2' : 'fr dtc pr2' ]"
+            :label="$t('people.gifts_add_date')"
             @submit="store"
           />
         </div>
@@ -252,6 +268,7 @@ export default {
       displayAmount: false,
       displayRecipient: false,
       displayUpload: false,
+      displayDate: false,
       newGift: {
         name: '',
         status: 'idea',
@@ -301,6 +318,7 @@ export default {
       return !this.displayComment ||
         !this.displayUrl ||
         !this.displayAmount ||
+        !this.displayDate ||
         !(this.displayRecipient || this.familyContacts.length == 0) ||
         !(this.displayUpload || this.reachLimit);
     }
@@ -341,6 +359,7 @@ export default {
         this.hasRecipient = false;
       }
       this.displayComment = this.gift ? this.gift.comment : false;
+      this.displayDate = this.gift ? this.gift.date : false;
       this.displayUrl = this.gift ? this.gift.url : false;
       this.displayAmount = this.gift ? this.gift.amount != '' : false;
       this.displayRecipient = this.gift ? (this.gift.recipient ? this.gift.recipient.id !== 0 : false) : false;
