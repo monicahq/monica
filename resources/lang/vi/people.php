@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Xem bình luận',
     'gifts_mark_offered' => 'Mark as given',
     'gifts_update_success' => 'Cập nhật quà tặng thành công',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Bạn chắc chắn muốn xóa khoản nợ này?',
