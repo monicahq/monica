@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Opmerking bekijken',
     'gifts_mark_offered' => 'Als aangeboden markeren',
     'gifts_update_success' => 'Het cadeau is succesvol bijgewerkt',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Weet je zeker dat je deze schuld wil verwijderen?',
