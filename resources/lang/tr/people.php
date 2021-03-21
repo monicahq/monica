@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Yorumu görüntüle',
     'gifts_mark_offered' => 'Önerildi olarak işaretle',
     'gifts_update_success' => 'Hediye başarıyla güncellendi',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Bu borcu silmek istediğinizden emin misiniz?',
