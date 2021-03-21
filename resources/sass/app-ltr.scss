@@ -468,6 +468,17 @@ input:disabled {
     display: table-cell;
     padding: 8px 10px;
   }
+
+  .table-header {
+    color: #4a4a4a;
+    background-color: #f2f4f8;
+    font-size: 1.1rem;
+    font-weight: bolder;
+  }
+
+  .audit-log-cell {
+    font-size: 0.9rem;
+  }
 }
 
 .profile-selected {

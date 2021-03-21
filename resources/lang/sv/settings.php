@@ -24,7 +24,7 @@ return [
     'title_i18n' => 'Internationella inställningar',
     'title_layout' => 'Layout',
 
-    'me_title' => 'Min kontakt',
+    'me_title' => 'Me as a contact',
     'me_help' => 'Detta är den kontakt som representerar <em>du</em> i Monica',
     'me_select' => 'Välj en kontakt',
     'me_no_contact' => 'Ingen kontakt vald ännu.',
@@ -514,5 +514,10 @@ return [
     'archive_cta' => 'Archive all of your contacts',
 
     'logs_title' => 'Everything that has happened to this account',
-    'logs_author' => 'Efter :name den :date',
+    'logs_actor' => 'Actor',
+    'logs_timestamp' => 'Timestamp',
+    'logs_description' => 'Description',
+    'logs_subject' => 'Subject',
+    'logs_size' => 'Size (Kb)',
+    'logs_object' => 'Object',
 ];

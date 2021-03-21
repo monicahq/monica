@@ -1,4 +1,4 @@
-</script>
+<script>
 export default {
   props: {
     value: {
@@ -16,5 +16,5 @@ export default {
       createElement('span', texts[1]),
     ]);
   },
-}
+};
 </script>
