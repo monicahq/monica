@@ -14312,16 +14312,16 @@
         },
         {
             "name": "nunomaduro/larastan",
-            "version": "v0.7.0",
+            "version": "v0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/larastan.git",
-                "reference": "179d7565674d4e264e60296d1b5b75413b7461b6"
+                "reference": "bbbe09ec16a565e6423878bd17fc4355fa0d0a4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/179d7565674d4e264e60296d1b5b75413b7461b6",
-                "reference": "179d7565674d4e264e60296d1b5b75413b7461b6",
+                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/bbbe09ec16a565e6423878bd17fc4355fa0d0a4c",
+                "reference": "bbbe09ec16a565e6423878bd17fc4355fa0d0a4c",
                 "shasum": ""
             },
             "require": {
@@ -14336,7 +14336,7 @@
                 "illuminate/support": "^6.0 || ^7.0 || ^8.0 || ^9.0",
                 "mockery/mockery": "^0.9 || ^1.0",
                 "php": "^7.2 || ^8.0",
-                "phpstan/phpstan": "^0.12.70",
+                "phpstan/phpstan": "0.12.81",
                 "symfony/process": "^4.3 || ^5.0"
             },
             "require-dev": {
@@ -14385,7 +14385,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nunomaduro/larastan/issues",
-                "source": "https://github.com/nunomaduro/larastan/tree/v0.7.0"
+                "source": "https://github.com/nunomaduro/larastan/tree/v0.7.1"
             },
             "funding": [
                 {
@@ -14405,7 +14405,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-02-01T22:08:11+00:00"
+            "time": "2021-03-19T09:41:48+00:00"
         },
         {
             "name": "openlss/lib-array2xml",
