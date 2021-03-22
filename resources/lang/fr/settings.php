@@ -266,7 +266,7 @@ return [
     'import_upload_rule_vcard' => 'Nous supportons le format vCard 3.0, qui est le format par défaut de l’application macOS Contacts.app et Google Contacts.',
     'import_upload_rule_instructions' => 'Instructions d’export pour <a href=":url1" target="_blank" rel="noopener noreferrer">macOS Contacts.app</a> et <a href=":url2" target="_blank" rel="noopener noreferrer">Google Contacts</a>.',
     'import_upload_rule_multiple' => 'Si vos contacts ont plusieurs adresses courriels ou numéros de téléphone, seule la première entrée sera sauvegardée.',
-    'import_upload_rule_limit' => 'Les fichiers sont limités à 10MB.',
+    'import_upload_rule_limit' => 'Files are limited to 10 MB.',
     'import_upload_rule_time' => 'Cela peut prendre une minute pour importer les contacts et les traiter. Merci de votre patience.',
     'import_upload_rule_cant_revert' => 'Veuillez vous assurer que les données sont fiables avant d’importer, car l’import ne peut être annulé.',
     'import_upload_form_file' => 'Votre fichier <code>.vcf</code> ou <code>.vCard</code> :',
@@ -489,7 +489,7 @@ return [
     'personalization_life_event_type_first_kiss' => 'Premier baiser',
 
     'storage_title' => 'Espace de stockage',
-    'storage_account_info' => 'La limite de votre compte est : :accountLimit Mo. Votre utilisation actuelle est : :currentAccountSize Mo (environ :percentUsage %).',
+    'storage_account_info' => 'Your account limit is :accountLimit MB. Your current usage is :currentAccountSize MB (about :percentUsage%).',
     'storage_upgrade_notice' => 'Mettez à niveau votre compte pour pouvoir télécharger des documents et des photos.',
     'storage_description' => 'Ici vous pouvez voir tous les documents et photos téléchargés sur vos contacts.',
 
