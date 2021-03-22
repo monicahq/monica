@@ -266,7 +266,7 @@ return [
     'import_upload_rule_vcard' => 'אנו תומכים ב־vCard גרסה 3.0, שהיא גרסת בררת המחדל עבור Contacts.app של macOS ועבור Google Contacts.',
     'import_upload_rule_instructions' => 'הנחיות יצוא עבור <a href=":url1" target="_blank" rel="noopener noreferrer">Contacts.app של macOS</a> ועבור <a href=":url2" target="_blank" rel="noopener noreferrer">אנשי הקשר של Google</a>.',
     'import_upload_rule_multiple' => 'אם לאנשי הקשר שלך יש מגוון כתובות דוא״ל או מספרי טלפון, רק הרשומה הראשונה תישמר.',
-    'import_upload_rule_limit' => 'Files are limited to 10 MB.',
+    'import_upload_rule_limit' => 'קבצים מוגבלים ל־10 מ״ב.',
     'import_upload_rule_time' => 'ההעלאה ועיבוד אנשי הקשר עשויים לארוך עד דקה. נא להתאזר בסבלנות.',
     'import_upload_rule_cant_revert' => 'נא לוודא שהנתונים מדויקים בטרם ההעלאה, כיוון שלא ניתן לבטל העלאה.',
     'import_upload_form_file' => 'קובץ ה־<code>.vcf</code> או ה־<code>.vCard</code> שלך:',
@@ -489,7 +489,7 @@ return [
     'personalization_life_event_type_first_kiss' => 'נשיקה ראשונה',
 
     'storage_title' => 'אחסון',
-    'storage_account_info' => 'Your account limit is :accountLimit MB. Your current usage is :currentAccountSize MB (about :percentUsage%).',
+    'storage_account_info' => 'מגבלת החשבון שלך היא: :accountLimit מגה בתים. הניצולת הנוכחית שלך היא: :currentAccountSize מגה בתים (בערך :percentUsage%).',
     'storage_upgrade_notice' => 'עליך לשדרג את החשבון שלך כדי שתהיה לך אפשרות להעלות מסמכים ותמונות.',
     'storage_description' => 'כאן ניתן לצפות בכל המסמכים והתמונות שהועלו לטובת אנשי הקשר שלך.',
 
