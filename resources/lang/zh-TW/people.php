@@ -328,7 +328,7 @@ return [
     'gifts_view_comment' => '檢視評論',
     'gifts_mark_offered' => '標記為提供',
     'gifts_update_success' => '禮物已成功更新',
-    'gifts_add_date' => 'Date (optional)',
+    'gifts_add_date' => '日期 (選填)',
 
     // debts
     'debt_delete_confirmation' => '是否確實要刪除此債務？',
