@@ -266,7 +266,7 @@ return [
     'import_upload_rule_vcard' => 'We support the vCard 3.0 format, which is the default format for macOS’s Contacts.app and Google Contacts.',
     'import_upload_rule_instructions' => 'Export instructions for <a href=":url1" target="_blank" rel="noopener noreferrer">macOS Contacts.app</a> and <a href=":url2" target="_blank" rel="noopener noreferrer">Google Contacts</a>.',
     'import_upload_rule_multiple' => 'If your contacts have multiple email addresses or phone numbers, only the first entry will be saved.',
-    'import_upload_rule_limit' => '文件限制为10MB。',
+    'import_upload_rule_limit' => 'Files are limited to 10 MB.',
     'import_upload_rule_time' => 'It might take up to a minute to upload the contacts and process them. Please be patient.',
     'import_upload_rule_cant_revert' => 'Please make sure data is accurate before uploading, as you can’t undo the upload.',
     'import_upload_form_file' => '你的 <code>.vcf</code> 或 <code>. vCard</code> 文件:',
@@ -489,7 +489,7 @@ return [
     'personalization_life_event_type_first_kiss' => '初吻',
 
     'storage_title' => '存储空间',
-    'storage_account_info' => 'Your account limit is :accountLimit Mb. Your current usage is :currentAccountSize Mb (about :percentUsage%).',
+    'storage_account_info' => 'Your account limit is :accountLimit MB. Your current usage is :currentAccountSize MB (about :percentUsage%).',
     'storage_upgrade_notice' => '升级您的帐户, 以便上传文档和照片。',
     'storage_description' => '在这里, 您可以看到上传的有关您的联系人的所有文档和照片。',
 
