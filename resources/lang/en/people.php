@@ -92,7 +92,7 @@ return [
     'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
     'stay_in_touch_modal_title' => 'Stay in touch',
     'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
-    'stay_in_touch_modal_label' => 'Send me an email every… {count} day|Send me an email every... {count} days',
+    'stay_in_touch_modal_label' => 'Send me an email every… {count} day|Send me an email every… {count} days',
 
     // Calls
     'modal_call_title' => 'Log a call',
@@ -112,7 +112,7 @@ return [
     'call_emotions' => 'Emotions:',
 
     // Conversation
-    'conversation_blank' => 'Record conversations you have with :name on social media, SMS, …',
+    'conversation_blank' => 'Record conversations you have with :name on social media, SMS…',
     'conversation_delete_link' => 'Delete the conversation',
     'conversation_edit_title' => 'Edit conversation',
     'conversation_edit_delete' => 'Are you sure you want to delete this conversation? Deletion is permanent.',
