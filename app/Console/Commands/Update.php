@@ -40,7 +40,6 @@ class Update extends Command
         if ($this->confirmToProceed()) {
             try {
                 $this->artisan('✓ Maintenance mode: on', 'down', [
-                    '--message' => 'Upgrading Monica v'.config('monica.app_version'),
                     '--retry' => '10',
                 ]);
 
