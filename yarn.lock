@@ -9532,9 +9532,9 @@ snyk-try-require@^2.0.0:
     lru-cache "^5.1.1"
 
 snyk@^1.410.3:
-  version "1.488.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.488.0.tgz#b22c6d474b85f403c7b28851017b97727c217520"
-  integrity sha512-jA2KYZXgnNs0fIQ4BIZ0Qc/50bef0YKHdGEq8oRLI5pJYTfTgeRQOyJXs+opk2FrxHIFI1cf8grrG+uCh68W/Q==
+  version "1.503.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.503.0.tgz#f87d74a4d3f89a70f67c0e038fb4f276b9dcea2c"
+  integrity sha512-CCDlwvQJ/TyR6cbG38p/TxzE313CIvtPJe8LIxplfoLj6yswRtwspY5iYCOW4wdUzbZQyXk/Y4A7VSjXhBL9qQ==
   dependencies:
     "@open-policy-agent/opa-wasm" "^1.2.0"
     "@snyk/cli-interface" "2.11.0"
