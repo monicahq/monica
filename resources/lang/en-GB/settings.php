@@ -18,7 +18,7 @@ return [
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'DAV Resources',
     'sidebar_settings_security' => 'Security',
-    'sidebar_settings_auditlogs' => 'Audit logs',
+    'sidebar_settings_auditlogs' => 'Audit log',
 
     'title_general' => 'General Information',
     'title_i18n' => 'International settings',
@@ -518,6 +518,6 @@ return [
     'logs_timestamp' => 'Timestamp',
     'logs_description' => 'Description',
     'logs_subject' => 'Subject',
-    'logs_size' => 'Size (Kb)',
+    'logs_size' => 'Size (KB)',
     'logs_object' => 'Object',
 ];
