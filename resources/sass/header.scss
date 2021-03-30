@@ -83,15 +83,15 @@
   color: #ffffff;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    color: #f2f4f8;
   }
   &:-ms-input-placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    color: #f2f4f8;
   }
 
   &:focus {
-    background: #ffffff;
-    color: rgb(50, 50, 50);
+    background: #f2f4f8;
+    color: #313436;
   }
 }
 
