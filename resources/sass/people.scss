@@ -183,7 +183,7 @@
   margin-top: -30px;
 
   .image-header::after {
-    box-shadow: inset 1px 1px 3px 0 rgba(173,173,173,0.50);
+    box-shadow: inset 1px 1px 3px 0 #d0d0d0;
     border-radius: 7px;
     content: '';
     display: block;
@@ -195,7 +195,7 @@
 
   .hide-child:hover {
     .child {
-      background: rgba(90, 90, 90, 0.96);
+      background: #4a4a4a;
     }
 
     a:hover {
