@@ -80,7 +80,7 @@
 .header-search-input {
   background: #497193;
   border-color: #497193;
-  color: white;
+  color: #ffffff;
 
   &::placeholder {
     color: rgba(255, 255, 255, 0.4);
@@ -90,7 +90,7 @@
   }
 
   &:focus {
-    background: white;
+    background: #ffffff;
     color: rgb(50, 50, 50);
   }
 }
@@ -103,7 +103,7 @@
 
 .header-search-result {
   position: relative;
-  background: white;
+  background: #ffffff;
   box-shadow: 0 3px 3px 0 #999999;
   border-bottom: 1px solid #eeeeee;
 
