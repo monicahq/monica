@@ -19,7 +19,7 @@
   background-repeat: repeat-x;
   background-position: -1px -1px;
   background-size: 110% 110%;
-  border: 1px solid rgba(27,31,35,0.2);
+  border: 1px solid #d0d0d0;
   border-radius: 0.25em;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -33,15 +33,15 @@
     background-image: linear-gradient(-180deg, #d7e3ec 0%, #dcdcdc 90%);
     background-position: 0 -0.5em;
     background-repeat: repeat-x;
-    border-color: rgba(27,31,35,0.35);
+    border-color: #999999;
     color: #0366d5;
   }
 
   &:active {
     background-color: #d0d0d0;
     background-image: none;
-    border-color: rgba(27,31,35,0.35);
-    box-shadow: inset 0 0.15em 0.3em rgba(27,31,35,0.15)
+    border-color: #999999;
+    box-shadow: inset 0 0.15em 0.3em #eeeeee;
   }
 
   &:disabled {
@@ -65,7 +65,7 @@
     background-image: -webkit-linear-gradient(270deg, #32cd32 0%, #228b22 90%);
     background-image: linear-gradient(-180deg, #32cd32 0%, #228b22 90%);
     background-position: 0 -0.5em;
-    border-color: rgba(27,31,35,0.5);
+    border-color: #999999;
   }
 }
 
@@ -104,7 +104,7 @@
   background: #ffffff;
   color: #4a4a4a;
   opacity: 0.8;
-  box-shadow: 1px 0px 1px rgba(43, 45, 80, 0.16), -1px 1px 1px rgba(43, 45, 80, 0.16), 0px 1px 4px rgba(43, 45, 80, 0.18);
+  box-shadow: 1px 0px 1px #d0d0d0, -1px 1px 1px #d0d0d0, 0px 1px 4px #d0d0d0;
   border-radius: 11px;
   font-weight: 500;
   text-decoration: none;
