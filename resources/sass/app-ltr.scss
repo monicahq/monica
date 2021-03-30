@@ -67,7 +67,7 @@ $bg-hover-monica: #d7e3ec;
 .box-shadow {
   background: #ffffff;
   border: 1px solid #d0d0d0;
-  box-shadow: 1px -1px 4px rgba(122, 122, 122, 0.25);
+  box-shadow: 1px -1px 4px #d0d0d0;
   border-radius: 11px;
 }
 
@@ -86,13 +86,14 @@ $bg-hover-monica: #d7e3ec;
 .form-error-message {
   border-top: 1px solid #d9534f;
   background-color: #f4cecd;
-  box-shadow: inset 0 3px 0 0 #d9534f, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
+  box-shadow: inset 0 3px 0 0 #d9534f, inset 0 0 0 0 transparent, 0 0 0 1px #eeeeee, 0 1px 3px 0 #d0d0d0;
 }
 
 .form-information-message {
   border-top: 1px solid #47c1bf;
   background-color: #d1ecfa;
-  box-shadow: inset 0 3px 0 0 #47c1bf, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
+  box-shadow: inset 0 3px 0 0 #228b22, inset 0 0 0 0 transparent, 0 0 0 1px #eeeeee, 0 1px 3px 0 #d0d0d0;
+}
 
   svg {
     width: 20px;
@@ -125,7 +126,7 @@ $bg-hover-monica: #d7e3ec;
   background: #ffffff;
   border: 1px solid $border-color;
   border-radius: 3px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .05);
+  box-shadow: 0 1px 3px 0 #eeeeee;
 }
 
 .box-padding {
@@ -160,7 +161,7 @@ kbd {
   font-family:Arial,Helvetica,sans-serif;
   background-color:#fafafa;
   color:#313436;
-  box-shadow:0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
+  box-shadow:0 1px 0px #999999,0 0 0 2px #ffffff inset;
   border-radius:3px;
   display:inline-block;
   margin:0 0.1em;
@@ -199,7 +200,7 @@ kbd {
   width: 100%;
   max-width: 700px;
   height: 200px;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 2%, transparent 2%);
+  background-image: linear-gradient(to bottom, #d0d0d0 2%, transparent 2%);
   background-size: 100% 50px;
   background-position: left top;
 
@@ -213,7 +214,7 @@ kbd {
   span {
     margin: 0 1em;
     display: block;
-    background: rgba(#d1ecfa, .75);
+    background: #d1ecfa;
     animation: draw 1s ease-in-out;
 
     &:before{
@@ -505,7 +506,7 @@ input:disabled {
 .full-page-modal {
   background: #ffffff;
   border: 1px solid #eeeeee;
-  box-shadow: 2px 0px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: 2px 0px 6px #999999;
   border-radius: 12px;
 
   .full-page-modal-year-selector {
@@ -553,7 +554,7 @@ table.vgt-table {
     padding: 0px 8px 4px;
 
     &:hover {
-      box-shadow: 1px 0px 1px rgba(43, 45, 80, 0.16), -1px 1px 1px rgba(43, 45, 80, 0.16), 0px 1px 4px rgba(43, 45, 80, 0.18);
+      box-shadow: 1px 0px 1px #d0d0d0, -1px 1px 1px #d0d0d0, 0px 1px 4px #d0d0d0;
       border-radius: 3px;
     }
   }
