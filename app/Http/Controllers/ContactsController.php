@@ -259,20 +259,36 @@ class ContactsController extends Controller
         $relationships = $contact->relationships;
         // get love relationship type
         $loveRelationships = $relationships->filter(function ($item) {
+            $item->relationshipTypeLocalized = $item->relationshipType->getLocalizedName(null, false, $item->ofContact->gender->type ?? null);
+
             return $item->relationshipType->relationshipTypeGroup->name == 'love';
         });
+        $loveRelationships->sortByCollator('relationshipTypeLocalized');
+
         // get family relationship type
         $familyRelationships = $relationships->filter(function ($item) {
+            $item->relationshipTypeLocalized = $item->relationshipType->getLocalizedName(null, false, $item->ofContact->gender->type ?? null);
+
             return $item->relationshipType->relationshipTypeGroup->name == 'family';
         });
+        $familyRelationships->sortByCollator('relationshipTypeLocalized');
+
         // get friend relationship type
         $friendRelationships = $relationships->filter(function ($item) {
+            $item->relationshipTypeLocalized = $item->relationshipType->getLocalizedName(null, false, $item->ofContact->gender->type ?? null);
+
             return $item->relationshipType->relationshipTypeGroup->name == 'friend';
         });
+        $friendRelationships->sortByCollator('relationshipTypeLocalized');
+
         // get work relationship type
         $workRelationships = $relationships->filter(function ($item) {
+            $item->relationshipTypeLocalized = $item->relationshipType->getLocalizedName(null, false, $item->ofContact->gender->type ?? null);
+
             return $item->relationshipType->relationshipTypeGroup->name == 'work';
         });
+        $workRelationships->sortByCollator('relationshipTypeLocalized');
+
         // reminders
         $reminders = $contact->activeReminders;
         $relevantRemindersFromRelatedContacts = $contact->getBirthdayRemindersAboutRelatedContacts();

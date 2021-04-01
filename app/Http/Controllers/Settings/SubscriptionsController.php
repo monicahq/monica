@@ -41,7 +41,6 @@ class SubscriptionsController extends Controller
             ]);
         }
 
-        $planId = $account->getSubscribedPlanId();
         try {
             $nextBillingDate = $account->getNextBillingDate();
         } catch (StripeException $e) {
@@ -55,7 +54,7 @@ class SubscriptionsController extends Controller
         }
 
         return view('settings.subscriptions.account', [
-            'planInformation' => InstanceHelper::getPlanInformationFromConfig($planId),
+            'planInformation' => InstanceHelper::getPlanInformationFromConfig($subscription->name),
             'nextBillingDate' => $nextBillingDate,
             'subscription' => $subscription,
             'hasInvoices' => $hasInvoices,

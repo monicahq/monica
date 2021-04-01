@@ -42,32 +42,42 @@
             <p>{{ trans('settings.storage_description') }}</p>
 
             <ul class="table">
-                @foreach($documents as $document)
-                  <li class="table-row">
-                    <div class="table-cell">
-                        {{ $document->created_at }}
-                    </div>
-                    <div class="table-cell">
-                        {{ $document->original_filename }} ({{ round($document->filesize / 1000) }} Kb)
-                    </div>
-                    <div class="table-cell">
-                        {{ $document->contact->name }}
-                    </div>
-                  </li>
-                @endforeach
-                @foreach($photos as $photo)
-                  <li class="table-row">
-                    <div class="table-cell">
-                        {{ $photo->created_at }}
-                    </div>
-                    <div class="table-cell">
-                        {{ $photo->original_filename }} ({{ round($photo->filesize / 1000) }} Kb)
-                    </div>
-                    <div class="table-cell">
-                        {{ $photo->contact() ? $photo->contact()->name : '' }}
-                    </div>
-                  </li>
-                @endforeach
+              <li class="table-row">
+                <div class="table-cell table-header">
+                  {{ trans('settings.logs_timestamp') }}
+                </div>
+                <div class="table-cell table-header">
+                  {{ trans('settings.logs_object') }}
+                </div>
+                <div class="table-cell table-header">
+                  {{ trans('settings.logs_size') }}
+                </div>
+                <div class="table-cell table-header">
+                  {{ trans('settings.logs_subject') }}
+                </div>
+              </li>
+              @foreach($elements as $element)
+                <li class="table-row">
+                  <div class="table-cell audit-log-cell">
+                    {{ \App\Helpers\DateHelper::getShortDateWithTime($element->created_at) }}
+                  </div>
+                  <div class="table-cell audit-log-cell">
+                    {{ $element->original_filename }}
+                  </div>
+                  <div class="table-cell audit-log-cell">
+                    {{ round($element->filesize / 1000) }}
+                  </div>
+                  <div class="table-cell audit-log-cell">
+                    @if ($element->contact())
+                      @if ($element instanceof \App\Models\Contact\Document)
+                        <a href="{{ route('people.show', ['contact' => $element->contact])}}">{{ $element->contact->name }}</a>
+                      @else
+                        <a href="{{ route('people.show', ['contact' => $element->contact()])}}">{{ $element->contact()->name }}</a>
+                      @endif
+                    @endif
+                  </div>
+                </li>
+              @endforeach
             </ul>
           </div>
         </div>

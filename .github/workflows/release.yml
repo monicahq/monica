@@ -58,7 +58,7 @@ jobs:
           path: CHANGELOG.md
 
   package:
-    needs: semantic-release
+    needs: semantic
     runs-on: ubuntu-latest
     name: Package release
     if: needs.semantic.outputs.new_release_published == 'true'
