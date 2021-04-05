@@ -4397,9 +4397,9 @@ extsprintf@^1.2.0:
   integrity sha1-4mifjzVvrWLMplo6kcXfX5VRaS8=
 
 faker@^5.1.0:
-  version "5.5.1"
-  resolved "https://registry.yarnpkg.com/faker/-/faker-5.5.1.tgz#30e4e8ba15c8c08d0494ba935f247d8e2469675d"
-  integrity sha512-JCFXcVesClQ6RlSWmBMFQmGDAZq6hjbJAFgKALx31uPaQC6p3SWT2ojaJGD8bMQri+8VNqDOkI2F8QC+ABvZng==
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/faker/-/faker-5.5.2.tgz#d6f99923fb757b26733a6d2396ddb448ac5bb446"
+  integrity sha512-6G3lzZXWjWfqTJDS9KhHFIislZMGdrzDqews3T14E/dsANVbs3YT4A3jSNDrbA/gbtmjLuKJx9DzcLucdXBqBw==
 
 fast-deep-equal@^3.1.1:
   version "3.1.3"
