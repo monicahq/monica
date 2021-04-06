@@ -23,7 +23,7 @@ return [
     'throttle' => 'Você realizou muitas tentativas de login. Por favor, tente novamente em :seconds segundos.',
     'not_authorized' => 'Você não está autorizado a executar esta ação',
     'signup_disabled' => 'Cadastro de novas contas desativado no momento',
-    'signup_error' => 'An error occured trying to register the user',
+    'signup_error' => 'Um erro ocorreu ao tentar registrar o usuário',
     'back_homepage' => 'Voltar à página inicial',
     'mfa_auth_otp' => 'Autenticar com dois fatores',
     'mfa_auth_webauthn' => 'Autenticar com uma chave de segurança (WebAuthn)',
@@ -72,7 +72,7 @@ return [
     'register_password_example' => 'Digite uma senha segura',
     'register_password_confirmation' => 'Confirmação de senha',
     'register_action' => 'Cadastrar',
-    'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url" hreflang=":hreflang">Privacy Policy</a> and <a href=":urlterm" hreflang=":hreflang">Terms of use</a>.',
+    'register_policy' => 'Registrar-se significa que você leu e concordou com nossas <a href=":url" hreflang=":hreflang">Políticas de Privacidade</a> e <a href=":urlterm" hreflang=":hreflang">Termos de uso</a>.',
     'register_invitation_email' => 'For security purposes, please indicate the email of the person who’ve invited you to join this account. This information is provided in the invitation email.',
 
     'confirmation_title' => 'Verify Your Email Address',
