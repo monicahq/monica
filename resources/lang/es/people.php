@@ -328,7 +328,7 @@ return [
     'gifts_view_comment' => 'Ver comentario',
     'gifts_mark_offered' => 'Marcar como dado',
     'gifts_update_success' => 'El regalo ha sido actualizado exitosamente',
-    'gifts_add_date' => 'Date (optional)',
+    'gifts_add_date' => 'Fecha (opcional)',
 
     // debts
     'debt_delete_confirmation' => '¿Está seguro de que desea eliminar esta deuda?',
@@ -501,8 +501,8 @@ return [
     'photo_current_profile_pic' => 'Foto de perfil actual',
     'photo_make_profile_pic' => 'Usar como foto de perfil',
     'photo_delete' => 'Eliminar foto',
-    'photo_next' => 'Next photo ❯',
-    'photo_previous' => '❮ Previous photo',
+    'photo_next' => 'Siguiente foto ❯',
+    'photo_previous' => '❮ Foto anterior',
 
     // Avatars
     'avatar_change_title' => 'Cambiar el avatar',
