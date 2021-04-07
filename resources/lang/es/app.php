@@ -308,7 +308,7 @@ return [
 
     'emotion_adoration' => 'Adoration',
     'emotion_affection' => 'Afecto',
-    'emotion_love' => 'Love',
+    'emotion_love' => 'Amor',
     'emotion_fondness' => 'Fondness',
     'emotion_liking' => 'Liking',
     'emotion_attraction' => 'Attraction',
@@ -405,9 +405,9 @@ return [
     'emotion_disappointment' => 'Disappointment',
     'emotion_displeasure' => 'Displeasure',
     'emotion_guilt' => 'Guilt',
-    'emotion_shame' => 'Shame',
+    'emotion_shame' => 'Vergüenza',
     'emotion_regret' => 'Regret',
-    'emotion_remorse' => 'Remorse',
+    'emotion_remorse' => 'Remordimiento',
     'emotion_alienation' => 'Alienation',
     'emotion_isolation' => 'Isolation',
     'emotion_neglect' => 'Neglect',
@@ -416,7 +416,7 @@ return [
     'emotion_homesickness' => 'Homesickness',
     'emotion_defeat' => 'Defeat',
     'emotion_dejection' => 'Dejection',
-    'emotion_insecurity' => 'Insecurity',
+    'emotion_insecurity' => 'Inseguridad',
     'emotion_embarrassment' => 'Embarrassment',
     'emotion_humiliation' => 'Humiliation',
     'emotion_insult' => 'Insult',
@@ -456,7 +456,7 @@ return [
     'weather_current_title' => 'Clima actual',
 
     // dav
-    'dav_contacts' => 'Contacts',
+    'dav_contacts' => 'Contactos',
     'dav_contacts_description' => 'Contactos de :name',
     'dav_birthdays' => 'Cumpleaños',
     'dav_birthdays_description' => 'Cumpleaños del contacto :name',
@@ -465,7 +465,7 @@ return [
 
     // contact list
     'contact_list_avatar' => 'Avatar',
-    'contact_list_name' => 'Contact',
-    'contact_list_description' => 'Description',
+    'contact_list_name' => 'Contacto',
+    'contact_list_description' => 'Descripción',
 
 ];
