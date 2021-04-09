@@ -220,6 +220,38 @@ class ContactTest extends FeatureTestCase
             'id' => $contact->id,
             'complete_name' => $contact->first_name.' '.$contact->last_name,
         ]);
+        $response->assertJsonCount(1, 'contacts');
+    }
+
+    public function test_user_can_list_contacts_with_tagname()
+    {
+        $user = $this->signIn();
+
+        factory(Contact::class, 10)->state('named')->create([
+            'account_id' => $user->account_id,
+        ]);
+        $contact = Contact::where('account_id', $user->account_id)
+                            ->inRandomOrder()
+                            ->first();
+
+        $tag = factory(Tag::class)->create([
+            'account_id' => $user->account_id,
+            'name' => 'c++',
+        ]);
+        $contact->tags()->sync([
+            $tag->id => [
+                'account_id' => $user->account_id,
+            ],
+        ]);
+
+        $response = $this->get('/people/list?tagnames[]='.rawurlencode($tag->name));
+
+        $response->assertSuccessful();
+        $response->assertJsonFragment([
+            'id' => $contact->id,
+            'complete_name' => $contact->first_name.' '.$contact->last_name,
+        ]);
+        $response->assertJsonCount(1, 'contacts');
     }
 
     public function test_user_can_see_contacts()

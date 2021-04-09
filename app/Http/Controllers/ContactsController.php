@@ -88,11 +88,13 @@ class ContactsController extends Controller
             $nbArchived = $contacts->count();
         }
 
+        $tagsCount = Tag::contactsCount();
         $tags = null;
         $url = '';
         $count = 1;
 
         if ($request->input('tag1')) {
+            // DEPRECATED. Please use tagnames[] (see below)
 
             // get contacts with selected tags
             $tags = collect();
@@ -120,6 +122,22 @@ class ContactsController extends Controller
             }
         } elseif ($request->input('no_tag')) {
             $contacts = $contacts->tags('NONE');
+        } elseif ($request->input('tagnames')) {
+            $tagnames = $request->input('tagnames');
+
+            $tags = $tagsCount->filter(function ($t) use ($tagnames) {
+                return in_array($t->name, $tagnames);
+            });
+
+            $url .= $tags->map(function ($t) {
+                return 'tagnames[]='.rawurlencode($t->name).'&';
+            })->join('');
+
+            if ($tags->count() === 0) {
+                return redirect()->route('people.index');
+            } else {
+                $contacts = $contacts->tags($tags);
+            }
         }
 
         $contactsCount = (clone $contacts)->alive()->count();
@@ -140,7 +158,7 @@ class ContactsController extends Controller
             ->withHasArchived($nbArchived > 0)
             ->withArchivedContacts($nbArchived)
             ->withTags($tags)
-            ->withTagsCount(Tag::contactsCount())
+            ->withTagsCount($tagsCount)
             ->withUrl($url)
             ->withTagCount($count)
             ->withTagLess($request->input('no_tag') ?? false);
@@ -693,7 +711,6 @@ class ContactsController extends Controller
         }
 
         $tags = null;
-        $url = '';
         $count = 1;
 
         $contacts = $user->account->contacts()->real();
@@ -714,6 +731,7 @@ class ContactsController extends Controller
             // get tag less contacts
             $contacts = $contacts->tags('NONE');
         } elseif ($request->input('tag1')) {
+            // DEPRECATED. Please use tagnames[] (see below)
             // get contacts with selected tags
             $tags = collect();
 
@@ -727,10 +745,16 @@ class ContactsController extends Controller
                     $tags = $tags->concat($tag);
                 }
 
-                $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
-
                 $count++;
             }
+            if ($tags->count() > 0) {
+                $contacts = $contacts->tags($tags);
+            }
+        } elseif ($request->input('tagnames')) {
+            $tags = Tag::where(['account_id' => $accountId])
+                    ->whereIn('name', $request->input('tagnames'))
+                    ->get();
+
             if ($tags->count() > 0) {
                 $contacts = $contacts->tags($tags);
             }
