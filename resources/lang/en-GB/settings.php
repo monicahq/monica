@@ -337,7 +337,7 @@ return [
     'api_authorized_clients' => 'List of authorized clients',
     'api_authorized_clients_desc' => 'This section lists all the clients you’ve authorised to access your application data. You can revoke this authorisation at any time.',
     'api_authorized_clients_title' => 'Authorized Applications',
-    'api_authorized_clients_none' => 'There are no authorized clients yet.',
+    'api_authorized_clients_none' => 'There are no authorised clients yet.',
     'api_authorized_clients_name' => 'Name',
     'api_authorized_clients_scopes' => 'Scopes',
 
@@ -409,7 +409,7 @@ return [
     'personalization_activity_type_category_title' => 'Activity type categories',
     'personalization_activity_type_category_add' => 'Add a new activity type category',
     'personalization_activity_type_category_table_name' => 'Name',
-    'personalization_activity_type_category_description' => 'An activity with one of your contacts can have a type and a category type. Your account comes with a set of predefined category types by default, but you can customize these here.',
+    'personalization_activity_type_category_description' => 'An activity with one of your contacts can have a type and a category type. Your account comes with a set of predefined category types by default, but you can customise these here.',
     'personalization_activity_type_category_table_actions' => 'Actions',
     'personalization_activity_type_category_modal_add' => 'Add a new activity type category',
     'personalization_activity_type_category_modal_edit' => 'Edit an activity type category',
@@ -427,7 +427,7 @@ return [
 
     'personalization_life_event_category_title' => 'Life event categories',
     'personalization_live_event_category_table_name' => 'Name',
-    'personalization_life_event_category_description' => 'A life event can have a type and a category. Your account comes with a set of predefined categories and types by default, but you can customize life event types here.',
+    'personalization_life_event_category_description' => 'A life event can have a type and a category. Your account comes with a set of predefined categories and types by default, but you can customise life event types here.',
     'personalization_live_event_category_table_actions' => 'Actions',
     'personalization_life_event_type_add_button' => 'Add a new life event type',
     'personalization_life_event_type_modal_add' => 'Add a new life event type',
