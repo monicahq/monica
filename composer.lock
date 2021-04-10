@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b60d6321d8a526550c576a780689514",
+    "content-hash": "06b66604e0f8b8295052c003e083dfd9",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -302,6 +302,57 @@
                 "source": "https://github.com/beberlei/assert/tree/v3.3.0"
             },
             "time": "2020-11-13T20:02:54+00:00"
+        },
+        {
+            "name": "bjeavons/zxcvbn-php",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bjeavons/zxcvbn-php.git",
+                "reference": "13b505d53c6e72a8fce7f42e3392f13642bbf65e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bjeavons/zxcvbn-php/zipball/13b505d53c6e72a8fce7f42e3392f13642bbf65e",
+                "reference": "13b505d53c6e72a8fce7f42e3392f13642bbf65e",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 | ^8.0",
+                "symfony/polyfill-mbstring": ">=1.3.1"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "*",
+                "phpunit/phpunit": "^8.5",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ZxcvbnPhp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "See contributors",
+                    "homepage": "https://github.com/bjeavons/zxcvbn-php"
+                }
+            ],
+            "description": "Realistic password strength estimation PHP library based on Zxcvbn JS",
+            "homepage": "https://github.com/bjeavons/zxcvbn-php",
+            "keywords": [
+                "password",
+                "zxcvbn"
+            ],
+            "support": {
+                "issues": "https://github.com/bjeavons/zxcvbn-php/issues",
+                "source": "https://github.com/bjeavons/zxcvbn-php/tree/1.2.0"
+            },
+            "time": "2020-11-30T16:47:23+00:00"
         },
         {
             "name": "brick/math",

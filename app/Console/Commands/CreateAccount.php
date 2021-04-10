@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use Safe;
+use App\Rules\StrongPassword;
 use App\Models\Account\Account;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
@@ -29,10 +31,24 @@ class CreateAccount extends Command
     protected $description = 'Create a new account';
 
     /**
+     * @var StrongPassword
+     */
+    public $strongPassword;
+
+    /**
      * Missing argument errors. Exposed for testing.
      */
     const ERROR_MISSING_EMAIL = '! You must specify an email';
     const ERROR_MISSING_PASSWORD = '! You must specify a password';
+
+    /**
+     * @param StrongPassword $strongPassword
+     */
+    public function __construct(StrongPassword $strongPassword)
+    {
+        parent::__construct();
+        $this->strongPassword = $strongPassword;
+    }
 
     /**
      * Execute the console command.
@@ -49,6 +65,12 @@ class CreateAccount extends Command
         $password = $this->option('password');
         if (empty($password)) {
             $this->error($this::ERROR_MISSING_PASSWORD);
+        }
+
+        if (! $this->strongPassword->passes('password', $password)) {
+            $this->error(Safe\sprintf('! %s', $this->strongPassword->message()));
+
+            return;
         }
 
         $firstName = $this->option('firstname') ?? 'John';

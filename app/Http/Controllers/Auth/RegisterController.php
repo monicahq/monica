@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
+use App\Rules\StrongPassword;
 use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Helpers\InstanceHelper;
@@ -75,7 +76,16 @@ class RegisterController extends Controller
             'last_name' => 'required|max:255',
             'first_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password' => [
+                'required',
+                'min:6',
+                'confirmed',
+                new StrongPassword([
+                    $data['last_name'],
+                    $data['first_name'],
+                    $data['email'],
+                ]),
+            ],
             'policy' => 'required',
         ]);
     }
