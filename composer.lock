@@ -2763,16 +2763,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v12.10.0",
+            "version": "v12.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier-stripe.git",
-                "reference": "4a1c61cca1db26487946b87bc53c4c735cbc840d"
+                "reference": "01613c324f8adcbd2f56484001f44800a6f2c023"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier-stripe/zipball/4a1c61cca1db26487946b87bc53c4c735cbc840d",
-                "reference": "4a1c61cca1db26487946b87bc53c4c735cbc840d",
+                "url": "https://api.github.com/repos/laravel/cashier-stripe/zipball/01613c324f8adcbd2f56484001f44800a6f2c023",
+                "reference": "01613c324f8adcbd2f56484001f44800a6f2c023",
                 "shasum": ""
             },
             "require": {
@@ -2824,7 +2824,7 @@
             "authors": [
                 {
                     "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
+                    "email": "taylor@laravel.com"
                 }
             ],
             "description": "Laravel Cashier provides an expressive, fluent interface to Stripe's subscription billing services.",
@@ -2837,7 +2837,7 @@
                 "issues": "https://github.com/laravel/cashier/issues",
                 "source": "https://github.com/laravel/cashier"
             },
-            "time": "2021-03-16T15:56:57+00:00"
+            "time": "2021-03-30T21:19:50+00:00"
         },
         {
             "name": "laravel/framework",
@@ -8397,16 +8397,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v7.75.0",
+            "version": "v7.76.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "d377a667cd789b99ccab768441a5a2160cc4ea80"
+                "reference": "47e66d4186712be33c593fe820dccf270a04d5d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/d377a667cd789b99ccab768441a5a2160cc4ea80",
-                "reference": "d377a667cd789b99ccab768441a5a2160cc4ea80",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/47e66d4186712be33c593fe820dccf270a04d5d6",
+                "reference": "47e66d4186712be33c593fe820dccf270a04d5d6",
                 "shasum": ""
             },
             "require": {
@@ -8452,9 +8452,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stripe/stripe-php/issues",
-                "source": "https://github.com/stripe/stripe-php/tree/v7.75.0"
+                "source": "https://github.com/stripe/stripe-php/tree/v7.76.0"
             },
-            "time": "2021-02-22T14:31:21+00:00"
+            "time": "2021-03-22T16:50:21+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
