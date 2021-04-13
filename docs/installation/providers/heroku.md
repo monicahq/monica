@@ -125,4 +125,4 @@ You can update your Monica instance to the latest version by cloning the reposit
 
 Clone the Monica repository to your local environment by `git clone https://github.com/monicahq/monica`, and add heroku git repository by `heroku git:remote -a (heroku app name)`. Then, push to heroku by `git push heroku master`. Heroku will build and update the repository, automatically.
 
-See more information about updating Monica (including Heroku-spcific things)[here](https://github.com/monicahq/monica/blob/master/docs/installation/update.md).
+See more information about updating Monica (including Heroku-spcific things) [here](https://github.com/monicahq/monica/blob/master/docs/installation/update.md).
