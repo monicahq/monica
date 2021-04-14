@@ -41,7 +41,7 @@
 * Allow customization of life event types
 
 ### Enhancements:
-
+* Adds enforceable password strength requirements to account creation
 * Use Unknown as default gender
 * Better padding and text about Me as a contact on Settings page
 

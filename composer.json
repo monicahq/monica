@@ -18,6 +18,7 @@
         "ext-redis": "*",
         "asbiin/laravel-webauthn": "^0",
         "bacon/bacon-qr-code": "^2.0",
+        "bjeavons/zxcvbn-php": "^1.2",
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "^2.9.3",
         "erusev/parsedown": "^1.7",

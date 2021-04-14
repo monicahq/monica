@@ -22,8 +22,8 @@ class RegisterTest extends FeatureTestCase
             'email' => 'john.mike@doe.com',
             'first_name' => 'john',
             'last_name' => 'doe',
-            'password' => 'admin0',
-            'password_confirmation' => 'admin0',
+            'password' => 'password-with-increased-complexity',
+            'password_confirmation' => 'password-with-increased-complexity',
             'policy' => 'true',
             'lang' => 'en',
         ];
