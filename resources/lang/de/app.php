@@ -459,7 +459,7 @@ return [
     'dav_contacts' => 'Kontakte',
     'dav_contacts_description' => 'Kontakte von :name',
     'dav_birthdays' => 'Geburtstage',
-    'dav_birthdays_description' => ':name’s contact’s birthdays',
+    'dav_birthdays_description' => 'Geburtstage der Kontakte von :name',
     'dav_tasks' => 'Aufgaben',
     'dav_tasks_description' => ':names Aufgaben',
 
