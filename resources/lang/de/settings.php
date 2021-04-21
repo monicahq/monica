@@ -14,7 +14,7 @@ return [
     'sidebar_settings_users' => 'Benutzer',
     'sidebar_settings_subscriptions' => 'Abonnement',
     'sidebar_settings_import' => 'Daten importieren',
-    'sidebar_settings_tags' => 'Tag management',
+    'sidebar_settings_tags' => 'Tag-Verwaltung',
     'sidebar_settings_api' => 'Schnittstelle (API)',
     'sidebar_settings_dav' => 'DAV-Ressourcen',
     'sidebar_settings_security' => 'Sicherheit',
