@@ -501,8 +501,8 @@ return [
     'photo_current_profile_pic' => 'Aktuelles Profilbild',
     'photo_make_profile_pic' => 'Zu Profilbild machen',
     'photo_delete' => 'Bild löschen',
-    'photo_next' => 'Nächstes Foto ❯',
-    'photo_previous' => '❮ Previous photo',
+    'photo_next' => 'Nächstes Bild ❯',
+    'photo_previous' => '❮ Vorheriges Bild',
 
     // Avatars
     'avatar_change_title' => 'Avatar ändern',
@@ -524,7 +524,7 @@ return [
     'auditlogs_author' => 'Nach :name am :date',
 
     // contact field label
-    'contact_field_label_home' => 'Home',
+    'contact_field_label_home' => 'Zuhause',
     'contact_field_label_work' => 'Arbeit',
     'contact_field_label_cell' => 'Mobil',
     'contact_field_label_fax' => 'Fax',
