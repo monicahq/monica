@@ -510,14 +510,14 @@ return [
     'dav_caldav_tasks_export' => 'Alle Aufgaben in einer Datei exportieren',
 
     'archive_title' => 'Alle Kontakte in deinem Konto archivieren',
-    'archive_desc' => 'This will archive all of the contacts in your account.',
-    'archive_cta' => 'Archive all of your contacts',
+    'archive_desc' => 'Dies wird alle Kontakte in deinem Konto archivieren.',
+    'archive_cta' => 'Alle Kontakte archivieren',
 
-    'logs_title' => 'Everything that has happened to this account',
-    'logs_actor' => 'Actor',
-    'logs_timestamp' => 'Timestamp',
-    'logs_description' => 'Description',
-    'logs_subject' => 'Subject',
-    'logs_size' => 'Size (Kb)',
-    'logs_object' => 'Object',
+    'logs_title' => 'Alles, was mit diesem Konto passiert ist',
+    'logs_actor' => 'Benutzer',
+    'logs_timestamp' => 'Zeitpunkt',
+    'logs_description' => 'Beschreibung',
+    'logs_subject' => 'Betroffener Kontakt',
+    'logs_size' => 'Größe (KB)',
+    'logs_object' => 'Objekt',
 ];
