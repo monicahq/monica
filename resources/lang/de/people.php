@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Keine Ergebnisse gefunden',
     'people_search_next' => 'Nächste',
     'people_search_prev' => 'Vorherige',
-    'people_search_rows_per_page' => 'Rows per page',
+    'people_search_rows_per_page' => 'Einträge pro Seite',
     'people_search_of' => 'von',
     'people_search_page' => 'Seite',
     'people_search_all' => 'Alle',
@@ -328,7 +328,7 @@ return [
     'gifts_view_comment' => 'Kommentar anzeigen',
     'gifts_mark_offered' => 'Als angeboten markieren',
     'gifts_update_success' => 'Das Geschenk wurde erfolgreich aktualisiert',
-    'gifts_add_date' => 'Date (optional)',
+    'gifts_add_date' => 'Datum (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Möchtest du die Schulden wirklich löschen?',
@@ -437,7 +437,7 @@ return [
     'life_event_date_it_happened' => 'Tag an dem es passierte',
     'life_event_category_work_education' => 'Arbeit & Ausbildung',
     'life_event_category_family_relationships' => 'Familie & Beziehungen',
-    'life_event_category_home_living' => 'Home & living',
+    'life_event_category_home_living' => 'Zuhause & Wohnen',
     'life_event_category_health_wellness' => 'Gesundheit & Wellness',
     'life_event_category_travel_experiences' => 'Reisen & Erfahrungen',
     'life_event_sentence_new_job' => 'Neuen Arbeitsplatz angetreten',
@@ -501,7 +501,7 @@ return [
     'photo_current_profile_pic' => 'Aktuelles Profilbild',
     'photo_make_profile_pic' => 'Zu Profilbild machen',
     'photo_delete' => 'Bild löschen',
-    'photo_next' => 'Next photo ❯',
+    'photo_next' => 'Nächstes Foto ❯',
     'photo_previous' => '❮ Previous photo',
 
     // Avatars
