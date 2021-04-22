@@ -107,7 +107,6 @@ $config = [
 
 ];
 
-
 // on fortrabbit: construct credentials from App secrets
 if (env('APP_SECRETS')) {
     $secrets = json_decode(file_get_contents(env('APP_SECRETS')), true);
@@ -118,7 +117,7 @@ if (env('APP_SECRETS')) {
             'weight' => 100,
         ]];
         if ($secrets['MEMCACHE']['COUNT'] > 1) {
-            $servers []= [
+            $servers [] = [
                 'host' => $secrets['MEMCACHE']['HOST2'],
                 'port' => $secrets['MEMCACHE']['PORT2'],
                 'weight' => 100,
@@ -131,27 +130,27 @@ if (env('APP_SECRETS')) {
 if (extension_loaded('memcached')) {
     $timeout_ms = 50;
     $options = [
-      // Assure that dead servers are properly removed and ...
-      \Memcached::OPT_REMOVE_FAILED_SERVERS => true,
+        // Assure that dead servers are properly removed and ...
+        \Memcached::OPT_REMOVE_FAILED_SERVERS => true,
 
-      // ... retried after a short while (here: 2 seconds)
-      \Memcached::OPT_RETRY_TIMEOUT         => 2,
+        // ... retried after a short while (here: 2 seconds)
+        \Memcached::OPT_RETRY_TIMEOUT         => 2,
 
-      // KETAMA must be enabled so that replication can be used
-      \Memcached::OPT_LIBKETAMA_COMPATIBLE  => true,
+        // KETAMA must be enabled so that replication can be used
+        \Memcached::OPT_LIBKETAMA_COMPATIBLE  => true,
 
-      // Replicate the data, write it to both memcached servers
-      \Memcached::OPT_NUMBER_OF_REPLICAS    => 1,
+        // Replicate the data, write it to both memcached servers
+        \Memcached::OPT_NUMBER_OF_REPLICAS    => 1,
 
-      // Those values assure that a dead (due to increased latency or
-      // really unresponsive) memcached server is dropped fast
-      \Memcached::OPT_POLL_TIMEOUT          => $timeout_ms,        // milliseconds
-      \Memcached::OPT_SEND_TIMEOUT          => $timeout_ms * 1000, // microseconds
-      \Memcached::OPT_RECV_TIMEOUT          => $timeout_ms * 1000, // microseconds
-      \Memcached::OPT_CONNECT_TIMEOUT       => $timeout_ms,        // milliseconds
+        // Those values assure that a dead (due to increased latency or
+        // really unresponsive) memcached server is dropped fast
+        \Memcached::OPT_POLL_TIMEOUT          => $timeout_ms,        // milliseconds
+        \Memcached::OPT_SEND_TIMEOUT          => $timeout_ms * 1000, // microseconds
+        \Memcached::OPT_RECV_TIMEOUT          => $timeout_ms * 1000, // microseconds
+        \Memcached::OPT_CONNECT_TIMEOUT       => $timeout_ms,        // milliseconds
 
-      // Further performance tuning
-      \Memcached::OPT_NO_BLOCK              => true,
+        // Further performance tuning
+        \Memcached::OPT_NO_BLOCK              => true,
     ];
     Arr::set($config, 'stores.memcached.options', $options);
 }
