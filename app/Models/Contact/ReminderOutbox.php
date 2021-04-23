@@ -3,9 +3,7 @@
 namespace App\Models\Contact;
 
 use App\Models\User\User;
-use App\Helpers\MailHelper;
 use App\Models\Account\Account;
-use App\Interfaces\MailNotification;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
 
