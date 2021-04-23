@@ -41,6 +41,9 @@ mix.js('resources/js/app.js', 'public/js')
   // global commands
   .purgeCss(purgeCssOptions)
   .extract()
-  .setResourceRoot('../')
-  .sourceMaps(false)
-  .version();
+  .sourceMaps(process.env.MIX_PROD_SOURCE_MAPS || false, 'eval-cheap-module-source-map', 'source-map')
+  .setResourceRoot('../');
+
+if (mix.inProduction()) {
+  mix.version();
+}

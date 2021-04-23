@@ -7,16 +7,22 @@ source $SELF_PATH/realpath.sh
 ROOT=$(realpath $SELF_PATH/../..)
 
 version=$1
-if [ "$version" == "" ]; then
+if [ -z "$version" ]; then
   echo "Version parameter is mandatory" >&2
   exit 1
+fi
+
+commit=$2
+if [ -z "$commit" ]; then
+  commit=$(git --git-dir $ROOT/.git log --pretty="%H" -n1 HEAD)
 fi
 
 set -v
 
 echo -n "$version" | tee $ROOT/config/.version
-git log --pretty="%h" -n1 HEAD | tee $ROOT/config/.release
-git log --pretty="%H" -n1 HEAD | tee $ROOT/config/.commit
+echo -n $commit | tee $ROOT/config/.commit
+echo -n "$version" | tee $ROOT/config/.release
+
 
 # BUILD
 composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --no-dev --working-dir=$ROOT

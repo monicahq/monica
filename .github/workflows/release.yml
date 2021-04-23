@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  php-version: 7.4
+  php-version: '8.0'
   node-version: 15
 
 
@@ -113,7 +113,7 @@ jobs:
 
       - name: Create package
         id: package
-        run: scripts/ci/package.sh 'v${{ needs.semantic.outputs.new_release_version }}'
+        run: scripts/ci/package.sh 'v${{ needs.semantic.outputs.new_release_version }}' $GITHUB_SHA
 
       - name: Import key
         run: echo -e "$GPG_KEY" | gpg --batch --yes --import -
