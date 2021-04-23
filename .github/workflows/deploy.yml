@@ -105,7 +105,7 @@ jobs:
 
       - name: Get version or revision
         id: version
-        run: echo "::set-output name=version::$(git describe --abbrev=0 --tags --exact-match $GITHUB_SHA 2>/dev/null || echo $GITHUB_SHA | cut -c-8)"
+        run: echo "::set-output name=version::$(git describe --abbrev=0 --tags --exact-match $GITHUB_SHA 2>/dev/null || git log --pretty="%h" -n1 $GITHUB_SHA)"
 
       - name: Prepare environment
         run: |

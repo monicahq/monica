@@ -15,14 +15,14 @@ fi
 commit=$2
 if [ -z "$commit" ]; then
   commit=$(git --git-dir $ROOT/.git log --pretty="%H" -n1 HEAD)
+  release=$(git --git-dir $ROOT/.git log --pretty="%h" -n1 HEAD)
 fi
 
 set -v
 
 echo -n "$version" | tee $ROOT/config/.version
 echo -n $commit | tee $ROOT/config/.commit
-echo -n "$version" | tee $ROOT/config/.release
-
+echo -n ${release:-$version} | tee $ROOT/config/.release
 
 # BUILD
 composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --no-dev --working-dir=$ROOT
