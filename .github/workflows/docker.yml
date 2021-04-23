@@ -8,9 +8,10 @@ on:
 jobs:
   docker-run:
     runs-on: ubuntu-latest
+    name: Docker build master
+
     strategy:
       fail-fast: false
-    name: Docker build master
 
     steps:
       - name: Checkout sources
