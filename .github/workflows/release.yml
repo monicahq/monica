@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  php-version: 7.4
+  php-version: '8.0'
   node-version: 15
 
 
@@ -111,31 +111,21 @@ jobs:
             ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
             ${{ runner.os }}-yarn-
 
-      - name: Create package
-        id: package
-        run: scripts/ci/package.sh 'v${{ needs.semantic.outputs.new_release_version }}'
-
       - name: Import key
         run: echo -e "$GPG_KEY" | gpg --batch --yes --import -
         env:
           GPG_KEY: ${{ secrets.GPG_KEY }}
 
-      - name: Sign package
-        run: |
-          sha512sum '${{ steps.package.outputs.package }}' > '${{ steps.package.outputs.package }}.sha512'
-          sha512sum '${{ steps.package.outputs.assets }}' > '${{ steps.package.outputs.assets }}.sha512'
-          for f in '${{ steps.package.outputs.package }}{,.sha512}' '${{ steps.package.outputs.assets }}{,.sha512}'; do
-            echo "Signing '$f'..."
-            echo "$GPG_PASSPHRASE" | gpg --batch --yes --passphrase-fd 0 --pinentry-mode=loopback --local-user $GPG_FINGERPRINT --sign --armor --detach-sig --output "$f.asc" "$f"
-            echo -e "\nSigned with key fingerprint $GPG_FINGERPRINT" >> "$f.asc"
-          done
+      - name: Create package
+        id: package
+        run: scripts/ci/package.sh 'v${{ needs.semantic.outputs.new_release_version }}' $GITHUB_SHA
         env:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           GPG_FINGERPRINT: ${{ secrets.GPG_FINGERPRINT }}
 
       - name: Publish package
         run: |
-          for f in '${{ steps.package.outputs.package }}{,.asc,.sha512,.sha512.asc}' '${{ steps.package.outputs.assets }}{,.asc,.sha512,.sha512.asc}'; do
+          for f in '{${{ steps.package.outputs.package }},${{ steps.package.outputs.assets }}}{,.asc,.sha512,.sha512.asc}'; do
             echo "Uploading release file '$f'..."
             gh release upload 'v${{ needs.semantic.outputs.new_release_version }}' "$f" --clobber
           done
@@ -147,6 +137,7 @@ jobs:
         with:
           name: package
           path: ${{ steps.package.outputs.package }}
+
       - name: Store assets
         uses: actions/upload-artifact@v2
         with:

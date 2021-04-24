@@ -16,7 +16,7 @@
     "e2e-gui": "cypress open",
     "cy:verify": "cypress verify",
     "cy:version": "cypress version",
-    "inst": "yarn install --ignore-engines --frozen-lockfile",
+    "inst": "yarn install --frozen-lockfile",
     "lint": "eslint --ext .js,.vue *.js .*.js resources/js/",
     "lint:cypress": "eslint --ext .js tests/cypress/",
     "lint:all": "yarn lint & yarn lint:cypress",

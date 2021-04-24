@@ -50,7 +50,7 @@ mix.js('resources/js/app.js', 'public/js').vue()
   // global commands
   .purgeCss(purgeCssOptions)
   .extract()
-  .sourceMaps(false, 'eval-cheap-module-source-map', 'source-map')
+  .sourceMaps(process.env.MIX_PROD_SOURCE_MAPS || false, 'eval-cheap-module-source-map', 'source-map')
   .setResourceRoot('../');
 
 if (mix.inProduction()) {
