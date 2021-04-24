@@ -590,7 +590,7 @@ class ContactsController extends Controller
      */
     public function vCard(Contact $contact)
     {
-        if (config('app.debug')) {
+        if (config('app.debug') && class_exists('\Barryvdh\Debugbar\Facade')) {
             Debugbar::disable();
         }
 
