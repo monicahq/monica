@@ -595,7 +595,7 @@ class Contact extends Model
         return $query->orWhereHas('notes', function ($query) use ($accountId, $needle) {
             return $query->where([
                 ['account_id', $accountId],
-                ['body', 'like', "%$needle%"]
+                ['body', 'like', "%$needle%"],
             ]);
         });
     }
