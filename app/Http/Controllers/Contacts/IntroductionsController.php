@@ -24,6 +24,8 @@ class IntroductionsController extends Controller
         $contacts = $contact->siblingContacts()
                         ->real()
                         ->active()
+                        ->orderBy('first_name')
+                        ->orderBy('last_name')
                         ->get();
 
         return view('people.introductions.edit')
