@@ -118,7 +118,8 @@
           :id="'email'"
           :input-type="'text'"
           :required="false"
-          :title="'{{ trans('people.people_add_email') }}'">
+          :title="'{{ trans('people.people_add_email') }}'"
+          :value="'{{ $email }}'">
         </form-input>
       </div>
 
