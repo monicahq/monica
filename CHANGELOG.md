@@ -104,6 +104,7 @@
 * Add an artisan command to create an account
 * Add the notion of AddressBooks
 * Allow customization of life event types
+* Order introductions contact list by first and last name
 
 ### Enhancements:
 
