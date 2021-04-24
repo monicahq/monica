@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <div>
     <notifications group="mfa" position="bottom right" :duration="5000" width="400" />
