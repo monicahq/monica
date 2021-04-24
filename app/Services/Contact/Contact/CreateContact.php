@@ -9,9 +9,9 @@ use App\Services\BaseService;
 use App\Helpers\AccountHelper;
 use function Safe\json_encode;
 use App\Models\Account\Account;
-use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\Contact;
 use App\Jobs\AuditLog\LogAccountAudit;
+use App\Models\Contact\ContactFieldType;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Jobs\Avatars\GetAvatarsFromInternet;
 use App\Services\Contact\ContactField\CreateContactField;
@@ -166,7 +166,7 @@ class CreateContact extends BaseService
     }
 
     /**
-     * Adds a contact field containing the email address
+     * Adds a contact field containing the email address.
      *
      * @param array $data
      * @param Contact $contact
@@ -179,7 +179,7 @@ class CreateContact extends BaseService
             'type' => ContactFieldType::EMAIL,
         ])->first();
 
-        if(is_null($contactFieldType) || is_null($data['email'])) {
+        if (is_null($contactFieldType) || is_null($data['email'])) {
             return;
         }
 
@@ -188,7 +188,7 @@ class CreateContact extends BaseService
                     'account_id' => $data['account_id'],
                     'contact_id' => $contact->id,
                     'contact_field_type_id' => $contactFieldType->id,
-                    'data' => $data['email']
+                    'data' => $data['email'],
                 ]
         );
     }

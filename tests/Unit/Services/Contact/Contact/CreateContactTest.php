@@ -9,8 +9,8 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Queue;
 use App\Jobs\AuditLog\LogAccountAudit;
-use Illuminate\Validation\ValidationException;
 use App\Models\Contact\ContactFieldType;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
