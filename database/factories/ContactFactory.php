@@ -113,23 +113,6 @@ $factory->define(App\Models\Contact\ReminderOutbox::class, function (Faker\Gener
     ];
 });
 
-$factory->define(App\Models\Contact\ReminderSent::class, function (Faker\Generator $faker) {
-    return [
-        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
-        'user_id' => function (array $data) {
-            return factory(App\Models\User\User::class)->create([
-                'account_id' => $data['account_id'],
-            ])->id;
-        },
-        'reminder_id' => function (array $data) {
-            return factory(App\Models\Contact\Reminder::class)->create([
-                'account_id' => $data['account_id'],
-            ])->id;
-        },
-        'planned_date' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
-    ];
-});
-
 $factory->define(App\Models\Contact\Gift::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
