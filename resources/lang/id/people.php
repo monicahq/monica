@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => 'at :company',
     'work_add_cta' => 'Update work information',
-    'work_edit_success' => 'Work information have been updated with success',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Update :name’s job information',
     'work_edit_job' => 'Job title (optional)',
     'work_edit_company' => 'Company (optional)',
