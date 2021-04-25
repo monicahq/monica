@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Ingen arbejdsinformation defineret',
     'information_work_at' => 'hos :company',
     'work_add_cta' => 'Opdatér arbejdsoplysninger',
-    'work_edit_success' => 'Arbejdsinformationen er blevet opdateret med succes',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Opdater :names\' jobinformation',
     'work_edit_job' => 'Jobtitel (valgfri)',
     'work_edit_company' => 'Virksomhed (valgfri)',
