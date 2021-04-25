@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'لا توجد معلومات العمل',
     'information_work_at' => 'لدى :company',
     'work_add_cta' => 'تحديث معلومات العمل',
-    'work_edit_success' => 'تم تحديث معلومات العمل بنجاح',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'تحيث معلومات العمل الخاصة بـ :name',
     'work_edit_job' => 'المسمى الوظيفي (اختياري)',
     'work_edit_company' => 'الشركة (اختياري)',
