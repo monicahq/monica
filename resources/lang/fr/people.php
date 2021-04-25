@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Aucune information professionnelle définie',
     'information_work_at' => 'chez :company',
     'work_add_cta' => 'Mettre à jour les informations professionnelles',
-    'work_edit_success' => 'Les informations professionnelles ont été mises à jour avec succès',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Mettre à jour les informations professionnelles de :name',
     'work_edit_job' => 'Poste (optionnel)',
     'work_edit_company' => 'Entreprise (optionnel)',
