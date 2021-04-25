@@ -341,7 +341,7 @@ return [
     'api_authorized_clients_name' => 'Name',
     'api_authorized_clients_scopes' => 'Geltungsbereiche',
 
-    'personalization_tab_title' => 'Personalisiere deine Konto',
+    'personalization_tab_title' => 'Personalisiere dein Konto',
 
     'personalization_title' => 'Hier findest du verschiedene Einstellungsoptionen für deinen Account. Diese Funktionen sind eher für erfahrene Nutzer gedacht, die maximale Kontrolle über Monica möchten.',
     'personalization_contact_field_type_title' => 'Kontaktfelder',
