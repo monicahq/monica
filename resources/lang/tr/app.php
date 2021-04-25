@@ -31,7 +31,7 @@ return [
     'new' => 'yeni',
     'unknown' => 'Bilmiyorum',
     'load_more' => 'Daha fazla',
-    'loading' => 'Yükleniyor...',
+    'loading' => 'Yükleniyor…',
     'with' => 'ile',
     'today' => 'bugün',
     'yesterday' => 'dün',
@@ -44,11 +44,11 @@ return [
     'retry' => 'Tekrar dene',
     'filter' => 'Listeyi filtrele',
     'go_back' => 'Geri dön',
-    'file_selected' => '{count} dosya seçildi...',
+    'file_selected' => 'Bir dosya seçildi... {count} dosya seçildi…',
 
     'application_title' => 'Monica - kişisel ilişki yöneticisi',
     'application_description' => 'Monica sevdiklerinizle, arkadaşlarınızla ve ailenizle etkileşimlerinizi yönetebileceğiniz bir araçtır.',
-    'application_og_title' => 'Sevdiklerinizle daha iyi ilişkilere sahip olun. Arkadaşlarınız ve aileniz için ücretsiz Online CRM.',
+    'application_og_title' => 'Sevdiklerinizle daha iyi ilişkiler kurun. Arkadaşlarınız ve aileniz için ücretsiz Online CRM.',
 
     'markdown_description' => 'Metninizi güzel bir şekilde biçimlendirmek mi istiyorsunuz? Kalın, italik, listeler ve daha fazlasını eklemek için Markdown desteğimiz bulunmaktadır.',
     'markdown_link' => 'Dokümantasyonu oku',
@@ -64,14 +64,14 @@ return [
     'main_nav_activities' => 'Aktiviteler',
     'main_nav_tasks' => 'Görevler',
 
-    'footer_remarks' => 'Herhangi bir notunuz var mı?',
-    'footer_send_email' => 'Bana bir e-posta gönder',
+    'footer_remarks' => 'Yorumlar?',
+    'footer_send_email' => 'Bize e-posta gönderin',
     'footer_privacy' => 'Gizlilik politikası',
     'footer_release' => 'Sürüm notları',
     'footer_newsletter' => 'Haber Bülteni',
     'footer_source_code' => 'Katkıda bulun',
     'footer_version' => 'Sürüm: :version',
-    'footer_new_version' => 'Yeni sürüm mevcut',
+    'footer_new_version' => 'Monica\'nın yeni sürümü mevcut',
 
     'footer_modal_version_whats_new' => 'Neler yeni',
     'footer_modal_version_release_away' => 'Mevcut olan son sürümden 1 sürüm aşağıdasın. Uygulamanı güncellemelisin.|Mevcut olan son sürümden :number sürüm aşağıdasın. Uygulamanı güncellemelisin.',
@@ -464,8 +464,8 @@ return [
     'dav_tasks_description' => ':name kişisinin görevleri',
 
     // contact list
-    'contact_list_avatar' => 'Avatar',
-    'contact_list_name' => 'Contact',
-    'contact_list_description' => 'Description',
+    'contact_list_avatar' => 'Profil Resmi',
+    'contact_list_name' => 'İletişim',
+    'contact_list_description' => 'Açıklama',
 
 ];

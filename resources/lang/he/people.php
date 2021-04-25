@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'לא צוינו פרטי עבודה',
     'information_work_at' => 'ב:company',
     'work_add_cta' => 'עדכון פרטי עבודה',
-    'work_edit_success' => 'פרטי העבודה עודכנו בהצלחה',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'עדכון פרטי העבודה של :name',
     'work_edit_job' => 'תפקיד (רשות)',
     'work_edit_company' => 'חברה (רשות)',
@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'צפייה בהערה',
     'gifts_mark_offered' => 'סימון שניתנה',
     'gifts_update_success' => 'המתנה עודכנה בהצלחה',
+    'gifts_add_date' => 'תאריך (רשות)',
 
     // debts
     'debt_delete_confirmation' => 'למחוק את החוב הזה?',

@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Keine Ergebnisse gefunden',
     'people_search_next' => 'Nächste',
     'people_search_prev' => 'Vorherige',
-    'people_search_rows_per_page' => 'Rows per page',
+    'people_search_rows_per_page' => 'Einträge pro Seite',
     'people_search_of' => 'von',
     'people_search_page' => 'Seite',
     'people_search_all' => 'Alle',
@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'keine Arbeitsplatz-Informationen angegeben',
     'information_work_at' => 'bei :company',
     'work_add_cta' => 'Ändere Arbeitsplatz-Informationen',
-    'work_edit_success' => 'Arbeitsplatz-Informationen wurden erfolgreich aktualisiert',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Ändere :name\'s Beruf-Informationen',
     'work_edit_job' => 'Position (optional)',
     'work_edit_company' => 'Firma (optional)',
@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Kommentar anzeigen',
     'gifts_mark_offered' => 'Als angeboten markieren',
     'gifts_update_success' => 'Das Geschenk wurde erfolgreich aktualisiert',
+    'gifts_add_date' => 'Datum (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Möchtest du die Schulden wirklich löschen?',
@@ -436,7 +437,7 @@ return [
     'life_event_date_it_happened' => 'Tag an dem es passierte',
     'life_event_category_work_education' => 'Arbeit & Ausbildung',
     'life_event_category_family_relationships' => 'Familie & Beziehungen',
-    'life_event_category_home_living' => 'Home & living',
+    'life_event_category_home_living' => 'Zuhause & Wohnen',
     'life_event_category_health_wellness' => 'Gesundheit & Wellness',
     'life_event_category_travel_experiences' => 'Reisen & Erfahrungen',
     'life_event_sentence_new_job' => 'Neuen Arbeitsplatz angetreten',
@@ -500,8 +501,8 @@ return [
     'photo_current_profile_pic' => 'Aktuelles Profilbild',
     'photo_make_profile_pic' => 'Zu Profilbild machen',
     'photo_delete' => 'Bild löschen',
-    'photo_next' => 'Next photo ❯',
-    'photo_previous' => '❮ Previous photo',
+    'photo_next' => 'Nächstes Bild ❯',
+    'photo_previous' => '❮ Vorheriges Bild',
 
     // Avatars
     'avatar_change_title' => 'Avatar ändern',
@@ -523,7 +524,7 @@ return [
     'auditlogs_author' => 'Nach :name am :date',
 
     // contact field label
-    'contact_field_label_home' => 'Home',
+    'contact_field_label_home' => 'Zuhause',
     'contact_field_label_work' => 'Arbeit',
     'contact_field_label_cell' => 'Mobil',
     'contact_field_label_fax' => 'Fax',
