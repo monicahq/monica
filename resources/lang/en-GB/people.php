@@ -83,7 +83,7 @@ return [
     'contact_unarchive' => 'Unarchive contact',
     'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Log a call',
-    'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
+    'set_favorite' => 'Favourite contacts are placed at the top of the contact list',
 
     // Stay in touch
     'stay_in_touch' => 'Stay in touch',
@@ -269,7 +269,7 @@ return [
     'activities_add_date_occured' => 'Date this activity occurred',
     'activities_add_participants' => 'Who, apart from {name}, participated in this activity? (optional)',
     'activities_add_emotions_title' => 'Do you want to log how you felt during this activity? (optional)',
-    'activities_blank_title' => 'Keep track of what you’ve done with :name in the past, and what you’ve talked about',
+    'activities_blank_title' => 'Keep track of what you’ve done with {name} in the past, and what you’ve talked about',
     'activities_blank_add_activity' => 'Add an activity',
     'activities_add_success' => 'The activity has been added successfully',
     'activities_add_error' => 'Error when adding the activity',
@@ -293,7 +293,7 @@ return [
     'notes_update_success' => 'The note has been saved successfully',
     'notes_delete_success' => 'The note has been deleted successfully',
     'notes_add_cta' => 'Add note',
-    'notes_favorite' => 'Add/remove from favorites',
+    'notes_favorite' => 'Add/remove from favourites',
     'notes_delete_title' => 'Delete a note',
     'notes_delete_confirmation' => 'Are you sure you want to delete this note? Deletion is permanent',
 
