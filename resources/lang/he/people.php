@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'לא צוינו פרטי עבודה',
     'information_work_at' => 'ב:company',
     'work_add_cta' => 'עדכון פרטי עבודה',
-    'work_edit_success' => 'Work information updated',
+    'work_edit_success' => 'פרטי העבודה עודכנו',
     'work_edit_title' => 'עדכון פרטי העבודה של :name',
     'work_edit_job' => 'תפקיד (רשות)',
     'work_edit_company' => 'חברה (רשות)',

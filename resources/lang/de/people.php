@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'keine Arbeitsplatz-Informationen angegeben',
     'information_work_at' => 'bei :company',
     'work_add_cta' => 'Ändere Arbeitsplatz-Informationen',
-    'work_edit_success' => 'Work information updated',
+    'work_edit_success' => 'Arbeitsplatz-Informationen aktualisiert',
     'work_edit_title' => 'Ändere :name\'s Beruf-Informationen',
     'work_edit_job' => 'Position (optional)',
     'work_edit_company' => 'Firma (optional)',

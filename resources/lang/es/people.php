@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Información de trabajo no definida',
     'information_work_at' => 'en: company',
     'work_add_cta' => 'Actualizar la información de trabajo',
-    'work_edit_success' => 'Work information updated',
+    'work_edit_success' => 'Información de trabajo actualizada',
     'work_edit_title' => 'Actualizar la información de trabajo de :name',
     'work_edit_job' => 'Título (opcional)',
     'work_edit_company' => 'Empresa (opcional)',
