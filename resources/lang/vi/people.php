@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Không có thông tin công việc',
     'information_work_at' => 'ở :company',
     'work_add_cta' => 'Cập nhật thông tin công việc',
-    'work_edit_success' => 'Cập nhật thông tin công việc thành công',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Cập nhật thông tin công việc của :name',
     'work_edit_job' => 'Tên công việc (tuỳ chọn)',
     'work_edit_company' => 'Tên công ty (nếu có)',
