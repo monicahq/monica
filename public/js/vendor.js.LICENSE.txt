@@ -79,6 +79,12 @@
  */
 
 /*!
+ * vue-i18n v8.24.3 
+ * (c) 2021 kazuya kawaguchi
+ * Released under the MIT License.
+ */
+
+/*!
  * vuejs-datepicker v2.0.2
  * (c) 2016-2019 Charlie Kassel
  * Released under the MIT License.

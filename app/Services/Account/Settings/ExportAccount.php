@@ -111,7 +111,6 @@ SET FOREIGN_KEY_CHECKS=0;
         $this->exportRelationship($data);
         $this->exportReminderOutbox($data);
         $this->exportReminderRule($data);
-        $this->exportReminderSent($data);
         $this->exportReminder($data);
         $this->exportSpecialDate($data);
         $this->exportTag($data);
@@ -1134,34 +1133,6 @@ SET FOREIGN_KEY_CHECKS=0;
         $foreignKey = 'account_id';
 
         $this->buildInsertSQLQuery('reminder_rules', $foreignKey, $columns, $data);
-    }
-
-    /**
-     * Export the Reminder Sent table.
-     *
-     * @param array $data
-     */
-    private function exportReminderSent(array $data)
-    {
-        $columns = [
-            'id',
-            'account_id',
-            'reminder_id',
-            'user_id',
-            'planned_date',
-            'sent_date',
-            'nature',
-            'frequency_type',
-            'frequency_number',
-            'html_content',
-            'text_content',
-            'created_at',
-            'updated_at',
-        ];
-
-        $foreignKey = 'account_id';
-
-        $this->buildInsertSQLQuery('reminder_sent', $foreignKey, $columns, $data);
     }
 
     /**

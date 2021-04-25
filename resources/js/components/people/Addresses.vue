@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <div class="sidebar-box" :class="[ editMode ? 'edit' : '' ]">
     <div class="w-100 dt">

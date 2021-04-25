@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <form ref="form" class="mb4" :action="callback" method="post" @submit.prevent="subscribe()">
     <notifications group="subscription" position="top middle" :duration="5000" width="400" />
@@ -85,7 +82,6 @@
 </template>
 
 <script>
-import { setTimeout } from 'timers';
 export default {
 
   props: {
