@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Tanımlanmış iş bilgisi yok',
     'information_work_at' => ':company',
     'work_add_cta' => 'İş Bilgilerini Güncelle',
-    'work_edit_success' => 'İş bilgileri başarılı bir şekilde güncellendi',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Güncelle :name kişisinin iş bilgisi',
     'work_edit_job' => 'İş unvanı (isteğe bağlı)',
     'work_edit_company' => 'Şirket (isteğe bağlı)',
