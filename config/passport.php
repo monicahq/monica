@@ -50,16 +50,16 @@ $passports = [
 
     /*
     |--------------------------------------------------------------------------
-    | Password Client
+    | Password Grant Client
     |--------------------------------------------------------------------------
     |
-    | Password client used for oauth login.
+    | Password grant client used for oauth login, and mobile application.
     |
     */
 
-    'password_client' => [
-        'id' => env('PASSPORT_PASSWORD_CLIENT_ID', env('MOBILE_CLIENT_ID')),
-        'secret' => env('PASSPORT_PASSWORD_CLIENT_SECRET', env('MOBILE_CLIENT_SECRET')),
+    'password_grant_client' => [
+        'id' => env('PASSPORT_PASSWORD_GRANT_CLIENT_ID', env('MOBILE_CLIENT_ID')),
+        'secret' => env('PASSPORT_PASSWORD_GRANT_CLIENT_SECRET', env('MOBILE_CLIENT_SECRET')),
     ],
 
     /*
