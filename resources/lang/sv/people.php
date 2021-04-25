@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Ingen arbetsinformation angiven',
     'information_work_at' => 'vid :company',
     'work_add_cta' => 'Uppdatera arbetsinformation',
-    'work_edit_success' => 'Arbetsinformationen har uppdaterats med framgång',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Uppdatera :name\'s jobbinformation',
     'work_edit_job' => 'Jobbtitel (valfritt)',
     'work_edit_company' => 'Företag (valfritt)',
