@@ -15,7 +15,7 @@ return [
     'comment' => 'Comentario: :comment',
     'footer_contact_info' => 'Add, view, complete, and change information about this contact:',
     'footer_contact_info2' => 'See :name’s profile',
-    'footer_contact_info2_link' => 'Ver :name\'s profile: :url',
+    'footer_contact_info2_link' => 'Ver el perfil de :name: :url',
 
     'notification_subject_line' => 'Tiene un evento próximo',
     'notification_description' => 'In :count days (on :date), the following event will happen:',
