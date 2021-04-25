@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Рабочая информация не указана',
     'information_work_at' => 'работает в :company',
     'work_add_cta' => 'Обновите информацию о работе',
-    'work_edit_success' => 'Информация о работе была обновлена',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Обновление информации о работе: :name',
     'work_edit_job' => 'Должность (не обяз.)',
     'work_edit_company' => 'Компания (не обяз.)',
