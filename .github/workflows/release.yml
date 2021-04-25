@@ -125,7 +125,7 @@ jobs:
 
       - name: Publish package
         run: |
-          for f in '{${{ steps.package.outputs.package }},${{ steps.package.outputs.assets }}}{,.asc,.sha512,.sha512.asc}'; do
+          for f in {${{ steps.package.outputs.package }},${{ steps.package.outputs.assets }}}{,.asc,.sha512,.sha512.asc}; do
             echo "Uploading release file '$f'..."
             gh release upload 'v${{ needs.semantic.outputs.new_release_version }}' "$f" --clobber
           done
