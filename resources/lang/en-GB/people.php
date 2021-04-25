@@ -263,7 +263,7 @@ return [
     'activities_add_category' => 'Indicate a category',
     'activities_add_participants_cta' => 'Add participants',
     'activities_item_information' => ':Activity. Happened on :date',
-    'activities_add_title' => 'What did you do with :name?',
+    'activities_add_title' => 'What did you do with {name}?',
     'activities_summary' => 'Describe what you did',
     'activities_add_pick_activity' => '(Optional) Would you like to categorize this activity? You don’t have to, but it will give you statistics later on',
     'activities_add_date_occured' => 'Date this activity occurred',
