@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Sem informação profissional',
     'information_work_at' => 'na :company',
     'work_add_cta' => 'Atualizar informação profissional',
-    'work_edit_success' => 'Informação profissional atualizado com sucesso',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Atualizar trabalho de :name',
     'work_edit_job' => 'Função (Opcional)',
     'work_edit_company' => 'Empresa (Opcional)',
