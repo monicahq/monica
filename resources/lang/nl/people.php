@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Geen werkgegevens gedefinieerd',
     'information_work_at' => 'bij :company',
     'work_add_cta' => 'Werk informatie bijwerken',
-    'work_edit_success' => 'Werkgegevens zijn met succes bijgewerkt',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Update :name\'s baan',
     'work_edit_job' => 'Functietitel (optioneel)',
     'work_edit_company' => 'Bedrijf (optioneel)',
