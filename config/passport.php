@@ -44,8 +44,22 @@ $passports = [
     */
 
     'personal_access_client' => [
-        'id' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_ID', env('MOBILE_CLIENT_ID')),
-        'secret' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET', env('MOBILE_CLIENT_SECRET')),
+        'id' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_ID'),
+        'secret' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Password Grant Client
+    |--------------------------------------------------------------------------
+    |
+    | Password grant client used for oauth login, and mobile application.
+    |
+    */
+
+    'password_grant_client' => [
+        'id' => env('PASSPORT_PASSWORD_GRANT_CLIENT_ID', env('MOBILE_CLIENT_ID')),
+        'secret' => env('PASSPORT_PASSWORD_GRANT_CLIENT_SECRET', env('MOBILE_CLIENT_SECRET')),
     ],
 
     /*

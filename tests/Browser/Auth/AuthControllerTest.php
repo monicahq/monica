@@ -42,8 +42,8 @@ class AuthControllerTest extends TestCase
             );
 
             $this->setEnvironmentValue([
-                'PASSPORT_PERSONAL_ACCESS_CLIENT_ID' => $client->id,
-                'PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET' => $client->secret,
+                'PASSPORT_PASSWORD_GRANT_CLIENT_ID' => $client->id,
+                'PASSPORT_PASSWORD_GRANT_CLIENT_SECRET' => $client->secret,
             ]);
 
             $userPassword = 'password';
@@ -79,8 +79,8 @@ class AuthControllerTest extends TestCase
             );
 
             $this->setEnvironmentValue([
-                'PASSPORT_PERSONAL_ACCESS_CLIENT_ID' => $client->id,
-                'PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET' => $client->secret,
+                'PASSPORT_PASSWORD_GRANT_CLIENT_ID' => $client->id,
+                'PASSPORT_PASSWORD_GRANT_CLIENT_SECRET' => $client->secret,
             ]);
 
             $userPassword = 'password';
@@ -135,8 +135,8 @@ class AuthControllerTest extends TestCase
             );
 
             $this->setEnvironmentValue([
-                'PASSPORT_PERSONAL_ACCESS_CLIENT_ID' => $client->id,
-                'PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET' => $client->secret,
+                'PASSPORT_PASSWORD_GRANT_CLIENT_ID' => $client->id,
+                'PASSPORT_PASSWORD_GRANT_CLIENT_SECRET' => $client->secret,
             ]);
 
             $userPassword = 'password';
