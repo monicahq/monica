@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Geen resultaten gevonden',
     'people_search_next' => 'Volgende',
     'people_search_prev' => 'Vorige',
-    'people_search_rows_per_page' => 'Rows per page',
+    'people_search_rows_per_page' => 'Rijen per pagina',
     'people_search_of' => 'van',
     'people_search_page' => 'Pagina',
     'people_search_all' => 'Iedereen',
@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Geen werkgegevens gedefinieerd',
     'information_work_at' => 'bij :company',
     'work_add_cta' => 'Werk informatie bijwerken',
-    'work_edit_success' => 'Werkgegevens zijn met succes bijgewerkt',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Update :name\'s baan',
     'work_edit_job' => 'Functietitel (optioneel)',
     'work_edit_company' => 'Bedrijf (optioneel)',
@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Opmerking bekijken',
     'gifts_mark_offered' => 'Als aangeboden markeren',
     'gifts_update_success' => 'Het cadeau is succesvol bijgewerkt',
+    'gifts_add_date' => 'Datum (optioneel)',
 
     // debts
     'debt_delete_confirmation' => 'Weet je zeker dat je deze schuld wil verwijderen?',
@@ -500,8 +501,8 @@ return [
     'photo_current_profile_pic' => 'Huidige profielfoto',
     'photo_make_profile_pic' => 'Stel in als profielfoto',
     'photo_delete' => 'Foto verwijderen',
-    'photo_next' => 'Next photo ❯',
-    'photo_previous' => '❮ Previous photo',
+    'photo_next' => 'Volgende foto ❯',
+    'photo_previous' => '❮ Vorige foto',
 
     // Avatars
     'avatar_change_title' => 'Wijzig je profielfoto',
@@ -528,7 +529,7 @@ return [
     'contact_field_label_cell' => 'Mobiel',
     'contact_field_label_fax' => 'Fax',
     'contact_field_label_pager' => 'Pieper',
-    'contact_field_label_main' => 'Main',
-    'contact_field_label_other' => 'Other',
+    'contact_field_label_main' => 'Algemeen',
+    'contact_field_label_other' => 'Ander',
     'contact_field_label_personal' => 'Persoonlijk',
 ];

@@ -80,6 +80,17 @@
   }
 }
 
+.btn-warning {
+  color: #daa520;
+
+  &:hover, &:focus {
+    background-color: #daa520;
+    background-image: linear-gradient(#fffacd, #daa520);
+    border-color: #fffacd;
+    color: #fff;
+  }
+}
+
 .btn-add {
   position: relative;
   top: 3px;

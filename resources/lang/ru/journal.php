@@ -13,6 +13,7 @@ return [
     'journal_add' => 'Добавить запись в журнал',
     'journal_edit' => 'Edit a journal entry',
     'journal_empty' => 'Empty journal',
+    'journal_created_at' => 'Created at {date}',
     'journal_created_automatically' => 'Создано автоматически',
     'journal_entry_type_journal' => 'Journal entry',
     'journal_entry_type_activity' => 'Activity',

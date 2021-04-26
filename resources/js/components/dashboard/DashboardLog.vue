@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <div class="br3 ba b--gray-monica bg-white mb3">
     <notifications group="main" position="bottom right" width="400" />

@@ -21,7 +21,7 @@ class AuditLogController extends Controller
         $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
 
         return view('settings.auditlog.index')
-            ->withLogsCollection(AuditLogHelper::getCollectionOfAuditForSettings($logs))
+            ->withLogsCollection(AuditLogHelper::getCollectionOfAudits($logs))
             ->withAccountHasLimitations($accountHasLimitations)
             ->withLogsPagination($logs);
     }

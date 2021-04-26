@@ -1,11 +1,8 @@
-<style scoped>
-</style>
-
 <template>
   <div>
     <div class="">
       <h3 class="mb2">
-        ☎️ {{ $t('people.call_title') }}
+        ☎️&#8199;{{ $t('people.call_title') }}
 
         <span class="fr relative" style="top: -7px;">
           <a v-if="displayLogCall == false" v-cy-name="'add-call-button'" class="btn edit-information" href="" @click.prevent="displayLogCall = true">
@@ -326,7 +323,7 @@ export default {
     },
 
     compiledMarkdown (text) {
-      return marked(text, { sanitize: true });
+      return text !== undefined && text !== null ? marked(text, { sanitize: true }) : '';
     },
 
     resetFields() {

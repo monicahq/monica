@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Δεν έχουν προσδιοριστεί πληροφορίες εργασίας',
     'information_work_at' => 'στο :company',
     'work_add_cta' => 'Ενημέρωση πληροφοριών εργασίας',
-    'work_edit_success' => 'Οι πληροφορίες εργασίας έχουν ενημερωθεί με επιτυχία',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Ενημέρωση πληροφοριών εργασίας της επαφής :name',
     'work_edit_job' => 'Επαγγελματικός τίτλος (προαιρετικό)',
     'work_edit_company' => 'Εταιρεία (προαιρετικό)',
@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Προβολή σχολίου',
     'gifts_mark_offered' => 'Mark as given',
     'gifts_update_success' => 'The gift has been updated successfully',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Are you sure you want to delete this debt?',

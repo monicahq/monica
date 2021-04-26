@@ -31,7 +31,7 @@ return [
     'new' => 'nuovo',
     'unknown' => 'Non so',
     'load_more' => 'Carica altro',
-    'loading' => 'Caricamento in corso...',
+    'loading' => 'Caricamento…',
     'with' => 'con',
     'today' => 'oggi',
     'yesterday' => 'ieri',
@@ -44,11 +44,11 @@ return [
     'retry' => 'Riprova',
     'filter' => 'Filtra la lista',
     'go_back' => 'Torna indietro',
-    'file_selected' => '1 file selezionato...|{count} files selezionati...',
+    'file_selected' => 'Un file selezionato…|{count} file selezionati…',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica è uno strumento per gestire le interazioni con i vostri cari, amici e familiari.',
-    'application_og_title' => 'Avere migliori relazioni con i vostri cari. CRM Online gratuito per gli amici e la famiglia.',
+    'application_og_title' => 'Stabilisci relazioni migliori con i tuoi cari. CRM gratuito online per amici e famiglia.',
 
     'markdown_description' => 'Vuoi formattare il tuo testo? Supportiamo Markdown per grassetto, corsivo, liste, e altro ancora.',
     'markdown_link' => 'Leggi documentazione',
@@ -65,13 +65,13 @@ return [
     'main_nav_tasks' => 'Compiti',
 
     'footer_remarks' => 'Commenti?',
-    'footer_send_email' => 'Inviami una email',
+    'footer_send_email' => 'Inviaci un\'email',
     'footer_privacy' => 'Privacy',
     'footer_release' => 'Note di rilascio',
     'footer_newsletter' => 'Newsletter',
     'footer_source_code' => 'Monica su GitHub',
     'footer_version' => 'Versione: :version',
-    'footer_new_version' => 'È disponibile una nuova versione',
+    'footer_new_version' => 'È disponibile una nuova versione di Monica',
 
     'footer_modal_version_whats_new' => 'Novità',
     'footer_modal_version_release_away' => 'La tua versione è 1 versione indietro rispetto all\'ultima disponibile. Dovresti aggiornare Monica.|La tua versione è :number versioni indietro rispetto all\'ultima disponibile. Dovresti aggiornare Monica.',
@@ -465,7 +465,7 @@ return [
 
     // contact list
     'contact_list_avatar' => 'Avatar',
-    'contact_list_name' => 'Contact',
-    'contact_list_description' => 'Description',
+    'contact_list_name' => 'Contatto',
+    'contact_list_description' => 'Descrizione',
 
 ];
