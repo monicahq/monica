@@ -156,11 +156,11 @@ return [
 
     'vue' => [
         'max' => [
-            'numeric' => '{field} may not be greater than {max}.',
-            'string' => '{field} may not be greater than {max} characters.',
+            'numeric' => '{field} nesmí být větší než {max}.',
+            'string' => '{field} nesmí být dlhší než {max} znakov.',
         ],
-        'required' => '{field} is required.',
-        'url' => '{field} is not a valid URL.',
+        'required' => '{field} je povinné.',
+        'url' => '{field} není platná adresa URL.',
     ],
 
 ];
