@@ -31,7 +31,7 @@ return [
     'new' => 'nuevo',
     'unknown' => 'No lo sé',
     'load_more' => 'Cargar más',
-    'loading' => 'Cargando...',
+    'loading' => 'Cargando…',
     'with' => 'con',
     'today' => 'hoy',
     'yesterday' => 'ayer',
@@ -44,7 +44,7 @@ return [
     'retry' => 'Reintentar',
     'filter' => 'Filtrar la lista',
     'go_back' => 'Volver atrás',
-    'file_selected' => '1 archivo seleccionado...|{count} archivos seleccionados...',
+    'file_selected' => '1 archivo seleccionado…|{count} archivos seleccionados…',
 
     'application_title' => 'Monica – gestor de relaciones personales',
     'application_description' => 'Monica es una herramienta para gestionar tus interacciones con tus seres queridos, amigos y familiares.',
@@ -64,14 +64,14 @@ return [
     'main_nav_activities' => 'Actividades',
     'main_nav_tasks' => 'Tareas',
 
-    'footer_remarks' => 'Alguna sugerencia?',
-    'footer_send_email' => 'Enviarme un email',
+    'footer_remarks' => 'Comentarios',
+    'footer_send_email' => 'Envíanos un correo electrónico',
     'footer_privacy' => 'Políticas de privacidad',
     'footer_release' => 'Notas de la versión',
     'footer_newsletter' => 'Boletín',
     'footer_source_code' => 'Contribuir',
     'footer_version' => 'Versión :version',
-    'footer_new_version' => 'Una nueva versión esta disponible',
+    'footer_new_version' => 'Una nueva versión de Monica está disponible',
 
     'footer_modal_version_whats_new' => 'Qué hay de nuevo',
     'footer_modal_version_release_away' => 'Estás una versión por detrás de la última disponible. Deberías actualizar tu instancia. | Estás :number versiones por detrás de la última versión disponible. Deberías actualizar tu instancia.',
@@ -308,7 +308,7 @@ return [
 
     'emotion_adoration' => 'Adoration',
     'emotion_affection' => 'Afecto',
-    'emotion_love' => 'Love',
+    'emotion_love' => 'Amor',
     'emotion_fondness' => 'Fondness',
     'emotion_liking' => 'Liking',
     'emotion_attraction' => 'Attraction',
@@ -405,9 +405,9 @@ return [
     'emotion_disappointment' => 'Disappointment',
     'emotion_displeasure' => 'Displeasure',
     'emotion_guilt' => 'Guilt',
-    'emotion_shame' => 'Shame',
+    'emotion_shame' => 'Vergüenza',
     'emotion_regret' => 'Regret',
-    'emotion_remorse' => 'Remorse',
+    'emotion_remorse' => 'Remordimiento',
     'emotion_alienation' => 'Alienation',
     'emotion_isolation' => 'Isolation',
     'emotion_neglect' => 'Neglect',
@@ -416,7 +416,7 @@ return [
     'emotion_homesickness' => 'Homesickness',
     'emotion_defeat' => 'Defeat',
     'emotion_dejection' => 'Dejection',
-    'emotion_insecurity' => 'Insecurity',
+    'emotion_insecurity' => 'Inseguridad',
     'emotion_embarrassment' => 'Embarrassment',
     'emotion_humiliation' => 'Humiliation',
     'emotion_insult' => 'Insult',
@@ -456,7 +456,7 @@ return [
     'weather_current_title' => 'Clima actual',
 
     // dav
-    'dav_contacts' => 'Contacts',
+    'dav_contacts' => 'Contactos',
     'dav_contacts_description' => 'Contactos de :name',
     'dav_birthdays' => 'Cumpleaños',
     'dav_birthdays_description' => 'Cumpleaños del contacto :name',
@@ -465,7 +465,7 @@ return [
 
     // contact list
     'contact_list_avatar' => 'Avatar',
-    'contact_list_name' => 'Contact',
-    'contact_list_description' => 'Description',
+    'contact_list_name' => 'Contacto',
+    'contact_list_description' => 'Descripción',
 
 ];

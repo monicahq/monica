@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <div class="reminder-rules">
     <notifications group="main" position="bottom right" />

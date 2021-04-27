@@ -13,6 +13,7 @@ return [
     'journal_add' => 'Bir günlük girdisi ekle',
     'journal_edit' => 'Bir günlük girdisini düzenle',
     'journal_empty' => 'Boş günlük',
+    'journal_created_at' => 'Created at {date}',
     'journal_created_automatically' => 'Otomatik olarak oluşturuldu',
     'journal_entry_type_journal' => 'Günlük girdisi',
     'journal_entry_type_activity' => 'Faaliyet',

@@ -13,6 +13,7 @@ return [
     'journal_add' => 'Lägg till en journalpost',
     'journal_edit' => 'Redigera en journalpost',
     'journal_empty' => 'Tom journal',
+    'journal_created_at' => 'Created at {date}',
     'journal_created_automatically' => 'Skapad automatiskt',
     'journal_entry_type_journal' => 'Journalpost',
     'journal_entry_type_activity' => 'Aktivitet',

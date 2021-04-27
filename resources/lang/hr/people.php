@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => 'at :company',
     'work_add_cta' => 'Update work information',
-    'work_edit_success' => 'Work information have been updated with success',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Update :name’s job information',
     'work_edit_job' => 'Job title (optional)',
     'work_edit_company' => 'Company (optional)',
@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Pogledaj komentar',
     'gifts_mark_offered' => 'Označi kao poklonjeno',
     'gifts_update_success' => 'Uspješno ažuriranje poklona',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Jeste li sigurni da želite izbrisati ovaj dug?',
