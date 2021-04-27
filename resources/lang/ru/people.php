@@ -232,7 +232,7 @@ return [
     // tasks
     'tasks_title' => 'Задачи',
     'tasks_blank_title' => 'У вас пока нет задач.',
-    'tasks_form_title' => 'Title',
+    'tasks_form_title' => 'Заголовок',
     'tasks_form_description' => 'Описание (необязательно)',
     'tasks_add_task' => 'Добавить задачу',
     'tasks_delete_success' => 'Задача была усрешна удалена',
