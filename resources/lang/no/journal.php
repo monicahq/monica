@@ -27,5 +27,5 @@ return [
     'journal_add_cta' => 'Lagre',
     'journal_blank_cta' => 'Legg til din første journaloppføring',
     'journal_blank_description' => 'Journalen lar deg skrive innlegg slik at du husker hva som skjer i løpet av en dag.',
-    'delete_confirmation' => 'Are you sure you want to delete this journal entry?',
+    'delete_confirmation' => 'Er du sikker på at du vil slette denne journaloppføringen?',
 ];
