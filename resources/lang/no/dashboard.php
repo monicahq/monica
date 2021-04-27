@@ -7,18 +7,18 @@
  */
 
 return [
-    'dashboard_blank_title' => 'Welcome to your account!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the people you care about.',
-    'dashboard_blank_cta' => 'Add your first contact',
-    'dashboard_blank_illustration' => 'Illustration by <a href=":url">Freepik</a>',
+    'dashboard_blank_title' => 'Velkommen til din konto!',
+    'dashboard_blank_description' => 'Monica er applikasjonen hvor du kan organisere alt du har å gjøre med personene du bryr deg om.',
+    'dashboard_blank_cta' => 'Legg til din første kontakt',
+    'dashboard_blank_illustration' => 'Illustrasjon av <a href=":url">Freepik</a>',
 
-    'notes_title' => 'You don’t have any starred notes yet.',
+    'notes_title' => 'Du har ingen uthevede notater ennå.',
 
-    'tab_recent_calls' => 'Recent calls',
-    'tab_favorite_notes' => 'Favorite notes',
-    'tab_calls_blank' => 'You haven’t logged any calls yet.',
-    'tab_debts' => 'Debts',
-    'tab_debts_blank' => 'You haven’t logged any debts yet.',
+    'tab_recent_calls' => 'Nylige anrop',
+    'tab_favorite_notes' => 'Favorittnotater',
+    'tab_calls_blank' => 'Du har ikke logget noen samtaler enda.',
+    'tab_debts' => 'Gjeld',
+    'tab_debts_blank' => 'Du har ikke loggført noen gjeld ennå.',
     'tab_tasks' => 'Tasks',
     'tab_tasks_blank' => 'You haven’t any tasks yet.',
 
