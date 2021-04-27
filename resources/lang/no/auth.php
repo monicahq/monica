@@ -19,8 +19,8 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed' => 'Brukernavn eller passord stemmer ikke.',
+    'throttle' => 'Du har forsøkt å logge inn for mange ganger. Prøv igjen om :seconds sekunder.',
     'not_authorized' => 'You are not authorized to execute this action',
     'signup_disabled' => 'Registration is currently disabled',
     'signup_error' => 'An error occured trying to register the user',
