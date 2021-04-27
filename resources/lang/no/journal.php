@@ -9,7 +9,7 @@
 return [
     'journal_rate' => 'Hvordan var dagen din? Du kan vurdere den én gang om dagen.',
     'journal_come_back' => 'Takk. Kom tilbake i morgen for å vurdere dagen din igjen.',
-    'journal_description' => 'Note: the journal lists both manual journal entries, and automatic entries like Activities done with your contacts. While you can delete journal entries manually, you’ll have to delete the activity directly on the contact page.',
+    'journal_description' => 'Merk: Journalen viser både manuelle journaloppføringer og automatiske innlegg som aktiviteter registrert på dine kontakter. Du kan slette journaloppføringer, men for å fjerne aktiviteter må du fjerne dem fra kontaktens side.',
     'journal_add' => 'Legg til journaloppføring',
     'journal_edit' => 'Rediger en journaloppføring',
     'journal_empty' => 'Tom journal',
