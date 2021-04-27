@@ -24,19 +24,19 @@ return [
 
     'tasks_add_task_placeholder' => 'What is this task about?',
     'tasks_tab_your_contacts' => 'Tasks related to your contacts',
-    'tasks_tab_your_tasks' => 'Your tasks',
-    'tasks_add_note' => 'Press <kbd>Enter</kbd> to add the task.',
-    'task_add_cta' => 'Add a task',
+    'tasks_tab_your_tasks' => 'Dine oppgaver',
+    'tasks_add_note' => 'Trykk <kbd>Enter</kbd> for å legge til oppgave.',
+    'task_add_cta' => 'Ny oppgave',
 
-    'debts_you_owe' => 'You owe',
+    'debts_you_owe' => 'Du skylder',
 
-    'statistics_contacts' => 'Contacts',
-    'statistics_activities' => 'Activities',
-    'statistics_gifts' => 'Gifts',
+    'statistics_contacts' => 'Kontakter',
+    'statistics_activities' => 'Aktiviteter',
+    'statistics_gifts' => 'Gaver',
 
-    'reminders_next_months' => 'Events in the next 3 months',
-    'reminders_none' => 'No reminders for this month.',
+    'reminders_next_months' => 'Hendelser de neste 3 månedene',
+    'reminders_none' => 'Ingen påminnelser for denne måneden.',
 
-    'product_changes' => 'Product changes',
-    'product_view_details' => 'View details',
+    'product_changes' => 'Produktendringer',
+    'product_view_details' => 'Vis detaljer',
 ];
