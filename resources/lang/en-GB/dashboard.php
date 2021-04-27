@@ -8,7 +8,7 @@
 
 return [
     'dashboard_blank_title' => 'Welcome to your account!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the people you care about.',
+    'dashboard_blank_description' => 'Monica is the place to organise all the interactions you have with the people you care about.',
     'dashboard_blank_cta' => 'Add your first contact',
     'dashboard_blank_illustration' => 'Illustration by <a href=":url">Freepik</a>',
 

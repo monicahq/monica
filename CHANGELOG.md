@@ -1,3 +1,17 @@
+# [2.21.0](https://github.com/monicahq/monica/compare/v2.20.0...v2.21.0) (2021-04-25)
+
+
+### Features
+
+* add ability to attach dates to gifts ([#4909](https://github.com/monicahq/monica/issues/4909)) ([da17b8d](https://github.com/monicahq/monica/commit/da17b8d1b48d894443fad165868086c4d04eb94d))
+* add date of creation in journal ([#4949](https://github.com/monicahq/monica/issues/4949)) ([be85cad](https://github.com/monicahq/monica/commit/be85cadd2abf38aba2353f629fac1733dd922e9b))
+
+
+### Bug Fixes
+
+* fix udpate maintenance mode message ([#4983](https://github.com/monicahq/monica/issues/4983)) ([225e68e](https://github.com/monicahq/monica/commit/225e68e038349afe1c86631dca04297b8ba72955))
+* sort and group relationships by relationship type ([#4985](https://github.com/monicahq/monica/issues/4985)) ([105b74f](https://github.com/monicahq/monica/commit/105b74f94e7f6b08da3883020670c9b8e3c72df0))
+
 # [2.20.0](https://github.com/monicahq/monica/compare/v2.19.1...v2.20.0) (2021-03-18)
 
 

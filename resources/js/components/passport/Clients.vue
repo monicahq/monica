@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <div>
     <notifications group="passport-clients" position="top middle" :duration="5000" width="400" />

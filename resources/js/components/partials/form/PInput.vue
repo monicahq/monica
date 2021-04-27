@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <div :class="dclass">
     <div>
