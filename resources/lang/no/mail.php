@@ -8,11 +8,11 @@
 
 return [
 
-    'subject_line' => 'Reminder for :contact',
-    'greetings' => 'Hi :username',
-    'want_reminded_of' => 'You wanted to be reminded of :reason',
+    'subject_line' => 'Påminnelse for :contact',
+    'greetings' => 'Hei :username',
+    'want_reminded_of' => 'Du ønsket å bli minnet om :reason',
     'for' => 'For: :name',
-    'comment' => 'Comment: :comment',
+    'comment' => 'Kommentar: :comment',
     'footer_contact_info' => 'Add, view, complete, and change information about this contact:',
     'footer_contact_info2' => 'See :name’s profile',
     'footer_contact_info2_link' => 'See :name’s profile: :url',
