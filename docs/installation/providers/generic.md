@@ -22,6 +22,8 @@ If you don't want to use Docker, the best way to setup the project is to use the
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 -   PHP 7.4+
 -   [Composer](https://getcomposer.org/)
+-   [Node.js](https://nodejs.org)
+-   [Yarn](https://yarnpkg.com)
 -   [MySQL](https://www.mysql.com/)
 -   Optional: Redis or Beanstalk
 
@@ -53,6 +55,15 @@ If you don't want to use Docker, the best way to setup the project is to use the
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 php composer-setup.php --install-dir=/usr/local/bin/ --filename=composer
 php -r "unlink('composer-setup.php');"
+```
+
+**Node.js:** Install node.js 14+ minimum
+
+
+**Yarn:** Install yarn using npm
+
+```sh
+npm install --global yarn
 ```
 
 **Mysql:** Install Mysql 5.7+

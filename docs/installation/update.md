@@ -25,7 +25,7 @@ or if you have installed Monica on your own server, you need to follow the steps
        # Clone the desired version
        git checkout tags/v2.18.0
        ```
-    1. Or check out `master`
+    2. Or check out `master`
        ```sh
        git pull origin master
        ```

@@ -21,6 +21,8 @@ Monica depends on the following:
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 -   PHP 7.4+
 -   [Composer](https://getcomposer.org/)
+-   [Node.js](https://nodejs.org)
+-   [Yarn](https://yarnpkg.com)
 -   MySQL / MariaDB
 
 An editor like vim or nano should be useful too.
@@ -51,6 +53,19 @@ sudo apt install -y php php-bcmath php-curl php-gd php-gmp php-imagick \
 
 ```sh
 sudo apt install -y composer
+```
+
+**Node.js:** Install node.js with package manager.
+
+```sh
+curl -fsSL https://deb.nodesource.com/setup_14.x | sudo bash -
+sudo apt install -y nodejs
+```
+
+**Yarn:** Install yarn with npm.
+
+```sh
+sudo npm install --global yarn
 ```
 
 **MariaDB:** Install MariaDB. Note that this only installs the package, but does not setup Mysql. This is done later in the instructions:

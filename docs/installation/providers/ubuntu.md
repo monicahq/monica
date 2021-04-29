@@ -22,6 +22,8 @@ Monica depends on the following:
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 -   PHP 7.4+
 -   [Composer](https://getcomposer.org/)
+-   [Node.js](https://nodejs.org)
+-   [Yarn](https://yarnpkg.com)
 -   [MySQL](https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/)
 
 **Apache:** If it doesn't come pre-installed with your server, follow the [instructions here](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04#step-1-install-apache-and-allow-in-firewall) to setup Apache and config the firewall.
@@ -68,6 +70,19 @@ rm -f composer-setup.php
 ```
 
 (or you can follow instruction on [getcomposer.org](https://getcomposer.org/download/) page)
+
+**Node.js:** Install node.js with package manager.
+
+```sh
+curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+sudo apt install -y nodejs
+```
+
+**Yarn:** Install yarn with npm.
+
+```sh
+sudo npm install --global yarn
+```
 
 **Mysql:** Install Mysql 5.7. Note that this only installs the package, but does not setup Mysql. This is done later in the instructions:
 
