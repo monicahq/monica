@@ -46,7 +46,7 @@ Install PHP 7.4 with these extensions:
 
 ```sh
 sudo apt install -y php php-bcmath php-curl php-gd php-gmp php-imagick \
-    php-intl php-mbstring php-mysql php-xml php-zip php-redis
+    php-intl php-mbstring php-mysql php-redis php-xml php-zip
 ```
 
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager.
