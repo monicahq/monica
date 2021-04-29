@@ -13,6 +13,7 @@ use App\Jobs\AuditLog\LogAccountAudit;
 use App\Exceptions\AccountLimitException;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Jobs\Avatars\GetAvatarsFromInternet;
+use App\Models\Account\Account;
 
 class CreateContact extends BaseService
 {
@@ -59,9 +60,10 @@ class CreateContact extends BaseService
     {
         $this->validate($data);
 
-        if (AccountHelper::hasReachedContactLimit(auth()->user()->account)
-            && AccountHelper::hasLimitations(auth()->user()->account)
-            && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
+        $account = Account::find($data['account_id']);
+        if (AccountHelper::hasReachedContactLimit($account)
+            && AccountHelper::hasLimitations($account)
+            && ! $account->legacy_free_plan_unlimited_contacts) {
             throw new AccountLimitException();
         }
 
