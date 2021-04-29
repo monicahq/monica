@@ -9,7 +9,7 @@ on:
     types: [completed]
 
 env:
-  php-version: 7.4
+  php-version: '8.0'
 
 
 jobs:

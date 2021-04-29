@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Ingen arbetsinformation angiven',
     'information_work_at' => 'vid :company',
     'work_add_cta' => 'Uppdatera arbetsinformation',
-    'work_edit_success' => 'Arbetsinformationen har uppdaterats med framgång',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Uppdatera :name\'s jobbinformation',
     'work_edit_job' => 'Jobbtitel (valfritt)',
     'work_edit_company' => 'Företag (valfritt)',
@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Visa kommentar',
     'gifts_mark_offered' => 'Markera som erbjuden',
     'gifts_update_success' => 'Gåvan har uppdaterats',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Är du säker på att du vill ta bort denna skuld?',

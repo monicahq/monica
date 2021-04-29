@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Рабочая информация не указана',
     'information_work_at' => 'работает в :company',
     'work_add_cta' => 'Обновите информацию о работе',
-    'work_edit_success' => 'Информация о работе была обновлена',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Обновление информации о работе: :name',
     'work_edit_job' => 'Должность (не обяз.)',
     'work_edit_company' => 'Компания (не обяз.)',
@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Просмотреть комментарий',
     'gifts_mark_offered' => 'Отметить как предложенный\'',
     'gifts_update_success' => 'Подарок успешно обновлен',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Вы уверены что хотите удалить этот долг?',

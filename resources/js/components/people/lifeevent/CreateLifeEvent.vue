@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <section class="ph3 ph0-ns life-event">
     <notifications group="main" position="top middle" width="400" />

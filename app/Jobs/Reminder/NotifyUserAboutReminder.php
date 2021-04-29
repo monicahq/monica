@@ -51,9 +51,6 @@ class NotifyUserAboutReminder implements ShouldQueue
                 Notification::send($this->reminderOutbox->user, $message);
             }
 
-            // create the Reminder Sent object
-            $this->reminderOutbox->logSent($message);
-
             // schedule the next reminder for this user
             /** @var \App\Models\Contact\Reminder */
             $reminder = $this->reminderOutbox->reminder;

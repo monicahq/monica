@@ -194,8 +194,8 @@ class OAuthController extends Controller
         /** @var \Illuminate\Http\Response */
         $response = app(Kernel::class)->handle(Request::create($url, 'POST', [
             'grant_type' => $data['grantType'],
-            'client_id' => config('passport.personal_access_client.id'),
-            'client_secret' => config('passport.personal_access_client.secret'),
+            'client_id' => config('passport.password_grant_client.id'),
+            'client_secret' => config('passport.password_grant_client.secret'),
             'username' => $data['username'],
             'password' => $data['password'],
             'scope' => '',

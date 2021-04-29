@@ -84,7 +84,7 @@ jobs:
       - name: Prepare environment
         run: |
           cp scripts/ci/.env.mysql .env
-          touch config/.version config/.release .sentry-release .sentry-commit
+          touch config/.version config/.release config/.commit
           mkdir -p results/coverage
           echo "REQUIRES_SUBSCRIPTION=true" >> .env
 

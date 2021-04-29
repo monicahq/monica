@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => '未定義工作資訊',
     'information_work_at' => '在 :company工作',
     'work_add_cta' => '更新工作資訊',
-    'work_edit_success' => '工作資訊已成功更新',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => '更新:name的工作資訊',
     'work_edit_job' => '職位名稱 (可選)',
     'work_edit_company' => '公司 (可選)',
@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => '檢視評論',
     'gifts_mark_offered' => '標記為提供',
     'gifts_update_success' => '禮物已成功更新',
+    'gifts_add_date' => '日期 (選填)',
 
     // debts
     'debt_delete_confirmation' => '是否確實要刪除此債務？',

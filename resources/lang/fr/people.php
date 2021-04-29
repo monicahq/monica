@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Aucune information professionnelle définie',
     'information_work_at' => 'chez :company',
     'work_add_cta' => 'Mettre à jour les informations professionnelles',
-    'work_edit_success' => 'Les informations professionnelles ont été mises à jour avec succès',
+    'work_edit_success' => 'Informations professionnelles mises à jour',
     'work_edit_title' => 'Mettre à jour les informations professionnelles de :name',
     'work_edit_job' => 'Poste (optionnel)',
     'work_edit_company' => 'Entreprise (optionnel)',
@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Voir commentaire',
     'gifts_mark_offered' => 'Marquer comme offert',
     'gifts_update_success' => 'Le cadeau a été mis à jour avec succès',
+    'gifts_add_date' => 'Date (facultatif)',
 
     // debts
     'debt_delete_confirmation' => 'Êtes-vous sûr de vouloir effacer cette dette ?',

@@ -4,8 +4,6 @@
         <base href="{{ url('/') }}/" />
         <title>@yield('title')</title>
 
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
-
         <style>
             html, body {
                 height: 100%;
@@ -15,10 +13,10 @@
                 margin: 0;
                 padding: 0;
                 width: 100%;
-                color: #B0BEC5;
+                color: #999999;
                 display: table;
                 font-weight: 100;
-                font-family: 'Lato';
+                font-family: "Lato Light", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
             }
 
             .container {

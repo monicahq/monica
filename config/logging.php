@@ -54,6 +54,10 @@ return [
             'emoji' => ':boom:',
             'level' => 'critical',
         ],
+        'papertrailsyslog' => [
+            'driver' => 'stack',
+            'channels' => ['papertrail', 'syslog'],
+        ],
         'papertrail' => [
             'driver'  => 'monolog',
             'level' => 'debug',

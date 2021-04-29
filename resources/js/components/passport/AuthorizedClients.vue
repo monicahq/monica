@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <div>
     <h3 class="mb3">
@@ -63,7 +60,7 @@
 
 <script>
 export default {
-  
+
   data() {
     return {
       tokens: []

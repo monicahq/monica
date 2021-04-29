@@ -14,7 +14,7 @@ on:
     types: [completed]
 
 env:
-  default-php-version: 7.4
+  default-php-version: '7.4'
   node-version: 15
 
 
@@ -74,7 +74,7 @@ jobs:
       - name: Prepare environment
         run: |
           cp scripts/ci/.env.${{ matrix.connection }} .env
-          touch config/.version config/.release .sentry-release .sentry-commit
+          touch config/.version config/.release config/.commit
           mkdir -p public/js public/css results/coverage
           {\
             echo "{"; \
@@ -210,7 +210,7 @@ jobs:
       - name: Prepare environment
         run: |
           cp scripts/ci/.env.${{ matrix.connection }} .env
-          touch config/.version config/.release .sentry-release .sentry-commit
+          touch config/.version config/.release config/.commit
           mkdir -p results/coverage results/cov results/console
           chmod -R 777 storage bootstrap/cache
 
