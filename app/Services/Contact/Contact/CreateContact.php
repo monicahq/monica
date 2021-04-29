@@ -8,12 +8,12 @@ use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Helpers\AccountHelper;
 use function Safe\json_encode;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Jobs\AuditLog\LogAccountAudit;
 use App\Exceptions\AccountLimitException;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Jobs\Avatars\GetAvatarsFromInternet;
-use App\Models\Account\Account;
 
 class CreateContact extends BaseService
 {
