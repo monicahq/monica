@@ -9,13 +9,13 @@
 return [
 
     //index
-    'people_not_found' => 'Contact not found',
+    'people_not_found' => 'Kontakten ble ikke funnet',
     'people_list_number_kids' => '1 kid|:count kids',
     'people_list_last_updated' => 'Last consulted:',
     'people_list_number_reminders' => '1 reminder|:count reminders',
-    'people_list_blank_title' => 'You don’t have anyone in your account yet',
+    'people_list_blank_title' => 'Du har ikke noen i kontoen din ennå',
     'people_list_blank_cta' => 'Add someone',
-    'people_list_sort' => 'Sort',
+    'people_list_sort' => 'Sorter',
     'people_list_stats' => '1 contact|:count contacts',
     'people_list_firstnameAZ' => 'Sort by first name A → Z',
     'people_list_firstnameZA' => 'Sort by first name Z → A',
