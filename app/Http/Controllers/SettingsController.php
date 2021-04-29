@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\AccountLimitException;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Str;
@@ -23,6 +22,7 @@ use App\Http\Requests\SettingsRequest;
 use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
+use App\Exceptions\AccountLimitException;
 use App\Services\Account\Settings\ResetAccount;
 use App\Services\Account\Settings\DestroyAccount;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
