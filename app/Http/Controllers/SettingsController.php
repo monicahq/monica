@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\AccountLimitException;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Str;
@@ -300,6 +301,10 @@ class SettingsController
      */
     public function inviteUser(InvitationRequest $request)
     {
+        if (AccountHelper::hasLimitations(auth()->user()->account)) {
+            throw new AccountLimitException();
+        }
+
         // Make sure the confirmation to invite has not been bypassed
         if (! $request->input('confirmation')) {
             return redirect()->back()->withErrors(trans('settings.users_error_please_confirm'))->withInput();
