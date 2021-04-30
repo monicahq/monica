@@ -1,3 +1,17 @@
+# [3.0.0](https://github.com/monicahq/monica/compare/v2.22.1...v3.0.0) (2021-04-30)
+
+
+### Features
+
+* remove assets from repository (see [#4759](https://github.com/monicahq/monica/issues/4759)) ([#5133](https://github.com/monicahq/monica/issues/5133)) ([02ba369](https://github.com/monicahq/monica/commit/02ba3694929154ecdafbe95fa34ad6920680b6b7))
+
+
+### BREAKING CHANGES
+
+* The assets are no longer embedded in source code: javascript, css, font files. Run `yarn install` then `yarn run production` to recreate them from sources, or download a [release file](https://github.com/monicahq/monica/releases) that contains compiled files.
+* For Heroku users: You'll have to manually go to `Settings` > `Buildpacks` and add buildpack: `nodejs`. See [this doc](https://github.com/monicahq/monica/blob/master/docs/installation/providers/heroku.md#update-from-2x-to-3x).
+* See more information about how to install a Monica instance [here](https://github.com/monicahq/monica/tree/master/docs/installation).
+
 ## [2.22.1](https://github.com/monicahq/monica/compare/v2.22.0...v2.22.1) (2021-04-30)
 
 
