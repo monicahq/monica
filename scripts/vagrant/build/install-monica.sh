@@ -38,9 +38,8 @@ debconf-set-selections <<< "mysql-server mysql-server/root_password_again passwo
 apt-get install -y mysql-server mysql-client >/dev/null
 
 echo -e "\n\033[4;32mInstalling PHP 7.4\033[0;40m"
-apt install -y curl gnupg2 apt-transport-https apt-transport-https lsb-release ca-certificates
-curl -s https://packages.sury.org/php/apt.gpg -o /etc/apt/trusted.gpg.d/php.gpg
-echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list
+apt-get install -y curl gnupg2 apt-transport-https apt-transport-https lsb-release ca-certificates >/dev/null
+add-apt-repository -y ppa:ondrej/php >/dev/null
 apt-get update >/dev/null
 apt-get install -y php7.4 >/dev/null
 
@@ -49,12 +48,12 @@ apt-get install -y git >/dev/null
 
 echo -e "\n\033[4;32mInstalling composer\033[0;40m"
 apt-get install -y curl php7.4-cli >/dev/null
-curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer >/dev/null
 
 echo -e "\n\033[4;32mInstalling packages for Monica\033[0;40m"
-apt-get install -y php7.4-common php7.4-fpm \
-    php7.4-json php7.4-opcache php7.4-mysql php7.4-mbstring php7.4-zip \
-    php7.4-bcmath php7.4-intl php7.4-xml php7.4-curl php7.4-gd php7.4-gmp php7.4-imagick >/dev/null
+apt-get install -y php7.4-bcmath php7.4-cli php7.4-curl php7.4-common php7.4-fpm \
+    php7.4-gd php7.4-gmp php7.4-imagick php7.4-intl php7.4-json php7.4-mbstring \
+    php7.4-mysql php7.4-opcache php7.4-redis php7.4-xml php7.4-zip >/dev/null
 
 echo -e "\n\033[4;32mGetting database ready\033[0;40m"
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE $MYSQL_DB_DATABASE;

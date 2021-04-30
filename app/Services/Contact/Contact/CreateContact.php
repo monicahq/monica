@@ -6,9 +6,12 @@ use App\Models\User\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
+use App\Helpers\AccountHelper;
 use function Safe\json_encode;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Jobs\AuditLog\LogAccountAudit;
+use App\Exceptions\AccountLimitException;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Jobs\Avatars\GetAvatarsFromInternet;
 
@@ -56,6 +59,13 @@ class CreateContact extends BaseService
     public function execute(array $data): Contact
     {
         $this->validate($data);
+
+        $account = Account::find($data['account_id']);
+        if (AccountHelper::hasReachedContactLimit($account)
+            && AccountHelper::hasLimitations($account)
+            && ! $account->legacy_free_plan_unlimited_contacts) {
+            throw new AccountLimitException();
+        }
 
         // filter out the data that shall not be updated here
         $dataOnly = Arr::except(
