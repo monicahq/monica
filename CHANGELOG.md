@@ -1,3 +1,18 @@
+# [2.22.0](https://github.com/monicahq/monica/compare/v2.21.0...v2.22.0) (2021-04-30)
+
+
+### Bug Fixes
+
+* fix bypass account limitation to create more contacts ([#5125](https://github.com/monicahq/monica/issues/5125)) ([3d66188](https://github.com/monicahq/monica/commit/3d66188350f107094309d3dcd62b8202aad25004))
+* fix bypass invitation ([#5127](https://github.com/monicahq/monica/issues/5127)) ([d889475](https://github.com/monicahq/monica/commit/d88947523094d7159a937033f3a4ab05380fb4a9))
+* fix stripe page ([#5113](https://github.com/monicahq/monica/issues/5113)) ([caa5bef](https://github.com/monicahq/monica/commit/caa5bef93bed33d269ef1260c805e0ffaffd08fa))
+
+
+### Features
+
+* create a new stacked log channel ([#5122](https://github.com/monicahq/monica/issues/5122)) ([71c3789](https://github.com/monicahq/monica/commit/71c3789b6013dcea5a3e856b5f6e52c32769b1f4))
+* display gifts date ([#5081](https://github.com/monicahq/monica/issues/5081)) ([a478fd8](https://github.com/monicahq/monica/commit/a478fd8f4394ee650a89bbf62610e973fb98c03a))
+
 # [2.21.0](https://github.com/monicahq/monica/compare/v2.20.0...v2.21.0) (2021-04-25)
 
 
