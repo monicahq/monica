@@ -156,11 +156,11 @@ return [
 
     'vue' => [
         'max' => [
-            'numeric' => '{field} may not be greater than {max}.',
-            'string' => '{field} may not be greater than {max} characters.',
+            'numeric' => '{field} tidak boleh lebih dari {max}.',
+            'string' => '{field} tidak boleh lebih dari {max} karakter.',
         ],
-        'required' => '{field} is required.',
-        'url' => '{field} is not a valid URL.',
+        'required' => '{field} diperlukan.',
+        'url' => '{field} bukan sebuah alamat URL yang valid.',
     ],
 
 ];
