@@ -12,7 +12,7 @@ return [
     'people_not_found' => 'Contact not found',
     'people_list_number_kids' => ':count child|:count children',
     'people_list_last_updated' => 'Last consulted:',
-    'people_list_number_reminders' => 'One reminder|:count reminders',
+    'people_list_number_reminders' => ':count reminder|:count reminders',
     'people_list_blank_title' => 'You don’t have anyone in your account yet',
     'people_list_blank_cta' => 'Add someone',
     'people_list_sort' => 'Sort',
