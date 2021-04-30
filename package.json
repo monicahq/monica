@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "cross-env": "^7.0",
-    "cypress": "^6.1",
+    "cypress": "^7.2.0",
     "eslint": "^7.10",
     "eslint-config-standard": "^16.0",
     "eslint-plugin-cypress": ">=2.11.2",
