@@ -10,6 +10,7 @@ Monica can be deployed on Heroku using the button below:
     - [Optional: Generate a Password grant client for OAuth access](#optional-generate-a-password-grant-client-for-oauth-access)
 - [Limitations](#limitations)
 - [Updating Heroku instance](#updating-heroku-instance)
+- [Update from 2.x to 3.x](#update-from-2x-to-3x)
 
 ## Installation
 
@@ -126,3 +127,11 @@ You can update your Monica instance to the latest version by cloning the reposit
 Clone the Monica repository to your local environment by `git clone https://github.com/monicahq/monica`, and add heroku git repository by `heroku git:remote -a (heroku app name)`. Then, push to heroku by `git push heroku master`. Heroku will build and update the repository, automatically.
 
 See more information about updating Monica (including Heroku-spcific things) [here](https://github.com/monicahq/monica/blob/master/docs/installation/update.md).
+
+
+## Update from 2.x to 3.x
+
+If you already deployed a 2.x Monica instance, when you will upgrade to 3.x, you will have to manually add `node.js` as a buildpack:
+- Go to `Settings`
+- Under `Buildpacks`, add a new buildpack, and select `nodejs`
+  - `heroku/nodejs` will be selected automatically

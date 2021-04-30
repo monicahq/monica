@@ -21,6 +21,8 @@ Monica depends on the following:
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 -   PHP 7.4+
 -   [Composer](https://getcomposer.org/)
+-   [Node.js](https://nodejs.org)
+-   [Yarn](https://yarnpkg.com)
 -   MySQL / MariaDB
 
 An editor like vim or nano should be useful too.
@@ -53,6 +55,19 @@ sudo apt install -y php php-bcmath php-curl php-gd php-gmp php-imagick \
 sudo apt install -y composer
 ```
 
+**Node.js:** Install node.js with package manager.
+
+```sh
+curl -fsSL https://deb.nodesource.com/setup_14.x | sudo bash -
+sudo apt install -y nodejs
+```
+
+**Yarn:** Install yarn with npm.
+
+```sh
+sudo npm install --global yarn
+```
+
 **MariaDB:** Install MariaDB. Note that this only installs the package, but does not setup Mysql. This is done later in the instructions:
 
 ```sh
@@ -77,8 +92,10 @@ Find the latest official version on the [release page](https://github.com/monica
 
 ```sh
 cd /var/www/monica
+# Get latest tags from GitHub
+sudo git fetch
 # Clone the desired version
-sudo git checkout tags/v1.6.2
+sudo git checkout tags/v2.18.0
 ```
 
 ### 2. Setup the database
@@ -125,16 +142,17 @@ exit
 `cd /var/www/monica` then run these steps with `sudo`:
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
-1. Update `.env` to your specific needs
+2. Update `.env` to your specific needs
     - set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
     - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
     - set the `APP_ENV` variable to `production`, `local` is only used for the development version. Beware: setting `APP_ENV` to `production` will force HTTPS. Skip this if you're running Monica locally.
-1. Run `composer install --no-interaction --no-dev` to install all packages.
-1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-1. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
+3. Run `composer install --no-interaction --no-dev` to install all packages.
+4. Run `yarn install` to install frontend packages, then `yarn run production` to build the assets (js, css).
+5. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
+6. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
     - You can use `email` and `password` parameter to setup a first account directly: `php artisan setup:production --email=your@email.com --password=yourpassword -v`
-1. _Optional_: Setup the queues with Redis, Beanstalk or Amazon SQS: see optional instruction of [generic installation](generic.md#setup-queues)
-1. _Optional_: Setup the access tokens to use the API follow optional instruction of [generic installation](generic.md#setup-access-tokens)
+7. _Optional_: Setup the queues with Redis, Beanstalk or Amazon SQS: see optional instruction of [generic installation](generic.md#setup-queues)
+8. _Optional_: Setup the access tokens to use the API follow optional instruction of [generic installation](generic.md#setup-access-tokens)
 
 ### 4. Configure cron job
 
