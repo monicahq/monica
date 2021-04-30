@@ -194,8 +194,10 @@ class SettingsController
 
         $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
 
+        $exportdate = date('Y-m-d');
+
         return response()
-            ->download($adapter->getPathPrefix().$path, 'monica.sql')
+            ->download($adapter->getPathPrefix().$path, "monica-export.$exportdate.sql")
             ->deleteFileAfterSend(true);
     }
 
