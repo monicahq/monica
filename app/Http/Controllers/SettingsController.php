@@ -22,6 +22,7 @@ use App\Http\Requests\SettingsRequest;
 use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
+use App\Exceptions\AccountLimitException;
 use App\Services\Account\Settings\ResetAccount;
 use App\Services\Account\Settings\DestroyAccount;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
@@ -300,6 +301,10 @@ class SettingsController
      */
     public function inviteUser(InvitationRequest $request)
     {
+        if (AccountHelper::hasLimitations(auth()->user()->account)) {
+            throw new AccountLimitException();
+        }
+
         // Make sure the confirmation to invite has not been bypassed
         if (! $request->input('confirmation')) {
             return redirect()->back()->withErrors(trans('settings.users_error_please_confirm'))->withInput();
