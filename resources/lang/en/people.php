@@ -16,7 +16,7 @@ return [
     'people_list_blank_title' => 'You don’t have anyone in your account yet',
     'people_list_blank_cta' => 'Add someone',
     'people_list_sort' => 'Sort',
-    'people_list_stats' => 'One contact|:count contacts',
+    'people_list_stats' => ':count contact|:count contacts',
     'people_list_firstnameAZ' => 'Sort by first name A → Z',
     'people_list_firstnameZA' => 'Sort by first name Z → A',
     'people_list_lastnameAZ' => 'Sort by last name A → Z',
