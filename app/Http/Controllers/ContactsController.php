@@ -90,19 +90,19 @@ class ContactsController extends Controller
 
         $tagsCount = Tag::contactsCount();
         $tags = null;
-        $url = '';
+        $url = null;
         $count = 1;
 
         if ($request->input('tags')) {
-            $tags = $request->input('tags');
+            $tagsInput = $request->input('tags');
 
-            $tags = $tagsCount->filter(function ($t) use ($tags) {
-                return in_array($t->name, $tags);
+            $tags = $tagsCount->filter(function ($tag) use ($tagsInput) {
+                return in_array($tag->name, $tagsInput);
             });
 
-            $url .= $tags->map(function ($t) {
-                return 'tags[]='.urlencode($t->name).'&';
-            })->join('');
+            $url = $tags->map(function ($tag) {
+                return 'tags[]='.urlencode($tag->name);
+            })->join('&');
 
             if ($tags->count() === 0) {
                 return redirect()->route('people.index');
@@ -124,8 +124,8 @@ class ContactsController extends Controller
 
         return view('people.index')
             ->withAccountHasLimitations($accountHasLimitations)
-            ->with('hidingDeceased', $showDeceased != 'true')
-            ->with('deceasedCount', $deceasedCount)
+            ->withHidingDeceased($showDeceased !== 'true')
+            ->withDeceasedCount($deceasedCount)
             ->withActive($active)
             ->withContactsCount($contactsCount)
             ->withHasArchived($nbArchived > 0)
