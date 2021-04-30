@@ -25,7 +25,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date, oldest to newest',
     'people_list_filter_tag' => 'Showing all the contacts tagged with',
     'people_list_clear_filter' => 'Clear filter',
-    'people_list_contacts_per_tags' => 'One contact|:count contacts',
+    'people_list_contacts_per_tags' => ':count contact|:count contacts',
     'people_list_show_dead' => 'Show deceased people (:count)',
     'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'Search your contacts…',
