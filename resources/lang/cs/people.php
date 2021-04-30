@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Žádné informace o práci',
     'information_work_at' => 'v :company',
     'work_add_cta' => 'Aktualizovat informace o práci',
-    'work_edit_success' => 'Work information updated',
+    'work_edit_success' => 'Údaje o zamestnaní byly aktualizovány',
     'work_edit_title' => 'Aktualizovat informace o práci pro :name',
     'work_edit_job' => 'Pracovní pozice (volitelné)',
     'work_edit_company' => 'Společnost (volitelné)',

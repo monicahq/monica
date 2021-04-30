@@ -19,12 +19,12 @@ return [
     |
     */
 
-    'reset' => 'Your password has been reset!',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'token' => 'This password reset token is invalid.',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'changed' => 'Password changed successfully.',
-    'invalid' => 'Current password you entered is not correct.',
-    'throttled' => 'Please wait before retrying.',
+    'reset' => 'Kata sandi Anda telah diatur ulang!',
+    'sent' => 'Jika email yang Anda masukkan ada/tersedia dalam catatan kami, Anda telah dikirimkan sebuah tautan pengaturan ulang kata sandi.',
+    'token' => 'Token pengaturan ulang kata sandi ini tidak valid.',
+    'user' => 'Jika email yang Anda masukkan ada/tersedia dalam catatan kami, Anda telah dikirimkan sebuah tautan pengaturan ulang kata sandi.',
+    'changed' => 'Kata sandi berhasil diganti.',
+    'invalid' => 'Kata sandi yang Anda masukkan saat ini tidak benar.',
+    'throttled' => 'Silahkan tunggu sebelum mencoba lagi.',
 
 ];
