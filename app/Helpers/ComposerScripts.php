@@ -55,4 +55,32 @@ class ComposerScripts
             \unlink(self::CONFIG); /** @phpstan-ignore-line */
         }
     }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public static function compile()
+    {
+        $gitdir = __DIR__.'/../../.git';
+        if (is_dir($gitdir)) {
+            $vals = [];
+            $vals['.version'] = trim(trim(shell_exec("git --git-dir $gitdir describe --abbrev=0 --tags"), 'v'));
+            $vals['.commit'] = trim(shell_exec("git --git-dir $gitdir log --pretty=%H -n1 HEAD"));
+
+            try {
+                $release = trim(shell_exec("git --git-dir $gitdir describe --abbrev=0 --tags --exact-match HEAD"));
+            } catch (\Exception) {
+            }
+            if ($release == '') {
+                $release = trim(shell_exec("git --git-dir $gitdir log --pretty=%h -n1 HEAD"));
+            }
+            $vals['.release'] = $release;
+
+            foreach ($vals as $key => $val) {
+                $file = fopen(__DIR__.'/../../config/'.$key, 'w');
+                fwrite($file, $val);
+                fclose($file);
+            }
+        }
+    }
 }
