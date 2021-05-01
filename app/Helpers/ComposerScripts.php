@@ -69,7 +69,8 @@ class ComposerScripts
 
             try {
                 $release = trim(shell_exec("git --git-dir $gitdir describe --abbrev=0 --tags --exact-match HEAD"));
-            } catch (\Exception) {
+            } catch (\Exception $e) {
+                // No error
             }
             if ($release == '') {
                 $release = trim(shell_exec("git --git-dir $gitdir log --pretty=%h -n1 HEAD"));
