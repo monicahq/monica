@@ -26,6 +26,7 @@ jobs:
     name: Build assets
     outputs:
       version: ${{ steps.version.outputs.version }}
+      release: ${{ steps.version.outputs.release }}
 
     strategy:
       fail-fast: false
@@ -103,15 +104,18 @@ jobs:
             exit -1
           fi
 
-      - name: Get version or revision
+      - name: Get version
         id: version
-        run: echo "::set-output name=version::$(git describe --abbrev=0 --tags --exact-match $GITHUB_SHA 2>/dev/null || git log --pretty="%h" -n1 $GITHUB_SHA)"
+        run: |
+          echo "::set-output name=version::$(git describe --abbrev=0 --tags)"
+          echo "::set-output name=release::$(git describe --abbrev=0 --tags --exact-match $GITHUB_SHA 2>/dev/null || git log --pretty="%h" -n1 $GITHUB_SHA)"
+
 
       - name: Prepare environment
         run: |
           { \
             echo "MIX_PROD_SOURCE_MAPS=true"; \
-            echo "MIX_SENTRY_RELEASE=${{ steps.version.outputs.version }}"; \
+            echo "MIX_SENTRY_RELEASE=${{ steps.version.outputs.release }}"; \
           } | tee .env
 
       - name: Build assets
@@ -125,6 +129,7 @@ jobs:
             public/mix-manifest.json
             public/js
             public/css
+            public/fonts
             !public/**/*.map
 
       - name: Store source maps
@@ -172,7 +177,8 @@ jobs:
 
       - name: Create release files
         run: |
-          echo ${{ needs.build.outputs.version }} > config/.release
+          echo ${{ needs.build.outputs.version }} > config/.version
+          echo ${{ needs.build.outputs.release }} > config/.release
           echo $GITHUB_SHA > config/.commit
 
       - name: Update .htaccess
@@ -231,5 +237,5 @@ jobs:
         with:
           environment: ${{ secrets.SENTRY_ENVIRONMENT }}
           sourcemaps: public/js/app.js public/js/app.js.map
-          version: ${{ needs.build.outputs.version }}
+          version: ${{ needs.build.outputs.release }}
           url_prefix: ~/js
