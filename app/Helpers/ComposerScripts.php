@@ -61,9 +61,10 @@ class ComposerScripts
      */
     public static function compile()
     {
+        $vals = [];
+
         $gitdir = __DIR__.'/../../.git';
         if (is_dir($gitdir)) {
-            $vals = [];
             $vals['.version'] = trim(trim(shell_exec("git --git-dir $gitdir describe --abbrev=0 --tags"), 'v'));
             $vals['.commit'] = trim(shell_exec("git --git-dir $gitdir log --pretty=%H -n1 HEAD"));
 
@@ -77,11 +78,16 @@ class ComposerScripts
             }
             $vals['.release'] = $release;
 
-            foreach ($vals as $key => $val) {
-                $file = fopen(__DIR__.'/../../config/'.$key, 'w');
-                fwrite($file, $val);
-                fclose($file);
-            }
+        } else if (env('SOURCE_VERSION') == '') {
+            $vals['.commit'] = env('SOURCE_VERSION');
+            $vals['.release'] = substr(env('SOURCE_VERSION'), 0, 8);
+
+        }
+
+        foreach ($vals as $key => $val) {
+            $file = fopen(__DIR__.'/../../config/'.$key, 'w');
+            fwrite($file, $val);
+            fclose($file);
         }
     }
 }
