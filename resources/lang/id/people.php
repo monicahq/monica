@@ -25,7 +25,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => 'Urutkan berdasarkan tanggal aktivitas terlama sampai terbaru',
     'people_list_filter_tag' => 'Menampilkan semua kontak dengan tag',
     'people_list_clear_filter' => 'Hapus filter',
-    'people_list_contacts_per_tags' => '1 kontak|:count kontak',
+    'people_list_contacts_per_tags' => ':count kontak',
     'people_list_show_dead' => 'Tampilkan orang yang telah tiada (:count)',
     'people_list_hide_dead' => 'Sembunyikan orang yang telah tiada (:count)',
     'people_search' => 'Cari kontak Anda...',
@@ -87,12 +87,12 @@ return [
 
     // Stay in touch
     'stay_in_touch' => 'Tetap berhubungan',
-    'stay_in_touch_frequency' => 'Tetap berhubungan setiap hari|Tetap berhubungan setiap {count} hari',
+    'stay_in_touch_frequency' => 'Tetap berhubungan setiap {count} hari',
     'stay_in_touch_invalid' => 'Frekuensinya harus berupa angka yang lebih besar dari 0.',
     'stay_in_touch_premium' => 'Anda perlu meningkatkan akun Anda untuk memanfaatkan fitur ini',
     'stay_in_touch_modal_title' => 'Tetap berhubungan',
     'stay_in_touch_modal_desc' => 'Kami dapat mengingatkan Anda melalui email untuk tetap berhubungan dengan {firstname} pada sebuah interval reguler.',
-    'stay_in_touch_modal_label' => 'Kirimkan saya email setiap... {count} hari|Kirimkan saya email setiap... {count} hari',
+    'stay_in_touch_modal_label' => 'Kirimkan saya email setiap... {count} hari',
 
     // Calls
     'modal_call_title' => 'Catat sebuah panggilan',
