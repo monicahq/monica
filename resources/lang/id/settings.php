@@ -196,7 +196,7 @@ return [
     'subscriptions_downgrade_title' => 'Turunkan akun Anda ke paket rencana gratis',
     'subscriptions_downgrade_limitations' => 'Paket rencana gratis memiliki keterbatasan. Untuk dapat menurunkan versi, Anda harus lulus daftar periksa di bawah ini:',
     'subscriptions_downgrade_rule_users' => 'Anda harus memiliki hanya 1 pengguna di akun Anda',
-    'subscriptions_downgrade_rule_users_constraint' => 'Anda saat ini memiliki <a href=":url">1 pengguna</a> pada akun Anda.|Anda saat ini memiliki <a href=":url">:count pengguna</a> pada akun Anda.',
+    'subscriptions_downgrade_rule_users_constraint' => 'Anda saat ini memiliki <a href=":url">:count pengguna</a> pada akun Anda.',
     'subscriptions_downgrade_rule_invitations' => 'Anda tidak boleh memiliki undangan yang tertunda',
     'subscriptions_downgrade_rule_invitations_constraint' => 'Anda saat ini memiliki <a href=":url">1 undangan tertunda</a>. | Anda saat ini memiliki <a href=":url">:count undangan tertunda</a>.',
     'subscriptions_downgrade_rule_contacts' => 'Anda tidak boleh memiliki lebih dari :number kontak aktif',
