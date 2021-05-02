@@ -23,7 +23,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.php-version }}
-          extensions: imagick, redis
+          extensions: redis
           coverage: none
 
       - name: Get Composer Cache Directory
@@ -56,7 +56,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.php-version }}
-          extensions: imagick, redis
+          extensions: redis
           coverage: none
 
       - name: Get Composer Cache Directory
