@@ -80,9 +80,8 @@ We've installed the development version with [Valet](https://laravel.com/docs/va
 **Prerequisites**:
 * Git
 * [Node](https://nodejs.org/en/)
-* PHP 7.4+
+* PHP 7.4+ or 8.0+
 * [Composer](https://getcomposer.org/)
-* GNU Make
 
 **Steps to install Monica**
 

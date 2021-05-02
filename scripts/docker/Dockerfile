@@ -5,7 +5,7 @@
 ### The standard monica image definition will be found here: https://github.com/monicahq/docker
 ###
 
-FROM php:7.4-apache
+FROM php:8.0-apache
 
 # opencontainers annotations https://github.com/opencontainers/image-spec/blob/master/annotations.md
 LABEL org.opencontainers.image.authors="Alexis Saettler <alexis@saettler.org>" \
@@ -40,7 +40,6 @@ RUN set -ex; \
         libjpeg62-turbo-dev \
         libgmp-dev \
         libmemcached-dev \
-        libmagickwand-dev \
         libwebp-dev \
     ; \
     \
