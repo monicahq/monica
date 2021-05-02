@@ -19,9 +19,8 @@
 
         <div class="panel-body">
           {{ $t('settings.2fa_enable_otp') }}
+          <div v-html="image"></div>
           <p>
-            <div v-html="image"></div>
-            <br />
             {{ $t('settings.2fa_enable_otp_help') }}
             <code id="secretkey">
               {{ secret }}
