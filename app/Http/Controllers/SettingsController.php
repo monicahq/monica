@@ -233,9 +233,16 @@ class SettingsController
 
     public function storeImport(ImportsRequest $request)
     {
+        $account = auth()->user()->account;
+        if (AccountHelper::hasReachedContactLimit($account)
+            && AccountHelper::hasLimitations($account)
+            && ! $account->legacy_free_plan_unlimited_contacts) {
+            throw new AccountLimitException();
+        }
+
         $filename = $request->file('vcard')->store('imports', 'public');
 
-        $importJob = auth()->user()->account->importjobs()->create([
+        $importJob = $account->importjobs()->create([
             'user_id' => auth()->user()->id,
             'type' => 'vcard',
             'filename' => $filename,

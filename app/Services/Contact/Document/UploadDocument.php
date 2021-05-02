@@ -3,8 +3,11 @@
 namespace App\Services\Contact\Document;
 
 use App\Services\BaseService;
+use App\Helpers\AccountHelper;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
+use App\Exceptions\AccountLimitException;
 
 class UploadDocument extends BaseService
 {
@@ -31,6 +34,13 @@ class UploadDocument extends BaseService
     public function execute(array $data): Document
     {
         $this->validate($data);
+
+        $account = Account::find($data['account_id']);
+        if (AccountHelper::hasReachedContactLimit($account)
+            && AccountHelper::hasLimitations($account)
+            && ! $account->legacy_free_plan_unlimited_contacts) {
+            throw new AccountLimitException();
+        }
 
         Contact::where('account_id', $data['account_id'])
                 ->findOrFail($data['contact_id']);
