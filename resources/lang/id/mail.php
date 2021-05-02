@@ -21,7 +21,7 @@ return [
     'notification_description' => 'Di :count hari (pada :date), peristiwa berikut akan terjadi:',
 
     'stay_in_touch_subject_line' => 'Tetap berhubungan dengan :name',
-    'stay_in_touch_subject_description' => 'Anda meminta untuk diingatkan untuk tetap berhubungan dengan :name setiap :frequency day.|Anda meminta untuk diingatkan untuk tetap berhubungan dengan :name setiap :frequency day.',
+    'stay_in_touch_subject_description' => 'Anda meminta untuk diingatkan untuk tetap berhubungan dengan :name setiap :frequency hari.',
 
     'notifications_whoops' => 'Waduh!',
     'notifications_hello' => 'Halo!',
