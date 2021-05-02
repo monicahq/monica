@@ -4,8 +4,6 @@
       "@semantic-release/commit-analyzer", {
         "preset": "angular",
         "releaseRules": [
-          {"type": "refactor", "scope": "laravel", "release": "minor"},
-          {"type": "refactor", "release": "patch"},
           {"scope": "no-release", "release": false}
         ]
       }
