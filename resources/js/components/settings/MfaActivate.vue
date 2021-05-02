@@ -20,7 +20,7 @@
         <div class="panel-body">
           {{ $t('settings.2fa_enable_otp') }}
           <p>
-            <img id="barcode" alt="Image of QR barcode" :src="image" />
+            <div v-html="image"></div>
             <br />
             {{ $t('settings.2fa_enable_otp_help') }}
             <code id="secretkey">
