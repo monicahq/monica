@@ -44,7 +44,7 @@ return [
     'retry' => 'Coba Lagi',
     'filter' => 'Filter daftar',
     'go_back' => 'Kembali',
-    'file_selected' => 'Satu berkas dipilih…|{count} berkas dipilih…',
+    'file_selected' => '{count} berkas dipilih…',
 
     'application_title' => 'Monica – pengelola kontak relasi pribadi',
     'application_description' => 'Monica adalah sebuah alat untuk mengelola interaksi Anda dengan orang yang Anda sayangi, teman, dan keluarga.',
@@ -74,7 +74,7 @@ return [
     'footer_new_version' => 'Sebuah versi baru dari Monica tersedia',
 
     'footer_modal_version_whats_new' => 'Apa yang baru',
-    'footer_modal_version_release_away' => 'Anda tertinggal 1 rilisan dibelakang versi baru yang tersedia. Anda harus memperbarui pemasangan Anda.|Anda tertinggal :number rilisan dibelakang versi baru yang tersedia. Anda harus memperbarui pemasangan Anda.',
+    'footer_modal_version_release_away' => 'Anda tertinggal :number rilisan dibelakang versi baru yang tersedia. Anda harus memperbarui pemasangan Anda.',
 
     'breadcrumb_dashboard' => 'Dasbor',
     'breadcrumb_list_contacts' => 'Daftar orang',
