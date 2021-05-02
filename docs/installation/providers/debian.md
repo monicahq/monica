@@ -45,7 +45,7 @@ sudo apt install -y git
 Install PHP 7.4 with these extensions:
 
 ```sh
-sudo apt install -y php php-bcmath php-curl php-gd php-gmp php-imagick \
+sudo apt install -y php php-bcmath php-curl php-gd php-gmp \
     php-intl php-mbstring php-mysql php-redis php-xml php-zip
 ```
 

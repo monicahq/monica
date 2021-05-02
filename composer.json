@@ -13,7 +13,6 @@
         "ext-bcmath": "*",
         "ext-gd": "*",
         "ext-gmp": "*",
-        "ext-imagick": "*",
         "ext-intl": "*",
         "ext-redis": "*",
         "asbiin/laravel-webauthn": "^1.0",

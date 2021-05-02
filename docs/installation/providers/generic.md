@@ -47,7 +47,6 @@ If you don't want to use Docker, the best way to setup the project is to use the
 -   sodium
 -   xml
 -   zip
--   imagick
 
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager. It is not enough to just install Composer, you also need to make sure it is installed globally for Monica's installation to run smoothly:
 

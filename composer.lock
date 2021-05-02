@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aebf6def55106d5d7d85307e0fdd2c2b",
+    "content-hash": "434e50e8209b64eb33aedb04241707d8",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -15920,7 +15920,7 @@
                 "pear/archive_tar": "<1.4.12",
                 "personnummer/personnummer": "<3.0.2",
                 "phpfastcache/phpfastcache": ">=5,<5.0.13",
-                "phpmailer/phpmailer": "<6.1.6",
+                "phpmailer/phpmailer": "<6.1.6|>=6.1.8,<6.4.1",
                 "phpmussel/phpmussel": ">=1,<1.6",
                 "phpmyadmin/phpmyadmin": "<4.9.6|>=5,<5.0.3",
                 "phpoffice/phpexcel": "<1.8.2",
@@ -16112,7 +16112,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-29T22:01:20+00:00"
+            "time": "2021-05-02T09:01:19+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -18152,7 +18152,6 @@
         "ext-bcmath": "*",
         "ext-gd": "*",
         "ext-gmp": "*",
-        "ext-imagick": "*",
         "ext-intl": "*",
         "ext-redis": "*"
     },
