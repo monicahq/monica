@@ -77,11 +77,9 @@ class ComposerScripts
                 $release = trim(shell_exec("git --git-dir $gitdir log --pretty=%h -n1 HEAD"));
             }
             $vals['.release'] = $release;
-
-        } else if (env('SOURCE_VERSION') == '') {
+        } elseif (env('SOURCE_VERSION') == '') {
             $vals['.commit'] = env('SOURCE_VERSION');
             $vals['.release'] = substr(env('SOURCE_VERSION'), 0, 8);
-
         }
 
         foreach ($vals as $key => $val) {
