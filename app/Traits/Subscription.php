@@ -20,6 +20,9 @@ trait Subscription
     public function subscribe(string $payment_method, string $planName)
     {
         $plan = InstanceHelper::getPlanInformationFromConfig($planName);
+        if ($plan === null) {
+            abort(404);
+        }
 
         return $this->stripeCall(function () use ($payment_method, $plan) {
             $this->newSubscription($plan['name'], $plan['id'])

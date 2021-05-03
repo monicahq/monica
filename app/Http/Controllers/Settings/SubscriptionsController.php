@@ -56,8 +56,14 @@ class SubscriptionsController extends Controller
             $invoices = $account->invoices();
         }
 
+        $planInformation = InstanceHelper::getPlanInformationFromConfig($subscription->name);
+
+        if ($planInformation === null) {
+            abort(404);
+        }
+
         return view('settings.subscriptions.account', [
-            'planInformation' => InstanceHelper::getPlanInformationFromConfig($subscription->name),
+            'planInformation' => $planInformation,
             'nextBillingDate' => $nextBillingDate,
             'subscription' => $subscription,
             'hasInvoices' => $hasInvoices,
@@ -83,9 +89,14 @@ class SubscriptionsController extends Controller
         }
 
         $plan = $request->query('plan');
+        $planInformation = InstanceHelper::getPlanInformationFromConfig($plan);
+
+        if ($planInformation === null) {
+            abort(404);
+        }
 
         return view('settings.subscriptions.upgrade', [
-            'planInformation' => InstanceHelper::getPlanInformationFromConfig($plan),
+            'planInformation' => $planInformation,
             'nextTheoriticalBillingDate' => DateHelper::getFullDate(DateHelper::getNextTheoriticalBillingDate($plan)),
             'intent' => auth()->user()->account->createSetupIntent(),
         ]);
