@@ -66,7 +66,7 @@ return [
     'layout_big' => 'Full nettleserbredde',
     'save' => 'Oppdater innstillinger',
     'delete_title' => 'Slett kontoen din',
-    'delete_desc' => 'Do you wish to delete your account? Deletion is permanent and all of your data will be erased permanently. If you have a subscription, it will be cancelled immediately.',
+    'delete_desc' => 'Ønsker du å slette din konto? Sletting er permanent og alle dine data vil bli slettet permanent. Hvis du har et abonnement, blir det kansellert umiddelbart.',
     'delete_other_desc' => 'Your data in the main database will be deleted immediately. As described in our privacy policy, we carry out daily backups, securely encrypted backups of the database and this backup is kept for 30 days after which it is completely deleted. We cannot delete specific data from the backups we hold any earlier than this.  All of your data will be completely deleted within 30 days of your account’s deletion.',
     'reset_desc' => 'Do you wish to reset your account? This will remove all your contacts, and all of the data associated with them. Your account will not be deleted.',
     'reset_title' => 'Tilbakestill konto',
