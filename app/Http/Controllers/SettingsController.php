@@ -240,7 +240,7 @@ class SettingsController
             throw new AccountLimitException();
         }
 
-        $filename = $request->file('vcard')->store('imports', 'public');
+        $filename = $request->file('vcard')->store('imports', config('filesystems.default'));
 
         $importJob = $account->importjobs()->create([
             'user_id' => auth()->user()->id,
