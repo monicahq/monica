@@ -16,7 +16,6 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        AccountLimitException::class,
         OAuthServerException::class,
         WrongIdException::class,
     ];

@@ -5,6 +5,7 @@ namespace App\Models\Account;
 use App\Models\User\User;
 use Sabre\VObject\Reader;
 use Illuminate\Support\Arr;
+use App\Helpers\AccountHelper;
 use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Database\Eloquent\Model;
@@ -104,13 +105,13 @@ class ImportJob extends Model
     {
         $this->initJob();
 
-        if ($this->getPhysicalFile()) {
+        if (! $this->failed && $this->getPhysicalFile()) {
             $this->getEntries();
 
             $this->processEntries($behaviour);
-
-            $this->deletePhysicalFile();
         }
+
+        $this->deletePhysicalFile();
 
         if (! $this->failed) {
             $this->endJob();
@@ -124,6 +125,10 @@ class ImportJob extends Model
      */
     private function initJob(): void
     {
+        if (AccountHelper::hasLimitations($this->account)) {
+            $this->fail(trans('auth.not_authorized'));
+        }
+
         $this->started_at = now();
         $this->contacts_imported = 0;
         $this->contacts_skipped = 0;
@@ -151,7 +156,9 @@ class ImportJob extends Model
     private function fail(string $reason): void
     {
         $this->failed = true;
-        $this->failed_reason = $reason;
+        if (! $this->failed_reason) {
+            $this->failed_reason = $reason;
+        }
         $this->endJob();
     }
 

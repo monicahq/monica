@@ -22,15 +22,24 @@ use App\Http\Requests\SettingsRequest;
 use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
-use App\Exceptions\AccountLimitException;
 use App\Services\Account\Settings\ResetAccount;
 use App\Services\Account\Settings\DestroyAccount;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
 
-class SettingsController
+class SettingsController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('limitations')->only(['inviteUser', 'storeImport']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -233,16 +242,9 @@ class SettingsController
 
     public function storeImport(ImportsRequest $request)
     {
-        $account = auth()->user()->account;
-        if (AccountHelper::hasReachedContactLimit($account)
-            && AccountHelper::hasLimitations($account)
-            && ! $account->legacy_free_plan_unlimited_contacts) {
-            throw new AccountLimitException();
-        }
-
         $filename = $request->file('vcard')->store('imports', config('filesystems.default'));
 
-        $importJob = $account->importjobs()->create([
+        $importJob = auth()->user()->account->importjobs()->create([
             'user_id' => auth()->user()->id,
             'type' => 'vcard',
             'filename' => $filename,
@@ -308,10 +310,6 @@ class SettingsController
      */
     public function inviteUser(InvitationRequest $request)
     {
-        if (AccountHelper::hasLimitations(auth()->user()->account)) {
-            throw new AccountLimitException();
-        }
-
         // Make sure the confirmation to invite has not been bypassed
         if (! $request->input('confirmation')) {
             return redirect()->back()->withErrors(trans('settings.users_error_please_confirm'))->withInput();
