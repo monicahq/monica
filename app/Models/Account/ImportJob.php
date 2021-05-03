@@ -104,15 +104,17 @@ class ImportJob extends Model
     {
         $this->initJob();
 
-        $this->getPhysicalFile();
+        if ($this->getPhysicalFile()) {
+            $this->getEntries();
 
-        $this->getEntries();
+            $this->processEntries($behaviour);
 
-        $this->processEntries($behaviour);
+            $this->deletePhysicalFile();
+        }
 
-        $this->deletePhysicalFile();
-
-        $this->endJob();
+        if (! $this->failed) {
+            $this->endJob();
+        }
     }
 
     /**
@@ -156,29 +158,33 @@ class ImportJob extends Model
     /**
      * Get the physical file (the vCard file).
      *
-     * @return self
+     * @return bool
      */
-    private function getPhysicalFile()
+    private function getPhysicalFile(): bool
     {
         try {
             $this->physicalFile = Storage::disk(config('filesystems.default'))->readStream($this->filename);
         } catch (FileNotFoundException $exception) {
             $this->fail(trans('settings.import_vcard_file_not_found'));
+            return false;
         }
 
-        return $this;
+        return true;
     }
 
     /**
      * Delete the physical file from the disk.
      *
-     * @return void
+     * @return bool
      */
-    private function deletePhysicalFile(): void
+    private function deletePhysicalFile(): bool
     {
         if (! Storage::disk(config('filesystems.default'))->delete($this->filename)) {
             $this->fail(trans('settings.import_vcard_file_not_found'));
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -202,7 +208,7 @@ class ImportJob extends Model
         while (true) {
             try {
                 /** @var VCard|null */
-                $entry = $this->entries->getNext();
+                $entry = $this->entries ? $this->entries->getNext() : null;
                 if (! $entry) {
                     // file end
                     break;
