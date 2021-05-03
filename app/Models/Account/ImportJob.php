@@ -50,7 +50,7 @@ class ImportJob extends Model
      *
      * @var VCardReader
      */
-    public $entries;
+    public $entries = null;
 
     /**
      * The attributes that aren't mass assignable.
@@ -217,7 +217,7 @@ class ImportJob extends Model
         while (true) {
             try {
                 /** @var VCard|null */
-                $entry = $this->entries ? $this->entries->getNext() : null;
+                $entry = $this->entries !== null ? $this->entries->getNext() : null;
                 if (! $entry) {
                     // file end
                     break;
