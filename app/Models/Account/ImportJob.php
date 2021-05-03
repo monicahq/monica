@@ -173,6 +173,7 @@ class ImportJob extends Model
             $this->physicalFile = Storage::disk(config('filesystems.default'))->readStream($this->filename);
         } catch (FileNotFoundException $exception) {
             $this->fail(trans('settings.import_vcard_file_not_found'));
+
             return false;
         }
 
@@ -188,6 +189,7 @@ class ImportJob extends Model
     {
         if (! Storage::disk(config('filesystems.default'))->delete($this->filename)) {
             $this->fail(trans('settings.import_vcard_file_not_found'));
+
             return false;
         }
 
