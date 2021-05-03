@@ -3700,14 +3700,14 @@ debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.9:
   dependencies:
     ms "2.0.0"
 
-debug@4.3.1, debug@^4.1.1, debug@^4.2.0, debug@^4.3.1:
+debug@4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.1.tgz#f0d229c505e0c6d8c49ac553d1b13dc183f6b2ee"
   integrity sha512-doEwdvm4PCeK4K3RQN2ZC2BYUBaxwLARCqZmMjtF8a51J2Rb0xpVloFRnCODwqjpwnAoao4pelN8l3RJdv3gRQ==
   dependencies:
     ms "2.1.2"
 
-debug@4.3.2, debug@^4.0.1, debug@^4.1.0:
+debug@4.3.2, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.2.0, debug@^4.3.1:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.2.tgz#f0a49c18ac8779e31d4a0c6029dfb76873c7428b"
   integrity sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==
@@ -9453,10 +9453,10 @@ snyk-go-plugin@1.17.0:
     tmp "0.2.1"
     tslib "^1.10.0"
 
-snyk-gradle-plugin@3.14.3:
-  version "3.14.3"
-  resolved "https://registry.yarnpkg.com/snyk-gradle-plugin/-/snyk-gradle-plugin-3.14.3.tgz#f576b55edfb6ace86356fc4d735939f3efe25527"
-  integrity sha512-jQw4rQT0DvejrdnZoTgy5W9k9D3K8xu8Qr1/2+uVrSCQL6lzbw2OrYYIjmiZseI2EIzkJUM42ZSAoDm+rIffBw==
+snyk-gradle-plugin@3.14.4:
+  version "3.14.4"
+  resolved "https://registry.yarnpkg.com/snyk-gradle-plugin/-/snyk-gradle-plugin-3.14.4.tgz#daaff12ab017014e685520703abd432600e98b56"
+  integrity sha512-EwosGFPizeg03wFl2z0X8qw5+zpTZLGwgtLyFcFTBCUxfuLjEOy71XYkgpHOOsV9PPKzOIAKjOhKof4K1nyinw==
   dependencies:
     "@snyk/cli-interface" "2.11.0"
     "@snyk/dep-graph" "^1.28.0"
@@ -9669,9 +9669,9 @@ snyk-try-require@^2.0.0:
     lru-cache "^5.1.1"
 
 snyk@^1.410:
-  version "1.573.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.573.0.tgz#dcd415df89e3947cca01613a48456e656010f5d3"
-  integrity sha512-6/6i6il8/Htr6Y9h8vbLE7HnKvGAm6TbWYfHV9pKuSeSTQ2p+bg7JgMg1OzRLnv0qZBoMiDUpoCGh1QRh4Ej2g==
+  version "1.575.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.575.0.tgz#4de27c54d79cafee68568da245ddff1aa604a58f"
+  integrity sha512-xlkPkNE2Pe9TRR+pFVUACeESN4k+jrPZcHCgIpc0x3be2ovC7ccEu+oh7pomGVYJVdEuviNfunL/5uCApZAhVQ==
   dependencies:
     "@open-policy-agent/opa-wasm" "^1.2.0"
     "@snyk/cli-interface" "2.11.0"
@@ -9722,7 +9722,7 @@ snyk@^1.410:
     snyk-cpp-plugin "2.2.1"
     snyk-docker-plugin "4.20.1"
     snyk-go-plugin "1.17.0"
-    snyk-gradle-plugin "3.14.3"
+    snyk-gradle-plugin "3.14.4"
     snyk-module "3.1.0"
     snyk-mvn-plugin "2.25.3"
     snyk-nodejs-lockfile-parser "1.34.0"
