@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use function Safe\date;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Str;
