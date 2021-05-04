@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # set version of vagrant to use :
-vagrantversion=2.2.14
+vagrantversion=2.2.15
 
 mkdir -p $HOME/vagrant
 pushd $HOME/vagrant > /dev/null
@@ -15,7 +15,7 @@ if [ ! -d "vagrant-$vagrantversion" ]; then
 
   curl -Os https://releases.hashicorp.com/vagrant/${vagrantversion}/vagrant_${vagrantversion}_SHA256SUMS
   curl -Os https://releases.hashicorp.com/vagrant/${vagrantversion}/vagrant_${vagrantversion}_SHA256SUMS.sig
-  gpg --keyserver keys.gnupg.net --recv-keys 51852D87348FFC4C
+  gpg --keyserver keys.gnupg.net --recv-keys 72D7468F
 
   verif=0
   if gpg --quiet --verify vagrant_${vagrantversion}_SHA256SUMS.sig vagrant_${vagrantversion}_SHA256SUMS 2>/dev/null; then

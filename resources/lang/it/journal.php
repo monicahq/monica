@@ -13,6 +13,7 @@ return [
     'journal_add' => 'Scrivi nel diario',
     'journal_edit' => 'Modifica una voce del diario',
     'journal_empty' => 'Diario vuoto',
+    'journal_created_at' => 'Creato il {date}',
     'journal_created_automatically' => 'Creata automaticamente',
     'journal_entry_type_journal' => 'Voce del diario',
     'journal_entry_type_activity' => 'Attività',

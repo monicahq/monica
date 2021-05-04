@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <div class="sidebar-box" :class="[ editMode ? 'edit' : '' ]">
     <notifications group="main" position="bottom right" />

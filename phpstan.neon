@@ -28,8 +28,6 @@ parameters:
           path: */Http/Controllers/DAV/Backend/CardDAV/AddressBookHome.php
         - message: '#Access to an undefined property object::\$action\.#'
           path: */Helpers/AuditLogHelper.php
-        - message: '#Call to an undefined method Illuminate\\Support\\HigherOrderCollectionProxy::delete\(\)\.#'
-          path: */Models/Contact/Reminder.php
         - message: '#Property App\\Models\\Contact\\Contact::\$avatar_photo_id \(int\) does not accept null\.#'
           path: */Services/Contact/Avatar/UpdateAvatar.php
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::addressBook\(\)\.#'

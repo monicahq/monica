@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <div>
     <div class="">
@@ -326,7 +323,7 @@ export default {
     },
 
     compiledMarkdown (text) {
-      return marked(text, { sanitize: true });
+      return text !== undefined && text !== null ? marked(text, { sanitize: true }) : '';
     },
 
     resetFields() {

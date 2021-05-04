@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <div>
     <notifications group="main" position="bottom right" />

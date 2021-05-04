@@ -154,4 +154,13 @@ return [
 
     'attributes' => [],
 
+    'vue' => [
+        'max' => [
+            'numeric' => '{field} tidak boleh lebih dari {max}.',
+            'string' => '{field} tidak boleh lebih dari {max} karakter.',
+        ],
+        'required' => '{field} diperlukan.',
+        'url' => '{field} bukan sebuah alamat URL yang valid.',
+    ],
+
 ];

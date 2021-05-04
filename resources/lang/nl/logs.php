@@ -10,11 +10,11 @@ return [
 
     // contact creation
     'contact_log_contact_created' => 'Contact is aangemaakt.',
-    'settings_log_contact_created_with_name' => 'Added :name as a contact.',
+    'settings_log_contact_created_with_name' => ':name is toegevoegd als contact.',
 
     // contat description update
-    'contact_log_contact_description_updated' => 'Updated the description.',
-    'settings_log_contact_description_updated_with_name' => 'Updated the description of :name.',
+    'contact_log_contact_description_updated' => 'Beschrijving geüpdatet.',
+    'settings_log_contact_description_updated_with_name' => 'Beschrijving van :name geüpdatet.',
 
     // contact description clear
     'contact_log_contact_description_cleared' => 'De beschrijving is gewist.',
@@ -22,7 +22,7 @@ return [
 
     // contact work information update
     'contact_log_contact_work_updated' => 'Werkinformatie bijgewerkt.',
-    'settings_log_contact_work_updated_with_name' => 'Updated work information of :name.',
+    'settings_log_contact_work_updated_with_name' => 'Werkinformatie van :name geüpdatet.',
 
     // company created
     'settings_log_company_created' => 'Bedrijf genaamd :name aangemaakt.',

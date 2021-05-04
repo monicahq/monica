@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Nessun risultato trovato',
     'people_search_next' => 'Successivo',
     'people_search_prev' => 'Precedente',
-    'people_search_rows_per_page' => 'Rows per page',
+    'people_search_rows_per_page' => 'Righe per pagina',
     'people_search_of' => 'di',
     'people_search_page' => 'Pagina',
     'people_search_all' => 'Tutto',
@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Nessuna informazione professionale',
     'information_work_at' => 'alla :company',
     'work_add_cta' => 'Aggiorna informazioni professionali',
-    'work_edit_success' => 'Le informazioni professionali sono state aggiornate.',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Aggiorna informazioni professionali di :name',
     'work_edit_job' => 'Titolo (facoltativo)',
     'work_edit_company' => 'Azienda (facoltativa)',
@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Visualizza commento',
     'gifts_mark_offered' => 'Segna come dato',
     'gifts_update_success' => 'Regalo modificato',
+    'gifts_add_date' => 'Data (opzionale)',
 
     // debts
     'debt_delete_confirmation' => 'Rimuovere questo debito?',
@@ -500,8 +501,8 @@ return [
     'photo_current_profile_pic' => 'Attuale immagine del profilo',
     'photo_make_profile_pic' => 'Rendi questa foto immagine del profilo',
     'photo_delete' => 'Elimina foto',
-    'photo_next' => 'Next photo ❯',
-    'photo_previous' => '❮ Previous photo',
+    'photo_next' => 'Prossima foto ❯',
+    'photo_previous' => '❮ Foto precedente',
 
     // Avatars
     'avatar_change_title' => 'Cambia il tuo avatar',
