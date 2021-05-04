@@ -44,11 +44,11 @@ return [
     'retry' => 'לנסות שוב',
     'filter' => 'סינון הרשימה',
     'go_back' => 'חזרה',
-    'file_selected' => 'קובץ אחד נבחר…|{count} קבצים נבחרו…',
+    'file_selected' => 'נבחר קובץ אחד…|{count} קבצים נבחרו…',
 
     'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
     'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
-    'application_og_title' => 'חיזוק הקשר עם אהוביך. מערכת ניהול מקוונת בחינם לקשרים עם חברים ומשפחה.',
+    'application_og_title' => 'חיזוק הקשר עם אהוביך. מערכת ניהול קשרים עם חברים ומשפחה, מקוונת ובחינם.',
 
     'markdown_description' => 'רוצה להוסיף קצת עניין לטקסט שלך? במערכת זו קיימת תמיכה ב־Markdown כדי להוסיף הדגשה, הטיה, רשימות ועוד.',
     'markdown_link' => 'קריאת התיעוד',
@@ -64,14 +64,14 @@ return [
     'main_nav_activities' => 'פעילויות',
     'main_nav_tasks' => 'משימות',
 
-    'footer_remarks' => 'יש הערות?',
-    'footer_send_email' => 'ניתן לשלוח לי דוא״ל',
+    'footer_remarks' => 'הערות?',
+    'footer_send_email' => 'ניתן לשלוח לנו דוא״ל',
     'footer_privacy' => 'מדיניות פרטיות',
     'footer_release' => 'הערות הוצאה לאור',
     'footer_newsletter' => 'רשימת דיוור',
     'footer_source_code' => 'תרומה',
     'footer_version' => 'גרסה: :version',
-    'footer_new_version' => 'גרסה חדשה זמינה',
+    'footer_new_version' => 'גרסה חדשה של מוניקה זמינה',
 
     'footer_modal_version_whats_new' => 'מה חדש',
     'footer_modal_version_release_away' => 'גרסה זו יצאה לאור גרסה אחת לפני הגרסה העדכנית הנוכחית. עליך לעדכן את העותק שלך.|גרסה זו יצאה לאור :number גרסאות לפני הגרסה העדכנית הנוכחית. עליך לעדכן את העותק שלך.',

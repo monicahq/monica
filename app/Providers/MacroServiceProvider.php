@@ -23,5 +23,14 @@ class MacroServiceProvider extends ServiceProvider
                 return CollectionHelper::sortByCollator($collect, $callback, $options, $descending);
             });
         }
+
+        if (! Collection::hasMacro('groupByItemsProperty')) {
+            Collection::macro('groupByItemsProperty', function ($property) {
+                /** @var Collection */
+                $collect = $this;
+
+                return CollectionHelper::groupByItemsProperty($collect, $property);
+            });
+        }
     }
 }

@@ -65,7 +65,8 @@
     background-image: -webkit-linear-gradient(270deg, #32cd32 0%, #228b22 90%);
     background-image: linear-gradient(-180deg, #32cd32 0%, #228b22 90%);
     background-position: 0 -0.5em;
-    border-color: rgba(27,31,35,0.5);
+    border-color: #228b22;
+    color: #edd077;
   }
 }
 
@@ -76,6 +77,17 @@
     background-color: #b22222;
     background-image: linear-gradient(#d9534f, #b22222);
     border-color: #d9534f;
+    color: #fff;
+  }
+}
+
+.btn-warning {
+  color: #daa520;
+
+  &:hover, &:focus {
+    background-color: #daa520;
+    background-image: linear-gradient(#fffacd, #daa520);
+    border-color: #fffacd;
     color: #fff;
   }
 }

@@ -1,3 +1,68 @@
+## [3.0.1](https://github.com/monicahq/monica/compare/v3.0.0...v3.0.1) (2021-05-02)
+
+
+### Bug Fixes
+
+* fix deploy on fortrabbit with version number ([#5139](https://github.com/monicahq/monica/issues/5139)) ([c5394af](https://github.com/monicahq/monica/commit/c5394af9bc30207a9158488c7617f3bb265a3c72))
+* fix import job without subscription bypass ([#5147](https://github.com/monicahq/monica/issues/5147)) ([fbac248](https://github.com/monicahq/monica/commit/fbac24891a9ace9f9c88fd4d23b8612243af283a))
+
+# [3.0.0](https://github.com/monicahq/monica/compare/v2.22.1...v3.0.0) (2021-04-30)
+
+
+### Features
+
+* remove assets from repository (see [#4759](https://github.com/monicahq/monica/issues/4759)) ([#5133](https://github.com/monicahq/monica/issues/5133)) ([02ba369](https://github.com/monicahq/monica/commit/02ba3694929154ecdafbe95fa34ad6920680b6b7))
+
+
+### BREAKING CHANGES
+
+* The assets are no longer embedded in source code: javascript, css, font files. Run `yarn install` then `yarn run production` to recreate them from sources, or download a [release file](https://github.com/monicahq/monica/releases) that contains compiled files.
+* For Heroku users: You'll have to manually go to `Settings` > `Buildpacks` and add buildpack: `nodejs`. See [this doc](https://github.com/monicahq/monica/blob/master/docs/installation/providers/heroku.md#update-from-2x-to-3x).
+* See more information about how to install a Monica instance [here](https://github.com/monicahq/monica/tree/master/docs/installation).
+
+## [2.22.1](https://github.com/monicahq/monica/compare/v2.22.0...v2.22.1) (2021-04-30)
+
+
+### Code Refactoring
+
+* remove assets from repository ([#4759](https://github.com/monicahq/monica/issues/4759)) ([570dde1](https://github.com/monicahq/monica/commit/570dde1a13096c8e15fa436eae99ddc572486922))
+
+
+### BREAKING CHANGES
+
+* The assets are no longer embedded in source code: javascript, css, font files. Run `yarn install` then `yarn run production` to recreate them from sources, or download a [release file](https://github.com/monicahq/monica/releases) that contains compiled files.
+* For Heroku users: You'll have to manually go to `Settings` > `Buildpacks` and add buildpack: `nodejs`. See [this doc](https://github.com/monicahq/monica/blob/master/docs/installation/providers/heroku.md#update-from-2x-to-3x).
+* See more information about how to install a Monica instance [here](https://github.com/monicahq/monica/tree/master/docs/installation).
+
+# [2.22.0](https://github.com/monicahq/monica/compare/v2.21.0...v2.22.0) (2021-04-30)
+
+
+### Bug Fixes
+
+* fix bypass account limitation to create more contacts ([#5125](https://github.com/monicahq/monica/issues/5125)) ([3d66188](https://github.com/monicahq/monica/commit/3d66188350f107094309d3dcd62b8202aad25004))
+* fix bypass invitation ([#5127](https://github.com/monicahq/monica/issues/5127)) ([d889475](https://github.com/monicahq/monica/commit/d88947523094d7159a937033f3a4ab05380fb4a9))
+* fix stripe page ([#5113](https://github.com/monicahq/monica/issues/5113)) ([caa5bef](https://github.com/monicahq/monica/commit/caa5bef93bed33d269ef1260c805e0ffaffd08fa))
+
+
+### Features
+
+* create a new stacked log channel ([#5122](https://github.com/monicahq/monica/issues/5122)) ([71c3789](https://github.com/monicahq/monica/commit/71c3789b6013dcea5a3e856b5f6e52c32769b1f4))
+* display gifts date ([#5081](https://github.com/monicahq/monica/issues/5081)) ([a478fd8](https://github.com/monicahq/monica/commit/a478fd8f4394ee650a89bbf62610e973fb98c03a))
+
+# [2.21.0](https://github.com/monicahq/monica/compare/v2.20.0...v2.21.0) (2021-04-25)
+
+
+### Features
+
+* add ability to attach dates to gifts ([#4909](https://github.com/monicahq/monica/issues/4909)) ([da17b8d](https://github.com/monicahq/monica/commit/da17b8d1b48d894443fad165868086c4d04eb94d))
+* add date of creation in journal ([#4949](https://github.com/monicahq/monica/issues/4949)) ([be85cad](https://github.com/monicahq/monica/commit/be85cadd2abf38aba2353f629fac1733dd922e9b))
+
+
+### Bug Fixes
+
+* fix udpate maintenance mode message ([#4983](https://github.com/monicahq/monica/issues/4983)) ([225e68e](https://github.com/monicahq/monica/commit/225e68e038349afe1c86631dca04297b8ba72955))
+* sort and group relationships by relationship type ([#4985](https://github.com/monicahq/monica/issues/4985)) ([105b74f](https://github.com/monicahq/monica/commit/105b74f94e7f6b08da3883020670c9b8e3c72df0))
+
 # [2.20.0](https://github.com/monicahq/monica/compare/v2.19.1...v2.20.0) (2021-03-18)
 
 

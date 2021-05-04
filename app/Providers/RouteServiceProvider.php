@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Str;
 use Illuminate\Routing\Router;
 use App\Models\Contact\Contact;
 use App\Services\Instance\IdHasher;
@@ -35,7 +36,7 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
 
         if (Config::get('app.force_url')) {
-            URL::forceRootUrl(config('app.url'));
+            URL::forceRootUrl(Str::of(config('app.url'))->ltrim('/'));
         }
 
         if (App::environment('production')) {

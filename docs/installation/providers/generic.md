@@ -22,6 +22,8 @@ If you don't want to use Docker, the best way to setup the project is to use the
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 -   PHP 7.4+
 -   [Composer](https://getcomposer.org/)
+-   [Node.js](https://nodejs.org)
+-   [Yarn](https://yarnpkg.com)
 -   [MySQL](https://www.mysql.com/)
 -   Optional: Redis or Beanstalk
 
@@ -45,7 +47,6 @@ If you don't want to use Docker, the best way to setup the project is to use the
 -   sodium
 -   xml
 -   zip
--   imagick
 
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager. It is not enough to just install Composer, you also need to make sure it is installed globally for Monica's installation to run smoothly:
 
@@ -53,6 +54,15 @@ If you don't want to use Docker, the best way to setup the project is to use the
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 php composer-setup.php --install-dir=/usr/local/bin/ --filename=composer
 php -r "unlink('composer-setup.php');"
+```
+
+**Node.js:** Install node.js 14+ minimum
+
+
+**Yarn:** Install yarn using npm
+
+```sh
+npm install --global yarn
 ```
 
 **Mysql:** Install Mysql 5.7+
@@ -78,6 +88,9 @@ You should check out a tagged version of Monica since `master` branch may not al
 
 ```sh
 cd /var/www/monica
+# Get latest tags from GitHub
+git fetch
+# Clone the desired version
 git checkout tags/v2.18.0
 ```
 
@@ -130,8 +143,9 @@ exit
     - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
     - set the `APP_ENV` variable to `production`, `local` is only used for the development version. Beware: setting `APP_ENV` to `production` will force HTTPS. Skip this if you're running Monica locally.
 3. Run `composer install --no-interaction --no-dev` to install all packages.
-4. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-5. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
+4. Run `yarn install` to install frontend packages, then `yarn run production` to build the assets (js, css).
+5. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
+6. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
 
 The `setup:production` command will run migrations scripts for database, and flush all cache for config, route, and view, as an optimization process.
 As the configuration of the application is cached, any update on the `.env` file will not be detected after that. You may have to run `php artisan config:cache` manually after every update of `.env` file.
@@ -300,8 +314,8 @@ Client secret: zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq
 
 -   Copy the two values into two new environment variables of your `.env` file:
 
-    -   The value of `Client ID` in a `PASSPORT_PERSONAL_ACCESS_CLIENT_ID` variable
-    -   The value of `Client secret` in a `PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET` variable
+    -   The value of `Client ID` in a `PASSPORT_PASSWORD_GRANT_CLIENT_ID` variable
+    -   The value of `Client secret` in a `PASSPORT_PASSWORD_GRANT_CLIENT_SECRET` variable
 
 -   OAuth login can be access on `http://localhost/oauth/login`.
 

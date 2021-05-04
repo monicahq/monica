@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Migrations\Migration;
 
-class DeleteReminderSentTable extends Migration
+class RemoveReminderSent extends Migration
 {
     /**
      * Run the migrations.
@@ -12,6 +12,6 @@ class DeleteReminderSentTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('reminders_sent');
+        Schema::dropIfExists('reminder_sent');
     }
 }

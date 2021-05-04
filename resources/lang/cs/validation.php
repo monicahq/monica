@@ -154,4 +154,13 @@ return [
 
     'attributes' => [],
 
+    'vue' => [
+        'max' => [
+            'numeric' => '{field} nesmí být větší než {max}.',
+            'string' => '{field} nesmí být dlhší než {max} znakov.',
+        ],
+        'required' => '{field} je povinné.',
+        'url' => '{field} není platná adresa URL.',
+    ],
+
 ];

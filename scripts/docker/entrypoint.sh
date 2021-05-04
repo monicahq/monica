@@ -51,12 +51,6 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ]; then
     waitfordb
     ${ARTISAN} monica:update --force -vv
 
-    if [ -n "${SENTRY_SUPPORT:-}" -a "$SENTRY_SUPPORT" = "true" -a -z "${SENTRY_NORELEASE:-}" -a -n "${SENTRY_ENV:-}" ]; then
-        commit=$(cat .sentry-commit)
-        release=$(cat .sentry-release)
-        ${ARTISAN} sentry:release --release="$release" --commit="$commit" --environment="$SENTRY_ENV" --force -v || true
-    fi
-
     if [ ! -f "${STORAGE}/oauth-public.key" -o ! -f "${STORAGE}/oauth-private.key" ]; then
         echo "Passport keys creation ..."
         ${ARTISAN} passport:keys

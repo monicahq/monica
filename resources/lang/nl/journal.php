@@ -13,6 +13,7 @@ return [
     'journal_add' => 'Voeg een dagboek-invoer toe',
     'journal_edit' => 'Bewerk dagboek-invoer',
     'journal_empty' => 'Leeg dagboek',
+    'journal_created_at' => 'Aangemaakt op {date}',
     'journal_created_automatically' => 'Automatisch aangemaakt',
     'journal_entry_type_journal' => 'Dagboek-invoer',
     'journal_entry_type_activity' => 'Activiteit',

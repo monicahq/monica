@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <div class="di f5 normal">
     <notifications group="favorite" position="top middle" width="400" />

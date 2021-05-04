@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <div>
     <!-- Left columns: showing calendar -->

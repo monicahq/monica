@@ -14,7 +14,7 @@ return [
     'add' => 'Toevoegen',
     'cancel' => 'Annuleren',
     'confirm' => 'Bevestigen',
-    'delete_confirm' => 'Weet je het zeker?',
+    'delete_confirm' => 'Zeker weten?',
     'delete' => 'Verwijderen',
     'edit' => 'Bewerken',
     'upload' => 'Uploaden',
@@ -31,7 +31,7 @@ return [
     'new' => 'nieuw',
     'unknown' => 'Ik weet het niet',
     'load_more' => 'Meer laden',
-    'loading' => 'Laden...',
+    'loading' => 'Laden…',
     'with' => 'met',
     'today' => 'vandaag',
     'yesterday' => 'gisteren',
@@ -44,11 +44,11 @@ return [
     'retry' => 'Opnieuw Proberen',
     'filter' => 'Filter de lijst',
     'go_back' => 'Terug',
-    'file_selected' => '1 bestand geselecteerd...|{count} bestanden geselecteerd...',
+    'file_selected' => 'Één bestand geselecteerd…|{count} bestanden geselecteerd…',
 
     'application_title' => 'Monica – persoonlijke relatie manager',
     'application_description' => 'Monica is een app voor het beheren van interacties met uw geliefden, vrienden en familie.',
-    'application_og_title' => 'Bouw betere relaties met uw dierbaren. Gratis Online CRM voor vrienden en familie.',
+    'application_og_title' => 'Heb betere relaties met je geliefden. Gratis online CRM voor familie en vrienden.',
 
     'markdown_description' => 'Wilt u uw tekst opmaken op een leuke manier? Wij ondersteunen Markdown om vet, cursief, lijsten en meer toe te voegen.',
     'markdown_link' => 'Lees documentatie',
@@ -64,14 +64,14 @@ return [
     'main_nav_activities' => 'Activiteiten',
     'main_nav_tasks' => 'Taken',
 
-    'footer_remarks' => 'Eventuele opmerkingen?',
-    'footer_send_email' => 'Stuur me een e-mail',
+    'footer_remarks' => 'Opmerkingen?',
+    'footer_send_email' => 'Stuur ons een e-mail',
     'footer_privacy' => 'Privacybeleid',
     'footer_release' => 'Releaseopmerkingen',
     'footer_newsletter' => 'Nieuwsbrief',
     'footer_source_code' => 'Bijdragen',
     'footer_version' => 'Versie: :version',
-    'footer_new_version' => 'Er is een nieuwe versie beschikbaar',
+    'footer_new_version' => 'Er is een nieuwe versie van Monica beschikbaar',
 
     'footer_modal_version_whats_new' => 'Wat is er nieuw',
     'footer_modal_version_release_away' => 'Je loopt 1 versie achter op de laatst beschikbare versie. Je zou je applicatie moeten bijwerken.|Je loopt :number versies achter op de laatst beschikbare versie. Je zou je applicatie moeten bijwerken.',
@@ -113,7 +113,7 @@ return [
     'error_try_again' => 'Er ging iets mis. Probeer opnieuw.',
     'error_id' => 'Fout-ID: :id',
     'error_unavailable' => 'Service niet beschikbaar',
-    'error_maintenance' => 'Onderhoud in uitvoering. Zo terug.',
+    'error_maintenance' => 'Werkzaamheden zijn bezig. Een ogenblik graag.',
     'error_help' => 'We zijn zo terug.',
     'error_twitter' => '<a href="https://twitter.com/:twitter">Volg ons op Twitter</a> als je gewaarschuwd wilt worden als we terug zijn.',
     'error_no_term' => 'Er zijn nog geen voorwaarden opgesteld voor deze server.',
@@ -466,6 +466,6 @@ return [
     // contact list
     'contact_list_avatar' => 'Avatar',
     'contact_list_name' => 'Contact',
-    'contact_list_description' => 'Description',
+    'contact_list_description' => 'Beschrijving',
 
 ];

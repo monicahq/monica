@@ -5,7 +5,7 @@
 
     <div class="">
         <h3>
-            📄 {{ trans('people.document_list_title') }}
+            📄&#8199;{{ trans('people.document_list_title') }}
         </h3>
 
         <div class="section-blank">
