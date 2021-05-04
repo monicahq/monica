@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User\User;
 use App\Traits\JsonRespondController;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
@@ -108,45 +109,40 @@ class MultiFAController extends Controller
 
         $user = $request->user();
 
+        if ($this->validateTwoFactorLogin($request, $user, $request['one_time_password'])) {
+            //make secret column blank
+            $user->google2fa_secret = null;
+            $user->save();
+
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false]);
+    }
+
+    /**
+     * Validate 2nd factor for user with 2FA code or recovery code.
+     *
+     * @param Request $request
+     * @param User $user
+     * @param string $oneTimePassword
+     * @return bool
+     */
+    private function validateTwoFactorLogin(Request $request, User $user, string $oneTimePassword): bool
+    {
         //retrieve secret
         $secret = $user->google2fa_secret;
 
         $authenticator = app(Authenticator::class)->boot($request);
 
-        // try provided token as a 2FA code
-        if ($authenticator->verifyGoogle2FA($secret, $request['one_time_password'])) {
-
-            //make secret column blank
-            $user->google2fa_secret = null;
-            $user->save();
-
+        // try provided token as a 2FA code, or as a recovery code
+        if ($authenticator->verifyGoogle2FA($secret, $oneTimePassword)
+            || $user->recoveryChallenge($oneTimePassword)) {
             $authenticator->logout();
-
-            return response()->json(['success' => true]);
+            return true;
         }
 
-        $recoveryCodes = $user->recoveryCodes()
-            ->where('used', false)
-            ->get();
-
-        // try provided token as a recovery code
-        foreach ($recoveryCodes as $recoveryCode) {
-            if ($recoveryCode->recovery == $request['one_time_password']) {
-                $recoveryCode->forceFill([
-                    'used' => true,
-                ])->save();
-
-                //make secret column blank
-                $user->google2fa_secret = null;
-                $user->save();
-
-                $authenticator->logout();
-
-                return response()->json(['success' => true]);
-            }
-        }
-
-        return response()->json(['success' => false]);
+        return false;
     }
 
     /**

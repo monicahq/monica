@@ -18,4 +18,15 @@ class RecoveryCode extends Model
         'user_id',
         'recovery',
     ];
+
+    /**
+     * Scope a query to only include unused code.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeUnused($query)
+    {
+        return $query->where('used', 0);
+    }
 }

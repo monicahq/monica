@@ -257,4 +257,26 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     {
         return $this->locale;
     }
+
+    /**
+     * Try using a recovery code.
+     *
+     * @param string $recovery
+     * @return bool
+     */
+    public function recoveryChallenge(string $recovery): bool
+    {
+        $recoveryCodes = $this->recoveryCodes()->unused()->get();
+
+        foreach ($recoveryCodes as $recoveryCode) {
+            if ($recoveryCode->recovery === $recovery) {
+                $recoveryCode->used = true;
+                $recoveryCode->save();
+
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
