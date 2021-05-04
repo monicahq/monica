@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Інформацію про роботу не визначено',
     'information_work_at' => 'у :company',
     'work_add_cta' => 'Оновити інформацію про роботу',
-    'work_edit_success' => 'Робоча інформація була оновлена успішно',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Оновити інформацію про роботу :name',
     'work_edit_job' => 'Посада (необов\'язково)',
     'work_edit_company' => 'Компанія (необов\'язково)',
@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'View comment',
     'gifts_mark_offered' => 'Mark as given',
     'gifts_update_success' => 'The gift has been updated successfully',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Are you sure you want to delete this debt?',

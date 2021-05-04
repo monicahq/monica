@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <div class="avatars">
     <a v-if="clickable == true" :href="'people/' + id">

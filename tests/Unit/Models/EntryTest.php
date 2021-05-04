@@ -31,6 +31,7 @@ class EntryTest extends TestCase
             'month_name' => 'JAN',
             'year' => 2017,
             'date' => '2017-01-01 00:00:00',
+            'created_at' => 'Jan 01, 2017 00:00',
         ];
 
         $this->assertEquals(

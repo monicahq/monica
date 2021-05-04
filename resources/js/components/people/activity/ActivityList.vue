@@ -8,7 +8,7 @@
   <div>
     <div class="">
       <h3 class="mb2">
-        🍿 {{ $t('people.activity_title') }}
+        🍿&#8199;{{ $t('people.activity_title') }}
 
         <span class="fr relative btn-title">
           <a v-if="displayLogActivity == false" v-cy-name="'add-activity-button'" class="btn edit-information" @click="displayLogActivity = true">
@@ -195,7 +195,7 @@ export default {
     },
 
     compiledMarkdown (text) {
-      return marked(text, { sanitize: true });
+      return text !== undefined && text !== null ? marked(text, { sanitize: true }) : '';
     },
 
     getActivities() {

@@ -89,4 +89,19 @@ class CollectionHelper
             return data_get($item, $value);
         };
     }
+
+    /**
+     * Group collection based on a specific property from its items.
+     *
+     * @param  \Illuminate\Support\Collection $collection
+     * @param string $property
+     *
+     * @return mixed
+     */
+    public static function groupByItemsProperty($collection, $property)
+    {
+        return $collection->mapToGroups(function ($item) use ($property) {
+            return [data_get($item, $property) => $item];
+        });
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use Illuminate\View\View;
+use App\Traits\StripeCall;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use Laravel\Cashier\Cashier;
@@ -21,6 +22,8 @@ use App\Services\Account\Settings\ArchiveAllContacts;
 
 class SubscriptionsController extends Controller
 {
+    use StripeCall;
+
     /**
      * Display a listing of the resource.
      *
@@ -53,8 +56,14 @@ class SubscriptionsController extends Controller
             $invoices = $account->invoices();
         }
 
+        $planInformation = InstanceHelper::getPlanInformationFromConfig($subscription->name);
+
+        if ($planInformation === null) {
+            abort(404);
+        }
+
         return view('settings.subscriptions.account', [
-            'planInformation' => InstanceHelper::getPlanInformationFromConfig($subscription->name),
+            'planInformation' => $planInformation,
             'nextBillingDate' => $nextBillingDate,
             'subscription' => $subscription,
             'hasInvoices' => $hasInvoices,
@@ -80,9 +89,14 @@ class SubscriptionsController extends Controller
         }
 
         $plan = $request->query('plan');
+        $planInformation = InstanceHelper::getPlanInformationFromConfig($plan);
+
+        if ($planInformation === null) {
+            abort(404);
+        }
 
         return view('settings.subscriptions.upgrade', [
-            'planInformation' => InstanceHelper::getPlanInformationFromConfig($plan),
+            'planInformation' => $planInformation,
             'nextTheoriticalBillingDate' => DateHelper::getFullDate(DateHelper::getNextTheoriticalBillingDate($plan)),
             'intent' => auth()->user()->account->createSetupIntent(),
         ]);
@@ -96,10 +110,16 @@ class SubscriptionsController extends Controller
      */
     public function confirmPayment($id)
     {
+        try {
+            $payment = $this->stripeCall(function () use ($id) {
+                return StripePaymentIntent::retrieve($id, Cashier::stripeOptions());
+            });
+        } catch (StripeException $e) {
+            return back()->withErrors($e->getMessage());
+        }
+
         return view('settings.subscriptions.confirm', [
-            'payment' => new Payment(
-                StripePaymentIntent::retrieve($id, Cashier::stripeOptions())
-            ),
+            'payment' => new Payment($payment),
             'redirect' => request('redirect'),
         ]);
     }

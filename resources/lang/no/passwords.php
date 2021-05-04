@@ -19,12 +19,12 @@ return [
     |
     */
 
-    'reset' => 'Your password has been reset!',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'token' => 'This password reset token is invalid.',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'changed' => 'Password changed successfully.',
-    'invalid' => 'Current password you entered is not correct.',
-    'throttled' => 'Please wait before retrying.',
+    'reset' => 'Ditt passord har blitt tilbakestilt!',
+    'sent' => 'Hvis e-posten du skrev inn finnes i vårt brukerregister, så har du blitt sendt en lenke for å tilbakestille passordet.',
+    'token' => 'Denne tilbakestillingsnøkkelen er ugyldig.',
+    'user' => 'Hvis e-posten du skrev inn finnes i vårt brukerregister, så har du blitt sendt en lenke for å tilbakestille passordet.',
+    'changed' => 'Passordet er endret.',
+    'invalid' => 'Nåværende passord er ikke riktig.',
+    'throttled' => 'Vennligst vent før du prøver igjen.',
 
 ];

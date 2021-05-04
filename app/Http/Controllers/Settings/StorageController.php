@@ -15,13 +15,9 @@ class StorageController extends Controller
      */
     public function index()
     {
-        $documents = Document::where('account_id', auth()->user()->account_id)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        $photos = Photo::where('account_id', auth()->user()->account_id)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $documents = Document::where('account_id', auth()->user()->account_id)->get();
+        $photos = Photo::where('account_id', auth()->user()->account_id)->get();
+        $elements = $documents->concat($photos)->sortByDesc('created_at');
 
         // size is in bytes in the database
         $currentAccountSize = StorageHelper::getAccountStorageSize(auth()->user()->account);
@@ -37,8 +33,7 @@ class StorageController extends Controller
 
         return view('settings.storage.index')
             ->withAccountHasLimitations($accountHasLimitations)
-            ->withDocuments($documents)
-            ->withPhotos($photos)
+            ->withElements($elements)
             ->withCurrentAccountSize($currentAccountSize)
             ->withAccountLimit(config('monica.max_storage_size'))
             ->withPercentUsage($percentUsage);

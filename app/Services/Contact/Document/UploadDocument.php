@@ -3,6 +3,8 @@
 namespace App\Services\Contact\Document;
 
 use App\Services\BaseService;
+use App\Helpers\AccountHelper;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
 
@@ -31,6 +33,11 @@ class UploadDocument extends BaseService
     public function execute(array $data): Document
     {
         $this->validate($data);
+
+        $account = Account::find($data['account_id']);
+        if (AccountHelper::hasLimitations($account)) {
+            abort(402);
+        }
 
         Contact::where('account_id', $data['account_id'])
                 ->findOrFail($data['contact_id']);

@@ -54,7 +54,7 @@ class Photo extends Model
      */
     public function contact()
     {
-        return $this->contacts()->first();
+        return $this->contacts->first();
     }
 
     /**

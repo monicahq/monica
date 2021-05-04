@@ -162,7 +162,7 @@ return [
     'information_no_work_defined' => 'Ingen arbejdsinformation defineret',
     'information_work_at' => 'hos :company',
     'work_add_cta' => 'Opdatér arbejdsoplysninger',
-    'work_edit_success' => 'Arbejdsinformationen er blevet opdateret med succes',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Opdater :names\' jobinformation',
     'work_edit_job' => 'Jobtitel (valgfri)',
     'work_edit_company' => 'Virksomhed (valgfri)',
@@ -328,6 +328,7 @@ return [
     'gifts_view_comment' => 'Se kommentar',
     'gifts_mark_offered' => 'Marker som givet',
     'gifts_update_success' => 'Gaven er blevet opdateret',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Er du sikker på, at du vil slette denne gæld?',

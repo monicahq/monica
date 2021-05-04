@@ -16,6 +16,17 @@ use App\Http\Resources\Document\Document as DocumentResource;
 class ApiDocumentController extends ApiController
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('limitations')->only('store');
+        parent::__construct();
+    }
+
+    /**
      * Get the list of documents.
      *
      * @param Request $request

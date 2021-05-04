@@ -37,13 +37,39 @@
             <h3>
               {{ trans('settings.logs_title') }}
             </h3>
-            <ul class="mb3">
-              @foreach ($logsCollection as $log)
-              <li class="pt2">
-                {!! $log['description'] !!}
+            <ul class="table">
+              <li class="table-row">
+                <div class="table-cell table-header">
+                  {{ trans('settings.logs_actor') }}
+                </div>
+                <div class="table-cell table-header date">
+                  {{ trans('settings.logs_timestamp') }}
+                </div>
+                <div class="table-cell table-header">
+                  {{ trans('settings.logs_description') }}
+                </div>
+                <div class="table-cell table-header">
+                  {{ trans('settings.logs_subject') }}
+                </div>
               </li>
-              <li class="bb b--gray-monica pb2 f6">
-                {{ trans('settings.logs_author', ['name' => $log['author_name'], 'date' => $log['audited_at']]) }}
+              @foreach ($logsCollection as $log)
+              <li class="table-row">
+                <div class="table-cell audit-log-cell">
+                  {{ $log['author_name'] }}
+                </div>
+                <div class="table-cell audit-log-cell date">
+                  {{ \App\Helpers\DateHelper::getShortDateWithTime($log['audited_at']) }}
+                </div>
+                <div class="table-cell audit-log-cell">
+                  {{ $log['description'] }}
+                </div>
+                <div class="table-cell audit-log-cell">
+                  @if($log['link'])
+                    <a href="{{ $log['link'] }}">{{ $log['object'] }}</a>
+                  @else
+                    {{ $log['object'] }}
+                  @endif
+                </div>
               </li>
               @endforeach
             </ul>

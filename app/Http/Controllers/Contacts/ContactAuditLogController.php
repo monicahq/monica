@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Helpers\DateHelper;
+use App\Helpers\AuditLogHelper;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 
@@ -18,21 +18,9 @@ class ContactAuditLogController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        $logsCollection = collect();
-
-        foreach ($logs as $log) {
-            $description = trans('logs.contact_log_'.$log->action);
-
-            $logsCollection->push([
-                'author_name' => ($log->author) ? $log->author->name : $log->author_name,
-                'description' => $description,
-                'audited_at' => DateHelper::getShortDateWithTime($log->audited_at),
-            ]);
-        }
-
         return view('people.auditlogs.index')
             ->withContact($contact)
-            ->withLogs($logsCollection)
+            ->withLogsCollection(AuditLogHelper::getCollectionOfAudits($logs))
             ->withLogsPagination($logs);
     }
 }

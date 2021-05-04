@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <form-select
     :id="'activity-type-list'"
