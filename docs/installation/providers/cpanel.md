@@ -39,7 +39,6 @@ Monica can be configured in shared hosting environments with a little difference
 -   sodium
 -   xml
 -   zip
--   imagick
 
 In most cases, this will be under the section called 'PHP Version' in cPanel where you can enable and disable modules. 
 

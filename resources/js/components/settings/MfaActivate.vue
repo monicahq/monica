@@ -19,9 +19,8 @@
 
         <div class="panel-body">
           {{ $t('settings.2fa_enable_otp') }}
+          <div v-html="image"></div>
           <p>
-            <img id="barcode" alt="Image of QR barcode" :src="image" />
-            <br />
             {{ $t('settings.2fa_enable_otp_help') }}
             <code id="secretkey">
               {{ secret }}
@@ -61,8 +60,8 @@
           <form-input
             :id="'one_time_password2'"
             v-model="one_time_password"
-            :title="$t('auth.2fa_one_time_password')"
-            :input-type="'number'"
+            :title="$t('auth.2fa_one_time_or_recuperation')"
+            :input-type="'text'"
             :width="100"
             :required="true"
           />

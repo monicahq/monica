@@ -52,8 +52,8 @@ curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
 
 echo -e "\n\033[4;32mInstalling packages for Monica\033[0;40m"
 apt-get install -y php7.4-bcmath php7.4-cli php7.4-curl php7.4-common php7.4-fpm \
-    php7.4-gd php7.4-gmp php7.4-imagick php7.4-intl php7.4-json php7.4-mbstring \
-    php7.4-mysql php7.4-opcache php7.4-redis php7.4-xml php7.4-zip >/dev/null
+    php7.4-gd php7.4-gmp php7.4-intl php7.4-json php7.4-mbstring php7.4-mysql \
+    php7.4-opcache php7.4-redis php7.4-xml php7.4-zip >/dev/null
 
 echo -e "\n\033[4;32mInstalling node.js\033[0;40m"
 curl -fsSL https://deb.nodesource.com/setup_14.x | bash - >/dev/null
