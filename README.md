@@ -134,6 +134,8 @@ If you want to host Monica yourself, you will need a server with:
 - Composer
 - MySQL
 
+Monica has been successfully self-hosted on a VPS with a single CPU core and 256&thinsp;MB of RAM. Monica was fully functional on this server, although suffered occasional slowdowns due to constrained resources. A machine with more RAM and CPU cores will give faster performance.
+
 ### Update your instance
 
 Once the software is installed, you’ll need to update it from time to time to have access to the latest features. [Read this document](/docs/installation/update.md) to learn how to do it.
