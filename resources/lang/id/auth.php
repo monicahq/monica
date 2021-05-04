@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => 'Otentikasi dua faktor telah gagal.',
     '2fa_one_time_password' => 'Kode otentikasi dua faktor',
     '2fa_recuperation_code' => 'Masukkan sebuah kode pemulihan dua faktor',
+    '2fa_one_time_or_recuperation' => 'Enter a two factor authentication code or a recovery code',
     '2fa_otp_help' => 'Buka aplikasi seluler otentikasi dua faktor Anda dan salin kode tersebut',
 
     'login_to_account' => 'Masuk ke akun Anda',
