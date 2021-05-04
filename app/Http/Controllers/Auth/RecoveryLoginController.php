@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Events\RecoveryLogin;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RedirectsUsers;
@@ -51,39 +49,13 @@ class RecoveryLoginController extends Controller
         $recovery = $request->input('recovery');
 
         if ($user instanceof \App\Models\User\User &&
-            $this->recoveryLogin($user, $recovery)) {
+            $user->recoveryChallenge($recovery)) {
             $this->fireLoginEvent($user);
         } else {
             abort(403);
         }
 
         return redirect($this->redirectPath());
-    }
-
-    /**
-     * Try login with the recovery code.
-     *
-     * @param \App\Models\User\User  $user
-     * @param string  $recovery
-     * @return bool
-     */
-    protected function recoveryLogin(User $user, string $recovery)
-    {
-        $recoveryCodes = $user->recoveryCodes()
-                                ->where('used', false)
-                                ->get();
-
-        foreach ($recoveryCodes as $recoveryCode) {
-            if ($recoveryCode->recovery == $recovery) {
-                $recoveryCode->forceFill([
-                    'used' => true,
-                ])->save();
-
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
