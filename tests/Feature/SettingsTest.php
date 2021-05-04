@@ -51,7 +51,7 @@ class SettingsTest extends FeatureTestCase
         $response = $this->get(route('settings.sql'));
 
         $response->assertStatus(200);
-        $this->assertTrue($response->headers->get('content-disposition') == 'attachment; filename=monica.sql');
+        $this->assertTrue($response->headers->get('content-disposition') == 'attachment; filename=monica-export.20[0-9][0-9]-[0-1][0-9]-[0-3][0-9].sql');
     }
 
     public function test_user_can_delete_account()
