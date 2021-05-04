@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\User\User;
 use App\Traits\JsonRespondController;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
