@@ -139,6 +139,7 @@ class MultiFAController extends Controller
         if ($authenticator->verifyGoogle2FA($secret, $oneTimePassword)
             || $user->recoveryChallenge($oneTimePassword)) {
             $authenticator->logout();
+
             return true;
         }
 
