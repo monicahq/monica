@@ -13785,16 +13785,16 @@
         },
         {
             "name": "khanamiryan/qrcode-detector-decoder",
-            "version": "1.0.5",
+            "version": "1.0.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/khanamiryan/php-qrcode-detector-decoder.git",
-                "reference": "6c8c23003a87ecd7458807cd49372b1fb590d1f5"
+                "reference": "b96163d4f074970dfe67d4185e75e1f4541b30ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/khanamiryan/php-qrcode-detector-decoder/zipball/6c8c23003a87ecd7458807cd49372b1fb590d1f5",
-                "reference": "6c8c23003a87ecd7458807cd49372b1fb590d1f5",
+                "url": "https://api.github.com/repos/khanamiryan/php-qrcode-detector-decoder/zipball/b96163d4f074970dfe67d4185e75e1f4541b30ca",
+                "reference": "b96163d4f074970dfe67d4185e75e1f4541b30ca",
                 "shasum": ""
             },
             "require": {
@@ -13814,7 +13814,8 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MIT"
+                "MIT",
+                "Apache-2.0"
             ],
             "authors": [
                 {
@@ -13833,9 +13834,9 @@
             ],
             "support": {
                 "issues": "https://github.com/khanamiryan/php-qrcode-detector-decoder/issues",
-                "source": "https://github.com/khanamiryan/php-qrcode-detector-decoder/tree/1.0.5"
+                "source": "https://github.com/khanamiryan/php-qrcode-detector-decoder/tree/1.0.5.1"
             },
-            "time": "2021-04-20T18:34:35+00:00"
+            "time": "2021-04-21T08:02:08+00:00"
         },
         {
             "name": "laravel/dusk",
