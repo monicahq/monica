@@ -7,6 +7,7 @@ use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use App\Services\Contact\Contact\UpdateContactIntroduction;
+use App\Helpers\ContactHelper;
 
 class IntroductionsController extends Controller
 {
@@ -21,12 +22,12 @@ class IntroductionsController extends Controller
      */
     public function edit(Contact $contact)
     {
-        $contacts = $contact->siblingContacts()
-                        ->real()
-                        ->active()
-                        ->orderBy('first_name')
-                        ->orderBy('last_name')
-                        ->get();
+        $contacts = ContactHelper::orderContactQueryByUserPreference(
+            auth()->user(),
+            $contact->siblingContacts()
+                ->real()
+                ->active()
+        )->get();
 
         return view('people.introductions.edit')
             ->withContact($contact)
