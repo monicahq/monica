@@ -179,7 +179,7 @@ class CreateContact extends BaseService
             'type' => ContactFieldType::EMAIL,
         ])->first();
 
-        if (is_null($contactFieldType) || is_null($data['email'])) {
+        if (is_null($contactFieldType) || is_null($this->nullOrvalue($data, 'email'))) {
             return;
         }
 
