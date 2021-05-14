@@ -3,8 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\Str;
-use App\Http\Requests\Request;
+use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
+use Illuminate\Http\JsonResponse;
 use App\Services\Instance\IdHasher;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
@@ -97,7 +98,18 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
+            return Limit::perMinute(60)
+                ->by(optional($request->user())->id ?: $request->ip())
+                ->response(function (Request $request, array $headers) {
+                    $message = [
+                        'error' => [
+                            'message' => config('api.error_codes.34'),
+                            'error_code' => 34,
+                        ],
+                    ];
+
+                    return new JsonResponse($message, 429, $headers);
+                });
         });
         RateLimiter::for('oauth', function (Request $request) {
             return Limit::perMinute(5)->by($request->input('email') ?: $request->ip());

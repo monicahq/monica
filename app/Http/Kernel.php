@@ -84,7 +84,7 @@ class Kernel extends HttpKernel
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'sentry.context' => \App\Http\Middleware\SentryContext::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
-        'throttle' => \App\Http\Middleware\ThrottleRequestsMiddleware::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         'webauthn' => \LaravelWebauthn\Http\Middleware\WebauthnMiddleware::class,
     ];

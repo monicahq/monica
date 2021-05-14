@@ -68,11 +68,11 @@ class AppServiceProvider extends ServiceProvider
 
         Paginator::defaultView('vendor.pagination.default');
 
-        RateLimiter::for('GPSCoordinatePerMinute', function () {
-            return Limit::perMinute(60);
-        });
-        RateLimiter::for('GPSCoordinatePerDay', function () {
-            return Limit::perDay(5000);
+        RateLimiter::for('GPSCoordinate', function () {
+            return [
+                Limit::perMinute(60),
+                Limit::perDay(5000),
+            ];
         });
     }
 
