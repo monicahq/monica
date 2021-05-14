@@ -125,13 +125,15 @@ class GetWeatherInformation extends BaseService
      * @param Place $place
      * @return Place|null
      */
-    private function fetchGPS(Place $place) : ?Place
+    private function fetchGPS(Place $place): ?Place
     {
         if (config('monica.enable_geolocation') && ! is_null(config('monica.location_iq_api_key'))) {
             GetGPSCoordinate::dispatchSync($place);
             $place->refresh();
+
             return $place;
         }
+
         return null;
     }
 }
