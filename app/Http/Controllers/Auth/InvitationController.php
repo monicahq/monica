@@ -129,7 +129,7 @@ class InvitationController extends Controller
         $user->save();
 
         // send me an alert
-        dispatch(new SendNewUserAlert($user));
+        SendNewUserAlert::dispatch($user);
 
         return $user;
     }

@@ -107,7 +107,7 @@ class RegisterController extends Controller
 
             if (! $first) {
                 // send me an alert
-                dispatch(new SendNewUserAlert($user));
+                SendNewUserAlert::dispatch($user);
             }
 
             return $user;
