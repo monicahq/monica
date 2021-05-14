@@ -5,7 +5,6 @@ namespace App\Services\Account\Place;
 use App\Models\Account\Place;
 use App\Services\BaseService;
 use App\Jobs\GetGPSCoordinate;
-use GuzzleHttp\Client as GuzzleClient;
 
 class UpdatePlace extends BaseService
 {
@@ -33,10 +32,9 @@ class UpdatePlace extends BaseService
      * Update a place.
      *
      * @param array $data
-     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
      * @return Place
      */
-    public function execute(array $data, GuzzleClient $client = null): Place
+    public function execute(array $data): Place
     {
         $this->validate($data);
 
@@ -55,7 +53,7 @@ class UpdatePlace extends BaseService
         ]);
 
         if (is_null($place->latitude) || is_null($place->longitude)) {
-            $this->getGeocodingInfo($place, $client);
+            $this->getGeocodingInfo($place);
         }
 
         return $place;
@@ -65,13 +63,12 @@ class UpdatePlace extends BaseService
      * Get geocoding information about the place (lat/longitude).
      *
      * @param Place $place
-     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
      * @return void
      */
-    private function getGeocodingInfo(Place $place, GuzzleClient $client = null)
+    private function getGeocodingInfo(Place $place)
     {
         if (config('monica.enable_geolocation') && ! is_null(config('monica.location_iq_api_key'))) {
-            GetGPSCoordinate::dispatch($place, $client);
+            GetGPSCoordinate::dispatch($place);
         }
     }
 }
