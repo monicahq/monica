@@ -38,7 +38,7 @@ class GetGPSCoordinateTest extends TestCase
 
         $body = file_get_contents(base_path('tests/Fixtures/Services/Instance/Geolocalization/GetGPSCoordinateSampleResponse.json'));
         Http::fake([
-            'us1.locationiq.com/v1/*' => Http::response($body, 200)
+            'us1.locationiq.com/v1/*' => Http::response($body, 200),
         ]);
 
         $place = factory(Place::class)->create();
@@ -68,7 +68,7 @@ class GetGPSCoordinateTest extends TestCase
 
         $body = file_get_contents(base_path('tests/Fixtures/Services/Instance/Geolocalization/GetGPSCoordinateGarbageResponse.json'));
         Http::fake([
-            'us1.locationiq.com/v1/*' => Http::response($body, 404)
+            'us1.locationiq.com/v1/*' => Http::response($body, 404),
         ]);
 
         $place = factory(Place::class)->create([

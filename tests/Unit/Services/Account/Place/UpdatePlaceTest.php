@@ -55,7 +55,7 @@ class UpdatePlaceTest extends TestCase
 
         $body = file_get_contents(base_path('tests/Fixtures/Services/Account/Place/UpdatePlaceSampleResponse.json'));
         Http::fake([
-            'us1.locationiq.com/v1/*' => Http::response($body, 200)
+            'us1.locationiq.com/v1/*' => Http::response($body, 200),
         ]);
 
         $place = factory(Place::class)->create([]);

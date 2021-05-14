@@ -53,7 +53,7 @@ class CreatePlaceTest extends TestCase
 
         $body = file_get_contents(base_path('tests/Fixtures/Services/Account/Place/CreatePlaceSampleResponse.json'));
         Http::fake([
-            'us1.locationiq.com/v1/*' => Http::response($body, 200)
+            'us1.locationiq.com/v1/*' => Http::response($body, 200),
         ]);
 
         $account = factory(Account::class)->create([]);

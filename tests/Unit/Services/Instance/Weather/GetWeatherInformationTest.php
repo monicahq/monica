@@ -29,7 +29,7 @@ class GetWeatherInformationTest extends TestCase
 
         $body = file_get_contents(base_path('tests/Fixtures/Services/Instance/Weather/GetWeatherInformationSampleResponse.json'));
         Http::fake([
-            'api.darksky.net/forecast/*' => Http::response($body, 200)
+            'api.darksky.net/forecast/*' => Http::response($body, 200),
         ]);
 
         $request = [
@@ -72,7 +72,7 @@ class GetWeatherInformationTest extends TestCase
         $placeBody = file_get_contents(base_path('tests/Fixtures/Services/Account/Place/CreatePlaceSampleResponse.json'));
         Http::fake([
             'us1.locationiq.com/v1/*' => Http::response($placeBody, 200),
-            'api.darksky.net/forecast/*' => Http::response($body, 200)
+            'api.darksky.net/forecast/*' => Http::response($body, 200),
         ]);
 
         $request = [
@@ -141,7 +141,6 @@ class GetWeatherInformationTest extends TestCase
         $this->expectException(MissingEnvVariableException::class);
         app(GetWeatherInformation::class)->execute($request);
     }
-
 
     /** @test */
     public function it_cant_get_weather_info_if_latitude_longitude_are_null()
