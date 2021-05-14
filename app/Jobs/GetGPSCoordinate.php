@@ -52,8 +52,7 @@ class GetGPSCoordinate implements ShouldQueue
     public function middleware()
     {
         return [
-            new RateLimited('GPSCoordinatePerMinute'),
-            new RateLimited('GPSCoordinatePerDay'),
+            new RateLimited('GPSCoordinate'),
         ];
     }
 
