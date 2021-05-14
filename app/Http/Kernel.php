@@ -42,13 +42,13 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:60,1',
+            'throttle:api',
             'sentry.context',
             'locale',
         ],
 
         'oauth' => [
-            'throttle:5,1',
+            'throttle:oauth',
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,

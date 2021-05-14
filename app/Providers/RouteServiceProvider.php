@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Str;
-use Illuminate\Routing\Router;
+use App\Http\Requests\Request;
 use App\Models\Contact\Contact;
 use App\Services\Instance\IdHasher;
 use Illuminate\Support\Facades\App;
@@ -12,6 +12,8 @@ use App\Exceptions\WrongIdException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -43,6 +45,27 @@ class RouteServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
+        $this->configureRateLimiting();
+
+        $this->routes(function () {
+            Route::prefix('api')
+                ->middleware('api')
+                ->namespace($this->namespace.'\Api')
+                ->group(base_path('routes/api.php'));
+
+            Route::prefix('oauth')
+                ->namespace($this->namespace.'\Api')
+                ->group(base_path('routes/oauth.php'));
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web.php'));
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/special.php'));
+        });
+
         Route::bind('contact', function ($value) {
             // In case the user is logged out
             if (! Auth::check()) {
@@ -67,85 +90,17 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Define the routes for the application.
+     * Configure the rate limiters for the application.
      *
-     * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
-    public function map(Router $router)
+    protected function configureRateLimiting()
     {
-        $this->mapApiRoutes($router);
-        $this->mapWebRoutes($router);
-        $this->mapOAuthRoutes($router);
-        $this->mapSpecialRoutes($router);
-    }
-
-    /**
-     * Define the "web" routes for the application.
-     *
-     * These routes all receive session state, CSRF protection, etc.
-     *
-     * @param  \Illuminate\Routing\Router  $router
-     * @return void
-     */
-    protected function mapWebRoutes(Router $router)
-    {
-        $router->group([
-            'middleware' => 'web',
-            'namespace' => $this->namespace,
-        ], function () {
-            require base_path('routes/web.php');
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
         });
-    }
-
-    /**
-     * Define the custom oauth routes for the API.
-     *
-     * @param  \Illuminate\Routing\Router  $router
-     * @return void
-     */
-    protected function mapOAuthRoutes(Router $router)
-    {
-        $router->group([
-            'prefix' => 'oauth',
-            'namespace' => $this->namespace.'\Api',
-        ], function () {
-            require base_path('routes/oauth.php');
-        });
-    }
-
-    /**
-     * Define the "api" routes for the application.
-     *
-     * These routes are typically stateless.
-     *
-     * @return void
-     */
-    protected function mapApiRoutes(Router $router)
-    {
-        $router->group([
-            'prefix' => 'api',
-            'middleware' => 'api',
-            'namespace' => $this->namespace.'\Api',
-        ], function () {
-            require base_path('routes/api.php');
-        });
-    }
-
-    /**
-     * Define the "special" routes for the application.
-     *
-     * These routes are typically stateless.
-     *
-     * @return void
-     */
-    protected function mapSpecialRoutes(Router $router)
-    {
-        $router->group([
-            'middleware' => 'web',
-            'namespace' => $this->namespace,
-        ], function () {
-            require base_path('routes/special.php');
+        RateLimiter::for('oauth', function (Request $request) {
+            return Limit::perMinute(5)->by($request->input('email') ?: $request->ip());
         });
     }
 }
