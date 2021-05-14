@@ -5,13 +5,13 @@ namespace App\Services\Instance\Weather;
 use Illuminate\Support\Str;
 use App\Models\Account\Place;
 use App\Services\BaseService;
+use App\Jobs\GetGPSCoordinate;
 use function Safe\json_decode;
 use App\Models\Account\Weather;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 use App\Exceptions\MissingEnvVariableException;
-use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 
 class GetWeatherInformation extends BaseService
 {
@@ -135,13 +135,16 @@ class GetWeatherInformation extends BaseService
      * Fetch missing longitude/latitude.
      *
      * @param Place $place
+     * @param GuzzleClient $client
      * @return Place|null
      */
-    private function fetchGPS(Place $place)
+    private function fetchGPS(Place $place, GuzzleClient $client = null) : ?Place
     {
-        return app(GetGPSCoordinate::class)->execute([
-            'account_id' => $place->account_id,
-            'place_id' => $place->id,
-        ]);
+        if (config('monica.enable_geolocation') && ! is_null(config('monica.location_iq_api_key'))) {
+            GetGPSCoordinate::dispatchSync($place, $client);
+            $place->refresh();
+            return $place;
+        }
+        return null;
     }
 }

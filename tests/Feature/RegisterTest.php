@@ -71,7 +71,7 @@ class RegisterTest extends FeatureTestCase
 
         $user = factory(User::class)->create();
 
-        dispatch(new SendNewUserAlert($user));
+        SendNewUserAlert::dispatch($user);
 
         Notification::assertSentTo($route, NewUserAlert::class);
 

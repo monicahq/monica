@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\View;
 use App\Notifications\EmailMessaging;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Auth\Notifications\ResetPassword;
 
@@ -65,6 +67,13 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Paginator::defaultView('vendor.pagination.default');
+
+        RateLimiter::for('GPSCoordinatePerMinute', function () {
+            return Limit::perMinute(60);
+        });
+        RateLimiter::for('GPSCoordinatePerDay', function () {
+            return Limit::perDay(5000);
+        });
     }
 
     /**

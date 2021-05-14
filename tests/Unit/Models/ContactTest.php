@@ -1003,7 +1003,7 @@ class ContactTest extends FeatureTestCase
             'timezone' => 'America/New_York',
         ]);
 
-        dispatch(new ScheduleStayInTouch($contact));
+        ScheduleStayInTouch::dispatch($contact);
 
         NotificationFacade::assertSentTo($user, StayInTouchEmail::class,
             function ($notification, $channels) use ($contact) {

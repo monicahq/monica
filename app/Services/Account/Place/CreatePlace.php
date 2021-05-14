@@ -4,8 +4,8 @@ namespace App\Services\Account\Place;
 
 use App\Models\Account\Place;
 use App\Services\BaseService;
+use App\Jobs\GetGPSCoordinate;
 use GuzzleHttp\Client as GuzzleClient;
-use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 
 class CreatePlace extends BaseService
 {
@@ -50,7 +50,7 @@ class CreatePlace extends BaseService
             'longitude' => $this->nullOrValue($data, 'longitude'),
         ]);
 
-        if (is_null($place->latitude)) {
+        if (is_null($place->latitude) || is_null($place->longitude)) {
             $this->getGeocodingInfo($place, $client);
         }
 
@@ -66,9 +66,8 @@ class CreatePlace extends BaseService
      */
     private function getGeocodingInfo(Place $place, GuzzleClient $client = null)
     {
-        app(GetGPSCoordinate::class)->execute([
-            'account_id' => $place->account_id,
-            'place_id' => $place->id,
-        ], $client);
+        if (config('monica.enable_geolocation') && ! is_null(config('monica.location_iq_api_key'))) {
+            GetGPSCoordinate::dispatch($place, $client);
+        }
     }
 }
