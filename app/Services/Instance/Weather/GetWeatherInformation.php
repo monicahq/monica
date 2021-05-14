@@ -138,13 +138,15 @@ class GetWeatherInformation extends BaseService
      * @param GuzzleClient $client
      * @return Place|null
      */
-    private function fetchGPS(Place $place, GuzzleClient $client = null) : ?Place
+    private function fetchGPS(Place $place, GuzzleClient $client = null): ?Place
     {
         if (config('monica.enable_geolocation') && ! is_null(config('monica.location_iq_api_key'))) {
             GetGPSCoordinate::dispatchSync($place, $client);
             $place->refresh();
+
             return $place;
         }
+
         return null;
     }
 }
