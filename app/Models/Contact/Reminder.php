@@ -6,10 +6,10 @@ use Carbon\Carbon;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
-use Illuminate\Support\Collection;
 
 /**
  * A reminder has two states: active and inactive.
@@ -200,7 +200,7 @@ class Reminder extends Model
      */
     public static function getListOfCalendarTypes(): Collection
     {
-        return collect(Reminder::$calendarTypes)->map(function($calendarType) {
+        return collect(Reminder::$calendarTypes)->map(function ($calendarType) {
             return [
                 'id' => $calendarType,
                 'name' => trans('people.reminders_calendar_'.$calendarType),
