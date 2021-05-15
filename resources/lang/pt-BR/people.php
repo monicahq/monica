@@ -31,7 +31,7 @@ return [
     'people_search' => 'Search your contacts…',
     'people_search_no_results' => 'Nenhum resultado encontrado',
     'people_search_next' => 'Próximo',
-    'people_search_prev' => 'Previous',
+    'people_search_prev' => 'Anterior',
     'people_search_rows_per_page' => 'Linhas por página',
     'people_search_of' => 'de',
     'people_search_page' => 'Página',
@@ -214,7 +214,7 @@ return [
     // relationships
     'relationship_form_add' => 'Adicionar novo relacionamento',
     'relationship_form_edit' => 'Editar relacionamento',
-    'relationship_form_is_with' => 'This person is…',
+    'relationship_form_is_with' => 'Esta pessoa é...',
     'relationship_form_is_with_name' => ':name is…',
     'relationship_form_add_choice' => 'Com quem é esse relacionamento?',
     'relationship_form_create_contact' => 'Adicionar nova pessoa',
@@ -419,7 +419,7 @@ return [
 
     // life events
     'life_event_list_tab_life_events' => 'Eventos da Vida',
-    'life_event_list_tab_other' => 'Notes, reminders, …',
+    'life_event_list_tab_other' => 'Anotações, lembretes, ...',
     'life_event_list_title' => 'Eventos da Vida',
     'life_event_blank' => 'Registre o que acontece com a vida de {name} para sua referência futura.',
     'life_event_list_cta' => 'Acrescentar evento de vida',
