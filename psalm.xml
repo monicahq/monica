@@ -148,6 +148,13 @@
         </RawObjectIteration>
 
         <TooManyTemplateParams errorLevel="info" />
+        <NonInvariantDocblockPropertyType errorLevel="info" />
+
+        <InvalidScope>
+            <errorLevel type="suppress">
+                <file name="routes/console.php" />
+            </errorLevel>
+        </InvalidScope>
 
     </issueHandlers>
 </psalm>

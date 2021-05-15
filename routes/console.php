@@ -14,15 +14,19 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
+// @codeCoverageIgnoreStart
 Artisan::command('memcached:stats', function () {
     if (config('cache.default') === 'memcached') {
+        /** @var \Illuminate\Console\Command */
+        $command = $this;
         $hostStats = Cache::getMemcached()->getStats();
         foreach ($hostStats as $host => $stats) {
-            $this->line('Host: '.$host);
+            $command->line('Host: '.$host);
             foreach ($stats as $key => $value) {
-                $this->line($key.': '.$value);
+                $command->line($key.': '.$value);
             }
-            $this->line('');
+            $command->line('');
         }
     }
 })->purpose('Display memcached statistics');
+// @codeCoverageIgnoreEnd

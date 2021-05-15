@@ -42,7 +42,7 @@ class SetPersonalDescription extends BaseService
         $this->data = $data;
         $this->validate($this->data);
 
-        /* @var Contact */
+        /** @var Contact */
         $this->contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
