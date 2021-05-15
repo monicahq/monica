@@ -48,6 +48,8 @@ class SettingsTest extends FeatureTestCase
 
         $response->assertSee(trans('settings.export_title'));
 
+        Carbon::setTestNow(Carbon::create(2021, 11, 1, 7, 0, 0));
+
         $response = $this->get(route('settings.sql'));
 
         $response->assertStatus(200);
