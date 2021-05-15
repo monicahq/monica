@@ -421,7 +421,7 @@ return [
     'life_event_list_tab_life_events' => 'Peristiwa kehidupan',
     'life_event_list_tab_other' => 'Notes, reminders, …',
     'life_event_list_title' => 'Peristiwa kehidupan',
-    'life_event_blank' => 'Catat apa yang terjadi pada kehidupan {nama} untuk referensi mendatang Anda.',
+    'life_event_blank' => 'Catat apa yang terjadi pada kehidupan {name} untuk referensi mendatang Anda.',
     'life_event_list_cta' => 'Tambahkan peristiwa kehidupan',
     'life_event_create_category' => 'Semua kategori',
     'life_event_create_life_event' => 'Tambahkan peristiwa kehidupan',
