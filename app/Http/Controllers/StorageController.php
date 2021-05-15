@@ -51,9 +51,10 @@ class StorageController
             default:
                 $flag = false;
         }
-        if (!$flag) {
+        if (! $flag) {
             abort(404);
         }
+
         return StorageHelper::disk(config('filesystem.default'))
             ->response($file, $original_filename);
     }
