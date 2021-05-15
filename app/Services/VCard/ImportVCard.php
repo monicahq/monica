@@ -1073,7 +1073,7 @@ class ImportVCard extends BaseService
     private function addAvatars(Contact $contact)
     {
         // set the default avatar color
-        if (!$contact->default_avatar_color) {
+        if (! $contact->default_avatar_color) {
             $contact->setAvatarColor();
             $contact->save();
         }
