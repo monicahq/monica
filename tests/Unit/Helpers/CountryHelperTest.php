@@ -37,12 +37,13 @@ class CountryHelperTest extends FeatureTestCase
             ['es', 'ES'],
             ['fr', 'FR'],
             ['hr', 'HR'],
+            ['id', 'ID'],
             ['it', 'IT'],
             ['nl', 'NL'],
             ['pt', 'PT'],
             ['ru', 'RU'],
             ['tr', 'TR'],
-            ['jp', null],
+            ['ja', 'JP'],
         ];
     }
 
@@ -74,6 +75,7 @@ class CountryHelperTest extends FeatureTestCase
             ['es', 'ES'],
             ['fr', 'FR'],
             ['hr', 'HR'],
+            ['id', 'ID'],
             ['it', 'IT'],
             ['nl', 'NL'],
             ['pt', 'PT'],

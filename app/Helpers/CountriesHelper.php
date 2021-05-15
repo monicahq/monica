@@ -143,22 +143,14 @@ class CountriesHelper
             case 'he':
                 $country = 'IL';
                 break;
+            case 'ja':
+                $country = 'JP';
+                break;
             case 'zh':
                 $country = 'CN';
                 break;
-            case 'de':
-            case 'es':
-            case 'fr':
-            case 'hr':
-            case 'it':
-            case 'nl':
-            case 'pt':
-            case 'ru':
-            case 'tr':
-                $country = mb_strtoupper($locale);
-                break;
             default:
-                $country = null;
+                $country = mb_strtoupper($locale);
                 break;
         }
 
