@@ -38,7 +38,7 @@ class ScheduleStayInTouchTest extends TestCase
             'timezone' => 'America/New_York',
         ]);
 
-        dispatch(new ScheduleStayInTouch($contact));
+        ScheduleStayInTouch::dispatch($contact);
 
         NotificationFacade::assertSentTo($user, StayInTouchEmail::class,
             function ($notification, $channels) use ($contact) {
@@ -81,7 +81,7 @@ class ScheduleStayInTouchTest extends TestCase
             'timezone' => 'America/New_York',
         ]);
 
-        dispatch(new ScheduleStayInTouch($contact));
+        ScheduleStayInTouch::dispatch($contact);
 
         NotificationFacade::assertNotSentTo($user, StayInTouchEmail::class);
         NotificationFacade::assertNothingSent();
@@ -113,7 +113,7 @@ class ScheduleStayInTouchTest extends TestCase
             'timezone' => 'America/New_York',
         ]);
 
-        dispatch(new ScheduleStayInTouch($contact));
+        ScheduleStayInTouch::dispatch($contact);
 
         NotificationFacade::assertNotSentTo($user, StayInTouchEmail::class);
         NotificationFacade::assertNothingSent();

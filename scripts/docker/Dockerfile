@@ -64,13 +64,11 @@ RUN set -ex; \
     pecl install APCu; \
     pecl install memcached; \
     pecl install redis; \
-    pecl install imagick; \
     \
     docker-php-ext-enable \
         apcu \
         memcached \
         redis \
-        imagick \
     ; \
     \
 # reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies

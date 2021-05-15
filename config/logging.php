@@ -58,6 +58,10 @@ return [
             'driver' => 'stack',
             'channels' => ['papertrail', 'syslog'],
         ],
+        'papertrailerrorlog' => [
+            'driver' => 'stack',
+            'channels' => ['papertrail', 'errorlog'],
+        ],
         'papertrail' => [
             'driver'  => 'monolog',
             'level' => 'debug',

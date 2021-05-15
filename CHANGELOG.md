@@ -1,3 +1,54 @@
+## [3.0.1](https://github.com/monicahq/monica/compare/v3.0.0...v3.0.1) (2021-05-02)
+
+
+### Bug Fixes
+
+* fix deploy on fortrabbit with version number ([#5139](https://github.com/monicahq/monica/issues/5139)) ([c5394af](https://github.com/monicahq/monica/commit/c5394af9bc30207a9158488c7617f3bb265a3c72))
+* fix import job without subscription bypass ([#5147](https://github.com/monicahq/monica/issues/5147)) ([fbac248](https://github.com/monicahq/monica/commit/fbac24891a9ace9f9c88fd4d23b8612243af283a))
+
+# [3.0.0](https://github.com/monicahq/monica/compare/v2.22.1...v3.0.0) (2021-04-30)
+
+
+### Features
+
+* remove assets from repository (see [#4759](https://github.com/monicahq/monica/issues/4759)) ([#5133](https://github.com/monicahq/monica/issues/5133)) ([02ba369](https://github.com/monicahq/monica/commit/02ba3694929154ecdafbe95fa34ad6920680b6b7))
+
+
+### BREAKING CHANGES
+
+* The assets are no longer embedded in source code: javascript, css, font files. Run `yarn install` then `yarn run production` to recreate them from sources, or download a [release file](https://github.com/monicahq/monica/releases) that contains compiled files.
+* For Heroku users: You'll have to manually go to `Settings` > `Buildpacks` and add buildpack: `nodejs`. See [this doc](https://github.com/monicahq/monica/blob/master/docs/installation/providers/heroku.md#update-from-2x-to-3x).
+* See more information about how to install a Monica instance [here](https://github.com/monicahq/monica/tree/master/docs/installation).
+
+## [2.22.1](https://github.com/monicahq/monica/compare/v2.22.0...v2.22.1) (2021-04-30)
+
+
+### Code Refactoring
+
+* remove assets from repository ([#4759](https://github.com/monicahq/monica/issues/4759)) ([570dde1](https://github.com/monicahq/monica/commit/570dde1a13096c8e15fa436eae99ddc572486922))
+
+
+### BREAKING CHANGES
+
+* The assets are no longer embedded in source code: javascript, css, font files. Run `yarn install` then `yarn run production` to recreate them from sources, or download a [release file](https://github.com/monicahq/monica/releases) that contains compiled files.
+* For Heroku users: You'll have to manually go to `Settings` > `Buildpacks` and add buildpack: `nodejs`. See [this doc](https://github.com/monicahq/monica/blob/master/docs/installation/providers/heroku.md#update-from-2x-to-3x).
+* See more information about how to install a Monica instance [here](https://github.com/monicahq/monica/tree/master/docs/installation).
+
+# [2.22.0](https://github.com/monicahq/monica/compare/v2.21.0...v2.22.0) (2021-04-30)
+
+
+### Bug Fixes
+
+* fix bypass account limitation to create more contacts ([#5125](https://github.com/monicahq/monica/issues/5125)) ([3d66188](https://github.com/monicahq/monica/commit/3d66188350f107094309d3dcd62b8202aad25004))
+* fix bypass invitation ([#5127](https://github.com/monicahq/monica/issues/5127)) ([d889475](https://github.com/monicahq/monica/commit/d88947523094d7159a937033f3a4ab05380fb4a9))
+* fix stripe page ([#5113](https://github.com/monicahq/monica/issues/5113)) ([caa5bef](https://github.com/monicahq/monica/commit/caa5bef93bed33d269ef1260c805e0ffaffd08fa))
+
+
+### Features
+
+* create a new stacked log channel ([#5122](https://github.com/monicahq/monica/issues/5122)) ([71c3789](https://github.com/monicahq/monica/commit/71c3789b6013dcea5a3e856b5f6e52c32769b1f4))
+* display gifts date ([#5081](https://github.com/monicahq/monica/issues/5081)) ([a478fd8](https://github.com/monicahq/monica/commit/a478fd8f4394ee650a89bbf62610e973fb98c03a))
+
 # [2.21.0](https://github.com/monicahq/monica/compare/v2.20.0...v2.21.0) (2021-04-25)
 
 
@@ -46,27 +97,6 @@
 * default gender to unknown ([#4753](https://github.com/monicahq/monica/issues/4753)) ([ebf7c08](https://github.com/monicahq/monica/commit/ebf7c085dd786b174055be389ba5fef35fae861a))
 * set and clear personal description now appears in change log ([#4893](https://github.com/monicahq/monica/issues/4893)) ([686a0a1](https://github.com/monicahq/monica/commit/686a0a1f0b2dbbee91fef41eca318a3b9fbd48ff))
 
-# UNRELEASED CHANGES:
-
-### New features:
-
-* Add an artisan command to create an account
-* Add the notion of AddressBooks
-* Allow customization of life event types
-
-### Enhancements:
-
-* Use Unknown as default gender
-* Better padding and text about Me as a contact on Settings page
-
-### Fixes:
-
-* Fix adding a gender type
-* Fix update activity with emotions
-* Fix bad return with wrong credential on oauth/login api
-
-
-# RELEASED VERSIONS:
 
 ## v2.19.1 - 2020-09-12
 

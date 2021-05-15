@@ -28,8 +28,18 @@ use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
 
-class SettingsController
+class SettingsController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('limitations')->only(['inviteUser', 'storeImport']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -189,7 +199,7 @@ class SettingsController
      */
     public function exportToSql()
     {
-        $path = dispatch_now(new ExportAccountAsSQL());
+        $path = ExportAccountAsSQL::dispatchSync();
 
         $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
 
@@ -232,7 +242,7 @@ class SettingsController
 
     public function storeImport(ImportsRequest $request)
     {
-        $filename = $request->file('vcard')->store('imports', 'public');
+        $filename = $request->file('vcard')->store('imports', config('filesystems.default'));
 
         $importJob = auth()->user()->account->importjobs()->create([
             'user_id' => auth()->user()->id,
@@ -240,7 +250,7 @@ class SettingsController
             'filename' => $filename,
         ]);
 
-        dispatch(new AddContactFromVCard($importJob, $request->input('behaviour')));
+        AddContactFromVCard::dispatch($importJob, $request->input('behaviour'));
 
         return redirect()->route('settings.import');
     }

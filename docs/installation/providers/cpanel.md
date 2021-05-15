@@ -39,7 +39,6 @@ Monica can be configured in shared hosting environments with a little difference
 -   sodium
 -   xml
 -   zip
--   imagick
 
 In most cases, this will be under the section called 'PHP Version' in cPanel where you can enable and disable modules. 
 
@@ -71,6 +70,9 @@ You should check out a tagged version of Monica since `master` branch may not al
 
 ```sh
 cd /var/www/monica
+# Get latest tags from GitHub
+git fetch
+# Clone the desired version
 git checkout tags/v2.18.0
 ```
 
@@ -97,8 +99,9 @@ Open the cPanel file manager and navigate to the directory in which you want to 
     - set the `APP_ENV` variable to `production`, `local` is only used for the development version. Beware: setting `APP_ENV` to `production` will force HTTPS. Skip this if you're running Monica locally.
 3. Log into the cPanel server via SSH and navigate to the directory in which you want to install Monica.
 4. Run `composer install --no-interaction --no-dev` to install all packages.
-5. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-6. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
+5. Run `yarn install` to install frontend packages, then `yarn run production` to build the assets (js, css).
+6. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
+7. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
 
 The `setup:production` command will run migrations scripts for database, and flush all cache for config, route, and view, as an optimization process.
 As the configuration of the application is cached, any update on the `.env` file will not be detected after that. You may have to run `php artisan config:cache` manually after every update of `.env` file.

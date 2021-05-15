@@ -21,7 +21,7 @@ class UpdateLastConsultedDateTest extends TestCase
             'number_of_views' => 1,
         ]);
 
-        dispatch(new UpdateLastConsultedDate($contact));
+        UpdateLastConsultedDate::dispatch($contact);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,

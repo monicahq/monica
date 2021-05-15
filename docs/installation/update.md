@@ -14,26 +14,27 @@ Monica uses the concept of releases and tries to follow
 or if you have installed Monica on your own server, you need to follow the steps below to update it, **every single time**, or you will run into problems.
 
 1. Always make a backup of your data before upgrading.
-1. Check that your backup is valid.
-1. Read the [release notes](https://github.com/monicahq/monica/blob/master/CHANGELOG.md) to check for breaking changes.
-1. Update sources:
+2. Check that your backup is valid.
+3. Read the [release notes](https://github.com/monicahq/monica/blob/master/CHANGELOG.md) to check for breaking changes.
+4. Update sources:
     1. Consider check out a tagged version of Monica since `master` branch may not always be stable.
        Find the latest official version on the [release page](https://github.com/monicahq/monica/releases)
        ```sh
        # Get latest tags from GitHub
        git fetch
        # Clone the desired version
-       git checkout tags/v1.6.2
+       git checkout tags/v2.18.0
        ```
-    1. Or check out `master`
+    2. Or check out `master`
        ```sh
        git pull origin master
        ```
-1. Update the dependencies of the project:
+5. Update the dependencies of the project:
    ```sh
    composer install --no-interaction --no-dev
    ```
-1. Then, run the following command to make the proper update:
+6. Run `yarn install` to install frontend packages, then `yarn run production` to build the assets (js, css).
+7. Then, run the following command to make the proper update:
    ```sh
    php artisan monica:update --force
    ```
