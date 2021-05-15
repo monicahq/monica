@@ -22,6 +22,7 @@ class StorageController
     {
         $accountId = auth()->user()->account_id;
         $folder = Str::before($file, '/');
+        $original_filename = null;
 
         switch ($folder) {
             case 'avatars':
