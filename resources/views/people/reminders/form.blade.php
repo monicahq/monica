@@ -77,6 +77,24 @@
         </fieldset>
     </div>
 
+    {{-- Calendar Type --}}
+    <div class="form-group">
+        <label for="initial_date">{{ trans('people.reminders_calendar_type') }}</label>
+        <label class="form-check-label">
+            <select name="calendar_type">
+                @foreach ($calendarTypes as $calendarType)
+                    <option value="{{ $calendarType->id }}"
+                    @if ($reminder->calendar_type === {{ $calendarType->id }})
+                      selected
+                    @endif
+                    >
+                        {{ $calendarType->name }}
+                    </option>
+                @endforeach
+            </select>
+        </label>
+    </div>
+
     <div class="form-group">
         <label for="description">{{ trans('people.reminders_add_optional_comment') }}</label>
         <textarea class="form-control" id="description" name="description" rows="3">{{ old('description') ?? $reminder->description }}</textarea>

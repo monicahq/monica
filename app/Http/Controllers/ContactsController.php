@@ -14,13 +14,12 @@ use App\Helpers\SearchHelper;
 use App\Helpers\AccountHelper;
 use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use App\Jobs\UpdateLastConsultedDate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
-use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use App\Services\User\UpdateViewPreference;
 use Illuminate\Validation\ValidationException;
@@ -211,6 +210,7 @@ class ContactsController extends Controller
                 'middle_name' => $request->input('middle_name', null),
                 'last_name' => $request->input('last_name', null),
                 'nickname' => $request->input('nickname', null),
+                'calendar_type' => $request->input('calendar_type', null),
                 'gender_id' => $request->input('gender'),
                 'is_birthdate_known' => false,
                 'is_deceased' => false,
@@ -351,6 +351,7 @@ class ContactsController extends Controller
         $deceaseddate = ! is_null($contact->deceasedDate) ? $contact->deceasedDate->date->toDateString() : '';
         $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : $now->day;
         $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : $now->month;
+        $calendarType = ! is_null($contact->calendar_type) ? $contact->calendar_type : config('app.default_calendar_type');
 
         $hasBirthdayReminder = ! is_null($contact->birthday_reminder_id);
         $hasDeceasedReminder = ! is_null($contact->deceased_reminder_id);
@@ -364,6 +365,8 @@ class ContactsController extends Controller
             ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdayState($contact->getBirthdayState())
             ->withBirthdate($birthdate)
+            ->withCalendarTypes(Reminder::getListOfCalendarTypes())
+            ->withCalendarType($calendarType)
             ->withDeceaseddate($deceaseddate)
             ->withDay($day)
             ->withMonth($month)
@@ -429,6 +432,7 @@ class ContactsController extends Controller
             'birthdate_day' => $day,
             'birthdate_month' => $month,
             'birthdate_year' => $year,
+            'calendar_type' => $request->input('calendar_type'),
             'birthdate_is_age_based' => $request->input('birthdate') === 'approximate',
             'birthdate_age' => $request->input('age'),
             'birthdate_add_reminder' => ! empty($request->input('addReminder')),

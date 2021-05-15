@@ -110,6 +110,8 @@
         <form-specialdate
           :months="{{ $months }}"
           :days="{{ $days }}"
+          :calendar-types="{{ \Safe\json_encode($calendarTypes) }}"
+          :calendar-type="'{{ $calendarType }}'"
           :birthdate="'{{ $birthdate }}'"
         ></form-specialdate>
 

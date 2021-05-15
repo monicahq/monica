@@ -7,6 +7,7 @@ use function Safe\strtotime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Overtrue\ChineseCalendar\Calendar;
 
 class DateHelper
 {
@@ -223,15 +224,48 @@ class DateHelper
         return $date->translatedFormat($format) ?: '';
     }
 
+    public static function convertToSolarCalendarDate(\Carbon\Carbon $from, string $calendarType)
+    {
+        switch ($calendarType) {
+            case 'lunar':
+                $to = app(Calendar::class)->lunar2solar($from->year, $from->month, $from->day);
+
+                return Carbon::create($to['solar_year'], $to['solar_month'], $to['solar_day']);
+            default:
+                return $from;
+        }
+    }
+
     /**
      * Add a given number of week/month/year to a date.
+     *
      * @param \Carbon\Carbon $date      the start date
+     * @param string $calendarType solar/lunar
      * @param string $frequency week/month/year
      * @param int $number    the number of week/month/year to increment to
      * @return \Carbon\Carbon
      */
-    public static function addTimeAccordingToFrequencyType(\Carbon\Carbon $date, string $frequency, int $number): \Carbon\Carbon
+    public static function addTimeAccordingToFrequencyType(\Carbon\Carbon $date, string $calendarType, string $frequency, int $number): \Carbon\Carbon
     {
+        if ($calendarType === 'lunar') {
+            $lunar = app(Calendar::class);
+            $lunarDate = $lunar->solar2lunar($date->year, $date->month, $date->day);
+            switch ($frequency) {
+                case 'week':
+                    $lunarDate = $lunar->addDays($lunarDate, $number * 7);
+                    break;
+                case 'month':
+                    $lunarDate = $lunar->addMonths($lunarDate, $number);
+                    break;
+                default:
+                    $lunarDate = $lunar->addYears($lunarDate, $number);
+                    break;
+            }
+            $date = $lunar->lunar2solar($lunarDate['lunar_year'], $lunarDate['lunar_month'], $lunarDate['lunar_day']);
+
+            return Carbon::create($date['solar_year'], $date['solar_month'], $date['solar_day']);
+        }
+
         switch ($frequency) {
             case 'week':
                 $date->addWeeks($number);

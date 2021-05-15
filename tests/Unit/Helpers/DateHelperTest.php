@@ -148,19 +148,19 @@ class DateHelperTest extends FeatureTestCase
         $testDate = DateHelper::parseDateTime($date);
         $this->assertEquals(
             '2017-01-29',
-            DateHelper::addTimeAccordingToFrequencyType($testDate, 'week', 1)->toDateString()
+            DateHelper::addTimeAccordingToFrequencyType($testDate, 'solar', 'week', 1)->toDateString()
         );
 
         $testDate = DateHelper::parseDateTime($date);
         $this->assertEquals(
             '2017-02-22',
-            DateHelper::addTimeAccordingToFrequencyType($testDate, 'month', 1)->toDateString()
+            DateHelper::addTimeAccordingToFrequencyType($testDate, 'solar', 'month', 1)->toDateString()
         );
 
         $testDate = DateHelper::parseDateTime($date);
         $this->assertEquals(
             '2018-01-22',
-            DateHelper::addTimeAccordingToFrequencyType($testDate, 'year', 1)->toDateString()
+            DateHelper::addTimeAccordingToFrequencyType($testDate, 'solar', 'year', 1)->toDateString()
         );
     }
 

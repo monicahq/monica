@@ -102,7 +102,7 @@ export default {
     inputClass() {
       var c = ['br2 f5 ba b--black-40 pa2 outline-0'];
       if (this.validator) {
-        c.push({ 'error': this.validator.$error });
+        c.push({ error: this.validator.$error });
       }
       return c;
     },

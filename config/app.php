@@ -232,4 +232,15 @@ return [
         'Gravatar' => Creativeorange\Gravatar\Facades\Gravatar::class,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Default calendar type
+    |--------------------------------------------------------------------------
+    |
+    | Calendar type: solar or lunar.
+    |
+    */
+
+    'default_calendar_type' => env('DEFAULT_CALENDAR_TYPE', 'solar'),
+
 ];

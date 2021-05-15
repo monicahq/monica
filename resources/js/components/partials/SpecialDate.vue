@@ -83,7 +83,7 @@
           <template slot="label">
             {{ $t('people.information_edit_exact') }}
           </template>
-          <div v-if="selectedOption == 'exact'" slot="extra" class="mt2">
+          <div v-if="selectedOption == 'exact'" slot="extra" class="mt2 flex">
             <form-date
               :id="'birthdayDate'"
               ref="birthday"
@@ -93,6 +93,12 @@
               :label="$t('people.information_edit_birthdate_label')"
               :class="[ dirltr ? 'fl' : 'fr' ]"
               :validator="$v.selectedDate"
+            />
+            <form-select
+              :id="'calendar_type'"
+              v-model="selectedCalendarType"
+              :options="calendarTypes"
+              :class="['ml3', dirltr ? 'mr3' : 'mr1']"
             />
           </div>
         </form-radio>
@@ -136,6 +142,10 @@ export default {
       type: String,
       default: '',
     },
+    calendarTypes: {
+      type: Array,
+      default: () => [],
+    },
     days: {
       type: Array,
       default: () => [],
@@ -143,6 +153,10 @@ export default {
     months: {
       type: Array,
       default: () => [],
+    },
+    calendarType: {
+      type: String,
+      default: '',
     },
     day: {
       type: Number,
@@ -174,6 +188,7 @@ export default {
       selectedAge: 0,
       selectedMonth: 0,
       selectedDay: 0,
+      selectedCalendarType: null,
       hasBirthdayReminder: false
     };
   },
@@ -228,6 +243,7 @@ export default {
     this.selectedAge = this.age;
     this.selectedMonth = this.month;
     this.selectedDay = this.day;
+    this.selectedCalendarType = this.calendarType;
     this.hasBirthdayReminder = this.reminder;
   },
 

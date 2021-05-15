@@ -106,6 +106,7 @@ class Contact extends Model
         'description',
         'account_id',
         'is_partial',
+        'calendar_type',
         'job',
         'company',
         'food_preferences',

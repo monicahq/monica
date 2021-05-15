@@ -8,6 +8,7 @@ use App\Helpers\FormHelper;
 use Illuminate\Http\Request;
 use App\Helpers\GenderHelper;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +45,8 @@ class RelationshipsController extends Controller
             ->withDefaultGender(auth()->user()->account->default_gender_id)
             ->withDays(DateHelper::getListOfDays())
             ->withMonths(DateHelper::getListOfMonths())
+            ->withCalendarTypes(Reminder::getListOfCalendarTypes())
+            ->withCalendarType(config('app.default_calendar_type'))
             ->withBirthdate(now(DateHelper::getTimezone())->toDateString())
             ->withExistingContacts(ContactResource::collection($existingContacts))
             ->withType($request->input('type'))
@@ -117,6 +120,8 @@ class RelationshipsController extends Controller
             ->withDays(DateHelper::getListOfDays())
             ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdate($birthdate)
+            ->withCalendarTypes(Reminder::getListOfCalendarTypes())
+            ->withCalendarType($otherContact->calendar_type)
             ->withRelationshipId($relationship->id)
             ->withType($relationship->relationship_type_id)
             ->withBirthdayState($otherContact->getBirthdayState())
@@ -211,6 +216,7 @@ class RelationshipsController extends Controller
             'birthdate_year' => $year,
             'birthdate_is_age_based' => $request->input('birthdate') === 'approximate',
             'birthdate_age' => $request->input('age'),
+            'calendar_type' => $request->input('calendar_type'),
             'birthdate_add_reminder' => ! empty($request->input('addReminder')),
             'is_partial' => ! $request->input('realContact'),
             'is_deceased' => false,

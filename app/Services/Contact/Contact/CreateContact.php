@@ -10,6 +10,8 @@ use App\Helpers\AccountHelper;
 use function Safe\json_encode;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use Illuminate\Validation\Rule;
+use App\Models\Contact\Reminder;
 use App\Jobs\AuditLog\LogAccountAudit;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Jobs\Avatars\GetAvatarsFromInternet;
@@ -40,6 +42,11 @@ class CreateContact extends BaseService
             'birthdate_is_age_based' => 'nullable|boolean',
             'birthdate_age' => 'nullable|integer',
             'birthdate_add_reminder' => 'nullable|boolean',
+            'calendar_type' => [
+                'nullable',
+                'string',
+                Rule::in(Reminder::$calendarTypes),
+            ],
             'is_deceased' => 'required|boolean',
             'is_deceased_date_known' => 'required|boolean',
             'deceased_date_day' => 'nullable|integer',
@@ -153,6 +160,7 @@ class CreateContact extends BaseService
             'month' => $this->nullOrvalue($data, 'birthdate_month'),
             'year' => $this->nullOrvalue($data, 'birthdate_year'),
             'is_age_based' => $this->nullOrvalue($data, 'birthdate_is_age_based'),
+            'calendar_type' => $this->nullOrvalue($data, 'calendar_type'),
             'age' => $this->nullOrvalue($data, 'birthdate_age'),
             'add_reminder' => $this->nullOrvalue($data, 'birthdate_add_reminder'),
             'is_deceased' => $data['is_deceased'],

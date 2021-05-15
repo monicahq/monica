@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e935211274a98900df063306a02f2d2",
+    "content-hash": "c318340370418f2ec487307d018168ba",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -5411,6 +5411,57 @@
                 "source": "https://github.com/opis/closure/tree/3.6.2"
             },
             "time": "2021-04-09T13:42:10+00:00"
+        },
+        {
+            "name": "overtrue/chinese-calendar",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/overtrue/chinese-calendar.git",
+                "reference": "d78e86d66a4b225defac6828bf1de42c4a9d4bdf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/overtrue/chinese-calendar/zipball/d78e86d66a4b225defac6828bf1de42c4a9d4bdf",
+                "reference": "d78e86d66a4b225defac6828bf1de42c4a9d4bdf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Overtrue\\ChineseCalendar\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "overtrue",
+                    "email": "anzhengchao@gmail.com"
+                }
+            ],
+            "description": "中国农历转换与查询工具",
+            "keywords": [
+                "Chinese",
+                "calendar",
+                "lunar",
+                "lunar2solar",
+                "solar",
+                "solar2lunar"
+            ],
+            "support": {
+                "issues": "https://github.com/overtrue/chinese-calendar/issues",
+                "source": "https://github.com/overtrue/chinese-calendar/tree/master"
+            },
+            "time": "2020-03-09T07:21:26+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",

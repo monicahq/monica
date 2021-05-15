@@ -25,6 +25,7 @@ class RemindersController extends Controller
         return view('people.reminders.add')
             ->withContact($contact)
             ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account))
+            ->withCalendarTypes(Reminder::getListOfCalendarTypes())
             ->withReminder(new Reminder);
     }
 
@@ -43,6 +44,7 @@ class RemindersController extends Controller
             'contact_id' => $contact->id,
             'initial_date' => $request->input('initial_date'),
             'frequency_type' => $request->input('frequency_type'),
+            'calendar_type' => $request->input('calendar_type'),
             'frequency_number' => is_null($request->input('frequency_number')) ? 1 : $request->input('frequency_number'),
             'title' => $request->input('title'),
             'description' => $request->input('description'),
@@ -67,6 +69,7 @@ class RemindersController extends Controller
         return view('people.reminders.edit')
             ->withContact($contact)
             ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account))
+            ->withCalendarTypes(Reminder::getListOfCalendarTypes())
             ->withReminder($reminder);
     }
 
@@ -87,6 +90,7 @@ class RemindersController extends Controller
             'reminder_id' => $reminder->id,
             'initial_date' => $request->input('initial_date'),
             'frequency_type' => $request->input('frequency_type'),
+            'calendar_type' => $request->input('calendar_type'),
             'frequency_number' => is_null($request->input('frequency_number')) ? 1 : $request->input('frequency_number'),
             'title' => $request->input('title'),
             'description' => $request->input('description'),

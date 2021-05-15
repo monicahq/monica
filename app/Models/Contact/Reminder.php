@@ -9,6 +9,7 @@ use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
+use Illuminate\Support\Collection;
 
 /**
  * A reminder has two states: active and inactive.
@@ -45,6 +46,15 @@ class Reminder extends Model
      */
     public static $frequencyTypes = [
         'one_time', 'week', 'month', 'year',
+    ];
+
+    /**
+     * Valid value for calendar type.
+     *
+     * @var array
+     */
+    public static $calendarTypes = [
+        'solar', 'lunar',
     ];
 
     /**
@@ -93,18 +103,19 @@ class Reminder extends Model
      *
      * @return Carbon
      */
-    public function calculateNextExpectedDate($date = null)
+    public function calculateNextExpectedDate($date = null, $calendarType = null)
     {
         if (is_null($date)) {
             $date = $this->initial_date;
         }
 
-        while ($date->isPast()) {
-            $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
+        if (is_null($calendarType)) {
+            $calendarType = $this->calendar_type ? $this->calendar_type : config('app.default_calendar_type');
+            $date = DateHelper::convertToSolarCalendarDate($date, $calendarType);
         }
 
-        if ($date->isToday()) {
-            $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
+        while ($date->isPast() || $date->isToday()) {
+            $date = DateHelper::addTimeAccordingToFrequencyType($date, $calendarType, $this->frequency_type, $this->frequency_number);
         }
 
         return $date;
@@ -180,5 +191,20 @@ class Reminder extends Model
                 'notification_number_days_before' => $reminderRule->number_of_days_before,
             ]);
         }
+    }
+
+    /**
+     * Get list of calendar types to display.
+     *
+     * @return Collection
+     */
+    public static function getListOfCalendarTypes(): Collection
+    {
+        return collect(Reminder::$calendarTypes)->map(function($calendarType) {
+            return [
+                'id' => $calendarType,
+                'name' => trans('people.reminders_calendar_'.$calendarType),
+            ];
+        });
     }
 }
