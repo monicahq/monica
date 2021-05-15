@@ -204,7 +204,7 @@ class SettingsController extends Controller
 
         $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
 
-        $exportdate = date('Y-m-d');
+        $exportdate = Carbon::now(DateHelper::getTimezone())->format('Y-m-d');
 
         return response()
             ->download($adapter->getPathPrefix().$path, "monica-export.$exportdate.sql")
