@@ -46,6 +46,8 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::post('/dashboard/setTab', 'DashboardController@setTab');
     });
 
+    Route::get('/file/{file}', 'StorageController@download')->where('file', '.*')->name('download');
+
     Route::get('/compliance', 'ComplianceController@index')->name('compliance');
     Route::post('/compliance/sign', 'ComplianceController@store');
     Route::get('/changelog', 'ChangelogController@index')->name('changelog.index');

@@ -65,7 +65,7 @@ class UploadDocument extends BaseService
             'mime_type' => (new \Mimey\MimeTypes)->getMimeType($document->guessClientExtension()),
         ];
 
-        $filename = $document->storePublicly('documents', config('filesystems.default'));
+        $filename = $document->store('documents', config('filesystems.default'));
 
         return array_merge($data, [
             'new_filename' => $filename,
