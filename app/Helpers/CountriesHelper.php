@@ -129,9 +129,9 @@ class CountriesHelper
      * Get default country for a language.
      *
      * @param string $locale   language code (iso)
-     * @return string  cca2 code
+     * @return string|null  cca2 code
      */
-    private static function getDefaultCountryFromLocale($locale): string
+    private static function getDefaultCountryFromLocale($locale): ?string
     {
         switch (mb_strtolower($locale)) {
             case 'cs':
@@ -143,14 +143,22 @@ class CountriesHelper
             case 'he':
                 $country = 'IL';
                 break;
-            case 'ja':
-                $country = 'JP';
-                break;
             case 'zh':
                 $country = 'CN';
                 break;
-            default:
+            case 'de':
+            case 'es':
+            case 'fr':
+            case 'hr':
+            case 'it':
+            case 'nl':
+            case 'pt':
+            case 'ru':
+            case 'tr':
                 $country = mb_strtoupper($locale);
+                break;
+            default:
+                $country = null;
                 break;
         }
 
