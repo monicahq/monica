@@ -29,6 +29,8 @@ class Kernel extends ConsoleKernel
         if ($this->app->environment() != 'production') {
             $this->load(__DIR__.'/Commands/Tests');
         }
+
+        require base_path('routes/console.php');
     }
 
     /**

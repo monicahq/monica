@@ -199,7 +199,7 @@ class SettingsController extends Controller
      */
     public function exportToSql()
     {
-        $path = dispatch_now(new ExportAccountAsSQL());
+        $path = ExportAccountAsSQL::dispatchSync();
 
         $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
 
@@ -250,7 +250,7 @@ class SettingsController extends Controller
             'filename' => $filename,
         ]);
 
-        dispatch(new AddContactFromVCard($importJob, $request->input('behaviour')));
+        AddContactFromVCard::dispatch($importJob, $request->input('behaviour'));
 
         return redirect()->route('settings.import');
     }

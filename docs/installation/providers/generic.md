@@ -105,13 +105,7 @@ mysql -u root -p
 Create a database called 'monica'.
 
 ```sql
-CREATE DATABASE monica;
-```
-
-or if you want to support all character (like emojis):
-
-```sql
-CREATE DATABASE monica CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 Create a user called 'monica' and its password 'strongpassword'.
@@ -120,7 +114,7 @@ Create a user called 'monica' and its password 'strongpassword'.
 CREATE USER 'monica'@'localhost' IDENTIFIED BY 'strongpassword';
 ```
 
-We have to authorize the new user on the monica db so that he is allowed to change the database.
+We have to authorize the new user on the `monica` db so that he is allowed to change the database.
 
 ```sql
 GRANT ALL ON monica.* TO 'monica'@'localhost';
