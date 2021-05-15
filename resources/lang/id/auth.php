@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => 'Otentikasi dua faktor telah gagal.',
     '2fa_one_time_password' => 'Kode otentikasi dua faktor',
     '2fa_recuperation_code' => 'Masukkan sebuah kode pemulihan dua faktor',
+    '2fa_one_time_or_recuperation' => 'Masukkan sebuah kode otentinkasi dua faktor atau sebuah kode pemulihan',
     '2fa_otp_help' => 'Buka aplikasi seluler otentikasi dua faktor Anda dan salin kode tersebut',
 
     'login_to_account' => 'Masuk ke akun Anda',
@@ -58,7 +59,7 @@ return [
     'password_reset_action' => 'Atur ulang kata sandi',
     'password_reset_email_content' => 'Klik di sini untuk mengatur ulang kata sandi Anda:',
 
-    'register_title_welcome' => 'Selamat datang di contoh Monica Anda yang baru saja dipasang',
+    'register_title_welcome' => 'Wilujeng sumping ke contoh pemasangan Monica Anda yang baru saja dipasang',
     'register_create_account' => 'Anda harus membuat sebuah akun untuk menggunakan Monica',
     'register_title_create' => 'Buat Akun Monica Anda',
     'register_login' => '<a href=":url">Masuk</a> jika Anda sudah memiliki akun.',
