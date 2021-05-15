@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\User\User;
+use Illuminate\Database\Eloquent\Builder;
 
 class ContactHelper
 {
@@ -10,11 +11,11 @@ class ContactHelper
      * Get the name order that will be used when rendered the Add/Edit forms
      * about contacts.
      *
-     * @param Builder $query
      * @param User $user
-     * @return string
+     * @param Builder $query
+     * @return Builder
      */
-    public static function orderContactQueryByUserPreference(User $user, $query)
+    public static function orderContactQueryByUserPreference(User $user, $query): Builder
     {
         switch ($user->name_order) {
             case 'firstname_lastname':
