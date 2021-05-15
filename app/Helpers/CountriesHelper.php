@@ -129,9 +129,9 @@ class CountriesHelper
      * Get default country for a language.
      *
      * @param string $locale   language code (iso)
-     * @return string|null  cca2 code
+     * @return string  cca2 code
      */
-    private static function getDefaultCountryFromLocale($locale): ?string
+    private static function getDefaultCountryFromLocale($locale): string
     {
         switch (mb_strtolower($locale)) {
             case 'cs':
