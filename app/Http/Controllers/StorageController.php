@@ -20,7 +20,7 @@ class StorageController
      *
      * @param Request $request
      * @param string $file
-     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\StreamedResponse|null
      */
     public function download(Request $request, string $file)
     {
@@ -142,7 +142,7 @@ class StorageController
             // return the entity if it has been changed since that date.
             $date = Carbon::parse($ifModifiedSince);
 
-            if ($date && $lastModified->lessThanOrEqualTo($date)) {
+            if ($lastModified->lessThanOrEqualTo($date)) {
                 return false;
             }
         }
@@ -153,7 +153,7 @@ class StorageController
             $date = Carbon::parse($ifUnmodifiedSince);
 
             // We must only check the date if it's valid
-            if ($date && $lastModified->greaterThan($date)) {
+            if ($lastModified->greaterThan($date)) {
                 abort(403, 'An If-Unmodified-Since header was specified, but the entity has been changed since the specified date.');
             }
         }
