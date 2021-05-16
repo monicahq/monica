@@ -81,7 +81,7 @@ class StorageController
             }
 
             return $disk->response($file, $filename, $headers);
-        } catch (FileNotFoundException) {
+        } catch (FileNotFoundException $e) {
             abort(404);
         }
     }
