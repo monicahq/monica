@@ -134,7 +134,7 @@ return [
     'conversation_list_cta' => 'תיעוד דיון ביומן',
 
     // age - birthday
-    'birthdate_not_set' => 'Birth date is not set',
+    'birthdate_not_set' => 'תאריך הלידה לא הוגדר',
     'age_approximate_in_years' => 'הגיל הוא בערך :age',
     'age_exact_in_years' => '{1}בגיל שנה|{2}בגיל שנתיים|[3,*]בגיל :age שנים',
     'age_exact_birthdate' => 'לידה ב־:date',
@@ -266,7 +266,7 @@ return [
     'activities_add_title' => 'מה עשית עם {name}?',
     'activities_summary' => 'נא לתאר את אופן הפעילות',
     'activities_add_pick_activity' => '(רשות) האם ברצונך לסווג את הפעילות הזאת? לא חובה אך סיווג יאפשר לך לערוך סטטיסטיקה בהמשך',
-    'activities_add_date_occured' => 'The activity happened on…',
+    'activities_add_date_occured' => 'הפעילות התרחשה ב…',
     'activities_add_participants' => 'מי, למעט {name}, השתתף בפעילות הזאת? (רשות)',
     'activities_add_emotions_title' => 'מעניין אותך לתעד איך הרגשת במהלך הפעילות? (רשות)',
     'activities_blank_title' => 'מעקב אחר מה שעשית עם {name} בעבר ועל מה דיברתם',
@@ -419,7 +419,7 @@ return [
 
     // life events
     'life_event_list_tab_life_events' => 'אירועים משמעותיים',
-    'life_event_list_tab_other' => 'Notes, reminders, …',
+    'life_event_list_tab_other' => 'פתקיות, תזכורות, …',
     'life_event_list_title' => 'אירועים משמעותיים',
     'life_event_blank' => 'תיעוד אירועים משמעותיים בחיים של {name} להפניה עתידית.',
     'life_event_list_cta' => 'הוספת אירוע משמעותי',
@@ -489,7 +489,7 @@ return [
     'document_list_cta' => 'העלאת מסמך',
     'document_list_blank_desc' => 'כאן ניתן לאחסן מסמכים שקשורים לאדם זה.',
     'document_upload_zone_cta' => 'העלאת קובץ',
-    'document_upload_zone_progress' => 'Uploading the document…',
+    'document_upload_zone_progress' => 'המסמך נשלח…',
     'document_upload_zone_error' => 'אירעה שגיאה בעת העלאת המסמך. נא לנסות שוב להלן.',
 
     // Photos
