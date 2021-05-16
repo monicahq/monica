@@ -86,7 +86,7 @@ return [
     'locale_fr' => 'Französisch',
     'locale_he' => 'Hebräisch',
     'locale_hr' => 'Kroatisch',
-    'locale_id' => 'Indonesian',
+    'locale_id' => 'Indonesisch',
     'locale_it' => 'Italienisch',
     'locale_ja' => 'Japanisch',
     'locale_nl' => 'Niederländisch',
