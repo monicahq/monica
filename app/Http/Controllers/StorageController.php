@@ -76,7 +76,7 @@ class StorageController
                 'Last-Modified' => $lastModified->isoFormat('ddd\, DD MMM YYYY HH\:mm\:ss \G\M\T'),
             ];
 
-            if (!$this->checkConditions($request, $etag, $lastModified)) {
+            if (! $this->checkConditions($request, $etag, $lastModified)) {
                 return Response::noContent(304, $headers)->setNotModified();
             }
 
@@ -104,7 +104,7 @@ class StorageController
                         break;
                     }
                 }
-                if (!$haveMatch) {
+                if (! $haveMatch) {
                     abort(403, 'An If-Match header was specified, but none of the specified ETags matched.');
                 }
             }
@@ -137,7 +137,7 @@ class StorageController
             }
         }
 
-        if (!$ifNoneMatch && ($ifModifiedSince = $request->header('If-Modified-Since'))) {
+        if (! $ifNoneMatch && ($ifModifiedSince = $request->header('If-Modified-Since'))) {
             // The If-Modified-Since header contains a date. We will only
             // return the entity if it has been changed since that date.
             $date = Carbon::parse($ifModifiedSince);
