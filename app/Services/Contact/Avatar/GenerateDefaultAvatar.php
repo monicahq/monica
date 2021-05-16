@@ -8,6 +8,7 @@ use App\Models\Contact\Contact;
 use Laravolt\Avatar\Facade as Avatar;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Facades\Cache;
 
 class GenerateDefaultAvatar extends BaseService
 {
@@ -46,6 +47,8 @@ class GenerateDefaultAvatar extends BaseService
 
         $contact->avatar_default_url = $filename;
         $contact->save();
+
+        Cache::forget('etag'.Str::before('?', $filename));
 
         return $contact;
     }
