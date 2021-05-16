@@ -63,7 +63,7 @@ class StorageController
         }
 
         try {
-            $disk = StorageHelper::disk(config('filesystem.default'));
+            $disk = StorageHelper::disk(config('filesystems.default'));
 
             $etag = Cache::rememberForever('etag.'.$file, function () {
                 return '"'.Str::uuid().'"';
@@ -72,7 +72,7 @@ class StorageController
 
             $headers = [
                 'ETag' => $etag,
-                'Cache-Control' => 'private, max-age=2592000',
+                'Cache-Control' => config('filesystems.default_cache_control'),
                 'Last-Modified' => $lastModified->isoFormat('ddd\, DD MMM YYYY HH\:mm\:ss \G\M\T'),
             ];
 

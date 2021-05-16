@@ -6,6 +6,7 @@ use DateTime;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
+use App\Helpers\StorageHelper;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use App\Helpers\WeatherHelper;
@@ -1018,7 +1019,18 @@ class Contact extends Model
             return '';
         }
 
-        return route('download', ['file' => $this->avatar_default_url]);
+        if (config('filesystems.secure_files')) {
+            return route('download', ['file' => $this->avatar_default_url]);
+        } else {
+            $matches = Str::of($this->new_filename)->split('/\?/');
+
+            $url = asset(StorageHelper::disk(config('filesystems.default'))->url($matches[0]));
+            if ($matches->count() > 1) {
+                $url .= '?'.$matches[1];
+            }
+
+            return $url;
+        }
     }
 
     /**

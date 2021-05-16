@@ -2,6 +2,7 @@
 
 namespace App\Models\Account;
 
+use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
 use App\Models\ModelBinding as Model;
 use Intervention\Image\Facades\Image;
@@ -63,7 +64,11 @@ class Photo extends Model
      */
     public function url()
     {
-        return route('download', ['file' => $this->new_filename]);
+        if (config('filesystems.secure_files')) {
+            return route('download', ['file' => $this->new_filename]);
+        } else {
+            return asset(StorageHelper::disk(config('filesystems.default'))->url($this->new_filename));
+        }
     }
 
     /**

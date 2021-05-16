@@ -103,7 +103,7 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
 
         if (! $this->dryrun) {
             $avatarFile = $this->storage->get($avatarFileName);
-            $newStorage->put($newAvatarFilename, $avatarFile);
+            $newStorage->put($newAvatarFilename, $avatarFile, config('filesystems.secure_files') ? 'private' : 'public');
 
             $this->contact->avatar_location = config('filesystems.default');
             $this->contact->save();

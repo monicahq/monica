@@ -2,6 +2,7 @@
 
 namespace App\Models\Contact;
 
+use App\Helpers\StorageHelper;
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -58,6 +59,11 @@ class Document extends Model
      */
     public function getDownloadLink(): string
     {
-        return route('download', ['file' => $this->new_filename]);
+        if (config('filesystems.secure_files')) {
+            return route('download', ['file' => $this->new_filename]);
+        } else {
+            return asset(StorageHelper::disk(config('filesystems.default'))->url($this->new_filename));
+        }
+
     }
 }

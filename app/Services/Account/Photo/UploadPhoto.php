@@ -84,7 +84,10 @@ class UploadPhoto extends BaseService
             'original_filename' => $photo->getClientOriginalName(),
             'filesize' => $photo->getSize(),
             'mime_type' => (new \Mimey\MimeTypes)->getMimeType($photo->guessClientExtension()),
-            'new_filename' => $photo->store('photos', config('filesystems.default')),
+            'new_filename' => $photo->store('photos', [
+                'disk' => config('filesystems.default'),
+                'visibility' => config('filesystems.secure_files') ? 'private' : 'public',
+            ]),
         ];
     }
 
@@ -146,7 +149,7 @@ class UploadPhoto extends BaseService
     private function storeImage(string $disk, $image, string $filename): ?string
     {
         $result = Storage::disk($disk)
-            ->put($path = $filename, (string) $image->stream());
+            ->put($path = $filename, (string) $image->stream(), config('filesystems.secure_files') ? 'private' : 'public');
 
         return $result ? $path : null;
     }

@@ -96,7 +96,7 @@ class MoveAvatars extends Command
             }
             if (! $this->option('dryrun')) {
                 $avatarFile = $storage->get($avatarFileName);
-                $newStorage->put($avatarFileName, $avatarFile);
+                $newStorage->put($avatarFileName, $avatarFile, config('filesystems.secure_files') ? 'private' : 'public');
             }
 
             $this->line('  File pushed: '.$avatarFileName, null, OutputInterface::VERBOSITY_VERBOSE);
