@@ -10,7 +10,7 @@ return [
 
     //index
     'people_not_found' => 'איש הקשר לא נמצא',
-    'people_list_number_kids' => ':count child|:count children',
+    'people_list_number_kids' => 'צאצא אחד|:count צאצאים',
     'people_list_last_updated' => 'יעוץ אחרון:',
     'people_list_number_reminders' => 'תזכורת אחת|:count תזכורות',
     'people_list_blank_title' => 'אין אף אחד בחשבון שלך עדיין',
