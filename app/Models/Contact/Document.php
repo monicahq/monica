@@ -64,6 +64,5 @@ class Document extends Model
         } else {
             return asset(StorageHelper::disk(config('filesystems.default'))->url($this->new_filename));
         }
-
     }
 }
