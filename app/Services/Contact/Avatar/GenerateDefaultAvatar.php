@@ -5,10 +5,10 @@ namespace App\Services\Contact\Avatar;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\Cache;
 use Laravolt\Avatar\Facade as Avatar;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Support\Facades\Cache;
 
 class GenerateDefaultAvatar extends BaseService
 {
