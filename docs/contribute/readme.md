@@ -86,9 +86,7 @@ asdf install
 asdf reshim
 
 pecl install redis
-pecl install imagick
-echo "extension=redis.so
-extension=imagick.so" > $(asdf where php)/conf.d/php.ini
+echo "extension=redis.so" > $(asdf where php)/conf.d/php.ini
 ```
 
 You'll need to run the installation instructions below and setup a local mysql installation. After completing the application installation process you can run `php artisan serve` to get a local development server.
@@ -112,7 +110,7 @@ Once the above softwares are installed (or if you've finished the installation o
     1. `composer install --no-interaction` to install all packages.
        - Due to an issue with VirtualBox, you may encounter an error at this step due to a plug-in called `package-versions`. If this happens, delete the /vendor folder that was created and run `composer install --no-interaction --no-plugins --no-scripts` instead.
        - See this [GitHub Issue](https://github.com/laravel/homestead/issues/1240) for more information.
-       - This runs `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
+       - Run `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
     2. `yarn install` to install all the front-end dependencies and tools needed to compile assets.
        - If you experience an error related to `EPROTO: protocol error, symlink`, see [here](https://github.com/yarnpkg/yarn/issues/4908).
     3. `yarn run dev` to compile js and css assets.
