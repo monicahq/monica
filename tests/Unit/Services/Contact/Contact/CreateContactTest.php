@@ -100,7 +100,7 @@ class CreateContactTest extends TestCase
         $this->assertDatabaseHas('contact_fields', [
             'account_id' => $account->id,
             'contact_id' => $contact->id,
-            'data' => 'email@example',
+            'data' => 'email@example.com',
         ]);
     }
 

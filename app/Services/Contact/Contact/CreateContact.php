@@ -183,14 +183,12 @@ class CreateContact extends BaseService
             return;
         }
 
-        $contactField = app(CreateContactField::class)->execute(
-                [
-                    'account_id' => $data['account_id'],
-                    'contact_id' => $contact->id,
-                    'contact_field_type_id' => $contactFieldType->id,
-                    'data' => $data['email'],
-                ]
-        );
+        $contactField = app(CreateContactField::class)->execute([
+            'account_id' => $data['account_id'],
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => $data['email'],
+        ]);
     }
 
     /**
