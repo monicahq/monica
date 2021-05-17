@@ -1022,7 +1022,7 @@ class Contact extends Model
         if (config('filesystems.secure_files')) {
             return route('download', ['file' => $this->avatar_default_url]);
         } else {
-            $matches = Str::of($this->new_filename)->split('/\?/');
+            $matches = Str::of($this->avatar_default_url)->split('/\?/');
 
             $url = asset(StorageHelper::disk(config('filesystems.default'))->url($matches[0]));
             if ($matches->count() > 1) {
