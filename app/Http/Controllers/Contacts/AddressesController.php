@@ -8,7 +8,6 @@ use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Traits\JsonRespondController;
 use Illuminate\Support\Facades\Cache;
 use App\Services\Contact\Address\CreateAddress;
