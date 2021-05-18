@@ -8,6 +8,12 @@
         "social"
     ],
     "license": "AGPL",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/asbiin/etagconditionals"
+        }
+    ],
     "require": {
         "php": "^7.4 || ^8.0",
         "ext-bcmath": "*",
@@ -57,6 +63,7 @@
         "web-token/jwt-signature-algorithm-ecdsa": "^2.1",
         "web-token/jwt-signature-algorithm-eddsa": "^2.1",
         "web-token/jwt-signature-algorithm-rsa": "^2.1",
+        "werk365/etagconditionals": "dev-generate-etag-callback",
         "xantios/mimey": "^2.0"
     },
     "require-dev": {
