@@ -79,8 +79,9 @@ class AppServiceProvider extends ServiceProvider
 
         EtagConditionals::etagGenerateUsing(function (\Illuminate\Http\Request $request, \Symfony\Component\HttpFoundation\Response $response) {
             $url = $request->getRequestUri();
+
             return Cache::rememberForever('etag.'.$url, function () use ($url) {
-                 return md5($url);
+                return md5($url);
             });
         });
     }
