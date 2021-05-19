@@ -62,7 +62,7 @@ return [
     'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
     'people_export' => 'Export as vCard',
-    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
+    'people_add_reminder_for_birthday' => 'Create an annual reminder for :name’s birthday',
 
     // show
     'section_contact_information' => 'Contact information',
@@ -134,7 +134,7 @@ return [
     'conversation_list_cta' => 'Log conversation',
 
     // age - birthday
-    'birthdate_not_set' => 'Birth date is not set',
+    'birthdate_not_set' => 'Birthday is not set',
     'age_approximate_in_years' => 'around :age years old',
     'age_exact_in_years' => ':age years old',
     'age_exact_birthdate' => 'born :date',
@@ -157,8 +157,8 @@ return [
     'information_edit_unknown' => 'I do not know :name’s age',
     'information_edit_probably' => ':name person is probably…',
     'information_edit_not_year' => 'I know the day and month of :name’s birthday, but not the year…',
-    'information_edit_exact' => 'I know the exact birthdate of :name…',
-    'information_edit_birthdate_label' => 'Birthdate',
+    'information_edit_exact' => 'I know :name’s exact birthday…',
+    'information_edit_birthdate_label' => 'Birthday',
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => 'at :company',
     'work_add_cta' => 'Update work information',
@@ -203,7 +203,7 @@ return [
     'reminders_delete_cta' => 'Delete',
     'reminders_next_expected_date' => 'on',
     'reminders_cta' => 'Add a reminder',
-    'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen. Reminders automatically added for birthdates can not be deleted. If you want to change those dates, edit the birthdate of the contacts.',
+    'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen. Reminders automatically added for birthdays can not be deleted. If you want to change those dates, edit the birthday of the contacts.',
     'reminders_one_time' => 'One time',
     'reminders_type_week' => 'week',
     'reminders_type_month' => 'month',
