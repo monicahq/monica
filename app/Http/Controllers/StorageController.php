@@ -73,6 +73,7 @@ class StorageController extends Controller
 
             $headers = [
                 'Last-Modified' => $lastModified->isoFormat('ddd\, DD MMM YYYY HH\:mm\:ss \G\M\T'),
+                'Cache-Control' => config('filesystems.default_cache_control'),
             ];
 
             if (! $this->checkConditions($request, $lastModified)) {
