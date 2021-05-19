@@ -283,15 +283,17 @@ return [
     'relationship_type_mentor_with_name' => ':name’s mentor',
     'relationship_type_mentor_female_with_name' => ':name’s mentor',
 
-    'relationship_type_protege' => 'protege',
-    'relationship_type_protege_female' => 'protege',
-    'relationship_type_protege_with_name' => ':name’s protege',
-    'relationship_type_protege_female_with_name' => ':name’s protege',
+    'relationship_type_protege' => 'protégé',
+    'relationship_type_protege_female' => 'protégé',
+    'relationship_type_protege_with_name' => ':name’s protégé',
+    'relationship_type_protege_female_with_name' => ':name’s protégé',
 
-    'relationship_type_ex_husband' => 'ex-husband',
+    'relationship_type_ex_husband' => 'ex-spouse',
     'relationship_type_ex_husband_female' => 'ex-wife',
-    'relationship_type_ex_husband_with_name' => ':name’s ex-husband',
+    'relationship_type_ex_husband_male' => 'ex-husband',
+    'relationship_type_ex_husband_with_name' => ':name’s ex-spouse',
     'relationship_type_ex_husband_female_with_name' => ':name’s ex-wife',
+    'relationship_type_ex_husband_male_with_name' => ':name’s ex-husband',
 
     // emotions
     'emotion_primary_love' => 'Love',
