@@ -239,15 +239,19 @@ return [
     'relationship_type_cousin_with_name' => ':name’s cousin',
     'relationship_type_cousin_female_with_name' => ':name’s cousin',
 
-    'relationship_type_godfather' => 'godfather',
+    'relationship_type_godfather' => 'godparent',
     'relationship_type_godfather_female' => 'godmother',
-    'relationship_type_godfather_with_name' => ':name’s godfather',
+    'relationship_type_godfather_male' => 'godfather',
+    'relationship_type_godfather_with_name' => ':name’s godparent',
     'relationship_type_godfather_female_with_name' => ':name’s godmother',
+    'relationship_type_godfather_male_with_name' => ':name’s godfather',
 
-    'relationship_type_godson' => 'godson',
+    'relationship_type_godson' => 'godchild',
     'relationship_type_godson_female' => 'goddaughter',
-    'relationship_type_godson_with_name' => ':name’s godson',
+    'relationship_type_godson_male' => 'godson',
+    'relationship_type_godson_with_name' => ':name’s godchild',
     'relationship_type_godson_female_with_name' => ':name’s goddaughter',
+    'relationship_type_godson_male_with_name' => ':name’s godson',
 
     'relationship_type_friend' => 'friend',
     'relationship_type_friend_female' => 'friend',
