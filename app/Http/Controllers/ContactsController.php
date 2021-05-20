@@ -16,7 +16,6 @@ use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use App\Jobs\UpdateLastConsultedDate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
