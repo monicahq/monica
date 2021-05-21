@@ -3,7 +3,6 @@
 namespace App\Services\VCard;
 
 use Ramsey\Uuid\Uuid;
-use App\Models\Contact\Note;
 use App\Models\User\User;
 use App\Traits\DAVFormat;
 use function Safe\substr;
@@ -12,6 +11,7 @@ use App\Helpers\DateHelper;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Helpers\VCardHelper;
+use App\Models\Contact\Note;
 use App\Helpers\LocaleHelper;
 use App\Services\BaseService;
 use function Safe\preg_split;
@@ -893,14 +893,14 @@ class ImportVCard extends BaseService
      */
     private function importNote(Contact $contact, VCard $entry): void
     {
-        if(is_null($entry->NOTE)) {
+        if (is_null($entry->NOTE)) {
             return;
         }
 
         $note = Note::create([
             'contact_id' => $contact->id,
             'account_id' => $contact->account_id,
-            'body' => $entry->NOTE
+            'body' => $entry->NOTE,
         ]);
     }
 
