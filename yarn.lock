@@ -3601,9 +3601,9 @@ csso@^4.0.2:
     css-tree "^1.0.0"
 
 cypress@^7.2.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-7.2.0.tgz#6a3364e18972f898fff1fb12c1ff747939e45ddc"
-  integrity sha512-lHHGay+YsffDn4M0bkkwezylBVHUpwwhtqte4LNPrFRCHy77X38+1PUe3neFb3glVTM+rbILtTN6FhO2djcOuQ==
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-7.3.0.tgz#17345b8d18681c120f033e7d8fd0f0271e9d0d51"
+  integrity sha512-aseRCH1tRVCrM6oEfja6fR/bo5l6e4SkHRRSATh27UeN4f/ANC8U7tGIulmrISJVy9xuOkOdbYKbUb2MNM+nrw==
   dependencies:
     "@cypress/listr-verbose-renderer" "^0.4.1"
     "@cypress/request" "^2.88.5"
