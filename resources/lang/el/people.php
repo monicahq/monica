@@ -49,6 +49,7 @@ return [
     'people_add_firstname' => 'Όνομα',
     'people_add_middlename' => 'Μεσαίο όνομα (Προαιρετικό)',
     'people_add_lastname' => 'Επώνυμο (Προαιρετικό)',
+    'people_add_email' => 'Email (Optional)',
     'people_add_nickname' => 'Ψευδώνυμο (Προαιρετικό)',
     'people_add_cta' => 'Προσθήκη',
     'people_save_and_add_another_cta' => 'Αποθήκευση και προσθήκη νέου',
