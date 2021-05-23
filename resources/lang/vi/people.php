@@ -49,6 +49,7 @@ return [
     'people_add_firstname' => 'Tên',
     'people_add_middlename' => 'Tên đệm (Tuỳ chọn)',
     'people_add_lastname' => 'Họ (Tuỳ chọn)',
+    'people_add_email' => 'Email (Optional)',
     'people_add_nickname' => 'Biệt danh (Tuỳ chọn)',
     'people_add_cta' => 'Thêm',
     'people_save_and_add_another_cta' => 'Gửi và thêm một người khác',
