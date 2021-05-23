@@ -210,6 +210,7 @@ class ContactsController extends Controller
                 'middle_name' => $request->input('middle_name', null),
                 'last_name' => $request->input('last_name', null),
                 'nickname' => $request->input('nickname', null),
+                'email' => $request->input('email', null),
                 'gender_id' => $request->input('gender'),
                 'is_birthdate_known' => false,
                 'is_deceased' => false,
