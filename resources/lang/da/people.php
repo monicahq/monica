@@ -49,6 +49,7 @@ return [
     'people_add_firstname' => 'Fornavn',
     'people_add_middlename' => 'Mellemnavn (valgfrit)',
     'people_add_lastname' => 'Efternavn (valgfrit)',
+    'people_add_email' => 'Email (Optional)',
     'people_add_nickname' => 'Kaldenavn (valgfrit)',
     'people_add_cta' => 'Tilføj',
     'people_save_and_add_another_cta' => 'Indsend og tilføj en anden',
