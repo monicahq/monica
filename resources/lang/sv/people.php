@@ -49,6 +49,7 @@ return [
     'people_add_firstname' => 'Förnamn',
     'people_add_middlename' => 'Mellannamn (valfritt)',
     'people_add_lastname' => 'Efternamn (valfritt)',
+    'people_add_email' => 'Email (Optional)',
     'people_add_nickname' => 'Smeknamn (valfritt)',
     'people_add_cta' => 'Lägg till',
     'people_save_and_add_another_cta' => 'Skicka in och lägg till någon annan',
