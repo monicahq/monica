@@ -49,6 +49,7 @@ return [
     'people_add_firstname' => '名',
     'people_add_middlename' => 'ミドルネーム（オプション）',
     'people_add_lastname' => '姓（オプション）',
+    'people_add_email' => 'Email (Optional)',
     'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => '追加',
     'people_save_and_add_another_cta' => 'Submit and add someone else',
