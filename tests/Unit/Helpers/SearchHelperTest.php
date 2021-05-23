@@ -3,9 +3,9 @@
 namespace Tests\Unit\Helpers;
 
 use Tests\FeatureTestCase;
+use App\Models\Contact\Note;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Note;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SearchHelperTest extends FeatureTestCase
@@ -35,7 +35,7 @@ class SearchHelperTest extends FeatureTestCase
 
         $note = factory(Note::class)->create([
             'account_id' => $user->account_id,
-            'body' => 'we met on github and talked about monica'
+            'body' => 'we met on github and talked about monica',
         ]);
 
         $searchResults = SearchHelper::searchContacts('monica', 'created_at')
@@ -53,7 +53,7 @@ class SearchHelperTest extends FeatureTestCase
 
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
-            'first_met_additional_info' => 'github'
+            'first_met_additional_info' => 'github',
         ]);
         $searchResults = SearchHelper::searchContacts($contact->first_met_additional_info, 'created_at')
             ->paginate(1);
