@@ -49,12 +49,12 @@ class SettingsTest extends FeatureTestCase
 
         $response->assertSee(trans('settings.export_title'));
 
-        Carbon::setTestNow(Carbon::create(2021, 11, 1, 7, 0, 0));
+        Carbon::setTestNow(Carbon::create(2021, 11, 25, 7, 0, 0));
 
         $response = $this->get(route('settings.sql'));
 
         $response->assertStatus(200);
-        $this->assertTrue($response->headers->get('content-disposition') == 'attachment; filename=monica-export.20[0-9][0-9]-[0-1][0-9]-[0-3][0-9].sql');
+        $this->assertTrue($response->headers->get('content-disposition') == 'attachment; filename=monica-export.2021-11-25.sql');
     }
 
     public function test_user_can_delete_account()
