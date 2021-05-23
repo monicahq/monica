@@ -49,6 +49,7 @@ return [
     'people_add_firstname' => 'Ім\'я',
     'people_add_middlename' => 'Середнє ім\'я (необов\'язково)',
     'people_add_lastname' => 'Прізвище (необов\'язково)',
+    'people_add_email' => 'Email (Optional)',
     'people_add_nickname' => 'Прізвисько (необов\'язково)',
     'people_add_cta' => 'Додати',
     'people_save_and_add_another_cta' => 'Надіслати і додати когось іншого',
