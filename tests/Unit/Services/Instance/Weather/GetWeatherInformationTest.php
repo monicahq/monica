@@ -3,12 +3,10 @@
 namespace Tests\Unit\Services\Instance\Weather;
 
 use Tests\TestCase;
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
 use App\Models\Account\Place;
-use GuzzleHttp\Psr7\Response;
+use App\Models\Account\Account;
 use App\Models\Account\Weather;
-use GuzzleHttp\Handler\MockHandler;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\MissingEnvVariableException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -30,20 +28,70 @@ class GetWeatherInformationTest extends TestCase
         config(['monica.darksky_api_key' => 'test']);
 
         $body = file_get_contents(base_path('tests/Fixtures/Services/Instance/Weather/GetWeatherInformationSampleResponse.json'));
-        $mock = new MockHandler([new Response(200, [], $body)]);
-        $handler = HandlerStack::create($mock);
-        $client = new Client(['handler' => $handler]);
+        Http::fake([
+            'api.darksky.net/forecast/*' => Http::response($body, 200),
+        ]);
 
         $request = [
             'place_id' => $place->id,
         ];
 
-        $weather = app(GetWeatherInformation::class)->execute($request, $client);
+        $weather = app(GetWeatherInformation::class)->execute($request);
 
         $this->assertDatabaseHas('weather', [
             'id' => $weather->id,
             'account_id' => $place->account_id,
             'place_id' => $place->id,
+        ]);
+
+        $this->assertEquals(
+            'Partly Cloudy',
+            $weather->summary
+        );
+
+        $this->assertInstanceOf(
+            Weather::class,
+            $weather
+        );
+    }
+
+    /** @test */
+    public function it_gets_weather_information_for_new_place()
+    {
+        $account = factory(Account::class)->create();
+        $place = factory(Place::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        config(['monica.enable_weather' => true]);
+        config(['monica.darksky_api_key' => 'test']);
+        config(['monica.enable_geolocation' => true]);
+        config(['monica.location_iq_api_key' => 'test']);
+
+        $body = file_get_contents(base_path('tests/Fixtures/Services/Instance/Weather/GetWeatherInformationSampleResponse.json'));
+        $placeBody = file_get_contents(base_path('tests/Fixtures/Services/Account/Place/CreatePlaceSampleResponse.json'));
+        Http::fake([
+            'us1.locationiq.com/v1/*' => Http::response($placeBody, 200),
+            'api.darksky.net/forecast/*' => Http::response($body, 200),
+        ]);
+
+        $request = [
+            'place_id' => $place->id,
+        ];
+
+        $weather = app(GetWeatherInformation::class)->execute($request);
+
+        $this->assertDatabaseHas('weather', [
+            'id' => $weather->id,
+            'account_id' => $account->id,
+            'place_id' => $place->id,
+        ]);
+        $this->assertDatabaseHas('places', [
+            'id' => $place->id,
+            'account_id' => $account->id,
+            'street' => '12',
+            'latitude' => 34.0736204,
+            'longitude' => -118.4003563,
         ]);
 
         $this->assertEquals(

@@ -97,27 +97,6 @@
 * default gender to unknown ([#4753](https://github.com/monicahq/monica/issues/4753)) ([ebf7c08](https://github.com/monicahq/monica/commit/ebf7c085dd786b174055be389ba5fef35fae861a))
 * set and clear personal description now appears in change log ([#4893](https://github.com/monicahq/monica/issues/4893)) ([686a0a1](https://github.com/monicahq/monica/commit/686a0a1f0b2dbbee91fef41eca318a3b9fbd48ff))
 
-# UNRELEASED CHANGES:
-
-### New features:
-
-* Add an artisan command to create an account
-* Add the notion of AddressBooks
-* Allow customization of life event types
-
-### Enhancements:
-
-* Use Unknown as default gender
-* Better padding and text about Me as a contact on Settings page
-
-### Fixes:
-
-* Fix adding a gender type
-* Fix update activity with emotions
-* Fix bad return with wrong credential on oauth/login api
-
-
-# RELEASED VERSIONS:
 
 ## v2.19.1 - 2020-09-12
 

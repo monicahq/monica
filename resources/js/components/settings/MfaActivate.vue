@@ -60,8 +60,8 @@
           <form-input
             :id="'one_time_password2'"
             v-model="one_time_password"
-            :title="$t('auth.2fa_one_time_password')"
-            :input-type="'number'"
+            :title="$t('auth.2fa_one_time_or_recuperation')"
+            :input-type="'text'"
             :width="100"
             :required="true"
           />

@@ -115,7 +115,7 @@ sudo mysql -uroot -p
 Create a database called 'monica'.
 
 ```sql
-CREATE DATABASE monica;
+CREATE DATABASE monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 Create a user called 'monica' and its password 'strongpassword'.

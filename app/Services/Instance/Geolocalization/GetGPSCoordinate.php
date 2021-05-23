@@ -5,16 +5,12 @@ namespace App\Services\Instance\Geolocalization;
 use Illuminate\Support\Str;
 use App\Models\Account\Place;
 use App\Services\BaseService;
-use function Safe\json_decode;
 use Illuminate\Support\Facades\Log;
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\ClientException;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\HttpClientException;
 
 class GetGPSCoordinate extends BaseService
 {
-    /** @var GuzzleClient */
-    protected $client;
-
     /**
      * Get the validation rules that apply to the service.
      *
@@ -33,18 +29,11 @@ class GetGPSCoordinate extends BaseService
      * This method uses LocationIQ to process the geocoding.
      *
      * @param array $data
-     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
      * @return Place|null
      */
-    public function execute(array $data, GuzzleClient $client = null)
+    public function execute(array $data)
     {
         $this->validate($data);
-
-        if (! is_null($client)) {
-            $this->client = $client;
-        } else {
-            $this->client = new GuzzleClient();
-        }
 
         $place = Place::where('account_id', $data['account_id'])
             ->findOrFail($data['place_id']);
@@ -88,19 +77,18 @@ class GetGPSCoordinate extends BaseService
         }
 
         try {
-            $response = $this->client->request('GET', $query);
-        } catch (ClientException $e) {
-            Log::error('Error making the call: '.$e);
+            $response = Http::get($query);
+            $response->throw();
 
-            return null;
+            $place->latitude = $response->json('0.lat');
+            $place->longitude = $response->json('0.lon');
+            $place->save();
+
+            return $place;
+        } catch (HttpClientException $e) {
+            Log::error('Error making the call: '.$e);
         }
 
-        $response = json_decode($response->getBody());
-
-        $place->latitude = $response[0]->lat;
-        $place->longitude = $response[0]->lon;
-        $place->save();
-
-        return $place;
+        return null;
     }
 }

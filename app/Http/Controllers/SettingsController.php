@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\AccountHelper;
+use Illuminate\Support\Carbon;
 use App\Helpers\TimezoneHelper;
 use App\Models\Contact\Contact;
 use App\Jobs\ExportAccountAsSQL;
@@ -199,12 +200,14 @@ class SettingsController extends Controller
      */
     public function exportToSql()
     {
-        $path = dispatch_now(new ExportAccountAsSQL());
+        $path = ExportAccountAsSQL::dispatchSync();
 
         $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
 
+        $exportdate = Carbon::now(DateHelper::getTimezone())->format('Y-m-d');
+
         return response()
-            ->download($adapter->getPathPrefix().$path, 'monica.sql')
+            ->download($adapter->getPathPrefix().$path, "monica-export.$exportdate.sql")
             ->deleteFileAfterSend(true);
     }
 
@@ -250,7 +253,7 @@ class SettingsController extends Controller
             'filename' => $filename,
         ]);
 
-        dispatch(new AddContactFromVCard($importJob, $request->input('behaviour')));
+        AddContactFromVCard::dispatch($importJob, $request->input('behaviour'));
 
         return redirect()->route('settings.import');
     }

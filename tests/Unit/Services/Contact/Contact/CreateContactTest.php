@@ -9,6 +9,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Queue;
 use App\Jobs\AuditLog\LogAccountAudit;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -61,6 +62,46 @@ class CreateContactTest extends TestCase
             Contact::class,
             $contact
         );
+    }
+
+    /** @test */
+    public function it_stores_a_contact_with_email()
+    {
+        $account = factory(Account::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        factory(ContactFieldType::class)->create([
+            'account_id' => $account->id,
+            'type' => 'email',
+        ]);
+
+        $request = [
+            'account_id' => $account->id,
+            'author_id' => $user->id,
+            'first_name' => 'john',
+            'last_name' => 'doe',
+            'email' => 'email@example.com',
+
+            'is_birthdate_known' => false,
+            'is_deceased' => false,
+            'is_deceased_date_known' => false,
+        ];
+
+        $contact = app(CreateContact::class)->execute($request);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'first_name' => 'john',
+        ]);
+
+        $this->assertDatabaseHas('contact_fields', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'data' => 'email@example.com',
+        ]);
     }
 
     /** @test */

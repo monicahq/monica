@@ -585,6 +585,35 @@ class Contact extends Model
     }
 
     /**
+     * Scope a query to include contacts whose notes contain the search phrase.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeNotes($query, int $accountId = null, string $needle)
+    {
+        return $query->orWhereHas('notes', function ($query) use ($accountId, $needle) {
+            return $query->where([
+                ['account_id', $accountId],
+                ['body', 'like', "%$needle%"],
+            ]);
+        });
+    }
+
+    /**
+     * Scope a query to include contacts whose introduction notes contain the search phrase.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeIntroductionAdditionalInformation($query, string $needle)
+    {
+        return $query->orWhere([
+            ['first_met_additional_info', 'like', "%$needle%"],
+        ]);
+    }
+
+    /**
      * Scope a query to only include contacts from given address book.
      * 'null' value for address book is the default address book.
      *
