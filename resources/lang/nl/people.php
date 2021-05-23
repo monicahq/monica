@@ -49,6 +49,7 @@ return [
     'people_add_firstname' => 'Voornaam',
     'people_add_middlename' => 'Tweede naam (optioneel)',
     'people_add_lastname' => 'Achternaam (optioneel)',
+    'people_add_email' => 'Email (Optional)',
     'people_add_nickname' => 'Bijnaam (optioneel)',
     'people_add_cta' => 'Toevoegen',
     'people_save_and_add_another_cta' => 'Opslaan en nog iemand toevoegen',
