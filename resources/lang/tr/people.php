@@ -49,6 +49,7 @@ return [
     'people_add_firstname' => 'Ad',
     'people_add_middlename' => 'İkinci Ad (Opsiyonel)',
     'people_add_lastname' => 'Soyadı (isteğe bağlı)',
+    'people_add_email' => 'Email (Optional)',
     'people_add_nickname' => 'Rumuz (isteğe bağlı)',
     'people_add_cta' => 'Ekle',
     'people_save_and_add_another_cta' => 'Kaydet ve başka birini ekle',
