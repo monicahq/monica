@@ -49,6 +49,7 @@ return [
     'people_add_firstname' => 'الاسم الأول',
     'people_add_middlename' => 'الاسم الأوسط (اختياري)',
     'people_add_lastname' => 'اسم العائلة (اختياري)',
+    'people_add_email' => 'Email (Optional)',
     'people_add_nickname' => 'الاسم المستعار (اختياري)',
     'people_add_cta' => 'إضافة',
     'people_save_and_add_another_cta' => 'تقديم وأضف شخص آخر',
