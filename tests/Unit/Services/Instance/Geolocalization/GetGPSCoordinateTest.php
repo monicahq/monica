@@ -3,11 +3,8 @@
 namespace Tests\Unit\Services\Instance\Geolocalization;
 
 use Tests\TestCase;
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
 use App\Models\Account\Place;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Handler\MockHandler;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Instance\Geolocalization\GetGPSCoordinate;
@@ -40,9 +37,9 @@ class GetGPSCoordinateTest extends TestCase
         config(['monica.location_iq_api_key' => 'test']);
 
         $body = file_get_contents(base_path('tests/Fixtures/Services/Instance/Geolocalization/GetGPSCoordinateSampleResponse.json'));
-        $mock = new MockHandler([new Response(200, [], $body)]);
-        $handler = HandlerStack::create($mock);
-        $client = new Client(['handler' => $handler]);
+        Http::fake([
+            'us1.locationiq.com/v1/*' => Http::response($body, 200),
+        ]);
 
         $place = factory(Place::class)->create();
 
@@ -51,7 +48,7 @@ class GetGPSCoordinateTest extends TestCase
             'place_id' => $place->id,
         ];
 
-        $place = app(GetGPSCoordinate::class)->execute($request, $client);
+        $place = app(GetGPSCoordinate::class)->execute($request);
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
@@ -70,9 +67,9 @@ class GetGPSCoordinateTest extends TestCase
         config(['monica.location_iq_api_key' => 'test']);
 
         $body = file_get_contents(base_path('tests/Fixtures/Services/Instance/Geolocalization/GetGPSCoordinateGarbageResponse.json'));
-        $mock = new MockHandler([new Response(200, [], $body)]);
-        $handler = HandlerStack::create($mock);
-        $client = new Client(['handler' => $handler]);
+        Http::fake([
+            'us1.locationiq.com/v1/*' => Http::response($body, 404),
+        ]);
 
         $place = factory(Place::class)->create([
             'country' => 'ewqr',

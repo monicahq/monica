@@ -11,11 +11,11 @@ use App\Helpers\DateHelper;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Helpers\VCardHelper;
+use App\Models\Contact\Note;
 use App\Helpers\LocaleHelper;
 use App\Services\BaseService;
 use function Safe\preg_split;
 use App\Models\Contact\Gender;
-use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Helpers\CountriesHelper;
@@ -26,7 +26,9 @@ use App\Models\Contact\ContactField;
 use App\Services\Contact\Tag\DetachTag;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Tag\AssociateTag;
+use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Services\Account\Photo\UploadPhoto;
+use App\Jobs\Avatars\GetAvatarsFromInternet;
 use App\Services\Contact\Avatar\UpdateAvatar;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
@@ -508,6 +510,7 @@ class ImportVCard extends BaseService
         $this->importTel($contact, $entry);
         $this->importSocialProfile($contact, $entry);
         $this->importCategories($contact, $entry);
+        $this->importNote($contact, $entry);
 
         // Save vcard content
         if ($contact->address_book_id) {
@@ -515,6 +518,8 @@ class ImportVCard extends BaseService
         }
 
         $contact->save();
+
+        $this->addAvatars($contact);
 
         return $contact;
     }
@@ -886,6 +891,24 @@ class ImportVCard extends BaseService
      * @param  VCard $entry
      * @return void
      */
+    private function importNote(Contact $contact, VCard $entry): void
+    {
+        if (is_null($entry->NOTE)) {
+            return;
+        }
+
+        $note = Note::create([
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'body' => $entry->NOTE,
+        ]);
+    }
+
+    /**
+     * @param Contact $contact
+     * @param  VCard $entry
+     * @return void
+     */
     private function importTel(Contact $contact, VCard $entry): void
     {
         if (is_null($entry->TEL)) {
@@ -1059,5 +1082,26 @@ class ImportVCard extends BaseService
                 'tag_id' => $tag,
             ]);
         }
+    }
+
+    /**
+     * Add the different default avatars.
+     *
+     * @param Contact $contact
+     * @return void
+     */
+    private function addAvatars(Contact $contact)
+    {
+        // set the default avatar color
+        if (! $contact->default_avatar_color) {
+            $contact->setAvatarColor();
+            $contact->save();
+        }
+
+        // populate the avatar from Adorable and grab the Gravatar
+        GetAvatarsFromInternet::dispatch($contact);
+
+        // also generate the default avatar
+        GenerateDefaultAvatar::dispatch($contact);
     }
 }

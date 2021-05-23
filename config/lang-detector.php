@@ -36,6 +36,7 @@ return [
             'es',
             'fr',
             'he',
+            'id',
             'it',
             'nl',
             'sv',

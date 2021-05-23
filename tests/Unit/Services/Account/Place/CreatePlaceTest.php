@@ -3,12 +3,9 @@
 namespace Tests\Unit\Services\Account\Place;
 
 use Tests\TestCase;
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
 use App\Models\Account\Place;
-use GuzzleHttp\Psr7\Response;
 use App\Models\Account\Account;
-use GuzzleHttp\Handler\MockHandler;
+use Illuminate\Support\Facades\Http;
 use App\Services\Account\Place\CreatePlace;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -55,9 +52,9 @@ class CreatePlaceTest extends TestCase
         config(['monica.location_iq_api_key' => 'test']);
 
         $body = file_get_contents(base_path('tests/Fixtures/Services/Account/Place/CreatePlaceSampleResponse.json'));
-        $mock = new MockHandler([new Response(200, [], $body)]);
-        $handler = HandlerStack::create($mock);
-        $client = new Client(['handler' => $handler]);
+        Http::fake([
+            'us1.locationiq.com/v1/*' => Http::response($body, 200),
+        ]);
 
         $account = factory(Account::class)->create([]);
 
@@ -72,7 +69,7 @@ class CreatePlaceTest extends TestCase
             'longitude' => '',
         ];
 
-        $place = app(CreatePlace::class)->execute($request, $client);
+        $place = app(CreatePlace::class)->execute($request);
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
@@ -86,7 +83,7 @@ class CreatePlaceTest extends TestCase
     /** @test */
     public function it_fails_if_wrong_parameters_are_given()
     {
-        $account = factory(Account::class)->create([]);
+        factory(Account::class)->create([]);
 
         $request = [
             'street' => '199 Lafayette Street',

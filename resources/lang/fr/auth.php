@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => 'L’authentification à deux facteurs a échoué.',
     '2fa_one_time_password' => 'Code d’authentification à deux facteurs',
     '2fa_recuperation_code' => 'Entrez le code de récupération de deux facteurs',
+    '2fa_one_time_or_recuperation' => 'Entrez un code d’authentification à deux facteurs ou un code de récupération',
     '2fa_otp_help' => 'Ouvrez votre application mobile pour l’authentification à deux facteurs et copiez le Qr code suivant',
 
     'login_to_account' => 'Connectez-vous à votre compte',

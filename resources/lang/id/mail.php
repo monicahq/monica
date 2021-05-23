@@ -21,7 +21,7 @@ return [
     'notification_description' => 'Di :count hari (pada :date), peristiwa berikut akan terjadi:',
 
     'stay_in_touch_subject_line' => 'Tetap berhubungan dengan :name',
-    'stay_in_touch_subject_description' => 'Anda meminta untuk diingatkan untuk tetap berhubungan dengan :name setiap :frequency day.|Anda meminta untuk diingatkan untuk tetap berhubungan dengan :name setiap :frequency day.',
+    'stay_in_touch_subject_description' => 'Anda meminta untuk diingatkan untuk tetap berhubungan dengan :name setiap :frequency hari.',
 
     'notifications_whoops' => 'Waduh!',
     'notifications_hello' => 'Halo!',
@@ -29,18 +29,18 @@ return [
     'notifications_footer' => 'Jika Anda mengalami masalah meng-klik tombol ":actionText", salin dan tempel alamat URL dibawah ini ke peramban web Anda : [:actionURL](:actionURL)',
     'notifications_rights' => 'Hak cipta',
 
-    'confirmation_email_title' => 'Monica - Verifikasi email',
+    'confirmation_email_title' => 'Monica – Verifikasi email',
     'confirmation_email_intro'=> 'Untuk memvalidasi email Anda klik pada tombol di bawah ini',
     'confirmation_email_button' => 'Verifikasi alamat email',
     'confirmation_email_bottom' => 'Jika Anda tidak membuat sebuah akun, tidak diperlukan tindakan lebih lanjut.',
 
-    'password_reset_title' => 'Monica - Pemberitahuan Atur Ulang Kata Sandi',
+    'password_reset_title' => 'Monica – Pemberitahuan Atur Ulang Kata Sandi',
     'password_reset_intro' => 'Anda menerima email ini karena kami menerima permintaan pengaturan ulang kata sandi untuk akun Anda.',
     'password_reset_button' => 'Atur Ulang Kata Sandi',
     'password_reset_expiration' => 'Tautan pengaturan ulang kata sandi ini akan beerakhir dalam :count menit.',
     'password_reset_bottom' => 'Jika Anda tidak meminta pengaturan ulang kata sandi, tidak diperlukan tindakan lebih lanjut.',
 
-    'invitation_title' => 'Monica - Anda diundang oleh :name',
+    'invitation_title' => 'Monica – Anda diundang oleh :name',
     'invitation_intro' => 'Kamu telah diundang oleh :name (:email) untuk menggunakan Monica, sebuah alat Pengelola Kontak Relasi Pribadi yang bagus.',
     'invitation_link' => 'Untuk menerima undangan, klik tautan di bawah ini:',
     'invitation_button' => 'Terima undangan',

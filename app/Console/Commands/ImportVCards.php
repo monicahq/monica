@@ -92,7 +92,7 @@ class ImportVCards extends Command
             'filename' => $pathName,
         ]);
 
-        dispatch_now(new AddContactFromVCard($importJob));
+        AddContactFromVCard::dispatchSync($importJob);
 
         return $importJob;
     }

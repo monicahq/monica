@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => 'To-faktor autentisering mislyktes.',
     '2fa_one_time_password' => 'Tofaktorautentiseringskode',
     '2fa_recuperation_code' => 'Skriv inn din tofaktorgjenopprettingskode',
+    '2fa_one_time_or_recuperation' => 'Skriv inn en to-faktor autentiseringskode eller en gjenopprettingskode',
     '2fa_otp_help' => 'Åpne din To-faktor autentiseringsapp og kopier koden',
 
     'login_to_account' => 'Logg på kontoen din',
