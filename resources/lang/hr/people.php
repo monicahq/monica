@@ -49,6 +49,7 @@ return [
     'people_add_firstname' => 'Ime',
     'people_add_middlename' => 'Srednje ime (opcionalno)',
     'people_add_lastname' => 'Prezime (opcionalno)',
+    'people_add_email' => 'Email (Optional)',
     'people_add_nickname' => 'Nadimak (opcionalno)',
     'people_add_cta' => 'Dodaj',
     'people_save_and_add_another_cta' => 'Unesi pa dodaj drugu osobu',
