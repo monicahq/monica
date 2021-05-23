@@ -49,6 +49,7 @@ return [
     'people_add_firstname' => '名字',
     'people_add_middlename' => '中間名 (可選)',
     'people_add_lastname' => '姓（可選）',
+    'people_add_email' => 'Email (Optional)',
     'people_add_nickname' => '暱稱（可選）',
     'people_add_cta' => '新增',
     'people_save_and_add_another_cta' => '提交併新增其他人',
