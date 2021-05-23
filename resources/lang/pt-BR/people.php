@@ -49,6 +49,7 @@ return [
     'people_add_firstname' => 'Nome',
     'people_add_middlename' => 'Nome do meio (Opcional)',
     'people_add_lastname' => 'Sobrenome (Opcional)',
+    'people_add_email' => 'Email (Optional)',
     'people_add_nickname' => 'Apelido (Opcional)',
     'people_add_cta' => 'Adicionar',
     'people_save_and_add_another_cta' => 'Enviar e adicionar outra pessoa',
