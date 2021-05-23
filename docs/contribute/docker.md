@@ -25,7 +25,7 @@ If you aren't using docker-compose, edit `.env` again to set the `DB_*` variable
 
 ```sh
 # assets are copied from the host machine, make sure they are built
-npm install --production && npm run preproduction && npm run production
+yarn install && yarn run production
 
 docker build -t monicahq/monicahq -f scripts/docker/Dockerfile .
 
