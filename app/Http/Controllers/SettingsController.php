@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\AccountHelper;
+use Illuminate\Support\Carbon;
 use App\Helpers\TimezoneHelper;
 use App\Models\Contact\Contact;
 use App\Jobs\ExportAccountAsSQL;
@@ -203,8 +204,10 @@ class SettingsController extends Controller
 
         $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
 
+        $exportdate = Carbon::now(DateHelper::getTimezone())->format('Y-m-d');
+
         return response()
-            ->download($adapter->getPathPrefix().$path, 'monica.sql')
+            ->download($adapter->getPathPrefix().$path, "monica-export.$exportdate.sql")
             ->deleteFileAfterSend(true);
     }
 
