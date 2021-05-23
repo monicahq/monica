@@ -49,6 +49,7 @@ return [
     'people_add_firstname' => 'Nama depan',
     'people_add_middlename' => 'Nama tengah (opsional)',
     'people_add_lastname' => 'Nama belakang (opsional)',
+    'people_add_email' => 'Email (Optional)',
     'people_add_nickname' => 'Nama panggilan (opsional)',
     'people_add_cta' => 'Tambah',
     'people_save_and_add_another_cta' => 'Kirimkan dan tambah orang yang lain',
