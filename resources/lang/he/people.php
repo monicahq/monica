@@ -49,7 +49,7 @@ return [
     'people_add_firstname' => 'שם פרטי',
     'people_add_middlename' => 'שם אמצעי (רשות)',
     'people_add_lastname' => 'שם משפחה (רשות)',
-    'people_add_email' => 'Email (Optional)',
+    'people_add_email' => 'דוא״ל (רשות)',
     'people_add_nickname' => 'כינוי (רשות)',
     'people_add_cta' => 'הוספה',
     'people_save_and_add_another_cta' => 'הגשה והוספת עוד מישהו',
