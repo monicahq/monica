@@ -111,14 +111,15 @@ Once the above softwares are installed (or if you've finished the installation o
        - Due to an issue with VirtualBox, you may encounter an error at this step due to a plug-in called `package-versions`. If this happens, delete the /vendor folder that was created and run `composer install --no-interaction --no-plugins --no-scripts` instead.
        - See this [GitHub Issue](https://github.com/laravel/homestead/issues/1240) for more information.
        - Run `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
-    2. `yarn install` to install all the front-end dependencies and tools needed to compile assets.
+    2. `php artisan lang:generate` to generate the js language assets.
+    3. `yarn install` to install all the front-end dependencies and tools needed to compile assets.
        - If you experience an error related to `EPROTO: protocol error, symlink`, see [here](https://github.com/yarnpkg/yarn/issues/4908).
-    3. `yarn run dev` to compile js and css assets.
-    4. `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-    5. `php artisan setup:test` to setup the database.
+    4. `yarn run dev` to compile js and css assets.
+    5. `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
+    6. `php artisan setup:test` to setup the database.
        - By default this command will also populate the database with fake data.
        - Use the `--skipSeed` option to skip the process of adding fake data in your dev environment.
-    6. `php artisan passport:install` to create the access tokens required for the API (Optional).
+    7. `php artisan passport:install` to create the access tokens required for the API (Optional).
 3. Update `.env` to your specific needs.
 
 If you haven't skipped the seeding of fake data, two accounts are created by default:
