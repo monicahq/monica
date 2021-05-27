@@ -157,8 +157,8 @@ return [
     'information_edit_description_help' => 'Digunakan pada daftar kontak untuk menambahkan beberapa konteks, jika diperlukan.',
     'information_edit_unknown' => 'Saya tidak tau umur orang ini',
     'information_edit_probably' => 'Orang ini mungkin…',
-    'information_edit_not_year' => 'I know the day and month of this person’s birthday, but not the year…',
-    'information_edit_exact' => 'I know the exact birthdate of this person…',
+    'information_edit_not_year' => 'Saya mengetahui hari dan bulan ulang tahun orang ini, tetapi tidak tahunnya…',
+    'information_edit_exact' => 'Saya tau percis tanggal kelahiran orang ini…',
     'information_edit_birthdate_label' => 'Tanggal lahir',
     'information_no_work_defined' => 'Tidak ada informasi pekerjaan yang ditentukan',
     'information_work_at' => 'di :company',
@@ -182,7 +182,7 @@ return [
     'reminders_blank_title' => 'Apakah ada sesuatu yang Anda ingin diingatkan tentang :name?',
     'reminders_blank_add_activity' => 'Tambahkan sebuah pengingat',
     'reminders_add_title' => 'Apa yang Anda ingin diingatkan tentang :name?',
-    'reminders_add_description' => 'Please remind me to…',
+    'reminders_add_description' => 'Tolong ingatkan saya untuk…',
     'reminders_add_next_time' => 'Kapan Anda ingin diingatkan tentang hal ini lain kali?',
     'reminders_add_once' => 'Ingatkan saya tentang ini sekali saja',
     'reminders_add_recurrent' => 'Ingatkan saya tentang ini setiap',
@@ -215,8 +215,8 @@ return [
     // relationships
     'relationship_form_add' => 'Tambahkan sebuah hubungan baru',
     'relationship_form_edit' => 'Sunting sebuah hubungan yang telah tersedia',
-    'relationship_form_is_with' => 'This person is…',
-    'relationship_form_is_with_name' => ':name is…',
+    'relationship_form_is_with' => 'Orang ini adalah…',
+    'relationship_form_is_with_name' => ':name adalah…',
     'relationship_form_add_choice' => 'Dengan siapa hubungannya?',
     'relationship_form_create_contact' => 'Tambah seseorang yang baru',
     'relationship_form_associate_contact' => 'Sebuah kontak yang tersedia',
@@ -267,7 +267,7 @@ return [
     'activities_add_title' => 'Apa yang telah Anda lakukan dengan {name}?',
     'activities_summary' => 'Jelaskan apa yang Anda telah lakukan',
     'activities_add_pick_activity' => '(Opsional) Apakah Anda ingin mengkategorikan aktifitas ini? Anda tidak perlu melakukannya, tetapi hal itu nanti akan memberi Anda statistik',
-    'activities_add_date_occured' => 'The activity happened on…',
+    'activities_add_date_occured' => 'Aktifitas terjadi pada…',
     'activities_add_participants' => 'Siapa, selain dari {name}, yang berpartisipasi dalam aktifitas ini? (opsional)',
     'activities_add_emotions_title' => 'Apakah Anda ingin mencatat bagaimana perasaan Anda selama aktifitas ini? (opsional)',
     'activities_blank_title' => 'Pantau apa yang telah Anda lakukan dengan {name} di masa lalu, dan apa yang telah Anda bicarakan',
@@ -420,7 +420,7 @@ return [
 
     // life events
     'life_event_list_tab_life_events' => 'Peristiwa kehidupan',
-    'life_event_list_tab_other' => 'Notes, reminders, …',
+    'life_event_list_tab_other' => 'Catatan, pengingat, …',
     'life_event_list_title' => 'Peristiwa kehidupan',
     'life_event_blank' => 'Catat apa yang terjadi pada kehidupan {name} untuk referensi mendatang Anda.',
     'life_event_list_cta' => 'Tambahkan peristiwa kehidupan',
@@ -490,7 +490,7 @@ return [
     'document_list_cta' => 'Unggah dokumen',
     'document_list_blank_desc' => 'Di sini Anda dapat menyimpan dokumen yang berkaitan dengan orang ini.',
     'document_upload_zone_cta' => 'Unggah sebuah berkas',
-    'document_upload_zone_progress' => 'Uploading the document…',
+    'document_upload_zone_progress' => 'Mengunggah dokumen…',
     'document_upload_zone_error' => 'Terdapat kesalahan saat mengunggah dokumen. Silakan coba lagi dibawah ini.',
 
     // Photos
