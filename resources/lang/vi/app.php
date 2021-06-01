@@ -464,7 +464,7 @@ return [
     'dav_tasks_description' => ':name’s tasks',
 
     // contact list
-    'contact_list_avatar' => 'Avatar',
+    'contact_list_avatar' => 'Ảnh đại diện',
     'contact_list_name' => 'Contact',
     'contact_list_description' => 'Description',
 
