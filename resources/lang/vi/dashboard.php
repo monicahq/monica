@@ -28,9 +28,9 @@ return [
     'tasks_add_note' => 'Press <kbd>Enter</kbd> to add the task.',
     'task_add_cta' => 'Add a task',
 
-    'debts_you_owe' => 'You owe',
+    'debts_you_owe' => 'Bạn nợ',
 
-    'statistics_contacts' => 'Contacts',
+    'statistics_contacts' => 'Danh bạ',
     'statistics_activities' => 'Hoạt động',
     'statistics_gifts' => 'Quà tặng',
 
