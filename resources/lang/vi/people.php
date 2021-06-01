@@ -511,21 +511,21 @@ return [
     'avatar_default_avatar' => 'The default avatar',
     'avatar_adorable_avatar' => 'The Adorable avatar',
     'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
-    'avatar_current' => 'Keep the current avatar',
-    'avatar_photo' => 'From a photo that you upload',
+    'avatar_current' => 'Giữ hình đại diện hiện tại',
+    'avatar_photo' => 'Từ ảnh bạn đã tải lên',
     'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',
 
     // logs
-    'auditlogs_link' => 'History',
-    'auditlogs_title' => 'Everything that happened to :name',
-    'auditlogs_breadcrumb' => 'History',
+    'auditlogs_link' => 'Lịch sử',
+    'auditlogs_title' => 'Mọi thứ đã xảy ra với :name',
+    'auditlogs_breadcrumb' => 'Lịch sử',
     'auditlogs_author' => 'By :name on :date',
 
     // contact field label
-    'contact_field_label_home' => 'Home',
+    'contact_field_label_home' => 'Nhà',
     'contact_field_label_work' => 'Cơ quan',
     'contact_field_label_cell' => 'Di động',
     'contact_field_label_fax' => 'Fax',
