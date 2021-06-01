@@ -34,10 +34,10 @@ return [
     'me_choose_placeholder' => 'Choose yourself',
 
     'export_title' => 'Xuất dữ liệu tài khoản của bạn',
-    'export_be_patient' => 'Click the button to start the export. It may take several minutes to process the export – please be patient and do not repeatedly click the button.',
-    'export_title_sql' => 'Export data to SQL',
+    'export_be_patient' => 'Bấm vào nút để bắt đầu xuất. Điều này sẽ tốn một vài phút để thực hiện - hãy kiên nhẫn và không spam nút bấm.',
+    'export_title_sql' => 'Xuất dữ liệu ra SQL',
     'export_sql_explanation' => 'Exporting your data in SQL format allows you to take your data and import it to your own Monica instance. This is only useful if you are running Monica on your own server.',
-    'export_sql_cta' => 'Export data to SQL',
+    'export_sql_cta' => 'Xuất dữ liệu ra SQL',
     'export_sql_link_instructions' => '<a href=":url">Read the instructions</a> to learn how to import this file into your instance.',
 
     'firstname' => 'Tên',
