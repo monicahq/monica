@@ -14,11 +14,11 @@ return [
     'for' => 'For: :name',
     'comment' => 'Comment: :comment',
     'footer_contact_info' => 'Add, view, complete, and change information about this contact:',
-    'footer_contact_info2' => 'See :name’s profile',
-    'footer_contact_info2_link' => 'See :name’s profile: :url',
+    'footer_contact_info2' => 'Xem hồ sơ của :name',
+    'footer_contact_info2_link' => 'Xem hồ sơ của :name :url',
 
-    'notification_subject_line' => 'You have an upcoming event',
-    'notification_description' => 'In :count days (on :date), the following event will happen:',
+    'notification_subject_line' => 'Bạn có sự kiện sắp diễn ra',
+    'notification_description' => 'Trong :count ngày (on :date), các sự kiện dưới đây sẽ  diễn ra:',
 
     'stay_in_touch_subject_line' => 'Stay in touch with :name',
     'stay_in_touch_subject_description' => 'You asked to be reminded to stay in touch with :name every :frequency day.|You asked to be reminded to stay in touch with :name every :frequency days.',
@@ -29,12 +29,12 @@ return [
     'notifications_footer' => 'If you’re having trouble clicking the ":actionText" button, copy and paste the URL below into your web browser: [:actionURL](:actionURL)',
     'notifications_rights' => 'Bản quyền đã được bảo hộ',
 
-    'confirmation_email_title' => 'Monica – Email verification',
-    'confirmation_email_intro'=> 'To validate your email click on the button below',
+    'confirmation_email_title' => 'Monica – Email xác thực',
+    'confirmation_email_intro'=> 'Để xác thực email của bạn, hãy bấm vào nút bên dưới',
     'confirmation_email_button' => 'Xác thực địa chỉ email',
     'confirmation_email_bottom' => 'If you did not create an account, no further action is required.',
 
-    'password_reset_title' => 'Monica – Reset Password Notification',
+    'password_reset_title' => 'Monica - Thông báo đặt lại mật khẩu',
     'password_reset_intro' => 'You are receiving this email because we received a password reset request for your account.',
     'password_reset_button' => 'Đặt lại mật khẩu',
     'password_reset_expiration' => 'This password reset link will expire in :count minutes.',
