@@ -59,8 +59,8 @@ return [
     'password_reset_action' => 'Đặt lại mật khẩu',
     'password_reset_email_content' => 'Nhấn vào đây để đặt lại mật khẩu của bạn:',
 
-    'register_title_welcome' => 'Welcome to your newly installed Monica instance',
-    'register_create_account' => 'You need to create an account to use Monica',
+    'register_title_welcome' => 'Chào mừng bạn đến với hệ thống Monica mới cài đặt',
+    'register_create_account' => 'Bạn cần tạo tài khoản để sử dụng Monica',
     'register_title_create' => 'Tạo tài khoản Monica của bạn',
     'register_login' => '<a href=":url">Đăng nhập</a> nếu bạn đã có tài khoản.',
     'register_email' => 'Nhập địa chỉ email hợp lệ',
