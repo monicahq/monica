@@ -25,7 +25,7 @@ return [
     'journal_add_date' => 'Ngày',
     'journal_add_post' => 'Mục',
     'journal_add_cta' => 'Lưu',
-    'journal_blank_cta' => 'Add your first journal entry',
-    'journal_blank_description' => 'The journal lets you write events that happened to you, and remember them.',
-    'delete_confirmation' => 'Are you sure you want to delete this journal entry?',
+    'journal_blank_cta' => 'Thêm mục nhật ký đầu tiên của bạn',
+    'journal_blank_description' => 'Nhật ký cho phép bạn viết sự kiện đã xảy ra với bạn, và ghi nhớ chúng.',
+    'delete_confirmation' => 'Bạn chắc chắn muốn xóa mục nhật ký này?',
 ];
