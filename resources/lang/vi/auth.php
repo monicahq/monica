@@ -27,7 +27,7 @@ return [
     'back_homepage' => 'Quay lại trang chủ',
     'mfa_auth_otp' => 'Xác thực với xác thực hai yếu tố',
     'mfa_auth_webauthn' => 'Xác thực với khóa bảo mật (WebAuthn)',
-    '2fa_title' => 'Two Factor Authentication',
+    '2fa_title' => 'Xác minh 2 bước',
     '2fa_wrong_validation' => 'The two factor authentication has failed.',
     '2fa_one_time_password' => 'Two factor authentication code',
     '2fa_recuperation_code' => 'Enter a two factor recovery code',
