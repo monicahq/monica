@@ -103,12 +103,12 @@ return [
 
     'gender_male' => 'Nam',
     'gender_female' => 'Nữ',
-    'gender_none' => 'Rather not say',
+    'gender_none' => 'Không tiết lộ',
     'gender_no_gender' => 'Không xác định giới tính',
 
     'error_title' => 'Rất tiếc! Đã xảy ra lỗi.',
     'error_unauthorized' => 'Bạn không có quyền chỉnh sửa tài nguyên này.',
-    'error_user_account' => 'This user does not belong to the given account.',
+    'error_user_account' => 'Người dùng này không thuộc về tài khoản nào.',
     'error_save' => 'Có lỗi khi lưu dữ liệu.',
     'error_try_again' => 'Có sự cố. Xin vui lòng thử lại.',
     'error_id' => 'ID lỗi: :id',
@@ -122,7 +122,7 @@ return [
 
     'compliance_title' => 'Xin lỗi vì sự gián đoạn.',
     'compliance_desc' => 'Chúng tôi đã thay đổi <a href=":urlterm" hreflang=":hreflang">Điều khoản sử dụng</a> và <a href=":url" hreflang=":hreflang">Chính sách bảo mật</a>. Theo luật chúng tôi phải hỏi bạn xem xét và chấp nhận chúng, sau đó bạn có thể tiếp tục sử dụng tài khoản của bạn.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
+    'compliance_desc_end' => 'Chúng tôi không làm bất cứ điều gì xấu với dữ liệu hoặc tài khoản của bạn và chúng tôi sẽ không bao giờ làm như vậy.',
     'compliance_terms' => 'Đồng ý điều khoản mới',
 
     // Relationship types
