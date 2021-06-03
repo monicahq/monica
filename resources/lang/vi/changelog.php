@@ -7,6 +7,6 @@
  */
 
 return [
-    'title' => 'Product changes',
+    'title' => 'Cập nhật sản phẩm',
     'note' => 'Ghi chú: rất tiếc, trang này chỉ có tiếng Anh.',
 ];
