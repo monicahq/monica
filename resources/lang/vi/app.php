@@ -223,10 +223,10 @@ return [
     'relationship_type_cousin_with_name' => 'anh em họ của :name',
     'relationship_type_cousin_female_with_name' => ':name’s cousin',
 
-    'relationship_type_godfather' => 'godfather',
-    'relationship_type_godfather_female' => 'godmother',
-    'relationship_type_godfather_with_name' => ':name’s godfather',
-    'relationship_type_godfather_female_with_name' => ':name’s godmother',
+    'relationship_type_godfather' => 'bố đỡ đầu',
+    'relationship_type_godfather_female' => 'mẹ đỡ đầu',
+    'relationship_type_godfather_with_name' => 'bố đỡ đầu của :name',
+    'relationship_type_godfather_female_with_name' => 'mẹ đỡ đầu của :name',
 
     'relationship_type_godson' => 'godson',
     'relationship_type_godson_female' => 'goddaughter',
@@ -342,7 +342,7 @@ return [
     'emotion_enthusiasm' => 'Enthusiasm',
     'emotion_zeal' => 'Zeal',
     'emotion_zest' => 'Zest',
-    'emotion_excitement' => 'Excitement',
+    'emotion_excitement' => 'Hứng thú',
     'emotion_thrill' => 'Thrill',
     'emotion_exhilaration' => 'Exhilaration',
     'emotion_contentment' => 'Contentment',
