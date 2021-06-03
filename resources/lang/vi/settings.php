@@ -214,8 +214,8 @@ return [
     'subscriptions_upgrade_credit' => 'Thẻ tín dụng',
     'subscriptions_upgrade_submit' => 'Thanh toán {amount}',
     'subscriptions_upgrade_charge' => 'Chúng tôi sẽ tính phí :price vào thẻ của bạn bây giờ. Lần tính phí tiếp theo vào :date. Nếu bạn muốn thay đổi, bạn có thể hủy bất cứ lúc nào, không cần hỏi.',
-    'subscriptions_upgrade_charge_handled' => 'The payment is handled by <a href=":url">Stripe</a>. No card information touches our server.',
-    'subscriptions_upgrade_success' => 'Thank you! You are now subscribed.',
+    'subscriptions_upgrade_charge_handled' => 'Việc thanh toán được xử lý bởi <a href=":url">Stripe</a>. Chúng tôi không lưu trữ thông tin thẻ.',
+    'subscriptions_upgrade_success' => 'Cảm ơn! Bây giờ bạn đã đăng kí thuê bao.',
     'subscriptions_upgrade_thanks' => 'Welcome to the community of people who try to make the world a better place.',
 
     'subscriptions_payment_confirm_title' => 'Confirm your :amount payment',
