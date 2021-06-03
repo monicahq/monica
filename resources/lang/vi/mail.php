@@ -8,19 +8,19 @@
 
 return [
 
-    'subject_line' => 'Reminder for :contact',
+    'subject_line' => 'Lời nhắc cho :contact',
     'greetings' => 'Chào :username',
     'want_reminded_of' => 'You wanted to be reminded of :reason',
     'for' => 'For: :name',
-    'comment' => 'Comment: :comment',
-    'footer_contact_info' => 'Add, view, complete, and change information about this contact:',
+    'comment' => 'Bình luận: :comment',
+    'footer_contact_info' => 'Thêm, xem, hoàn thiện, và thay đổi thông tin về liên hệ này:',
     'footer_contact_info2' => 'Xem hồ sơ của :name',
     'footer_contact_info2_link' => 'Xem hồ sơ của :name :url',
 
     'notification_subject_line' => 'Bạn có sự kiện sắp diễn ra',
     'notification_description' => 'Trong :count ngày (on :date), các sự kiện dưới đây sẽ  diễn ra:',
 
-    'stay_in_touch_subject_line' => 'Stay in touch with :name',
+    'stay_in_touch_subject_line' => 'Giữ liên lạc với :name',
     'stay_in_touch_subject_description' => 'You asked to be reminded to stay in touch with :name every :frequency day.|You asked to be reminded to stay in touch with :name every :frequency days.',
 
     'notifications_whoops' => 'Whoops!',
@@ -40,7 +40,7 @@ return [
     'password_reset_expiration' => 'This password reset link will expire in :count minutes.',
     'password_reset_bottom' => 'If you did not request a password reset, no further action is required.',
 
-    'invitation_title' => 'Monica – You are invited by :name',
+    'invitation_title' => 'Monica - Bạn đã được mời bởi :name',
     'invitation_intro' => 'You’ve been invited by :name (:email) to use Monica, a nice Personal Relationship Management tool.',
     'invitation_link' => 'To accept the invitation, click on the link below:',
     'invitation_button' => 'Chấp nhận lời mời',
