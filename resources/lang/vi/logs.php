@@ -9,8 +9,8 @@
 return [
 
     // contact creation
-    'contact_log_contact_created' => 'Created the contact.',
-    'settings_log_contact_created_with_name' => 'Added :name as a contact.',
+    'contact_log_contact_created' => 'Đã tạo liên hệ.',
+    'settings_log_contact_created_with_name' => 'Đã thêm :name thành liên hệ.',
 
     // contat description update
     'contact_log_contact_description_updated' => 'Đã cập nhật mô tả.',
