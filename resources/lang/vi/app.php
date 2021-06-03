@@ -116,7 +116,7 @@ return [
     'error_maintenance' => 'Đang bảo trì. Chúng tôi sẽ trở lại ngay.',
     'error_help' => 'Chúng tôi sẽ trở lại ngay.',
     'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">tài khoản Twitter</a> để nhận thông báo điều gì đang diễn ra.',
-    'error_no_term' => 'There is no policy for this instance yet.',
+    'error_no_term' => 'Không có chính sách nào cho instance này.',
 
     'default_save_success' => 'Lưu dữ liệu thành công.',
 
@@ -140,8 +140,8 @@ return [
 
     'relationship_type_partner' => 'điều trọng đại khác',
     'relationship_type_partner_female' => 'điều trọng đại khác',
-    'relationship_type_partner_with_name' => ':name’s significant other',
-    'relationship_type_partner_female_with_name' => ':name’s significant other',
+    'relationship_type_partner_with_name' => 'người quan trọng với :name',
+    'relationship_type_partner_female_with_name' => 'người quan trọng với :name',
 
     'relationship_type_spouse' => 'vợ/chồng',
     'relationship_type_spouse_female' => 'vợ/chồng',
@@ -160,7 +160,7 @@ return [
 
     'relationship_type_inlovewith' => 'có tình cảm với',
     'relationship_type_inlovewith_female' => 'có tình cảm với',
-    'relationship_type_inlovewith_with_name' => 'someone :name is in love with',
+    'relationship_type_inlovewith_with_name' => 'ai đó :name có tình cảm',
     'relationship_type_inlovewith_female_with_name' => 'someone :name is in love with',
 
     'relationship_type_lovedby' => 'được thích bởi',
