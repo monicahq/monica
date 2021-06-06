@@ -48,19 +48,6 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        // names order
-        $namesOrder = [
-            'firstname_lastname',
-            'lastname_firstname',
-            'firstname_lastname_nickname',
-            'firstname_nickname_lastname',
-            'lastname_firstname_nickname',
-            'lastname_nickname_firstname',
-            'nickname_firstname_lastname',
-            'nickname_lastname_firstname',
-            'nickname',
-        ];
-
         $meContact = null;
 
         $search = auth()->user()->first_name.' '.
@@ -83,7 +70,7 @@ class SettingsController extends Controller
                 ->withAccountHasLimitations($accountHasLimitations)
                 ->withMeContact($meContact ? new ContactResource($meContact) : null)
                 ->withExistingContacts(ContactResource::collection($existingContacts))
-                ->withNamesOrder($namesOrder)
+                ->withNamesOrder(User::NAMES_ORDER)
                 ->withLocales(LocaleHelper::getLocaleList()->sortByCollator('name-orig'))
                 ->withHours(DateHelper::getListOfHours())
                 ->withSelectedTimezone(TimezoneHelper::adjustEquivalentTimezone(DateHelper::getTimezone()))

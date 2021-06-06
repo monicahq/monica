@@ -8,6 +8,7 @@ use App\Traits\DAVFormat;
 use function Safe\substr;
 use Sabre\VObject\Reader;
 use App\Helpers\DateHelper;
+use App\Helpers\FormHelper;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Helpers\VCardHelper;
@@ -626,7 +627,7 @@ class ImportVCard extends BaseService
         $user = User::where('account_id', $this->accountId)
             ->findOrFail($this->userId);
 
-        if ($user->name_order == 'firstname_lastname' || $user->name_order == 'firstname_lastname_nickname') {
+        if (FormHelper::getNameOrderForForms($user) === 'firstname') {
             $contact->first_name = $this->formatValue($fullnameParts[0]);
             if (count($fullnameParts) > 1) {
                 $contact->last_name = $this->formatValue($fullnameParts[1]);
