@@ -50,7 +50,7 @@ return [
     'name_order_lastname_firstname_nickname' => '<Họ> <Tên> (<Nickname>) – Nguyễn Tèo (cu tèo)',
     'name_order_lastname_nickname_firstname' => '<Họ> (<Nickname>) <Tên> – Nguyễn (cu tèo) Tèo',
     'name_order_nickname_firstname_lastname' => '<Nickname> (<Tên> <Họ>) – cu tèo (Tèo Nguyễn)',
-    'name_order_nickname_firstname_lastname' => '<Nickname> (<Họ> <Tên>) – cu tèo (Nguyễn Tèo)',
+    'name_order_nickname_lastname_firstname' => '<Nickname> (<Last name> <First name>) – Rambo (Doe John)',
     'name_order_nickname' => '<Nickname> – cu tèo',
     'currency' => 'Tiền tệ',
     'name' => 'Tên bạn: :name',
