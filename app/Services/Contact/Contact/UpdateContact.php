@@ -2,10 +2,12 @@
 
 namespace App\Services\Contact\Contact;
 
+use App\Helpers\AccountHelper;
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
+use App\Models\Account\Account;
 use App\Services\Contact\Description\SetPersonalDescription;
 use App\Services\Contact\Description\ClearPersonalDescription;
 
@@ -62,6 +64,16 @@ class UpdateContact extends BaseService
         /* @var Contact */
         $this->contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        // Test is the account is limited and the contact should be updated as real contact
+        $account = Account::find($data['account_id']);
+        if ($this->contact->is_partial
+            && ! $this->valueOrFalse($this->data, 'is_partial')
+            && AccountHelper::hasReachedContactLimit($account)
+            && AccountHelper::hasLimitations($account)
+            && ! $account->legacy_free_plan_unlimited_contacts) {
+            abort(402);
+        }
 
         $this->updateGeneralInformation();
         $this->updateDescription();

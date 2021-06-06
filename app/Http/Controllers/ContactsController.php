@@ -667,7 +667,7 @@ class ContactsController extends Controller
             && AccountHelper::hasReachedContactLimit(auth()->user()->account)
             && AccountHelper::hasLimitations(auth()->user()->account)
             && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
-            return redirect()->route('settings.subscriptions.index');
+            abort(402);
         }
 
         $contact->is_active = ! $contact->is_active;

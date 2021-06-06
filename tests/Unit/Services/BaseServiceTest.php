@@ -113,5 +113,9 @@ class BaseServiceTest extends TestCase
         $this->assertFalse(
             $stub->valueOrFalse($array, 'value')
         );
+
+        $this->assertFalse(
+            $stub->valueOrFalse([], 'value')
+        );
     }
 }
