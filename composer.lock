@@ -2876,16 +2876,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v12.13.1",
+            "version": "v12.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier-stripe.git",
-                "reference": "532089a487dd09c6fa5adaf9c0088715a7623e48"
+                "reference": "beea7ed0ef282cbb9885ea37c2035637b939104a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier-stripe/zipball/532089a487dd09c6fa5adaf9c0088715a7623e48",
-                "reference": "532089a487dd09c6fa5adaf9c0088715a7623e48",
+                "url": "https://api.github.com/repos/laravel/cashier-stripe/zipball/beea7ed0ef282cbb9885ea37c2035637b939104a",
+                "reference": "beea7ed0ef282cbb9885ea37c2035637b939104a",
                 "shasum": ""
             },
             "require": {
@@ -2950,7 +2950,7 @@
                 "issues": "https://github.com/laravel/cashier/issues",
                 "source": "https://github.com/laravel/cashier"
             },
-            "time": "2021-05-11T20:52:30+00:00"
+            "time": "2021-05-25T16:32:09+00:00"
         },
         {
             "name": "laravel/framework",
@@ -8550,16 +8550,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v7.78.0",
+            "version": "v7.80.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "6ec33fa8e9de2322be93d28dfd685661c67ca549"
+                "reference": "566900968407302f88a925ba731c87c05fe98a7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/6ec33fa8e9de2322be93d28dfd685661c67ca549",
-                "reference": "6ec33fa8e9de2322be93d28dfd685661c67ca549",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/566900968407302f88a925ba731c87c05fe98a7a",
+                "reference": "566900968407302f88a925ba731c87c05fe98a7a",
                 "shasum": ""
             },
             "require": {
@@ -8605,9 +8605,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stripe/stripe-php/issues",
-                "source": "https://github.com/stripe/stripe-php/tree/v7.78.0"
+                "source": "https://github.com/stripe/stripe-php/tree/v7.80.0"
             },
-            "time": "2021-05-05T23:55:32+00:00"
+            "time": "2021-05-26T19:10:43+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -9950,16 +9950,16 @@
         },
         {
             "name": "symfony/polyfill-intl-icu",
-            "version": "v1.22.1",
+            "version": "v1.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-icu.git",
-                "reference": "af1842919c7e7364aaaa2798b29839e3ba168588"
+                "reference": "4a80a521d6176870b6445cfb469c130f9cae1dda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-icu/zipball/af1842919c7e7364aaaa2798b29839e3ba168588",
-                "reference": "af1842919c7e7364aaaa2798b29839e3ba168588",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-icu/zipball/4a80a521d6176870b6445cfb469c130f9cae1dda",
+                "reference": "4a80a521d6176870b6445cfb469c130f9cae1dda",
                 "shasum": ""
             },
             "require": {
@@ -9971,7 +9971,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.22-dev"
+                    "dev-main": "1.23-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -10017,7 +10017,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-icu/tree/v1.22.1"
+                "source": "https://github.com/symfony/polyfill-intl-icu/tree/v1.23.0"
             },
             "funding": [
                 {
@@ -10033,7 +10033,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-22T09:19:47+00:00"
+            "time": "2021-05-24T10:04:56+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
