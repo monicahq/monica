@@ -176,13 +176,13 @@ class ContactsController extends Controller
      */
     private function createForm(Request $request, bool $isContactMissing = false)
     {
-        if (AccountHelper::hasReachedContactLimit(auth()->user()->account)
-            && AccountHelper::hasLimitations(auth()->user()->account)
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
+        if ($accountHasLimitations
+            && AccountHelper::hasReachedContactLimit(auth()->user()->account)
             && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
             return redirect()->route('settings.subscriptions.index');
         }
-
-        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
 
         return view('people.create')
             ->withAccountHasLimitations($accountHasLimitations)
@@ -663,6 +663,13 @@ class ContactsController extends Controller
      */
     public function archive(Request $request, Contact $contact)
     {
+        if (! $contact->is_active
+            && AccountHelper::hasReachedContactLimit(auth()->user()->account)
+            && AccountHelper::hasLimitations(auth()->user()->account)
+            && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
+            return redirect()->route('settings.subscriptions.index');
+        }
+
         $contact->is_active = ! $contact->is_active;
         $contact->save();
 
