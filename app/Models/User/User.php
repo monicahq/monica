@@ -169,7 +169,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     {
         $completeName = '';
 
-        if (FormHelper::getNameOrderForForms($this)) {
+        if (FormHelper::getNameOrderForForms($this) === 'firstname') {
             $completeName = $this->first_name;
 
             if ($this->last_name !== '') {

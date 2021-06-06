@@ -627,7 +627,7 @@ class ImportVCard extends BaseService
         $user = User::where('account_id', $this->accountId)
             ->findOrFail($this->userId);
 
-        if (FormHelper::getNameOrderForForms($user) == 'firstname') {
+        if (FormHelper::getNameOrderForForms($user) === 'firstname') {
             $contact->first_name = $this->formatValue($fullnameParts[0]);
             if (count($fullnameParts) > 1) {
                 $contact->last_name = $this->formatValue($fullnameParts[1]);
