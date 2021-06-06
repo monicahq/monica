@@ -23,19 +23,19 @@ class SettingsRequest extends AuthorizedRequest
             'temperature_scale' => [
                 'required',
                 'string',
-                Rule::in(['fahrenheit', 'celsius'])
+                Rule::in(['fahrenheit', 'celsius']),
             ],
             'locale' => [
                 'required',
                 'string',
-                Rule::In(config('lang-detector.languages'))
+                Rule::In(config('lang-detector.languages')),
             ],
             'currency_id' => 'required|int|exists:currencies,id',
             'name_order' => [
                 'required',
                 'string',
-                Rule::In(User::NAMES_ORDER)
-            ]
+                Rule::In(User::NAMES_ORDER),
+            ],
         ];
     }
 }

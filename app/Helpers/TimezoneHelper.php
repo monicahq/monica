@@ -71,9 +71,9 @@ class TimezoneHelper
             $name = str_replace(['St_', '/', '_'], ['St. ', ', ', ' '], $name);
 
             if (empty($loc['comments'])) {
-                $formatted = '(UTC ' . $offset . ') ' . $name;
+                $formatted = '(UTC '.$offset.') '.$name;
             } else {
-                $formatted = '(UTC ' . $offset . ') ' . $loc['comments'] . ' (' . $name . ')';
+                $formatted = '(UTC '.$offset.') '.$loc['comments'].' ('.$name.')';
             }
         }
 
