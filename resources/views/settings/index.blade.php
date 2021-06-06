@@ -136,8 +136,8 @@
                 <div class="form-group">
                   <label for="layout" class="mb2 b">{{ trans('settings.layout') }}</label>
                   <select class="form-control" name="layout" id="layout">
-                    <option value='false' {{ (auth()->user()->fluid_container == 'false')?'selected':'' }}>{{ trans('settings.layout_small') }}</option>
-                    <option value='true' {{ (auth()->user()->fluid_container == 'true')?'selected':'' }}>{{ trans('settings.layout_big') }}</option>
+                    <option value='0' {{ (auth()->user()->fluid_container == 'false')?'selected':'' }}>{{ trans('settings.layout_small') }}</option>
+                    <option value='1' {{ (auth()->user()->fluid_container == 'true')?'selected':'' }}>{{ trans('settings.layout_big') }}</option>
                   </select>
                 </div>
               </div>
