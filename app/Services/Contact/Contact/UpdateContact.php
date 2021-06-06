@@ -2,12 +2,12 @@
 
 namespace App\Services\Contact\Contact;
 
-use App\Helpers\AccountHelper;
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
+use App\Helpers\AccountHelper;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
-use App\Models\Account\Account;
 use App\Services\Contact\Description\SetPersonalDescription;
 use App\Services\Contact\Description\ClearPersonalDescription;
 

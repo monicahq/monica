@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Controllers\Contact;
 
-use App\Helpers\AccountHelper;
 use Tests\FeatureTestCase;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
