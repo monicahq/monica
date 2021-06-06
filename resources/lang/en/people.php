@@ -58,11 +58,11 @@ return [
     'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Are you sure you want to delete :name’s contact? Deletion is immediate and permanent.',
     'people_add_birthday_reminder' => 'Wish happy birthday to :name',
-    'people_add_birthday_reminder_deceased' => 'On this date, they would have celebrated their birthday',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name would have celebrated their birthday',
     'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
     'people_export' => 'Export as vCard',
-    'people_add_reminder_for_birthday' => 'Create an annual reminder for :name’s birthday',
+    'people_add_reminder_for_birthday' => 'Create an annual birthday reminder',
 
     // show
     'section_contact_information' => 'Contact information',
