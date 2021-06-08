@@ -296,7 +296,7 @@ return [
     'import_need_subscription' => 'Việc nhập dữ liệu yêu cầu gói thuê bao.',
 
     'tags_list_title' => 'Nhãn',
-    'tags_list_description' => 'You can organize your contacts by setting up tags. Tags work like folders, but you can add more than one tag to a contact. To add a new tag, add it on the contact itself.',
+    'tags_list_description' => 'Bạn có thể sắp xếp liên hệ bằng cách thiết lập nhãn. Nhãn hoạt động giống thư mục, nhưng bạn có thể thêm nhiều nhãn vào một liên hệ. Để thêm nhãn mới, thêm nó ở trang liên hệ.',
     'tags_list_contact_number' => '1 liên hệ|:count liên hệ',
     'tags_list_delete_success' => 'The tag has been successfully deleted',
     'tags_list_delete_confirmation' => 'Are you sure you want to delete the tag? No contacts will be deleted, only the tag.',
