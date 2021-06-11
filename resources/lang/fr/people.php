@@ -204,7 +204,7 @@ return [
     'reminders_delete_cta' => 'Supprimer',
     'reminders_next_expected_date' => 'le',
     'reminders_cta' => 'Ajouter un rappel',
-    'reminders_description' => 'Nous vous enverrons un courriel pour chacun des rappels ci-dessous. Les rappels sont envoyés le matin du jour où l’événement se passe.',
+    'reminders_description' => 'Nous vous enverrons un courriel pour chacun des rappels ci-dessous. Les rappels sont envoyés le matin du jour où l’événement se passe. Les rappels ajoutés automatiquement pour les anniversaires ne peuvent pas être effacés. Si vous désirez changer ces derniers, modifiez la date de naissance de ces contacts.',
     'reminders_one_time' => 'Unique',
     'reminders_type_week' => 'semaine',
     'reminders_type_month' => 'mois',
