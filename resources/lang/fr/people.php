@@ -49,7 +49,7 @@ return [
     'people_add_firstname' => 'Prénom',
     'people_add_middlename' => 'Deuxième prénom (optionnel)',
     'people_add_lastname' => 'Nom de famille (optionnel)',
-    'people_add_email' => 'Email (Optional)',
+    'people_add_email' => 'Courriel (optionnel)',
     'people_add_nickname' => 'Surnom (optionnel)',
     'people_add_cta' => 'Ajouter',
     'people_save_and_add_another_cta' => 'Sauver et ajouter un autre contact',
@@ -57,7 +57,7 @@ return [
     'people_add_gender' => 'Genre',
     'people_delete_success' => 'Le contact a été supprimé',
     'people_delete_message' => 'Supprimer le contact',
-    'people_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer le contact de :name ? La suppression est immédiate et permanente.',
+    'people_delete_confirmation' => 'Êtes-vous sûr⋅e de vouloir supprimer le contact de :name ? La suppression est immédiate et permanente.',
     'people_add_birthday_reminder' => 'Souhaiter un bon anniversaire à :name',
     'people_add_birthday_reminder_deceased' => 'À cette date, :name aurait célébré son anniversaire',
     'people_add_import' => 'Souhaitez-vous <a href=":url">importer vos contacts</a> ?',
@@ -93,7 +93,7 @@ return [
     'stay_in_touch_premium' => 'Vous devez mettre à jour votre compte pour pouvoir profiter de cette fonctionnalité',
     'stay_in_touch_modal_title' => 'Restez en contact',
     'stay_in_touch_modal_desc' => 'Nous pouvons vous rappeler par courriel pour rester en contact avec {firstname} à intervalle régulier.',
-    'stay_in_touch_modal_label' => 'Envoyez-moi un couriel tous les… {count} jour|Envoyez-moi un couriel tous les… {count} jours',
+    'stay_in_touch_modal_label' => 'Envoyez-moi un courriel tous les… {count} jour|Envoyez-moi un courriel tous les… {count} jours',
 
     // Calls
     'modal_call_title' => 'Enregistrer un appel téléphonique',
@@ -420,7 +420,7 @@ return [
 
     // life events
     'life_event_list_tab_life_events' => 'Évènements marquants',
-    'life_event_list_tab_other' => 'Notes, rappels, …',
+    'life_event_list_tab_other' => 'Notes, rappels…',
     'life_event_list_title' => 'Évènements marquants',
     'life_event_blank' => 'Prenez des notes sur ce qui arrive dans la vie de {name} pour votre référence future.',
     'life_event_list_cta' => 'Ajouter un évènement marquant',
