@@ -33,7 +33,7 @@ return [
     'people_search_next' => 'Suivant',
     'people_search_prev' => 'Précédent',
     'people_search_rows_per_page' => 'Résultats par page',
-    'people_search_of' => 'de',
+    'people_search_of' => 'sur',
     'people_search_page' => 'Page',
     'people_search_all' => 'Tous',
     'people_add_new' => 'Ajouter une nouvelle personne',
