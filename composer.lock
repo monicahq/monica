@@ -12577,16 +12577,16 @@
         },
         {
             "name": "xantios/mimey",
-            "version": "v2.1.1",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Xantios/mimey.git",
-                "reference": "ef84ef9a666aa2af4888859fd29477f4fb3f3257"
+                "reference": "8cb6f0c29b8eadde38777ed947847f4253c00b60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Xantios/mimey/zipball/ef84ef9a666aa2af4888859fd29477f4fb3f3257",
-                "reference": "ef84ef9a666aa2af4888859fd29477f4fb3f3257",
+                "url": "https://api.github.com/repos/Xantios/mimey/zipball/8cb6f0c29b8eadde38777ed947847f4253c00b60",
+                "reference": "8cb6f0c29b8eadde38777ed947847f4253c00b60",
                 "shasum": ""
             },
             "require": {
@@ -12618,9 +12618,10 @@
             ],
             "description": "PHP package for converting file extensions to MIME types and vice versa.",
             "support": {
-                "source": "https://github.com/Xantios/mimey/tree/v2.1.1"
+                "issues": "https://github.com/Xantios/mimey/issues",
+                "source": "https://github.com/Xantios/mimey/tree/v2.2.0"
             },
-            "time": "2021-01-22T14:16:05+00:00"
+            "time": "2021-06-12T14:33:14+00:00"
         }
     ],
     "packages-dev": [
@@ -18314,5 +18315,5 @@
         "ext-redis": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
