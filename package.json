@@ -61,7 +61,7 @@
     "font-awesome": "^4.7",
     "hint.css": "^2.3",
     "jquery": "^3.6",
-    "laravel-mix": "^6.0",
+    "laravel-mix": "^6.0.20",
     "laravel-mix-purgecss": "^6.0",
     "list.js": "^2.3",
     "lodash": "^4.17",
