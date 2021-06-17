@@ -42,6 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'Αναβάθμιση τώρα',
     'people_list_untagged' => 'Εμφάνιση επαφών χωρίς ετικέτα',
     'people_list_filter_untag' => 'Εμφάνιση όλων των επαφών χωρίς ετικέτες',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => 'Προσθήκη νέου ατόμου',
