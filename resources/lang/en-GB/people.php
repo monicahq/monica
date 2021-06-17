@@ -42,6 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'Upgrade now',
     'people_list_untagged' => 'View untagged contacts',
     'people_list_filter_untag' => 'Showing all untagged contacts',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => 'Add a new person',
@@ -266,7 +267,7 @@ return [
     'activities_item_information' => ':Activity. Happened on :date',
     'activities_add_title' => 'What did you do with {name}?',
     'activities_summary' => 'Describe what you did',
-    'activities_add_pick_activity' => 'Would you like to categorize this activity? You don’t have to, but it will give you statistics later on (optional)',
+    'activities_add_pick_activity' => 'Would you like to categorise this activity? You don’t have to, but it will give you statistics later on (optional)',
     'activities_add_date_occured' => 'The activity happened on…',
     'activities_add_participants' => 'Who, apart from {name}, participated in this activity? (optional)',
     'activities_add_emotions_title' => 'Do you want to log how you felt during this activity? (optional)',
