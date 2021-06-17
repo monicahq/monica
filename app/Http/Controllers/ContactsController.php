@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Log;
 use App\Jobs\UpdateLastConsultedDate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
-use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use App\Services\User\UpdateViewPreference;
 use Illuminate\Validation\ValidationException;
@@ -341,7 +340,7 @@ class ContactsController extends Controller
      *
      * @param Contact $contact
      *
-     * @return View
+     * @return View|RedirectResponse
      */
     public function edit(Contact $contact)
     {
@@ -502,7 +501,7 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return View
+     * @return View|RedirectResponse
      */
     public function editWork(Request $request, Contact $contact)
     {
@@ -546,7 +545,7 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return View
+     * @return View|RedirectResponse
      */
     public function editFoodPreferences(Request $request, Contact $contact)
     {
@@ -634,7 +633,7 @@ class ContactsController extends Controller
      *
      * @param  Request $request
      * @param  Contact $contact
-     * @return int
+     * @return int|RedirectResponse
      */
     public function stayInTouch(Request $request, Contact $contact)
     {
