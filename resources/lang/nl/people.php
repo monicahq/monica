@@ -42,6 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'Nu upgraden',
     'people_list_untagged' => 'Bekijken contacten zonder labels',
     'people_list_filter_untag' => 'All contacten zonder labels',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => 'Voeg een nieuwe persoon toe',
