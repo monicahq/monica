@@ -42,6 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'Assinar agora',
     'people_list_untagged' => 'Visualizar contatos sem etiqueta',
     'people_list_filter_untag' => 'Exibindo todos os contatos não etiquetados',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => 'Adicionar novo contato',
