@@ -42,6 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'Perbarui sekarang',
     'people_list_untagged' => 'Tampilkan kontak belum mempunyai tag',
     'people_list_filter_untag' => 'Menampilkan semua kontak tanpa tag',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => 'Tambah orang baru',
