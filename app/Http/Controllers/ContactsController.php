@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Log;
 use App\Jobs\UpdateLastConsultedDate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
-use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use App\Services\User\UpdateViewPreference;
 use Illuminate\Validation\ValidationException;
@@ -176,13 +175,13 @@ class ContactsController extends Controller
      */
     private function createForm(Request $request, bool $isContactMissing = false)
     {
-        if (AccountHelper::hasReachedContactLimit(auth()->user()->account)
-            && AccountHelper::hasLimitations(auth()->user()->account)
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
+        if ($accountHasLimitations
+            && AccountHelper::hasReachedContactLimit(auth()->user()->account)
             && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
             return redirect()->route('settings.subscriptions.index');
         }
-
-        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
 
         return view('people.create')
             ->withAccountHasLimitations($accountHasLimitations)
@@ -341,10 +340,14 @@ class ContactsController extends Controller
      *
      * @param Contact $contact
      *
-     * @return View
+     * @return View|RedirectResponse
      */
     public function edit(Contact $contact)
     {
+        if (! $contact->is_active) {
+            return back()->withErrors(trans('people.archived_contact_readonly'));
+        }
+
         $now = now();
         $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
         $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->toDateString() : $now->toDateString();
@@ -384,6 +387,10 @@ class ContactsController extends Controller
      */
     public function update(Request $request, Contact $contact)
     {
+        if (! $contact->is_active) {
+            return back()->withErrors(trans('people.archived_contact_readonly'));
+        }
+
         // process birthday dates
         // TODO: remove this part entirely when we redo this whole SpecialDate
         // thing
@@ -494,10 +501,14 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return View
+     * @return View|RedirectResponse
      */
     public function editWork(Request $request, Contact $contact)
     {
+        if (! $contact->is_active) {
+            return back()->withErrors(trans('people.archived_contact_readonly'));
+        }
+
         return view('people.work.edit')
             ->withContact($contact);
     }
@@ -512,6 +523,10 @@ class ContactsController extends Controller
      */
     public function updateWork(Request $request, Contact $contact)
     {
+        if (! $contact->is_active) {
+            return back()->withErrors(trans('people.archived_contact_readonly'));
+        }
+
         $contact = app(UpdateWorkInformation::class)->execute([
             'account_id' => auth()->user()->account_id,
             'author_id' => auth()->user()->id,
@@ -530,10 +545,14 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return View
+     * @return View|RedirectResponse
      */
     public function editFoodPreferences(Request $request, Contact $contact)
     {
+        if (! $contact->is_active) {
+            return back()->withErrors(trans('people.archived_contact_readonly'));
+        }
+
         $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
 
         return view('people.food-preferences.edit')
@@ -551,6 +570,10 @@ class ContactsController extends Controller
      */
     public function updateFoodPreferences(Request $request, Contact $contact)
     {
+        if (! $contact->is_active) {
+            return back()->withErrors(trans('people.archived_contact_readonly'));
+        }
+
         $contact = app(UpdateContactFoodPreferences::class)->execute([
             'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
@@ -610,10 +633,14 @@ class ContactsController extends Controller
      *
      * @param  Request $request
      * @param  Contact $contact
-     * @return int
+     * @return int|RedirectResponse
      */
     public function stayInTouch(Request $request, Contact $contact)
     {
+        if (! $contact->is_active) {
+            return back()->withErrors(trans('people.archived_contact_readonly'));
+        }
+
         $frequency = intval($request->input('frequency'));
         $state = $request->input('state');
 
@@ -663,6 +690,13 @@ class ContactsController extends Controller
      */
     public function archive(Request $request, Contact $contact)
     {
+        if (! $contact->is_active
+            && AccountHelper::hasReachedContactLimit(auth()->user()->account)
+            && AccountHelper::hasLimitations(auth()->user()->account)
+            && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
+            abort(402);
+        }
+
         $contact->is_active = ! $contact->is_active;
         $contact->save();
 
