@@ -42,6 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'Upgrade now',
     'people_list_untagged' => 'View untagged contacts',
     'people_list_filter_untag' => 'Showing all untagged contacts',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => '新しく人を作成する',
