@@ -42,6 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'قم بالترقية الان',
     'people_list_untagged' => 'عرض جهات الاتصال الغير موسومة',
     'people_list_filter_untag' => 'عرض كل جهات الاتصال الغير موسومة',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => 'إضافة شخص جديد',
