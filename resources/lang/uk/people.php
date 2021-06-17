@@ -42,6 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'Оновіть тарифний план',
     'people_list_untagged' => 'Переглянути контакти без міток',
     'people_list_filter_untag' => 'Показано всі контакти без міток',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => 'Додати нову особу',
