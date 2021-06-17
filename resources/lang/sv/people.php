@@ -42,6 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'Uppgradera nu',
     'people_list_untagged' => 'Visa ej taggade kontakter',
     'people_list_filter_untag' => 'Visar alla omarkerade kontakter',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => 'Lägg till en ny person',
