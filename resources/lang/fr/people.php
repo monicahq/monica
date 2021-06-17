@@ -42,6 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'Passez au plan supérieur',
     'people_list_untagged' => 'Afficher les contacts sans étiquette',
     'people_list_filter_untag' => 'Afficher les contacts sans aucune étiquette',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => 'Ajouter une nouvelle personne',
