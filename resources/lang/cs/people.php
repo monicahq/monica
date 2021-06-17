@@ -42,6 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'Upgradovat nyní',
     'people_list_untagged' => 'Zobrazit neoznačené kontakty',
     'people_list_filter_untag' => 'Zobrazení všech neoznačených kontaktů',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => 'Přidat novou osobu',
