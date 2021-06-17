@@ -42,6 +42,7 @@ return [
     'people_list_account_upgrade_cta' => '立即升級',
     'people_list_untagged' => '檢視未加標籤的聯絡人',
     'people_list_filter_untag' => '所有未加標籤的聯絡人',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => '新增一位新的聯絡人',
