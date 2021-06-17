@@ -42,6 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'Effettua l\'upgrade ora',
     'people_list_untagged' => 'Mostra contatti senza etichette',
     'people_list_filter_untag' => 'Tutti i contatti senza etichette',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => 'Aggiungi una nuova persona',
