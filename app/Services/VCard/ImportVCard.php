@@ -8,9 +8,11 @@ use App\Traits\DAVFormat;
 use function Safe\substr;
 use Sabre\VObject\Reader;
 use App\Helpers\DateHelper;
+use App\Helpers\FormHelper;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Helpers\VCardHelper;
+use App\Models\Contact\Note;
 use App\Helpers\LocaleHelper;
 use App\Services\BaseService;
 use function Safe\preg_split;
@@ -509,6 +511,7 @@ class ImportVCard extends BaseService
         $this->importTel($contact, $entry);
         $this->importSocialProfile($contact, $entry);
         $this->importCategories($contact, $entry);
+        $this->importNote($contact, $entry);
 
         // Save vcard content
         if ($contact->address_book_id) {
@@ -624,7 +627,7 @@ class ImportVCard extends BaseService
         $user = User::where('account_id', $this->accountId)
             ->findOrFail($this->userId);
 
-        if ($user->name_order == 'firstname_lastname' || $user->name_order == 'firstname_lastname_nickname') {
+        if (FormHelper::getNameOrderForForms($user) === 'firstname') {
             $contact->first_name = $this->formatValue($fullnameParts[0]);
             if (count($fullnameParts) > 1) {
                 $contact->last_name = $this->formatValue($fullnameParts[1]);
@@ -882,6 +885,24 @@ class ImportVCard extends BaseService
                 'contact_field_id' => $email->id,
             ]);
         }
+    }
+
+    /**
+     * @param Contact $contact
+     * @param  VCard $entry
+     * @return void
+     */
+    private function importNote(Contact $contact, VCard $entry): void
+    {
+        if (is_null($entry->NOTE)) {
+            return;
+        }
+
+        $note = Note::create([
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'body' => $entry->NOTE,
+        ]);
     }
 
     /**
