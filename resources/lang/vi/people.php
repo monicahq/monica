@@ -42,6 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'Nâng cấp ngay',
     'people_list_untagged' => 'Xem liên hệ không được gắn thẻ',
     'people_list_filter_untag' => 'Hiện tất cả liên hệ không được gắn thẻ',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => 'Thêm người mới',
