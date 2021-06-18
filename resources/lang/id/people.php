@@ -374,8 +374,8 @@ return [
 
     // Deceased
     'deceased_reminder_title' => 'Hari peringatan meninggal dunia :name',
-    'deceased_mark_person_deceased' => 'Mark this as deceased',
-    'deceased_know_date' => 'I know the date that this person died',
+    'deceased_mark_person_deceased' => 'Tandai ini sebagai almarhum',
+    'deceased_know_date' => 'Saya tau kapan tanggal orang ini meninggal',
     'deceased_add_reminder' => 'Tambahkan sebuah pengingat untuk tanggal ini',
     'deceased_label' => 'Almarhum',
     'deceased_date_label' => 'Tanggal meninggal',
@@ -429,7 +429,7 @@ return [
     'life_event_create_life_event' => 'Tambahkan peristiwa kehidupan',
     'life_event_create_default_title' => 'Judul (opsional)',
     'life_event_create_default_story' => 'Cerita (opsional)',
-    'life_event_create_date' => 'You do not need to indicate a month or a day – only the year is mandatory.',
+    'life_event_create_date' => 'Anda tidak perlu mencantumkan bulan atau hari – hanya tahun saja yang bersifat wajib.',
     'life_event_create_default_description' => 'Tambahkan informasi tentang apa yang Anda ketahui',
     'life_event_create_add_yearly_reminder' => 'Tambah sebuah pengingat tahunan untuk peristiwa ini',
     'life_event_create_success' => 'Peristiwa kehidupan telah ditambahkan',
