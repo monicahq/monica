@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Contacts;
 
 use Illuminate\Http\Request;
+use App\Helpers\ContactHelper;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
@@ -21,10 +22,12 @@ class IntroductionsController extends Controller
      */
     public function edit(Contact $contact)
     {
-        $contacts = $contact->siblingContacts()
-                        ->real()
-                        ->active()
-                        ->get();
+        $contacts = ContactHelper::orderContactQueryByUserPreference(
+            auth()->user(),
+            $contact->siblingContacts()
+                ->real()
+                ->active()
+        )->get();
 
         return view('people.introductions.edit')
             ->withContact($contact)
