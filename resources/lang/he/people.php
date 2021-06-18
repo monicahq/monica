@@ -42,7 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'לשדרג כעת',
     'people_list_untagged' => 'הצגת אנשי קשר ללא תיוג',
     'people_list_filter_untag' => 'מוצגים כל אנשי קשר ללא תיוג',
-    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
+    'archived_contact_readonly' => 'לא ניתן לערוך אנשי קשר בארכיון, נא להוציא מהארכיון תחילה.',
 
     // people add
     'people_add_title' => 'הוספת אדם חדש',
