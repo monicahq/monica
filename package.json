@@ -3,7 +3,9 @@
   "scripts": {
     "dev": "yarn development",
     "development": "mix",
+    "predevelopment": "php artisan lang:generate -vvv",
     "watch": "mix watch",
+    "prewatch": "php artisan lang:generate -vvv",
     "watch-poll": "mix watch -- --watch-options-poll=1000",
     "hot": "mix watch --hot",
     "prod": "yarn production",
