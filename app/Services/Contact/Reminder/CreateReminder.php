@@ -6,6 +6,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
+use Illuminate\Validation\ValidationException;
 
 class CreateReminder extends BaseService
 {
@@ -43,6 +44,8 @@ class CreateReminder extends BaseService
 
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $reminder = Reminder::create([
             'account_id' => $data['account_id'],

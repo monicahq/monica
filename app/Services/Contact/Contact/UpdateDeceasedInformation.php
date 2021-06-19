@@ -8,6 +8,7 @@ use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
+use Illuminate\Validation\ValidationException;
 
 class UpdateDeceasedInformation extends BaseService
 {
@@ -43,6 +44,8 @@ class UpdateDeceasedInformation extends BaseService
         /** @var Contact */
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $this->clearRelatedReminder($contact);
 

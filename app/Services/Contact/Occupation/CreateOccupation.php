@@ -2,9 +2,11 @@
 
 namespace App\Services\Contact\Occupation;
 
+use App\Models\Contact\Contact;
 use App\Services\BaseService;
 use Illuminate\Validation\Rule;
 use App\Models\Contact\Occupation;
+use Illuminate\Validation\ValidationException;
 
 class CreateOccupation extends BaseService
 {
@@ -41,6 +43,11 @@ class CreateOccupation extends BaseService
     public function execute(array $data): Occupation
     {
         $this->validate($data);
+
+        $contact = Contact::where('account_id', $data['account_id'])
+            ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         return Occupation::create([
             'account_id' => $data['account_id'],

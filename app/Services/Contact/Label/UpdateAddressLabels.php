@@ -5,6 +5,7 @@ namespace App\Services\Contact\Label;
 use App\Services\BaseService;
 use App\Models\Contact\Address;
 use App\Models\Contact\ContactFieldLabel;
+use Illuminate\Validation\ValidationException;
 
 class UpdateAddressLabels extends BaseService
 {
@@ -34,6 +35,8 @@ class UpdateAddressLabels extends BaseService
 
         $address = Address::where('account_id', $data['account_id'])
             ->findOrFail($data['address_id']);
+
+        $address->contact->throwInactive();
 
         $labelsId = $this->getLabelsId($data);
 

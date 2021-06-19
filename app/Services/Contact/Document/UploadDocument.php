@@ -7,6 +7,7 @@ use App\Helpers\AccountHelper;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
+use Illuminate\Validation\ValidationException;
 
 class UploadDocument extends BaseService
 {
@@ -39,8 +40,10 @@ class UploadDocument extends BaseService
             abort(402);
         }
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
                 ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $array = $this->populateData($data);
 

@@ -4,6 +4,7 @@ namespace App\Services\Contact\Gift;
 
 use App\Models\Contact\Gift;
 use App\Services\BaseService;
+use Illuminate\Validation\ValidationException;
 
 class DestroyGift extends BaseService
 {
@@ -32,6 +33,8 @@ class DestroyGift extends BaseService
 
         $gift = Gift::where('account_id', $data['account_id'])
             ->findOrFail($data['gift_id']);
+
+        $gift->contact->throwInactive();
 
         $gift->photos()->detach();
 

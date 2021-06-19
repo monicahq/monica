@@ -7,6 +7,7 @@ use App\Models\Contact\Call;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Instance\Emotion\Emotion;
+use Illuminate\Validation\ValidationException;
 
 class CreateCall extends BaseService
 {
@@ -39,6 +40,8 @@ class CreateCall extends BaseService
 
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         // emotions array is left out as they are not attached during this call
         $call = Call::create(Arr::except($data, ['emotions']));

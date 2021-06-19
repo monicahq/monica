@@ -9,6 +9,7 @@ namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
 use App\Models\Contact\Conversation;
+use Illuminate\Validation\ValidationException;
 
 class DestroyConversation extends BaseService
 {
@@ -37,6 +38,8 @@ class DestroyConversation extends BaseService
 
         $conversation = Conversation::where('account_id', $data['account_id'])
                                     ->findOrFail($data['conversation_id']);
+
+        $conversation->contact->throwInactive();
 
         $conversation->delete();
 

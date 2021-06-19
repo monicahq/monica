@@ -6,6 +6,7 @@ use App\Models\Account\Photo;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Update the avatar of the contact.
@@ -48,6 +49,8 @@ class UpdateAvatar extends BaseService
         /** @var Contact */
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         if (isset($data['photo_id'])) {
             Photo::where('account_id', $data['account_id'])

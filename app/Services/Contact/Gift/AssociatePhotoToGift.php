@@ -5,6 +5,7 @@ namespace App\Services\Contact\Gift;
 use App\Models\Contact\Gift;
 use App\Models\Account\Photo;
 use App\Services\BaseService;
+use Illuminate\Validation\ValidationException;
 
 class AssociatePhotoToGift extends BaseService
 {
@@ -36,6 +37,8 @@ class AssociatePhotoToGift extends BaseService
 
         $gift = Gift::where('account_id', $data['account_id'])
             ->findOrFail($data['gift_id']);
+
+        $gift->contact->throwInactive();
 
         $gift->photos()->syncWithoutDetaching([$photo->id]);
     }

@@ -5,6 +5,7 @@ namespace App\Services\Contact\Tag;
 use App\Models\Contact\Tag;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use Illuminate\Validation\ValidationException;
 
 class AssociateTag extends BaseService
 {
@@ -34,6 +35,8 @@ class AssociateTag extends BaseService
 
         $contact = Contact::where('account_id', $data['account_id'])
                             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         // check if the tag already exists in the account
         $tag = $this->tagExistOrCreate($data);

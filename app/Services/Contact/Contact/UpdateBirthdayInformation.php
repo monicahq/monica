@@ -11,6 +11,7 @@ use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
+use Illuminate\Validation\ValidationException;
 
 class UpdateBirthdayInformation extends BaseService
 {
@@ -71,6 +72,8 @@ class UpdateBirthdayInformation extends BaseService
         /** @var Contact */
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $this->clearRelatedReminder($contact);
 

@@ -54,6 +54,8 @@ class UploadPhoto extends BaseService
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
+        $contact->throwInactive();
+
         $array = null;
         if (Arr::has($data, 'photo')) {
             $array = $this->importPhoto($data);

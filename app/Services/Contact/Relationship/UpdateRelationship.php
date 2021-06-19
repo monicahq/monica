@@ -5,6 +5,7 @@ namespace App\Services\Contact\Relationship;
 use App\Services\BaseService;
 use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
+use Illuminate\Validation\ValidationException;
 
 class UpdateRelationship extends BaseService
 {
@@ -34,6 +35,8 @@ class UpdateRelationship extends BaseService
 
         $relationship = Relationship::where('account_id', $data['account_id'])
             ->findOrFail($data['relationship_id']);
+
+        $relationship->contactIs->throwInactive();
 
         $newRelationshipType = RelationshipType::where('account_id', $data['account_id'])
             ->findOrFail($data['relationship_type_id']);

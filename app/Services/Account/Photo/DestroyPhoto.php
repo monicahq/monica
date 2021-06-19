@@ -34,6 +34,8 @@ class DestroyPhoto extends BaseService
         $photo = Photo::where('account_id', $data['account_id'])
             ->findOrFail($data['photo_id']);
 
+        $photo->contact->throwInactive();
+
         // Delete the physical photo
         // Throws FileNotFoundException
         Storage::delete($photo->new_filename);

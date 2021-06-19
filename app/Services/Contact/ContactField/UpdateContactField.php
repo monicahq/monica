@@ -7,6 +7,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Label\UpdateContactFieldLabels;
+use Illuminate\Validation\ValidationException;
 
 class UpdateContactField extends BaseService
 {
@@ -41,8 +42,10 @@ class UpdateContactField extends BaseService
         $contactField = ContactField::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_field_id']);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         ContactFieldType::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_field_type_id']);

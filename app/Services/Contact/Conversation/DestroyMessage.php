@@ -10,6 +10,7 @@ namespace App\Services\Contact\Conversation;
 use App\Services\BaseService;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
+use Illuminate\Validation\ValidationException;
 
 class DestroyMessage extends BaseService
 {
@@ -43,6 +44,8 @@ class DestroyMessage extends BaseService
         $message = Message::where('account_id', $data['account_id'])
                             ->where('conversation_id', $data['conversation_id'])
                             ->findOrFail($data['message_id']);
+
+        $message->contact->throwInactive();
 
         $message->delete();
 

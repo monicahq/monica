@@ -8,6 +8,7 @@ use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Services\Account\Place\UpdatePlace;
 use App\Services\Contact\Label\UpdateAddressLabels;
+use Illuminate\Validation\ValidationException;
 
 class UpdateAddress extends BaseService
 {
@@ -49,8 +50,10 @@ class UpdateAddress extends BaseService
             ->where('contact_id', $data['contact_id'])
             ->findOrFail($data['address_id']);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $this->updatePlace($data, $address);
 

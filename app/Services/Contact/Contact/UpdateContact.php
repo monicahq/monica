@@ -10,6 +10,7 @@ use App\Models\Contact\Contact;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Services\Contact\Description\SetPersonalDescription;
 use App\Services\Contact\Description\ClearPersonalDescription;
+use Illuminate\Validation\ValidationException;
 
 class UpdateContact extends BaseService
 {
@@ -64,6 +65,8 @@ class UpdateContact extends BaseService
         /* @var Contact */
         $this->contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $this->contact->throwInactive();
 
         // Test is the account is limited and the contact should be updated as real contact
         $account = Account::find($data['account_id']);

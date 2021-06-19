@@ -6,6 +6,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
+use Illuminate\Validation\ValidationException;
 
 class CreateRelationship extends BaseService
 {
@@ -37,6 +38,8 @@ class CreateRelationship extends BaseService
 
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_is']);
+
+        $contact->throwInactive();
 
         $otherContact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['of_contact']);

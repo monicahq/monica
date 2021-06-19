@@ -32,6 +32,20 @@ class DestroyContactTest extends TestCase
     }
 
     /** @test */
+    public function it_fails_if_contact_is_archived()
+    {
+        $contact = factory(Contact::class)->state('archived')->create([]);
+
+        $request = [
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ];
+
+        $this->expectException(ValidationException::class);
+        app(DestroyContact::class)->execute($request);
+    }
+
+    /** @test */
     public function it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);
@@ -41,7 +55,6 @@ class DestroyContactTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-
         app(DestroyContact::class)->execute($request);
     }
 

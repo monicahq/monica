@@ -2,9 +2,11 @@
 
 namespace App\Services\Contact\Reminder;
 
+use App\Models\Contact\Contact;
 use App\Services\BaseService;
 use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
+use Illuminate\Validation\ValidationException;
 
 class UpdateReminder extends BaseService
 {
@@ -45,6 +47,11 @@ class UpdateReminder extends BaseService
         $reminder = Reminder::where('account_id', $data['account_id'])
             ->where('contact_id', $data['contact_id'])
             ->findOrFail($data['reminder_id']);
+
+        $contact = Contact::where('account_id', $data['account_id'])
+            ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $reminder->update([
             'title' => $data['title'],

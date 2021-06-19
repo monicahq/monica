@@ -6,6 +6,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
 use App\Services\Contact\Relationship\DestroyRelationship;
+use Illuminate\Validation\ValidationException;
 
 class DestroyContact extends BaseService
 {
@@ -34,6 +35,8 @@ class DestroyContact extends BaseService
 
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $this->destroyRelationships($data, $contact);
 

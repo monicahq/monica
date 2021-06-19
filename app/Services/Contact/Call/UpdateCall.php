@@ -5,6 +5,7 @@ namespace App\Services\Contact\Call;
 use App\Models\Contact\Call;
 use App\Services\BaseService;
 use App\Models\Instance\Emotion\Emotion;
+use Illuminate\Validation\ValidationException;
 
 class UpdateCall extends BaseService
 {
@@ -38,6 +39,8 @@ class UpdateCall extends BaseService
         /** @var Call */
         $call = Call::where('account_id', $data['account_id'])
             ->findOrFail($data['call_id']);
+
+        $call->contact->throwInactive();
 
         $call->update([
             'called_at' => $data['called_at'],

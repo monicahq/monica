@@ -11,6 +11,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
+use Illuminate\Validation\ValidationException;
 
 class UpdateMessage extends BaseService
 {
@@ -42,8 +43,10 @@ class UpdateMessage extends BaseService
     {
         $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
                 ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         Conversation::where('contact_id', $data['contact_id'])
                     ->where('account_id', $data['account_id'])

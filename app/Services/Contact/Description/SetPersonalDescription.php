@@ -7,6 +7,7 @@ use App\Services\BaseService;
 use function Safe\json_encode;
 use App\Models\Contact\Contact;
 use App\Jobs\AuditLog\LogAccountAudit;
+use Illuminate\Validation\ValidationException;
 
 class SetPersonalDescription extends BaseService
 {
@@ -41,6 +42,8 @@ class SetPersonalDescription extends BaseService
         /** @var Contact $contact */
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $contact->description = $data['description'];
         $contact->save();

@@ -4,6 +4,7 @@ namespace App\Services\Contact\ContactField;
 
 use App\Services\BaseService;
 use App\Models\Contact\ContactField;
+use Illuminate\Validation\ValidationException;
 
 class DestroyContactField extends BaseService
 {
@@ -32,6 +33,8 @@ class DestroyContactField extends BaseService
 
         $contactField = ContactField::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_field_id']);
+
+        $contactField->contact->throwInactive();
 
         $contactField->delete();
 

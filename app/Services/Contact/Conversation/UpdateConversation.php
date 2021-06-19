@@ -10,6 +10,7 @@ namespace App\Services\Contact\Conversation;
 use App\Services\BaseService;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\ContactFieldType;
+use Illuminate\Validation\ValidationException;
 
 class UpdateConversation extends BaseService
 {
@@ -41,6 +42,8 @@ class UpdateConversation extends BaseService
         /** @var Conversation */
         $conversation = Conversation::where('account_id', $data['account_id'])
                                     ->findOrFail($data['conversation_id']);
+
+        $conversation->contact->throwInactive();
 
         ContactFieldType::where('account_id', $data['account_id'])
                             ->findOrFail($data['contact_field_type_id']);

@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Validation\ValidationException;
 
 /**
  * @method static \Illuminate\Database\Eloquent\Builder search()
@@ -1502,5 +1503,14 @@ class Contact extends Model
         $this->save();
 
         $this->timestamps = $timestamps;
+    }
+
+    public function throwInactive()
+    {
+        if (! $this->is_active) {
+            throw ValidationException::withMessages([
+                trans('people.archived_contact_readonly'),
+            ]);
+        }
     }
 }

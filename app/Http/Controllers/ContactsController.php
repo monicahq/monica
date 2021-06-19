@@ -344,9 +344,7 @@ class ContactsController extends Controller
      */
     public function edit(Contact $contact)
     {
-        if (! $contact->is_active) {
-            return back()->withErrors(trans('people.archived_contact_readonly'));
-        }
+        $contact->throwInactive();
 
         $now = now();
         $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
@@ -387,9 +385,7 @@ class ContactsController extends Controller
      */
     public function update(Request $request, Contact $contact)
     {
-        if (! $contact->is_active) {
-            return back()->withErrors(trans('people.archived_contact_readonly'));
-        }
+        $contact->throwInactive();
 
         // process birthday dates
         // TODO: remove this part entirely when we redo this whole SpecialDate
@@ -505,9 +501,7 @@ class ContactsController extends Controller
      */
     public function editWork(Request $request, Contact $contact)
     {
-        if (! $contact->is_active) {
-            return back()->withErrors(trans('people.archived_contact_readonly'));
-        }
+        $contact->throwInactive();
 
         return view('people.work.edit')
             ->withContact($contact);
@@ -523,9 +517,7 @@ class ContactsController extends Controller
      */
     public function updateWork(Request $request, Contact $contact)
     {
-        if (! $contact->is_active) {
-            return back()->withErrors(trans('people.archived_contact_readonly'));
-        }
+        $contact->throwInactive();
 
         $contact = app(UpdateWorkInformation::class)->execute([
             'account_id' => auth()->user()->account_id,
@@ -549,9 +541,7 @@ class ContactsController extends Controller
      */
     public function editFoodPreferences(Request $request, Contact $contact)
     {
-        if (! $contact->is_active) {
-            return back()->withErrors(trans('people.archived_contact_readonly'));
-        }
+        $contact->throwInactive();
 
         $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
 
@@ -570,9 +560,7 @@ class ContactsController extends Controller
      */
     public function updateFoodPreferences(Request $request, Contact $contact)
     {
-        if (! $contact->is_active) {
-            return back()->withErrors(trans('people.archived_contact_readonly'));
-        }
+        $contact->throwInactive();
 
         $contact = app(UpdateContactFoodPreferences::class)->execute([
             'account_id' => auth()->user()->account_id,
@@ -637,9 +625,7 @@ class ContactsController extends Controller
      */
     public function stayInTouch(Request $request, Contact $contact)
     {
-        if (! $contact->is_active) {
-            return back()->withErrors(trans('people.archived_contact_readonly'));
-        }
+        $contact->throwInactive();
 
         $frequency = intval($request->input('frequency'));
         $state = $request->input('state');

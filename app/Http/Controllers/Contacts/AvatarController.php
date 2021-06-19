@@ -16,6 +16,8 @@ class AvatarController extends Controller
      */
     public function edit(Contact $contact)
     {
+        $contact->throwInactive();
+
         return view('people.avatar.edit')
             ->withContact($contact);
     }

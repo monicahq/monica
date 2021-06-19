@@ -7,6 +7,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class UpdateGift extends BaseService
 {
@@ -51,8 +52,10 @@ class UpdateGift extends BaseService
         $gift = Gift::where('account_id', $data['account_id'])
                     ->findOrFail((int) $data['gift_id']);
 
-        Contact::where('account_id', $data['account_id'])
-        ->findOrFail($data['contact_id']);
+        $contact = Contact::where('account_id', $data['account_id'])
+            ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         if (isset($data['recipient_id'])) {
             Contact::where('account_id', $data['account_id'])

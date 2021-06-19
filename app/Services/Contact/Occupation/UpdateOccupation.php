@@ -5,6 +5,7 @@ namespace App\Services\Contact\Occupation;
 use App\Services\BaseService;
 use Illuminate\Validation\Rule;
 use App\Models\Contact\Occupation;
+use Illuminate\Validation\ValidationException;
 
 class UpdateOccupation extends BaseService
 {
@@ -48,6 +49,8 @@ class UpdateOccupation extends BaseService
             ->where('contact_id', $data['contact_id'])
             ->where('company_id', $data['company_id'])
             ->findOrFail($data['occupation_id']);
+
+        $occupation->contact->throwInactive();
 
         $occupation->update([
             'title' => $data['title'],

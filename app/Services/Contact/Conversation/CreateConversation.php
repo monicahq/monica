@@ -11,6 +11,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\ContactFieldType;
+use Illuminate\Validation\ValidationException;
 
 class CreateConversation extends BaseService
 {
@@ -39,8 +40,10 @@ class CreateConversation extends BaseService
     {
         $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
                 ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         ContactFieldType::where('account_id', $data['account_id'])
                         ->findOrFail($data['contact_field_type_id']);
