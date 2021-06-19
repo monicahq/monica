@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Controllers\Contact;
+namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
 use App\Helpers\AccountHelper;
@@ -17,9 +17,8 @@ class ContactsControllerTest extends FeatureTestCase
         config(['monica.requires_subscription' => true]);
         $user = $this->signin();
 
-        $contact = factory(Contact::class)->create([
+        $contact = factory(Contact::class)->state('archived')->create([
             'account_id' => $user->account_id,
-            'is_active' => false,
         ]);
 
         factory(Contact::class, 10)->create([
@@ -32,5 +31,27 @@ class ContactsControllerTest extends FeatureTestCase
         $response = $this->put("/people/{$contact->hashID()}/archive");
 
         $response->assertStatus(402);
+    }
+
+    /** @test */
+    public function it_stays_in_touch()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->post("/people/{$contact->hashID()}/stayintouch", [
+            'frequency' => 5,
+            'state' => 1,
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'stay_in_touch_frequency' => 5,
+        ]);
     }
 }
