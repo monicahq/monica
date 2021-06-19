@@ -8,7 +8,6 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
 use App\Services\Contact\Reminder\CreateReminder;
-use Illuminate\Validation\ValidationException;
 
 class CreateLifeEvent extends BaseService
 {

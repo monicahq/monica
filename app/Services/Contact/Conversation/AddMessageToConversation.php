@@ -11,7 +11,6 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
-use Illuminate\Validation\ValidationException;
 
 class AddMessageToConversation extends BaseService
 {

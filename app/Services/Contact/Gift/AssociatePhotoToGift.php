@@ -5,7 +5,6 @@ namespace App\Services\Contact\Gift;
 use App\Models\Contact\Gift;
 use App\Models\Account\Photo;
 use App\Services\BaseService;
-use Illuminate\Validation\ValidationException;
 
 class AssociatePhotoToGift extends BaseService
 {

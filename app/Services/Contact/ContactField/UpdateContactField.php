@@ -7,7 +7,6 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Label\UpdateContactFieldLabels;
-use Illuminate\Validation\ValidationException;
 
 class UpdateContactField extends BaseService
 {

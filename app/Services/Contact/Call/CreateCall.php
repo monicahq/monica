@@ -7,7 +7,6 @@ use App\Models\Contact\Call;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Instance\Emotion\Emotion;
-use Illuminate\Validation\ValidationException;
 
 class CreateCall extends BaseService
 {

@@ -6,7 +6,6 @@ use App\Models\Account\Photo;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
 
 /**
  * Update the avatar of the contact.

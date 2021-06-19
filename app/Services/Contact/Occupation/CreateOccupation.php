@@ -2,11 +2,10 @@
 
 namespace App\Services\Contact\Occupation;
 
-use App\Models\Contact\Contact;
 use App\Services\BaseService;
+use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Models\Contact\Occupation;
-use Illuminate\Validation\ValidationException;
 
 class CreateOccupation extends BaseService
 {

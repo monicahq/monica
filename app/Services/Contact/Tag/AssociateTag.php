@@ -5,7 +5,6 @@ namespace App\Services\Contact\Tag;
 use App\Models\Contact\Tag;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use Illuminate\Validation\ValidationException;
 
 class AssociateTag extends BaseService
 {

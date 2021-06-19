@@ -4,7 +4,6 @@ namespace App\Services\Contact\ContactField;
 
 use App\Services\BaseService;
 use App\Models\Contact\ContactField;
-use Illuminate\Validation\ValidationException;
 
 class DestroyContactField extends BaseService
 {

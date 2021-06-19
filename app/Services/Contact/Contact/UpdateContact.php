@@ -10,7 +10,6 @@ use App\Models\Contact\Contact;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Services\Contact\Description\SetPersonalDescription;
 use App\Services\Contact\Description\ClearPersonalDescription;
-use Illuminate\Validation\ValidationException;
 
 class UpdateContact extends BaseService
 {

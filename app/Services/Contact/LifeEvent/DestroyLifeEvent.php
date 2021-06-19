@@ -5,7 +5,6 @@ namespace App\Services\Contact\LifeEvent;
 use App\Services\BaseService;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
-use Illuminate\Validation\ValidationException;
 
 class DestroyLifeEvent extends BaseService
 {

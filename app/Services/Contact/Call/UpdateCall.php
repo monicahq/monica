@@ -5,7 +5,6 @@ namespace App\Services\Contact\Call;
 use App\Models\Contact\Call;
 use App\Services\BaseService;
 use App\Models\Instance\Emotion\Emotion;
-use Illuminate\Validation\ValidationException;
 
 class UpdateCall extends BaseService
 {

@@ -7,7 +7,6 @@ use App\Helpers\AccountHelper;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
-use Illuminate\Validation\ValidationException;
 
 class UploadDocument extends BaseService
 {

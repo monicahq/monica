@@ -6,7 +6,6 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
-use Illuminate\Validation\ValidationException;
 
 class CreateRelationship extends BaseService
 {

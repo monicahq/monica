@@ -8,7 +8,6 @@ use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
-use Illuminate\Validation\ValidationException;
 
 class UpdateDeceasedInformation extends BaseService
 {

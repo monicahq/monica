@@ -8,8 +8,8 @@ use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\DB;
 use App\Models\Instance\Emotion\Emotion;
 use App\Services\Contact\Call\DestroyCall;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DestroyCallTest extends TestCase
 {

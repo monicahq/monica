@@ -6,7 +6,6 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
 use App\Services\Contact\Relationship\DestroyRelationship;
-use Illuminate\Validation\ValidationException;
 
 class DestroyContact extends BaseService
 {

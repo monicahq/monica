@@ -11,7 +11,6 @@ use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
-use Illuminate\Validation\ValidationException;
 
 class UpdateBirthdayInformation extends BaseService
 {

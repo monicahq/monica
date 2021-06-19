@@ -10,7 +10,6 @@ namespace App\Services\Contact\Conversation;
 use App\Services\BaseService;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\ContactFieldType;
-use Illuminate\Validation\ValidationException;
 
 class UpdateConversation extends BaseService
 {

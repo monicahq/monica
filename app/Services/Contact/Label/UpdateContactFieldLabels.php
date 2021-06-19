@@ -5,7 +5,6 @@ namespace App\Services\Contact\Label;
 use App\Services\BaseService;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldLabel;
-use Illuminate\Validation\ValidationException;
 
 class UpdateContactFieldLabels extends BaseService
 {

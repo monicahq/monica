@@ -6,7 +6,6 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
-use Illuminate\Validation\ValidationException;
 
 class CreateReminder extends BaseService
 {

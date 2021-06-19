@@ -4,7 +4,6 @@ namespace App\Services\Contact\Gift;
 
 use App\Models\Contact\Gift;
 use App\Services\BaseService;
-use Illuminate\Validation\ValidationException;
 
 class DestroyGift extends BaseService
 {

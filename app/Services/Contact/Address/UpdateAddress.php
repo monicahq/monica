@@ -8,7 +8,6 @@ use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Services\Account\Place\UpdatePlace;
 use App\Services\Contact\Label\UpdateAddressLabels;
-use Illuminate\Validation\ValidationException;
 
 class UpdateAddress extends BaseService
 {

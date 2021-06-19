@@ -9,7 +9,6 @@ namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
 use App\Models\Contact\Conversation;
-use Illuminate\Validation\ValidationException;
 
 class DestroyConversation extends BaseService
 {
