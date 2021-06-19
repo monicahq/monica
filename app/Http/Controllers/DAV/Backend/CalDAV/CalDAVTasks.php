@@ -77,27 +77,27 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Datas for this task.
      *
-     * @param mixed $task
+     * @param mixed $obj
      * @return array
      */
-    public function prepareData($task)
+    public function prepareData($obj)
     {
-        if ($task instanceof Task) {
+        if ($obj instanceof Task) {
             try {
                 $vcal = app(ExportTask::class)
                     ->execute([
                         'account_id' => Auth::user()->account_id,
-                        'task_id' => $task->id,
+                        'task_id' => $obj->id,
                     ]);
 
                 $calendardata = $vcal->serialize();
 
                 return [
-                    'id' => $task->id,
-                    'uri' => $this->encodeUri($task),
+                    'id' => $obj->id,
+                    'uri' => $this->encodeUri($obj),
                     'calendardata' => $calendardata,
                     'etag' => '"'.md5($calendardata).'"',
-                    'lastmodified' => $task->updated_at->timestamp,
+                    'lastmodified' => $obj->updated_at->timestamp,
                 ];
             } catch (\Exception $e) {
                 Log::debug(__CLASS__.' prepareData: '.(string) $e);
