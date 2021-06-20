@@ -28,43 +28,7 @@ class StorageController extends Controller
      */
     public function download(Request $request, string $file)
     {
-        $accountId = auth()->user()->account_id;
-        $folder = Str::before($file, '/');
-
-        switch ($folder) {
-            case 'avatars':
-                $flag = Contact::where([
-                    'account_id' => $accountId,
-                    ['avatar_default_url', 'like', "$file%"],
-                ])->first();
-                $filename = Str::after($file, '/');
-                break;
-
-            case 'photos':
-                $flag = Photo::where([
-                    'account_id' => $accountId,
-                    'new_filename' => $file,
-                ])->first();
-                $filename = $flag ? $flag->original_filename : null;
-                break;
-
-            case 'documents':
-                $flag = Document::where([
-                    'account_id' => $accountId,
-                    'new_filename' => $file,
-                ])->first();
-                $filename = $flag ? $flag->original_filename : null;
-                break;
-
-            default:
-                $flag = false;
-                $filename = null;
-                break;
-        }
-
-        if (! $flag || ! $flag->exists) {
-            abort(404);
-        }
+        $filename = $this->getFilename($request, $file);
 
         try {
             $disk = StorageHelper::disk(config('filesystems.default'));
@@ -86,6 +50,64 @@ class StorageController extends Controller
         }
     }
 
+    /**
+     * Get the filename for this file.
+     *
+     * @param Request $request
+     * @param string $file
+     * @return string
+     */
+    private function getFilename(Request $request, string $file): string
+    {
+        $accountId = $request->user()->account_id;
+        $folder = Str::before($file, '/');
+
+        switch ($folder) {
+            case 'avatars':
+                $obj = Contact::where([
+                    'account_id' => $accountId,
+                    ['avatar_default_url', 'like', "$file%"],
+                ])->first();
+                $filename = Str::after($file, '/');
+                break;
+
+            case 'photos':
+                $obj = Photo::where([
+                    'account_id' => $accountId,
+                    'new_filename' => $file,
+                ])->first();
+                $filename = $obj ? $obj->original_filename : null;
+                break;
+
+            case 'documents':
+                $obj = Document::where([
+                    'account_id' => $accountId,
+                    'new_filename' => $file,
+                ])->first();
+                $filename = $obj ? $obj->original_filename : null;
+                break;
+
+            default:
+                $obj = false;
+                $filename = null;
+                break;
+        }
+
+        if ($obj === false || $obj === null || ! $obj->exists) {
+            abort(404);
+        }
+
+        return $filename;
+    }
+
+    /**
+     * Check for If-Modified-Since and If-Unmodified-Since conditions.
+     * Return true if the condition does not match.
+     *
+     * @param Request $request
+     * @param Carbon $lastModified  Last modified date
+     * @return bool
+     */
     private function checkConditions(Request $request, Carbon $lastModified): bool
     {
         if (! $request->header('If-None-Match') && ($ifModifiedSince = $request->header('If-Modified-Since'))) {
