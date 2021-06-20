@@ -57,7 +57,7 @@ class StorageControllerTest extends FeatureTestCase
         $file = $this->storeImage($contact);
 
         $response = $this->get('/store/'.$file, [
-            'If-Modified-Since' => 'Sat, 26 Jun 2021 07:00:00 GMT'
+            'If-Modified-Since' => 'Sat, 26 Jun 2021 07:00:00 GMT',
         ]);
 
         $response->assertNoContent(304);
@@ -76,7 +76,7 @@ class StorageControllerTest extends FeatureTestCase
         $file = $this->storeImage($contact);
 
         $response = $this->get('/store/'.$file, [
-            'If-Unmodified-Since' => 'Sat, 26 Jun 2021 07:00:00 GMT'
+            'If-Unmodified-Since' => 'Sat, 26 Jun 2021 07:00:00 GMT',
         ]);
 
         $response->assertStatus(200);
@@ -95,7 +95,7 @@ class StorageControllerTest extends FeatureTestCase
         $file = $this->storeImage($contact);
 
         $response = $this->get('/store/'.$file, [
-            'If-Unmodified-Since' => 'Sat, 12 Jun 2021 07:00:00 GMT'
+            'If-Unmodified-Since' => 'Sat, 12 Jun 2021 07:00:00 GMT',
         ]);
 
         $response->assertStatus(403);
@@ -125,7 +125,7 @@ class StorageControllerTest extends FeatureTestCase
         $this->signIn();
 
         $response = $this->get('/store/'.$file, [
-            'If-Unmodified-Since' => 'Sat, 12 Jun 2021 07:00:00 GMT'
+            'If-Unmodified-Since' => 'Sat, 12 Jun 2021 07:00:00 GMT',
         ]);
 
         $response->assertStatus(404);
@@ -141,7 +141,7 @@ class StorageControllerTest extends FeatureTestCase
         $file = $this->storeImage($contact);
 
         $response = $this->get('/store/'.$file, [
-            'If-Match' => '"'.md5('/store/'.$file).'"'
+            'If-Match' => '"'.md5('/store/'.$file).'"',
         ]);
 
         $response->assertNoContent(200);
@@ -160,7 +160,7 @@ class StorageControllerTest extends FeatureTestCase
         $file = $this->storeImage($contact);
 
         $response = $this->get('/store/'.$file, [
-            'If-Modified-Since' => 'Sat, 12 Jun 2021 07:00:00 GMT'
+            'If-Modified-Since' => 'Sat, 12 Jun 2021 07:00:00 GMT',
         ]);
 
         $response->assertStatus(200);
@@ -195,7 +195,7 @@ class StorageControllerTest extends FeatureTestCase
 
         $adapter = $disk->getDriver()->getAdapter();
         $adapter->getCache()->updateObject($file, [
-            'timestamp' => Carbon::create(2021, 6, 19, 7, 0, 0, 'UTC')->timestamp
+            'timestamp' => Carbon::create(2021, 6, 19, 7, 0, 0, 'UTC')->timestamp,
         ]);
 
         return $file;
