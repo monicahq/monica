@@ -43,7 +43,7 @@ class StorageControllerTest extends FeatureTestCase
                 'store' => 'file',
                 'expire' => 600,
                 'prefix' => 'local',
-            ]
+            ],
         ]);
         $adapter = $disk->getDriver()->getAdapter();
         $image = UploadedFile::fake()->image('avatar.jpg');
@@ -55,7 +55,7 @@ class StorageControllerTest extends FeatureTestCase
             'original_filename' => 'avatar.jpg',
             'filesize' => $image->getSize(),
             'mime_type' => $image->getMimeType(),
-            'new_filename' => $file
+            'new_filename' => $file,
         ]);
 
         $contact->photos()->syncWithoutDetaching([$photo->id]);
