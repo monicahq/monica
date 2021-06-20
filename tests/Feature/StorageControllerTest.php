@@ -176,7 +176,7 @@ class StorageControllerTest extends FeatureTestCase
                 'store' => 'file',
                 'expire' => 600,
                 'prefix' => 'local',
-            ]
+            ],
         ]);
         //$image = UploadedFile::fake()->image('avatar.png');
         $image = File::createWithContent('avatar.png', file_get_contents(base_path('public/img/favicon.png')));
@@ -188,7 +188,7 @@ class StorageControllerTest extends FeatureTestCase
             'original_filename' => 'avatar.png',
             'filesize' => $image->getSize(),
             'mime_type' => $image->getMimeType(),
-            'new_filename' => $file
+            'new_filename' => $file,
         ]);
 
         $contact->photos()->syncWithoutDetaching([$photo->id]);
