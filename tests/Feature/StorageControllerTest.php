@@ -114,6 +114,28 @@ class StorageControllerTest extends FeatureTestCase
     }
 
     /** @test */
+    public function it_fails_if_file_not_exist()
+    {
+        config(['filesystems.default' => 'local']);
+
+        [$user, $contact] = $this->fetchUser();
+
+        $photo = factory(Photo::class)->create([
+            'account_id' => $contact->account_id,
+            'original_filename' => 'avatar.png',
+            'filesize' => 0,
+            'mime_type' => '',
+            'new_filename' => 'avatar.png',
+        ]);
+
+        $contact->photos()->syncWithoutDetaching([$photo->id]);
+
+        $response = $this->get('/store/photos/avatar.png');
+
+        $response->assertStatus(404);
+    }
+
+    /** @test */
     public function it_fails_if_file_not_owned_by_user()
     {
         config(['filesystems.default' => 'local']);
@@ -151,6 +173,63 @@ class StorageControllerTest extends FeatureTestCase
     }
 
     /** @test */
+    public function it_fails_if_sent_if_match_not_ok()
+    {
+        config(['filesystems.default' => 'local']);
+
+        [$user, $contact] = $this->fetchUser();
+
+        $file = $this->storeImage($contact);
+
+        $response = $this->get('/store/'.$file, [
+            'If-Match' => '"bad"',
+        ]);
+
+        $response->assertNoContent(200);
+        $response->assertHeader('Last-Modified', 'Sat, 19 Jun 2021 07:00:00 GMT');
+        $response->assertHeader('Cache-Control', 'max-age=2628000, private');
+        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+    }
+
+    /** @test */
+    public function it_get_no_content_if_sent_if_none_match()
+    {
+        config(['filesystems.default' => 'local']);
+
+        [$user, $contact] = $this->fetchUser();
+
+        $file = $this->storeImage($contact);
+
+        $response = $this->get('/store/'.$file, [
+            'If-None-Match' => '"test"',
+        ]);
+
+        $response->assertNoContent(200);
+        $response->assertHeader('Last-Modified', 'Sat, 19 Jun 2021 07:00:00 GMT');
+        $response->assertHeader('Cache-Control', 'max-age=2628000, private');
+        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+    }
+
+    /** @test */
+    public function it_send_no_content_if_sent_if_none_match_but_correspond()
+    {
+        config(['filesystems.default' => 'local']);
+
+        [$user, $contact] = $this->fetchUser();
+
+        $file = $this->storeImage($contact);
+
+        $response = $this->get('/store/'.$file, [
+            'If-None-Match' => '"'.md5('/store/'.$file).'"',
+        ]);
+
+        $response->assertNoContent(304);
+        $response->assertHeaderMissing('Last-Modified');
+        $response->assertHeader('Cache-Control', 'max-age=2628000, private');
+        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+    }
+
+    /** @test */
     public function it_get_content_if_change()
     {
         config(['filesystems.default' => 'local']);
@@ -178,7 +257,6 @@ class StorageControllerTest extends FeatureTestCase
                 'prefix' => 'local',
             ],
         ]);
-        //$image = UploadedFile::fake()->image('avatar.png');
         $image = File::createWithContent('avatar.png', file_get_contents(base_path('public/img/favicon.png')));
 
         $file = $disk->put('/photos', $image, 'private');
