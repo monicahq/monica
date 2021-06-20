@@ -101,7 +101,7 @@ return [
     'modal_call_comment' => 'О чём вы разговаривали? (не обяз.)',
     'modal_call_exact_date' => 'Дата звонка',
     'modal_call_who_called' => 'Кто звонил?',
-    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
+    'modal_call_emotion' => 'Вы хотите записать как вы чувствовали себя во время этого звонка? (опционально)',
     'calls_add_success' => 'Звонок сохранён.',
     'call_delete_confirmation' => 'Вы уверены что хотите удалить звонок?',
     'call_delete_success' => 'Звонок был удалён',
