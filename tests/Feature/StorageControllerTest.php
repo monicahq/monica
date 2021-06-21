@@ -10,7 +10,6 @@ use App\Models\Contact\Document;
 use Illuminate\Http\Testing\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Laravolt\Avatar\Avatar;
 
 class StorageControllerTest extends FeatureTestCase
 {
