@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Helpers\StorageHelper;
 use Illuminate\Bus\Queueable;
+use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
 use Intervention\Image\Facades\Image;
 use Illuminate\Queue\SerializesModels;

@@ -2,9 +2,9 @@
 
 namespace App\Services\Contact\Avatar;
 
-use App\Helpers\StorageHelper;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
+use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Cache;
 use Laravolt\Avatar\Facade as Avatar;
