@@ -11,6 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Exceptions\FileNotFoundException;
+use App\Helpers\StorageHelper;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Services\Contact\Avatar\UpdateAvatar;
@@ -103,7 +104,7 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
 
         if (! $this->dryrun) {
             $avatarFile = $this->storage->get($avatarFileName);
-            $newStorage->put($newAvatarFilename, $avatarFile, config('filesystems.secure_files') ? 'private' : 'public');
+            $newStorage->put($newAvatarFilename, $avatarFile, StorageHelper::visibility());
 
             $this->contact->avatar_location = config('filesystems.default');
             $this->contact->save();

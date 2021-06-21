@@ -4,6 +4,7 @@ namespace App\Services\Contact\Document;
 
 use App\Services\BaseService;
 use App\Helpers\AccountHelper;
+use App\Helpers\StorageHelper;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
@@ -67,7 +68,7 @@ class UploadDocument extends BaseService
 
         $filename = $document->store('documents', [
             'disk' => config('filesystems.default'),
-            'visibility' => config('filesystems.secure_files') ? 'private' : 'public',
+            'visibility' => StorageHelper::visibility(),
         ]);
 
         return array_merge($data, [

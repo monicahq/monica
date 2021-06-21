@@ -464,7 +464,7 @@ class ContactsController extends Controller
             $contact->avatar_location = config('filesystems.default');
             $contact->avatar_file_name = $request->file('avatar')->store('avatars', [
                 'disk' => $contact->avatar_location,
-                'visibility' => config('filesystems.secure_files') ? 'private' : 'public',
+                'visibility' => StorageHelper::visibility(),
             ]);
             $contact->save();
         }

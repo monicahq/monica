@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\Avatar;
 
+use App\Helpers\StorageHelper;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
@@ -86,7 +87,7 @@ class GenerateDefaultAvatar extends BaseService
 
             $filename = 'avatars/'.$contact->uuid.'.jpg';
             Storage::disk(config('filesystems.default'))
-                ->put($filename, $img, config('filesystems.secure_files') ? 'private' : 'public');
+                ->put($filename, $img, StorageHelper::visibility());
 
             // This will force the browser to reload the new avatar
             return $filename.'?'.now()->format('U');
