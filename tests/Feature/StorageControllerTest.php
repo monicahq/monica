@@ -6,9 +6,11 @@ use Carbon\Carbon;
 use Tests\FeatureTestCase;
 use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Document;
 use Illuminate\Http\Testing\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Laravolt\Avatar\Avatar;
 
 class StorageControllerTest extends FeatureTestCase
 {
@@ -45,6 +47,64 @@ class StorageControllerTest extends FeatureTestCase
         $response->assertHeader('Last-Modified', 'Sat, 19 Jun 2021 07:00:00 GMT');
         $response->assertHeader('Cache-Control', 'max-age=2628000, private');
         $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+    }
+
+    /** @test */
+    public function it_get_avatar_content()
+    {
+        config(['filesystems.default' => 'local']);
+
+        [$user, $contact] = $this->fetchUser();
+
+        $file = $this->storeAvatar($contact);
+
+        $response = $this->get('/store/'.$file);
+
+        $response->assertStatus(200);
+        $response->assertHeader('Last-Modified', 'Sat, 19 Jun 2021 07:00:00 GMT');
+        $response->assertHeader('Cache-Control', 'max-age=2628000, private');
+        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+    }
+
+    /** @test */
+    public function it_get_document_content()
+    {
+        config(['filesystems.default' => 'local']);
+
+        [$user, $contact] = $this->fetchUser();
+
+        $file = $this->storeDocument($contact);
+
+        $response = $this->get('/store/'.$file);
+
+        $response->assertStatus(200);
+        $response->assertHeader('Last-Modified', 'Sat, 19 Jun 2021 07:00:00 GMT');
+        $response->assertHeader('Cache-Control', 'max-age=2628000, private');
+        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+    }
+
+    /** @test */
+    public function it_returns_404_if_avatar_not_exist()
+    {
+        config(['filesystems.default' => 'local']);
+
+        [$user, $contact] = $this->fetchUser();
+
+        $response = $this->get('/store/avatars/test');
+
+        $response->assertStatus(404);
+    }
+
+    /** @test */
+    public function it_returns_404_if_folder_unknown()
+    {
+        config(['filesystems.default' => 'local']);
+
+        [$user, $contact] = $this->fetchUser();
+
+        $response = $this->get('/store/xxx/test');
+
+        $response->assertStatus(404);
     }
 
     /** @test */
@@ -251,6 +311,59 @@ class StorageControllerTest extends FeatureTestCase
         ]);
 
         $contact->photos()->syncWithoutDetaching([$photo->id]);
+
+        $adapter = $disk->getDriver()->getAdapter();
+        $adapter->getCache()->updateObject($file, [
+            'timestamp' => Carbon::create(2021, 6, 19, 7, 0, 0, 'UTC')->timestamp,
+        ]);
+
+        return $file;
+    }
+
+    public function storeDocument(Contact $contact)
+    {
+        $disk = Storage::fake('local', [
+            'cache' => [
+                'store' => 'file',
+                'expire' => 600,
+                'prefix' => 'local',
+            ],
+        ]);
+        $image = File::createWithContent('file.png', file_get_contents(base_path('public/img/favicon.png')));
+
+        $file = $disk->put('/documents', $image, 'private');
+
+        $document = factory(Document::class)->create([
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+            'original_filename' => 'file.png',
+            'new_filename' => $file,
+        ]);
+
+        $adapter = $disk->getDriver()->getAdapter();
+        $adapter->getCache()->updateObject($file, [
+            'timestamp' => Carbon::create(2021, 6, 19, 7, 0, 0, 'UTC')->timestamp,
+        ]);
+
+        return $file;
+    }
+
+    public function storeAvatar(Contact $contact)
+    {
+        $disk = Storage::fake('local', [
+            'cache' => [
+                'store' => 'file',
+                'expire' => 600,
+                'prefix' => 'local',
+            ],
+        ]);
+        $image = File::createWithContent('avatar.png', file_get_contents(base_path('public/img/favicon.png')));
+
+        $file = $disk->put('/avatars', $image, 'private');
+
+        $contact->avatar_source = 'default';
+        $contact->avatar_default_url = $file.'?123';
+        $contact->save();
 
         $adapter = $disk->getDriver()->getAdapter();
         $adapter->getCache()->updateObject($file, [
