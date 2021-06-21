@@ -127,7 +127,7 @@ class StorageController extends Controller
 
             // We must only check the date if it's valid
             if ($lastModified->greaterThan($date)) {
-                abort(403, 'An If-Unmodified-Since header was specified, but the entity has been changed since the specified date.');
+                abort(412, 'An If-Unmodified-Since header was specified, but the entity has been changed since the specified date.');
             }
         }
 

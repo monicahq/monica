@@ -48,7 +48,26 @@ class StorageControllerTest extends FeatureTestCase
     }
 
     /** @test */
-    public function it_get_no_content_if_sent_modified_since()
+    public function it_returns_200_if_modified_after_IfModifiedSince()
+    {
+        config(['filesystems.default' => 'local']);
+
+        [$user, $contact] = $this->fetchUser();
+
+        $file = $this->storeImage($contact);
+
+        $response = $this->get('/store/'.$file, [
+            'If-Modified-Since' => 'Sat, 12 Jun 2021 07:00:00 GMT',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertHeader('Last-Modified', 'Sat, 19 Jun 2021 07:00:00 GMT');
+        $response->assertHeader('Cache-Control', 'max-age=2628000, private');
+        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+    }
+
+    /** @test */
+    public function it_returns_304_if_not_modified_since_IfModifiedSince()
     {
         config(['filesystems.default' => 'local']);
 
@@ -67,7 +86,7 @@ class StorageControllerTest extends FeatureTestCase
     }
 
     /** @test */
-    public function it_get_no_content_if_sent_unmodified_since()
+    public function it_returns_200_if_not_modified_after_IfUnmodifiedSince()
     {
         config(['filesystems.default' => 'local']);
 
@@ -86,7 +105,7 @@ class StorageControllerTest extends FeatureTestCase
     }
 
     /** @test */
-    public function it_fails_if_sent_unmodified_since_and_content_changed()
+    public function it_returns_412_if_modified_after_IfUnmodifiedSince()
     {
         config(['filesystems.default' => 'local']);
 
@@ -98,7 +117,7 @@ class StorageControllerTest extends FeatureTestCase
             'If-Unmodified-Since' => 'Sat, 12 Jun 2021 07:00:00 GMT',
         ]);
 
-        $response->assertStatus(403);
+        $response->assertStatus(412);
     }
 
     /** @test */
@@ -154,7 +173,7 @@ class StorageControllerTest extends FeatureTestCase
     }
 
     /** @test */
-    public function it_get_no_content_if_sent_if_match()
+    public function it_returns_200_if_matching_IfMatch()
     {
         config(['filesystems.default' => 'local']);
 
@@ -173,26 +192,7 @@ class StorageControllerTest extends FeatureTestCase
     }
 
     /** @test */
-    public function it_fails_if_sent_if_match_not_ok()
-    {
-        config(['filesystems.default' => 'local']);
-
-        [$user, $contact] = $this->fetchUser();
-
-        $file = $this->storeImage($contact);
-
-        $response = $this->get('/store/'.$file, [
-            'If-Match' => '"bad"',
-        ]);
-
-        $response->assertNoContent(200);
-        $response->assertHeader('Last-Modified', 'Sat, 19 Jun 2021 07:00:00 GMT');
-        $response->assertHeader('Cache-Control', 'max-age=2628000, private');
-        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
-    }
-
-    /** @test */
-    public function it_get_no_content_if_sent_if_none_match()
+    public function it_returns_200_with_none_matching_IfNoneMatch()
     {
         config(['filesystems.default' => 'local']);
 
@@ -211,7 +211,7 @@ class StorageControllerTest extends FeatureTestCase
     }
 
     /** @test */
-    public function it_send_no_content_if_sent_if_none_match_but_correspond()
+    public function it_returns_304_if_matching_IfNoneMatch()
     {
         config(['filesystems.default' => 'local']);
 
@@ -225,25 +225,6 @@ class StorageControllerTest extends FeatureTestCase
 
         $response->assertNoContent(304);
         $response->assertHeaderMissing('Last-Modified');
-        $response->assertHeader('Cache-Control', 'max-age=2628000, private');
-        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
-    }
-
-    /** @test */
-    public function it_get_content_if_change()
-    {
-        config(['filesystems.default' => 'local']);
-
-        [$user, $contact] = $this->fetchUser();
-
-        $file = $this->storeImage($contact);
-
-        $response = $this->get('/store/'.$file, [
-            'If-Modified-Since' => 'Sat, 12 Jun 2021 07:00:00 GMT',
-        ]);
-
-        $response->assertStatus(200);
-        $response->assertHeader('Last-Modified', 'Sat, 19 Jun 2021 07:00:00 GMT');
         $response->assertHeader('Cache-Control', 'max-age=2628000, private');
         $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
     }
