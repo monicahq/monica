@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9402fb108c1283cad50a441ad4b0ba3f",
+    "content-hash": "c0c0b45e6b8264564db678658a42159c",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -12577,16 +12577,16 @@
         },
         {
             "name": "werk365/etagconditionals",
-            "version": "dev-generate-etag-callback",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/asbiin/etagconditionals.git",
-                "reference": "b1d65d7016efe8d8d69527ca8d4ce78bded38ebc"
+                "url": "https://github.com/365Werk/etagconditionals.git",
+                "reference": "947743c7b711a0669d1dd39f4e8797b62159dcb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/etagconditionals/zipball/b1d65d7016efe8d8d69527ca8d4ce78bded38ebc",
-                "reference": "b1d65d7016efe8d8d69527ca8d4ce78bded38ebc",
+                "url": "https://api.github.com/repos/365Werk/etagconditionals/zipball/947743c7b711a0669d1dd39f4e8797b62159dcb8",
+                "reference": "947743c7b711a0669d1dd39f4e8797b62159dcb8",
                 "shasum": ""
             },
             "require": {
@@ -12612,11 +12612,7 @@
                     "Werk365\\EtagConditionals\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Werk365\\EtagConditionals\\Tests\\": "tests"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -12631,12 +12627,13 @@
             "homepage": "https://github.com/werk365/etagconditionals",
             "keywords": [
                 "EtagConditionals",
-                "Laravel"
+                "laravel"
             ],
             "support": {
-                "source": "https://github.com/asbiin/etagconditionals/tree/generate-etag-callback"
+                "issues": "https://github.com/365Werk/etagconditionals/issues",
+                "source": "https://github.com/365Werk/etagconditionals/tree/1.2.0"
             },
-            "time": "2021-05-18T18:42:15+00:00"
+            "time": "2021-06-03T09:16:46+00:00"
         },
         {
             "name": "xantios/mimey",
@@ -18372,7 +18369,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "werk365/etagconditionals": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
