@@ -1048,9 +1048,7 @@ class Contact extends Model
             return '';
         }
 
-        if (config('filesystems.default_visibility') === 'private') {
-            return route('storage', ['file' => $this->avatar_default_url]);
-        } else {
+        if (config('filesystems.default_visibility') === 'public') {
             $matches = Str::of($this->avatar_default_url)->split('/\?/');
 
             $url = asset(StorageHelper::disk(config('filesystems.default'))->url($matches[0]));
@@ -1060,6 +1058,8 @@ class Contact extends Model
 
             return $url;
         }
+
+        return route('storage', ['file' => $this->avatar_default_url]);
     }
 
     /**

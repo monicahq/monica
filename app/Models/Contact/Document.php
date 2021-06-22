@@ -59,10 +59,10 @@ class Document extends Model
      */
     public function getDownloadLink(): string
     {
-        if (config('filesystems.default_visibility') === 'private') {
-            return route('storage', ['file' => $this->new_filename]);
-        } else {
+        if (config('filesystems.default_visibility') === 'public') {
             return asset(StorageHelper::disk(config('filesystems.default'))->url($this->new_filename));
         }
+
+        return route('storage', ['file' => $this->new_filename]);
     }
 }

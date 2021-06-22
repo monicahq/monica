@@ -64,11 +64,11 @@ class Photo extends Model
      */
     public function url()
     {
-        if (config('filesystems.default_visibility') === 'private') {
-            return route('storage', ['file' => $this->new_filename]);
-        } else {
+        if (config('filesystems.default_visibility') === 'public') {
             return asset(StorageHelper::disk(config('filesystems.default'))->url($this->new_filename));
         }
+
+        return route('storage', ['file' => $this->new_filename]);
     }
 
     /**
