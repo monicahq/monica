@@ -65,6 +65,8 @@ class UpdateContact extends BaseService
         $this->contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
+        $this->contact->throwInactive();
+
         // Test is the account is limited and the contact should be updated as real contact
         $account = Account::find($data['account_id']);
         if ($this->contact->is_partial

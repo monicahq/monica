@@ -33,6 +33,8 @@ class DestroyContactField extends BaseService
         $contactField = ContactField::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_field_id']);
 
+        $contactField->contact->throwInactive();
+
         $contactField->delete();
 
         return true;

@@ -39,6 +39,8 @@ class UpdateLifeEvent extends BaseService
         $lifeEvent = LifeEvent::where('account_id', $data['account_id'])
             ->findOrFail($data['life_event_id']);
 
+        $lifeEvent->contact->throwInactive();
+
         LifeEventType::where('account_id', $data['account_id'])
             ->findOrFail($data['life_event_type_id']);
 

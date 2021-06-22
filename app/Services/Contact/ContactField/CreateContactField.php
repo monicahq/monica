@@ -36,8 +36,10 @@ class CreateContactField extends BaseService
     {
         $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         ContactFieldType::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_field_type_id']);

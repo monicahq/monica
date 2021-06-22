@@ -26,6 +26,7 @@ use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingHasher as Model;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -1502,5 +1503,14 @@ class Contact extends Model
         $this->save();
 
         $this->timestamps = $timestamps;
+    }
+
+    public function throwInactive()
+    {
+        if (! $this->is_active) {
+            throw ValidationException::withMessages([
+                trans('people.archived_contact_readonly'),
+            ]);
+        }
     }
 }
