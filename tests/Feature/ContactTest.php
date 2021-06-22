@@ -224,6 +224,33 @@ class ContactTest extends FeatureTestCase
         $response->assertJsonCount(1, 'contacts');
     }
 
+    public function test_user_can_show_contacts_with_tags()
+    {
+        $user = $this->signIn();
+
+        factory(Contact::class, 10)->state('named')->create([
+            'account_id' => $user->account_id,
+        ]);
+        $contact = Contact::where('account_id', $user->account_id)
+                            ->inRandomOrder()
+                            ->first();
+
+        $tag = factory(Tag::class)->create([
+            'account_id' => $user->account_id,
+            'name' => 'c++',
+        ]);
+        $contact->tags()->sync([
+            $tag->id => [
+                'account_id' => $user->account_id,
+            ],
+        ]);
+
+        $response = $this->get('/people?tags[]='.urlencode($tag->name));
+
+        $response->assertSuccessful();
+        $response->assertSee('1 contact');
+    }
+
     public function test_user_can_see_contacts()
     {
         [$user, $contact] = $this->fetchUser();
