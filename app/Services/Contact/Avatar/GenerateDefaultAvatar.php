@@ -5,6 +5,7 @@ namespace App\Services\Contact\Avatar;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\Cache;
 use Laravolt\Avatar\Facade as Avatar;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -47,6 +48,8 @@ class GenerateDefaultAvatar extends BaseService
         $contact->avatar_default_url = $filename;
         $contact->save();
 
+        Cache::forget('etag'.Str::before('?', $filename));
+
         return $contact;
     }
 
@@ -83,7 +86,7 @@ class GenerateDefaultAvatar extends BaseService
 
             $filename = 'avatars/'.$contact->uuid.'.jpg';
             Storage::disk(config('filesystems.default'))
-                ->put($filename, $img, 'public');
+                ->put($filename, $img, config('filesystems.default_visibility'));
 
             // This will force the browser to reload the new avatar
             return $filename.'?'.now()->format('U');

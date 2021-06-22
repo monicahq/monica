@@ -10,6 +10,8 @@
     "hot": "mix watch --hot",
     "prod": "yarn production",
     "production": "mix --production",
+    "predevelopment": "php artisan lang:generate -vvv",
+    "prewatch": "php artisan lang:generate -vvv",
     "preproduction": "php artisan lang:generate -vvv",
     "heroku-postbuild": "yarn run production",
     "e2e": "cypress run",

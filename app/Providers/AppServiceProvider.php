@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use App\Notifications\EmailMessaging;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Werk365\EtagConditionals\EtagConditionals;
 use Illuminate\Auth\Notifications\ResetPassword;
 
 class AppServiceProvider extends ServiceProvider
@@ -73,6 +75,14 @@ class AppServiceProvider extends ServiceProvider
                 Limit::perMinute(60),
                 Limit::perDay(5000),
             ];
+        });
+
+        EtagConditionals::etagGenerateUsing(function (\Illuminate\Http\Request $request, \Symfony\Component\HttpFoundation\Response $response) {
+            $url = $request->getRequestUri();
+
+            return Cache::rememberForever('etag.'.$url, function () use ($url) {
+                return md5($url);
+            });
         });
     }
 
