@@ -24,11 +24,11 @@ return [
     'copy' => 'Копировать',
     'create' => 'Создать',
     'remove' => 'Убрать',
-    'revoke' => 'Revoke',
+    'revoke' => 'Отозвать',
     'done' => 'Готово',
     'back' => 'Назад',
     'verify' => 'Подтвердить',
-    'new' => 'new',
+    'new' => 'новый',
     'unknown' => 'Я не знаю',
     'load_more' => 'Загрузить ещё',
     'loading' => 'Loading…',
@@ -173,8 +173,8 @@ return [
     'relationship_type_ex_with_name' => ':name’s ex-boyfriend',
     'relationship_type_ex_female_with_name' => ':name’s ex-girlfriend',
 
-    'relationship_type_parent' => 'father',
-    'relationship_type_parent_female' => 'mother',
+    'relationship_type_parent' => 'отец',
+    'relationship_type_parent_female' => 'мать',
     'relationship_type_parent_with_name' => ':name’s father',
     'relationship_type_parent_female_with_name' => ':name’s mother',
 
@@ -183,8 +183,8 @@ return [
     'relationship_type_child_with_name' => ':name’s son',
     'relationship_type_child_female_with_name' => ':name’s daughter',
 
-    'relationship_type_stepparent' => 'stepfather',
-    'relationship_type_stepparent_female' => 'stepmother',
+    'relationship_type_stepparent' => 'отчим',
+    'relationship_type_stepparent_female' => 'мачеха',
     'relationship_type_stepparent_with_name' => ':name’s stepfather',
     'relationship_type_stepparent_female_with_name' => ':name’s stepmother',
 
