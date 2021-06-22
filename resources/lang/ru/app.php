@@ -40,9 +40,9 @@ return [
     'type' => 'Тип',
     'zoom' => 'Zoom',
     'upgrade' => 'Upgrade to unlock',
-    'percent_uploaded' => '{percent}% uploaded',
+    'percent_uploaded' => '{percent}% загружено',
     'retry' => 'Повторить',
-    'filter' => 'Filter the list',
+    'filter' => 'Список фильтров',
     'go_back' => 'Назад',
     'file_selected' => 'One file selected…|{count} files selected…',
 
@@ -65,13 +65,13 @@ return [
     'main_nav_tasks' => 'Задачи',
 
     'footer_remarks' => 'Comments?',
-    'footer_send_email' => 'Send us an email',
+    'footer_send_email' => 'Отправить нам email',
     'footer_privacy' => 'Политика конфиденциальности',
     'footer_release' => 'Примечания к выпуску',
     'footer_newsletter' => 'Рассылка',
-    'footer_source_code' => 'Contribute',
+    'footer_source_code' => 'Поддержать проект',
     'footer_version' => 'Версия: :version',
-    'footer_new_version' => 'A new version of Monica is available',
+    'footer_new_version' => 'Доступна новая версия',
 
     'footer_modal_version_whats_new' => 'Что нового',
     'footer_modal_version_release_away' => 'You are 1 release behind the latest version available. You should update your instance.|You are :number releases behind the latest version available. You should update your instance.',
@@ -132,10 +132,10 @@ return [
     // and then, the feminine version of the string. Finally, in some sentences
     // in the UI, we need to include the name of the person we add the relationship
     // to.
-    'relationship_type_group_love' => 'Love relationships',
-    'relationship_type_group_family' => 'Family relationships',
-    'relationship_type_group_friend' => 'Friend relationships',
-    'relationship_type_group_work' => 'Work relationships',
+    'relationship_type_group_love' => 'Любовные отношения',
+    'relationship_type_group_family' => 'Семейные отношения',
+    'relationship_type_group_friend' => 'Дружеские отношения',
+    'relationship_type_group_work' => 'Рабочие отношения',
     'relationship_type_group_other' => 'Other kind of relationships',
 
     'relationship_type_partner' => 'significant other',
