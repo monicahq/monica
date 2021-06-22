@@ -9,7 +9,6 @@ use App\Models\Account\Photo;
 use App\Services\BaseService;
 use function Safe\finfo_open;
 use function Safe\preg_match;
-use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
 use function Safe\base64_decode;
 use Intervention\Image\Facades\Image;
@@ -87,7 +86,7 @@ class UploadPhoto extends BaseService
             'mime_type' => (new \Mimey\MimeTypes)->getMimeType($photo->guessClientExtension()),
             'new_filename' => $photo->store('photos', [
                 'disk' => config('filesystems.default'),
-                'visibility' => StorageHelper::visibility(),
+                'visibility' => config('filesystems.default_visibility'),
             ]),
         ];
     }
@@ -150,7 +149,7 @@ class UploadPhoto extends BaseService
     private function storeImage(string $disk, $image, string $filename): ?string
     {
         $result = Storage::disk($disk)
-            ->put($path = $filename, (string) $image->stream(), StorageHelper::visibility());
+            ->put($path = $filename, (string) $image->stream(), config('filesystems.default_visibility'));
 
         return $result ? $path : null;
     }

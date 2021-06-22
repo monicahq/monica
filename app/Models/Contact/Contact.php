@@ -1048,8 +1048,8 @@ class Contact extends Model
             return '';
         }
 
-        if (config('filesystems.secure_files')) {
-            return route('download', ['file' => $this->avatar_default_url]);
+        if (config('filesystems.default_visibility') === 'private') {
+            return route('storage', ['file' => $this->avatar_default_url]);
         } else {
             $matches = Str::of($this->avatar_default_url)->split('/\?/');
 

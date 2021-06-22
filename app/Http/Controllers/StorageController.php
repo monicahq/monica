@@ -20,13 +20,13 @@ class StorageController extends Controller
     }
 
     /**
-     * Download file authorization.
+     * Download file with authorization.
      *
      * @param Request $request
      * @param string $file
      * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\StreamedResponse|null
      */
-    public function download(Request $request, string $file)
+    public function show(Request $request, string $file)
     {
         $filename = $this->getFilename($request, $file);
 

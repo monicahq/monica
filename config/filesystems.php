@@ -88,20 +88,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Secure filesystems
+    | Filesystem visibility
     |--------------------------------------------------------------------------
     |
-    | If this is activated, all files are stored privately, and are delivered
-    | using a proxy-url by monica, providing access of the files in the storage.
+    | If this is set to private, all files are stored privately, and are
+    | delivered using a proxy-url by monica, providing access of the files in
+    | the storage.
     | This means only the authenticated user will be able to open the files.
     |
-    | You might deactivated it if you're on a private instance and want to make
-    | files accessible from the outside - the url files are still private and
-    | not easy to guess.
+    | You might store the files publicly if you're on a private instance and if
+    | you want to make files accessible from the outside - the url files are
+    | still private and not easy to guess.
+    |
+    | Supported: "private", "public"
     |
     */
 
-    'secure_files' => env('SECURE_FILESYSTEM', true),
+    'default_visibility' => env('FILESYSTEM_DEFAULT_VISIBILITY', 'private'),
 
     /*
     |--------------------------------------------------------------------------

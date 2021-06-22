@@ -4,7 +4,6 @@ namespace App\Services\Contact\Avatar;
 
 use Illuminate\Support\Str;
 use App\Services\BaseService;
-use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Cache;
 use Laravolt\Avatar\Facade as Avatar;
@@ -87,7 +86,7 @@ class GenerateDefaultAvatar extends BaseService
 
             $filename = 'avatars/'.$contact->uuid.'.jpg';
             Storage::disk(config('filesystems.default'))
-                ->put($filename, $img, StorageHelper::visibility());
+                ->put($filename, $img, config('filesystems.default_visibility'));
 
             // This will force the browser to reload the new avatar
             return $filename.'?'.now()->format('U');

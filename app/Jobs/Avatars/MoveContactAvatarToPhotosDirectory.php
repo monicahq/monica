@@ -4,7 +4,6 @@ namespace App\Jobs\Avatars;
 
 use App\Models\Account\Photo;
 use Illuminate\Bus\Queueable;
-use App\Helpers\StorageHelper;
 use App\Events\MoveAvatarEvent;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Event;
@@ -104,7 +103,7 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
 
         if (! $this->dryrun) {
             $avatarFile = $this->storage->get($avatarFileName);
-            $newStorage->put($newAvatarFilename, $avatarFile, StorageHelper::visibility());
+            $newStorage->put($newAvatarFilename, $avatarFile, config('filesystems.default_visibility'));
 
             $this->contact->avatar_location = config('filesystems.default');
             $this->contact->save();

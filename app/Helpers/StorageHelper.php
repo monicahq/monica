@@ -57,14 +57,4 @@ class StorageHelper
 
         return $currentAccountSize > (config('monica.max_storage_size') * 1000000);
     }
-
-    /**
-     * Get visibility to put files in storage.
-     *
-     * @return string
-     */
-    public static function visibility(): string
-    {
-        return config('filesystems.secure_files') ? 'private' : 'public';
-    }
 }

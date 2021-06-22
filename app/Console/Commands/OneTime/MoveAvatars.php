@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands\OneTime;
 
-use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
@@ -97,7 +96,7 @@ class MoveAvatars extends Command
             }
             if (! $this->option('dryrun')) {
                 $avatarFile = $storage->get($avatarFileName);
-                $newStorage->put($avatarFileName, $avatarFile, StorageHelper::visibility());
+                $newStorage->put($avatarFileName, $avatarFile, config('filesystems.default_visibility'));
             }
 
             $this->line('  File pushed: '.$avatarFileName, null, OutputInterface::VERBOSITY_VERBOSE);
