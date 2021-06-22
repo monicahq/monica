@@ -1,3 +1,33 @@
+# [3.1.0](https://github.com/monicahq/monica/compare/v3.0.1...v3.1.0) (2021-06-22)
+
+
+### Features
+
+* add a console command to see memcached stats ([#5186](https://github.com/monicahq/monica/issues/5186)) ([b359c90](https://github.com/monicahq/monica/commit/b359c90206bc4bddbd87fe8ad7a11993304a8542))
+* add a rate limiter for locationiq queries ([#5185](https://github.com/monicahq/monica/issues/5185)) ([f8442ba](https://github.com/monicahq/monica/commit/f8442ba507181d425e3dafb6a06555a15518b384))
+* add Indonesian language ([#5190](https://github.com/monicahq/monica/issues/5190)) ([16cd47e](https://github.com/monicahq/monica/commit/16cd47e925144b3ec20c0ad851bb7bd595af4438))
+* add new logging stack for papertrail+errorlog ([#5166](https://github.com/monicahq/monica/issues/5166)) ([744efb0](https://github.com/monicahq/monica/commit/744efb0e6bfbe3f452999285583b290e21c8b61c))
+* add notes when importing vcard ([#5216](https://github.com/monicahq/monica/issues/5216)) ([36912bc](https://github.com/monicahq/monica/commit/36912bc5ef7d06f281e555f93f42d91fbb7ccb63))
+* allow recovery codes when disabling 2FA ([#4970](https://github.com/monicahq/monica/issues/4970)) ([1f4c4c4](https://github.com/monicahq/monica/commit/1f4c4c4b6c2c39dc4917600220d78a44580d1327))
+* datestamp filename of exported SQL file. ([#5136](https://github.com/monicahq/monica/issues/5136)) ([a658fcf](https://github.com/monicahq/monica/commit/a658fcf074b36ba6a8855ecaa7b3c13a3e78888d))
+* download and get storage files as private ([#5192](https://github.com/monicahq/monica/issues/5192)) ([7fdc445](https://github.com/monicahq/monica/commit/7fdc4453b688781a651f09d9b6cbc274ac3fbdbb))
+* email field on add person ([#5097](https://github.com/monicahq/monica/issues/5097)) ([2392afc](https://github.com/monicahq/monica/commit/2392afc0aaa9d5f79d5f3f6357912c70a4d96ca1))
+* make archived contact readonly ([#5285](https://github.com/monicahq/monica/issues/5285)) ([a3fdac9](https://github.com/monicahq/monica/commit/a3fdac949f662d08ced6e02bcf63fd5106600fb0))
+* search notes when searching through contacts ([#5103](https://github.com/monicahq/monica/issues/5103)) ([6378bc1](https://github.com/monicahq/monica/commit/6378bc183df414175a9aee49c94780247ef27b94))
+
+
+### Bug Fixes
+
+* fix import vcard stability ([#5160](https://github.com/monicahq/monica/issues/5160)) ([3f2821d](https://github.com/monicahq/monica/commit/3f2821d75a4d2451f397d98d4095547d520f660e))
+* fix importvcard job ([#5151](https://github.com/monicahq/monica/issues/5151)) ([cf8041c](https://github.com/monicahq/monica/commit/cf8041cfe7544889c7d4c28e5b1e27cd1671bbd0))
+* fix name order selection and result  ([#5255](https://github.com/monicahq/monica/issues/5255)) ([d3217c0](https://github.com/monicahq/monica/commit/d3217c067e642614c3f2176e963f41d77a1aed29))
+* fix stripe pages stability ([#5161](https://github.com/monicahq/monica/issues/5161)) ([53977cc](https://github.com/monicahq/monica/commit/53977cc9eb24e9a14d0ec8d8419c54595e680857))
+* fix tags list filtering ([#5123](https://github.com/monicahq/monica/issues/5123)) ([99bd8e1](https://github.com/monicahq/monica/commit/99bd8e17f8ac78af45937673a38a15c72f1e0278))
+* fix unarchive on limited account ([#5256](https://github.com/monicahq/monica/issues/5256)) ([8357d0f](https://github.com/monicahq/monica/commit/8357d0f57907d0fe568db1b51defece6d65b4ad0))
+* fix vcard import to generate avatars ([#5193](https://github.com/monicahq/monica/issues/5193)) ([6323a5d](https://github.com/monicahq/monica/commit/6323a5d4cd4207eba9d0d46a3f2f6a425915afbe))
+* left trim url if there is a trailing slash ([#5149](https://github.com/monicahq/monica/issues/5149)) ([56572bb](https://github.com/monicahq/monica/commit/56572bbd576bdc45eaa8ebf5b2f27c7aab6c8a9d))
+* package.json & yarn.lock to reduce vulnerabilities ([#5269](https://github.com/monicahq/monica/issues/5269)) ([9c111c3](https://github.com/monicahq/monica/commit/9c111c3427e9ca2a8e9e84cf336bdd97cb67bee2))
+
 ## [3.0.1](https://github.com/monicahq/monica/compare/v3.0.0...v3.0.1) (2021-05-02)
 
 
