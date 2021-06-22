@@ -86,31 +86,22 @@ class ContactsController extends Controller
             $nbArchived = $contacts->count();
         }
 
+        $tagsCount = Tag::contactsCount();
         $tags = null;
-        $url = '';
+        $url = null;
         $count = 1;
 
-        if ($request->input('tag1')) {
+        if ($request->input('tags')) {
+            $tagsInput = $request->input('tags');
 
-            // get contacts with selected tags
-            $tags = collect();
+            $tags = $tagsCount->filter(function ($tag) use ($tagsInput) {
+                return in_array($tag->name, $tagsInput);
+            });
 
-            while ($request->input('tag'.$count)) {
-                $tag = Tag::where([
-                    'account_id' => auth()->user()->account_id,
-                    'name_slug' => $request->input('tag'.$count),
-                ]);
-                if ($tag->count() > 0) {
-                    $tag = $tag->get();
+            $url = $tags->map(function ($tag) {
+                return 'tags[]='.urlencode($tag->name);
+            })->join('&');
 
-                    if (! $tags->contains($tag[0])) {
-                        $tags = $tags->concat($tag);
-                    }
-
-                    $url .= 'tag'.$count.'='.$tag[0]->name_slug.'&';
-                }
-                $count++;
-            }
             if ($tags->count() === 0) {
                 return redirect()->route('people.index');
             } else {
@@ -131,14 +122,14 @@ class ContactsController extends Controller
 
         return view('people.index')
             ->withAccountHasLimitations($accountHasLimitations)
-            ->with('hidingDeceased', $showDeceased != 'true')
-            ->with('deceasedCount', $deceasedCount)
+            ->withHidingDeceased($showDeceased !== 'true')
+            ->withDeceasedCount($deceasedCount)
             ->withActive($active)
             ->withContactsCount($contactsCount)
             ->withHasArchived($nbArchived > 0)
             ->withArchivedContacts($nbArchived)
             ->withTags($tags)
-            ->withTagsCount(Tag::contactsCount())
+            ->withTagsCount($tagsCount)
             ->withUrl($url)
             ->withTagCount($count)
             ->withTagLess($request->input('no_tag') ?? false);
@@ -730,8 +721,6 @@ class ContactsController extends Controller
         }
 
         $tags = null;
-        $url = '';
-        $count = 1;
 
         $contacts = $user->account->contacts()->real();
 
@@ -747,30 +736,17 @@ class ContactsController extends Controller
             $contacts = $contacts->alive();
         }
 
-        if ($request->input('no_tag')) {
-            // get tag less contacts
-            $contacts = $contacts->tags('NONE');
-        } elseif ($request->input('tag1')) {
-            // get contacts with selected tags
-            $tags = collect();
+        if ($request->input('tags')) {
+            $tags = Tag::where('account_id', $accountId)
+                    ->whereIn('name', $request->input('tags'))
+                    ->get();
 
-            while ($request->input('tag'.$count)) {
-                $tag = Tag::where([
-                    'account_id' => $accountId,
-                    'name_slug' => $request->input('tag'.$count),
-                ])->get();
-
-                if (! ($tags->contains($tag[0]))) {
-                    $tags = $tags->concat($tag);
-                }
-
-                $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
-
-                $count++;
-            }
             if ($tags->count() > 0) {
                 $contacts = $contacts->tags($tags);
             }
+        } elseif ($request->input('no_tag')) {
+            // get tag less contacts
+            $contacts = $contacts->tags('NONE');
         }
 
         // get the number of contacts per page

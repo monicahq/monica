@@ -8,6 +8,11 @@
     background-color: #4AAE9B;
     color: white;
   }
+
+.tag-link,
+.tag-link:hover{
+    text-decoration: none;
+}
 </style>
 
 <template>
@@ -15,14 +20,14 @@
     <!-- list of existing tags -->
     <ul>
       <li v-for="tag in contactTags" :key="tag.id" class="di mr2">
-        <span class="bg-white ph2 pb1 pt0 dib br3 b--light-gray ba mb2">
-          <span v-show="!editMode" class="pointer" @click="navigateTo(tag)">
+        <a v-if="!editMode" :href="`people?tags[]=${encodeURIComponent(tag.name)}`" class="tag-link bg-white ph2 pb1 pt0 dib br3 b--light-gray ba mb2">
+          {{ tag.name }}
+        </a>
+        <span v-else class="bg-white ph2 pb1 pt0 dib br3 b--light-gray ba mb2">
+          <span>
             {{ tag.name }}
           </span>
-          <span v-show="editMode">
-            {{ tag.name }}
-          </span>
-          <span v-show="editMode" class="pointer" @click="removeTag(tag)">
+          <span class="pointer" @click="removeTag(tag)">
             ×
           </span>
         </span>
@@ -207,10 +212,6 @@ export default {
         .then(response => {
           this.getExistingTags();
         });
-    },
-
-    navigateTo(tag) {
-      window.location.href = 'people?tag1=' + tag.name_slug;
     },
 
     handleClickOutside(evt) {
