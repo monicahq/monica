@@ -7,10 +7,10 @@
  */
 
 return [
-    'message' => 'Thanks for signing up! Please check your emails to confirm your email address.',
-    'success' => 'You have successfully verified your account! You can now login.',
-    'again' => 'You must verify your email before you can access the site.
-                <br/>If you have not received the confirmation email check your spam folder.
-                <br/>To get a new confirmation email please <a href=":url" class="alert-link">click here</a>.',
-    'resend' => 'A confirmation message has been sent. Please check your mailbox.'
+    'message' => 'Terima kasih telah mendaftar! Silakan periksa email Anda untuk mengkonfirmasi alamat email Anda.',
+    'success' => 'Anda telah berhasil memverifikasi akun Anda! Sekarang Anda bisa masuk.',
+    'again' => 'Anda harus memverifikasi email Anda sebelum Anda dapat mengakses situs. 
+                <br/> Jika Anda belum menerima email konfirmasi, silahkan periksa folder spam Anda.
+                <br/> Untuk mendapatkan email konfirmasi baru, silahkan <a href=":url" class="alert-link">klik di sini</a>.',
+    'resend' => 'Sebuah pesan konfirmasi telah dikirimkan. Silakan periksa kotak surat Anda.'
 ];

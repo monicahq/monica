@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => 'فشلت المصادقة الثنائية.',
     '2fa_one_time_password' => 'رمز المصادقة الثنائية',
     '2fa_recuperation_code' => 'أدخل رمز استرداد العامل الثنائي',
+    '2fa_one_time_or_recuperation' => 'Enter a two factor authentication code or a recovery code',
     '2fa_otp_help' => 'قم بفتح تطبيق المصادقة الثنائية في هاتفك و انسخ الرمز',
 
     'login_to_account' => 'تسجيل الدخول إلى حسابك',

@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => 'Die Zwei-Faktor-Authentifizierung ist fehlgeschlagen.',
     '2fa_one_time_password' => 'Zwei-Faktor-Authentifizierungscode',
     '2fa_recuperation_code' => 'Bitte gib deinen Zwei-Faktor-Wiederherstellungscode ein',
+    '2fa_one_time_or_recuperation' => 'Gib einen Zwei-Faktor-Authentifizierungscode oder einen Wiederherstellungscode ein',
     '2fa_otp_help' => 'Öffne deine Zwei-Faktor-Authentifizierungs-App und scanne den folgenden QR-Code',
 
     'login_to_account' => 'In Konto einloggen',

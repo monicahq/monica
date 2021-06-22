@@ -148,6 +148,19 @@
         </RawObjectIteration>
 
         <TooManyTemplateParams errorLevel="info" />
+        <NonInvariantDocblockPropertyType errorLevel="info" />
+
+        <InvalidScope>
+            <errorLevel type="suppress">
+                <file name="routes/console.php" />
+            </errorLevel>
+        </InvalidScope>
+
+        <ParamNameMismatch>
+            <errorLevel type="suppress">
+                <file name="app/Http/Controllers/DAV/Backend/CardDAV/AddressBookRoot.php" />
+            </errorLevel>
+        </ParamNameMismatch>
 
     </issueHandlers>
 </psalm>

@@ -7,6 +7,6 @@
  */
 
 return [
-    'title' => 'Product changes',
-    'note' => 'Note: unfortunately, this page is only in English.',
+    'title' => 'Perubahan produk',
+    'note' => 'Catatan: Sangat disayangkan, halaman ini hanya dalam bahasa Inggris.',
 ];

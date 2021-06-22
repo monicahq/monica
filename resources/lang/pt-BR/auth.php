@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => 'Falha na autenticação de dois fatores.',
     '2fa_one_time_password' => 'Código de autenticação de dois fatores',
     '2fa_recuperation_code' => 'Digite um código de recuperação de dois fatores',
+    '2fa_one_time_or_recuperation' => 'Enter a two factor authentication code or a recovery code',
     '2fa_otp_help' => 'Abra seu aplicativo para autenticação de dois fatores e copie o código',
 
     'login_to_account' => 'Entre na sua conta',

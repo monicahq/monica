@@ -522,7 +522,7 @@ class ApiContactControllerTest extends ApiTestCase
 
         $initialContact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
-            'first_name' => 'Alfred',
+            'created_at' => now()->addDays(-1),
         ]);
 
         $field = factory(ContactFieldType::class)->create([
@@ -539,7 +539,6 @@ class ApiContactControllerTest extends ApiTestCase
         while ($counter < 12) {
             $contact = factory(Contact::class)->create([
                 'account_id' => $user->account_id,
-                'first_name' => 'Roger',
             ]);
 
             $field = factory(ContactFieldType::class)->create([
