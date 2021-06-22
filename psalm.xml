@@ -156,5 +156,11 @@
             </errorLevel>
         </InvalidScope>
 
+        <ParamNameMismatch>
+            <errorLevel type="suppress">
+                <file name="app/Http/Controllers/DAV/Backend/CardDAV/AddressBookRoot.php" />
+            </errorLevel>
+        </ParamNameMismatch>
+
     </issueHandlers>
 </psalm>

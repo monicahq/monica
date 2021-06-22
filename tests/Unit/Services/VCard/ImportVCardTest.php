@@ -1090,6 +1090,30 @@ class ImportVCardTest extends TestCase
     }
 
     /** @test */
+    public function it_imports_notes()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $account->id;
+
+        $vcard = new VCard([
+            'NOTE' => 'a great note about this contact',
+        ]);
+
+        $this->invokePrivateMethod($importVCard, 'importNote', [$contact, $vcard]);
+
+        $this->assertDatabaseHas('notes', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'body' => 'a great note about this contact',
+        ]);
+    }
+
+    /** @test */
     public function it_imports_new_categories()
     {
         $account = factory(Account::class)->create();
