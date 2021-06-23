@@ -1,3 +1,10 @@
+## [3.1.1](https://github.com/monicahq/monica/compare/v3.1.0...v3.1.1) (2021-06-23)
+
+
+### Bug Fixes
+
+* fix search with additional info ([#5301](https://github.com/monicahq/monica/issues/5301)) ([13325cc](https://github.com/monicahq/monica/commit/13325cc8c1f32b391905a35abb166f843faef142))
+
 # [3.1.0](https://github.com/monicahq/monica/compare/v3.0.1...v3.1.0) (2021-06-22)
 
 
