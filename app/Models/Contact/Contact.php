@@ -593,6 +593,7 @@ class Contact extends Model
     public function scopeNotes($query, int $accountId = null, string $needle)
     {
         $maccountId = $accountId ?? Auth::user()->account_id;
+
         return $query->orWhereHas('notes', function ($query) use ($maccountId, $needle) {
             return $query->where([
                 ['account_id', $maccountId],
@@ -610,6 +611,7 @@ class Contact extends Model
     public function scopeIntroductionAdditionalInformation($query, int $accountId = null, string $needle)
     {
         $maccountId = $accountId ?? Auth::user()->account_id;
+
         return $query->orWhere([
             ['account_id', $maccountId],
             ['first_met_additional_info', 'like', "%$needle%"],
