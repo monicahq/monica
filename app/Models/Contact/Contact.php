@@ -592,9 +592,11 @@ class Contact extends Model
      */
     public function scopeNotes($query, int $accountId = null, string $needle)
     {
-        return $query->orWhereHas('notes', function ($query) use ($accountId, $needle) {
+        $maccountId = $accountId ?? Auth::user()->account_id;
+
+        return $query->orWhereHas('notes', function ($query) use ($maccountId, $needle) {
             return $query->where([
-                ['account_id', $accountId],
+                ['account_id', $maccountId],
                 ['body', 'like', "%$needle%"],
             ]);
         });
@@ -606,9 +608,12 @@ class Contact extends Model
      * @param Builder $query
      * @return Builder
      */
-    public function scopeIntroductionAdditionalInformation($query, string $needle)
+    public function scopeIntroductionAdditionalInformation($query, int $accountId = null, string $needle)
     {
+        $maccountId = $accountId ?? Auth::user()->account_id;
+
         return $query->orWhere([
+            ['account_id', $maccountId],
             ['first_met_additional_info', 'like', "%$needle%"],
         ]);
     }
