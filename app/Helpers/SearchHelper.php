@@ -49,6 +49,10 @@ class SearchHelper
 
         return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection)
             ->notes($accountId, $needle)
+            ->calls($accountId, $needle)
+			->messages($accountId, $needle)
+			->actionsum($accountId, $needle)
+			->actiondes($accountId, $needle)
             ->introductionAdditionalInformation($needle)
             ->addressBook($accountId, $addressBookName);
     }

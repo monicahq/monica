@@ -600,6 +600,63 @@ class Contact extends Model
         });
     }
 
+        /** 
+     * Scope a query to include contacts whose phone calls content contain the search phrase.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeCalls($query, int $accountId = null, string $needle)
+    {
+        return $query->orWhereHas('calls', function ($query) use ($accountId, $needle) {
+            return $query->where([
+                ['account_id', $accountId],
+                ['content', 'like', "%$needle%"],
+            ]);
+        });
+    }
+
+    /** 
+     * Scope a query to include contacts whose messages in conversations contain the search phrase.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeMessages($query, int $accountId = null, string $needle)
+    {
+        return $query->orWhereHas('messages', function ($query) use ($accountId, $needle) {
+            return $query->where([
+                ['account_id', $accountId],
+                ['content', 'like', "%$needle%"],
+            ]);
+        });
+    }
+ 
+    /** 
+     * Scope a query to include contacts whose action description or action summary contain the search phrase.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeActionsum($query, int $accountId = null, string $needle)
+    {
+        return $query->orWhereHas('activities', function ($query) use ($accountId, $needle) {
+            return $query->where([
+               
+                ['summary', 'like', "%$needle%"],
+            ]);
+        });
+    }
+    public function scopeActiondes($query, int $accountId = null, string $needle)
+    {
+        return $query->orWhereHas('activities', function ($query) use ($accountId, $needle) {
+            return $query->where([
+               
+                ['description', 'like', "%$needle%"],
+            ]);
+        });
+    }
+	
     /**
      * Scope a query to include contacts whose introduction notes contain the search phrase.
      *
