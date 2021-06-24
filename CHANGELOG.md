@@ -1,3 +1,10 @@
+## [3.1.2](https://github.com/monicahq/monica/compare/v3.1.1...v3.1.2) (2021-06-24)
+
+
+### Bug Fixes
+
+* fix search being extremely slow ([#5306](https://github.com/monicahq/monica/issues/5306)) ([8ba7d98](https://github.com/monicahq/monica/commit/8ba7d983efcef7555b620cb1a0bbc32db3835f00))
+
 ## [3.1.1](https://github.com/monicahq/monica/compare/v3.1.0...v3.1.1) (2021-06-23)
 
 
