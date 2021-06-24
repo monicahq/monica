@@ -48,8 +48,6 @@ class SearchHelper
         }
 
         return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection)
-            ->notes($accountId, $needle)
-            ->introductionAdditionalInformation($accountId, $needle)
             ->addressBook($accountId, $addressBookName);
     }
 }
