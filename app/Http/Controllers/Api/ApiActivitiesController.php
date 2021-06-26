@@ -77,6 +77,7 @@ class ApiActivitiesController extends ApiController
         } catch (ValidationException $e) {
             return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
+dd($e);
             return $this->respondInvalidQuery();
         }
 
