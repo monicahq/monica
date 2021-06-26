@@ -14,7 +14,7 @@ class AddColorsToUsers extends Migration
     public function up()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->string('default_avatar_color');
+            $table->string('default_avatar_color')->nullable();
         });
     }
 
