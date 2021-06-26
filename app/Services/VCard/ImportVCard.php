@@ -203,7 +203,6 @@ class ImportVCard extends BaseService
      */
     private function processEntry(array $data, VCard $entry): array
     {
-
         if (! $this->canImportCurrentEntry($entry)) {
             return [
                 'error' => 'ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME',
@@ -489,7 +488,7 @@ class ImportVCard extends BaseService
     {
         if (! $contact) {
             $contact = new Contact;
-            $contact->first_name = 'Unknown ' . $entry->UID;
+            $contact->first_name = 'Unknown '.$entry->UID;
             $contact->account_id = $this->accountId;
             $contact->gender_id = $this->getGender('O')->id;
             $contact->setAvatarColor();

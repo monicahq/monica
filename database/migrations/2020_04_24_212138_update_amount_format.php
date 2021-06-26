@@ -83,10 +83,8 @@ class UpdateAmountFormat extends Migration
                 }
             });
 
-
-        
         if (DBHelper::isPostgres()) {
-            DB::statement('ALTER TABLE ' . DBHelper::getTable('gifts')  . ' ALTER COLUMN 
+            DB::statement('ALTER TABLE '.DBHelper::getTable('gifts').' ALTER COLUMN 
                   value TYPE integer USING (trim(value)::integer)');
         }
 

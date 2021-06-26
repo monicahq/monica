@@ -63,17 +63,19 @@ class DBHelper
     public static function getTable($name)
     {
         $tableWrapChar = (static::isPostgres()) ? '' : '`';
-        return $tableWrapChar . static::connection()->getTablePrefix() . $name . $tableWrapChar;
+
+        return $tableWrapChar.static::connection()->getTablePrefix().$name.$tableWrapChar;
     }
 
     public static function getTableColumn($table, $column)
     {
         $tableWrapChar = (static::isPostgres()) ? '' : '`';
-        return static::getTable($table) . '.' . $tableWrapChar . $column . $tableWrapChar;
+
+        return static::getTable($table).'.'.$tableWrapChar.$column.$tableWrapChar;
     }
 
     public static function isPostgres()
     {
-        return (static::connection()->getDriverName() === 'pgsql');
+        return static::connection()->getDriverName() === 'pgsql';
     }
 }
