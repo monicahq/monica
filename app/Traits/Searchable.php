@@ -25,12 +25,12 @@ trait Searchable
         }
 
         $searchableColumns = array_map(function ($column) {
-            return DBHelper::getTable($this->getTable()).".`$column`";
+            return DBHelper::getTableColumn($this->getTable(), $column);
         }, $this->searchable_columns);
 
         $queryString = $this->buildQuery($searchableColumns, $needle);
 
-        $builder->whereRaw(DBHelper::getTable($this->getTable()).".`account_id` = $accountId")
+        $builder->whereRaw(DBHelper::getTableColumn($this->getTable(), 'account_id') . " = $accountId")
             ->whereRaw("( $queryString )")
             ->orderBy($orderByColumn, $orderByDirection);
 
@@ -39,7 +39,7 @@ trait Searchable
         }
 
         $builder->select(array_map(function ($column) {
-            return "{$this->getTable()}.$column";
+            return DBHelper::getTableColumn($this->getTable(), $column);
         }, $this->return_from_search));
 
         return $builder;
