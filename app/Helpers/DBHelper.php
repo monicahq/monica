@@ -62,13 +62,13 @@ class DBHelper
 
     public static function getTable($name)
     {
-        $tableWrapChar = (static::isPostgres()) ? '"' : '`';
+        $tableWrapChar = (static::isPostgres()) ? '' : '`';
         return $tableWrapChar . static::connection()->getTablePrefix() . $name . $tableWrapChar;
     }
 
     public static function getTableColumn($table, $column)
     {
-        $tableWrapChar = (static::isPostgres()) ? '"' : '`';
+        $tableWrapChar = (static::isPostgres()) ? '' : '`';
         return static::getTable($table) . '.' . $tableWrapChar . $column . $tableWrapChar;
     }
 
