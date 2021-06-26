@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\DBHelper;
 use App\Helpers\MoneyHelper;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
@@ -82,8 +83,17 @@ class UpdateAmountFormat extends Migration
                 }
             });
 
+
+        
+        if (DBHelper::isPostgres()) {
+            DB::statement('ALTER TABLE ' . DBHelper::getTable('gifts')  . ' ALTER COLUMN 
+                  value TYPE integer USING (trim(value)::integer)');
+        }
+
         Schema::table('gifts', function (Blueprint $table) {
-            $table->integer('value')->change()->nullable();
+            if (DBHelper::isPostgres() === false) {
+                $table->integer('value')->change()->nullable();
+            }
             $table->renameColumn('value', 'amount');
         });
     }

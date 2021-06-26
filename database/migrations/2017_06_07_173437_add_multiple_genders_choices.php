@@ -39,7 +39,8 @@ class AddMultipleGendersChoices extends Migration
      */
     protected function alterEnum($table, $field, array $options)
     {
-        $check = "${table}_${field}_check";
+        $cleanTable = str_replace(['"', '`'], '', $table);
+        $check = "${cleanTable}_${field}_check";
         $enumList = [];
         foreach ($options as $option) {
             $enumList[] = sprintf("'%s'::CHARACTER VARYING", $option);
