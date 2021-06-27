@@ -237,7 +237,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         });
 
         Route::get('/settings/export', 'SettingsController@export')->name('export');
-        Route::get('/settings/exportToSql', 'SettingsController@exportToSQL')->name('sql');
+        Route::post('/settings/exportToSql', 'SettingsController@exportToSQL')->name('sql');
         Route::get('/settings/import', 'SettingsController@import')->name('import');
         Route::get('/settings/import/report/{importjobid}', 'SettingsController@report')->name('report');
         Route::get('/settings/import/upload', 'SettingsController@upload')->name('upload');
