@@ -98,13 +98,12 @@ class SettingsController extends Controller
                 'locale',
                 'currency_id',
                 'name_order',
-            ]) + [
-                'fluid_container' => $request->input('layout'),
-                'temperature_scale' => $request->input('temperature_scale'),
-            ]
+                'fluid_container',
+                'temperature_scale',
+            ])
         );
 
-        if ($user->email != $request->input('email')) {
+        if ($user->email !== $request->input('email')) {
             app(EmailChange::class)->execute([
                 'account_id' => $user->account_id,
                 'email' => $request->input('email'),

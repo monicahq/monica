@@ -65,6 +65,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     protected $casts = [
         'profile_new_life_event_badge_seen' => 'boolean',
         'admin' => 'boolean',
+        'fluid_container' => 'boolean',
     ];
 
     /**
@@ -152,7 +153,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
      */
     public function getFluidLayout(): string
     {
-        if ($this->fluid_container == 'true') {
+        if ($this->fluid_container) {
             return 'container-fluid';
         } else {
             return 'container';
