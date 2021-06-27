@@ -38,7 +38,7 @@ return [
     'export_title_sql' => 'Exporteer naar SQL',
     'export_sql_explanation' => 'Het exporteren van je gegevens in SQL formaat maakt het mogelijk om je gegevens te importeren in je eigen Monica installatie. Dit is alleen waardevol als je een eigen server hebt.',
     'export_sql_cta' => 'Exporteer naar SQL',
-    'export_sql_link_instructions' => '<a href=":url">Read the instructions</a> to learn how to import this file into your instance.',
+    'export_sql_link_instructions' => '<a href=":url">Lees de instructies</a> om te leren hoe je dit bestand kunt importeren in je eigen installatie.',
 
     'firstname' => 'Voornaam',
     'lastname' => 'Achternaam',
