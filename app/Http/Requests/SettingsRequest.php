@@ -19,7 +19,7 @@ class SettingsRequest extends AuthorizedRequest
             'last_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users,email,'.$this->id,
             'timezone' => 'required|string',
-            'layout' => 'required|bool',
+            'fluid_container' => 'required|bool',
             'temperature_scale' => [
                 'required',
                 'string',
