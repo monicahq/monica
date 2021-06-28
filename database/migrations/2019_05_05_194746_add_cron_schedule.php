@@ -16,7 +16,7 @@ class AddCronSchedule extends Migration
         Schema::create('crons', function (Blueprint $table) {
             $table->increments('id');
             $table->string('command')->unique();
-            $table->timestamp('last_run');
+            $table->timestamp('last_run')->nullable();
             $table->timestamps();
         });
     }
