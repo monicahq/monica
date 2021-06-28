@@ -58,6 +58,7 @@ class LogoutUserDevices
         if (! $guard instanceof SessionGuard) {
             throw new \LogicException('guard is not a SessionGuard kind');
         }
+
         return $guard;
     }
 
@@ -72,6 +73,7 @@ class LogoutUserDevices
         if ($recaller = request()->cookies->get($guard->getRecallerName())) {
             return new Recaller($recaller);
         }
+
         return null;
     }
 
