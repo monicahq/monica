@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Werk365\EtagConditionals\EtagConditionals;
@@ -54,6 +55,10 @@ class AppServiceProvider extends ServiceProvider
         View::composer(
             'partials.check', 'App\Http\ViewComposers\InstanceViewComposer'
         );
+
+        Password::defaults(function () {
+            return Password::min(6);
+        });
 
         if (config('database.use_utf8mb4')
             && DBHelper::connection()->getDriverName() == 'mysql'
