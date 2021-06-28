@@ -52,9 +52,13 @@ class LogoutUserDevices
      *
      * @return SessionGuard
      */
-    protected function guard()
+    protected function guard(): SessionGuard
     {
-        return Auth::guard('web');
+        $guard = Auth::guard('web');
+        if (! $guard instanceof SessionGuard) {
+            throw new \LogicException('guard is not a SessionGuard kind');
+        }
+        return $guard;
     }
 
     /**
@@ -63,11 +67,12 @@ class LogoutUserDevices
      * @param SessionGuard $guard
      * @return \Illuminate\Auth\Recaller|null
      */
-    protected function recaller($guard)
+    protected function recaller($guard): ?Recaller
     {
         if ($recaller = request()->cookies->get($guard->getRecallerName())) {
             return new Recaller($recaller);
         }
+        return null;
     }
 
     /**
