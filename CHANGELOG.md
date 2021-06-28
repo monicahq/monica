@@ -1,3 +1,11 @@
+## [3.1.3](https://github.com/monicahq/monica/compare/v3.1.2...v3.1.3) (2021-06-28)
+
+
+### Bug Fixes
+
+* fix layout selection ([#5313](https://github.com/monicahq/monica/issues/5313)) ([8b4821f](https://github.com/monicahq/monica/commit/8b4821f1393a1fad31d3ba3cf30679d483197664))
+* use post request for exportToSql ([#5314](https://github.com/monicahq/monica/issues/5314)) ([cefeb9b](https://github.com/monicahq/monica/commit/cefeb9bdfa74e30ff77ff692c3d14c05ae081bff))
+
 ## [3.1.2](https://github.com/monicahq/monica/compare/v3.1.1...v3.1.2) (2021-06-24)
 
 
