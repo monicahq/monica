@@ -488,6 +488,7 @@ class ImportVCard extends BaseService
     {
         if (! $contact) {
             $contact = new Contact;
+            $contact->first_name = 'Unknown '.$entry->UID;
             $contact->account_id = $this->accountId;
             $contact->gender_id = $this->getGender('O')->id;
             $contact->setAvatarColor();

@@ -76,6 +76,9 @@ class JournalEntry extends Model
         } elseif ($resourceToLog instanceof \App\Models\Journal\Entry) {
             $journal->date = $resourceToLog->attributes['date'];
         }
+        $journal->journalable_id = $resourceToLog->id;
+        $journal->journalable_type = get_class($resourceToLog);
+
         $journal->save();
         $resourceToLog->journalEntries()->save($journal);
 

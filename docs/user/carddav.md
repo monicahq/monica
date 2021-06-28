@@ -72,7 +72,11 @@ After that, you can use any Contacts application on your phone. Be sure to displ
 
 
 ### iPhone
+Settings -> Contacts -> Accounts -> Other -> CardDAV
 
+Server: https://servername.com/dav
+Username: Email address
+Password: API Token
 
 ### Apple iOS
 
