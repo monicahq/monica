@@ -3,11 +3,11 @@
 namespace App\Listeners;
 
 use App\Models\User\User;
-use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Recaller;
 use Illuminate\Auth\SessionGuard;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\PasswordReset;
 
 class LogoutUserDevices
 {
@@ -45,7 +45,7 @@ class LogoutUserDevices
                 $user->getAuthIdentifier().'|'.$user->getRememberToken().'|'.$user->getAuthPassword()
             ));
         }
-   }
+    }
 
     /**
      * Get the guard.

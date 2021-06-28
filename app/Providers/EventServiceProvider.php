@@ -16,7 +16,7 @@ class EventServiceProvider extends ServiceProvider
             \Illuminate\Auth\Listeners\SendEmailVerificationNotification::class,
         ],
         \Illuminate\Auth\Events\PasswordReset::class => [
-            \App\Listeners\LogoutUserDevices::class
+            \App\Listeners\LogoutUserDevices::class,
         ],
     ];
 
