@@ -1131,38 +1131,34 @@
     micromatch "^4.0.2"
     picomatch "^2.2.1"
 
-"@snyk/fix-pipenv-pipfile@0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@snyk/fix-pipenv-pipfile/-/fix-pipenv-pipfile-0.5.3.tgz#d934c7ac56ca401deb53b3f639e6335f30dc0e80"
-  integrity sha512-/wD7bcQ2mpDyXtQiKToQBfKl6asl3nroe9Dw3PkBY79ljwOSm27yqLQVv2EQT7BTK25VxndXSbe47eOrShh1eg==
+"@snyk/fix-pipenv-pipfile@0.5.4":
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/@snyk/fix-pipenv-pipfile/-/fix-pipenv-pipfile-0.5.4.tgz#c95f18fb4dbd76d247746fbb1ef366694695af4a"
+  integrity sha512-n1Sg21htJG+gqw2Q9JYsIFxT5IDtELifbQZheiLhOl8sgfoD6oCNyf07IwUqzPrW2wRpmCrTUtuO08+KGnzJpg==
   dependencies:
     "@snyk/child-process" "^0.3.1"
     bottleneck "2.19.5"
     debug "4.3.1"
-    prettier "^2.3.0"
-    source-map-support "^0.5.16"
     tslib "^1.10.0"
 
-"@snyk/fix-poetry@0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@snyk/fix-poetry/-/fix-poetry-0.7.0.tgz#b6d9f8fb2c4facf037aa6d6283d06c2bdbd2b8d8"
-  integrity sha512-M0JzI/7rOwH2Q/Gy/v1UXvpnvoaRGZrQCe4bEd3hsJ1ZR1tSy7jZsZGtTxk/E5WjWFMrqe4RRip9Uyd1aLjr9A==
+"@snyk/fix-poetry@0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@snyk/fix-poetry/-/fix-poetry-0.7.2.tgz#17d672a296cf2e4952d0a981e59b3566806838f5"
+  integrity sha512-abBdeOb326exreUDnCkELw9GVOR7qdUQmX0sKyE1baz3i9WaWI5Wy0bWHqjw9oGE5ZP8Ki/xtzkHU2W57D++Zg==
   dependencies:
     "@snyk/child-process" "^0.3.1"
     bottleneck "2.19.5"
     debug "4.3.1"
-    prettier "^2.3.0"
-    source-map-support "^0.5.16"
     tslib "^1.10.0"
 
-"@snyk/fix@1.634.0":
-  version "1.634.0"
-  resolved "https://registry.yarnpkg.com/@snyk/fix/-/fix-1.634.0.tgz#613c1def74a532aa599c3c0142c7678cceeaaf5f"
-  integrity sha512-uR0Y2jfh+hnoNepnSsiPvyFEUSo9SEUNwYPxyKZGq6bfPvoC9HzZkujhSJMnmagSlxVP/UtGtEb2mHRNu/IOdg==
+"@snyk/fix@1.648.0":
+  version "1.648.0"
+  resolved "https://registry.yarnpkg.com/@snyk/fix/-/fix-1.648.0.tgz#bc256a42a4b46d4bf0d72a3eb9a72a8beea07c30"
+  integrity sha512-UZxBdzrOlu2fAINbJWfohAj1b4Bbo0P2NNy0QT62gPi5jIiQHnowAyAlsLHiQzmskYBvWMk9ks3XJdhjL2MELQ==
   dependencies:
     "@snyk/dep-graph" "^1.21.0"
-    "@snyk/fix-pipenv-pipfile" "0.5.3"
-    "@snyk/fix-poetry" "0.7.0"
+    "@snyk/fix-pipenv-pipfile" "0.5.4"
+    "@snyk/fix-poetry" "0.7.2"
     chalk "4.1.1"
     debug "^4.3.1"
     lodash.groupby "4.6.0"
@@ -7400,11 +7396,6 @@ prettier@^1.18.2:
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
   integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
 
-prettier@^2.3.0:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.3.1.tgz#76903c3f8c4449bc9ac597acefa24dc5ad4cbea6"
-  integrity sha512-p+vNbgpLjif/+D+DwAZAbndtRrR0md0MwfmOVN9N+2RgyACMT+7tfaRnT+WDPkqnuVwleyuBIG2XBxKDme3hPA==
-
 pretty-bytes@^5.1.0, pretty-bytes@^5.6.0:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/pretty-bytes/-/pretty-bytes-5.6.0.tgz#356256f643804773c82f64723fe78c92c62beaeb"
@@ -8462,10 +8453,10 @@ snyk-resolve@1.1.0, snyk-resolve@^1.0.0, snyk-resolve@^1.1.0:
     debug "^4.1.1"
     promise-fs "^2.1.1"
 
-snyk-sbt-plugin@2.11.0:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/snyk-sbt-plugin/-/snyk-sbt-plugin-2.11.0.tgz#f5469dcf5589e34575fc901e2064475582cc3e48"
-  integrity sha512-wUqHLAa3MzV6sVO+05MnV+lwc+T6o87FZZaY+43tQPytBI2Wq23O3j4POREM4fa2iFfiQJoEYD6c7xmhiEUsSA==
+snyk-sbt-plugin@2.11.1:
+  version "2.11.1"
+  resolved "https://registry.yarnpkg.com/snyk-sbt-plugin/-/snyk-sbt-plugin-2.11.1.tgz#b80229a1a173a25cfc08f6e3860c22b98e5d14be"
+  integrity sha512-WKSV4MivovUHqdD2EYrkCuESjVLSbtsKpNnHeDCRIvv/GZ7YkvDsDqRLBUzDl6SvhGzaCv9rwEVUl+ZwJITL1w==
   dependencies:
     debug "^4.1.1"
     semver "^6.1.2"
@@ -8500,16 +8491,16 @@ snyk-try-require@^2.0.0:
     lru-cache "^5.1.1"
 
 snyk@^1.410:
-  version "1.639.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.639.0.tgz#4ebcd5e6199bfb1ade253d5c1bf399411266e9e1"
-  integrity sha512-kGmk2T9DoxxGrLDJX0PvXp0ktR0rb1PE5kD6mAsafqhvzfGbNCUJTtPPD/Wy/pbf5jAjHryFYX/KRW9bMXIFGQ==
+  version "1.650.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.650.0.tgz#81cc2c8967a9d8c35d0fb3617708d4a3a296bf7a"
+  integrity sha512-+ErRNirt/+8YR3ZgAsEV3gDt7j/eVxAHGesk/VyQBjOqKmJrEs7XJGPoDWR2TyGfMiwf6tx0CO1H0PjIPj64xw==
   dependencies:
     "@open-policy-agent/opa-wasm" "^1.2.0"
     "@snyk/cli-interface" "2.11.0"
     "@snyk/cloud-config-parser" "^1.9.2"
     "@snyk/code-client" "3.9.0"
     "@snyk/dep-graph" "^1.27.1"
-    "@snyk/fix" "1.634.0"
+    "@snyk/fix" "1.648.0"
     "@snyk/gemfile" "1.2.0"
     "@snyk/graphlib" "^2.1.9-patch.3"
     "@snyk/inquirer" "^7.3.3-patch"
@@ -8564,7 +8555,7 @@ snyk@^1.410:
     snyk-python-plugin "1.19.9"
     snyk-resolve "1.1.0"
     snyk-resolve-deps "4.7.2"
-    snyk-sbt-plugin "2.11.0"
+    snyk-sbt-plugin "2.11.1"
     snyk-try-require "1.3.1"
     source-map-support "^0.5.11"
     strip-ansi "^5.2.0"
