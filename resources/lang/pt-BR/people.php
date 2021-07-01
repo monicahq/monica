@@ -46,12 +46,12 @@ return [
 
     // people add
     'people_add_title' => 'Adicionar novo contato',
-    'people_add_missing' => 'No person found – add a new one now',
+    'people_add_missing' => 'Nenhuma pessoa encontrada – adicione uma nova agora',
     'people_add_firstname' => 'Nome',
-    'people_add_middlename' => 'Middle name (optional)',
-    'people_add_lastname' => 'Last name (optional)',
-    'people_add_email' => 'Email (optional)',
-    'people_add_nickname' => 'Nickname (optional)',
+    'people_add_middlename' => 'Nome do meio (opcional)',
+    'people_add_lastname' => 'Último nome (opcional)',
+    'people_add_email' => 'E-mail (opcional)',
+    'people_add_nickname' => 'Apelido (opcional)',
     'people_add_cta' => 'Adicionar',
     'people_save_and_add_another_cta' => 'Enviar e adicionar outra pessoa',
     'people_add_success' => ':nome foi criado com sucesso',
