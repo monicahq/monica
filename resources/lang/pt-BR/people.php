@@ -517,7 +517,7 @@ return [
     'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
     // emotions
-    'emotion_this_made_me_feel' => 'This made you feel…',
+    'emotion_this_made_me_feel' => 'Isso fez você se sentir…',
 
     // logs
     'auditlogs_link' => 'História',
