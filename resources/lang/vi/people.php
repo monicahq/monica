@@ -374,8 +374,8 @@ return [
 
     // Deceased
     'deceased_reminder_title' => 'Kỷ niệm ngày mất của :name',
-    'deceased_mark_person_deceased' => 'Mark this as deceased',
-    'deceased_know_date' => 'I know the date that this person died',
+    'deceased_mark_person_deceased' => 'Đánh dấu người này đã qua đời',
+    'deceased_know_date' => 'Tôi biết ngày người này mất',
     'deceased_add_reminder' => 'Thêm nhắc nhở cho ngày này',
     'deceased_label' => 'Đã qua đời',
     'deceased_date_label' => 'Ngày mất',
@@ -429,7 +429,7 @@ return [
     'life_event_create_life_event' => 'Thêm sự kiện trong đời',
     'life_event_create_default_title' => 'Tiêu đề (tuỳ chọn)',
     'life_event_create_default_story' => 'Câu chuyện (tuỳ chọn)',
-    'life_event_create_date' => 'You do not need to indicate a month or a day – only the year is mandatory.',
+    'life_event_create_date' => 'Bạn không cần chỉ rõ ngày hoặc tháng - chỉ bắt buộc năm.',
     'life_event_create_default_description' => 'Thêm thông tin về những gì bạn biết',
     'life_event_create_add_yearly_reminder' => 'Thêm nhắc nhở hàng năm cho sự kiện này',
     'life_event_create_success' => 'Đã thêm sự kiện trong đời',
