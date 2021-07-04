@@ -2,6 +2,11 @@
 
 namespace App\Helpers;
 
+use function Safe\fopen;
+use function Safe\substr;
+use function Safe\fclose;
+use function Safe\fwrite;
+
 class ComposerScripts
 {
     const CONFIG = 'bootstrap/cache/config.php';
@@ -68,16 +73,17 @@ class ComposerScripts
             $vals['.version'] = trim(trim(shell_exec("git --git-dir $gitdir describe --abbrev=0 --tags"), 'v'));
             $vals['.commit'] = trim(shell_exec("git --git-dir $gitdir log --pretty=%H -n1 HEAD"));
 
+            $release = '';
             try {
                 $release = trim(shell_exec("git --git-dir $gitdir describe --abbrev=0 --tags --exact-match HEAD"));
             } catch (\Exception $e) {
                 // No error
             }
-            if ($release == '') {
+            if ($release === '') {
                 $release = trim(shell_exec("git --git-dir $gitdir log --pretty=%h -n1 HEAD"));
             }
             $vals['.release'] = $release;
-        } elseif (env('SOURCE_VERSION') == '') {
+        } elseif (env('SOURCE_VERSION') === '') {
             $vals['.commit'] = env('SOURCE_VERSION');
             $vals['.release'] = substr(env('SOURCE_VERSION'), 0, 8);
         }
