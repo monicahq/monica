@@ -3,9 +3,9 @@
 namespace App\Helpers;
 
 use function Safe\fopen;
-use function Safe\substr;
 use function Safe\fclose;
 use function Safe\fwrite;
+use function Safe\substr;
 
 class ComposerScripts
 {
