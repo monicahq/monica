@@ -46,6 +46,8 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::post('/dashboard/setTab', 'DashboardController@setTab');
     });
 
+    Route::get('/store/{file}', 'StorageController@show')->where('file', '.*')->name('storage');
+
     Route::get('/compliance', 'ComplianceController@index')->name('compliance');
     Route::post('/compliance/sign', 'ComplianceController@store');
     Route::get('/changelog', 'ChangelogController@index')->name('changelog.index');
@@ -235,7 +237,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         });
 
         Route::get('/settings/export', 'SettingsController@export')->name('export');
-        Route::get('/settings/exportToSql', 'SettingsController@exportToSQL')->name('sql');
+        Route::post('/settings/exportToSql', 'SettingsController@exportToSQL')->name('sql');
         Route::get('/settings/import', 'SettingsController@import')->name('import');
         Route::get('/settings/import/report/{importjobid}', 'SettingsController@report')->name('report');
         Route::get('/settings/import/upload', 'SettingsController@upload')->name('upload');

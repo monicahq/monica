@@ -35,6 +35,8 @@ class UpdateAddressLabels extends BaseService
         $address = Address::where('account_id', $data['account_id'])
             ->findOrFail($data['address_id']);
 
+        $address->contact->throwInactive();
+
         $labelsId = $this->getLabelsId($data);
 
         $this->updateLabels($labelsId, $address);

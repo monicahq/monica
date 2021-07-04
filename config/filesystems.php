@@ -86,4 +86,36 @@ return [
         public_path('storage') => storage_path('app/public'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Filesystem visibility
+    |--------------------------------------------------------------------------
+    |
+    | If this is set to private, all files are stored privately, and are
+    | delivered using a proxy-url by monica, providing access of the files in
+    | the storage.
+    | This means only the authenticated user will be able to open the files.
+    |
+    | You might store the files publicly if you're on a private instance and if
+    | you want to make files accessible from the outside - the url files are
+    | still private and not easy to guess.
+    |
+    | Supported: "private", "public"
+    |
+    */
+
+    'default_visibility' => env('FILESYSTEM_DEFAULT_VISIBILITY', 'private'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cache control for files
+    |--------------------------------------------------------------------------
+    |
+    | Defines the Cache-Control header used to serve files.
+    | Default: 'max-age=2628000' for 1 month cache.
+    |
+    */
+
+    'default_cache_control' => env('DEFAULT_CACHE_CONTROL', 'private, max-age=2628000'),
+
 ];

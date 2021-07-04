@@ -39,6 +39,8 @@ class UpdateCall extends BaseService
         $call = Call::where('account_id', $data['account_id'])
             ->findOrFail($data['call_id']);
 
+        $call->contact->throwInactive();
+
         $call->update([
             'called_at' => $data['called_at'],
             'content' => (empty($data['content']) ? null : $data['content']),

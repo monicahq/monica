@@ -42,6 +42,7 @@ export default {
   'fr': pluralB,
   'he': pluralF,
   'hr': pluralD,
+  'id': pluralA,
   'ja': pluralA,
   'ru': pluralD,
   'tr': pluralA,

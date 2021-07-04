@@ -77,6 +77,8 @@ class UpdateContactIntroduction extends BaseService
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
+        $contact->throwInactive();
+
         if ($contact->is_partial) {
             throw ValidationException::withMessages([
                 'contact_id' => 'The contact can\'t be a partial contact',

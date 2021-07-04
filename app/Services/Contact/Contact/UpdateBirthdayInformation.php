@@ -72,6 +72,8 @@ class UpdateBirthdayInformation extends BaseService
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
+        $contact->throwInactive();
+
         $this->clearRelatedReminder($contact);
 
         $this->clearRelatedSpecialDate($contact);

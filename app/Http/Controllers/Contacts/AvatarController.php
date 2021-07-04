@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Contacts;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Account\Photo\UploadPhoto;
 use App\Services\Contact\Avatar\UpdateAvatar;
@@ -17,6 +16,8 @@ class AvatarController extends Controller
      */
     public function edit(Contact $contact)
     {
+        $contact->throwInactive();
+
         return view('people.avatar.edit')
             ->withContact($contact);
     }

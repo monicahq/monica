@@ -5,6 +5,7 @@
 - [Install Monica locally](#install-monica-locally)
   - [Homestead (macOS, Linux, Windows)](#homestead-macos-linux-windows)
   - [Valet (macOS)](#valet-macos)
+  - [asdf (macOS)](#asdf-macos)
   - [Instructions](#instructions)
 - [Testing environment](#testing-environment)
   - [Setup](#setup)
@@ -75,6 +76,20 @@ Note: the official Monica installation uses mySQL as the database system. While 
 We've installed the development version with [Valet](https://laravel.com/docs/valet), which is a Laravel development environment for Mac minimalists. It works really well and is extremely fast, much faster than Homestead.
 
 <a id="markdown-instructions" name="instructions"></a>
+
+### asdf (macOS)
+
+You can use [asdf](https://asdf-vm.com/#/) to install a version of php for monica:
+
+```bash
+asdf install
+asdf reshim
+
+pecl install redis
+echo "extension=redis.so" > $(asdf where php)/conf.d/php.ini
+```
+
+You'll need to run the installation instructions below and setup a local mysql installation. After completing the application installation process you can run `php artisan serve` to get a local development server.
 ### Instructions
 
 **Prerequisites**:
@@ -89,22 +104,22 @@ We've installed the development version with [Valet](https://laravel.com/docs/va
 Once the above softwares are installed (or if you've finished the installation of Homestead/Valet):
 
 1. Create a database called `monica` in your mySQL instance.
-    1. From Homestead directory: `sudo scripts/create-mysql.sh monica` or `mysql -e "CREATE DATABASE 'monica'";` inside mySQL.
-    1. If you use Homestead (which uses Vagrant under the hood), `vagrant ssh` will let you login as root inside your VM.
-1. Run `make install` in the folder the repository has been cloned. This will run :
-    1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
+    1. `mysql -e "CREATE DATABASE monica";` inside mySQL.
+    2. If you use Homestead (which uses Vagrant under the hood), `vagrant ssh` will let you login as root inside your VM.
+2. Setup the application environment:
     1. `composer install --no-interaction` to install all packages.
        - Due to an issue with VirtualBox, you may encounter an error at this step due to a plug-in called `package-versions`. If this happens, delete the /vendor folder that was created and run `composer install --no-interaction --no-plugins --no-scripts` instead.
        - See this [GitHub Issue](https://github.com/laravel/homestead/issues/1240) for more information.
-    1. `yarn install` to install all the front-end dependencies and tools needed to compile assets.
+       - Run `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
+    2. `yarn install` to install all the front-end dependencies and tools needed to compile assets.
        - If you experience an error related to `EPROTO: protocol error, symlink`, see [here](https://github.com/yarnpkg/yarn/issues/4908).
-    1. `yarn run dev` to compile js and css assets.
-    1. `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-    1. `php artisan setup:test` to setup the database.
+    3. `yarn run dev` to compile js and css assets.
+    4. `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
+    5. `php artisan setup:test` to setup the database.
        - By default this command will also populate the database with fake data.
        - Use the `--skipSeed` option to skip the process of adding fake data in your dev environment.
-    1. `php artisan passport:install` to create the access tokens required for the API (Optional).
-1. Update `.env` to your specific needs.
+    6. `php artisan passport:install` to create the access tokens required for the API (Optional).
+3. Update `.env` to your specific needs.
 
 If you haven't skipped the seeding of fake data, two accounts are created by default:
 
@@ -127,7 +142,7 @@ We try to cover most features and new methods with unit and functional tests. An
 
 To setup the test environment:
 
-* Create a database called `monica_test`
+* Create a database `mysql -e "CREATE DATABASE monica_test;"`
 * `php artisan migrate --database testing`
    - If this fails due to the `oauth_auth_codes_table` already existing, edit `config/passport.php` to update the storage driver so `'connection' => 'testing'`, then run `php artisan migrate --database testing` again.
    - For more information, see this [GitHub Issue](https://github.com/laravel/passport/issues/1370).

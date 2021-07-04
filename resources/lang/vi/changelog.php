@@ -7,6 +7,6 @@
  */
 
 return [
-    'title' => 'Product changes',
-    'note' => 'Note: unfortunately, this page is only in English.',
+    'title' => 'Cập nhật sản phẩm',
+    'note' => 'Ghi chú: rất tiếc, trang này chỉ có tiếng Anh.',
 ];

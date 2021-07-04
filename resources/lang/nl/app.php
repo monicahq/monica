@@ -219,9 +219,9 @@ return [
     'relationship_type_nephew_female_with_name' => ':name’s nicht',
 
     'relationship_type_cousin' => 'neef',
-    'relationship_type_cousin_female' => 'neef',
+    'relationship_type_cousin_female' => 'nicht',
     'relationship_type_cousin_with_name' => ':name’s neef',
-    'relationship_type_cousin_female_with_name' => ':name’s neef',
+    'relationship_type_cousin_female_with_name' => ':name’s nicht',
 
     'relationship_type_godfather' => 'peetoom',
     'relationship_type_godfather_female' => 'peet moeder',
