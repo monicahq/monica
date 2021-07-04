@@ -21,21 +21,28 @@ docker-compose up
 Use this process if you're a developer and want complete control over
 your Monica container.
 
-Edit `.env` again to set the `DB_*` variables to match your database. Then run:
+If you aren't using docker-compose, edit `.env` again to set the `DB_*` variables to match your database. Then run:
 
 ```sh
-docker build -t monicahq/monicahq .
+# assets are copied from the host machine, make sure they are built
+yarn install && yarn run production
+
+docker build -t monicahq/monicahq -f scripts/docker/Dockerfile .
+
 docker run --env-file .env -p 80:80 monicahq/monicahq  # to run MonicaHQ
+
 # ...or...
 docker run --env-file .env -it monicahq/monicahq sh    # to get a prompt
 ```
+
+There's a bunch of [docker-compose examples here.](https://github.com/monicahq/docker/tree/master/.examples)
 
 Note that uploaded files, like avatars, will disappear when you
 restart the container. Map a volume to
 `/var/www/monica/storage/app/public` if you want that data to persist
 between runs. See `docker-compose.yml` for examples.
 
-## Other documents to read	
+## Other documents to read
 
 [Connecting to MySQL inside of a Docker container](/docs/installation/docker-mysql.md)
 [Use mobile app with standalone server](/docs/installation/mobile.md)
