@@ -42,6 +42,7 @@ return [
             'sv',
             'tr',
             'zh',
+            'pt-BR'
             'zh-TW' => 'zh-TW',
         ])
     ),
