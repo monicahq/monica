@@ -41,6 +41,7 @@ return [
             'nl',
             'sv',
             'tr',
+            'vi',
             'zh',
             'zh-TW' => 'zh-TW',
         ])
