@@ -43,7 +43,7 @@ return [
     'firstname' => 'Voornaam',
     'lastname' => 'Achternaam',
     'name_order' => 'Naamvolgorde',
-    'name_order_firstname_lastname' => '<First name> <Last name> - Klaas Bakker',
+    'name_order_firstname_lastname' => '<First name> <Last name> – Klaas Bakker',
     'name_order_lastname_firstname' => '<Last name> <First name> – Bakker Klaas',
     'name_order_firstname_lastname_nickname' => '<First name> <Last name> (<Nickname>) – Klaas Bakker (Broodje)',
     'name_order_firstname_nickname_lastname' => '<First name> (<Nickname>) <Last name> – Klaas (Broodje) Bakker',
