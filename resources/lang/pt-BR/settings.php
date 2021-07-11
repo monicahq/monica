@@ -376,7 +376,7 @@ return [
     'personalization_genders_modal_default' => 'Selecione o gênero padrão para um novo contato',
     'personalization_genders_modal_delete' => 'Excluir tipo de gênero',
     'personalization_genders_modal_delete_desc' => 'Tem certeza de que deseja excluir o gênero “{name}”?',
-    'personalization_genders_modal_delete_question' => 'Atualmente, você tem {count} contatos com este gênero. Se você excluir este gênero, qual deve ser o gênero deste contato? Atualmente você tem {count} contatos com este gênero. Se você excluir este gênero, qual deve ser o gênero destes contatos?',
+    'personalization_genders_modal_delete_question' => 'Atualmente, você tem {count} contato com este gênero. Se você excluir este gênero, qual deve ser o gênero deste contato?|Atualmente você tem {count} contatos com este gênero. Se você excluir este gênero, qual deve ser o gênero destes contatos?',
     'personalization_genders_modal_delete_question_default' => 'Este gênero é o padrão. Se você excluir este gênero, qual será o novo padrão?',
     'personalization_genders_modal_error' => 'Por favor, escolha um gênero da lista.',
     'personalization_genders_list_contact_number' => '{count} contato|{count} contatos',
@@ -394,7 +394,7 @@ return [
 
     'personalization_reminder_rule_save' => 'A alteração foi salva',
     'personalization_reminder_rule_title' => 'Regras do lembrete',
-    'personalization_reminder_rule_line' => '{count} dia antes?{count} dias antes',
+    'personalization_reminder_rule_line' => '{count} dia antes?|{count} dias antes',
     'personalization_reminder_rule_desc' => 'Para cada lembrete que você definiu, Monica pode enviar-lhe um e-mail por alguns dias antes do evento acontecer. Você pode ajustar estas configurações de notificação aqui. Estas notificações se aplicam apenas a lembretes mensais e anuais.',
 
     'personalization_module_save' => 'A alteração foi salva',
