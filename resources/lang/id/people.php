@@ -46,7 +46,7 @@ return [
 
     // people add
     'people_add_title' => 'Tambah orang baru',
-    'people_add_missing' => 'Tidak ada orang ditemukan - tambahkan satu yang baru sekarang',
+    'people_add_missing' => 'Tidak ada orang ditemukan – tambahkan satu yang baru sekarang',
     'people_add_firstname' => 'Nama depan',
     'people_add_middlename' => 'Nama tengah (opsional)',
     'people_add_lastname' => 'Nama belakang (opsional)',
