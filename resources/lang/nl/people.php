@@ -46,7 +46,7 @@ return [
 
     // people add
     'people_add_title' => 'Voeg een nieuwe persoon toe',
-    'people_add_missing' => 'Geen persoon gevonden - voeg nu een nieuwe toe',
+    'people_add_missing' => 'Geen persoon gevonden – voeg nu een nieuwe toe',
     'people_add_firstname' => 'Voornaam',
     'people_add_middlename' => 'Tussenvoegsel (optioneel)',
     'people_add_lastname' => 'Achternaam (optioneel)',
