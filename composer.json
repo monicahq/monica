@@ -132,6 +132,9 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate"
+        ],
+        "compile": [
+            "App\\Helpers\\ComposerScripts::compile"
         ]
     }
 }
