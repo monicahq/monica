@@ -19,7 +19,7 @@ Monica depends on the following:
 
 -   A Web server, like [Apache httpd webserver](https://httpd.apache.org/)
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
--   PHP 7.4+
+-   PHP 7.4+ or 8.0+
 -   [Composer](https://getcomposer.org/)
 -   [Node.js](https://nodejs.org)
 -   [Yarn](https://yarnpkg.com)

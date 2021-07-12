@@ -41,7 +41,6 @@ RUN set -ex; \
         libjpeg62-turbo-dev \
         libgmp-dev \
         libmemcached-dev \
-        libmagickwand-dev \
         libwebp-dev \
     ; \
     \
