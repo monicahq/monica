@@ -67,6 +67,7 @@ return [
                 'expire' => env('S3_CACHE_EXPIRE', 600),
                 'prefix' => env('S3_CACHE_PREFIX', 's3'),
             ],
+            'use_path_style_endpoint' => env('S3_PATH_STYLE', false),
         ],
 
     ],
