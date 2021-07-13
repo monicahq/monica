@@ -39,6 +39,7 @@ return [
             'id',
             'it',
             'nl',
+            'pt-BR' => 'pt-BR',
             'sv',
             'tr',
             'vi',
