@@ -94,6 +94,7 @@ return [
     'locale_pt-BR' => 'Portugisiska (brasiliansk)',
     'locale_ru' => 'Ryska',
     'locale_sv' => 'Swedish',
+    'locale_vi' => 'Vietnamese',
     'locale_zh' => 'Kinesiska, förenklad',
     'locale_zh-TW' => 'Kinesiska Traditionell',
     'locale_tr' => 'Turkiska',
