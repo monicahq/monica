@@ -94,6 +94,7 @@ return [
     'locale_pt-BR' => 'Tiếng Bồ Đào Nha (Brazil)',
     'locale_ru' => 'Tiếng Nga',
     'locale_sv' => 'Tiếng Thụy Điển',
+    'locale_vi' => 'Vietnamese',
     'locale_zh' => 'Tiếng Trung Giản thể',
     'locale_zh-TW' => 'Tiếng Trung phồn thể',
     'locale_tr' => 'Tiếng Thổ Nhĩ Kỳ',
