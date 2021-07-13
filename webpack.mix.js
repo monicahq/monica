@@ -17,11 +17,11 @@ mix.webpackConfig({
         'id',
         'it',
         'nl',
+        'pt-BR',
         'sv',
         'tr',
         'zh-CN',
         'zh-TW'
-        'pt-BR',
       ],
     }),
   ],
