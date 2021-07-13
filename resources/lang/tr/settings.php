@@ -94,6 +94,7 @@ return [
     'locale_pt-BR' => 'Portekizce (Brezilya)',
     'locale_ru' => 'Rusça',
     'locale_sv' => 'İsveççe',
+    'locale_vi' => 'Vietnamese',
     'locale_zh' => 'Çince (Basitleştirilmiş)',
     'locale_zh-TW' => 'Geleneksel Çince',
     'locale_tr' => 'Türkçe',
