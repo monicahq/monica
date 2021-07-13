@@ -94,6 +94,7 @@ return [
     'locale_pt-BR' => 'Portugiesisch (Brasilien)',
     'locale_ru' => 'Russisch',
     'locale_sv' => 'Schwedisch',
+    'locale_vi' => 'Vietnamese',
     'locale_zh' => 'Vereinfachtes Chinesisch',
     'locale_zh-TW' => 'Chinesisch (Traditionell)',
     'locale_tr' => 'Türkisch',
