@@ -160,7 +160,7 @@ return [
     'information_edit_probably' => 'Cette personne a probablement…',
     'information_edit_not_year' => 'Je connais le jour et le mois de l’anniversaire de cette personne, mais pas l\'année…',
     'information_edit_exact' => 'Je connais la date d’anniversaire exacte de cette personne…',
-    'information_edit_birthdate_label' => 'Date d’anniversaire ',
+    'information_edit_birthdate_label' => 'Date d’anniversaire',
     'information_no_work_defined' => 'Aucune information professionnelle définie',
     'information_work_at' => 'chez :company',
     'work_add_cta' => 'Mettre à jour les informations professionnelles',
