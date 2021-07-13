@@ -10,13 +10,13 @@ return [
 
     //index
     'people_not_found' => 'Không tìm thấy liên hệ',
-    'people_list_number_kids' => ':count con|:count con',
+    'people_list_number_kids' => ':count con',
     'people_list_last_updated' => 'Danh sách liên hệ mới cập nhật:',
-    'people_list_number_reminders' => ':count lời nhắc|:count lời nhắc',
+    'people_list_number_reminders' => ':count lời nhắc',
     'people_list_blank_title' => 'Bạn không có ai trong tài khoản',
     'people_list_blank_cta' => 'Thêm ai đó',
     'people_list_sort' => 'Sắp xếp',
-    'people_list_stats' => ':count liên hệ|:count liên hệ',
+    'people_list_stats' => ':count liên hệ',
     'people_list_firstnameAZ' => 'Xếp theo tên A → Z',
     'people_list_firstnameZA' => 'Xếp theo tên Z → A',
     'people_list_lastnameAZ' => 'Xếp theo họ A → Z',
