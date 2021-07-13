@@ -44,7 +44,7 @@ return [
     'retry' => 'Thử lại',
     'filter' => 'Lọc danh sách',
     'go_back' => 'Quay lại',
-    'file_selected' => 'Một tệp được chọn…|{count} tệp được chọn…',
+    'file_selected' => '{count} tệp được chọn…',
 
     'application_title' => 'Monica – hệ thống quản trị quan hệ cá nhân',
     'application_description' => 'Monica là công cụ để quản lý tương tác của bạn với người yêu, bạn bè và gia đình.',
