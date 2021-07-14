@@ -94,6 +94,7 @@ return [
     'locale_pt-BR' => 'פורטוגלית ברזילאית',
     'locale_ru' => 'רוסית',
     'locale_sv' => 'שוודית',
+    'locale_vi' => 'וייטנאמית',
     'locale_zh' => 'סינית מפושטת',
     'locale_zh-TW' => 'סינית מסורתית',
     'locale_tr' => 'טורקית',

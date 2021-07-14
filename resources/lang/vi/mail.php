@@ -21,7 +21,7 @@ return [
     'notification_description' => 'Trong :count ngày (on :date), các sự kiện dưới đây sẽ  diễn ra:',
 
     'stay_in_touch_subject_line' => 'Giữ liên lạc với :name',
-    'stay_in_touch_subject_description' => 'Bạn đã yêu cầu được nhắc giữ liên lạc với :name mỗi :frequency ngày.|Bạn đã yêu cầu được nhắc giữ liên lạc với :name mỗi :frequency ngày.',
+    'stay_in_touch_subject_description' => 'Bạn đã yêu cầu được nhắc giữ liên lạc với :name mỗi :frequency ngày.',
 
     'notifications_whoops' => 'Whoops!',
     'notifications_hello' => 'Xin chào!',
