@@ -91,7 +91,7 @@ return [
     'locale_ja' => 'Japonês',
     'locale_nl' => 'Nederlands',
     'locale_pt' => 'Português',
-    'locale_pt-BR' => 'Português do Brasil',
+    'locale_pt-BR' => 'Brazilian Portuguese',
     'locale_ru' => 'Russo',
     'locale_sv' => 'Sueco',
     'locale_vi' => 'Vietnamita',
