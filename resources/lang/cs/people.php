@@ -46,12 +46,12 @@ return [
 
     // people add
     'people_add_title' => 'Přidat novou osobu',
-    'people_add_missing' => 'No person found – add a new one now',
+    'people_add_missing' => 'Nenalezena žádná osoba – přidejte novou osobu',
     'people_add_firstname' => 'Jméno',
-    'people_add_middlename' => 'Middle name (optional)',
-    'people_add_lastname' => 'Last name (optional)',
-    'people_add_email' => 'Email (optional)',
-    'people_add_nickname' => 'Nickname (optional)',
+    'people_add_middlename' => 'Prostřední jméno (volitelné)',
+    'people_add_lastname' => 'Příjmení (volitelné)',
+    'people_add_email' => 'E-mail (volitelné)',
+    'people_add_nickname' => 'Přezdívka (volitelné)',
     'people_add_cta' => 'Přidat tuto osobu',
     'people_save_and_add_another_cta' => 'Odeslat a přidat někoho ďaľšího',
     'people_add_success' => ':name has been successfully created',
