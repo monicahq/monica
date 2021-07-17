@@ -91,7 +91,7 @@ return [
     'locale_ja' => 'Tiếng Nhật',
     'locale_nl' => 'Tiếng Hà Lan',
     'locale_pt' => 'Tiếng Bồ Đào Nha',
-    'locale_pt-BR' => 'Portuguese, Brazil',
+    'locale_pt-BR' => 'Brazilian Portuguese',
     'locale_ru' => 'Tiếng Nga',
     'locale_sv' => 'Tiếng Thụy Điển',
     'locale_vi' => 'Vietnamese',
