@@ -9502,9 +9502,9 @@ vue-rx@^6.2:
   integrity sha512-tpKUcqS5IUYS+HsdbR5TlE5LL9PK4zwlplEtmMeydnbqaUTa9ciLMplJXAtFSiQw1vuURoyEJmCXqMxaVEIloQ==
 
 vue-select@^3.11:
-  version "3.12.1"
-  resolved "https://registry.yarnpkg.com/vue-select/-/vue-select-3.12.1.tgz#769d8d99db6fec7139fc45f265b341c9ef19dbd4"
-  integrity sha512-8t2XQLIN5lsKj5r+ixjnOOPnjLdEU/vyRDnpsUmXrmVEgcwU6jfgJnK3EvXF5VfmixoWNRDyCONNbXedLRz1dQ==
+  version "3.12.2"
+  resolved "https://registry.yarnpkg.com/vue-select/-/vue-select-3.12.2.tgz#b0dd89233d673dcbee567418667b1bfd5c139b64"
+  integrity sha512-KWIXQ50pC+B1wpBmaUXwuHm8yevPIL8YsZin9Hi2qCdK7C0KMbztRk6adgpIJ99bqaiccrGFQIPuXsuUNeegPw==
 
 vue-style-loader@^4.1.0, vue-style-loader@^4.1.3:
   version "4.1.3"
