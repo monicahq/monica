@@ -10,7 +10,7 @@ return [
 
     //index
     'people_not_found' => 'Δεν βρέθηκε η επαφή',
-    'people_list_number_kids' => ':count παιδί:count παιδιά',
+    'people_list_number_kids' => ':count παιδί|:count παιδιά',
     'people_list_last_updated' => 'Συμβουλευτήκατε τελευταία:',
     'people_list_number_reminders' => ':count υπενθύμιση|:count υπενθυμίσεις',
     'people_list_blank_title' => 'Δεν υπάρχει κάποια επαφή στον λογαριασμό σας ακόμη',
