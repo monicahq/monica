@@ -64,7 +64,7 @@ trait Subscription
             return true;
         }
 
-        return ($this->getSubscribedPlan() !== null);
+        return $this->getSubscribedPlan() !== null;
     }
 
     /**
