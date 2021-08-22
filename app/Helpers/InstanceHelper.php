@@ -48,6 +48,28 @@ class InstanceHelper
     }
 
     /**
+     * Get the plan information for the given time period.
+     *
+     * @param  \Laravel\Cashier\Subscription $subscription
+     * @return array|null
+     */
+    public static function getPlanInformationFromSubscription(\Laravel\Cashier\Subscription $subscription): ?array
+    {
+        $plan = $subscription->asStripeSubscription()->plan;
+
+        $currency = Currency::where('iso', strtoupper($plan->currency))->first();
+        $amount = MoneyHelper::format($plan->amount, $currency);
+
+        return [
+            'type' => $plan->interval === 'month' ? 'monthly' : 'annual',
+            'name' => $subscription->name,
+            'id' => $plan->id,
+            'price' => $plan->amount,
+            'friendlyPrice' => $amount,
+        ];
+    }
+
+    /**
      * Get changelogs entries.
      *
      * @param int $limit

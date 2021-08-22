@@ -31,11 +31,11 @@ class SubscriptionsController extends Controller
      */
     public function index()
     {
-        $account = auth()->user()->account;
-
         if (! config('monica.requires_subscription')) {
             return redirect()->route('settings.index');
         }
+
+        $account = auth()->user()->account;
 
         $subscription = $account->getSubscribedPlan();
         if (! $account->isSubscribed() && (! $subscription || $subscription->ended())) {
@@ -56,7 +56,7 @@ class SubscriptionsController extends Controller
             $invoices = $account->invoices();
         }
 
-        $planInformation = InstanceHelper::getPlanInformationFromConfig($subscription->name);
+        $planInformation = InstanceHelper::getPlanInformationFromSubscription($subscription);
 
         if ($planInformation === null) {
             abort(404);
@@ -89,6 +89,10 @@ class SubscriptionsController extends Controller
         }
 
         $plan = $request->query('plan');
+        if ($plan !== 'monthly' && $plan !== 'annual') {
+            abort(404);
+        }
+
         $planInformation = InstanceHelper::getPlanInformationFromConfig($plan);
 
         if ($planInformation === null) {
@@ -100,6 +104,77 @@ class SubscriptionsController extends Controller
             'nextTheoriticalBillingDate' => DateHelper::getFullDate(DateHelper::getNextTheoriticalBillingDate($plan)),
             'intent' => auth()->user()->account->createSetupIntent(),
         ]);
+    }
+
+    /**
+     * Display the update view page.
+     *
+     * @param Request $request
+     * @return View|Factory|RedirectResponse
+     */
+    public function update(Request $request)
+    {
+        if (! config('monica.requires_subscription')) {
+            return redirect()->route('settings.index');
+        }
+
+        $account = auth()->user()->account;
+
+        $subscription = $account->getSubscribedPlan();
+        if (! $account->isSubscribed() && (! $subscription || $subscription->ended())) {
+            return view('settings.subscriptions.blank', [
+                'numberOfCustomers' => InstanceHelper::getNumberOfPaidSubscribers(),
+            ]);
+        }
+
+        $planInformation = InstanceHelper::getPlanInformationFromSubscription($subscription);
+
+        if ($planInformation === null) {
+            abort(404);
+        }
+
+        $plans = collect();
+        foreach (['monthly', 'annual'] as $plan) {
+            $plans->push(InstanceHelper::getPlanInformationFromConfig($plan));
+        }
+
+        if (! $plans->contains(function ($value) use ($planInformation) {
+            return $value['id'] === $planInformation['id'];
+        })) {
+            $legacyPlan = $planInformation;
+        }
+
+        return view('settings.subscriptions.update', [
+            'planInformation' => $planInformation,
+            'plans' => $plans,
+            'legacyPlan' => $legacyPlan,
+        ]);
+    }
+
+    /**
+     * Process the update process.
+     *
+     * @param Request $request
+     * @return View|Factory|RedirectResponse
+     */
+    public function processUpdate(Request $request)
+    {
+        $account = auth()->user()->account;
+
+        $subscription = $account->getSubscribedPlan();
+        if (! $account->isSubscribed() && ! $subscription) {
+            return redirect()->route('settings.index');
+        }
+
+        try {
+            $account->updateSubscription($request->input('frequency'), $subscription);
+        } catch (StripeException $e) {
+            return back()
+                ->withInput()
+                ->withErrors($e->getMessage());
+        }
+
+        return redirect()->route('settings.subscriptions.index');
     }
 
     /**
@@ -211,17 +286,19 @@ class SubscriptionsController extends Controller
      */
     public function processDowngrade()
     {
-        if (! AccountHelper::canDowngrade(auth()->user()->account)) {
+        $account = auth()->user()->account;
+
+        if (! AccountHelper::canDowngrade($account)) {
             return redirect()->route('settings.subscriptions.downgrade');
         }
 
-        $subscription = auth()->user()->account->getSubscribedPlan();
-        if (! auth()->user()->account->isSubscribed() && ! $subscription) {
+        $subscription = $account->getSubscribedPlan();
+        if (! $account->isSubscribed() && ! $subscription) {
             return redirect()->route('settings.index');
         }
 
         try {
-            auth()->user()->account->subscriptionCancel();
+            $account->subscriptionCancel();
         } catch (StripeException $e) {
             return back()
                 ->withInput()

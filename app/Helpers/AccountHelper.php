@@ -40,7 +40,7 @@ class AccountHelper
      */
     public static function hasReachedContactLimit(Account $account): bool
     {
-        return $account->allContacts()->real()->active()->count() >= config('monica.number_of_allowed_contacts_free_account');
+        return $account->allContacts()->real()->active()->count() > config('monica.number_of_allowed_contacts_free_account');
     }
 
     /**
