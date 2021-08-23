@@ -136,7 +136,6 @@ class InstanceHelperTest extends TestCase
             '$5.00',
             InstanceHelper::getPlanInformationFromSubscription($subscription)['friendlyPrice']
         );
-
     }
 
     /** @test */
