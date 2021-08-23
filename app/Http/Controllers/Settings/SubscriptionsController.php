@@ -138,6 +138,7 @@ class SubscriptionsController extends Controller
             $plans->push(InstanceHelper::getPlanInformationFromConfig($plan));
         }
 
+        $legacyPlan = null;
         if (! $plans->contains(function ($value) use ($planInformation) {
             return $value['id'] === $planInformation['id'];
         })) {

@@ -36,3 +36,7 @@ parameters:
           path: */Http/Controllers/Api/ApiContactController.php
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::sortedBy\(\)\.#'
           path: */Traits/Searchable.php
+        - message: '#Access to an undefined property Stripe\\Subscription::\$plan\.#'
+          path: */Helpers/InstanceHelper.php
+        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::active\(\)\.#'
+          path: */Traits/Subscription.php
