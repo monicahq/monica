@@ -57,8 +57,14 @@ class InstanceHelper
     {
         $plan = $subscription->asStripeSubscription()->plan;
 
+        if (is_null($plan)) {
+            return null;
+        }
+
         $currency = Currency::where('iso', strtoupper($plan->currency))->first();
         $amount = MoneyHelper::format($plan->amount, $currency);
+
+        $name = $subscription->name;
 
         return [
             'type' => $plan->interval === 'month' ? 'monthly' : 'annual',
