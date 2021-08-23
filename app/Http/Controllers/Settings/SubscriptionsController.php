@@ -276,7 +276,7 @@ class SubscriptionsController extends Controller
             ->with('numberOfPendingInvitations', $account->invitations()->count())
             ->with('numberOfUsers', $account->users()->count())
             ->with('accountHasLimitations', AccountHelper::hasLimitations($account))
-            ->with('hasReachedContactLimit', AccountHelper::hasReachedContactLimit($account))
+            ->with('hasReachedContactLimit', ! AccountHelper::isBelowContactLimit($account))
             ->with('canDowngrade', AccountHelper::canDowngrade($account));
     }
 
