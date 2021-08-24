@@ -1,47 +1,63 @@
-<style scoped>
+<style lang="scss" scoped>
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity .4s
+}
+
+.journal-list {
+  &:last-child {
+    border-bottom: 0;
+  }
 }
 </style>
 
 <template>
   <div class="mw9 center">
     <!-- Left sidebar -->
-    <div :class="[ dirltr ? 'fl' : 'fr' ]" class="w-70-ns w-100 pa2">
+    <div :class="[ dirltr ? 'fl' : 'fr' ]" class="w-70-ns w-100 pa2 cf">
       <!-- How was your day -->
       <journal-rate-day @hasRated="hasRated" />
 
-      <!-- Logs -->
-      <div v-if="journalEntries.data" v-cy-name="'journal-entries-body'" v-cy-items="journalEntries.data.map(j => j.id)" :cy-object-items="journalEntries.data.map(j => j.object.id)">
-        <div v-for="journalEntry in journalEntries.data" :key="journalEntry.id" v-cy-name="'entry-body-' + journalEntry.id" class="cf">
-          <journal-content-rate v-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Day'" :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
+      <div :class="[ dirltr ? 'fl' : 'fr' ]" class="w-30-ns">
+        <!-- Entries -->
+        <div v-if="journalEntries.data" class="ba b--gray-monica br3 bg-white">
+          <div v-for="entry in journalEntries.data" :key="entry.id" class="pa3 bb b--gray-monica journal-list">
+            <p class="mb1 f7 gray">{{ entry.written_at }}</p>
 
-          <journal-content-activity v-else-if="journalEntry.journalable_type == 'App\\Models\\Account\\Activity'" :journal-entry="journalEntry" />
+            <h3 class="mb1">
+              {{ entry.title }}
+            </h3>
 
-          <journal-content-entry v-else-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Entry'" :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
+            <span dir="auto" class="markdown" v-html="entry.post"></span>
+          </div>
+        </div>
+
+        <!-- load more button -->
+        <div v-if="(journalEntries.per_page * journalEntries.current_page) <= journalEntries.total" class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc">
+          <p class="mb0 pointer" @click="loadMore()">
+            <span v-if="!loadingMore">
+              {{ $t('app.load_more') }}
+            </span>
+            <span v-else class="black-50">
+              {{ $t('app.loading') }}
+            </span>
+          </p>
+        </div>
+
+        <!-- blank state -->
+        <div v-if="journalEntries.total === 0" class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc">
+          <div class="tc mb4">
+            <img src="img/journal/blank.svg" :alt="$t('journal.journal_empty')" />
+          </div>
+          <h3>
+            {{ $t('journal.journal_blank_cta') }}
+          </h3>
+          <p>{{ $t('journal.journal_blank_description') }}</p>
         </div>
       </div>
 
-      <div v-if="(journalEntries.per_page * journalEntries.current_page) <= journalEntries.total" class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc">
-        <p class="mb0 pointer" @click="loadMore()">
-          <span v-if="!loadingMore">
-            {{ $t('app.load_more') }}
-          </span>
-          <span v-else class="black-50">
-            {{ $t('app.loading') }}
-          </span>
-        </p>
-      </div>
+      <div :class="[ dirltr ? 'fl' : 'fr' ]" class="w-70-ns pl3">
 
-      <div v-if="journalEntries.total === 0" v-cy-name="'journal-blank-state'" class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc">
-        <div class="tc mb4">
-          <img src="img/journal/blank.svg" :alt="$t('journal.journal_empty')" />
-        </div>
-        <h3>
-          {{ $t('journal.journal_blank_cta') }}
-        </h3>
-        <p>{{ $t('journal.journal_blank_description') }}</p>
       </div>
     </div>
 
@@ -109,18 +125,18 @@ export default {
     },
 
     // This event is omited from the child component
-    deleteJournalEntry: function($journalEntryId) {
+    deleteentry: function($entryId) {
       // check if the deleted entry date is today. If that's the case
       // we need to put back the Rate box. This is only necessary if
       // the user does all his actions on the same page without ever
       // reloading the page.
       this.journalEntries.data.filter(function(obj) {
-        return obj.id == $journalEntryId;
+        return obj.id == $entryId;
       });
 
       // Filter out the array without the deleted Journal Entry
       this.journalEntries.data = this.journalEntries.data.filter(function(element) {
-        return element.id !== $journalEntryId;
+        return element.id !== $entryId;
       });
     },
 

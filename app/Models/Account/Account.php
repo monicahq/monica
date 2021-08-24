@@ -302,13 +302,13 @@ class Account extends Model
     }
 
     /**
-     * Get the Journal Entries records associated with the account.
+     * Get the Entries records associated with the account.
      *
      * @return HasMany
      */
     public function journalEntries()
     {
-        return $this->hasMany(JournalEntry::class)->orderBy('date', 'desc');
+        return $this->hasMany(Entry::class)->orderBy('written_at', 'desc');
     }
 
     /**

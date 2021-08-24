@@ -243,23 +243,8 @@ Vue.component(
 );
 
 Vue.component(
-  'JournalCalendar',
-  require('./components/journal/partials/JournalCalendar.vue').default
-);
-
-Vue.component(
-  'JournalContentRate',
-  require('./components/journal/partials/JournalContentRate.vue').default
-);
-
-Vue.component(
-  'JournalContentActivity',
-  require('./components/journal/partials/JournalContentActivity.vue').default
-);
-
-Vue.component(
-  'JournalContentEntry',
-  require('./components/journal/partials/JournalContentEntry.vue').default
+  'CreateJournal',
+  require('./components/journal/Create.vue').default
 );
 
 // Settings

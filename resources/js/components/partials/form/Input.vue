@@ -18,7 +18,7 @@
       class="mb2"
       :class="{ b: required, error: validator && validator.$error }"
     >
-      {{ title }}
+      {{ title }} <span v-if="!required">{{ $t('app.optional') }}</span>
     </label>
     <input
       :id="realid"

@@ -211,5 +211,6 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Instance\AuditLog\LogAccountAction::class => \App\Services\Instance\AuditLog\LogAccountAction::class,
         \App\Services\User\UpdateViewPreference::class => \App\Services\User\UpdateViewPreference::class,
         \App\Services\User\AcceptPolicy::class => \App\Services\User\AcceptPolicy::class,
+        \App\Services\Journal\CreateJournalEntry::class => \App\Services\Journal\CreateJournalEntry::class,
     ];
 }

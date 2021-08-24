@@ -31,6 +31,7 @@ textarea:focus {
       :style="textareaStyle"
       @input="$emit('input', buffer)"
     ></textarea>
+    <p v-if="supportsMarkdown" class="f6">{{ $t('app.markdown_description')}} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="noopener noreferrer">{{ $t('app.markdown_link') }}</a></p>
   </div>
 </template>
 
@@ -65,6 +66,10 @@ export default {
     rows: {
       type: Number,
       default: 0,
+    },
+    supportsMarkdown: {
+      type: Boolean,
+      default: false,
     }
   },
 

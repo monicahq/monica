@@ -10,6 +10,9 @@ use App\Helpers\JournalHelper;
 use App\Models\Journal\JournalEntry;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Journal\DaysRequest;
+use App\Services\Journal\CreateJournalEntry;
+use Parsedown;
+use Illuminate\Support\Str;
 
 class JournalController extends Controller
 {
@@ -20,7 +23,7 @@ class JournalController extends Controller
      */
     public function index()
     {
-        return view('journal.index');
+        return view('journal.index')->withEntries($entries);
     }
 
     /**
@@ -30,33 +33,20 @@ class JournalController extends Controller
     public function list()
     {
         $entries = collect([]);
-        $journalEntries = auth()->user()->account->journalEntries()->paginate(30);
+        $journalEntries = auth()->user()->account->journalEntries()->get();
 
-        // this is needed to determine if we need to display the calendar
-        // (month + year) next to the journal entry
-        $previousEntryMonth = 0;
-        $previousEntryYear = 0;
-        $showCalendar = true;
-
-        foreach ($journalEntries->items() as $journalEntry) {
-            if ($previousEntryMonth == $journalEntry->date->month && $previousEntryYear == $journalEntry->date->year) {
-                $showCalendar = false;
-            }
-
+        foreach ($journalEntries as $journalEntry) {
             $data = [
                 'id' => $journalEntry->id,
-                'date' => $journalEntry->date,
-                'journalable_id' => $journalEntry->journalable_id,
-                'journalable_type' => $journalEntry->journalable_type,
-                'object' => $journalEntry->getObjectData(),
-                'show_calendar' => $showCalendar,
+                'written_at' => DateHelper:: getShortDate($journalEntry->written_at),
+                'title' => $journalEntry->title,
+                'post' => Str::limit($journalEntry->post, 20),
             ];
             $entries->push($data);
-
-            $previousEntryMonth = $journalEntry->date->month;
-            $previousEntryYear = $journalEntry->date->year;
-            $showCalendar = true;
         }
+
+        // get first post
+        $firstPost = $journalEntries->first();
 
         // I need the pagination items when I send back the array.
         // There is probably a simpler way to achieve this.
@@ -67,6 +57,7 @@ class JournalController extends Controller
             'next_page_url' => $journalEntries->nextPageUrl(),
             'prev_page_url' => $journalEntries->previousPageUrl(),
             'data' => $entries,
+            'post' => $firstPost,
         ];
     }
 
@@ -146,8 +137,11 @@ class JournalController extends Controller
      */
     public function save(Request $request)
     {
+        $user = $request->user();
+
         $validator = Validator::make($request->all(), [
-            'entry' => 'required|string',
+            'post' => 'required|string',
+            'title' => 'nullable|string',
             'date' => 'required|date',
         ]);
 
@@ -157,21 +151,16 @@ class JournalController extends Controller
                 ->withErrors($validator);
         }
 
-        $entry = new Entry;
-        $entry->account_id = $request->user()->account_id;
-        $entry->post = $request->input('entry');
+        app(CreateJournalEntry::class)->execute([
+            'account_id' => $user->account_id,
+            'title' => $request->input('title'),
+            'post' => $request->input('post'),
+            'date' => $request->input('date'),
+        ]);
 
-        if ($request->input('title') != '') {
-            $entry->title = $request->input('title');
-        }
-
-        $entry->save();
-
-        $entry->date = $request->input('date');
-        // Log a journal entry
-        JournalEntry::add($entry);
-
-        return redirect()->route('journal.index');
+        return response()->json([
+            'data' => route('journal.index'),
+        ], 201);
     }
 
     /**
