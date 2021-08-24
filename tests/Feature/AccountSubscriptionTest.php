@@ -287,8 +287,7 @@ class AccountSubscriptionTest extends FeatureTestCase
 
         $response = $this->get('/settings/subscriptions/update');
 
-        $response->assertSee("Monthly – $1.00");
-        $response->assertSee("Annual – $5.00");
+        $response->assertSee('Monthly – $1.00');
+        $response->assertSee('Annual – $5.00');
     }
-
 }
