@@ -56,10 +56,12 @@ class SubscriptionsController extends Controller
             $invoices = $account->invoices();
         }
 
-        $planInformation = InstanceHelper::getPlanInformationFromSubscription($subscription);
-
-        if ($planInformation === null) {
-            abort(404);
+        try {
+            $planInformation = $this->stripeCall(function () use ($subscription) {
+                return InstanceHelper::getPlanInformationFromSubscription($subscription);
+            });
+        } catch (StripeException $e) {
+            $planInformation = null;
         }
 
         return view('settings.subscriptions.account', [

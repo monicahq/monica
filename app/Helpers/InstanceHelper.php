@@ -55,16 +55,24 @@ class InstanceHelper
      */
     public static function getPlanInformationFromSubscription(\Laravel\Cashier\Subscription $subscription): ?array
     {
-        $plan = $subscription->asStripeSubscription()->plan;
+        try {
+            $plan = $subscription->asStripeSubscription()->plan;
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            $plan = null;
+        }
 
         if (is_null($plan)) {
-            return null;
+            return [
+                'type' => $subscription->stripe_plan,
+                'name' => $subscription->name,
+                'id' => $subscription->stripe_id,
+                'price' => '?',
+                'friendlyPrice' => '?',
+            ];
         }
 
         $currency = Currency::where('iso', strtoupper($plan->currency))->first();
         $amount = MoneyHelper::format($plan->amount, $currency);
-
-        $name = $subscription->name;
 
         return [
             'type' => $plan->interval === 'month' ? 'monthly' : 'annual',
