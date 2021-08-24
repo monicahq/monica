@@ -2,12 +2,8 @@
 
 namespace App\Services\Journal;
 
-use App\Models\Account\Place;
 use App\Models\Journal\Entry;
 use App\Services\BaseService;
-use App\Services\Account\Place\CreatePlace;
-use App\Services\Contact\Label\UpdateAddressLabels;
-use Parsedown;
 
 class CreateJournalEntry extends BaseService
 {
