@@ -195,22 +195,20 @@ class UpdateContactIntroduction extends BaseService
             return;
         }
 
-        if ($data['add_reminder']) {
-            $reminder = app(CreateReminder::class)->execute([
-                'account_id' => $data['account_id'],
-                'contact_id' => $data['contact_id'],
-                'initial_date' => DateHelper::getDate($specialDate),
-                'frequency_type' => 'year',
-                'frequency_number' => 1,
-                'title' => trans(
-                    'people.introductions_reminder_title',
-                    ['name' => $contact->first_name]
-                ),
-                'delible' => false,
-            ]);
+        $reminder = app(CreateReminder::class)->execute([
+            'account_id' => $data['account_id'],
+            'contact_id' => $data['contact_id'],
+            'initial_date' => DateHelper::getDate($specialDate),
+            'frequency_type' => 'year',
+            'frequency_number' => 1,
+            'title' => trans(
+                'people.introductions_reminder_title',
+                ['name' => $contact->first_name]
+            ),
+            'delible' => false,
+        ]);
 
-            $contact->first_met_reminder_id = $reminder->id;
-            $contact->save();
-        }
+        $contact->first_met_reminder_id = $reminder->id;
+        $contact->save();
     }
 }
