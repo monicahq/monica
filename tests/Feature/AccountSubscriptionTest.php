@@ -274,6 +274,15 @@ class AccountSubscriptionTest extends FeatureTestCase
         $this->fail();
     }
 
+    public function test_it_get_blank_page_on_update_if_not_subscribed()
+    {
+        $this->signin();
+
+        $response = $this->get('/settings/subscriptions/update');
+
+        $response->assertSee('Upgrade Monica today and have more meaningful relationships.');
+    }
+
     public function test_it_get_subscription_update()
     {
         $user = $this->signin();
@@ -289,5 +298,23 @@ class AccountSubscriptionTest extends FeatureTestCase
 
         $response->assertSee('Monthly – $1.00');
         $response->assertSee('Annual – $5.00');
+    }
+
+    public function test_it_process_subscription_update()
+    {
+        $user = $this->signin();
+        $user->email = 'test_it_subscribe@monica-test.com';
+        $user->save();
+
+        $response = $this->post('/settings/subscriptions/processPayment', [
+            'payment_method' => 'pm_card_visa',
+            'plan' => 'monthly',
+        ]);
+
+        $response = $this->followingRedirects()->post('/settings/subscriptions/update', [
+            'frequency' => 'annual'
+        ]);
+
+        $response->assertSee('You are on the Annual plan.');
     }
 }
