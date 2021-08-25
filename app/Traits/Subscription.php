@@ -49,15 +49,17 @@ trait Subscription
             abort(404);
         }
 
-        $newSubscription = $this->stripeCall(function () use ($subscription, $plan) {
+        $subscription = $this->stripeCall(function () use ($subscription, $plan) {
             return $subscription->swap($plan['id']);
         });
 
-        if ($newSubscription->stripe_plan !== $oldPlan && $newSubscription->stripe_plan === $plan['id']) {
+        if ($subscription->stripe_plan !== $oldPlan && $subscription->stripe_plan === $plan['id']) {
             $subscription->forceFill([
                 'name' => $plan['name']
             ])->save();
         }
+
+        return $subscription;
     }
 
     /**
