@@ -140,7 +140,7 @@ return [
 
     'relationship_type_partner' => '搭档',
     'relationship_type_partner_female' => '搭档',
-    'relationship_type_partner_with_name' => ':name的搭档',
+    'relationship_type_partner_with_name' => ':name的情侣',
     'relationship_type_partner_female_with_name' => ':name的搭档',
 
     'relationship_type_spouse' => '配偶',
