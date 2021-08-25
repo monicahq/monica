@@ -36,3 +36,5 @@ parameters:
           path: */Http/Controllers/Api/ApiContactController.php
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::sortedBy\(\)\.#'
           path: */Traits/Searchable.php
+        - message: '#Access to an undefined property Faker\\Generator::\$state\.#'
+          path: */Console/Commands/SetupTest.php
