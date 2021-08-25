@@ -55,7 +55,7 @@ trait Subscription
 
         if ($newSubscription->stripe_plan !== $oldPlan && $newSubscription->stripe_plan === $plan['id']) {
             $subscription->forceFill([
-                'name' => $plan['name']
+                'name' => $plan['name'],
             ])->save();
         }
     }
