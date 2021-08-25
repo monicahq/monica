@@ -312,7 +312,7 @@ class AccountSubscriptionTest extends FeatureTestCase
         ]);
 
         $response = $this->followingRedirects()->post('/settings/subscriptions/update', [
-            'frequency' => 'annual'
+            'frequency' => 'annual',
         ]);
 
         $response->assertSee('You are on the Annual plan.');
