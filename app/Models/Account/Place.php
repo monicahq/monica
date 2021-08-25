@@ -88,8 +88,6 @@ class Place extends Model
         if (is_string($address)) {
             return $address;
         }
-
-        return null;
     }
 
     /**

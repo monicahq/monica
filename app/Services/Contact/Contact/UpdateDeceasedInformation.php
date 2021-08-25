@@ -147,21 +147,19 @@ class UpdateDeceasedInformation extends BaseService
             return;
         }
 
-        if ($data['add_reminder']) {
-            $reminder = app(CreateReminder::class)->execute([
-                'account_id' => $data['account_id'],
-                'contact_id' => $data['contact_id'],
-                'initial_date' => DateHelper::getDate($specialDate),
-                'frequency_type' => 'year',
-                'frequency_number' => 1,
-                'title' => trans(
-                    'people.deceased_reminder_title',
-                    ['name' => $contact->first_name]
-                ),
-            ]);
+        $reminder = app(CreateReminder::class)->execute([
+            'account_id' => $data['account_id'],
+            'contact_id' => $data['contact_id'],
+            'initial_date' => DateHelper::getDate($specialDate),
+            'frequency_type' => 'year',
+            'frequency_number' => 1,
+            'title' => trans(
+                'people.deceased_reminder_title',
+                ['name' => $contact->first_name]
+            ),
+        ]);
 
-            $contact->deceased_reminder_id = $reminder->id;
-            $contact->save();
-        }
+        $contact->deceased_reminder_id = $reminder->id;
+        $contact->save();
     }
 }
