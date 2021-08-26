@@ -81,7 +81,9 @@ return [
     'locale_ar' => 'Arabe',
     'locale_cs' => 'Tchèque',
     'locale_de' => 'Allemand',
+    'locale_el' => 'Greek',
     'locale_en' => 'Anglais',
+    'locale_en-GB' => 'Anglais (Royaume-Uni)',
     'locale_es' => 'Espagnol',
     'locale_fr' => 'Francais',
     'locale_he' => 'Hébreu',
@@ -98,7 +100,6 @@ return [
     'locale_zh' => 'Chinois Simplifié',
     'locale_zh-TW' => 'Chinois Traditionnel',
     'locale_tr' => 'Turc',
-    'locale_en-GB' => 'Anglais (Royaume-Uni)',
 
     'security_title' => 'Sécurité',
     'security_help' => 'Changer les questions de sécurité pour votre compte.',
