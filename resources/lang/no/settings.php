@@ -81,7 +81,9 @@ return [
     'locale_ar' => 'Arabisk',
     'locale_cs' => 'Tsjekkisk',
     'locale_de' => 'Tysk',
+    'locale_el' => 'Greek',
     'locale_en' => 'Engelsk',
+    'locale_en-GB' => 'English (United Kingdom)',
     'locale_es' => 'Spansk',
     'locale_fr' => 'Fransk',
     'locale_he' => 'Hebraisk',
@@ -98,7 +100,6 @@ return [
     'locale_zh' => 'Chinese Simplified',
     'locale_zh-TW' => 'Chinese Traditional',
     'locale_tr' => 'Turkish',
-    'locale_en-GB' => 'English (United Kingdom)',
 
     'security_title' => 'Sikkerhet',
     'security_help' => 'Endre sikkerhetsinnstillinger for din konto.',
