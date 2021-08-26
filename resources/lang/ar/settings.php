@@ -81,7 +81,9 @@ return [
     'locale_ar' => 'العربية',
     'locale_cs' => 'التشيكية',
     'locale_de' => 'الألمانية',
+    'locale_el' => 'Greek',
     'locale_en' => 'الإنجليزية',
+    'locale_en-GB' => 'English (United Kingdom)',
     'locale_es' => 'الإسبانية',
     'locale_fr' => 'الفرنسية',
     'locale_he' => 'العبرية',
@@ -98,7 +100,6 @@ return [
     'locale_zh' => 'الصينية المبسطة',
     'locale_zh-TW' => 'Chinese Traditional',
     'locale_tr' => 'التركية',
-    'locale_en-GB' => 'English (United Kingdom)',
 
     'security_title' => 'الأمن',
     'security_help' => 'قم بتغيير المسائل الأمنية للحساب الخاص بك.',
