@@ -81,7 +81,9 @@ return [
     'locale_ar' => '阿拉伯文',
     'locale_cs' => '捷克文',
     'locale_de' => '德文',
+    'locale_el' => 'Greek',
     'locale_en' => '英文',
+    'locale_en-GB' => '英语 (英国)',
     'locale_es' => '西班牙文',
     'locale_fr' => '法文',
     'locale_he' => '希伯来文',
@@ -98,7 +100,6 @@ return [
     'locale_zh' => '简体中文',
     'locale_zh-TW' => 'Chinese Traditional',
     'locale_tr' => '土耳其文',
-    'locale_en-GB' => '英语 (英国)',
 
     'security_title' => '安全',
     'security_help' => '更改您的帐户的安全选项。',
