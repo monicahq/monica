@@ -200,7 +200,7 @@ return [
     'subscriptions_account_upgrade_title' => 'Faça um upgrade no Monica hoje e tenha relações mais significativas.',
     'subscriptions_account_upgrade_choice' => 'Escolha um plano abaixo e junte-se a :customers pessoas que fizeram upgrade em seu Monica.',
     'subscriptions_account_update_title' => 'Atualizar minha Assinatura',
-    'subscriptions_account_update_description' => 'You can change your subscription’s frequency here.',
+    'subscriptions_account_update_description' => 'Aqui você pode alterar a frequência de pagamento da sua assinatura.',
     'subscriptions_account_update_information' => 'A cobrança do novo valor será feita imediatamente. Sua assinatura será estendida dependendo da sua escolha.',
     'subscriptions_account_invoices' => 'Faturas',
     'subscriptions_account_invoices_download' => 'Download',
@@ -243,7 +243,7 @@ return [
 
     'subscriptions_pdf_title' => 'Sua assinatura mensal :name',
     'subscriptions_plan_frequency_year' => ':amount / ano',
-    'subscriptions_plan_frequency_month' => ':amount / month',
+    'subscriptions_plan_frequency_month' => ':amount / mês',
     'subscriptions_plan_choose' => 'Escolha este plano',
     'subscriptions_plan_year_title' => 'Pagar anualmente',
     'subscriptions_plan_year_bonus' => 'Tranquilidade para um ano inteiro',
