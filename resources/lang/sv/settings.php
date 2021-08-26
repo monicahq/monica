@@ -81,7 +81,9 @@ return [
     'locale_ar' => 'Arabiska',
     'locale_cs' => 'Tjeckiska',
     'locale_de' => 'Tyska',
+    'locale_el' => 'Greek',
     'locale_en' => 'Engelska',
+    'locale_en-GB' => 'Engelska (Storbritannien)',
     'locale_es' => 'Spanska',
     'locale_fr' => 'Franska',
     'locale_he' => 'Hebreiska',
@@ -98,7 +100,6 @@ return [
     'locale_zh' => 'Kinesiska, förenklad',
     'locale_zh-TW' => 'Kinesiska Traditionell',
     'locale_tr' => 'Turkiska',
-    'locale_en-GB' => 'Engelska (Storbritannien)',
 
     'security_title' => 'Säkerhet',
     'security_help' => 'Ändra säkerhetsfrågor för ditt konto.',
