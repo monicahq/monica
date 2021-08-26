@@ -81,7 +81,9 @@ return [
     'locale_ar' => 'Arabisch',
     'locale_cs' => 'Tsjechisch',
     'locale_de' => 'Duits',
+    'locale_el' => 'Greek',
     'locale_en' => 'Engels',
+    'locale_en-GB' => 'Engels (Verenigd Koninkrijk)',
     'locale_es' => 'Spaans',
     'locale_fr' => 'Frans',
     'locale_he' => 'Hebreeuws',
@@ -98,7 +100,6 @@ return [
     'locale_zh' => 'Chinees (vereenvoudigd)',
     'locale_zh-TW' => 'Traditioneel Chinees',
     'locale_tr' => 'Turks',
-    'locale_en-GB' => 'Engels (Verenigd Koninkrijk)',
 
     'security_title' => 'Beveiliging',
     'security_help' => 'Verander de beveiligingsinstellingen voor je account.',
