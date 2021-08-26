@@ -32,6 +32,7 @@ return [
             'en',
             'ar',
             'de',
+            'el',
             'en-GB' => 'en-GB',
             'es',
             'fr',

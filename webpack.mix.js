@@ -10,6 +10,7 @@ mix.webpackConfig({
         'en',
         'ar',
         'de',
+        'el',
         'en-GB',
         'es',
         'fr',
