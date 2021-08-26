@@ -81,7 +81,9 @@ return [
     'locale_ar' => 'ערבית',
     'locale_cs' => 'צ׳כית',
     'locale_de' => 'גרמנית',
+    'locale_el' => 'Greek',
     'locale_en' => 'אנגלית',
+    'locale_en-GB' => 'אנגלית בריטית',
     'locale_es' => 'ספרדית',
     'locale_fr' => 'צרפתית',
     'locale_he' => 'עברית',
@@ -98,7 +100,6 @@ return [
     'locale_zh' => 'סינית מפושטת',
     'locale_zh-TW' => 'סינית מסורתית',
     'locale_tr' => 'טורקית',
-    'locale_en-GB' => 'אנגלית בריטית',
 
     'security_title' => 'אבטחה',
     'security_help' => 'שינוי נדבכי האבטחה של החשבון שלך.',
