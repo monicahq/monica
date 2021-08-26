@@ -81,7 +81,9 @@ return [
     'locale_ar' => 'Arabisch',
     'locale_cs' => 'Tschechisch',
     'locale_de' => 'Deutsch',
+    'locale_el' => 'Greek',
     'locale_en' => 'Englisch',
+    'locale_en-GB' => 'Englisch (Vereinigtes Königreich)',
     'locale_es' => 'Spanisch',
     'locale_fr' => 'Französisch',
     'locale_he' => 'Hebräisch',
@@ -98,7 +100,6 @@ return [
     'locale_zh' => 'Vereinfachtes Chinesisch',
     'locale_zh-TW' => 'Chinesisch (Traditionell)',
     'locale_tr' => 'Türkisch',
-    'locale_en-GB' => 'Englisch (Vereinigtes Königreich)',
 
     'security_title' => 'Sicherheit',
     'security_help' => 'Ändere die Sicherheitseinstellungen für dein Konto.',
