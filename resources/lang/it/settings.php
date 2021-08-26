@@ -81,7 +81,9 @@ return [
     'locale_ar' => 'Arabo',
     'locale_cs' => 'Ceco',
     'locale_de' => 'Tedesco',
+    'locale_el' => 'Greek',
     'locale_en' => 'Inglese',
+    'locale_en-GB' => 'Inglese (Regno Unito)',
     'locale_es' => 'Spagnolo',
     'locale_fr' => 'Francese',
     'locale_he' => 'Ebraico',
@@ -98,7 +100,6 @@ return [
     'locale_zh' => 'Cinese semplificato',
     'locale_zh-TW' => 'Cinese Tradizionale',
     'locale_tr' => 'Turco',
-    'locale_en-GB' => 'Inglese (Regno Unito)',
 
     'security_title' => 'Sicurezza',
     'security_help' => 'Modifica le impostazioni di sicurezza relative al tuo account',
