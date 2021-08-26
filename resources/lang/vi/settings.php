@@ -81,7 +81,9 @@ return [
     'locale_ar' => 'Tiếng Ả Rập',
     'locale_cs' => 'Tiếng Séc',
     'locale_de' => 'Tiếng Đức',
+    'locale_el' => 'Greek',
     'locale_en' => 'Tiếng Anh',
+    'locale_en-GB' => 'Tiếng Anh (Vương Quốc Anh)',
     'locale_es' => 'Tiếng Tây Ban Nha',
     'locale_fr' => 'Tiếng Pháp',
     'locale_he' => 'Tiếng Do Thái',
@@ -98,7 +100,6 @@ return [
     'locale_zh' => 'Tiếng Trung Giản thể',
     'locale_zh-TW' => 'Tiếng Trung phồn thể',
     'locale_tr' => 'Tiếng Thổ Nhĩ Kỳ',
-    'locale_en-GB' => 'Tiếng Anh (Vương Quốc Anh)',
 
     'security_title' => 'Bảo mật',
     'security_help' => 'Thay đổi các vấn đề bảo mật cho tài khoản của bạn.',
