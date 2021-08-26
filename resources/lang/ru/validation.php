@@ -156,11 +156,11 @@ return [
 
     'vue' => [
         'max' => [
-            'numeric' => '{field} may not be greater than {max}.',
-            'string' => '{field} may not be greater than {max} characters.',
+            'numeric' => '{field} не может быть больше, чем {max}.',
+            'string' => 'Количество символов в {field} не может превышать {max}.',
         ],
-        'required' => '{field} is required.',
-        'url' => '{field} is not a valid URL.',
+        'required' => '{field} обязательно.',
+        'url' => '{field} не является действительным URL.',
     ],
 
 ];

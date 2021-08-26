@@ -44,6 +44,8 @@ class DestroyMessage extends BaseService
                             ->where('conversation_id', $data['conversation_id'])
                             ->findOrFail($data['message_id']);
 
+        $message->contact->throwInactive();
+
         $message->delete();
 
         return true;

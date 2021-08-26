@@ -3,6 +3,8 @@
 namespace App\Services\Contact\Document;
 
 use App\Services\BaseService;
+use App\Helpers\AccountHelper;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
 
@@ -32,8 +34,15 @@ class UploadDocument extends BaseService
     {
         $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
+        $account = Account::find($data['account_id']);
+        if (AccountHelper::hasLimitations($account)) {
+            abort(402);
+        }
+
+        $contact = Contact::where('account_id', $data['account_id'])
                 ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $array = $this->populateData($data);
 
@@ -58,7 +67,10 @@ class UploadDocument extends BaseService
             'mime_type' => (new \Mimey\MimeTypes)->getMimeType($document->guessClientExtension()),
         ];
 
-        $filename = $document->storePublicly('documents', config('filesystems.default'));
+        $filename = $document->store('documents', [
+            'disk' => config('filesystems.default'),
+            'visibility' => config('filesystems.default_visibility'),
+        ]);
 
         return array_merge($data, [
             'new_filename' => $filename,

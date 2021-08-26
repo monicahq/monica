@@ -48,6 +48,46 @@ class InstanceHelper
     }
 
     /**
+     * Get the plan information for the given time period.
+     *
+     * @param  \Laravel\Cashier\Subscription $subscription
+     * @return array|null
+     */
+    public static function getPlanInformationFromSubscription(\Laravel\Cashier\Subscription $subscription): ?array
+    {
+        try {
+            $stripeSubscription = $subscription->asStripeSubscription();
+            $plan = $stripeSubscription->plan;
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            $stripeSubscription = null;
+            $plan = null;
+        }
+
+        if (is_null($stripeSubscription) || is_null($plan)) {
+            return [
+                'type' => $subscription->stripe_plan,
+                'name' => $subscription->name,
+                'id' => $subscription->stripe_id,
+                'price' => '?',
+                'friendlyPrice' => '?',
+                'nextBillingDate' => '',
+            ];
+        }
+
+        $currency = Currency::where('iso', strtoupper($plan->currency))->first();
+        $amount = MoneyHelper::format($plan->amount, $currency);
+
+        return [
+            'type' => $plan->interval === 'month' ? 'monthly' : 'annual',
+            'name' => $subscription->name,
+            'id' => $plan->id,
+            'price' => $plan->amount,
+            'friendlyPrice' => $amount,
+            'nextBillingDate' => DateHelper::getFullDate($stripeSubscription->current_period_end),
+        ];
+    }
+
+    /**
      * Get changelogs entries.
      *
      * @param int $limit

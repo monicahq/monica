@@ -524,7 +524,7 @@ class ContactTest extends FeatureTestCase
         ]);
 
         $this->assertStringContainsString(
-            'storage/defaultURL',
+            'store/defaultURL',
             $contact->getAvatarURL()
         );
 
@@ -559,7 +559,7 @@ class ContactTest extends FeatureTestCase
         $contact->save();
 
         $this->assertEquals(
-            config('app.url').'/storage/'.$photo->new_filename,
+            config('app.url').'/store/'.$photo->new_filename,
             $contact->getAvatarURL()
         );
     }
@@ -1003,7 +1003,7 @@ class ContactTest extends FeatureTestCase
             'timezone' => 'America/New_York',
         ]);
 
-        dispatch(new ScheduleStayInTouch($contact));
+        ScheduleStayInTouch::dispatch($contact);
 
         NotificationFacade::assertSentTo($user, StayInTouchEmail::class,
             function ($notification, $channels) use ($contact) {

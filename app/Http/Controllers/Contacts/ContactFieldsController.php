@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Contacts;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Models\Contact\ContactField;
-use Illuminate\Support\Facades\Auth;
 use App\Jobs\Avatars\GetAvatarsFromInternet;
 use App\Http\Requests\People\ContactFieldsRequest;
 

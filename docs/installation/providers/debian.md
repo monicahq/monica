@@ -21,6 +21,8 @@ Monica depends on the following:
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 -   PHP 7.4+
 -   [Composer](https://getcomposer.org/)
+-   [Node.js](https://nodejs.org)
+-   [Yarn](https://yarnpkg.com)
 -   MySQL / MariaDB
 
 An editor like vim or nano should be useful too.
@@ -40,17 +42,39 @@ sudo apt install -y git
 
 **PHP:**
 
+If you are using Debian 10 or lower, PHP 7.4 is not available from the Debian project directly.  Instead use the [deb.sury.org](https://deb.sury.org/) package repository from Ondřej Surý, maintainer of the mainline Debian packages.
+
+```sh
+sudo wget -q https://packages.sury.org/php/apt.gpg -O /etc/apt/trusted.gpg.d/php-sury.gpg
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php-sury.list
+sudo apt update
+```
+
+
 Install PHP 7.4 with these extensions:
 
 ```sh
-sudo apt install -y php php-bcmath php-curl php-gd php-gmp php-imagick \
-    php-intl php-mbstring php-mysql php-xml php-zip
+sudo apt install -y php7.4 php7.4-bcmath php7.4-curl php7.4-gd php7.4-gmp \
+    php7.4-intl php7.4-mbstring php7.4-mysql php7.4-redis php7.4-xml php7.4-zip
 ```
 
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager.
 
 ```sh
-sudo apt install -y composer
+wget -q -O - https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin/ --filename=composer
+```
+
+**Node.js:** Install node.js with package manager.
+
+```sh
+wget -q -O - https://deb.nodesource.com/setup_14.x | sudo bash -
+sudo apt install -y nodejs
+```
+
+**Yarn:** Install yarn with npm.
+
+```sh
+sudo npm install --global yarn
 ```
 
 **MariaDB:** Install MariaDB. Note that this only installs the package, but does not setup Mysql. This is done later in the instructions:
@@ -77,8 +101,10 @@ Find the latest official version on the [release page](https://github.com/monica
 
 ```sh
 cd /var/www/monica
+# Get latest tags from GitHub
+sudo git fetch
 # Clone the desired version
-sudo git checkout tags/v1.6.2
+sudo git checkout tags/v2.18.0
 ```
 
 ### 2. Setup the database
@@ -98,7 +124,7 @@ sudo mysql -uroot -p
 Create a database called 'monica'.
 
 ```sql
-CREATE DATABASE monica;
+CREATE DATABASE monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 Create a user called 'monica' and its password 'strongpassword'.
@@ -125,16 +151,17 @@ exit
 `cd /var/www/monica` then run these steps with `sudo`:
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
-1. Update `.env` to your specific needs
+2. Update `.env` to your specific needs
     - set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
     - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
     - set the `APP_ENV` variable to `production`, `local` is only used for the development version. Beware: setting `APP_ENV` to `production` will force HTTPS. Skip this if you're running Monica locally.
-1. Run `composer install --no-interaction --no-dev` to install all packages.
-1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-1. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
+3. Run `composer install --no-interaction --no-dev` to install all packages.
+4. Run `yarn install` to install frontend packages, then `yarn run production` to build the assets (js, css).
+5. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
+6. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
     - You can use `email` and `password` parameter to setup a first account directly: `php artisan setup:production --email=your@email.com --password=yourpassword -v`
-1. _Optional_: Setup the queues with Redis, Beanstalk or Amazon SQS: see optional instruction of [generic installation](generic.md#setup-queues)
-1. _Optional_: Setup the access tokens to use the API follow optional instruction of [generic installation](generic.md#setup-access-tokens)
+7. _Optional_: Setup the queues with Redis, Beanstalk or Amazon SQS: see optional instruction of [generic installation](generic.md#setup-queues)
+8. _Optional_: Setup the access tokens to use the API follow optional instruction of [generic installation](generic.md#setup-access-tokens)
 
 ### 4. Configure cron job
 
@@ -145,7 +172,7 @@ To do this, setup a cron that runs every minute that triggers the following comm
 Run the crontab command:
 
 ```sh
-crontab -u www-data -e
+sudo crontab -u www-data -e
 ```
 
 Then, in the `crontab` editor window you just opened, paste the following at the end of the document:

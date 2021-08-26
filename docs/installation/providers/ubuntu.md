@@ -22,6 +22,8 @@ Monica depends on the following:
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 -   PHP 7.4+
 -   [Composer](https://getcomposer.org/)
+-   [Node.js](https://nodejs.org)
+-   [Yarn](https://yarnpkg.com)
 -   [MySQL](https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/)
 
 **Apache:** If it doesn't come pre-installed with your server, follow the [instructions here](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04#step-1-install-apache-and-allow-in-firewall) to setup Apache and config the firewall.
@@ -53,9 +55,9 @@ Then install php 7.4 with these extensions:
 
 ```sh
 sudo apt update
-sudo apt install -y php7.4 php7.4-cli php7.4-common php7.4-fpm \
-    php7.4-json php7.4-opcache php7.4-mysql php7.4-mbstring php7.4-zip \
-    php7.4-bcmath php7.4-intl php7.4-xml php7.4-curl php7.4-gd php7.4-gmp php7.4-imagick
+sudo apt install -y php7.4 php7.4-bcmath php7.4-cli php7.4-curl php7.4-common \
+    php7.4-fpm php7.4-gd php7.4-gmp php7.4-intl php7.4-json php7.4-mbstring \
+    php7.4-mysql php7.4-opcache php7.4-redis php7.4-xml php7.4-zip
 ```
 
 **Composer:** After you're done installing PHP, you'll need the [Composer](https://getcomposer.org/download/) dependency manager.
@@ -68,6 +70,19 @@ rm -f composer-setup.php
 ```
 
 (or you can follow instruction on [getcomposer.org](https://getcomposer.org/download/) page)
+
+**Node.js:** Install node.js with package manager.
+
+```sh
+curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+sudo apt install -y nodejs
+```
+
+**Yarn:** Install yarn with npm.
+
+```sh
+sudo npm install --global yarn
+```
 
 **Mysql:** Install Mysql 5.7. Note that this only installs the package, but does not setup Mysql. This is done later in the instructions:
 
@@ -97,7 +112,10 @@ You should check out a tagged version of Monica since `master` branch may not al
 
 ```sh
 cd /var/www/monica
-git checkout tags/v2.2.1
+# Get latest tags from GitHub
+git fetch
+# Clone the desired version
+git checkout tags/v2.18.0
 ```
 
 ### 2. Setup the database
@@ -111,7 +129,7 @@ mysql -u root -p
 Create a database called 'monica'.
 
 ```sql
-CREATE DATABASE monica;
+CREATE DATABASE monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 Create a user called 'monica' and its password 'strongpassword'.
@@ -120,7 +138,7 @@ Create a user called 'monica' and its password 'strongpassword'.
 CREATE USER 'monica'@'localhost' IDENTIFIED BY 'strongpassword';
 ```
 
-We have to authorize the new user on the monica db so that he is allowed to change the database.
+We have to authorize the new user on the `monica` db so that he is allowed to change the database.
 
 ```sql
 GRANT ALL ON monica.* TO 'monica'@'localhost';
@@ -138,16 +156,17 @@ exit
 `cd /var/www/monica` then run these steps:
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
-1. Update `.env` to your specific needs
+2. Update `.env` to your specific needs
     - set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
     - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
     - set the `APP_ENV` variable to `production`, `local` is only used for the development version. Beware: setting `APP_ENV` to `production` will force HTTPS. Skip this if you're running Monica locally.
-1. Run `composer install --no-interaction --no-dev` to install all packages.
-1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-1. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
+3. Run `composer install --no-interaction --no-dev` to install all packages.
+4. Run `yarn install` to install frontend packages, then `yarn run production` to build the assets (js, css).
+5. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
+6. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
     - You can use `email` and `password` parameter to setup a first account directly: `php artisan setup:production --email=your@email.com --password=yourpassword -v`
-1. _Optional_: Setup the queues with Redis, Beanstalk or Amazon SQS: see optional instruction of [generic installation](generic.md#setup-queues)
-1. _Optional_: Setup the access tokens to use the API follow optional instruction of [generic installation](generic.md#setup-access-tokens)
+7. _Optional_: Setup the queues with Redis, Beanstalk or Amazon SQS: see optional instruction of [generic installation](generic.md#setup-queues)
+8. _Optional_: Setup the access tokens to use the API follow optional instruction of [generic installation](generic.md#setup-access-tokens)
 
 ### 4. Configure cron job
 

@@ -49,6 +49,8 @@ class UpdateOccupation extends BaseService
             ->where('company_id', $data['company_id'])
             ->findOrFail($data['occupation_id']);
 
+        $occupation->contact->throwInactive();
+
         $occupation->update([
             'title' => $data['title'],
             'description' => $this->nullOrValue($data, 'description'),

@@ -141,7 +141,7 @@ class DateHelper
     /**
      * Return a date in a full format like "October 29, 1981".
      *
-     * @param string $date
+     * @param string|int $date
      * @return string
      */
     public static function getFullDate($date): string

@@ -13,7 +13,6 @@
         "ext-bcmath": "*",
         "ext-gd": "*",
         "ext-gmp": "*",
-        "ext-imagick": "*",
         "ext-intl": "*",
         "ext-redis": "*",
         "asbiin/laravel-webauthn": "^1.0",
@@ -58,6 +57,7 @@
         "web-token/jwt-signature-algorithm-ecdsa": "^2.1",
         "web-token/jwt-signature-algorithm-eddsa": "^2.1",
         "web-token/jwt-signature-algorithm-rsa": "^2.1",
+        "werk365/etagconditionals": "^1.2",
         "xantios/mimey": "^2.0"
     },
     "require-dev": {
@@ -66,6 +66,7 @@
         "khanamiryan/qrcode-detector-decoder": "^1.0",
         "laravel/dusk": "^6.0",
         "laravel/legacy-factories": "^1.0",
+        "laravel/tinker": "^2.6",
         "matthiasnoback/live-code-coverage": "^1",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^5.0",

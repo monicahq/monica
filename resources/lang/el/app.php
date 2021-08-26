@@ -31,7 +31,7 @@ return [
     'new' => 'νέο',
     'unknown' => 'Δεν γνωρίζω',
     'load_more' => 'Εμφάνιση περισσότερων',
-    'loading' => 'Loading…',
+    'loading' => 'Φόρτωση…',
     'with' => 'με',
     'today' => 'σήμερα',
     'yesterday' => 'χθες',
@@ -64,14 +64,14 @@ return [
     'main_nav_activities' => 'Δραστηριότητες',
     'main_nav_tasks' => 'Εργασίες',
 
-    'footer_remarks' => 'Comments?',
-    'footer_send_email' => 'Send us an email',
+    'footer_remarks' => 'Σχόλια;',
+    'footer_send_email' => 'Στείλτε μας ένα email',
     'footer_privacy' => 'Πολιτική απορρήτου',
     'footer_release' => 'Σημειώσεις έκδοσης',
     'footer_newsletter' => 'Newsletter',
     'footer_source_code' => 'Συμβάλλετε',
     'footer_version' => 'Έκδοση :version',
-    'footer_new_version' => 'A new version of Monica is available',
+    'footer_new_version' => 'Μια νέα έκδοση της εφαρμογής Monica είναι διαθέσιμη',
 
     'footer_modal_version_whats_new' => 'Τι νέο υπάρχει;',
     'footer_modal_version_release_away' => 'Είστε 1 έκδοση πίσω από την τελευταία διαθέσιμη έκδοση. Θα πρέπει να αναβαθμίσετε την εγκατάσταση σας.|Είστε :number εκδόσεις πίσω από την τελευταία διαθέσιμη έκδοση. Θα πρέπει να αναβαθμίσετε την εγκατάσταση σας.',
@@ -113,7 +113,7 @@ return [
     'error_try_again' => 'Κάτι πήγε στραβά. Παρακαλώ προσπαθήστε ξανά.',
     'error_id' => 'ID Σφάλματος: :id',
     'error_unavailable' => 'Η υπηρεσία δεν είναι διαθέσιμη',
-    'error_maintenance' => 'Maintenance in progress. We’ll be right back.',
+    'error_maintenance' => 'Συντήρηση σε εξέλιξη. Θα επιστρέψουμε σύντομα.',
     'error_help' => 'Θα επιστρέψουμε σύντομα.',
     'error_twitter' => 'Ακολουθήστε <a href="https://twitter.com/:twitter">το λογαριασμό μας στο Twitter</a> για να ενημερωθείτε όταν επανέλθουμε.',
     'error_no_term' => 'Δεν υπάρχει πολιτική για αυτή την εγκατάσταση ακόμη.',
@@ -465,7 +465,7 @@ return [
 
     // contact list
     'contact_list_avatar' => 'Avatar',
-    'contact_list_name' => 'Contact',
-    'contact_list_description' => 'Description',
+    'contact_list_name' => 'Επαφή',
+    'contact_list_description' => 'Περιγραφή',
 
 ];

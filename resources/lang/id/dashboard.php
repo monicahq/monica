@@ -7,36 +7,36 @@
  */
 
 return [
-    'dashboard_blank_title' => 'Welcome to your account!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the people you care about.',
-    'dashboard_blank_cta' => 'Add your first contact',
-    'dashboard_blank_illustration' => 'Illustration by <a href=":url">Freepik</a>',
+    'dashboard_blank_title' => 'Wilujeng sumping ke akun Anda!',
+    'dashboard_blank_description' => 'Monica adalah tempat untuk mengatur semua interaksi yang Anda miliki dengan orang-orang yang Anda sayangi.',
+    'dashboard_blank_cta' => 'Tambahkan kontak pertama Anda',
+    'dashboard_blank_illustration' => 'Ilustrasi oleh <a href=":url">Freepik</a>',
 
-    'notes_title' => 'You don’t have any starred notes yet.',
+    'notes_title' => 'Anda belum punya catatan apa pun yang telah dilihat.',
 
-    'tab_recent_calls' => 'Recent calls',
-    'tab_favorite_notes' => 'Favorite notes',
-    'tab_calls_blank' => 'You haven’t logged any calls yet.',
-    'tab_debts' => 'Debts',
-    'tab_debts_blank' => 'You haven’t logged any debts yet.',
-    'tab_tasks' => 'Tasks',
-    'tab_tasks_blank' => 'You haven’t any tasks yet.',
+    'tab_recent_calls' => 'Panggilan terbaru',
+    'tab_favorite_notes' => 'Catatan favorit',
+    'tab_calls_blank' => 'Anda belum mencatat panggilan.',
+    'tab_debts' => 'Hutang',
+    'tab_debts_blank' => 'Anda belum mencatat hutang apa pun.',
+    'tab_tasks' => 'Tugas',
+    'tab_tasks_blank' => 'Anda belum punya tugas apa pun.',
 
-    'tasks_add_task_placeholder' => 'What is this task about?',
-    'tasks_tab_your_contacts' => 'Tasks related to your contacts',
-    'tasks_tab_your_tasks' => 'Your tasks',
-    'tasks_add_note' => 'Press <kbd>Enter</kbd> to add the task.',
-    'task_add_cta' => 'Add a task',
+    'tasks_add_task_placeholder' => 'Tugas ini tentang apa?',
+    'tasks_tab_your_contacts' => 'Tugas yang berhubungan dengan kontak Anda',
+    'tasks_tab_your_tasks' => 'Tugas Anda',
+    'tasks_add_note' => 'Tekan <kbd>Enter</kbd> untuk menambahkan tugas.',
+    'task_add_cta' => 'Tambah sebuah tugas',
 
-    'debts_you_owe' => 'You owe',
+    'debts_you_owe' => 'Anda berhutang',
 
-    'statistics_contacts' => 'Contacts',
-    'statistics_activities' => 'Activities',
-    'statistics_gifts' => 'Gifts',
+    'statistics_contacts' => 'Kontak',
+    'statistics_activities' => 'Aktifitas',
+    'statistics_gifts' => 'Hadiah',
 
-    'reminders_next_months' => 'Events in the next 3 months',
-    'reminders_none' => 'No reminders for this month.',
+    'reminders_next_months' => 'Peristiwa dalam 3 bulan ke depan',
+    'reminders_none' => 'Tidak ada pengingat untuk bulan ini.',
 
-    'product_changes' => 'Product changes',
-    'product_view_details' => 'View details',
+    'product_changes' => 'Perubahan produk',
+    'product_view_details' => 'Lihat rincian',
 ];

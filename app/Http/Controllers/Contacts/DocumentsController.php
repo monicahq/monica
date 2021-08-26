@@ -17,6 +17,16 @@ class DocumentsController extends Controller
     use JsonRespondController;
 
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('limitations')->only('store');
+    }
+
+    /**
      * Display the list of documents.
      *
      * @param Contact $contact
@@ -40,6 +50,8 @@ class DocumentsController extends Controller
      */
     public function store(Request $request, Contact $contact): Document
     {
+        $contact->throwInactive();
+
         return app(UploadDocument::class)->execute([
             'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Models\User\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use function Safe\json_decode;
 use Illuminate\Http\JsonResponse;
@@ -190,7 +191,7 @@ class OAuthController extends Controller
      */
     private function proxy(array $data = []): array
     {
-        $url = App::runningUnitTests() ? config('app.url').'/oauth/token' : route('passport.token');
+        $url = App::runningUnitTests() ? Str::of(config('app.url'))->ltrim('/').'/oauth/token' : route('passport.token');
         /** @var \Illuminate\Http\Response */
         $response = app(Kernel::class)->handle(Request::create($url, 'POST', [
             'grant_type' => $data['grantType'],
