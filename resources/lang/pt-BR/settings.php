@@ -183,8 +183,8 @@ return [
 
     'subscriptions_account_next_billing_title' => 'Próximo pagamento',
     'subscriptions_account_next_billing' => 'Sua assinatura será renovada automaticamente em <strong>:date</strong>.',
-    'subscriptions_account_bill_monthly' => 'We’ll bill you <strong>:price</strong> for another <strong>month</strong>.',
-    'subscriptions_account_bill_annual' => 'We’ll bill you <strong>:price</strong> for another <strong>year</strong>.',
+    'subscriptions_account_bill_monthly' => 'Vamos cobrar <strong>:price</strong> por mais um <strong>mês</strong>.',
+    'subscriptions_account_bill_annual' => 'Vamos cobrar <strong>:price</strong> por mais um <strong>ano</strong>.',
     'subscriptions_account_change' => 'Alterar Plano',
 
     'subscriptions_account_cancel_title' => 'Cancelar assinatura',
