@@ -81,7 +81,9 @@ return [
     'locale_ar' => 'Арабский',
     'locale_cs' => 'Чешский',
     'locale_de' => 'Немецкий',
+    'locale_el' => 'Greek',
     'locale_en' => 'Английский',
+    'locale_en-GB' => 'Английский (Великобритания)',
     'locale_es' => 'Испанский',
     'locale_fr' => 'Французский',
     'locale_he' => 'Иврит',
@@ -98,7 +100,6 @@ return [
     'locale_zh' => 'Китайский упрощенный',
     'locale_zh-TW' => 'Китайский традиционный',
     'locale_tr' => 'Турецкий',
-    'locale_en-GB' => 'Английский (Великобритания)',
 
     'security_title' => 'Безопасность',
     'security_help' => 'Change security matters for your account.',
