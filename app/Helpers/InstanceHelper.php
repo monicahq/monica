@@ -81,7 +81,7 @@ class InstanceHelper
             'id' => $stripeSubscription->plan->id,
             'price' => $stripeSubscription->plan->amount,
             'friendlyPrice' => $amount,
-            'nextBillingDate' => DateHelper::getFullDate((string) $stripeSubscription->current_period_end)
+            'nextBillingDate' => DateHelper::getFullDate((string) $stripeSubscription->current_period_end),
         ];
     }
 

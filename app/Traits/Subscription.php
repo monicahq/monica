@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use App\Helpers\DateHelper;
 use Laravel\Cashier\Billable;
 use App\Helpers\InstanceHelper;
 
