@@ -156,22 +156,6 @@ class AccountSubscriptionTest extends FeatureTestCase
         $this->assertEquals('Annual', $user->account->getSubscribedPlanName());
     }
 
-    public function test_it_get_next_billing_date()
-    {
-        $user = $this->signin();
-
-        factory(Subscription::class)->create([
-            'account_id' => $user->account_id,
-            'name' => 'Annual',
-            'stripe_plan' => 'annual',
-            'stripe_id' => 'test',
-            'quantity' => 1,
-        ]);
-
-        $this->expectException(\App\Exceptions\StripeException::class);
-        $user->account->getNextBillingDate();
-    }
-
     public function test_it_throw_an_error_on_cancel()
     {
         $user = $this->signin();

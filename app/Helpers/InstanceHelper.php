@@ -56,30 +56,32 @@ class InstanceHelper
     public static function getPlanInformationFromSubscription(\Laravel\Cashier\Subscription $subscription): ?array
     {
         try {
-            $plan = $subscription->asStripeSubscription()->plan;
+            $stripeSubscription = $subscription->asStripeSubscription();
         } catch (\Stripe\Exception\ApiErrorException $e) {
-            $plan = null;
+            $stripeSubscription = null;
         }
 
-        if (is_null($plan)) {
+        if (is_null($stripeSubscription)) {
             return [
                 'type' => $subscription->stripe_plan,
                 'name' => $subscription->name,
                 'id' => $subscription->stripe_id,
                 'price' => '?',
                 'friendlyPrice' => '?',
+                'nextBillingDate' => '',
             ];
         }
 
-        $currency = Currency::where('iso', strtoupper($plan->currency))->first();
-        $amount = MoneyHelper::format($plan->amount, $currency);
+        $currency = Currency::where('iso', strtoupper($stripeSubscription->plan->currency))->first();
+        $amount = MoneyHelper::format($stripeSubscription->plan->amount, $currency);
 
         return [
-            'type' => $plan->interval === 'month' ? 'monthly' : 'annual',
+            'type' => $stripeSubscription->plan->interval === 'month' ? 'monthly' : 'annual',
             'name' => $subscription->name,
-            'id' => $plan->id,
-            'price' => $plan->amount,
+            'id' => $stripeSubscription->plan->id,
+            'price' => $stripeSubscription->plan->amount,
             'friendlyPrice' => $amount,
+            'nextBillingDate' => DateHelper::getFullDate((string) $stripeSubscription->current_period_end)
         ];
     }
 

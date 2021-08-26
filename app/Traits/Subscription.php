@@ -83,7 +83,7 @@ trait Subscription
      */
     public function getSubscribedPlan()
     {
-        return $this->subscriptions()->active()->first();
+        return $this->subscriptions()->recurring()->first();
     }
 
     /**
@@ -138,25 +138,5 @@ trait Subscription
     public function hasInvoices()
     {
         return $this->subscriptions()->count() > 0;
-    }
-
-    /**
-     * Get the next billing date for the account.
-     *
-     * @return string
-     */
-    public function getNextBillingDate()
-    {
-        // Weird method to get the next billing date from Laravel Cashier
-        // see https://stackoverflow.com/questions/41576568/get-next-billing-date-from-laravel-cashier
-        return $this->stripeCall(function () {
-            $subscriptions = $this->asStripeCustomer()['subscriptions'];
-            if (! $subscriptions || count($subscriptions->data) <= 0) {
-                return '';
-            }
-            $timestamp = $subscriptions->data[0]['current_period_end'];
-
-            return DateHelper::getFullDate($timestamp);
-        });
     }
 }

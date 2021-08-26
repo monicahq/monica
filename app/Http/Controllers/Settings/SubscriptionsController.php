@@ -44,12 +44,6 @@ class SubscriptionsController extends Controller
             ]);
         }
 
-        try {
-            $nextBillingDate = $account->getNextBillingDate();
-        } catch (StripeException $e) {
-            $nextBillingDate = trans('app.unknown');
-        }
-
         $hasInvoices = $account->hasStripeId() && $account->hasInvoices();
         $invoices = null;
         if ($hasInvoices) {
@@ -66,7 +60,6 @@ class SubscriptionsController extends Controller
 
         return view('settings.subscriptions.account', [
             'planInformation' => $planInformation,
-            'nextBillingDate' => $nextBillingDate,
             'subscription' => $subscription,
             'hasInvoices' => $hasInvoices,
             'invoices' => $invoices,
