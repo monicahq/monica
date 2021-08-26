@@ -1,3 +1,20 @@
+# [3.2.0](https://github.com/monicahq/monica/compare/v3.1.3...v3.2.0) (2021-08-26)
+
+
+### Features
+
+* activate greek language ([#5453](https://github.com/monicahq/monica/issues/5453)) ([c571001](https://github.com/monicahq/monica/commit/c571001e066375167e105aa18b7d5ce18bd5e0af))
+* add path style URL support for S3 buckets ([#5362](https://github.com/monicahq/monica/issues/5362)) ([ee6206a](https://github.com/monicahq/monica/commit/ee6206a08064fdf799aa87051ecd2c0bfc48f9fb))
+* add Portuguese-BR language ([#5333](https://github.com/monicahq/monica/issues/5333)) ([aca3c7a](https://github.com/monicahq/monica/commit/aca3c7a5bfc862084799b4de5e9afb4163f6bd31))
+* add Vietnamese language ([#5343](https://github.com/monicahq/monica/issues/5343)) ([bf2d570](https://github.com/monicahq/monica/commit/bf2d570bd71c645f23b393beebd3550fddb993d4))
+* allow to update a subscription frequency ([#5436](https://github.com/monicahq/monica/issues/5436)) ([e298c63](https://github.com/monicahq/monica/commit/e298c63dd2beb1e8f048cbf32a1dc36e66ce4061))
+* revoke session from other browser after a password change ([#5328](https://github.com/monicahq/monica/issues/5328)) ([a4c037f](https://github.com/monicahq/monica/commit/a4c037f539e282491496995925159463edec6629))
+
+
+### Bug Fixes
+
+* contact name population on delete confirmation ([#5431](https://github.com/monicahq/monica/issues/5431)) ([ffd0e86](https://github.com/monicahq/monica/commit/ffd0e867361d916d00b4e0d654a537a4d6f8b998))
+
 ## [3.1.3](https://github.com/monicahq/monica/compare/v3.1.2...v3.1.3) (2021-06-28)
 
 
