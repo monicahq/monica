@@ -81,7 +81,9 @@ return [
     'locale_ar' => 'Arapça',
     'locale_cs' => 'Çekçe',
     'locale_de' => 'Almanca',
+    'locale_el' => 'Greek',
     'locale_en' => 'İngilizce',
+    'locale_en-GB' => 'İngilizce (Birleşik Krallık)',
     'locale_es' => 'İspanyolca',
     'locale_fr' => 'Fransızca',
     'locale_he' => 'İbranice',
@@ -98,7 +100,6 @@ return [
     'locale_zh' => 'Çince (Basitleştirilmiş)',
     'locale_zh-TW' => 'Geleneksel Çince',
     'locale_tr' => 'Türkçe',
-    'locale_en-GB' => 'İngilizce (Birleşik Krallık)',
 
     'security_title' => 'Güvenlik',
     'security_help' => 'Hesabınız için güvenlik unsurlarını değiştirin.',
