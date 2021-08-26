@@ -81,7 +81,7 @@ return [
     'locale_ar' => 'Arabe',
     'locale_cs' => 'Tchèque',
     'locale_de' => 'Allemand',
-    'locale_el' => 'Greek',
+    'locale_el' => 'Grec',
     'locale_en' => 'Anglais',
     'locale_en-GB' => 'Anglais (Royaume-Uni)',
     'locale_es' => 'Espagnol',
