@@ -26,10 +26,7 @@ class AccountHelperTest extends TestCase
             'has_access_to_paid_version_for_free' => true,
         ]);
 
-        $this->assertEquals(
-            false,
-            AccountHelper::hasLimitations($account)
-        );
+        $this->assertFalse(AccountHelper::hasLimitations($account));
 
         // Check that if the ENV variable REQUIRES_SUBSCRIPTION has an effect
         $account = factory(Account::class)->make([
@@ -38,10 +35,7 @@ class AccountHelperTest extends TestCase
 
         config(['monica.requires_subscription' => false]);
 
-        $this->assertEquals(
-            false,
-            AccountHelper::hasLimitations($account)
-        );
+        $this->assertFalse(AccountHelper::hasLimitations($account));
     }
 
     /** @test */
@@ -53,23 +47,20 @@ class AccountHelperTest extends TestCase
         ]);
 
         config(['monica.number_of_allowed_contacts_free_account' => 1]);
-        $this->assertTrue(
-            AccountHelper::hasReachedContactLimit($account)
-        );
+        $this->assertTrue(AccountHelper::hasReachedContactLimit($account));
+        $this->assertFalse(AccountHelper::isBelowContactLimit($account));
 
         factory(Contact::class)->state('partial')->create([
             'account_id' => $account->id,
         ]);
 
         config(['monica.number_of_allowed_contacts_free_account' => 3]);
-        $this->assertFalse(
-            AccountHelper::hasReachedContactLimit($account)
-        );
+        $this->assertFalse(AccountHelper::hasReachedContactLimit($account));
+        $this->assertTrue(AccountHelper::isBelowContactLimit($account));
 
         config(['monica.number_of_allowed_contacts_free_account' => 100]);
-        $this->assertFalse(
-            AccountHelper::hasReachedContactLimit($account)
-        );
+        $this->assertFalse(AccountHelper::hasReachedContactLimit($account));
+        $this->assertTrue(AccountHelper::isBelowContactLimit($account));
 
         $account = factory(Account::class)->create();
         factory(Contact::class, 2)->create([
@@ -82,9 +73,8 @@ class AccountHelperTest extends TestCase
         ]);
 
         config(['monica.number_of_allowed_contacts_free_account' => 3]);
-        $this->assertTrue(
-            AccountHelper::hasReachedContactLimit($account)
-        );
+        $this->assertTrue(AccountHelper::hasReachedContactLimit($account));
+        $this->assertTrue(AccountHelper::isBelowContactLimit($account));
     }
 
     /** @test */
@@ -97,10 +87,7 @@ class AccountHelperTest extends TestCase
             'account_id' => $contact->account_id,
         ]);
 
-        $this->assertEquals(
-            true,
-            AccountHelper::canDowngrade($contact->account)
-        );
+        $this->assertTrue(AccountHelper::canDowngrade($contact->account));
     }
 
     /** @test */
@@ -112,10 +99,7 @@ class AccountHelperTest extends TestCase
             'account_id' => $contact->account_id,
         ]);
 
-        $this->assertEquals(
-            false,
-            AccountHelper::canDowngrade($contact->account)
-        );
+        $this->assertFalse(AccountHelper::canDowngrade($contact->account));
     }
 
     /** @test */
@@ -127,10 +111,7 @@ class AccountHelperTest extends TestCase
             'account_id' => $account->id,
         ]);
 
-        $this->assertEquals(
-            false,
-            AccountHelper::canDowngrade($account)
-        );
+        $this->assertFalse(AccountHelper::canDowngrade($account));
     }
 
     /** @test */
@@ -143,9 +124,7 @@ class AccountHelperTest extends TestCase
             'account_id' => $account->id,
         ]);
 
-        $this->assertFalse(
-            AccountHelper::canDowngrade($account)
-        );
+        $this->assertFalse(AccountHelper::canDowngrade($account));
     }
 
     /** @test */
@@ -153,10 +132,7 @@ class AccountHelperTest extends TestCase
     {
         $account = factory(Account::class)->create();
 
-        $this->assertEquals(
-            Gender::UNKNOWN,
-            AccountHelper::getDefaultGender($account)
-        );
+        $this->assertEquals(Gender::UNKNOWN, AccountHelper::getDefaultGender($account));
 
         $gender = factory(Gender::class)->create([
             'account_id' => $account->id,
@@ -164,10 +140,7 @@ class AccountHelperTest extends TestCase
         $account->default_gender_id = $gender->id;
         $account->save();
 
-        $this->assertEquals(
-            $gender->type,
-            AccountHelper::getDefaultGender($account)
-        );
+        $this->assertEquals($gender->type, AccountHelper::getDefaultGender($account));
     }
 
     /** @test */
@@ -181,10 +154,7 @@ class AccountHelperTest extends TestCase
         ]);
 
         // check if there are reminders for the month of March
-        $this->assertEquals(
-            0,
-            AccountHelper::getUpcomingRemindersForMonth($account, 3)->count()
-        );
+        $this->assertCount(0, AccountHelper::getUpcomingRemindersForMonth($account, 3));
     }
 
     /** @test */
@@ -207,10 +177,7 @@ class AccountHelperTest extends TestCase
             $reminder->schedule($user);
         }
 
-        $this->assertEquals(
-            3,
-            AccountHelper::getUpcomingRemindersForMonth($account, 2)->count()
-        );
+        $this->assertCount(3, AccountHelper::getUpcomingRemindersForMonth($account, 2));
     }
 
     /** @test */
