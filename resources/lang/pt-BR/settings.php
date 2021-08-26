@@ -178,7 +178,7 @@ return [
     'users_invitation_need_subscription' => 'Adicionar mais usuários requer uma assinatura.',
 
     'subscriptions_account_current_plan' => 'Seu plano atual',
-    'subscriptions_account_current_legacy' => 'Current plan, not selectable anymore:',
+    'subscriptions_account_current_legacy' => 'Plano atual, não pode mais ser selecionado:',
     'subscriptions_account_current_paid_plan' => 'Você está no plano :name. Muito obrigado por ser um assinante.',
 
     'subscriptions_account_next_billing_title' => 'Next bill',
