@@ -81,7 +81,9 @@ return [
     'locale_ar' => 'Arab',
     'locale_cs' => 'Ceko',
     'locale_de' => 'Jerman',
+    'locale_el' => 'Greek',
     'locale_en' => 'Inggris',
+    'locale_en-GB' => 'Inggris (Britania Raya)',
     'locale_es' => 'Spanyol',
     'locale_fr' => 'Perancis',
     'locale_he' => 'Ibrani',
@@ -98,7 +100,6 @@ return [
     'locale_zh' => 'Cina Sederhana',
     'locale_zh-TW' => 'Cina Tradisional',
     'locale_tr' => 'Turki',
-    'locale_en-GB' => 'Inggris (Britania Raya)',
 
     'security_title' => 'Keamanan',
     'security_help' => 'Ubah hal tentang keamanan untuk akun Anda.',
