@@ -34,7 +34,6 @@
 
           <p class="tc mb4">{{ trans('settings.subscriptions_account_update_description') }}</p>
 
-
           @if ($legacyPlan)
             <div>
               <input type="radio" class="mr1" id="frequencycurrent" name="frequency" checked disabled>
@@ -57,8 +56,12 @@
               </div>
             @endforeach
 
-            <button type="submit" class="btn btn-primary">{{ trans('app.save') }}</button>
-            <a href="{{ route('settings.subscriptions.index') }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+            <p class="ma3 alert alert-success">{{ trans('settings.subscriptions_account_update_information') }}</p>
+
+            <div class="tc">
+              <button type="submit" class="btn btn-primary">{{ trans('app.confirm') }}</button>
+              <a href="{{ route('settings.subscriptions.index') }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+            </div>
           </form>
 
         </div>

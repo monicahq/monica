@@ -48,6 +48,11 @@ trait Subscription
             abort(404);
         }
 
+        if ($oldPlan === $planName) {
+            // No change
+            return $subscription;
+        }
+
         $subscription = $this->stripeCall(function () use ($subscription, $plan) {
             return $subscription->swap($plan['id']);
         });
