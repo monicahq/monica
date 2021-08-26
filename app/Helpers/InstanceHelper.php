@@ -57,11 +57,13 @@ class InstanceHelper
     {
         try {
             $stripeSubscription = $subscription->asStripeSubscription();
+            $plan = $stripeSubscription->plan;
         } catch (\Stripe\Exception\ApiErrorException $e) {
             $stripeSubscription = null;
+            $plan = null;
         }
 
-        if (is_null($stripeSubscription)) {
+        if (is_null($stripeSubscription) || is_null($plan)) {
             return [
                 'type' => $subscription->stripe_plan,
                 'name' => $subscription->name,
@@ -72,16 +74,16 @@ class InstanceHelper
             ];
         }
 
-        $currency = Currency::where('iso', strtoupper($stripeSubscription->plan->currency))->first();
-        $amount = MoneyHelper::format($stripeSubscription->plan->amount, $currency);
+        $currency = Currency::where('iso', strtoupper($plan->currency))->first();
+        $amount = MoneyHelper::format($plan->amount, $currency);
 
         return [
-            'type' => $stripeSubscription->plan->interval === 'month' ? 'monthly' : 'annual',
+            'type' => $plan->interval === 'month' ? 'monthly' : 'annual',
             'name' => $subscription->name,
-            'id' => $stripeSubscription->plan->id,
-            'price' => $stripeSubscription->plan->amount,
+            'id' => $plan->id,
+            'price' => $plan->amount,
             'friendlyPrice' => $amount,
-            'nextBillingDate' => DateHelper::getFullDate((string) $stripeSubscription->current_period_end)
+            'nextBillingDate' => DateHelper::getFullDate($stripeSubscription->current_period_end)
         ];
     }
 
