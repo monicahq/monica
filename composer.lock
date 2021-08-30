@@ -2133,20 +2133,20 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.12.30",
+            "version": "8.12.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "8b0986654eb5b16d5edb06a6e6533d2bef39a600"
+                "reference": "2d79a2443df5a693286510a24a308a0625a8132c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/8b0986654eb5b16d5edb06a6e6533d2bef39a600",
-                "reference": "8b0986654eb5b16d5edb06a6e6533d2bef39a600",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/2d79a2443df5a693286510a24a308a0625a8132c",
+                "reference": "2d79a2443df5a693286510a24a308a0625a8132c",
                 "shasum": ""
             },
             "require": {
-                "giggsey/locale": "^1.7",
+                "giggsey/locale": "^1.7|^2.0",
                 "php": ">=5.3.2",
                 "symfony/polyfill-mbstring": "^1.17"
             },
@@ -2202,36 +2202,37 @@
                 "issues": "https://github.com/giggsey/libphonenumber-for-php/issues",
                 "source": "https://github.com/giggsey/libphonenumber-for-php"
             },
-            "time": "2021-08-17T07:25:43+00:00"
+            "time": "2021-08-24T07:02:46+00:00"
         },
         {
             "name": "giggsey/locale",
-            "version": "1.9",
+            "version": "2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/Locale.git",
-                "reference": "b07f1eace8072ccc61445ad8fbd493ff9d783043"
+                "reference": "f28e0fa55e842afe034a7671df79757731467031"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/Locale/zipball/b07f1eace8072ccc61445ad8fbd493ff9d783043",
-                "reference": "b07f1eace8072ccc61445ad8fbd493ff9d783043",
+                "url": "https://api.github.com/repos/giggsey/Locale/zipball/f28e0fa55e842afe034a7671df79757731467031",
+                "reference": "f28e0fa55e842afe034a7671df79757731467031",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2"
+                "php": ">=7.2"
             },
             "require-dev": {
+                "ext-json": "*",
                 "pear/pear-core-minimal": "^1.9",
                 "pear/pear_exception": "^1.0",
                 "pear/versioncontrol_git": "^0.5",
-                "phing/phing": "~2.7",
-                "php-coveralls/php-coveralls": "^1.0|^2.0",
-                "phpunit/phpunit": "^4.8|^5.0",
-                "symfony/console": "^2.8|^3.0|^4.0",
-                "symfony/filesystem": "^2.8|^3.0|^4.0",
-                "symfony/finder": "^2.8|^3.0|^4.0",
-                "symfony/process": "^2.8|^3.0|^4.0"
+                "phing/phing": "^2.7",
+                "php-coveralls/php-coveralls": "^2.0",
+                "phpunit/phpunit": "^8.5|^9.5",
+                "symfony/console": "^5.0",
+                "symfony/filesystem": "^5.0",
+                "symfony/finder": "^5.0",
+                "symfony/process": "^5.0"
             },
             "type": "library",
             "autoload": {
@@ -2247,15 +2248,15 @@
                 {
                     "name": "Joshua Gigg",
                     "email": "giggsey@gmail.com",
-                    "homepage": "http://giggsey.com/"
+                    "homepage": "https://giggsey.com/"
                 }
             ],
             "description": "Locale functions required by libphonenumber-for-php",
             "support": {
                 "issues": "https://github.com/giggsey/Locale/issues",
-                "source": "https://github.com/giggsey/Locale/tree/master"
+                "source": "https://github.com/giggsey/Locale/tree/2.0"
             },
-            "time": "2020-07-07T11:16:24+00:00"
+            "time": "2021-08-23T09:01:14+00:00"
         },
         {
             "name": "graham-campbell/manager",
