@@ -49,6 +49,8 @@ class TagsController extends Controller
      */
     public function update(Request $request, Contact $contact): void
     {
+        $contact->throwInactive();
+
         $tags = $request->all();
 
         // detaching all the tags

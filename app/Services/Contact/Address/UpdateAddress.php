@@ -49,8 +49,10 @@ class UpdateAddress extends BaseService
             ->where('contact_id', $data['contact_id'])
             ->findOrFail($data['address_id']);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $this->updatePlace($data, $address);
 

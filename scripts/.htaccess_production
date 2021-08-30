@@ -11,7 +11,7 @@
 
     <IfModule mod_headers.c>
         # Activate HSTS
-        Header always set Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;"
+        Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload;"
 
         Header always set Referrer-Policy "no-referrer"
         Header always set X-Content-Type-Options "nosniff"
@@ -22,19 +22,8 @@
         Header always set X-XSS-Protection "1; mode=block"
 
         # Assets expire after 1 month
-        <filesMatch ".(css|js|woff2?|svg|png|gif|json)$">
-            Header set Cache-Control "public, max-age=15768000"
-
-            # Activate HSTS
-            Header always set Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;"
-
-            Header always set Referrer-Policy "no-referrer"
-            Header always set X-Content-Type-Options "nosniff"
-            Header always set X-Download-Options "noopen"
-            Header always set X-Frame-Options "SAMEORIGIN"
-            Header always set X-Permitted-Cross-Domain-Policies "none"
-            Header always set X-Robots-Tag "none"
-            Header always set X-XSS-Protection "1; mode=block"
+        <filesMatch ".(css|js|json|woff2?|ttf|eot|svg)$">
+            Header set Cache-Control "public, max-age=2628000"
         </filesMatch>
     </IfModule>
 

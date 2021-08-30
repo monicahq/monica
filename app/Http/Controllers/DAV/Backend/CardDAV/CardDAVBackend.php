@@ -235,11 +235,12 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Returns the collection of all active contacts.
      *
+     * @param string|null $collectionId
      * @return \Illuminate\Support\Collection
      */
-    public function getObjects($addressBookId)
+    public function getObjects($collectionId)
     {
-        return Auth::user()->account->contacts($addressBookId)
+        return Auth::user()->account->contacts($collectionId)
                     ->active()
                     ->get();
     }
@@ -260,12 +261,12 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * calculating them. If they are specified, you can also ommit carddata.
      * This may speed up certain requests, especially with large cards.
      *
-     * @param mixed $collectionId
+     * @param mixed $addressbookId
      * @return array
      */
-    public function getCards($collectionId)
+    public function getCards($addressbookId)
     {
-        $contacts = $this->getObjects($collectionId);
+        $contacts = $this->getObjects($addressbookId);
 
         return $contacts->map(function ($contact) {
             return $this->prepareCard($contact);

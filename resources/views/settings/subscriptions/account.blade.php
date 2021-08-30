@@ -39,24 +39,55 @@
 
             <p>{{ trans('settings.subscriptions_account_current_paid_plan', ['name' => $planInformation['name']]) }}</p>
 
-            @if ($subscription->hasIncompletePayment())
-              @include('partials.subscription')
-              @if (! app()->environment('production'))
-              <p>
-                <a href="{{ route('settings.subscriptions.forceCompletePaymentOnTesting') }}">
-                  {{-- No translation needed --}}
-                  Force payment success (test).
-                </a>
-              </p>
-              @endif
-            @else
+            @include('partials.subscription')
 
-            <p>{!! trans('settings.subscriptions_account_next_billing', ['date' => $nextBillingDate]) !!}</p>
-            <p>{!! trans('settings.subscriptions_account_cancel', ['url' => route('settings.subscriptions.downgrade')]) !!}</p>
+            <div class="dt dt--fixed w-100 collapse br--top br--bottom">
+              <div class="dt-row">
+                <div class="dtc">
+                  <div class="pa2 b">
+                    {{ trans('settings.subscriptions_account_next_billing_title') }}
+                  </div>
+                </div>
+                <div class="dtc w-60">
+                  <div class="ph2">
+                    {!! trans('settings.subscriptions_account_next_billing', ['date' => $planInformation['nextBillingDate']]) !!}
+                  </div>
+                  <div class="ph2 pb2">
+                    {!! trans('settings.subscriptions_account_bill_' . $planInformation['type'], ['price' => $planInformation['friendlyPrice']]) !!}
+                  </div>
+                </div>
+                <div class="dtc {{ htmldir() == 'ltr' ? 'tr' : 'tl' }}">
+                  <div class="pa2">
+                    <a href="{{ route('settings.subscriptions.update') }}">{{ trans('settings.subscriptions_account_change') }}</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dt-row">
+                <div class="dtc">
+                  <div class="pa2 b">
+                    {{ trans('settings.subscriptions_account_cancel_title') }}
+                  </div>
+                </div>
+                <div class="dtc">
+                  <div class="pa2">
+                    {{ trans('settings.subscriptions_account_cancel') }}
+                  </div>
+                </div>
+                <div class="dtc {{ htmldir() == 'ltr' ? 'tr' : 'tl' }}">
+                  <div class="pa2">
+                    <a href="{{ route('settings.subscriptions.downgrade') }}">
+                      {{ trans('settings.subscriptions_account_cancel_action') }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
 
             {{-- Only display invoices if the subscription exists or existed --}}
             @if ($hasInvoices)
-              <div class="invoices">
+              <div class="invoices pt4">
                 <h3>{{ trans('settings.subscriptions_account_invoices') }}</h3>
                 <ul class="table">
                   @foreach ($invoices as $invoice)
@@ -79,7 +110,6 @@
                   @endforeach
                 </ul>
               </div>
-            @endif
             @endif
 
           </div>

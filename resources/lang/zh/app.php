@@ -14,7 +14,7 @@ return [
     'add' => '添加',
     'cancel' => '取消',
     'confirm' => '确认',
-    'delete_confirm' => 'Are you sure?',
+    'delete_confirm' => '确定要这样做吗?',
     'delete' => '删除',
     'edit' => '编辑',
     'upload' => '上传',
@@ -31,7 +31,7 @@ return [
     'new' => '新',
     'unknown' => '我不知道',
     'load_more' => '载入更多',
-    'loading' => 'Loading…',
+    'loading' => '加载中...',
     'with' => '与',
     'today' => '今天',
     'yesterday' => '昨天',
@@ -44,7 +44,7 @@ return [
     'retry' => '重试',
     'filter' => '过滤列表',
     'go_back' => '后退',
-    'file_selected' => 'One file selected…|{count} files selected…',
+    'file_selected' => '选择了 1 个文件...| 选择了 {count} 个文件...',
 
     'application_title' => 'Monica – 您的私人社交关系管家',
     'application_description' => 'Monica是用来收集并管理您与亲朋好友之间的关系的得力助手。',
@@ -65,13 +65,13 @@ return [
     'main_nav_tasks' => '任务',
 
     'footer_remarks' => 'Comments?',
-    'footer_send_email' => 'Send us an email',
+    'footer_send_email' => '给我们发邮件',
     'footer_privacy' => '隐私条款',
     'footer_release' => '版本说明',
     'footer_newsletter' => '新闻简报',
     'footer_source_code' => '捐助',
     'footer_version' => '版本::version',
-    'footer_new_version' => 'A new version of Monica is available',
+    'footer_new_version' => '有新版本的 Monica 可用',
 
     'footer_modal_version_whats_new' => '新增内容',
     'footer_modal_version_release_away' => '您有一个最新发布版本可更新。您应该更新实例. |您已经有:number个版本没有更新，应该更新了。',
@@ -113,7 +113,7 @@ return [
     'error_try_again' => '出了点问题，请再试一次。',
     'error_id' => '错误代码：:id',
     'error_unavailable' => '服务不可用',
-    'error_maintenance' => 'Maintenance in progress. We’ll be right back.',
+    'error_maintenance' => '网站维护中，待会见。',
     'error_help' => '待会见！',
     'error_twitter' => '关注我们的<a href="https://twitter.com/:twitter">推特</a>来得知网站的最新消息！',
     'error_no_term' => '此实例尚无策略',
@@ -464,8 +464,8 @@ return [
     'dav_tasks_description' => ':name的任务',
 
     // contact list
-    'contact_list_avatar' => 'Avatar',
+    'contact_list_avatar' => '头像',
     'contact_list_name' => 'Contact',
-    'contact_list_description' => 'Description',
+    'contact_list_description' => '描述',
 
 ];

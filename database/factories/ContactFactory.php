@@ -23,6 +23,10 @@ $factory->state(App\Models\Contact\Contact::class, 'partial', [
     'is_partial' => 1,
 ]);
 
+$factory->state(App\Models\Contact\Contact::class, 'archived', [
+    'is_active' => 0,
+]);
+
 $factory->state(App\Models\Contact\Contact::class, 'named', function (Faker\Generator $faker) {
     return [
         'first_name' => $faker->firstName,

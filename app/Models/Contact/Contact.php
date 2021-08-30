@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
-use function Safe\preg_split;
 use App\Helpers\StorageHelper;
 use App\Helpers\WeatherHelper;
 use Illuminate\Support\Carbon;
@@ -27,6 +26,7 @@ use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingHasher as Model;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -592,9 +592,11 @@ class Contact extends Model
      */
     public function scopeNotes($query, int $accountId = null, string $needle)
     {
-        return $query->orWhereHas('notes', function ($query) use ($accountId, $needle) {
+        $maccountId = $accountId ?? Auth::user()->account_id;
+
+        return $query->orWhereHas('notes', function ($query) use ($maccountId, $needle) {
             return $query->where([
-                ['account_id', $accountId],
+                ['account_id', $maccountId],
                 ['body', 'like', "%$needle%"],
             ]);
         });
@@ -606,9 +608,12 @@ class Contact extends Model
      * @param Builder $query
      * @return Builder
      */
-    public function scopeIntroductionAdditionalInformation($query, string $needle)
+    public function scopeIntroductionAdditionalInformation($query, int $accountId = null, string $needle)
     {
+        $maccountId = $accountId ?? Auth::user()->account_id;
+
         return $query->orWhere([
+            ['account_id', $maccountId],
             ['first_met_additional_info', 'like', "%$needle%"],
         ]);
     }
@@ -1049,17 +1054,18 @@ class Contact extends Model
             return '';
         }
 
-        try {
-            $matches = preg_split('/\?/', $this->avatar_default_url);
+        if (config('filesystems.default_visibility') === 'public') {
+            $matches = Str::of($this->avatar_default_url)->split('/\?/');
+
             $url = asset(StorageHelper::disk(config('filesystems.default'))->url($matches[0]));
-            if (count($matches) > 1) {
+            if ($matches->count() > 1) {
                 $url .= '?'.$matches[1];
             }
 
             return $url;
-        } catch (\Exception $e) {
-            return '';
         }
+
+        return route('storage', ['file' => $this->avatar_default_url]);
     }
 
     /**
@@ -1502,5 +1508,14 @@ class Contact extends Model
         $this->save();
 
         $this->timestamps = $timestamps;
+    }
+
+    public function throwInactive()
+    {
+        if (! $this->is_active) {
+            throw ValidationException::withMessages([
+                trans('people.archived_contact_readonly'),
+            ]);
+        }
     }
 }

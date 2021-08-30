@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use App\Helpers\DateHelper;
 use Laravel\Cashier\Billable;
 use App\Helpers\InstanceHelper;
 
@@ -35,6 +34,39 @@ trait Subscription
     }
 
     /**
+     * Update an existing subscription.
+     *
+     * @param string $planName
+     * @param \Laravel\Cashier\Subscription $subscription
+     * @return \Laravel\Cashier\Subscription
+     */
+    public function updateSubscription(string $planName, \Laravel\Cashier\Subscription $subscription)
+    {
+        $oldPlan = $subscription->stripe_plan;
+        $plan = InstanceHelper::getPlanInformationFromConfig($planName);
+        if ($plan === null) {
+            abort(404);
+        }
+
+        if ($oldPlan === $planName) {
+            // No change
+            return $subscription;
+        }
+
+        $subscription = $this->stripeCall(function () use ($subscription, $plan) {
+            return $subscription->swap($plan['id']);
+        });
+
+        if ($subscription->stripe_plan !== $oldPlan && $subscription->stripe_plan === $plan['id']) {
+            $subscription->forceFill([
+                'name' => $plan['name'],
+            ])->save();
+        }
+
+        return $subscription;
+    }
+
+    /**
      * Check if the account is currently subscribed to a plan.
      *
      * @return bool
@@ -45,8 +77,7 @@ trait Subscription
             return true;
         }
 
-        return $this->subscribed(config('monica.paid_plan_monthly_friendly_name'))
-            || $this->subscribed(config('monica.paid_plan_annual_friendly_name'));
+        return $this->getSubscribedPlan() !== null;
     }
 
     /**
@@ -56,13 +87,7 @@ trait Subscription
      */
     public function getSubscribedPlan()
     {
-        $subscription = $this->subscription(config('monica.paid_plan_monthly_friendly_name'));
-
-        if (! $subscription) {
-            $subscription = $this->subscription(config('monica.paid_plan_annual_friendly_name'));
-        }
-
-        return $subscription;
+        return $this->subscriptions()->recurring()->first();
     }
 
     /**
@@ -74,11 +99,7 @@ trait Subscription
     {
         $plan = $this->getSubscribedPlan();
 
-        if (! is_null($plan)) {
-            return $plan->stripe_plan;
-        }
-
-        return '';
+        return is_null($plan) ? '' : $plan->stripe_plan;
     }
 
     /**
@@ -121,25 +142,5 @@ trait Subscription
     public function hasInvoices()
     {
         return $this->subscriptions()->count() > 0;
-    }
-
-    /**
-     * Get the next billing date for the account.
-     *
-     * @return string
-     */
-    public function getNextBillingDate()
-    {
-        // Weird method to get the next billing date from Laravel Cashier
-        // see https://stackoverflow.com/questions/41576568/get-next-billing-date-from-laravel-cashier
-        return $this->stripeCall(function () {
-            $subscriptions = $this->asStripeCustomer()['subscriptions'];
-            if (! $subscriptions || count($subscriptions->data) <= 0) {
-                return '';
-            }
-            $timestamp = $subscriptions->data[0]['current_period_end'];
-
-            return DateHelper::getFullDate($timestamp);
-        });
     }
 }

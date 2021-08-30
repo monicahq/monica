@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\PasswordReset;
 use App\Http\Requests\PasswordChangeRequest;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\RedirectsUsers;
@@ -45,7 +46,7 @@ class PasswordChangeController extends Controller
 
         $response = $this->validateAndPasswordChange($credentials);
 
-        return $response == 'passwords.changed'
+        return $response === 'passwords.changed'
             ? $this->sendChangedResponse($response)
             : $this->sendChangedFailedResponse($response);
     }
@@ -127,6 +128,8 @@ class PasswordChangeController extends Controller
         $user->setRememberToken(Str::random(60));
 
         $user->save();
+
+        event(new PasswordReset($user));
 
         Auth::guard()->login($user);
     }

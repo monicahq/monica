@@ -31,7 +31,7 @@ return [
     '2fa_wrong_validation' => '二次验证失败',
     '2fa_one_time_password' => '验证码',
     '2fa_recuperation_code' => '输入二次验证恢复码',
-    '2fa_one_time_or_recuperation' => 'Enter a two factor authentication code or a recovery code',
+    '2fa_one_time_or_recuperation' => '输入两步验证代码或恢复代码',
     '2fa_otp_help' => '打开您的二次验证APP并复制验证码',
 
     'login_to_account' => '登录您的账号',

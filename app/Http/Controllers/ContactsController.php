@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Log;
 use App\Jobs\UpdateLastConsultedDate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
-use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use App\Services\User\UpdateViewPreference;
 use Illuminate\Validation\ValidationException;
@@ -87,31 +86,22 @@ class ContactsController extends Controller
             $nbArchived = $contacts->count();
         }
 
+        $tagsCount = Tag::contactsCount();
         $tags = null;
-        $url = '';
+        $url = null;
         $count = 1;
 
-        if ($request->input('tag1')) {
+        if ($request->input('tags')) {
+            $tagsInput = $request->input('tags');
 
-            // get contacts with selected tags
-            $tags = collect();
+            $tags = $tagsCount->filter(function ($tag) use ($tagsInput) {
+                return in_array($tag->name, $tagsInput);
+            });
 
-            while ($request->input('tag'.$count)) {
-                $tag = Tag::where([
-                    'account_id' => auth()->user()->account_id,
-                    'name_slug' => $request->input('tag'.$count),
-                ]);
-                if ($tag->count() > 0) {
-                    $tag = $tag->get();
+            $url = $tags->map(function ($tag) {
+                return 'tags[]='.urlencode($tag->name);
+            })->join('&');
 
-                    if (! $tags->contains($tag[0])) {
-                        $tags = $tags->concat($tag);
-                    }
-
-                    $url .= 'tag'.$count.'='.$tag[0]->name_slug.'&';
-                }
-                $count++;
-            }
             if ($tags->count() === 0) {
                 return redirect()->route('people.index');
             } else {
@@ -132,14 +122,14 @@ class ContactsController extends Controller
 
         return view('people.index')
             ->withAccountHasLimitations($accountHasLimitations)
-            ->with('hidingDeceased', $showDeceased != 'true')
-            ->with('deceasedCount', $deceasedCount)
+            ->withHidingDeceased($showDeceased !== 'true')
+            ->withDeceasedCount($deceasedCount)
             ->withActive($active)
             ->withContactsCount($contactsCount)
             ->withHasArchived($nbArchived > 0)
             ->withArchivedContacts($nbArchived)
             ->withTags($tags)
-            ->withTagsCount(Tag::contactsCount())
+            ->withTagsCount($tagsCount)
             ->withUrl($url)
             ->withTagCount($count)
             ->withTagLess($request->input('no_tag') ?? false);
@@ -176,13 +166,13 @@ class ContactsController extends Controller
      */
     private function createForm(Request $request, bool $isContactMissing = false)
     {
-        if (AccountHelper::hasReachedContactLimit(auth()->user()->account)
-            && AccountHelper::hasLimitations(auth()->user()->account)
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
+        if ($accountHasLimitations
+            && AccountHelper::hasReachedContactLimit(auth()->user()->account)
             && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
             return redirect()->route('settings.subscriptions.index');
         }
-
-        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
 
         return view('people.create')
             ->withAccountHasLimitations($accountHasLimitations)
@@ -341,10 +331,12 @@ class ContactsController extends Controller
      *
      * @param Contact $contact
      *
-     * @return View
+     * @return View|RedirectResponse
      */
     public function edit(Contact $contact)
     {
+        $contact->throwInactive();
+
         $now = now();
         $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
         $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->toDateString() : $now->toDateString();
@@ -384,6 +376,8 @@ class ContactsController extends Controller
      */
     public function update(Request $request, Contact $contact)
     {
+        $contact->throwInactive();
+
         // process birthday dates
         // TODO: remove this part entirely when we redo this whole SpecialDate
         // thing
@@ -455,7 +449,10 @@ class ContactsController extends Controller
             }
             $contact->has_avatar = true;
             $contact->avatar_location = config('filesystems.default');
-            $contact->avatar_file_name = $request->avatar->storePublicly('avatars', $contact->avatar_location);
+            $contact->avatar_file_name = $request->file('avatar')->store('avatars', [
+                'disk' => $contact->avatar_location,
+                'visibility' => config('filesystems.default_visibility'),
+            ]);
             $contact->save();
         }
 
@@ -494,10 +491,12 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return View
+     * @return View|RedirectResponse
      */
     public function editWork(Request $request, Contact $contact)
     {
+        $contact->throwInactive();
+
         return view('people.work.edit')
             ->withContact($contact);
     }
@@ -512,6 +511,8 @@ class ContactsController extends Controller
      */
     public function updateWork(Request $request, Contact $contact)
     {
+        $contact->throwInactive();
+
         $contact = app(UpdateWorkInformation::class)->execute([
             'account_id' => auth()->user()->account_id,
             'author_id' => auth()->user()->id,
@@ -530,10 +531,12 @@ class ContactsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return View
+     * @return View|RedirectResponse
      */
     public function editFoodPreferences(Request $request, Contact $contact)
     {
+        $contact->throwInactive();
+
         $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
 
         return view('people.food-preferences.edit')
@@ -551,6 +554,8 @@ class ContactsController extends Controller
      */
     public function updateFoodPreferences(Request $request, Contact $contact)
     {
+        $contact->throwInactive();
+
         $contact = app(UpdateContactFoodPreferences::class)->execute([
             'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
@@ -610,10 +615,12 @@ class ContactsController extends Controller
      *
      * @param  Request $request
      * @param  Contact $contact
-     * @return int
+     * @return int|RedirectResponse
      */
     public function stayInTouch(Request $request, Contact $contact)
     {
+        $contact->throwInactive();
+
         $frequency = intval($request->input('frequency'));
         $state = $request->input('state');
 
@@ -663,6 +670,13 @@ class ContactsController extends Controller
      */
     public function archive(Request $request, Contact $contact)
     {
+        if (! $contact->is_active
+            && AccountHelper::hasReachedContactLimit(auth()->user()->account)
+            && AccountHelper::hasLimitations(auth()->user()->account)
+            && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
+            abort(402);
+        }
+
         $contact->is_active = ! $contact->is_active;
         $contact->save();
 
@@ -693,8 +707,6 @@ class ContactsController extends Controller
         }
 
         $tags = null;
-        $url = '';
-        $count = 1;
 
         $contacts = $user->account->contacts()->real();
 
@@ -710,30 +722,17 @@ class ContactsController extends Controller
             $contacts = $contacts->alive();
         }
 
-        if ($request->input('no_tag')) {
-            // get tag less contacts
-            $contacts = $contacts->tags('NONE');
-        } elseif ($request->input('tag1')) {
-            // get contacts with selected tags
-            $tags = collect();
+        if ($request->input('tags')) {
+            $tags = Tag::where('account_id', $accountId)
+                    ->whereIn('name', $request->input('tags'))
+                    ->get();
 
-            while ($request->input('tag'.$count)) {
-                $tag = Tag::where([
-                    'account_id' => $accountId,
-                    'name_slug' => $request->input('tag'.$count),
-                ])->get();
-
-                if (! ($tags->contains($tag[0]))) {
-                    $tags = $tags->concat($tag);
-                }
-
-                $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
-
-                $count++;
-            }
             if ($tags->count() > 0) {
                 $contacts = $contacts->tags($tags);
             }
+        } elseif ($request->input('no_tag')) {
+            // get tag less contacts
+            $contacts = $contacts->tags('NONE');
         }
 
         // get the number of contacts per page

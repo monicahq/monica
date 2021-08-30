@@ -49,27 +49,27 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
     /**
      * Datas for this date.
      *
-     * @param mixed $date
+     * @param mixed $obj
      * @return array
      */
-    public function prepareData($date)
+    public function prepareData($obj)
     {
-        if ($date instanceof SpecialDate) {
+        if ($obj instanceof SpecialDate) {
             try {
                 $vcal = app(ExportVCalendar::class)
                     ->execute([
                         'account_id' => Auth::user()->account_id,
-                        'special_date_id' => $date->id,
+                        'special_date_id' => $obj->id,
                     ]);
 
                 $calendardata = $vcal->serialize();
 
                 return [
-                    'id' => $date->id,
-                    'uri' => $this->encodeUri($date),
+                    'id' => $obj->id,
+                    'uri' => $this->encodeUri($obj),
                     'calendardata' => $calendardata,
                     'etag' => '"'.md5($calendardata).'"',
-                    'lastmodified' => $date->updated_at->timestamp,
+                    'lastmodified' => $obj->updated_at->timestamp,
                 ];
             } catch (\Exception $e) {
                 Log::debug(__CLASS__.' prepareData: '.(string) $e);
