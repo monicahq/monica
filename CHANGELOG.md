@@ -1,22 +1,171 @@
-# UNRELEASED CHANGES:
-
-### New features:
-
-* Add addressbook subscriptions (Carddav client)
-* Add the notion of AddressBooks
-* Allow customization of life event types
-
-### Enhancements:
-
-*
-
-### Fixes:
-
-* Fix update activity with emotions
-* Fix bad return with wrong credential on oauth/login api
+# [3.2.0](https://github.com/monicahq/monica/compare/v3.1.3...v3.2.0) (2021-08-26)
 
 
-# RELEASED VERSIONS:
+### Features
+
+* activate greek language ([#5453](https://github.com/monicahq/monica/issues/5453)) ([c571001](https://github.com/monicahq/monica/commit/c571001e066375167e105aa18b7d5ce18bd5e0af))
+* add path style URL support for S3 buckets ([#5362](https://github.com/monicahq/monica/issues/5362)) ([ee6206a](https://github.com/monicahq/monica/commit/ee6206a08064fdf799aa87051ecd2c0bfc48f9fb))
+* add Portuguese-BR language ([#5333](https://github.com/monicahq/monica/issues/5333)) ([aca3c7a](https://github.com/monicahq/monica/commit/aca3c7a5bfc862084799b4de5e9afb4163f6bd31))
+* add Vietnamese language ([#5343](https://github.com/monicahq/monica/issues/5343)) ([bf2d570](https://github.com/monicahq/monica/commit/bf2d570bd71c645f23b393beebd3550fddb993d4))
+* allow to update a subscription frequency ([#5436](https://github.com/monicahq/monica/issues/5436)) ([e298c63](https://github.com/monicahq/monica/commit/e298c63dd2beb1e8f048cbf32a1dc36e66ce4061))
+* revoke session from other browser after a password change ([#5328](https://github.com/monicahq/monica/issues/5328)) ([a4c037f](https://github.com/monicahq/monica/commit/a4c037f539e282491496995925159463edec6629))
+
+
+### Bug Fixes
+
+* contact name population on delete confirmation ([#5431](https://github.com/monicahq/monica/issues/5431)) ([ffd0e86](https://github.com/monicahq/monica/commit/ffd0e867361d916d00b4e0d654a537a4d6f8b998))
+
+## [3.1.3](https://github.com/monicahq/monica/compare/v3.1.2...v3.1.3) (2021-06-28)
+
+
+### Bug Fixes
+
+* fix layout selection ([#5313](https://github.com/monicahq/monica/issues/5313)) ([8b4821f](https://github.com/monicahq/monica/commit/8b4821f1393a1fad31d3ba3cf30679d483197664))
+* use post request for exportToSql ([#5314](https://github.com/monicahq/monica/issues/5314)) ([cefeb9b](https://github.com/monicahq/monica/commit/cefeb9bdfa74e30ff77ff692c3d14c05ae081bff))
+
+## [3.1.2](https://github.com/monicahq/monica/compare/v3.1.1...v3.1.2) (2021-06-24)
+
+
+### Bug Fixes
+
+* fix search being extremely slow ([#5306](https://github.com/monicahq/monica/issues/5306)) ([8ba7d98](https://github.com/monicahq/monica/commit/8ba7d983efcef7555b620cb1a0bbc32db3835f00))
+
+## [3.1.1](https://github.com/monicahq/monica/compare/v3.1.0...v3.1.1) (2021-06-23)
+
+
+### Bug Fixes
+
+* fix search with additional info ([#5301](https://github.com/monicahq/monica/issues/5301)) ([13325cc](https://github.com/monicahq/monica/commit/13325cc8c1f32b391905a35abb166f843faef142))
+
+# [3.1.0](https://github.com/monicahq/monica/compare/v3.0.1...v3.1.0) (2021-06-22)
+
+
+### Features
+
+* add a console command to see memcached stats ([#5186](https://github.com/monicahq/monica/issues/5186)) ([b359c90](https://github.com/monicahq/monica/commit/b359c90206bc4bddbd87fe8ad7a11993304a8542))
+* add a rate limiter for locationiq queries ([#5185](https://github.com/monicahq/monica/issues/5185)) ([f8442ba](https://github.com/monicahq/monica/commit/f8442ba507181d425e3dafb6a06555a15518b384))
+* add Indonesian language ([#5190](https://github.com/monicahq/monica/issues/5190)) ([16cd47e](https://github.com/monicahq/monica/commit/16cd47e925144b3ec20c0ad851bb7bd595af4438))
+* add new logging stack for papertrail+errorlog ([#5166](https://github.com/monicahq/monica/issues/5166)) ([744efb0](https://github.com/monicahq/monica/commit/744efb0e6bfbe3f452999285583b290e21c8b61c))
+* add notes when importing vcard ([#5216](https://github.com/monicahq/monica/issues/5216)) ([36912bc](https://github.com/monicahq/monica/commit/36912bc5ef7d06f281e555f93f42d91fbb7ccb63))
+* allow recovery codes when disabling 2FA ([#4970](https://github.com/monicahq/monica/issues/4970)) ([1f4c4c4](https://github.com/monicahq/monica/commit/1f4c4c4b6c2c39dc4917600220d78a44580d1327))
+* datestamp filename of exported SQL file. ([#5136](https://github.com/monicahq/monica/issues/5136)) ([a658fcf](https://github.com/monicahq/monica/commit/a658fcf074b36ba6a8855ecaa7b3c13a3e78888d))
+* download and get storage files as private ([#5192](https://github.com/monicahq/monica/issues/5192)) ([7fdc445](https://github.com/monicahq/monica/commit/7fdc4453b688781a651f09d9b6cbc274ac3fbdbb))
+* email field on add person ([#5097](https://github.com/monicahq/monica/issues/5097)) ([2392afc](https://github.com/monicahq/monica/commit/2392afc0aaa9d5f79d5f3f6357912c70a4d96ca1))
+* make archived contact readonly ([#5285](https://github.com/monicahq/monica/issues/5285)) ([a3fdac9](https://github.com/monicahq/monica/commit/a3fdac949f662d08ced6e02bcf63fd5106600fb0))
+* search notes when searching through contacts ([#5103](https://github.com/monicahq/monica/issues/5103)) ([6378bc1](https://github.com/monicahq/monica/commit/6378bc183df414175a9aee49c94780247ef27b94))
+
+
+### Bug Fixes
+
+* fix import vcard stability ([#5160](https://github.com/monicahq/monica/issues/5160)) ([3f2821d](https://github.com/monicahq/monica/commit/3f2821d75a4d2451f397d98d4095547d520f660e))
+* fix importvcard job ([#5151](https://github.com/monicahq/monica/issues/5151)) ([cf8041c](https://github.com/monicahq/monica/commit/cf8041cfe7544889c7d4c28e5b1e27cd1671bbd0))
+* fix name order selection and result  ([#5255](https://github.com/monicahq/monica/issues/5255)) ([d3217c0](https://github.com/monicahq/monica/commit/d3217c067e642614c3f2176e963f41d77a1aed29))
+* fix stripe pages stability ([#5161](https://github.com/monicahq/monica/issues/5161)) ([53977cc](https://github.com/monicahq/monica/commit/53977cc9eb24e9a14d0ec8d8419c54595e680857))
+* fix tags list filtering ([#5123](https://github.com/monicahq/monica/issues/5123)) ([99bd8e1](https://github.com/monicahq/monica/commit/99bd8e17f8ac78af45937673a38a15c72f1e0278))
+* fix unarchive on limited account ([#5256](https://github.com/monicahq/monica/issues/5256)) ([8357d0f](https://github.com/monicahq/monica/commit/8357d0f57907d0fe568db1b51defece6d65b4ad0))
+* fix vcard import to generate avatars ([#5193](https://github.com/monicahq/monica/issues/5193)) ([6323a5d](https://github.com/monicahq/monica/commit/6323a5d4cd4207eba9d0d46a3f2f6a425915afbe))
+* left trim url if there is a trailing slash ([#5149](https://github.com/monicahq/monica/issues/5149)) ([56572bb](https://github.com/monicahq/monica/commit/56572bbd576bdc45eaa8ebf5b2f27c7aab6c8a9d))
+* package.json & yarn.lock to reduce vulnerabilities ([#5269](https://github.com/monicahq/monica/issues/5269)) ([9c111c3](https://github.com/monicahq/monica/commit/9c111c3427e9ca2a8e9e84cf336bdd97cb67bee2))
+
+## [3.0.1](https://github.com/monicahq/monica/compare/v3.0.0...v3.0.1) (2021-05-02)
+
+
+### Bug Fixes
+
+* fix deploy on fortrabbit with version number ([#5139](https://github.com/monicahq/monica/issues/5139)) ([c5394af](https://github.com/monicahq/monica/commit/c5394af9bc30207a9158488c7617f3bb265a3c72))
+* fix import job without subscription bypass ([#5147](https://github.com/monicahq/monica/issues/5147)) ([fbac248](https://github.com/monicahq/monica/commit/fbac24891a9ace9f9c88fd4d23b8612243af283a))
+
+# [3.0.0](https://github.com/monicahq/monica/compare/v2.22.1...v3.0.0) (2021-04-30)
+
+
+### Features
+
+* remove assets from repository (see [#4759](https://github.com/monicahq/monica/issues/4759)) ([#5133](https://github.com/monicahq/monica/issues/5133)) ([02ba369](https://github.com/monicahq/monica/commit/02ba3694929154ecdafbe95fa34ad6920680b6b7))
+
+
+### BREAKING CHANGES
+
+* The assets are no longer embedded in source code: javascript, css, font files. Run `yarn install` then `yarn run production` to recreate them from sources, or download a [release file](https://github.com/monicahq/monica/releases) that contains compiled files.
+* For Heroku users: You'll have to manually go to `Settings` > `Buildpacks` and add buildpack: `nodejs`. See [this doc](https://github.com/monicahq/monica/blob/master/docs/installation/providers/heroku.md#update-from-2x-to-3x).
+* See more information about how to install a Monica instance [here](https://github.com/monicahq/monica/tree/master/docs/installation).
+
+## [2.22.1](https://github.com/monicahq/monica/compare/v2.22.0...v2.22.1) (2021-04-30)
+
+
+### Code Refactoring
+
+* remove assets from repository ([#4759](https://github.com/monicahq/monica/issues/4759)) ([570dde1](https://github.com/monicahq/monica/commit/570dde1a13096c8e15fa436eae99ddc572486922))
+
+
+### BREAKING CHANGES
+
+* The assets are no longer embedded in source code: javascript, css, font files. Run `yarn install` then `yarn run production` to recreate them from sources, or download a [release file](https://github.com/monicahq/monica/releases) that contains compiled files.
+* For Heroku users: You'll have to manually go to `Settings` > `Buildpacks` and add buildpack: `nodejs`. See [this doc](https://github.com/monicahq/monica/blob/master/docs/installation/providers/heroku.md#update-from-2x-to-3x).
+* See more information about how to install a Monica instance [here](https://github.com/monicahq/monica/tree/master/docs/installation).
+
+# [2.22.0](https://github.com/monicahq/monica/compare/v2.21.0...v2.22.0) (2021-04-30)
+
+
+### Bug Fixes
+
+* fix bypass account limitation to create more contacts ([#5125](https://github.com/monicahq/monica/issues/5125)) ([3d66188](https://github.com/monicahq/monica/commit/3d66188350f107094309d3dcd62b8202aad25004))
+* fix bypass invitation ([#5127](https://github.com/monicahq/monica/issues/5127)) ([d889475](https://github.com/monicahq/monica/commit/d88947523094d7159a937033f3a4ab05380fb4a9))
+* fix stripe page ([#5113](https://github.com/monicahq/monica/issues/5113)) ([caa5bef](https://github.com/monicahq/monica/commit/caa5bef93bed33d269ef1260c805e0ffaffd08fa))
+
+
+### Features
+
+* create a new stacked log channel ([#5122](https://github.com/monicahq/monica/issues/5122)) ([71c3789](https://github.com/monicahq/monica/commit/71c3789b6013dcea5a3e856b5f6e52c32769b1f4))
+* display gifts date ([#5081](https://github.com/monicahq/monica/issues/5081)) ([a478fd8](https://github.com/monicahq/monica/commit/a478fd8f4394ee650a89bbf62610e973fb98c03a))
+
+# [2.21.0](https://github.com/monicahq/monica/compare/v2.20.0...v2.21.0) (2021-04-25)
+
+
+### Features
+
+* add ability to attach dates to gifts ([#4909](https://github.com/monicahq/monica/issues/4909)) ([da17b8d](https://github.com/monicahq/monica/commit/da17b8d1b48d894443fad165868086c4d04eb94d))
+* add date of creation in journal ([#4949](https://github.com/monicahq/monica/issues/4949)) ([be85cad](https://github.com/monicahq/monica/commit/be85cadd2abf38aba2353f629fac1733dd922e9b))
+
+
+### Bug Fixes
+
+* fix udpate maintenance mode message ([#4983](https://github.com/monicahq/monica/issues/4983)) ([225e68e](https://github.com/monicahq/monica/commit/225e68e038349afe1c86631dca04297b8ba72955))
+* sort and group relationships by relationship type ([#4985](https://github.com/monicahq/monica/issues/4985)) ([105b74f](https://github.com/monicahq/monica/commit/105b74f94e7f6b08da3883020670c9b8e3c72df0))
+
+# [2.20.0](https://github.com/monicahq/monica/compare/v2.19.1...v2.20.0) (2021-03-18)
+
+
+### Bug Fixes
+
+* catch fatal error during install hooks ([#4642](https://github.com/monicahq/monica/issues/4642)) ([1c63ea0](https://github.com/monicahq/monica/commit/1c63ea0b3088e7701c4326bce365a8f09491d6f3))
+* fix add gender type ([#4548](https://github.com/monicahq/monica/issues/4548)) ([c0561ce](https://github.com/monicahq/monica/commit/c0561cef7b6c296d41ee42405dec46dae8bb34af))
+* fix broken stay in touch frequency input ([#4969](https://github.com/monicahq/monica/issues/4969)) ([500ecc8](https://github.com/monicahq/monica/commit/500ecc830282c79170121c2666a71025aaa65721))
+* fix checkbox UI issue in invite user page ([#4546](https://github.com/monicahq/monica/issues/4546)) ([827154e](https://github.com/monicahq/monica/commit/827154e9bebb3a545c71eb73ef204feeaf59ed07))
+* fix contact list description display & UI column names ([#4891](https://github.com/monicahq/monica/issues/4891)) ([aa090f8](https://github.com/monicahq/monica/commit/aa090f89846cc5323005636ca77b294953f2c5de))
+* fix date missing on journal api ([#4905](https://github.com/monicahq/monica/issues/4905)) ([8de23ba](https://github.com/monicahq/monica/commit/8de23ba01b5b796cc7c9fbe4d22b4f8b8d2d8cd9))
+* fix date you met update UX ([#4511](https://github.com/monicahq/monica/issues/4511)) ([288e3d0](https://github.com/monicahq/monica/commit/288e3d0af5bcd331ac83836f25d5b347194f11c9))
+* fix docker build ([#4733](https://github.com/monicahq/monica/issues/4733)) ([4fa4561](https://github.com/monicahq/monica/commit/4fa4561c2c4b34d3f39c5266d1581fa2cd9ee75a))
+* fix oauth login bad credentials ([#4688](https://github.com/monicahq/monica/issues/4688)) ([28d4cc9](https://github.com/monicahq/monica/commit/28d4cc94bb339e4345ae1a0d9c1a4f45716707ff))
+* fix passport setup migration ([#4606](https://github.com/monicahq/monica/issues/4606)) ([e17b89b](https://github.com/monicahq/monica/commit/e17b89b656ea6d002f8347af75aebb631c4d0e4f))
+* fix subscriptions list display ([#4967](https://github.com/monicahq/monica/issues/4967)) ([ca21705](https://github.com/monicahq/monica/commit/ca217056bb375d38b4673f6fcfb4db758b775298))
+* fix the adorable url migration ([#4963](https://github.com/monicahq/monica/issues/4963)) ([ed2b3b7](https://github.com/monicahq/monica/commit/ed2b3b7667b8ea2c65bd151b4fe0c75364418eb8))
+* fix the adorable url migration (again) ([#4964](https://github.com/monicahq/monica/issues/4964)) ([5894065](https://github.com/monicahq/monica/commit/5894065059e5877ba4486c64bc746378ac655fdb))
+* update activity with emotions ([#4459](https://github.com/monicahq/monica/issues/4459)) ([d4adb4f](https://github.com/monicahq/monica/commit/d4adb4f206c7637ae5bd21f39009568e0ca639c3))
+* update adorable api to api.hello-avatar.com ([#4778](https://github.com/monicahq/monica/issues/4778)) ([527131e](https://github.com/monicahq/monica/commit/527131e4e72f7a0deea5d4a9d8025a6d1a9d15fa))
+
+
+### Features
+
+* add a confirmation to delete a journal entry [#4308](https://github.com/monicahq/monica/issues/4308) ([#4514](https://github.com/monicahq/monica/issues/4514)) ([18fadb7](https://github.com/monicahq/monica/commit/18fadb77ce7fb4b46fd71ae8205127b9e8c9581d))
+* add Android icon for use when bookmarking ([#4798](https://github.com/monicahq/monica/issues/4798)) ([dcee3a9](https://github.com/monicahq/monica/commit/dcee3a943212476f2e96e5c54165daae244c47fc))
+* add Apple icons for use when bookmarking. ([#4743](https://github.com/monicahq/monica/issues/4743)) ([a28adcd](https://github.com/monicahq/monica/commit/a28adcdd7d13330271d198c470b6985eee39df11))
+* add artisan command to create new account ([#4745](https://github.com/monicahq/monica/issues/4745)) ([b9ee793](https://github.com/monicahq/monica/commit/b9ee793669562c8bf44bd57322e9f5126b2af998))
+* add notion of addressbooks ([#3749](https://github.com/monicahq/monica/issues/3749)) ([a18962e](https://github.com/monicahq/monica/commit/a18962ecbf09cb222ac943f8be19362985a7235a))
+* add Swedish language ([#4652](https://github.com/monicahq/monica/issues/4652)) ([e1edcad](https://github.com/monicahq/monica/commit/e1edcad04b5cdee0c61883db0d64cf2ca9e9369c))
+* allow customization of life event types ([#4243](https://github.com/monicahq/monica/issues/4243)) ([657d824](https://github.com/monicahq/monica/commit/657d824273e8eedc01ed099576571d47d0e26017))
+* default gender to unknown ([#4753](https://github.com/monicahq/monica/issues/4753)) ([ebf7c08](https://github.com/monicahq/monica/commit/ebf7c085dd786b174055be389ba5fef35fae861a))
+* set and clear personal description now appears in change log ([#4893](https://github.com/monicahq/monica/issues/4893)) ([686a0a1](https://github.com/monicahq/monica/commit/686a0a1f0b2dbbee91fef41eca318a3b9fbd48ff))
+
 
 ## v2.19.1 - 2020-09-12
 

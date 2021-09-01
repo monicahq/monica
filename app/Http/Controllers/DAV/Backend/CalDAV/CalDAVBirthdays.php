@@ -38,7 +38,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
     /**
      * Extension for Calendar objects.
      *
-     * @var string
+     * @return string
      */
     public function getExtension()
     {
@@ -48,21 +48,21 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
     /**
      * Datas for this date.
      *
-     * @param mixed $date
+     * @param mixed $obj
      * @return array
      */
-    public function prepareData($date)
+    public function prepareData($obj)
     {
-        if ($date instanceof SpecialDate) {
+        if ($obj instanceof SpecialDate) {
             try {
-                $calendardata = $this->refreshObject($date);
+                $calendardata = $this->refreshObject($obj);
 
                 return [
-                    'id' => $date->id,
-                    'uri' => $this->encodeUri($date),
+                    'id' => $obj->id,
+                    'uri' => $this->encodeUri($obj),
                     'calendardata' => $calendardata,
                     'etag' => '"'.md5($calendardata).'"',
-                    'lastmodified' => $date->updated_at->timestamp,
+                    'lastmodified' => $obj->updated_at->timestamp,
                 ];
             } catch (\Exception $e) {
                 Log::debug(__CLASS__.' prepareData: '.(string) $e);

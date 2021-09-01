@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <div :class="{ 'form-group-error': validator && validator.$error }">
     <datepicker

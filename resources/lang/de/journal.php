@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -13,6 +13,7 @@ return [
     'journal_add' => 'Tagebucheintrag hinzufügen',
     'journal_edit' => 'Tagebucheintrag bearbeiten',
     'journal_empty' => 'Leeres Tagebuch',
+    'journal_created_at' => 'Erstellt am {date}',
     'journal_created_automatically' => 'Autmatisch hinzugefügt',
     'journal_entry_type_journal' => 'Tagebucheintrag',
     'journal_entry_type_activity' => 'Aktivität',

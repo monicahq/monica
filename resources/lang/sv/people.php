@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -10,29 +10,29 @@ return [
 
     //index
     'people_not_found' => 'Kontakt hittades ej',
-    'people_list_number_kids' => '1 barn|:count barn',
+    'people_list_number_kids' => ':count child|:count children',
     'people_list_last_updated' => 'Senast kontakt:',
-    'people_list_number_reminders' => '1 påminnelse|:count påminnelser',
+    'people_list_number_reminders' => ':count reminder|:count reminders',
     'people_list_blank_title' => 'Du har ingen på ditt konto ännu',
     'people_list_blank_cta' => 'Lägg till en person',
     'people_list_sort' => 'Sortera',
-    'people_list_stats' => '1 kontakt|:count kontakter',
+    'people_list_stats' => ':count contact|:count contacts',
     'people_list_firstnameAZ' => 'Sortera efter förnamn A → Ö',
     'people_list_firstnameZA' => 'Sortera efter förnamn Ö → A',
     'people_list_lastnameAZ' => 'Sortera efter efternamn A → Ö',
     'people_list_lastnameZA' => 'Sortera efter efternamn Ö → A',
-    'people_list_lastactivitydateNewtoOld' => 'Sortera efter senaste aktivitetsdatum nyaste till äldsta',
-    'people_list_lastactivitydateOldtoNew' => 'Sortera efter senaste aktivitetsdatum äldsta till nyaste',
+    'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date, newest to oldest',
+    'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date, oldest to newest',
     'people_list_filter_tag' => 'Visar alla kontakter taggade med',
     'people_list_clear_filter' => 'Töm filter',
-    'people_list_contacts_per_tags' => '1 kontakt|:count kontakter',
+    'people_list_contacts_per_tags' => ':count contact|:count contacts',
     'people_list_show_dead' => 'Visa avlidna personer (:count)',
     'people_list_hide_dead' => 'Dölj avlidna personer (:count)',
-    'people_search' => 'Sök efter kontakt...',
+    'people_search' => 'Search your contacts…',
     'people_search_no_results' => 'Inga resultat hittades',
     'people_search_next' => 'Nästa',
-    'people_search_prev' => 'Föregående',
-    'people_search_rows_per_page' => 'Rader per sida:',
+    'people_search_prev' => 'Previous',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'av',
     'people_search_page' => 'Sida',
     'people_search_all' => 'Alla',
@@ -42,27 +42,29 @@ return [
     'people_list_account_upgrade_cta' => 'Uppgradera nu',
     'people_list_untagged' => 'Visa ej taggade kontakter',
     'people_list_filter_untag' => 'Visar alla omarkerade kontakter',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => 'Lägg till en ny person',
-    'people_add_missing' => 'Ingen person hittade Lägg till en ny nu',
+    'people_add_missing' => 'No person found – add a new one now',
     'people_add_firstname' => 'Förnamn',
-    'people_add_middlename' => 'Mellannamn (valfritt)',
-    'people_add_lastname' => 'Efternamn (valfritt)',
-    'people_add_nickname' => 'Smeknamn (valfritt)',
+    'people_add_middlename' => 'Middle name (optional)',
+    'people_add_lastname' => 'Last name (optional)',
+    'people_add_email' => 'Email (optional)',
+    'people_add_nickname' => 'Nickname (optional)',
     'people_add_cta' => 'Lägg till',
     'people_save_and_add_another_cta' => 'Skicka in och lägg till någon annan',
     'people_add_success' => ':name har skapats',
     'people_add_gender' => 'Kön',
     'people_delete_success' => 'Kontakten har tagits bort',
     'people_delete_message' => 'Ta bort kontakt',
-    'people_delete_confirmation' => 'Är du säker på att du vill ta bort denna kontakt? Borttagning är permanent.',
+    'people_delete_confirmation' => 'Are you sure you want to delete :name’s contact? Deletion is immediate and permanent.',
     'people_add_birthday_reminder' => 'Önska födelsedag till :name',
-    'people_add_birthday_reminder_deceased' => 'På detta datum, skulle :name, ha firat sin födelsedag',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name would have celebrated their birthday',
     'people_add_import' => 'Vill du <a href=":url">importera dina kontakter</a>?',
     'people_edit_email_error' => 'Det finns redan en kontakt på ditt konto med denna e-postadress. Välj en annan.',
     'people_export' => 'Exportera som vCard',
-    'people_add_reminder_for_birthday' => 'Skapa en årlig påminnelse för födelsedagen',
+    'people_add_reminder_for_birthday' => 'Create an annual birthday reminder',
 
     // show
     'section_contact_information' => 'Kontaktuppgifter',
@@ -81,7 +83,7 @@ return [
     'edit_contact_information' => 'Redigera kontaktinformation',
     'contact_archive' => 'Arkivera kontakt',
     'contact_unarchive' => 'Avarkivera kontakt',
-    'contact_archive_help' => 'Arkiverade kontakter visas inte på kontaktlistan, men visas fortfarande i sökresultaten.',
+    'contact_archive_help' => 'Archived contacts are not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Logga ett samtal',
     'set_favorite' => 'Favoritkontakter placeras högst upp i kontaktlistan',
 
@@ -92,7 +94,7 @@ return [
     'stay_in_touch_premium' => 'Du måste uppgradera ditt konto för att använda denna funktion',
     'stay_in_touch_modal_title' => 'Håll kontakten',
     'stay_in_touch_modal_desc' => 'Vi kan påminna dig via e-post om att hålla kontakten med {firstname} med ett regelbundet intervall.',
-    'stay_in_touch_modal_label' => 'Skicka ett mail med var... {count} dag|Skicka ett mail med var... {count} dagar',
+    'stay_in_touch_modal_label' => 'Send me an email every… {count} day|Send me an email every… {count} days',
 
     // Calls
     'modal_call_title' => 'Registrera samtal',
@@ -112,7 +114,7 @@ return [
     'call_emotions' => 'Känslor:',
 
     // Conversation
-    'conversation_blank' => 'Spela in samtal du har med :name på sociala medier, SMS, ...',
+    'conversation_blank' => 'Record conversations you have with :name on social media, SMS…',
     'conversation_delete_link' => 'Ta bort konversationen',
     'conversation_edit_title' => 'Redigera konversation',
     'conversation_edit_delete' => 'Är du säker på att du vill ta bort denna konversation? Borttagning är permanent.',
@@ -121,7 +123,7 @@ return [
     'conversation_delete_success' => 'Konversationen har tagits bort.',
     'conversation_add_title' => 'Spela in en ny konversation',
     'conversation_add_when' => 'När hade du den här konversationen?',
-    'conversation_add_who_wrote' => 'Vem har sagt detta meddelande?',
+    'conversation_add_who_wrote' => 'Who sent this message?',
     'conversation_add_how' => 'Hur kommunicerade du?',
     'conversation_add_you' => 'Du',
     'conversation_add_content' => 'Skriv ner vad som sades',
@@ -134,7 +136,7 @@ return [
     'conversation_list_cta' => 'Logga konversation',
 
     // age - birthday
-    'birthdate_not_set' => 'Födelsedatum är inte inställt',
+    'birthdate_not_set' => 'Birthday is not set',
     'age_approximate_in_years' => 'runt :age år gammal',
     'age_exact_in_years' => ':age år gammal',
     'age_exact_birthdate' => 'född :date',
@@ -151,18 +153,18 @@ return [
     'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => 'Förnamn',
-    'information_edit_lastname' => 'Efternamn (valfritt)',
-    'information_edit_description' => 'Beskrivning (valfritt)',
+    'information_edit_lastname' => 'Last name (optional)',
+    'information_edit_description' => 'Description (optional)',
     'information_edit_description_help' => 'Används på kontaktlistan för att vid behov lägga till lite kontext.',
     'information_edit_unknown' => 'Jag känner inte till personens ålder',
-    'information_edit_probably' => 'Denna person är förmodligen...',
-    'information_edit_not_year' => 'Jag vet dag och månad av födelsedatum för denna person, men inte året…',
-    'information_edit_exact' => 'Jag vet exakt födelsedatum för denna person...',
-    'information_edit_birthdate_label' => 'Födelsedatum',
+    'information_edit_probably' => 'This person is probably…',
+    'information_edit_not_year' => 'I know the day and month of this person’s birthday, but not the year…',
+    'information_edit_exact' => 'I know this person’s exact birthday…',
+    'information_edit_birthdate_label' => 'Birthday',
     'information_no_work_defined' => 'Ingen arbetsinformation angiven',
     'information_work_at' => 'vid :company',
     'work_add_cta' => 'Uppdatera arbetsinformation',
-    'work_edit_success' => 'Arbetsinformationen har uppdaterats med framgång',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Uppdatera :name\'s jobbinformation',
     'work_edit_job' => 'Jobbtitel (valfritt)',
     'work_edit_company' => 'Företag (valfritt)',
@@ -181,7 +183,7 @@ return [
     'reminders_blank_title' => 'Finns det något du vill bli påmind om :name?',
     'reminders_blank_add_activity' => 'Lägg till en påminnelse',
     'reminders_add_title' => 'Vad skulle du vilja bli påmind om :name?',
-    'reminders_add_description' => 'Var snäll och påminn mig om...',
+    'reminders_add_description' => 'Please remind me to…',
     'reminders_add_next_time' => 'När är nästa gång du vill bli påmind om detta?',
     'reminders_add_once' => 'Påminn mig om detta bara en gång',
     'reminders_add_recurrent' => 'Påminn mig om detta varje',
@@ -203,7 +205,7 @@ return [
     'reminders_delete_cta' => 'Radera',
     'reminders_next_expected_date' => 'på',
     'reminders_cta' => 'Lägg till en påminnelse',
-    'reminders_description' => 'Vi kommer att skicka ett mail för var och en av påminnelserna nedan. Påminnelser skickas varje morgon då händelser kommer att hända. Påminnelser som läggs till automatiskt för födelsedatum kan inte raderas. Om du vill ändra dessa datum, redigera födelsedatum för kontakterna.',
+    'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen. Reminders automatically added for birthdays can not be deleted. If you want to change those dates, edit the birthday of the contacts.',
     'reminders_one_time' => 'En gång',
     'reminders_type_week' => 'vecka',
     'reminders_type_month' => 'månad',
@@ -214,8 +216,8 @@ return [
     // relationships
     'relationship_form_add' => 'Lägg till ett nytt förhållande',
     'relationship_form_edit' => 'Redigera ett befintligt förhållande',
-    'relationship_form_is_with' => 'Denna person är...',
-    'relationship_form_is_with_name' => ':name är...',
+    'relationship_form_is_with' => 'This person is…',
+    'relationship_form_is_with_name' => ':name is…',
     'relationship_form_add_choice' => 'Vem är relationen med?',
     'relationship_form_create_contact' => 'Lägg till en ny person',
     'relationship_form_associate_contact' => 'En befintlig kontakt',
@@ -265,8 +267,8 @@ return [
     'activities_item_information' => ':Activity. Hänt :date',
     'activities_add_title' => 'Vad gjorde du med {name}?',
     'activities_summary' => 'Beskriv vad du gjorde',
-    'activities_add_pick_activity' => '(Valfritt) Vill du kategorisera denna aktivitet? Du behöver inte, men det kommer att ge dig statistik senare',
-    'activities_add_date_occured' => 'Aktiviteten skedde på...',
+    'activities_add_pick_activity' => 'Would you like to categorize this activity? You don’t have to, but it will give you statistics later on (optional)',
+    'activities_add_date_occured' => 'The activity happened on…',
     'activities_add_participants' => 'Vem deltog förutom {name} i denna aktivitet? (valfritt)',
     'activities_add_emotions_title' => 'Vill du logga hur du kände dig under detta samtal? (valfritt)',
     'activities_blank_title' => 'Håll koll på vad du har gjort med {name} tidigare och vad du har pratat om',
@@ -328,6 +330,7 @@ return [
     'gifts_view_comment' => 'Visa kommentar',
     'gifts_mark_offered' => 'Markera som erbjuden',
     'gifts_update_success' => 'Gåvan har uppdaterats',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Är du säker på att du vill ta bort denna skuld?',
@@ -371,8 +374,8 @@ return [
 
     // Deceased
     'deceased_reminder_title' => 'Årsdag av bortgång av :name',
-    'deceased_mark_person_deceased' => 'Markera denna person som avliden',
-    'deceased_know_date' => 'Jag vet vilket datum personen avled',
+    'deceased_mark_person_deceased' => 'Mark this as deceased',
+    'deceased_know_date' => 'I know the date that this person died',
     'deceased_add_reminder' => 'Lägg till en påminnelse för detta datum',
     'deceased_label' => 'Avlidna',
     'deceased_date_label' => 'Datum av bortgång',
@@ -418,7 +421,7 @@ return [
 
     // life events
     'life_event_list_tab_life_events' => 'Livshändelser',
-    'life_event_list_tab_other' => 'Anteckningar, påminnelser, ...',
+    'life_event_list_tab_other' => 'Notes, reminders, …',
     'life_event_list_title' => 'Livshändelser',
     'life_event_blank' => 'Logga vad som händer med livet för {name} för din framtida referens.',
     'life_event_list_cta' => 'Lägg till livshändelse',
@@ -426,7 +429,7 @@ return [
     'life_event_create_life_event' => 'Lägg till livshändelse',
     'life_event_create_default_title' => 'Titel (valfritt)',
     'life_event_create_default_story' => 'Berättelse (valfritt)',
-    'life_event_create_date' => 'Du behöver inte ange en månad eller en dag - bara året är obligatoriskt.',
+    'life_event_create_date' => 'You do not need to indicate a month or a day – only the year is mandatory.',
     'life_event_create_default_description' => 'Lägg till information om vad du vet',
     'life_event_create_add_yearly_reminder' => 'Lägg till en årlig påminnelse för denna händelse',
     'life_event_create_success' => 'Livshändelsen har lagts till',
@@ -488,7 +491,7 @@ return [
     'document_list_cta' => 'Ladda upp dokument',
     'document_list_blank_desc' => 'Här kan du lagra dokument relaterade till denna person.',
     'document_upload_zone_cta' => 'Ladda upp en fil',
-    'document_upload_zone_progress' => 'Laddar upp dokumentet...',
+    'document_upload_zone_progress' => 'Uploading the document…',
     'document_upload_zone_error' => 'Det gick inte att ladda upp dokumentet. Försök igen nedan.',
 
     // Photos
@@ -500,8 +503,8 @@ return [
     'photo_current_profile_pic' => 'Nuvarande profilbild',
     'photo_make_profile_pic' => 'Skapa profilbild',
     'photo_delete' => 'Ta bort foto',
-    'photo_next' => 'Nästa foto',
-    'photo_previous' => 'Föregående foto',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Ändra din avatar',

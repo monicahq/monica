@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -13,42 +13,42 @@ return [
     'save' => 'Сохранить',
     'add' => 'Добавить',
     'cancel' => 'Отмена',
-    'confirm' => 'Confirm',
-    'delete_confirm' => 'Уверены?',
+    'confirm' => 'Подтвердить',
+    'delete_confirm' => 'Вы уверены?',
     'delete' => 'Удалить',
     'edit' => 'Редактировать',
     'upload' => 'Закачать',
-    'download' => 'Download',
+    'download' => 'Загрузить',
     'save_close' => 'Сохранить и закрыть',
     'close' => 'Закрыть',
     'copy' => 'Копировать',
     'create' => 'Создать',
     'remove' => 'Убрать',
-    'revoke' => 'Revoke',
-    'done' => 'Done',
+    'revoke' => 'Отозвать',
+    'done' => 'Готово',
     'back' => 'Назад',
-    'verify' => 'Verify',
-    'new' => 'new',
+    'verify' => 'Подтвердить',
+    'new' => 'новый',
     'unknown' => 'Я не знаю',
-    'load_more' => 'Load more',
-    'loading' => 'Loading...',
-    'with' => 'with',
+    'load_more' => 'Загрузить ещё',
+    'loading' => 'Загрузка...',
+    'with' => 'с',
     'today' => 'сегодня',
     'yesterday' => 'вчера',
     'another_day' => 'another day',
     'date' => 'Дата',
-    'type' => 'Type',
+    'type' => 'Тип',
     'zoom' => 'Zoom',
     'upgrade' => 'Upgrade to unlock',
-    'percent_uploaded' => '{percent}% uploaded',
-    'retry' => 'Retry',
-    'filter' => 'Filter the list',
-    'go_back' => 'Go back',
-    'file_selected' => '1 file selected...|{count} files selected...',
+    'percent_uploaded' => '{percent}% загружено',
+    'retry' => 'Повторить',
+    'filter' => 'Список фильтров',
+    'go_back' => 'Назад',
+    'file_selected' => 'One file selected…|{count} files selected…',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
-    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
+    'application_og_title' => 'Have better relations with your loved ones. Free online CRM for friends and family.',
 
     'markdown_description' => 'Хотите форматировать ваш текст? Мы поддерживаем Markdown для добавления этих функций',
     'markdown_link' => 'Читать документацию',
@@ -64,12 +64,12 @@ return [
     'main_nav_activities' => 'Активности',
     'main_nav_tasks' => 'Задачи',
 
-    'footer_remarks' => 'Есть предложения?',
-    'footer_send_email' => 'Отправьте мне email',
+    'footer_remarks' => 'Комментарии?',
+    'footer_send_email' => 'Отправить нам email',
     'footer_privacy' => 'Политика конфиденциальности',
     'footer_release' => 'Примечания к выпуску',
     'footer_newsletter' => 'Рассылка',
-    'footer_source_code' => 'Contribute',
+    'footer_source_code' => 'Поддержать проект',
     'footer_version' => 'Версия: :version',
     'footer_new_version' => 'Доступна новая версия',
 
@@ -113,7 +113,7 @@ return [
     'error_try_again' => 'Произошла ошибка. Пожалуйста, попробуйте снова.',
     'error_id' => 'Error ID: :id',
     'error_unavailable' => 'Service unavailable',
-    'error_maintenance' => 'Maintenance in progress. Be right back.',
+    'error_maintenance' => 'Maintenance in progress. We’ll be right back.',
     'error_help' => 'We’ll be right back.',
     'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
     'error_no_term' => 'There is no policy for this instance yet.',
@@ -132,10 +132,10 @@ return [
     // and then, the feminine version of the string. Finally, in some sentences
     // in the UI, we need to include the name of the person we add the relationship
     // to.
-    'relationship_type_group_love' => 'Love relationships',
-    'relationship_type_group_family' => 'Family relationships',
-    'relationship_type_group_friend' => 'Friend relationships',
-    'relationship_type_group_work' => 'Work relationships',
+    'relationship_type_group_love' => 'Любовные отношения',
+    'relationship_type_group_family' => 'Семейные отношения',
+    'relationship_type_group_friend' => 'Дружеские отношения',
+    'relationship_type_group_work' => 'Рабочие отношения',
     'relationship_type_group_other' => 'Other kind of relationships',
 
     'relationship_type_partner' => 'significant other',
@@ -173,8 +173,8 @@ return [
     'relationship_type_ex_with_name' => ':name’s ex-boyfriend',
     'relationship_type_ex_female_with_name' => ':name’s ex-girlfriend',
 
-    'relationship_type_parent' => 'father',
-    'relationship_type_parent_female' => 'mother',
+    'relationship_type_parent' => 'отец',
+    'relationship_type_parent_female' => 'мать',
     'relationship_type_parent_with_name' => ':name’s father',
     'relationship_type_parent_female_with_name' => ':name’s mother',
 
@@ -183,8 +183,8 @@ return [
     'relationship_type_child_with_name' => ':name’s son',
     'relationship_type_child_female_with_name' => ':name’s daughter',
 
-    'relationship_type_stepparent' => 'stepfather',
-    'relationship_type_stepparent_female' => 'stepmother',
+    'relationship_type_stepparent' => 'отчим',
+    'relationship_type_stepparent_female' => 'мачеха',
     'relationship_type_stepparent_with_name' => ':name’s stepfather',
     'relationship_type_stepparent_female_with_name' => ':name’s stepmother',
 
@@ -462,4 +462,10 @@ return [
     'dav_birthdays_description' => ':name’s contact’s birthdays',
     'dav_tasks' => 'Задачи',
     'dav_tasks_description' => 'Задачи :name',
+
+    // contact list
+    'contact_list_avatar' => 'Avatar',
+    'contact_list_name' => 'Contact',
+    'contact_list_description' => 'Description',
+
 ];

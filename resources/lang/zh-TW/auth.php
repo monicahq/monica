@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => '二次驗證失敗',
     '2fa_one_time_password' => '驗證碼',
     '2fa_recuperation_code' => '輸入二次驗證恢復碼',
+    '2fa_one_time_or_recuperation' => 'Enter a two factor authentication code or a recovery code',
     '2fa_otp_help' => '開啟您的二次驗證APP並複製驗證碼',
 
     'login_to_account' => '登入您的帳號',

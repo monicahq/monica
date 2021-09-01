@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -13,6 +13,7 @@ return [
     'journal_add' => 'הוספת רשומה ביומן',
     'journal_edit' => 'עריכת רשומה ביומן',
     'journal_empty' => 'יומן ריק',
+    'journal_created_at' => 'נוצר ב־{date}',
     'journal_created_automatically' => 'נוצרה אוטומטית',
     'journal_entry_type_journal' => 'רשומה ביומן',
     'journal_entry_type_activity' => 'פעילות',

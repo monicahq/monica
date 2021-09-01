@@ -8,6 +8,7 @@ use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\DB;
 use App\Models\Instance\Emotion\Emotion;
 use App\Services\Contact\Call\DestroyCall;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DestroyCallTest extends TestCase
@@ -125,5 +126,23 @@ class DestroyCallTest extends TestCase
             'id' => $contact->id,
             'last_talked_to' => null,
         ]);
+    }
+
+    /** @test */
+    public function it_fails_if_contact_is_archived()
+    {
+        $contact = factory(Contact::class)->state('archived')->create([]);
+        $call = factory(Call::class)->create([
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $request = [
+            'account_id' => $call->account_id,
+            'call_id' => $call->id,
+        ];
+
+        $this->expectException(ValidationException::class);
+        app(DestroyCall::class)->execute($request);
     }
 }

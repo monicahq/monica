@@ -23,6 +23,7 @@ class SearchHelper
     {
         $accountId = Auth::user()->account_id;
 
+        // match against `field: string` queries
         if (preg_match('/(.{1,})[:](.{1,})/', $needle, $matches)) {
             $search_field = $matches[1];
             $search_term = $matches[2];

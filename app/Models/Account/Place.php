@@ -2,8 +2,8 @@
 
 namespace App\Models\Account;
 
+use Illuminate\Support\Str;
 use App\Models\Contact\Contact;
-use function Safe\preg_replace;
 use App\Helpers\CountriesHelper;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -84,12 +84,7 @@ class Place extends Model
         }
 
         // trim extra whitespaces inside the address
-        $address = preg_replace('/\s+/', ' ', $address);
-        if (is_string($address)) {
-            return $address;
-        }
-
-        return null;
+        return Str::of($address)->replaceMatches('/\s+/', ' ');
     }
 
     /**

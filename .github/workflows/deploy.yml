@@ -1,0 +1,241 @@
+name: Deploy
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches-ignore: ['l10n_master*']
+  release:
+    types: [created]
+
+  workflow_run:
+    workflows: ['Compress images']
+    types: [completed]
+
+  workflow_dispatch:
+
+env:
+  php-version: '8.0'
+  node-version: 15
+
+jobs:
+  #############
+  # Build
+  #############
+  build:
+    runs-on: ubuntu-latest
+    name: Build assets
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      release: ${{ steps.version.outputs.release }}
+
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP ${{ env.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php-version }}
+          extensions: redis
+          coverage: none
+      - name: Check PHP Version
+        run: php -v
+      - name: Check Composer Version
+        run: composer -V
+      - name: Check PHP Extensions
+        run: php -m
+
+    # Composer
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer files
+        uses: actions/cache@v2.1.6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ env.php-version }}
+            ${{ runner.os }}-composer-
+
+      - name: Install composer dependencies
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+
+    # Yarn
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.node-version }}
+      - name: Get yarn cache directory path
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache yarn files
+        uses: actions/cache@v2.1.6
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            ${{ runner.os }}-yarn-
+
+      - name: Install yarn dependencies
+        run: yarn inst
+      - name: Lint files
+        run: yarn run lint:fix
+
+      - name: Check if there is any file update needed
+        id: check
+        run: |
+          status=$(git status --porcelain)
+          if [ -z "$status" ]; then
+            echo "Nothing to push, already up to date."
+          else
+            echo -e "Waiting modifications:\n$status"
+            echo "::error::Resources are not up to date. Please rebuild with: 'yarn run lint:all' and 'yarn run prod'."
+            exit -1
+          fi
+
+      - name: Get version
+        id: version
+        run: |
+          echo "::set-output name=version::$(git describe --abbrev=0 --tags | sed 's/^v//')"
+          echo "::set-output name=release::$(git describe --abbrev=0 --tags --exact-match $GITHUB_SHA 2>/dev/null || git log --pretty="%h" -n1 $GITHUB_SHA)"
+
+
+      - name: Prepare environment
+        run: |
+          { \
+            echo "MIX_PROD_SOURCE_MAPS=true"; \
+            echo "MIX_SENTRY_RELEASE=${{ steps.version.outputs.release }}"; \
+          } | tee .env
+
+      - name: Build assets
+        run: yarn run production
+
+      - name: Store assets
+        uses: actions/upload-artifact@v2
+        with:
+          name: assets
+          path: |
+            public/mix-manifest.json
+            public/js
+            public/css
+            public/fonts
+            !public/**/*.map
+
+      - name: Store source maps
+        uses: actions/upload-artifact@v2
+        with:
+          name: sourcemaps
+          path: |
+            public/**/*.map
+
+
+  ######################
+  # Deploy on fortrabbit
+  ######################
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    needs: build
+    if: github.event_name != 'pull_request'
+
+    environment: fortrabbit
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Download assets
+        uses: actions/download-artifact@v2
+        with:
+          name: assets
+          path: public
+
+      - name: Configure Git
+        run: |
+          git config user.email $GIT_EMAIL
+          git config user.name $GIT_USERNAME
+        env:
+          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+          GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+
+      - name: Create release files
+        run: |
+          echo ${{ needs.build.outputs.version }} > config/.version
+          echo ${{ needs.build.outputs.release }} > config/.release
+          echo $GITHUB_SHA > config/.commit
+
+      - name: Update .htaccess
+        run: cp -f scripts/.htaccess_production public/.htaccess
+
+      - name: Commit everything
+        run: |
+          git add -A --force public config
+          git commit -m "Build $($CURRENT_DATE_TIME)"
+        env:
+          CURRENT_DATE_TIME: "date +%Y-%m-%d:%H-%M"
+
+      - name: Deploy
+        run: |
+          git remote add deploy $REPO_URL
+          git push deploy --force
+        env:
+          # This avoids a failure when the client does not know the SSH Host already
+          GIT_SSH_COMMAND: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+          REPO_URL: ${{ secrets.REPO_URL }}
+
+
+  ############################
+  # Create a release on sentry
+  ############################
+  sentry:
+    runs-on: ubuntu-latest
+    name: Sentry release
+    needs: build
+    if: github.event_name != 'pull_request'
+
+    environment: sentry
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Download assets
+        uses: actions/download-artifact@v2
+        with:
+          name: assets
+          path: public
+
+      - name: Download source maps
+        uses: actions/download-artifact@v2
+        with:
+          name: sourcemaps
+          path: public
+
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: ${{ secrets.SENTRY_ENVIRONMENT }}
+          sourcemaps: public/js/app.js public/js/app.js.map
+          version: ${{ needs.build.outputs.release }}
+          url_prefix: ~/js

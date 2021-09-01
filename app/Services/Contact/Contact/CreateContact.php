@@ -6,11 +6,15 @@ use App\Models\User\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
+use App\Helpers\AccountHelper;
 use function Safe\json_encode;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Jobs\AuditLog\LogAccountAudit;
+use App\Models\Contact\ContactFieldType;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Jobs\Avatars\GetAvatarsFromInternet;
+use App\Services\Contact\ContactField\CreateContactField;
 
 class CreateContact extends BaseService
 {
@@ -28,6 +32,7 @@ class CreateContact extends BaseService
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
             'nickname' => 'nullable|string|max:255',
+            'email' => 'nullable|string|max:255',
             'gender_id' => 'nullable|integer|exists:genders,id',
             'description' => 'nullable|string|max:255',
             'is_partial' => 'nullable|boolean',
@@ -57,11 +62,19 @@ class CreateContact extends BaseService
     {
         $this->validate($data);
 
+        $account = Account::find($data['account_id']);
+        if (AccountHelper::hasReachedContactLimit($account)
+            && AccountHelper::hasLimitations($account)
+            && ! $account->legacy_free_plan_unlimited_contacts) {
+            abort(402);
+        }
+
         // filter out the data that shall not be updated here
         $dataOnly = Arr::except(
             $data,
             [
                 'author_id',
+                'email',
                 'is_birthdate_known',
                 'birthdate_day',
                 'birthdate_month',
@@ -83,6 +96,8 @@ class CreateContact extends BaseService
         $this->updateBirthDayInformation($data, $contact);
 
         $this->updateDeceasedInformation($data, $contact);
+
+        $this->updateEmail($data, $contact);
 
         $this->generateUUID($contact);
 
@@ -147,6 +162,32 @@ class CreateContact extends BaseService
             'age' => $this->nullOrvalue($data, 'birthdate_age'),
             'add_reminder' => $this->nullOrvalue($data, 'birthdate_add_reminder'),
             'is_deceased' => $data['is_deceased'],
+        ]);
+    }
+
+    /**
+     * Adds a contact field containing the email address.
+     *
+     * @param array $data
+     * @param Contact $contact
+     * @return void
+     */
+    private function updateEmail(array $data, Contact $contact)
+    {
+        $contactFieldType = ContactFieldType::where([
+            'account_id' => $data['account_id'],
+            'type' => ContactFieldType::EMAIL,
+        ])->first();
+
+        if (is_null($contactFieldType) || is_null($this->nullOrvalue($data, 'email'))) {
+            return;
+        }
+
+        $contactField = app(CreateContactField::class)->execute([
+            'account_id' => $data['account_id'],
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => $data['email'],
         ]);
     }
 

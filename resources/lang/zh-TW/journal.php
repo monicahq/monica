@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -13,6 +13,7 @@ return [
     'journal_add' => '新增日記條目',
     'journal_edit' => '編輯日記條目',
     'journal_empty' => '暫無日記',
+    'journal_created_at' => 'Created at {date}',
     'journal_created_automatically' => '自動建立',
     'journal_entry_type_journal' => '記錄條目',
     'journal_entry_type_activity' => '活動',

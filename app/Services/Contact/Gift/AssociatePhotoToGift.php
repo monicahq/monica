@@ -37,6 +37,8 @@ class AssociatePhotoToGift extends BaseService
         $gift = Gift::where('account_id', $data['account_id'])
             ->findOrFail($data['gift_id']);
 
+        $gift->contact->throwInactive();
+
         $gift->photos()->syncWithoutDetaching([$photo->id]);
     }
 }

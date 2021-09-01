@@ -44,6 +44,17 @@ class AccountHelper
     }
 
     /**
+     * Indicate whether an account has not reached the contact limit of free accounts.
+     *
+     * @param Account $account
+     * @return bool
+     */
+    public static function isBelowContactLimit(Account $account): bool
+    {
+        return $account->allContacts()->real()->active()->count() <= config('monica.number_of_allowed_contacts_free_account');
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
      * @param Account $account
@@ -82,7 +93,7 @@ class AccountHelper
      */
     public static function getDefaultGender(Account $account): string
     {
-        $defaultGenderType = Gender::MALE;
+        $defaultGenderType = Gender::UNKNOWN;
 
         if ($account->default_gender_id) {
             $defaultGender = Gender::where([

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -153,5 +153,14 @@ return [
     */
 
     'attributes' => [],
+
+    'vue' => [
+        'max' => [
+            'numeric' => '{field} не может быть больше, чем {max}.',
+            'string' => 'Количество символов в {field} не может превышать {max}.',
+        ],
+        'required' => '{field} обязательно.',
+        'url' => '{field} не является действительным URL.',
+    ],
 
 ];

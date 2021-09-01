@@ -52,7 +52,7 @@ class ComposerScripts
     protected static function clear()
     {
         if (file_exists(self::CONFIG)) {
-            \unlink(self::CONFIG);
+            \unlink(self::CONFIG); /** @phpstan-ignore-line */
         }
     }
 }

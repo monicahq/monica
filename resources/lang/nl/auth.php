@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => 'De tweestapsverificatie is mislukt.',
     '2fa_one_time_password' => 'Tweestapsverificatiecode',
     '2fa_recuperation_code' => 'Voer een tweestapsverificatiecode in',
+    '2fa_one_time_or_recuperation' => 'Voer een tweestapsverificatiecode of een herstelcode in',
     '2fa_otp_help' => 'Open je tweestapsverificatiecode-app en kopieer de code',
 
     'login_to_account' => 'Inloggen op je account',

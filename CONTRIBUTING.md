@@ -3,7 +3,7 @@
 First off, thank you for considering contributing to Monica. We need people like
 you to make Monica the best tool it can be.
 
-Before you do anything else, please read the [README.md](readme.md) of this project first.
+Before you do anything else, please read the [README.md](README.md) of this project first.
 This is where we highlight the vision and the strategy. Please make sure you
 accept this vision before contributing to this project.
 

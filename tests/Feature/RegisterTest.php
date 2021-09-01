@@ -16,6 +16,8 @@ class RegisterTest extends FeatureTestCase
 
     public function test_user_can_register()
     {
+        config(['monica.disable_signup' => false]);
+
         Mail::fake();
 
         $params = [
@@ -40,6 +42,8 @@ class RegisterTest extends FeatureTestCase
 
     public function test_user_cannot_register_twice()
     {
+        config(['monica.disable_signup' => false]);
+
         Mail::fake();
 
         $user = factory(User::class)->create();
@@ -64,6 +68,8 @@ class RegisterTest extends FeatureTestCase
 
     public function test_it_dispatches_an_email()
     {
+        config(['monica.disable_signup' => false]);
+
         $route = Notification::route('mail', 'test@test.com');
         Notification::fake();
 
@@ -71,7 +77,7 @@ class RegisterTest extends FeatureTestCase
 
         $user = factory(User::class)->create();
 
-        dispatch(new SendNewUserAlert($user));
+        SendNewUserAlert::dispatch($user);
 
         Notification::assertSentTo($route, NewUserAlert::class);
 

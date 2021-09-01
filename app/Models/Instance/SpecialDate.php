@@ -2,8 +2,8 @@
 
 namespace App\Models\Instance;
 
-use Carbon\Carbon;
 use App\Helpers\DateHelper;
+use Illuminate\Support\Carbon;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;

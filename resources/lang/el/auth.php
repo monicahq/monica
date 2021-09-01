@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => 'Ο έλεγχος ταυτότητας δύο παραγόντων απέτυχε.',
     '2fa_one_time_password' => 'Κωδικός ελέγχου ταυτότητας δύο παραγόντων',
     '2fa_recuperation_code' => 'Πληκτρολογήστε έναν κωδικό ελέγχου ταυτότητας δύο παραγόντων',
+    '2fa_one_time_or_recuperation' => 'Εισάγετε έναν κωδικό πιστοποίησης 2 παραγόντων (2FA) ή έναν κωδικό ανάκτησης',
     '2fa_otp_help' => 'Ανοίξτε την εφαρμογή ελέγχου ταυτότητας δύο παραγόντων στο κινητό σας και αντιγράψτε τον κωδικό',
 
     'login_to_account' => 'Συνδεθείτε στο λογαριασμό σας',
@@ -84,5 +85,5 @@ return [
     'email_change_current_email' => 'Διεύθυνση email αυτή τη στιγμή:',
     'email_change_title' => 'Αλλάξτε την διεύθυνση email σας',
     'email_change_new' => 'Νέα διεύθυνση email',
-    'email_changed' => 'Your email address has been changed. Check your mailbox to validate it.',
+    'email_changed' => 'Η διεύθυνση email σας έχει αλλάξει. Ελέγξτε το γραμματοκιβώτιό σας για να το επικυρώσετε.',
 ];

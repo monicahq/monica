@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -13,6 +13,7 @@ return [
     'journal_add' => 'أضف تدويناً للمذكرة',
     'journal_edit' => 'Edit a journal entry',
     'journal_empty' => 'Empty journal',
+    'journal_created_at' => 'Created at {date}',
     'journal_created_automatically' => 'تم إنشائه تلقائياً',
     'journal_entry_type_journal' => 'تدوين المذكرة',
     'journal_entry_type_activity' => 'نشاط',

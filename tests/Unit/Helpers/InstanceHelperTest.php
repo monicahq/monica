@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Helpers;
 
+use Mockery;
 use Tests\TestCase;
 use function Safe\json_decode;
 use App\Helpers\InstanceHelper;
@@ -89,6 +90,52 @@ class InstanceHelperTest extends TestCase
         $this->assertEquals(
             '$10.00',
             InstanceHelper::getPlanInformationFromConfig('annual')['friendlyPrice']
+        );
+    }
+
+    /** @test */
+    public function it_fetches_subscription_information()
+    {
+        $stripeSubscription = (object) [
+            'plan' => (object) [
+                'currency' => 'USD',
+                'amount' => 500,
+                'interval' => 'month',
+                'id' => 'monthly',
+            ],
+            'current_period_end' => 1629976560,
+        ];
+
+        $subscription = Mockery::mock('\Laravel\Cashier\Subscription');
+        $subscription->shouldReceive('asStripeSubscription')
+            ->andReturn($stripeSubscription);
+        $subscription->shouldReceive('getAttribute')
+            ->with('name')
+            ->andReturn('Monthly');
+
+        $this->assertEquals(
+            'monthly',
+            InstanceHelper::getPlanInformationFromSubscription($subscription)['type']
+        );
+
+        $this->assertEquals(
+            'Monthly',
+            InstanceHelper::getPlanInformationFromSubscription($subscription)['name']
+        );
+
+        $this->assertEquals(
+            'monthly',
+            InstanceHelper::getPlanInformationFromSubscription($subscription)['id']
+        );
+
+        $this->assertEquals(
+            500,
+            InstanceHelper::getPlanInformationFromSubscription($subscription)['price']
+        );
+
+        $this->assertEquals(
+            '$5.00',
+            InstanceHelper::getPlanInformationFromSubscription($subscription)['friendlyPrice']
         );
     }
 

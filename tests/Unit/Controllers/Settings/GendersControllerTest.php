@@ -91,6 +91,7 @@ class GendersControllerTest extends FeatureTestCase
 
         $response = $this->json('PUT', '/settings/personalization/genders/'.$gender->id, [
             'name' => 'gender',
+            'type' => 'U',
         ]);
 
         $response->assertStatus(200);
@@ -145,7 +146,7 @@ class GendersControllerTest extends FeatureTestCase
 
         $response->assertStatus(403);
         $response->assertJson([
-            'message' => 'Please choose a valid gender from the list.',
+            'message' => 'Please choose a gender from the list.',
         ]);
     }
 

@@ -13,7 +13,8 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-window.Vue = require('vue');
+import Vue from 'vue';
+window.Vue = Vue;
 
 // Notifications
 import Notifications from 'vue-notification';
@@ -21,18 +22,18 @@ Vue.use(Notifications);
 
 // Custom components
 Vue.component(
-  'stripe-subscription',
+  'StripeSubscription',
   require('./components/settings/Subscription.vue').default
 );
 
 // Form elements
 Vue.component(
-  'form-input',
+  'FormInput',
   require('./components/partials/form/Input.vue').default
 );
 
 Vue.component(
-  'contact-search',
+  'ContactSearch',
   require('./components/people/ContactSearch.vue').default
 );
 

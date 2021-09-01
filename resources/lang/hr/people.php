@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -10,29 +10,29 @@ return [
 
     //index
     'people_not_found' => 'Contact not found',
-    'people_list_number_kids' => '1 dijete|:count djece',
+    'people_list_number_kids' => ':count child|:count children',
     'people_list_last_updated' => 'Posljednji ažurirani:',
-    'people_list_number_reminders' => '1 podsjetnik|:count podsjetnika',
+    'people_list_number_reminders' => ':count reminder|:count reminders',
     'people_list_blank_title' => 'Još nemate unesenih kontakata',
     'people_list_blank_cta' => 'Novi kontakt',
     'people_list_sort' => 'Sortiraj',
-    'people_list_stats' => '1 kontakt|:count kontakata',
+    'people_list_stats' => ':count contact|:count contacts',
     'people_list_firstnameAZ' => 'Sortiraj po imenu A → Z',
     'people_list_firstnameZA' => 'Sortiraj po imenu Z → A',
     'people_list_lastnameAZ' => 'Sortiraj po prezimenu A → Z',
     'people_list_lastnameZA' => 'Sortiraj po prezimenu Z → A',
-    'people_list_lastactivitydateNewtoOld' => 'Sortiraj po datumu zadnje aktivnosti (najnoviji prema najstarijem)',
-    'people_list_lastactivitydateOldtoNew' => 'Sortiraj po datumu zadnje aktivnosti (najstariji prema najnovijem)',
+    'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date, newest to oldest',
+    'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date, oldest to newest',
     'people_list_filter_tag' => 'Prikazuju se svi kontakti označeni sa',
     'people_list_clear_filter' => 'Očisti filter',
-    'people_list_contacts_per_tags' => '1 kontakt|:count kontakata',
+    'people_list_contacts_per_tags' => ':count contact|:count contacts',
     'people_list_show_dead' => 'Pokaži umrle osobe (:count)',
     'people_list_hide_dead' => 'Sakrij umrle osobe (:count)',
-    'people_search' => 'Pretraži svoje kontakte...',
+    'people_search' => 'Search your contacts…',
     'people_search_no_results' => 'No results found',
     'people_search_next' => 'Next',
-    'people_search_prev' => 'Prev',
-    'people_search_rows_per_page' => 'Rows per page:',
+    'people_search_prev' => 'Previous',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => 'of',
     'people_search_page' => 'Page',
     'people_search_all' => 'All',
@@ -42,27 +42,29 @@ return [
     'people_list_account_upgrade_cta' => 'Nadogradi sada',
     'people_list_untagged' => 'View untagged contacts',
     'people_list_filter_untag' => 'Showing all untagged contacts',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => 'Dodajte novu osobu',
-    'people_add_missing' => 'No Person Found Add New One Now',
+    'people_add_missing' => 'No person found – add a new one now',
     'people_add_firstname' => 'Ime',
-    'people_add_middlename' => 'Srednje ime (opcionalno)',
-    'people_add_lastname' => 'Prezime (opcionalno)',
-    'people_add_nickname' => 'Nadimak (opcionalno)',
+    'people_add_middlename' => 'Middle name (optional)',
+    'people_add_lastname' => 'Last name (optional)',
+    'people_add_email' => 'Email (optional)',
+    'people_add_nickname' => 'Nickname (optional)',
     'people_add_cta' => 'Dodaj',
     'people_save_and_add_another_cta' => 'Unesi pa dodaj drugu osobu',
     'people_add_success' => 'Kontakt :name je uspješno unesen',
     'people_add_gender' => 'Spol',
     'people_delete_success' => 'Kontakt je obrisan',
     'people_delete_message' => 'Delete contact',
-    'people_delete_confirmation' => 'Jeste li sigurni da želite izbrisati kontakt? Brisanje je trajno.',
+    'people_delete_confirmation' => 'Are you sure you want to delete :name’s contact? Deletion is immediate and permanent.',
     'people_add_birthday_reminder' => 'Zaželi sretan rođendan :name',
-    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name would have celebrated their birthday',
     'people_add_import' => 'Želite li <a href=":url">uvesti svoje kontakte</a>?',
     'people_edit_email_error' => 'Već postoji kontakt s ovom email adresom. Molimo unesite drugu.',
     'people_export' => 'Izvezi kao vCard',
-    'people_add_reminder_for_birthday' => 'Napravi godišnji podsjetnik za rođendan',
+    'people_add_reminder_for_birthday' => 'Create an annual birthday reminder',
 
     // show
     'section_contact_information' => 'Informacije o kontaktu',
@@ -81,7 +83,7 @@ return [
     'edit_contact_information' => 'Uredi kontakt',
     'contact_archive' => 'Archive contact',
     'contact_unarchive' => 'Unarchive contact',
-    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
+    'contact_archive_help' => 'Archived contacts are not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Zabilježi poziv',
     'set_favorite' => 'Omiljeni kontakti smješteni su na vrhu popisa',
 
@@ -92,7 +94,7 @@ return [
     'stay_in_touch_premium' => 'Potrebno je nadograditi račun za korištenje ove opcije',
     'stay_in_touch_modal_title' => 'Ostani u kontaktu',
     'stay_in_touch_modal_desc' => 'Možemo vas mailom podsjetiti da radovito ostenete u kontaktu sa {firstname}.',
-    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
+    'stay_in_touch_modal_label' => 'Send me an email every… {count} day|Send me an email every… {count} days',
 
     // Calls
     'modal_call_title' => 'Zabilježi poziv',
@@ -112,7 +114,7 @@ return [
     'call_emotions' => 'Emotions:',
 
     // Conversation
-    'conversation_blank' => 'Bilježi razgovore koje ste imali vi i :name imali na socijalnim mrežama.',
+    'conversation_blank' => 'Record conversations you have with :name on social media, SMS…',
     'conversation_delete_link' => 'Izbriši razgovor',
     'conversation_edit_title' => 'Uredi razgovor',
     'conversation_edit_delete' => 'Jeste li sigurni da želite izbrisati razgovor? Brisanje je trajno.',
@@ -121,7 +123,7 @@ return [
     'conversation_delete_success' => 'Razgovor je uspješno izbrisan.',
     'conversation_add_title' => 'Unesi novi razgovor',
     'conversation_add_when' => 'Kada ste imali ovaj razgovor?',
-    'conversation_add_who_wrote' => 'Tko je napisao ovu poruku?',
+    'conversation_add_who_wrote' => 'Who sent this message?',
     'conversation_add_how' => 'Kako ste komunicirali?',
     'conversation_add_you' => 'Vi',
     'conversation_add_content' => 'Zapišite ono što je rečeno',
@@ -134,7 +136,7 @@ return [
     'conversation_list_cta' => 'Zabilježi razgovor',
 
     // age - birthday
-    'birthdate_not_set' => 'Datum rođenja nije unesen',
+    'birthdate_not_set' => 'Birthday is not set',
     'age_approximate_in_years' => 'oko :age godina',
     'age_exact_in_years' => ':age years old',
     'age_exact_birthdate' => 'rođen/a :date',
@@ -151,18 +153,18 @@ return [
     'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => 'Ime',
-    'information_edit_lastname' => 'Prezime (opcionalno)',
-    'information_edit_description' => 'Description (Optional)',
+    'information_edit_lastname' => 'Last name (optional)',
+    'information_edit_description' => 'Description (optional)',
     'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_unknown' => 'Ne znam starost ove osobe',
-    'information_edit_probably' => 'Ova osoba je otprilike...',
-    'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
-    'information_edit_exact' => 'I know the exact birthdate of this person...',
-    'information_edit_birthdate_label' => 'Birthdate',
+    'information_edit_probably' => 'This person is probably…',
+    'information_edit_not_year' => 'I know the day and month of this person’s birthday, but not the year…',
+    'information_edit_exact' => 'I know this person’s exact birthday…',
+    'information_edit_birthdate_label' => 'Birthday',
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => 'at :company',
     'work_add_cta' => 'Update work information',
-    'work_edit_success' => 'Work information have been updated with success',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => 'Update :name’s job information',
     'work_edit_job' => 'Job title (optional)',
     'work_edit_company' => 'Company (optional)',
@@ -181,7 +183,7 @@ return [
     'reminders_blank_title' => 'Is there something you want to be reminded of about :name?',
     'reminders_blank_add_activity' => 'Dodaj podsjetnik',
     'reminders_add_title' => 'Što želiš zapamtiti za :name?',
-    'reminders_add_description' => 'Molim podsjeti me da...',
+    'reminders_add_description' => 'Please remind me to…',
     'reminders_add_next_time' => 'Kada sljedeći put želite dobiti podsjetnik?',
     'reminders_add_once' => 'Remind me about this just once',
     'reminders_add_recurrent' => 'Remind me about this every',
@@ -203,7 +205,7 @@ return [
     'reminders_delete_cta' => 'Delete',
     'reminders_next_expected_date' => 'on',
     'reminders_cta' => 'Add a reminder',
-    'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen. Reminders automatically added for birthdates can not be deleted. If you want to change those dates, edit the birthdate of the contacts.',
+    'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen. Reminders automatically added for birthdays can not be deleted. If you want to change those dates, edit the birthday of the contacts.',
     'reminders_one_time' => 'One time',
     'reminders_type_week' => 'tjedan',
     'reminders_type_month' => 'mjesec',
@@ -214,8 +216,8 @@ return [
     // relationships
     'relationship_form_add' => 'Dodaj novi odnos',
     'relationship_form_edit' => 'Uredi postojeći odnos',
-    'relationship_form_is_with' => 'Ova osoba je...',
-    'relationship_form_is_with_name' => ':name is...',
+    'relationship_form_is_with' => 'This person is…',
+    'relationship_form_is_with_name' => ':name is…',
     'relationship_form_add_choice' => 'Who is the relationship with?',
     'relationship_form_create_contact' => 'Dodajte novu osobu',
     'relationship_form_associate_contact' => 'Dodaj postojeći kontakt',
@@ -265,8 +267,8 @@ return [
     'activities_item_information' => ':Activity. Happened on :date',
     'activities_add_title' => 'What did you do with {name}?',
     'activities_summary' => 'Describe what you did',
-    'activities_add_pick_activity' => '(Optional) Would you like to categorize this activity? You don’t have to, but it will give you statistics later on',
-    'activities_add_date_occured' => 'The activity happened on...',
+    'activities_add_pick_activity' => 'Would you like to categorize this activity? You don’t have to, but it will give you statistics later on (optional)',
+    'activities_add_date_occured' => 'The activity happened on…',
     'activities_add_participants' => 'Who, apart from {name}, participated in this activity? (optional)',
     'activities_add_emotions_title' => 'Do you want to log how you felt during this activity? (optional)',
     'activities_blank_title' => 'Keep track of what you’ve done with {name} in the past, and what you’ve talked about',
@@ -328,6 +330,7 @@ return [
     'gifts_view_comment' => 'Pogledaj komentar',
     'gifts_mark_offered' => 'Označi kao poklonjeno',
     'gifts_update_success' => 'Uspješno ažuriranje poklona',
+    'gifts_add_date' => 'Date (optional)',
 
     // debts
     'debt_delete_confirmation' => 'Jeste li sigurni da želite izbrisati ovaj dug?',
@@ -371,8 +374,8 @@ return [
 
     // Deceased
     'deceased_reminder_title' => 'Anniversary of the death of :name',
-    'deceased_mark_person_deceased' => 'Mark this person as deceased',
-    'deceased_know_date' => 'I know the date this person died',
+    'deceased_mark_person_deceased' => 'Mark this as deceased',
+    'deceased_know_date' => 'I know the date that this person died',
     'deceased_add_reminder' => 'Add a reminder for this date',
     'deceased_label' => 'Deceased',
     'deceased_date_label' => 'Deceased date',
@@ -418,7 +421,7 @@ return [
 
     // life events
     'life_event_list_tab_life_events' => 'Life events',
-    'life_event_list_tab_other' => 'Notes, reminders, ...',
+    'life_event_list_tab_other' => 'Notes, reminders, …',
     'life_event_list_title' => 'Life events',
     'life_event_blank' => 'Log what happens to the life of {name} for your future reference.',
     'life_event_list_cta' => 'Add life event',
@@ -426,7 +429,7 @@ return [
     'life_event_create_life_event' => 'Add life event',
     'life_event_create_default_title' => 'Title (optional)',
     'life_event_create_default_story' => 'Story (optional)',
-    'life_event_create_date' => 'You do not need to indicate a month or a day - only the year is mandatory.',
+    'life_event_create_date' => 'You do not need to indicate a month or a day – only the year is mandatory.',
     'life_event_create_default_description' => 'Add information about what you know',
     'life_event_create_add_yearly_reminder' => 'Add a yearly reminder for this event',
     'life_event_create_success' => 'The life event has been added',
@@ -488,7 +491,7 @@ return [
     'document_list_cta' => 'Upload document',
     'document_list_blank_desc' => 'Here you can store documents related to this person.',
     'document_upload_zone_cta' => 'Upload a file',
-    'document_upload_zone_progress' => 'Uploading the document...',
+    'document_upload_zone_progress' => 'Uploading the document…',
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
 
     // Photos
@@ -500,8 +503,8 @@ return [
     'photo_current_profile_pic' => 'Current profile picture',
     'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Delete photo',
-    'photo_next' => 'Next photo',
-    'photo_previous' => 'Previous photo',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => 'Change your avatar',

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => 'Autenticazione due fattori fallita.',
     '2fa_one_time_password' => 'Codice di autenticazione a due fattori',
     '2fa_recuperation_code' => 'Inserisci il codice di recupero dell\'Autenticazione a due Fattori',
+    '2fa_one_time_or_recuperation' => 'Enter a two factor authentication code or a recovery code',
     '2fa_otp_help' => 'Apri la tua app di autenticazione a due fattori e copia il codice',
 
     'login_to_account' => 'Accedi al tuo conto',

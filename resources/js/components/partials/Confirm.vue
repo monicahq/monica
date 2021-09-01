@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <p>
-      <a :class="lclass" :title="title" href="" @click.prevent="open">
-        <slot>
-        </slot>
-      </a>
-    </p>
+  <div class="di">
+    <a :class="lclass" :title="title" href="" @click.prevent="open">
+      <slot>
+      </slot>
+    </a>
 
     <sweet-modal ref="modal" tabindex="-1" role="dialog">
       <div>

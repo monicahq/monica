@@ -1,16 +1,16 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
 
 return [
 
-    'subject_line' => 'Reminder for :contact',
-    'greetings' => 'Hi :username',
-    'want_reminded_of' => 'You wanted to be reminded of :reason',
+    'subject_line' => 'Υπενθύμιση για :contact',
+    'greetings' => 'Γεια σου :username',
+    'want_reminded_of' => 'Είχατε ζητήσει υπενθύμιση για :reason',
     'for' => 'Προς: :name',
     'comment' => 'Σχόλιο: :comment',
     'footer_contact_info' => 'Προσθέστε, δείτε, ολοκληρώστε και επεξεργαστείτε τις πληροφορίες για αυτή την επαφή:',

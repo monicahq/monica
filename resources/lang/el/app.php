@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -14,7 +14,7 @@ return [
     'add' => 'Προσθήκη',
     'cancel' => 'Ακύρωση',
     'confirm' => 'Επιβεβαίωση',
-    'delete_confirm' => 'Είστε σίγουροι;',
+    'delete_confirm' => 'Are you sure?',
     'delete' => 'Διαγραφή',
     'edit' => 'Επεξεργασία',
     'upload' => 'Μεταφόρτωση',
@@ -31,7 +31,7 @@ return [
     'new' => 'νέο',
     'unknown' => 'Δεν γνωρίζω',
     'load_more' => 'Εμφάνιση περισσότερων',
-    'loading' => 'Φόρτωση...',
+    'loading' => 'Φόρτωση…',
     'with' => 'με',
     'today' => 'σήμερα',
     'yesterday' => 'χθες',
@@ -44,11 +44,11 @@ return [
     'retry' => 'Ξαναδοκιμάστε',
     'filter' => 'Φιλτράρισμα λίστας',
     'go_back' => 'Επιστροφή',
-    'file_selected' => '1 αρχείο επιλέχθηκε...|{count} αρχεία επιλέχθηκαν...',
+    'file_selected' => 'One file selected…|{count} files selected…',
 
     'application_title' => 'Monica – διαχειριστής προσωπικών σχέσεων',
     'application_description' => 'Το Monica είναι ένα εργαλείο που διαχειρίζεται τις επαφές σας με τους αγαπημένους σας, τους φίλους και την οικογένεια.',
-    'application_og_title' => 'Βελτιώστε τις σχέσεις με του αγαπημένους σας. Δωρεάν Online CRM για φίλους και οικογένεια.',
+    'application_og_title' => 'Have better relations with your loved ones. Free online CRM for friends and family.',
 
     'markdown_description' => 'Θέλετε να μορφοποιήσετε το κείμενο σας όμορφα; Υποστηρίζουμε Markdown για να προσθέσετε εντονη, πλάγια γραφή, λίστες και περισσότερα.',
     'markdown_link' => 'Διαβάστε την τεκμηρίωση',
@@ -64,14 +64,14 @@ return [
     'main_nav_activities' => 'Δραστηριότητες',
     'main_nav_tasks' => 'Εργασίες',
 
-    'footer_remarks' => 'Έχετε κάποια σχόλια;',
-    'footer_send_email' => 'Στείλτε μου ένα email',
+    'footer_remarks' => 'Σχόλια;',
+    'footer_send_email' => 'Στείλτε μας ένα email',
     'footer_privacy' => 'Πολιτική απορρήτου',
     'footer_release' => 'Σημειώσεις έκδοσης',
     'footer_newsletter' => 'Newsletter',
     'footer_source_code' => 'Συμβάλλετε',
     'footer_version' => 'Έκδοση :version',
-    'footer_new_version' => 'Μια νέα έκδοση είναι διαθέσιμη',
+    'footer_new_version' => 'Μια νέα έκδοση της εφαρμογής Monica είναι διαθέσιμη',
 
     'footer_modal_version_whats_new' => 'Τι νέο υπάρχει;',
     'footer_modal_version_release_away' => 'Είστε 1 έκδοση πίσω από την τελευταία διαθέσιμη έκδοση. Θα πρέπει να αναβαθμίσετε την εγκατάσταση σας.|Είστε :number εκδόσεις πίσω από την τελευταία διαθέσιμη έκδοση. Θα πρέπει να αναβαθμίσετε την εγκατάσταση σας.',
@@ -462,4 +462,10 @@ return [
     'dav_birthdays_description' => 'Γενέθλια επαφών του :name',
     'dav_tasks' => 'Εργασίες',
     'dav_tasks_description' => 'εργασίες του :name',
+
+    // contact list
+    'contact_list_avatar' => 'Avatar',
+    'contact_list_name' => 'Επαφή',
+    'contact_list_description' => 'Περιγραφή',
+
 ];

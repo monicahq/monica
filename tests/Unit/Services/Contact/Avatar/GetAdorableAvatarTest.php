@@ -22,7 +22,7 @@ class GetAdorableAvatarTest extends TestCase
         $url = app(GetAdorableAvatarURL::class)->execute($request);
 
         $this->assertEquals(
-            'https://api.adorable.io/avatars/400/matt@wordpress.com.png',
+            'https://api.hello-avatar.com/adorables/400/matt@wordpress.com.png',
             $url
         );
     }
@@ -38,7 +38,7 @@ class GetAdorableAvatarTest extends TestCase
 
         // should return an avatar of 200 px wide
         $this->assertEquals(
-            'https://api.adorable.io/avatars/200/matt@wordpress.com.png',
+            'https://api.hello-avatar.com/adorables/200/matt@wordpress.com.png',
             $url
         );
     }

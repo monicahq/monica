@@ -8,6 +8,11 @@
     background-color: #4AAE9B;
     color: white;
   }
+
+.tag-link,
+.tag-link:hover{
+    text-decoration: none;
+}
 </style>
 
 <template>
@@ -15,14 +20,14 @@
     <!-- list of existing tags -->
     <ul>
       <li v-for="tag in contactTags" :key="tag.id" class="di mr2">
-        <span class="bg-white ph2 pb1 pt0 dib br3 b--light-gray ba mb2">
-          <span v-show="!editMode" class="pointer" @click="navigateTo(tag)">
+        <a v-if="!editMode" :href="`people?tags[]=${encodeURIComponent(tag.name)}`" class="tag-link bg-white ph2 pb1 pt0 dib br3 b--light-gray ba mb2">
+          {{ tag.name }}
+        </a>
+        <span v-else class="bg-white ph2 pb1 pt0 dib br3 b--light-gray ba mb2">
+          <span>
             {{ tag.name }}
           </span>
-          <span v-show="editMode">
-            {{ tag.name }}
-          </span>
-          <span v-show="editMode" class="pointer" @click="removeTag(tag)">
+          <span class="pointer" @click="removeTag(tag)">
             ×
           </span>
         </span>
@@ -39,14 +44,14 @@
       <li v-show="editMode" class="di mb3">
         <div class="relative di mr2">
           <input v-model="search"
-                type="text"
-                class="di br2 f5 ba b--black-40 pa2 outline-0"
-                :placeholder="$t('people.tag_add_search')"
-                @keydown.down="onArrowDown"
-                @keydown.up="onArrowUp"
-                @keydown.enter="onEnter"
-                @keydown.esc="onEscape"
-                @input="onChange"
+                 type="text"
+                 class="di br2 f5 ba b--black-40 pa2 outline-0"
+                 :placeholder="$t('people.tag_add_search')"
+                 @keydown.down="onArrowDown"
+                 @keydown.up="onArrowUp"
+                 @keydown.enter="onEnter"
+                 @keydown.esc="onEscape"
+                 @input="onChange"
           />
 
           <ul v-show="isOpen" v-if="results.length > 0" class="autocomplete-results ba b--gray-monica absolute bg-white left-0 z-9999">
@@ -207,10 +212,6 @@ export default {
         .then(response => {
           this.getExistingTags();
         });
-    },
-
-    navigateTo(tag) {
-      window.location.href = 'people?tag1=' + tag.name_slug;
     },
 
     handleClickOutside(evt) {

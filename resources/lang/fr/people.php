@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -21,19 +21,19 @@ return [
     'people_list_firstnameZA' => 'Tri par prénom Z → A',
     'people_list_lastnameAZ' => 'Tri par nom de famille A → Z',
     'people_list_lastnameZA' => 'Tri par nom de famille Z → A',
-    'people_list_lastactivitydateNewtoOld' => 'Trier par date de dernière activité (récent à vieux)',
-    'people_list_lastactivitydateOldtoNew' => 'Trier par date de dernière activité (vieux à récent)',
+    'people_list_lastactivitydateNewtoOld' => 'Trier par date de dernière activité, du plus récent au plus ancien',
+    'people_list_lastactivitydateOldtoNew' => 'Trier par date de dernière activité, du plus ancien au plus récent',
     'people_list_filter_tag' => 'Affichage des contacts avec l’étiquette',
     'people_list_clear_filter' => 'Enlever le filtre',
     'people_list_contacts_per_tags' => ':count contact|:count contacts',
     'people_list_show_dead' => 'Afficher les contacts décédés (:count)',
     'people_list_hide_dead' => 'Masquer les contacts décédés (:count)',
-    'people_search' => 'Recherchez dans vos contacts...',
+    'people_search' => 'Recherchez dans vos contacts…',
     'people_search_no_results' => 'Aucun résultat',
     'people_search_next' => 'Suivant',
     'people_search_prev' => 'Précédent',
-    'people_search_rows_per_page' => 'Résultats par page:',
-    'people_search_of' => 'de',
+    'people_search_rows_per_page' => 'Résultats par page',
+    'people_search_of' => 'sur',
     'people_search_page' => 'Page',
     'people_search_all' => 'Tous',
     'people_add_new' => 'Ajouter une nouvelle personne',
@@ -42,13 +42,15 @@ return [
     'people_list_account_upgrade_cta' => 'Passez au plan supérieur',
     'people_list_untagged' => 'Afficher les contacts sans étiquette',
     'people_list_filter_untag' => 'Afficher les contacts sans aucune étiquette',
+    'archived_contact_readonly' => 'Un contact archivé ne peut pas être modifié, veuillez d’abord le désarchiver.',
 
     // people add
     'people_add_title' => 'Ajouter une nouvelle personne',
-    'people_add_missing' => 'Nous n’avons trouvé personne. Ajoutez quelqu’un maintenant',
+    'people_add_missing' => 'Aucune personne trouvée – ajouter une nouvelle personne maintenant',
     'people_add_firstname' => 'Prénom',
     'people_add_middlename' => 'Deuxième prénom (optionnel)',
     'people_add_lastname' => 'Nom de famille (optionnel)',
+    'people_add_email' => 'Courriel (optionnel)',
     'people_add_nickname' => 'Surnom (optionnel)',
     'people_add_cta' => 'Ajouter',
     'people_save_and_add_another_cta' => 'Sauver et ajouter un autre contact',
@@ -56,13 +58,13 @@ return [
     'people_add_gender' => 'Genre',
     'people_delete_success' => 'Le contact a été supprimé',
     'people_delete_message' => 'Supprimer le contact',
-    'people_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer ce contact ? La suppression est permanente.',
+    'people_delete_confirmation' => 'Êtes-vous sûr⋅e de vouloir supprimer le contact de :name ? La suppression est immédiate et permanente.',
     'people_add_birthday_reminder' => 'Souhaiter un bon anniversaire à :name',
     'people_add_birthday_reminder_deceased' => 'À cette date, :name aurait célébré son anniversaire',
     'people_add_import' => 'Souhaitez-vous <a href=":url">importer vos contacts</a> ?',
     'people_edit_email_error' => 'Il y a déjà quelqu’un dans votre compte avec cette adresse courriel. Merci d’en choisir une autre.',
     'people_export' => 'Exporter en tant que vCard',
-    'people_add_reminder_for_birthday' => 'Créer un rappel annuel pour l’anniversaire',
+    'people_add_reminder_for_birthday' => 'Créer un rappel annuel d’anniversaire',
 
     // show
     'section_contact_information' => 'Coordonnées',
@@ -92,7 +94,7 @@ return [
     'stay_in_touch_premium' => 'Vous devez mettre à jour votre compte pour pouvoir profiter de cette fonctionnalité',
     'stay_in_touch_modal_title' => 'Restez en contact',
     'stay_in_touch_modal_desc' => 'Nous pouvons vous rappeler par courriel pour rester en contact avec {firstname} à intervalle régulier.',
-    'stay_in_touch_modal_label' => 'Envoyez-moi un email tous les... {count} jour|Envoyez-moi un email tous les... {count} jours',
+    'stay_in_touch_modal_label' => 'Envoyez-moi un courriel tous les… {count} jour|Envoyez-moi un courriel tous les… {count} jours',
 
     // Calls
     'modal_call_title' => 'Enregistrer un appel téléphonique',
@@ -134,7 +136,7 @@ return [
     'conversation_list_cta' => 'Journal de conversation',
 
     // age - birthday
-    'birthdate_not_set' => 'Non indiqué.',
+    'birthdate_not_set' => 'La date de naissance n’est pas définie',
     'age_approximate_in_years' => 'env. :age ans',
     'age_exact_in_years' => ':age ans',
     'age_exact_birthdate' => 'né le :date',
@@ -152,17 +154,17 @@ return [
     'information_edit_max_size2' => 'Maximum {size} Ko.',
     'information_edit_firstname' => 'Prénom',
     'information_edit_lastname' => 'Nom de famille (optionnel)',
-    'information_edit_description' => 'Description (facultatif)',
+    'information_edit_description' => 'Description (optionnel)',
     'information_edit_description_help' => 'Utilisé sur la liste de contacts pour ajouter un contexte, si nécessaire.',
     'information_edit_unknown' => 'Je ne connais pas son âge',
-    'information_edit_probably' => 'Cette personne a probablement …',
-    'information_edit_not_year' => 'Je connais le jour et le mois de sa naissance, mais pas l’année…',
-    'information_edit_exact' => 'Je connais la date de naissance précise, qui est …',
-    'information_edit_birthdate_label' => 'Date de naissance',
+    'information_edit_probably' => 'Cette personne a probablement…',
+    'information_edit_not_year' => 'Je connais le jour et le mois de l’anniversaire de cette personne, mais pas l\'année…',
+    'information_edit_exact' => 'Je connais la date d’anniversaire exacte de cette personne…',
+    'information_edit_birthdate_label' => 'Date d’anniversaire',
     'information_no_work_defined' => 'Aucune information professionnelle définie',
     'information_work_at' => 'chez :company',
     'work_add_cta' => 'Mettre à jour les informations professionnelles',
-    'work_edit_success' => 'Les informations professionnelles ont été mises à jour avec succès',
+    'work_edit_success' => 'Informations professionnelles mises à jour',
     'work_edit_title' => 'Mettre à jour les informations professionnelles de :name',
     'work_edit_job' => 'Poste (optionnel)',
     'work_edit_company' => 'Entreprise (optionnel)',
@@ -181,7 +183,7 @@ return [
     'reminders_blank_title' => 'De quoi souhaitez-vous être rappelé à propos de :name ?',
     'reminders_blank_add_activity' => 'Ajouter un rappel',
     'reminders_add_title' => 'De quoi souhaitez-vous être rappelé à propos de :name ?',
-    'reminders_add_description' => 'Merci de me tenir informé de …',
+    'reminders_add_description' => 'Merci de me tenir informé de…',
     'reminders_add_next_time' => 'Quand voulez-vous être rappelé à propos de ceci ?',
     'reminders_add_once' => 'Rappelez-moi juste une fois',
     'reminders_add_recurrent' => 'Rappelez-moi tous les',
@@ -203,7 +205,7 @@ return [
     'reminders_delete_cta' => 'Supprimer',
     'reminders_next_expected_date' => 'le',
     'reminders_cta' => 'Ajouter un rappel',
-    'reminders_description' => 'Nous vous enverrons un courriel pour chacun des rappels ci-dessous. Les rappels sont envoyés le matin du jour où l’événement se passe.',
+    'reminders_description' => 'Nous vous enverrons un courriel pour chacun des rappels ci-dessous. Les rappels sont envoyés le matin du jour où l’événement se passe. Les rappels ajoutés automatiquement pour les anniversaires ne peuvent pas être effacés. Si vous désirez changer ces derniers, modifiez la date d’anniversaire de ces contacts.',
     'reminders_one_time' => 'Unique',
     'reminders_type_week' => 'semaine',
     'reminders_type_month' => 'mois',
@@ -214,8 +216,8 @@ return [
     // relationships
     'relationship_form_add' => 'Ajouter une relation',
     'relationship_form_edit' => 'Modifier une relation existante',
-    'relationship_form_is_with' => 'Cette personne est...',
-    'relationship_form_is_with_name' => ':name est ...',
+    'relationship_form_is_with' => 'Cette personne est…',
+    'relationship_form_is_with_name' => ':name est…',
     'relationship_form_add_choice' => 'Quelle est cette relation ?',
     'relationship_form_create_contact' => 'Ajouter une nouvelle personne',
     'relationship_form_associate_contact' => 'Un contact existant',
@@ -265,8 +267,8 @@ return [
     'activities_item_information' => ':Activity. S’est passée le :date',
     'activities_add_title' => 'Qu’avez-vous fait avec {name} ?',
     'activities_summary' => 'Décrivez ce que vous avez fait',
-    'activities_add_pick_activity' => '(optionnel) Souhaitez-vous catégoriser cette activité ? Vous n’avez pas à le faire, mais cela nous permettra de faire des statistiques plus tard',
-    'activities_add_date_occured' => 'Date de l’activité',
+    'activities_add_pick_activity' => 'Souhaitez-vous catégoriser cette activité ? Vous n’avez pas à le faire, mais cela nous permettra de faire des statistiques plus tard (optionnel)',
+    'activities_add_date_occured' => 'Cette activité s\'est produite le…',
     'activities_add_participants' => 'Qui, à part {name}, a participé à l’activité ? (optionnel)',
     'activities_add_emotions_title' => 'Voulez vous enregistrer ce que vous avez ressenti au cours de cette activité ? (optionnel)',
     'activities_blank_title' => 'Gardez une trace de ce que vous avez fait avec {name} dans le passé, et de ce dont vous avez parlé',
@@ -328,6 +330,7 @@ return [
     'gifts_view_comment' => 'Voir commentaire',
     'gifts_mark_offered' => 'Marquer comme offert',
     'gifts_update_success' => 'Le cadeau a été mis à jour avec succès',
+    'gifts_add_date' => 'Date (facultatif)',
 
     // debts
     'debt_delete_confirmation' => 'Êtes-vous sûr de vouloir effacer cette dette ?',
@@ -418,7 +421,7 @@ return [
 
     // life events
     'life_event_list_tab_life_events' => 'Évènements marquants',
-    'life_event_list_tab_other' => 'Notes, rappels, ...',
+    'life_event_list_tab_other' => 'Notes, rappels…',
     'life_event_list_title' => 'Évènements marquants',
     'life_event_blank' => 'Prenez des notes sur ce qui arrive dans la vie de {name} pour votre référence future.',
     'life_event_list_cta' => 'Ajouter un évènement marquant',
@@ -426,7 +429,7 @@ return [
     'life_event_create_life_event' => 'Ajouter l’évènement marquant',
     'life_event_create_default_title' => 'Titre (optionnel)',
     'life_event_create_default_story' => 'Histoire (optionnel)',
-    'life_event_create_date' => 'Vous n’avez pas à renseigner le mois ou le jour - seule l’année est obligatoire.',
+    'life_event_create_date' => 'Vous n’avez pas à renseigner le mois ou le jour – seule l’année est obligatoire.',
     'life_event_create_default_description' => 'Ajouter des informations sur ce que vous savez',
     'life_event_create_add_yearly_reminder' => 'Ajouter un rappel annuel pour cet évènement',
     'life_event_create_success' => 'L’évènement a été sauvegardé',
@@ -488,7 +491,7 @@ return [
     'document_list_cta' => 'Télécharger un document',
     'document_list_blank_desc' => 'Ici vous pouvez stocker les documents reliés à cette personne.',
     'document_upload_zone_cta' => 'Télécharger un fichier',
-    'document_upload_zone_progress' => 'Télécharger le document...',
+    'document_upload_zone_progress' => 'Téléchargement du document…',
     'document_upload_zone_error' => 'Une erreur est survenue durant le téléchargement du document. Veuillez réessayer plus tard.',
 
     // Photos
@@ -500,8 +503,8 @@ return [
     'photo_current_profile_pic' => 'Photo de profil actuelle',
     'photo_make_profile_pic' => 'Utiliser comme photo de profil',
     'photo_delete' => 'Supprimer la photo',
-    'photo_next' => 'Photo suivante',
-    'photo_previous' => 'Photo précédente',
+    'photo_next' => 'Photo suivante ❯',
+    'photo_previous' => '❮ Photo précédente',
 
     // Avatars
     'avatar_change_title' => 'Changer de photo de profil',

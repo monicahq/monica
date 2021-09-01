@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -13,6 +13,7 @@ return [
     'journal_add' => 'Voeg een dagboek-invoer toe',
     'journal_edit' => 'Bewerk dagboek-invoer',
     'journal_empty' => 'Leeg dagboek',
+    'journal_created_at' => 'Aangemaakt op {date}',
     'journal_created_automatically' => 'Automatisch aangemaakt',
     'journal_entry_type_journal' => 'Dagboek-invoer',
     'journal_entry_type_activity' => 'Activiteit',

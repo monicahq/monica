@@ -14,14 +14,14 @@
 Monica can be configured in shared hosting environments with a little differences that we can remedy easily. In this scenerio, Monica depends on the following:
 
 -   A shared cPanel Server
--   PHP 7.2+
+-   PHP 7.4+
 -   [Composer](https://getcomposer.org/)
 -   [MySQL](https://www.mysql.com/)
 -   SSH Access for an accont on the cPanel server
 
 **Git:** Git should come pre-installed with your server. If it doesn't - use the installation instructions in the link.
 
-**PHP:** Install php7.2 minimum. Generally cPanel will have a PHP 7 version installed, verify unser the 'PHP Version' section from the cPanel section. Make sure these extensions are enabled:
+**PHP:** Install php7.4 minimum. Generally cPanel will have a PHP 7 version installed, verify unser the 'PHP Version' section from the cPanel section. Make sure these extensions are enabled:
 
 -   bcmath
 -   curl
@@ -39,7 +39,6 @@ Monica can be configured in shared hosting environments with a little difference
 -   sodium
 -   xml
 -   zip
--   imagick
 
 In most cases, this will be under the section called 'PHP Version' in cPanel where you can enable and disable modules. 
 
@@ -71,6 +70,9 @@ You should check out a tagged version of Monica since `master` branch may not al
 
 ```sh
 cd /var/www/monica
+# Get latest tags from GitHub
+git fetch
+# Clone the desired version
 git checkout tags/v2.18.0
 ```
 
@@ -96,9 +98,10 @@ Open the cPanel file manager and navigate to the directory in which you want to 
     - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly. Generally you can configure a SMTP account within cPanel and be fine. 
     - set the `APP_ENV` variable to `production`, `local` is only used for the development version. Beware: setting `APP_ENV` to `production` will force HTTPS. Skip this if you're running Monica locally.
 3. Log into the cPanel server via SSH and navigate to the directory in which you want to install Monica.
-4. Run `composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs` to install all packages.
-5. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-6. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
+4. Run `composer install --no-interaction --no-dev` to install all packages.
+5. Run `yarn install` to install frontend packages, then `yarn run production` to build the assets (js, css).
+6. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
+7. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
 
 The `setup:production` command will run migrations scripts for database, and flush all cache for config, route, and view, as an optimization process.
 As the configuration of the application is cached, any update on the `.env` file will not be detected after that. You may have to run `php artisan config:cache` manually after every update of `.env` file.

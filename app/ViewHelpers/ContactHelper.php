@@ -27,7 +27,7 @@ class ContactHelper
         $logsCollection = collect();
 
         foreach ($logs as $log) {
-            $description = trans('app.contact_log_'.$log->action);
+            $description = trans('logs.contact_log_'.$log->action);
 
             $logsCollection->push([
                 'author_name' => ($log->author) ? $log->author->name : $log->author_name,

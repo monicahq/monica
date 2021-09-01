@@ -67,7 +67,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Extension for Calendar objects.
      *
-     * @var string
+     * @return string
      */
     public function getExtension()
     {
@@ -77,21 +77,21 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Datas for this task.
      *
-     * @param mixed $task
+     * @param mixed $obj
      * @return array
      */
-    public function prepareData($task)
+    public function prepareData($obj)
     {
-        if ($task instanceof Task) {
+        if ($obj instanceof Task) {
             try {
-                $calendardata = $this->refreshObject($task);
+                $calendardata = $this->refreshObject($obj);
 
                 return [
-                    'id' => $task->id,
-                    'uri' => $this->encodeUri($task),
+                    'id' => $obj->id,
+                    'uri' => $this->encodeUri($obj),
                     'calendardata' => $calendardata,
                     'etag' => '"'.md5($calendardata).'"',
-                    'lastmodified' => $task->updated_at->timestamp,
+                    'lastmodified' => $obj->updated_at->timestamp,
                 ];
             } catch (\Exception $e) {
                 Log::debug(__CLASS__.' prepareData: '.(string) $e);

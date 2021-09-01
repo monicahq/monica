@@ -9,7 +9,6 @@ parameters:
     level: 5
     ignoreErrors:
         - '#Call to an undefined method Illuminate\\View\\View::with[a-zA-Z0-9\\_]+\(\)\.#'
-        - '#Argument of an invalid type Illuminate\\Contracts\\Pagination\\LengthAwarePaginator supplied for foreach, only iterables are supported\.#'
         - '#Access to an undefined property Sabre\\VObject\\Component\\[a-zA-Z0-9\\_]+::\$[a-zA-Z0-9_]+\.#'
         - '#Access to an undefined property PragmaRX\\Countries\\Package\\Support\\Collection::\$[a-zA-Z0-9_]+\.#'
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::active\(\)\.#'
@@ -30,12 +29,22 @@ parameters:
           path: */Http/Controllers/DAV/Backend/CardDAV/AddressBookHome.php
         - message: '#Access to an undefined property object::\$action\.#'
           path: */Helpers/AuditLogHelper.php
-        - message: '#Call to an undefined method Illuminate\\Support\\HigherOrderCollectionProxy::delete\(\)\.#'
-          path: */Models/Contact/Reminder.php
         - message: '#Property App\\Models\\Contact\\Contact::\$avatar_photo_id \(int\) does not accept null\.#'
           path: */Services/Contact/Avatar/UpdateAvatar.php
         - message: '#Parameter \#2 \$callback of function tap expects \(callable\(mixed\): void\)\|null, Closure\(mixed\): mixed given\.#'
           path: */Http/Controllers/DAVClient/AddressBookSynchronizer.php
+        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::addressBook\(\)\.#'
+          path: */Helpers/SearchHelper.php
+        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::real\(\)\.#'
+          path: */Http/Controllers/Api/ApiContactController.php
+        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::sortedBy\(\)\.#'
+          path: */Traits/Searchable.php
+        - message: '#Access to an undefined property Faker\\Generator::\$state\.#'
+          path: */Console/Commands/SetupTest.php
+        - message: '#Access to an undefined property Stripe\\Subscription::\$plan\.#'
+          path: */Helpers/InstanceHelper.php
+        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::recurring\(\)\.#'
+          path: */Traits/Subscription.php
 
     excludes_analyse:
         - */app/Helpers/ComposerScripts.php

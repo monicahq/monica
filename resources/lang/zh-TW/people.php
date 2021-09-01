@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -10,29 +10,29 @@ return [
 
     //index
     'people_not_found' => '聯絡人未找到',
-    'people_list_number_kids' => ':count 個孩子',
+    'people_list_number_kids' => ':count child|:count children',
     'people_list_last_updated' => '最近更新:',
-    'people_list_number_reminders' => ':count 個提醒',
+    'people_list_number_reminders' => ':count reminder|:count reminders',
     'people_list_blank_title' => '您還沒有任何聯絡人',
     'people_list_blank_cta' => '新增某人',
     'people_list_sort' => '排序',
-    'people_list_stats' => ':count 個聯絡人',
+    'people_list_stats' => ':count contact|:count contacts',
     'people_list_firstnameAZ' => '以名字A → Z排序',
     'people_list_firstnameZA' => '以名字 Z → A排序',
     'people_list_lastnameAZ' => '以姓A → Z排序',
     'people_list_lastnameZA' => '以姓Z → A排序',
-    'people_list_lastactivitydateNewtoOld' => '以最後活動日期從近到遠排序',
-    'people_list_lastactivitydateOldtoNew' => '以最後活動日期從遠到近排序',
+    'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date, newest to oldest',
+    'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date, oldest to newest',
     'people_list_filter_tag' => '擁有以下標籤的聯絡人：',
     'people_list_clear_filter' => '清除篩選',
-    'people_list_contacts_per_tags' => ':count 個聯絡人',
+    'people_list_contacts_per_tags' => ':count contact|:count contacts',
     'people_list_show_dead' => '顯示已故人員 (:count)',
     'people_list_hide_dead' => '隱藏已故人員 (:count)',
-    'people_search' => '搜尋聯絡人...',
+    'people_search' => 'Search your contacts…',
     'people_search_no_results' => '未找到任何結果',
     'people_search_next' => '下一頁',
-    'people_search_prev' => '上一頁',
-    'people_search_rows_per_page' => '每頁行數:',
+    'people_search_prev' => 'Previous',
+    'people_search_rows_per_page' => 'Rows per page',
     'people_search_of' => '/',
     'people_search_page' => '頁',
     'people_search_all' => '所有',
@@ -42,27 +42,29 @@ return [
     'people_list_account_upgrade_cta' => '立即升級',
     'people_list_untagged' => '檢視未加標籤的聯絡人',
     'people_list_filter_untag' => '所有未加標籤的聯絡人',
+    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
 
     // people add
     'people_add_title' => '新增一位新的聯絡人',
-    'people_add_missing' => '沒有聯絡人，現在新增一個',
+    'people_add_missing' => 'No person found – add a new one now',
     'people_add_firstname' => '名字',
-    'people_add_middlename' => '中間名 (可選)',
-    'people_add_lastname' => '姓（可選）',
-    'people_add_nickname' => '暱稱（可選）',
+    'people_add_middlename' => 'Middle name (optional)',
+    'people_add_lastname' => 'Last name (optional)',
+    'people_add_email' => 'Email (optional)',
+    'people_add_nickname' => 'Nickname (optional)',
     'people_add_cta' => '新增',
     'people_save_and_add_another_cta' => '提交併新增其他人',
     'people_add_success' => ':name 已成功建立',
     'people_add_gender' => '性別',
     'people_delete_success' => '聯絡人已被刪除',
     'people_delete_message' => '刪除聯絡人',
-    'people_delete_confirmation' => '確實要刪除此聯絡人嗎？刪除是永久性的。',
+    'people_delete_confirmation' => 'Are you sure you want to delete :name’s contact? Deletion is immediate and permanent.',
     'people_add_birthday_reminder' => '祝: name生日快樂',
-    'people_add_birthday_reminder_deceased' => 'On this date, :name, would have celebrated his birthday',
+    'people_add_birthday_reminder_deceased' => 'On this date, :name would have celebrated their birthday',
     'people_add_import' => '是否要 <a href=":url">匯入您的聯絡人</a>？',
     'people_edit_email_error' => '您的聯絡人中已經有人使用此電子郵件，請更換一個',
     'people_export' => '匯出為 vCard',
-    'people_add_reminder_for_birthday' => '建立一個年度生日提醒事項',
+    'people_add_reminder_for_birthday' => 'Create an annual birthday reminder',
 
     // show
     'section_contact_information' => '聯絡人資訊',
@@ -81,7 +83,7 @@ return [
     'edit_contact_information' => '編輯聯絡人資訊',
     'contact_archive' => '存檔聯絡人',
     'contact_unarchive' => '取消存檔',
-    'contact_archive_help' => '存檔的聯絡人將不會顯示在聯絡人列表中, 但仍會顯示在搜尋結果中。',
+    'contact_archive_help' => 'Archived contacts are not be shown on the contact list, but still appear in search results.',
     'call_button' => '記錄通話',
     'set_favorite' => '您收藏的聯絡人將在聯絡人列表置頂顯示。',
 
@@ -92,7 +94,7 @@ return [
     'stay_in_touch_premium' => '您需要升級到高階賬戶來使用這個功能！',
     'stay_in_touch_modal_title' => '常聯絡*',
     'stay_in_touch_modal_desc' => '我們將會用郵件提醒您與{firstname}保持聯絡。',
-    'stay_in_touch_modal_label' => '每 {count} 天給我傳送郵件|每 {count} 天給我傳送郵件',
+    'stay_in_touch_modal_label' => 'Send me an email every… {count} day|Send me an email every… {count} days',
 
     // Calls
     'modal_call_title' => '記錄通話',
@@ -112,7 +114,7 @@ return [
     'call_emotions' => '情緒：',
 
     // Conversation
-    'conversation_blank' => '記錄您與:name通過簡訊或社交媒體的資訊記錄',
+    'conversation_blank' => 'Record conversations you have with :name on social media, SMS…',
     'conversation_delete_link' => '刪除對話',
     'conversation_edit_title' => '編輯對話',
     'conversation_edit_delete' => '您是否要刪除這個對話？操作無法撤銷。',
@@ -121,7 +123,7 @@ return [
     'conversation_delete_success' => '對話成功刪除',
     'conversation_add_title' => '記錄一個新對話',
     'conversation_add_when' => '你們何時進行的對話？',
-    'conversation_add_who_wrote' => '誰說的？',
+    'conversation_add_who_wrote' => 'Who sent this message?',
     'conversation_add_how' => '你們怎麼交流？',
     'conversation_add_you' => '您',
     'conversation_add_content' => '寫下你們說的話',
@@ -134,7 +136,7 @@ return [
     'conversation_list_cta' => '記錄對話',
 
     // age - birthday
-    'birthdate_not_set' => '未設定生日',
+    'birthdate_not_set' => 'Birthday is not set',
     'age_approximate_in_years' => '大概:age歲',
     'age_exact_in_years' => ':age歲',
     'age_exact_birthdate' => '出生:date',
@@ -151,18 +153,18 @@ return [
     'information_edit_max_size' => '最大值 :size Kb',
     'information_edit_max_size2' => '最大 {size} Kb',
     'information_edit_firstname' => '名字',
-    'information_edit_lastname' => '姓氏（可選）',
-    'information_edit_description' => '說明 (可選)',
+    'information_edit_lastname' => 'Last name (optional)',
+    'information_edit_description' => 'Description (optional)',
     'information_edit_description_help' => '用於在聯絡人列表中新增一些元素（如有必要）',
     'information_edit_unknown' => '我不知道具體年齡',
-    'information_edit_probably' => '此人可能是...',
-    'information_edit_not_year' => '我知道這個人的生日的日期和月份, 但不知道哪一年。',
-    'information_edit_exact' => '我知道這個人的確切出生日期...',
-    'information_edit_birthdate_label' => '生日',
+    'information_edit_probably' => 'This person is probably…',
+    'information_edit_not_year' => 'I know the day and month of this person’s birthday, but not the year…',
+    'information_edit_exact' => 'I know this person’s exact birthday…',
+    'information_edit_birthdate_label' => 'Birthday',
     'information_no_work_defined' => '未定義工作資訊',
     'information_work_at' => '在 :company工作',
     'work_add_cta' => '更新工作資訊',
-    'work_edit_success' => '工作資訊已成功更新',
+    'work_edit_success' => 'Work information updated',
     'work_edit_title' => '更新:name的工作資訊',
     'work_edit_job' => '職位名稱 (可選)',
     'work_edit_company' => '公司 (可選)',
@@ -181,7 +183,7 @@ return [
     'reminders_blank_title' => '您有什麼關於:name的提醒嗎？',
     'reminders_blank_add_activity' => '新增提醒',
     'reminders_add_title' => '你需要關於:name的提醒嗎？',
-    'reminders_add_description' => '請提醒我...',
+    'reminders_add_description' => 'Please remind me to…',
     'reminders_add_next_time' => '您希望下一次關於這個的提醒的時間是？',
     'reminders_add_once' => '僅一次',
     'reminders_add_recurrent' => '每',
@@ -203,7 +205,7 @@ return [
     'reminders_delete_cta' => '刪除',
     'reminders_next_expected_date' => '在',
     'reminders_cta' => '新增提醒',
-    'reminders_description' => '我們將傳送電子郵件的每一個提醒如下。每天早上都會發出提醒,。無法刪除自動為生日新增的提醒。如果要更改這些日期, 請編輯聯絡人的生日。',
+    'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen. Reminders automatically added for birthdays can not be deleted. If you want to change those dates, edit the birthday of the contacts.',
     'reminders_one_time' => '一次性',
     'reminders_type_week' => '周',
     'reminders_type_month' => '月',
@@ -214,8 +216,8 @@ return [
     // relationships
     'relationship_form_add' => '新增一個新的關係',
     'relationship_form_edit' => '修改一個已有關係',
-    'relationship_form_is_with' => '這個人是...',
-    'relationship_form_is_with_name' => ':name 是...',
+    'relationship_form_is_with' => 'This person is…',
+    'relationship_form_is_with_name' => ':name is…',
     'relationship_form_add_choice' => '這是與誰的關係？',
     'relationship_form_create_contact' => '新增一個新的人',
     'relationship_form_associate_contact' => '匯入一位已存在的聯絡人',
@@ -265,8 +267,8 @@ return [
     'activities_item_information' => ':Activity，發生於:date',
     'activities_add_title' => '您與 {name} 一起做了什麼?',
     'activities_summary' => '描述你做了什麼',
-    'activities_add_pick_activity' => '活動分類(可選)',
-    'activities_add_date_occured' => '活動發生於...',
+    'activities_add_pick_activity' => 'Would you like to categorize this activity? You don’t have to, but it will give you statistics later on (optional)',
+    'activities_add_date_occured' => 'The activity happened on…',
     'activities_add_participants' => '除了 {name} 之外，誰參與了這個活動？(可選)',
     'activities_add_emotions_title' => '您想記錄您在此通話中的感受嗎？(可選)',
     'activities_blank_title' => '記錄您與 {name} 之間的點滴',
@@ -328,6 +330,7 @@ return [
     'gifts_view_comment' => '檢視評論',
     'gifts_mark_offered' => '標記為提供',
     'gifts_update_success' => '禮物已成功更新',
+    'gifts_add_date' => '日期 (選填)',
 
     // debts
     'debt_delete_confirmation' => '是否確實要刪除此債務？',
@@ -371,8 +374,8 @@ return [
 
     // Deceased
     'deceased_reminder_title' => ':name的去世週年懷念',
-    'deceased_mark_person_deceased' => '將此人標記為已逝者',
-    'deceased_know_date' => '我知道這個人去世日期',
+    'deceased_mark_person_deceased' => 'Mark this as deceased',
+    'deceased_know_date' => 'I know the date that this person died',
     'deceased_add_reminder' => '為此日期新增提醒',
     'deceased_label' => '逝者',
     'deceased_date_label' => '死亡日期',
@@ -418,7 +421,7 @@ return [
 
     // life events
     'life_event_list_tab_life_events' => '生活事件',
-    'life_event_list_tab_other' => '便籤、提醒..',
+    'life_event_list_tab_other' => 'Notes, reminders, …',
     'life_event_list_title' => '生活事件',
     'life_event_blank' => '記錄在{name} 身上發生的事情以供將來參考',
     'life_event_list_cta' => '新增生活事件',
@@ -426,7 +429,7 @@ return [
     'life_event_create_life_event' => '新增生活事件',
     'life_event_create_default_title' => '標題 (可選)',
     'life_event_create_default_story' => '故事 (可選)',
-    'life_event_create_date' => '你不需要詳細到某一天 - 只需要提供年份就行',
+    'life_event_create_date' => 'You do not need to indicate a month or a day – only the year is mandatory.',
     'life_event_create_default_description' => '新增你知道的資訊',
     'life_event_create_add_yearly_reminder' => '為該事件新增年度提醒',
     'life_event_create_success' => '生活事件新增成功',
@@ -488,7 +491,7 @@ return [
     'document_list_cta' => '上載檔案',
     'document_list_blank_desc' => '在這裡, 您可以儲存與此人相關的檔案。',
     'document_upload_zone_cta' => '上傳檔案',
-    'document_upload_zone_progress' => '正在上傳檔案',
+    'document_upload_zone_progress' => 'Uploading the document…',
     'document_upload_zone_error' => '上傳檔案時出錯，請再試一次 ！',
 
     // Photos
@@ -500,8 +503,8 @@ return [
     'photo_current_profile_pic' => '目前頭像',
     'photo_make_profile_pic' => '製作頭像',
     'photo_delete' => '刪除照片',
-    'photo_next' => '下一張照片',
-    'photo_previous' => '上一張照片',
+    'photo_next' => 'Next photo ❯',
+    'photo_previous' => '❮ Previous photo',
 
     // Avatars
     'avatar_change_title' => '更換頭像',

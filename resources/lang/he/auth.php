@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => 'האימות הדו־שלבי נכשל.',
     '2fa_one_time_password' => 'קוד אימות דו־שלבי',
     '2fa_recuperation_code' => 'נא להקליד את קוד השחזור לאימות הדו־שלבי',
+    '2fa_one_time_or_recuperation' => 'לא למלא קוד אימות דו־שלבי או קוד שחזור',
     '2fa_otp_help' => 'יש לפתוח את יישומון האימות הדו־שלבי שלך ולהעתיק את הקוד',
 
     'login_to_account' => 'כניסה לחשבון שלך',

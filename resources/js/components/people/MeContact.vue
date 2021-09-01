@@ -24,7 +24,7 @@ div >>> .avatar-small {
         </span>
       </span>
     </div>
-    <div v-else class="dib pointer ml2 fl">
+    <div v-else class="dib pointer fl">
       {{ $t('settings.me_no_contact') }}<br />
       <a v-if="!limited" href="" @click.prevent="openModal">{{ $t('settings.me_select_click') }}</a>
       <div v-else v-html="$t('settings.personalisation_paid_upgrade_vue', {url: 'settings/subscriptions' })"></div>

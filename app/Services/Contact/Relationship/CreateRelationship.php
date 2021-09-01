@@ -38,6 +38,8 @@ class CreateRelationship extends BaseService
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_is']);
 
+        $contact->throwInactive();
+
         $otherContact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['of_contact']);
 

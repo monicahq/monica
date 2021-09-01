@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -14,7 +14,7 @@ return [
     'add' => 'Ajouter',
     'cancel' => 'Annuler',
     'confirm' => 'Confirmer',
-    'delete_confirm' => 'Êtes-vous sûr ?',
+    'delete_confirm' => 'Êtes-vous sûr(e) ?',
     'delete' => 'Supprimer',
     'edit' => 'Éditer',
     'upload' => 'Envoyer',
@@ -31,7 +31,7 @@ return [
     'new' => 'nouveau',
     'unknown' => 'Je ne sais pas',
     'load_more' => 'Charger plus',
-    'loading' => 'Chargement...',
+    'loading' => 'Chargement…',
     'with' => 'avec',
     'today' => 'aujourd’hui',
     'yesterday' => 'hier',
@@ -44,13 +44,13 @@ return [
     'retry' => 'Réessayer',
     'filter' => 'Filtrer la liste',
     'go_back' => 'Revenir en arrière',
-    'file_selected' => '{count} fichier sélectionné...|{count} fichiers sélectionnés...',
+    'file_selected' => '{count} fichier sélectionné…|{count} fichiers sélectionnés…',
 
     'application_title' => 'Monica – gestionnaire de relations personnelles',
     'application_description' => 'Monica est un outil pour gérer vos interactions avec vos proches, vos amis et votre famille.',
     'application_og_title' => 'Ayez de meilleures relations avec vos proches. GRC gratuit en ligne pour les amis et la famille.',
 
-    'markdown_description' => 'Souhaitez-vous formatter votre texte d’une belle manière ? Nous supportons le format Markdown pour ajouter du gras, italique, des listes et plus encore.',
+    'markdown_description' => 'Souhaitez-vous formater votre texte d’une belle manière ? Nous supportons le format Markdown pour ajouter du gras, de l’italique, des listes et plus encore.',
     'markdown_link' => 'Lire la documentation',
 
     'header_settings_link' => 'Paramètres',
@@ -64,14 +64,14 @@ return [
     'main_nav_activities' => 'Activités',
     'main_nav_tasks' => 'Tâches',
 
-    'footer_remarks' => 'Une remarque ?',
-    'footer_send_email' => 'Envoyez moi un courriel',
+    'footer_remarks' => 'Commentaires ?',
+    'footer_send_email' => 'Envoyez nous un courriel',
     'footer_privacy' => 'Politique de confidentialité',
     'footer_release' => 'Notes de version',
     'footer_newsletter' => 'Infolettre',
     'footer_source_code' => 'Contribuer',
     'footer_version' => 'Version : :version',
-    'footer_new_version' => 'Une nouvelle version est disponible',
+    'footer_new_version' => 'Une nouvelle version de Monica est disponible',
 
     'footer_modal_version_whats_new' => 'Quoi de neuf ?',
     'footer_modal_version_release_away' => 'Vous avez une version de retard par rapport à la dernière version disponible.|Vous avez :number versions de retard par rapport à la dernière version disponible. Vous devriez mettre à jour votre instance.',
@@ -462,4 +462,10 @@ return [
     'dav_birthdays_description' => 'Anniversaires des contacts de :name',
     'dav_tasks' => 'Tâches',
     'dav_tasks_description' => 'Tâches de :name',
+
+    // contact list
+    'contact_list_avatar' => 'Avatar',
+    'contact_list_name' => 'Contact',
+    'contact_list_description' => 'Description',
+
 ];

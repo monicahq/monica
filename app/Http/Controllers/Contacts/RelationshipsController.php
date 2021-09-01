@@ -99,6 +99,8 @@ class RelationshipsController extends Controller
      */
     public function edit(Contact $contact, Relationship $relationship)
     {
+        $contact->throwInactive();
+
         $otherContact = $relationship->ofContact;
 
         $now = now();
@@ -152,6 +154,7 @@ class RelationshipsController extends Controller
 
             app(UpdateContact::class)->execute($datas + [
                 'contact_id' => $otherContact->id,
+                'author_id' => auth()->user()->id,
             ]);
         }
 

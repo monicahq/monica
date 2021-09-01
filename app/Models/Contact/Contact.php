@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
-use function Safe\preg_split;
 use App\Helpers\StorageHelper;
 use App\Helpers\WeatherHelper;
 use Illuminate\Support\Carbon;
@@ -27,6 +26,7 @@ use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingHasher as Model;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -77,6 +77,7 @@ class Contact extends Model
         'middle_name',
         'last_name',
         'nickname',
+        'description',
         'gender_id',
         'account_id',
         'created_at',
@@ -155,16 +156,6 @@ class Contact extends Model
      * @var string
      */
     protected $nameOrder = 'firstname_lastname';
-
-    /**
-     * Get Searchable Fields.
-     *
-     * @return array
-     */
-    public function getSearchableFields()
-    {
-        return $this->searchable_columns;
-    }
 
     /**
      * Get the user associated with the contact.
@@ -591,6 +582,40 @@ class Contact extends Model
     public function scopeNotActive($query)
     {
         return $query->where('is_active', 0);
+    }
+
+    /**
+     * Scope a query to include contacts whose notes contain the search phrase.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeNotes($query, int $accountId = null, string $needle)
+    {
+        $maccountId = $accountId ?? Auth::user()->account_id;
+
+        return $query->orWhereHas('notes', function ($query) use ($maccountId, $needle) {
+            return $query->where([
+                ['account_id', $maccountId],
+                ['body', 'like', "%$needle%"],
+            ]);
+        });
+    }
+
+    /**
+     * Scope a query to include contacts whose introduction notes contain the search phrase.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeIntroductionAdditionalInformation($query, int $accountId = null, string $needle)
+    {
+        $maccountId = $accountId ?? Auth::user()->account_id;
+
+        return $query->orWhere([
+            ['account_id', $maccountId],
+            ['first_met_additional_info', 'like', "%$needle%"],
+        ]);
     }
 
     /**
@@ -1029,17 +1054,50 @@ class Contact extends Model
             return '';
         }
 
-        try {
-            $matches = preg_split('/\?/', $this->avatar_default_url);
+        if (config('filesystems.default_visibility') === 'public') {
+            $matches = Str::of($this->avatar_default_url)->split('/\?/');
+
             $url = asset(StorageHelper::disk(config('filesystems.default'))->url($matches[0]));
-            if (count($matches) > 1) {
+            if ($matches->count() > 1) {
                 $url .= '?'.$matches[1];
             }
 
             return $url;
-        } catch (\Exception $e) {
-            return '';
         }
+
+        return route('storage', ['file' => $this->avatar_default_url]);
+    }
+
+    /**
+     * Get the adorable avatar URL.
+     *
+     * @param string|null $value
+     * @return string|null
+     */
+    public function getAvatarAdorableUrlAttribute(?string $value): ?string
+    {
+        if (isset($value) && $value !== '') {
+            return Str::of($value)
+                ->after('https://api.adorable.io/avatars/')
+                ->ltrim('/')
+                ->start(Str::finish(config('monica.adorable_api'), '/'));
+        }
+
+        return null;
+    }
+
+    /**
+     * Set the adorable avatar URL.
+     *
+     * @param string|null $value
+     * @return void
+     */
+    public function setAvatarAdorableUrlAttribute(?string $value)
+    {
+        if (isset($value) && $value !== '') {
+            $value = Str::of($value)->replace(Str::finish(config('monica.adorable_api'), '/'), '');
+        }
+        $this->attributes['avatar_adorable_url'] = $value;
     }
 
     /**
@@ -1450,5 +1508,14 @@ class Contact extends Model
         $this->save();
 
         $this->timestamps = $timestamps;
+    }
+
+    public function throwInactive()
+    {
+        if (! $this->is_active) {
+            throw ValidationException::withMessages([
+                trans('people.archived_contact_readonly'),
+            ]);
+        }
     }
 }

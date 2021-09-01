@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ⚠️ Edition not allowed except for 'en' language.
+ * ⚠️ Editing not allowed except for 'en' language.
  *
  * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
  */
@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => 'İki adımlı doğrulaması başarısız oldu.',
     '2fa_one_time_password' => 'İki adımlı doğrulama kodu',
     '2fa_recuperation_code' => 'İki aşamalı doğrulama kodu ile girin',
+    '2fa_one_time_or_recuperation' => 'Enter a two factor authentication code or a recovery code',
     '2fa_otp_help' => 'İki aşamalı kimlik doğrulama mobil uygulamanızı açın ve kodu kopyalayın',
 
     'login_to_account' => 'Hesabınıza giriş yapın',
