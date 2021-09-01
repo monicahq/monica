@@ -285,7 +285,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'Ecco un resoconto dei tipi di attività svolte nel :year',
     'activities_profile_year_summary' => 'Ecco cosa avete fatto insieme nel :year',
     'activities_profile_number_occurences' => ':value attività|:value attività',
-    'activities_list_participants' => 'Partecipanti:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'Emozioni provate:',
     'activities_list_date' => 'Accaduto il',
     'activities_list_category' => 'Categoria:',
