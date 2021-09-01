@@ -285,7 +285,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'Her er en opdeling af den type aktiviteter, I har lavet sammen i :year',
     'activities_profile_year_summary' => 'Her er hvad I to har lavet i :year',
     'activities_profile_number_occurences' => ':value aktivitet|:value aktiviteter',
-    'activities_list_participants' => 'Deltagere:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'Følelser følt:',
     'activities_list_date' => 'Skete den',
     'activities_list_category' => 'Kategori:',
