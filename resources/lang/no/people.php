@@ -285,7 +285,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'Here is a breakdown of the type of activities you’ve done together in :year',
     'activities_profile_year_summary' => 'Here is what you two have done in :year',
     'activities_profile_number_occurences' => ':value activity|:value activities',
-    'activities_list_participants' => 'Participants:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'Emotions felt:',
     'activities_list_date' => 'Happened on',
     'activities_list_category' => 'Category:',
