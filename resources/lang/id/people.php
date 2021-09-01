@@ -285,7 +285,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'Ini adalah rincian dari jenis aktifitas yang telah Anda lakukan bersama dalam :year',
     'activities_profile_year_summary' => 'Inilah yang telah kalian lakukan dalam :year',
     'activities_profile_number_occurences' => 'Aktifitas :value',
-    'activities_list_participants' => 'Orang/Peserta:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'Perasaan yang dirasakan:',
     'activities_list_date' => 'Terjadi pada',
     'activities_list_category' => 'Kategori:',
