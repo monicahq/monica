@@ -285,7 +285,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'هنا تفاصيل هذا النوع من الأنشطة التي قضيتماها معا في عام :year',
     'activities_profile_year_summary' => 'هذا ما فعلتموه معا في عام :year',
     'activities_profile_number_occurences' => ':value نشاط|:value أنشطة',
-    'activities_list_participants' => 'Participants:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'Emotions felt:',
     'activities_list_date' => 'Happened on',
     'activities_list_category' => 'Category:',
