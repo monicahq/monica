@@ -285,7 +285,7 @@ return [
     'activities_profile_year_summary_activity_types' => ':year年活动类型汇总',
     'activities_profile_year_summary' => ':year年你们一起进行的活动',
     'activities_profile_number_occurences' => ':value 次活动',
-    'activities_list_participants' => '参与者：',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => '我感觉:',
     'activities_list_date' => '发生于',
     'activities_list_category' => '分类：',
