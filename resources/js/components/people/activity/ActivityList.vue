@@ -66,7 +66,7 @@
                 <li v-if="activity.attendees.total > 1" class="di">
                   <ul class="di list" :class="[ dirltr ? 'mr3' : 'ml3' ]">
                     <li class="di">
-                      {{ $t('people.activities_list_participants') }}
+                      {{ $t('people.activities_list_participants', { total: activity.attendees.total - 1}) }}
                     </li>
                     <li v-for="attendee in activity.attendees.contacts.filter(c => c.id !== contactId)" :key="attendee.id" class="di mr2">
                       <a :href="'people/' + attendee.hash_id">{{ attendee.complete_name }}</a>
