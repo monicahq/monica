@@ -285,7 +285,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'Dưới đây là bảng phân tích các loại hoạt động các bạn đã làm cùng nhau trong năm :year',
     'activities_profile_year_summary' => 'Dưới đây là những gì hai bạn đã làm trong năm :year',
     'activities_profile_number_occurences' => ':value hoạt động',
-    'activities_list_participants' => 'Người tham gia:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'Cảm thấy:',
     'activities_list_date' => 'Xảy ra vào',
     'activities_list_category' => 'Thể loại:',
