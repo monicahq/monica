@@ -285,7 +285,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'להלן פילוח של סוגי הפעילויות אותן ביצעתם יחדיו ב־:year',
     'activities_profile_year_summary' => 'הנה מה שעשיתם יחד ב־:year',
     'activities_profile_number_occurences' => 'פעילות אחת|:value פעילויות',
-    'activities_list_participants' => 'משתתפים:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'רגשות שהרגשת:',
     'activities_list_date' => 'מועד הפעילות',
     'activities_list_category' => 'קטגוריה:',
