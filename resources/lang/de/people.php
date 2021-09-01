@@ -285,7 +285,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'Hier ist eine Aufzeichnung von Aktivitäten, die Sie gemeinsam im letzten Jahr erlebt haben',
     'activities_profile_year_summary' => 'Das haben Sie zwei im :year gemeinsam gemacht',
     'activities_profile_number_occurences' => ':value Aktivität|:value Aktivitäten',
-    'activities_list_participants' => 'Teilnehmer:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'Emotionen gefühlt:',
     'activities_list_date' => 'Geschehen am',
     'activities_list_category' => 'Kategorie:',
