@@ -285,7 +285,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'İşte :year yılında birlikte gerçekleştirdiğiniz etkinlik türlerinin bir dökümü',
     'activities_profile_year_summary' => 'İşte :year yılında ikinizin yaptıkları',
     'activities_profile_number_occurences' => ':value aktivite',
-    'activities_list_participants' => 'Katılımcılar:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'Hissedilen duygular:',
     'activities_list_date' => 'Gerçekleşti',
     'activities_list_category' => 'Kategori:',
