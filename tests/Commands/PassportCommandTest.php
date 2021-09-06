@@ -12,23 +12,23 @@ class PassportCommandTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /** @test */
-    public function passport_command_create()
-    {
-        /** @var \Tests\Helpers\CommandCallerFake */
-        $fake = Command::fake();
+    // /** @test */
+    // public function passport_command_create()
+    // {
+    //     /** @var \Tests\Helpers\CommandCallerFake */
+    //     $fake = Command::fake();
 
-        $app = $this->createApplication();
-        $app->make('config')->set(['passport.private_key' => '', 'passport.public_key' => '']);
-        foreach (PersonalAccessClient::all() as $client) {
-            $client->delete();
-        }
+    //     $app = $this->createApplication();
+    //     $app->make('config')->set(['passport.private_key' => '', 'passport.public_key' => '']);
+    //     foreach (PersonalAccessClient::all() as $client) {
+    //         $client->delete();
+    //     }
 
-        Artisan::call('monica:passport');
+    //     Artisan::call('monica:passport');
 
-        $this->assertCount(1, $fake->buffer);
-        $this->assertCommandContains($fake->buffer[0], '✓ Creating personal access client', 'php artisan passport:client');
-    }
+    //     $this->assertCount(1, $fake->buffer);
+    //     $this->assertCommandContains($fake->buffer[0], '✓ Creating personal access client', 'php artisan passport:client');
+    // }
 
     /** @test */
     public function passport_command_already_created()
