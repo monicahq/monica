@@ -45,8 +45,3 @@ parameters:
           path: */Helpers/InstanceHelper.php
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::recurring\(\)\.#'
           path: */Traits/Subscription.php
-
-    excludes_analyse:
-        - */app/Helpers/ComposerScripts.php
-        - */app/Providers/BroadcastServiceProvider.php
-        - */Services/Instance/IdHasher.php
