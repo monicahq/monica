@@ -31,7 +31,7 @@ jobs:
       matrix:
         php-version: [7.4, '8.0']
         connection: [mysql]
-        testsuite: [Api, Feature, Unit-Models, Unit-Services]
+        testsuite: [Api, Feature, Commands, Unit-Models, Unit-Services]
 
     steps:
       - name: Checkout sources
@@ -110,13 +110,13 @@ jobs:
         run: php artisan route:cache
 
     # Test
-      - name: Run Unit test suite
+      - name: Run test suite
         if: matrix.php-version == env.default-php-version
         run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testdox --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage/coverage${{ matrix.testsuite }}.xml
         env:
           DB_CONNECTION: ${{ matrix.connection }}
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
-      - name: Run Unit test suite
+      - name: Run test suite
         if: matrix.php-version != env.default-php-version
         run: vendor/bin/phpunit -c phpunit.xml --testdox --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml
         env:

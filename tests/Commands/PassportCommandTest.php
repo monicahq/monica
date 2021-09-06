@@ -24,10 +24,10 @@ class PassportCommandTest extends TestCase
             $client->delete();
         }
 
-        // Artisan::call('monica:passport');
+        Artisan::call('monica:passport');
 
-        // $this->assertCount(1, $fake->buffer);
-        // $this->assertCommandContains($fake->buffer[0], '✓ Creating personal access client', 'php artisan passport:client');
+        $this->assertCount(1, $fake->buffer);
+        $this->assertCommandContains($fake->buffer[0], '✓ Creating personal access client', 'php artisan passport:client');
     }
 
     /** @test */
