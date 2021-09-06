@@ -10,9 +10,6 @@ use App\Jobs\AuditLog\LogAccountAudit;
 
 class SetPersonalDescription extends BaseService
 {
-    private array $data;
-    private Contact $contact;
-
     /**
      * Get the validation rules that apply to the service.
      *
@@ -39,41 +36,44 @@ class SetPersonalDescription extends BaseService
      */
     public function execute(array $data): Contact
     {
-        $this->data = $data;
-        $this->validate($this->data);
+        $this->validate($data);
 
-        /* @var Contact */
-        $this->contact = Contact::where('account_id', $data['account_id'])
+        /** @var Contact $contact */
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
-        $this->contact->description = $data['description'];
-        $this->contact->save();
+        $contact->throwInactive();
 
-        $this->log();
+        $contact->description = $data['description'];
+        $contact->save();
 
-        return $this->contact->refresh();
+        $this->log($data, $contact);
+
+        return $contact->refresh();
     }
 
     /**
      * Add an audit log.
      *
+     * @param array $data
+     * @param Contact $contact
      * @return void
      */
-    private function log(): void
+    private function log(array $data, Contact $contact): void
     {
-        $author = User::find($this->data['author_id']);
+        $author = User::find($data['author_id']);
 
         LogAccountAudit::dispatch([
             'action' => 'contact_description_updated',
             'account_id' => $author->account_id,
-            'about_contact_id' => $this->contact->id,
+            'about_contact_id' => $contact->id,
             'author_id' => $author->id,
             'author_name' => $author->name,
             'audited_at' => now(),
             'should_appear_on_dashboard' => true,
             'objects' => json_encode([
-                'contact_name' => $this->contact->name,
-                'contact_id' => $this->contact->id,
+                'contact_name' => $contact->name,
+                'contact_id' => $contact->id,
             ]),
         ]);
     }

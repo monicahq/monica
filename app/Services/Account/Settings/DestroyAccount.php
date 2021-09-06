@@ -78,11 +78,7 @@ class DestroyAccount extends BaseService
     private function cancelStripe(Account $account)
     {
         if ($account->isSubscribed() && ! $account->has_access_to_paid_version_for_free) {
-            try {
-                $account->subscriptionCancel();
-            } catch (StripeException $e) {
-                throw new StripeException();
-            }
+            $account->subscriptionCancel();
         }
     }
 }

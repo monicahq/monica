@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RedirectsUsers;
+use Illuminate\Validation\Rules\Password as PasswordRules;
 
 class InvitationController extends Controller
 {
@@ -68,7 +69,7 @@ class InvitationController extends Controller
             'first_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'email_security' => 'required',
-            'password' => 'required|min:6|confirmed',
+            'password' => ['required', 'confirmed', PasswordRules::defaults()],
             'policy' => 'required',
         ]);
     }

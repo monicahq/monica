@@ -84,12 +84,8 @@ class CallsController extends Controller
             'call_id' => $call->id,
         ];
 
-        try {
-            if (app(DestroyCall::class)->execute($data)) {
-                return $this->respondObjectDeleted($call->id);
-            }
-        } catch (\Exception $e) {
-            return $this->respondNotFound();
+        if (app(DestroyCall::class)->execute($data)) {
+            return $this->respondObjectDeleted($call->id);
         }
 
         return null;

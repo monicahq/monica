@@ -10,7 +10,7 @@
 
 .people-list {
   .breadcrumb {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #eeeeee;
   }
 
   .main-content {
@@ -35,7 +35,7 @@
       position: relative;
 
       &.selected::before {
-        color: #999;
+        color: #999999;
         content: '>';
         left: 0;
         position: absolute;
@@ -52,12 +52,12 @@
   }
 
   .list {
-    border: 1px solid #eee;
+    border: 1px solid #eeeeee;
     border-radius: 3px;
   }
 
   .clear-filter {
-    border: 1px solid #eee;
+    border: 1px solid #eeeeee;
     position: relative;
     padding: 6px;
     border-radius: 3px;
@@ -73,7 +73,7 @@
   }
 
   .people-list-item {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #eeeeee;
     padding: 10px;
 
     &:hover {
@@ -109,17 +109,17 @@
             content: '\f00c';
             font-family: FontAwesome;
             margin-right: 5px;
-            color: #fff;
+            color: #ffffff;
           }
 
           &:hover {
             background-color: #0366d5;
-            color: #fff;
+            color: #ffffff;
           }
 
           &.selected {
             &:before {
-              color: #999;
+              color: #999999;
             }
           }
         }
@@ -127,18 +127,18 @@
     }
 
     a {
-      color: #333;
+      color: #313436;
       text-decoration: none;
       display: block;
 
       &:hover {
         background-color: transparent;
-        color: #333;
+        color: #313436;
       }
     }
 
     .people-list-item-information {
-      color: #999;
+      color: #999999;
       font-size: 12px;
       font-style: italic;
       position: relative;
@@ -183,7 +183,7 @@
   margin-top: -30px;
 
   .image-header::after {
-    box-shadow: inset 1px 1px 3px 0 rgba(173,173,173,0.50);
+    box-shadow: inset 1px 1px 3px 0 #d0d0d0;
     border-radius: 7px;
     content: '';
     display: block;
@@ -195,7 +195,7 @@
 
   .hide-child:hover {
     .child {
-      background: rgba(90, 90, 90, 0.96);
+      background: #4a4a4a;
     }
 
     a:hover {
@@ -207,7 +207,7 @@
 
 .people-show {
   .main-content {
-    background-color: #fff;
+    background-color: #ffffff;
     padding-bottom: 20px;
     padding-top: 40px;
 
@@ -249,9 +249,9 @@
   .profile {
     .sidebar-box {
       background-color: #f2f4f8;
-      border: 1px solid #eee;
+      border: 1px solid #eeeeee;
       border-radius: 3px;
-      color: #333;
+      color: #313436;
       margin-bottom: 25px;
       padding: 10px;
       position: relative;
@@ -259,7 +259,7 @@
 
       &.edit {
         background-color: #fffceb;
-        border-color: gold;
+        border-color: #ffd700;
       }
     }
 
@@ -303,7 +303,7 @@
     .work,
     .introductions {
       li {
-        color: #999;
+        color: #999999;
         font-size: 12px;
         margin-bottom: 10px;
 
@@ -339,7 +339,7 @@
       }
 
       .section-heading {
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #eeeeee;
         padding-bottom: 4px;
         margin-bottom: 10px;
 
@@ -355,7 +355,7 @@
 
       .section-blank {
         background-color: #fafafa;
-        border: 1px solid #eee;
+        border: 1px solid #eeeeee;
         border-radius: 3px;
         padding: 15px;
         text-align: center;
@@ -384,7 +384,7 @@
       font-size: 75%;
       font-weight: 400;
       line-height: 1;
-      color: #fff;
+      color: #ffffff;
       text-align: center;
       white-space: nowrap;
       vertical-align: baseline;
@@ -394,7 +394,7 @@
     }
 
     .gift-list-item {
-      border-top: 1px solid #eee;
+      border-top: 1px solid #eeeeee;
       padding: 5px 0;
 
       &:last-child {
@@ -416,12 +416,12 @@
 
     .gift-list-item-date,
     .gift-list-item-actions {
-      color: #999;
+      color: #999999;
       display: inline;
       font-size: 12px;
 
       a {
-        color: #999;
+        color: #999999;
         font-size: 11px;
         margin-right: 5px;
         text-decoration: underline;
@@ -448,7 +448,7 @@
   .debts,
   .gifts {
     .date {
-      color: #777;
+      color: #999999;
       font-size: 12px;
       margin-right: 10px;
       width: 100px;
@@ -457,7 +457,7 @@
     .frequency-type,
     .value {
       background-color: #d7e3ec;
-      border: 1px solid #eee;
+      border: 1px solid #eeeeee;
       border-radius: 3px;
       display: inline;
       font-size: 12px;

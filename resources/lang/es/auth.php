@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => 'La autenticación en dos pasos ha fallado.',
     '2fa_one_time_password' => 'Código de autenticación en dos pasos',
     '2fa_recuperation_code' => 'Introduce un código de recuperación de autenticación en dos pasos',
+    '2fa_one_time_or_recuperation' => 'Enter a two factor authentication code or a recovery code',
     '2fa_otp_help' => 'Abre tú aplicación móvil de autenticación en dos pasos y copia el código',
 
     'login_to_account' => 'Inicia sesión en tu cuenta',

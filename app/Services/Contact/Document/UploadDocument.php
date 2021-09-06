@@ -39,8 +39,10 @@ class UploadDocument extends BaseService
             abort(402);
         }
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
                 ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $array = $this->populateData($data);
 
@@ -65,7 +67,10 @@ class UploadDocument extends BaseService
             'mime_type' => (new \Mimey\MimeTypes)->getMimeType($document->guessClientExtension()),
         ];
 
-        $filename = $document->storePublicly('documents', config('filesystems.default'));
+        $filename = $document->store('documents', [
+            'disk' => config('filesystems.default'),
+            'visibility' => config('filesystems.default_visibility'),
+        ]);
 
         return array_merge($data, [
             'new_filename' => $filename,
