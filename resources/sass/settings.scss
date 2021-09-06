@@ -34,7 +34,7 @@
         } @else {
           margin-left: 5px;
         }
-        color: #999;
+        color: #999999;
       }
     }
   }
@@ -68,7 +68,7 @@
   }
 
   .settings-group {
-    border-color: #999;
+    border-color: #999999;
     border-radius: 3px;
   }
 
@@ -130,7 +130,7 @@
     .requires-subscription {
       margin-top: 20px;
       font-size: 13px;
-      color: #999;
+      color: #999999;
     }
   }
 
@@ -176,7 +176,6 @@
           .icon:after {
             font-family: FontAwesome;
             font-size: 17px;
-            color: #47c1bf;
             content: "\f058";
             top: 10px;
             position: relative;;
