@@ -66,27 +66,26 @@ class MoveAvatarsToPhotosDirectoryTest extends TestCase
         Storage::disk('public')->assertExists($photo->new_filename);
     }
 
-    /** @test */
-    public function it_handles_missing_avatar()
-    {
-        [$user, $contact] = $this->fetchUser();
+    // public function it_handles_missing_avatar()
+    // {
+    //     [$user, $contact] = $this->fetchUser();
 
-        Storage::fake('public');
+    //     Storage::fake('public');
 
-        $contact->avatar_file_name = 'avatars/avatar.jpg';
-        $contact->avatar_location = 'public';
-        $contact->has_avatar = true;
-        $contact->save();
+    //     $contact->avatar_file_name = 'avatars/avatar.jpg';
+    //     $contact->avatar_location = 'public';
+    //     $contact->has_avatar = true;
+    //     $contact->save();
 
-        $exitCode = Artisan::call('monica:moveavatarstophotosdirectory');
+    //     $exitCode = Artisan::call('monica:moveavatarstophotosdirectory');
 
-        Storage::disk('public')->assertMissing('avatars/avatar.jpg');
+    //     Storage::disk('public')->assertMissing('avatars/avatar.jpg');
 
-        $this->assertDatabaseHas('contacts', [
-            'id' => $contact->id,
-            'avatar_source' => 'default',
-            'avatar_file_name' => 'avatars/avatar.jpg',
-            'avatar_location' => 'public',
-        ]);
-    }
+    //     $this->assertDatabaseHas('contacts', [
+    //         'id' => $contact->id,
+    //         'avatar_source' => 'default',
+    //         'avatar_file_name' => 'avatars/avatar.jpg',
+    //         'avatar_location' => 'public',
+    //     ]);
+    // }
 }
