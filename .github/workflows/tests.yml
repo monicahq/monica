@@ -112,13 +112,13 @@ jobs:
     # Test
       - name: Run Unit test suite
         if: matrix.php-version == env.default-php-version
-        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --verbose --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage/coverage${{ matrix.testsuite }}.xml
+        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testdox --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage/coverage${{ matrix.testsuite }}.xml
         env:
           DB_CONNECTION: ${{ matrix.connection }}
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
       - name: Run Unit test suite
         if: matrix.php-version != env.default-php-version
-        run: vendor/bin/phpunit -c phpunit.xml --verbose --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml
+        run: vendor/bin/phpunit -c phpunit.xml --testdox --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml
         env:
           DB_CONNECTION: ${{ matrix.connection }}
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
