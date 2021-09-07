@@ -262,8 +262,8 @@ return [
     |
     | Configure rate limit for route services per minute
     */
-    'rate_limit_api' => env('DEFAULT_RATE_LIMIT_PER_MINUTE_API', 60),
-    'rate_limit_oauth' => env('DEFAULT_RATE_LIMIT_PER_MINUTE_OAUTH', 5),
+    'rate_limit_api' => env('RATE_LIMIT_PER_MINUTE_API', 60),
+    'rate_limit_oauth' => env('RATE_LIMIT_PER_MINUTE_OAUTH', 5),
 
     /*
     |--------------------------------------------------------------------------
