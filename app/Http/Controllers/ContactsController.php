@@ -615,7 +615,7 @@ class ContactsController extends Controller
      *
      * @param  Request $request
      * @param  Contact $contact
-     * @return int|RedirectResponse
+     * @return array
      */
     public function stayInTouch(Request $request, Contact $contact)
     {
