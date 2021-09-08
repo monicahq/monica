@@ -285,7 +285,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'Voici une ventilation du type d’activités que vous avez faites ensemble en :year',
     'activities_profile_year_summary' => 'Voici ce que vous avez fait ensemble en :year',
     'activities_profile_number_occurences' => ':value activité|:value activités',
-    'activities_list_participants' => 'Participants ({total}):',
+    'activities_list_participants' => 'Participants ({total}) :',
     'activities_list_emotions' => 'Émotions ressenties :',
     'activities_list_date' => 'Arrivé le',
     'activities_list_category' => 'Catégorie :',
