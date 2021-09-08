@@ -24,7 +24,7 @@
     <!-- Contact has a frequency set -->
     <div v-else class="di">
       <span>
-        {{ $tc('people.stay_in_touch_frequency', frequency, { count: frequency }) }}
+        {{ $tc('people.stay_in_touch_frequency', frequency, { count: frequency, date: formatDate(next_trigger_date) }) }}
       </span>
       <a class="pointer" href="" @click.prevent="showUpdate">
         {{ $t('app.edit') }}
@@ -227,6 +227,7 @@ export default {
         this.frequency = 0;
       } else {
         this.frequency = parseInt(this.contact.stay_in_touch_frequency);
+        this.next_trigger_date = this.contact.stay_in_touch_trigger_date;
       }
       this.isActive = (this.frequency > 0);
 
@@ -235,6 +236,14 @@ export default {
       // the counter
       this.stateInput = this.isActive;
       this.frequencyInput = this.frequency;
+    },
+    
+    formatDate(dateAsString) {
+      const moment = require('moment-timezone');
+      moment.locale(this._i18n.locale);
+      moment.tz.setDefault('UTC');
+      var date = moment.tz(moment(dateAsString), this.$root.timezone);
+      return date.format('ll');
     },
 
     showUpdate() {
@@ -266,6 +275,7 @@ export default {
           this.$refs.updateModal.close();
           this.isActive = this.stateInput;
           this.frequency = this.frequencyInput;
+          this.next_trigger_date = response.data.trigger_date;
 
           this.$notify({
             group: 'main',
