@@ -640,7 +640,7 @@ class ContactsController extends Controller
 
         $contact->setStayInTouchTriggerDate($frequency);
 
-        return ["frequency" => $frequency, "trigger_date" => $contact->stay_in_touch_trigger_date];
+        return ['frequency' => $frequency, 'trigger_date' => $contact->stay_in_touch_trigger_date];
     }
 
     /**
