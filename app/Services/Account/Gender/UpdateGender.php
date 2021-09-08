@@ -29,7 +29,7 @@ class UpdateGender extends BaseService
     /**
      * Update a gender.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Gender
      */
     public function execute(array $data): Gender

@@ -32,7 +32,7 @@ class CountriesHelper
     /**
      * Get country name.
      *
-     * @param string $iso code of the country
+     * @param  string  $iso  code of the country
      * @return string common name (localized) of the country
      */
     public static function get($iso): string
@@ -48,8 +48,8 @@ class CountriesHelper
     /**
      * Find a country by the (english) name of the country.
      *
-     * @param string $name  Common name of a country
-     * @return string  cca2 code of the country
+     * @param  string  $name  Common name of a country
+     * @return string cca2 code of the country
      */
     public static function find($name): string
     {
@@ -67,7 +67,7 @@ class CountriesHelper
     /**
      * Get the common name of country, in locale version.
      *
-     * @param \ArrayAccess $country
+     * @param  \ArrayAccess  $country
      * @return string
      */
     private static function getCommonNameLocale($country): string
@@ -83,8 +83,8 @@ class CountriesHelper
     /**
      * Get country for a specific iso code.
      *
-     * @param string $iso
-     * @return Country|null  the Country element
+     * @param  string  $iso
+     * @return Country|null the Country element
      */
     public static function getCountry($iso): ?Country
     {
@@ -102,8 +102,8 @@ class CountriesHelper
     /**
      * Get country for a specific language.
      *
-     * @param string $locale  language code (iso)
-     * @return Country|null  the Country element
+     * @param  string  $locale  language code (iso)
+     * @return Country|null the Country element
      */
     public static function getCountryFromLocale($locale): ?Country
     {
@@ -128,8 +128,8 @@ class CountriesHelper
     /**
      * Get default country for a language.
      *
-     * @param string $locale   language code (iso)
-     * @return string|null  cca2 code
+     * @param  string  $locale  language code (iso)
+     * @return string|null cca2 code
      */
     private static function getDefaultCountryFromLocale($locale): ?string
     {
@@ -168,8 +168,8 @@ class CountriesHelper
     /**
      * Get default timezone for the country.
      *
-     * @param mixed $country  Country element
-     * @return string  timezone fo this sountry
+     * @param  mixed  $country  Country element
+     * @return string timezone fo this sountry
      */
     public static function getDefaultTimezone($country): string
     {

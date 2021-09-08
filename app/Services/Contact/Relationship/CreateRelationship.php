@@ -27,7 +27,7 @@ class CreateRelationship extends BaseService
     /**
      * Set a relationship between two contacts.
      *
-     * @param array $data
+     * @param  array  $data
      *
      * @return Relationship
      */
@@ -61,9 +61,9 @@ class CreateRelationship extends BaseService
     /**
      * Set a relationship between two contacts.
      *
-     * @param Contact $contact
-     * @param Contact $otherContact
-     * @param RelationshipType $relationshipType
+     * @param  Contact  $contact
+     * @param  Contact  $otherContact
+     * @param  RelationshipType  $relationshipType
      *
      * @return Relationship
      */

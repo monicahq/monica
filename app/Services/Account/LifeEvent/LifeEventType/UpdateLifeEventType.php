@@ -26,7 +26,7 @@ class UpdateLifeEventType extends BaseService
     /**
      * Update a life event type.
      *
-     * @param array $data
+     * @param  array  $data
      * @return LifeEventType
      */
     public function execute(array $data): LifeEventType

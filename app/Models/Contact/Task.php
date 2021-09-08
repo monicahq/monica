@@ -79,7 +79,7 @@ class Task extends Model
     /**
      * Limit tasks to completed ones.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeCompleted(Builder $query)
@@ -90,7 +90,7 @@ class Task extends Model
     /**
      * Limit tasks to in-progress ones.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeInProgress(Builder $query)

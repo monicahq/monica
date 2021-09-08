@@ -28,7 +28,7 @@ class ExportAccountAsSQL
     /**
      * Create a new job instance.
      *
-     * @param string|null $path
+     * @param  string|null  $path
      */
     public function __construct($path = null)
     {

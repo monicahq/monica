@@ -72,7 +72,7 @@ class AuditLog extends Model
      * Get the JSON object.
      *
      * @return array
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function getObjectAttribute($value)
     {

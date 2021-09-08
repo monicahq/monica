@@ -15,8 +15,8 @@ class ApiContactTagController extends ApiController
 {
     /**
      * Associate one or more tags to the contact.
-     * @param Request $request
-     * @param int  $contactId
+     * @param  Request  $request
+     * @param  int  $contactId
      */
     public function setTags(Request $request, $contactId)
     {
@@ -44,8 +44,8 @@ class ApiContactTagController extends ApiController
     /**
      * Remove all the tags associated with the contact.
      *
-     * @param Request $request
-     * @param int  $contactId
+     * @param  Request  $request
+     * @param  int  $contactId
      */
     public function unsetTags(Request $request, $contactId)
     {
@@ -73,8 +73,8 @@ class ApiContactTagController extends ApiController
     /**
      * Remove one or more specific tags associated with the contact.
      *
-     * @param Request $request
-     * @param int  $contactId
+     * @param  Request  $request
+     * @param  int  $contactId
      */
     public function unsetTag(Request $request, $contactId)
     {
@@ -102,8 +102,8 @@ class ApiContactTagController extends ApiController
     /**
      * Validate the request for update tag.
      *
-     * @param  Request $request
-     * @param  int $contactId
+     * @param  Request  $request
+     * @param  int  $contactId
      * @return mixed
      */
     private function validateTag(Request $request, $contactId)

@@ -138,7 +138,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     /**
      * Assigns a default value just in case the sort order is empty.
      *
-     * @param string $value
+     * @param  string  $value
      * @return string
      */
     public function getContactsSortOrderAttribute($value): string
@@ -190,7 +190,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     /**
      * Ecrypt the user's google_2fa secret.
      *
-     * @param string  $value
+     * @param  string  $value
      * @return void
      */
     public function setGoogle2faSecretAttribute($value): void
@@ -212,7 +212,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     /**
      * Indicate if the user has accepted the most current terms and privacy.
      *
-     * @param string|null $value
+     * @param  string|null  $value
      * @return bool
      */
     public function getPolicyCompliantAttribute($value): bool
@@ -225,7 +225,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
      * This is affected by the user settings regarding the hour of the day he
      * wants to be reminded.
      *
-     * @param Carbon|null $date
+     * @param  Carbon|null  $date
      * @return bool
      */
     public function isTheRightTimeToBeReminded($date)
@@ -280,7 +280,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     /**
      * Try using a recovery code.
      *
-     * @param string $recovery
+     * @param  string  $recovery
      * @return bool
      */
     public function recoveryChallenge(string $recovery): bool

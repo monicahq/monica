@@ -117,7 +117,7 @@ class ApiController extends Controller
     }
 
     /**
-     * @param string $with
+     * @param  string  $with
      * @return self
      */
     public function setWithParameter($with)
@@ -136,7 +136,7 @@ class ApiController extends Controller
     }
 
     /**
-     * @param int $limit
+     * @param  int  $limit
      * @return self
      */
     public function setLimitPerPage($limit)
@@ -164,7 +164,7 @@ class ApiController extends Controller
     }
 
     /**
-     * @param string $criteria
+     * @param  string  $criteria
      * @return self
      */
     public function setSortCriteria($criteria)

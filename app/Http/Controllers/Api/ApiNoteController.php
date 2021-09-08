@@ -33,7 +33,7 @@ class ApiNoteController extends ApiController
     /**
      * Get the detail of a given note.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return NoteResource|\Illuminate\Http\JsonResponse
      */
@@ -53,7 +53,7 @@ class ApiNoteController extends ApiController
     /**
      * Store the note.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return NoteResource|\Illuminate\Http\JsonResponse
      */
@@ -84,8 +84,8 @@ class ApiNoteController extends ApiController
     /**
      * Update the note.
      *
-     * @param Request $request
-     * @param int $noteId
+     * @param  Request  $request
+     * @param  int  $noteId
      *
      * @return NoteResource|\Illuminate\Http\JsonResponse
      */
@@ -123,7 +123,7 @@ class ApiNoteController extends ApiController
     /**
      * Validate the request for update.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse|true
      */
     private function validateUpdate(Request $request)
@@ -153,7 +153,7 @@ class ApiNoteController extends ApiController
     /**
      * Delete a note.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\JsonResponse
      */

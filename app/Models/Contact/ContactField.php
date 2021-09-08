@@ -67,7 +67,7 @@ class ContactField extends Model implements LabelInterface
     /**
      * Scope a query to only include contact field of email type.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeEmail($query)
@@ -80,7 +80,7 @@ class ContactField extends Model implements LabelInterface
     /**
      * Scope a query to only include contact field of phone type.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePhone($query)

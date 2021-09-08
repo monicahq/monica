@@ -19,7 +19,7 @@ class ApiMessageController extends ApiController
     /**
      * Store the message.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return ConversationResource|\Illuminate\Http\JsonResponse
      */
@@ -55,9 +55,9 @@ class ApiMessageController extends ApiController
     /**
      * Update the message.
      *
-     * @param Request $request
-     * @param int $conversationId
-     * @param int $messageId
+     * @param  Request  $request
+     * @param  int  $conversationId
+     * @param  int  $messageId
      *
      * @return ConversationResource|\Illuminate\Http\JsonResponse
      */
@@ -95,9 +95,9 @@ class ApiMessageController extends ApiController
     /**
      * Destroy the message.
      *
-     * @param Request $request
-     * @param int $conversationId
-     * @param int $messageId
+     * @param  Request  $request
+     * @param  int  $conversationId
+     * @param  int  $messageId
      *
      * @return \Illuminate\Http\JsonResponse
      */

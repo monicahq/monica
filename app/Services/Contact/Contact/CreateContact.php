@@ -55,7 +55,7 @@ class CreateContact extends BaseService
     /**
      * Create a contact.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data): Contact
@@ -114,7 +114,7 @@ class CreateContact extends BaseService
     /**
      * Generates a UUID for this contact.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      * @return void
      */
     private function generateUUID(Contact $contact)
@@ -126,7 +126,7 @@ class CreateContact extends BaseService
     /**
      * Add the different default avatars.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      * @return void
      */
     private function addAvatars(Contact $contact)
@@ -145,8 +145,8 @@ class CreateContact extends BaseService
     /**
      * Update the information about the birthday.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function updateBirthDayInformation(array $data, Contact $contact)
@@ -168,8 +168,8 @@ class CreateContact extends BaseService
     /**
      * Adds a contact field containing the email address.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function updateEmail(array $data, Contact $contact)
@@ -194,8 +194,8 @@ class CreateContact extends BaseService
     /**
      * Update the information about the date of death.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function updateDeceasedInformation(array $data, Contact $contact)
@@ -215,8 +215,8 @@ class CreateContact extends BaseService
     /**
      * Add an audit log.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function log(array $data, Contact $contact): void

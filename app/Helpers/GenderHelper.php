@@ -32,9 +32,9 @@ class GenderHelper
      * Replaces a specific gender of all the contacts in the account with another
      * gender.
      *
-     * @param Account $account
-     * @param Gender $genderToDelete
-     * @param Gender $genderToReplaceWith
+     * @param  Account  $account
+     * @param  Gender  $genderToDelete
+     * @param  Gender  $genderToReplaceWith
      * @return bool
      */
     public static function replace(Account $account, Gender $genderToDelete, Gender $genderToReplaceWith): bool

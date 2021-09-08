@@ -17,7 +17,7 @@ class ApiRelationshipController extends ApiController
     /**
      * Get all of relationships of a contact.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
@@ -37,7 +37,7 @@ class ApiRelationshipController extends ApiController
     /**
      * Get the detail of a given relationship.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return RelationshipResource|\Illuminate\Http\JsonResponse
      */
@@ -56,7 +56,7 @@ class ApiRelationshipController extends ApiController
     /**
      * Create a new relationship.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return RelationshipResource|\Illuminate\Http\JsonResponse
      */
@@ -81,7 +81,7 @@ class ApiRelationshipController extends ApiController
     /**
      * Update an existing relationship.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse|RelationshipResource
      */
     public function update(Request $request, $relationshipId)
@@ -106,7 +106,7 @@ class ApiRelationshipController extends ApiController
     /**
      * Delete a relationship.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\JsonResponse
      */

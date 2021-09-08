@@ -14,7 +14,7 @@ class TagsController extends Controller
     /**
      * Get the list of all the tags in the account.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
@@ -28,7 +28,7 @@ class TagsController extends Controller
     /**
      * Get the list of all the tags for this contact.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
@@ -42,8 +42,8 @@ class TagsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Contact $contact
+     * @param  Request  $request
+     * @param  Contact  $contact
      *
      * @return void
      */

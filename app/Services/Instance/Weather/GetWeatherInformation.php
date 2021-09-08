@@ -29,7 +29,7 @@ class GetWeatherInformation extends BaseService
     /**
      * Get the weather information.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Weather|null
      * @throws \Illuminate\Validation\ValidationException if the array that is given in parameter is not valid
      * @throws \App\Exceptions\MissingEnvVariableException if the weather services are not enabled
@@ -73,7 +73,7 @@ class GetWeatherInformation extends BaseService
     /**
      * Actually make the call to Darksky.
      *
-     * @param Place $place
+     * @param  Place  $place
      * @return Weather|null
      * @throws \Exception
      */
@@ -102,7 +102,7 @@ class GetWeatherInformation extends BaseService
     /**
      * Prepare the query that will be send to Darksky.
      *
-     * @param Place $place
+     * @param  Place  $place
      * @return string
      */
     private function buildQuery(Place $place)
@@ -122,7 +122,7 @@ class GetWeatherInformation extends BaseService
     /**
      * Fetch missing longitude/latitude.
      *
-     * @param Place $place
+     * @param  Place  $place
      * @return Place|null
      */
     private function fetchGPS(Place $place): ?Place

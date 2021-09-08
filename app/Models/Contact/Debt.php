@@ -58,7 +58,7 @@ class Debt extends Model
     /**
      * Limit results to unpaid/unreceived debt.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeInProgress(Builder $query)
@@ -69,7 +69,7 @@ class Debt extends Model
     /**
      * Limit results to due debt.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeDue(Builder $query)
@@ -80,7 +80,7 @@ class Debt extends Model
     /**
      * Limit results to owed debt.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeOwed(Builder $query)
