@@ -41,7 +41,7 @@ class ApiTagController extends ApiController
     /**
      * Get the detail of a given tag.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return TagResource|JsonResponse
      */
@@ -61,7 +61,7 @@ class ApiTagController extends ApiController
     /**
      * Store the tag.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return TagResource|JsonResponse
      */
@@ -87,8 +87,8 @@ class ApiTagController extends ApiController
     /**
      * Update the tag.
      *
-     * @param Request $request
-     * @param int $id
+     * @param  Request  $request
+     * @param  int  $id
      * @return TagResource|JsonResponse
      */
     public function update(Request $request, int $id)
@@ -114,7 +114,7 @@ class ApiTagController extends ApiController
     /**
      * Delete a tag.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return JsonResponse
      */
@@ -137,8 +137,8 @@ class ApiTagController extends ApiController
     /**
      * Show all the contacts for a given tag.
      *
-     * @param Request $request
-     * @param int $tagId
+     * @param  Request  $request
+     * @param  int  $tagId
      * @return JsonResponse|AnonymousResourceCollection
      */
     public function contacts(Request $request, int $tagId)

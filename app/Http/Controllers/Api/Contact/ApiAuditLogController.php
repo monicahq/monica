@@ -16,8 +16,8 @@ class ApiAuditLogController extends ApiController
     /**
      * Get the list of the audit logs for the given contact.
      *
-     * @param Request $request
-     * @param int $contactId
+     * @param  Request  $request
+     * @param  int  $contactId
      * @return JsonResponse|AnonymousResourceCollection
      */
     public function index(Request $request, int $contactId)

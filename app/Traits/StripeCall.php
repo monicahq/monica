@@ -10,7 +10,7 @@ trait StripeCall
     /**
      * Call stripe.
      *
-     * @param callable $callback
+     * @param  callable  $callback
      * @return mixed
      */
     private function stripeCall($callback)

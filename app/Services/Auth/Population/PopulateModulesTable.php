@@ -37,7 +37,7 @@ class PopulateModulesTable extends BaseService
     /**
      * Execute the service.
      *
-     * @param array $givenData
+     * @param  array  $givenData
      * @return bool
      */
     public function execute(array $givenData): bool
@@ -90,7 +90,7 @@ class PopulateModulesTable extends BaseService
     /**
      * Create an entry in the module table.
      *
-     * @param object $defaultModule
+     * @param  object  $defaultModule
      * @return void
      */
     private function feedModule($defaultModule)

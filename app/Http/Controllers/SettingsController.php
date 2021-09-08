@@ -82,7 +82,7 @@ class SettingsController extends Controller
     /**
      * Save user settings.
      *
-     * @param SettingsRequest $request
+     * @param  SettingsRequest  $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -126,7 +126,7 @@ class SettingsController extends Controller
     /**
      * Delete user account.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -151,7 +151,7 @@ class SettingsController extends Controller
     /**
      * Reset user account.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -293,7 +293,7 @@ class SettingsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param InvitationRequest $request
+     * @param  InvitationRequest  $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -340,7 +340,7 @@ class SettingsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Invitation $invitation
+     * @param  Invitation  $invitation
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -355,7 +355,7 @@ class SettingsController extends Controller
     /**
      * Delete additional user account.
      *
-     * @param int $userID
+     * @param  int  $userID
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -387,7 +387,7 @@ class SettingsController extends Controller
     /**
      * Destroy the tag.
      *
-     * @param int $tagId
+     * @param  int  $tagId
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -437,7 +437,7 @@ class SettingsController extends Controller
      * about the contact (notes, reminders, ...).
      * Possible values: life-events | notes.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return string
      */
     public function updateDefaultProfileView(Request $request)

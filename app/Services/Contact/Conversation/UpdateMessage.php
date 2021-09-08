@@ -35,7 +35,7 @@ class UpdateMessage extends BaseService
     /**
      * Update message in a conversation.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Message
      */
     public function execute(array $data): Message

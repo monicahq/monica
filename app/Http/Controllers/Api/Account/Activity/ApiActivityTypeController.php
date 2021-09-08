@@ -36,7 +36,7 @@ class ApiActivityTypeController extends ApiController
     /**
      * Get the detail of a given activity type.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return ActivityTypeResource|\Illuminate\Http\JsonResponse
      */
@@ -56,7 +56,7 @@ class ApiActivityTypeController extends ApiController
     /**
      * Store the activity type.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return ActivityTypeResource|\Illuminate\Http\JsonResponse
      */
@@ -84,8 +84,8 @@ class ApiActivityTypeController extends ApiController
     /**
      * Update the activity type.
      *
-     * @param Request $request
-     * @param int $activityTypeId
+     * @param  Request  $request
+     * @param  int  $activityTypeId
      *
      * @return ActivityTypeResource|\Illuminate\Http\JsonResponse
      */
@@ -114,8 +114,8 @@ class ApiActivityTypeController extends ApiController
     /**
      * Delete an activity type.
      *
-     * @param Request $request
-     * @param int $activityTypeId
+     * @param  Request  $request
+     * @param  int  $activityTypeId
      *
      * @return \Illuminate\Http\JsonResponse
      */

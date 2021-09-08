@@ -31,7 +31,7 @@ class ApiLifeEventController extends ApiController
     /**
      * Get the detail of a given life event.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return LifeEventResource|\Illuminate\Http\JsonResponse
      */
@@ -50,7 +50,7 @@ class ApiLifeEventController extends ApiController
     /**
      * Store the life event.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return LifeEventResource|\Illuminate\Http\JsonResponse
      */
@@ -76,8 +76,8 @@ class ApiLifeEventController extends ApiController
     /**
      * Update the life event.
      *
-     * @param Request $request
-     * @param int $lifeEventId
+     * @param  Request  $request
+     * @param  int  $lifeEventId
      *
      * @return LifeEventResource|\Illuminate\Http\JsonResponse
      */
@@ -104,8 +104,8 @@ class ApiLifeEventController extends ApiController
     /**
      * Destroy the life event.
      *
-     * @param Request $request
-     * @param int $lifeEventId
+     * @param  Request  $request
+     * @param  int  $lifeEventId
      *
      * @return \Illuminate\Http\JsonResponse
      */

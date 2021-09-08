@@ -28,7 +28,7 @@ class ApiContactFieldTypeController extends ApiController
     /**
      * Get the detail of a given contact field type.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return ContactFieldTypeResource|\Illuminate\Http\JsonResponse
      */
@@ -48,7 +48,7 @@ class ApiContactFieldTypeController extends ApiController
     /**
      * Store the contactfieldtype.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return ContactFieldTypeResource|\Illuminate\Http\JsonResponse
      */
@@ -74,8 +74,8 @@ class ApiContactFieldTypeController extends ApiController
     /**
      * Update the contact field type.
      *
-     * @param Request $request
-     * @param int $contactFieldTypeId
+     * @param  Request  $request
+     * @param  int  $contactFieldTypeId
      *
      * @return ContactFieldTypeResource|\Illuminate\Http\JsonResponse
      */
@@ -115,7 +115,7 @@ class ApiContactFieldTypeController extends ApiController
     /**
      * Validate the request for update.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse|true
      */
     private function validateUpdate(Request $request)
@@ -139,7 +139,7 @@ class ApiContactFieldTypeController extends ApiController
     /**
      * Delete an contactfieldtype.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\JsonResponse
      */

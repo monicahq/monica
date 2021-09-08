@@ -26,7 +26,7 @@ class RelationshipsController extends Controller
     /**
      * Display the Create relationship page.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      *
      * @return View
      */
@@ -53,8 +53,8 @@ class RelationshipsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @param Contact $contact
+     * @param  Request  $request
+     * @param  Contact  $contact
      *
      * @return RedirectResponse
      */
@@ -92,8 +92,8 @@ class RelationshipsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Contact $contact
-     * @param Relationship $relationship
+     * @param  Contact  $contact
+     * @param  Relationship  $relationship
      *
      * @return View
      */
@@ -133,9 +133,9 @@ class RelationshipsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Contact $contact
-     * @param Relationship $relationship
+     * @param  Request  $request
+     * @param  Contact  $contact
+     * @param  Relationship  $relationship
      *
      * @return RedirectResponse
      */
@@ -172,7 +172,7 @@ class RelationshipsController extends Controller
     /**
      * Validate datas and get an array for create or update a contact.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return array|\Illuminate\Contracts\Validation\Validator
      */
     private function validateAndGetDatas(Request $request)
@@ -223,8 +223,8 @@ class RelationshipsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Contact $contact
-     * @param Relationship $relationship
+     * @param  Contact  $contact
+     * @param  Relationship  $relationship
      *
      * @return RedirectResponse
      */

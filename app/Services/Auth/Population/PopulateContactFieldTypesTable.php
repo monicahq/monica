@@ -31,7 +31,7 @@ class PopulateContactFieldTypesTable extends BaseService
     /**
      * Execute the service.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data): bool
@@ -44,7 +44,7 @@ class PopulateContactFieldTypesTable extends BaseService
     /**
      * Create contact field type entries.
      *
-     * @param array $data
+     * @param  array  $data
      * @return void
      */
     private function createEntries($data)
@@ -59,7 +59,7 @@ class PopulateContactFieldTypesTable extends BaseService
     /**
      * Get the default contact field types.
      *
-     * @param array $data
+     * @param  array  $data
      * @throws QueryException if the query does not run for some reasons.
      * @return Collection
      */
@@ -80,8 +80,8 @@ class PopulateContactFieldTypesTable extends BaseService
     /**
      * Create an entry in the life event category table.
      *
-     * @param object $defaultContactFieldType
-     * @param array $data
+     * @param  object  $defaultContactFieldType
+     * @param  array  $data
      * @return void
      */
     private function createEntry($defaultContactFieldType, $data)

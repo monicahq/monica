@@ -37,7 +37,7 @@ class ApiGiftController extends ApiController
     /**
      * Get the detail of a given gift.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return GiftResource|\Illuminate\Http\JsonResponse
      */
@@ -56,7 +56,7 @@ class ApiGiftController extends ApiController
     /**
      * Store the gift.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return GiftResource|\Illuminate\Http\JsonResponse
      */
@@ -79,8 +79,8 @@ class ApiGiftController extends ApiController
     /**
      * Update the gift.
      *
-     * @param Request $request
-     * @param int $giftId
+     * @param  Request  $request
+     * @param  int  $giftId
      *
      * @return GiftResource|\Illuminate\Http\JsonResponse
      */
@@ -106,9 +106,9 @@ class ApiGiftController extends ApiController
     /**
      * Associate a photo to the gift.
      *
-     * @param Request $request
-     * @param int $giftId
-     * @param int $photoId
+     * @param  Request  $request
+     * @param  int  $giftId
+     * @param  int  $photoId
      *
      * @return GiftResource|\Illuminate\Http\JsonResponse
      */
@@ -132,7 +132,7 @@ class ApiGiftController extends ApiController
     /**
      * Delete a gift.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\JsonResponse
      */

@@ -52,8 +52,8 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Returns the contact for the specific uuid.
      *
-     * @param mixed|null $collectionId
-     * @param string  $uuid
+     * @param  mixed|null  $collectionId
+     * @param  string  $uuid
      * @return mixed
      */
     public function getObjectUuid($collectionId, $uuid)
@@ -77,7 +77,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Datas for this task.
      *
-     * @param mixed $obj
+     * @param  mixed  $obj
      * @return array
      */
     public function prepareData($obj)
@@ -120,8 +120,8 @@ class CalDAVTasks extends AbstractCalDAVBackend
      * calendar-data. If the result of a subsequent GET to this object is not
      * the exact same as this request body, you should omit the ETag.
      *
-     * @param string $objectUri
-     * @param string $calendarData
+     * @param  string  $objectUri
+     * @param  string  $calendarData
      * @return string|null
      */
     public function updateOrCreateCalendarObject($calendarId, $objectUri, $calendarData): ?string
@@ -163,7 +163,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
      *
      * The object uri is only the basename, or filename and not a full path.
      *
-     * @param string $objectUri
+     * @param  string  $objectUri
      * @return void
      */
     public function deleteCalendarObject($objectUri)

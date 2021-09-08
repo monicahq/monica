@@ -80,7 +80,7 @@ class Reminder extends Model
     /**
      * Scope a query to only include active reminders.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive($query)
@@ -127,7 +127,7 @@ class Reminder extends Model
     /**
      * Schedule the reminder to be sent.
      *
-     * @param User $user
+     * @param  User  $user
      * @return void
      */
     public function schedule(User $user)
@@ -154,8 +154,8 @@ class Reminder extends Model
      * Create all the notifications that are supposed to be sent
      * 30 and 7 days prior to the actual reminder.
      *
-     * @param Carbon $triggerDate
-     * @param User $user
+     * @param  Carbon  $triggerDate
+     * @param  User  $user
      * @return void
      */
     public function scheduleNotifications(Carbon $triggerDate, User $user)

@@ -25,7 +25,7 @@ class ApiComplianceController extends ApiController
     /**
      * Get the detail of a given term.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return ComplianceResource|\Illuminate\Http\JsonResponse
      */

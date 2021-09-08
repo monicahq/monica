@@ -46,7 +46,7 @@ class Command
     /**
      * Set the current backend command.
      *
-     * @param CommandCallerContract $executor
+     * @param  CommandCallerContract  $executor
      */
     public static function setBackend(CommandCallerContract $executor): void
     {

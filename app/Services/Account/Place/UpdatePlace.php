@@ -31,7 +31,7 @@ class UpdatePlace extends BaseService
     /**
      * Update a place.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Place
      */
     public function execute(array $data): Place
@@ -62,7 +62,7 @@ class UpdatePlace extends BaseService
     /**
      * Get geocoding information about the place (lat/longitude).
      *
-     * @param Place $place
+     * @param  Place  $place
      * @return void
      */
     private function getGeocodingInfo(Place $place)

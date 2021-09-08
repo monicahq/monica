@@ -15,7 +15,7 @@ class IntroductionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      *
      * @return \Illuminate\View\View
      */
@@ -36,8 +36,8 @@ class IntroductionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Contact $contact
+     * @param  Request  $request
+     * @param  Contact  $contact
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */

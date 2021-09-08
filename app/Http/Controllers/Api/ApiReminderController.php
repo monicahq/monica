@@ -36,7 +36,7 @@ class ApiReminderController extends ApiController
     /**
      * Get the detail of a given reminder.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return ReminderResource|\Illuminate\Http\JsonResponse
      */
@@ -56,7 +56,7 @@ class ApiReminderController extends ApiController
     /**
      * Store the reminder.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return ReminderResource|\Illuminate\Http\JsonResponse
      */
@@ -84,8 +84,8 @@ class ApiReminderController extends ApiController
     /**
      * Update the reminder.
      *
-     * @param Request $request
-     * @param int $reminderId
+     * @param  Request  $request
+     * @param  int  $reminderId
      *
      * @return ReminderResource|\Illuminate\Http\JsonResponse
      */
@@ -114,7 +114,7 @@ class ApiReminderController extends ApiController
     /**
      * Delete a reminder.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\JsonResponse
      */

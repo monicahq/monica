@@ -36,7 +36,7 @@ class ApiPlaceController extends ApiController
     /**
      * Get the detail of a given place.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return PlaceResource|\Illuminate\Http\JsonResponse
      */
@@ -56,7 +56,7 @@ class ApiPlaceController extends ApiController
     /**
      * Store the place.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return PlaceResource|\Illuminate\Http\JsonResponse
      */
@@ -84,8 +84,8 @@ class ApiPlaceController extends ApiController
     /**
      * Update a place.
      *
-     * @param Request $request
-     * @param int $placeId
+     * @param  Request  $request
+     * @param  int  $placeId
      *
      * @return PlaceResource|\Illuminate\Http\JsonResponse
      */
@@ -114,7 +114,7 @@ class ApiPlaceController extends ApiController
     /**
      * Delete a place.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\JsonResponse
      */

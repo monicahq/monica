@@ -48,7 +48,7 @@ class TimezoneHelper
     /**
      * Format a timezone to be displayed (english only).
      *
-     * @param string $timezone
+     * @param  string  $timezone
      * @return array int value of the offset, string formatted timezone
      */
     private static function formatTimezone($timezone): array
@@ -112,7 +112,7 @@ class TimezoneHelper
     /**
      * Adjust a timezone with equivalent name (remove deprecated).
      *
-     * @param string $timezone
+     * @param  string  $timezone
      * @return string
      */
     public static function adjustEquivalentTimezone($timezone): string

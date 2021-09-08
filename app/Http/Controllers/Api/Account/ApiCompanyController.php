@@ -36,7 +36,7 @@ class ApiCompanyController extends ApiController
     /**
      * Get the detail of a given company.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return CompanyResource|\Illuminate\Http\JsonResponse
      */
@@ -56,7 +56,7 @@ class ApiCompanyController extends ApiController
     /**
      * Store the company.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return CompanyResource|\Illuminate\Http\JsonResponse
      */
@@ -85,8 +85,8 @@ class ApiCompanyController extends ApiController
     /**
      * Update a company.
      *
-     * @param Request $request
-     * @param int $companyId
+     * @param  Request  $request
+     * @param  int  $companyId
      *
      * @return CompanyResource|\Illuminate\Http\JsonResponse
      */
@@ -115,7 +115,7 @@ class ApiCompanyController extends ApiController
     /**
      * Delete a company.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\JsonResponse
      */

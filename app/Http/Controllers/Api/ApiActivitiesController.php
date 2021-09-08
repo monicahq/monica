@@ -39,7 +39,7 @@ class ApiActivitiesController extends ApiController
     /**
      * Get the detail of a given activity.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return ActivityResource|\Illuminate\Http\JsonResponse
      */
@@ -58,7 +58,7 @@ class ApiActivitiesController extends ApiController
     /**
      * Store the activity.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return ActivityResource|\Illuminate\Http\JsonResponse
      */
@@ -86,8 +86,8 @@ class ApiActivitiesController extends ApiController
     /**
      * Update the activity.
      *
-     * @param Request $request
-     * @param int $activityId
+     * @param  Request  $request
+     * @param  int  $activityId
      *
      * @return ActivityResource|\Illuminate\Http\JsonResponse
      */
@@ -116,7 +116,7 @@ class ApiActivitiesController extends ApiController
     /**
      * Delete an activity.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\JsonResponse
      */

@@ -29,7 +29,7 @@ class ApiDocumentController extends ApiController
     /**
      * Get the list of documents.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
@@ -49,8 +49,8 @@ class ApiDocumentController extends ApiController
     /**
      * Get the list of documents for a specific contact.
      *
-     * @param Request $request
-     * @param int $contactId
+     * @param  Request  $request
+     * @param  int  $contactId
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
@@ -78,8 +78,8 @@ class ApiDocumentController extends ApiController
     /**
      * Get the detail of a given document.
      *
-     * @param Request $request
-     * @param int $documentId
+     * @param  Request  $request
+     * @param  int  $documentId
      *
      * @return DocumentResource|\Illuminate\Http\JsonResponse
      */
@@ -98,7 +98,7 @@ class ApiDocumentController extends ApiController
     /**
      * Store a document.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return DocumentResource|\Illuminate\Http\JsonResponse
      */
@@ -126,8 +126,8 @@ class ApiDocumentController extends ApiController
     /**
      * Destroy a document.
      *
-     * @param Request $request
-     * @param int $documentId
+     * @param  Request  $request
+     * @param  int  $documentId
      *
      * @return \Illuminate\Http\JsonResponse
      */

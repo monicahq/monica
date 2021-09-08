@@ -38,7 +38,7 @@ class InvitationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $key
+     * @param  string  $key
      *
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
@@ -77,8 +77,8 @@ class InvitationController extends Controller
     /**
      * Store the specified resource.
      *
-     * @param Request $request
-     * @param string $key
+     * @param  Request  $request
+     * @param  string  $key
      *
      * @return null|\Illuminate\Http\RedirectResponse
      */
@@ -111,8 +111,8 @@ class InvitationController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array $data
-     * @param  mixed $invitation
+     * @param  array  $data
+     * @param  mixed  $invitation
      * @return \App\Models\User\User
      */
     protected function create(array $data, $invitation)

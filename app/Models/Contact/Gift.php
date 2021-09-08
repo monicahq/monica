@@ -93,7 +93,7 @@ class Gift extends Model
     /**
      * Limit results to already offered gifts.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeOffered(Builder $query)
@@ -104,7 +104,7 @@ class Gift extends Model
     /**
      * Limit results to gifts at the idea stage.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeIsIdea(Builder $query)
@@ -126,7 +126,7 @@ class Gift extends Model
     /**
      * Set the recipient for the gift.
      *
-     * @param int $value
+     * @param  int  $value
      *
      * @return void
      */
