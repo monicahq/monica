@@ -10,6 +10,10 @@
     display: block;
     color:#f57f6c;
   }
+
+  .dashed {
+    border-bottom-style: dashed;
+  }
 </style>
 
 <template>
@@ -23,8 +27,8 @@
 
     <!-- Contact has a frequency set -->
     <div v-else class="di">
-      <span>
-        {{ $tc('people.stay_in_touch_frequency', frequency, { count: frequency, date: formatDate(next_trigger_date) }) }}
+      <span class="bb dashed dib pointer nowrap-link" v-tooltip.bottom="$t('people.stay_in_touch_next_date', { date: formatDate(next_trigger_date)} )">
+        {{ $tc('people.stay_in_touch_frequency', frequency, { count: frequency }) }}
       </span>
       <a class="pointer" href="" @click.prevent="showUpdate">
         {{ $t('app.edit') }}
@@ -243,7 +247,7 @@ export default {
       moment.locale(this._i18n.locale);
       moment.tz.setDefault('UTC');
       var date = moment.tz(moment(dateAsString), this.$root.timezone);
-      return date.format('ll');
+      return date.format('LL');
     },
 
     showUpdate() {
