@@ -2,16 +2,15 @@
 
 namespace Tests\Unit\Services\DavClient\Utils;
 
-use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
-use App\Models\Account\AddressBookSubscription;
-use App\Models\Contact\Contact;
-use App\Models\User\SyncToken;
 use Tests\TestCase;
 use Tests\Helpers\DavTester;
+use App\Models\User\SyncToken;
+use App\Models\Contact\Contact;
 use App\Services\DavClient\Utils\Dav\Client;
-use App\Services\DavClient\Utils\AddressBookSynchronizer;
-use GuzzleHttp\Psr7\Response;
+use App\Models\Account\AddressBookSubscription;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\DavClient\Utils\AddressBookSynchronizer;
+use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 
 class AddressBookSynchronizerTest extends TestCase
 {
@@ -41,7 +40,7 @@ class AddressBookSynchronizerTest extends TestCase
 
         $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
         $tester->getSynctoken('"test2"')
-            ->getSyncCollection("test2");
+            ->getSyncCollection('test2');
 
         $client = new Client([], $tester->getClient());
 
@@ -72,7 +71,7 @@ class AddressBookSynchronizerTest extends TestCase
 
         $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
         $tester->getSynctoken('"test2"')
-            ->getSyncCollection("test2");
+            ->getSyncCollection('test2');
 
         $client = new Client([], $tester->getClient());
 

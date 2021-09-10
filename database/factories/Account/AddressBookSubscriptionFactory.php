@@ -50,7 +50,7 @@ class AddressBookSubscriptionFactory extends Factory
             ],
             'username' => $this->faker->email,
             'password' => 'password',
-            'syncToken' => '"test"'
+            'syncToken' => '"test"',
         ];
     }
 }
