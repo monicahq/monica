@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\ClientException;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use App\Http\Controllers\DAVClient\Dav\Client;
 use App\Http\Controllers\DAVClient\Dav\DavClientException;
+use App\Http\Controllers\DAVClient\Dav\DavServerNotCompliantException;
 
 class AddressBookGetter extends BaseService
 {
@@ -87,24 +88,31 @@ class AddressBookGetter extends BaseService
         $principal = $this->getCurrentUserPrincipal();
 
         // Get the AddressBook of this principal
-        $addressbook = $this->getAddressBookUrl($principal);
+        $addressBook = $this->getAddressBookUrl($principal);
 
-        return $this->client->getBaseUri($addressbook);
+        if ($addressBook === null) {
+            throw new DavClientException('No address book found');
+        }
+
+        return $this->client->getBaseUri($addressBook);
     }
 
     /**
      * Check options of the server.
      *
+     * @return void
      * @see https://tools.ietf.org/html/rfc2518#section-15
-     * @throws DavClientException
+     * @throws DavServerNotCompliantException
      */
     private function checkOptions()
     {
         $options = $this->client->options();
-        $options = explode(', ', $options[0]);
+        if (count($options) > 0) {
+            $options = explode(', ', $options[0]);
+        }
 
         if (! in_array('1', $options) || ! in_array('3', $options) || ! in_array('addressbook', $options)) {
-            throw new DavClientException('server is not compliant with rfc2518 section 15.1, or rfc6352 section 6.1');
+            throw new DavServerNotCompliantException('server is not compliant with rfc2518 section 15.1, or rfc6352 section 6.1');
         }
     }
 
@@ -113,13 +121,14 @@ class AddressBookGetter extends BaseService
      *
      * @return string
      * @see https://tools.ietf.org/html/rfc5397#section-3
+     * @throws DavServerNotCompliantException
      */
     private function getCurrentUserPrincipal(): string
     {
         $prop = $this->client->getProperty('{DAV:}current-user-principal');
 
-        if (is_null($prop) || count($prop) == 0) {
-            throw new DavClientException('Server does not support rfc 5397 section 3 (DAV:current-user-principal)');
+        if (is_null($prop) || empty($prop)) {
+            throw new DavServerNotCompliantException('Server does not support rfc 5397 section 3 (DAV:current-user-principal)');
         } elseif (is_string($prop)) {
             return $prop;
         }
@@ -132,13 +141,14 @@ class AddressBookGetter extends BaseService
      *
      * @return string
      * @see https://tools.ietf.org/html/rfc6352#section-7.1.1
+     * @throws DavServerNotCompliantException
      */
     private function getAddressBookHome(string $principal): string
     {
         $prop = $this->client->getProperty('{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-home-set', $principal);
 
-        if (is_null($prop) || count($prop) == 0) {
-            throw new DavClientException('Server does not support rfc 6352 section 7.1.1 (CARD:addressbook-home-set)');
+        if (is_null($prop) || empty($prop)) {
+            throw new DavServerNotCompliantException('Server does not support rfc 6352 section 7.1.1 (CARD:addressbook-home-set)');
         } elseif (is_string($prop)) {
             return $prop;
         }

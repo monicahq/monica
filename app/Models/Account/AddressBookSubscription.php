@@ -6,11 +6,14 @@ use App\Models\User\User;
 use function safe\json_decode;
 use function safe\json_encode;
 use App\Models\ModelBinding as Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AddressBookSubscription extends Model
 {
+    use HasFactory;
+
     protected $table = 'addressbook_subscriptions';
 
     /**
@@ -21,12 +24,17 @@ class AddressBookSubscription extends Model
     protected $fillable = [
         'account_id',
         'user_id',
-        'addressbook_id',
+        'address_book_id',
         'name',
         'uri',
         'capabilities',
         'username',
         'password',
+        'readonly',
+        'syncToken',
+        'localSyncToken',
+        'frequency',
+        'lastsync'
     ];
 
     /**
@@ -41,7 +49,9 @@ class AddressBookSubscription extends Model
      *
      * @var array
      */
-    protected $dates = ['lastsync'];
+    protected $dates = [
+        'lastsync'
+    ];
 
     /**
      * The attributes that should be cast to native types.
@@ -49,6 +59,7 @@ class AddressBookSubscription extends Model
      * @var array
      */
     protected $casts = [
+        'readonly' => 'bool',
     ];
 
     /**
@@ -76,7 +87,7 @@ class AddressBookSubscription extends Model
      *
      * @return BelongsTo
      */
-    public function addressbook()
+    public function addressBook()
     {
         return $this->belongsTo(AddressBook::class);
     }

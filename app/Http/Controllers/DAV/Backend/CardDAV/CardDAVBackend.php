@@ -61,11 +61,11 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         $result = [];
         $result[] = $this->getDefaultAddressBook();
 
-        $addressbooks = AddressBook::where('account_id', $this->user->account_id)
+        $addressBooks = AddressBook::where('account_id', $this->user->account_id)
             ->get();
 
-        foreach ($addressbooks as $addressbook) {
-            $result[] = $this->getAddressBookDetails($addressbook);
+        foreach ($addressBooks as $addressBook) {
+            $result[] = $this->getAddressBookDetails($addressBook);
         }
 
         return $result;
@@ -85,17 +85,17 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         return $des;
     }
 
-    private function getAddressBookDetails($addressbook)
+    private function getAddressBookDetails($addressBook)
     {
-        $id = $addressbook ? $addressbook->name : $this->backendUri();
-        $token = $this->getCurrentSyncToken($addressbook);
+        $id = $addressBook ? $addressBook->name : $this->backendUri();
+        $token = $this->getCurrentSyncToken($addressBook);
 
         $des = [
             'id'                => $id,
             'uri'               => $id,
             'principaluri'      => PrincipalBackend::getPrincipalUser($this->user),
             '{DAV:}displayname' => trans('app.dav_contacts'),
-            '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $addressbook ? $addressbook->description : trans('app.dav_contacts_description', ['name' => $this->user->name]),
+            '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $addressBook ? $addressBook->description : trans('app.dav_contacts_description', ['name' => $this->user->name]),
         ];
         if ($token) {
             $des += [

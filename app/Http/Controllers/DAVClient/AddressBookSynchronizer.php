@@ -77,6 +77,7 @@ class AddressBookSynchronizer
     {
         // Get changes to sync
         $localChanges = $this->backend->getChangesForAddressBook($this->subscription->addressbook->name, $this->subscription->localSyncToken, 1);
+
         // Get actual list of contacts
         $localContacts = $this->backend->getObjects($this->subscription->addressbook->name);
 
@@ -133,7 +134,7 @@ class AddressBookSynchronizer
      */
     private function updateContacts(Collection $refresh)
     {
-        if (Arr::get($this->subscription->capabilities, 'addressbookMultiget', false)) {
+        if ($this->hasCapability('addressbookMultiget')) {
             $refreshContacts = $this->refreshMultigetContacts($refresh);
         } else {
             $refreshContacts = $this->refreshSimpleGetContacts($refresh);
@@ -361,7 +362,7 @@ class AddressBookSynchronizer
      */
     private function getDistantEtags(): PromiseInterface
     {
-        if (Arr::get($this->subscription->capabilities, 'syncCollection', false)) {
+        if ($this->hasCapability('syncCollection')) {
             // With sync-collection
             return $this->callSyncCollection();
         } else {
@@ -411,7 +412,7 @@ class AddressBookSynchronizer
      */
     private function getAllContactsEtag(): PromiseInterface
     {
-        if (! Arr::get($this->subscription->capabilities, 'addressbookQuery', false)) {
+        if (! $this->hasCapability('addressbookQuery')) {
             return $this->emptyPromise();
         }
 
@@ -443,5 +444,16 @@ class AddressBookSynchronizer
         });
 
         return $promise;
+    }
+
+    /**
+     * Check if the subscription has the give capability.
+     *
+     * @param string $capability
+     * @return bool
+     */
+    private function hasCapability(string $capability): bool
+    {
+        return Arr::get($this->subscription->capabilities, $capability, false);
     }
 }

@@ -84,9 +84,10 @@ class Client
         $wkUri = $this->getBaseUri('/.well-known/carddav');
 
         try {
-            $response = $this->client->get($wkUri, [
+            $response = $this->requestAsync('GET', $wkUri, [], null, [
                 RequestOptions::ALLOW_REDIRECTS => false,
-            ]);
+                RequestOptions::SYNCHRONOUS => true,
+            ])->wait();
 
             $code = $response->getStatusCode();
             if (($code === 301 || $code === 302) && $response->hasHeader('Location')) {

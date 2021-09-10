@@ -42,18 +42,11 @@ class AddAddressBook extends BaseService
     {
         $this->validate($data);
 
-        $addressbookData = null;
-        try {
-            $addressbookData = $this->getAddressBookData($data, $httpClient);
-        } catch (\Exception $e) {
-        }
-
-        if (! $addressbookData) {
-            return null;
-        }
+        $addressBookData = $this->getAddressBookData($data, $httpClient);
 
         $lastAddressBook = AddressBook::where('account_id', $data['account_id'])
-            ->last();
+            ->orderBy('id', 'desc')
+            ->first();
 
         $lastId = 0;
         if ($lastAddressBook) {
@@ -61,19 +54,19 @@ class AddAddressBook extends BaseService
         }
         $nextAddressBookName = 'contacts'.($lastId + 1);
 
-        $addressbook = AddressBook::create([
+        $addressBook = AddressBook::create([
             'account_id' => $data['account_id'],
             'user_id' => $data['user_id'],
             'name' => $nextAddressBookName,
-            'description' => $addressbookData['name'],
+            'description' => $addressBookData['name'],
         ]);
         $subscription = AddressBookSubscription::create([
             'account_id' => $data['account_id'],
             'user_id' => $data['user_id'],
             'username' => $data['username'],
-            'addressbook_id' => $addressbook->id,
-            'uri' => $addressbookData['uri'],
-            'capabilities' => $addressbookData['capabilities'],
+            'address_book_id' => $addressBook->id,
+            'uri' => $addressBookData['uri'],
+            'capabilities' => $addressBookData['capabilities'],
         ]);
         $subscription->password = $data['password'];
         $subscription->save();
