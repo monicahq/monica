@@ -12,8 +12,7 @@ class Validate2faController extends Controller
     /**
      * Redirect the user after 2fa form has been submitted.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function index(Request $request)

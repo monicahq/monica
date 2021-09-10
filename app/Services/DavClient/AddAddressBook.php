@@ -34,8 +34,8 @@ class AddAddressBook extends BaseService
     /**
      * Add a new Adress Book.
      *
-     * @param array $data
-     * @param GuzzleClient|null $httpClient
+     * @param  array  $data
+     * @param  GuzzleClient|null  $httpClient
      * @return AddressBookSubscription|null
      */
     public function execute(array $data, GuzzleClient $httpClient = null): ?AddressBookSubscription

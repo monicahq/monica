@@ -101,9 +101,9 @@ class UpdateTimestampsTimezone extends Migration
     /**
      * Update the timestamps table.
      *
-     * @param string $table
-     * @param string $timezone
-     * @param string $id
+     * @param  string  $table
+     * @param  string  $timezone
+     * @param  string  $id
      */
     private static function update($table, $timezone, $id = 'id')
     {

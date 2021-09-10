@@ -17,7 +17,7 @@ abstract class AbstractCalDAVBackend implements ICalDAVBackend, IDAVBackend
     /**
      * Create a new instance of AbstractCalDAVBackend.
      *
-     * @param User $user
+     * @param  User  $user
      */
     public function __construct($user)
     {
@@ -46,7 +46,7 @@ abstract class AbstractCalDAVBackend implements ICalDAVBackend, IDAVBackend
     /**
      * Get the new exported version of the object.
      *
-     * @param mixed $obj
+     * @param  mixed  $obj
      * @return string
      */
     abstract protected function refreshObject($obj): string;

@@ -53,7 +53,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *   {urn:ietf:params:xml:ns:carddav}addressbook-description
      *   {http://calendarserver.org/ns/}getctag
      *
-     * @param string $principalUri
+     * @param  string  $principalUri
      * @return array
      */
     public function getAddressBooksForUser($principalUri)
@@ -168,10 +168,10 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * The limit is 'suggestive'. You are free to ignore it.
      *
-     * @param string $addressBookId
-     * @param string $syncToken
-     * @param int $syncLevel
-     * @param int $limit
+     * @param  string  $addressBookId
+     * @param  string  $syncToken
+     * @param  int  $syncLevel
+     * @param  int  $limit
      * @return array|null
      */
     public function getChangesForAddressBook($addressBookId, $syncToken, $syncLevel, $limit = null): ?array
@@ -182,7 +182,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Prepare datas for this contact.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      * @return array
      */
     public function prepareCard($contact): array
@@ -215,7 +215,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Get the new exported version of the object.
      *
-     * @param mixed $obj contact
+     * @param  mixed  $obj  contact
      * @return string
      */
     protected function refreshObject($obj): string
@@ -232,8 +232,8 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Returns the contact for the specific uuid.
      *
-     * @param mixed|null $collectionId
-     * @param string  $uuid
+     * @param  mixed|null  $collectionId
+     * @param  string  $uuid
      * @return Contact
      */
     public function getObjectUuid($collectionId, $uuid)
@@ -256,7 +256,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Returns the collection of all active contacts.
      *
-     * @param string|null $collectionId
+     * @param  string|null  $collectionId
      * @return \Illuminate\Support\Collection
      */
     public function getObjects($collectionId)
@@ -282,7 +282,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * calculating them. If they are specified, you can also ommit carddata.
      * This may speed up certain requests, especially with large cards.
      *
-     * @param mixed $addressbookId
+     * @param  mixed  $addressbookId
      * @return array
      */
     public function getCards($addressbookId)
@@ -302,8 +302,8 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * If the card does not exist, you must return false.
      *
-     * @param mixed $addressBookId
-     * @param string $cardUri
+     * @param  mixed  $addressBookId
+     * @param  string  $cardUri
      * @return array|bool
      */
     public function getCard($addressBookId, $cardUri)
@@ -337,9 +337,9 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * If you don't return an ETag, you can just return null.
      *
-     * @param mixed $addressBookId
-     * @param string $cardUri
-     * @param string $cardData
+     * @param  mixed  $addressBookId
+     * @param  string  $cardUri
+     * @param  string  $cardData
      * @return string|null
      */
     public function createCard($addressBookId, $cardUri, $cardData)
@@ -367,9 +367,9 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * If you don't return an ETag, you can just return null.
      *
-     * @param mixed $addressBookId
-     * @param string $cardUri
-     * @param string|resource $cardData
+     * @param  mixed  $addressBookId
+     * @param  string  $cardUri
+     * @param  string|resource  $cardData
      * @return string|null
      */
     public function updateCard($addressBookId, $cardUri, $cardData): ?string
@@ -411,8 +411,8 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Deletes a card.
      *
-     * @param mixed $addressBookId
-     * @param string $cardUri
+     * @param  mixed  $addressBookId
+     * @param  string  $cardUri
      * @return bool
      */
     public function deleteCard($addressBookId, $cardUri)
@@ -432,8 +432,8 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * Read the PropPatch documentation for more info and examples.
      *
-     * @param string $addressBookId
-     * @param \Sabre\DAV\PropPatch $propPatch
+     * @param  string  $addressBookId
+     * @param  \Sabre\DAV\PropPatch  $propPatch
      * @return bool|null
      */
     public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch): ?bool
@@ -461,9 +461,9 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * This method should return the id of the new address book. The id can be
      * in any format, including ints, strings, arrays or objects.
      *
-     * @param string $principalUri
-     * @param string $url Just the 'basename' of the url.
-     * @param array $properties
+     * @param  string  $principalUri
+     * @param  string  $url  Just the 'basename' of the url.
+     * @param  array  $properties
      * @return int|bool
      */
     public function createAddressBook($principalUri, $url, array $properties)
@@ -474,7 +474,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Deletes an entire addressbook and all its contents.
      *
-     * @param mixed $addressBookId
+     * @param  mixed  $addressBookId
      * @return bool|null
      */
     public function deleteAddressBook($addressBookId)

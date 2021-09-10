@@ -130,7 +130,7 @@ class AddressBookSynchronizer
     /**
      * Update local contacts.
      *
-     * @param Collection $refresh
+     * @param  Collection  $refresh
      */
     private function updateContacts(Collection $refresh)
     {
@@ -154,8 +154,8 @@ class AddressBookSynchronizer
     /**
      * Update local missed contacts.
      *
-     * @param Collection $localContacts
-     * @param Collection $distContacts
+     * @param  Collection  $localContacts
+     * @param  Collection  $distContacts
      */
     private function updateMissedContacts(Collection $localContacts, Collection $distContacts)
     {
@@ -171,7 +171,7 @@ class AddressBookSynchronizer
     /**
      * Get contacts data with addressbook-multiget request.
      *
-     * @param Collection $refresh
+     * @param  Collection  $refresh
      * @return PromiseInterface
      */
     private function refreshMultigetContacts(Collection $refresh): PromiseInterface
@@ -208,7 +208,7 @@ class AddressBookSynchronizer
     /**
      * Get contacts data with request.
      *
-     * @param Collection $contacts
+     * @param  Collection  $contacts
      * @return PromiseInterface
      */
     private function refreshSimpleGetContacts(Collection $contacts): PromiseInterface
@@ -238,10 +238,10 @@ class AddressBookSynchronizer
     /**
      * Push contacts to the distant server.
      *
-     * @param Collection $changes
-     * @param array|null $localChanges
-     * @param Collection|null $distContacts
-     * @param Collection|null $localContacts
+     * @param  Collection  $changes
+     * @param  array|null  $localChanges
+     * @param  Collection|null  $distContacts
+     * @param  Collection|null  $localContacts
      * @return PromiseInterface
      */
     private function pushContacts(Collection $changes, ?array $localChanges, ?Collection $distContacts = null, ?Collection $localContacts = null): PromiseInterface
@@ -278,7 +278,7 @@ class AddressBookSynchronizer
     /**
      * Get list of requests to push new contacts.
      *
-     * @param array $contacts
+     * @param  array  $contacts
      * @return Collection
      */
     private function preparePushAddedContacts(array $contacts): Collection
@@ -299,8 +299,8 @@ class AddressBookSynchronizer
     /**
      * Get list of requests to push modified contacts.
      *
-     * @param Collection $changes
-     * @param array $contacts
+     * @param  Collection  $changes
+     * @param  array  $contacts
      * @return Collection
      */
     private function preparePushChangedContacts(Collection $changes, array $contacts): Collection
@@ -327,9 +327,9 @@ class AddressBookSynchronizer
     /**
      * Get list of requests of missed contacts.
      *
-     * @param array $added
-     * @param Collection $distContacts
-     * @param Collection $localContacts
+     * @param  array  $added
+     * @param  Collection  $distContacts
+     * @param  Collection  $localContacts
      * @return Collection
      */
     private function preparePushMissedContacts(array $added, Collection $distContacts, Collection $localContacts): Collection
@@ -449,7 +449,7 @@ class AddressBookSynchronizer
     /**
      * Check if the subscription has the give capability.
      *
-     * @param string $capability
+     * @param  string  $capability
      * @return bool
      */
     private function hasCapability(string $capability): bool

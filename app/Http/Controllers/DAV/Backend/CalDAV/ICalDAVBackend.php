@@ -55,8 +55,8 @@ interface ICalDAVBackend
      * The getChanges method returns all the changes that have happened, since
      * the specified syncToken in the specified calendar.
      *
-     * @param string|null $calendarId
-     * @param string $syncToken
+     * @param  string|null  $calendarId
+     * @param  string  $syncToken
      * @return array
      */
     public function getChanges($calendarId, $syncToken);
@@ -81,7 +81,7 @@ interface ICalDAVBackend
      * Note that the etag is optional, but it's highly encouraged to return for
      * speed reasons.
      *
-     * @param mixed $obj
+     * @param  mixed  $obj
      * @return array
      */
     public function prepareData($obj);
@@ -99,9 +99,9 @@ interface ICalDAVBackend
      * calendar-data. If the result of a subsequent GET to this object is not
      * the exact same as this request body, you should omit the ETag.
      *
-     * @param string|null $calendarId
-     * @param string $objectUri
-     * @param string $calendarData
+     * @param  string|null  $calendarId
+     * @param  string  $objectUri
+     * @param  string  $calendarData
      * @return string|null
      */
     public function updateOrCreateCalendarObject($calendarId, $objectUri, $calendarData): ?string;
@@ -111,7 +111,7 @@ interface ICalDAVBackend
      *
      * The object uri is only the basename, or filename and not a full path.
      *
-     * @param string $objectUri
+     * @param  string  $objectUri
      * @return void
      */
     public function deleteCalendarObject($objectUri);

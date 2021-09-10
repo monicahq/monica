@@ -2,9 +2,9 @@
 
 namespace Database\Factories\Account;
 
+use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Account\AddressBook;
-use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AddressBookFactory extends Factory

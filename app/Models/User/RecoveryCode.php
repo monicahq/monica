@@ -23,7 +23,7 @@ class RecoveryCode extends Model
     /**
      * Scope a query to only include unused code.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeUnused($query)

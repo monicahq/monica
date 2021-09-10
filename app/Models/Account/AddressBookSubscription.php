@@ -6,9 +6,9 @@ use App\Models\User\User;
 use function safe\json_decode;
 use function safe\json_encode;
 use App\Models\ModelBinding as Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AddressBookSubscription extends Model
 {
@@ -34,7 +34,7 @@ class AddressBookSubscription extends Model
         'syncToken',
         'localSyncToken',
         'frequency',
-        'lastsync'
+        'lastsync',
     ];
 
     /**
@@ -50,7 +50,7 @@ class AddressBookSubscription extends Model
      * @var array
      */
     protected $dates = [
-        'lastsync'
+        'lastsync',
     ];
 
     /**
@@ -95,7 +95,7 @@ class AddressBookSubscription extends Model
     /**
      * Get capabilities.
      *
-     * @param string $value
+     * @param  string  $value
      * @return array
      */
     public function getCapabilitiesAttribute($value)
@@ -106,7 +106,7 @@ class AddressBookSubscription extends Model
     /**
      * Set capabilities.
      *
-     * @param string $value
+     * @param  string  $value
      * @return void
      */
     public function setCapabilitiesAttribute($value)
@@ -117,7 +117,7 @@ class AddressBookSubscription extends Model
     /**
      * Get password.
      *
-     * @param string $value
+     * @param  string  $value
      * @return string
      */
     public function getPasswordAttribute($value)
@@ -128,7 +128,7 @@ class AddressBookSubscription extends Model
     /**
      * Set password.
      *
-     * @param string $value
+     * @param  string  $value
      * @return void
      */
     public function setPasswordAttribute($value)

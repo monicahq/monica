@@ -24,7 +24,7 @@ class GetGravatarURL extends BaseService
     /**
      * Get Gravatar, if it exists.
      *
-     * @param array $data
+     * @param  array  $data
      * @return string|null
      */
     public function execute(array $data): ?string
@@ -46,7 +46,7 @@ class GetGravatarURL extends BaseService
     /**
      * Test given email.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     private function exists(array $data)

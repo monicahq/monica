@@ -149,8 +149,7 @@ class ImportJob extends Model
     /**
      * Mark the import job as failed.
      *
-     * @param string $reason
-     *
+     * @param  string  $reason
      * @return void
      */
     private function fail(string $reason): void
@@ -209,7 +208,7 @@ class ImportJob extends Model
     /**
      * Process all entries contained in the vCard file.
      *
-     * @param string $behaviour
+     * @param  string  $behaviour
      * @return void
      */
     private function processEntries($behaviour = ImportVCard::BEHAVIOUR_ADD)
@@ -239,8 +238,8 @@ class ImportJob extends Model
     /**
      * Process a single vCard entry.
      *
-     * @param  string|VCard $entry
-     * @param  string $behaviour
+     * @param  string|VCard  $entry
+     * @param  string  $behaviour
      * @return void
      */
     private function processSingleEntry($entry, $behaviour = ImportVCard::BEHAVIOUR_ADD): void
@@ -271,8 +270,8 @@ class ImportJob extends Model
     /**
      * Skip the current entry.
      *
-     * @param  string $name
-     * @param  string $reason
+     * @param  string  $name
+     * @param  string  $reason
      * @return void
      */
     private function skipEntry($name, $reason = null): void
@@ -284,9 +283,9 @@ class ImportJob extends Model
     /**
      * File an import job report for the current entry.
      *
-     * @param  string $name
-     * @param  bool $status
-     * @param  string $reason
+     * @param  string  $name
+     * @param  bool  $status
+     * @param  string  $reason
      * @return void
      */
     private function fileImportJobReport($name, $status, $reason = null): void

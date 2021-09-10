@@ -20,8 +20,7 @@ class CallsController extends Controller
     /**
      * Display the list of calls.
      *
-     * @param Contact $contact
-     *
+     * @param  Contact  $contact
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request, Contact $contact)
@@ -34,7 +33,7 @@ class CallsController extends Controller
     /**
      * Store a call.
      *
-     * @param  Contact $contact
+     * @param  Contact  $contact
      * @return Call
      */
     public function store(Request $request, Contact $contact)
@@ -52,8 +51,8 @@ class CallsController extends Controller
     /**
      * Update a call.
      *
-     * @param  Contact $contact
-     * @param  Call $call
+     * @param  Contact  $contact
+     * @param  Call  $call
      * @return Call
      */
     public function update(Request $request, Contact $contact, Call $call)
@@ -71,10 +70,9 @@ class CallsController extends Controller
     /**
      * Delete the call.
      *
-     * @param Request $request
-     * @param Contact $contact
-     * @param Call $call
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
+     * @param  Call  $call
      * @return null|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Call $call): ?JsonResponse

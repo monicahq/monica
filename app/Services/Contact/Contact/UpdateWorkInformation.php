@@ -30,7 +30,7 @@ class UpdateWorkInformation extends BaseService
     /**
      * Update a contact.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data): Contact
@@ -62,8 +62,8 @@ class UpdateWorkInformation extends BaseService
     /**
      * Add an audit log.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function log(array $data, Contact $contact): void

@@ -24,7 +24,7 @@ class InstanceHelper
     /**
      * Get the plan information for the given time period.
      *
-     * @param  string $timePeriod  Accepted values: 'monthly', 'annual'
+     * @param  string  $timePeriod  Accepted values: 'monthly', 'annual'
      * @return array|null
      */
     public static function getPlanInformationFromConfig(string $timePeriod): ?array
@@ -50,7 +50,7 @@ class InstanceHelper
     /**
      * Get the plan information for the given time period.
      *
-     * @param  \Laravel\Cashier\Subscription $subscription
+     * @param  \Laravel\Cashier\Subscription  $subscription
      * @return array|null
      */
     public static function getPlanInformationFromSubscription(\Laravel\Cashier\Subscription $subscription): ?array
@@ -90,7 +90,7 @@ class InstanceHelper
     /**
      * Get changelogs entries.
      *
-     * @param int $limit
+     * @param  int  $limit
      * @return array
      */
     public static function getChangelogEntries($limit = null)

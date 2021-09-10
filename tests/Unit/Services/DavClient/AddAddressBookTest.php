@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\DavClient;
 
-use App\Http\Controllers\DAVClient\Dav\DavClientException;
 use Tests\TestCase;
 use App\Models\User\User;
 use Tests\Helpers\DavTester;
 use App\Services\DavClient\AddAddressBook;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Http\Controllers\DAVClient\Dav\DavServerNotCompliantException;
 use App\Models\Account\AddressBookSubscription;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Http\Controllers\DAVClient\Dav\DavClientException;
+use App\Http\Controllers\DAVClient\Dav\DavServerNotCompliantException;
 
 class AddAddressBookTest extends TestCase
 {
@@ -138,4 +138,5 @@ class AddAddressBookTest extends TestCase
 
         $this->expectException(DavClientException::class);
         app(AddAddressBook::class)->execute($request, $tester->getClient());
-    }}
+    }
+}

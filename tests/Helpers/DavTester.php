@@ -29,6 +29,7 @@ class DavTester
     {
         $mock = new MockHandler($this->responses);
         $handlerStack = HandlerStack::create($mock);
+
         return new Client(['handler' => $handlerStack, 'base_uri' => $this->baseUri]);
     }
 
@@ -76,7 +77,7 @@ class DavTester
             '<d:propstat>'.
                 '<d:prop>'.
                     '<d:current-user-principal>'.
-                        "<d:href>/dav/principals/user@test.com/</d:href>".
+                        '<d:href>/dav/principals/user@test.com/</d:href>'.
                     '</d:current-user-principal>'.
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.

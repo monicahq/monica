@@ -33,8 +33,8 @@ class Client
     /**
      * Create a new client.
      *
-     * @param array $settings
-     * @param GuzzleClient $client
+     * @param  array  $settings
+     * @param  GuzzleClient  $client
      */
     public function __construct(array $settings, GuzzleClient $client = null)
     {
@@ -163,7 +163,7 @@ class Client
     /**
      * Get current uri.
      *
-     * @param string|null $path
+     * @param  string|null  $path
      * @return string
      */
     public function getBaseUri(?string $path = null): string
@@ -176,7 +176,7 @@ class Client
     /**
      * Set the base uri of client.
      *
-     * @param string $uri
+     * @param  string  $uri
      * @return self
      */
     public function setBaseUri($uri): self
@@ -206,10 +206,9 @@ class Client
      * Depth should be either 0 or 1. A depth of 1 will cause a request to be
      * made to the server to also return all child resources.
      *
-     * @param string $url
-     * @param array  $properties
-     * @param int    $depth
-     *
+     * @param  string  $url
+     * @param  array  $properties
+     * @param  int  $depth
      * @return array
      */
     public function propFind(string $url, array $properties, int $depth = 0): array
@@ -235,10 +234,9 @@ class Client
      * Depth should be either 0 or 1. A depth of 1 will cause a request to be
      * made to the server to also return all child resources.
      *
-     * @param string $url
-     * @param array  $properties
-     * @param int    $depth
-     *
+     * @param  string  $url
+     * @param  array  $properties
+     * @param  int  $depth
      * @return PromiseInterface
      */
     public function propFindAsync(string $url, array $properties, int $depth = 0, array $options = []): PromiseInterface
@@ -282,10 +280,9 @@ class Client
     /**
      * Run a REPORT {DAV:}sync-collection.
      *
-     * @param string $url
-     * @param array $properties
-     * @param string $syncToken
-     *
+     * @param  string  $url
+     * @param  array  $properties
+     * @param  string  $syncToken
      * @return PromiseInterface
      *
      * @see https://tools.ietf.org/html/rfc6578
@@ -320,10 +317,9 @@ class Client
     /**
      * Run a REPORT card:addressbook-multiget.
      *
-     * @param string $url
-     * @param array $properties
-     * @param iterable $contacts
-     *
+     * @param  string  $url
+     * @param  array  $properties
+     * @param  iterable  $contacts
      * @return PromiseInterface
      *
      * @see https://tools.ietf.org/html/rfc6352#section-8.7
@@ -361,9 +357,8 @@ class Client
     /**
      * Run a REPORT card:addressbook-query.
      *
-     * @param string $url
-     * @param array $properties
-     *
+     * @param  string  $url
+     * @param  array  $properties
      * @return PromiseInterface
      *
      * @see https://tools.ietf.org/html/rfc6352#section-8.6
@@ -412,11 +407,10 @@ class Client
      *     ]
      * ]
      *
-     * @param \DOMDocument $dom
-     * @param \DOMNode $prop
-     * @param array $properties
-     * @param array $namespaces
-     *
+     * @param  \DOMDocument  $dom
+     * @param  \DOMNode  $prop
+     * @param  array  $properties
+     * @param  array  $namespaces
      * @return void
      */
     private function fetchProperties(\DOMDocument $dom, \DOMNode $prop, array $properties, array $namespaces)
@@ -451,9 +445,8 @@ class Client
     /**
      * Get a WebDAV property.
      *
-     * @param string $property
-     * @param string $url
-     *
+     * @param  string  $property
+     * @param  string  $url
      * @return string|array<array>|null
      */
     public function getProperty(string $property, string $url = '')
@@ -466,9 +459,8 @@ class Client
     /**
      * Get a WebDAV property.
      *
-     * @param string $property
-     * @param string $url
-     *
+     * @param  string  $property
+     * @param  string  $url
      * @return PromiseInterface
      */
     public function getPropertyAsync(string $property, string $url = '', array $options = []): PromiseInterface
@@ -498,6 +490,7 @@ class Client
      * Get a {DAV:}supported-report-set propfind.
      *
      * @return array
+     *
      * @see https://tools.ietf.org/html/rfc3253#section-3.1.5
      */
     public function getSupportedReportSet(): array
@@ -511,6 +504,7 @@ class Client
      * Get a {DAV:}supported-report-set propfind.
      *
      * @return PromiseInterface
+     *
      * @see https://tools.ietf.org/html/rfc3253#section-3.1.5
      */
     public function getSupportedReportSetAsync(array $options = []): PromiseInterface
@@ -542,9 +536,8 @@ class Client
      * and the actual (string) value for the value. If the value is null, an
      * attempt is made to delete the property.
      *
-     * @param string $url
-     * @param array  $properties
-     *
+     * @param  string  $url
+     * @param  array  $properties
      * @return PromiseInterface
      */
     public function propPatchAsync(string $url, array $properties): PromiseInterface
@@ -611,11 +604,10 @@ class Client
     /**
      * Performs an actual HTTP request, and returns the result.
      *
-     * @param string $method
-     * @param string $url
-     * @param string|null|resource|\Psr\Http\Message\StreamInterface $body
-     * @param array $headers
-     *
+     * @param  string  $method
+     * @param  string  $url
+     * @param  string|null|resource|\Psr\Http\Message\StreamInterface  $body
+     * @param  array  $headers
      * @return ResponseInterface
      *
      * @throws \GuzzleHttp\Exception\ClientException in case a curl error occurred
@@ -628,11 +620,10 @@ class Client
     /**
      * Performs an actual HTTP request, and returns the result.
      *
-     * @param string $method
-     * @param string $url
-     * @param string|null|resource|\Psr\Http\Message\StreamInterface $body
-     * @param array $headers
-     *
+     * @param  string  $method
+     * @param  string  $url
+     * @param  string|null|resource|\Psr\Http\Message\StreamInterface  $body
+     * @param  array  $headers
      * @return PromiseInterface
      *
      * @throws \GuzzleHttp\Exception\ClientException in case a curl error occurred
@@ -645,9 +636,8 @@ class Client
     /**
      * Create multiple request in parallel.
      *
-     * @param array $requests
-     * @param array $config
-     *
+     * @param  array  $requests
+     * @param  array  $config
      * @return PromiseInterface
      */
     public function requestPool(array $requests, array $config = []): PromiseInterface
@@ -676,7 +666,7 @@ class Client
      *   ]
      * ]
      *
-     * @param string $body xml body
+     * @param  string  $body  xml body
      * @return array
      */
     public function parseMultiStatus(string $body): array

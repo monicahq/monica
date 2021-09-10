@@ -36,7 +36,7 @@ class CronEvent
     /**
      * Get the command.
      *
-     * @param string $command
+     * @param  string  $command
      * @return self
      */
     public static function command(string $command): self

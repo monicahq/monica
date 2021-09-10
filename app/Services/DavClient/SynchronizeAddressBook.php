@@ -31,7 +31,7 @@ class SynchronizeAddressBook extends BaseService
     }
 
     /**
-     * @param array $data
+     * @param  array  $data
      * @return void
      */
     public function execute(array $data, GuzzleClient $httpClient = null)

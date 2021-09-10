@@ -101,7 +101,9 @@ class AddressBookGetter extends BaseService
      * Check options of the server.
      *
      * @return void
+     *
      * @see https://tools.ietf.org/html/rfc2518#section-15
+     *
      * @throws DavServerNotCompliantException
      */
     private function checkOptions()
@@ -120,7 +122,9 @@ class AddressBookGetter extends BaseService
      * Get principal name.
      *
      * @return string
+     *
      * @see https://tools.ietf.org/html/rfc5397#section-3
+     *
      * @throws DavServerNotCompliantException
      */
     private function getCurrentUserPrincipal(): string
@@ -140,7 +144,9 @@ class AddressBookGetter extends BaseService
      * Get addressbook url.
      *
      * @return string
+     *
      * @see https://tools.ietf.org/html/rfc6352#section-7.1.1
+     *
      * @throws DavServerNotCompliantException
      */
     private function getAddressBookHome(string $principal): string
