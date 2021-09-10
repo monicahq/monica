@@ -8,9 +8,9 @@ use App\Services\BaseService;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
-use App\Http\Controllers\DAVClient\Dav\Client;
+use App\Services\DavClient\Utils\Dav\Client;
 use App\Models\Account\AddressBookSubscription;
-use App\Http\Controllers\DAVClient\AddressBookSynchronizer;
+use App\Services\DavClient\Utils\AddressBookSynchronizer;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 
 class SynchronizeAddressBook extends BaseService

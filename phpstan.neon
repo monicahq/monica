@@ -32,7 +32,7 @@ parameters:
         - message: '#Property App\\Models\\Contact\\Contact::\$avatar_photo_id \(int\) does not accept null\.#'
           path: */Services/Contact/Avatar/UpdateAvatar.php
         - message: '#Parameter \#2 \$callback of function tap expects \(callable\(mixed\): void\)\|null, Closure\(mixed\): mixed given\.#'
-          path: */Http/Controllers/DAVClient/AddressBookSynchronizer.php
+          path: */App/Services/DavClient/Utils/AddressBookSynchronizer.php
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::addressBook\(\)\.#'
           path: */Helpers/SearchHelper.php
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::real\(\)\.#'

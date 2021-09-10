@@ -47,4 +47,28 @@ class AddressBookSubscriptionTest extends TestCase
 
         $this->assertTrue($addressBookSubscription->addressBook()->exists());
     }
+
+    /** @test */
+    public function it_saves_capabilities()
+    {
+        $addressBookSubscription = new AddressBookSubscription();
+
+        $addressBookSubscription->capabilities = [
+            'test' => true
+        ];
+
+        $this->assertIsArray($addressBookSubscription->capabilities);
+        $this->assertEquals([
+            'test' => true
+        ], $addressBookSubscription->capabilities);
+    }
+
+    /** @test */
+    public function it_saves_password()
+    {
+        $addressBookSubscription = new AddressBookSubscription();
+
+        $addressBookSubscription->password = 'test';
+        $this->assertEquals('test', $addressBookSubscription->password);
+    }
 }

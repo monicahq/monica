@@ -30,7 +30,7 @@ class AddressBookFactory extends Factory
                     'account_id' => $attributes['account_id'],
                 ]);
             },
-            'name' => $this->faker->word,
+            'name' => 'contacts1',
             'description' => $this->faker->sentence,
         ];
     }

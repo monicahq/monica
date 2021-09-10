@@ -9,9 +9,9 @@ use App\Models\Account\AddressBook;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
-use App\Http\Controllers\DAVClient\Dav\Client;
+use App\Services\DavClient\Utils\Dav\Client;
 use App\Models\Account\AddressBookSubscription;
-use App\Http\Controllers\DAVClient\AddressBookGetter;
+use App\Services\DavClient\Utils\AddressBookGetter;
 
 class AddAddressBook extends BaseService
 {

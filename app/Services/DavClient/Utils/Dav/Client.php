@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\DAVClient\Dav;
+namespace App\Services\DavClient\Utils\Dav;
 
 use GuzzleHttp\Pool;
 use Sabre\DAV\Xml\Service;
@@ -242,7 +242,7 @@ class Client
     public function propFindAsync(string $url, array $properties, int $depth = 0, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
-        $dom->formatOutput = true;
+        $dom->formatOutput = false;
         $root = $dom->appendChild($dom->createElementNS('DAV:', 'd:propfind'));
         $prop = $root->appendChild($dom->createElement('d:prop'));
 
@@ -290,7 +290,7 @@ class Client
     public function syncCollectionAsync(string $url, array $properties, string $syncToken, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
-        $dom->formatOutput = true;
+        $dom->formatOutput = false;
         $root = $dom->appendChild($dom->createElementNS('DAV:', 'd:sync-collection'));
 
         $root->appendChild($dom->createElement('d:sync-token', $syncToken));
@@ -327,7 +327,7 @@ class Client
     public function addressbookMultigetAsync(string $url, array $properties, iterable $contacts, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
-        $dom->formatOutput = true;
+        $dom->formatOutput = false;
         $root = $dom->appendChild($dom->createElementNS(CardDAVPlugin::NS_CARDDAV, 'card:addressbook-multiget'));
         $dom->createAttributeNS('DAV:', 'd:e');
 
@@ -366,7 +366,7 @@ class Client
     public function addressbookQueryAsync(string $url, array $properties, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
-        $dom->formatOutput = true;
+        $dom->formatOutput = false;
         $root = $dom->appendChild($dom->createElementNS(CardDAVPlugin::NS_CARDDAV, 'card:addressbook-query'));
         $dom->createAttributeNS('DAV:', 'd:e');
 
@@ -513,15 +513,17 @@ class Client
 
         return $this->propFindAsync('', [$propName], 0, $options)
         ->then(function (array $properties) use ($propName): array {
-            if (! in_array($propName, $properties)) {
+            if (! array_key_exists($propName, $properties)) {
                 return [];
             }
 
-            return array_map(function ($supportedReportSet) {
-                foreach ($supportedReportSet['value'] as $kind) {
-                    if ($kind['name'] == '{DAV:}report') {
-                        foreach ($kind['value'] as $type) {
-                            return $type['name'];
+            return array_map(function ($supportedReport) {
+                if ($supportedReport['name'] == '{DAV:}supported-report') {
+                    foreach ($supportedReport['value'] as $report) {
+                        if ($report['name'] == '{DAV:}report') {
+                            foreach ($report['value'] as $type) {
+                                return $type['name'];
+                            }
                         }
                     }
                 }

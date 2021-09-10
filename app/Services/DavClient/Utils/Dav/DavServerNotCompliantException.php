@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\DAVClient\Dav;
+namespace App\Services\DavClient\Utils\Dav;
 
 class DavServerNotCompliantException extends DavClientException
 {

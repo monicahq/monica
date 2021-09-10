@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\DAVClient;
+namespace App\Services\DavClient\Utils;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
-use App\Http\Controllers\DAVClient\Dav\Client;
+use App\Services\DavClient\Utils\Dav\Client;
 use App\Models\Account\AddressBookSubscription;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 

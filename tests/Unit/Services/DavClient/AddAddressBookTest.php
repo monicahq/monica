@@ -5,11 +5,10 @@ namespace Tests\Unit\Services\DavClient;
 use Tests\TestCase;
 use App\Models\User\User;
 use Tests\Helpers\DavTester;
+use App\Models\Account\AddressBook;
 use App\Services\DavClient\AddAddressBook;
 use App\Models\Account\AddressBookSubscription;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Http\Controllers\DAVClient\Dav\DavClientException;
-use App\Http\Controllers\DAVClient\Dav\DavServerNotCompliantException;
 
 class AddAddressBookTest extends TestCase
 {
@@ -32,28 +31,46 @@ class AddAddressBookTest extends TestCase
             ->addressBookBaseUri()
             ->capabilities()
             ->displayName();
-        $addressBook = app(AddAddressBook::class)->execute($request, $tester->getClient());
+        $addressBookSubscription = app(AddAddressBook::class)->execute($request, $tester->getClient());
 
+        $tester->assert();
         $this->assertDatabaseHas('addressbooks', [
+            'id' => $addressBookSubscription->address_book_id,
             'account_id' => $user->account_id,
             'user_id' => $user->id,
+            'name' => 'contacts1',
         ]);
         $this->assertDatabaseHas('addressbook_subscriptions', [
+            'id' => $addressBookSubscription->id,
             'account_id' => $user->account_id,
             'user_id' => $user->id,
-            'address_book_id' => $addressBook->id,
+            'address_book_id' => $addressBookSubscription->address_book_id,
+            'capabilities' => json_encode([
+                'addressbookMultiget' => false,
+                'addressbookQuery' => false,
+                'syncCollection' => false,
+                'addressData' => [
+                    'content-type' => 'text/vcard',
+                    'version' => '4.0'
+                ]
+            ]),
         ]);
 
         $this->assertInstanceOf(
             AddressBookSubscription::class,
-            $addressBook
+            $addressBookSubscription
         );
     }
 
     /** @test */
-    public function it_fails_on_server_not_compliant()
+    public function it_creates_next_addressbook()
     {
         $user = factory(User::class)->create([]);
+        AddressBook::factory()->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'name' => 'contacts5',
+        ]);
 
         $request = [
             'account_id' => $user->account_id,
@@ -64,79 +81,28 @@ class AddAddressBookTest extends TestCase
         ];
 
         $tester = (new DavTester())
-            ->serviceUrl()
-            ->optionsFail();
+            ->addressBookBaseUri()
+            ->capabilities()
+            ->displayName();
+        $addressBookSubscription = app(AddAddressBook::class)->execute($request, $tester->getClient());
 
-        $this->expectException(DavServerNotCompliantException::class);
-        app(AddAddressBook::class)->execute($request, $tester->getClient());
-    }
-
-    /** @test */
-    public function it_fails_if_no_userprincipal()
-    {
-        $user = factory(User::class)->create([]);
-
-        $request = [
+        $tester->assert();
+        $this->assertDatabaseHas('addressbooks', [
+            'id' => $addressBookSubscription->address_book_id,
             'account_id' => $user->account_id,
             'user_id' => $user->id,
-            'base_uri' => 'https://test',
-            'username' => 'test',
-            'password' => 'test',
-        ];
-
-        $tester = (new DavTester())
-            ->serviceUrl()
-            ->options()
-            ->userPrincipalEmpty();
-
-        $this->expectException(DavServerNotCompliantException::class);
-        app(AddAddressBook::class)->execute($request, $tester->getClient());
-    }
-
-    /** @test */
-    public function it_fails_if_no_addressbook()
-    {
-        $user = factory(User::class)->create([]);
-
-        $request = [
+            'name' => 'contacts6',
+        ]);
+        $this->assertDatabaseHas('addressbook_subscriptions', [
+            'id' => $addressBookSubscription->id,
             'account_id' => $user->account_id,
             'user_id' => $user->id,
-            'base_uri' => 'https://test',
-            'username' => 'test',
-            'password' => 'test',
-        ];
+            'address_book_id' => $addressBookSubscription->address_book_id,
+        ]);
 
-        $tester = (new DavTester())
-            ->serviceUrl()
-            ->options()
-            ->userPrincipal()
-            ->addressbookEmpty();
-
-        $this->expectException(DavServerNotCompliantException::class);
-        app(AddAddressBook::class)->execute($request, $tester->getClient());
-    }
-
-    /** @test */
-    public function it_fails_if_no_addressbook_url()
-    {
-        $user = factory(User::class)->create([]);
-
-        $request = [
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-            'base_uri' => 'https://test',
-            'username' => 'test',
-            'password' => 'test',
-        ];
-
-        $tester = (new DavTester())
-            ->serviceUrl()
-            ->options()
-            ->userPrincipal()
-            ->addressbookHome()
-            ->resourceTypeHomeOnly();
-
-        $this->expectException(DavClientException::class);
-        app(AddAddressBook::class)->execute($request, $tester->getClient());
+        $this->assertInstanceOf(
+            AddressBookSubscription::class,
+            $addressBookSubscription
+        );
     }
 }

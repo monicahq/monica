@@ -6,8 +6,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Middleware;
+use Tests\TestCase;
 
-class DavTester
+class DavTester extends TestCase
 {
     /**
      * @var array
@@ -19,6 +21,8 @@ class DavTester
      */
     public $baseUri;
 
+    public $container;
+
     public function __construct(string $baseUri = 'https://test')
     {
         $this->baseUri = $baseUri;
@@ -27,19 +31,38 @@ class DavTester
 
     public function getClient()
     {
-        $mock = new MockHandler($this->responses);
+        $this->container = [];
+        $history = Middleware::history($this->container);
+
+        $mock = new MockHandler(array_map(function ($response) {
+            return $response['response'];
+        }, $this->responses));
         $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push($history);
 
         return new Client(['handler' => $handlerStack, 'base_uri' => $this->baseUri]);
+    }
+
+    public function assert()
+    {
+        $this->assertCount(count($this->responses), $this->container, 'the number of response do not match the number of requests');
+        foreach ($this->container as $index => $request) {
+            $srequest = $request['request']->getMethod() . ' ' . (string) $request['request']->getUri();
+            $this->assertEquals($this->responses[$index]['method'], $request['request']->getMethod(), "method for request $srequest differs");
+            $this->assertEquals($this->responses[$index]['uri'], (string) $request['request']->getUri(), "uri for request $srequest differs");
+            if (isset($this->responses[$index]['body'])) {
+                $this->assertEquals($this->responses[$index]['body'], (string) $request['request']->getBody(), "body for request $srequest differs");
+            }
+        }
     }
 
     public function addressBookBaseUri()
     {
         return $this->serviceUrl()
-        ->options()
-        ->userPrincipal()
-        ->addressbookHome()
-        ->resourceTypeAddressBook();
+            ->optionsOk()
+            ->userPrincipal()
+            ->addressbookHome()
+            ->resourceTypeAddressBook();
     }
 
     public function capabilities()
@@ -48,30 +71,48 @@ class DavTester
             ->supportedAddressData();
     }
 
+    public function addResponse(string $uri, Response $response, string $body = null, string $method = 'PROPFIND')
+    {
+        $this->responses[] = [
+            'uri' => $uri,
+            'response' => $response,
+            'method' => $method,
+            'body' => $body,
+        ];
+        return $this;
+    }
+
     public function serviceUrl()
     {
-        $this->responses[] = new Response(301, ['Location' => $this->baseUri]);
+        $this->addResponse('https://test/.well-known/carddav', new Response(301, ['Location' => $this->baseUri.'/dav/']), null, 'GET');
 
         return $this;
     }
 
-    public function options()
+    public function nonStandardServiceUrl()
     {
-        $this->responses[] = new Response(200, ['Dav' => '1, 3, addressbook']);
+        $this->addResponse('https://test/.well-known/carddav', new Response(301, ['Location' => '/dav/']));
+
+        return $this;
+    }
+
+    public function optionsOk()
+    {
+        $this->addResponse('https://test/dav/', new Response(200, ['Dav' => '1, 3, addressbook']), null, 'OPTIONS');
 
         return $this;
     }
 
     public function optionsFail()
     {
-        $this->responses[] = new Response(200, ['Dav' => 'bad']);
+        $this->addResponse('https://test/dav/', new Response(200, ['Dav' => 'bad']), null, 'OPTIONS');
 
         return $this;
     }
 
     public function userPrincipal()
     {
-        $this->responses[] = new Response(200, [], $this->multistatusHeader().
+        $this->addResponse('https://test/dav/', new Response(200, [], $this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/</d:href>'.
             '<d:propstat>'.
@@ -83,14 +124,14 @@ class DavTester
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
         '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>'));
 
         return $this;
     }
 
     public function userPrincipalEmpty()
     {
-        $this->responses[] = new Response(200, [], $this->multistatusHeader().
+        $this->addResponse('https://test/dav/', new Response(200, [], $this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/</d:href>'.
             '<d:propstat>'.
@@ -100,14 +141,14 @@ class DavTester
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
         '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>'));
 
         return $this;
     }
 
     public function addressbookHome()
     {
-        $this->responses[] = new Response(200, [], $this->multistatusHeader().
+        $this->addResponse('https://test/dav/principals/user@test.com/', new Response(200, [], $this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/principals/user@test.com/</d:href>'.
             '<d:propstat>'.
@@ -119,14 +160,14 @@ class DavTester
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
         '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>'));
 
         return $this;
     }
 
     public function addressbookEmpty()
     {
-        $this->responses[] = new Response(200, [], $this->multistatusHeader().
+        $this->addResponse('https://test/dav/principals/user@test.com/', new Response(200, [], $this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/principals/user@test.com/</d:href>'.
             '<d:propstat>'.
@@ -136,14 +177,14 @@ class DavTester
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
         '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>'));
 
         return $this;
     }
 
     public function resourceTypeAddressBook()
     {
-        $this->responses[] = new Response(200, [], $this->multistatusHeader().
+        $this->addResponse('https://test/dav/addressbooks/user@test.com/', new Response(200, [], $this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/addressbooks/user@test.com/contacts/</d:href>'.
             '<d:propstat>'.
@@ -155,14 +196,14 @@ class DavTester
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
         '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>'));
 
         return $this;
     }
 
     public function resourceTypeHomeOnly()
     {
-        $this->responses[] = new Response(200, [], $this->multistatusHeader().
+        $this->addResponse('https://test/dav/addressbooks/user@test.com/', new Response(200, [], $this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/addressbooks/user@test.com/</d:href>'.
             '<d:propstat>'.
@@ -172,14 +213,14 @@ class DavTester
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
         '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>'));
 
         return $this;
     }
 
     public function resourceTypeEmpty()
     {
-        $this->responses[] = new Response(200, [], $this->multistatusHeader().
+        $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/addressbooks/user@test.com/contacts/</d:href>'.
             '<d:propstat>'.
@@ -189,14 +230,14 @@ class DavTester
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
         '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>'));
 
         return $this;
     }
 
     public function supportedReportSet(array $reportSet = ['card:addressbook-multiget', 'card:addressbook-query', 'd:sync-collection'])
     {
-        $this->responses[] = new Response(200, [], $this->multistatusHeader().
+        $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/addressbooks/user@test.com/contacts/</d:href>'.
             '<d:propstat>'.
@@ -210,14 +251,14 @@ class DavTester
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
         '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>'));
 
         return $this;
     }
 
     public function supportedAddressData(array $list = ['card:address-data-type content-type="text/vcard" version="4.0"'])
     {
-        $this->responses[] = new Response(200, [], $this->multistatusHeader().
+        $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/addressbooks/user@test.com/contacts/</d:href>'.
             '<d:propstat>'.
@@ -231,14 +272,14 @@ class DavTester
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
         '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>'));
 
         return $this;
     }
 
     public function displayName(string $name = 'Test')
     {
-        $this->responses[] = new Response(200, [], $this->multistatusHeader().
+        $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/addressbooks/user@test.com/contacts/</d:href>'.
             '<d:propstat>'.
@@ -248,12 +289,12 @@ class DavTester
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
         '</d:response>'.
-        '</d:multistatus>');
+        '</d:multistatus>'));
 
         return $this;
     }
 
-    private function multistatusHeader()
+    public function multistatusHeader()
     {
         return '<d:multistatus xmlns:d="DAV:" xmlns:card="urn:ietf:params:xml:ns:carddav">';
     }
