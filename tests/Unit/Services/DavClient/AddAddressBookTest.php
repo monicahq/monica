@@ -51,8 +51,8 @@ class AddAddressBookTest extends TestCase
                 'syncCollection' => false,
                 'addressData' => [
                     'content-type' => 'text/vcard',
-                    'version' => '4.0'
-                ]
+                    'version' => '4.0',
+                ],
             ]),
         ]);
 

@@ -4,10 +4,9 @@ namespace Tests\Unit\Services\DavClient\Utils;
 
 use Tests\TestCase;
 use Tests\Helpers\DavTester;
-use App\Services\DavClient\Utils\Dav\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Exception\ServerException;
+use App\Services\DavClient\Utils\Dav\Client;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ClientTest extends TestCase
@@ -60,7 +59,6 @@ class ClientTest extends TestCase
 
         $tester->assert();
     }
-
 
     /** @test */
     public function it_get_serviceurl()
@@ -169,7 +167,7 @@ class ClientTest extends TestCase
 
         $tester->assert();
         $this->assertEquals([
-            '{DAV:}test' => 'value'
+            '{DAV:}test' => 'value',
         ], $result);
     }
 
@@ -237,7 +235,7 @@ class ClientTest extends TestCase
         $result = $client->getSupportedReportSet();
 
         $tester->assert();
-        $this->assertEquals(['{DAV:}test1','{DAV:}test2'], $result);
+        $this->assertEquals(['{DAV:}test1', '{DAV:}test2'], $result);
     }
 
     /** @test */
@@ -275,9 +273,9 @@ class ClientTest extends TestCase
             'href' => [
                 200 => [
                     '{DAV:}getetag' => '"00001-abcd1"',
-                    '{DAV:}test' => 'value'
-                ]
-            ]
+                    '{DAV:}test' => 'value',
+                ],
+            ],
         ], $result);
     }
 
@@ -316,9 +314,9 @@ class ClientTest extends TestCase
             'href' => [
                 200 => [
                     '{DAV:}getetag' => '"00001-abcd1"',
-                    '{DAV:}test' => 'value'
-                ]
-            ]
+                    '{DAV:}test' => 'value',
+                ],
+            ],
         ], $result);
     }
 
@@ -349,7 +347,7 @@ class ClientTest extends TestCase
         $client = new Client([], $tester->getClient());
 
         $result = $client->addressbookMultigetAsync('https://test/test', ['{DAV:}test'], [
-            'https://test/contacts/1'
+            'https://test/contacts/1',
         ])
             ->wait();
 
@@ -358,9 +356,9 @@ class ClientTest extends TestCase
             'href' => [
                 200 => [
                     '{DAV:}getetag' => '"00001-abcd1"',
-                    '{DAV:}test' => 'value'
-                ]
-            ]
+                    '{DAV:}test' => 'value',
+                ],
+            ],
         ], $result);
     }
 
@@ -397,9 +395,9 @@ class ClientTest extends TestCase
             'href' => [
                 200 => [
                     '{DAV:}getetag' => '"00001-abcd1"',
-                    '{DAV:}test' => 'value'
-                ]
-            ]
+                    '{DAV:}test' => 'value',
+                ],
+            ],
         ], $result);
     }
 }

@@ -54,12 +54,12 @@ class AddressBookSubscriptionTest extends TestCase
         $addressBookSubscription = new AddressBookSubscription();
 
         $addressBookSubscription->capabilities = [
-            'test' => true
+            'test' => true,
         ];
 
         $this->assertIsArray($addressBookSubscription->capabilities);
         $this->assertEquals([
-            'test' => true
+            'test' => true,
         ], $addressBookSubscription->capabilities);
     }
 

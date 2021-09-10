@@ -2,12 +2,12 @@
 
 namespace Tests\Helpers;
 
+use Tests\TestCase;
 use GuzzleHttp\Client;
+use GuzzleHttp\Middleware;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\Middleware;
-use Tests\TestCase;
 
 class DavTester extends TestCase
 {
@@ -47,7 +47,7 @@ class DavTester extends TestCase
     {
         $this->assertCount(count($this->responses), $this->container, 'the number of response do not match the number of requests');
         foreach ($this->container as $index => $request) {
-            $srequest = $request['request']->getMethod() . ' ' . (string) $request['request']->getUri();
+            $srequest = $request['request']->getMethod().' '.(string) $request['request']->getUri();
             $this->assertEquals($this->responses[$index]['method'], $request['request']->getMethod(), "method for request $srequest differs");
             $this->assertEquals($this->responses[$index]['uri'], (string) $request['request']->getUri(), "uri for request $srequest differs");
             if (isset($this->responses[$index]['body'])) {
@@ -79,6 +79,7 @@ class DavTester extends TestCase
             'method' => $method,
             'body' => $body,
         ];
+
         return $this;
     }
 

@@ -45,8 +45,8 @@ class AddressBookSubscriptionFactory extends Factory
                 'syncCollection' => false,
                 'addressData' => [
                     'content-type' => 'text/vcard',
-                    'version' => '4.0'
-                ]
+                    'version' => '4.0',
+                ],
             ],
             'username' => $this->faker->email,
             'password' => 'password',
