@@ -122,6 +122,7 @@ class Client
                 return $this->getBaseUri($location);
             }
         } catch (ClientException $e) {
+            // catch exception and return null
         }
 
         return null;
@@ -139,12 +140,10 @@ class Client
             $entry = dns_get_record($name.'.'.$host, DNS_SRV);
 
             if ($entry) {
-                $target = isset($entry[0]['target']) ? $entry[0]['target'] : null;
-                $port = isset($entry[0]['port']) ? $entry[0]['port'] : null;
+                $target = $this->getEntryValue($entry, 'target');
+                $port = $this->getEntryValue($entry, 'port');
                 if ($target) {
-                    if ($port === 443 && $https) {
-                        $port = null;
-                    } elseif ($port === 80 && ! $https) {
+                    if (($port === 443 && $https) || ($port === 80 && ! $https)) {
                         $port = null;
                     }
 
@@ -158,6 +157,11 @@ class Client
         }
 
         return null;
+    }
+
+    private function getEntryValue($entry, $name)
+    {
+        return isset($entry[0][$name]) ? $entry[0][$name] : null;
     }
 
     /**
@@ -546,14 +550,14 @@ class Client
     {
         $propPatch = new PropPatch();
         $propPatch->properties = $properties;
-        $xml = $this->xml->write(
+        $body = $this->xml->write(
             '{DAV:}propertyupdate',
             $propPatch
         );
 
         return $this->requestAsync('PROPPATCH', $url, [
             'Content-Type' => 'application/xml; charset=utf-8',
-        ], $xml)->then(function (ResponseInterface $response): bool {
+        ], $body)->then(function (ResponseInterface $response): bool {
             if ($response->getStatusCode() === 207) {
                 // If it's a 207, the request could still have failed, but the
                 // information is hidden in the response body.

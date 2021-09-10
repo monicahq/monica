@@ -254,6 +254,7 @@ class ClientTest extends TestCase
                     '<d:status>HTTP/1.1 200 OK</d:status>'.
                 '</d:propstat>'.
             '</d:response>'.
+            '<d:sync-token>"00001-abcd1"</d:sync-token>'.
             '</d:multistatus>'), '<?xml version="1.0" encoding="UTF-8"?>'."\n".
             '<d:sync-collection xmlns:d="DAV:">'.
               '<d:sync-token/>'.
@@ -276,6 +277,7 @@ class ClientTest extends TestCase
                     '{DAV:}test' => 'value',
                 ],
             ],
+            'synctoken' => '"00001-abcd1"',
         ], $result);
     }
 
@@ -295,6 +297,7 @@ class ClientTest extends TestCase
                     '<d:status>HTTP/1.1 200 OK</d:status>'.
                 '</d:propstat>'.
             '</d:response>'.
+            '<d:sync-token>"00001-abcd1"</d:sync-token>'.
             '</d:multistatus>'), '<?xml version="1.0" encoding="UTF-8"?>'."\n".
             '<d:sync-collection xmlns:d="DAV:">'.
               '<d:sync-token>"00000-abcd0"</d:sync-token>'.
@@ -317,6 +320,7 @@ class ClientTest extends TestCase
                     '{DAV:}test' => 'value',
                 ],
             ],
+            'synctoken' => '"00001-abcd1"',
         ], $result);
     }
 

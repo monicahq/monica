@@ -40,9 +40,9 @@ class AddressBookSubscriptionFactory extends Factory
             'name' => $this->faker->word,
             'uri' => $this->faker->url,
             'capabilities' => [
-                'addressbookMultiget' => false,
-                'addressbookQuery' => false,
-                'syncCollection' => false,
+                'addressbookMultiget' => true,
+                'addressbookQuery' => true,
+                'syncCollection' => true,
                 'addressData' => [
                     'content-type' => 'text/vcard',
                     'version' => '4.0',
@@ -50,6 +50,7 @@ class AddressBookSubscriptionFactory extends Factory
             ],
             'username' => $this->faker->email,
             'password' => 'password',
+            'syncToken' => '"test"'
         ];
     }
 }

@@ -398,8 +398,10 @@ class AddressBookSynchronizer
             '{DAV:}getetag',
         ], $syncToken)->then(function ($collection) {
             // save the new syncToken as current one
-            $this->subscription->syncToken = $collection['synctoken'];
-            $this->subscription->save();
+            if (array_key_exists('synctoken', $collection)) {
+                $this->subscription->syncToken = $collection['synctoken'];
+                $this->subscription->save();
+            }
 
             return $collection;
         });

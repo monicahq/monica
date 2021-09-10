@@ -245,7 +245,7 @@ class DavTester extends TestCase
                 '<d:prop>'.
                     '<d:supported-report-set>'.
                     implode('', array_map(function ($report) {
-                        return "<$report/>";
+                        return "<d:supported-report><d:report><$report/></d:report></d:supported-report>";
                     }, $reportSet)).
                     '</d:supported-report-set>'.
                 '</d:prop>'.
@@ -293,6 +293,40 @@ class DavTester extends TestCase
         '</d:multistatus>'));
 
         return $this;
+    }
+
+    public function getSynctoken(string $synctoken = '"test"')
+    {
+        $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $this->multistatusHeader().
+        '<d:response>'.
+            '<d:href>/dav/addressbooks/user@test.com/contacts/</d:href>'.
+            '<d:propstat>'.
+                '<d:prop>'.
+                    "<d:sync-token>$synctoken</d:sync-token>".
+                '</d:prop>'.
+                '<d:status>HTTP/1.1 200 OK</d:status>'.
+            '</d:propstat>'.
+        '</d:response>'.
+        '</d:multistatus>'));
+
+        return $this;
+    }
+
+    public function getSyncCollection(string $synctoken = '"test"')
+    {
+        return $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $this->multistatusHeader().
+        '<d:response>'.
+            '<d:href>href</d:href>'.
+            '<d:propstat>'.
+                '<d:prop>'.
+                    "<d:getetag>$synctoken</d:getetag>".
+                    '<d:getcontenttype>text/vcard</d:getcontenttype>'.
+                '</d:prop>'.
+                '<d:status>HTTP/1.1 200 OK</d:status>'.
+            '</d:propstat>'.
+        '</d:response>'.
+        "<d:sync-token>$synctoken</d:sync-token>".
+        '</d:multistatus>'), null, 'REPORT');
     }
 
     public function multistatusHeader()

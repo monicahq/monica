@@ -29,9 +29,9 @@ class AddressBookGetterTest extends TestCase
         $this->assertEquals([
             'uri' => 'https://test/dav/addressbooks/user@test.com/contacts/',
             'capabilities' => [
-                'addressbookMultiget' => false,
-                'addressbookQuery' => false,
-                'syncCollection' => false,
+                'addressbookMultiget' => true,
+                'addressbookQuery' => true,
+                'syncCollection' => true,
                 'addressData' => [
                     'content-type' => 'text/vcard',
                     'version' => '4.0',
