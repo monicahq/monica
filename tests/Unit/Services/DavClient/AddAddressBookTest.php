@@ -46,9 +46,9 @@ class AddAddressBookTest extends TestCase
             'user_id' => $user->id,
             'address_book_id' => $addressBookSubscription->address_book_id,
             'capabilities' => json_encode([
-                'addressbookMultiget' => false,
-                'addressbookQuery' => false,
-                'syncCollection' => false,
+                'addressbookMultiget' => true,
+                'addressbookQuery' => true,
+                'syncCollection' => true,
                 'addressData' => [
                     'content-type' => 'text/vcard',
                     'version' => '4.0',
