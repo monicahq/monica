@@ -5,8 +5,8 @@ namespace App\Services\DavClient\Utils;
 use Illuminate\Support\Str;
 use GuzzleHttp\Promise\Promise;
 use GuzzleHttp\Promise\PromiseInterface;
-use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Models\Account\AddressBookSubscription;
+use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Traits\HasCapability;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 

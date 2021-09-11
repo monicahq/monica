@@ -7,7 +7,7 @@ use App\Models\Account\AddressBookSubscription;
 
 trait HasCapability
 {
-    protected abstract function subscription(): AddressBookSubscription;
+    abstract protected function subscription(): AddressBookSubscription;
 
     /**
      * Check if the subscription has the give capability.
