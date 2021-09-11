@@ -5,6 +5,7 @@ namespace Tests\Unit\Services\DavClient;
 use Tests\TestCase;
 use App\Models\User\User;
 use Tests\Helpers\DavTester;
+use function Safe\json_encode;
 use App\Models\Account\AddressBook;
 use App\Services\DavClient\AddAddressBook;
 use App\Models\Account\AddressBookSubscription;

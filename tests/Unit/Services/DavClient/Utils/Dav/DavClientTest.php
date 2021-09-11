@@ -6,17 +6,17 @@ use Tests\TestCase;
 use Tests\Helpers\DavTester;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\ServerException;
-use App\Services\DavClient\Utils\Dav\Client;
+use App\Services\DavClient\Utils\Dav\DavClient;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ClientTest extends TestCase
+class DavClientTest extends TestCase
 {
     use DatabaseTransactions;
 
     /** @test */
     public function it_creates_client()
     {
-        $client = new Client([
+        $client = new DavClient([
             'base_uri' => 'test',
             'username' => 'user',
             'password' => 'pass',
@@ -29,14 +29,14 @@ class ClientTest extends TestCase
     public function it_fails_if_no_baseuri()
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Client([]);
+        new DavClient([]);
     }
 
     /** @test */
     public function it_accept_guzzle_client()
     {
-        $client = new Client([], new \GuzzleHttp\Client());
-        $this->assertInstanceOf(Client::class, $client);
+        $client = new DavClient([], new \GuzzleHttp\Client());
+        $this->assertInstanceOf(DavClient::class, $client);
     }
 
     /** @test */
@@ -46,7 +46,7 @@ class ClientTest extends TestCase
             ->addResponse('https://test', new Response(200, []), null, 'OPTIONS')
             ->addResponse('https://test', new Response(200, ['Dav' => 'test']), null, 'OPTIONS')
             ->addResponse('https://test', new Response(200, ['Dav' => ' test ']), null, 'OPTIONS');
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $result = $client->options();
         $this->assertEquals([], $result);
@@ -65,7 +65,7 @@ class ClientTest extends TestCase
     {
         $tester = (new DavTester())
             ->serviceUrl();
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $result = $client->getServiceUrl();
 
@@ -79,7 +79,7 @@ class ClientTest extends TestCase
         $tester = (new DavTester())
             ->addResponse('https://test/.well-known/carddav', new Response(200), null, 'GET')
             ->nonStandardServiceUrl();
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $result = $client->getServiceUrl();
 
@@ -93,7 +93,7 @@ class ClientTest extends TestCase
         $tester = (new DavTester())
             ->addResponse('https://test/.well-known/carddav', new Response(404), null, 'GET')
             ->nonStandardServiceUrl();
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $result = $client->getServiceUrl();
 
@@ -106,7 +106,7 @@ class ClientTest extends TestCase
     {
         $tester = (new DavTester())
             ->addResponse('https://test/.well-known/carddav', new Response(500), null, 'GET');
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $this->expectException(ServerException::class);
         $client->getServiceUrl();
@@ -116,7 +116,7 @@ class ClientTest extends TestCase
     public function it_get_base_uri()
     {
         $tester = (new DavTester());
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $result = $client->getBaseUri();
 
@@ -131,7 +131,7 @@ class ClientTest extends TestCase
     public function it_set_base_uri()
     {
         $tester = (new DavTester());
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $result = $client->setBaseUri('https://new')
             ->getBaseUri();
@@ -161,7 +161,7 @@ class ClientTest extends TestCase
               '</d:prop>'.
             "</d:propfind>\n", 'PROPFIND');
 
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $result = $client->propFind('https://test/test', ['{DAV:}test']);
 
@@ -193,7 +193,7 @@ class ClientTest extends TestCase
               '</d:prop>'.
             "</d:propfind>\n", 'PROPFIND');
 
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $result = $client->getProperty('{DAV:}test', 'https://test/test');
 
@@ -230,7 +230,7 @@ class ClientTest extends TestCase
               '</d:prop>'.
             "</d:propfind>\n", 'PROPFIND');
 
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $result = $client->getSupportedReportSet();
 
@@ -264,7 +264,7 @@ class ClientTest extends TestCase
               '</d:prop>'.
             "</d:sync-collection>\n", 'REPORT');
 
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $result = $client->syncCollectionAsync('https://test/test', ['{DAV:}test'], '')
             ->wait();
@@ -307,7 +307,7 @@ class ClientTest extends TestCase
               '</d:prop>'.
             "</d:sync-collection>\n", 'REPORT');
 
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $result = $client->syncCollectionAsync('https://test/test', ['{DAV:}test'], '"00000-abcd0"')
             ->wait();
@@ -348,7 +348,7 @@ class ClientTest extends TestCase
               '<d:href>https://test/contacts/1</d:href>'.
             "</card:addressbook-multiget>\n", 'REPORT');
 
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $result = $client->addressbookMultigetAsync('https://test/test', ['{DAV:}test'], [
             'https://test/contacts/1',
@@ -389,7 +389,7 @@ class ClientTest extends TestCase
               '</d:prop>'.
             "</card:addressbook-query>\n", 'REPORT');
 
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $result = $client->addressbookQueryAsync('https://test/test', ['{DAV:}test'])
             ->wait();

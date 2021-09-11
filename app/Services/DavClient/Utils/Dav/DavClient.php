@@ -16,7 +16,7 @@ use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Exception\ClientException;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 
-class Client
+class DavClient
 {
     /**
      * The xml service.

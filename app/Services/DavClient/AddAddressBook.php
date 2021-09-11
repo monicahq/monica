@@ -9,7 +9,7 @@ use App\Models\Account\AddressBook;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
-use App\Services\DavClient\Utils\Dav\Client;
+use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\AddressBookGetter;
 
@@ -87,7 +87,7 @@ class AddAddressBook extends BaseService
         return null;
     }
 
-    private function getClient(array $data, ?GuzzleClient $client): Client
+    private function getClient(array $data, ?GuzzleClient $client): DavClient
     {
         $settings = Arr::only($data, [
             'base_uri',
@@ -95,6 +95,6 @@ class AddAddressBook extends BaseService
             'password',
         ]);
 
-        return new Client($settings, $client);
+        return new DavClient($settings, $client);
     }
 }

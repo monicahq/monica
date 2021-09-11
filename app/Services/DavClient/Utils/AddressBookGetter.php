@@ -7,18 +7,18 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Exception\ClientException;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
-use App\Services\DavClient\Utils\Dav\Client;
+use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Dav\DavClientException;
 use App\Services\DavClient\Utils\Dav\DavServerNotCompliantException;
 
 class AddressBookGetter
 {
     /**
-     * @var Client
+     * @var DavClient
      */
     private $client;
 
-    public function __construct(Client $client)
+    public function __construct(DavClient $client)
     {
         $this->client = $client;
     }

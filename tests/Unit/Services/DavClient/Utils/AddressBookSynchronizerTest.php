@@ -8,7 +8,7 @@ use Tests\Helpers\DavTester;
 use GuzzleHttp\Psr7\Response;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
-use App\Services\DavClient\Utils\Dav\Client;
+use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Models\Account\AddressBookSubscription;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\AddressBookSynchronizer;
@@ -27,7 +27,7 @@ class AddressBookSynchronizerTest extends TestCase
 
         $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'))
             ->getSynctoken($subscription->syncToken);
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $result = (new AddressBookSynchronizer($subscription, $client, $backend))
             ->sync();
@@ -45,7 +45,7 @@ class AddressBookSynchronizerTest extends TestCase
         $tester->getSynctoken('"test2"')
             ->getSyncCollection('test2');
 
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         $result = (new AddressBookSynchronizer($subscription, $client, $backend))
             ->sync();
@@ -99,7 +99,7 @@ class AddressBookSynchronizerTest extends TestCase
                 new Response(201, ['Etag' => $this->getEtag($contact, true)]),
                 $this->getCard($contact, true), 'PUT');
 
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         (new AddressBookSynchronizer($subscription, $client, $backend))
             ->sync();
@@ -146,7 +146,7 @@ class AddressBookSynchronizerTest extends TestCase
             '</d:response>'.
             '</d:multistatus>'), null, 'REPORT');
 
-        $client = new Client([], $tester->getClient());
+        $client = new DavClient([], $tester->getClient());
 
         (new AddressBookSynchronizer($subscription, $client, $backend))
             ->sync();

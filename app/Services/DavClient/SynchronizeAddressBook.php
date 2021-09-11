@@ -8,7 +8,7 @@ use App\Services\BaseService;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
-use App\Services\DavClient\Utils\Dav\Client;
+use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\AddressBookSynchronizer;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
@@ -69,9 +69,9 @@ class SynchronizeAddressBook extends BaseService
         }
     }
 
-    private function getClient(AddressBookSubscription $subscription, ?GuzzleClient $client): Client
+    private function getClient(AddressBookSubscription $subscription, ?GuzzleClient $client): DavClient
     {
-        return new Client([
+        return new DavClient([
             'base_uri' => $subscription->uri,
             'username' => $subscription->username,
             'password' => $subscription->password,
