@@ -79,7 +79,8 @@ class AddAddressBook extends BaseService
         try {
             $client = $this->getClient($data, $httpClient);
 
-            return (new AddressBookGetter($client))->getAddressBookData();
+            return app(AddressBookGetter::class)
+                ->getAddressBookData($client);
         } catch (ClientException $e) {
             Log::error(__CLASS__.' getAddressBookBaseUri: '.$e->getMessage(), [$e]);
         }

@@ -9,98 +9,77 @@ use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Traits\HasCapability;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
+use App\Services\DavClient\Utils\Model\SyncDto;
 
 class AddressBookSynchronizer
 {
     use HasCapability;
 
     /**
-     * @var AddressBookSubscription
+     * @var SyncDto
      */
-    public $subscription;
-
-    /**
-     * @var DavClient
-     */
-    public $client;
-
-    /**
-     * @var CardDAVBackend
-     */
-    public $backend;
-
-    public function __construct(AddressBookSubscription $subscription, DavClient $client, CardDAVBackend $backend)
-    {
-        $this->subscription = $subscription;
-        $this->client = $client;
-        $this->backend = $backend;
-    }
-
-    protected function subscription(): AddressBookSubscription
-    {
-        return $this->subscription;
-    }
+    private $sync;
 
     /**
      * Sync the address book.
      */
-    public function sync()
+    public function sync(SyncDto $sync)
     {
+        $this->sync = $sync;
+
         // Get changes to sync
-        $localChanges = $this->backend->getChangesForAddressBook($this->subscription->addressbook->name, $this->subscription->localSyncToken, 1);
+        $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->subscription->addressbook->name, $this->sync->subscription->localSyncToken, 1);
 
         // Get distant changes to sync
         $this->getDistantChanges()
             ->then(function ($changes) {
                 // Get distant contacts
-                (new AddressBookContactsUpdater($this))
-                    ->updateContacts($changes);
+                app(AddressBookContactsUpdater::class)
+                    ->updateContacts($this->sync, $changes);
 
                 return $changes;
             })
             ->then(function ($changes) use ($localChanges) {
-                if ($this->subscription->readonly) {
-                    return;
+                if (!$this->sync->subscription->readonly) {
+                    app(AddressBookContactsPusher::class)
+                        ->pushContacts($this->sync, $changes, $localChanges);
                 }
-
-                return (new AddressBookContactsPusher($this))
-                    ->pushContacts($changes, $localChanges);
             })
             ->wait();
 
-        $token = $this->backend->getCurrentSyncToken($this->subscription->addressbook->name);
+        $token = $this->sync->backend->getCurrentSyncToken($this->sync->subscription->addressbook->name);
 
-        $this->subscription->localSyncToken = $token->id;
-        $this->subscription->save();
+        $this->sync->subscription->localSyncToken = $token->id;
+        $this->sync->subscription->save();
     }
 
     /**
      * Sync the address book.
      */
-    public function forcesync()
+    public function forcesync(SyncDto $sync)
     {
+        $this->sync = $sync;
+
         // Get changes to sync
-        $localChanges = $this->backend->getChangesForAddressBook($this->subscription->addressbook->name, $this->subscription->localSyncToken, 1);
+        $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->subscription->addressbook->name, $this->sync->subscription->localSyncToken, 1);
 
         // Get actual list of contacts
-        $localContacts = $this->backend->getObjects($this->subscription->addressbook->name);
+        $localContacts = $this->sync->backend->getObjects($this->sync->subscription->addressbook->name);
 
         // Get distant changes to sync
         $this->getAllContactsEtag()
             ->then(function ($distContacts) use ($localContacts) {
                 // Get missed contacts
-                (new AddressBookContactsUpdater($this))
-                    ->updateMissedContacts($localContacts, $distContacts);
+                app(AddressBookContactsUpdater::class)
+                    ->updateMissedContacts($this->sync, $localContacts, $distContacts);
 
                 return $distContacts;
             })
             ->then(function ($distContacts) use ($localChanges, $localContacts) {
-                if ($this->subscription->readonly) {
-                    return;
+                if (!$this->sync->subscription->readonly) {
+                    app(AddressBookContactsPusher::class)
+                        ->pushContacts($this->sync, collect(), $localChanges, $distContacts, $localContacts);
                 }
-
-                return (new AddressBookContactsPusher($this))
-                    ->pushContacts(collect(), $localChanges, $distContacts, $localContacts);
             })
             ->wait();
     }
@@ -121,7 +100,7 @@ class AddressBookSynchronizer
                         && Str::contains($contact[200]['{DAV:}getcontenttype'], 'text/vcard');
                 })->filter(function ($contact, $href) {
                     // only new contact or contact with etag that match
-                    $card = $this->backend->getCard($this->subscription->addressbook->name, $href);
+                    $card = $this->sync->backend->getCard($this->sync->subscription->addressbook->name, $href);
 
                     return $card === false || $card['etag'] !== $contact[200]['{DAV:}getetag'];
                 })->map(function ($contact, $href) {
@@ -145,7 +124,7 @@ class AddressBookSynchronizer
             return $this->callSyncCollection();
         } else {
             // With PROPFIND
-            return $this->client->propFindAsync('', [
+            return $this->sync->client->propFindAsync('', [
                 '{DAV:}getcontenttype',
                 '{DAV:}getetag',
             ], 1);
@@ -160,10 +139,10 @@ class AddressBookSynchronizer
     private function callSyncCollection(): PromiseInterface
     {
         // With sync-collection
-        $syncToken = $this->subscription->syncToken ?? '';
+        $syncToken = $this->sync->subscription->syncToken ?? '';
 
         // get the current distant syncToken
-        $distantSyncToken = $this->client->getProperty('{DAV:}sync-token');
+        $distantSyncToken = $this->sync->client->getProperty('{DAV:}sync-token');
 
         if ($syncToken == $distantSyncToken) {
             // no change at all
@@ -171,14 +150,14 @@ class AddressBookSynchronizer
         }
 
         // get sync
-        return $this->client->syncCollectionAsync('', [
+        return $this->sync->client->syncCollectionAsync('', [
             '{DAV:}getcontenttype',
             '{DAV:}getetag',
         ], $syncToken)->then(function ($collection) {
             // save the new syncToken as current one
             if (array_key_exists('synctoken', $collection)) {
-                $this->subscription->syncToken = $collection['synctoken'];
-                $this->subscription->save();
+                $this->sync->subscription->syncToken = $collection['synctoken'];
+                $this->sync->subscription->save();
             }
 
             return $collection;
@@ -196,7 +175,7 @@ class AddressBookSynchronizer
             return $this->emptyPromise();
         }
 
-        return $this->client->addressbookQueryAsync('', [
+        return $this->sync->client->addressbookQueryAsync('', [
             '{DAV:}getetag',
         ])->then(function ($datas) {
             return collect($datas)

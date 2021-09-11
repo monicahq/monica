@@ -5,6 +5,8 @@ namespace App\Services\DavClient;
 use App\Models\User\User;
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
+use App\Helpers\AccountHelper;
+use App\Models\Account\Account;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
@@ -12,6 +14,7 @@ use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\AddressBookSynchronizer;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
+use App\Services\DavClient\Utils\Model\SyncDto;
 
 class SynchronizeAddressBook extends BaseService
 {
@@ -38,6 +41,13 @@ class SynchronizeAddressBook extends BaseService
     {
         $this->validate($data);
 
+        $account = Account::find($data['account_id']);
+        if (AccountHelper::hasReachedContactLimit($account)
+            && AccountHelper::hasLimitations($account)
+            && ! $account->legacy_free_plan_unlimited_contacts) {
+            abort(402);
+        }
+
         $user = User::where('account_id', $data['account_id'])
             ->findOrFail($data['user_id']);
 
@@ -60,12 +70,13 @@ class SynchronizeAddressBook extends BaseService
     {
         $client = $this->getClient($subscription, $httpClient);
 
-        $synchronizer = new AddressBookSynchronizer($subscription, $client, $backend);
+        $synchronizer = app(AddressBookSynchronizer::class);
+        $sync = new SyncDto($subscription, $client, $backend);
 
-        if (! Arr::has($data, 'force') || ! $data['force']) {
-            $synchronizer->sync();
+        if (Arr::get($data, 'force', false) === true) {
+            $synchronizer->forcesync($sync);
         } else {
-            $synchronizer->forcesync();
+            $synchronizer->sync($sync);
         }
     }
 

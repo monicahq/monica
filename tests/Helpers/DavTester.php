@@ -312,14 +312,14 @@ class DavTester extends TestCase
         return $this;
     }
 
-    public function getSyncCollection(string $synctoken = '"test"')
+    public function getSyncCollection(string $synctoken = 'token', string $etag = '"etag"')
     {
         return $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $this->multistatusHeader().
         '<d:response>'.
-            '<d:href>href</d:href>'.
+            '<d:href>https://test/dav/addressbooks/user@test.com/contacts/uuid</d:href>'.
             '<d:propstat>'.
                 '<d:prop>'.
-                    "<d:getetag>$synctoken</d:getetag>".
+                    "<d:getetag>$etag</d:getetag>".
                     '<d:getcontenttype>text/vcard</d:getcontenttype>'.
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.

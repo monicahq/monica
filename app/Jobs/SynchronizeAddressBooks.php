@@ -14,7 +14,10 @@ class SynchronizeAddressBooks implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $addressBookSubscription;
+    /**
+     * @var AddressBookSubscription
+     */
+    public $subscription;
 
     /**
      * Create a new job instance.
@@ -22,9 +25,9 @@ class SynchronizeAddressBooks implements ShouldQueue
      * @param  AddressBookSubscription  $addressBookSubscription
      * @return void
      */
-    public function __construct(AddressBookSubscription $addressBookSubscription)
+    public function __construct(AddressBookSubscription $subscription)
     {
-        $this->addressBookSubscription = $addressBookSubscription;
+        $this->subscription = $subscription;
     }
 
     /**
@@ -35,12 +38,12 @@ class SynchronizeAddressBooks implements ShouldQueue
     public function handle()
     {
         app(SynchronizeAddressBook::class)->execute([
-            'account_id' => $this->addressBookSubscription->account_id,
-            'user_id' => $this->addressBookSubscription->user_id,
-            'addressbook_subscription_id' => $this->addressBookSubscription->id,
+            'account_id' => $this->subscription->account_id,
+            'user_id' => $this->subscription->user_id,
+            'addressbook_subscription_id' => $this->subscription->id,
             //'force' => true,
         ]);
-        $this->addressBookSubscription->lastsync = now();
-        $this->addressBookSubscription->save();
+        $this->subscription->lastsync = now();
+        $this->subscription->save();
     }
 }

@@ -4,11 +4,12 @@ namespace Tests\Unit\Services\DavClient;
 
 use Tests\TestCase;
 use App\Models\User\User;
-use Tests\Helpers\DavTester;
+use Mockery\MockInterface;
 use function Safe\json_encode;
 use App\Models\Account\AddressBook;
 use App\Services\DavClient\AddAddressBook;
 use App\Models\Account\AddressBookSubscription;
+use App\Services\DavClient\Utils\AddressBookGetter;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AddAddressBookTest extends TestCase
@@ -20,6 +21,12 @@ class AddAddressBookTest extends TestCase
     {
         $user = factory(User::class)->create([]);
 
+        $this->mock(AddressBookGetter::class, function (MockInterface $mock) {
+            $mock->shouldReceive('getAddressBookData')
+                ->once()
+                ->andReturn($this->mockReturn());
+        });
+
         $request = [
             'account_id' => $user->account_id,
             'user_id' => $user->id,
@@ -28,13 +35,8 @@ class AddAddressBookTest extends TestCase
             'password' => 'test',
         ];
 
-        $tester = (new DavTester())
-            ->addressBookBaseUri()
-            ->capabilities()
-            ->displayName();
-        $addressBookSubscription = app(AddAddressBook::class)->execute($request, $tester->getClient());
+        $addressBookSubscription = (new AddAddressBook())->execute($request);
 
-        $tester->assert();
         $this->assertDatabaseHas('addressbooks', [
             'id' => $addressBookSubscription->address_book_id,
             'account_id' => $user->account_id,
@@ -73,6 +75,12 @@ class AddAddressBookTest extends TestCase
             'name' => 'contacts5',
         ]);
 
+        $this->mock(AddressBookGetter::class, function (MockInterface $mock) {
+            $mock->shouldReceive('getAddressBookData')
+                ->once()
+                ->andReturn($this->mockReturn());
+        });
+
         $request = [
             'account_id' => $user->account_id,
             'user_id' => $user->id,
@@ -81,13 +89,8 @@ class AddAddressBookTest extends TestCase
             'password' => 'test',
         ];
 
-        $tester = (new DavTester())
-            ->addressBookBaseUri()
-            ->capabilities()
-            ->displayName();
-        $addressBookSubscription = app(AddAddressBook::class)->execute($request, $tester->getClient());
+        $addressBookSubscription = app(AddAddressBook::class)->execute($request);
 
-        $tester->assert();
         $this->assertDatabaseHas('addressbooks', [
             'id' => $addressBookSubscription->address_book_id,
             'account_id' => $user->account_id,
@@ -105,5 +108,22 @@ class AddAddressBookTest extends TestCase
             AddressBookSubscription::class,
             $addressBookSubscription
         );
+    }
+
+    private function mockReturn(): array
+    {
+        return [
+            'uri' => 'https://test/dav',
+            'capabilities' => [
+                'addressbookMultiget' => true,
+                'addressbookQuery' => true,
+                'syncCollection' => true,
+                'addressData' => [
+                    'content-type' => 'text/vcard',
+                    'version' => '4.0',
+                ],
+            ],
+            'name' => 'Test',
+        ];
     }
 }

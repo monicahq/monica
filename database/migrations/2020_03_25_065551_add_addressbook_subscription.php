@@ -24,6 +24,7 @@ class AddAddressbookSubscription extends Migration
             $table->string('username', 1024);
             $table->string('password', 2048);
             $table->boolean('readonly');
+            $table->boolean('active')->default(true);
             $table->string('capabilities', 2048);
             $table->string('syncToken', 512)->nullable();
             $table->string('localSyncToken', 1024)->nullable();

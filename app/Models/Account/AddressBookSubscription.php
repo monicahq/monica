@@ -35,6 +35,7 @@ class AddressBookSubscription extends Model
         'localSyncToken',
         'frequency',
         'lastsync',
+        'active',
     ];
 
     /**
@@ -60,6 +61,7 @@ class AddressBookSubscription extends Model
      */
     protected $casts = [
         'readonly' => 'bool',
+        'active' => 'bool',
     ];
 
     /**
@@ -134,5 +136,16 @@ class AddressBookSubscription extends Model
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Crypt::encryptString($value);
+    }
+
+    /**
+     * Scope a query to only include active subscriptions.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('active', 1);
     }
 }

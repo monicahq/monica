@@ -18,18 +18,15 @@ class AddressBookGetter
      */
     private $client;
 
-    public function __construct(DavClient $client)
-    {
-        $this->client = $client;
-    }
-
     /**
      * Get address book data: uri, capabilities, and name.
      *
      * @return array|null
      */
-    public function getAddressBookData(): ?array
+    public function getAddressBookData(DavClient $client): ?array
     {
+        $this->client = $client;
+
         try {
             $uri = $this->getAddressBookBaseUri();
 

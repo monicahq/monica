@@ -7,35 +7,18 @@ use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\ResponseInterface;
-use GuzzleHttp\Promise\PromiseInterface;
 use IlluminateAgnostic\Collection\Support\Arr;
-use App\Models\Account\AddressBookSubscription;
+use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Traits\HasCapability;
-use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 
 class AddressBookContactsPusher
 {
     use HasCapability;
 
     /**
-     * @var AddressBookSynchronizer
+     * @var SyncDto
      */
-    private $synchronizer;
-
-    public function __construct(AddressBookSynchronizer $synchronizer)
-    {
-        $this->synchronizer = $synchronizer;
-    }
-
-    protected function subscription(): AddressBookSubscription
-    {
-        return $this->synchronizer->subscription;
-    }
-
-    protected function backend(): CardDAVBackend
-    {
-        return $this->synchronizer->backend;
-    }
+    private $sync;
 
     /**
      * Push contacts to the distant server.
@@ -44,10 +27,11 @@ class AddressBookContactsPusher
      * @param  array|null  $localChanges
      * @param  Collection|null  $distContacts
      * @param  Collection|null  $localContacts
-     * @return PromiseInterface
      */
-    public function pushContacts(Collection $changes, ?array $localChanges, ?Collection $distContacts = null, ?Collection $localContacts = null): PromiseInterface
+    public function pushContacts(SyncDto $sync, Collection $changes, ?array $localChanges, ?Collection $distContacts = null, ?Collection $localContacts = null): void
     {
+        $this->sync = $sync;
+
         $requests = $this->preparePushChanges($changes, $localChanges);
 
         if ($distContacts !== null && $localContacts !== null) {
@@ -57,7 +41,7 @@ class AddressBookContactsPusher
 
         $urls = $requests->pluck('request')->toArray();
 
-        return $this->synchronizer->client->requestPool($urls, [
+        $this->sync->client->requestPool($urls, [
             'concurrency' => 25,
             'fulfilled' => function (ResponseInterface $response, $index) use ($requests) {
                 Log::info(__CLASS__.' pushContacts: PUT '.$requests[$index]['uri']);
@@ -66,7 +50,7 @@ class AddressBookContactsPusher
                     Log::warning(__CLASS__.' pushContacts: wrong etag. Expected '.$requests[$index]['etag'].', get '.$etags[0]);
                 }
             },
-        ]);
+        ])->wait();
     }
 
     /**
@@ -95,9 +79,9 @@ class AddressBookContactsPusher
         // All added contact must be pushed
         return collect($contacts)
           ->map(function ($uri) {
-              return tap($this->backend()->getCard($this->subscription()->addressbook->name, $uri), function ($card) use ($uri) {
-                  $card['uri'] = $uri;
-              });
+              $card = $this->sync->backend->getCard($this->sync->subscription->addressbook->name, $uri);
+              $card['uri'] = $uri;
+              return $card;
           })->map(function ($contact): array {
               $contact['request'] = new Request('PUT', $contact['uri'], [], $contact['carddata']);
 
@@ -119,11 +103,11 @@ class AddressBookContactsPusher
         // We don't push contact that have just been pulled
         return collect($contacts)
           ->reject(function (string $uri) use ($refreshIds) {
-              $uuid = $this->backend()->getUuid($uri);
+              $uuid = $this->sync->backend->getUuid($uri);
 
               return $refreshIds->contains($uuid);
           })->map(function (string $uri) {
-              return tap($this->backend()->getCard($this->subscription()->addressbook->name, $uri), function ($card) use ($uri) {
+              return tap($this->sync->backend->getCard($this->sync->subscription->addressbook->name, $uri), function ($card) use ($uri) {
                   $card['uri'] = $uri;
               });
           })->map(function (array $contact): array {
@@ -144,10 +128,10 @@ class AddressBookContactsPusher
     private function preparePushMissedContacts(array $added, Collection $distContacts, Collection $localContacts): Collection
     {
         $distContacts = $distContacts->map(function ($c) {
-            return $this->backend()->getUuid($c['href']);
+            return $this->sync->backend->getUuid($c['href']);
         });
         $added = collect($added)->map(function ($c) {
-            return $this->backend()->getUuid($c);
+            return $this->sync->backend->getUuid($c);
         });
 
         return $localContacts
@@ -155,7 +139,7 @@ class AddressBookContactsPusher
               return ! $distContacts->contains($contact->uuid)
                 && ! $added->contains($contact->uuid);
           })->map(function (Contact $contact): array {
-              $data = $this->backend()->prepareCard($contact);
+              $data = $this->sync->backend->prepareCard($contact);
 
               $data['request'] = new Request('PUT', $data['uri'], ['If-Match' => '*'], $data['carddata']);
 

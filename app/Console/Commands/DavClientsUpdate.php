@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use App\Jobs\SynchronizeAddressBooks;
 use App\Models\Account\AddressBookSubscription;
 
@@ -29,14 +30,18 @@ class DavClientsUpdate extends Command
      */
     public function handle()
     {
-        $subscriptions = AddressBookSubscription::all();
+        $subscriptions = AddressBookSubscription::active()->get();
 
         $now = now();
         $subscriptions->filter(function ($subscription) use ($now) {
             return is_null($subscription->lastsync)
                 || $subscription->lastsync->addMinutes($subscription->frequency)->lessThan($now);
         })->each(function ($subscription) {
-            SynchronizeAddressBooks::dispatch($subscription);
+            try {
+                SynchronizeAddressBooks::dispatch($subscription);
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+            }
         });
     }
 }
