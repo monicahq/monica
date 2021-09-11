@@ -2,12 +2,12 @@
 
 namespace Tests\Commands;
 
-use App\Jobs\SynchronizeAddressBooks;
-use App\Models\Account\AddressBookSubscription;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Artisan;
+use App\Jobs\SynchronizeAddressBooks;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Artisan;
+use App\Models\Account\AddressBookSubscription;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DavClientsUpdateTest extends TestCase
 {

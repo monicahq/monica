@@ -81,6 +81,7 @@ class AddressBookContactsPusher
           ->map(function ($uri) {
               $card = $this->sync->backend->getCard($this->sync->subscription->addressbook->name, $uri);
               $card['uri'] = $uri;
+
               return $card;
           })->map(function ($contact): array {
               $contact['request'] = new Request('PUT', $contact['uri'], [], $contact['carddata']);

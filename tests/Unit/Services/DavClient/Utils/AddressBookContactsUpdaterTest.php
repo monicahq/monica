@@ -9,9 +9,9 @@ use Tests\Helpers\DavTester;
 use GuzzleHttp\Psr7\Response;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
-use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
+use App\Services\DavClient\Utils\Model\SyncDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 use App\Services\DavClient\Utils\AddressBookContactsUpdater;
@@ -43,12 +43,12 @@ class AddressBookContactsUpdaterTest extends TestCase
         $card = $this->getCard($contact);
         $etag = $this->getEtag($contact, true);
 
-
         /** @var CardDAVBackend */
         $backend = $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
             $mock->shouldReceive('updateCard')
-                ->withArgs(function ($addressBookId, $cardUri, $cardData) use ($card, $etag) {
+                ->withArgs(function ($addressBookId, $cardUri, $cardData) use ($card) {
                     $this->assertEquals($card, $cardData);
+
                     return true;
                 })
                 ->andReturn($etag);
@@ -120,21 +120,21 @@ class AddressBookContactsUpdaterTest extends TestCase
         $card = $this->getCard($contact);
         $etag = $this->getEtag($contact, true);
 
-
         /** @var CardDAVBackend */
         $backend = $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
             $mock->shouldReceive('updateCard')
-                ->withArgs(function ($addressBookId, $cardUri, $cardData) use ($card, $etag) {
+                ->withArgs(function ($addressBookId, $cardUri, $cardData) use ($card) {
                     $this->assertTrue(is_resource($cardData));
 
-                    $data = "";
-                    while(! feof($cardData)) {
+                    $data = '';
+                    while (! feof($cardData)) {
                         $data .= fgets($cardData);
                     }
 
                     fclose($cardData);
 
                     $this->assertEquals($card, $data);
+
                     return true;
                 })
                 ->andReturn($etag);

@@ -6,8 +6,8 @@ use Tests\TestCase;
 use GuzzleHttp\Client;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\SynchronizeAddressBook;
-use App\Services\DavClient\Utils\AddressBookSynchronizer;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\DavClient\Utils\AddressBookSynchronizer;
 
 class SynchronizeAddressBookTest extends TestCase
 {
@@ -51,5 +51,4 @@ class SynchronizeAddressBookTest extends TestCase
 
         $spy->shouldHaveReceived('forcesync');
     }
-
 }

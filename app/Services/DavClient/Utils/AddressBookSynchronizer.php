@@ -5,11 +5,8 @@ namespace App\Services\DavClient\Utils;
 use Illuminate\Support\Str;
 use GuzzleHttp\Promise\Promise;
 use GuzzleHttp\Promise\PromiseInterface;
-use App\Models\Account\AddressBookSubscription;
-use App\Services\DavClient\Utils\Dav\DavClient;
-use App\Services\DavClient\Utils\Traits\HasCapability;
-use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 use App\Services\DavClient\Utils\Model\SyncDto;
+use App\Services\DavClient\Utils\Traits\HasCapability;
 
 class AddressBookSynchronizer
 {
@@ -40,7 +37,7 @@ class AddressBookSynchronizer
                 return $changes;
             })
             ->then(function ($changes) use ($localChanges) {
-                if (!$this->sync->subscription->readonly) {
+                if (! $this->sync->subscription->readonly) {
                     app(AddressBookContactsPusher::class)
                         ->pushContacts($this->sync, $changes, $localChanges);
                 }
@@ -76,7 +73,7 @@ class AddressBookSynchronizer
                 return $distContacts;
             })
             ->then(function ($distContacts) use ($localChanges, $localContacts) {
-                if (!$this->sync->subscription->readonly) {
+                if (! $this->sync->subscription->readonly) {
                     app(AddressBookContactsPusher::class)
                         ->pushContacts($this->sync, collect(), $localChanges, $distContacts, $localContacts);
                 }

@@ -9,10 +9,8 @@ use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
-use App\Models\Account\AddressBookSubscription;
-use App\Services\DavClient\Utils\Traits\HasCapability;
-use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 use App\Services\DavClient\Utils\Model\SyncDto;
+use App\Services\DavClient\Utils\Traits\HasCapability;
 
 class AddressBookContactsUpdater
 {
@@ -26,7 +24,7 @@ class AddressBookContactsUpdater
     /**
      * Update local contacts.
      *
-     * @param  SyncDto $sync
+     * @param  SyncDto  $sync
      * @param  Collection  $refresh
      */
     public function updateContacts(SyncDto $sync, Collection $refresh): void
@@ -43,7 +41,7 @@ class AddressBookContactsUpdater
     /**
      * Update local missed contacts.
      *
-     * @param  SyncDto $sync
+     * @param  SyncDto  $sync
      * @param  Collection  $localContacts
      * @param  Collection  $distContacts
      */
@@ -130,9 +128,10 @@ class AddressBookContactsUpdater
 
     /**
      * Save contact to local storage.
+     *
      * @param  string  $href
      * @param  string  $etag
-     * @param  string|resource|null $vcard
+     * @param  string|resource|null  $vcard
      */
     private function syncLocalContact(string $href, string $etag, $vcard): void
     {

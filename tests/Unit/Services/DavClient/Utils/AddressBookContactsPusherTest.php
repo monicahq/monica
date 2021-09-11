@@ -9,13 +9,12 @@ use Tests\Helpers\DavTester;
 use GuzzleHttp\Psr7\Response;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
-use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
+use App\Services\DavClient\Utils\Model\SyncDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 use App\Services\DavClient\Utils\AddressBookContactsPusher;
-use App\Services\DavClient\Utils\AddressBookContactsUpdater;
+use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 
 class AddressBookContactsPusherTest extends TestCase
 {
@@ -43,12 +42,12 @@ class AddressBookContactsPusherTest extends TestCase
         $card = $this->getCard($contact);
         $etag = $this->getEtag($contact, true);
 
-
         /** @var CardDAVBackend */
         $backend = $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
             $mock->shouldReceive('getCard')
-                ->withArgs(function ($name, $uri) use ($card, $etag) {
+                ->withArgs(function ($name, $uri) {
                     $this->assertEquals($uri, 'https://test/dav/uricontact');
+
                     return true;
                 })
                 ->andReturn([
@@ -69,7 +68,7 @@ class AddressBookContactsPusherTest extends TestCase
                     'etag' => $etag,
                 ],
             ]), [
-                'added' => ['https://test/dav/uricontact']
+                'added' => ['https://test/dav/uricontact'],
             ]);
 
         $tester->assert();

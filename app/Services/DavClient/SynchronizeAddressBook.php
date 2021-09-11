@@ -12,9 +12,9 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
+use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\AddressBookSynchronizer;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
-use App\Services\DavClient\Utils\Model\SyncDto;
 
 class SynchronizeAddressBook extends BaseService
 {
