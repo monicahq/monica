@@ -108,7 +108,7 @@ class AddressBookGetter
     private function checkOptions()
     {
         $options = $this->client->options();
-        if (count($options) > 0) {
+        if (!empty($options)) {
             $options = explode(', ', $options[0]);
         }
 
@@ -177,10 +177,9 @@ class AddressBookGetter
                 continue;
             }
 
-            if ($resources = Arr::get($properties, '{DAV:}resourcetype', null)) {
-                if ($resources->is('{'.CardDAVPlugin::NS_CARDDAV.'}addressbook')) {
-                    return $book;
-                }
+            if (($resources = Arr::get($properties, '{DAV:}resourcetype', null)) &&
+                $resources->is('{'.CardDAVPlugin::NS_CARDDAV.'}addressbook')) {
+                return $book;
             }
         }
 

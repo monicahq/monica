@@ -31,19 +31,6 @@ trait SyncDAVBackend
             ->orderBy('created_at')
             ->get();
 
-        /*
-        if ($tokens->count() <= 0) {
-        $token = $this->createSyncTokenNow($collectionId);
-        } else {
-        $token = $tokens->last();
-
-        if ($refresh && $token->timestamp < $this->getLastModified($collectionId)) {
-            $token = $this->createSyncToken($collectionId);
-        }
-        }
-
-        return $token;
-        */
         return $tokens->count() > 0 ? $tokens->last() : null;
     }
 
