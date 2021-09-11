@@ -268,7 +268,7 @@ class AddressBookSynchronizer
             'fulfilled' => function (ResponseInterface $response, $index) use ($requests) {
                 Log::info(__CLASS__.' pushContacts: PUT '.$requests[$index]['uri']);
                 $etags = $response->getHeader('Etag');
-                if (!empty($etags) && $etags[0] !== $requests[$index]['etag']) {
+                if (! empty($etags) && $etags[0] !== $requests[$index]['etag']) {
                     Log::warning(__CLASS__.' pushContacts: wrong etag. Expected '.$requests[$index]['etag'].', get '.$etags[0]);
                 }
             },

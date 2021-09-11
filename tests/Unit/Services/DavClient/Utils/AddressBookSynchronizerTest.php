@@ -3,7 +3,9 @@
 namespace Tests\Unit\Services\DavClient\Utils;
 
 use Tests\TestCase;
+use Tests\Api\DAV\CardEtag;
 use Tests\Helpers\DavTester;
+use GuzzleHttp\Psr7\Response;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use App\Services\DavClient\Utils\Dav\Client;
@@ -11,8 +13,6 @@ use App\Models\Account\AddressBookSubscription;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\AddressBookSynchronizer;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
-use GuzzleHttp\Psr7\Response;
-use Tests\Api\DAV\CardEtag;
 
 class AddressBookSynchronizerTest extends TestCase
 {
@@ -70,7 +70,7 @@ class AddressBookSynchronizerTest extends TestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $subscription->account_id,
             'address_book_id' => $subscription->address_book_id,
-            'uuid' => 'd403af1c-8492-4e9b-9833-cf18c795dfa9'
+            'uuid' => 'd403af1c-8492-4e9b-9833-cf18c795dfa9',
         ]);
 
         $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
@@ -129,7 +129,6 @@ class AddressBookSynchronizerTest extends TestCase
         ]);
         $card = $this->getCard($contact, true);
         $etag = $this->getEtag($contact, true);
-
 
         $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
         $tester->getSynctoken('"test2"')

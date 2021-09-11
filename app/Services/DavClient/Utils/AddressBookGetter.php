@@ -108,7 +108,7 @@ class AddressBookGetter
     private function checkOptions()
     {
         $options = $this->client->options();
-        if (!empty($options)) {
+        if (! empty($options)) {
             $options = explode(', ', $options[0]);
         }
 

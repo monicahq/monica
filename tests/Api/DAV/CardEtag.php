@@ -22,8 +22,9 @@ trait CardEtag
 
         $etag = md5($data);
         if ($quotes) {
-            $etag = '"' . $etag . '"';
+            $etag = '"'.$etag.'"';
         }
+
         return $etag;
     }
 
