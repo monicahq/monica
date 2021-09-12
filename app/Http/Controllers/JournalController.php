@@ -25,6 +25,7 @@ class JournalController extends Controller
 
     /**
      * Get all the journal entries.
+     *
      * @return array
      */
     public function list()
@@ -72,7 +73,8 @@ class JournalController extends Controller
 
     /**
      * Gets the details of a single Journal Entry.
-     * @param  JournalEntry $journalEntry
+     *
+     * @param  JournalEntry  $journalEntry
      * @return array
      */
     public function get(JournalEntry $journalEntry)
@@ -117,6 +119,7 @@ class JournalController extends Controller
 
     /**
      * Indicates whether the user has already rated the current day.
+     *
      * @return string
      */
     public function hasRated()
@@ -141,7 +144,7 @@ class JournalController extends Controller
     /**
      * Saves the journal entry.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function save(Request $request)
@@ -177,7 +180,7 @@ class JournalController extends Controller
     /**
      * Display the Edit journal entry screen.
      *
-     * @param Entry $entry
+     * @param  Entry  $entry
      * @return \Illuminate\View\View
      */
     public function edit(Entry $entry)
@@ -189,7 +192,7 @@ class JournalController extends Controller
     /**
      * Update a journal entry.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Entry $entry)

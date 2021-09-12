@@ -44,7 +44,7 @@ class UploadPhoto extends BaseService
     /**
      * Upload a photo.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Photo|null
      */
     public function execute(array $data): ?Photo
@@ -143,9 +143,9 @@ class UploadPhoto extends BaseService
     /**
      * Store the decoded image in the temp file.
      *
-     * @param string $disk
-     * @param \Intervention\Image\Image $image
-     * @param string $filename
+     * @param  string  $disk
+     * @param  \Intervention\Image\Image  $image
+     * @param  string  $filename
      * @return string|null
      */
     private function storeImage(string $disk, $image, string $filename): ?string
@@ -159,7 +159,7 @@ class UploadPhoto extends BaseService
     /**
      * Determines if the source photo is a valid encoded photo.
      *
-     * @param string $data
+     * @param  string  $data
      * @return bool
      */
     private function isValidPhoto(string $data): bool
@@ -170,7 +170,7 @@ class UploadPhoto extends BaseService
     /**
      * Determines if source data is binary data.
      *
-     * @param string $data
+     * @param  string  $data
      * @return bool
      */
     private function isBinary(string $data): bool
@@ -183,7 +183,7 @@ class UploadPhoto extends BaseService
     /**
      * Determines if source data is data-url format.
      *
-     * @param string $data
+     * @param  string  $data
      * @return bool
      */
     private function isDataUrl(string $data): bool
@@ -205,7 +205,7 @@ class UploadPhoto extends BaseService
     /**
      * Determines if source data is base64 encoded.
      *
-     * @param string $data
+     * @param  string  $data
      * @return bool
      */
     private function isBase64(string $data): bool

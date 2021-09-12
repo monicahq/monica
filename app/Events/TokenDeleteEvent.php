@@ -19,7 +19,7 @@ class TokenDeleteEvent extends Event
     /**
      * Create a new event instance.
      *
-     * @param  SyncToken $token
+     * @param  SyncToken  $token
      * @return void
      *
      * @codeCoverageIgnore

@@ -32,8 +32,7 @@ class ApiJournalController extends ApiController
     /**
      * Get the detail of a given journal entry.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return JournalResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $entryId)
@@ -52,8 +51,7 @@ class ApiJournalController extends ApiController
     /**
      * Store the call.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return JournalResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -78,9 +76,8 @@ class ApiJournalController extends ApiController
     /**
      * Update the note.
      *
-     * @param Request $request
-     * @param int $entryId
-     *
+     * @param  Request  $request
+     * @param  int  $entryId
      * @return JournalResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $entryId)
@@ -110,7 +107,7 @@ class ApiJournalController extends ApiController
     /**
      * Validate the request for update.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse|true
      */
     private function validateUpdate(Request $request)
@@ -131,8 +128,7 @@ class ApiJournalController extends ApiController
     /**
      * Delete a journal entry.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $entryId)

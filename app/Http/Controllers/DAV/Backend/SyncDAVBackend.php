@@ -14,7 +14,7 @@ trait SyncDAVBackend
      * If null is returned from this function, the plugin assumes there's no
      * sync information available.
      *
-     * @param string|null $collectionId
+     * @param  string|null  $collectionId
      * @return SyncToken|null
      */
     protected function getCurrentSyncToken($collectionId): ?SyncToken
@@ -33,7 +33,7 @@ trait SyncDAVBackend
     /**
      * Create or refresh the token if a change happened.
      *
-     * @param string|null $collectionId
+     * @param  string|null  $collectionId
      * @return SyncToken
      */
     public function refreshSyncToken($collectionId): SyncToken
@@ -50,7 +50,7 @@ trait SyncDAVBackend
     /**
      * Get SyncToken by token id.
      *
-     * @param string|null $collectionId
+     * @param  string|null  $collectionId
      * @return SyncToken|null
      */
     protected function getSyncToken($collectionId, $syncToken)
@@ -67,7 +67,7 @@ trait SyncDAVBackend
     /**
      * Create a token with now timestamp.
      *
-     * @param string|null $collectionId
+     * @param  string|null  $collectionId
      * @return SyncToken
      */
     private function createSyncTokenNow($collectionId)
@@ -83,7 +83,7 @@ trait SyncDAVBackend
     /**
      * Returns the last modification date.
      *
-     * @param string|null $collectionId
+     * @param  string|null  $collectionId
      * @return \Carbon\Carbon|null
      */
     public function getLastModified($collectionId)
@@ -142,8 +142,8 @@ trait SyncDAVBackend
      *
      * The limit is 'suggestive'. You are free to ignore it.
      *
-     * @param string $calendarId
-     * @param string $syncToken
+     * @param  string  $calendarId
+     * @param  string  $syncToken
      * @return array|null
      */
     public function getChanges($calendarId, $syncToken): ?array
@@ -210,7 +210,7 @@ trait SyncDAVBackend
     /**
      * Returns the contact uuid for the specific uri.
      *
-     * @param string  $uri
+     * @param  string  $uri
      * @return string
      */
     public function getUuid($uri): string
@@ -221,8 +221,8 @@ trait SyncDAVBackend
     /**
      * Returns the contact for the specific uri.
      *
-     * @param string|null $collectionId
-     * @param string  $uri
+     * @param  string|null  $collectionId
+     * @param  string  $uri
      * @return mixed
      */
     public function getObject($collectionId, $uri)
@@ -237,8 +237,8 @@ trait SyncDAVBackend
     /**
      * Returns the object for the specific uuid.
      *
-     * @param string|null $collectionId
-     * @param string  $uuid
+     * @param  string|null  $collectionId
+     * @param  string  $uuid
      * @return mixed
      */
     abstract public function getObjectUuid($collectionId, $uuid);
@@ -246,7 +246,7 @@ trait SyncDAVBackend
     /**
      * Returns the collection of objects.
      *
-     * @param string|null $collectionId
+     * @param  string|null  $collectionId
      * @return \Illuminate\Support\Collection
      */
     abstract public function getObjects($collectionId);

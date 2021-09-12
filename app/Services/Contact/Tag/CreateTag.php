@@ -25,7 +25,7 @@ class CreateTag extends BaseService
     /**
      * Create a tag.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Tag
      */
     public function execute(array $data): Tag

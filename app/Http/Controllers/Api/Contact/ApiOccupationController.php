@@ -36,8 +36,7 @@ class ApiOccupationController extends ApiController
     /**
      * Get the detail of a given occupation.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return OccupationResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $occupationId)
@@ -56,8 +55,7 @@ class ApiOccupationController extends ApiController
     /**
      * Store the occupation.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return OccupationResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -84,9 +82,8 @@ class ApiOccupationController extends ApiController
     /**
      * Update an occupation.
      *
-     * @param Request $request
-     * @param int $occupationId
-     *
+     * @param  Request  $request
+     * @param  int  $occupationId
      * @return OccupationResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $occupationId)
@@ -114,8 +111,7 @@ class ApiOccupationController extends ApiController
     /**
      * Delete an occupation.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, int $occupationId)

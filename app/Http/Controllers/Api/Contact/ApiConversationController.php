@@ -64,8 +64,7 @@ class ApiConversationController extends ApiController
     /**
      * Get the detail of a given conversation.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return ConversationResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $conversationId)
@@ -83,8 +82,7 @@ class ApiConversationController extends ApiController
     /**
      * Store the conversation.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return ConversationResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -111,9 +109,8 @@ class ApiConversationController extends ApiController
     /**
      * Update the conversation.
      *
-     * @param Request $request
-     * @param int $conversationId
-     *
+     * @param  Request  $request
+     * @param  int  $conversationId
      * @return ConversationResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $conversationId)
@@ -141,9 +138,8 @@ class ApiConversationController extends ApiController
     /**
      * Destroy the conversation.
      *
-     * @param Request $request
-     * @param int $conversationId
-     *
+     * @param  Request  $request
+     * @param  int  $conversationId
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, int $conversationId)

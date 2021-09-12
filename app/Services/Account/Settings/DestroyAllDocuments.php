@@ -24,7 +24,7 @@ class DestroyAllDocuments extends BaseService
     /**
      * Destroy all documents in an account.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data): bool

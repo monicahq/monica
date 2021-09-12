@@ -37,7 +37,7 @@ class PersonalizationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return string
      */
     public function storeContactFieldType(Request $request)
@@ -63,9 +63,8 @@ class PersonalizationController extends Controller
     /**
      * Edit a newly created resource in storage.
      *
-     * @param Request $request
-     * @param ContactFieldType $contactFieldType
-     *
+     * @param  Request  $request
+     * @param  ContactFieldType  $contactFieldType
      * @return ContactFieldType
      */
     public function editContactFieldType(Request $request, ContactFieldType $contactFieldType): ContactFieldType

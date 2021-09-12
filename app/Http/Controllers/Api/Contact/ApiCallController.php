@@ -40,8 +40,7 @@ class ApiCallController extends ApiController
     /**
      * Get the detail of a given call.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return CallResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $callId)
@@ -60,8 +59,7 @@ class ApiCallController extends ApiController
     /**
      * Store the call.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return CallResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -88,9 +86,8 @@ class ApiCallController extends ApiController
     /**
      * Update a call.
      *
-     * @param Request $request
-     * @param int $callId
-     *
+     * @param  Request  $request
+     * @param  int  $callId
      * @return CallResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $callId)
@@ -118,8 +115,7 @@ class ApiCallController extends ApiController
     /**
      * Delete a call.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, int $callId)

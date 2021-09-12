@@ -31,7 +31,7 @@ class ImportVCards extends Command
     /**
      * Execute the console command.
      *
-     * @param Filesystem $filesystem
+     * @param  Filesystem  $filesystem
      * @return mixed
      */
     public function handle(Filesystem $filesystem)

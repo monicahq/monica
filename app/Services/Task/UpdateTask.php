@@ -27,7 +27,7 @@ class UpdateTask extends BaseService
     /**
      * Update a task.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Task
      */
     public function execute(array $data): Task

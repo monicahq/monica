@@ -126,7 +126,7 @@ class ImportVCard extends BaseService
     /**
      * Import one VCard.
      *
-     * @param array $data
+     * @param  array  $data
      * @return array
      */
     public function execute(array $data): array
@@ -163,7 +163,7 @@ class ImportVCard extends BaseService
     /**
      * Process data importation.
      *
-     * @param array $data
+     * @param  array  $data
      * @return array
      */
     private function process(array $data): array
@@ -197,8 +197,8 @@ class ImportVCard extends BaseService
     /**
      * Process entry importation.
      *
-     * @param array $data
-     * @param VCard $entry
+     * @param  array  $data
+     * @param  VCard  $entry
      * @return array
      */
     private function processEntry(array $data, VCard $entry): array
@@ -220,9 +220,9 @@ class ImportVCard extends BaseService
     /**
      * Process entry importation.
      *
-     * @param array $data
-     * @param VCard $entry
-     * @param Contact|null $contact
+     * @param  array  $data
+     * @param  VCard  $entry
+     * @param  Contact|null  $contact
      * @return array
      */
     private function processEntryContact(array $data, VCard $entry, $contact): array
@@ -255,7 +255,7 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param array $data
+     * @param  array  $data
      * @return VCard|null
      */
     private function getEntry($data): ?VCard
@@ -348,7 +348,7 @@ class ImportVCard extends BaseService
      * Check whether a contact has a first name or a nickname. If not, contact
      * can not be imported.
      *
-     * @param VCard $entry
+     * @param  VCard  $entry
      * @return bool
      */
     private function canImportCurrentEntry(VCard $entry): bool
@@ -360,7 +360,7 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param  VCard $entry
+     * @param  VCard  $entry
      * @return bool
      */
     private function hasFirstnameInN(VCard $entry): bool
@@ -369,7 +369,7 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param  VCard $entry
+     * @param  VCard  $entry
      * @return bool
      */
     private function hasNICKNAME(VCard $entry): bool
@@ -378,7 +378,7 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param  VCard $entry
+     * @param  VCard  $entry
      * @return bool
      */
     private function hasFN(VCard $entry): bool
@@ -389,7 +389,7 @@ class ImportVCard extends BaseService
     /**
      * Check whether the email is valid.
      *
-     * @param string $email
+     * @param  string  $email
      */
     private function isValidEmail(string $email): bool
     {
@@ -399,8 +399,8 @@ class ImportVCard extends BaseService
     /**
      * Check whether the contact already exists in the database.
      *
-     * @param  VCard $entry
-     * @param  int $contact_id
+     * @param  VCard  $entry
+     * @param  int  $contact_id
      * @return Contact|null
      */
     private function getExistingContact(VCard $entry, $contact_id = null)
@@ -428,7 +428,7 @@ class ImportVCard extends BaseService
     /**
      * Search with email field.
      *
-     * @param  VCard $entry
+     * @param  VCard  $entry
      * @return Contact|null
      */
     private function existingContactWithEmail(VCard $entry): ?Contact
@@ -460,7 +460,7 @@ class ImportVCard extends BaseService
     /**
      * Search with names fields.
      *
-     * @param  VCard $entry
+     * @param  VCard  $entry
      * @return Contact|null
      */
     private function existingContactWithName(VCard $entry)
@@ -480,8 +480,8 @@ class ImportVCard extends BaseService
     /**
      * Create the Contact object matching the current entry.
      *
-     * @param  Contact|null $contact
-     * @param  VCard $entry
+     * @param  Contact|null  $contact
+     * @param  VCard  $entry
      * @return Contact
      */
     private function importEntry($contact, VCard $entry): Contact
@@ -528,8 +528,8 @@ class ImportVCard extends BaseService
     /**
      * Import names of the contact.
      *
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
     private function importNames(Contact $contact, VCard $entry): void
@@ -553,8 +553,7 @@ class ImportVCard extends BaseService
      * @psalm-suppress InvalidReturnStatement
      * @psalm-suppress InvalidReturnType
      *
-     * @param VCard $entry
-     *
+     * @param  VCard  $entry
      * @return array|string|null|\Illuminate\Contracts\Translation\Translator
      */
     private function name($entry)
@@ -587,8 +586,8 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
     private function importFromN(Contact $contact, VCard $entry): void
@@ -606,8 +605,8 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
     private function importFromNICKNAME(Contact $contact, VCard $entry): void
@@ -616,8 +615,8 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
     private function importFromFN(Contact $contact, VCard $entry): void
@@ -647,8 +646,8 @@ class ImportVCard extends BaseService
     /**
      * Import uid of the contact.
      *
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
     private function importUid(Contact $contact, VCard $entry): void
@@ -661,8 +660,8 @@ class ImportVCard extends BaseService
     /**
      * Import gender of the contact.
      *
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
     private function importGender(Contact $contact, VCard $entry): void
@@ -675,8 +674,8 @@ class ImportVCard extends BaseService
     /**
      * Import photo of the contact.
      *
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
     private function importPhoto(Contact $contact, VCard $entry): void
@@ -719,8 +718,8 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
     private function importWorkInformation(Contact $contact, VCard $entry): void
@@ -739,8 +738,8 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
     private function importBirthday(Contact $contact, VCard $entry): void
@@ -778,8 +777,8 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
     private function importAddress(Contact $contact, VCard $entry): void
@@ -832,8 +831,8 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
     private function importEmail(Contact $contact, VCard $entry): void
@@ -888,8 +887,8 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
     private function importNote(Contact $contact, VCard $entry): void
@@ -906,8 +905,8 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
     private function importTel(Contact $contact, VCard $entry): void
@@ -967,8 +966,8 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
     private function importSocialProfile(Contact $contact, VCard $entry): void
@@ -1021,7 +1020,7 @@ class ImportVCard extends BaseService
     /**
      * Get the contact field type id for the $type.
      *
-     * @param string $type  The type of the ContactFieldType, or the name
+     * @param  string  $type  The type of the ContactFieldType, or the name
      * @return int|null
      */
     private function getContactFieldTypeId(string $type)
@@ -1048,8 +1047,8 @@ class ImportVCard extends BaseService
     /**
      * Import the categories as tags.
      *
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
     private function importCategories(Contact $contact, VCard $entry)
@@ -1088,7 +1087,7 @@ class ImportVCard extends BaseService
     /**
      * Add the different default avatars.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      * @return void
      */
     private function addAvatars(Contact $contact)

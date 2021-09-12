@@ -32,8 +32,8 @@ class ActivitiesController extends Controller
     /**
      * Get the list of activities.
      *
-     * @param Request $request
-     * @param Contact $contact
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
     public function index(Request $request, Contact $contact)
@@ -55,8 +55,8 @@ class ActivitiesController extends Controller
      * necessary information.
      * Also we need to filter out the current contact from the list.
      *
-     * @param Request $request
-     * @param Contact $contact
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return Collection
      */
     public function contacts(Request $request, Contact $contact)
@@ -76,7 +76,7 @@ class ActivitiesController extends Controller
     /**
      * Get the list of activity categories.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Collection
      */
     public function categories(Request $request)
@@ -108,8 +108,8 @@ class ActivitiesController extends Controller
     /**
      * Display the summary of activities for a given contact.
      *
-     * @param Request $request
-     * @param Contact $contact
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return \Illuminate\Http\RedirectResponse
      */
     public function summary(Request $request, Contact $contact)

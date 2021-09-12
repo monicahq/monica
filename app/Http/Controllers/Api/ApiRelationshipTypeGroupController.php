@@ -17,8 +17,7 @@ class ApiRelationshipTypeGroupController extends ApiController
     /**
      * Get all relationship type groups in an instance.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
@@ -36,8 +35,7 @@ class ApiRelationshipTypeGroupController extends ApiController
     /**
      * Get the detail of a given relationship type group.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return RelationshipTypeGroupResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id)

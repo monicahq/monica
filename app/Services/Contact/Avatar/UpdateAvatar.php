@@ -38,7 +38,7 @@ class UpdateAvatar extends BaseService
     /**
      * Update message in a conversation.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data): Contact
