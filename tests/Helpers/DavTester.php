@@ -336,6 +336,29 @@ class DavTester extends TestCase
         '</d:multistatus>'), null, 'REPORT');
     }
 
+    public function addressMultiGet($etag, $card, $url)
+    {
+        return $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $this->multistatusHeader().
+        '<d:response>'.
+            '<d:href>https://test/dav/addressbooks/user@test.com/contacts/uuid</d:href>'.
+            '<d:propstat>'.
+                '<d:prop>'.
+                    "<d:getetag>$etag</d:getetag>".
+                    "<card:address-data>$card</card:address-data>".
+                '</d:prop>'.
+                '<d:status>HTTP/1.1 200 OK</d:status>'.
+            '</d:propstat>'.
+        '</d:response>'.
+        '</d:multistatus>'), '<?xml version="1.0" encoding="UTF-8"?>'."\n".
+        '<card:addressbook-multiget xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:d="DAV:">'.
+          '<d:prop>'.
+            '<d:getetag/>'.
+            '<card:address-data content-type="text/vcard" version="4.0"/>'.
+          '</d:prop>'.
+          "<d:href>$url</d:href>".
+        "</card:addressbook-multiget>\n", 'REPORT');
+    }
+
     public function multistatusHeader()
     {
         return '<d:multistatus xmlns:d="DAV:" xmlns:card="urn:ietf:params:xml:ns:carddav">';

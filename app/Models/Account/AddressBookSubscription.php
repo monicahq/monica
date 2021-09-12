@@ -7,6 +7,7 @@ use function safe\json_decode;
 use function safe\json_encode;
 use App\Models\ModelBinding as Model;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
