@@ -22,7 +22,7 @@ class SynchronizeAddressBooks implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  AddressBookSubscription  $addressBookSubscription
+     * @param  AddressBookSubscription  $subscription
      * @return void
      */
     public function __construct(AddressBookSubscription $subscription)
