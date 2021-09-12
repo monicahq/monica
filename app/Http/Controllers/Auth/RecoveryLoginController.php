@@ -23,8 +23,7 @@ class RecoveryLoginController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function get(Request $request)
@@ -35,8 +34,7 @@ class RecoveryLoginController extends Controller
     /**
      * Validate recovery login.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)

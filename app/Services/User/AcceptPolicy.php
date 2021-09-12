@@ -26,8 +26,9 @@ class AcceptPolicy extends BaseService
     /**
      * Accept the latest user policy.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Term
+     *
      * @throws \Exception
      */
     public function execute(array $data): Term

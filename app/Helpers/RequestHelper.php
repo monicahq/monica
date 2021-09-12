@@ -32,7 +32,7 @@ class RequestHelper
     /**
      * Get client country.
      *
-     * @param string $ip
+     * @param  string  $ip
      * @return string|null
      */
     public static function country($ip): ?string
@@ -45,7 +45,7 @@ class RequestHelper
     /**
      * Get client country and currency.
      *
-     * @param string|null $ip
+     * @param  string|null  $ip
      * @return array
      */
     public static function infos($ip)

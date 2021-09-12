@@ -21,6 +21,7 @@ class AuthenticateWithTokenOnBasicAuth
      * The guard factory instance.
      *
      * @var AuthManager
+     *
      * @return \Illuminate\Contracts\Auth\Guard|\Illuminate\Contracts\Auth\StatefulGuard
      */
     protected $auth;
@@ -138,6 +139,7 @@ class AuthenticateWithTokenOnBasicAuth
      * Get the response for basic authentication.
      *
      * @return void
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
      */
     protected function failedBasicResponse()

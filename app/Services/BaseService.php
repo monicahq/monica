@@ -21,7 +21,7 @@ abstract class BaseService
     /**
      * Validate all datas to execute the service.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function validate(array $data): bool
@@ -35,8 +35,8 @@ abstract class BaseService
     /**
      * Checks if the value is empty or null.
      *
-     * @param mixed $data
-     * @param mixed $index
+     * @param  mixed  $data
+     * @param  mixed  $index
      * @return mixed
      */
     public function nullOrValue($data, $index)
@@ -49,8 +49,8 @@ abstract class BaseService
     /**
      * Checks if the value is empty or null and returns a date from a string.
      *
-     * @param mixed $data
-     * @param mixed $index
+     * @param  mixed  $data
+     * @param  mixed  $index
      * @return mixed
      */
     public function nullOrDate($data, $index)
@@ -63,8 +63,8 @@ abstract class BaseService
     /**
      * Returns the value if it's defined, or false otherwise.
      *
-     * @param mixed $data
-     * @param mixed $index
+     * @param  mixed  $data
+     * @param  mixed  $index
      * @return mixed
      */
     public function valueOrFalse($data, $index)

@@ -28,7 +28,7 @@ class DestroyConversation extends BaseService
     /**
      * Destroy a conversation.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data): bool

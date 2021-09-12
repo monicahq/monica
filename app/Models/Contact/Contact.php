@@ -37,6 +37,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /**
  * @method static \Illuminate\Database\Eloquent\Builder search()
+ *
  * @property \App\Models\Instance\SpecialDate|null $birthdate
  */
 class Contact extends Model
@@ -487,8 +488,9 @@ class Contact extends Model
 
     /**
      * Sort the contacts according a given criteria.
-     * @param Builder $builder
-     * @param string $criteria
+     *
+     * @param  Builder  $builder
+     * @param  string  $criteria
      * @return Builder
      */
     public function scopeSortedBy(Builder $builder, string $criteria): Builder
@@ -513,8 +515,9 @@ class Contact extends Model
 
     /**
      * Sort the contacts using last activity.
-     * @param Builder $builder
-     * @param string $order
+     *
+     * @param  Builder  $builder
+     * @param  string  $order
      * @return Builder
      */
     private function sortedByLastActivity(Builder $builder, string $order): Builder
@@ -532,7 +535,7 @@ class Contact extends Model
      * Scope a query to only include contacts who are not only a kid or a
      * significant other without being a contact.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeReal($query)
@@ -543,7 +546,7 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are active.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeActive($query)
@@ -554,7 +557,7 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are alive.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeAlive($query)
@@ -565,7 +568,7 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are dead.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeDead($query)
@@ -576,7 +579,7 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are not active.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeNotActive($query)
@@ -587,7 +590,7 @@ class Contact extends Model
     /**
      * Scope a query to include contacts whose notes contain the search phrase.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeNotes($query, int $accountId = null, string $needle)
@@ -605,7 +608,7 @@ class Contact extends Model
     /**
      * Scope a query to include contacts whose introduction notes contain the search phrase.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeIntroductionAdditionalInformation($query, int $accountId = null, string $needle)
@@ -622,9 +625,9 @@ class Contact extends Model
      * Scope a query to only include contacts from given address book.
      * 'null' value for address book is the default address book.
      *
-     * @param Builder $query
-     * @param int|null $accountId
-     * @param string|null $addressBookName
+     * @param  Builder  $query
+     * @param  int|null  $accountId
+     * @param  string|null  $addressBookName
      * @return Builder
      */
     public function scopeAddressBook($query, int $accountId = null, string $addressBookName = null)
@@ -644,7 +647,7 @@ class Contact extends Model
      * Mutator first_name.
      * Get the first name of the contact.
      *
-     * @param string|null $value
+     * @param  string|null  $value
      */
     public function setFirstNameAttribute($value)
     {
@@ -656,7 +659,7 @@ class Contact extends Model
      *
      * It doesn't run ucfirst on purpose.
      *
-     * @param string|null $value
+     * @param  string|null  $value
      */
     public function setLastNameAttribute($value)
     {
@@ -667,7 +670,7 @@ class Contact extends Model
     /**
      * Set the name order attribute.
      *
-     * @param string $value
+     * @param  string  $value
      * @return void
      */
     public function nameOrder($value)
@@ -678,7 +681,7 @@ class Contact extends Model
     /**
      * Mutator last_name.
      *
-     * @param string|null $value
+     * @param  string|null  $value
      */
     public function setNicknameAttribute($value)
     {
@@ -903,7 +906,7 @@ class Contact extends Model
      * Get all the contacts related to the current contact by a specific
      * relationship type group.
      *
-     * @param  string $type
+     * @param  string  $type
      * @return Collection|null
      */
     public function getRelationshipsByRelationshipTypeGroup(string $type): ?Collection
@@ -922,7 +925,7 @@ class Contact extends Model
     /**
      * Set the default avatar color for this object.
      *
-     * @param string|null $color
+     * @param  string|null  $color
      * @return void
      */
     public function setAvatarColor($color = null)
@@ -944,9 +947,9 @@ class Contact extends Model
     /**
      * Set the name of the contact.
      *
-     * @param  string $firstName
-     * @param  string $middleName
-     * @param  string $lastName
+     * @param  string  $firstName
+     * @param  string  $middleName
+     * @param  string  $lastName
      * @return bool
      */
     public function setName(string $firstName, string $lastName = null, string $middleName = null)
@@ -1071,7 +1074,7 @@ class Contact extends Model
     /**
      * Get the adorable avatar URL.
      *
-     * @param string|null $value
+     * @param  string|null  $value
      * @return string|null
      */
     public function getAvatarAdorableUrlAttribute(?string $value): ?string
@@ -1089,7 +1092,7 @@ class Contact extends Model
     /**
      * Set the adorable avatar URL.
      *
-     * @param string|null $value
+     * @param  string|null  $value
      * @return void
      */
     public function setAvatarAdorableUrlAttribute(?string $value)
@@ -1152,8 +1155,8 @@ class Contact extends Model
     /**
      * Delete avatar file for one size.
      *
-     * @param Filesystem $storage
-     * @param int $size
+     * @param  Filesystem  $storage
+     * @param  int  $size
      */
     private function deleteAvatarSize(Filesystem $storage, int $size = null)
     {
@@ -1227,6 +1230,7 @@ class Contact extends Model
 
     /**
      * Indicates whether the contact has information about how they first met.
+     *
      * @return bool
      */
     public function hasFirstMetInformation()
@@ -1260,10 +1264,10 @@ class Contact extends Model
      * Sets a Special Date for this contact, for a specific occasion (birthday,
      * decease date,...) of which we know the date.
      *
-     * @param string $occasion
-     * @param int $year
-     * @param int $month
-     * @param int $day
+     * @param  string  $occasion
+     * @param  int  $year
+     * @param  int  $month
+     * @param  int  $day
      * @return SpecialDate|null
      */
     public function setSpecialDate($occasion, int $year, int $month, int $day): ?SpecialDate
@@ -1378,6 +1382,7 @@ class Contact extends Model
 
     /**
      * Get the link to this contact, or the related real contact.
+     *
      * @return string
      */
     public function getLink()
@@ -1393,8 +1398,9 @@ class Contact extends Model
     /**
      * Get the contacts that have all the provided $tags
      * or if $tags is NONE get contacts that have no tags.
-     * @param Builder $query
-     * @param mixed $tags string or Tag
+     *
+     * @param  Builder  $query
+     * @param  mixed  $tags  string or Tag
      * @return Builder $query
      */
     public function scopeTags($query, $tags)
@@ -1440,7 +1446,7 @@ class Contact extends Model
      * Update the frequency for which user has to be warned to stay in touch
      * with the contact.
      *
-     * @param  int $frequency
+     * @param  int  $frequency
      * @return bool
      */
     public function updateStayInTouchFrequency($frequency)
@@ -1463,8 +1469,8 @@ class Contact extends Model
     /**
      * Update the date the notification about staying in touch should be sent.
      *
-     * @param int $frequency
-     * @param Carbon|null $triggerDate
+     * @param  int  $frequency
+     * @param  Carbon|null  $triggerDate
      */
     public function setStayInTouchTriggerDate($frequency, $triggerDate = null)
     {

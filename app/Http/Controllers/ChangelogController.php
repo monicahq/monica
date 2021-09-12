@@ -10,8 +10,7 @@ class ChangelogController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\View\View
      */
     public function index(Request $request)

@@ -31,7 +31,8 @@ class LogoutUserDevices
      *
      * The application must be using the AuthenticateSession middleware.
      *
-     * @param User $user
+     * @param  User  $user
+     *
      * @throws \Illuminate\Auth\AuthenticationException
      */
     public function logoutOtherDevices($user)
@@ -65,7 +66,7 @@ class LogoutUserDevices
     /**
      * Get the decrypted recaller cookie for the request.
      *
-     * @param SessionGuard $guard
+     * @param  SessionGuard  $guard
      * @return \Illuminate\Auth\Recaller|null
      */
     protected function recaller($guard): ?Recaller
@@ -80,7 +81,7 @@ class LogoutUserDevices
     /**
      * Delete the other browser session records from storage.
      *
-     * @param User $user
+     * @param  User  $user
      * @return void
      */
     protected function deleteOtherSessionRecords($user)

@@ -35,7 +35,7 @@ class UpdateReminder extends BaseService
     /**
      * Update a reminder.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Reminder
      */
     public function execute(array $data): Reminder

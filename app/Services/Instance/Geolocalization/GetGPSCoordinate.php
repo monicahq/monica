@@ -28,7 +28,7 @@ class GetGPSCoordinate extends BaseService
      * Get the latitude and longitude from a place.
      * This method uses LocationIQ to process the geocoding.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Place|null
      */
     public function execute(array $data)
@@ -44,7 +44,7 @@ class GetGPSCoordinate extends BaseService
     /**
      * Build the query to send with the API call.
      *
-     * @param Place $place
+     * @param  Place  $place
      * @return string|null
      */
     private function buildQuery(Place $place): ?string
@@ -65,7 +65,7 @@ class GetGPSCoordinate extends BaseService
     /**
      * Actually make the call to the reverse geocoding API.
      *
-     * @param Place $place
+     * @param  Place  $place
      * @return Place|null
      */
     private function query(Place $place): ?Place

@@ -27,7 +27,7 @@ class UploadDocument extends BaseService
     /**
      * Upload a document.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Document
      */
     public function execute(array $data): Document

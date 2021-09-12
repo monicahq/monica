@@ -22,7 +22,7 @@ class ResetAccount extends BaseService
     /**
      * Reset the account.
      *
-     * @param array $data
+     * @param  array  $data
      * @return void
      */
     public function execute(array $data): void
@@ -51,7 +51,7 @@ class ResetAccount extends BaseService
     /**
      * Destroy the companies.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return void
      */
     private function destroyCompanies(Account $account)
@@ -65,7 +65,7 @@ class ResetAccount extends BaseService
     /**
      * Destroy the days.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return void
      */
     private function destroyDays(Account $account)
@@ -79,7 +79,7 @@ class ResetAccount extends BaseService
     /**
      * Destroy the places.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return void
      */
     private function destroyPlaces(Account $account)
@@ -93,7 +93,7 @@ class ResetAccount extends BaseService
     /**
      * Destroy the documents.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return void
      */
     private function destroyDocuments(Account $account)
@@ -106,7 +106,7 @@ class ResetAccount extends BaseService
     /**
      * Destroy the photos.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return void
      */
     private function destroyPhotos(Account $account)
@@ -120,7 +120,7 @@ class ResetAccount extends BaseService
      * Destroy the journal entries associated with all the contacts of this
      * account.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return void
      */
     private function destroyJournalEntries(Account $account)
@@ -144,7 +144,7 @@ class ResetAccount extends BaseService
     /**
      * Destroy the import jobs.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return void
      */
     private function destroyImportJobs(Account $account)
@@ -158,7 +158,7 @@ class ResetAccount extends BaseService
     /**
      * Destroy all the contacts associated with this account.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return void
      */
     private function destroyContacts(Account $account)

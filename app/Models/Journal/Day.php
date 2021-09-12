@@ -33,6 +33,7 @@ class Day extends Model implements IsJournalableInterface
 
     /**
      * Get all the information of the Entry for the journal.
+     *
      * @return array
      */
     public function getInfoForJournalEntry()

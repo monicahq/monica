@@ -11,8 +11,7 @@ class AuditLogHelper
     /**
      * Prepare a collection of audit logs that is displayed on the Settings page.
      *
-     * @param \Illuminate\Contracts\Pagination\LengthAwarePaginator|Collection<\App\Models\Instance\AuditLog,mixed> $logs
-     *
+     * @param  \Illuminate\Contracts\Pagination\LengthAwarePaginator|Collection<\App\Models\Instance\AuditLog,mixed>  $logs
      * @return Collection
      */
     public static function getCollectionOfAudits($logs): Collection

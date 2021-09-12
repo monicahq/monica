@@ -26,8 +26,8 @@ class AddContactFromVCard implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param ImportJob $importJob
-     * @param string $behaviour
+     * @param  ImportJob  $importJob
+     * @param  string  $behaviour
      * @return void
      */
     public function __construct(ImportJob $importJob, string $behaviour = ImportVCard::BEHAVIOUR_ADD)
