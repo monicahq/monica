@@ -26,7 +26,7 @@ class ArchiveAllContacts extends BaseService
      *
      * This method is used by a user who wants to downgrade his plan.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data): bool

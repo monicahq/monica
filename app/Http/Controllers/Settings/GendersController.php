@@ -158,7 +158,7 @@ class GendersController extends Controller
     /**
      * Format data for output.
      *
-     * @param Gender  $gender
+     * @param  Gender  $gender
      * @return array
      */
     private function formatData($gender)

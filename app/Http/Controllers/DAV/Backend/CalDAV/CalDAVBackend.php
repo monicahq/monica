@@ -55,7 +55,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      * If you return {http://sabredav.org/ns}read-only and set the value to 1,
      * ACL will automatically be put in read-only mode.
      *
-     * @param string $principalUri
+     * @param  string  $principalUri
      * @return array
      */
     public function getCalendarsForUser($principalUri)
@@ -115,10 +115,10 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      *
      * The limit is 'suggestive'. You are free to ignore it.
      *
-     * @param string $calendarId
-     * @param string $syncToken
-     * @param int $syncLevel
-     * @param int $limit
+     * @param  string  $calendarId
+     * @param  string  $syncToken
+     * @param  int  $syncLevel
+     * @param  int  $limit
      * @return array
      */
     public function getChangesForCalendar($calendarId, $syncToken, $syncLevel, $limit = null)
@@ -159,7 +159,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      * used/fetched to determine these numbers. If both are specified the
      * amount of times this is needed is reduced by a great degree.
      *
-     * @param mixed $calendarId
+     * @param  mixed  $calendarId
      * @return array
      */
     public function getCalendarObjects($calendarId)
@@ -193,8 +193,8 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      *
      * This method must return null if the object did not exist.
      *
-     * @param mixed $calendarId
-     * @param string $objectUri
+     * @param  mixed  $calendarId
+     * @param  string  $objectUri
      * @return array|null
      */
     public function getCalendarObject($calendarId, $objectUri)
@@ -224,9 +224,9 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      * calendar-data. If the result of a subsequent GET to this object is not
      * the exact same as this request body, you should omit the ETag.
      *
-     * @param mixed $calendarId
-     * @param string $objectUri
-     * @param string $calendarData
+     * @param  mixed  $calendarId
+     * @param  string  $objectUri
+     * @param  string  $calendarData
      * @return string|null
      */
     public function createCalendarObject($calendarId, $objectUri, $calendarData)
@@ -247,9 +247,9 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      * calendar-data. If the result of a subsequent GET to this object is not
      * the exact same as this request body, you should omit the ETag.
      *
-     * @param mixed $calendarId
-     * @param string $objectUri
-     * @param string $calendarData
+     * @param  mixed  $calendarId
+     * @param  string  $objectUri
+     * @param  string  $calendarData
      * @return string|null
      */
     public function updateCalendarObject($calendarId, $objectUri, $calendarData): ?string
@@ -266,8 +266,8 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      *
      * The object uri is only the basename, or filename and not a full path.
      *
-     * @param mixed $calendarId
-     * @param string $objectUri
+     * @param  mixed  $calendarId
+     * @param  string  $objectUri
      * @return void
      */
     public function deleteCalendarObject($calendarId, $objectUri)
@@ -286,10 +286,9 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      *
      * The id can be any type, including ints, strings, objects or array.
      *
-     * @param string $principalUri
-     * @param string $calendarUri
-     * @param array $properties
-     *
+     * @param  string  $principalUri
+     * @param  string  $calendarUri
+     * @param  array  $properties
      * @return void
      */
     public function createCalendar($principalUri, $calendarUri, array $properties): void
@@ -299,7 +298,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     /**
      * Delete a calendar and all its objects.
      *
-     * @param mixed $calendarId
+     * @param  mixed  $calendarId
      * @return void
      */
     public function deleteCalendar($calendarId)
@@ -312,9 +311,9 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      * If the creation was a success, an id must be returned that can be used to reference
      * this subscription in other methods, such as updateSubscription.
      *
-     * @param string $principalUri
-     * @param string $uri
-     * @param array $properties
+     * @param  string  $principalUri
+     * @param  string  $uri
+     * @param  array  $properties
      * @return mixed
      */
     public function createSubscription($principalUri, $uri, array $properties)
@@ -334,8 +333,8 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      *
      * Read the PropPatch documentation for more info and examples.
      *
-     * @param mixed $subscriptionId
-     * @param \Sabre\DAV\PropPatch $propPatch
+     * @param  mixed  $subscriptionId
+     * @param  \Sabre\DAV\PropPatch  $propPatch
      * @return void
      */
     public function updateSubscription($subscriptionId, DAV\PropPatch $propPatch)
@@ -345,7 +344,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     /**
      * Deletes a subscription.
      *
-     * @param mixed $subscriptionId
+     * @param  mixed  $subscriptionId
      * @return void
      */
     public function deleteSubscription($subscriptionId)

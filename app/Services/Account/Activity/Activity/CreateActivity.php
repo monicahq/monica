@@ -32,7 +32,7 @@ class CreateActivity extends BaseService
     /**
      * Validate all datas to execute the service.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function validate(array $data): bool
@@ -63,7 +63,7 @@ class CreateActivity extends BaseService
     /**
      * Create an activity.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Activity
      */
     public function execute(array $data): Activity
@@ -88,7 +88,7 @@ class CreateActivity extends BaseService
     /**
      * Create the activity.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Activity
      */
     private function create(array $data): Activity
@@ -111,8 +111,8 @@ class CreateActivity extends BaseService
     /**
      * Add emotions to the activity.
      *
-     * @param array $emotions
-     * @param Activity $activity
+     * @param  array  $emotions
+     * @param  Activity  $activity
      * @return void
      */
     private function addEmotions(array $emotions, Activity $activity)

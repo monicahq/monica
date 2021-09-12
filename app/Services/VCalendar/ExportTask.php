@@ -27,7 +27,7 @@ class ExportTask extends BaseService
     /**
      * Export one VCalendar.
      *
-     * @param array $data
+     * @param  array  $data
      * @return VCalendar
      */
     public function execute(array $data): VCalendar
@@ -41,7 +41,7 @@ class ExportTask extends BaseService
     }
 
     /**
-     * @param Task $task
+     * @param  Task  $task
      * @return VCalendar
      */
     private function export(Task $task): VCalendar
@@ -65,7 +65,7 @@ class ExportTask extends BaseService
     }
 
     /**
-     * @param VCalendar $vcal
+     * @param  VCalendar  $vcal
      */
     private function exportTimezone(VCalendar $vcal)
     {
@@ -75,8 +75,8 @@ class ExportTask extends BaseService
     }
 
     /**
-     * @param Task $task
-     * @param VTodo $vtodo
+     * @param  Task  $task
+     * @param  VTodo  $vtodo
      */
     private function exportVTodo(Task $task, VTodo $vtodo)
     {

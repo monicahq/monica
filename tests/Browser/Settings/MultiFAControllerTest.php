@@ -21,6 +21,7 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test if the user has 2fa Enable Link in Security Page.
+     *
      * @group multifa
      */
     public function testHasSettings2faEnableLink()
@@ -34,6 +35,7 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test if the user has WebAuthn Enable Link in Security Page.
+     *
      * @group multifa
      */
     public function testHasSettingsWebAuthnEnableLink()
@@ -47,6 +49,7 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test the barcode generated in 2fa Enable Page.
+     *
      * @group multifa
      */
     public function testHas2faEnableBarCode()
@@ -66,6 +69,7 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test the barcode generated in 2fa Enable Page.
+     *
      * @group multifa
      * @group multifabarcode
      */
@@ -116,6 +120,7 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test the 2fa Enable Page with wrong code.
+     *
      * @group multifa
      */
     public function testEnable2faWrongCode()
@@ -143,6 +148,7 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test the 2fa Enable Page.
+     *
      * @group multifa
      */
     public function testEnable2fa()
@@ -189,6 +195,7 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test the 2fa Enable Page.
+     *
      * @group multifa
      */
     public function testEnable2faLoginWrongCode()
@@ -224,6 +231,7 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test the 2fa Enable Page.
+     *
      * @group multifa
      */
     public function testEnable2faLogin()
@@ -259,6 +267,7 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test 2fa Enable Page and Disable Page.
+     *
      * @group multifa
      */
     public function testEnable2faDisable2fa()
@@ -295,6 +304,7 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test 2fa Enable Page and Disable Page.
+     *
      * @group multifa
      */
     public function testEnable2faDisable2faWrongCode()

@@ -18,7 +18,7 @@ class IdHasher
     /**
      * Create a new IdHasher.
      *
-     * @param string|null $prefix
+     * @param  string|null  $prefix
      */
     public function __construct($prefix = null)
     {

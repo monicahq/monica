@@ -51,7 +51,7 @@ class PrincipalBackend extends AbstractBackend
      *     field that's actually injected in a number of other properties. If
      *     you have an email address, use this property.
      *
-     * @param string $prefixPath
+     * @param  string  $prefixPath
      * @return array
      */
     public function getPrincipalsByPrefix($prefixPath)
@@ -68,7 +68,7 @@ class PrincipalBackend extends AbstractBackend
      * The returned structure should be the exact same as from
      * getPrincipalsByPrefix.
      *
-     * @param string $path
+     * @param  string  $path
      * @return array
      */
     public function getPrincipalByPath($path)
@@ -94,8 +94,8 @@ class PrincipalBackend extends AbstractBackend
      *
      * Read the PropPatch documentation for more info and examples.
      *
-     * @param string $path
-     * @param \Sabre\DAV\PropPatch $propPatch
+     * @param  string  $path
+     * @param  \Sabre\DAV\PropPatch  $propPatch
      * @return void
      */
     public function updatePrincipal($path, DAV\PropPatch $propPatch)
@@ -126,9 +126,9 @@ class PrincipalBackend extends AbstractBackend
      * searching at all, but keep in mind that this may stop certain features
      * from working.
      *
-     * @param string $prefixPath
-     * @param array $searchProperties
-     * @param string $test
+     * @param  string  $prefixPath
+     * @param  array  $searchProperties
+     * @param  string  $test
      * @return array
      */
     public function searchPrincipals($prefixPath, array $searchProperties, $test = 'allof')
@@ -160,7 +160,7 @@ class PrincipalBackend extends AbstractBackend
     /**
      * Returns the list of members for a group-principal.
      *
-     * @param string $principal
+     * @param  string  $principal
      * @return array
      */
     public function getGroupMemberSet($principal)
@@ -176,7 +176,7 @@ class PrincipalBackend extends AbstractBackend
     /**
      * Returns the list of groups a principal is a member of.
      *
-     * @param string $principal
+     * @param  string  $principal
      * @return array
      */
     public function getGroupMembership($principal)
@@ -189,8 +189,8 @@ class PrincipalBackend extends AbstractBackend
      *
      * The principals should be passed as a list of uri's.
      *
-     * @param string $principal
-     * @param array $members
+     * @param  string  $principal
+     * @param  array  $members
      * @return void
      */
     public function setGroupMemberSet($principal, array $members)

@@ -23,7 +23,7 @@ class DestroyActivity extends BaseService
     /**
      * Validate all datas to execute the service.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function validate(array $data): bool
@@ -39,7 +39,7 @@ class DestroyActivity extends BaseService
     /**
      * Destroy an activity.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data): bool

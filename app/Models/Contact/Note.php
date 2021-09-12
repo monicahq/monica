@@ -81,7 +81,7 @@ class Note extends Model
     /**
      * Limit notes to favorited ones.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeFavorited(Builder $query)

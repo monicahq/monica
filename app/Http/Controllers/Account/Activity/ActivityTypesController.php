@@ -17,7 +17,7 @@ class ActivityTypesController extends Controller
     /**
      * Store an activity type category.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return ActivityTypeResource
      */
     public function store(Request $request)
@@ -35,8 +35,8 @@ class ActivityTypesController extends Controller
     /**
      * Update an activity type.
      *
-     * @param Request $request
-     * @param int $activityTypeId
+     * @param  Request  $request
+     * @param  int  $activityTypeId
      * @return ActivityTypeResource
      */
     public function update(Request $request, $activityTypeId)
@@ -57,9 +57,8 @@ class ActivityTypesController extends Controller
     /**
      * Delete the activity type.
      *
-     * @param Request $request
-     * @param int $activityTypeId
-     *
+     * @param  Request  $request
+     * @param  int  $activityTypeId
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $activityTypeId)
