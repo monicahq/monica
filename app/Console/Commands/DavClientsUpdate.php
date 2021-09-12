@@ -34,8 +34,8 @@ class DavClientsUpdate extends Command
 
         $now = now();
         $subscriptions->filter(function ($subscription) use ($now) {
-            return is_null($subscription->lastsync)
-                || $subscription->lastsync->addMinutes($subscription->frequency)->lessThan($now);
+            return is_null($subscription->last_synchronized_at)
+                || $subscription->last_synchronized_at->addMinutes($subscription->frequency)->lessThan($now);
         })->each(function ($subscription) {
             try {
                 SynchronizeAddressBooks::dispatch($subscription);

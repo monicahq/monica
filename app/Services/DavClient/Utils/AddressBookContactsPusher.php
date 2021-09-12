@@ -108,9 +108,10 @@ class AddressBookContactsPusher
 
               return $refreshIds->contains($uuid);
           })->map(function (string $uri) {
-              return tap($this->sync->backend->getCard($this->sync->subscription->addressbook->name, $uri), function ($card) use ($uri) {
-                  $card['uri'] = $uri;
-              });
+              $card = $this->sync->backend->getCard($this->sync->subscription->addressbook->name, $uri);
+              $card['uri'] = $uri;
+
+              return $card;
           })->map(function (array $contact): array {
               $contact['request'] = new Request('PUT', $contact['uri'], ['If-Match' => $contact['etag']], $contact['carddata']);
 

@@ -43,7 +43,7 @@ class SynchronizeAddressBooks implements ShouldQueue
             'addressbook_subscription_id' => $this->subscription->id,
             //'force' => true,
         ]);
-        $this->subscription->lastsync = now();
+        $this->subscription->last_synchronized_at = now();
         $this->subscription->save();
     }
 }

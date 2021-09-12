@@ -29,7 +29,7 @@ class AddAddressbookSubscription extends Migration
             $table->string('syncToken', 512)->nullable();
             $table->string('localSyncToken', 1024)->nullable();
             $table->smallInteger('frequency')->default(180); // 3 hours
-            $table->timestamp('lastsync', 0)->nullable();
+            $table->timestamp('last_synchronized_at', 0)->nullable();
             $table->timestamps();
 
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');

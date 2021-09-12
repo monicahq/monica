@@ -53,6 +53,12 @@ class DavTester extends TestCase
             if (isset($this->responses[$index]['body'])) {
                 $this->assertEquals($this->responses[$index]['body'], (string) $request['request']->getBody(), "body for request $srequest differs");
             }
+            if (isset($this->responses[$index]['headers'])) {
+                foreach ($this->responses[$index]['headers'] as $key => $value) {
+                    $this->assertArrayHasKey($key, $request['request']->getHeaders(), "header $key for request $srequest is missing");
+                    $this->assertEquals($value, $request['request']->getHeaderLine($key), "header $key for request $srequest differs");
+                }
+            }
         }
     }
 
@@ -71,13 +77,14 @@ class DavTester extends TestCase
             ->supportedAddressData();
     }
 
-    public function addResponse(string $uri, Response $response, string $body = null, string $method = 'PROPFIND')
+    public function addResponse(string $uri, Response $response, string $body = null, string $method = 'PROPFIND', array $headers = null)
     {
         $this->responses[] = [
             'uri' => $uri,
             'response' => $response,
             'method' => $method,
             'body' => $body,
+            'headers' => $headers
         ];
 
         return $this;

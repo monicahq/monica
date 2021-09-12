@@ -34,7 +34,7 @@ class AddressBookSubscription extends Model
         'syncToken',
         'localSyncToken',
         'frequency',
-        'lastsync',
+        'last_synchronized_at',
         'active',
     ];
 
@@ -51,7 +51,7 @@ class AddressBookSubscription extends Model
      * @var array
      */
     protected $dates = [
-        'lastsync',
+        'last_synchronized_at',
     ];
 
     /**
