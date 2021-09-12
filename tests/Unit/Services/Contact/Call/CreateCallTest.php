@@ -216,6 +216,22 @@ class CreateCallTest extends TestCase
     }
 
     /** @test */
+    public function it_fails_if_contact_is_archived()
+    {
+        $contact = factory(Contact::class)->state('archived')->create([]);
+
+        $request = [
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'called_at' => now(),
+            'content' => 'this is the content',
+        ];
+
+        $this->expectException(ValidationException::class);
+        app(CreateCall::class)->execute($request);
+    }
+
+    /** @test */
     public function it_throws_an_exception_if_contact_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create();

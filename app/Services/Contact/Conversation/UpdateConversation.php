@@ -42,6 +42,8 @@ class UpdateConversation extends BaseService
         $conversation = Conversation::where('account_id', $data['account_id'])
                                     ->findOrFail($data['conversation_id']);
 
+        $conversation->contact->throwInactive();
+
         ContactFieldType::where('account_id', $data['account_id'])
                             ->findOrFail($data['contact_field_type_id']);
 

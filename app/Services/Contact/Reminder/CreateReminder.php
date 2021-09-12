@@ -44,6 +44,8 @@ class CreateReminder extends BaseService
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
+        $contact->throwInactive();
+
         $reminder = Reminder::create([
             'account_id' => $data['account_id'],
             'contact_id' => $data['contact_id'],

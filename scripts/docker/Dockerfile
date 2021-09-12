@@ -3,9 +3,10 @@
 ###
 ### This file is used for dev purpose.
 ### The standard monica image definition will be found here: https://github.com/monicahq/docker
+### This file is based off of the `apache` variant in the above mentioned repo
 ###
 
-FROM php:7.4-apache
+FROM php:8.0-apache
 
 # opencontainers annotations https://github.com/opencontainers/image-spec/blob/master/annotations.md
 LABEL org.opencontainers.image.authors="Alexis Saettler <alexis@saettler.org>" \
@@ -138,23 +139,7 @@ WORKDIR /var/www/html
 # Copy the local (outside Docker) source into the working directory,
 # copy system files into their proper homes, and set file ownership
 # correctly
-COPY --chown=www-data:www-data \
-    README.md \
-    CONTRIBUTING.md \
-    CHANGELOG.md \
-    CONTRIBUTORS \
-    LICENSE \
-    artisan \
-    composer.json \
-    composer.lock \
-    ./
-COPY --chown=www-data:www-data app ./app
-COPY --chown=www-data:www-data bootstrap ./bootstrap
-COPY --chown=www-data:www-data config ./config
-COPY --chown=www-data:www-data database ./database
-COPY --chown=www-data:www-data public ./public
-COPY --chown=www-data:www-data resources ./resources
-COPY --chown=www-data:www-data routes ./routes
+COPY --chown=www-data:www-data . ./
 
 RUN set -ex; \
     \

@@ -41,6 +41,8 @@ class NotesController extends Controller
      */
     public function store(NotesRequest $request, Contact $contact)
     {
+        $contact->throwInactive();
+
         return $contact->notes()->create([
             'account_id' => auth()->user()->account_id,
             'body' => $request->input('body'),
@@ -71,6 +73,8 @@ class NotesController extends Controller
      */
     public function update(NotesRequest $request, Contact $contact, Note $note): Note
     {
+        $contact->throwInactive();
+
         $note->update(
             $request->only([
                 'body',
@@ -90,6 +94,8 @@ class NotesController extends Controller
      */
     public function destroy(Contact $contact, Note $note): void
     {
+        $contact->throwInactive();
+
         $note->delete();
     }
 }

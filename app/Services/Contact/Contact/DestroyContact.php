@@ -35,6 +35,8 @@ class DestroyContact extends BaseService
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
+        $contact->throwInactive();
+
         $this->destroyRelationships($data, $contact);
 
         $contact->deleteAvatars();

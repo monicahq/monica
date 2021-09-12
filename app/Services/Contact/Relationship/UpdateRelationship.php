@@ -35,6 +35,8 @@ class UpdateRelationship extends BaseService
         $relationship = Relationship::where('account_id', $data['account_id'])
             ->findOrFail($data['relationship_id']);
 
+        $relationship->contactIs->throwInactive();
+
         $newRelationshipType = RelationshipType::where('account_id', $data['account_id'])
             ->findOrFail($data['relationship_type_id']);
 

@@ -47,8 +47,10 @@ class CreateGift extends BaseService
     {
         $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         if (isset($data['recipient_id'])) {
             Contact::where('account_id', $data['account_id'])

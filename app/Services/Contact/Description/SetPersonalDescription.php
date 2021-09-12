@@ -42,6 +42,8 @@ class SetPersonalDescription extends BaseService
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
+        $contact->throwInactive();
+
         $contact->description = $data['description'];
         $contact->save();
 

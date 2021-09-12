@@ -37,16 +37,16 @@
         <!-- ADDITIONAL FIELDS -->
         <div v-show="!displayDescription || !displayEmotions || !displayCategory || !displayParticipants" class="bb b--gray-monica pv3 mb3">
           <ul class="list">
-            <li v-show="!displayDescription" class="di pointer mr3">
+            <li v-show="!displayDescription" class="di pointer mr3 nowrap-link">
               <a href="" @click.prevent="displayDescription = true">{{ $t('people.activities_add_more_details') }}</a>
             </li>
-            <li v-show="!displayEmotions" class="di pointer mr3">
+            <li v-show="!displayEmotions" class="di pointer mr3 nowrap-link">
               <a href="" @click.prevent="displayEmotions = true">{{ $t('people.activities_add_emotions') }}</a>
             </li>
-            <li v-show="!displayCategory" class="di pointer mr3">
+            <li v-show="!displayCategory" class="di pointer mr3 nowrap-link">
               <a v-cy-name="'activities_add_category'" href="" @click.prevent="displayCategory = true">{{ $t('people.activities_add_category') }}</a>
             </li>
-            <li v-show="!displayParticipants" class="di pointer">
+            <li v-show="!displayParticipants" class="di pointer nowrap-link">
               <a href="" @click.prevent="displayParticipants = true">{{ $t('people.activities_add_participants_cta') }}</a>
             </li>
           </ul>

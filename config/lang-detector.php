@@ -32,6 +32,7 @@ return [
             'en',
             'ar',
             'de',
+            'el',
             'en-GB' => 'en-GB',
             'es',
             'fr',
@@ -39,8 +40,10 @@ return [
             'id',
             'it',
             'nl',
+            'pt-BR' => 'pt-BR',
             'sv',
             'tr',
+            'vi',
             'zh',
             'zh-TW' => 'zh-TW',
         ])

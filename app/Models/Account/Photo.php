@@ -64,9 +64,11 @@ class Photo extends Model
      */
     public function url()
     {
-        $url = $this->new_filename;
+        if (config('filesystems.default_visibility') === 'public') {
+            return asset(StorageHelper::disk(config('filesystems.default'))->url($this->new_filename));
+        }
 
-        return asset(StorageHelper::disk(config('filesystems.default'))->url($url));
+        return route('storage', ['file' => $this->new_filename]);
     }
 
     /**

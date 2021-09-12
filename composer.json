@@ -57,6 +57,7 @@
         "web-token/jwt-signature-algorithm-ecdsa": "^2.1",
         "web-token/jwt-signature-algorithm-eddsa": "^2.1",
         "web-token/jwt-signature-algorithm-rsa": "^2.1",
+        "werk365/etagconditionals": "^1.2",
         "xantios/mimey": "^2.0"
     },
     "require-dev": {

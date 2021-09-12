@@ -34,6 +34,8 @@ class DestroyReminder extends BaseService
         $reminder = Reminder::where('account_id', $data['account_id'])
             ->findOrFail($data['reminder_id']);
 
+        $reminder->contact->throwInactive();
+
         $reminder->delete();
 
         return true;

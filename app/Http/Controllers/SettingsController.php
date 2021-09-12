@@ -48,19 +48,6 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        // names order
-        $namesOrder = [
-            'firstname_lastname',
-            'lastname_firstname',
-            'firstname_lastname_nickname',
-            'firstname_nickname_lastname',
-            'lastname_firstname_nickname',
-            'lastname_nickname_firstname',
-            'nickname_firstname_lastname',
-            'nickname_lastname_firstname',
-            'nickname',
-        ];
-
         $meContact = null;
 
         $search = auth()->user()->first_name.' '.
@@ -83,7 +70,7 @@ class SettingsController extends Controller
                 ->withAccountHasLimitations($accountHasLimitations)
                 ->withMeContact($meContact ? new ContactResource($meContact) : null)
                 ->withExistingContacts(ContactResource::collection($existingContacts))
-                ->withNamesOrder($namesOrder)
+                ->withNamesOrder(User::NAMES_ORDER)
                 ->withLocales(LocaleHelper::getLocaleList()->sortByCollator('name-orig'))
                 ->withHours(DateHelper::getListOfHours())
                 ->withSelectedTimezone(TimezoneHelper::adjustEquivalentTimezone(DateHelper::getTimezone()))
@@ -110,13 +97,12 @@ class SettingsController extends Controller
                 'locale',
                 'currency_id',
                 'name_order',
-            ]) + [
-                'fluid_container' => $request->input('layout'),
-                'temperature_scale' => $request->input('temperature_scale'),
-            ]
+                'fluid_container',
+                'temperature_scale',
+            ])
         );
 
-        if ($user->email != $request->input('email')) {
+        if ($user->email !== $request->input('email')) {
             app(EmailChange::class)->execute([
                 'account_id' => $user->account_id,
                 'email' => $request->input('email'),

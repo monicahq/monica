@@ -33,6 +33,8 @@ class DestroyGift extends BaseService
         $gift = Gift::where('account_id', $data['account_id'])
             ->findOrFail($data['gift_id']);
 
+        $gift->contact->throwInactive();
+
         $gift->photos()->detach();
 
         $gift->delete();

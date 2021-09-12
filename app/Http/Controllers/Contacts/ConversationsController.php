@@ -115,6 +115,8 @@ class ConversationsController extends Controller
      */
     public function edit(Request $request, Contact $contact, Conversation $conversation)
     {
+        $contact->throwInactive();
+
         // preparing the messages for the Vue component
         $messages = collect([]);
         foreach ($conversation->messages as $message) {

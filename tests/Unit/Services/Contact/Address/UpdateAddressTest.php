@@ -67,6 +67,33 @@ class UpdateAddressTest extends TestCase
     }
 
     /** @test */
+    public function it_fails_if_contact_is_archived()
+    {
+        $contact = factory(Contact::class)->state('archived')->create();
+        $address = factory(Address::class)->create([
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $request = [
+            'account_id' => $address->account_id,
+            'contact_id' => $address->contact_id,
+            'address_id' => $address->id,
+            'name' => 'this is a test',
+            'street' => '1990 Lafayette Street',
+            'city' => 'New York City',
+            'province' => '',
+            'postal_code' => '',
+            'country' => 'USA',
+            'latitude' => '',
+            'longitude' => '',
+        ];
+
+        $this->expectException(ValidationException::class);
+        app(UpdateAddress::class)->execute($request);
+    }
+
+    /** @test */
     public function it_throws_an_exception_if_address_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create([]);

@@ -41,8 +41,10 @@ class CreateLifeEvent extends BaseService
     {
         $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         LifeEventType::where('account_id', $data['account_id'])
             ->findOrFail($data['life_event_type_id']);

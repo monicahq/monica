@@ -2,6 +2,7 @@
 
 use App\Helpers\MoneyHelper;
 use App\Models\Account\Account;
+use Illuminate\Support\Facades\DB;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency as MoneyCurrency;
 use Illuminate\Support\Facades\Schema;

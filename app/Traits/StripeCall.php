@@ -43,6 +43,8 @@ trait StripeCall
         } catch (\Stripe\Exception\ApiErrorException $e) {
             $errorMessage = $e->getMessage();
             Log::error('Stripe error: '.(string) $e, $e->getJsonBody() ?: []);
+        } catch (\Laravel\Cashier\Exceptions\IncompletePayment $e) {
+            throw $e;
         } catch (\Exception $e) {
             $errorMessage = $e->getMessage();
             Log::error('Stripe error: '.(string) $e);

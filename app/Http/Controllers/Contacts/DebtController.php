@@ -45,6 +45,8 @@ class DebtController extends Controller
      */
     public function store(DebtRequest $request, Contact $contact)
     {
+        $contact->throwInactive();
+
         $contact->debts()->create(
             $request->only([
                 'in_debt',
@@ -82,6 +84,8 @@ class DebtController extends Controller
      */
     public function edit(Contact $contact, Debt $debt)
     {
+        $contact->throwInactive();
+
         return view('people.debt.edit')
             ->withContact($contact)
             ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account))
@@ -98,6 +102,8 @@ class DebtController extends Controller
      */
     public function update(DebtRequest $request, Contact $contact, Debt $debt)
     {
+        $contact->throwInactive();
+
         $debt->update(
             $request->only([
                 'in_debt',
@@ -123,6 +129,8 @@ class DebtController extends Controller
      */
     public function destroy(Contact $contact, Debt $debt)
     {
+        $contact->throwInactive();
+
         $debt->delete();
 
         return redirect()->route('people.show', $contact)

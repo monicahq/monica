@@ -36,6 +36,8 @@ class DestroyCall extends BaseService
 
         $contact = $call->contact;
 
+        $contact->throwInactive();
+
         // delete all associations with emotions
         $call->emotions()->sync([]);
 

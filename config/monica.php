@@ -257,6 +257,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Configure default rate limit for route services per minute
+    |--------------------------------------------------------------------------
+    |
+    | Configure rate limit for route services per minute
+    */
+    'rate_limit_api' => env('RATE_LIMIT_PER_MINUTE_API', 60),
+    'rate_limit_oauth' => env('RATE_LIMIT_PER_MINUTE_OAUTH', 5),
+
+    /*
+    |--------------------------------------------------------------------------
     | Default avatar size
     |--------------------------------------------------------------------------
     |
