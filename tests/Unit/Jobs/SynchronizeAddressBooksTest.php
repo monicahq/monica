@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\Jobs\SynchronizeAddressBooks;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Jobs\SynchronizeAddressBooks;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\SynchronizeAddressBook;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

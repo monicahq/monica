@@ -84,7 +84,7 @@ class DavTester extends TestCase
             'response' => $response,
             'method' => $method,
             'body' => $body,
-            'headers' => $headers
+            'headers' => $headers,
         ];
 
         return $this;

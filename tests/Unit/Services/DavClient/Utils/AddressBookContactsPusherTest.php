@@ -189,7 +189,7 @@ class AddressBookContactsPusherTest extends TestCase
                 [
                     'href' => 'https://test/dav/uuid6',
                     'etag' => $etag,
-                ]
+                ],
             ]), collect([$contact]));
 
         $tester->assert();
