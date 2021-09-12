@@ -103,7 +103,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)
+            return Limit::perMinute(config('monica.rate_limit_api'))
                 ->by(optional($request->user())->id ?: RequestHelper::ip())
                 ->response(function (Request $request, array $headers) {
                     $message = [
@@ -117,7 +117,7 @@ class RouteServiceProvider extends ServiceProvider
                 });
         });
         RateLimiter::for('oauth', function (Request $request) {
-            return Limit::perMinute(5)->by($request->input('email') ?: RequestHelper::ip());
+            return Limit::perMinute(config('monica.rate_limit_oauth'))->by($request->input('email') ?: RequestHelper::ip());
         });
     }
 }
