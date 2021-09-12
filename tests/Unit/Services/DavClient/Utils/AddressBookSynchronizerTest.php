@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Mockery\MockInterface;
 use Tests\Api\DAV\CardEtag;
 use Tests\Helpers\DavTester;
+use GuzzleHttp\Psr7\Response;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use App\Models\Account\AddressBookSubscription;
@@ -13,10 +14,9 @@ use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\AddressBookSynchronizer;
-use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 use App\Services\DavClient\Utils\AddressBookContactsPusher;
+use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 use App\Services\DavClient\Utils\AddressBookContactsUpdater;
-use GuzzleHttp\Psr7\Response;
 
 class AddressBookSynchronizerTest extends TestCase
 {
@@ -137,7 +137,6 @@ class AddressBookSynchronizerTest extends TestCase
             '<d:getetag/>'.
           '</d:prop>'.
         "</card:addressbook-query>\n", 'REPORT');
-
 
         $client = new DavClient([], $tester->getClient());
 
