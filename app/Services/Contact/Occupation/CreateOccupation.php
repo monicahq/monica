@@ -35,7 +35,7 @@ class CreateOccupation extends BaseService
     /**
      * Create a occupation.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Occupation
      */
     public function execute(array $data): Occupation

@@ -11,9 +11,9 @@ class CommandCaller implements CommandCallerContract
     /**
      * Print a message on the console, then execute a command.
      *
-     * @param Command $command  Laravel command context
-     * @param string $message   Message to output
-     * @param string $commandline Command to execute
+     * @param  Command  $command  Laravel command context
+     * @param  string  $message  Message to output
+     * @param  string  $commandline  Command to execute
      *
      * @codeCoverageIgnore
      */
@@ -31,10 +31,10 @@ class CommandCaller implements CommandCallerContract
     /**
      * Print a message on the console, then execute an artisan command.
      *
-     * @param Command $command  Laravel command context
-     * @param string $message   Message to output
-     * @param string $commandline Artisan command name to execute
-     * @param array $arguments    Optional arguments to pass to the artisan command
+     * @param  Command  $command  Laravel command context
+     * @param  string  $message  Message to output
+     * @param  string  $commandline  Artisan command name to execute
+     * @param  array  $arguments  Optional arguments to pass to the artisan command
      *
      * @codeCoverageIgnore
      */

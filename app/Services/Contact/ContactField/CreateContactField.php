@@ -29,7 +29,7 @@ class CreateContactField extends BaseService
     /**
      * Create a contact field.
      *
-     * @param array $data
+     * @param  array  $data
      * @return ContactField
      */
     public function execute(array $data): ContactField

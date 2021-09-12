@@ -23,7 +23,7 @@ class LogAccountAudit implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param array $auditLog
+     * @param  array  $auditLog
      */
     public function __construct(array $auditLog)
     {

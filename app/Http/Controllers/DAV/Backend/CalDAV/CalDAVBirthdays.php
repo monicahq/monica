@@ -49,7 +49,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
     /**
      * Datas for this date.
      *
-     * @param mixed $date
+     * @param  mixed  $date
      * @return array
      */
     public function prepareData($date)
@@ -95,8 +95,8 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
     /**
      * Returns the date for the specific uuid.
      *
-     * @param string|null $collectionId
-     * @param string  $uuid
+     * @param  string|null  $collectionId
+     * @param  string  $uuid
      * @return mixed
      */
     public function getObjectUuid($collectionId, $uuid)

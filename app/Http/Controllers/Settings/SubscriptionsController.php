@@ -75,7 +75,7 @@ class SubscriptionsController extends Controller
     /**
      * Display the upgrade view page.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return View|Factory|RedirectResponse
      */
     public function upgrade(Request $request)
@@ -106,6 +106,7 @@ class SubscriptionsController extends Controller
      * Display the confirm view page.
      *
      * @return View|Factory|RedirectResponse
+     *
      * @throws ApiErrorException
      */
     public function confirmPayment($id)
@@ -141,7 +142,7 @@ class SubscriptionsController extends Controller
     /**
      * Display the downgrade success page.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return View|Factory|RedirectResponse
      */
     public function downgradeSuccess(Request $request)
@@ -234,7 +235,7 @@ class SubscriptionsController extends Controller
     /**
      * Process the upgrade payment.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return RedirectResponse
      */
     public function processPayment(Request $request)
@@ -263,7 +264,7 @@ class SubscriptionsController extends Controller
     /**
      * Download the invoice as PDF.
      *
-     * @param mixed $invoiceId
+     * @param  mixed  $invoiceId
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function downloadInvoice($invoiceId)
@@ -277,7 +278,7 @@ class SubscriptionsController extends Controller
     /**
      * Download the invoice as PDF.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse|null
      */
     public function forceCompletePaymentOnTesting(Request $request): ?RedirectResponse

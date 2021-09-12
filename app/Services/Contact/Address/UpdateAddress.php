@@ -37,7 +37,7 @@ class UpdateAddress extends BaseService
     /**
      * Update an address.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Address
      */
     public function execute(array $data): Address
@@ -72,8 +72,8 @@ class UpdateAddress extends BaseService
     /**
      * Create a place for the given address.
      *
-     * @param array $data
-     * @param Address $address
+     * @param  array  $data
+     * @param  Address  $address
      * @return Place
      */
     private function updatePlace(array $data, Address $address)

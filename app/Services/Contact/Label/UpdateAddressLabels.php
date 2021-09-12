@@ -25,7 +25,7 @@ class UpdateAddressLabels extends BaseService
     /**
      * Update address' labels.
      *
-     * @param array $data
+     * @param  array  $data
      * @return void
      */
     public function execute(array $data)
@@ -43,7 +43,7 @@ class UpdateAddressLabels extends BaseService
     /**
      * Get ContactFieldLabel ids.
      *
-     * @param array $data
+     * @param  array  $data
      * @return array
      */
     private function getLabelsId(array $data): array
@@ -70,8 +70,8 @@ class UpdateAddressLabels extends BaseService
     /**
      * Update contactField's labels.
      *
-     * @param array $labelsId
-     * @param Address $address
+     * @param  array  $labelsId
+     * @param  Address  $address
      * @return void
      */
     private function updateLabels(array $labelsId, Address $address)

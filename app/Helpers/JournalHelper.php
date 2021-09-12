@@ -11,7 +11,7 @@ class JournalHelper
     /**
      * Get the number of paid accounts in the instance.
      *
-     * @param User $user
+     * @param  User  $user
      * @return bool
      */
     public static function hasAlreadyRatedToday(User $user): bool

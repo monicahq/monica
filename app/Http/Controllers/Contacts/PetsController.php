@@ -33,7 +33,8 @@ class PetsController extends Controller
 
     /**
      * Get all the pets for this contact.
-     * @param  Contact $contact
+     *
+     * @param  Contact  $contact
      */
     public function index(Contact $contact)
     {

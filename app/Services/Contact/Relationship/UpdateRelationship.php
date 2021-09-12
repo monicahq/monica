@@ -25,7 +25,7 @@ class UpdateRelationship extends BaseService
     /**
      * Update a relationship.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Relationship
      */
     public function execute(array $data): Relationship
@@ -52,8 +52,8 @@ class UpdateRelationship extends BaseService
     /**
      * Update one relationship.
      *
-     * @param Relationship $relationship
-     * @param RelationshipType $relationshipType
+     * @param  Relationship  $relationship
+     * @param  RelationshipType  $relationshipType
      * @return Relationship
      */
     private function updateRelationship(Relationship $relationship, RelationshipType $relationshipType): Relationship

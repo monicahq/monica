@@ -35,7 +35,7 @@ class AccountHelper
      * Indicate whether an account has reached the contact limit if the account
      * is on a free trial.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return bool
      */
     public static function hasReachedContactLimit(Account $account): bool
@@ -46,7 +46,7 @@ class AccountHelper
     /**
      * Check if the account can be downgraded, based on a set of rules.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return bool
      */
     public static function canDowngrade(Account $account): bool
@@ -77,7 +77,7 @@ class AccountHelper
     /**
      * Get the default gender for this account.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return string
      */
     public static function getDefaultGender(Account $account): string
@@ -103,8 +103,8 @@ class AccountHelper
      * - 1 means month+1
      * - 2 means month+2...
      *
-     * @param Account $account
-     * @param int $month
+     * @param  Account  $account
+     * @param  int  $month
      */
     public static function getUpcomingRemindersForMonth(Account $account, int $month)
     {
@@ -128,7 +128,7 @@ class AccountHelper
     /**
      * Get the number of activities grouped by year.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return Collection
      */
     public static function getYearlyActivitiesStatistics(Account $account): Collection

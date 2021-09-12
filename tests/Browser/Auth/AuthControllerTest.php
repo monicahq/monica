@@ -210,8 +210,8 @@ class AuthControllerTest extends TestCase
     }
 
     /**
-     * @param string $path
-     * @param array $param
+     * @param  string  $path
+     * @param  array  $param
      * @return TestResponse
      */
     protected function postClient($path, $param)

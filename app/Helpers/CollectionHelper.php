@@ -48,7 +48,7 @@ class CollectionHelper
     /**
      * Get a Collator object for the locale or current locale.
      *
-     * @param string $locale
+     * @param  string  $locale
      * @return \Collator
      */
     public static function getCollator($locale = null)
@@ -93,9 +93,8 @@ class CollectionHelper
     /**
      * Group collection based on a specific property from its items.
      *
-     * @param  \Illuminate\Support\Collection $collection
-     * @param string $property
-     *
+     * @param  \Illuminate\Support\Collection  $collection
+     * @param  string  $property
      * @return mixed
      */
     public static function groupByItemsProperty($collection, $property)

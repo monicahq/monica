@@ -33,7 +33,7 @@ class UpdateActivity extends BaseService
     /**
      * Validate all datas to execute the service.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function validate(array $data): bool
@@ -65,7 +65,7 @@ class UpdateActivity extends BaseService
     /**
      * Update an activity.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Activity
      */
     public function execute(array $data): Activity
@@ -94,8 +94,8 @@ class UpdateActivity extends BaseService
     /**
      * Update the activity.
      *
-     * @param array $data
-     * @param Activity $activity
+     * @param  array  $data
+     * @param  Activity  $activity
      * @return void
      */
     private function update(array $data, Activity $activity)
@@ -115,8 +115,8 @@ class UpdateActivity extends BaseService
     /**
      * Update activity's emotions.
      *
-     * @param array $emotions
-     * @param Activity $activity
+     * @param  array  $emotions
+     * @param  Activity  $activity
      * @return void
      */
     private function updateEmotions(array $emotions, Activity $activity)

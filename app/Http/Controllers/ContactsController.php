@@ -35,8 +35,7 @@ class ContactsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return View|RedirectResponse
      */
     public function index(Request $request)
@@ -47,8 +46,7 @@ class ContactsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return View|RedirectResponse
      */
     public function archived(Request $request)
@@ -59,8 +57,8 @@ class ContactsController extends Controller
     /**
      * Display contacts.
      *
-     * @param Request $request
-     * @param bool $active
+     * @param  Request  $request
+     * @param  bool  $active
      * @return View|RedirectResponse
      */
     private function contacts(Request $request, bool $active)
@@ -148,7 +146,7 @@ class ContactsController extends Controller
     /**
      * Show the form to add a new contact.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return View|Factory|RedirectResponse
      */
     public function create(Request $request)
@@ -159,7 +157,7 @@ class ContactsController extends Controller
     /**
      * Show the form in case the contact is missing.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return View|Factory|RedirectResponse
      */
     public function missing(Request $request)
@@ -170,8 +168,8 @@ class ContactsController extends Controller
     /**
      * Show the Add user form unless the contact has limitations.
      *
-     * @param Request $request
-     * @param  bool $isContactMissing
+     * @param  Request  $request
+     * @param  bool  $isContactMissing
      * @return View|Factory|RedirectResponse
      */
     private function createForm(Request $request, bool $isContactMissing = false)
@@ -197,7 +195,7 @@ class ContactsController extends Controller
     /**
      * Store the contact.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return RedirectResponse
      */
     public function store(Request $request)
@@ -234,8 +232,7 @@ class ContactsController extends Controller
     /**
      * Display the contact profile.
      *
-     * @param Contact $contact
-     *
+     * @param  Contact  $contact
      * @return View|RedirectResponse
      */
     public function show(Contact $contact)
@@ -339,8 +336,7 @@ class ContactsController extends Controller
     /**
      * Display the Edit people's view.
      *
-     * @param Contact $contact
-     *
+     * @param  Contact  $contact
      * @return View
      */
     public function edit(Contact $contact)
@@ -377,9 +373,8 @@ class ContactsController extends Controller
     /**
      * Update the contact.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return RedirectResponse
      */
     public function update(Request $request, Contact $contact)
@@ -466,9 +461,8 @@ class ContactsController extends Controller
     /**
      * Delete the contact.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return RedirectResponse
      */
     public function destroy(Request $request, Contact $contact)
@@ -491,9 +485,8 @@ class ContactsController extends Controller
     /**
      * Show the Edit work view.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return View
      */
     public function editWork(Request $request, Contact $contact)
@@ -505,9 +498,8 @@ class ContactsController extends Controller
     /**
      * Save the work information.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return RedirectResponse
      */
     public function updateWork(Request $request, Contact $contact)
@@ -527,9 +519,8 @@ class ContactsController extends Controller
     /**
      * Show the Edit food preferences view.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return View
      */
     public function editFoodPreferences(Request $request, Contact $contact)
@@ -544,9 +535,8 @@ class ContactsController extends Controller
     /**
      * Save the food preferences.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return RedirectResponse
      */
     public function updateFoodPreferences(Request $request, Contact $contact)
@@ -563,7 +553,8 @@ class ContactsController extends Controller
 
     /**
      * Search used in the header.
-     * @param  Request $request
+     *
+     * @param  Request  $request
      */
     public function search(Request $request)
     {
@@ -585,7 +576,8 @@ class ContactsController extends Controller
 
     /**
      * Download the contact as vCard.
-     * @param  Contact $contact
+     *
+     * @param  Contact  $contact
      * @return \Illuminate\Http\Response
      */
     public function vCard(Contact $contact)
@@ -608,8 +600,8 @@ class ContactsController extends Controller
      * Set or change the frequency of which the user wants to stay in touch with
      * the given contact.
      *
-     * @param  Request $request
-     * @param  Contact $contact
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return int
      */
     public function stayInTouch(Request $request, Contact $contact)
@@ -638,8 +630,9 @@ class ContactsController extends Controller
 
     /**
      * Toggle favorites of a contact.
-     * @param  Request $request
-     * @param  Contact $contact
+     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return array
      */
     public function favorite(Request $request, Contact $contact)
@@ -657,8 +650,8 @@ class ContactsController extends Controller
     /**
      * Toggle archive state of a contact.
      *
-     * @param  Request $request
-     * @param  Contact $contact
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return array
      */
     public function archive(Request $request, Contact $contact)
@@ -674,7 +667,7 @@ class ContactsController extends Controller
     /**
      * Display the list of contacts.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return array
      */
     public function list(Request $request)

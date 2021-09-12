@@ -41,7 +41,7 @@ class UpdateGift extends BaseService
     /**
      * Update a gift.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Gift
      */
     public function execute(array $data): Gift

@@ -34,7 +34,7 @@ class AddMessageToConversation extends BaseService
     /**
      * Add message to a conversation.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Message
      */
     public function execute(array $data): Message

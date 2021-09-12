@@ -27,7 +27,7 @@ class GenerateDefaultAvatar extends BaseService
      * Generate the default image for the avatar, based on the initals of the
      * contact and returns the filename.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data)
@@ -53,7 +53,7 @@ class GenerateDefaultAvatar extends BaseService
     /**
      * Create an uuid for the contact if it does not exist.
      *
-     * @param Contact  $contact
+     * @param  Contact  $contact
      * @return Contact
      */
     private function generateContactUUID(Contact $contact)
@@ -69,7 +69,7 @@ class GenerateDefaultAvatar extends BaseService
     /**
      * Create a new avatar for the contact based on the name of the contact.
      *
-     * @param Contact  $contact
+     * @param  Contact  $contact
      * @return string
      */
     private function createNewAvatar(Contact $contact)
@@ -97,7 +97,7 @@ class GenerateDefaultAvatar extends BaseService
     /**
      * Delete the existing default avatar.
      *
-     * @param Contact  $contact
+     * @param  Contact  $contact
      * @return Contact
      */
     private function deleteExistingDefaultAvatar(Contact $contact)
