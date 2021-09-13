@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Hold kontakten',
     'stay_in_touch_frequency' => 'Hold kontakten hver dag|Hold kontakten hver {count}. dag',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => 'Frekvensen skal være et tal større end 0.',
     'stay_in_touch_premium' => 'Du skal opgradere din konto for at gøre brug af denne funktion',
     'stay_in_touch_modal_title' => 'Hold kontakten',
