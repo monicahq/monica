@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'ابقى على اتصال',
     'stay_in_touch_frequency' => 'ابقى على اتصال يوميا|ابقى على اتصال كل {count} يومًا',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => 'يجب أن يكون التواتر عدد أكبر من 0.',
     'stay_in_touch_premium' => 'تحتاج إلى ترقية الحساب الخاص بك لاستخدام هذه الميزة',
     'stay_in_touch_modal_title' => 'ابقى على اتصال',
