@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Stay in touch',
     'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
     'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
     'stay_in_touch_modal_title' => 'Stay in touch',
