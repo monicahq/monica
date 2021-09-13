@@ -90,7 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Rimani in contatto',
     'stay_in_touch_frequency' => 'Rimani in contatto ogni giorno|Rimani in contatto ogni {count} giorni',
-    'stay_in_touch_next_date' => 'Next due: {date}',
+    'stay_in_touch_next_date' => 'Prossima scadenza: {date}',
     'stay_in_touch_invalid' => 'La frequenza dev\'essere un numero maggiore di 0.',
     'stay_in_touch_premium' => 'Devi fare l\'upgrade al tuo account per usare questa funzione',
     'stay_in_touch_modal_title' => 'Rimani in contatto',
