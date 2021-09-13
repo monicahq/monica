@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Оставаться на связи',
     'stay_in_touch_frequency' => 'Будьте на связи каждый день|Оставайтесь на связи каждые {count} дней',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => 'Частота должна быть числом больше 0.',
     'stay_in_touch_premium' => 'Вам нужно обновить свой аккаунт, чтобы использовать эту функцию',
     'stay_in_touch_modal_title' => 'Оставаться на связи',
