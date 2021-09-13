@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'İrtibatta kal',
     'stay_in_touch_frequency' => 'Her {count} gün iletişimde kalın',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => 'Sıklık değeri, 0\'dan daha büyük bir sayı olmalıdır.',
     'stay_in_touch_premium' => 'Bu özelliği kullanabilmek için hesabınızı yükseltmeniz gerekir',
     'stay_in_touch_modal_title' => 'İrtibatta kal',
