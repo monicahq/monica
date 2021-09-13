@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Giữ liên lạc',
     'stay_in_touch_frequency' => 'Giữ liên lạc mỗi ngày|Giữ liên lạc mỗi  {count} ngày',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => 'Tần suất phải là số lớn hơn 0.',
     'stay_in_touch_premium' => 'Bạn cần nâng cấp tài khoản để sử dụng tính năng này',
     'stay_in_touch_modal_title' => 'Giữ liên lạc',
