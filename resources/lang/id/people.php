@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Tetap berhubungan',
     'stay_in_touch_frequency' => 'Tetap berhubungan setiap {count} hari',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => 'Frekuensinya harus berupa angka yang lebih besar dari 0.',
     'stay_in_touch_premium' => 'Anda perlu meningkatkan akun Anda untuk memanfaatkan fitur ini',
     'stay_in_touch_modal_title' => 'Tetap berhubungan',
