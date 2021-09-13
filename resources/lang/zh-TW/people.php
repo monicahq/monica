@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => '常聯絡*',
     'stay_in_touch_frequency' => '常聯絡*提醒頻率：每天|常聯絡*提醒頻率：每 {count} 天',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => '頻率必須大於0。',
     'stay_in_touch_premium' => '您需要升級到高階賬戶來使用這個功能！',
     'stay_in_touch_modal_title' => '常聯絡*',
