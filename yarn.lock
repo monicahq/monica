@@ -7086,9 +7086,9 @@ vue-checkbox-radio@^0.6:
   integrity sha512-qaXzRR9Mji5onbYPvxXbXdCSHkJmauMirCWnHYG4uNLy7xXNoSBJOtetMnuE2KkVL6DbLycFe/uCLmx7LrXoNg==
 
 vue-clipboard2@^0.3:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/vue-clipboard2/-/vue-clipboard2-0.3.1.tgz#6e551fb7bd384889b28b0da3b12289ed6bca4894"
-  integrity sha512-H5S/agEDj0kXjUb5GP2c0hCzIXWRBygaWLN3NEFsaI9I3uWin778SFEMt8QRXiPG+7anyjqWiw2lqcxWUSfkYg==
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/vue-clipboard2/-/vue-clipboard2-0.3.2.tgz#e7bf79e199720c7e1926a115660e5d1525358948"
+  integrity sha512-JUllOtw16qO0RF224eqN2kr9n21Xb7nCrbAehiJDTpX8eP00DKcdoYPbaT1dcs0vKou1D6hA42sJIte0Mm71IQ==
   dependencies:
     clipboard "^2.0.0"
 
