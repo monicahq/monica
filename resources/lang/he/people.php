@@ -90,7 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'לשמור על קשר',
     'stay_in_touch_frequency' => 'להישאר בקשר כל יום|להישאר בקשר כל יומיים|להישאר בקשר כל {count} ימים',
-    'stay_in_touch_next_date' => 'Next due: {date}',
+    'stay_in_touch_next_date' => 'המועד הבא: {date}',
     'stay_in_touch_invalid' => 'התדירות חייבת להיות מספר גדול מ־0.',
     'stay_in_touch_premium' => 'עליך לשדרג את החשבון שלך כדי להשתמש בתכונה זו',
     'stay_in_touch_modal_title' => 'לשמור על קשר',
