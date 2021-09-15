@@ -7,9 +7,10 @@ use Safe\Exceptions\NetworkException;
 class ServiceUrlQuery
 {
     /**
-     * Get service url
+     * Get service url.
      *
      * @return string|null
+     *
      * @see https://tools.ietf.org/html/rfc6352#section-11
      */
     public function execute(string $name, bool $https, string $baseUri): ?string
@@ -50,6 +51,7 @@ class ServiceUrlQuery
         if ($result === false) {
             throw NetworkException::createFromPhpError();
         }
+
         return $result;
     }
 }

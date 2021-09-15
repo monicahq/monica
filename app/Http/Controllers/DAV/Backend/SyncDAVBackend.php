@@ -55,7 +55,7 @@ trait SyncDAVBackend
      * Get SyncToken by token id.
      *
      * @param  string|null  $collectionId
-     * @param  string $syncToken
+     * @param  string  $syncToken
      * @return SyncToken|null
      */
     protected function getSyncToken($collectionId, $syncToken)

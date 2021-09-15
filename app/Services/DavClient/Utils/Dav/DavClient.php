@@ -2,21 +2,21 @@
 
 namespace App\Services\DavClient\Utils\Dav;
 
-use App\Services\DavClient\Utils\Traits\ServiceUrlQuery;
 use GuzzleHttp\Pool;
 use Sabre\DAV\Xml\Service;
 use Illuminate\Support\Arr;
-#use function Safe\parse_url;
 use GuzzleHttp\Psr7\Request;
+//use function Safe\parse_url;
 use GuzzleHttp\RequestOptions;
-#use function Safe\dns_get_record;
 use Illuminate\Support\Facades\App;
+//use function Safe\dns_get_record;
 use Sabre\DAV\Xml\Request\PropPatch;
 use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Exception\ClientException;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
+use App\Services\DavClient\Utils\Traits\ServiceUrlQuery;
 
 class DavClient
 {
