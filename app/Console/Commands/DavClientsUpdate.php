@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 use App\Jobs\SynchronizeAddressBooks;
 use App\Models\Account\AddressBookSubscription;
 

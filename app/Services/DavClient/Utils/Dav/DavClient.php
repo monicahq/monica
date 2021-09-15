@@ -49,7 +49,7 @@ class DavClient
                 $settings['username'],
                 $settings['password'],
             ],
-            'verify' => ! App::environment('local')
+            'verify' => ! App::environment('local'),
         ]) : $client;
 
         $this->xml = new Service();

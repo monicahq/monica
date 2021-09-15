@@ -51,7 +51,7 @@ class AddAddressBookSubscription extends Command
             $this->error($e->getMessage());
         }
 
-        if (!isset($addressBook)) {
+        if (! isset($addressBook)) {
             $this->error('Could not add subscription');
         } else {
             $this->info('Subscription added');

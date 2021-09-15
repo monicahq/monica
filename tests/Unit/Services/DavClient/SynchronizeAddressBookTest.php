@@ -4,11 +4,11 @@ namespace Tests\Unit\Services\DavClient;
 
 use Tests\TestCase;
 use GuzzleHttp\Client;
+use Mockery\MockInterface;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\SynchronizeAddressBook;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\AddressBookSynchronizer;
-use Mockery\MockInterface;
 
 class SynchronizeAddressBookTest extends TestCase
 {
@@ -22,6 +22,7 @@ class SynchronizeAddressBookTest extends TestCase
                 ->once()
                 ->withArgs(function ($sync, $force) {
                     $this->assertFalse($force);
+
                     return true;
                 });
         });
@@ -47,6 +48,7 @@ class SynchronizeAddressBookTest extends TestCase
                 ->once()
                 ->withArgs(function ($sync, $force) {
                     $this->assertTrue($force);
+
                     return true;
                 });
         });
