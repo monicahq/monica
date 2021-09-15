@@ -6,14 +6,10 @@ use App\Models\User\User;
 use function safe\json_decode;
 use function safe\json_encode;
 use App\Models\ModelBinding as Model;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-/**
- * @property int $localSyncToken
- */
 class AddressBookSubscription extends Model
 {
     use HasFactory;
@@ -129,7 +125,7 @@ class AddressBookSubscription extends Model
      */
     public function getPasswordAttribute($value)
     {
-        return Crypt::decryptString($value);
+        return decrypt($value);
     }
 
     /**
@@ -140,7 +136,7 @@ class AddressBookSubscription extends Model
      */
     public function setPasswordAttribute($value)
     {
-        $this->attributes['password'] = Crypt::encryptString($value);
+        $this->attributes['password'] = encrypt($value);
     }
 
     /**
