@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * @property int $localSyncToken
+ */
 class AddressBookSubscription extends Model
 {
     use HasFactory;
@@ -61,8 +64,9 @@ class AddressBookSubscription extends Model
      * @var array
      */
     protected $casts = [
-        'readonly' => 'bool',
-        'active' => 'bool',
+        'readonly' => 'boolean',
+        'active' => 'boolean',
+        'localSyncToken' => 'integer',
     ];
 
     /**

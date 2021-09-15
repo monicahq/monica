@@ -2,13 +2,14 @@
 
 namespace App\Services\DavClient\Utils\Dav;
 
+use App\Services\DavClient\Utils\Traits\ServiceUrlQuery;
 use GuzzleHttp\Pool;
 use Sabre\DAV\Xml\Service;
 use Illuminate\Support\Arr;
-use function Safe\parse_url;
+#use function Safe\parse_url;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use function Safe\dns_get_record;
+#use function Safe\dns_get_record;
 use Illuminate\Support\Facades\App;
 use Sabre\DAV\Xml\Request\PropPatch;
 use GuzzleHttp\Client as GuzzleClient;
@@ -71,9 +72,9 @@ class DavClient
 
         if (! $target) {
             // Get service name register (section 9.2)
-            $target = $this->getServiceUrlSrv('_carddavs._tcp', true);
+            $target = app(ServiceUrlQuery::class)->execute('_carddavs._tcp', true, $this->getBaseUri());
             if (is_null($target)) {
-                $target = $this->getServiceUrlSrv('_carddav._tcp', false);
+                $target = app(ServiceUrlQuery::class)->execute('_carddav._tcp', false, $this->getBaseUri());
             }
         }
 
@@ -128,42 +129,6 @@ class DavClient
         }
 
         return null;
-    }
-
-    /**
-     * Service Discovery via SRV Records.
-     *
-     * @see https://tools.ietf.org/html/rfc6352#section-11
-     */
-    private function getServiceUrlSrv(string $name, bool $https): ?string
-    {
-        try {
-            $host = parse_url($this->getBaseUri(), PHP_URL_HOST);
-            $entry = dns_get_record($name.'.'.$host, DNS_SRV);
-
-            if ($entry) {
-                $target = $this->getEntryValue($entry, 'target');
-                $port = $this->getEntryValue($entry, 'port');
-                if ($target) {
-                    if (($port === 443 && $https) || ($port === 80 && ! $https)) {
-                        $port = null;
-                    }
-
-                    return ($https ? 'https' : 'http').'://'.$target.(is_null($port) ? '' : ':'.$port);
-                }
-            }
-        } catch (\Safe\Exceptions\UrlException $e) {
-            // catch exception and return null
-        } catch (\Safe\Exceptions\NetworkException $e) {
-            // catch exception and return null
-        }
-
-        return null;
-    }
-
-    private function getEntryValue($entry, $name)
-    {
-        return isset($entry[0][$name]) ? $entry[0][$name] : null;
     }
 
     /**

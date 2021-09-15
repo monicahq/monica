@@ -11,7 +11,6 @@ parameters:
         - '#Call to an undefined method Illuminate\\View\\View::with[a-zA-Z0-9\\_]+\(\)\.#'
         - '#Access to an undefined property Sabre\\VObject\\Component\\[a-zA-Z0-9\\_]+::\$[a-zA-Z0-9_]+\.#'
         - '#Access to an undefined property PragmaRX\\Countries\\Package\\Support\\Collection::\$[a-zA-Z0-9_]+\.#'
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::active\(\)\.#'
 
         - message: '#Call to an undefined static method PragmaRX\\CountriesLaravel\\Package\\Facade::[a-zA-Z0-9_]+\(\)\.#'
           path: */Helpers/CountriesHelper.php
@@ -31,8 +30,6 @@ parameters:
           path: */Helpers/AuditLogHelper.php
         - message: '#Property App\\Models\\Contact\\Contact::\$avatar_photo_id \(int\) does not accept null\.#'
           path: */Services/Contact/Avatar/UpdateAvatar.php
-        - message: '#Parameter \#2 \$callback of function tap expects \(callable\(mixed\): void\)\|null, Closure\(mixed\): mixed given\.#'
-          path: */App/Services/DavClient/Utils/AddressBookSynchronizer.php
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::addressBook\(\)\.#'
           path: */Helpers/SearchHelper.php
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::real\(\)\.#'
@@ -45,3 +42,5 @@ parameters:
           path: */Helpers/InstanceHelper.php
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::recurring\(\)\.#'
           path: */Traits/Subscription.php
+        - message: '#Function dns_get_record is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\dns_get_record;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.#'
+          path: */Services/DavClient/Utils/Dav/ServiceUrlQuery.php

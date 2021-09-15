@@ -35,7 +35,7 @@ class AddressBookSynchronizer
     private function sync()
     {
         // Get changes to sync
-        $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->subscription->addressbook->name, $this->sync->subscription->localSyncToken, 1);
+        $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->subscription->addressbook->name, (string) $this->sync->subscription->localSyncToken, 1);
 
         // Get distant changes to sync
         $this->getDistantChanges()
@@ -66,7 +66,7 @@ class AddressBookSynchronizer
     private function forcesync()
     {
         // Get changes to sync
-        $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->subscription->addressbook->name, $this->sync->subscription->localSyncToken, 1);
+        $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->subscription->addressbook->name, (string) $this->sync->subscription->localSyncToken, 1);
 
         // Get actual list of contacts
         $localContacts = $this->sync->backend->getObjects($this->sync->subscription->addressbook->name);

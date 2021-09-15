@@ -33,8 +33,6 @@ class AddressBookGetter
             Log::error(__CLASS__.' getAddressBookBaseUri: '.$e->getMessage(), [$e]);
             throw $e;
         }
-
-        return null;
     }
 
     /**
