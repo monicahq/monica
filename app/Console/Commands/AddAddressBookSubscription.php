@@ -39,12 +39,22 @@ class AddAddressBookSubscription extends Command
         $login = $this->option('login') ?? $this->ask('login', 'Login name');
         $password = $this->option('password') ?? $this->ask('password', 'User password');
 
-        app(AddAddressBook::class)->execute([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-            'base_uri' => $url,
-            'username' => $login,
-            'password' => $password,
-        ]);
+        try {
+            $addressBook = app(AddAddressBook::class)->execute([
+                'account_id' => $user->account_id,
+                'user_id' => $user->id,
+                'base_uri' => $url,
+                'username' => $login,
+                'password' => $password,
+            ]);
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+        }
+
+        if (!isset($addressBook)) {
+            $this->error('Could not add subscription');
+        } else {
+            $this->info('Subscription added');
+        }
     }
 }

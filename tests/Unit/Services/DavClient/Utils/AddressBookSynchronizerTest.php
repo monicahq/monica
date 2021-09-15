@@ -17,6 +17,7 @@ use App\Services\DavClient\Utils\AddressBookSynchronizer;
 use App\Services\DavClient\Utils\AddressBookContactsPusher;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 use App\Services\DavClient\Utils\AddressBookContactsUpdater;
+use App\Services\DavClient\Utils\AddressBookContactsUpdaterMissed;
 
 class AddressBookSynchronizerTest extends TestCase
 {
@@ -27,7 +28,7 @@ class AddressBookSynchronizerTest extends TestCase
     public function it_sync_empty_changes()
     {
         $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) {
-            $mock->shouldReceive('updateContacts')
+            $mock->shouldReceive('execute')
                 ->once()
                 ->andReturn(collect());
         });
@@ -40,7 +41,7 @@ class AddressBookSynchronizerTest extends TestCase
         $client = new DavClient([], $tester->getClient());
 
         (new AddressBookSynchronizer())
-            ->sync(new SyncDto($subscription, $client, $backend));
+            ->execute(new SyncDto($subscription, $client, $backend));
 
         $tester->assert();
     }
@@ -49,7 +50,7 @@ class AddressBookSynchronizerTest extends TestCase
     public function it_sync_no_changes()
     {
         $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) {
-            $mock->shouldReceive('updateContacts')
+            $mock->shouldReceive('execute')
                 ->once()
                 ->andReturn(collect());
         });
@@ -64,7 +65,7 @@ class AddressBookSynchronizerTest extends TestCase
         $client = new DavClient([], $tester->getClient());
 
         (new AddressBookSynchronizer())
-            ->sync(new SyncDto($subscription, $client, $backend));
+            ->execute(new SyncDto($subscription, $client, $backend));
 
         $tester->assert();
     }
@@ -89,7 +90,7 @@ class AddressBookSynchronizerTest extends TestCase
 
         $sync = new SyncDto($subscription, $client, $backend);
         $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) use ($sync) {
-            $mock->shouldReceive('updateContacts')
+            $mock->shouldReceive('execute')
                 ->once()
                 ->withArgs(function ($localSync, $contacts) use ($sync) {
                     $this->assertEquals($sync, $localSync);
@@ -102,7 +103,7 @@ class AddressBookSynchronizerTest extends TestCase
         });
 
         (new AddressBookSynchronizer())
-            ->sync($sync);
+            ->execute($sync);
 
         $tester->assert();
     }
@@ -141,8 +142,8 @@ class AddressBookSynchronizerTest extends TestCase
         $client = new DavClient([], $tester->getClient());
 
         $sync = new SyncDto($subscription, $client, $backend);
-        $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) use ($sync, $contact, $etag) {
-            $mock->shouldReceive('updateMissedContacts')
+        $this->mock(AddressBookContactsUpdaterMissed::class, function (MockInterface $mock) use ($sync, $contact, $etag) {
+            $mock->shouldReceive('execute')
                 ->once()
                 ->withArgs(function ($localSync, $localContacts, $distContacts) use ($sync, $contact, $etag) {
                     $this->assertEquals($sync, $localSync);
@@ -154,12 +155,12 @@ class AddressBookSynchronizerTest extends TestCase
                 });
         });
         $this->mock(AddressBookContactsPusher::class, function (MockInterface $mock) {
-            $mock->shouldReceive('pushContacts')
+            $mock->shouldReceive('execute')
                 ->once();
         });
 
         (new AddressBookSynchronizer())
-            ->forcesync($sync);
+            ->execute($sync, true);
 
         $tester->assert();
     }

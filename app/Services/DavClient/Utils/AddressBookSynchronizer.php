@@ -19,11 +19,21 @@ class AddressBookSynchronizer
 
     /**
      * Sync the address book.
+     *
+     * @return void
      */
-    public function sync(SyncDto $sync)
+    public function execute(SyncDto $sync, bool $force = false)
     {
         $this->sync = $sync;
 
+        $force ? $this->forcesync() : $this->sync();
+    }
+
+    /**
+     * Sync the address book.
+     */
+    private function sync()
+    {
         // Get changes to sync
         $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->subscription->addressbook->name, $this->sync->subscription->localSyncToken, 1);
 
@@ -32,14 +42,14 @@ class AddressBookSynchronizer
             ->then(function ($changes) {
                 // Get distant contacts
                 app(AddressBookContactsUpdater::class)
-                    ->updateContacts($this->sync, $changes);
+                    ->execute($this->sync, $changes);
 
                 return $changes;
             })
             ->then(function ($changes) use ($localChanges) {
                 if (! $this->sync->subscription->readonly) {
                     app(AddressBookContactsPusher::class)
-                        ->pushContacts($this->sync, $changes, $localChanges);
+                        ->execute($this->sync, $changes, $localChanges);
                 }
             })
             ->wait();
@@ -53,10 +63,8 @@ class AddressBookSynchronizer
     /**
      * Sync the address book.
      */
-    public function forcesync(SyncDto $sync)
+    private function forcesync()
     {
-        $this->sync = $sync;
-
         // Get changes to sync
         $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->subscription->addressbook->name, $this->sync->subscription->localSyncToken, 1);
 
@@ -67,15 +75,15 @@ class AddressBookSynchronizer
         $this->getAllContactsEtag()
             ->then(function ($distContacts) use ($localContacts) {
                 // Get missed contacts
-                app(AddressBookContactsUpdater::class)
-                    ->updateMissedContacts($this->sync, $localContacts, $distContacts);
+                app(AddressBookContactsUpdaterMissed::class)
+                    ->execute($this->sync, $localContacts, $distContacts);
 
                 return $distContacts;
             })
             ->then(function ($distContacts) use ($localChanges, $localContacts) {
                 if (! $this->sync->subscription->readonly) {
                     app(AddressBookContactsPusher::class)
-                        ->pushContacts($this->sync, collect(), $localChanges, $distContacts, $localContacts);
+                        ->execute($this->sync, collect(), $localChanges, $distContacts, $localContacts);
                 }
             })
             ->wait();

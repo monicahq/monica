@@ -23,42 +23,53 @@ class AddressBookGetter
      *
      * @return array|null
      */
-    public function getAddressBookData(DavClient $client): ?array
+    public function execute(DavClient $client): ?array
     {
         $this->client = $client;
 
         try {
-            $uri = $this->getAddressBookBaseUri();
-
-            $this->client->setBaseUri($uri);
-
-            if (Str::contains($uri, 'https://www.googleapis.com')) {
-                // Google API sucks
-                $capabilities = [
-                    'addressbookMultiget' => true,
-                    'addressbookQuery' => true,
-                    'syncCollection' => true,
-                    'addressData' => [
-                        'content-type' => 'text/vcard',
-                        'version' => '3.0',
-                    ],
-                ];
-            } else {
-                $capabilities = $this->getCapabilities();
-            }
-
-            $name = $this->client->getProperty('{DAV:}displayname');
-
-            return [
-                'uri' => $uri,
-                'capabilities' => $capabilities,
-                'name' => $name,
-            ];
+            return $this->getAddressBookData();
         } catch (ClientException $e) {
             Log::error(__CLASS__.' getAddressBookBaseUri: '.$e->getMessage(), [$e]);
+            throw $e;
         }
 
         return null;
+    }
+
+    /**
+     * Get address book data: uri, capabilities, and name.
+     *
+     * @return array
+     */
+    private function getAddressBookData(): array
+    {
+        $uri = $this->getAddressBookBaseUri();
+
+        $this->client->setBaseUri($uri);
+
+        if (Str::startsWith($uri, 'https://www.googleapis.com')) {
+            // Google API sucks
+            $capabilities = [
+                'addressbookMultiget' => true,
+                'addressbookQuery' => true,
+                'syncCollection' => true,
+                'addressData' => [
+                    'content-type' => 'text/vcard',
+                    'version' => '3.0',
+                ],
+            ];
+        } else {
+            $capabilities = $this->getCapabilities();
+        }
+
+        $name = $this->client->getProperty('{DAV:}displayname');
+
+        return [
+            'uri' => $uri,
+            'capabilities' => $capabilities,
+            'name' => $name,
+        ];
     }
 
     /**

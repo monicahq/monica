@@ -68,19 +68,15 @@ class SynchronizeAddressBook extends BaseService
 
     private function sync(array $data, AddressBookSubscription $subscription, CardDAVBackend $backend, ?GuzzleClient $httpClient)
     {
-        $client = $this->getClient($subscription, $httpClient);
-
-        $synchronizer = app(AddressBookSynchronizer::class);
+        $client = $this->getDavClient($subscription, $httpClient);
         $sync = new SyncDto($subscription, $client, $backend);
+        $force = Arr::get($data, 'force', false);
 
-        if (Arr::get($data, 'force', false) === true) {
-            $synchronizer->forcesync($sync);
-        } else {
-            $synchronizer->sync($sync);
-        }
+        app(AddressBookSynchronizer::class)
+            ->execute($sync, $force);
     }
 
-    private function getClient(AddressBookSubscription $subscription, ?GuzzleClient $client): DavClient
+    private function getDavClient(AddressBookSubscription $subscription, ?GuzzleClient $client): DavClient
     {
         return new DavClient([
             'base_uri' => $subscription->uri,

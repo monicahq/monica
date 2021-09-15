@@ -28,7 +28,7 @@ class AddressBookContactsPusher
      * @param  Collection|null  $distContacts
      * @param  Collection|null  $localContacts
      */
-    public function pushContacts(SyncDto $sync, Collection $changes, ?array $localChanges, ?Collection $distContacts = null, ?Collection $localContacts = null): void
+    public function execute(SyncDto $sync, Collection $changes, ?array $localChanges, ?Collection $distContacts = null, ?Collection $localContacts = null): void
     {
         $this->sync = $sync;
 

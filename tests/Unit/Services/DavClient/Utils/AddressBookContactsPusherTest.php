@@ -62,7 +62,7 @@ class AddressBookContactsPusherTest extends TestCase
         $client = new DavClient([], $tester->getClient());
 
         (new AddressBookContactsPusher())
-            ->pushContacts(new SyncDto($subscription, $client, $backend), collect([
+            ->execute(new SyncDto($subscription, $client, $backend), collect([
                 'https://test/dav/addressbooks/user@test.com/contacts/uuid' => [
                     'href' => 'https://test/dav/addressbooks/user@test.com/contacts/uuid',
                     'etag' => $etag,
@@ -122,7 +122,7 @@ class AddressBookContactsPusherTest extends TestCase
         $client = new DavClient([], $tester->getClient());
 
         (new AddressBookContactsPusher())
-            ->pushContacts(new SyncDto($subscription, $client, $backend), collect([
+            ->execute(new SyncDto($subscription, $client, $backend), collect([
                 'https://test/dav/addressbooks/user@test.com/contacts/uuid' => [
                     'href' => 'https://test/dav/addressbooks/user@test.com/contacts/uuid',
                     'etag' => $etag,
@@ -185,7 +185,7 @@ class AddressBookContactsPusherTest extends TestCase
         $client = new DavClient([], $tester->getClient());
 
         (new AddressBookContactsPusher())
-            ->pushContacts(new SyncDto($subscription, $client, $backend), collect(), [], collect([
+            ->execute(new SyncDto($subscription, $client, $backend), collect(), [], collect([
                 [
                     'href' => 'https://test/dav/uuid6',
                     'etag' => $etag,

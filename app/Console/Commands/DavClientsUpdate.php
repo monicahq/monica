@@ -37,11 +37,7 @@ class DavClientsUpdate extends Command
             return is_null($subscription->last_synchronized_at)
                 || $subscription->last_synchronized_at->addMinutes($subscription->frequency)->lessThan($now);
         })->each(function ($subscription) {
-            try {
-                SynchronizeAddressBooks::dispatch($subscription);
-            } catch (\Exception $e) {
-                Log::error($e->getMessage());
-            }
+            SynchronizeAddressBooks::dispatch($subscription);
         });
     }
 }

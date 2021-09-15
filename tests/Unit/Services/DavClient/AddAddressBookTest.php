@@ -22,7 +22,7 @@ class AddAddressBookTest extends TestCase
         $user = factory(User::class)->create([]);
 
         $this->mock(AddressBookGetter::class, function (MockInterface $mock) {
-            $mock->shouldReceive('getAddressBookData')
+            $mock->shouldReceive('execute')
                 ->once()
                 ->andReturn($this->mockReturn());
         });
@@ -76,7 +76,7 @@ class AddAddressBookTest extends TestCase
         ]);
 
         $this->mock(AddressBookGetter::class, function (MockInterface $mock) {
-            $mock->shouldReceive('getAddressBookData')
+            $mock->shouldReceive('execute')
                 ->once()
                 ->andReturn($this->mockReturn());
         });

@@ -12,6 +12,7 @@ use GuzzleHttp\Exception\ClientException;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\AddressBookGetter;
+use App\Services\DavClient\Utils\Dav\DavClientException;
 
 class AddAddressBook extends BaseService
 {
@@ -43,6 +44,9 @@ class AddAddressBook extends BaseService
         $this->validate($data);
 
         $addressBookData = $this->getAddressBookData($data, $httpClient);
+        if (! $addressBookData) {
+            throw new DavClientException(__('Could not get address book data.'));
+        }
 
         $lastAddressBook = AddressBook::where('account_id', $data['account_id'])
             ->orderBy('id', 'desc')
@@ -76,16 +80,10 @@ class AddAddressBook extends BaseService
 
     private function getAddressBookData(array $data, ?GuzzleClient $httpClient): ?array
     {
-        try {
-            $client = $this->getClient($data, $httpClient);
+        $client = $this->getClient($data, $httpClient);
 
-            return app(AddressBookGetter::class)
-                ->getAddressBookData($client);
-        } catch (ClientException $e) {
-            Log::error(__CLASS__.' getAddressBookBaseUri: '.$e->getMessage(), [$e]);
-        }
-
-        return null;
+        return app(AddressBookGetter::class)
+            ->execute($client);
     }
 
     private function getClient(array $data, ?GuzzleClient $client): DavClient

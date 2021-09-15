@@ -9,6 +9,7 @@ use function Safe\parse_url;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
 use function Safe\dns_get_record;
+use Illuminate\Support\Facades\App;
 use Sabre\DAV\Xml\Request\PropPatch;
 use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Message\ResponseInterface;
@@ -48,6 +49,7 @@ class DavClient
                 $settings['username'],
                 $settings['password'],
             ],
+            'verify' => ! App::environment('local')
         ]) : $client;
 
         $this->xml = new Service();

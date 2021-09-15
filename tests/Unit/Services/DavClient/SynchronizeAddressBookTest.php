@@ -8,6 +8,7 @@ use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\SynchronizeAddressBook;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\AddressBookSynchronizer;
+use Mockery\MockInterface;
 
 class SynchronizeAddressBookTest extends TestCase
 {
@@ -16,7 +17,15 @@ class SynchronizeAddressBookTest extends TestCase
     /** @test */
     public function it_runs_sync()
     {
-        $spy = $this->spy(AddressBookSynchronizer::class);
+        $this->mock(AddressBookSynchronizer::class, function (MockInterface $mock) {
+            $mock->shouldReceive('execute')
+                ->once()
+                ->withArgs(function ($sync, $force) {
+                    $this->assertFalse($force);
+                    return true;
+                });
+        });
+
         $client = new Client();
 
         $subscription = AddressBookSubscription::factory()->create();
@@ -28,14 +37,20 @@ class SynchronizeAddressBookTest extends TestCase
         ];
 
         (new SynchronizeAddressBook())->execute($request, $client);
-
-        $spy->shouldHaveReceived('sync');
     }
 
     /** @test */
     public function it_runs_sync_force()
     {
-        $spy = $this->spy(AddressBookSynchronizer::class);
+        $this->mock(AddressBookSynchronizer::class, function (MockInterface $mock) {
+            $mock->shouldReceive('execute')
+                ->once()
+                ->withArgs(function ($sync, $force) {
+                    $this->assertTrue($force);
+                    return true;
+                });
+        });
+
         $client = new Client();
 
         $subscription = AddressBookSubscription::factory()->create();
@@ -48,7 +63,5 @@ class SynchronizeAddressBookTest extends TestCase
         ];
 
         (new SynchronizeAddressBook())->execute($request, $client);
-
-        $spy->shouldHaveReceived('forcesync');
     }
 }

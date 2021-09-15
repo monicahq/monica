@@ -27,7 +27,7 @@ class AddressBookContactsUpdater
      * @param  SyncDto  $sync
      * @param  Collection  $refresh
      */
-    public function updateContacts(SyncDto $sync, Collection $refresh): void
+    public function execute(SyncDto $sync, Collection $refresh): void
     {
         $this->sync = $sync;
 
@@ -36,26 +36,6 @@ class AddressBookContactsUpdater
             : $this->refreshSimpleGetContacts($refresh);
 
         $promise->wait();
-    }
-
-    /**
-     * Update local missed contacts.
-     *
-     * @param  SyncDto  $sync
-     * @param  Collection  $localContacts
-     * @param  Collection  $distContacts
-     */
-    public function updateMissedContacts(SyncDto $sync, Collection $localContacts, Collection $distContacts): void
-    {
-        $this->sync = $sync;
-
-        $uuids = $localContacts->pluck('uuid');
-
-        $missed = $distContacts->reject(function ($contact) use ($uuids): bool {
-            return $uuids->contains($this->sync->backend->getUuid($contact['href']));
-        });
-
-        $this->updateContacts($this->sync, $missed);
     }
 
     /**
