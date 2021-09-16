@@ -57,7 +57,7 @@ class DavClient
     /**
      * Follow rfc6764 to get carddav service url.
      *
-     * @see https://tools.ietf.org/html/rfc6764
+     * @see https://datatracker.ietf.org/doc/html/rfc6764
      */
     public function getServiceUrl()
     {
@@ -254,7 +254,7 @@ class DavClient
      * @param  string  $syncToken
      * @return PromiseInterface
      *
-     * @see https://tools.ietf.org/html/rfc6578
+     * @see https://datatracker.ietf.org/doc/html/rfc6578
      */
     public function syncCollectionAsync(string $url, array $properties, string $syncToken, array $options = []): PromiseInterface
     {
@@ -291,7 +291,7 @@ class DavClient
      * @param  iterable  $contacts
      * @return PromiseInterface
      *
-     * @see https://tools.ietf.org/html/rfc6352#section-8.7
+     * @see https://datatracker.ietf.org/doc/html/rfc6352#section-8.7
      */
     public function addressbookMultigetAsync(string $url, array $properties, iterable $contacts, array $options = []): PromiseInterface
     {
@@ -330,7 +330,7 @@ class DavClient
      * @param  array  $properties
      * @return PromiseInterface
      *
-     * @see https://tools.ietf.org/html/rfc6352#section-8.6
+     * @see https://datatracker.ietf.org/doc/html/rfc6352#section-8.6
      */
     public function addressbookQueryAsync(string $url, array $properties, array $options = []): PromiseInterface
     {
@@ -460,7 +460,7 @@ class DavClient
      *
      * @return array
      *
-     * @see https://tools.ietf.org/html/rfc3253#section-3.1.5
+     * @see https://datatracker.ietf.org/doc/html/rfc3253#section-3.1.5
      */
     public function getSupportedReportSet(): array
     {
@@ -474,7 +474,7 @@ class DavClient
      *
      * @return PromiseInterface
      *
-     * @see https://tools.ietf.org/html/rfc3253#section-3.1.5
+     * @see https://datatracker.ietf.org/doc/html/rfc3253#section-3.1.5
      */
     public function getSupportedReportSetAsync(array $options = []): PromiseInterface
     {
@@ -510,6 +510,8 @@ class DavClient
      * @param  string  $url
      * @param  array  $properties
      * @return PromiseInterface
+     *
+     * @see https://datatracker.ietf.org/doc/html/rfc2518#section-12.13
      */
     public function propPatchAsync(string $url, array $properties): PromiseInterface
     {
@@ -639,6 +641,8 @@ class DavClient
      *
      * @param  string  $body  xml body
      * @return array
+     *
+     * @see https://datatracker.ietf.org/doc/html/rfc4918#section-9.2.1
      */
     public function parseMultiStatus(string $body): array
     {

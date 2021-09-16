@@ -7,6 +7,7 @@ use Tests\Helpers\DavTester;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\ServerException;
 use App\Services\DavClient\Utils\Dav\DavClient;
+use App\Services\DavClient\Utils\Dav\DavClientException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DavClientTest extends TestCase
@@ -412,23 +413,71 @@ class DavClientTest extends TestCase
 
         $tester->addResponse('https://test/test', new Response(207, [], $tester->multistatusHeader().
             '<d:response>'.
-                '<d:propertyupdate>'.
+                '<d:href>href</d:href>'.
+                '<d:propstat>'.
+                    '<d:prop>'.
+                        '<d:test>value</d:test>'.
+                    '</d:prop>'.
                     '<d:status>HTTP/1.1 200 OK</d:status>'.
-                '</d:propertyupdate>'.
+                '</d:propstat>'.
             '</d:response>'.
             '</d:multistatus>'), '<?xml version="1.0"?>'."\n".
             '<d:propertyupdate xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">'."\n".
             ' <d:set>'."\n".
-            '  <d:prop>{DAV:}test</d:prop>'."\n".
+            '  <d:prop>'."\n".
+            '   <d:test>value</d:test>'."\n".
+            '  </d:prop>'."\n".
             ' </d:set>'."\n".
             "</d:propertyupdate>\n", 'PROPPATCH');
 
         $client = new DavClient([], $tester->getClient());
 
-        $result = $client->propPatchAsync('https://test/test', ['{DAV:}test'])
+        $result = $client->propPatchAsync('https://test/test', ['{DAV:}test' => 'value'])
             ->wait();
 
         $tester->assert();
         $this->assertTrue($result);
+    }
+
+    /** @test */
+    public function it_run_proppatch_error()
+    {
+        $tester = (new DavTester());
+
+        $tester->addResponse('https://test/test', new Response(207, [], $tester->multistatusHeader().
+            '<d:response>'.
+                '<d:href>href</d:href>'.
+                '<d:propstat>'.
+                    '<d:prop>'.
+                        '<d:test>x</d:test>'.
+                    '</d:prop>'.
+                    '<d:status>HTTP/1.1 405 OK</d:status>'.
+                '</d:propstat>'.
+                '<d:propstat>'.
+                    '<d:prop>'.
+                        '<d:excerpt>x</d:excerpt>'.
+                    '</d:prop>'.
+                    '<d:status>HTTP/1.1 500 OK</d:status>'.
+                '</d:propstat>'.
+            '</d:response>'.
+            '</d:multistatus>'), '<?xml version="1.0"?>'."\n".
+            '<d:propertyupdate xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">'."\n".
+            ' <d:set>'."\n".
+            '  <d:prop>'."\n".
+            '   <d:test>value</d:test>'."\n".
+            '   <d:excerpt>value</d:excerpt>'."\n".
+            '  </d:prop>'."\n".
+            ' </d:set>'."\n".
+            "</d:propertyupdate>\n", 'PROPPATCH');
+
+        $client = new DavClient([], $tester->getClient());
+
+        $this->expectException(DavClientException::class);
+        $this->expectExceptionMessage('PROPPATCH failed. The following properties errored: {DAV:}test (405), {DAV:}excerpt (500)');
+        $result = $client->propPatchAsync('https://test/test', [
+            '{DAV:}test' => 'value',
+            '{DAV:}excerpt' => 'value',
+        ])
+            ->wait();
     }
 }
