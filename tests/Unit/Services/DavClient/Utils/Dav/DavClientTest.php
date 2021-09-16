@@ -7,8 +7,8 @@ use Tests\Helpers\DavTester;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\ServerException;
 use App\Services\DavClient\Utils\Dav\DavClient;
-use App\Services\DavClient\Utils\Dav\DavClientException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\DavClient\Utils\Dav\DavClientException;
 
 class DavClientTest extends TestCase
 {
