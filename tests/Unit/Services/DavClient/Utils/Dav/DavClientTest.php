@@ -404,4 +404,31 @@ class DavClientTest extends TestCase
             ],
         ], $result);
     }
+
+    /** @test */
+    public function it_run_proppatch()
+    {
+        $tester = (new DavTester());
+
+        $tester->addResponse('https://test/test', new Response(207, [], $tester->multistatusHeader().
+            '<d:response>'.
+                '<d:propertyupdate>'.
+                    '<d:status>HTTP/1.1 200 OK</d:status>'.
+                '</d:propertyupdate>'.
+            '</d:response>'.
+            '</d:multistatus>'), '<?xml version="1.0"?>'."\n".
+            '<d:propertyupdate xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">'."\n".
+            ' <d:set>'."\n".
+            '  <d:prop>{DAV:}test</d:prop>'."\n".
+            ' </d:set>'."\n".
+            "</d:propertyupdate>\n", 'PROPPATCH');
+
+        $client = new DavClient([], $tester->getClient());
+
+        $result = $client->propPatchAsync('https://test/test', ['{DAV:}test'])
+            ->wait();
+
+        $tester->assert();
+        $this->assertTrue($result);
+    }
 }
