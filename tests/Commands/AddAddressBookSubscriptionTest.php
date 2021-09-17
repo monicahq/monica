@@ -29,6 +29,7 @@ class AddAddressBookSubscriptionTest extends TestCase
                         'username' => 'login',
                         'password' => 'password',
                     ], $data);
+
                     return true;
                 });
         });
