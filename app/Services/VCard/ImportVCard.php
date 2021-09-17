@@ -31,9 +31,9 @@ use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Services\Account\Photo\UploadPhoto;
 use App\Jobs\Avatars\GetAvatarsFromInternet;
 use App\Services\Contact\Avatar\UpdateAvatar;
-use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
+use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Address\DestroyAddress;
 use App\Services\Contact\ContactField\CreateContactField;
 use App\Services\Contact\ContactField\UpdateContactField;
@@ -571,7 +571,7 @@ class ImportVCard extends BaseService
     /**
      * Get contact data.
      *
-     * @param  Contact $contact
+     * @param  Contact  $contact
      * @return array
      */
     private function getContactData(Contact $contact): array
@@ -596,7 +596,7 @@ class ImportVCard extends BaseService
             if ($result['birthdate_is_age_based'] = $contact->birthdate->is_age_based) {
                 $result['birthdate_day'] = $contact->birthdate->date->day;
                 $result['birthdate_month'] = $contact->birthdate->date->month;
-                if (!$contact->birthdate->is_year_unknown) {
+                if (! $contact->birthdate->is_year_unknown) {
                     $result['birthdate_year'] = $contact->birthdate->date->year;
                 }
             } else {
@@ -608,7 +608,7 @@ class ImportVCard extends BaseService
             $result['birthdate_is_age_based'] = $contact->deceasedDate->is_age_based) {
             $result['deceased_date_day'] = $contact->deceasedDate->date->day;
             $result['deceased_date_month'] = $contact->deceasedDate->date->month;
-            if (!$contact->deceasedDate->is_year_unknown) {
+            if (! $contact->deceasedDate->is_year_unknown) {
                 $result['deceased_date_year'] = $contact->deceasedDate->date->year;
             }
         }
