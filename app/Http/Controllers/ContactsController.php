@@ -607,7 +607,7 @@ class ContactsController extends Controller
      *
      * @param  Request  $request
      * @param  Contact  $contact
-     * @return int|RedirectResponse
+     * @return array
      */
     public function stayInTouch(Request $request, Contact $contact)
     {
@@ -632,7 +632,10 @@ class ContactsController extends Controller
 
         $contact->setStayInTouchTriggerDate($frequency);
 
-        return $frequency;
+        return [
+            'frequency' => $frequency,
+            'trigger_date' => $contact->stay_in_touch_trigger_date,
+        ];
     }
 
     /**
