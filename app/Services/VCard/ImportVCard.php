@@ -35,6 +35,7 @@ use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Address\DestroyAddress;
+use App\Services\Contact\Contact\UpdateWorkInformation;
 use App\Services\Contact\ContactField\CreateContactField;
 use App\Services\Contact\ContactField\UpdateContactField;
 use App\Services\Contact\ContactField\DestroyContactField;
