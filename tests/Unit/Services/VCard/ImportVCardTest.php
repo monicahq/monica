@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Services\VCard;
 
-use App\Helpers\DateHelper;
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Contact\Tag;
@@ -288,6 +288,33 @@ class ImportVCardTest extends TestCase
         $this->assertEquals('Doe', $newContact->first_name);
         $this->assertNotNull($newContact->birthdate);
         $this->assertEquals('2001-04-01', $newContact->birthdate->date->format('Y-m-d'));
+    }
+
+    /** @test */
+    public function it_update_a_contact_with_birthdate_age_based()
+    {
+        Carbon::setTestNow(Carbon::create(2021, 8, 25, 7, 0, 0));
+
+        $user = factory(User::class)->create([]);
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $user->account_id;
+        $importVCard->userId = $user->id;
+
+        $vcard = new VCard([
+            'N' => ['John', 'Doe', '', '', ''],
+        ]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $contact->setSpecialDateFromAge('birthdate', 19);
+
+        $newContact = $this->invokePrivateMethod($importVCard, 'importGeneralInformation', [$contact, $vcard]);
+
+        $this->assertEquals('John', $newContact->last_name);
+        $this->assertEquals('Doe', $newContact->first_name);
+        $this->assertNotNull($newContact->birthdate);
+        $this->assertTrue($newContact->birthdate->is_age_based);
+        $this->assertEquals('2002-01-01', $newContact->birthdate->date->format('Y-m-d'));
     }
 
     /** @test */
