@@ -27,12 +27,11 @@ use App\Models\Contact\ContactField;
 use App\Services\Contact\Tag\DetachTag;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Tag\AssociateTag;
-use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Services\Account\Photo\UploadPhoto;
-use App\Jobs\Avatars\GetAvatarsFromInternet;
 use App\Services\Contact\Avatar\UpdateAvatar;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
+use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Address\DestroyAddress;
 use App\Services\Contact\Contact\UpdateWorkInformation;
@@ -487,22 +486,6 @@ class ImportVCard extends BaseService
      */
     private function importEntry(?Contact $contact, VCard $entry): Contact
     {
-        if (! $contact) {
-            $contact = new Contact;
-            $contact->account_id = $this->accountId;
-            $contact->gender_id = $this->getGender('O')->id;
-            $contact->setAvatarColor();
-            $contact->address_book_id = $this->addressBook ? $this->addressBook->id : null;
-            $contact->save();
-
-            $this->importUid($contact, $entry);
-            if (empty($contact->uuid)) {
-                $contact->uuid = Str::uuid()->toString();
-            }
-
-            $this->addAvatars($contact);
-        }
-
         $contact = $this->importGeneralInformation($contact, $entry);
 
         $this->importUid($contact, $entry);
@@ -526,34 +509,13 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * Add the different default avatars.
-     *
-     * @param  Contact  $contact
-     * @return void
-     */
-    private function addAvatars(Contact $contact)
-    {
-        // set the default avatar color
-        if (! $contact->default_avatar_color) {
-            $contact->setAvatarColor();
-            $contact->save();
-        }
-
-        // populate the avatar from Adorable and grab the Gravatar
-        GetAvatarsFromInternet::dispatch($contact);
-
-        // also generate the default avatar
-        GenerateDefaultAvatar::dispatch($contact);
-    }
-
-    /**
      * Import general contact information.
      *
-     * @param  Contact  $contact
+     * @param  Contact|null  $contact
      * @param  VCard  $entry
      * @return Contact
      */
-    private function importGeneralInformation(Contact $contact, VCard $entry): Contact
+    private function importGeneralInformation(?Contact $contact, VCard $entry): Contact
     {
         $contactData = $this->getContactData($contact);
         $original = $contactData;
@@ -562,8 +524,10 @@ class ImportVCard extends BaseService
         $contactData = $this->importGender($contactData, $entry);
         $contactData = $this->importBirthday($contactData, $entry);
 
-        if ($contactData !== $original) {
+        if ($contact !== null && $contactData !== $original) {
             $contact = app(UpdateContact::class)->execute($contactData);
+        } else {
+            $contact = app(CreateContact::class)->execute($contactData);
         }
 
         return $contact;
@@ -572,26 +536,30 @@ class ImportVCard extends BaseService
     /**
      * Get contact data.
      *
-     * @param  Contact  $contact
+     * @param  Contact|null  $contact
      * @return array
      */
-    private function getContactData(Contact $contact): array
+    private function getContactData(?Contact $contact): array
     {
         $result = [
-            'account_id' => $contact->account_id,
-            'contact_id' => $contact->id,
-            'first_name' => $contact->first_name,
-            'middle_name' => $contact->middle_name,
-            'last_name' => $contact->last_name,
-            'nickname' => $contact->nickname,
-            'gender_id' => $contact->gender_id,
-            'description' => $contact->description,
-            'is_partial' => $contact->is_partial,
-            'is_birthdate_known' => $contact->birthdate !== null,
-            'is_deceased' => $contact->is_dead !== null ? $contact->is_dead : false,
-            'is_deceased_date_known' => $contact->deceasedDate !== null,
+            'account_id' => $contact ? $contact->account_id : $this->accountId,
+            'address_book_id' => $this->addressBook ? $this->addressBook->id : null,
+            'first_name' => $contact ? $contact->first_name : null,
+            'middle_name' => $contact ? $contact->middle_name : null,
+            'last_name' => $contact ? $contact->last_name : null,
+            'nickname' => $contact ? $contact->nickname : null,
+            'gender_id' => $contact ? $contact->gender_id : $this->getGender('O')->id,
+            'description' => $contact ? $contact->description : null,
+            'is_partial' => $contact ? $contact->is_partial : false,
+            'is_birthdate_known' => $contact ? $contact->birthdate !== null : false,
+            'is_deceased' => $contact ? ($contact->is_dead !== null ? $contact->is_dead : false) : false,
+            'is_deceased_date_known' => $contact ? $contact->deceasedDate !== null : false,
             'author_id' => $this->userId,
         ];
+
+        if ($contact) {
+            $result['contact_id'] = $contact->id;
+        }
 
         if ($result['is_birthdate_known']) {
             if ($result['birthdate_is_age_based'] = $contact->birthdate->is_age_based) {
