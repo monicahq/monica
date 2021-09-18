@@ -552,7 +552,7 @@ class ImportVCard extends BaseService
             'description' => $contact ? $contact->description : null,
             'is_partial' => $contact ? $contact->is_partial : false,
             'is_birthdate_known' => $contact ? $contact->birthdate !== null : false,
-            'is_deceased' => $contact ? ($contact->is_dead !== null ? $contact->is_dead : false) : false,
+            'is_deceased' => $contact && $contact->is_dead !== null ? $contact->is_dead : false,
             'is_deceased_date_known' => $contact ? $contact->deceasedDate !== null : false,
             'author_id' => $this->userId,
         ];
@@ -563,18 +563,18 @@ class ImportVCard extends BaseService
 
         if ($result['is_birthdate_known']) {
             if ($result['birthdate_is_age_based'] = $contact->birthdate->is_age_based) {
+                $result['birthdate_age'] = now()->diffInYears($contact->birthdate->date, true);
+            } else {
                 $result['birthdate_day'] = $contact->birthdate->date->day;
                 $result['birthdate_month'] = $contact->birthdate->date->month;
                 if (! $contact->birthdate->is_year_unknown) {
                     $result['birthdate_year'] = $contact->birthdate->date->year;
                 }
-            } else {
-                $result['birthdate_age'] = now()->diffInYears($contact->birthdate->date, true);
             }
         }
 
         if ($result['is_deceased_date_known'] &&
-            $result['birthdate_is_age_based'] = $contact->deceasedDate->is_age_based) {
+            ! ($result['birthdate_is_age_based'] = $contact->deceasedDate->is_age_based)) {
             $result['deceased_date_day'] = $contact->deceasedDate->date->day;
             $result['deceased_date_month'] = $contact->deceasedDate->date->month;
             if (! $contact->deceasedDate->is_year_unknown) {
