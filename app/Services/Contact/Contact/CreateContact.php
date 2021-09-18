@@ -10,11 +10,11 @@ use App\Helpers\AccountHelper;
 use function Safe\json_encode;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Account\AddressBook;
 use App\Jobs\AuditLog\LogAccountAudit;
 use App\Models\Contact\ContactFieldType;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Jobs\Avatars\GetAvatarsFromInternet;
-use App\Models\Account\AddressBook;
 use App\Services\Contact\ContactField\CreateContactField;
 
 class CreateContact extends BaseService
