@@ -43,7 +43,6 @@ class SynchronizeAddressBooks implements ShouldQueue
                 'account_id' => $this->subscription->account_id,
                 'user_id' => $this->subscription->user_id,
                 'addressbook_subscription_id' => $this->subscription->id,
-                //'force' => true,
             ]);
         } catch (\Exception $e) {
             Log::error($e->getMessage(), [$e]);
