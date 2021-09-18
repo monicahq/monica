@@ -5,6 +5,7 @@ namespace Tests\Unit\Services\VCard;
 use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Contact\Tag;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Models\Account\Account;
 use App\Models\Contact\Address;
@@ -16,7 +17,6 @@ use Sabre\VObject\PHPUnitAssertions;
 use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\ContactFieldLabel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Arr;
 
 class ImportVCardTest extends TestCase
 {
