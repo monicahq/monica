@@ -116,6 +116,7 @@ class Contact extends Model
         'last_consulted_at',
         'created_at',
         'first_met_additional_info',
+        'address_book_id',
     ];
 
     /**

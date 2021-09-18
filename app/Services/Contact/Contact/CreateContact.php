@@ -29,7 +29,7 @@ class CreateContact extends BaseService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'author_id' => 'required|integer|exists:users,id',
-            'address_book_id' => 'nullable|integer|exists:address_books,id',
+            'address_book_id' => 'nullable|integer|exists:addressbooks,id',
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',

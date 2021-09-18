@@ -12,6 +12,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
+use App\Models\Account\AddressBook;
 use App\Services\VCard\ImportVCard;
 use App\Models\Contact\ContactField;
 use Sabre\VObject\PHPUnitAssertions;
@@ -264,6 +265,37 @@ class ImportVCardTest extends TestCase
         $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [null, $vcard]);
 
         $this->assertTrue($contact->exists);
+    }
+
+    /** @test */
+    public function it_creates_a_contact_in_address_book()
+    {
+        $user = factory(User::class)->create([]);
+        $addressBook = AddressBook::create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'name' => 'contacts',
+        ]);
+
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $user->account_id;
+        $importVCard->userId = $user->id;
+
+        $this->setPrivateValue($importVCard, 'addressBook', $addressBook);
+
+        $vcard = new VCard([
+            'N' => ['John', 'Doe', '', '', ''],
+            'EMAIL' => 'john@doe.com',
+        ]);
+        factory(ContactFieldType::class)->create([
+            'account_id' => $user->account_id,
+            'type' => 'email',
+        ]);
+
+        $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [null, $vcard]);
+
+        $this->assertTrue($contact->exists);
+        $this->assertEquals($addressBook->id, $contact->address_book_id);
     }
 
     /** @test */
