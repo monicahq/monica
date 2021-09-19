@@ -395,9 +395,9 @@ class DavClient
             }
             [$namespace, $elementName] = Service::parseClarkNotation($property);
 
-            $value = Arr::get($namespaces, $namespace, null);
-            $element = $value !== null
-                ? $dom->createElement("$value:$elementName")
+            $ns = Arr::get($namespaces, $namespace);
+            $element = $ns !== null
+                ? $dom->createElement("$ns:$elementName")
                 : $dom->createElementNS($namespace, 'x:'.$elementName);
 
             $child = $prop->appendChild($element);
@@ -538,13 +538,13 @@ class DavClient
                 foreach ($result as $statusList) {
                     foreach ($statusList as $status => $properties) {
                         if ($status >= 400) {
-                            foreach ($properties as $propName) {
+                            foreach ($properties as $propName => $propValue) {
                                 $errorProperties[] = $propName.' ('.$status.')';
                             }
                         }
                     }
                 }
-                if ($errorProperties) {
+                if (count($errorProperties) > 0) {
                     throw new DavClientException('PROPPATCH failed. The following properties errored: '.implode(', ', $errorProperties));
                 }
             }
