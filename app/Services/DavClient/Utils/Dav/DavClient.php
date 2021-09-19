@@ -483,13 +483,14 @@ class DavClient
         ->then(function (array $properties) use ($propName): array {
             if (($prop = Arr::get($properties, $propName)) && is_array($prop)) {
                 $prop = array_map(function ($supportedReport) {
-                    return $this->iterateOver($supportedReport, '{DAV:}supported-report', function($report) {
+                    return $this->iterateOver($supportedReport, '{DAV:}supported-report', function ($report) {
                         return $this->iterateOver($report, '{DAV:}report', function ($type) {
-                             return Arr::get($type, 'name');
+                            return Arr::get($type, 'name');
                         });
                     });
                 }, $prop);
             }
+
             return $prop;
         });
     }
