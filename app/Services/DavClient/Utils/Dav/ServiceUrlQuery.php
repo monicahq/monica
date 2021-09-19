@@ -23,7 +23,7 @@ class ServiceUrlQuery
 
             if ($entry && $target = Arr::get($entry, '0.target')) {
                 $uri = (new Uri())
-                    ->withScheme($https ? 'https' : 'http', '', )
+                    ->withScheme($https ? 'https' : 'http')
                     ->withPort(Arr::get($entry, '0.port'))
                     ->withHost($target);
 
