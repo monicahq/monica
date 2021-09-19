@@ -211,9 +211,8 @@ class DavClient
     public function propFindAsync(string $url, $properties, int $depth = 0, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
-        $dom->formatOutput = false;
-        $root = $dom->appendChild($dom->createElementNS('DAV:', 'd:propfind'));
-        $prop = $root->appendChild($dom->createElement('d:prop'));
+        $root = $this->addElementNS($dom, 'DAV:', 'd:propfind');
+        $prop = $this->addElement($dom, $root, 'd:prop');
 
         $namespaces = [
             'DAV:' => 'd',
@@ -229,20 +228,17 @@ class DavClient
         ], $body, $options)->then(function (ResponseInterface $response) use ($depth): array {
             $result = $this->parseMultiStatus((string) $response->getBody());
 
-            // If depth was 0, we only return the top item
+            // If depth was 0, we only return the top item value
             if ($depth === 0) {
                 reset($result);
                 $result = current($result);
 
-                return isset($result[200]) ? $result[200] : [];
+                return Arr::get($result, 200, []);
             }
 
-            $newResult = [];
-            foreach ($result as $href => $statusList) {
-                $newResult[$href] = isset($statusList[200]) ? $statusList[200] : [];
-            }
-
-            return $newResult;
+            return array_map(function ($statusList) {
+                return Arr::get($statusList, 200, []);
+            }, $result);
         });
     }
 
@@ -259,13 +255,12 @@ class DavClient
     public function syncCollectionAsync(string $url, $properties, string $syncToken, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
-        $dom->formatOutput = false;
-        $root = $dom->appendChild($dom->createElementNS('DAV:', 'd:sync-collection'));
+        $root = $this->addElementNS($dom, 'DAV:', 'd:sync-collection');
 
-        $root->appendChild($dom->createElement('d:sync-token', $syncToken));
-        $root->appendChild($dom->createElement('d:sync-level', '1'));
+        $this->addElement($dom, $root, 'd:sync-token', $syncToken);
+        $this->addElement($dom, $root, 'd:sync-level', '1');
 
-        $prop = $root->appendChild($dom->createElement('d:prop'));
+        $prop = $this->addElement($dom, $root, 'd:prop');
 
         $namespaces = [
             'DAV:' => 'd',
@@ -296,11 +291,10 @@ class DavClient
     public function addressbookMultigetAsync(string $url, $properties, iterable $contacts, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
-        $dom->formatOutput = false;
-        $root = $dom->appendChild($dom->createElementNS(CardDAVPlugin::NS_CARDDAV, 'card:addressbook-multiget'));
+        $root = $this->addElementNS($dom, CardDAVPlugin::NS_CARDDAV, 'card:addressbook-multiget');
         $dom->createAttributeNS('DAV:', 'd:e');
 
-        $prop = $root->appendChild($dom->createElement('d:prop'));
+        $prop = $this->addElement($dom, $root, 'd:prop');
 
         $namespaces = [
             'DAV:' => 'd',
@@ -310,7 +304,7 @@ class DavClient
         $this->fetchProperties($dom, $prop, $properties, $namespaces);
 
         foreach ($contacts as $contact) {
-            $root->appendChild($dom->createElement('d:href', $contact));
+            $this->addElement($dom, $root, 'd:href', $contact);
         }
 
         $body = $dom->saveXML();
@@ -335,11 +329,10 @@ class DavClient
     public function addressbookQueryAsync(string $url, $properties, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
-        $dom->formatOutput = false;
-        $root = $dom->appendChild($dom->createElementNS(CardDAVPlugin::NS_CARDDAV, 'card:addressbook-query'));
+        $root = $this->addElementNS($dom, CardDAVPlugin::NS_CARDDAV, 'card:addressbook-query');
         $dom->createAttributeNS('DAV:', 'd:e');
 
-        $prop = $root->appendChild($dom->createElement('d:prop'));
+        $prop = $this->addElement($dom, $root, 'd:prop');
 
         $namespaces = [
             'DAV:' => 'd',
@@ -398,7 +391,7 @@ class DavClient
             $ns = Arr::get($namespaces, $namespace);
             $element = $ns !== null
                 ? $dom->createElement("$ns:$elementName")
-                : $dom->createElementNS($namespace, 'x:'.$elementName);
+                : $dom->createElementNS($namespace, "x:$elementName");
 
             $child = $prop->appendChild($element);
 
@@ -657,7 +650,7 @@ class DavClient
      *
      * @see https://datatracker.ietf.org/doc/html/rfc4918#section-9.2.1
      */
-    public function parseMultiStatus(string $body): array
+    private function parseMultiStatus(string $body): array
     {
         $multistatus = $this->xml->expect('{DAV:}multistatus', $body);
 
@@ -673,5 +666,32 @@ class DavClient
         }
 
         return $result;
+    }
+
+    /**
+     * Create a new Element Namespace and add it as document's child.
+     *
+     * @param  \DOMDocument  $dom
+     * @param  string|null  $namespace
+     * @param  string  $qualifiedName
+     * @return \DOMNode
+     */
+    private function addElementNS(\DOMDocument $dom, ?string $namespace, string $qualifiedName): \DOMNode
+    {
+        return $dom->appendChild($dom->createElementNS($namespace, $qualifiedName));
+    }
+
+    /**
+     * Create a new Element and add it as root's child.
+     *
+     * @param  \DOMDocument  $dom
+     * @param  \DOMNode  $root
+     * @param  string  $name
+     * @param  string|null  $value
+     * @return \DOMNode
+     */
+    private function addElement(\DOMDocument $dom, \DOMNode $root, string $name, ?string $value = null): \DOMNode
+    {
+        return $root->appendChild($dom->createElement($name, $value));
     }
 }

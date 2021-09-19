@@ -6,10 +6,10 @@ use Tests\TestCase;
 use App\Models\User\User;
 use Mockery\MockInterface;
 use Illuminate\Support\Facades\Artisan;
-use App\Services\DavClient\AddAddressBook;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\DavClient\CreateAddressBookSubscription;
 
-class AddAddressBookSubscriptionTest extends TestCase
+class CreateAddressBookSubscriptionTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -18,7 +18,7 @@ class AddAddressBookSubscriptionTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->mock(AddAddressBook::class, function (MockInterface $mock) use ($user) {
+        $this->mock(CreateAddressBookSubscription::class, function (MockInterface $mock) use ($user) {
             $mock->shouldReceive('execute')
                 ->once()
                 ->withArgs(function ($data) use ($user) {

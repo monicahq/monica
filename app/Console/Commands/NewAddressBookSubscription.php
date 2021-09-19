@@ -4,9 +4,9 @@ namespace App\Console\Commands;
 
 use App\Models\User\User;
 use Illuminate\Console\Command;
-use App\Services\DavClient\AddAddressBook;
+use App\Services\DavClient\CreateAddressBookSubscription;
 
-class AddAddressBookSubscription extends Command
+class NewAddressBookSubscription extends Command
 {
     /**
      * The name and signature of the console command.
@@ -40,7 +40,7 @@ class AddAddressBookSubscription extends Command
         $password = $this->option('password') ?? $this->ask('password', 'User password');
 
         try {
-            $addressBook = app(AddAddressBook::class)->execute([
+            $addressBook = app(CreateAddressBookSubscription::class)->execute([
                 'account_id' => $user->account_id,
                 'user_id' => $user->id,
                 'base_uri' => $url,

@@ -7,10 +7,10 @@ use App\Models\User\User;
 use Mockery\MockInterface;
 use function Safe\json_encode;
 use App\Models\Account\AddressBook;
-use App\Services\DavClient\AddAddressBook;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\AddressBookGetter;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\DavClient\CreateAddressBookSubscription;
 
 class AddAddressBookTest extends TestCase
 {
@@ -35,7 +35,7 @@ class AddAddressBookTest extends TestCase
             'password' => 'test',
         ];
 
-        $addressBookSubscription = (new AddAddressBook())->execute($request);
+        $addressBookSubscription = (new CreateAddressBookSubscription())->execute($request);
 
         $this->assertDatabaseHas('addressbooks', [
             'id' => $addressBookSubscription->address_book_id,
@@ -89,7 +89,7 @@ class AddAddressBookTest extends TestCase
             'password' => 'test',
         ];
 
-        $addressBookSubscription = app(AddAddressBook::class)->execute($request);
+        $addressBookSubscription = app(CreateAddressBookSubscription::class)->execute($request);
 
         $this->assertDatabaseHas('addressbooks', [
             'id' => $addressBookSubscription->address_book_id,

@@ -12,7 +12,7 @@ use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\AddressBookGetter;
 use App\Services\DavClient\Utils\Dav\DavClientException;
 
-class AddAddressBook extends BaseService
+class CreateAddressBookSubscription extends BaseService
 {
     /**
      * Get the validation rules that apply to the service.
