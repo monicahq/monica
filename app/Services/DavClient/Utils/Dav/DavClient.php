@@ -440,13 +440,8 @@ class DavClient
     {
         return $this->propfindAsync($url, $property, 0, $options)
         ->then(function (array $properties) use ($property) {
-            if (! isset($properties[$property])) {
-                return;
-            }
-
-            $prop = $properties[$property];
-
-            if (is_array($prop)) {
+            if (($prop = Arr::get($properties, $property))
+                && is_array($prop)) {
                 $value = $prop[0];
 
                 if (is_string($value)) {
@@ -486,22 +481,35 @@ class DavClient
 
         return $this->propFindAsync('', $propName, 0, $options)
         ->then(function (array $properties) use ($propName): array {
-            if (! array_key_exists($propName, $properties)) {
-                return [];
+            if (($prop = Arr::get($properties, $propName)) && is_array($prop)) {
+                $prop = array_map(function ($supportedReport) {
+                    return $this->iterateOver($supportedReport, '{DAV:}supported-report', function($report) {
+                        return $this->iterateOver($report, '{DAV:}report', function ($type) {
+                             return Arr::get($type, 'name');
+                        });
+                    });
+                }, $prop);
             }
-
-            return array_map(function ($supportedReport) {
-                if ($supportedReport['name'] == '{DAV:}supported-report') {
-                    foreach ($supportedReport['value'] as $report) {
-                        if ($report['name'] == '{DAV:}report') {
-                            foreach ($report['value'] as $type) {
-                                return $type['name'];
-                            }
-                        }
-                    }
-                }
-            }, $properties[$propName]);
+            return $prop;
         });
+    }
+
+    /**
+     * Iterate over the list, if it contains an item name that match with $name.
+     *
+     * @param  array  $list
+     * @param  string  $name
+     * @param  callable  $callback
+     * @return mixed
+     */
+    private function iterateOver(array $list, string $name, callable $callback)
+    {
+        if (Arr::get($list, 'name') === $name
+            && ($value = Arr::get($list, 'value'))) {
+            foreach ($value as $item) {
+                return $callback($item);
+            }
+        }
     }
 
     /**
