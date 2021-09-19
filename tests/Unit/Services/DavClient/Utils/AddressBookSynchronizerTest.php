@@ -9,6 +9,7 @@ use Tests\Helpers\DavTester;
 use GuzzleHttp\Psr7\Response;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
+use GuzzleHttp\Promise\Promise;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
@@ -18,7 +19,6 @@ use App\Services\DavClient\Utils\AddressBookContactsPusher;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 use App\Services\DavClient\Utils\AddressBookContactsUpdater;
 use App\Services\DavClient\Utils\AddressBookContactsUpdaterMissed;
-use GuzzleHttp\Promise\Promise;
 
 class AddressBookSynchronizerTest extends TestCase
 {
@@ -100,7 +100,9 @@ class AddressBookSynchronizerTest extends TestCase
 
                     return true;
                 })
-                ->andReturn(new Promise(function () {return true;}));
+                ->andReturn(new Promise(function () {
+                    return true;
+                }));
         });
 
         (new AddressBookSynchronizer())
@@ -154,12 +156,16 @@ class AddressBookSynchronizerTest extends TestCase
 
                     return true;
                 })
-                ->andReturn(new Promise(function () {return true;}));
+                ->andReturn(new Promise(function () {
+                    return true;
+                }));
         });
         $this->mock(AddressBookContactsPusher::class, function (MockInterface $mock) {
             $mock->shouldReceive('execute')
                 ->once()
-                ->andReturn(new Promise(function () {return true;}));
+                ->andReturn(new Promise(function () {
+                    return true;
+                }));
         });
 
         (new AddressBookSynchronizer())

@@ -2,13 +2,13 @@
 
 namespace App\Services\DavClient\Utils;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use GuzzleHttp\Promise\Each;
 use GuzzleHttp\Promise\Promise;
 use GuzzleHttp\Promise\PromiseInterface;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Traits\HasCapability;
-use Illuminate\Support\Arr;
 
 class AddressBookSynchronizer
 {
