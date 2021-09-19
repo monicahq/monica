@@ -46,20 +46,11 @@ class AddressBookContactsUpdater
      */
     private function refreshMultigetContacts(Collection $refresh): PromiseInterface
     {
-        $addressDataAttributes = Arr::get($this->sync->subscription->capabilities, 'addressData', [
-            'content-type' => 'text/vcard',
-            'version' => '4.0',
-        ]);
-
         $hrefs = $refresh->pluck('uri');
 
         return $this->sync->client->addressbookMultigetAsync('', [
             '{DAV:}getetag',
-            [
-                'name' => '{'.CardDAVPlugin::NS_CARDDAV.'}address-data',
-                'value' => null,
-                'attributes' => $addressDataAttributes,
-            ],
+            $this->getAddressDataProperty(),
         ], $hrefs)
         ->then(function ($datas) {
             return collect($datas)
@@ -78,6 +69,25 @@ class AddressBookContactsUpdater
                 $this->syncLocalContact($contact);
             });
         });
+    }
+
+    /**
+     * Get data for address-data property.
+     *
+     * @return array
+     */
+    private function getAddressDataProperty(): array
+    {
+        $addressDataAttributes = Arr::get($this->sync->subscription->capabilities, 'addressData', [
+            'content-type' => 'text/vcard',
+            'version' => '4.0',
+        ]);
+
+        return [
+            'name' => '{'.CardDAVPlugin::NS_CARDDAV.'}address-data',
+            'value' => null,
+            'attributes' => $addressDataAttributes,
+        ];
     }
 
     /**
@@ -119,7 +129,7 @@ class AddressBookContactsUpdater
         if ($contact->card !== null) {
             Log::info(__CLASS__.' syncLocalContact: update '.$contact->uri);
 
-            $newtag = $this->sync->backend->updateCard($this->sync->subscription->addressbook->name, $contact->uri, $contact->card);
+            $newtag = $this->sync->backend->updateCard($this->sync->addressBookName(), $contact->uri, $contact->card);
 
             if ($newtag !== $contact->etag) {
                 Log::warning(__CLASS__.' syncLocalContact: wrong etag when updating contact. Expected '.$contact->etag.', get '.$newtag);

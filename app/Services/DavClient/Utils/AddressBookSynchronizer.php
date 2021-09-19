@@ -41,7 +41,7 @@ class AddressBookSynchronizer
     private function sync()
     {
         // Get changes to sync
-        $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->subscription->addressbook->name, (string) $this->sync->subscription->localSyncToken, 1);
+        $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->addressBookName(), (string) $this->sync->subscription->localSyncToken, 1);
 
         // Get distant changes to sync
         $promise = $this->getDistantChanges();
@@ -61,7 +61,7 @@ class AddressBookSynchronizer
 
         Each::of($chain)->wait();
 
-        $token = $this->sync->backend->getCurrentSyncToken($this->sync->subscription->addressbook->name);
+        $token = $this->sync->backend->getCurrentSyncToken($this->sync->addressBookName());
 
         $this->sync->subscription->localSyncToken = $token->id;
         $this->sync->subscription->save();
@@ -73,10 +73,10 @@ class AddressBookSynchronizer
     private function forcesync()
     {
         // Get changes to sync
-        $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->subscription->addressbook->name, (string) $this->sync->subscription->localSyncToken, 1);
+        $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->addressBookName(), (string) $this->sync->subscription->localSyncToken, 1);
 
         // Get current list of contacts
-        $localContacts = $this->sync->backend->getObjects($this->sync->subscription->addressbook->name);
+        $localContacts = $this->sync->backend->getObjects($this->sync->addressBookName());
 
         // Get distant changes to sync
         $promise = $this->getAllContactsEtag();
@@ -132,7 +132,7 @@ class AddressBookSynchronizer
         }
 
         // only new contact or contact with etag that match
-        $card = $this->sync->backend->getCard($this->sync->subscription->addressbook->name, $href);
+        $card = $this->sync->backend->getCard($this->sync->addressBookName(), $href);
 
         return $card === false || $card['etag'] !== Arr::get($contact, '200.{DAV:}getetag');
     }

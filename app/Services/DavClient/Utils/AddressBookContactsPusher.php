@@ -90,15 +90,15 @@ class AddressBookContactsPusher
     {
         // All added contact must be pushed
         return collect($contacts)
-          ->map(function (string $uri): ?ContactPushDto {
-              $card = $this->sync->backend->getCard($this->sync->subscription->addressbook->name, $uri);
+            ->map(function (string $uri): ?ContactPushDto {
+                $card = $this->sync->backend->getCard($this->sync->addressBookName(), $uri);
 
-              if ($card === false) {
-                  return null;
-              }
+                if ($card === false) {
+                    return null;
+                }
 
-              return new ContactPushDto($uri, $card['etag'], new Request('PUT', $uri, [], $card['carddata']));
-          });
+                return new ContactPushDto($uri, $card['etag'], new Request('PUT', $uri, [], $card['carddata']));
+            });
     }
 
     /**
@@ -116,19 +116,19 @@ class AddressBookContactsPusher
 
         // We don't push contact that have just been pulled
         return collect($contacts)
-          ->reject(function (string $uri) use ($refreshIds): bool {
-              $uuid = $this->sync->backend->getUuid($uri);
+            ->reject(function (string $uri) use ($refreshIds): bool {
+                $uuid = $this->sync->backend->getUuid($uri);
 
-              return $refreshIds->contains($uuid);
-          })->map(function (string $uri): ?ContactPushDto {
-              $card = $this->sync->backend->getCard($this->sync->subscription->addressbook->name, $uri);
+                return $refreshIds->contains($uuid);
+            })->map(function (string $uri): ?ContactPushDto {
+                $card = $this->sync->backend->getCard($this->sync->addressBookName(), $uri);
 
-              if ($card === false) {
-                  return null;
-              }
+                if ($card === false) {
+                    return null;
+                }
 
-              return new ContactPushDto($uri, $card['etag'], new Request('PUT', $uri, ['If-Match' => $card['etag']], $card['carddata']));
-          });
+                return new ContactPushDto($uri, $card['etag'], new Request('PUT', $uri, ['If-Match' => $card['etag']], $card['carddata']));
+            });
     }
 
     /**
@@ -145,20 +145,21 @@ class AddressBookContactsPusher
         $distUuids = $distContacts->map(function (ContactDto $contact) {
             return $this->sync->backend->getUuid($contact->uri);
         });
+
         /** @var Collection<array-key, string> $added */
         $addedUuids = collect($added)->map(function ($uri) {
             return $this->sync->backend->getUuid($uri);
         });
 
         return collect($localContacts)
-          ->filter(function (Contact $contact) use ($distUuids, $addedUuids) {
-              return ! $distUuids->contains($contact->uuid)
-                && ! $addedUuids->contains($contact->uuid);
-          })->map(function (Contact $contact): ContactPushDto {
-              $card = $this->sync->backend->prepareCard($contact);
+            ->filter(function (Contact $contact) use ($distUuids, $addedUuids) {
+                return ! $distUuids->contains($contact->uuid)
+                    && ! $addedUuids->contains($contact->uuid);
+            })->map(function (Contact $contact): ContactPushDto {
+                $card = $this->sync->backend->prepareCard($contact);
 
-              return new ContactPushDto($card['uri'], $card['etag'], new Request('PUT', $card['uri'], ['If-Match' => '*'], $card['carddata']));
-          })
+                return new ContactPushDto($card['uri'], $card['etag'], new Request('PUT', $card['uri'], ['If-Match' => '*'], $card['carddata']));
+            })
             ->values();
     }
 }

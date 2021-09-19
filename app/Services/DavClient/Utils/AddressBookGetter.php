@@ -107,7 +107,7 @@ class AddressBookGetter
      *
      * @return void
      *
-     * @see https://tools.ietf.org/html/rfc2518#section-15
+     * @see https://datatracker.ietf.org/doc/html/rfc2518#section-15
      *
      * @throws DavServerNotCompliantException
      */
@@ -128,7 +128,7 @@ class AddressBookGetter
      *
      * @return string
      *
-     * @see https://tools.ietf.org/html/rfc5397#section-3
+     * @see https://datatracker.ietf.org/doc/html/rfc5397#section-3
      *
      * @throws DavServerNotCompliantException
      */
@@ -150,7 +150,7 @@ class AddressBookGetter
      *
      * @return string
      *
-     * @see https://tools.ietf.org/html/rfc6352#section-7.1.1
+     * @see https://datatracker.ietf.org/doc/html/rfc6352#section-7.1.1
      *
      * @throws DavServerNotCompliantException
      */

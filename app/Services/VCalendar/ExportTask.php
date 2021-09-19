@@ -46,7 +46,7 @@ class ExportTask extends BaseService
      */
     private function export(Task $task): VCalendar
     {
-        // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc5545
+        // The standard for most of these fields can be found on https://datatracker.ietf.org/doc/html/rfc5545
         if (! $task->uuid) {
             $task->forceFill([
                 'uuid' => Str::uuid(),

@@ -2,6 +2,8 @@
 
 namespace App\Services\DavClient\Utils\Traits;
 
+use GuzzleHttp\Psr7\Uri;
+use Illuminate\Support\Arr;
 use Safe\Exceptions\NetworkException;
 
 class ServiceUrlQuery
@@ -11,7 +13,7 @@ class ServiceUrlQuery
      *
      * @return string|null
      *
-     * @see https://tools.ietf.org/html/rfc6352#section-11
+     * @see https://datatracker.ietf.org/doc/html/rfc6352#section-11
      */
     public function execute(string $name, bool $https, string $baseUri): ?string
     {
@@ -19,16 +21,13 @@ class ServiceUrlQuery
             $host = \Safe\parse_url($baseUri, PHP_URL_HOST);
             $entry = $this->dns_get_record($name.'.'.$host, DNS_SRV);
 
-            if ($entry) {
-                $target = $this->getEntryValue($entry, 'target');
-                $port = $this->getEntryValue($entry, 'port');
-                if ($target) {
-                    if (($port === 443 && $https) || ($port === 80 && ! $https)) {
-                        $port = null;
-                    }
+            if ($entry && $target = Arr::get($entry, '0.target')) {
+                $uri = (new Uri())
+                    ->withScheme($https ? 'https' : 'http', '', )
+                    ->withPort(Arr::get($entry, '0.port'))
+                    ->withHost($target);
 
-                    return ($https ? 'https' : 'http').'://'.$target.(is_null($port) ? '' : ':'.$port);
-                }
+                return (string) $uri;
             }
         } catch (\Safe\Exceptions\UrlException $e) {
             // catch exception and return null
@@ -37,11 +36,6 @@ class ServiceUrlQuery
         }
 
         return null;
-    }
-
-    private function getEntryValue($entry, $name)
-    {
-        return isset($entry[0][$name]) ? $entry[0][$name] : null;
     }
 
     private function dns_get_record(string $hostname, int $type = DNS_ANY, ?array &$authns = null, ?array &$addtl = null, bool $raw = false): array

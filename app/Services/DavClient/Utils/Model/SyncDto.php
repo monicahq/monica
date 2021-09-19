@@ -32,4 +32,14 @@ class SyncDto
         $this->client = $client;
         $this->backend = $backend;
     }
+
+    /**
+     * Get address book name.
+     *
+     * @return string
+     */
+    public function addressBookName(): string
+    {
+        return $this->subscription->addressbook->name;
+    }
 }

@@ -62,7 +62,7 @@ class ExportVCard extends BaseService
      */
     private function export(Contact $contact): VCard
     {
-        // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc6350
+        // The standard for most of these fields can be found on https://datatracker.ietf.org/doc/html/rfc6350
         if (! $contact->uuid) {
             $contact->forceFill([
                 'uuid' => Str::uuid(),
@@ -215,7 +215,7 @@ class ExportVCard extends BaseService
      * @param  Contact  $contact
      * @param  VCard  $vcard
      *
-     * @see https://tools.ietf.org/html/rfc6350#section-6.3.1
+     * @see https://datatracker.ietf.org/doc/html/rfc6350#section-6.3.1
      */
     private function exportAddress(Contact $contact, VCard $vcard)
     {
