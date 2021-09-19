@@ -396,19 +396,19 @@ class DavClient
             [$namespace, $elementName] = Service::parseClarkNotation($property);
 
             $value = Arr::get($namespaces, $namespace, null);
-            if (! is_null($value)) {
-                $element = $prop->appendChild($dom->createElement("$value:$elementName"));
-            } else {
-                $element = $prop->appendChild($dom->createElementNS($namespace, 'x:'.$elementName));
-            }
+            $element = $value !== null
+                ? $dom->createElement("$value:$elementName")
+                : $dom->createElementNS($namespace, 'x:'.$elementName);
+
+            $child = $prop->appendChild($element);
 
             if (isset($propertyExt)) {
-                if (isset($propertyExt['value']) && ! is_null($propertyExt['value'])) {
-                    $element->nodeValue = $propertyExt['value'];
+                if (($nodeValue = Arr::get($propertyExt, 'value')) !== null) {
+                    $child->nodeValue = $nodeValue;
                 }
-                if (isset($propertyExt['attributes'])) {
-                    foreach ($propertyExt['attributes'] as $name => $property) {
-                        $element->appendChild($dom->createAttribute($name))->nodeValue = $property;
+                if (($attributes = Arr::get($propertyExt, 'attributes')) !== null) {
+                    foreach ($attributes as $name => $property) {
+                        $child->appendChild($dom->createAttribute($name))->nodeValue = $property;
                     }
                 }
             }
@@ -446,12 +446,12 @@ class DavClient
 
             $prop = $properties[$property];
 
-            if (is_string($prop)) {
-                return $prop;
-            } elseif (is_array($prop)) {
+            if (is_array($prop)) {
                 $value = $prop[0];
 
-                return is_string($value) ? $value : $prop;
+                if (is_string($value)) {
+                    $prop = $value;
+                }
             }
 
             return $prop;
@@ -475,6 +475,7 @@ class DavClient
     /**
      * Get a {DAV:}supported-report-set propfind.
      *
+     * @param  array  $options
      * @return PromiseInterface
      *
      * @see https://datatracker.ietf.org/doc/html/rfc3253#section-3.1.5
@@ -537,7 +538,7 @@ class DavClient
                 foreach ($result as $statusList) {
                     foreach ($statusList as $status => $properties) {
                         if ($status >= 400) {
-                            foreach ($properties as $propName => $propValue) {
+                            foreach ($properties as $propName) {
                                 $errorProperties[] = $propName.' ('.$status.')';
                             }
                         }
