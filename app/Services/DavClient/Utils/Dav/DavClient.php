@@ -552,7 +552,7 @@ class DavClient
                         }
                     }
                 }
-                if (count($errorProperties) > 0) {
+                if (! empty($errorProperties)) {
                     throw new DavClientException('PROPPATCH failed. The following properties errored: '.implode(', ', $errorProperties));
                 }
             }
