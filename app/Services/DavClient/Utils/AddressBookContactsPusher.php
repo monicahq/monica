@@ -43,7 +43,9 @@ class AddressBookContactsPusher
             $commands = $commands->union($missed);
         }
 
-        $commands = $commands->filter(function ($command) { return $command !== null; });
+        $commands = $commands->filter(function ($command) {
+            return $command !== null;
+        });
 
         $requests = $commands->pluck('request')->toArray();
 

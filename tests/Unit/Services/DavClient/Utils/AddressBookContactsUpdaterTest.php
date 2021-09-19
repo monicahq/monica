@@ -12,11 +12,10 @@ use App\Models\Contact\Contact;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
+use App\Services\DavClient\Utils\Model\ContactDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 use App\Services\DavClient\Utils\AddressBookContactsUpdater;
-use App\Services\DavClient\Utils\Model\ContactDto;
-use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 
 class AddressBookContactsUpdaterTest extends TestCase
 {

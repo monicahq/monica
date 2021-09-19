@@ -2,7 +2,6 @@
 
 namespace App\Services\DavClient\Utils;
 
-use App\Services\DavClient\Utils\Model\ContactDto;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use GuzzleHttp\Promise\Each;
@@ -10,8 +9,8 @@ use GuzzleHttp\Promise\Promise;
 use Illuminate\Support\Collection;
 use GuzzleHttp\Promise\PromiseInterface;
 use App\Services\DavClient\Utils\Model\SyncDto;
+use App\Services\DavClient\Utils\Model\ContactDto;
 use App\Services\DavClient\Utils\Traits\HasCapability;
-use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 
 class AddressBookSynchronizer
 {
