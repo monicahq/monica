@@ -95,8 +95,8 @@ class AddressBookSynchronizerTest extends TestCase
                 ->once()
                 ->withArgs(function ($localSync, $contacts) use ($sync) {
                     $this->assertEquals($sync, $localSync);
-                    $this->assertEquals('https://test/dav/addressbooks/user@test.com/contacts/uuid', $contacts->first()['href']);
-                    $this->assertEquals('"test2"', $contacts->first()['etag']);
+                    $this->assertEquals('https://test/dav/addressbooks/user@test.com/contacts/uuid', $contacts->first()->uri);
+                    $this->assertEquals('"test2"', $contacts->first()->etag);
 
                     return true;
                 })
@@ -151,8 +151,8 @@ class AddressBookSynchronizerTest extends TestCase
                 ->withArgs(function ($localSync, $localContacts, $distContacts) use ($sync, $contact, $etag) {
                     $this->assertEquals($sync, $localSync);
                     $this->assertEquals($contact->id, $localContacts->first()->id);
-                    $this->assertEquals('https://test/dav/uuid1', $distContacts->first()['href']);
-                    $this->assertEquals($etag, $distContacts->first()['etag']);
+                    $this->assertEquals('https://test/dav/uuid1', $distContacts->first()->uri);
+                    $this->assertEquals($etag, $distContacts->first()->etag);
 
                     return true;
                 })

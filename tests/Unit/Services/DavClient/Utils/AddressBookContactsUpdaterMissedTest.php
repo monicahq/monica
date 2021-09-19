@@ -14,6 +14,8 @@ use App\Services\DavClient\Utils\Model\SyncDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 use App\Services\DavClient\Utils\AddressBookContactsUpdaterMissed;
+use App\Services\DavClient\Utils\Model\ContactDto;
+use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 
 class AddressBookContactsUpdaterMissedTest extends TestCase
 {
@@ -71,10 +73,7 @@ class AddressBookContactsUpdaterMissedTest extends TestCase
                     'uuid' => 'uuid1',
                 ],
             ]), collect([
-                'https://test/dav/uuid2' => [
-                    'href' => 'https://test/dav/uuid2',
-                    'etag' => $etag,
-                ],
+                'https://test/dav/uuid2' => new ContactDto('https://test/dav/uuid2', $etag),
             ]))
             ->wait();
 

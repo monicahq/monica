@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\DavClient\Utils;
 
 use Tests\TestCase;
 use Mockery\MockInterface;
+use Illuminate\Support\Str;
 use Tests\Api\DAV\CardEtag;
 use Tests\Helpers\DavTester;
 use GuzzleHttp\Psr7\Response;
@@ -15,6 +16,7 @@ use App\Services\DavClient\Utils\Model\SyncDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\AddressBookContactsPusher;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
+use App\Services\DavClient\Utils\Model\ContactDto;
 
 class AddressBookContactsPusherTest extends TestCase
 {
@@ -46,7 +48,7 @@ class AddressBookContactsPusherTest extends TestCase
         $backend = $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
             $mock->shouldReceive('getCard')
                 ->withArgs(function ($name, $uri) {
-                    $this->assertEquals($uri, 'https://test/dav/uricontact');
+                    $this->assertEquals($uri, 'https://test/dav/uricontact2');
 
                     return true;
                 })
@@ -54,21 +56,25 @@ class AddressBookContactsPusherTest extends TestCase
                     'carddata' => $card,
                     'etag' => $etag,
                 ]);
+            $mock->shouldReceive('getUuid')
+                ->withArgs(function ($uri) {
+                    $this->assertEquals($uri, 'https://test/dav/uricontact1');
+
+                    return true;
+                })
+                ->andReturn('uricontact1');
         });
 
         $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
-        $tester->addResponse('https://test/dav/uricontact', new Response(200, ['Etag' => $etag]), $card, 'PUT');
+        $tester->addResponse('https://test/dav/uricontact2', new Response(200, ['Etag' => $etag]), $card, 'PUT');
 
         $client = new DavClient([], $tester->getClient());
 
         (new AddressBookContactsPusher())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
-                'https://test/dav/addressbooks/user@test.com/contacts/uuid' => [
-                    'href' => 'https://test/dav/addressbooks/user@test.com/contacts/uuid',
-                    'etag' => $etag,
-                ],
+                'https://test/dav/uricontact1' => new ContactDto('https://test/dav/uricontact1', $etag),
             ]), [
-                'added' => ['https://test/dav/uricontact'],
+                'added' => ['https://test/dav/uricontact2'],
             ])
             ->wait();
 
@@ -100,14 +106,16 @@ class AddressBookContactsPusherTest extends TestCase
         $backend = $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
             $mock->shouldReceive('getUuid')
                 ->withArgs(function ($uri) {
-                    $this->assertEquals($uri, 'https://test/dav/uricontact');
+                    $this->assertStringStartsWith('https://test/dav/uricontact', $uri);
 
                     return true;
                 })
-                ->andReturn('uricontact');
+                ->andReturnUsing(function ($uri) {
+                    return Str::contains($uri, 'uricontact1') ? 'uricontact1' : 'uricontact2';
+                });
             $mock->shouldReceive('getCard')
                 ->withArgs(function ($name, $uri) {
-                    $this->assertEquals($uri, 'https://test/dav/uricontact');
+                    $this->assertEquals($uri, 'https://test/dav/uricontact2');
 
                     return true;
                 })
@@ -118,18 +126,15 @@ class AddressBookContactsPusherTest extends TestCase
         });
 
         $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
-        $tester->addResponse('https://test/dav/uricontact', new Response(200, ['Etag' => $etag]), $card, 'PUT', ['If-Match' => $etag]);
+        $tester->addResponse('https://test/dav/uricontact2', new Response(200, ['Etag' => $etag]), $card, 'PUT', ['If-Match' => $etag]);
 
         $client = new DavClient([], $tester->getClient());
 
         (new AddressBookContactsPusher())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
-                'https://test/dav/addressbooks/user@test.com/contacts/uuid' => [
-                    'href' => 'https://test/dav/addressbooks/user@test.com/contacts/uuid',
-                    'etag' => $etag,
-                ],
+                'https://test/dav/uricontact1' => new ContactDto('https://test/dav/uricontact1', $etag),
             ]), [
-                'modified' => ['https://test/dav/uricontact'],
+                'modified' => ['https://test/dav/uricontact2'],
             ])
             ->wait();
 
@@ -188,10 +193,7 @@ class AddressBookContactsPusherTest extends TestCase
 
         (new AddressBookContactsPusher())
             ->execute(new SyncDto($subscription, $client, $backend), collect(), [], collect([
-                [
-                    'href' => 'https://test/dav/uuid6',
-                    'etag' => $etag,
-                ],
+                'https://test/dav/uuid6' => new ContactDto('https://test/dav/uuid6', $etag),
             ]), collect([$contact]))
             ->wait();
 

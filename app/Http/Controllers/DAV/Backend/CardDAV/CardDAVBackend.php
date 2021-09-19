@@ -257,7 +257,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * Returns the collection of all active contacts.
      *
      * @param  string|null  $collectionId
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection<array-key, Contact>
      */
     public function getObjects($collectionId)
     {

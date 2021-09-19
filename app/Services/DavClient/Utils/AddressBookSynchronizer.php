@@ -2,13 +2,16 @@
 
 namespace App\Services\DavClient\Utils;
 
+use App\Services\DavClient\Utils\Model\ContactDto;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use GuzzleHttp\Promise\Each;
 use GuzzleHttp\Promise\Promise;
+use Illuminate\Support\Collection;
 use GuzzleHttp\Promise\PromiseInterface;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Traits\HasCapability;
+use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 
 class AddressBookSynchronizer
 {
@@ -45,13 +48,13 @@ class AddressBookSynchronizer
         $promise = $this->getDistantChanges();
 
         $chain = [];
-        $chain[] = $promise->then(function ($changes) {
+        $chain[] = $promise->then(function (Collection $changes) {
             // Get distant contacts
             return app(AddressBookContactsUpdater::class)
                 ->execute($this->sync, $changes);
         });
         if (! $this->sync->subscription->readonly) {
-            $chain[] = $promise->then(function ($changes) use ($localChanges) {
+            $chain[] = $promise->then(function (Collection $changes) use ($localChanges) {
                 return app(AddressBookContactsPusher::class)
                     ->execute($this->sync, $changes, $localChanges);
             });
@@ -80,7 +83,7 @@ class AddressBookSynchronizer
         $promise = $this->getAllContactsEtag();
 
         $chain = [];
-        $chain[] = $promise->then(function ($distContacts) use ($localContacts) {
+        $chain[] = $promise->then(function (Collection $distContacts) use ($localContacts) {
             // Get missed contacts
             return app(AddressBookContactsUpdaterMissed::class)
                 ->execute($this->sync, $localContacts, $distContacts);
@@ -109,11 +112,8 @@ class AddressBookSynchronizer
                 ->filter(function ($contact, $href): bool {
                     return $this->filterDistantContacts($contact, $href);
                 })
-                ->map(function ($contact, $href): array {
-                    return [
-                        'href' => $href,
-                        'etag' => Arr::get($contact, '200.{DAV:}getetag'),
-                    ];
+                ->map(function ($contact, $href): ContactDto {
+                    return new ContactDto($href, Arr::get($contact, '200.{DAV:}getetag'));
                 });
           });
     }
@@ -193,8 +193,8 @@ class AddressBookSynchronizer
             '{DAV:}getetag',
         ], $syncToken)->then(function ($collection) {
             // save the new syncToken as current one
-            if (array_key_exists('synctoken', $collection)) {
-                $this->sync->subscription->syncToken = $collection['synctoken'];
+            if ($newSyncToken = Arr::get($collection, 'synctoken')) {
+                $this->sync->subscription->syncToken = $newSyncToken;
                 $this->sync->subscription->save();
             }
 
@@ -219,11 +219,8 @@ class AddressBookSynchronizer
                 ->filter(function ($contact) {
                     return isset($contact[200]);
                 })
-                ->map(function ($contact, $href) {
-                    return [
-                        'href' => $href,
-                        'etag' => $contact[200]['{DAV:}getetag'],
-                    ];
+                ->map(function ($contact, $href): ContactDto {
+                    return new ContactDto($href, Arr::get($contact, '200.{DAV:}getetag'));
                 });
         });
     }

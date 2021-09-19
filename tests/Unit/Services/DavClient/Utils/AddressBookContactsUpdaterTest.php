@@ -15,6 +15,8 @@ use App\Services\DavClient\Utils\Model\SyncDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 use App\Services\DavClient\Utils\AddressBookContactsUpdater;
+use App\Services\DavClient\Utils\Model\ContactDto;
+use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 
 class AddressBookContactsUpdaterTest extends TestCase
 {
@@ -61,10 +63,7 @@ class AddressBookContactsUpdaterTest extends TestCase
 
         (new AddressBookContactsUpdater())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
-                'https://test/dav/uuid2' => [
-                    'href' => 'https://test/dav/uuid2',
-                    'etag' => $etag,
-                ],
+                'https://test/dav/uuid2' => new ContactDto('https://test/dav/uuid2', $etag),
             ]))
             ->wait();
 
@@ -130,10 +129,7 @@ class AddressBookContactsUpdaterTest extends TestCase
 
         (new AddressBookContactsUpdater())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
-                'https://test/dav/uuid2' => [
-                    'href' => 'https://test/dav/uuid2',
-                    'etag' => $etag,
-                ],
+                'https://test/dav/uuid2' => new ContactDto('https://test/dav/uuid2', $etag),
             ]))
             ->wait();
 
