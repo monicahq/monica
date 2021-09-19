@@ -89,9 +89,9 @@ class AddressBookContactsPusher
               }
 
               return [
-                'uri' => $uri,
-                'request' => new Request('PUT', $uri, [], $card['carddata']),
-                'etag' => $card['etag'],
+                  'uri' => $uri,
+                  'request' => new Request('PUT', $uri, [], $card['carddata']),
+                  'etag' => $card['etag'],
               ];
           });
     }
@@ -121,9 +121,9 @@ class AddressBookContactsPusher
               }
 
               return [
-                'uri' => $uri,
-                'request' => new Request('PUT', $uri, ['If-Match' => $card['etag']], $card['carddata']),
-                'etag' => $card['etag'],
+                  'uri' => $uri,
+                  'request' => new Request('PUT', $uri, ['If-Match' => $card['etag']], $card['carddata']),
+                  'etag' => $card['etag'],
               ];
           });
     }
