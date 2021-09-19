@@ -69,7 +69,8 @@ class AddressBookContactsPusherTest extends TestCase
                 ],
             ]), [
                 'added' => ['https://test/dav/uricontact'],
-            ]);
+            ])
+            ->wait();
 
         $tester->assert();
     }
@@ -129,7 +130,8 @@ class AddressBookContactsPusherTest extends TestCase
                 ],
             ]), [
                 'modified' => ['https://test/dav/uricontact'],
-            ]);
+            ])
+            ->wait();
 
         $tester->assert();
     }
@@ -190,7 +192,8 @@ class AddressBookContactsPusherTest extends TestCase
                     'href' => 'https://test/dav/uuid6',
                     'etag' => $etag,
                 ],
-            ]), collect([$contact]));
+            ]), collect([$contact]))
+            ->wait();
 
         $tester->assert();
     }

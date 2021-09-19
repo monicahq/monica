@@ -3,10 +3,12 @@
 namespace App\Services\DavClient\Utils;
 
 use Illuminate\Support\Str;
+use GuzzleHttp\Promise\Each;
 use GuzzleHttp\Promise\Promise;
 use GuzzleHttp\Promise\PromiseInterface;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Traits\HasCapability;
+use Illuminate\Support\Arr;
 
 class AddressBookSynchronizer
 {
@@ -26,7 +28,9 @@ class AddressBookSynchronizer
     {
         $this->sync = $sync;
 
-        $force ? $this->forcesync() : $this->sync();
+        $force
+            ? $this->forcesync()
+            : $this->sync();
     }
 
     /**
@@ -38,21 +42,22 @@ class AddressBookSynchronizer
         $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->subscription->addressbook->name, (string) $this->sync->subscription->localSyncToken, 1);
 
         // Get distant changes to sync
-        $this->getDistantChanges()
-            ->then(function ($changes) {
-                // Get distant contacts
-                app(AddressBookContactsUpdater::class)
-                    ->execute($this->sync, $changes);
+        $promise = $this->getDistantChanges();
 
-                return $changes;
-            })
-            ->then(function ($changes) use ($localChanges) {
-                if (! $this->sync->subscription->readonly) {
-                    app(AddressBookContactsPusher::class)
-                        ->execute($this->sync, $changes, $localChanges);
-                }
-            })
-            ->wait();
+        $chain = [];
+        $chain[] = $promise->then(function ($changes) {
+            // Get distant contacts
+            return app(AddressBookContactsUpdater::class)
+                ->execute($this->sync, $changes);
+        });
+        if (! $this->sync->subscription->readonly) {
+            $chain[] = $promise->then(function ($changes) use ($localChanges) {
+                return app(AddressBookContactsPusher::class)
+                    ->execute($this->sync, $changes, $localChanges);
+            });
+        }
+
+        Each::of($chain)->wait();
 
         $token = $this->sync->backend->getCurrentSyncToken($this->sync->subscription->addressbook->name);
 
@@ -68,25 +73,27 @@ class AddressBookSynchronizer
         // Get changes to sync
         $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->subscription->addressbook->name, (string) $this->sync->subscription->localSyncToken, 1);
 
-        // Get actual list of contacts
+        // Get current list of contacts
         $localContacts = $this->sync->backend->getObjects($this->sync->subscription->addressbook->name);
 
         // Get distant changes to sync
-        $this->getAllContactsEtag()
-            ->then(function ($distContacts) use ($localContacts) {
-                // Get missed contacts
-                app(AddressBookContactsUpdaterMissed::class)
-                    ->execute($this->sync, $localContacts, $distContacts);
+        $promise = $this->getAllContactsEtag();
 
-                return $distContacts;
-            })
-            ->then(function ($distContacts) use ($localChanges, $localContacts) {
-                if (! $this->sync->subscription->readonly) {
-                    app(AddressBookContactsPusher::class)
-                        ->execute($this->sync, collect(), $localChanges, $distContacts, $localContacts);
-                }
-            })
-            ->wait();
+        $chain = [];
+        $chain[] = $promise->then(function ($distContacts) use ($localContacts) {
+            // Get missed contacts
+            return app(AddressBookContactsUpdaterMissed::class)
+                ->execute($this->sync, $localContacts, $distContacts);
+        });
+
+        if (! $this->sync->subscription->readonly) {
+            $chain[] = $promise->then(function ($distContacts) use ($localChanges, $localContacts) {
+                return app(AddressBookContactsPusher::class)
+                    ->execute($this->sync, collect(), $localChanges, $distContacts, $localContacts);
+            });
+        }
+
+        Each::of($chain)->wait();
     }
 
     /**
@@ -99,22 +106,36 @@ class AddressBookSynchronizer
         return $this->getDistantEtags()
           ->then(function ($collection) {
               return collect($collection)
-                ->filter(function ($contact) {
-                    // only return vcards
-                    return isset($contact[200])
-                        && Str::contains($contact[200]['{DAV:}getcontenttype'], 'text/vcard');
-                })->filter(function ($contact, $href) {
-                    // only new contact or contact with etag that match
-                    $card = $this->sync->backend->getCard($this->sync->subscription->addressbook->name, $href);
-
-                    return $card === false || $card['etag'] !== $contact[200]['{DAV:}getetag'];
-                })->map(function ($contact, $href) {
+                ->filter(function ($contact, $href): bool {
+                    return $this->filterDistantContacts($contact, $href);
+                })
+                ->map(function ($contact, $href): array {
                     return [
                         'href' => $href,
-                        'etag' => $contact[200]['{DAV:}getetag'],
+                        'etag' => Arr::get($contact, '200.{DAV:}getetag'),
                     ];
                 });
           });
+    }
+
+    /**
+     * Filter contacts to only return vcards type and new contacts or contacts with matching etags.
+     *
+     * @param  mixed  $contact
+     * @param  string  $href
+     * @return bool
+     */
+    private function filterDistantContacts($contact, $href): bool
+    {
+        // only return vcards
+        if (! is_array($contact) || ! Str::contains(Arr::get($contact, '200.{DAV:}getcontenttype'), 'text/vcard')) {
+            return false;
+        }
+
+        // only new contact or contact with etag that match
+        $card = $this->sync->backend->getCard($this->sync->subscription->addressbook->name, $href);
+
+        return $card === false || $card['etag'] !== Arr::get($contact, '200.{DAV:}getetag');
     }
 
     /**
@@ -126,7 +147,7 @@ class AddressBookSynchronizer
     {
         if ($this->hasCapability('syncCollection')) {
             // With sync-collection
-            return $this->callSyncCollection();
+            return $this->callSyncCollectionWhenNeeded();
         } else {
             // With PROPFIND
             return $this->sync->client->propFindAsync('', [
@@ -137,22 +158,34 @@ class AddressBookSynchronizer
     }
 
     /**
+     * Make sync-collection request if sync-token has changed.
+     *
+     * @return PromiseInterface
+     */
+    private function callSyncCollectionWhenNeeded(): PromiseInterface
+    {
+        // get the current distant syncToken
+        return $this->sync->client->getPropertyAsync('{DAV:}sync-token')
+            ->then(function ($distantSyncToken) {
+                $syncToken = $this->sync->subscription->syncToken ?? '';
+
+                if ($syncToken === $distantSyncToken) {
+                    // no change at all
+                    return $this->emptyPromise();
+                }
+
+                return $this->callSyncCollection();
+            });
+    }
+
+    /**
      * Make sync-collection request.
      *
      * @return PromiseInterface
      */
     private function callSyncCollection(): PromiseInterface
     {
-        // With sync-collection
         $syncToken = $this->sync->subscription->syncToken ?? '';
-
-        // get the current distant syncToken
-        $distantSyncToken = $this->sync->client->getProperty('{DAV:}sync-token');
-
-        if ($syncToken == $distantSyncToken) {
-            // no change at all
-            return $this->emptyPromise();
-        }
 
         // get sync
         return $this->sync->client->syncCollectionAsync('', [
@@ -180,9 +213,8 @@ class AddressBookSynchronizer
             return $this->emptyPromise();
         }
 
-        return $this->sync->client->addressbookQueryAsync('', [
-            '{DAV:}getetag',
-        ])->then(function ($datas) {
+        return $this->sync->client->addressbookQueryAsync('', '{DAV:}getetag')
+        ->then(function ($datas) {
             return collect($datas)
                 ->filter(function ($contact) {
                     return isset($contact[200]);

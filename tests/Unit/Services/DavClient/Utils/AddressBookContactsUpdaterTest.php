@@ -65,7 +65,8 @@ class AddressBookContactsUpdaterTest extends TestCase
                     'href' => 'https://test/dav/uuid2',
                     'etag' => $etag,
                 ],
-            ]));
+            ]))
+            ->wait();
 
         $tester->assert();
     }
@@ -133,7 +134,8 @@ class AddressBookContactsUpdaterTest extends TestCase
                     'href' => 'https://test/dav/uuid2',
                     'etag' => $etag,
                 ],
-            ]));
+            ]))
+            ->wait();
 
         $tester->assert();
     }

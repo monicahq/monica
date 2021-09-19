@@ -176,11 +176,11 @@ class DavClient
      * made to the server to also return all child resources.
      *
      * @param  string  $url
-     * @param  array  $properties
+     * @param  array|string  $properties
      * @param  int  $depth
      * @return array
      */
-    public function propFind(string $url, array $properties, int $depth = 0): array
+    public function propFind(string $url, $properties, int $depth = 0): array
     {
         return $this->propFindAsync($url, $properties, $depth, [
             RequestOptions::SYNCHRONOUS => true,
@@ -204,11 +204,11 @@ class DavClient
      * made to the server to also return all child resources.
      *
      * @param  string  $url
-     * @param  array  $properties
+     * @param  array|string  $properties
      * @param  int  $depth
      * @return PromiseInterface
      */
-    public function propFindAsync(string $url, array $properties, int $depth = 0, array $options = []): PromiseInterface
+    public function propFindAsync(string $url, $properties, int $depth = 0, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = false;
@@ -250,13 +250,13 @@ class DavClient
      * Run a REPORT {DAV:}sync-collection.
      *
      * @param  string  $url
-     * @param  array  $properties
+     * @param  array|string  $properties
      * @param  string  $syncToken
      * @return PromiseInterface
      *
      * @see https://datatracker.ietf.org/doc/html/rfc6578
      */
-    public function syncCollectionAsync(string $url, array $properties, string $syncToken, array $options = []): PromiseInterface
+    public function syncCollectionAsync(string $url, $properties, string $syncToken, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = false;
@@ -287,13 +287,13 @@ class DavClient
      * Run a REPORT card:addressbook-multiget.
      *
      * @param  string  $url
-     * @param  array  $properties
+     * @param  array|string  $properties
      * @param  iterable  $contacts
      * @return PromiseInterface
      *
      * @see https://datatracker.ietf.org/doc/html/rfc6352#section-8.7
      */
-    public function addressbookMultigetAsync(string $url, array $properties, iterable $contacts, array $options = []): PromiseInterface
+    public function addressbookMultigetAsync(string $url, $properties, iterable $contacts, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = false;
@@ -327,12 +327,12 @@ class DavClient
      * Run a REPORT card:addressbook-query.
      *
      * @param  string  $url
-     * @param  array  $properties
+     * @param  array|string  $properties
      * @return PromiseInterface
      *
      * @see https://datatracker.ietf.org/doc/html/rfc6352#section-8.6
      */
-    public function addressbookQueryAsync(string $url, array $properties, array $options = []): PromiseInterface
+    public function addressbookQueryAsync(string $url, $properties, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = false;
@@ -378,12 +378,16 @@ class DavClient
      *
      * @param  \DOMDocument  $dom
      * @param  \DOMNode  $prop
-     * @param  array  $properties
+     * @param  array|string  $properties
      * @param  array  $namespaces
      * @return void
      */
-    private function fetchProperties(\DOMDocument $dom, \DOMNode $prop, array $properties, array $namespaces)
+    private function fetchProperties(\DOMDocument $dom, \DOMNode $prop, $properties, array $namespaces)
     {
+        if (is_string($properties)) {
+            $properties = [$properties];
+        }
+
         foreach ($properties as $property) {
             if (is_array($property)) {
                 $propertyExt = $property;
@@ -434,9 +438,8 @@ class DavClient
      */
     public function getPropertyAsync(string $property, string $url = '', array $options = []): PromiseInterface
     {
-        return $this->propfindAsync($url, [
-            $property,
-        ], 0, $options)->then(function (array $properties) use ($property) {
+        return $this->propfindAsync($url, $property, 0, $options)
+        ->then(function (array $properties) use ($property) {
             if (! isset($properties[$property])) {
                 return;
             }
@@ -480,7 +483,7 @@ class DavClient
     {
         $propName = '{DAV:}supported-report-set';
 
-        return $this->propFindAsync('', [$propName], 0, $options)
+        return $this->propFindAsync('', $propName, 0, $options)
         ->then(function (array $properties) use ($propName): array {
             if (! array_key_exists($propName, $properties)) {
                 return [];

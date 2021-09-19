@@ -176,7 +176,7 @@ class AddressBookGetter
     {
         $home = $this->getAddressBookHome($principal);
 
-        $books = $this->client->propfind($home, ['{DAV:}resourcetype'], 1);
+        $books = $this->client->propfind($home, '{DAV:}resourcetype', 1);
 
         foreach ($books as $book => $properties) {
             if ($book == $home) {
@@ -250,8 +250,8 @@ class AddressBookGetter
 
         return [
             'addressData' => [
-                'content-type' => $datas['attributes']['content-type'],
-                'version' => $datas['attributes']['version'],
+                'content-type' => Arr::get($datas, 'attributes.content-type'),
+                'version' => Arr::get($datas, 'attributes.version'),
             ],
         ];
     }

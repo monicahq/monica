@@ -7,6 +7,7 @@ use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use IlluminateAgnostic\Collection\Support\Arr;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Traits\HasCapability;
@@ -27,8 +28,9 @@ class AddressBookContactsPusher
      * @param  array|null  $localChanges
      * @param  Collection|null  $distContacts
      * @param  Collection|null  $localContacts
+     * @return PromiseInterface
      */
-    public function execute(SyncDto $sync, Collection $changes, ?array $localChanges, ?Collection $distContacts = null, ?Collection $localContacts = null): void
+    public function execute(SyncDto $sync, Collection $changes, ?array $localChanges, ?Collection $distContacts = null, ?Collection $localContacts = null): PromiseInterface
     {
         $this->sync = $sync;
 
@@ -41,16 +43,17 @@ class AddressBookContactsPusher
 
         $urls = $requests->pluck('request')->toArray();
 
-        $this->sync->client->requestPool($urls, [
+        return $this->sync->client->requestPool($urls, [
             'concurrency' => 25,
             'fulfilled' => function (ResponseInterface $response, $index) use ($requests) {
                 Log::info(__CLASS__.' pushContacts: PUT '.$requests[$index]['uri']);
+
                 $etags = $response->getHeader('Etag');
                 if (! empty($etags) && $etags[0] !== $requests[$index]['etag']) {
-                    Log::warning(__CLASS__.' pushContacts: wrong etag. Expected '.$requests[$index]['etag'].', get '.$etags[0]);
+                    Log::warning(__CLASS__.' pushContacts: wrong etag when updating contact. Expected '.$requests[$index]['etag'].', get '.$etags[0]);
                 }
             },
-        ])->wait();
+        ]);
     }
 
     /**
@@ -78,15 +81,13 @@ class AddressBookContactsPusher
     {
         // All added contact must be pushed
         return collect($contacts)
-          ->map(function ($uri) {
+          ->map(function (string $uri): array {
               $card = $this->sync->backend->getCard($this->sync->subscription->addressbook->name, $uri);
+
               $card['uri'] = $uri;
+              $card['request'] = new Request('PUT', $uri, [], $card['carddata']);
 
               return $card;
-          })->map(function ($contact): array {
-              $contact['request'] = new Request('PUT', $contact['uri'], [], $contact['carddata']);
-
-              return $contact;
           });
     }
 
@@ -103,19 +104,17 @@ class AddressBookContactsPusher
 
         // We don't push contact that have just been pulled
         return collect($contacts)
-          ->reject(function (string $uri) use ($refreshIds) {
+          ->reject(function (string $uri) use ($refreshIds): bool {
               $uuid = $this->sync->backend->getUuid($uri);
 
               return $refreshIds->contains($uuid);
-          })->map(function (string $uri) {
+          })->map(function (string $uri): array {
               $card = $this->sync->backend->getCard($this->sync->subscription->addressbook->name, $uri);
+
               $card['uri'] = $uri;
+              $card['request'] = new Request('PUT', $uri, ['If-Match' => $card['etag']], $card['carddata']);
 
               return $card;
-          })->map(function (array $contact): array {
-              $contact['request'] = new Request('PUT', $contact['uri'], ['If-Match' => $contact['etag']], $contact['carddata']);
-
-              return $contact;
           });
     }
 
@@ -141,11 +140,11 @@ class AddressBookContactsPusher
               return ! $distContacts->contains($contact->uuid)
                 && ! $added->contains($contact->uuid);
           })->map(function (Contact $contact): array {
-              $data = $this->sync->backend->prepareCard($contact);
+              $card = $this->sync->backend->prepareCard($contact);
 
-              $data['request'] = new Request('PUT', $data['uri'], ['If-Match' => '*'], $data['carddata']);
+              $card['request'] = new Request('PUT', $card['uri'], ['If-Match' => '*'], $card['carddata']);
 
-              return $data;
+              return $card;
           })
             ->values();
     }

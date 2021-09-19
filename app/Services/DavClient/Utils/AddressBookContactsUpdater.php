@@ -26,16 +26,15 @@ class AddressBookContactsUpdater
      *
      * @param  SyncDto  $sync
      * @param  Collection  $refresh
+     * @return PromiseInterface
      */
-    public function execute(SyncDto $sync, Collection $refresh): void
+    public function execute(SyncDto $sync, Collection $refresh): PromiseInterface
     {
         $this->sync = $sync;
 
-        $promise = $this->hasCapability('addressbookMultiget')
+        return $this->hasCapability('addressbookMultiget')
             ? $this->refreshMultigetContacts($refresh)
             : $this->refreshSimpleGetContacts($refresh);
-
-        $promise->wait();
     }
 
     /**
@@ -60,7 +59,8 @@ class AddressBookContactsUpdater
                 'value' => null,
                 'attributes' => $addressDataAttributes,
             ],
-        ], $hrefs)->then(function ($datas) {
+        ], $hrefs)
+        ->then(function ($datas) {
             return collect($datas)
                 ->filter(function ($contact): bool {
                     return isset($contact[200]);
@@ -68,12 +68,14 @@ class AddressBookContactsUpdater
                 ->map(function ($contact, $href): array {
                     return [
                         'href' => $href,
-                        'etag' => $contact[200]['{DAV:}getetag'],
-                        'vcard' => $contact[200]['{'.CardDAVPlugin::NS_CARDDAV.'}address-data'],
+                        'etag' => Arr::get($contact, '200.{DAV:}getetag'),
+                        'vcard' => Arr::get($contact, '200.{'.CardDAVPlugin::NS_CARDDAV.'}address-data'),
                     ];
                 });
         })->then(function ($contacts) {
             foreach ($contacts as $contact) {
+                Log::info(__CLASS__.' refreshMultigetContacts: GET '.$contact['href']);
+
                 $this->syncLocalContact($contact['href'], $contact['etag'], $contact['vcard']);
             }
         });
@@ -82,23 +84,23 @@ class AddressBookContactsUpdater
     /**
      * Get contacts data with request.
      *
-     * @param  Collection  $contacts
+     * @param  Collection  $requests
      * @return PromiseInterface
      */
-    private function refreshSimpleGetContacts(Collection $contacts): PromiseInterface
+    private function refreshSimpleGetContacts(Collection $requests): PromiseInterface
     {
-        $requests = $contacts->map(function ($contact) {
+        $inputs = $requests->map(function ($contact) {
             return new Request('GET', $contact['href']);
         })->toArray();
 
-        return $this->sync->client->requestPool($requests, [
+        return $this->sync->client->requestPool($inputs, [
             'concurrency' => 25,
-            'fulfilled' => function (ResponseInterface $response, $index) use ($contacts) {
+            'fulfilled' => function (ResponseInterface $response, $index) use ($requests) {
                 if ($response->getStatusCode() === 200) {
-                    Log::info(__CLASS__.' refreshSimpleGetContacts: GET '.$contacts[$index]['href']);
+                    Log::info(__CLASS__.' refreshSimpleGetContacts: GET '.$requests[$index]['href']);
 
-                    $this->syncLocalContact($contacts[$index]['href'],
-                        $contacts[$index]['etag'],
+                    $this->syncLocalContact($requests[$index]['href'],
+                        $requests[$index]['etag'],
                         $response->getBody()->detach()
                     );
                 }
@@ -119,7 +121,7 @@ class AddressBookContactsUpdater
             $newtag = $this->sync->backend->updateCard($this->sync->subscription->addressbook->name, $href, $vcard);
 
             if ($newtag !== $etag) {
-                Log::warning(__CLASS__.' syncLocalContact: wrong etag. Expected '.$etag.', get '.$newtag);
+                Log::warning(__CLASS__.' syncLocalContact: wrong etag when updating contact. Expected '.$etag.', get '.$newtag);
             }
         }
     }

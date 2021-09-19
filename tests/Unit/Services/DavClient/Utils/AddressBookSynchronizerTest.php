@@ -18,6 +18,7 @@ use App\Services\DavClient\Utils\AddressBookContactsPusher;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 use App\Services\DavClient\Utils\AddressBookContactsUpdater;
 use App\Services\DavClient\Utils\AddressBookContactsUpdaterMissed;
+use GuzzleHttp\Promise\Promise;
 
 class AddressBookSynchronizerTest extends TestCase
 {
@@ -59,8 +60,8 @@ class AddressBookSynchronizerTest extends TestCase
         $backend = new CardDAVBackend($subscription->user);
 
         $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
-        $tester->getSynctoken('"test2"')
-            ->getSyncCollection('test2');
+        $tester->getSynctoken('"test21"')
+            ->getSyncCollection('test20');
 
         $client = new DavClient([], $tester->getClient());
 
@@ -99,7 +100,7 @@ class AddressBookSynchronizerTest extends TestCase
 
                     return true;
                 })
-                ->andReturn(collect());
+                ->andReturn(new Promise(function () {return true;}));
         });
 
         (new AddressBookSynchronizer())
@@ -152,11 +153,13 @@ class AddressBookSynchronizerTest extends TestCase
                     $this->assertEquals($etag, $distContacts->first()['etag']);
 
                     return true;
-                });
+                })
+                ->andReturn(new Promise(function () {return true;}));
         });
         $this->mock(AddressBookContactsPusher::class, function (MockInterface $mock) {
             $mock->shouldReceive('execute')
-                ->once();
+                ->once()
+                ->andReturn(new Promise(function () {return true;}));
         });
 
         (new AddressBookSynchronizer())
