@@ -84,10 +84,15 @@ class AddressBookContactsPusher
           ->map(function (string $uri): array {
               $card = $this->sync->backend->getCard($this->sync->subscription->addressbook->name, $uri);
 
-              $card['uri'] = $uri;
-              $card['request'] = new Request('PUT', $uri, [], $card['carddata']);
+              if ($card === false) {
+                  return [];
+              }
 
-              return $card;
+              return [
+                'uri' => $uri,
+                'request' => new Request('PUT', $uri, [], $card['carddata']),
+                'etag' => $card['etag'],
+              ];
           });
     }
 
@@ -111,10 +116,15 @@ class AddressBookContactsPusher
           })->map(function (string $uri): array {
               $card = $this->sync->backend->getCard($this->sync->subscription->addressbook->name, $uri);
 
-              $card['uri'] = $uri;
-              $card['request'] = new Request('PUT', $uri, ['If-Match' => $card['etag']], $card['carddata']);
+              if ($card === false) {
+                  return [];
+              }
 
-              return $card;
+              return [
+                'uri' => $uri,
+                'request' => new Request('PUT', $uri, ['If-Match' => $card['etag']], $card['carddata']),
+                'etag' => $card['etag'],
+              ];
           });
     }
 
