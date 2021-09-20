@@ -54,7 +54,7 @@ class AddressBookSynchronizer
         });
         if (! $this->sync->subscription->readonly) {
             $chain[] = $promise->then(function (Collection $changes) use ($localChanges) {
-                return app(AddressBookContactsPusher::class)
+                return app(AddressBookContactsPush::class)
                     ->execute($this->sync, $changes, $localChanges);
             });
         }
@@ -90,8 +90,8 @@ class AddressBookSynchronizer
 
         if (! $this->sync->subscription->readonly) {
             $chain[] = $promise->then(function ($distContacts) use ($localChanges, $localContacts) {
-                return app(AddressBookContactsPusher::class)
-                    ->execute($this->sync, collect(), $localChanges, $distContacts, $localContacts);
+                return app(AddressBookContactsPushMissed::class)
+                    ->execute($this->sync, $localChanges, $distContacts, $localContacts);
             });
         }
 
