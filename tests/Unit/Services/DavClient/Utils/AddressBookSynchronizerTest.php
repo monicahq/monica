@@ -15,10 +15,9 @@ use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\AddressBookSynchronizer;
-use App\Services\DavClient\Utils\AddressBookContactsPush;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
-use App\Services\DavClient\Utils\AddressBookContactsPushMissed;
 use App\Services\DavClient\Utils\AddressBookContactsUpdater;
+use App\Services\DavClient\Utils\AddressBookContactsPushMissed;
 use App\Services\DavClient\Utils\AddressBookContactsUpdaterMissed;
 
 class AddressBookSynchronizerTest extends TestCase
