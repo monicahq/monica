@@ -627,8 +627,8 @@ attach them to the start of each source file to most effectively state
 the exclusion of warranty; and each file should have at least the
 "copyright" line and a pointer to where the full notice is found.
 
-        <one line to give the program's name and a brief idea of what it does.>
-        Copyright (C) <year>  <name of author>
+        The software is called Monica and is a personal relationship management system.
+        Copyright (C) 2016-2021 Regis Freyd
 
         This program is free software: you can redistribute it and/or modify
         it under the terms of the GNU Affero General Public License as
