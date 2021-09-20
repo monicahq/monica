@@ -46,7 +46,7 @@ class ExportVCalendar extends BaseService
      */
     private function export(SpecialDate $date): VCalendar
     {
-        // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc5545
+        // The standard for most of these fields can be found on https://datatracker.ietf.org/doc/html/rfc5545
         if (! $date->uuid) {
             $date->forceFill([
                 'uuid' => Str::uuid(),

@@ -94,8 +94,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
-            "Tests\\": "tests/"
+            "App\\": "app/"
         },
         "classmap": [
             "database/seeds",
@@ -108,7 +107,12 @@
     "autoload-dev": {
         "classmap": [
             "tests/TestCase.php"
-        ]
+        ],
+        "psr-4": {
+            "Tests\\": "tests/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
     },
     "scripts": {
         "pre-install-cmd": [

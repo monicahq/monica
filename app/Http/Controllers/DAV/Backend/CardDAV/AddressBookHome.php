@@ -36,10 +36,10 @@ class AddressBookHome extends BaseAddressBookHome
      */
     public function getChildren()
     {
-        $addressbooks = $this->carddavBackend->getAddressBooksForUser($this->principalUri);
+        $addressBooks = $this->carddavBackend->getAddressBooksForUser($this->principalUri);
 
-        return collect($addressbooks)->map(function ($addressbook) {
-            return new AddressBook($this->carddavBackend, $addressbook);
+        return collect($addressBooks)->map(function ($addressBook) {
+            return new AddressBook($this->carddavBackend, $addressBook);
         })->toArray();
     }
 }

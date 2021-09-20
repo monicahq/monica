@@ -4,10 +4,14 @@ namespace App\Http\Controllers\DAV\Backend;
 
 use Illuminate\Support\Str;
 use App\Models\User\SyncToken;
-use Illuminate\Support\Facades\Auth;
 
 trait SyncDAVBackend
 {
+    /**
+     * @var \App\Models\User\User
+     */
+    protected $user;
+
     /**
      * This method returns a sync-token for this collection.
      *
@@ -17,11 +21,11 @@ trait SyncDAVBackend
      * @param  string|null  $collectionId
      * @return SyncToken|null
      */
-    protected function getCurrentSyncToken($collectionId): ?SyncToken
+    public function getCurrentSyncToken($collectionId): ?SyncToken
     {
         $tokens = SyncToken::where([
-            'account_id' => Auth::user()->account_id,
-            'user_id' => Auth::user()->id,
+            'account_id' => $this->user->account_id,
+            'user_id' => $this->user->id,
             'name' => $collectionId ?? $this->backendUri(),
         ])
             ->orderBy('created_at')
@@ -51,14 +55,15 @@ trait SyncDAVBackend
      * Get SyncToken by token id.
      *
      * @param  string|null  $collectionId
+     * @param  string  $syncToken
      * @return SyncToken|null
      */
     protected function getSyncToken($collectionId, $syncToken)
     {
         /** @var SyncToken|null */
         return SyncToken::where([
-            'account_id' => Auth::user()->account_id,
-            'user_id' => Auth::user()->id,
+            'account_id' => $this->user->account_id,
+            'user_id' => $this->user->id,
             'name' => $collectionId ?? $this->backendUri(),
         ])
             ->find($syncToken);
@@ -73,8 +78,8 @@ trait SyncDAVBackend
     private function createSyncTokenNow($collectionId)
     {
         return SyncToken::create([
-            'account_id' => Auth::user()->account_id,
-            'user_id' => Auth::user()->id,
+            'account_id' => $this->user->account_id,
+            'user_id' => $this->user->id,
             'name' => $collectionId ?? $this->backendUri(),
             'timestamp' => now(),
         ]);
@@ -179,6 +184,8 @@ trait SyncDAVBackend
                 return $this->encodeUri($obj);
             })->values()->toArray(),
             'modified' => $modified->map(function ($obj) {
+                $this->refreshObject($obj);
+
                 return $this->encodeUri($obj);
             })->values()->toArray(),
             'deleted' => [],
@@ -252,4 +259,12 @@ trait SyncDAVBackend
     abstract public function getObjects($collectionId);
 
     abstract public function getExtension();
+
+    /**
+     * Get the new exported version of the object.
+     *
+     * @param  mixed  $obj
+     * @return string
+     */
+    abstract protected function refreshObject($obj): string;
 }

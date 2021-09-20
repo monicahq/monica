@@ -6,7 +6,6 @@ use Illuminate\Support\Arr;
 use App\Models\Contact\Task;
 use App\Services\Task\DestroyTask;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use App\Services\VCalendar\ExportTask;
 use App\Services\VCalendar\ImportTask;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
@@ -30,8 +29,8 @@ class CalDAVTasks extends AbstractCalDAVBackend
         return parent::getDescription()
         + [
             '{DAV:}displayname' => trans('app.dav_tasks'),
-            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => trans('app.dav_tasks_description', ['name' => Auth::user()->name]),
-            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => Auth::user()->timezone,
+            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => trans('app.dav_tasks_description', ['name' => $this->user->name]),
+            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => $this->user->timezone,
             '{'.CalDAVPlugin::NS_CALDAV.'}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VTODO']),
             '{'.CalDAVPlugin::NS_CALDAV.'}schedule-calendar-transp' => new ScheduleCalendarTransp(ScheduleCalendarTransp::TRANSPARENT),
         ];
@@ -40,11 +39,12 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Returns the collection of all tasks.
      *
+     * @param  mixed|null  $collectionId
      * @return \Illuminate\Support\Collection
      */
     public function getObjects($collectionId)
     {
-        return Auth::user()->account
+        return $this->user->account
                     ->tasks()
                     ->get();
     }
@@ -59,7 +59,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
     public function getObjectUuid($collectionId, $uuid)
     {
         return Task::where([
-            'account_id' => Auth::user()->account_id,
+            'account_id' => $this->user->account_id,
             'uuid' => $uuid,
         ])->first();
     }
@@ -84,13 +84,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
     {
         if ($obj instanceof Task) {
             try {
-                $vcal = app(ExportTask::class)
-                    ->execute([
-                        'account_id' => Auth::user()->account_id,
-                        'task_id' => $obj->id,
-                    ]);
-
-                $calendardata = $vcal->serialize();
+                $calendardata = $this->refreshObject($obj);
 
                 return [
                     'id' => $obj->id,
@@ -105,6 +99,23 @@ class CalDAVTasks extends AbstractCalDAVBackend
         }
 
         return [];
+    }
+
+    /**
+     * Get the new exported version of the object.
+     *
+     * @param  mixed  $obj  task
+     * @return string
+     */
+    protected function refreshObject($obj): string
+    {
+        $vcal = app(ExportTask::class)
+            ->execute([
+                'account_id' => $this->user->account_id,
+                'task_id' => $obj->id,
+            ]);
+
+        return $vcal->serialize();
     }
 
     /**
@@ -138,13 +149,13 @@ class CalDAVTasks extends AbstractCalDAVBackend
         try {
             $result = app(ImportTask::class)
                 ->execute([
-                    'account_id' => Auth::user()->account_id,
+                    'account_id' => $this->user->account_id,
                     'task_id' => $task_id,
                     'entry' => $calendarData,
                 ]);
 
             if (! Arr::has($result, 'error')) {
-                $task = Task::where('account_id', Auth::user()->account_id)
+                $task = Task::where('account_id', $this->user->account_id)
                     ->find($result['task_id']);
 
                 $calendar = $this->prepareData($task);
@@ -174,7 +185,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
             try {
                 app(DestroyTask::class)
                     ->execute([
-                        'account_id' => Auth::user()->account_id,
+                        'account_id' => $this->user->account_id,
                         'task_id' => $task->id,
                     ]);
             } catch (\Exception $e) {

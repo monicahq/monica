@@ -16,7 +16,9 @@ use App\Models\Contact\Note;
 use App\Helpers\LocaleHelper;
 use App\Services\BaseService;
 use function Safe\preg_split;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Gender;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Helpers\CountriesHelper;
@@ -110,8 +112,8 @@ class ImportVCard extends BaseService
             'entry' => [
                 'required',
                 function ($attribute, $value, $fail) {
-                    if (! is_string($value) && ! $value instanceof VCard) {
-                        $fail($attribute.' must be a string or a VCard object.');
+                    if (! is_string($value) && ! is_resource($value) && ! $value instanceof VCard) {
+                        $fail($attribute.' must be a string, a resource, or a VCard object.');
                     }
                 },
             ],
@@ -132,6 +134,13 @@ class ImportVCard extends BaseService
     public function execute(array $data): array
     {
         $this->validate($data);
+
+        $account = Account::find($data['account_id']);
+        if (AccountHelper::hasReachedContactLimit($account)
+            && AccountHelper::hasLimitations($account)
+            && ! $account->legacy_free_plan_unlimited_contacts) {
+            abort(402);
+        }
 
         User::where('account_id', $data['account_id'])
             ->findOrFail($data['user_id']);
@@ -420,6 +429,10 @@ class ImportVCard extends BaseService
 
         if (! $contact) {
             $contact = $this->existingContactWithName($entry);
+        }
+
+        if ($contact) {
+            $contact->timestamps = false;
         }
 
         return $contact;

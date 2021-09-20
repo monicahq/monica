@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\Account\Company;
 
 use Tests\TestCase;
 use App\Models\User\User;
+use function Safe\json_encode;
 use App\Models\Account\Account;
 use App\Models\Account\Company;
 use Illuminate\Support\Facades\Queue;

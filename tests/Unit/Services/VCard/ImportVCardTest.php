@@ -271,7 +271,7 @@ class ImportVCardTest extends TestCase
     public function it_creates_a_contact_in_address_book()
     {
         $user = factory(User::class)->create([]);
-        $addressBook = AddressBook::create([
+        $addressBook = AddressBook::factory()->create([
             'account_id' => $user->account_id,
             'user_id' => $user->id,
             'name' => 'contacts',

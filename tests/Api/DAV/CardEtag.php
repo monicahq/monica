@@ -9,7 +9,7 @@ use App\Models\Contact\ContactFieldType;
 
 trait CardEtag
 {
-    protected function getEtag($obj)
+    protected function getEtag($obj, bool $quotes = false)
     {
         $data = '';
         if ($obj instanceof Contact) {
@@ -20,7 +20,12 @@ trait CardEtag
             $data = $this->getVTodo($obj, true);
         }
 
-        return md5($data);
+        $etag = md5($data);
+        if ($quotes) {
+            $etag = '"'.$etag.'"';
+        }
+
+        return $etag;
     }
 
     protected function getCard(Contact $contact, bool $realFormat = false): string
