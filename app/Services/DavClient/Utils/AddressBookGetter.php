@@ -21,6 +21,7 @@ class AddressBookGetter
     /**
      * Get address book data: uri, capabilities, and name.
      *
+     * @param  DavClient  $client
      * @return array|null
      */
     public function execute(DavClient $client): ?array

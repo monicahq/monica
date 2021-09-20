@@ -22,6 +22,7 @@ class AddressBookContactsPush
     /**
      * Push contacts to the distant server.
      *
+     * @param  SyncDto  $sync
      * @param  Collection<array-key, ContactDto>  $changes
      * @param  array<array-key, string>|null  $localChanges
      * @param  Collection<array-key, ContactPushDto>|null  $missed

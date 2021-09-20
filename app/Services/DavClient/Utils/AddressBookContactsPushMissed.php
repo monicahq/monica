@@ -21,10 +21,10 @@ class AddressBookContactsPushMissed
     /**
      * Push contacts to the distant server.
      *
-     * @param  Collection<array-key, ContactDto>  $changes
+     * @param  SyncDto  $sync
      * @param  array<array-key, string>|null  $localChanges
-     * @param  Collection<array-key, ContactDto>|null  $distContacts
-     * @param  Collection<array-key, Contact>|null  $localContacts
+     * @param  Collection<array-key, ContactDto>  $distContacts
+     * @param  Collection<array-key, Contact>  $localContacts
      * @return PromiseInterface
      */
     public function execute(SyncDto $sync, ?array $localChanges, Collection $distContacts, Collection $localContacts): PromiseInterface
