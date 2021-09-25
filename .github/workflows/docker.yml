@@ -77,6 +77,13 @@ jobs:
       - name: Build assets
         run: yarn run production
 
+    # Complete setup
+      - name: Version files
+        run: |
+          git describe --abbrev=0 --tags | sed 's/^v//' > config/.version
+          git describe --abbrev=0 --tags --exact-match $GITHUB_SHA 2>/dev/null || git log --pretty="%h" -n1 $GITHUB_SHA > config/.release
+          echo $GITHUB_SHA > config/.commit
+
     # Build docker
       - name: Docker build
         id: docker_build
