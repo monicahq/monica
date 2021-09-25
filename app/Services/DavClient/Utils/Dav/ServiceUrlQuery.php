@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\DavClient\Utils\Traits;
+namespace App\Services\DavClient\Utils\Dav;
 
 use GuzzleHttp\Psr7\Uri;
 use Illuminate\Support\Arr;

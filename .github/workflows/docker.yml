@@ -54,9 +54,6 @@ jobs:
             ${{ runner.os }}-composer-${{ env.php-version }}
             ${{ runner.os }}-composer-
 
-      - name: Install composer dependencies
-        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
-
     # Yarn
       - name: Setup Node.js
         uses: actions/setup-node@v2
@@ -74,17 +71,9 @@ jobs:
             ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
             ${{ runner.os }}-yarn-
 
-      - name: Install yarn dependencies
-        run: yarn inst
-      - name: Build assets
-        run: yarn run production
-
-    # Complete setup
-      - name: Version files
-        run: |
-          git describe --abbrev=0 --tags | sed 's/^v//' > config/.version
-          git describe --abbrev=0 --tags --exact-match $GITHUB_SHA 2>/dev/null || git log --pretty="%h" -n1 $GITHUB_SHA > config/.release
-          echo $GITHUB_SHA > config/.commit
+    # Install
+      - name: Install
+        run: scripts/docker/build.sh --skip-build $GITHUB_SHA
 
     # Build docker
       - name: Docker build

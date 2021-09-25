@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\DavClient\Utils;
+namespace Tests\Unit\Services\DavClient\Utils\Dav;
 
 use Tests\TestCase;
 use Tests\Helpers\DavTester;
