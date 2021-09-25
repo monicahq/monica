@@ -14,7 +14,6 @@ use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Exception\ClientException;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
-use App\Services\DavClient\Utils\Traits\ServiceUrlQuery;
 
 class DavClient
 {
