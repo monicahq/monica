@@ -109,6 +109,7 @@ class AddressBookGetter
      * @return void
      *
      * @see https://datatracker.ietf.org/doc/html/rfc2518#section-15
+     * @see https://datatracker.ietf.org/doc/html/rfc6352#section-6.1
      *
      * @throws DavServerNotCompliantException
      */
