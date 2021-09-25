@@ -24,15 +24,22 @@ your Monica container.
 If you aren't using docker-compose, edit `.env` again to set the `DB_*` variables to match your database. Then run:
 
 ```sh
-# assets are copied from the host machine, make sure they are built
-yarn install && yarn run production
+scripts/docker/build.sh
+```
 
-docker build -t monicahq/monicahq -f scripts/docker/Dockerfile .
+You can add the tag name as a parameter:
+```sh
+scripts/docker/build.sh monica-dev
+```
 
-docker run --env-file .env -p 80:80 monicahq/monicahq  # to run MonicaHQ
+Run monica with:
+```sh
+docker run --env-file .env -p 80:80 monica-dev
+```
 
-# ...or...
-docker run --env-file .env -it monicahq/monicahq sh    # to get a prompt
+Or run a command in the container:
+```sh
+docker run --env-file .env -it monica-dev bash
 ```
 
 There's a bunch of [docker-compose examples here.](https://github.com/monicahq/docker/tree/master/.examples)
