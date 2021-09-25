@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Docker meta
         id: docker_meta
