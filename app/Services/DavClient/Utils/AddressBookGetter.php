@@ -109,6 +109,7 @@ class AddressBookGetter
      * @return void
      *
      * @see https://datatracker.ietf.org/doc/html/rfc2518#section-15
+     * @see https://datatracker.ietf.org/doc/html/rfc6352#section-6.1
      *
      * @throws DavServerNotCompliantException
      */
@@ -116,7 +117,10 @@ class AddressBookGetter
     {
         $options = $this->client->options();
         if (! empty($options)) {
-            $options = explode(', ', $options[0]);
+            $options = array_map(function ($option) {
+                return explode(', ', $option);
+            }, $options);
+            $options = Arr::flatten($options);
         }
 
         if (! in_array('1', $options) || ! in_array('3', $options) || ! in_array('addressbook', $options)) {
