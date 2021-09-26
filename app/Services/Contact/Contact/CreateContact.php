@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\Contact;
 
+use Ramsey\Uuid\Uuid;
 use App\Models\User\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -29,6 +30,7 @@ class CreateContact extends BaseService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'author_id' => 'required|integer|exists:users,id',
+            'uuid' => 'nullable|string',
             'address_book_id' => 'nullable|integer|exists:addressbooks,id',
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
@@ -76,6 +78,30 @@ class CreateContact extends BaseService
                 ->findOrFail($data['address_book_id']);
         }
 
+        $contact = $this->create($data);
+
+        $this->updateBirthDayInformation($data, $contact);
+        $this->updateDeceasedInformation($data, $contact);
+        $this->updateEmail($data, $contact);
+        $this->generateUUID($contact);
+        $this->addAvatars($contact);
+
+        $this->log($data, $contact);
+
+        // we query the DB again to fill the object with all the new properties
+        $contact->refresh();
+
+        return $contact;
+    }
+
+    /**
+     * Create the contact.
+     *
+     * @param  array  $data
+     * @return Contact
+     */
+    private function create(array $data): Contact
+    {
         // filter out the data that shall not be updated here
         $dataOnly = Arr::except(
             $data,
@@ -98,24 +124,11 @@ class CreateContact extends BaseService
             ]
         );
 
-        $contact = Contact::create($dataOnly);
+        if (! empty($uuid = Arr::get($data, 'uuid')) && Uuid::isValid($uuid)) {
+            $dataOnly['uuid'] = $uuid;
+        }
 
-        $this->updateBirthDayInformation($data, $contact);
-
-        $this->updateDeceasedInformation($data, $contact);
-
-        $this->updateEmail($data, $contact);
-
-        $this->generateUUID($contact);
-
-        $this->addAvatars($contact);
-
-        $this->log($data, $contact);
-
-        // we query the DB again to fill the object with all the new properties
-        $contact->refresh();
-
-        return $contact;
+        return Contact::create($dataOnly);
     }
 
     /**
@@ -126,8 +139,10 @@ class CreateContact extends BaseService
      */
     private function generateUUID(Contact $contact)
     {
-        $contact->uuid = Str::uuid()->toString();
-        $contact->save();
+        if (empty($contact->uuid)) {
+            $contact->uuid = Str::uuid()->toString();
+            $contact->save();
+        }
     }
 
     /**

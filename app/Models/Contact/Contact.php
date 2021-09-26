@@ -99,6 +99,7 @@ class Contact extends Model
      * @var array<string>
      */
     protected $fillable = [
+        'uuid',
         'first_name',
         'middle_name',
         'last_name',
@@ -117,6 +118,9 @@ class Contact extends Model
         'created_at',
         'first_met_additional_info',
         'address_book_id',
+        'vcard',
+        'avatar_gravatar_url',
+        'avatar_source',
     ];
 
     /**

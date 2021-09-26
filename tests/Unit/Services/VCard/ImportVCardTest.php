@@ -1300,4 +1300,45 @@ class ImportVCardTest extends TestCase
             'tag_id' => $tag3->id,
         ]);
     }
+
+    /** @test */
+    public function it_imports_uuid_default()
+    {
+        $account = factory(Account::class)->create();
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $account->id;
+
+        $vcard = new VCard([
+            'UID' => '31fdc242-c974-436e-98de-6b21624d6e34',
+        ]);
+
+        $contact = [];
+
+        $contact = $this->invokePrivateMethod($importVCard, 'importUid', [$contact, $vcard]);
+
+        $this->assertEquals('31fdc242-c974-436e-98de-6b21624d6e34', $contact['uuid']);
+    }
+
+    /** @test */
+    public function it_imports_uuid_contact()
+    {
+        $user = factory(User::class)->create([]);
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $user->account_id;
+        $importVCard->userId = $user->id;
+
+        $vcard = new VCard([
+            'FN'   => 'John Doe',
+            'UID' => '31fdc242-c974-436e-98de-6b21624d6e34',
+        ]);
+
+        $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [null, $vcard]);
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account_id,
+            'id' => $contact->id,
+            'uuid' => '31fdc242-c974-436e-98de-6b21624d6e34',
+        ]);
+        $this->assertEquals('31fdc242-c974-436e-98de-6b21624d6e34', $contact->uuid, );
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\Contact;
 
+use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Helpers\AccountHelper;
@@ -27,6 +28,7 @@ class UpdateContact extends BaseService
             'account_id' => 'required|integer|exists:accounts,id',
             'author_id' => 'required|integer|exists:users,id',
             'contact_id' => 'required|integer',
+            'uuid' => 'nullable|string',
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
@@ -92,6 +94,7 @@ class UpdateContact extends BaseService
             $this->data,
             [
                 'author_id',
+                'uuid',
                 'is_birthdate_known',
                 'birthdate_day',
                 'birthdate_month',
@@ -108,6 +111,10 @@ class UpdateContact extends BaseService
                 'description',
             ]
         );
+
+        if (! empty($uuid = Arr::get($this->data, 'uuid')) && Uuid::isValid($uuid)) {
+            $dataOnly['uuid'] = $uuid;
+        }
 
         $oldName = $this->contact->name;
         $this->contact->update($dataOnly);
