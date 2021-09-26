@@ -424,6 +424,10 @@ class ImportVCard extends BaseService
         }
 
         if (! $contact) {
+            $contact = $this->existingUuid($entry);
+        }
+
+        if (! $contact) {
             $contact = $this->existingContactWithEmail($entry);
         }
 
@@ -491,6 +495,23 @@ class ImportVCard extends BaseService
     }
 
     /**
+     * Search with uuid.
+     *
+     * @param  VCard  $entry
+     * @return Contact|null
+     */
+    private function existingUuid(VCard $entry): ?Contact
+    {
+        return ! empty($uuid = (string) $entry->UID) && Uuid::isValid($uuid)
+            ? Contact::where([
+                'account_id' => $this->accountId,
+                'uuid' => $uuid,
+                'address_book_id' => $this->addressBook ? $this->addressBook->id : null,
+            ])->first()
+            : null;
+    }
+
+    /**
      * Create the Contact object matching the current entry.
      *
      * @param  Contact|null  $contact
@@ -501,7 +522,6 @@ class ImportVCard extends BaseService
     {
         $contact = $this->importGeneralInformation($contact, $entry);
 
-        $this->importUid($contact, $entry);
         $this->importPhoto($contact, $entry);
         $this->importWorkInformation($contact, $entry);
         $this->importAddress($contact, $entry);
@@ -533,6 +553,7 @@ class ImportVCard extends BaseService
         $contactData = $this->getContactData($contact);
         $original = $contactData;
 
+        $contactData = $this->importUid($contactData, $entry);
         $contactData = $this->importNames($contactData, $entry);
         $contactData = $this->importGender($contactData, $entry);
         $contactData = $this->importBirthday($contactData, $entry);
@@ -556,6 +577,7 @@ class ImportVCard extends BaseService
     {
         $result = [
             'account_id' => $contact ? $contact->account_id : $this->accountId,
+            'uuid' => $contact ? (string) $contact->uuid : null,
             'address_book_id' => $this->addressBook ? $this->addressBook->id : null,
             'first_name' => $contact ? $contact->first_name : null,
             'middle_name' => $contact ? $contact->middle_name : null,
@@ -728,15 +750,17 @@ class ImportVCard extends BaseService
     /**
      * Import uid of the contact.
      *
-     * @param  Contact  $contact
+     * @param  array  $contactData
      * @param  VCard  $entry
-     * @return void
+     * @return array
      */
-    private function importUid(Contact $contact, VCard $entry): void
+    private function importUid(array $contactData, VCard $entry): array
     {
-        if (empty($contact->uuid) && Uuid::isValid((string) $entry->UID)) {
-            $contact->uuid = (string) $entry->UID;
+        if (! empty($uuid = (string) $entry->UID) && Uuid::isValid($uuid)) {
+            $contactData['uuid'] = $uuid;
         }
+
+        return $contactData;
     }
 
     /**
