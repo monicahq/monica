@@ -8,13 +8,13 @@ use Tests\Api\DAV\CardEtag;
 use Tests\Helpers\DavTester;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
+use App\Jobs\Dav\GetMultipleVCard;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
-use App\Jobs\Dav\GetMultipleVCard;
 use App\Services\DavClient\Utils\AddressBookContactsUpdaterMissed;
 
 class AddressBookContactsUpdaterMissedTest extends TestCase

@@ -34,10 +34,11 @@ class ContactUpdateDto extends ContactDto
     protected static function transformCard($card): string
     {
         if (is_resource($card)) {
-            $card = tap(stream_get_contents($card), function() use ($card) {
+            $card = tap(stream_get_contents($card), function () use ($card) {
                 fclose($card);
             });
         }
+
         return $card;
     }
 }

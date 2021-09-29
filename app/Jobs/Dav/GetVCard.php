@@ -5,7 +5,6 @@ namespace App\Jobs\Dav;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -31,8 +30,8 @@ class GetVCard implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param AddressBookSubscription  $subscription
-     * @param ContactDto $contact
+     * @param  AddressBookSubscription  $subscription
+     * @param  ContactDto  $contact
      * @return void
      */
     public function __construct(AddressBookSubscription $subscription, ContactDto $contact)
