@@ -22,7 +22,7 @@ class AddressBookContactsPush
      * @param  SyncDto  $sync
      * @param  Collection<array-key, ContactDto>  $changes
      * @param  array<array-key, string>|null  $localChanges
-     * @return void
+     * @return Collection
      */
     public function execute(SyncDto $sync, Collection $changes, ?array $localChanges): Collection
     {

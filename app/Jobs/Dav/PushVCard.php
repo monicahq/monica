@@ -30,8 +30,8 @@ class PushVCard implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param string $addressBookName
-     * @param ContactPushDto $contact
+     * @param AddressBookSubscription  $subscription
+     * @param ContactPushDto  $contact
      * @return void
      */
     public function __construct(AddressBookSubscription $subscription, ContactPushDto $contact)
@@ -63,7 +63,7 @@ class PushVCard implements ShouldQueue
 
         $response = $this->subscription->getRequest()
             ->withHeaders($headers)
-            ->put($this->contact->uri, $this->contact->card);
+            ->put($this->contact->uri, [$this->contact->card]);
 
         $response->throw();
 

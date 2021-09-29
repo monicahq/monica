@@ -211,7 +211,7 @@ class AddressBookSynchronizer
     private function getAllContactsEtag(): Collection
     {
         if (! $this->hasCapability('addressbookQuery')) {
-            return $this->emptyPromise();
+            return collect();
         }
 
         return $this->sync->client->addressbookQueryAsync('', '{DAV:}getetag')

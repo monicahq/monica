@@ -275,7 +275,7 @@ class DavClient
      * @param  string  $url
      * @param  array|string  $properties
      * @param  iterable  $contacts
-     * @return PromiseInterface
+     * @return array
      *
      * @see https://datatracker.ietf.org/doc/html/rfc6352#section-8.7
      */

@@ -31,7 +31,7 @@ class GetVCard implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param string $addressBookName
+     * @param AddressBookSubscription  $subscription
      * @param ContactDto $contact
      * @return void
      */
