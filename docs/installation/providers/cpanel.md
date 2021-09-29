@@ -11,7 +11,7 @@
 
 ## Prerequisites
 
-Monica can be configured in shared hosting environments with a little differences that we can remedy easily. In this scenerio, Monica depends on the following:
+Monica can be configured in shared hosting environments with a little differences that we can remedy easily. In this scenario, Monica depends on the following:
 
 -   A shared cPanel Server
 -   PHP 7.4+
@@ -21,7 +21,7 @@ Monica can be configured in shared hosting environments with a little difference
 
 **Git:** Git should come pre-installed with your server. If it doesn't - use the installation instructions in the link.
 
-**PHP:** Install php7.4 minimum. Generally cPanel will have a PHP 7 version installed, verify unser the 'PHP Version' section from the cPanel section. Make sure these extensions are enabled:
+**PHP:** Install php7.4 minimum. Generally cPanel will have a PHP 7 version installed, verify under the 'PHP Version' section from the cPanel section. Make sure these extensions are enabled:
 
 -   bcmath
 -   curl
@@ -126,7 +126,7 @@ php /var/www/monica/artisan schedule:run >> /dev/null 2>&1
 
 ### 5. Configure cPanel webserver
 
-1. Navigat to the 'Subdomain' section in the cPanel GUI:
+1. Navigate to the 'Subdomain' section in the cPanel GUI:
 
 
 2. Update the path of the domain you wish to assign to Monica to the following:
