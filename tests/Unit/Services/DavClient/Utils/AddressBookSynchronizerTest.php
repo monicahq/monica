@@ -9,20 +9,18 @@ use Tests\Helpers\DavTester;
 use GuzzleHttp\Psr7\Response;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
-use GuzzleHttp\Promise\Promise;
+use Illuminate\Bus\PendingBatch;
+use App\Jobs\Dav\GetMultipleVCard;
+use Illuminate\Support\Facades\Bus;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\AddressBookSynchronizer;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
-use App\Jobs\Dav\GetMultipleVCard;
-use App\Jobs\Dav\PushVCard;
 use App\Services\DavClient\Utils\AddressBookContactsUpdater;
 use App\Services\DavClient\Utils\AddressBookContactsPushMissed;
 use App\Services\DavClient\Utils\AddressBookContactsUpdaterMissed;
-use Illuminate\Bus\PendingBatch;
-use Illuminate\Support\Facades\Bus;
 
 class AddressBookSynchronizerTest extends TestCase
 {
@@ -151,6 +149,7 @@ class AddressBookSynchronizerTest extends TestCase
             $job = $batch->jobs[0];
             $this->assertInstanceOf(GetMultipleVCard::class, $job);
             $this->assertEquals(['https://test/dav/addressbooks/user@test.com/contacts/uuid'], $this->getPrivateValue($job, 'hrefs'));
+
             return true;
         });
     }
@@ -258,11 +257,12 @@ class AddressBookSynchronizerTest extends TestCase
 
         $tester->assert();
 
-        Bus::assertBatched(function (PendingBatch $batch) use ($contact) {
+        Bus::assertBatched(function (PendingBatch $batch) {
             $this->assertCount(1, $batch->jobs);
             $job = $batch->jobs[0];
             $this->assertInstanceOf(GetMultipleVCard::class, $job);
             $this->assertEquals(['https://test/dav/uuid1'], $this->getPrivateValue($job, 'hrefs'));
+
             return true;
         });
     }

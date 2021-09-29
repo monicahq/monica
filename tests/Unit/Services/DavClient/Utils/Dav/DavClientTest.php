@@ -5,12 +5,12 @@ namespace Tests\Unit\Services\DavClient\Utils\Dav;
 use Tests\TestCase;
 use Tests\Helpers\DavTester;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Exception\ServerException;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\Dav\DavClientException;
-use Illuminate\Http\Client\Request;
-use Illuminate\Support\Facades\Http;
 
 class DavClientTest extends TestCase
 {
@@ -330,7 +330,7 @@ class DavClientTest extends TestCase
                     '<d:status>HTTP/1.1 200 OK</d:status>'.
                 '</d:propstat>'.
             '</d:response>'.
-            '</d:multistatus>')
+            '</d:multistatus>'),
         ]);
 
         $result = DavClient::addressbookMultiget(Http::baseUrl('https://test/test'), ['{DAV:}test'], [
@@ -347,6 +347,7 @@ class DavClientTest extends TestCase
                      '</d:prop>'.
                      '<d:href>https://test/contacts/1</d:href>'.
                    "</card:addressbook-multiget>\n", $request->body());
+
             return true;
         });
 

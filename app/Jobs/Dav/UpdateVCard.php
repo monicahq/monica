@@ -35,9 +35,9 @@ class UpdateVCard implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param User $user
-     * @param string $addressBookName
-     * @param ContactUpdateDto $contact
+     * @param  User  $user
+     * @param  string  $addressBookName
+     * @param  ContactUpdateDto  $contact
      * @return void
      */
     public function __construct(User $user, string $addressBookName, ContactUpdateDto $contact)

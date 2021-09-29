@@ -3,20 +3,19 @@
 namespace Tests\Unit\Services\DavClient\Utils;
 
 use Tests\TestCase;
+use App\Jobs\Dav\GetVCard;
 use Mockery\MockInterface;
 use Tests\Api\DAV\CardEtag;
 use Tests\Helpers\DavTester;
-use GuzzleHttp\Psr7\Response;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
+use App\Jobs\Dav\GetMultipleVCard;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
-use App\Jobs\Dav\GetMultipleVCard;
-use App\Jobs\Dav\GetVCard;
 use App\Services\DavClient\Utils\AddressBookContactsUpdater;
 
 class AddressBookContactsUpdaterTest extends TestCase

@@ -31,8 +31,8 @@ class GetMultipleVCard implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param string $addressBookName
-     * @param array $hrefs
+     * @param  string  $addressBookName
+     * @param  array  $hrefs
      * @return void
      */
     public function __construct(AddressBookSubscription $subscription, array $hrefs)
@@ -69,8 +69,8 @@ class GetMultipleVCard implements ShouldQueue
     /**
      * Update the contact.
      *
-     * @param array $contact
-     * @param string $href
+     * @param  array  $contact
+     * @param  string  $href
      * @return void
      */
     private function updateVCard(array $contact, $href): void

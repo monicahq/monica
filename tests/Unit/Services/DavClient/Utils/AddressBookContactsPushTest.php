@@ -4,21 +4,20 @@ namespace Tests\Unit\Services\DavClient\Utils;
 
 use Tests\TestCase;
 use Mockery\MockInterface;
+use App\Jobs\Dav\PushVCard;
 use Illuminate\Support\Str;
 use Tests\Api\DAV\CardEtag;
 use Tests\Helpers\DavTester;
-use GuzzleHttp\Psr7\Response;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
+use App\Services\DavClient\Utils\Model\ContactPushDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\AddressBookContactsPush;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
-use App\Jobs\Dav\PushVCard;
-use App\Services\DavClient\Utils\Model\ContactPushDto;
 
 class AddressBookContactsPushTest extends TestCase
 {

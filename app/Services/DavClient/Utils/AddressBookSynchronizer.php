@@ -83,7 +83,7 @@ class AddressBookSynchronizer
         // Get distant changes to sync
         $distContacts = $this->getAllContactsEtag();
 
-            // Get missed contacts
+        // Get missed contacts
         $batch = app(AddressBookContactsUpdaterMissed::class)
                     ->execute($this->sync, $localContacts, $distContacts);
 

@@ -3,7 +3,6 @@
 namespace App\Services\DavClient\Utils;
 
 use Illuminate\Support\Collection;
-use GuzzleHttp\Promise\PromiseInterface;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
 

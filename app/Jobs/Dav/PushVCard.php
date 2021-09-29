@@ -5,7 +5,6 @@ namespace App\Jobs\Dav;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -30,8 +29,8 @@ class PushVCard implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param string $addressBookName
-     * @param ContactPushDto $contact
+     * @param  string  $addressBookName
+     * @param  ContactPushDto  $contact
      * @return void
      */
     public function __construct(AddressBookSubscription $subscription, ContactPushDto $contact)

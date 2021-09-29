@@ -4,20 +4,19 @@ namespace Tests\Unit\Services\DavClient\Utils;
 
 use Tests\TestCase;
 use Mockery\MockInterface;
+use App\Jobs\Dav\PushVCard;
 use Tests\Api\DAV\CardEtag;
 use Tests\Helpers\DavTester;
-use GuzzleHttp\Psr7\Response;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
+use App\Services\DavClient\Utils\Model\ContactPushDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
-use App\Jobs\Dav\PushVCard;
 use App\Services\DavClient\Utils\AddressBookContactsPushMissed;
-use App\Services\DavClient\Utils\Model\ContactPushDto;
 
 class AddressBookContactsPushMissedTest extends TestCase
 {
@@ -76,7 +75,6 @@ class AddressBookContactsPushMissedTest extends TestCase
             ->execute(new SyncDto($subscription, $client, $backend), [], collect([
                 'https://test/dav/uuid6' => new ContactDto('https://test/dav/uuid6', $etag),
             ]), collect([$contact]));
-
 
         $this->assertCount(1, $batchs);
         $batch = $batchs->first();
