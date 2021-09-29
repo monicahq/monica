@@ -14,6 +14,7 @@ use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
+use App\Jobs\Dav\GetMultipleVCard;
 use App\Services\DavClient\Utils\AddressBookContactsUpdaterMissed;
 
 class AddressBookContactsUpdaterMissedTest extends TestCase
@@ -61,21 +62,22 @@ class AddressBookContactsUpdaterMissedTest extends TestCase
                 ->andReturn($etag);
         });
 
-        $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
-        $tester->addressMultiGet($etag, $card, 'https://test/dav/uuid2');
-
+        $tester = new DavTester();
         $client = new DavClient([], $tester->getClient());
 
-        (new AddressBookContactsUpdaterMissed())
+        $batchs = (new AddressBookContactsUpdaterMissed())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
                 [
                     'uuid' => 'uuid1',
                 ],
             ]), collect([
                 'https://test/dav/uuid2' => new ContactDto('https://test/dav/uuid2', $etag),
-            ]))
-            ->wait();
+            ]));
 
-        $tester->assert();
+        $this->assertCount(1, $batchs);
+        $batch = $batchs->first();
+        $this->assertInstanceOf(GetMultipleVCard::class, $batch);
+        $hrefs = $this->getPrivateValue($batch, 'hrefs');
+        $this->assertEquals(['https://test/dav/uuid2'], $hrefs);
     }
 }

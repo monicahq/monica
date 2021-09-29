@@ -15,6 +15,8 @@ use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
+use App\Jobs\Dav\GetMultipleVCard;
+use App\Jobs\Dav\GetVCard;
 use App\Services\DavClient\Utils\AddressBookContactsUpdater;
 
 class AddressBookContactsUpdaterTest extends TestCase
@@ -55,18 +57,19 @@ class AddressBookContactsUpdaterTest extends TestCase
                 ->andReturn($etag);
         });
 
-        $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
-        $tester->addressMultiGet($etag, $card, 'https://test/dav/uuid2');
-
+        $tester = new DavTester();
         $client = new DavClient([], $tester->getClient());
 
-        (new AddressBookContactsUpdater())
+        $batchs = (new AddressBookContactsUpdater())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
                 'https://test/dav/uuid2' => new ContactDto('https://test/dav/uuid2', $etag),
-            ]))
-            ->wait();
+            ]));
 
-        $tester->assert();
+        $this->assertCount(1, $batchs);
+        $batch = $batchs->first();
+        $this->assertInstanceOf(GetMultipleVCard::class, $batch);
+        $hrefs = $this->getPrivateValue($batch, 'hrefs');
+        $this->assertEquals(['https://test/dav/uuid2'], $hrefs);
     }
 
     /** @test */
@@ -121,17 +124,19 @@ class AddressBookContactsUpdaterTest extends TestCase
                 ->andReturn($etag);
         });
 
-        $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
-        $tester->addResponse('https://test/dav/uuid2', new Response(200, [], $card), null, 'GET');
-
+        $tester = new DavTester();
         $client = new DavClient([], $tester->getClient());
 
-        (new AddressBookContactsUpdater())
+        $batchs = (new AddressBookContactsUpdater())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
                 'https://test/dav/uuid2' => new ContactDto('https://test/dav/uuid2', $etag),
-            ]))
-            ->wait();
+            ]));
 
-        $tester->assert();
+        $this->assertCount(1, $batchs);
+        $batch = $batchs->first();
+        $this->assertInstanceOf(GetVCard::class, $batch);
+        $dto = $this->getPrivateValue($batch, 'contact');
+        $this->assertInstanceOf(ContactDto::class, $dto);
+        $this->assertEquals('https://test/dav/uuid2', $dto->uri);
     }
 }

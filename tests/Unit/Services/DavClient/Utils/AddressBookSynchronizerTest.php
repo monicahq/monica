@@ -16,9 +16,13 @@ use App\Services\DavClient\Utils\Model\SyncDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\AddressBookSynchronizer;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
+use App\Jobs\Dav\GetMultipleVCard;
+use App\Jobs\Dav\PushVCard;
 use App\Services\DavClient\Utils\AddressBookContactsUpdater;
 use App\Services\DavClient\Utils\AddressBookContactsPushMissed;
 use App\Services\DavClient\Utils\AddressBookContactsUpdaterMissed;
+use Illuminate\Bus\PendingBatch;
+use Illuminate\Support\Facades\Bus;
 
 class AddressBookSynchronizerTest extends TestCase
 {
@@ -28,6 +32,8 @@ class AddressBookSynchronizerTest extends TestCase
     /** @test */
     public function it_sync_empty_changes()
     {
+        Bus::fake();
+
         $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) {
             $mock->shouldReceive('execute')
                 ->once()
@@ -50,6 +56,8 @@ class AddressBookSynchronizerTest extends TestCase
     /** @test */
     public function it_sync_no_changes()
     {
+        Bus::fake();
+
         $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) {
             $mock->shouldReceive('execute')
                 ->once()
@@ -74,6 +82,8 @@ class AddressBookSynchronizerTest extends TestCase
     /** @test */
     public function it_sync_changes_added_local_contact()
     {
+        Bus::fake();
+
         $subscription = $this->getSubscription();
         $backend = new CardDAVBackend($subscription->user);
 
@@ -100,9 +110,7 @@ class AddressBookSynchronizerTest extends TestCase
 
                     return true;
                 })
-                ->andReturn(new Promise(function () {
-                    return true;
-                }));
+                ->andReturn(collect());
         });
 
         (new AddressBookSynchronizer())
@@ -112,8 +120,46 @@ class AddressBookSynchronizerTest extends TestCase
     }
 
     /** @test */
+    public function it_sync_changes_added_local_contact_batched()
+    {
+        Bus::fake();
+
+        $subscription = $this->getSubscription();
+        $backend = new CardDAVBackend($subscription->user);
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $subscription->account_id,
+            'address_book_id' => $subscription->address_book_id,
+            'uuid' => 'd403af1c-8492-4e9b-9833-cf18c795dfa9',
+        ]);
+
+        $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
+        $tester->getSynctoken('"token"')
+            ->getSyncCollection('token', '"test2"');
+
+        $client = new DavClient([], $tester->getClient());
+
+        $sync = new SyncDto($subscription, $client, $backend);
+
+        (new AddressBookSynchronizer())
+            ->execute($sync);
+
+        $tester->assert();
+
+        Bus::assertBatched(function (PendingBatch $batch) {
+            $this->assertCount(1, $batch->jobs);
+            $job = $batch->jobs[0];
+            $this->assertInstanceOf(GetMultipleVCard::class, $job);
+            $this->assertEquals(['https://test/dav/addressbooks/user@test.com/contacts/uuid'], $this->getPrivateValue($job, 'hrefs'));
+            return true;
+        });
+    }
+
+    /** @test */
     public function it_forcesync_changes_added_local_contact()
     {
+        Bus::fake();
+
         $subscription = $this->getSubscription();
         $backend = new CardDAVBackend($subscription->user);
 
@@ -156,22 +202,69 @@ class AddressBookSynchronizerTest extends TestCase
 
                     return true;
                 })
-                ->andReturn(new Promise(function () {
-                    return true;
-                }));
+                ->andReturn(collect());
         });
         $this->mock(AddressBookContactsPushMissed::class, function (MockInterface $mock) {
             $mock->shouldReceive('execute')
                 ->once()
-                ->andReturn(new Promise(function () {
-                    return true;
-                }));
+                ->andReturn(collect());
         });
 
         (new AddressBookSynchronizer())
             ->execute($sync, true);
 
         $tester->assert();
+    }
+
+    /** @test */
+    public function it_forcesync_changes_added_local_contact_batched()
+    {
+        Bus::fake();
+
+        $subscription = $this->getSubscription();
+        $backend = new CardDAVBackend($subscription->user);
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $subscription->account_id,
+            'address_book_id' => $subscription->address_book_id,
+            'uuid' => 'd403af1c-8492-4e9b-9833-cf18c795dfa9',
+        ]);
+        $etag = $this->getEtag($contact, true);
+
+        $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
+        $tester->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $tester->multistatusHeader().
+        '<d:response>'.
+            '<d:href>https://test/dav/uuid1</d:href>'.
+            '<d:propstat>'.
+                '<d:prop>'.
+                    "<d:getetag>$etag</d:getetag>".
+                '</d:prop>'.
+                '<d:status>HTTP/1.1 200 OK</d:status>'.
+            '</d:propstat>'.
+        '</d:response>'.
+        '</d:multistatus>'), '<?xml version="1.0" encoding="UTF-8"?>'."\n".
+        '<card:addressbook-query xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:d="DAV:">'.
+          '<d:prop>'.
+            '<d:getetag/>'.
+          '</d:prop>'.
+        "</card:addressbook-query>\n", 'REPORT');
+
+        $client = new DavClient([], $tester->getClient());
+
+        $sync = new SyncDto($subscription, $client, $backend);
+
+        (new AddressBookSynchronizer())
+            ->execute($sync, true);
+
+        $tester->assert();
+
+        Bus::assertBatched(function (PendingBatch $batch) use ($contact) {
+            $this->assertCount(1, $batch->jobs);
+            $job = $batch->jobs[0];
+            $this->assertInstanceOf(GetMultipleVCard::class, $job);
+            $this->assertEquals(['https://test/dav/uuid1'], $this->getPrivateValue($job, 'hrefs'));
+            return true;
+        });
     }
 
     private function getSubscription()

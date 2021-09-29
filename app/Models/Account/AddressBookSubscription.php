@@ -5,8 +5,10 @@ namespace App\Models\Account;
 use App\Models\User\User;
 use function safe\json_decode;
 use function safe\json_encode;
+use Illuminate\Support\Facades\Http;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -148,5 +150,17 @@ class AddressBookSubscription extends Model
     public function scopeActive($query)
     {
         return $query->where('active', 1);
+    }
+
+    /**
+     * Get a pending request.
+     *
+     * @return PendingRequest
+     */
+    public function getRequest(): PendingRequest
+    {
+        return Http::withBasicAuth($this->username, $this->password)
+            ->baseUrl($this->uri)
+            ->withUserAgent('Monica DavClient '.config('monica.app_version'));
     }
 }

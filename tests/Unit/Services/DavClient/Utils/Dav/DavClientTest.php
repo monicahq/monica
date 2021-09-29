@@ -9,22 +9,12 @@ use GuzzleHttp\Exception\ServerException;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\Dav\DavClientException;
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Http;
 
 class DavClientTest extends TestCase
 {
     use DatabaseTransactions;
-
-    /** @test */
-    public function it_creates_client()
-    {
-        $client = new DavClient([
-            'base_uri' => 'test',
-            'username' => 'user',
-            'password' => 'pass',
-        ]);
-
-        $this->assertInstanceOf(\Sabre\DAV\Xml\Service::class, $client->xml);
-    }
 
     /** @test */
     public function it_fails_if_no_baseuri()
@@ -328,9 +318,8 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_run_addressbook_multiget_report()
     {
-        $tester = (new DavTester());
-
-        $tester->addResponse('https://test/test', new Response(200, [], $tester->multistatusHeader().
+        Http::fake([
+            'https://test/*' => Http::response(DavTester::multistatusHeader().
             '<d:response>'.
                 '<d:href>href</d:href>'.
                 '<d:propstat>'.
@@ -341,22 +330,26 @@ class DavClientTest extends TestCase
                     '<d:status>HTTP/1.1 200 OK</d:status>'.
                 '</d:propstat>'.
             '</d:response>'.
-            '</d:multistatus>'), '<?xml version="1.0" encoding="UTF-8"?>'."\n".
-            '<card:addressbook-multiget xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:d="DAV:">'.
-              '<d:prop>'.
-                '<d:test/>'.
-              '</d:prop>'.
-              '<d:href>https://test/contacts/1</d:href>'.
-            "</card:addressbook-multiget>\n", 'REPORT');
+            '</d:multistatus>')
+        ]);
 
-        $client = new DavClient([], $tester->getClient());
-
-        $result = $client->addressbookMultigetAsync('https://test/test', ['{DAV:}test'], [
+        $result = DavClient::addressbookMultiget(Http::baseUrl('https://test/test'), ['{DAV:}test'], [
             'https://test/contacts/1',
-        ])
-            ->wait();
+        ]);
 
-        $tester->assert();
+        Http::assertSent(function (Request $request) {
+            $this->assertEquals('https://test/test/', $request->url());
+            $this->assertEquals('REPORT', $request->method());
+            $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>'."\n".
+                   '<card:addressbook-multiget xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:d="DAV:">'.
+                     '<d:prop>'.
+                       '<d:test/>'.
+                     '</d:prop>'.
+                     '<d:href>https://test/contacts/1</d:href>'.
+                   "</card:addressbook-multiget>\n", $request->body());
+            return true;
+        });
+
         $this->assertEquals([
             'href' => [
                 200 => [
@@ -474,7 +467,7 @@ class DavClientTest extends TestCase
 
         $this->expectException(DavClientException::class);
         $this->expectExceptionMessage('PROPPATCH failed. The following properties errored: {DAV:}test (405), {DAV:}excerpt (500)');
-        $result = $client->propPatchAsync('https://test/test', [
+        $client->propPatchAsync('https://test/test', [
             '{DAV:}test' => 'value',
             '{DAV:}excerpt' => 'value',
         ])

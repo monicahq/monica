@@ -2,26 +2,24 @@
 
 namespace App\Services\DavClient\Utils\Model;
 
-use GuzzleHttp\Psr7\Request;
-
-class ContactPushDto extends ContactDto
+class ContactPushDto extends ContactUpdateDto
 {
     /**
-     * @var Request
+     * @var int
      */
-    public $request;
+    public $mode;
 
     /**
      * Create a new ContactPushDto.
      *
      * @param  string  $uri
      * @param  string  $etag
-     * @param  Request  $request
+     * @param  string|resource  $card
+     * @param  int  $mode
      */
-    public function __construct(string $uri, string $etag, Request $request)
+    public function __construct(string $uri, string $etag, $card, int $mode)
     {
-        $this->uri = $uri;
-        $this->etag = $etag;
-        $this->request = $request;
+        parent::__construct($uri, $etag, $card);
+        $this->mode = $mode;
     }
 }

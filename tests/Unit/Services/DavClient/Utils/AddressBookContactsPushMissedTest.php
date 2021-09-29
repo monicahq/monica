@@ -15,7 +15,9 @@ use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
+use App\Jobs\Dav\PushVCard;
 use App\Services\DavClient\Utils\AddressBookContactsPushMissed;
+use App\Services\DavClient\Utils\Model\ContactPushDto;
 
 class AddressBookContactsPushMissedTest extends TestCase
 {
@@ -67,17 +69,21 @@ class AddressBookContactsPushMissedTest extends TestCase
                 ]);
         });
 
-        $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
-        $tester->addResponse('https://test/dav/uuid3', new Response(200, ['Etag' => $etag]), $card, 'PUT', ['If-Match' => '*']);
-
+        $tester = new DavTester();
         $client = new DavClient([], $tester->getClient());
 
-        (new AddressBookContactsPushMissed())
+        $batchs = (new AddressBookContactsPushMissed())
             ->execute(new SyncDto($subscription, $client, $backend), [], collect([
                 'https://test/dav/uuid6' => new ContactDto('https://test/dav/uuid6', $etag),
-            ]), collect([$contact]))
-            ->wait();
+            ]), collect([$contact]));
 
-        $tester->assert();
+
+        $this->assertCount(1, $batchs);
+        $batch = $batchs->first();
+        $this->assertInstanceOf(PushVCard::class, $batch);
+        $dto = $this->getPrivateValue($batch, 'contact');
+        $this->assertInstanceOf(ContactPushDto::class, $dto);
+        $this->assertEquals('https://test/dav/uuid3', $dto->uri);
+        $this->assertEquals(2, $dto->mode);
     }
 }
