@@ -46,6 +46,10 @@ class PushVCardTest extends TestCase
         $card = $this->getCard($contact);
         $etag = $this->getEtag($contact, true);
 
+        if ($ifmatch == ['etag']) {
+            $ifmatch = [$etag];
+        }
+
         Http::fake(function (Request $request, $options) use ($card, $ifmatch) {
             $this->assertEquals('https://test/dav/uri', $request->url());
             $this->assertEquals('PUT', $request->method());
@@ -74,7 +78,7 @@ class PushVCardTest extends TestCase
     {
         return [
             [0, []],
-            [1, ['"24e005c364ef6fc0e4588817b9785a7b"']],
+            [1, ['etag']],
             [2, ['*']],
         ];
     }

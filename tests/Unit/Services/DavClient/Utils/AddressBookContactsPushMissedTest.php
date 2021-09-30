@@ -49,7 +49,7 @@ class AddressBookContactsPushMissedTest extends TestCase
             $mock->shouldReceive('getUuid')
                 ->once()
                 ->withArgs(function ($uri) {
-                    $this->assertEquals('https://test/dav/uuid6', $uri);
+                    $this->assertEquals('uuid6', $uri);
 
                     return true;
                 })
@@ -63,7 +63,7 @@ class AddressBookContactsPushMissedTest extends TestCase
                 })
                 ->andReturn([
                     'carddata' => $card,
-                    'uri' => 'https://test/dav/uuid3',
+                    'uri' => 'uuid3',
                     'etag' => $etag,
                 ]);
         });
@@ -73,7 +73,7 @@ class AddressBookContactsPushMissedTest extends TestCase
 
         $batchs = (new AddressBookContactsPushMissed())
             ->execute(new SyncDto($subscription, $client, $backend), [], collect([
-                'https://test/dav/uuid6' => new ContactDto('https://test/dav/uuid6', $etag),
+                'uuid6' => new ContactDto('uuid6', $etag),
             ]), collect([$contact]));
 
         $this->assertCount(1, $batchs);
@@ -81,7 +81,7 @@ class AddressBookContactsPushMissedTest extends TestCase
         $this->assertInstanceOf(PushVCard::class, $batch);
         $dto = $this->getPrivateValue($batch, 'contact');
         $this->assertInstanceOf(ContactPushDto::class, $dto);
-        $this->assertEquals('https://test/dav/uuid3', $dto->uri);
+        $this->assertEquals('uuid3', $dto->uri);
         $this->assertEquals(2, $dto->mode);
     }
 }

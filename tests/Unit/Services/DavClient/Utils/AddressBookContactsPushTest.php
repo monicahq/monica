@@ -49,7 +49,7 @@ class AddressBookContactsPushTest extends TestCase
         $backend = $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
             $mock->shouldReceive('getCard')
                 ->withArgs(function ($name, $uri) {
-                    $this->assertEquals($uri, 'https://test/dav/uricontact2');
+                    $this->assertEquals($uri, 'uricontact2');
 
                     return true;
                 })
@@ -73,7 +73,7 @@ class AddressBookContactsPushTest extends TestCase
             ->execute(new SyncDto($subscription, $client, $backend), collect([
                 'https://test/dav/uricontact1' => new ContactDto('https://test/dav/uricontact1', $etag),
             ]), [
-                'added' => ['https://test/dav/uricontact2'],
+                'added' => ['uricontact2'],
             ]);
 
         $this->assertCount(1, $batchs);
@@ -81,7 +81,7 @@ class AddressBookContactsPushTest extends TestCase
         $this->assertInstanceOf(PushVCard::class, $batch);
         $dto = $this->getPrivateValue($batch, 'contact');
         $this->assertInstanceOf(ContactPushDto::class, $dto);
-        $this->assertEquals('https://test/dav/uricontact2', $dto->uri);
+        $this->assertEquals('uricontact2', $dto->uri);
         $this->assertEquals(0, $dto->mode);
     }
 
@@ -110,7 +110,7 @@ class AddressBookContactsPushTest extends TestCase
         $backend = $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
             $mock->shouldReceive('getUuid')
                 ->withArgs(function ($uri) {
-                    $this->assertStringStartsWith('https://test/dav/uricontact', $uri);
+                    $this->assertStringContainsString('uricontact', $uri);
 
                     return true;
                 })
@@ -119,7 +119,7 @@ class AddressBookContactsPushTest extends TestCase
                 });
             $mock->shouldReceive('getCard')
                 ->withArgs(function ($name, $uri) {
-                    $this->assertEquals($uri, 'https://test/dav/uricontact2');
+                    $this->assertEquals($uri, 'uricontact2');
 
                     return true;
                 })
@@ -136,7 +136,7 @@ class AddressBookContactsPushTest extends TestCase
             ->execute(new SyncDto($subscription, $client, $backend), collect([
                 'https://test/dav/uricontact1' => new ContactDto('https://test/dav/uricontact1', $etag),
             ]), [
-                'modified' => ['https://test/dav/uricontact2'],
+                'modified' => ['uricontact2'],
             ]);
 
         $this->assertCount(1, $batchs);
@@ -144,7 +144,7 @@ class AddressBookContactsPushTest extends TestCase
         $this->assertInstanceOf(PushVCard::class, $batch);
         $dto = $this->getPrivateValue($batch, 'contact');
         $this->assertInstanceOf(ContactPushDto::class, $dto);
-        $this->assertEquals('https://test/dav/uricontact2', $dto->uri);
+        $this->assertEquals('uricontact2', $dto->uri);
         $this->assertEquals(1, $dto->mode);
     }
 }
