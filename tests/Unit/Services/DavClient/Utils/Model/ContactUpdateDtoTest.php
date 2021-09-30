@@ -3,20 +3,8 @@
 namespace Tests\Unit\Services\DavClient\Utils\Model;
 
 use Tests\TestCase;
-use App\Models\User\User;
-use Mockery\MockInterface;
-use Tests\Api\DAV\CardEtag;
-use App\Jobs\Dav\UpdateVCard;
-use App\Models\Contact\Contact;
-use Illuminate\Bus\PendingBatch;
-use App\Jobs\Dav\GetMultipleVCard;
-use Illuminate\Support\Facades\Bus;
-use Sabre\CardDAV\Plugin as CardDAVPlugin;
-use Illuminate\Bus\DatabaseBatchRepository;
-use App\Models\Account\AddressBookSubscription;
-use App\Services\DavClient\Utils\Dav\DavClient;
-use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 
 class ContactUpdateDtoTest extends TestCase
 {
