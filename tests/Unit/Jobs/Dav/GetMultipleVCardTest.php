@@ -53,9 +53,9 @@ class GetMultipleVCardTest extends TestCase
                             'value' => null,
                             'attributes' => [
                                 'content-type' => 'text/vcard',
-                                'version' => '4.0'
+                                'version' => '4.0',
                             ],
-                        ]
+                        ],
                     ], $properties);
                     $this->assertEquals(['https://test/dav/uri'], $contacts);
 
@@ -67,18 +67,19 @@ class GetMultipleVCardTest extends TestCase
                             '{'.CardDAVPlugin::NS_CARDDAV.'}address-data' => $card,
                             '{DAV:}getetag' => $etag,
                         ],
-                    ]
+                    ],
                 ]);
         });
 
         $pendingBatch = $fake->batch([
-            $job = new GetMultipleVCard($addressBookSubscription, ['https://test/dav/uri'])
+            $job = new GetMultipleVCard($addressBookSubscription, ['https://test/dav/uri']),
         ]);
         $batch = $pendingBatch->dispatch();
 
         $fake->assertBatched(function (PendingBatch $pendingBatch) {
             $this->assertCount(1, $pendingBatch->jobs);
             $this->assertInstanceOf(GetMultipleVCard::class, $pendingBatch->jobs->first());
+
             return true;
         });
 
@@ -90,6 +91,7 @@ class GetMultipleVCardTest extends TestCase
             $this->assertEquals('https://test/dav/uri', $dto->uri);
             $this->assertEquals($etag, $dto->etag);
             $this->assertEquals($card, $dto->card);
+
             return true;
         });
     }

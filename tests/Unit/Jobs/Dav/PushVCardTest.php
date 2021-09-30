@@ -4,20 +4,17 @@ namespace Tests\Unit\Jobs\Dav;
 
 use Tests\TestCase;
 use App\Models\User\User;
-use App\Jobs\Dav\GetVCard;
 use App\Jobs\Dav\PushVCard;
 use Tests\Api\DAV\CardEtag;
-use App\Jobs\Dav\UpdateVCard;
 use App\Models\Contact\Contact;
 use Illuminate\Bus\PendingBatch;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Bus\DatabaseBatchRepository;
 use App\Models\Account\AddressBookSubscription;
-use App\Services\DavClient\Utils\Model\ContactDto;
 use App\Services\DavClient\Utils\Model\ContactPushDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Http\Client\Request;
 
 class PushVCardTest extends TestCase
 {
@@ -53,24 +50,25 @@ class PushVCardTest extends TestCase
             $this->assertEquals('https://test/dav/uri', $request->url());
             $this->assertEquals('PUT', $request->method());
             $this->assertEquals($ifmatch, $request->header('If-Match'));
+
             return Http::response($card, 200);
         });
 
         $pendingBatch = $fake->batch([
-            $job = new PushVCard($addressBookSubscription, new ContactPushDto('uri', $etag, $card, $mode))
+            $job = new PushVCard($addressBookSubscription, new ContactPushDto('uri', $etag, $card, $mode)),
         ]);
         $batch = $pendingBatch->dispatch();
 
         $fake->assertBatched(function (PendingBatch $pendingBatch) {
             $this->assertCount(1, $pendingBatch->jobs);
             $this->assertInstanceOf(PushVCard::class, $pendingBatch->jobs->first());
+
             return true;
         });
 
         $batch = app(DatabaseBatchRepository::class)->store($pendingBatch);
         $job->withBatchId($batch->id)->handle();
     }
-
 
     public function modes(): array
     {

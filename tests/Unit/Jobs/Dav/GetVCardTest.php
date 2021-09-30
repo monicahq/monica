@@ -53,6 +53,7 @@ class GetVCardTest extends TestCase
         $fake->assertBatched(function (PendingBatch $pendingBatch) {
             $this->assertCount(1, $pendingBatch->jobs);
             $this->assertInstanceOf(GetVCard::class, $pendingBatch->jobs->first());
+
             return true;
         });
 
@@ -64,6 +65,7 @@ class GetVCardTest extends TestCase
             $this->assertEquals('https://test/dav/uri', $dto->uri);
             $this->assertEquals($etag, $dto->etag);
             $this->assertEquals($card, $dto->card);
+
             return true;
         });
     }

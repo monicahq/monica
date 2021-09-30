@@ -7,12 +7,12 @@ use App\Models\User\User;
 use Tests\Api\DAV\CardEtag;
 use App\Jobs\Dav\UpdateVCard;
 use App\Models\Contact\Contact;
+use Illuminate\Bus\PendingBatch;
 use App\Models\Account\AddressBook;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Bus\DatabaseBatchRepository;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\Model\ContactUpdateDto;
-use Illuminate\Bus\DatabaseBatchRepository;
-use Illuminate\Bus\PendingBatch;
-use Illuminate\Support\Facades\Bus;
 
 class UpdateVCardTest extends TestCase
 {
@@ -40,13 +40,14 @@ class UpdateVCardTest extends TestCase
         $etag = $this->getEtag($contact, true);
 
         $pendingBatch = $fake->batch([
-            $job = new UpdateVCard($user, $addressBook->name, new ContactUpdateDto('https://test/dav/uricontact1', $etag, $card))
+            $job = new UpdateVCard($user, $addressBook->name, new ContactUpdateDto('https://test/dav/uricontact1', $etag, $card)),
         ]);
         $batch = $pendingBatch->dispatch();
 
         $fake->assertBatched(function (PendingBatch $pendingBatch) {
             $this->assertCount(1, $pendingBatch->jobs);
             $this->assertInstanceOf(UpdateVCard::class, $pendingBatch->jobs->first());
+
             return true;
         });
 
