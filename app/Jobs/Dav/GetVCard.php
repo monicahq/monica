@@ -47,11 +47,11 @@ class GetVCard implements ShouldQueue
      */
     public function handle(): void
     {
-        if ($this->batch()->cancelled()) {
+        if (! $this->batching()) {
             return;
         }
 
-        Log::info(__CLASS__.' getVCard '.$this->contact->uri);
+        Log::info(__CLASS__.' '.$this->contact->uri);
 
         $response = $this->subscription->getRequest()
             ->get($this->contact->uri);
@@ -59,8 +59,19 @@ class GetVCard implements ShouldQueue
         $response->throw();
 
         if (($card = $response->body()) !== null) {
-            $dto = new ContactUpdateDto($this->contact->uri, $this->contact->etag, $card);
-            $this->batch()->add([
+            $this->chainUpdateVCard($card);
+        } else {
+            Log::warning(__CLASS__.' card body is empty!');
+        }
+    }
+
+    private function chainUpdateVCard(string $card): void
+    {
+        $dto = new ContactUpdateDto($this->contact->uri, $this->contact->etag, $card);
+
+        $batch = $this->batch();
+        if ($batch !== null) {
+            $batch->add([
                 new UpdateVCard($this->subscription->user, $this->subscription->addressbook->name, $dto),
             ]);
         }

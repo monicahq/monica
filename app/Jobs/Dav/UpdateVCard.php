@@ -54,7 +54,7 @@ class UpdateVCard implements ShouldQueue
      */
     public function handle(): void
     {
-        if ($this->batch()->cancelled()) {
+        if (! $this->batching()) {
             return;
         }
 

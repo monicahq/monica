@@ -46,11 +46,11 @@ class PushVCard implements ShouldQueue
      */
     public function handle(): void
     {
-        if ($this->batch()->cancelled()) {
+        if (! $this->batching()) {
             return;
         }
 
-        Log::info(__CLASS__.' pushVCard '.$this->contact->uri);
+        Log::info(__CLASS__.' '.$this->contact->uri);
 
         $headers = [];
 
@@ -67,7 +67,7 @@ class PushVCard implements ShouldQueue
         $response->throw();
 
         if (! empty($etag = $response->header('Etag')) && $etag !== $this->contact->etag) {
-            Log::warning(__CLASS__.' pushVCard: wrong etag when updating contact. Expected '.$this->contact->etag.', get '.$etag);
+            Log::warning(__CLASS__.' wrong etag when updating contact. Expected '.$this->contact->etag.', get '.$etag);
         }
     }
 }

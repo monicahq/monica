@@ -48,11 +48,11 @@ class GetMultipleVCard implements ShouldQueue
      */
     public function handle(): void
     {
-        if ($this->batch()->cancelled()) {
+        if (! $this->batching()) {
             return;
         }
 
-        $datas = DavClient::addressbookMultiget($this->subscription->getRequest(), [
+        $datas = app(DavClient::class)->addressbookMultiget($this->subscription->getRequest(), [
             '{DAV:}getetag',
             $this->getAddressDataProperty(),
         ], $this->hrefs);
@@ -78,14 +78,14 @@ class GetMultipleVCard implements ShouldQueue
         $card = Arr::get($contact, '200.{'.CardDAVPlugin::NS_CARDDAV.'}address-data');
 
         if ($card !== null) {
-            $dto = new ContactUpdateDto(
-                $href,
-                Arr::get($contact, '200.{DAV:}getetag'),
-                $card
-            );
-            $this->batch()->add([
-                new UpdateVCard($this->subscription->user, $this->subscription->addressbook->name, $dto),
-            ]);
+            $dto = new ContactUpdateDto($href, Arr::get($contact, '200.{DAV:}getetag'), $card);
+
+            $batch = $this->batch();
+            if ($batch !== null) {
+                $batch->add([
+                    new UpdateVCard($this->subscription->user, $this->subscription->addressbook->name, $dto),
+                ]);
+            }
         }
     }
 
