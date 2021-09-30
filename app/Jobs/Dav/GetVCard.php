@@ -58,11 +58,7 @@ class GetVCard implements ShouldQueue
 
         $response->throw();
 
-        if (($card = $response->body()) !== null) {
-            $this->chainUpdateVCard($card);
-        } else {
-            Log::warning(__CLASS__.' card body is empty!');
-        }
+        $this->chainUpdateVCard($response->body());
     }
 
     private function chainUpdateVCard(string $card): void
