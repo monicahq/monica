@@ -40,5 +40,7 @@ class AssociatePhotoToGift extends BaseService
         $gift->contact->throwInactive();
 
         $gift->photos()->syncWithoutDetaching([$photo->id]);
+
+        return $gift;
     }
 }
