@@ -8,13 +8,12 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Model\ContactPushDto;
 
 class PushVCard implements ShouldQueue
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * @var AddressBookSubscription

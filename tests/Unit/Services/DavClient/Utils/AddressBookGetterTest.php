@@ -21,7 +21,7 @@ class AddressBookGetterTest extends TestCase
             ->addressBookBaseUri()
             ->capabilities()
             ->displayName();
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
         $result = (new AddressBookGetter())
             ->execute($client);
 
@@ -47,7 +47,7 @@ class AddressBookGetterTest extends TestCase
         $tester = (new DavTester())
             ->serviceUrl()
             ->optionsFail();
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $this->expectException(DavServerNotCompliantException::class);
         (new AddressBookGetter())
@@ -62,7 +62,7 @@ class AddressBookGetterTest extends TestCase
             ->optionsOk()
             ->userPrincipalEmpty();
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $this->expectException(DavServerNotCompliantException::class);
         (new AddressBookGetter())
@@ -78,7 +78,7 @@ class AddressBookGetterTest extends TestCase
             ->userPrincipal()
             ->addressbookEmpty();
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $this->expectException(DavServerNotCompliantException::class);
         (new AddressBookGetter())
@@ -94,7 +94,7 @@ class AddressBookGetterTest extends TestCase
             ->userPrincipal()
             ->addressbookHome()
             ->resourceTypeHomeOnly();
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $this->expectException(DavClientException::class);
         (new AddressBookGetter())

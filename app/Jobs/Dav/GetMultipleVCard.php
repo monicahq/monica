@@ -9,14 +9,13 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 
 class GetMultipleVCard implements ShouldQueue
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * @var AddressBookSubscription
@@ -80,8 +79,7 @@ class GetMultipleVCard implements ShouldQueue
         if ($card !== null) {
             $dto = new ContactUpdateDto($href, Arr::get($contact, '200.{DAV:}getetag'), $card);
 
-            $batch = $this->batch();
-            if ($batch !== null) {
+            if (($batch = $this->batch()) !== null) {
                 $batch->add([
                     new UpdateVCard($this->subscription->user, $this->subscription->addressbook->name, $dto),
                 ]);

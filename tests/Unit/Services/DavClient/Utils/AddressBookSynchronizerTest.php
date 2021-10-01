@@ -43,7 +43,7 @@ class AddressBookSynchronizerTest extends TestCase
 
         $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'))
             ->getSynctoken($subscription->syncToken);
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         (new AddressBookSynchronizer())
             ->execute(new SyncDto($subscription, $client, $backend));
@@ -69,7 +69,7 @@ class AddressBookSynchronizerTest extends TestCase
         $tester->getSynctoken('"test21"')
             ->getSyncCollection('test20');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         (new AddressBookSynchronizer())
             ->execute(new SyncDto($subscription, $client, $backend));
@@ -95,7 +95,7 @@ class AddressBookSynchronizerTest extends TestCase
         $tester->getSynctoken('"token"')
             ->getSyncCollection('token', '"test2"');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $sync = new SyncDto($subscription, $client, $backend);
         $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) use ($sync) {
@@ -135,7 +135,7 @@ class AddressBookSynchronizerTest extends TestCase
         $tester->getSynctoken('"token"')
             ->getSyncCollection('token', '"test2"');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $sync = new SyncDto($subscription, $client, $backend);
 
@@ -187,7 +187,7 @@ class AddressBookSynchronizerTest extends TestCase
           '</d:prop>'.
         "</card:addressbook-query>\n", 'REPORT');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $sync = new SyncDto($subscription, $client, $backend);
         $this->mock(AddressBookContactsUpdaterMissed::class, function (MockInterface $mock) use ($sync, $contact, $etag) {
@@ -248,7 +248,7 @@ class AddressBookSynchronizerTest extends TestCase
           '</d:prop>'.
         "</card:addressbook-query>\n", 'REPORT');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $sync = new SyncDto($subscription, $client, $backend);
 

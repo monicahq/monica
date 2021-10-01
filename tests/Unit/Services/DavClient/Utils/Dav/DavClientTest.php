@@ -20,13 +20,13 @@ class DavClientTest extends TestCase
     public function it_fails_if_no_baseuri()
     {
         $this->expectException(\InvalidArgumentException::class);
-        new DavClient([]);
+        app(DavClient::class)->init([]);
     }
 
     /** @test */
     public function it_accept_guzzle_client()
     {
-        $client = new DavClient([], new \GuzzleHttp\Client());
+        $client = app(DavClient::class)->init([], new \GuzzleHttp\Client());
         $this->assertInstanceOf(DavClient::class, $client);
     }
 
@@ -37,7 +37,7 @@ class DavClientTest extends TestCase
             ->addResponse('https://test', new Response(200, []), null, 'OPTIONS')
             ->addResponse('https://test', new Response(200, ['Dav' => 'test']), null, 'OPTIONS')
             ->addResponse('https://test', new Response(200, ['Dav' => ' test ']), null, 'OPTIONS');
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $result = $client->options();
         $this->assertEquals([], $result);
@@ -56,7 +56,7 @@ class DavClientTest extends TestCase
     {
         $tester = (new DavTester())
             ->serviceUrl();
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $result = $client->getServiceUrl();
 
@@ -70,7 +70,7 @@ class DavClientTest extends TestCase
         $tester = (new DavTester())
             ->addResponse('https://test/.well-known/carddav', new Response(200), null, 'GET')
             ->nonStandardServiceUrl();
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $result = $client->getServiceUrl();
 
@@ -84,7 +84,7 @@ class DavClientTest extends TestCase
         $tester = (new DavTester())
             ->addResponse('https://test/.well-known/carddav', new Response(404), null, 'GET')
             ->nonStandardServiceUrl();
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $result = $client->getServiceUrl();
 
@@ -97,7 +97,7 @@ class DavClientTest extends TestCase
     {
         $tester = (new DavTester())
             ->addResponse('https://test/.well-known/carddav', new Response(500), null, 'GET');
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $this->expectException(ServerException::class);
         $client->getServiceUrl();
@@ -107,7 +107,7 @@ class DavClientTest extends TestCase
     public function it_get_base_uri()
     {
         $tester = (new DavTester());
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $result = $client->getBaseUri();
 
@@ -122,7 +122,7 @@ class DavClientTest extends TestCase
     public function it_set_base_uri()
     {
         $tester = (new DavTester());
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $result = $client->setBaseUri('https://new')
             ->getBaseUri();
@@ -152,7 +152,7 @@ class DavClientTest extends TestCase
               '</d:prop>'.
             "</d:propfind>\n", 'PROPFIND');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $result = $client->propFind('https://test/test', ['{DAV:}test']);
 
@@ -184,7 +184,7 @@ class DavClientTest extends TestCase
               '</d:prop>'.
             "</d:propfind>\n", 'PROPFIND');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $result = $client->getProperty('{DAV:}test', 'https://test/test');
 
@@ -221,7 +221,7 @@ class DavClientTest extends TestCase
               '</d:prop>'.
             "</d:propfind>\n", 'PROPFIND');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $result = $client->getSupportedReportSet();
 
@@ -255,7 +255,7 @@ class DavClientTest extends TestCase
               '</d:prop>'.
             "</d:sync-collection>\n", 'REPORT');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $result = $client->syncCollectionAsync('https://test/test', ['{DAV:}test'], '')
             ->wait();
@@ -298,7 +298,7 @@ class DavClientTest extends TestCase
               '</d:prop>'.
             "</d:sync-collection>\n", 'REPORT');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $result = $client->syncCollectionAsync('https://test/test', ['{DAV:}test'], '"00000-abcd0"')
             ->wait();
@@ -333,7 +333,7 @@ class DavClientTest extends TestCase
             '</d:multistatus>'),
         ]);
 
-        $result = DavClient::addressbookMultiget(Http::baseUrl('https://test/test'), ['{DAV:}test'], [
+        $result = app(DavClient::class)->addressbookMultiget(Http::baseUrl('https://test/test'), ['{DAV:}test'], [
             'https://test/contacts/1',
         ]);
 
@@ -384,7 +384,7 @@ class DavClientTest extends TestCase
               '</d:prop>'.
             "</card:addressbook-query>\n", 'REPORT');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $result = $client->addressbookQueryAsync('https://test/test', ['{DAV:}test'])
             ->wait();
@@ -424,7 +424,7 @@ class DavClientTest extends TestCase
             ' </d:set>'."\n".
             "</d:propertyupdate>\n", 'PROPPATCH');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $result = $client->propPatchAsync('https://test/test', ['{DAV:}test' => 'value'])
             ->wait();
@@ -464,7 +464,7 @@ class DavClientTest extends TestCase
             ' </d:set>'."\n".
             "</d:propertyupdate>\n", 'PROPPATCH');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $this->expectException(DavClientException::class);
         $this->expectExceptionMessage('PROPPATCH failed. The following properties errored: {DAV:}test (405), {DAV:}excerpt (500)');

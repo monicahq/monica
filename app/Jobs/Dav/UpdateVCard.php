@@ -9,13 +9,12 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 
 class UpdateVCard implements ShouldQueue
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * @var User

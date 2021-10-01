@@ -24,25 +24,32 @@ class DavClient
     protected $client;
 
     /**
-     * Create a new client.
+     * Initialize the client.
      *
      * @param  array  $settings
      * @param  GuzzleClient  $client
+     * @return DavClient
      */
-    public function __construct(array $settings, GuzzleClient $client = null)
+    public static function init(array $settings, GuzzleClient $client = null): DavClient
     {
         if (is_null($client) && ! isset($settings['base_uri'])) {
             throw new \InvalidArgumentException('A baseUri must be provided');
         }
 
-        $this->client = is_null($client) ? new GuzzleClient([
-            'base_uri' => $settings['base_uri'],
-            'auth' => [
-                $settings['username'],
-                $settings['password'],
-            ],
-            'verify' => ! App::environment('local'),
-        ]) : $client;
+        $me = new self();
+
+        $me->client = is_null($client)
+            ? new GuzzleClient([
+                'base_uri' => $settings['base_uri'],
+                'auth' => [
+                    $settings['username'],
+                    $settings['password'],
+                ],
+                'verify' => ! App::environment('local'),
+            ])
+            : $client;
+
+        return $me;
     }
 
     /**
@@ -130,7 +137,7 @@ class DavClient
     {
         $baseUri = $this->client->getConfig('base_uri');
 
-        return is_null($path) ? $baseUri : $baseUri->withPath($path);
+        return (string) (is_null($path) ? $baseUri : $baseUri->withPath($path));
     }
 
     /**

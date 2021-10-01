@@ -67,7 +67,7 @@ class AddressBookContactsPushTest extends TestCase
         });
 
         $tester = new DavTester();
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $batchs = (new AddressBookContactsPush())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
@@ -130,7 +130,7 @@ class AddressBookContactsPushTest extends TestCase
         });
 
         $tester = new DavTester();
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $batchs = (new AddressBookContactsPush())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
