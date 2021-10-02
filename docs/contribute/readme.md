@@ -177,7 +177,7 @@ sudo apt -y -f install google-chrome-stable fonts-liberation libappindicator1
 
 You should never make real HTTP calls in your unit tests - like querying an external API that is not linked to Monica.
 
-You can mock http calls by mocking calls made by Guzzl.
+You can mock http calls by mocking calls made by Guzzle.
 
 You can find an example of how mocking is done in the `GetWeatherInformationTest.php` file.
 
@@ -356,7 +356,7 @@ We use the default Laravel helper: `trans('app.save')`.
 For everything that is in VueJS though, things are a bit different. We have to use a special library to allow translated strings to be available in the javascript views. The helper in Vue is slightly different.
 
 You can use these replacements instead of the regular (php) definition:
-* `trans('file.string')` is writen `$t('file.string')`.
+* `trans('file.string')` is written `$t('file.string')`.
 * `trans('file.string', ['param' => $value])` is written `$t('file.string', {param: value})`.
 * `trans_choice('file.string', $count)` is written `$tc('file.string', count)` or `$tc('file.string', count, {param: value})`.
 
