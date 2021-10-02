@@ -7,7 +7,7 @@
 
 <div align="center">
 
-[![Build Status](https://img.shields.io/azure-devops/build/monicahq/monica/monica%20CI/master)](https://dev.azure.com/monicahq/monica)
+[![Build Status](https://github.com/monicahq/monica/actions/workflows/tests.yml/badge.svg)](https://github.com/monicahq/monica/actions)
 [![Docker pulls](https://img.shields.io/docker/pulls/library/monica)](https://hub.docker.com/_/monica/)
 ![Lines of code](https://img.shields.io/tokei/lines/github/monicahq/monica)
 [![Code coverage](https://img.shields.io/sonar/coverage/monica?server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/project/activity?custom_metrics=coverage&amp;graph=custom&amp;id=monica)
