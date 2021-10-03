@@ -9,7 +9,9 @@ use Tests\Helpers\DavTester;
 use GuzzleHttp\Psr7\Response;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
-use GuzzleHttp\Promise\Promise;
+use Illuminate\Bus\PendingBatch;
+use App\Jobs\Dav\GetMultipleVCard;
+use Illuminate\Support\Facades\Bus;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
@@ -28,6 +30,8 @@ class AddressBookSynchronizerTest extends TestCase
     /** @test */
     public function it_sync_empty_changes()
     {
+        Bus::fake();
+
         $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) {
             $mock->shouldReceive('execute')
                 ->once()
@@ -39,7 +43,7 @@ class AddressBookSynchronizerTest extends TestCase
 
         $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'))
             ->getSynctoken($subscription->syncToken);
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         (new AddressBookSynchronizer())
             ->execute(new SyncDto($subscription, $client, $backend));
@@ -50,6 +54,8 @@ class AddressBookSynchronizerTest extends TestCase
     /** @test */
     public function it_sync_no_changes()
     {
+        Bus::fake();
+
         $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) {
             $mock->shouldReceive('execute')
                 ->once()
@@ -63,7 +69,7 @@ class AddressBookSynchronizerTest extends TestCase
         $tester->getSynctoken('"test21"')
             ->getSyncCollection('test20');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         (new AddressBookSynchronizer())
             ->execute(new SyncDto($subscription, $client, $backend));
@@ -74,6 +80,8 @@ class AddressBookSynchronizerTest extends TestCase
     /** @test */
     public function it_sync_changes_added_local_contact()
     {
+        Bus::fake();
+
         $subscription = $this->getSubscription();
         $backend = new CardDAVBackend($subscription->user);
 
@@ -87,7 +95,7 @@ class AddressBookSynchronizerTest extends TestCase
         $tester->getSynctoken('"token"')
             ->getSyncCollection('token', '"test2"');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $sync = new SyncDto($subscription, $client, $backend);
         $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) use ($sync) {
@@ -100,9 +108,7 @@ class AddressBookSynchronizerTest extends TestCase
 
                     return true;
                 })
-                ->andReturn(new Promise(function () {
-                    return true;
-                }));
+                ->andReturn(collect());
         });
 
         (new AddressBookSynchronizer())
@@ -112,8 +118,47 @@ class AddressBookSynchronizerTest extends TestCase
     }
 
     /** @test */
+    public function it_sync_changes_added_local_contact_batched()
+    {
+        Bus::fake();
+
+        $subscription = $this->getSubscription();
+        $backend = new CardDAVBackend($subscription->user);
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $subscription->account_id,
+            'address_book_id' => $subscription->address_book_id,
+            'uuid' => 'd403af1c-8492-4e9b-9833-cf18c795dfa9',
+        ]);
+
+        $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
+        $tester->getSynctoken('"token"')
+            ->getSyncCollection('token', '"test2"');
+
+        $client = app(DavClient::class)->init([], $tester->getClient());
+
+        $sync = new SyncDto($subscription, $client, $backend);
+
+        (new AddressBookSynchronizer())
+            ->execute($sync);
+
+        $tester->assert();
+
+        Bus::assertBatched(function (PendingBatch $batch) {
+            $this->assertCount(1, $batch->jobs);
+            $job = $batch->jobs[0];
+            $this->assertInstanceOf(GetMultipleVCard::class, $job);
+            $this->assertEquals(['https://test/dav/addressbooks/user@test.com/contacts/uuid'], $this->getPrivateValue($job, 'hrefs'));
+
+            return true;
+        });
+    }
+
+    /** @test */
     public function it_forcesync_changes_added_local_contact()
     {
+        Bus::fake();
+
         $subscription = $this->getSubscription();
         $backend = new CardDAVBackend($subscription->user);
 
@@ -142,7 +187,7 @@ class AddressBookSynchronizerTest extends TestCase
           '</d:prop>'.
         "</card:addressbook-query>\n", 'REPORT');
 
-        $client = new DavClient([], $tester->getClient());
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
         $sync = new SyncDto($subscription, $client, $backend);
         $this->mock(AddressBookContactsUpdaterMissed::class, function (MockInterface $mock) use ($sync, $contact, $etag) {
@@ -156,22 +201,70 @@ class AddressBookSynchronizerTest extends TestCase
 
                     return true;
                 })
-                ->andReturn(new Promise(function () {
-                    return true;
-                }));
+                ->andReturn(collect());
         });
         $this->mock(AddressBookContactsPushMissed::class, function (MockInterface $mock) {
             $mock->shouldReceive('execute')
                 ->once()
-                ->andReturn(new Promise(function () {
-                    return true;
-                }));
+                ->andReturn(collect());
         });
 
         (new AddressBookSynchronizer())
             ->execute($sync, true);
 
         $tester->assert();
+    }
+
+    /** @test */
+    public function it_forcesync_changes_added_local_contact_batched()
+    {
+        Bus::fake();
+
+        $subscription = $this->getSubscription();
+        $backend = new CardDAVBackend($subscription->user);
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $subscription->account_id,
+            'address_book_id' => $subscription->address_book_id,
+            'uuid' => 'd403af1c-8492-4e9b-9833-cf18c795dfa9',
+        ]);
+        $etag = $this->getEtag($contact, true);
+
+        $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
+        $tester->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $tester->multistatusHeader().
+        '<d:response>'.
+            '<d:href>https://test/dav/uuid1</d:href>'.
+            '<d:propstat>'.
+                '<d:prop>'.
+                    "<d:getetag>$etag</d:getetag>".
+                '</d:prop>'.
+                '<d:status>HTTP/1.1 200 OK</d:status>'.
+            '</d:propstat>'.
+        '</d:response>'.
+        '</d:multistatus>'), '<?xml version="1.0" encoding="UTF-8"?>'."\n".
+        '<card:addressbook-query xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:d="DAV:">'.
+          '<d:prop>'.
+            '<d:getetag/>'.
+          '</d:prop>'.
+        "</card:addressbook-query>\n", 'REPORT');
+
+        $client = app(DavClient::class)->init([], $tester->getClient());
+
+        $sync = new SyncDto($subscription, $client, $backend);
+
+        (new AddressBookSynchronizer())
+            ->execute($sync, true);
+
+        $tester->assert();
+
+        Bus::assertBatched(function (PendingBatch $batch) {
+            $this->assertCount(1, $batch->jobs);
+            $job = $batch->jobs[0];
+            $this->assertInstanceOf(GetMultipleVCard::class, $job);
+            $this->assertEquals(['https://test/dav/uuid1'], $this->getPrivateValue($job, 'hrefs'));
+
+            return true;
+        });
     }
 
     private function getSubscription()

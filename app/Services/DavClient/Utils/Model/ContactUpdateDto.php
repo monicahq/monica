@@ -2,10 +2,13 @@
 
 namespace App\Services\DavClient\Utils\Model;
 
+use function Safe\fclose;
+use function Safe\stream_get_contents;
+
 class ContactUpdateDto extends ContactDto
 {
     /**
-     * @var string|resource
+     * @var string
      */
     public $card;
 
@@ -18,8 +21,24 @@ class ContactUpdateDto extends ContactDto
      */
     public function __construct(string $uri, string $etag, $card)
     {
-        $this->uri = $uri;
-        $this->etag = $etag;
-        $this->card = $card;
+        parent::__construct($uri, $etag);
+        $this->card = self::transformCard($card);
+    }
+
+    /**
+     * Transform card.
+     *
+     * @param  string|resource  $card
+     * @return string
+     */
+    protected static function transformCard($card): string
+    {
+        if (is_resource($card)) {
+            $card = tap(stream_get_contents($card), function () use ($card) {
+                fclose($card);
+            });
+        }
+
+        return $card;
     }
 }

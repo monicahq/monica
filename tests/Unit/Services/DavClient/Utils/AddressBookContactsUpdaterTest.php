@@ -3,12 +3,13 @@
 namespace Tests\Unit\Services\DavClient\Utils;
 
 use Tests\TestCase;
+use App\Jobs\Dav\GetVCard;
 use Mockery\MockInterface;
 use Tests\Api\DAV\CardEtag;
 use Tests\Helpers\DavTester;
-use GuzzleHttp\Psr7\Response;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
+use App\Jobs\Dav\GetMultipleVCard;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
@@ -55,18 +56,19 @@ class AddressBookContactsUpdaterTest extends TestCase
                 ->andReturn($etag);
         });
 
-        $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
-        $tester->addressMultiGet($etag, $card, 'https://test/dav/uuid2');
+        $tester = new DavTester();
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
-        $client = new DavClient([], $tester->getClient());
-
-        (new AddressBookContactsUpdater())
+        $batchs = (new AddressBookContactsUpdater())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
                 'https://test/dav/uuid2' => new ContactDto('https://test/dav/uuid2', $etag),
-            ]))
-            ->wait();
+            ]));
 
-        $tester->assert();
+        $this->assertCount(1, $batchs);
+        $batch = $batchs->first();
+        $this->assertInstanceOf(GetMultipleVCard::class, $batch);
+        $hrefs = $this->getPrivateValue($batch, 'hrefs');
+        $this->assertEquals(['https://test/dav/uuid2'], $hrefs);
     }
 
     /** @test */
@@ -121,17 +123,19 @@ class AddressBookContactsUpdaterTest extends TestCase
                 ->andReturn($etag);
         });
 
-        $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
-        $tester->addResponse('https://test/dav/uuid2', new Response(200, [], $card), null, 'GET');
+        $tester = new DavTester();
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
-        $client = new DavClient([], $tester->getClient());
-
-        (new AddressBookContactsUpdater())
+        $batchs = (new AddressBookContactsUpdater())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
                 'https://test/dav/uuid2' => new ContactDto('https://test/dav/uuid2', $etag),
-            ]))
-            ->wait();
+            ]));
 
-        $tester->assert();
+        $this->assertCount(1, $batchs);
+        $batch = $batchs->first();
+        $this->assertInstanceOf(GetVCard::class, $batch);
+        $dto = $this->getPrivateValue($batch, 'contact');
+        $this->assertInstanceOf(ContactDto::class, $dto);
+        $this->assertEquals('https://test/dav/uuid2', $dto->uri);
     }
 }

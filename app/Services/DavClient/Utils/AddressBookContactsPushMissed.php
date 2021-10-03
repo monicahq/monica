@@ -2,10 +2,9 @@
 
 namespace App\Services\DavClient\Utils;
 
-use GuzzleHttp\Psr7\Request;
+use App\Jobs\Dav\PushVCard;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
-use GuzzleHttp\Promise\PromiseInterface;
 use IlluminateAgnostic\Collection\Support\Arr;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
@@ -25,16 +24,17 @@ class AddressBookContactsPushMissed
      * @param  array<array-key, string>|null  $localChanges
      * @param  Collection<array-key, ContactDto>  $distContacts
      * @param  Collection<array-key, Contact>  $localContacts
-     * @return PromiseInterface
+     * @return Collection
      */
-    public function execute(SyncDto $sync, ?array $localChanges, Collection $distContacts, Collection $localContacts): PromiseInterface
+    public function execute(SyncDto $sync, ?array $localChanges, Collection $distContacts, Collection $localContacts): Collection
     {
         $this->sync = $sync;
 
-        $missed = $this->preparePushMissedContacts(Arr::get($localChanges, 'added', []), $distContacts, $localContacts);
+        $missings = $this->preparePushMissedContacts(Arr::get($localChanges, 'added', []), $distContacts, $localContacts);
 
         return app(AddressBookContactsPush::class)
-            ->execute($sync, collect(), $localChanges, $missed);
+            ->execute($sync, collect(), $localChanges)
+            ->union($missings);
     }
 
     /**
@@ -43,7 +43,7 @@ class AddressBookContactsPushMissed
      * @param  array<array-key, string>  $added
      * @param  Collection<array-key, ContactDto>  $distContacts
      * @param  Collection<array-key, Contact>  $localContacts
-     * @return Collection<array-key, ContactPushDto>
+     * @return Collection
      */
     private function preparePushMissedContacts(array $added, Collection $distContacts, Collection $localContacts): Collection
     {
@@ -61,11 +61,10 @@ class AddressBookContactsPushMissed
             ->filter(function (Contact $contact) use ($distUuids, $addedUuids) {
                 return ! $distUuids->contains($contact->uuid)
                     && ! $addedUuids->contains($contact->uuid);
-            })->map(function (Contact $contact): ContactPushDto {
+            })->map(function (Contact $contact): PushVCard {
                 $card = $this->sync->backend->prepareCard($contact);
 
-                return new ContactPushDto($card['uri'], $card['etag'], new Request('PUT', $card['uri'], ['If-Match' => '*'], $card['carddata']));
-            })
-            ->values();
+                return new PushVCard($this->sync->subscription, new ContactPushDto($card['uri'], $card['etag'], $card['carddata'], 2));
+            });
     }
 }

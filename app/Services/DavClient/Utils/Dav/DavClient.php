@@ -13,44 +13,43 @@ use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Exception\ClientException;
+use Illuminate\Http\Client\PendingRequest;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 
 class DavClient
 {
-    /**
-     * The xml service.
-     *
-     * @var Service
-     */
-    public $xml;
-
     /**
      * @var GuzzleClient
      */
     protected $client;
 
     /**
-     * Create a new client.
+     * Initialize the client.
      *
      * @param  array  $settings
      * @param  GuzzleClient  $client
+     * @return DavClient
      */
-    public function __construct(array $settings, GuzzleClient $client = null)
+    public static function init(array $settings, GuzzleClient $client = null): DavClient
     {
         if (is_null($client) && ! isset($settings['base_uri'])) {
             throw new \InvalidArgumentException('A baseUri must be provided');
         }
 
-        $this->client = is_null($client) ? new GuzzleClient([
-            'base_uri' => $settings['base_uri'],
-            'auth' => [
-                $settings['username'],
-                $settings['password'],
-            ],
-            'verify' => ! App::environment('local'),
-        ]) : $client;
+        $me = new self();
 
-        $this->xml = new Service();
+        $me->client = is_null($client)
+            ? new GuzzleClient([
+                'base_uri' => $settings['base_uri'],
+                'auth' => [
+                    $settings['username'],
+                    $settings['password'],
+                ],
+                'verify' => ! App::environment('local'),
+            ])
+            : $client;
+
+        return $me;
     }
 
     /**
@@ -138,7 +137,7 @@ class DavClient
     {
         $baseUri = $this->client->getConfig('base_uri');
 
-        return is_null($path) ? $baseUri : $baseUri->withPath($path);
+        return (string) (is_null($path) ? $baseUri : $baseUri->withPath($path));
     }
 
     /**
@@ -210,14 +209,14 @@ class DavClient
     public function propFindAsync(string $url, $properties, int $depth = 0, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
-        $root = $this->addElementNS($dom, 'DAV:', 'd:propfind');
-        $prop = $this->addElement($dom, $root, 'd:prop');
+        $root = self::addElementNS($dom, 'DAV:', 'd:propfind');
+        $prop = self::addElement($dom, $root, 'd:prop');
 
         $namespaces = [
             'DAV:' => 'd',
         ];
 
-        $this->fetchProperties($dom, $prop, $properties, $namespaces);
+        self::fetchProperties($dom, $prop, $properties, $namespaces);
 
         $body = $dom->saveXML();
 
@@ -225,7 +224,7 @@ class DavClient
             'Depth' => $depth,
             'Content-Type' => 'application/xml; charset=utf-8',
         ], $body, $options)->then(function (ResponseInterface $response) use ($depth): array {
-            $result = $this->parseMultiStatus((string) $response->getBody());
+            $result = self::parseMultiStatus((string) $response->getBody());
 
             // If depth was 0, we only return the top item value
             if ($depth === 0) {
@@ -254,18 +253,18 @@ class DavClient
     public function syncCollectionAsync(string $url, $properties, string $syncToken, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
-        $root = $this->addElementNS($dom, 'DAV:', 'd:sync-collection');
+        $root = self::addElementNS($dom, 'DAV:', 'd:sync-collection');
 
-        $this->addElement($dom, $root, 'd:sync-token', $syncToken);
-        $this->addElement($dom, $root, 'd:sync-level', '1');
+        self::addElement($dom, $root, 'd:sync-token', $syncToken);
+        self::addElement($dom, $root, 'd:sync-level', '1');
 
-        $prop = $this->addElement($dom, $root, 'd:prop');
+        $prop = self::addElement($dom, $root, 'd:prop');
 
         $namespaces = [
             'DAV:' => 'd',
         ];
 
-        $this->fetchProperties($dom, $prop, $properties, $namespaces);
+        self::fetchProperties($dom, $prop, $properties, $namespaces);
 
         $body = $dom->saveXML();
 
@@ -273,7 +272,7 @@ class DavClient
             'Depth' => '0',
             'Content-Type' => 'application/xml; charset=utf-8',
         ], $body, $options)->then(function (ResponseInterface $response) {
-            return $this->parseMultiStatus((string) $response->getBody());
+            return self::parseMultiStatus((string) $response->getBody());
         });
     }
 
@@ -283,37 +282,38 @@ class DavClient
      * @param  string  $url
      * @param  array|string  $properties
      * @param  iterable  $contacts
-     * @return PromiseInterface
+     * @return array
      *
      * @see https://datatracker.ietf.org/doc/html/rfc6352#section-8.7
      */
-    public function addressbookMultigetAsync(string $url, $properties, iterable $contacts, array $options = []): PromiseInterface
+    public static function addressbookMultiget(PendingRequest $request, $properties, iterable $contacts, string $url = '', array $options = []): array
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
-        $root = $this->addElementNS($dom, CardDAVPlugin::NS_CARDDAV, 'card:addressbook-multiget');
+        $root = self::addElementNS($dom, CardDAVPlugin::NS_CARDDAV, 'card:addressbook-multiget');
         $dom->createAttributeNS('DAV:', 'd:e');
 
-        $prop = $this->addElement($dom, $root, 'd:prop');
+        $prop = self::addElement($dom, $root, 'd:prop');
 
         $namespaces = [
             'DAV:' => 'd',
             CardDAVPlugin::NS_CARDDAV => 'card',
         ];
 
-        $this->fetchProperties($dom, $prop, $properties, $namespaces);
+        self::fetchProperties($dom, $prop, $properties, $namespaces);
 
         foreach ($contacts as $contact) {
-            $this->addElement($dom, $root, 'd:href', $contact);
+            self::addElement($dom, $root, 'd:href', $contact);
         }
 
         $body = $dom->saveXML();
 
-        return $this->requestAsync('REPORT', $url, [
-            'Depth' => '1',
-            'Content-Type' => 'application/xml; charset=utf-8',
-        ], $body, $options)->then(function (ResponseInterface $response) {
-            return $this->parseMultiStatus((string) $response->getBody());
-        });
+        $response = $request->withHeaders(['Depth' => '1'])
+            ->withBody($body, 'application/xml; charset=utf-8')
+            ->send('REPORT', $url, $options);
+
+        $response->throw();
+
+        return self::parseMultiStatus($response->body());
     }
 
     /**
@@ -328,17 +328,17 @@ class DavClient
     public function addressbookQueryAsync(string $url, $properties, array $options = []): PromiseInterface
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
-        $root = $this->addElementNS($dom, CardDAVPlugin::NS_CARDDAV, 'card:addressbook-query');
+        $root = self::addElementNS($dom, CardDAVPlugin::NS_CARDDAV, 'card:addressbook-query');
         $dom->createAttributeNS('DAV:', 'd:e');
 
-        $prop = $this->addElement($dom, $root, 'd:prop');
+        $prop = self::addElement($dom, $root, 'd:prop');
 
         $namespaces = [
             'DAV:' => 'd',
             CardDAVPlugin::NS_CARDDAV => 'card',
         ];
 
-        $this->fetchProperties($dom, $prop, $properties, $namespaces);
+        self::fetchProperties($dom, $prop, $properties, $namespaces);
 
         $body = $dom->saveXML();
 
@@ -346,7 +346,7 @@ class DavClient
             'Depth' => '1',
             'Content-Type' => 'application/xml; charset=utf-8',
         ], $body, $options)->then(function (ResponseInterface $response) {
-            return $this->parseMultiStatus((string) $response->getBody());
+            return self::parseMultiStatus((string) $response->getBody());
         });
     }
 
@@ -374,7 +374,7 @@ class DavClient
      * @param  array  $namespaces
      * @return void
      */
-    private function fetchProperties(\DOMDocument $dom, \DOMNode $prop, $properties, array $namespaces)
+    private static function fetchProperties(\DOMDocument $dom, \DOMNode $prop, $properties, array $namespaces)
     {
         if (is_string($properties)) {
             $properties = [$properties];
@@ -522,7 +522,7 @@ class DavClient
     {
         $propPatch = new PropPatch();
         $propPatch->properties = $properties;
-        $body = $this->xml->write(
+        $body = (new Service())->write(
             '{DAV:}propertyupdate',
             $propPatch
         );
@@ -533,7 +533,7 @@ class DavClient
             if ($response->getStatusCode() === 207) {
                 // If it's a 207, the request could still have failed, but the
                 // information is hidden in the response body.
-                $result = $this->parseMultiStatus((string) $response->getBody());
+                $result = self::parseMultiStatus((string) $response->getBody());
 
                 $errorProperties = [];
                 foreach ($result as $statusList) {
@@ -649,9 +649,10 @@ class DavClient
      *
      * @see https://datatracker.ietf.org/doc/html/rfc4918#section-9.2.1
      */
-    private function parseMultiStatus(string $body): array
+    private static function parseMultiStatus(string $body): array
     {
-        $multistatus = $this->xml->expect('{DAV:}multistatus', $body);
+        $multistatus = (new Service())
+            ->expect('{DAV:}multistatus', $body);
 
         $result = [];
 
@@ -675,7 +676,7 @@ class DavClient
      * @param  string  $qualifiedName
      * @return \DOMNode
      */
-    private function addElementNS(\DOMDocument $dom, ?string $namespace, string $qualifiedName): \DOMNode
+    private static function addElementNS(\DOMDocument $dom, ?string $namespace, string $qualifiedName): \DOMNode
     {
         return $dom->appendChild($dom->createElementNS($namespace, $qualifiedName));
     }
@@ -689,7 +690,7 @@ class DavClient
      * @param  string|null  $value
      * @return \DOMNode
      */
-    private function addElement(\DOMDocument $dom, \DOMNode $root, string $name, ?string $value = null): \DOMNode
+    private static function addElement(\DOMDocument $dom, \DOMNode $root, string $name, ?string $value = null): \DOMNode
     {
         return $root->appendChild($dom->createElement($name, $value));
     }

@@ -359,7 +359,7 @@ class DavTester extends TestCase
         "</card:addressbook-multiget>\n", 'REPORT');
     }
 
-    public function multistatusHeader()
+    public static function multistatusHeader()
     {
         return '<d:multistatus xmlns:d="DAV:" xmlns:card="urn:ietf:params:xml:ns:carddav">';
     }

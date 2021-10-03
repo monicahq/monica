@@ -3,7 +3,6 @@
 namespace App\Services\DavClient\Utils;
 
 use Illuminate\Support\Collection;
-use GuzzleHttp\Promise\PromiseInterface;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
 
@@ -20,9 +19,9 @@ class AddressBookContactsUpdaterMissed
      * @param  SyncDto  $sync
      * @param  Collection<array-key, \App\Models\Contact\Contact>  $localContacts
      * @param  Collection<array-key, \App\Services\DavClient\Utils\Model\ContactDto>  $distContacts
-     * @return PromiseInterface
+     * @return Collection
      */
-    public function execute(SyncDto $sync, Collection $localContacts, Collection $distContacts): PromiseInterface
+    public function execute(SyncDto $sync, Collection $localContacts, Collection $distContacts): Collection
     {
         $this->sync = $sync;
 

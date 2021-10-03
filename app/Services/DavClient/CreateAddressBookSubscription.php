@@ -92,6 +92,6 @@ class CreateAddressBookSubscription extends BaseService
             'password',
         ]);
 
-        return new DavClient($settings, $client);
+        return app(DavClient::class)->init($settings, $client);
     }
 }

@@ -78,10 +78,11 @@ class SynchronizeAddressBook extends BaseService
 
     private function getDavClient(AddressBookSubscription $subscription, ?GuzzleClient $client): DavClient
     {
-        return new DavClient([
-            'base_uri' => $subscription->uri,
-            'username' => $subscription->username,
-            'password' => $subscription->password,
-        ], $client);
+        return app(DavClient::class)
+            ->init([
+                'base_uri' => $subscription->uri,
+                'username' => $subscription->username,
+                'password' => $subscription->password,
+            ], $client);
     }
 }

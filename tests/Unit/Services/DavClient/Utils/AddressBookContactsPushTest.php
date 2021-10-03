@@ -4,16 +4,17 @@ namespace Tests\Unit\Services\DavClient\Utils;
 
 use Tests\TestCase;
 use Mockery\MockInterface;
+use App\Jobs\Dav\PushVCard;
 use Illuminate\Support\Str;
 use Tests\Api\DAV\CardEtag;
 use Tests\Helpers\DavTester;
-use GuzzleHttp\Psr7\Response;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
+use App\Services\DavClient\Utils\Model\ContactPushDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\AddressBookContactsPush;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
@@ -48,7 +49,7 @@ class AddressBookContactsPushTest extends TestCase
         $backend = $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
             $mock->shouldReceive('getCard')
                 ->withArgs(function ($name, $uri) {
-                    $this->assertEquals($uri, 'https://test/dav/uricontact2');
+                    $this->assertEquals($uri, 'uricontact2');
 
                     return true;
                 })
@@ -65,20 +66,23 @@ class AddressBookContactsPushTest extends TestCase
                 ->andReturn('uricontact1');
         });
 
-        $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
-        $tester->addResponse('https://test/dav/uricontact2', new Response(200, ['Etag' => $etag]), $card, 'PUT');
+        $tester = new DavTester();
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
-        $client = new DavClient([], $tester->getClient());
-
-        (new AddressBookContactsPush())
+        $batchs = (new AddressBookContactsPush())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
                 'https://test/dav/uricontact1' => new ContactDto('https://test/dav/uricontact1', $etag),
             ]), [
-                'added' => ['https://test/dav/uricontact2'],
-            ])
-            ->wait();
+                'added' => ['uricontact2'],
+            ]);
 
-        $tester->assert();
+        $this->assertCount(1, $batchs);
+        $batch = $batchs->first();
+        $this->assertInstanceOf(PushVCard::class, $batch);
+        $dto = $this->getPrivateValue($batch, 'contact');
+        $this->assertInstanceOf(ContactPushDto::class, $dto);
+        $this->assertEquals('uricontact2', $dto->uri);
+        $this->assertEquals(0, $dto->mode);
     }
 
     /** @test */
@@ -106,7 +110,7 @@ class AddressBookContactsPushTest extends TestCase
         $backend = $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
             $mock->shouldReceive('getUuid')
                 ->withArgs(function ($uri) {
-                    $this->assertStringStartsWith('https://test/dav/uricontact', $uri);
+                    $this->assertStringContainsString('uricontact', $uri);
 
                     return true;
                 })
@@ -115,7 +119,7 @@ class AddressBookContactsPushTest extends TestCase
                 });
             $mock->shouldReceive('getCard')
                 ->withArgs(function ($name, $uri) {
-                    $this->assertEquals($uri, 'https://test/dav/uricontact2');
+                    $this->assertEquals($uri, 'uricontact2');
 
                     return true;
                 })
@@ -125,19 +129,22 @@ class AddressBookContactsPushTest extends TestCase
                 ]);
         });
 
-        $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
-        $tester->addResponse('https://test/dav/uricontact2', new Response(200, ['Etag' => $etag]), $card, 'PUT', ['If-Match' => $etag]);
+        $tester = new DavTester();
+        $client = app(DavClient::class)->init([], $tester->getClient());
 
-        $client = new DavClient([], $tester->getClient());
-
-        (new AddressBookContactsPush())
+        $batchs = (new AddressBookContactsPush())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
                 'https://test/dav/uricontact1' => new ContactDto('https://test/dav/uricontact1', $etag),
             ]), [
-                'modified' => ['https://test/dav/uricontact2'],
-            ])
-            ->wait();
+                'modified' => ['uricontact2'],
+            ]);
 
-        $tester->assert();
+        $this->assertCount(1, $batchs);
+        $batch = $batchs->first();
+        $this->assertInstanceOf(PushVCard::class, $batch);
+        $dto = $this->getPrivateValue($batch, 'contact');
+        $this->assertInstanceOf(ContactPushDto::class, $dto);
+        $this->assertEquals('uricontact2', $dto->uri);
+        $this->assertEquals(1, $dto->mode);
     }
 }
