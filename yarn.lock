@@ -7123,9 +7123,9 @@ vue-eslint-parser@^7.10.0:
     semver "^6.3.0"
 
 vue-good-table@^2.21:
-  version "2.21.10"
-  resolved "https://registry.yarnpkg.com/vue-good-table/-/vue-good-table-2.21.10.tgz#a6efd27f345512b6ff3933dff8d2e9f1431ac590"
-  integrity sha512-K7yD8LwW5ouJmMTjNyjnXK1qwm6/FPt4jt+xk+dYAlVPTikW5QWnY8WZHgsiAWWWq58l5oOzRw9wS1tAAWaj6g==
+  version "2.21.11"
+  resolved "https://registry.yarnpkg.com/vue-good-table/-/vue-good-table-2.21.11.tgz#0d92a36f4119bc91825009780c09df38d27b5a4b"
+  integrity sha512-OpVPdxbBTahtfq1aXxEa5P1CMy1wiLcBg4mo7k6Qs537l9v8KVrvF+fXqbnxqNrAfmd1Mw9LidcjgTErjmVU8g==
   dependencies:
     date-fns "^2.17.0"
     lodash.isequal "^4.5.0"
