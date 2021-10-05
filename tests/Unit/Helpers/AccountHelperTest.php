@@ -184,6 +184,33 @@ class AccountHelperTest extends TestCase
     }
 
     /** @test */
+    public function get_reminders_for_month_returns_reminders_for_current_user_only(): void
+    {
+        $account = factory(Account::class)->create();
+        $user1 = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $user2 = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        // add 3 reminders for the month of March
+        for ($i = 0; $i < 3; $i++) {
+            $reminder = factory(Reminder::class)->create([
+                'account_id' => $account->id,
+                'initial_date' => '2017-03-03 00:00:00',
+            ]);
+
+            $reminder->schedule($user1);
+            $reminder->schedule($user2);
+        }
+
+        $this->actingAs($user1)->assertCount(3, AccountHelper::getUpcomingRemindersForMonth($account, 2));
+    }
+
+    /** @test */
     public function it_retrieves_yearly_activities_statistics(): void
     {
         $account = factory(Account::class)->create();
