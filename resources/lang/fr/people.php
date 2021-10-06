@@ -90,7 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Restez en contact',
     'stay_in_touch_frequency' => 'Rester en contact chaque jour|Rester en contact chaque jour|Rester en contact tous les {count} jours',
-    'stay_in_touch_next_date' => 'Next due: {date}',
+    'stay_in_touch_next_date' => 'Prochaine échéance : {date}',
     'stay_in_touch_invalid' => 'La fréquence doit être un nombre supérieur à 0.',
     'stay_in_touch_premium' => 'Vous devez mettre à jour votre compte pour pouvoir profiter de cette fonctionnalité',
     'stay_in_touch_modal_title' => 'Restez en contact',
