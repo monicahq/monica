@@ -58,6 +58,7 @@
             :required="false"
             :title="'{{ trans('people.people_add_lastname') }}'"
             value="{{ $lastName }}">
+
           </form-input>
         </div>
 
