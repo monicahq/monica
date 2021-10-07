@@ -7,6 +7,12 @@ use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 
+/**
+ * @method array propFind($properties, int $depth = 0, array $options = [], string $url = '')
+ * @method array|string|null getProperty(string $property, string $url = '', array $options = [])
+ * @method array syncCollection($properties, string $syncToken, array $options = [], string $url = '')
+ * @method array addressbookQuery($properties, array $options = [], string $url = '')
+ */
 class SyncDto
 {
     use Macroable {

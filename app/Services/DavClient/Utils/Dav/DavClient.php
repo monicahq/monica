@@ -15,17 +15,17 @@ use Sabre\CardDAV\Plugin as CardDAVPlugin;
 class DavClient
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $baseUri;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $username;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $password;
 
@@ -143,7 +143,7 @@ class DavClient
 
     private function nonStandardServiceUrl($url): ?string
     {
-        $response = $this->getRequest($url)
+        $response = $this->getRequest()
             ->withoutRedirecting()
             ->send('PROPFIND', $this->path($url));
 
@@ -366,7 +366,7 @@ class DavClient
      *
      * @param  string  $property
      * @param  string  $url
-     * @return array|string
+     * @return array|string|null
      */
     public function getProperty(string $property, string $url = '', array $options = [])
     {
