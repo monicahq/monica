@@ -2,10 +2,10 @@
 
 namespace App\Services\DavClient\Utils\Model;
 
+use Illuminate\Support\Traits\Macroable;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
-use Illuminate\Support\Traits\Macroable;
 
 class SyncDto
 {

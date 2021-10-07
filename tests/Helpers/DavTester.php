@@ -65,6 +65,7 @@ class DavTester extends TestCase
                         $this->assertEquals($value, $request->header($key), "header $key for request $srequest differs");
                     }
                 }
+
                 return true;
             };
         }, $this->responses));

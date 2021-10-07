@@ -10,7 +10,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\Account\AddressBookSubscription;
-use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 
 class GetMultipleVCard implements ShouldQueue

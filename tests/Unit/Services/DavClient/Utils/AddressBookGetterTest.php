@@ -4,7 +4,6 @@ namespace Tests\Unit\Services\DavClient\Utils;
 
 use Tests\TestCase;
 use Tests\Helpers\DavTester;
-use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\AddressBookGetter;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\Dav\DavClientException;

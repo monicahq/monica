@@ -130,7 +130,7 @@ class DavClient
             ->get($this->path($url));
 
         $code = $response->status();
-        if ($code === 301 || $code === 302){
+        if ($code === 301 || $code === 302) {
             return $response->header('Location');
         }
 

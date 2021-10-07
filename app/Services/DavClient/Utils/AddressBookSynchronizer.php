@@ -206,6 +206,7 @@ class AddressBookSynchronizer
         }
 
         $datas = $this->sync->addressbookQuery('{DAV:}getetag');
+
         return collect($datas)
             ->filter(function ($contact) {
                 return isset($contact[200]);

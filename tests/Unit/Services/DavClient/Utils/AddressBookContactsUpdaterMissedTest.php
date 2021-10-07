@@ -10,7 +10,6 @@ use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use App\Jobs\Dav\GetMultipleVCard;
 use App\Models\Account\AddressBookSubscription;
-use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
