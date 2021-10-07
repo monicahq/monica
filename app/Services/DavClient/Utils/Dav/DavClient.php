@@ -108,9 +108,9 @@ class DavClient
 
         if (! $target) {
             // Get service name register (section 9.2)
-            $target = app(ServiceUrlQuery::class)->execute('_carddavs._tcp', true, $this->path());
+            $target = app(ServiceUrlQuery::class)->execute('_carddavs._tcp', true, $this->path(), $this);
             if (is_null($target)) {
-                $target = app(ServiceUrlQuery::class)->execute('_carddav._tcp', false, $this->path());
+                $target = app(ServiceUrlQuery::class)->execute('_carddav._tcp', false, $this->path(), $this);
             }
         }
 
