@@ -43,9 +43,11 @@ class GetMultipleVCardTest extends TestCase
         $etag = $this->getEtag($contact, true);
 
         $this->mock(DavClient::class, function (MockInterface $mock) use ($card, $etag) {
+            $mock->shouldReceive('setBaseUri')->once()->andReturn($mock);
+            $mock->shouldReceive('setCredentials')->once()->andReturn($mock);
             $mock->shouldReceive('addressbookMultiget')
                 ->once()
-                ->withArgs(function ($request, $properties, $contacts) {
+                ->withArgs(function ($properties, $contacts) {
                     $this->assertEquals([
                         '{DAV:}getetag',
                         [
@@ -117,9 +119,11 @@ class GetMultipleVCardTest extends TestCase
         $etag = $this->getEtag($contact, true);
 
         $this->mock(DavClient::class, function (MockInterface $mock) use ($card, $etag) {
+            $mock->shouldReceive('setBaseUri')->once()->andReturn($mock);
+            $mock->shouldReceive('setCredentials')->once()->andReturn($mock);
             $mock->shouldReceive('addressbookMultiget')
                 ->once()
-                ->withArgs(function ($request, $properties, $contacts) {
+                ->withArgs(function ($properties, $contacts) {
                     $this->assertEquals([
                         '{DAV:}getetag',
                         [

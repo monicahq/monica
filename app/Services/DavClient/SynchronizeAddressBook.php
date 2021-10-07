@@ -8,7 +8,6 @@ use App\Services\BaseService;
 use App\Helpers\AccountHelper;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\Log;
-use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
@@ -37,7 +36,7 @@ class SynchronizeAddressBook extends BaseService
      * @param  array  $data
      * @return void
      */
-    public function execute(array $data, GuzzleClient $httpClient = null)
+    public function execute(array $data)
     {
         $this->validate($data);
 
@@ -57,7 +56,7 @@ class SynchronizeAddressBook extends BaseService
         $backend = new CardDAVBackend($user);
 
         try {
-            $this->sync($data, $subscription, $backend, $httpClient);
+            $this->sync($data, $subscription, $backend);
         } catch (ClientException $e) {
             Log::error(__CLASS__.' execute: '.$e->getMessage(), [$e]);
             if ($e->hasResponse()) {
@@ -66,9 +65,9 @@ class SynchronizeAddressBook extends BaseService
         }
     }
 
-    private function sync(array $data, AddressBookSubscription $subscription, CardDAVBackend $backend, ?GuzzleClient $httpClient)
+    private function sync(array $data, AddressBookSubscription $subscription, CardDAVBackend $backend)
     {
-        $client = $this->getDavClient($subscription, $httpClient);
+        $client = $this->getDavClient($subscription);
         $sync = new SyncDto($subscription, $client, $backend);
         $force = Arr::get($data, 'force', false);
 
@@ -76,13 +75,10 @@ class SynchronizeAddressBook extends BaseService
             ->execute($sync, $force);
     }
 
-    private function getDavClient(AddressBookSubscription $subscription, ?GuzzleClient $client): DavClient
+    private function getDavClient(AddressBookSubscription $subscription): DavClient
     {
         return app(DavClient::class)
-            ->init([
-                'base_uri' => $subscription->uri,
-                'username' => $subscription->username,
-                'password' => $subscription->password,
-            ], $client);
+            ->setBaseUri($subscription->uri)
+            ->setCredentials($subscription->username, $subscription->password);
     }
 }

@@ -59,7 +59,7 @@ class PushVCardTest extends TestCase
         });
 
         $pendingBatch = $fake->batch([
-            $job = new PushVCard($addressBookSubscription, new ContactPushDto('uri', $etag, $card, $mode)),
+            $job = new PushVCard($addressBookSubscription, new ContactPushDto('https://test/dav/uri', $etag, $card, $mode)),
         ]);
         $batch = $pendingBatch->dispatch();
 

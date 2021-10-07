@@ -10,7 +10,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\Account\AddressBookSubscription;
-use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 
 class GetMultipleVCard implements ShouldQueue
@@ -51,10 +50,11 @@ class GetMultipleVCard implements ShouldQueue
             return;
         }
 
-        $datas = app(DavClient::class)->addressbookMultiget($this->subscription->getRequest(), [
-            '{DAV:}getetag',
-            $this->getAddressDataProperty(),
-        ], $this->hrefs);
+        $datas = $this->subscription->getClient()
+            ->addressbookMultiget([
+                '{DAV:}getetag',
+                $this->getAddressDataProperty(),
+            ], $this->hrefs);
 
         collect($datas)
             ->filter(function (array $contact): bool {

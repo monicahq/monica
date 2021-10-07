@@ -10,7 +10,6 @@ use Tests\Helpers\DavTester;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use App\Models\Account\AddressBookSubscription;
-use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
 use App\Services\DavClient\Utils\Model\ContactPushDto;
@@ -68,8 +67,7 @@ class AddressBookContactsPushMissedTest extends TestCase
                 ]);
         });
 
-        $tester = new DavTester();
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = (new DavTester())->fake()->client();
 
         $batchs = (new AddressBookContactsPushMissed())
             ->execute(new SyncDto($subscription, $client, $backend), [], collect([

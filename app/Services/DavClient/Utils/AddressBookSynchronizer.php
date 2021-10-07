@@ -5,10 +5,8 @@ namespace App\Services\DavClient\Utils;
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use GuzzleHttp\Promise\Promise;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
-use GuzzleHttp\Promise\PromiseInterface;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
 use App\Services\DavClient\Utils\Traits\HasCapability;
@@ -106,17 +104,13 @@ class AddressBookSynchronizer
      */
     private function getDistantChanges(): Collection
     {
-        return $this->getDistantEtags()
-          ->then(function ($collection) {
-              return collect($collection)
-                ->filter(function ($contact, $href): bool {
-                    return $this->filterDistantContacts($contact, $href);
-                })
-                ->map(function ($contact, $href): ContactDto {
-                    return new ContactDto($href, Arr::get($contact, '200.{DAV:}getetag'));
-                });
-          })
-          ->wait();
+        return collect($this->getDistantEtags())
+            ->filter(function ($contact, $href): bool {
+                return $this->filterDistantContacts($contact, $href);
+            })
+            ->map(function ($contact, $href): ContactDto {
+                return new ContactDto($href, Arr::get($contact, '200.{DAV:}getetag'));
+            });
     }
 
     /**
@@ -142,16 +136,16 @@ class AddressBookSynchronizer
     /**
      * Get refreshed etags.
      *
-     * @return PromiseInterface
+     * @return array
      */
-    private function getDistantEtags(): PromiseInterface
+    private function getDistantEtags(): array
     {
         if ($this->hasCapability('syncCollection')) {
             // With sync-collection
             return $this->callSyncCollectionWhenNeeded();
         } else {
             // With PROPFIND
-            return $this->sync->client->propFindAsync('', [
+            return $this->sync->propFind([
                 '{DAV:}getcontenttype',
                 '{DAV:}getetag',
             ], 1);
@@ -161,46 +155,43 @@ class AddressBookSynchronizer
     /**
      * Make sync-collection request if sync-token has changed.
      *
-     * @return PromiseInterface
+     * @return array
      */
-    private function callSyncCollectionWhenNeeded(): PromiseInterface
+    private function callSyncCollectionWhenNeeded(): array
     {
         // get the current distant syncToken
-        return $this->sync->client->getPropertyAsync('{DAV:}sync-token')
-            ->then(function ($distantSyncToken) {
-                $syncToken = $this->sync->subscription->syncToken ?? '';
+        $distantSyncToken = $this->sync->getProperty('{DAV:}sync-token');
 
-                if ($syncToken === $distantSyncToken) {
-                    // no change at all
-                    return $this->emptyPromise();
-                }
+        if (($this->sync->subscription->syncToken ?? '') === $distantSyncToken) {
+            // no change at all
+            return [];
+        }
 
-                return $this->callSyncCollection();
-            });
+        return $this->callSyncCollection();
     }
 
     /**
      * Make sync-collection request.
      *
-     * @return PromiseInterface
+     * @return array
      */
-    private function callSyncCollection(): PromiseInterface
+    private function callSyncCollection(): array
     {
         $syncToken = $this->sync->subscription->syncToken ?? '';
 
         // get sync
-        return $this->sync->client->syncCollectionAsync('', [
+        $collection = $this->sync->syncCollection([
             '{DAV:}getcontenttype',
             '{DAV:}getetag',
-        ], $syncToken)->then(function ($collection) {
-            // save the new syncToken as current one
-            if ($newSyncToken = Arr::get($collection, 'synctoken')) {
-                $this->sync->subscription->syncToken = $newSyncToken;
-                $this->sync->subscription->save();
-            }
+        ], $syncToken);
 
-            return $collection;
-        });
+        // save the new syncToken as current one
+        if ($newSyncToken = Arr::get($collection, 'synctoken')) {
+            $this->sync->subscription->syncToken = $newSyncToken;
+            $this->sync->subscription->save();
+        }
+
+        return $collection;
     }
 
     /**
@@ -214,30 +205,14 @@ class AddressBookSynchronizer
             return collect();
         }
 
-        return $this->sync->client->addressbookQueryAsync('', '{DAV:}getetag')
-        ->then(function ($datas) {
-            return collect($datas)
-                ->filter(function ($contact) {
-                    return isset($contact[200]);
-                })
-                ->map(function ($contact, $href): ContactDto {
-                    return new ContactDto($href, Arr::get($contact, '200.{DAV:}getetag'));
-                });
-        })
-        ->wait();
-    }
+        $datas = $this->sync->addressbookQuery('{DAV:}getetag');
 
-    /**
-     * Get an empty Promise.
-     *
-     * @return PromiseInterface
-     */
-    private function emptyPromise(): PromiseInterface
-    {
-        $promise = new Promise(function () use (&$promise) {
-            $promise->resolve([]);
-        });
-
-        return $promise;
+        return collect($datas)
+            ->filter(function ($contact) {
+                return isset($contact[200]);
+            })
+            ->map(function ($contact, $href): ContactDto {
+                return new ContactDto($href, Arr::get($contact, '200.{DAV:}getetag'));
+            });
     }
 }

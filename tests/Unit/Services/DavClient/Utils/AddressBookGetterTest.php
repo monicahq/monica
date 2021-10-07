@@ -4,7 +4,6 @@ namespace Tests\Unit\Services\DavClient\Utils;
 
 use Tests\TestCase;
 use Tests\Helpers\DavTester;
-use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\AddressBookGetter;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\Dav\DavClientException;
@@ -20,8 +19,9 @@ class AddressBookGetterTest extends TestCase
         $tester = (new DavTester())
             ->addressBookBaseUri()
             ->capabilities()
-            ->displayName();
-        $client = app(DavClient::class)->init([], $tester->getClient());
+            ->displayName()
+            ->fake();
+        $client = $tester->client();
         $result = (new AddressBookGetter())
             ->execute($client);
 
@@ -46,8 +46,9 @@ class AddressBookGetterTest extends TestCase
     {
         $tester = (new DavTester())
             ->serviceUrl()
-            ->optionsFail();
-        $client = app(DavClient::class)->init([], $tester->getClient());
+            ->optionsFail()
+            ->fake();
+        $client = $tester->client();
 
         $this->expectException(DavServerNotCompliantException::class);
         (new AddressBookGetter())
@@ -60,9 +61,9 @@ class AddressBookGetterTest extends TestCase
         $tester = (new DavTester())
             ->serviceUrl()
             ->optionsOk()
-            ->userPrincipalEmpty();
-
-        $client = app(DavClient::class)->init([], $tester->getClient());
+            ->userPrincipalEmpty()
+            ->fake();
+        $client = $tester->client();
 
         $this->expectException(DavServerNotCompliantException::class);
         (new AddressBookGetter())
@@ -76,9 +77,9 @@ class AddressBookGetterTest extends TestCase
             ->serviceUrl()
             ->optionsOk()
             ->userPrincipal()
-            ->addressbookEmpty();
-
-        $client = app(DavClient::class)->init([], $tester->getClient());
+            ->addressbookEmpty()
+            ->fake();
+        $client = $tester->client();
 
         $this->expectException(DavServerNotCompliantException::class);
         (new AddressBookGetter())
@@ -93,8 +94,9 @@ class AddressBookGetterTest extends TestCase
             ->optionsOk()
             ->userPrincipal()
             ->addressbookHome()
-            ->resourceTypeHomeOnly();
-        $client = app(DavClient::class)->init([], $tester->getClient());
+            ->resourceTypeHomeOnly()
+            ->fake();
+        $client = $tester->client();
 
         $this->expectException(DavClientException::class);
         (new AddressBookGetter())

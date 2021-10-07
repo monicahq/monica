@@ -3,11 +3,11 @@
 namespace Tests\Helpers;
 
 use Tests\TestCase;
-use GuzzleHttp\Client;
-use GuzzleHttp\Middleware;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Handler\MockHandler;
+use Illuminate\Http\Client\Request;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Promise\PromiseInterface;
+use App\Services\DavClient\Utils\Dav\DavClient;
 
 class DavTester extends TestCase
 {
@@ -15,6 +15,11 @@ class DavTester extends TestCase
      * @var array
      */
     public $responses;
+
+    /**
+     * @var int
+     */
+    private $current;
 
     /**
      * @var string
@@ -25,41 +30,61 @@ class DavTester extends TestCase
 
     public function __construct(string $baseUri = 'https://test')
     {
+        $this->current = 0;
         $this->baseUri = $baseUri;
         $this->responses = [];
     }
 
-    public function getClient()
+    public function client(): DavClient
     {
-        $this->container = [];
-        $history = Middleware::history($this->container);
+        return (new DavClient())->setBaseUri($this->baseUri);
+    }
 
-        $mock = new MockHandler(array_map(function ($response) {
-            return $response['response'];
-        }, $this->responses));
-        $handlerStack = HandlerStack::create($mock);
-        $handlerStack->push($history);
+    public function fake()
+    {
+        Http::fake(function ($request) {
+            return $this->responses[$this->current++]['response'];
+        });
 
-        return new Client(['handler' => $handlerStack, 'base_uri' => $this->baseUri]);
+        return $this;
     }
 
     public function assert()
     {
-        $this->assertCount(count($this->responses), $this->container, 'the number of response do not match the number of requests');
-        foreach ($this->container as $index => $request) {
-            $srequest = $request['request']->getMethod().' '.(string) $request['request']->getUri();
-            $this->assertEquals($this->responses[$index]['method'], $request['request']->getMethod(), "method for request $srequest differs");
-            $this->assertEquals($this->responses[$index]['uri'], (string) $request['request']->getUri(), "uri for request $srequest differs");
-            if (isset($this->responses[$index]['body'])) {
-                $this->assertEquals($this->responses[$index]['body'], (string) $request['request']->getBody(), "body for request $srequest differs");
-            }
-            if (isset($this->responses[$index]['headers'])) {
-                foreach ($this->responses[$index]['headers'] as $key => $value) {
-                    $this->assertArrayHasKey($key, $request['request']->getHeaders(), "header $key for request $srequest is missing");
-                    $this->assertEquals($value, $request['request']->getHeaderLine($key), "header $key for request $srequest differs");
+        Http::assertSentInOrder(array_map(function ($data) {
+            return function (Request $request, Response $response) use ($data) {
+                $srequest = $request->method().' '.$request->url();
+                $this->assertEquals($data['method'], $request->method(), "method for request $srequest differs");
+                $this->assertEquals($data['uri'], $request->url(), "uri for request $srequest differs");
+                if (isset($data['body'])) {
+                    $this->assertEquals($data['body'], $request->body(), "body for request $srequest differs");
                 }
-            }
-        }
+                if (isset($data['headers'])) {
+                    foreach ($data['headers'] as $key => $value) {
+                        $this->assertArrayHasKey($key, $request->headers(), "header $key for request $srequest is missing");
+                        $this->assertEquals($value, $request->header($key), "header $key for request $srequest differs");
+                    }
+                }
+
+                return true;
+            };
+        }, $this->responses));
+
+        // $this->assertCount(count($this->responses), $this->container, 'the number of response do not match the number of requests');
+        // foreach ($this->container as $index => $request) {
+        //     $srequest = $request->getMethod().' '.(string) $request->getUri();
+        //     $this->assertEquals($this->responses[$index]['method'], $request->getMethod(), "method for request $srequest differs");
+        //     $this->assertEquals($this->responses[$index]['uri'], (string) $request->getUri(), "uri for request $srequest differs");
+        //     if (isset($this->responses[$index]['body'])) {
+        //         $this->assertEquals($this->responses[$index]['body'], (string) $request->getBody(), "body for request $srequest differs");
+        //     }
+        //     if (isset($this->responses[$index]['headers'])) {
+        //         foreach ($this->responses[$index]['headers'] as $key => $value) {
+        //             $this->assertArrayHasKey($key, $request->getHeaders(), "header $key for request $srequest is missing");
+        //             $this->assertEquals($value, $request->getHeaderLine($key), "header $key for request $srequest differs");
+        //         }
+        //     }
+        // }
     }
 
     public function addressBookBaseUri()
@@ -77,7 +102,7 @@ class DavTester extends TestCase
             ->supportedAddressData();
     }
 
-    public function addResponse(string $uri, Response $response, string $body = null, string $method = 'PROPFIND', array $headers = null)
+    public function addResponse(string $uri, PromiseInterface $response, string $body = null, string $method = 'PROPFIND', array $headers = null)
     {
         $this->responses[] = [
             'uri' => $uri,
@@ -92,35 +117,27 @@ class DavTester extends TestCase
 
     public function serviceUrl()
     {
-        $this->addResponse('https://test/.well-known/carddav', new Response(301, ['Location' => $this->baseUri.'/dav/']), null, 'GET');
-
-        return $this;
+        return $this->addResponse('https://test/.well-known/carddav', Http::response(null, 301, ['Location' => $this->baseUri.'/dav/']), null, 'GET');
     }
 
     public function nonStandardServiceUrl()
     {
-        $this->addResponse('https://test/.well-known/carddav', new Response(301, ['Location' => '/dav/']));
-
-        return $this;
+        return $this->addResponse('https://test/.well-known/carddav', Http::response(null, 301, ['Location' => '/dav/']), null, 'PROPFIND');
     }
 
     public function optionsOk()
     {
-        $this->addResponse('https://test/dav/', new Response(200, ['Dav' => '1, 3, addressbook']), null, 'OPTIONS');
-
-        return $this;
+        return $this->addResponse('https://test/dav/', Http::response(null, 200, ['Dav' => '1, 3, addressbook']), null, 'OPTIONS');
     }
 
     public function optionsFail()
     {
-        $this->addResponse('https://test/dav/', new Response(200, ['Dav' => 'bad']), null, 'OPTIONS');
-
-        return $this;
+        return $this->addResponse('https://test/dav/', Http::response(null, 200, ['Dav' => 'bad']), null, 'OPTIONS');
     }
 
     public function userPrincipal()
     {
-        $this->addResponse('https://test/dav/', new Response(200, [], $this->multistatusHeader().
+        return $this->addResponse('https://test/dav/', Http::response($this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/</d:href>'.
             '<d:propstat>'.
@@ -133,13 +150,11 @@ class DavTester extends TestCase
             '</d:propstat>'.
         '</d:response>'.
         '</d:multistatus>'));
-
-        return $this;
     }
 
     public function userPrincipalEmpty()
     {
-        $this->addResponse('https://test/dav/', new Response(200, [], $this->multistatusHeader().
+        return $this->addResponse('https://test/dav/', Http::response($this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/</d:href>'.
             '<d:propstat>'.
@@ -150,13 +165,11 @@ class DavTester extends TestCase
             '</d:propstat>'.
         '</d:response>'.
         '</d:multistatus>'));
-
-        return $this;
     }
 
     public function addressbookHome()
     {
-        $this->addResponse('https://test/dav/principals/user@test.com/', new Response(200, [], $this->multistatusHeader().
+        return $this->addResponse('https://test/dav/principals/user@test.com/', Http::response($this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/principals/user@test.com/</d:href>'.
             '<d:propstat>'.
@@ -169,13 +182,11 @@ class DavTester extends TestCase
             '</d:propstat>'.
         '</d:response>'.
         '</d:multistatus>'));
-
-        return $this;
     }
 
     public function addressbookEmpty()
     {
-        $this->addResponse('https://test/dav/principals/user@test.com/', new Response(200, [], $this->multistatusHeader().
+        return $this->addResponse('https://test/dav/principals/user@test.com/', Http::response($this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/principals/user@test.com/</d:href>'.
             '<d:propstat>'.
@@ -186,13 +197,11 @@ class DavTester extends TestCase
             '</d:propstat>'.
         '</d:response>'.
         '</d:multistatus>'));
-
-        return $this;
     }
 
     public function resourceTypeAddressBook()
     {
-        $this->addResponse('https://test/dav/addressbooks/user@test.com/', new Response(200, [], $this->multistatusHeader().
+        return $this->addResponse('https://test/dav/addressbooks/user@test.com/', Http::response($this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/addressbooks/user@test.com/contacts/</d:href>'.
             '<d:propstat>'.
@@ -205,13 +214,11 @@ class DavTester extends TestCase
             '</d:propstat>'.
         '</d:response>'.
         '</d:multistatus>'));
-
-        return $this;
     }
 
     public function resourceTypeHomeOnly()
     {
-        $this->addResponse('https://test/dav/addressbooks/user@test.com/', new Response(200, [], $this->multistatusHeader().
+        return $this->addResponse('https://test/dav/addressbooks/user@test.com/', Http::response($this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/addressbooks/user@test.com/</d:href>'.
             '<d:propstat>'.
@@ -222,13 +229,11 @@ class DavTester extends TestCase
             '</d:propstat>'.
         '</d:response>'.
         '</d:multistatus>'));
-
-        return $this;
     }
 
     public function resourceTypeEmpty()
     {
-        $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $this->multistatusHeader().
+        return $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', Http::response($this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/addressbooks/user@test.com/contacts/</d:href>'.
             '<d:propstat>'.
@@ -239,13 +244,11 @@ class DavTester extends TestCase
             '</d:propstat>'.
         '</d:response>'.
         '</d:multistatus>'));
-
-        return $this;
     }
 
     public function supportedReportSet(array $reportSet = ['card:addressbook-multiget', 'card:addressbook-query', 'd:sync-collection'])
     {
-        $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $this->multistatusHeader().
+        return $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', Http::response($this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/addressbooks/user@test.com/contacts/</d:href>'.
             '<d:propstat>'.
@@ -260,13 +263,11 @@ class DavTester extends TestCase
             '</d:propstat>'.
         '</d:response>'.
         '</d:multistatus>'));
-
-        return $this;
     }
 
     public function supportedAddressData(array $list = ['card:address-data-type content-type="text/vcard" version="4.0"'])
     {
-        $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $this->multistatusHeader().
+        return $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', Http::response($this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/addressbooks/user@test.com/contacts/</d:href>'.
             '<d:propstat>'.
@@ -281,13 +282,11 @@ class DavTester extends TestCase
             '</d:propstat>'.
         '</d:response>'.
         '</d:multistatus>'));
-
-        return $this;
     }
 
     public function displayName(string $name = 'Test')
     {
-        $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $this->multistatusHeader().
+        return $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', Http::response($this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/addressbooks/user@test.com/contacts/</d:href>'.
             '<d:propstat>'.
@@ -298,13 +297,11 @@ class DavTester extends TestCase
             '</d:propstat>'.
         '</d:response>'.
         '</d:multistatus>'));
-
-        return $this;
     }
 
     public function getSynctoken(string $synctoken = '"test"')
     {
-        $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $this->multistatusHeader().
+        return $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', Http::response($this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/addressbooks/user@test.com/contacts/</d:href>'.
             '<d:propstat>'.
@@ -315,13 +312,11 @@ class DavTester extends TestCase
             '</d:propstat>'.
         '</d:response>'.
         '</d:multistatus>'));
-
-        return $this;
     }
 
     public function getSyncCollection(string $synctoken = 'token', string $etag = '"etag"')
     {
-        return $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $this->multistatusHeader().
+        return $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', Http::response($this->multistatusHeader().
         '<d:response>'.
             '<d:href>https://test/dav/addressbooks/user@test.com/contacts/uuid</d:href>'.
             '<d:propstat>'.
@@ -338,7 +333,7 @@ class DavTester extends TestCase
 
     public function addressMultiGet($etag, $card, $url)
     {
-        return $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', new Response(200, [], $this->multistatusHeader().
+        return $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', Http::response($this->multistatusHeader().
         '<d:response>'.
             '<d:href>https://test/dav/addressbooks/user@test.com/contacts/uuid</d:href>'.
             '<d:propstat>'.
