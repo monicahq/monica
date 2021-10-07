@@ -51,10 +51,11 @@ class GetMultipleVCard implements ShouldQueue
             return;
         }
 
-        $datas = app(DavClient::class)->addressbookMultiget($this->subscription->getRequest(), [
-            '{DAV:}getetag',
-            $this->getAddressDataProperty(),
-        ], $this->hrefs);
+        $datas = $this->subscription->getClient()
+            ->addressbookMultiget([
+                '{DAV:}getetag',
+                $this->getAddressDataProperty(),
+            ], $this->hrefs);
 
         collect($datas)
             ->filter(function (array $contact): bool {

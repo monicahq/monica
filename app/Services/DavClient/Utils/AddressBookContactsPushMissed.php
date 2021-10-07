@@ -64,7 +64,7 @@ class AddressBookContactsPushMissed
             })->map(function (Contact $contact): PushVCard {
                 $card = $this->sync->backend->prepareCard($contact);
 
-                return new PushVCard($this->sync->subscription, new ContactPushDto($card['uri'], $card['etag'], $card['carddata'], 2));
+                return new PushVCard($this->sync->subscription, new ContactPushDto($card['uri'], $card['etag'], $card['carddata'], ContactPushDto::MODE_MATCH_ANY));
             });
     }
 }

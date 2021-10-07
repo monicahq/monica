@@ -66,8 +66,7 @@ class AddressBookContactsPushTest extends TestCase
                 ->andReturn('uricontact1');
         });
 
-        $tester = new DavTester();
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = (new DavTester())->fake()->client();
 
         $batchs = (new AddressBookContactsPush())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
@@ -82,7 +81,7 @@ class AddressBookContactsPushTest extends TestCase
         $dto = $this->getPrivateValue($batch, 'contact');
         $this->assertInstanceOf(ContactPushDto::class, $dto);
         $this->assertEquals('uricontact2', $dto->uri);
-        $this->assertEquals(0, $dto->mode);
+        $this->assertEquals(ContactPushDto::MODE_MATCH_NONE, $dto->mode);
     }
 
     /** @test */
@@ -129,8 +128,7 @@ class AddressBookContactsPushTest extends TestCase
                 ]);
         });
 
-        $tester = new DavTester();
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = (new DavTester())->fake()->client();
 
         $batchs = (new AddressBookContactsPush())
             ->execute(new SyncDto($subscription, $client, $backend), collect([

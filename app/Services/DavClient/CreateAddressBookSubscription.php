@@ -6,7 +6,6 @@ use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use function Safe\preg_replace;
 use App\Models\Account\AddressBook;
-use GuzzleHttp\Client as GuzzleClient;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\AddressBookGetter;
@@ -34,14 +33,13 @@ class CreateAddressBookSubscription extends BaseService
      * Add a new Adress Book.
      *
      * @param  array  $data
-     * @param  GuzzleClient|null  $httpClient
      * @return AddressBookSubscription|null
      */
-    public function execute(array $data, GuzzleClient $httpClient = null): ?AddressBookSubscription
+    public function execute(array $data): ?AddressBookSubscription
     {
         $this->validate($data);
 
-        $addressBookData = $this->getAddressBookData($data, $httpClient);
+        $addressBookData = $this->getAddressBookData($data);
         if (! $addressBookData) {
             throw new DavClientException(__('Could not get address book data.'));
         }
@@ -76,22 +74,18 @@ class CreateAddressBookSubscription extends BaseService
         return $subscription;
     }
 
-    private function getAddressBookData(array $data, ?GuzzleClient $httpClient): ?array
+    private function getAddressBookData(array $data): ?array
     {
-        $client = $this->getClient($data, $httpClient);
+        $client = $this->getClient($data);
 
         return app(AddressBookGetter::class)
             ->execute($client);
     }
 
-    private function getClient(array $data, ?GuzzleClient $client): DavClient
+    private function getClient(array $data): DavClient
     {
-        $settings = Arr::only($data, [
-            'base_uri',
-            'username',
-            'password',
-        ]);
-
-        return app(DavClient::class)->init($settings, $client);
+        return app(DavClient::class)
+            ->setBaseUri(Arr::get($data, 'base_uri'))
+            ->setCredentials(Arr::get($data, 'username'), Arr::get($data, 'password'));
     }
 }

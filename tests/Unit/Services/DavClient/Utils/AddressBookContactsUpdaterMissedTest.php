@@ -62,8 +62,7 @@ class AddressBookContactsUpdaterMissedTest extends TestCase
                 ->andReturn($etag);
         });
 
-        $tester = new DavTester();
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = (new DavTester())->fake()->client();
 
         $batchs = (new AddressBookContactsUpdaterMissed())
             ->execute(new SyncDto($subscription, $client, $backend), collect([

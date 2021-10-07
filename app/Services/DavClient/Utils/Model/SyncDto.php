@@ -5,9 +5,14 @@ namespace App\Services\DavClient\Utils\Model;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
+use Illuminate\Support\Traits\Macroable;
 
 class SyncDto
 {
+    use Macroable {
+        __call as macroCall;
+    }
+
     /**
      * @var AddressBookSubscription
      */
@@ -41,5 +46,22 @@ class SyncDto
     public function addressBookName(): string
     {
         return $this->subscription->addressbook->name;
+    }
+
+    /**
+     * Execute a method against a new dav client instance.
+     *
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return mixed
+     */
+    public function __call($method, $parameters)
+    {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
+        return $this->subscription->getClient()
+            ->{$method}(...$parameters);
     }
 }

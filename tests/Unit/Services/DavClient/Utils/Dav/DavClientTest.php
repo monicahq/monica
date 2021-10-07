@@ -4,11 +4,8 @@ namespace Tests\Unit\Services\DavClient\Utils\Dav;
 
 use Tests\TestCase;
 use Tests\Helpers\DavTester;
-use GuzzleHttp\Psr7\Response;
-use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
-use GuzzleHttp\Exception\ServerException;
-use App\Services\DavClient\Utils\Dav\DavClient;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\Dav\DavClientException;
 
@@ -17,27 +14,14 @@ class DavClientTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
-    public function it_fails_if_no_baseuri()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        app(DavClient::class)->init([]);
-    }
-
-    /** @test */
-    public function it_accept_guzzle_client()
-    {
-        $client = app(DavClient::class)->init([], new \GuzzleHttp\Client());
-        $this->assertInstanceOf(DavClient::class, $client);
-    }
-
-    /** @test */
     public function it_get_options()
     {
         $tester = (new DavTester())
-            ->addResponse('https://test', new Response(200, []), null, 'OPTIONS')
-            ->addResponse('https://test', new Response(200, ['Dav' => 'test']), null, 'OPTIONS')
-            ->addResponse('https://test', new Response(200, ['Dav' => ' test ']), null, 'OPTIONS');
-        $client = app(DavClient::class)->init([], $tester->getClient());
+            ->addResponse('https://test', Http::response(), null, 'OPTIONS')
+            ->addResponse('https://test', Http::response(null, 200, ['Dav' => 'test']), null, 'OPTIONS')
+            ->addResponse('https://test', Http::response(null, 200, ['Dav' => ' test ']), null, 'OPTIONS')
+            ->fake();
+        $client = $tester->client();
 
         $result = $client->options();
         $this->assertEquals([], $result);
@@ -55,8 +39,9 @@ class DavClientTest extends TestCase
     public function it_get_serviceurl()
     {
         $tester = (new DavTester())
-            ->serviceUrl();
-        $client = app(DavClient::class)->init([], $tester->getClient());
+            ->serviceUrl()
+            ->fake();
+        $client = $tester->client();
 
         $result = $client->getServiceUrl();
 
@@ -68,9 +53,11 @@ class DavClientTest extends TestCase
     public function it_get_non_standard_serviceurl()
     {
         $tester = (new DavTester())
-            ->addResponse('https://test/.well-known/carddav', new Response(200), null, 'GET')
-            ->nonStandardServiceUrl();
-        $client = app(DavClient::class)->init([], $tester->getClient());
+            ->addResponse('https://test/.well-known/carddav', Http::response(), null, 'GET')
+            ->addResponse('https://test/.well-known/carddav', Http::response(), null, 'GET')
+            ->nonStandardServiceUrl()
+            ->fake();
+        $client = $tester->client();
 
         $result = $client->getServiceUrl();
 
@@ -82,9 +69,11 @@ class DavClientTest extends TestCase
     public function it_get_non_standard_serviceurl2()
     {
         $tester = (new DavTester())
-            ->addResponse('https://test/.well-known/carddav', new Response(404), null, 'GET')
-            ->nonStandardServiceUrl();
-        $client = app(DavClient::class)->init([], $tester->getClient());
+            ->addResponse('https://test/.well-known/carddav', Http::response(null, 404), null, 'GET')
+            ->addResponse('https://test/.well-known/carddav', Http::response(null, 404), null, 'GET')
+            ->nonStandardServiceUrl()
+            ->fake();
+        $client = $tester->client();
 
         $result = $client->getServiceUrl();
 
@@ -96,24 +85,26 @@ class DavClientTest extends TestCase
     public function it_fail_non_standard()
     {
         $tester = (new DavTester())
-            ->addResponse('https://test/.well-known/carddav', new Response(500), null, 'GET');
-        $client = app(DavClient::class)->init([], $tester->getClient());
+            ->addResponse('https://test/.well-known/carddav', Http::response(null, 500), null, 'GET')
+            ->fake();
+        $client = $tester->client();
 
-        $this->expectException(ServerException::class);
+        $this->expectException(RequestException::class);
         $client->getServiceUrl();
     }
 
     /** @test */
     public function it_get_base_uri()
     {
-        $tester = (new DavTester());
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $tester = (new DavTester())
+            ->fake();
+        $client = $tester->client();
 
-        $result = $client->getBaseUri();
+        $result = $client->path();
 
         $this->assertEquals('https://test', $result);
 
-        $result = $client->getBaseUri('xxx');
+        $result = $client->path('xxx');
 
         $this->assertEquals('https://test/xxx', $result);
     }
@@ -121,11 +112,12 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_set_base_uri()
     {
-        $tester = (new DavTester());
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $tester = (new DavTester())
+            ->fake();
+        $client = $tester->client();
 
         $result = $client->setBaseUri('https://new')
-            ->getBaseUri();
+            ->path();
 
         $this->assertEquals('https://new', $result);
     }
@@ -133,9 +125,8 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_call_propfind()
     {
-        $tester = (new DavTester());
-
-        $tester->addResponse('https://test/test', new Response(200, [], $tester->multistatusHeader().
+        $tester = (new DavTester())
+        ->addResponse('https://test', Http::response(DavTester::multistatusHeader().
             '<d:response>'.
                 '<d:href>href</d:href>'.
                 '<d:propstat>'.
@@ -150,11 +141,12 @@ class DavClientTest extends TestCase
               '<d:prop>'.
                 '<d:test/>'.
               '</d:prop>'.
-            "</d:propfind>\n", 'PROPFIND');
+            "</d:propfind>\n", 'PROPFIND')
+        ->fake();
 
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = $tester->client();
 
-        $result = $client->propFind('https://test/test', ['{DAV:}test']);
+        $result = $client->propFind(['{DAV:}test']);
 
         $tester->assert();
         $this->assertEquals([
@@ -165,9 +157,8 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_get_property()
     {
-        $tester = (new DavTester());
-
-        $tester->addResponse('https://test/test', new Response(200, [], $tester->multistatusHeader().
+        $tester = (new DavTester())
+        ->addResponse('https://test/test', Http::response(DavTester::multistatusHeader().
             '<d:response>'.
                 '<d:href>href</d:href>'.
                 '<d:propstat>'.
@@ -182,9 +173,10 @@ class DavClientTest extends TestCase
               '<d:prop>'.
                 '<d:test/>'.
               '</d:prop>'.
-            "</d:propfind>\n", 'PROPFIND');
+            "</d:propfind>\n", 'PROPFIND')
+        ->fake();
 
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = $tester->client();
 
         $result = $client->getProperty('{DAV:}test', 'https://test/test');
 
@@ -195,9 +187,8 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_get_supported_report()
     {
-        $tester = (new DavTester('https://test/dav'));
-
-        $tester->addResponse('https://test/dav', new Response(200, [], $tester->multistatusHeader().
+        $tester = (new DavTester('https://test/dav'))
+        ->addResponse('https://test/dav', Http::response(DavTester::multistatusHeader().
             '<d:response>'.
                 '<d:href>/dav</d:href>'.
                 '<d:propstat>'.
@@ -219,9 +210,10 @@ class DavClientTest extends TestCase
               '<d:prop>'.
                 '<d:supported-report-set/>'.
               '</d:prop>'.
-            "</d:propfind>\n", 'PROPFIND');
+            "</d:propfind>\n", 'PROPFIND')
+        ->fake();
 
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = $tester->client();
 
         $result = $client->getSupportedReportSet();
 
@@ -232,9 +224,8 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_sync_collection()
     {
-        $tester = (new DavTester());
-
-        $tester->addResponse('https://test/test', new Response(200, [], $tester->multistatusHeader().
+        $tester = (new DavTester())
+        ->addResponse('https://test', Http::response(DavTester::multistatusHeader().
             '<d:response>'.
                 '<d:href>href</d:href>'.
                 '<d:propstat>'.
@@ -253,12 +244,12 @@ class DavClientTest extends TestCase
               '<d:prop>'.
                 '<d:test/>'.
               '</d:prop>'.
-            "</d:sync-collection>\n", 'REPORT');
+            "</d:sync-collection>\n", 'REPORT')
+        ->fake();
 
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = $tester->client();
 
-        $result = $client->syncCollectionAsync('https://test/test', ['{DAV:}test'], '')
-            ->wait();
+        $result = $client->syncCollection(['{DAV:}test'], '');
 
         $tester->assert();
         $this->assertEquals([
@@ -275,9 +266,8 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_sync_collection_with_synctoken()
     {
-        $tester = (new DavTester());
-
-        $tester->addResponse('https://test/test', new Response(200, [], $tester->multistatusHeader().
+        $tester = (new DavTester())
+        ->addResponse('https://test', Http::response(DavTester::multistatusHeader().
             '<d:response>'.
                 '<d:href>href</d:href>'.
                 '<d:propstat>'.
@@ -296,12 +286,12 @@ class DavClientTest extends TestCase
               '<d:prop>'.
                 '<d:test/>'.
               '</d:prop>'.
-            "</d:sync-collection>\n", 'REPORT');
+            "</d:sync-collection>\n", 'REPORT')
+        ->fake();
 
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = $tester->client();
 
-        $result = $client->syncCollectionAsync('https://test/test', ['{DAV:}test'], '"00000-abcd0"')
-            ->wait();
+        $result = $client->syncCollection(['{DAV:}test'], '"00000-abcd0"');
 
         $tester->assert();
         $this->assertEquals([
@@ -318,8 +308,8 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_run_addressbook_multiget_report()
     {
-        Http::fake([
-            'https://test/*' => Http::response(DavTester::multistatusHeader().
+        $tester = (new DavTester())
+        ->addResponse('https://test', Http::response(DavTester::multistatusHeader().
             '<d:response>'.
                 '<d:href>href</d:href>'.
                 '<d:propstat>'.
@@ -330,26 +320,18 @@ class DavClientTest extends TestCase
                     '<d:status>HTTP/1.1 200 OK</d:status>'.
                 '</d:propstat>'.
             '</d:response>'.
-            '</d:multistatus>'),
-        ]);
+            '</d:multistatus>'), '<?xml version="1.0" encoding="UTF-8"?>'."\n".
+            '<card:addressbook-multiget xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:d="DAV:">'.
+              '<d:prop>'.
+                '<d:test/>'.
+              '</d:prop>'.
+              '<d:href>https://test/contacts/1</d:href>'.
+            "</card:addressbook-multiget>\n", 'REPORT')
+        ->fake();
 
-        $result = app(DavClient::class)->addressbookMultiget(Http::baseUrl('https://test/test'), ['{DAV:}test'], [
-            'https://test/contacts/1',
-        ]);
+        $client = $tester->client();
 
-        Http::assertSent(function (Request $request) {
-            $this->assertEquals('https://test/test/', $request->url());
-            $this->assertEquals('REPORT', $request->method());
-            $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>'."\n".
-                   '<card:addressbook-multiget xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:d="DAV:">'.
-                     '<d:prop>'.
-                       '<d:test/>'.
-                     '</d:prop>'.
-                     '<d:href>https://test/contacts/1</d:href>'.
-                   "</card:addressbook-multiget>\n", $request->body());
-
-            return true;
-        });
+        $result = $client->addressbookMultiget(['{DAV:}test'], ['https://test/contacts/1']);
 
         $this->assertEquals([
             'href' => [
@@ -359,14 +341,15 @@ class DavClientTest extends TestCase
                 ],
             ],
         ], $result);
+
+        $tester->assert();
     }
 
     /** @test */
     public function it_run_addressbook_query_report()
     {
-        $tester = (new DavTester());
-
-        $tester->addResponse('https://test/test', new Response(200, [], $tester->multistatusHeader().
+        $tester = (new DavTester())
+        ->addResponse('https://test', Http::response(DavTester::multistatusHeader().
             '<d:response>'.
                 '<d:href>href</d:href>'.
                 '<d:propstat>'.
@@ -382,12 +365,12 @@ class DavClientTest extends TestCase
               '<d:prop>'.
                 '<d:test/>'.
               '</d:prop>'.
-            "</card:addressbook-query>\n", 'REPORT');
+            "</card:addressbook-query>\n", 'REPORT')
+        ->fake();
 
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = $tester->client();
 
-        $result = $client->addressbookQueryAsync('https://test/test', ['{DAV:}test'])
-            ->wait();
+        $result = $client->addressbookQuery(['{DAV:}test']);
 
         $tester->assert();
         $this->assertEquals([
@@ -403,9 +386,8 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_run_proppatch()
     {
-        $tester = (new DavTester());
-
-        $tester->addResponse('https://test/test', new Response(207, [], $tester->multistatusHeader().
+        $tester = (new DavTester())
+        ->addResponse('https://test', Http::response(DavTester::multistatusHeader().
             '<d:response>'.
                 '<d:href>href</d:href>'.
                 '<d:propstat>'.
@@ -415,19 +397,19 @@ class DavClientTest extends TestCase
                     '<d:status>HTTP/1.1 200 OK</d:status>'.
                 '</d:propstat>'.
             '</d:response>'.
-            '</d:multistatus>'), '<?xml version="1.0"?>'."\n".
+            '</d:multistatus>', 207), '<?xml version="1.0"?>'."\n".
             '<d:propertyupdate xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">'."\n".
             ' <d:set>'."\n".
             '  <d:prop>'."\n".
             '   <d:test>value</d:test>'."\n".
             '  </d:prop>'."\n".
             ' </d:set>'."\n".
-            "</d:propertyupdate>\n", 'PROPPATCH');
+            "</d:propertyupdate>\n", 'PROPPATCH')
+        ->fake();
 
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = $tester->client();
 
-        $result = $client->propPatchAsync('https://test/test', ['{DAV:}test' => 'value'])
-            ->wait();
+        $result = $client->propPatch(['{DAV:}test' => 'value']);
 
         $tester->assert();
         $this->assertTrue($result);
@@ -436,9 +418,8 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_run_proppatch_error()
     {
-        $tester = (new DavTester());
-
-        $tester->addResponse('https://test/test', new Response(207, [], $tester->multistatusHeader().
+        $tester = (new DavTester())
+        ->addResponse('https://test', Http::response(DavTester::multistatusHeader().
             '<d:response>'.
                 '<d:href>href</d:href>'.
                 '<d:propstat>'.
@@ -454,7 +435,7 @@ class DavClientTest extends TestCase
                     '<d:status>HTTP/1.1 500 OK</d:status>'.
                 '</d:propstat>'.
             '</d:response>'.
-            '</d:multistatus>'), '<?xml version="1.0"?>'."\n".
+            '</d:multistatus>', 207), '<?xml version="1.0"?>'."\n".
             '<d:propertyupdate xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">'."\n".
             ' <d:set>'."\n".
             '  <d:prop>'."\n".
@@ -462,16 +443,16 @@ class DavClientTest extends TestCase
             '   <d:excerpt>value</d:excerpt>'."\n".
             '  </d:prop>'."\n".
             ' </d:set>'."\n".
-            "</d:propertyupdate>\n", 'PROPPATCH');
+            "</d:propertyupdate>\n", 'PROPPATCH')
+        ->fake();
 
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = $tester->client();
 
         $this->expectException(DavClientException::class);
         $this->expectExceptionMessage('PROPPATCH failed. The following properties errored: {DAV:}test (405), {DAV:}excerpt (500)');
-        $client->propPatchAsync('https://test/test', [
+        $client->propPatch([
             '{DAV:}test' => 'value',
             '{DAV:}excerpt' => 'value',
-        ])
-            ->wait();
+        ]);
     }
 }

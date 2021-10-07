@@ -68,8 +68,7 @@ class AddressBookContactsPushMissedTest extends TestCase
                 ]);
         });
 
-        $tester = new DavTester();
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = (new DavTester())->fake()->client();
 
         $batchs = (new AddressBookContactsPushMissed())
             ->execute(new SyncDto($subscription, $client, $backend), [], collect([

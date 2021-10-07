@@ -51,7 +51,7 @@ class AddressBookContactsPush
                 $card = $this->sync->backend->getCard($this->sync->addressBookName(), $uri);
 
                 return $card !== false
-                    ? new PushVCard($this->sync->subscription, new ContactPushDto($uri, $card['etag'], $card['carddata'], 0))
+                    ? new PushVCard($this->sync->subscription, new ContactPushDto($uri, $card['etag'], $card['carddata']))
                     : null;
             });
     }
@@ -79,7 +79,7 @@ class AddressBookContactsPush
                 $card = $this->sync->backend->getCard($this->sync->addressBookName(), $uri);
 
                 return $card !== false
-                    ? new PushVCard($this->sync->subscription, new ContactPushDto($uri, $card['etag'], $card['carddata'], 1))
+                    ? new PushVCard($this->sync->subscription, new ContactPushDto($uri, $card['etag'], $card['carddata'], ContactPushDto::MODE_MATCH_ETAG))
                     : null;
             });
     }

@@ -52,10 +52,8 @@ class GetVCard implements ShouldQueue
 
         Log::info(__CLASS__.' '.$this->contact->uri);
 
-        $response = $this->subscription->getRequest()
-            ->get($this->contact->uri);
-
-        $response->throw();
+        $response = $this->subscription->getClient()
+            ->request('GET', $this->contact->uri);
 
         $this->chainUpdateVCard($response->body());
     }

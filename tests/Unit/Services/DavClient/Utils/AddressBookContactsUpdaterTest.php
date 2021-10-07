@@ -56,8 +56,7 @@ class AddressBookContactsUpdaterTest extends TestCase
                 ->andReturn($etag);
         });
 
-        $tester = new DavTester();
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = (new DavTester())->fake()->client();
 
         $batchs = (new AddressBookContactsUpdater())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
@@ -123,8 +122,7 @@ class AddressBookContactsUpdaterTest extends TestCase
                 ->andReturn($etag);
         });
 
-        $tester = new DavTester();
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = (new DavTester())->fake()->client();
 
         $batchs = (new AddressBookContactsUpdater())
             ->execute(new SyncDto($subscription, $client, $backend), collect([
