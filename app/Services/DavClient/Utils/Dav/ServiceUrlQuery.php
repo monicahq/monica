@@ -3,6 +3,7 @@
 namespace App\Services\DavClient\Utils\Dav;
 
 use GuzzleHttp\Psr7\Uri;
+use Illuminate\Support\Collection;
 use Http\Client\Exception\RequestException;
 
 class ServiceUrlQuery
@@ -25,7 +26,7 @@ class ServiceUrlQuery
 
         $entries = $this->dns_get_record($name.'.'.$host, DNS_SRV);
 
-        if ($entries && count($entries) > 0) {
+        if ($entries && $entries->count() > 0) {
             $entries = collect($entries)
                 ->groupBy('pri')
                 ->sortKeys()
@@ -39,6 +40,7 @@ class ServiceUrlQuery
                     // no exception
                 }
             }
+
         }
 
         return null;
@@ -67,7 +69,7 @@ class ServiceUrlQuery
         return (string) $uri;
     }
 
-    private function dns_get_record(string $hostname, int $type = DNS_ANY, ?array &$authns = null, ?array &$addtl = null, bool $raw = false): ?array
+    private function dns_get_record(string $hostname, int $type = DNS_ANY, ?array &$authns = null, ?array &$addtl = null, bool $raw = false): ?Collection
     {
         error_clear_last();
         $result = \dns_get_record($hostname, $type, $authns, $addtl, $raw);
@@ -75,6 +77,6 @@ class ServiceUrlQuery
             return null;
         }
 
-        return $result;
+        return collect($result);
     }
 }
