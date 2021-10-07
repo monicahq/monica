@@ -57,11 +57,6 @@ class DavClient
         return $this;
     }
 
-    public static function fake(string $uri): self
-    {
-        return (new self())->setBaseUri($uri);
-    }
-
     /**
      * Get current uri.
      *
