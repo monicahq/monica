@@ -39,7 +39,6 @@ class ServiceUrlQuery
                     // no exception
                 }
             }
-
         }
 
         return null;
