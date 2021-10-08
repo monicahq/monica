@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => '常联系*',
     'stay_in_touch_frequency' => '常联系*提醒频率：每天|常联系*提醒频率：每 {count} 天',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => '频率必须大于0。',
     'stay_in_touch_premium' => '您需要升级到高级账户来使用这个功能！',
     'stay_in_touch_modal_title' => '常联系*',
@@ -285,7 +286,7 @@ return [
     'activities_profile_year_summary_activity_types' => ':year年活动类型汇总',
     'activities_profile_year_summary' => ':year年你们一起进行的活动',
     'activities_profile_number_occurences' => ':value 次活动',
-    'activities_list_participants' => '参与者：',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => '我感觉:',
     'activities_list_date' => '发生于',
     'activities_list_category' => '分类：',

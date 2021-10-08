@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'İrtibatta kal',
     'stay_in_touch_frequency' => 'Her {count} gün iletişimde kalın',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => 'Sıklık değeri, 0\'dan daha büyük bir sayı olmalıdır.',
     'stay_in_touch_premium' => 'Bu özelliği kullanabilmek için hesabınızı yükseltmeniz gerekir',
     'stay_in_touch_modal_title' => 'İrtibatta kal',
@@ -285,7 +286,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'İşte :year yılında birlikte gerçekleştirdiğiniz etkinlik türlerinin bir dökümü',
     'activities_profile_year_summary' => 'İşte :year yılında ikinizin yaptıkları',
     'activities_profile_number_occurences' => ':value aktivite',
-    'activities_list_participants' => 'Katılımcılar:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'Hissedilen duygular:',
     'activities_list_date' => 'Gerçekleşti',
     'activities_list_category' => 'Kategori:',

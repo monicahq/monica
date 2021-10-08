@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Hold kontakten',
     'stay_in_touch_frequency' => 'Hold kontakten hver dag|Hold kontakten hver {count}. dag',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => 'Frekvensen skal være et tal større end 0.',
     'stay_in_touch_premium' => 'Du skal opgradere din konto for at gøre brug af denne funktion',
     'stay_in_touch_modal_title' => 'Hold kontakten',
@@ -285,7 +286,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'Her er en opdeling af den type aktiviteter, I har lavet sammen i :year',
     'activities_profile_year_summary' => 'Her er hvad I to har lavet i :year',
     'activities_profile_number_occurences' => ':value aktivitet|:value aktiviteter',
-    'activities_list_participants' => 'Deltagere:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'Følelser følt:',
     'activities_list_date' => 'Skete den',
     'activities_list_category' => 'Kategori:',

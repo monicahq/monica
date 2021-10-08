@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Giữ liên lạc',
     'stay_in_touch_frequency' => 'Giữ liên lạc mỗi ngày|Giữ liên lạc mỗi  {count} ngày',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => 'Tần suất phải là số lớn hơn 0.',
     'stay_in_touch_premium' => 'Bạn cần nâng cấp tài khoản để sử dụng tính năng này',
     'stay_in_touch_modal_title' => 'Giữ liên lạc',
@@ -285,7 +286,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'Dưới đây là bảng phân tích các loại hoạt động các bạn đã làm cùng nhau trong năm :year',
     'activities_profile_year_summary' => 'Dưới đây là những gì hai bạn đã làm trong năm :year',
     'activities_profile_number_occurences' => ':value hoạt động',
-    'activities_list_participants' => 'Người tham gia:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'Cảm thấy:',
     'activities_list_date' => 'Xảy ra vào',
     'activities_list_category' => 'Thể loại:',

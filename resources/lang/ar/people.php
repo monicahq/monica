@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'ابقى على اتصال',
     'stay_in_touch_frequency' => 'ابقى على اتصال يوميا|ابقى على اتصال كل {count} يومًا',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => 'يجب أن يكون التواتر عدد أكبر من 0.',
     'stay_in_touch_premium' => 'تحتاج إلى ترقية الحساب الخاص بك لاستخدام هذه الميزة',
     'stay_in_touch_modal_title' => 'ابقى على اتصال',
@@ -285,7 +286,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'هنا تفاصيل هذا النوع من الأنشطة التي قضيتماها معا في عام :year',
     'activities_profile_year_summary' => 'هذا ما فعلتموه معا في عام :year',
     'activities_profile_number_occurences' => ':value نشاط|:value أنشطة',
-    'activities_list_participants' => 'Participants:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'Emotions felt:',
     'activities_list_date' => 'Happened on',
     'activities_list_category' => 'Category:',
