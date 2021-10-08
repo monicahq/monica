@@ -43,8 +43,8 @@ class AddressBookContactsPushMissedTest extends TestCase
         $card = $this->getCard($contact);
         $etag = $this->getEtag($contact, true);
 
-        /** @var CardDAVBackend */
-        $backend = $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag, $contact) {
+        $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag, $contact) {
+            $mock->shouldReceive('init')->andReturn($mock);
             $mock->shouldReceive('getUuid')
                 ->once()
                 ->withArgs(function ($uri) {
@@ -70,7 +70,7 @@ class AddressBookContactsPushMissedTest extends TestCase
         $client = (new DavTester())->fake()->client();
 
         $batchs = (new AddressBookContactsPushMissed())
-            ->execute(new SyncDto($subscription, $client, $backend), [], collect([
+            ->execute(new SyncDto($subscription, $client), [], collect([
                 'uuid6' => new ContactDto('uuid6', $etag),
             ]), collect([$contact]));
 

@@ -16,7 +16,6 @@ use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\Utils\AddressBookSynchronizer;
-use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 use App\Services\DavClient\Utils\AddressBookContactsUpdater;
 use App\Services\DavClient\Utils\AddressBookContactsPushMissed;
 use App\Services\DavClient\Utils\AddressBookContactsUpdaterMissed;
@@ -38,7 +37,6 @@ class AddressBookSynchronizerTest extends TestCase
         });
 
         $subscription = $this->getSubscription();
-        $backend = new CardDAVBackend($subscription->user);
 
         $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'))
             ->getSynctoken($subscription->syncToken)
@@ -46,7 +44,7 @@ class AddressBookSynchronizerTest extends TestCase
         $client = $tester->client();
 
         (new AddressBookSynchronizer())
-            ->execute(new SyncDto($subscription, $client, $backend));
+            ->execute(new SyncDto($subscription, $client));
 
         $tester->assert();
     }
@@ -63,7 +61,6 @@ class AddressBookSynchronizerTest extends TestCase
         });
 
         $subscription = $this->getSubscription();
-        $backend = new CardDAVBackend($subscription->user);
 
         $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'));
         $tester->getSynctoken('"test21"')
@@ -73,7 +70,7 @@ class AddressBookSynchronizerTest extends TestCase
         $client = $tester->client();
 
         (new AddressBookSynchronizer())
-            ->execute(new SyncDto($subscription, $client, $backend));
+            ->execute(new SyncDto($subscription, $client));
 
         $tester->assert();
     }
@@ -84,7 +81,6 @@ class AddressBookSynchronizerTest extends TestCase
         Bus::fake();
 
         $subscription = $this->getSubscription();
-        $backend = new CardDAVBackend($subscription->user);
 
         $contact = factory(Contact::class)->create([
             'account_id' => $subscription->account_id,
@@ -99,7 +95,7 @@ class AddressBookSynchronizerTest extends TestCase
 
         $client = $tester->client();
 
-        $sync = new SyncDto($subscription, $client, $backend);
+        $sync = new SyncDto($subscription, $client);
         $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) use ($sync) {
             $mock->shouldReceive('execute')
                 ->once()
@@ -125,9 +121,8 @@ class AddressBookSynchronizerTest extends TestCase
         Bus::fake();
 
         $subscription = $this->getSubscription();
-        $backend = new CardDAVBackend($subscription->user);
 
-        $contact = factory(Contact::class)->create([
+        factory(Contact::class)->create([
             'account_id' => $subscription->account_id,
             'address_book_id' => $subscription->address_book_id,
             'uuid' => 'd403af1c-8492-4e9b-9833-cf18c795dfa9',
@@ -140,7 +135,7 @@ class AddressBookSynchronizerTest extends TestCase
 
         $client = $tester->client();
 
-        $sync = new SyncDto($subscription, $client, $backend);
+        $sync = new SyncDto($subscription, $client);
 
         (new AddressBookSynchronizer())
             ->execute($sync);
@@ -163,7 +158,6 @@ class AddressBookSynchronizerTest extends TestCase
         Bus::fake();
 
         $subscription = $this->getSubscription();
-        $backend = new CardDAVBackend($subscription->user);
 
         $contact = factory(Contact::class)->create([
             'account_id' => $subscription->account_id,
@@ -193,7 +187,7 @@ class AddressBookSynchronizerTest extends TestCase
 
         $client = $tester->client();
 
-        $sync = new SyncDto($subscription, $client, $backend);
+        $sync = new SyncDto($subscription, $client);
         $this->mock(AddressBookContactsUpdaterMissed::class, function (MockInterface $mock) use ($sync, $contact, $etag) {
             $mock->shouldReceive('execute')
                 ->once()
@@ -225,7 +219,6 @@ class AddressBookSynchronizerTest extends TestCase
         Bus::fake();
 
         $subscription = $this->getSubscription();
-        $backend = new CardDAVBackend($subscription->user);
 
         $contact = factory(Contact::class)->create([
             'account_id' => $subscription->account_id,
@@ -255,7 +248,7 @@ class AddressBookSynchronizerTest extends TestCase
 
         $client = $tester->client();
 
-        $sync = new SyncDto($subscription, $client, $backend);
+        $sync = new SyncDto($subscription, $client);
 
         (new AddressBookSynchronizer())
             ->execute($sync, true);

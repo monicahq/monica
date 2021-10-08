@@ -67,6 +67,15 @@ class AddressBookSubscription extends Model
     ];
 
     /**
+     * Eager load account with every contact.
+     *
+     * @var array<string>
+     */
+    protected $with = [
+        'user',
+    ];
+
+    /**
      * Get the account record associated with the subscription.
      *
      * @return BelongsTo

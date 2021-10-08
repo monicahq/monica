@@ -9,16 +9,12 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
+use App\Services\DavClient\Utils\Traits\WithSyncDto;
 use App\Services\DavClient\Utils\Traits\HasCapability;
 
 class AddressBookSynchronizer
 {
-    use HasCapability;
-
-    /**
-     * @var SyncDto
-     */
-    private $sync;
+    use HasCapability, WithSyncDto;
 
     /**
      * Sync the address book.
@@ -40,7 +36,7 @@ class AddressBookSynchronizer
     private function sync()
     {
         // Get changes to sync
-        $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->addressBookName(), (string) $this->sync->subscription->localSyncToken, 1);
+        $localChanges = $this->backend()->getChangesForAddressBook($this->sync->addressBookName(), (string) $this->sync->subscription->localSyncToken, 1);
 
         // Get distant changes to sync
         $changes = $this->getDistantChanges();
@@ -58,10 +54,7 @@ class AddressBookSynchronizer
 
         Bus::batch($batch)
             ->then(function (Batch $batch) {
-                $token = $this->sync->backend->getCurrentSyncToken($this->sync->addressBookName());
-
-                $this->sync->subscription->localSyncToken = $token->id;
-                $this->sync->subscription->save();
+                $this->updateSyncToken();
             })
             ->allowFailures()
             ->dispatch();
@@ -72,11 +65,13 @@ class AddressBookSynchronizer
      */
     private function forcesync()
     {
+        $backend = $this->backend();
+
         // Get changes to sync
-        $localChanges = $this->sync->backend->getChangesForAddressBook($this->sync->addressBookName(), (string) $this->sync->subscription->localSyncToken, 1);
+        $localChanges = $backend->getChangesForAddressBook($this->sync->addressBookName(), (string) $this->sync->subscription->localSyncToken, 1);
 
         // Get current list of contacts
-        $localContacts = $this->sync->backend->getObjects($this->sync->addressBookName());
+        $localContacts = $backend->getObjects($this->sync->addressBookName());
 
         // Get distant changes to sync
         $distContacts = $this->getAllContactsEtag();
@@ -128,7 +123,7 @@ class AddressBookSynchronizer
         }
 
         // only new contact or contact with etag that match
-        $card = $this->sync->backend->getCard($this->sync->addressBookName(), $href);
+        $card = $this->backend()->getCard($this->sync->addressBookName(), $href);
 
         return $card === false || $card['etag'] !== Arr::get($contact, '200.{DAV:}getetag');
     }
@@ -214,5 +209,18 @@ class AddressBookSynchronizer
             ->map(function ($contact, $href): ContactDto {
                 return new ContactDto($href, Arr::get($contact, '200.{DAV:}getetag'));
             });
+    }
+
+    /**
+     * Update the synctoken.
+     *
+     * @return void
+     */
+    private function updateSyncToken(): void
+    {
+        $token = $this->backend()->getCurrentSyncToken($this->sync->addressBookName());
+
+        $this->sync->subscription->localSyncToken = $token->id;
+        $this->sync->subscription->save();
     }
 }

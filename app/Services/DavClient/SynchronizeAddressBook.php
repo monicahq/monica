@@ -13,7 +13,6 @@ use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\AddressBookSynchronizer;
-use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 
 class SynchronizeAddressBook extends BaseService
 {
@@ -53,10 +52,8 @@ class SynchronizeAddressBook extends BaseService
         $subscription = AddressBookSubscription::where('account_id', $data['account_id'])
             ->findOrFail($data['addressbook_subscription_id']);
 
-        $backend = new CardDAVBackend($user);
-
         try {
-            $this->sync($data, $subscription, $backend);
+            $this->sync($data, $subscription);
         } catch (ClientException $e) {
             Log::error(__CLASS__.' execute: '.$e->getMessage(), [$e]);
             if ($e->hasResponse()) {
@@ -65,10 +62,10 @@ class SynchronizeAddressBook extends BaseService
         }
     }
 
-    private function sync(array $data, AddressBookSubscription $subscription, CardDAVBackend $backend)
+    private function sync(array $data, AddressBookSubscription $subscription)
     {
         $client = $this->getDavClient($subscription);
-        $sync = new SyncDto($subscription, $client, $backend);
+        $sync = new SyncDto($subscription, $client);
         $force = Arr::get($data, 'force', false);
 
         app(AddressBookSynchronizer::class)

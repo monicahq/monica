@@ -8,14 +8,12 @@ use Illuminate\Support\Collection;
 use IlluminateAgnostic\Collection\Support\Arr;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
+use App\Services\DavClient\Utils\Traits\WithSyncDto;
 use App\Services\DavClient\Utils\Model\ContactPushDto;
 
 class AddressBookContactsPushMissed
 {
-    /**
-     * @var SyncDto
-     */
-    private $sync;
+    use WithSyncDto;
 
     /**
      * Push contacts to the distant server.
@@ -47,22 +45,24 @@ class AddressBookContactsPushMissed
      */
     private function preparePushMissedContacts(array $added, Collection $distContacts, Collection $localContacts): Collection
     {
-        /** @var Collection<array-key, string> $distUuids */
-        $distUuids = $distContacts->map(function (ContactDto $contact) {
-            return $this->sync->backend->getUuid($contact->uri);
+        $backend = $this->backend();
+
+        /** @var Collection<array-key, string> */
+        $distUuids = $distContacts->map(function (ContactDto $contact) use ($backend) {
+            return $backend->getUuid($contact->uri);
         });
 
-        /** @var Collection<array-key, string> $added */
-        $addedUuids = collect($added)->map(function ($uri) {
-            return $this->sync->backend->getUuid($uri);
+        /** @var Collection<array-key, string> */
+        $addedUuids = collect($added)->map(function ($uri) use ($backend) {
+            return $backend->getUuid($uri);
         });
 
         return collect($localContacts)
             ->filter(function (Contact $contact) use ($distUuids, $addedUuids) {
                 return ! $distUuids->contains($contact->uuid)
                     && ! $addedUuids->contains($contact->uuid);
-            })->map(function (Contact $contact): PushVCard {
-                $card = $this->sync->backend->prepareCard($contact);
+            })->map(function (Contact $contact) use ($backend): PushVCard {
+                $card = $backend->prepareCard($contact);
 
                 return new PushVCard($this->sync->subscription, new ContactPushDto($card['uri'], $card['etag'], $card['carddata'], ContactPushDto::MODE_MATCH_ANY));
             });
