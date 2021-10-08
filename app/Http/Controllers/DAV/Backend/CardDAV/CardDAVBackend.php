@@ -202,7 +202,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
                 'lastmodified' => $contact->updated_at->timestamp,
             ];
         } catch (\Exception $e) {
-            Log::debug(__CLASS__.' prepareCard: '.(string) $e);
+            Log::debug(__CLASS__.' prepareCard: '.(string) $e, [$e, 'carddata' => $carddata, 'contact_id' => $contact->id]);
             throw $e;
         }
     }
@@ -396,7 +396,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
                 return '"'.md5($contact->vcard).'"';
             }
         } catch (\Exception $e) {
-            Log::debug(__CLASS__.' updateCard: '.(string) $e);
+            Log::debug(__CLASS__.' updateCard: '.(string) $e, [$e]);
             throw $e;
         }
 

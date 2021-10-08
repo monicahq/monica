@@ -40,6 +40,8 @@ use App\Services\Contact\Contact\UpdateWorkInformation;
 use App\Services\Contact\ContactField\CreateContactField;
 use App\Services\Contact\ContactField\UpdateContactField;
 use App\Services\Contact\ContactField\DestroyContactField;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class ImportVCard extends BaseService
 {
@@ -809,7 +811,13 @@ class ImportVCard extends BaseService
                     $array['extension'] = $type->getValue();
                 }
 
-                $photo = app(UploadPhoto::class)->execute($array);
+                try {
+                    $photo = app(UploadPhoto::class)
+                        ->execute($array);
+                } catch (ValidationException $e) {
+                    // wrong data
+                    Log::debug(__CLASS__.' importPhoto: ERROR when UploadPhoto: '. implode(', ', $e->errors()).', PHOTO='.$array['data'], [$e, $array, 'contact_id' => $contact->id]);
+                }
 
                 if (! $photo) {
                     return;
