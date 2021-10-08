@@ -82,6 +82,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
      */
     public function prepareData($obj)
     {
+        $calendardata = null;
         if ($obj instanceof Task) {
             try {
                 $calendardata = $this->refreshObject($obj);

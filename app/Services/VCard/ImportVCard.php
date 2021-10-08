@@ -814,21 +814,21 @@ class ImportVCard extends BaseService
                 try {
                     $photo = app(UploadPhoto::class)
                         ->execute($array);
+                    if (! $photo) {
+                        return;
+                    }
+
+                    app(UpdateAvatar::class)->execute([
+                        'account_id' => $contact->account_id,
+                        'contact_id' => $contact->id,
+                        'source' => 'photo',
+                        'photo_id' => $photo->id,
+                    ]);
                 } catch (ValidationException $e) {
                     // wrong data
                     Log::debug(__CLASS__.' importPhoto: ERROR when UploadPhoto: '. implode(', ', $e->errors()).', PHOTO='.$array['data'], [$e, $array, 'contact_id' => $contact->id]);
-                }
-
-                if (! $photo) {
                     return;
                 }
-
-                app(UpdateAvatar::class)->execute([
-                    'account_id' => $contact->account_id,
-                    'contact_id' => $contact->id,
-                    'source' => 'photo',
-                    'photo_id' => $photo->id,
-                ]);
             }
         }
     }
