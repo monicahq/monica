@@ -43,7 +43,7 @@ class AddressBookContactsPushMissedTest extends TestCase
         $card = $this->getCard($contact);
         $etag = $this->getEtag($contact, true);
 
-        $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag, $contact, $subscription) {
+        $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag, $contact) {
             $mock->shouldReceive('init')->andReturn($mock);
             $mock->shouldReceive('getUuid')
                 ->once()

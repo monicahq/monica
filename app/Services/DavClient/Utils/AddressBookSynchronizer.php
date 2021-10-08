@@ -9,8 +9,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
-use App\Services\DavClient\Utils\Traits\HasCapability;
 use App\Services\DavClient\Utils\Traits\WithSyncDto;
+use App\Services\DavClient\Utils\Traits\HasCapability;
 
 class AddressBookSynchronizer
 {

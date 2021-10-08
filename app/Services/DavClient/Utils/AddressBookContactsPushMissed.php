@@ -8,8 +8,8 @@ use Illuminate\Support\Collection;
 use IlluminateAgnostic\Collection\Support\Arr;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
-use App\Services\DavClient\Utils\Model\ContactPushDto;
 use App\Services\DavClient\Utils\Traits\WithSyncDto;
+use App\Services\DavClient\Utils\Model\ContactPushDto;
 
 class AddressBookContactsPushMissed
 {
