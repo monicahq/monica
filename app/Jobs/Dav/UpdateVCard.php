@@ -61,8 +61,6 @@ class UpdateVCard implements ShouldQueue
             return;
         }
 
-        Log::info(__CLASS__.' update '.$this->contact->uri);
-
         $newtag = $this->updateCard($this->addressBookName, $this->contact->uri, $this->contact->card);
 
         if ($newtag !== $this->contact->etag) {
