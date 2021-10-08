@@ -25,12 +25,14 @@ use App\Helpers\CountriesHelper;
 use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCard;
 use App\Models\Account\AddressBook;
+use Illuminate\Support\Facades\Log;
 use App\Models\Contact\ContactField;
 use App\Services\Contact\Tag\DetachTag;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Tag\AssociateTag;
 use App\Services\Account\Photo\UploadPhoto;
 use App\Services\Contact\Avatar\UpdateAvatar;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
 use App\Services\Contact\Contact\CreateContact;
@@ -40,8 +42,6 @@ use App\Services\Contact\Contact\UpdateWorkInformation;
 use App\Services\Contact\ContactField\CreateContactField;
 use App\Services\Contact\ContactField\UpdateContactField;
 use App\Services\Contact\ContactField\DestroyContactField;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\ValidationException;
 
 class ImportVCard extends BaseService
 {
@@ -826,8 +826,7 @@ class ImportVCard extends BaseService
                     ]);
                 } catch (ValidationException $e) {
                     // wrong data
-                    Log::debug(__CLASS__.' importPhoto: ERROR when UploadPhoto: '. implode(', ', $e->errors()).', PHOTO='.$array['data'], [$e, $array, 'contact_id' => $contact->id]);
-                    return;
+                    Log::debug(__CLASS__.' importPhoto: ERROR when UploadPhoto: '.implode(', ', $e->errors()).', PHOTO='.$array['data'], [$e, $array, 'contact_id' => $contact->id]);
                 }
             }
         }

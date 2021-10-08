@@ -164,7 +164,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
                 return $calendar['etag'];
             }
         } catch (\Exception $e) {
-            Log::debug(__CLASS__." updateOrCreateCalendarObject: ".(string) $e, [$e, 'calendarId' => $calendarId, 'objectUri' => $objectUri, 'calendarData' => $calendarData]);
+            Log::debug(__CLASS__.' updateOrCreateCalendarObject: '.(string) $e, [$e, 'calendarId' => $calendarId, 'objectUri' => $objectUri, 'calendarData' => $calendarData]);
         }
 
         return null;
@@ -190,7 +190,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
                         'task_id' => $task->id,
                     ]);
             } catch (\Exception $e) {
-                Log::debug(__CLASS__." deleteCalendarObject: ".(string) $e, [$e, 'objectUri' => $objectUri]);
+                Log::debug(__CLASS__.' deleteCalendarObject: '.(string) $e, [$e, 'objectUri' => $objectUri]);
             }
         }
     }
