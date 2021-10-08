@@ -7,12 +7,11 @@ use Illuminate\Support\Arr;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Log;
 use App\Services\VCard\ImportVCard;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 
