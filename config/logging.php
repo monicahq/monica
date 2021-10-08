@@ -36,6 +36,10 @@ return [
             'channels' => ['single'],
             'ignore_exceptions' => false,
         ],
+        'stackerrorlog' => [
+            'driver' => 'stack',
+            'channels' => ['errorlog', 'papertrail', 'sentry'],
+        ],
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
@@ -54,10 +58,6 @@ return [
             'emoji' => ':boom:',
             'level' => 'critical',
         ],
-        'papertrailsyslog' => [
-            'driver' => 'stack',
-            'channels' => ['papertrail', 'syslog'],
-        ],
         'papertrailerrorlog' => [
             'driver' => 'stack',
             'channels' => ['papertrail', 'errorlog'],
@@ -70,6 +70,11 @@ return [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
             ],
+        ],
+        'sentry' => [
+            'driver' => 'sentry',
+            'level'  => 'debug',
+            'bubble' => true,
         ],
         'stderr' => [
             'driver' => 'monolog',
