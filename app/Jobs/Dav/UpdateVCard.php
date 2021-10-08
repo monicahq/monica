@@ -59,7 +59,7 @@ class UpdateVCard implements ShouldQueue
 
         Log::info(__CLASS__.' update '.$this->contact->uri);
 
-        $backend = new CardDAVBackend($this->user);
+        $backend = app(CardDAVBackend::class)->init($this->user);
         $newtag = $backend->updateCard($this->addressBookName, $this->contact->uri, $this->contact->card);
 
         if ($newtag !== $this->contact->etag) {

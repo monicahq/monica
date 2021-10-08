@@ -30,18 +30,12 @@ class SyncDto
     public $client;
 
     /**
-     * @var CardDAVBackend
-     */
-    public $backend;
-
-    /**
      * Sync the address book.
      */
-    public function __construct(AddressBookSubscription $subscription, DavClient $client, CardDAVBackend $backend)
+    public function __construct(AddressBookSubscription $subscription, DavClient $client)
     {
         $this->subscription = $subscription;
         $this->client = $client;
-        $this->backend = $backend;
     }
 
     /**
@@ -52,6 +46,16 @@ class SyncDto
     public function addressBookName(): string
     {
         return $this->subscription->addressbook->name;
+    }
+
+    /**
+     * Get carddav backend.
+     *
+     * @return CardDAVBackend
+     */
+    public function backend(): CardDAVBackend
+    {
+        return app(CardDAVBackend::class)->init($this->subscription->user);
     }
 
     /**

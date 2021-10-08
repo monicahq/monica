@@ -7,15 +7,11 @@ use App\Jobs\Dav\GetMultipleVCard;
 use Illuminate\Support\Collection;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Traits\HasCapability;
+use App\Services\DavClient\Utils\Traits\WithSyncDto;
 
 class AddressBookContactsUpdater
 {
-    use HasCapability;
-
-    /**
-     * @var SyncDto
-     */
-    private $sync;
+    use HasCapability, WithSyncDto;
 
     /**
      * Update local contacts.

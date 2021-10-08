@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\DAV\Backend;
 
+use App\Traits\WithUser;
 use Illuminate\Support\Str;
 use App\Models\User\SyncToken;
 
 trait SyncDAVBackend
 {
-    /**
-     * @var \App\Models\User\User
-     */
-    protected $user;
+    use WithUser;
 
     /**
      * This method returns a sync-token for this collection.

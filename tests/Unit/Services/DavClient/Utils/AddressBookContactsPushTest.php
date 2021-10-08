@@ -44,8 +44,8 @@ class AddressBookContactsPushTest extends TestCase
         $card = $this->getCard($contact);
         $etag = $this->getEtag($contact, true);
 
-        /** @var CardDAVBackend */
-        $backend = $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
+        $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
+            $mock->shouldReceive('init')->andReturn($mock);
             $mock->shouldReceive('getCard')
                 ->withArgs(function ($name, $uri) {
                     $this->assertEquals($uri, 'uricontact2');
@@ -68,7 +68,7 @@ class AddressBookContactsPushTest extends TestCase
         $client = (new DavTester())->fake()->client();
 
         $batchs = (new AddressBookContactsPush())
-            ->execute(new SyncDto($subscription, $client, $backend), collect([
+            ->execute(new SyncDto($subscription, $client), collect([
                 'https://test/dav/uricontact1' => new ContactDto('https://test/dav/uricontact1', $etag),
             ]), [
                 'added' => ['uricontact2'],
@@ -104,8 +104,8 @@ class AddressBookContactsPushTest extends TestCase
         $card = $this->getCard($contact);
         $etag = $this->getEtag($contact, true);
 
-        /** @var CardDAVBackend */
-        $backend = $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
+        $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
+            $mock->shouldReceive('init')->andReturn($mock);
             $mock->shouldReceive('getUuid')
                 ->withArgs(function ($uri) {
                     $this->assertStringContainsString('uricontact', $uri);
@@ -130,7 +130,7 @@ class AddressBookContactsPushTest extends TestCase
         $client = (new DavTester())->fake()->client();
 
         $batchs = (new AddressBookContactsPush())
-            ->execute(new SyncDto($subscription, $client, $backend), collect([
+            ->execute(new SyncDto($subscription, $client), collect([
                 'https://test/dav/uricontact1' => new ContactDto('https://test/dav/uricontact1', $etag),
             ]), [
                 'modified' => ['uricontact2'],

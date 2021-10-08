@@ -5,13 +5,11 @@ namespace App\Services\DavClient\Utils;
 use Illuminate\Support\Collection;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
+use App\Services\DavClient\Utils\Traits\WithSyncDto;
 
 class AddressBookContactsUpdaterMissed
 {
-    /**
-     * @var SyncDto
-     */
-    private $sync;
+    use WithSyncDto;
 
     /**
      * Update local missed contacts.
@@ -28,7 +26,7 @@ class AddressBookContactsUpdaterMissed
         $uuids = $localContacts->pluck('uuid');
 
         $missed = $distContacts->reject(function (ContactDto $contact) use ($uuids): bool {
-            return $uuids->contains($this->sync->backend->getUuid($contact->uri));
+            return $uuids->contains($this->backend()->getUuid($contact->uri));
         });
 
         return app(AddressBookContactsUpdater::class)
