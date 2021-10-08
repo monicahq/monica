@@ -3,12 +3,16 @@
 namespace App\Jobs\Dav;
 
 use App\Models\User\User;
+use Illuminate\Support\Arr;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Log;
+use App\Services\VCard\ImportVCard;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 
@@ -59,11 +63,56 @@ class UpdateVCard implements ShouldQueue
 
         Log::info(__CLASS__.' update '.$this->contact->uri);
 
-        $backend = app(CardDAVBackend::class)->init($this->user);
-        $newtag = $backend->updateCard($this->addressBookName, $this->contact->uri, $this->contact->card);
+        $newtag = $this->updateCard($this->addressBookName, $this->contact->uri, $this->contact->card);
 
         if ($newtag !== $this->contact->etag) {
             Log::warning(__CLASS__.' wrong etag when updating contact. Expected '.$this->contact->etag.', get '.$newtag);
         }
+    }
+
+    /**
+     * Update the contact with the carddata.
+     *
+     * @param  mixed  $addressBookId
+     * @param  string  $cardUri
+     * @param  string  $cardData
+     * @return string|null
+     */
+    private function updateCard($addressBookId, $cardUri, $cardData): ?string
+    {
+        $backend = app(CardDAVBackend::class)->init($this->user);
+
+        $contact_id = null;
+        if ($cardUri) {
+            $contact = $backend->getObject($addressBookId, $cardUri);
+
+            if ($contact) {
+                $contact_id = $contact->id;
+            }
+        }
+
+        try {
+            $result = app(ImportVCard::class)
+                ->execute([
+                    'account_id' => $this->user->account_id,
+                    'user_id' => $this->user->id,
+                    'contact_id' => $contact_id,
+                    'entry' => $cardData,
+                    'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
+                    'addressBookName' => $addressBookId === $backend->backendUri() ? null : $addressBookId,
+                ]);
+
+            if (! Arr::has($result, 'error')) {
+                $contact = Contact::where('account_id', $this->user->account_id)
+                    ->find($result['contact_id']);
+
+                return '"'.md5($contact->vcard).'"';
+            }
+        } catch (\Exception $e) {
+            Log::debug(__CLASS__.' updateCard: '.(string) $e);
+            throw $e;
+        }
+
+        return null;
     }
 }
