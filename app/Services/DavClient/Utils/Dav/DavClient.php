@@ -483,16 +483,15 @@ class DavClient
     {
         $response = $this->request('OPTIONS');
 
-        $dav = Arr::get($response->headers(), 'Dav');
-        if (! $dav) {
+        $dav = $response->header('Dav');
+        if (empty($dav)) {
             return [];
         }
+        $davs = explode(', ', $dav);
 
-        foreach ($dav as &$v) {
-            $v = trim($v);
-        }
-
-        return $dav;
+        return array_map(function ($header) {
+            return trim($header);
+        }, $davs);
     }
 
     /**

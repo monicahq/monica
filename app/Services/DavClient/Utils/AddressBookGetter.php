@@ -116,12 +116,6 @@ class AddressBookGetter
     private function checkOptions()
     {
         $options = $this->client->options();
-        if (! empty($options)) {
-            $options = array_map(function ($option) {
-                return explode(', ', $option);
-            }, $options);
-            $options = Arr::flatten($options);
-        }
 
         if (! in_array('1', $options) || ! in_array('3', $options) || ! in_array('addressbook', $options)) {
             throw new DavServerNotCompliantException('server is not compliant with rfc2518 section 15.1, or rfc6352 section 6.1');
