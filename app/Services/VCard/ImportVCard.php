@@ -826,7 +826,7 @@ class ImportVCard extends BaseService
                     ]);
                 } catch (ValidationException $e) {
                     // wrong data
-                    Log::debug(__CLASS__.' importPhoto: ERROR when UploadPhoto: '.implode(', ', $e->errors()).', PHOTO='.$array['data'], [$e, $array, 'contact_id' => $contact->id]);
+                    Log::debug(__CLASS__.' importPhoto: ERROR when UploadPhoto: '.implode(', ', $e->validator->errors()->all()).', PHOTO='.$array['data'], [$e, $array, 'contact_id' => $contact->id]);
                 }
             }
         }
