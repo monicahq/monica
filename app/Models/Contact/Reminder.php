@@ -89,6 +89,17 @@ class Reminder extends Model
     }
 
     /**
+     * Test if this reminder is the contact's birthday reminder.
+     *
+     * @return bool
+     */
+    public function isBirthdayReminder(): bool
+    {
+        return $this->contact !== null
+            && $this->contact->birthday_reminder_id === $this->id;
+    }
+
+    /**
      * Calculate the next expected date for this reminder.
      *
      * @return Carbon

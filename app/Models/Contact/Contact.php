@@ -278,7 +278,7 @@ class Contact extends Model
      */
     public function activeReminders()
     {
-        return $this->hasMany(Reminder::class)->active();
+        return $this->reminders()->active();
     }
 
     /**

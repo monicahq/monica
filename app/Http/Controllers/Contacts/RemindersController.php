@@ -36,11 +36,16 @@ class RemindersController extends Controller
      */
     public function store(Request $request, Contact $contact)
     {
+        $frequency_type = $request->input('frequency_type');
+        if ($frequency_type === 'recurrent') {
+            $frequency_type = $request->input('frequency_number_select');
+        }
+
         $data = [
             'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'initial_date' => $request->input('initial_date'),
-            'frequency_type' => $request->input('frequency_type'),
+            'frequency_type' => $frequency_type,
             'frequency_number' => is_null($request->input('frequency_number')) ? 1 : $request->input('frequency_number'),
             'title' => $request->input('title'),
             'description' => $request->input('description'),
@@ -77,12 +82,17 @@ class RemindersController extends Controller
      */
     public function update(Request $request, Contact $contact, Reminder $reminder)
     {
+        $frequency_type = $request->input('frequency_type');
+        if ($frequency_type === 'recurrent') {
+            $frequency_type = $request->input('frequency_number_select');
+        }
+
         $data = [
             'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'reminder_id' => $reminder->id,
             'initial_date' => $request->input('initial_date'),
-            'frequency_type' => $request->input('frequency_type'),
+            'frequency_type' => $frequency_type,
             'frequency_number' => is_null($request->input('frequency_number')) ? 1 : $request->input('frequency_number'),
             'title' => $request->input('title'),
             'description' => $request->input('description'),
