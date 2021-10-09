@@ -281,7 +281,7 @@ class ContactsController extends Controller
         $workRelationships->sortByCollator('relationshipTypeLocalized');
 
         // reminders
-        $reminders = $contact->activeReminders;
+        $reminders = $contact->reminders()->active()->get();
         $relevantRemindersFromRelatedContacts = $contact->getBirthdayRemindersAboutRelatedContacts();
         $reminders = $reminders->merge($relevantRemindersFromRelatedContacts);
         // now we need to sort the reminders by next date they will be triggered

@@ -272,16 +272,6 @@ class Contact extends Model
     }
 
     /**
-     * Get only the active reminder records associated with the contact.
-     *
-     * @return HasMany
-     */
-    public function activeReminders()
-    {
-        return $this->hasMany(Reminder::class)->active();
-    }
-
-    /**
      * Get the task records associated with the contact.
      *
      * @return HasMany
