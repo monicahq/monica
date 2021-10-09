@@ -484,8 +484,14 @@ class DavClient
         $response = $this->request('OPTIONS');
 
         $dav = $response->header('Dav');
+        if (empty($dav)) {
+            return [];
+        }
+        $davs = explode(', ', $dav);
 
-        return explode(', ', $dav);
+        return array_map(function ($header) {
+            return trim($header);
+        }, $davs);
     }
 
     /**
