@@ -42,7 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'Jetzt upgraden',
     'people_list_untagged' => 'Unmarkierte Kontakte anzeigen',
     'people_list_filter_untag' => 'Es werden alle Kontakte ohne Tags angezeigt',
-    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
+    'archived_contact_readonly' => 'Archivierter Kontakt kann nicht bearbeitet werden, bitte zuerst dearchivieren.',
 
     // people add
     'people_add_title' => 'Person hinzufügen',
@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'In Kontakt bleiben',
     'stay_in_touch_frequency' => 'Jeden Tag in Kontakt bleiben|Alle {count} Tage in Kontakt bleiben',
+    'stay_in_touch_next_date' => 'Nächster Termin: {date}',
     'stay_in_touch_invalid' => 'Die Zahl muss größer als 0 sein.',
     'stay_in_touch_premium' => 'Du musst dein Konto upgraden, um diese Funktion nutzen zu können',
     'stay_in_touch_modal_title' => 'In Kontakt bleiben',
@@ -285,7 +286,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'Hier ist eine Aufzeichnung von Aktivitäten, die Sie gemeinsam im letzten Jahr erlebt haben',
     'activities_profile_year_summary' => 'Das haben Sie zwei im :year gemeinsam gemacht',
     'activities_profile_number_occurences' => ':value Aktivität|:value Aktivitäten',
-    'activities_list_participants' => 'Teilnehmer:',
+    'activities_list_participants' => 'Teilnehmer ({total}):',
     'activities_list_emotions' => 'Emotionen gefühlt:',
     'activities_list_date' => 'Geschehen am',
     'activities_list_category' => 'Kategorie:',

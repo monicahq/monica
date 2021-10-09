@@ -22,11 +22,14 @@ class AssociateGiftToPhotoTest extends TestCase
             'account_id' => $gift->account_id,
         ]);
 
-        app(AssociatePhotoToGift::class)->execute([
+        $giftUpdated = app(AssociatePhotoToGift::class)->execute([
             'account_id' => $gift->account_id,
             'gift_id' => $gift->id,
             'photo_id' => $photo->id,
         ]);
+
+        $this->assertInstanceOf(Gift::class, $giftUpdated);
+        $this->assertEquals($gift->id, $giftUpdated->id);
 
         $this->assertDatabaseHas('gift_photo', [
             'gift_id' => $gift->id,

@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'לשמור על קשר',
     'stay_in_touch_frequency' => 'להישאר בקשר כל יום|להישאר בקשר כל יומיים|להישאר בקשר כל {count} ימים',
+    'stay_in_touch_next_date' => 'המועד הבא: {date}',
     'stay_in_touch_invalid' => 'התדירות חייבת להיות מספר גדול מ־0.',
     'stay_in_touch_premium' => 'עליך לשדרג את החשבון שלך כדי להשתמש בתכונה זו',
     'stay_in_touch_modal_title' => 'לשמור על קשר',
@@ -285,7 +286,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'להלן פילוח של סוגי הפעילויות אותן ביצעתם יחדיו ב־:year',
     'activities_profile_year_summary' => 'הנה מה שעשיתם יחד ב־:year',
     'activities_profile_number_occurences' => 'פעילות אחת|:value פעילויות',
-    'activities_list_participants' => 'משתתפים:',
+    'activities_list_participants' => 'משתתפים ({total}):',
     'activities_list_emotions' => 'רגשות שהרגשת:',
     'activities_list_date' => 'מועד הפעילות',
     'activities_list_category' => 'קטגוריה:',

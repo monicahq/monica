@@ -2,54 +2,88 @@
 
 namespace App\Services\DavClient\Utils\Dav;
 
-use GuzzleHttp\Pool;
 use Sabre\DAV\Xml\Service;
 use Illuminate\Support\Arr;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\RequestOptions;
-use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
 use Sabre\DAV\Xml\Request\PropPatch;
-use GuzzleHttp\Client as GuzzleClient;
-use Psr\Http\Message\ResponseInterface;
-use GuzzleHttp\Promise\PromiseInterface;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\Utils as GuzzleUtils;
 use Illuminate\Http\Client\PendingRequest;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 
 class DavClient
 {
     /**
-     * @var GuzzleClient
+     * @var string|null
      */
-    protected $client;
+    protected $baseUri;
 
     /**
-     * Initialize the client.
-     *
-     * @param  array  $settings
-     * @param  GuzzleClient  $client
-     * @return DavClient
+     * @var string|null
      */
-    public static function init(array $settings, GuzzleClient $client = null): DavClient
+    protected $username;
+
+    /**
+     * @var string|null
+     */
+    protected $password;
+
+    /**
+     * Set the base uri of client.
+     *
+     * @param  string  $uri
+     * @return self
+     */
+    public function setBaseUri(string $uri): self
     {
-        if (is_null($client) && ! isset($settings['base_uri'])) {
-            throw new \InvalidArgumentException('A baseUri must be provided');
+        $this->baseUri = $uri;
+
+        return $this;
+    }
+
+    /**
+     * Set credentials.
+     *
+     * @param  string  $username
+     * @param  string  $password
+     * @return self
+     */
+    public function setCredentials(string $username, string $password): self
+    {
+        $this->username = $username;
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get current uri.
+     *
+     * @param  string|null  $path
+     * @return string
+     */
+    public function path(?string $path = null): string
+    {
+        $uri = GuzzleUtils::uriFor($this->baseUri);
+
+        return (string) (is_null($path) || empty($path) ? $uri : $uri->withPath($path));
+    }
+
+    /**
+     * Get a PendingRequest.
+     *
+     * @return PendingRequest
+     */
+    public function getRequest(): PendingRequest
+    {
+        $request = Http::withUserAgent('Monica DavClient '.config('monica.app_version').'/Guzzle');
+
+        if (! is_null($this->username) && ! is_null($this->password)) {
+            $request = $request->withBasicAuth($this->username, $this->password);
         }
 
-        $me = new self();
-
-        $me->client = is_null($client)
-            ? new GuzzleClient([
-                'base_uri' => $settings['base_uri'],
-                'auth' => [
-                    $settings['username'],
-                    $settings['password'],
-                ],
-                'verify' => ! App::environment('local'),
-            ])
-            : $client;
-
-        return $me;
+        return $request;
     }
 
     /**
@@ -59,102 +93,61 @@ class DavClient
      */
     public function getServiceUrl()
     {
-        $target = $this->standardServiceUrl();
+        // first attempt on relative url
+        $target = $this->standardServiceUrl('.well-known/carddav');
 
         if (! $target) {
-            // second attempt for non standard server, like Google API
-            $target = $this->nonStandardServiceUrl();
+            // second attempt on absolute root url
+            $target = $this->standardServiceUrl('/.well-known/carddav');
+        }
+
+        if (! $target) {
+            // third attempt for non standard server, like Google API
+            $target = $this->nonStandardServiceUrl('/.well-known/carddav');
         }
 
         if (! $target) {
             // Get service name register (section 9.2)
-            $target = app(ServiceUrlQuery::class)->execute('_carddavs._tcp', true, $this->getBaseUri());
+            $target = app(ServiceUrlQuery::class)->execute('_carddavs._tcp', true, $this->path(), $this);
             if (is_null($target)) {
-                $target = app(ServiceUrlQuery::class)->execute('_carddav._tcp', false, $this->getBaseUri());
+                $target = app(ServiceUrlQuery::class)->execute('_carddav._tcp', false, $this->path(), $this);
             }
         }
 
         return $target;
     }
 
-    private function standardServiceUrl(): ?string
+    private function standardServiceUrl(string $url): ?string
     {
         // Get well-known register (section 9.1)
-        $wkUri = $this->getBaseUri('/.well-known/carddav');
+        $response = $this->getRequest()
+            ->withoutRedirecting()
+            ->get($this->path($url));
 
-        try {
-            $response = $this->requestAsync('GET', $wkUri, [], null, [
-                RequestOptions::ALLOW_REDIRECTS => false,
-                RequestOptions::SYNCHRONOUS => true,
-            ])->wait();
+        $code = $response->status();
+        if ($code === 301 || $code === 302) {
+            return $response->header('Location');
+        }
 
-            $code = $response->getStatusCode();
-            if (($code === 301 || $code === 302) && $response->hasHeader('Location')) {
-                return $response->getHeader('Location')[0];
-            }
-        } catch (ClientException $e) {
-            if ($e->hasResponse()) {
-                $code = $e->getResponse()->getStatusCode();
-                if ($code !== 400 && $code !== 401 && $code !== 404) {
-                    throw $e;
-                }
-            }
+        if ($response->serverError()) {
+            $response->throw();
         }
 
         return null;
     }
 
-    private function nonStandardServiceUrl(): ?string
+    private function nonStandardServiceUrl($url): ?string
     {
-        $wkUri = $this->getBaseUri('/.well-known/carddav');
+        $response = $this->getRequest()
+            ->withoutRedirecting()
+            ->send('PROPFIND', $this->path($url));
 
-        try {
-            $response = $this->requestAsync('PROPFIND', $wkUri, [], null, [
-                RequestOptions::ALLOW_REDIRECTS => false,
-                RequestOptions::SYNCHRONOUS => true,
-            ])->wait();
-
-            $code = $response->getStatusCode();
-            if (($code === 301 || $code === 302) && $response->hasHeader('Location')) {
-                $location = $response->getHeader('Location')[0];
-
-                return $this->getBaseUri($location);
-            }
-        } catch (ClientException $e) {
-            // catch exception and return null
+        $code = $response->status();
+        if ($code === 301 || $code === 302) {
+            return $this->path($response->header('Location'));
         }
 
         return null;
-    }
-
-    /**
-     * Get current uri.
-     *
-     * @param  string|null  $path
-     * @return string
-     */
-    public function getBaseUri(?string $path = null): string
-    {
-        $baseUri = $this->client->getConfig('base_uri');
-
-        return (string) (is_null($path) ? $baseUri : $baseUri->withPath($path));
-    }
-
-    /**
-     * Set the base uri of client.
-     *
-     * @param  string  $uri
-     * @return self
-     */
-    public function setBaseUri($uri): self
-    {
-        $this->client = new GuzzleClient(
-            Arr::except($this->client->getConfig(), ['base_uri'])
-            +
-            ['base_uri' => $uri]
-        );
-
-        return $this;
     }
 
     /**
@@ -178,66 +171,33 @@ class DavClient
      * @param  int  $depth
      * @return array
      */
-    public function propFind(string $url, $properties, int $depth = 0): array
-    {
-        return $this->propFindAsync($url, $properties, $depth, [
-            RequestOptions::SYNCHRONOUS => true,
-        ])->wait();
-    }
-
-    /**
-     * Do a PROPFIND request.
-     *
-     * The list of requested properties must be specified as an array, in clark
-     * notation.
-     *
-     * The returned array will contain a list of filenames as keys, and
-     * properties as values.
-     *
-     * The properties array will contain the list of properties. Only properties
-     * that are actually returned from the server (without error) will be
-     * returned, anything else is discarded.
-     *
-     * Depth should be either 0 or 1. A depth of 1 will cause a request to be
-     * made to the server to also return all child resources.
-     *
-     * @param  string  $url
-     * @param  array|string  $properties
-     * @param  int  $depth
-     * @return PromiseInterface
-     */
-    public function propFindAsync(string $url, $properties, int $depth = 0, array $options = []): PromiseInterface
+    public function propFind($properties, int $depth = 0, array $options = [], string $url = ''): array
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $root = self::addElementNS($dom, 'DAV:', 'd:propfind');
         $prop = self::addElement($dom, $root, 'd:prop');
 
-        $namespaces = [
-            'DAV:' => 'd',
-        ];
+        $namespaces = ['DAV:' => 'd'];
 
         self::fetchProperties($dom, $prop, $properties, $namespaces);
 
         $body = $dom->saveXML();
 
-        return $this->requestAsync('PROPFIND', $url, [
-            'Depth' => $depth,
-            'Content-Type' => 'application/xml; charset=utf-8',
-        ], $body, $options)->then(function (ResponseInterface $response) use ($depth): array {
-            $result = self::parseMultiStatus((string) $response->getBody());
+        $response = $this->request('PROPFIND', $url, $body, ['Depth' => $depth], $options);
 
-            // If depth was 0, we only return the top item value
-            if ($depth === 0) {
-                reset($result);
-                $result = current($result);
+        $result = self::parseMultiStatus($response->body());
 
-                return Arr::get($result, 200, []);
-            }
+        // If depth was 0, we only return the top item value
+        if ($depth === 0) {
+            reset($result);
+            $result = current($result);
 
-            return array_map(function ($statusList) {
-                return Arr::get($statusList, 200, []);
-            }, $result);
-        });
+            return Arr::get($result, 200, []);
+        }
+
+        return array_map(function ($statusList) {
+            return Arr::get($statusList, 200, []);
+        }, $result);
     }
 
     /**
@@ -246,11 +206,11 @@ class DavClient
      * @param  string  $url
      * @param  array|string  $properties
      * @param  string  $syncToken
-     * @return PromiseInterface
+     * @return array
      *
      * @see https://datatracker.ietf.org/doc/html/rfc6578
      */
-    public function syncCollectionAsync(string $url, $properties, string $syncToken, array $options = []): PromiseInterface
+    public function syncCollection($properties, string $syncToken, array $options = [], string $url = ''): array
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $root = self::addElementNS($dom, 'DAV:', 'd:sync-collection');
@@ -260,33 +220,29 @@ class DavClient
 
         $prop = self::addElement($dom, $root, 'd:prop');
 
-        $namespaces = [
-            'DAV:' => 'd',
-        ];
+        $namespaces = ['DAV:' => 'd'];
 
         self::fetchProperties($dom, $prop, $properties, $namespaces);
 
         $body = $dom->saveXML();
 
-        return $this->requestAsync('REPORT', $url, [
-            'Depth' => '0',
-            'Content-Type' => 'application/xml; charset=utf-8',
-        ], $body, $options)->then(function (ResponseInterface $response) {
-            return self::parseMultiStatus((string) $response->getBody());
-        });
+        $response = $this->request('REPORT', $url, $body, ['Depth' => '0'], $options);
+
+        return self::parseMultiStatus($response->body());
     }
 
     /**
      * Run a REPORT card:addressbook-multiget.
      *
-     * @param  string  $url
      * @param  array|string  $properties
      * @param  iterable  $contacts
+     * @param  string  $url
+     * @param  array  $options
      * @return array
      *
      * @see https://datatracker.ietf.org/doc/html/rfc6352#section-8.7
      */
-    public static function addressbookMultiget(PendingRequest $request, $properties, iterable $contacts, string $url = '', array $options = []): array
+    public function addressbookMultiget($properties, iterable $contacts, array $options = [], string $url = ''): array
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $root = self::addElementNS($dom, CardDAVPlugin::NS_CARDDAV, 'card:addressbook-multiget');
@@ -307,11 +263,7 @@ class DavClient
 
         $body = $dom->saveXML();
 
-        $response = $request->withHeaders(['Depth' => '1'])
-            ->withBody($body, 'application/xml; charset=utf-8')
-            ->send('REPORT', $url, $options);
-
-        $response->throw();
+        $response = $this->request('REPORT', $url, $body, ['Depth' => '1'], $options);
 
         return self::parseMultiStatus($response->body());
     }
@@ -321,11 +273,11 @@ class DavClient
      *
      * @param  string  $url
      * @param  array|string  $properties
-     * @return PromiseInterface
+     * @return array
      *
      * @see https://datatracker.ietf.org/doc/html/rfc6352#section-8.6
      */
-    public function addressbookQueryAsync(string $url, $properties, array $options = []): PromiseInterface
+    public function addressbookQuery($properties, array $options = [], string $url = ''): array
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $root = self::addElementNS($dom, CardDAVPlugin::NS_CARDDAV, 'card:addressbook-query');
@@ -342,12 +294,9 @@ class DavClient
 
         $body = $dom->saveXML();
 
-        return $this->requestAsync('REPORT', $url, [
-            'Depth' => '1',
-            'Content-Type' => 'application/xml; charset=utf-8',
-        ], $body, $options)->then(function (ResponseInterface $response) {
-            return self::parseMultiStatus((string) $response->getBody());
-        });
+        $response = $this->request('REPORT', $url, $body, ['Depth' => '1'], $options);
+
+        return self::parseMultiStatus($response->body());
     }
 
     /**
@@ -412,79 +361,48 @@ class DavClient
      *
      * @param  string  $property
      * @param  string  $url
-     * @return string|array<array>|null
+     * @return array|string|null
      */
-    public function getProperty(string $property, string $url = '')
+    public function getProperty(string $property, string $url = '', array $options = [])
     {
-        return $this->getPropertyAsync($property, $url, [
-            RequestOptions::SYNCHRONOUS => true,
-        ])->wait();
-    }
+        $properties = $this->propfind($property, 0, $options, $url);
 
-    /**
-     * Get a WebDAV property.
-     *
-     * @param  string  $property
-     * @param  string  $url
-     * @return PromiseInterface
-     */
-    public function getPropertyAsync(string $property, string $url = '', array $options = []): PromiseInterface
-    {
-        return $this->propfindAsync($url, $property, 0, $options)
-        ->then(function (array $properties) use ($property) {
-            if (($prop = Arr::get($properties, $property))
-                && is_array($prop)) {
-                $value = $prop[0];
+        if (($prop = Arr::get($properties, $property)) && is_array($prop)) {
+            $value = $prop[0];
 
-                if (is_string($value)) {
-                    $prop = $value;
-                }
+            if (is_string($value)) {
+                $prop = $value;
             }
+        }
 
-            return $prop;
-        });
-    }
-
-    /**
-     * Get a {DAV:}supported-report-set propfind.
-     *
-     * @return array
-     *
-     * @see https://datatracker.ietf.org/doc/html/rfc3253#section-3.1.5
-     */
-    public function getSupportedReportSet(): array
-    {
-        return $this->getSupportedReportSetAsync([
-            RequestOptions::SYNCHRONOUS => true,
-        ])->wait();
+        return $prop;
     }
 
     /**
      * Get a {DAV:}supported-report-set propfind.
      *
      * @param  array  $options
-     * @return PromiseInterface
+     * @return array
      *
      * @see https://datatracker.ietf.org/doc/html/rfc3253#section-3.1.5
      */
-    public function getSupportedReportSetAsync(array $options = []): PromiseInterface
+    public function getSupportedReportSet(array $options = []): array
     {
         $propName = '{DAV:}supported-report-set';
 
-        return $this->propFindAsync('', $propName, 0, $options)
-        ->then(function (array $properties) use ($propName): array {
-            if (($prop = Arr::get($properties, $propName)) && is_array($prop)) {
-                $prop = array_map(function ($supportedReport) {
-                    return $this->iterateOver($supportedReport, '{DAV:}supported-report', function ($report) {
-                        return $this->iterateOver($report, '{DAV:}report', function ($type) {
-                            return Arr::get($type, 'name');
-                        });
-                    });
-                }, $prop);
-            }
+        $properties = $this->propFind($propName, 0, $options);
 
-            return $prop;
-        });
+        if (($prop = Arr::get($properties, $propName)) && is_array($prop)) {
+            $prop = array_map(function ($supportedReport) {
+                return $this->iterateOver($supportedReport, '{DAV:}supported-report', function ($report) {
+                    return $this->iterateOver($report, '{DAV:}report', function ($type) {
+                        return Arr::get($type, 'name');
+                    });
+                });
+            }, $prop);
+        }
+
+        return $prop;
     }
 
     /**
@@ -514,11 +432,11 @@ class DavClient
      *
      * @param  string  $url
      * @param  array  $properties
-     * @return PromiseInterface
+     * @return bool
      *
      * @see https://datatracker.ietf.org/doc/html/rfc2518#section-12.13
      */
-    public function propPatchAsync(string $url, array $properties): PromiseInterface
+    public function propPatch(array $properties, string $url = ''): bool
     {
         $propPatch = new PropPatch();
         $propPatch->properties = $properties;
@@ -527,31 +445,29 @@ class DavClient
             $propPatch
         );
 
-        return $this->requestAsync('PROPPATCH', $url, [
-            'Content-Type' => 'application/xml; charset=utf-8',
-        ], $body)->then(function (ResponseInterface $response): bool {
-            if ($response->getStatusCode() === 207) {
-                // If it's a 207, the request could still have failed, but the
-                // information is hidden in the response body.
-                $result = self::parseMultiStatus((string) $response->getBody());
+        $response = $this->request('PROPPATCH', $url, $body);
 
-                $errorProperties = [];
-                foreach ($result as $statusList) {
-                    foreach ($statusList as $status => $properties) {
-                        if ($status >= 400) {
-                            foreach ($properties as $propName => $propValue) {
-                                $errorProperties[] = $propName.' ('.$status.')';
-                            }
+        if ($response->status() === 207) {
+            // If it's a 207, the request could still have failed, but the
+            // information is hidden in the response body.
+            $result = self::parseMultiStatus($response->body());
+
+            $errorProperties = [];
+            foreach ($result as $statusList) {
+                foreach ($statusList as $status => $properties) {
+                    if ($status >= 400) {
+                        foreach ($properties as $propName => $propValue) {
+                            $errorProperties[] = $propName.' ('.$status.')';
                         }
                     }
                 }
-                if (! empty($errorProperties)) {
-                    throw new DavClientException('PROPPATCH failed. The following properties errored: '.implode(', ', $errorProperties));
-                }
             }
+            if (! empty($errorProperties)) {
+                throw new DavClientException('PROPPATCH failed. The following properties errored: '.implode(', ', $errorProperties));
+            }
+        }
 
-            return true;
-        });
+        return true;
     }
 
     /**
@@ -567,7 +483,7 @@ class DavClient
     {
         $response = $this->request('OPTIONS');
 
-        $dav = $response->getHeader('Dav');
+        $dav = Arr::get($response->headers(), 'Dav');
         if (! $dav) {
             return [];
         }
@@ -586,41 +502,22 @@ class DavClient
      * @param  string  $url
      * @param  string|null|resource|\Psr\Http\Message\StreamInterface  $body
      * @param  array  $headers
-     * @return ResponseInterface
-     *
-     * @throws \GuzzleHttp\Exception\ClientException in case a curl error occurred
+     * @return Response
      */
-    public function request(string $method, string $url = '', array $headers = [], $body = null, array $options = []): ResponseInterface
+    public function request(string $method, string $url = '', $body = null, array $headers = [], array $options = []): Response
     {
-        return $this->client->send(new Request($method, $url, $headers, $body), $options);
-    }
+        $request = $this->getRequest()
+            ->withHeaders($headers);
 
-    /**
-     * Performs an actual HTTP request, and returns the result.
-     *
-     * @param  string  $method
-     * @param  string  $url
-     * @param  string|null|resource|\Psr\Http\Message\StreamInterface  $body
-     * @param  array  $headers
-     * @return PromiseInterface
-     *
-     * @throws \GuzzleHttp\Exception\ClientException in case a curl error occurred
-     */
-    public function requestAsync(string $method, string $url = '', array $headers = [], $body = null, array $options = []): PromiseInterface
-    {
-        return $this->client->sendAsync(new Request($method, $url, $headers, $body), $options);
-    }
+        if ($body !== null) {
+            $request = $request->withBody($body, 'application/xml; charset=utf-8');
+        }
 
-    /**
-     * Create multiple request in parallel.
-     *
-     * @param  array  $requests
-     * @param  array  $config
-     * @return PromiseInterface
-     */
-    public function requestPool(array $requests, array $config = []): PromiseInterface
-    {
-        return (new Pool($this->client, $requests, $config))->promise();
+        $url = Str::startsWith($url, 'http') ? $url : $this->path($url);
+
+        return $request
+            ->send($method, $url, $options)
+            ->throw();
     }
 
     /**

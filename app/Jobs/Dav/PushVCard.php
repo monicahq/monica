@@ -59,11 +59,8 @@ class PushVCard implements ShouldQueue
             $headers['If-Match'] = '*';
         }
 
-        $response = $this->subscription->getRequest()
-            ->withHeaders($headers)
-            ->put($this->contact->uri, [$this->contact->card]);
-
-        $response->throw();
+        $response = $this->subscription->getClient()
+            ->request('PUT', $this->contact->uri, $this->contact->card, $headers);
 
         if (! empty($etag = $response->header('Etag')) && $etag !== $this->contact->etag) {
             Log::warning(__CLASS__.' wrong etag when updating contact. Expected '.$this->contact->etag.', get '.$etag);

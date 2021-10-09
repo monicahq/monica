@@ -92,7 +92,7 @@
                   :input-type="'text'"
                   :id="'nickname'"
                   :required="false"
-                  :title="'{{ trans('people.information_edit_description') }}'">
+                  :title="'{{ trans('people.people_add_nickname') }}'">
                 </form-input>
               </div>
             </div>

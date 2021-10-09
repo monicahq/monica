@@ -53,6 +53,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
      */
     public function prepareData($obj)
     {
+        $calendardata = null;
         if ($obj instanceof SpecialDate) {
             try {
                 $calendardata = $this->refreshObject($obj);
@@ -65,7 +66,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
                     'lastmodified' => $obj->updated_at->timestamp,
                 ];
             } catch (\Exception $e) {
-                Log::debug(__CLASS__.' prepareData: '.(string) $e);
+                Log::debug(__CLASS__.' prepareData: '.(string) $e, [$e, 'calendardata' => $calendardata]);
             }
         }
 

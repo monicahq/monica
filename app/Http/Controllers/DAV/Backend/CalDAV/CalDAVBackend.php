@@ -3,26 +3,13 @@
 namespace App\Http\Controllers\DAV\Backend\CalDAV;
 
 use Sabre\DAV;
-use App\Models\User\User;
+use App\Traits\WithUser;
 use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Backend\AbstractBackend;
 
 class CalDAVBackend extends AbstractBackend implements SyncSupport
 {
-    /**
-     * @var User
-     */
-    protected $user;
-
-    /**
-     * Create a new instance of CalDAVBackend.
-     *
-     * @param  User  $user
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
+    use WithUser;
 
     /**
      * Set the Calendar backends.
@@ -32,8 +19,8 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     private function getBackends(): array
     {
         return [
-            new CalDAVBirthdays($this->user),
-            new CalDAVTasks($this->user),
+            app(CalDAVBirthdays::class)->init($this->user),
+            app(CalDAVTasks::class)->init($this->user),
         ];
     }
 

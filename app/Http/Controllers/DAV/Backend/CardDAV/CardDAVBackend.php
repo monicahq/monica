@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
 use Sabre\DAV;
-use Illuminate\Support\Arr;
+use App\Jobs\Dav\UpdateVCard;
 use App\Models\Contact\Contact;
 use App\Models\Account\AddressBook;
 use App\Services\VCard\ExportVCard;
-use App\Services\VCard\ImportVCard;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\CardDAV\Backend\SyncSupport;
@@ -19,15 +19,11 @@ use App\Services\Contact\Contact\SetMeContact;
 use App\Http\Controllers\DAV\Backend\IDAVBackend;
 use App\Http\Controllers\DAV\Backend\SyncDAVBackend;
 use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
+use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 
 class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 {
     use SyncDAVBackend;
-
-    public function __construct($user)
-    {
-        $this->user = $user;
-    }
 
     /**
      * Returns the uri for this backend.
@@ -187,16 +183,10 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      */
     public function prepareCard($contact): array
     {
+        $carddata = $contact->vcard;
         try {
-            $carddata = $contact->vcard;
             if (empty($carddata)) {
-                $vcard = app(ExportVCard::class)
-                    ->execute([
-                        'account_id' => $this->user->account_id,
-                        'contact_id' => $contact->id,
-                    ]);
-
-                $carddata = $vcard->serialize();
+                $carddata = $this->refreshObject($contact);
             }
 
             return [
@@ -207,7 +197,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
                 'lastmodified' => $contact->updated_at->timestamp,
             ];
         } catch (\Exception $e) {
-            Log::debug(__CLASS__.' prepareCard: '.(string) $e);
+            Log::debug(__CLASS__.' prepareCard: '.(string) $e, [$e, 'carddata' => $carddata, 'contact_id' => $contact->id]);
             throw $e;
         }
     }
@@ -374,36 +364,13 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      */
     public function updateCard($addressBookId, $cardUri, $cardData): ?string
     {
-        $contact_id = null;
-        if ($cardUri) {
-            $contact = $this->getObject($addressBookId, $cardUri);
+        $dto = new ContactUpdateDto($cardUri, '"'.md5($cardData).'"', $cardData);
 
-            if ($contact) {
-                $contact_id = $contact->id;
-            }
-        }
+        $job = new UpdateVCard($this->user, $addressBookId, $dto);
 
-        try {
-            $result = app(ImportVCard::class)
-                ->execute([
-                    'account_id' => $this->user->account_id,
-                    'user_id' => $this->user->id,
-                    'contact_id' => $contact_id,
-                    'entry' => $cardData,
-                    'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
-                    'addressBookName' => $addressBookId == $this->backendUri() ? null : $addressBookId,
-                ]);
-
-            if (! Arr::has($result, 'error')) {
-                $contact = Contact::where('account_id', $this->user->account_id)
-                    ->find($result['contact_id']);
-
-                return '"'.md5($contact->vcard).'"';
-            }
-        } catch (\Exception $e) {
-            Log::debug(__CLASS__.' updateCard: '.(string) $e);
-            throw $e;
-        }
+        Bus::batch([$job])
+            ->allowFailures()
+            ->dispatch();
 
         return null;
     }

@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Mantenerse en contacto',
     'stay_in_touch_frequency' => 'Mantenerse en contacto cada día|Mantenerse en contacto cada {count} días',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => 'La frecuencia debe ser un número mayor que 0.',
     'stay_in_touch_premium' => 'Necesitas actualizar tu cuenta para hacer uso de esta característica',
     'stay_in_touch_modal_title' => 'Mantenerse en contacto',
@@ -285,7 +286,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'Aquí tienes un desglose del tipo de actvidades que han tenido juntos en :year',
     'activities_profile_year_summary' => 'Aquí tienes lo que han hecho en :year',
     'activities_profile_number_occurences' => ':value actividad|:value actividades',
-    'activities_list_participants' => 'Participantes:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'Emociones sentidas:',
     'activities_list_date' => 'Ocurrió el',
     'activities_list_category' => 'Categoría:',

@@ -8,13 +8,11 @@ use App\Services\BaseService;
 use App\Helpers\AccountHelper;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\Log;
-use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\AddressBookSynchronizer;
-use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 
 class SynchronizeAddressBook extends BaseService
 {
@@ -37,7 +35,7 @@ class SynchronizeAddressBook extends BaseService
      * @param  array  $data
      * @return void
      */
-    public function execute(array $data, GuzzleClient $httpClient = null)
+    public function execute(array $data)
     {
         $this->validate($data);
 
@@ -54,10 +52,8 @@ class SynchronizeAddressBook extends BaseService
         $subscription = AddressBookSubscription::where('account_id', $data['account_id'])
             ->findOrFail($data['addressbook_subscription_id']);
 
-        $backend = new CardDAVBackend($user);
-
         try {
-            $this->sync($data, $subscription, $backend, $httpClient);
+            $this->sync($data, $subscription);
         } catch (ClientException $e) {
             Log::error(__CLASS__.' execute: '.$e->getMessage(), [$e]);
             if ($e->hasResponse()) {
@@ -66,23 +62,20 @@ class SynchronizeAddressBook extends BaseService
         }
     }
 
-    private function sync(array $data, AddressBookSubscription $subscription, CardDAVBackend $backend, ?GuzzleClient $httpClient)
+    private function sync(array $data, AddressBookSubscription $subscription)
     {
-        $client = $this->getDavClient($subscription, $httpClient);
-        $sync = new SyncDto($subscription, $client, $backend);
+        $client = $this->getDavClient($subscription);
+        $sync = new SyncDto($subscription, $client);
         $force = Arr::get($data, 'force', false);
 
         app(AddressBookSynchronizer::class)
             ->execute($sync, $force);
     }
 
-    private function getDavClient(AddressBookSubscription $subscription, ?GuzzleClient $client): DavClient
+    private function getDavClient(AddressBookSubscription $subscription): DavClient
     {
         return app(DavClient::class)
-            ->init([
-                'base_uri' => $subscription->uri,
-                'username' => $subscription->username,
-                'password' => $subscription->password,
-            ], $client);
+            ->setBaseUri($subscription->uri)
+            ->setCredentials($subscription->username, $subscription->password);
     }
 }

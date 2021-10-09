@@ -100,7 +100,7 @@ class AddressBookGetter
             throw new DavClientException('No address book found');
         }
 
-        return $this->client->getBaseUri($addressBook);
+        return $this->client->path($addressBook);
     }
 
     /**
@@ -181,7 +181,7 @@ class AddressBookGetter
     {
         $home = $this->getAddressBookHome($principal);
 
-        $books = $this->client->propfind($home, '{DAV:}resourcetype', 1);
+        $books = $this->client->propfind('{DAV:}resourcetype', 1, [], $home);
 
         foreach ($books as $book => $properties) {
             if ($book == $home) {

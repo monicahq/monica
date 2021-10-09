@@ -11,7 +11,6 @@ use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use App\Jobs\Dav\GetMultipleVCard;
 use App\Models\Account\AddressBookSubscription;
-use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -45,8 +44,7 @@ class AddressBookContactsUpdaterTest extends TestCase
         $card = $this->getCard($contact);
         $etag = $this->getEtag($contact, true);
 
-        /** @var CardDAVBackend */
-        $backend = $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
+        $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
             $mock->shouldReceive('updateCard')
                 ->withArgs(function ($addressBookId, $cardUri, $cardData) use ($card) {
                     $this->assertEquals($card, $cardData);
@@ -56,11 +54,10 @@ class AddressBookContactsUpdaterTest extends TestCase
                 ->andReturn($etag);
         });
 
-        $tester = new DavTester();
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = (new DavTester())->fake()->client();
 
         $batchs = (new AddressBookContactsUpdater())
-            ->execute(new SyncDto($subscription, $client, $backend), collect([
+            ->execute(new SyncDto($subscription, $client), collect([
                 'https://test/dav/uuid2' => new ContactDto('https://test/dav/uuid2', $etag),
             ]));
 
@@ -103,8 +100,7 @@ class AddressBookContactsUpdaterTest extends TestCase
         $card = $this->getCard($contact);
         $etag = $this->getEtag($contact, true);
 
-        /** @var CardDAVBackend */
-        $backend = $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
+        $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
             $mock->shouldReceive('updateCard')
                 ->withArgs(function ($addressBookId, $cardUri, $cardData) use ($card) {
                     $this->assertTrue(is_resource($cardData));
@@ -123,11 +119,10 @@ class AddressBookContactsUpdaterTest extends TestCase
                 ->andReturn($etag);
         });
 
-        $tester = new DavTester();
-        $client = app(DavClient::class)->init([], $tester->getClient());
+        $client = (new DavTester())->fake()->client();
 
         $batchs = (new AddressBookContactsUpdater())
-            ->execute(new SyncDto($subscription, $client, $backend), collect([
+            ->execute(new SyncDto($subscription, $client), collect([
                 'https://test/dav/uuid2' => new ContactDto('https://test/dav/uuid2', $etag),
             ]));
 

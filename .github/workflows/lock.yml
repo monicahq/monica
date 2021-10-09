@@ -9,16 +9,16 @@ jobs:
   lock:
     runs-on: ubuntu-latest
     steps:
-      - uses: dessant/lock-threads@v2
+      - uses: dessant/lock-threads@v3
         with:
           github-token: ${{ github.token }}
-          issue-exclude-labels: retained
-          issue-lock-comment: |
+          exclude-any-issue-labels: retained
+          issue-comment: |
             This issue has been automatically locked since there
             has not been any recent activity after it was closed.
             Please open a new issue for related bugs.
-          pr-exclude-labels: wip
-          pr-lock-comment: |
+          exclude-any-pr-labels: wip
+          pr-comment: |
             This pull request has been automatically locked since there
             has not been any recent activity after it was closed.
             Please open a new issue for related bugs.

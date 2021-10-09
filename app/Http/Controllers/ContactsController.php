@@ -100,6 +100,10 @@ class ContactsController extends Controller
                 return 'tags[]='.urlencode($tag->name);
             })->join('&');
 
+            if ('' !== $url) {
+                $url .= '&';
+            }
+
             if ($tags->count() === 0) {
                 return redirect()->route('people.index');
             } else {
