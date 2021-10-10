@@ -32,15 +32,17 @@ class CreateConversation extends BaseService
     /**
      * Create a conversation.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Conversation
      */
     public function execute(array $data): Conversation
     {
         $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
                 ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         ContactFieldType::where('account_id', $data['account_id'])
                         ->findOrFail($data['contact_field_type_id']);

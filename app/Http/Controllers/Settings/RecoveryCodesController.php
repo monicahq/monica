@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Settings;
 
+use PragmaRX\Random\Random;
 use Illuminate\Http\Request;
 use App\Models\User\RecoveryCode;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
-use PragmaRX\Recovery\Recovery as PragmaRXRecovery;
 
 class RecoveryCodesController extends Controller
 {
@@ -15,7 +15,7 @@ class RecoveryCodesController extends Controller
     /**
      * Generate recovery codes.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Support\Collection
      */
     public function store(Request $request)
@@ -37,7 +37,7 @@ class RecoveryCodesController extends Controller
     /**
      * Get list of recovery codes.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Support\Collection
      */
     public function index(Request $request)
@@ -55,7 +55,7 @@ class RecoveryCodesController extends Controller
     /**
      * Format codes collection for response.
      *
-     * @param \Illuminate\Database\Eloquent\Collection  $codes
+     * @param  \Illuminate\Database\Eloquent\Collection  $codes
      * @return \Illuminate\Support\Collection
      */
     private function response($codes)
@@ -77,12 +77,20 @@ class RecoveryCodesController extends Controller
     private function generate()
     {
         // Generate new codes
-        $recovery = new PragmaRXRecovery();
-        $codes = $recovery->setCount(config('auth.recovery.count'))
-                 ->setBlocks(config('auth.recovery.blocks'))
-                 ->setChars(config('auth.recovery.chars'))
-                 ->uppercase()
-                 ->toArray();
+        $random = new Random();
+        $random->uppercase(true);
+
+        $codes = [];
+
+        for ($i = 1; $i <= (int) config('auth.recovery.count'); $i++) {
+            $blocks = [];
+
+            for ($j = 1; $j <= (int) config('auth.recovery.blocks'); $j++) {
+                $blocks[] = $random->size(config('auth.recovery.chars'))->get();
+            }
+
+            $codes[] = implode('-', $blocks);
+        }
 
         foreach ($codes as $code) {
             RecoveryCode::create([

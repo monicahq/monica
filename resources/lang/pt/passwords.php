@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Editing not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     /*
@@ -13,12 +19,12 @@ return [
     |
     */
 
-    'password' => 'A senha deve possuir no mínimo 6 caracteres e ser igual a confirmação.',
     'reset' => 'Sua senha foi redefinida!',
     'sent' => 'O link para redefinição de senha foi enviado para o seu e-mail.',
     'token' => 'Token para recuperação de senha inválido.',
     'user' => 'O link para redefinição de senha foi enviado para o seu e-mail.',
     'changed' => 'Password changed successfully.',
     'invalid' => 'A senha que introduziu não está correta.',
+    'throttled' => 'Please wait before retrying.',
 
 ];

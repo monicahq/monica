@@ -4,7 +4,6 @@ namespace Tests\Browser\Settings;
 
 use Zxing\QrReader;
 use Tests\DuskTestCase;
-use App\Models\User\User;
 use Laravel\Dusk\Browser;
 use Illuminate\Console\Application;
 use Tests\Browser\Pages\SettingsSecurity;
@@ -18,21 +17,17 @@ class MultiFAControllerTest extends DuskTestCase
     public function cleanup()
     {
         exec(Application::formatCommandString('2fa:deactivate --force --email=admin@admin.com'), $output);
-        //$this->log(implode($output));
     }
 
     /**
      * Test if the user has 2fa Enable Link in Security Page.
+     *
      * @group multifa
      */
     public function testHasSettings2faEnableLink()
     {
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->login()
                     ->visit(new SettingsSecurity)
                     ->assertSeeLink('Enable Two Factor Authentication');
         });
@@ -40,57 +35,29 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test if the user has WebAuthn Enable Link in Security Page.
+     *
      * @group multifa
      */
     public function testHasSettingsWebAuthnEnableLink()
     {
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->login()
                     ->visit(new SettingsSecurity)
                     ->assertSeeLink('Add a new security key');
         });
     }
 
     /**
-     * Test U2F modal.
-     * @group multifa
-     */
-    public function testU2fModal()
-    {
-        $this->markTestIncomplete('Ignore 2fa tests for now.');
-
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
-                    ->visit(new SettingsSecurity)
-                    ->scrollTo('two_factor_link')
-                    ->clickLink('Add a new U2F security key')
-                    ->waitFor('registerModal')
-                    ->assertSee('Insert your security key.');
-        });
-    }
-
-    /**
      * Test the barcode generated in 2fa Enable Page.
+     *
      * @group multifa
      */
     public function testHas2faEnableBarCode()
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->login()
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
@@ -102,6 +69,7 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test the barcode generated in 2fa Enable Page.
+     *
      * @group multifa
      * @group multifabarcode
      */
@@ -109,13 +77,9 @@ class MultiFAControllerTest extends DuskTestCase
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
+        $this->browse(function (Browser $browser) {
             $browser =
-            $browser->loginAs($user)
+            $browser->login()
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
@@ -156,19 +120,16 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test the 2fa Enable Page with wrong code.
+     *
      * @group multifa
      */
     public function testEnable2faWrongCode()
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
+        $this->browse(function (Browser $browser) {
             $browser =
-            $browser->loginAs($user)
+            $browser->login()
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
@@ -187,19 +148,16 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test the 2fa Enable Page.
+     *
      * @group multifa
      */
     public function testEnable2fa()
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
+        $this->browse(function (Browser $browser) {
             $browser =
-            $browser->loginAs($user)
+            $browser->login()
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
@@ -237,15 +195,14 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test the 2fa Enable Page.
+     *
      * @group multifa
      */
     public function testEnable2faLoginWrongCode()
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
+        $user = call_user_func(Browser::$userResolver);
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser =
@@ -274,15 +231,14 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test the 2fa Enable Page.
+     *
      * @group multifa
      */
     public function testEnable2faLogin()
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
+        $user = call_user_func(Browser::$userResolver);
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser =
@@ -311,19 +267,16 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test 2fa Enable Page and Disable Page.
+     *
      * @group multifa
      */
     public function testEnable2faDisable2fa()
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
+        $this->browse(function (Browser $browser) {
             $browser =
-            $browser->loginAs($user)
+            $browser->login()
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
@@ -351,19 +304,16 @@ class MultiFAControllerTest extends DuskTestCase
 
     /**
      * Test 2fa Enable Page and Disable Page.
+     *
      * @group multifa
      */
     public function testEnable2faDisable2faWrongCode()
     {
         $this->markTestIncomplete('Ignore 2fa tests for now.');
 
-        $user = factory(User::class)->create();
-        $user->account->populateDefaultFields();
-        $user->acceptPolicy();
-
-        $this->browse(function (Browser $browser) use ($user) {
+        $this->browse(function (Browser $browser) {
             $browser =
-            $browser->loginAs($user)
+            $browser->login()
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')

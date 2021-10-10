@@ -30,10 +30,10 @@ class DestroyMessage extends BaseService
     /**
      * Destroy a message.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
-    public function execute(array $data) : bool
+    public function execute(array $data): bool
     {
         $this->validate($data);
 
@@ -43,6 +43,8 @@ class DestroyMessage extends BaseService
         $message = Message::where('account_id', $data['account_id'])
                             ->where('conversation_id', $data['conversation_id'])
                             ->findOrFail($data['message_id']);
+
+        $message->contact->throwInactive();
 
         $message->delete();
 

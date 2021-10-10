@@ -9,10 +9,12 @@ use App\Models\Account\Photo;
 use App\Services\BaseService;
 use function Safe\finfo_open;
 use function Safe\preg_match;
+use App\Models\Contact\Contact;
 use function Safe\base64_decode;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Exception\NotReadableException;
 
 class UploadPhoto extends BaseService
 {
@@ -32,6 +34,7 @@ class UploadPhoto extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer|exists:contacts,id',
             'photo' => 'required_without:data|file|image',
             'data' => 'required_without:photo|string|photo',
             'extension' => 'nullable|string',
@@ -41,12 +44,17 @@ class UploadPhoto extends BaseService
     /**
      * Upload a photo.
      *
-     * @param array $data
-     * @return Photo
+     * @param  array  $data
+     * @return Photo|null
      */
-    public function execute(array $data) : Photo
+    public function execute(array $data): ?Photo
     {
         $this->validate($data);
+
+        $contact = Contact::where('account_id', $data['account_id'])
+            ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $array = null;
         if (Arr::has($data, 'photo')) {
@@ -55,7 +63,13 @@ class UploadPhoto extends BaseService
             $array = $this->importFile($data);
         }
 
-        return Photo::create($array);
+        if (! $array) {
+            return null;
+        }
+
+        return tap(Photo::create($array), function ($photo) use ($contact): void {
+            $contact->photos()->syncWithoutDetaching([$photo->id]);
+        });
     }
 
     /**
@@ -63,30 +77,37 @@ class UploadPhoto extends BaseService
      *
      * @return array
      */
-    private function importPhoto($data)
+    private function importPhoto($data): array
     {
         $photo = $data['photo'];
-        $array = [
+
+        return [
             'account_id' => $data['account_id'],
             'original_filename' => $photo->getClientOriginalName(),
-            'filesize' => $photo->getClientSize(),
+            'filesize' => $photo->getSize(),
             'mime_type' => (new \Mimey\MimeTypes)->getMimeType($photo->guessClientExtension()),
+            'new_filename' => $photo->store('photos', [
+                'disk' => config('filesystems.default'),
+                'visibility' => config('filesystems.default_visibility'),
+            ]),
         ];
-        $array['new_filename'] = $photo->storePublicly('photos', config('filesystems.default'));
-
-        return $array;
     }
 
     /**
      * Upload the photo.
      *
-     * @return array
+     * @return array|null
      */
-    private function importFile(array $data) : array
+    private function importFile(array $data): ?array
     {
         $filename = Str::random(40);
 
-        $image = Image::make($data['data']);
+        try {
+            $image = Image::make($data['data']);
+        } catch (NotReadableException $e) {
+            return null;
+        }
+
         $tempfile = $this->storeImage('local', $image, 'temp/'.$filename);
 
         try {
@@ -122,15 +143,15 @@ class UploadPhoto extends BaseService
     /**
      * Store the decoded image in the temp file.
      *
-     * @param string $disk
-     * @param \Intervention\Image\Image $image
-     * @param string $filename
+     * @param  string  $disk
+     * @param  \Intervention\Image\Image  $image
+     * @param  string  $filename
      * @return string|null
      */
-    private function storeImage(string $disk, $image, string $filename) : ? string
+    private function storeImage(string $disk, $image, string $filename): ?string
     {
         $result = Storage::disk($disk)
-            ->put($path = $filename, (string) $image->stream(), 'public');
+            ->put($path = $filename, (string) $image->stream(), config('filesystems.default_visibility'));
 
         return $result ? $path : null;
     }
@@ -138,10 +159,10 @@ class UploadPhoto extends BaseService
     /**
      * Determines if the source photo is a valid encoded photo.
      *
-     * @param string $data
+     * @param  string  $data
      * @return bool
      */
-    private function isValidPhoto(string $data) : bool
+    private function isValidPhoto(string $data): bool
     {
         return $this->isBinary($data) || $this->isDataUrl($data) || $this->isBase64($data);
     }
@@ -149,27 +170,23 @@ class UploadPhoto extends BaseService
     /**
      * Determines if source data is binary data.
      *
-     * @param string $data
+     * @param  string  $data
      * @return bool
      */
-    private function isBinary(string $data) : bool
+    private function isBinary(string $data): bool
     {
-        if (is_string($data)) {
-            $mime = finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $data);
+        $mime = finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $data);
 
-            return substr($mime, 0, 4) != 'text' && $mime != 'application/x-empty';
-        }
-
-        return false;
+        return substr($mime, 0, 4) != 'text' && $mime != 'application/x-empty';
     }
 
     /**
      * Determines if source data is data-url format.
      *
-     * @param string $data
+     * @param  string  $data
      * @return bool
      */
-    private function isDataUrl(string $data) : bool
+    private function isDataUrl(string $data): bool
     {
         if (! is_string($data)) {
             return false;
@@ -188,10 +205,10 @@ class UploadPhoto extends BaseService
     /**
      * Determines if source data is base64 encoded.
      *
-     * @param string $data
+     * @param  string  $data
      * @return bool
      */
-    private function isBase64(string $data) : bool
+    private function isBase64(string $data): bool
     {
         if (! is_string($data)) {
             return false;

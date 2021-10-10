@@ -3,18 +3,24 @@
 namespace App\Models\Contact;
 
 use App\Models\Account\Account;
+use App\Traits\AmountFormatter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
 
 /**
  * @property Account $account
  * @property Contact $contact
- * @method static Builder due()s
+ * @property int $amount
+ *
+ * @method static Builder due()
  * @method static Builder owed()
  * @method static Builder inProgress()
  */
 class Debt extends Model
 {
+    use AmountFormatter;
+
     /**
      * The attributes that aren't mass assignable.
      *
@@ -32,6 +38,8 @@ class Debt extends Model
 
     /**
      * Get the account record associated with the debt.
+     *
+     * @return BelongsTo
      */
     public function account()
     {
@@ -40,6 +48,8 @@ class Debt extends Model
 
     /**
      * Get the contact record associated with the debt.
+     *
+     * @return BelongsTo
      */
     public function contact()
     {
@@ -49,7 +59,7 @@ class Debt extends Model
     /**
      * Limit results to unpaid/unreceived debt.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeInProgress(Builder $query)
@@ -60,7 +70,7 @@ class Debt extends Model
     /**
      * Limit results to due debt.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeDue(Builder $query)
@@ -71,7 +81,7 @@ class Debt extends Model
     /**
      * Limit results to owed debt.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeOwed(Builder $query)

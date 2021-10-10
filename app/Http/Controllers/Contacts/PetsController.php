@@ -33,7 +33,8 @@ class PetsController extends Controller
 
     /**
      * Get all the pets for this contact.
-     * @param  Contact $contact
+     *
+     * @param  Contact  $contact
      */
     public function index(Contact $contact)
     {
@@ -59,6 +60,8 @@ class PetsController extends Controller
      */
     public function store(PetsRequest $request, Contact $contact)
     {
+        $contact->throwInactive();
+
         $pet = $contact->pets()->create(
             $request->only([
                 'pet_category_id',
@@ -83,6 +86,8 @@ class PetsController extends Controller
      */
     public function update(PetsRequest $request, Contact $contact, Pet $pet)
     {
+        $contact->throwInactive();
+
         $pet->update(
             $request->only([
                 'pet_category_id',

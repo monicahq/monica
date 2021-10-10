@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Editing not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'yes' => 'Yes',
     'no' => 'No',
@@ -7,7 +13,8 @@ return [
     'save' => 'Spremi',
     'add' => 'Dodaj',
     'cancel' => 'Poništi',
-    'delete_confirm' => 'Sure?',
+    'confirm' => 'Confirm',
+    'delete_confirm' => 'Are you sure?',
     'delete' => 'Obriši',
     'edit' => 'Uredi',
     'upload' => 'Uploadaj',
@@ -21,13 +28,11 @@ return [
     'done' => 'Gotovo',
     'back' => 'Back',
     'verify' => 'Potvrdi',
-    'for' => 'za',
     'new' => 'novo',
     'unknown' => 'Nepoznato',
     'load_more' => 'Učitaj više',
-    'loading' => 'Učitavanje...',
+    'loading' => 'Loading…',
     'with' => 's',
-    'days' => 'dan|dana',
     'today' => 'danas',
     'yesterday' => 'jučer',
     'another_day' => 'drugi dan',
@@ -37,11 +42,13 @@ return [
     'upgrade' => 'Upgrade to unlock',
     'percent_uploaded' => '{percent}% uploaded',
     'retry' => 'Retry',
+    'filter' => 'Filter the list',
     'go_back' => 'Go back',
+    'file_selected' => 'One file selected…|{count} files selected…',
 
     'application_title' => 'Monica – upravljanje osobnim odnosima',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
-    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
+    'application_og_title' => 'Have better relations with your loved ones. Free online CRM for friends and family.',
 
     'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
     'markdown_link' => 'Pročitajte dokumentaciju',
@@ -57,14 +64,14 @@ return [
     'main_nav_activities' => 'Aktivnosti',
     'main_nav_tasks' => 'Zadaci',
 
-    'footer_remarks' => 'Primjedbe?',
-    'footer_send_email' => 'Pošaljite mi e-mail',
+    'footer_remarks' => 'Comments?',
+    'footer_send_email' => 'Send us an email',
     'footer_privacy' => 'Pravila privatnosti',
     'footer_release' => 'Release notes',
     'footer_newsletter' => 'Newsletter',
     'footer_source_code' => 'Pridonesite',
     'footer_version' => 'Verzija :version',
-    'footer_new_version' => 'Nova verzija je dostupna',
+    'footer_new_version' => 'A new version of Monica is available',
 
     'footer_modal_version_whats_new' => 'Što je novo',
     'footer_modal_version_release_away' => 'You are 1 release behind the latest version available. You should update your instance.|You are :number releases behind the latest version available. You should update your instance.',
@@ -101,13 +108,15 @@ return [
 
     'error_title' => 'Whoops! Something went wrong.',
     'error_unauthorized' => 'You don’t have the right to edit this resource.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'We had an error trying to save the data.',
     'error_try_again' => 'Something went wrong. Please try again.',
     'error_id' => 'Error ID: :id',
-    'error_unavailable' => 'Service Unavailable',
-    'error_maintenance' => 'Maintenance in progress. Be right back.',
+    'error_unavailable' => 'Service unavailable',
+    'error_maintenance' => 'Maintenance in progress. We’ll be right back.',
     'error_help' => 'We’ll be right back.',
     'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'The data has been saved.',
 
@@ -453,4 +462,10 @@ return [
     'dav_birthdays_description' => ':name’s contact’s birthdays',
     'dav_tasks' => 'Tasks',
     'dav_tasks_description' => ':name’s tasks',
+
+    // contact list
+    'contact_list_avatar' => 'Avatar',
+    'contact_list_name' => 'Contact',
+    'contact_list_description' => 'Description',
+
 ];

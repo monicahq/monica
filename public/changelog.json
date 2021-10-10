@@ -1,6 +1,31 @@
 {
     "entries": [
         {
+            "date": "Aug 26, 2021",
+            "title": "New feature: change subscription frequency",
+            "description": "You can now change the frequency of your subscription: ![image](img/changelogs/2021-08-26-subscription.png) ![image](img/changelogs/2021-08-26-update.png)"
+        },
+        {
+            "date": "May 11, 2020",
+            "title": "New feature: crop an avatar photo",
+            "description": "When uploading a new avatar for a contact, you are now invited to crop it to keep a square format.\n\n Choose a new file to upload, then select the zone to keep: ![image](img/changelogs/2020-05-11-crop-avatar-1.png) After validation, you can now save the new avatar: ![image](img/changelogs/2020-05-11-crop-avatar-2.png)"
+        },
+        {
+            "date": "Mar 22, 2020",
+            "title": "New feature: define yourself as a contact",
+            "description": "In your Settings panel, you can now indicate who you are as a contact in the application."
+        },
+        {
+            "date": "Jan 04, 2020",
+            "title": "New feature: associate a photo to a gift",
+            "description": "Adding a gift is now done inline, and you can associate a photo with it, to remember what you offered. ![image](img/changelogs/2020-01-04-gifts-photo.png)"
+        },
+        {
+            "date": "Dec 22, 2019",
+            "title": "Enhancement: add emotions to activities",
+            "description": "Adding activities is now done inline, and you can add emotions and participants to an activity. ![image](img/changelogs/2019-03-22-new-activity.png)"
+        },
+        {
             "date": "Aug 17, 2019",
             "title": "New feature: you can now change avatars",
             "description": "You can now change the avatar of your contacts. Mouse over the profile picture and have fun. ![image](/img/changelogs/2019-08-17-avatars.png)"

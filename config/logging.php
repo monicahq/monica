@@ -1,5 +1,6 @@
 <?php
 
+use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 
@@ -33,6 +34,11 @@ return [
         'stack' => [
             'driver' => 'stack',
             'channels' => ['single'],
+            'ignore_exceptions' => false,
+        ],
+        'stackerrorlog' => [
+            'driver' => 'stack',
+            'channels' => ['errorlog', 'papertrail', 'sentry'],
         ],
         'single' => [
             'driver' => 'single',
@@ -52,6 +58,10 @@ return [
             'emoji' => ':boom:',
             'level' => 'critical',
         ],
+        'papertrailerrorlog' => [
+            'driver' => 'stack',
+            'channels' => ['papertrail', 'errorlog'],
+        ],
         'papertrail' => [
             'driver'  => 'monolog',
             'level' => 'debug',
@@ -60,6 +70,11 @@ return [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
             ],
+        ],
+        'sentry' => [
+            'driver' => 'sentry',
+            'level'  => 'debug',
+            'bubble' => true,
         ],
         'stderr' => [
             'driver' => 'monolog',
@@ -79,6 +94,13 @@ return [
         'testing' => [
             'driver' => 'errorlog',
             'level' => 'emergency',
+        ],
+        'null' => [
+            'driver' => 'monolog',
+            'handler' => NullHandler::class,
+        ],
+        'emergency' => [
+            'path' => storage_path('logs/laravel.log'),
         ],
     ],
 ];

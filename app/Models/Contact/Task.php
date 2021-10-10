@@ -8,8 +8,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * @property int $id
  * @property Account $account
- * @property Contact $contact
+ * @property Contact|null $contact
+ * @property string $title
+ * @property string $description
+ * @property string $uuid
+ * @property bool $completed
+ * @property \Carbon\Carbon|null $completed_at
+ *
  * @method static Builder completed()
  * @method static Builder inProgress()
  */
@@ -27,7 +34,10 @@ class Task extends Model
      *
      * @var array
      */
-    protected $dates = ['completed_at', 'archived_at'];
+    protected $dates = [
+        'completed_at',
+        'archived_at',
+    ];
 
     /**
      * The attributes that should be cast to native types.
@@ -70,7 +80,7 @@ class Task extends Model
     /**
      * Limit tasks to completed ones.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeCompleted(Builder $query)
@@ -81,7 +91,7 @@ class Task extends Model
     /**
      * Limit tasks to in-progress ones.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeInProgress(Builder $query)

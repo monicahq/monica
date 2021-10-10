@@ -64,8 +64,7 @@ class ApiConversationController extends ApiController
     /**
      * Get the detail of a given conversation.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return ConversationResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $conversationId)
@@ -83,18 +82,17 @@ class ApiConversationController extends ApiController
     /**
      * Store the conversation.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return ConversationResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
             $conversation = app(CreateConversation::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                 +
                 [
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -111,19 +109,18 @@ class ApiConversationController extends ApiController
     /**
      * Update the conversation.
      *
-     * @param Request $request
-     * @param int $conversationId
-     *
+     * @param  Request  $request
+     * @param  int  $conversationId
      * @return ConversationResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $conversationId)
     {
         try {
             $conversation = app(UpdateConversation::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'conversation_id'])
                 +
                 [
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                     'conversation_id' => $conversationId,
                 ]
             );
@@ -141,16 +138,15 @@ class ApiConversationController extends ApiController
     /**
      * Destroy the conversation.
      *
-     * @param Request $request
-     * @param int $conversationId
-     *
+     * @param  Request  $request
+     * @param  int  $conversationId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $conversationId)
+    public function destroy(Request $request, int $conversationId)
     {
         try {
             app(DestroyConversation::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'conversation_id' => $conversationId,
             ]);
         } catch (ModelNotFoundException $e) {
@@ -161,6 +157,6 @@ class ApiConversationController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $conversationId);
+        return $this->respondObjectDeleted($conversationId);
     }
 }

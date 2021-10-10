@@ -17,7 +17,8 @@ class CreateReminderTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_stores_a_recurring_reminder()
+    /** @test */
+    public function it_stores_a_recurring_reminder()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
         $user = factory(User::class)->create([]);
@@ -56,7 +57,8 @@ class CreateReminderTest extends TestCase
         ]);
     }
 
-    public function test_it_stores_a_one_time_reminder()
+    /** @test */
+    public function it_stores_a_one_time_reminder()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
         $user = factory(User::class)->create([]);
@@ -95,7 +97,8 @@ class CreateReminderTest extends TestCase
         ]);
     }
 
-    public function test_it_stores_a_reminder_for_each_user_of_an_account()
+    /** @test */
+    public function it_stores_a_reminder_for_each_user_of_an_account()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
         $account = factory(Account::class)->create([]);
@@ -148,7 +151,8 @@ class CreateReminderTest extends TestCase
         ]);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -162,7 +166,8 @@ class CreateReminderTest extends TestCase
         $reminderService = app(CreateReminder::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_ids_are_not_found()
+    /** @test */
+    public function it_throws_an_exception_if_ids_are_not_found()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([]);
@@ -196,7 +201,8 @@ class CreateReminderTest extends TestCase
         $reminderService = app(CreateReminder::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_frequency_type_is_not_right()
+    /** @test */
+    public function it_throws_an_exception_if_frequency_type_is_not_right()
     {
         $contact = factory(Contact::class)->create([]);
 

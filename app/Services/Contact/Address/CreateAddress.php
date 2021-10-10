@@ -7,6 +7,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Services\Account\Place\CreatePlace;
+use App\Services\Contact\Label\UpdateAddressLabels;
 
 class CreateAddress extends BaseService
 {
@@ -28,36 +29,49 @@ class CreateAddress extends BaseService
             'country' => 'nullable|string|max:3',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
+            'labels' => 'nullable|array',
         ];
     }
 
     /**
      * Create an address.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Address
      */
-    public function execute(array $data) : Address
+    public function execute(array $data): Address
     {
         $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $place = $this->createPlace($data);
 
-        return Address::create([
+        $address = Address::create([
             'account_id' => $data['account_id'],
             'contact_id' => $data['contact_id'],
             'place_id' => $place->id,
             'name' => $this->nullOrValue($data, 'name'),
         ]);
+
+        if ($labels = $this->nullOrValue($data, 'labels')) {
+            app(UpdateAddressLabels::class)->execute([
+                'account_id' => $data['account_id'],
+                'address_id' => $address->id,
+                'labels' => $labels,
+            ]);
+        }
+
+        return $address;
     }
 
     /**
      * Create a place for the given address.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Place
      */
     private function createPlace(array $data)

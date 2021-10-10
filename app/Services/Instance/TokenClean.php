@@ -29,7 +29,7 @@ class TokenClean
     /**
      * Clean token list.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data)
     {
@@ -49,10 +49,10 @@ class TokenClean
     /**
      * Handle tokens for a user.
      *
-     * @param array $data
-     * @param int $userId
-     * @param string $tokenName
-     * @param string $timestamp
+     * @param  array  $data
+     * @param  int  $userId
+     * @param  string  $tokenName
+     * @param  string  $timestamp
      */
     private function handleUserToken(array $data, int $userId, string $tokenName, string $timestamp)
     {

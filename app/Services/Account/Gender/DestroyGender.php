@@ -23,10 +23,10 @@ class DestroyGender extends BaseService
     /**
      * Destroy a gender.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
-    public function execute(array $data) : bool
+    public function execute(array $data): bool
     {
         $this->validate($data);
 

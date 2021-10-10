@@ -37,10 +37,10 @@ class PopulateModulesTable extends BaseService
     /**
      * Execute the service.
      *
-     * @param array $givenData
+     * @param  array  $givenData
      * @return bool
      */
-    public function execute(array $givenData) : bool
+    public function execute(array $givenData): bool
     {
         $this->data = $givenData;
 
@@ -70,8 +70,9 @@ class PopulateModulesTable extends BaseService
     /**
      * Get the default modules.
      *
-     * @throws QueryException if the query does not run for some reasons.
      * @return Collection
+     *
+     * @throws QueryException if the query does not run for some reasons.
      */
     private function getDefaultModules()
     {
@@ -90,7 +91,7 @@ class PopulateModulesTable extends BaseService
     /**
      * Create an entry in the module table.
      *
-     * @param object $defaultModule
+     * @param  object  $defaultModule
      * @return void
      */
     private function feedModule($defaultModule)

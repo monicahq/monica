@@ -1,0 +1,112 @@
+.btn {
+  color: #4a4a4a;
+  background-color: #d7e3ec;
+  background-image: -webkit-linear-gradient(270deg, #fafafa 0%, #d7e3ec 90%);
+  background-image: linear-gradient(-180deg, #fafafa 0%, #d7e3ec 90%);
+  position: relative;
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-repeat: repeat-x;
+  background-position: -1px -1px;
+  background-size: 110% 110%;
+  border: 1px solid #d0d0d0;
+  border-radius: 0.25em;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-decoration: none;
+
+  &:hover, &:focus {
+    text-decoration: none;
+    background-color: #d0d0d0;
+    background-image: -webkit-linear-gradient(270deg, #d7e3ec 0%, #d0d0d0 90%);
+    background-image: linear-gradient(-180deg, #d7e3ec 0%, #d0d0d0 90%);
+    background-position: 0 -0.5em;
+    background-repeat: repeat-x;
+    border-color: #999999;
+    color: #0366d5;
+  }
+
+  &:active {
+    background-color: #d0d0d0;
+    background-image: none;
+    border-color: #999999;
+    box-shadow: inset 0 0.15em 0.3em #eeeeee;
+  }
+
+  &:disabled {
+    background-image: linear-gradient(-180deg, #d0d0d0 0%, #d0d0d0 90%);
+  }
+
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+}
+
+.btn-primary {
+  color: #ffffff;
+  background-color: #228b22;
+  background-image: -webkit-linear-gradient(270deg, #32cd32 0%, #228b22 90%);
+  background-image: linear-gradient(-180deg, #32cd32 0%, #228b22 90%);
+
+  &:hover, &:focus {
+    background-color: #228b22;
+    background-image: -webkit-linear-gradient(270deg, #32cd32 0%, #228b22 90%);
+    background-image: linear-gradient(-180deg, #32cd32 0%, #228b22 90%);
+    background-position: 0 -0.5em;
+    border-color: #228b22;
+    color: #ffd700;
+  }
+}
+
+.btn-danger {
+  color: #b22222;
+
+  &:hover, &:focus {
+    background-color: #b22222;
+    background-image: linear-gradient(#d9534f, #b22222);
+    border-color: #b22222;
+    color: #ffffff;
+  }
+}
+
+.btn-warning {
+  color: #daa520;
+
+  &:hover, &:focus {
+    background-color: #daa520;
+    background-image: linear-gradient(#fffacd, #daa520);
+    border-color: #daa520;
+    color: #ffffff;
+  }
+}
+
+.btn-add {
+  position: relative;
+  top: 3px;
+  border: 1px solid #4a4a4a;
+  border-radius: 50%;
+  width: 15px;
+  margin-right: 3px;
+}
+
+.small-btn {
+  background: #ffffff;
+  color: #4a4a4a;
+  opacity: 0.8;
+  box-shadow: 1px 0px 1px #d0d0d0, -1px 1px 1px #d0d0d0, 0px 1px 4px #d0d0d0;
+  border-radius: 11px;
+  font-weight: 500;
+  text-decoration: none;
+}

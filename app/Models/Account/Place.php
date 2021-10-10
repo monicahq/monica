@@ -2,8 +2,8 @@
 
 namespace App\Models\Account;
 
+use Illuminate\Support\Str;
 use App\Models\Contact\Contact;
-use function Safe\preg_replace;
 use App\Helpers\CountriesHelper;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -55,7 +55,7 @@ class Place extends Model
      *
      * @return string|null
      */
-    public function getAddressAsString()
+    public function getAddressAsString(): ?string
     {
         $address = '';
 
@@ -80,14 +80,11 @@ class Place extends Model
         }
 
         if (empty($address)) {
-            return;
+            return null;
         }
 
         // trim extra whitespaces inside the address
-        $address = preg_replace('/\s+/', ' ', $address);
-        if (is_string($address)) {
-            return $address;
-        }
+        return Str::of($address)->replaceMatches('/\s+/', ' ');
     }
 
     /**
@@ -95,11 +92,13 @@ class Place extends Model
      *
      * @return string|null
      */
-    public function getCountryName()
+    public function getCountryName(): ?string
     {
         if ($this->country) {
             return CountriesHelper::get($this->country);
         }
+
+        return null;
     }
 
     /**

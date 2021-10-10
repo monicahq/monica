@@ -36,8 +36,7 @@ class ApiReminderController extends ApiController
     /**
      * Get the detail of a given reminder.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return ReminderResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $reminderId)
@@ -56,19 +55,18 @@ class ApiReminderController extends ApiController
     /**
      * Store the reminder.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return ReminderResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
             $reminder = app(CreateReminder::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -84,21 +82,20 @@ class ApiReminderController extends ApiController
     /**
      * Update the reminder.
      *
-     * @param Request $request
-     * @param int $reminderId
-     *
+     * @param  Request  $request
+     * @param  int  $reminderId
      * @return ReminderResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $reminderId)
     {
         try {
             $reminder = app(UpdateReminder::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'reminder_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'reminder_id' => $reminderId,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                        'reminder_id' => $reminderId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -114,15 +111,14 @@ class ApiReminderController extends ApiController
     /**
      * Delete a reminder.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $reminderId)
+    public function destroy(Request $request, int $reminderId)
     {
         try {
             app(DestroyReminder::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'reminder_id' => $reminderId,
             ]);
         } catch (ModelNotFoundException $e) {
@@ -133,7 +129,7 @@ class ApiReminderController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $reminderId);
+        return $this->respondObjectDeleted($reminderId);
     }
 
     /**

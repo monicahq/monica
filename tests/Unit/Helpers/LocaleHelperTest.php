@@ -11,7 +11,8 @@ class LocaleHelperTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
-    public function test_get_locale_returns_english_by_default()
+    /** @test */
+    public function get_locale_returns_english_by_default()
     {
         $this->assertEquals(
             'en',
@@ -19,7 +20,8 @@ class LocaleHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_get_locale_returns_right_locale_if_user_logged()
+    /** @test */
+    public function get_locale_returns_right_locale_if_user_logged()
     {
         $user = $this->signIn();
         $user->locale = 'fr';
@@ -31,7 +33,8 @@ class LocaleHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_get_direction_default()
+    /** @test */
+    public function get_direction_default()
     {
         $this->assertEquals(
             'ltr',
@@ -39,7 +42,8 @@ class LocaleHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_get_direction_french()
+    /** @test */
+    public function get_direction_french()
     {
         App::setLocale('fr');
 
@@ -49,7 +53,8 @@ class LocaleHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_get_direction_hebrew()
+    /** @test */
+    public function get_direction_hebrew()
     {
         App::setLocale('he');
 
@@ -59,7 +64,8 @@ class LocaleHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_format_telephone_by_iso()
+    /** @test */
+    public function format_telephone_by_iso()
     {
         $tel = LocaleHelper::formatTelephoneNumberByISO('202-555-0191', 'gb');
 

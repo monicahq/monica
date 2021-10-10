@@ -10,8 +10,8 @@ interface MailNotification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  User $user
+     * @param  User  $user
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail(User $user) : MailMessage;
+    public function toMail(User $user): MailMessage;
 }

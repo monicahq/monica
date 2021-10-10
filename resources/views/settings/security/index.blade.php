@@ -46,7 +46,7 @@
             <p>{{ trans('settings.security_help') }}</p>
 
             <form method="POST" action="{{ route('settings.security.passwordChange') }}" class="settings-reset">
-              {{ csrf_field() }}
+              @csrf
 
               <h2>{{ trans('settings.password_change') }}</h2>
 
@@ -66,7 +66,7 @@
               <button type="submit" class="btn">{{ trans('settings.password_btn') }}</button>
             </form>
 
-            @if (config('google2fa.enabled')===true || config('u2f.enable')===true)
+            @if (config('google2fa.enabled')===true)
             <form class="settings-reset">
               <h2>{{ trans('settings.2fa_title') }}</h2>
 
@@ -85,26 +85,7 @@
                   :keys="{{ \Safe\json_encode($webauthnKeys) }}"
                   :timezone="{{ \Safe\json_encode(auth()->user()->timezone) }}"
                 >
-                @if (config('u2f.enable')===true)
-                  <u2f-connector
-                    :method="'register-modal'"
-                    :currentkeys="{{ \Safe\json_encode($currentkeys) }}"
-                    :timezone="{{ \Safe\json_encode(auth()->user()->timezone) }}"
-                    :enable-register="{{ \Safe\json_encode(false) }}"
-                  >
-                  </u2f-connector>
-                @endif
                 </webauthn-connector>
-              @elseif (config('u2f.enable')===true)
-                <u2f-connector
-                  :method="'register-modal'"
-                  :currentkeys="{{ \Safe\json_encode($currentkeys) }}"
-                  :timezone="{{ \Safe\json_encode(auth()->user()->timezone) }}"
-                  :enable-register="{{ \Safe\json_encode(true) }}"
-                >
-                </u2f-connector>
-                  
-                <script src="{{ asset(mix('js/u2f-api.js')) }}" type="text/javascript"></script>
               @endif
 
             </form>

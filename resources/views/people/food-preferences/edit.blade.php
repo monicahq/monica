@@ -33,7 +33,7 @@
         <div class="row">
           <div class="col-12 col-sm-6 offset-sm-3 offset-sm-3-right">
             <form method="POST" action="{{ route('people.food.update', $contact) }}">
-              {{ csrf_field() }}
+              @csrf
 
               <h2>{{ trans('people.food_preferences_edit_title') }}</h2>
 

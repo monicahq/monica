@@ -24,15 +24,17 @@ class DestroyLifeEvent extends BaseService
     /**
      * Destroy a life event.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
-    public function execute(array $data) : bool
+    public function execute(array $data): bool
     {
         $this->validate($data);
 
         $lifeEvent = LifeEvent::where('account_id', $data['account_id'])
             ->findOrFail($data['life_event_id']);
+
+        $lifeEvent->contact->throwInactive();
 
         $this->deleteAssociatedReminder($lifeEvent);
 

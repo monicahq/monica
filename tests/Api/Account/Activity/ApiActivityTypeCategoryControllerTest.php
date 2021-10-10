@@ -21,7 +21,8 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_it_gets_a_list_of_activity_type_categories()
+    /** @test */
+    public function it_gets_a_list_of_activity_type_categories()
     {
         $user = $this->signin();
 
@@ -38,7 +39,8 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_applies_limit_parameter()
+    /** @test */
+    public function it_applies_limit_parameter()
     {
         $user = $this->signin();
 
@@ -65,7 +67,8 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_stores_a_activity_type_category()
+    /** @test */
+    public function it_stores_a_activity_type_category()
     {
         $user = $this->signin();
 
@@ -84,12 +87,13 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_updates_a_activity_type_category()
+    /** @test */
+    public function it_updates_a_activity_type_category()
     {
         $user = $this->signin();
 
         $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/activitytypecategories/'.$activityTypeCategory->id, [
@@ -107,7 +111,8 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_doesnt_update_if_custom_field_not_found()
+    /** @test */
+    public function it_doesnt_update_if_custom_field_not_found()
     {
         $user = $this->signin();
 
@@ -122,7 +127,8 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_deletes_a_activity_type_category()
+    /** @test */
+    public function it_deletes_a_activity_type_category()
     {
         $user = $this->signin();
 
@@ -145,7 +151,8 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_doesnt_delete_the_custom_field_if_not_found()
+    /** @test */
+    public function it_doesnt_delete_the_custom_field_if_not_found()
     {
         $user = $this->signin();
 
@@ -158,7 +165,8 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_a_single_activity_type_category()
+    /** @test */
+    public function it_gets_a_single_activity_type_category()
     {
         $user = $this->signin();
 

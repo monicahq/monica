@@ -34,15 +34,17 @@ class CreateLifeEvent extends BaseService
     /**
      * Create a life event.
      *
-     * @param array $data
+     * @param  array  $data
      * @return LifeEvent
      */
-    public function execute(array $data) : LifeEvent
+    public function execute(array $data): LifeEvent
     {
         $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         LifeEventType::where('account_id', $data['account_id'])
             ->findOrFail($data['life_event_type_id']);
@@ -68,8 +70,8 @@ class CreateLifeEvent extends BaseService
     /**
      * Add yearly reminder if necessary.
      *
-     * @param array $data
-     * @param LifeEvent $lifeEvent
+     * @param  array  $data
+     * @param  LifeEvent  $lifeEvent
      */
     private function addYearlyReminder($data, $lifeEvent)
     {

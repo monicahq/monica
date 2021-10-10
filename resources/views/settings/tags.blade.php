@@ -72,15 +72,15 @@
                     </ul>
                   </div>
                   <div class="table-cell actions">
-                    <a href="#" onclick="if (confirm('{{ trans('settings.tags_list_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
-                      <i class="fa fa-trash-o" aria-hidden="true"></i>
-                    </a>
+                    <form method="POST" action="{{ route('settings.tags.delete', $tag) }}">
+                      @method('DELETE')
+                      @csrf
+                      <confirm message="{{ trans('settings.tags_list_delete_confirmation') }}">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                      </confirm>
+                    </form>
                   </div>
 
-                  <form method="POST" action="{{ route('settings.tags.delete', $tag) }}" class="entry-delete-form hidden">
-                    {{ method_field('DELETE') }}
-                    {{ csrf_field() }}
-                  </form>
                 </li>
               @endforeach
               </ul>

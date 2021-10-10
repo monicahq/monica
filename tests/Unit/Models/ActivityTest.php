@@ -12,32 +12,19 @@ class ActivityTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testGetDescriptionReturnsNullIfUndefined()
-    {
-        $activity = new Activity;
-
-        $this->assertNull($activity->getDescription());
-    }
-
-    public function testGetDescriptionReturnsDescription()
-    {
-        $activity = new Activity;
-        $activity->description = 'This is a test';
-
-        $this->assertEquals(
-            'This is a test',
-            $activity->getDescription()
-        );
-    }
-
-    public function testGetDateItHappenedReturnsCarbonObject()
+    /** @test */
+    public function it_returns_the_happened_at()
     {
         $activity = factory(Activity::class)->make();
 
-        $this->assertInstanceOf(Carbon::class, $activity->date_it_happened);
+        $this->assertInstanceOf(
+            Carbon::class,
+            $activity->happened_at
+        );
     }
 
-    public function testGetTitleReturnsAString()
+    /** @test */
+    public function it_returns_a_title()
     {
         $type = factory(ActivityType::class)->create();
 
@@ -45,10 +32,14 @@ class ActivityTest extends TestCase
             'activity_type_id' => $type->id,
         ]);
 
-        $this->assertEquals($type->key, $activity->getTitle());
+        $this->assertEquals(
+            $type->translation_key,
+            $activity->getTitle()
+        );
     }
 
-    public function test_get_info_for_journal_entry()
+    /** @test */
+    public function it_gets_info_for_journal_entry()
     {
         $activity = factory(Activity::class)->create();
 
@@ -58,11 +49,11 @@ class ActivityTest extends TestCase
             'activity_type' => (! is_null($activity->type) ? $activity->type->name : null),
             'summary' => $activity->summary,
             'description' => $activity->description,
-            'day' => $activity->date_it_happened->day,
-            'day_name' => $activity->date_it_happened->format('D'),
-            'month' => $activity->date_it_happened->month,
-            'month_name' => strtoupper($activity->date_it_happened->format('M')),
-            'year' => $activity->date_it_happened->year,
+            'day' => $activity->happened_at->day,
+            'day_name' => $activity->happened_at->format('D'),
+            'month' => $activity->happened_at->month,
+            'month_name' => strtoupper($activity->happened_at->format('M')),
+            'year' => $activity->happened_at->year,
             'attendees' => $activity->getContactsForAPI(),
         ];
 

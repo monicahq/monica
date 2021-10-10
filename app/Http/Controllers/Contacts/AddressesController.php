@@ -8,7 +8,6 @@ use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Traits\JsonRespondController;
 use Illuminate\Support\Facades\Cache;
 use App\Services\Contact\Address\CreateAddress;
@@ -100,10 +99,9 @@ class AddressesController extends Controller
     /**
      * Destroy the address.
      *
-     * @param Request $request
-     * @param Contact $contact
-     * @param Address $address
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
+     * @param  Address  $address
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Address $address)

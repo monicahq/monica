@@ -1,0 +1,614 @@
+.avatars {
+  a {
+    text-decoration: none;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
+
+.people-list {
+  .breadcrumb {
+    border-bottom: 1px solid #eeeeee;
+  }
+
+  .main-content {
+    margin-top: 20px;
+  }
+
+  .sidebar {
+    .sidebar-cta {
+      margin-bottom: 20px;
+      padding: 15px;
+      text-align: center;
+      width: 100%;
+    }
+
+    li {
+      margin-bottom: 7px;
+      @if $htmldir == ltr {
+        padding-left: 15px;
+      } @else {
+        padding-right: 15px;
+      }
+      position: relative;
+
+      &.selected::before {
+        color: #999999;
+        content: '>';
+        left: 0;
+        position: absolute;
+      }
+
+      .number-contacts-per-tag {
+        @if $htmldir == ltr {
+          float: right;
+        } @else {
+          float: left;
+        }
+      }
+    }
+  }
+
+  .list {
+    border: 1px solid #eeeeee;
+    border-radius: 3px;
+  }
+
+  .clear-filter {
+    border: 1px solid #eeeeee;
+    position: relative;
+    padding: 6px;
+    border-radius: 3px;
+
+    a {
+      position: absolute;
+      @if $htmldir == ltr {
+        right: 10px;
+      } @else {
+        left: 10px;
+      }
+    }
+  }
+
+  .people-list-item {
+    border-bottom: 1px solid #eeeeee;
+    padding: 10px;
+
+    &:hover {
+      background-color: #fafafa;
+    }
+
+    &.sorting {
+      background-color: #fafafa;
+      position: relative;
+      padding: 10px;
+
+      .options {
+        display: inline;
+        position: absolute;
+        @if $htmldir == ltr {
+          right: 10px;
+        } @else {
+          left: 10px;
+        }
+
+        .dropdown-btn {
+          &:after {
+            content: '\f0d7';
+            font-family: FontAwesome;
+            margin-left: 5px;
+          }
+        }
+
+        .dropdown-item {
+          padding: 3px 20px 3px 10px;
+
+          &:before {
+            content: '\f00c';
+            font-family: FontAwesome;
+            margin-right: 5px;
+            color: #ffffff;
+          }
+
+          &:hover {
+            background-color: #0366d5;
+            color: #ffffff;
+          }
+
+          &.selected {
+            &:before {
+              color: #999999;
+            }
+          }
+        }
+      }
+    }
+
+    a {
+      color: #313436;
+      text-decoration: none;
+      display: block;
+
+      &:hover {
+        background-color: transparent;
+        color: #313436;
+      }
+    }
+
+    .people-list-item-information {
+      color: #999999;
+      font-size: 12px;
+      font-style: italic;
+      position: relative;
+      text-align: right;
+      top: 16px;
+      @if $htmldir == ltr {
+        float: right;
+      } @else {
+        float: left;
+      }
+    }
+  }
+}
+
+.blank-people-state {
+  margin-top: 30px;
+  text-align: center;
+
+  h3 {
+    font-weight: 400;
+    margin-bottom: 30px;
+  }
+
+  .cta-blank {
+    margin-bottom: 30px;
+  }
+
+  .illustration-blank {
+    p {
+      margin-top: 30px;
+    }
+
+    img {
+      display: block;
+      margin: 0 auto 20px;
+    }
+  }
+}
+
+.avatar-header {
+  top: 40px;
+  margin-top: -30px;
+
+  .image-header::after {
+    box-shadow: inset 1px 1px 3px 0 #d0d0d0;
+    border-radius: 7px;
+    content: '';
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+
+  .hide-child:hover {
+    .child {
+      background: #4a4a4a;
+    }
+
+    a:hover {
+      background: transparent;
+      text-decoration: underline;
+    }
+  }
+}
+
+.people-show {
+  .main-content {
+    background-color: #ffffff;
+    padding-bottom: 20px;
+    padding-top: 40px;
+
+    .section-title {
+      position: relative;
+
+      h3 {
+        border-bottom: 1px solid #d0d0d0;
+        font-size: 18px;
+        font-weight: 400;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        @if $htmldir == ltr {
+          padding-left: 23px;
+        } @else {
+          padding-right: 23px;
+        }
+        padding-top: 10px;
+        position: relative;
+      }
+
+      .icon-section {
+        position: absolute;
+        top: 14px;
+        width: 17px;
+      }
+    }
+
+    .sidebar {
+      .sidebar-cta {
+        a {
+          margin-bottom: 20px;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .profile {
+    .sidebar-box {
+      background-color: #f2f4f8;
+      border: 1px solid #eeeeee;
+      border-radius: 3px;
+      color: #313436;
+      margin-bottom: 25px;
+      padding: 10px;
+      position: relative;
+      font-size: 0.875rem;
+
+      &.edit {
+        background-color: #fffceb;
+        border-color: #ffd700;
+      }
+    }
+
+    .sidebar-box-title {
+      margin-bottom: 4px;
+      position: relative;
+
+      h3 {
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+      }
+
+      a {
+        position: absolute;
+        right: 7px;
+      }
+
+      img {
+        left: -3px;
+        position: relative;
+        width: 20px;
+
+        &.people-information {
+          top: -4px;
+        }
+      }
+    }
+
+    .sidebar-box-paragraph:not(:last-child) {
+      margin-bottom: 9px;
+    }
+
+    .people-list {
+      li {
+        margin-bottom: 4px;
+      }
+    }
+
+    .people-information,
+    .work,
+    .introductions {
+      li {
+        color: #999999;
+        font-size: 12px;
+        margin-bottom: 10px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        i {
+          text-align: center;
+          width: 17px;
+        }
+      }
+    }
+
+    .section {
+      margin-bottom: 35px;
+
+      &.kids,
+      &.food-preferences {
+        .section-heading img {
+          position: relative;
+          top: -3px;
+        }
+      }
+
+      .inline-action {
+        display: inline;
+        margin-left: 10px;
+
+        a {
+          margin-right: 5px;
+        }
+      }
+
+      .section-heading {
+        border-bottom: 1px solid #eeeeee;
+        padding-bottom: 4px;
+        margin-bottom: 10px;
+
+        img {
+          width: 25px;
+        }
+      }
+
+      .section-action {
+        display: inline;
+        float: right;
+      }
+
+      .section-blank {
+        background-color: #fafafa;
+        border: 1px solid #eeeeee;
+        border-radius: 3px;
+        padding: 15px;
+        text-align: center;
+
+        h3 {
+          font-weight: 400;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  .gifts {
+    .gift-recipient {
+      font-size: 15px;
+
+      &:not(:first-child) {
+        margin-top: 25px;
+      }
+    }
+
+    .offered {
+      background-color: #32cd32;
+      border-radius: 10rem;
+      display: inline-block;
+      font-size: 75%;
+      font-weight: 400;
+      line-height: 1;
+      color: #ffffff;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      padding: 2px 0;
+      padding-right: .6em;
+      padding-left: .6em;
+    }
+
+    .gift-list-item {
+      border-top: 1px solid #eeeeee;
+      padding: 5px 0;
+
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+
+    .gift-list-item-url {
+      display: inline;
+      font-size: 12px;
+      margin-left: 10px;
+      padding: 5px 0 0;
+    }
+
+    .gift-list-item-information {
+      display: inline;
+      margin-left: 10px;
+    }
+
+    .gift-list-item-date,
+    .gift-list-item-actions {
+      color: #999999;
+      display: inline;
+      font-size: 12px;
+
+      a {
+        color: #999999;
+        font-size: 11px;
+        margin-right: 5px;
+        text-decoration: underline;
+      }
+
+      li {
+        display: inline;
+      }
+    }
+
+    .gift-list-item-actions {
+      margin-left: 5px;
+    }
+
+    .for {
+      font-style: italic;
+      margin-left: 10px;
+    }
+  }
+
+  .activities,
+  .reminders,
+  .tasks,
+  .debts,
+  .gifts {
+    .date {
+      color: #999999;
+      font-size: 12px;
+      margin-right: 10px;
+      width: 100px;
+    }
+
+    .frequency-type,
+    .value {
+      background-color: #d7e3ec;
+      border: 1px solid #eeeeee;
+      border-radius: 3px;
+      display: inline;
+      font-size: 12px;
+      padding: 0 6px;
+    }
+
+    .list-actions {
+      position: relative;
+      text-align: center;
+      width: 90px;
+
+      a:not(:last-child) {
+        @if $htmldir == ltr {
+          margin-right: 5px;
+        } @else {
+          margin-left: 5px;
+        }
+      }
+
+      a.edit {
+        position: relative;
+        top: 1px;
+      }
+    }
+
+    .empty {
+      font-style: italic;
+    }
+  }
+
+  .reminders {
+    .frequency-type {
+      white-space: nowrap;
+    }
+
+    input[type='date'] {
+      margin-bottom: 20px;
+      width: 170px;
+    }
+
+    .form-check {
+      input[type='number'] {
+        display: inline;
+        width: 50px;
+      }
+    }
+  }
+
+  .debts {
+    .debts-list {
+      .debt-nature {
+        width: 220px;
+      }
+    }
+  }
+}
+
+.create-people {
+  .import {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .people-list {
+    margin-top: 20px;
+
+    .people-list-mobile {
+      border-bottom: 1px solid $border-color;
+
+      li {
+        padding: 6px 0;
+      }
+    }
+
+    .people-list-item {
+      .people-list-item-information {
+        display: none;
+      }
+    }
+  }
+
+  .people-show {
+    .main-content {
+      &.modal {
+        margin-top: 0;
+      }
+
+      &.dashboard {
+        .sidebar-box {
+          margin-bottom: 15px;
+        }
+
+        .sidebar-cta {
+          margin-top: 15px;
+        }
+
+        .people-information-actions {
+          margin-bottom: 20px;
+        }
+      }
+
+      &.activities {
+        .cta-mobile {
+          margin-bottom: 20px;
+
+          a {
+            width: 100%;
+          }
+        }
+
+        .activities-list {
+          .activity-item-date {
+            top: -4px;
+          }
+        }
+      }
+    }
+  }
+
+  .create-people {
+    width: 100%;
+
+    .btn {
+      width: 100%;
+    }
+  }
+
+  .list-add-item {
+    margin-left: 0;
+  }
+
+  .inline-form {
+    .task-add-title {
+      width: 100%;
+    }
+
+    textarea {
+      width: 100%;
+    }
+  }
+
+  .box-links {
+    margin-bottom: 10px;
+    position: relative;
+    right: 0;
+    top: 0;
+
+    li {
+      margin-left: 0;
+    }
+  }
+}

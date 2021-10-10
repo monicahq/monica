@@ -15,6 +15,7 @@ class AddressTest extends FeatureTestCase
     /**
      * Returns an array containing a user object along with
      * a contact for that user.
+     *
      * @return array
      */
     private function fetchUser()
@@ -38,7 +39,7 @@ class AddressTest extends FeatureTestCase
 
         $countries = CountriesHelper::getAll();
 
-        $response->assertSee($countries->first()->country);
+        $response->assertSee($countries->first()['country']);
     }
 
     public function test_users_can_get_addresses()

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Jobs;
+namespace Tests\Commands;
 
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -18,7 +18,8 @@ class SendRemindersTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_schedules_a_reminder_email_job()
+    /** @test */
+    public function it_schedules_a_reminder_email_job()
     {
         Bus::fake();
 
@@ -45,7 +46,8 @@ class SendRemindersTest extends TestCase
         Bus::assertDispatched(NotifyUserAboutReminder::class);
     }
 
-    public function test_it_doesnt_schedule_a_notification_if_it_is_not_the_right_time()
+    /** @test */
+    public function it_doesnt_schedule_a_notification_if_it_is_not_the_right_time()
     {
         Bus::fake();
 

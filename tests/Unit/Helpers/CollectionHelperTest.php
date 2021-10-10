@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\App;
 
 class CollectionHelperTest extends FeatureTestCase
 {
-    public function test_sortByCollator_base()
+    /** @test */
+    public function sortByCollator_base()
     {
         $collection = collect([
             ['name' => 'a'],
@@ -27,7 +28,8 @@ class CollectionHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_sortByCollator_macro()
+    /** @test */
+    public function sortByCollator_macro()
     {
         $collection = collect([
             ['name' => 'a'],
@@ -46,7 +48,8 @@ class CollectionHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_sortByCollator_callback()
+    /** @test */
+    public function sortByCollator_callback()
     {
         $collection = collect([
             ['name' => 'a'],
@@ -67,7 +70,8 @@ class CollectionHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_sortByCollator_default_collation()
+    /** @test */
+    public function sortByCollator_default_collation()
     {
         App::setLocale('en');
 
@@ -90,7 +94,8 @@ class CollectionHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_sortByCollator_french_collation()
+    /** @test */
+    public function sortByCollator_french_collation()
     {
         App::setLocale('fr');
 
@@ -113,11 +118,36 @@ class CollectionHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_getCollator_french_collation()
+    /** @test */
+    public function getCollator_french_collation()
     {
         $collator = CollectionHelper::getCollator('fr');
 
         $this->assertEquals($collator->getAttribute(\Collator::FRENCH_COLLATION), \Collator::ON);
         $this->assertEquals($collator->getLocale(\Locale::VALID_LOCALE), 'fr');
+    }
+
+    /** @test */
+    public function group_by_items_property()
+    {
+        $object1 = (object) ['name' => 'John'];
+        $object2 = (object) ['name' => 'Jack'];
+        $object3 = (object) ['name' => 'John'];
+
+        $collection = collect([
+            $object1,
+            $object2,
+            $object3,
+        ]);
+
+        $collection = CollectionHelper::groupByItemsProperty($collection, 'name');
+
+        $this->assertEquals(
+            [
+                'John' => [$object1, $object3],
+                'Jack' => [$object2],
+            ],
+            $collection->toArray()
+        );
     }
 }

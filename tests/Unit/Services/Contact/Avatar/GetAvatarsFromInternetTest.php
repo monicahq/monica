@@ -14,15 +14,16 @@ class GetAvatarsFromInternetTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_returns_a_contact_object_with_avatars()
+    /** @test */
+    public function it_returns_a_contact_object_with_avatars()
     {
         $contact = factory(Contact::class)->create([]);
         $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ]);
-        $contactField = factory(ContactField::class)->create([
+        factory(ContactField::class)->create([
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_field_type_id' => $contactFieldType->id,
             'data' => 'matt@wordpress.com',
         ]);
@@ -47,7 +48,8 @@ class GetAvatarsFromInternetTest extends TestCase
         );
     }
 
-    public function test_gravatar_is_null_if_contact_doesnt_have_an_email()
+    /** @test */
+    public function gravatar_is_null_if_contact_doesnt_have_an_email()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -62,17 +64,18 @@ class GetAvatarsFromInternetTest extends TestCase
         );
     }
 
-    public function test_avatar_source_is_reset_and_set_to_adorable_if_gravatar_doesnt_exist_anymore()
+    /** @test */
+    public function avatar_source_is_reset_and_set_to_adorable_if_gravatar_doesnt_exist_anymore()
     {
         $contact = factory(Contact::class)->create([
             'avatar_source' => 'gravatar',
         ]);
         $contactFieldType = factory(ContactFieldType::class)->create([
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ]);
         $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_field_type_id' => $contactFieldType->id,
             'data' => 'matt@wordpress.com',
         ]);
@@ -97,7 +100,8 @@ class GetAvatarsFromInternetTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [
             'size' => 200,

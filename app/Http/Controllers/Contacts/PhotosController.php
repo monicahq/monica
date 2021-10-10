@@ -19,8 +19,7 @@ class PhotosController extends Controller
     /**
      * Display the list of photos.
      *
-     * @param Contact $contact
-     *
+     * @param  Contact  $contact
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request, Contact $contact)
@@ -33,19 +32,17 @@ class PhotosController extends Controller
     /**
      * Store the Photo.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return PhotoResource
      */
     public function store(Request $request, Contact $contact): PhotoResource
     {
         $photo = app(UploadPhoto::class)->execute([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
+            'contact_id' => $contact->id,
             'photo' => $request->photo,
         ]);
-
-        $contact->photos()->syncWithoutDetaching([$photo->id]);
 
         return new PhotoResource($photo);
     }
@@ -55,16 +52,15 @@ class PhotosController extends Controller
      * Also, if this photo was the current avatar of the contact, change the
      * avatar to the default one.
      *
-     * @param Request $request
-     * @param Contact $contact
-     * @param Photo $photo
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
+     * @param  Photo  $photo
      * @return null|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Photo $photo)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'photo_id' => $photo->id,
         ];
 
@@ -77,10 +73,12 @@ class PhotosController extends Controller
         if ($contact->avatar_source == 'photo'
             && $contact->avatar_photo_id == $photo->id) {
             app(UpdateAvatar::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'contact_id' => $contact->id,
                 'source' => 'adorable',
             ]);
         }
+
+        return $this->respondObjectDeleted($photo->id);
     }
 }

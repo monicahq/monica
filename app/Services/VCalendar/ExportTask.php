@@ -27,10 +27,10 @@ class ExportTask extends BaseService
     /**
      * Export one VCalendar.
      *
-     * @param array $data
+     * @param  array  $data
      * @return VCalendar
      */
-    public function execute(array $data) : VCalendar
+    public function execute(array $data): VCalendar
     {
         $this->validate($data);
 
@@ -41,12 +41,12 @@ class ExportTask extends BaseService
     }
 
     /**
-     * @param Task $task
+     * @param  Task  $task
      * @return VCalendar
      */
-    private function export(Task $task) : VCalendar
+    private function export(Task $task): VCalendar
     {
-        // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc5545
+        // The standard for most of these fields can be found on https://datatracker.ietf.org/doc/html/rfc5545
         if (! $task->uuid) {
             $task->forceFill([
                 'uuid' => Str::uuid(),
@@ -65,7 +65,7 @@ class ExportTask extends BaseService
     }
 
     /**
-     * @param VCalendar $vcal
+     * @param  VCalendar  $vcal
      */
     private function exportTimezone(VCalendar $vcal)
     {
@@ -75,8 +75,8 @@ class ExportTask extends BaseService
     }
 
     /**
-     * @param Task $task
-     * @param VTodo $vtodo
+     * @param  Task  $task
+     * @param  VTodo  $vtodo
      */
     private function exportVTodo(Task $task, VTodo $vtodo)
     {

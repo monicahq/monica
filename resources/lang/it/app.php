@@ -1,14 +1,21 @@
 <?php
 
+/**
+ * ⚠️ Editing not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'yes' => 'Sì',
     'no' => 'No',
     'update' => 'Aggiorna',
     'save' => 'Salva',
     'add' => 'Aggiungi',
-    'cancel' => 'Cancella',
+    'cancel' => 'Annulla',
+    'confirm' => 'Conferma',
     'delete_confirm' => 'Sei sicuro?',
-    'delete' => 'Rimuovi',
+    'delete' => 'Elimina',
     'edit' => 'Modifica',
     'upload' => 'Carica',
     'download' => 'Scarica',
@@ -21,13 +28,11 @@ return [
     'done' => 'Fatto',
     'back' => 'Indietro',
     'verify' => 'Verifica',
-    'for' => 'per',
     'new' => 'nuovo',
     'unknown' => 'Non so',
     'load_more' => 'Carica altro',
-    'loading' => 'Caricamento in corso...',
+    'loading' => 'Caricamento…',
     'with' => 'con',
-    'days' => 'giorno | giorni',
     'today' => 'oggi',
     'yesterday' => 'ieri',
     'another_day' => 'un altro giorno',
@@ -37,11 +42,13 @@ return [
     'upgrade' => 'Effettua l\'upgrade per sbloccare',
     'percent_uploaded' => '{percent}% caricato',
     'retry' => 'Riprova',
+    'filter' => 'Filtra la lista',
     'go_back' => 'Torna indietro',
+    'file_selected' => 'Un file selezionato…|{count} file selezionati…',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica è uno strumento per gestire le interazioni con i vostri cari, amici e familiari.',
-    'application_og_title' => 'Avere migliori relazioni con i vostri cari. CRM Online gratuito per gli amici e la famiglia.',
+    'application_og_title' => 'Stabilisci relazioni migliori con i tuoi cari. CRM gratuito online per amici e famiglia.',
 
     'markdown_description' => 'Vuoi formattare il tuo testo? Supportiamo Markdown per grassetto, corsivo, liste, e altro ancora.',
     'markdown_link' => 'Leggi documentazione',
@@ -58,13 +65,13 @@ return [
     'main_nav_tasks' => 'Compiti',
 
     'footer_remarks' => 'Commenti?',
-    'footer_send_email' => 'Inviami una email',
+    'footer_send_email' => 'Inviaci un\'email',
     'footer_privacy' => 'Privacy',
     'footer_release' => 'Note di rilascio',
     'footer_newsletter' => 'Newsletter',
     'footer_source_code' => 'Monica su GitHub',
     'footer_version' => 'Versione: :version',
-    'footer_new_version' => 'È disponibile una nuova versione',
+    'footer_new_version' => 'È disponibile una nuova versione di Monica',
 
     'footer_modal_version_whats_new' => 'Novità',
     'footer_modal_version_release_away' => 'La tua versione è 1 versione indietro rispetto all\'ultima disponibile. Dovresti aggiornare Monica.|La tua versione è :number versioni indietro rispetto all\'ultima disponibile. Dovresti aggiornare Monica.',
@@ -101,6 +108,7 @@ return [
 
     'error_title' => 'Ops! Qualcosa è andato storto.',
     'error_unauthorized' => 'Non hai il permesso di aggiornare questa risorsa.',
+    'error_user_account' => 'Questo utente non appartiene all\'account corrente.',
     'error_save' => 'Abbiamo avuto un errore cercando di salvare i dati.',
     'error_try_again' => 'Qualcosa è andato storto. Riprova.',
     'error_id' => 'ID errore: :id',
@@ -108,6 +116,7 @@ return [
     'error_maintenance' => 'Manutenzione in corso. Torneremo presto.',
     'error_help' => 'Torneremo presto.',
     'error_twitter' => 'Seguici sul <a href="https://twitter.com/:twitter">nostro account Twitter</a> per venire notificato quando saremo di nuovo online.',
+    'error_no_term' => 'Non ci sono ancora regole per questa istanza.',
 
     'default_save_success' => 'I dati sono stati salvati.',
 
@@ -176,13 +185,13 @@ return [
 
     'relationship_type_stepparent' => 'patrigno',
     'relationship_type_stepparent_female' => 'madrigna',
-    'relationship_type_stepparent_with_name' => ':nome del patrigno',
-    'relationship_type_stepparent_female_with_name' => ':nome della matrigna',
+    'relationship_type_stepparent_with_name' => ':name del patrigno',
+    'relationship_type_stepparent_female_with_name' => ':name della matrigna',
 
     'relationship_type_stepchild' => 'figliastro',
     'relationship_type_stepchild_female' => 'figliastra',
-    'relationship_type_stepchild_with_name' => ':nome del figliastro',
-    'relationship_type_stepchild_female_with_name' => ':nome della figliastra',
+    'relationship_type_stepchild_with_name' => ':name del figliastro',
+    'relationship_type_stepchild_female_with_name' => ':name della figliastra',
 
     'relationship_type_sibling' => 'fratello',
     'relationship_type_sibling_female' => 'sorella',
@@ -442,8 +451,8 @@ return [
     'weather_cloudy' => 'Nuvoloso',
     'weather_partly-cloudy-day' => 'Giorno parzialmente nuvoloso',
     'weather_partly-cloudy-night' => 'Notte parzialmente nuvolosa',
-    'weather_current_temperature_celsius' => ':temperatura (°C)',
-    'weather_current_temperature_fahrenheit' => ':temperatura °F',
+    'weather_current_temperature_celsius' => ':temperature °C',
+    'weather_current_temperature_fahrenheit' => ':temperature °F',
     'weather_current_title' => 'Meteo attuale',
 
     // dav
@@ -453,4 +462,10 @@ return [
     'dav_birthdays_description' => 'compleanno del contatto di :name',
     'dav_tasks' => 'Compiti',
     'dav_tasks_description' => 'attività di :name',
+
+    // contact list
+    'contact_list_avatar' => 'Avatar',
+    'contact_list_name' => 'Contatto',
+    'contact_list_description' => 'Descrizione',
+
 ];

@@ -25,20 +25,22 @@ class UpdateTask extends BaseService
     }
 
     /**
-     * Create a task.
+     * Update a task.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Task
      */
-    public function execute(array $data) : Task
+    public function execute(array $data): Task
     {
         $this->validate($data);
 
         if (! empty($data['contact_id'])) {
+            /** @var Task */
             $task = Task::where('account_id', $data['account_id'])
                 ->where('contact_id', $data['contact_id'])
                 ->findOrFail($data['task_id']);
         } else {
+            /** @var Task */
             $task = Task::where('account_id', $data['account_id'])
                 ->findOrFail($data['task_id']);
         }

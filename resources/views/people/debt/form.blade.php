@@ -1,6 +1,6 @@
 <form method="POST" action="{{ $action }}">
-    {{ method_field($method) }}
-    {{ csrf_field() }}
+    @method($method)
+    @csrf
 
     @include('partials.errors')
 

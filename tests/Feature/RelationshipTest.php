@@ -25,7 +25,7 @@ class RelationshipTest extends FeatureTestCase
 
         $response->assertStatus(200);
 
-        $response->assertSee('This person is...');
+        $response->assertSee('This person is…');
     }
 
     public function test_user_can_add_a_relationship()
@@ -210,7 +210,7 @@ class RelationshipTest extends FeatureTestCase
 
         $response->assertStatus(200);
 
-        $response->assertSee('Homer Simpson is...');
+        $response->assertSee('Homer Simpson is…');
     }
 
     public function test_user_can_update_a_relationship()
@@ -273,7 +273,7 @@ class RelationshipTest extends FeatureTestCase
             'relationship_type_id' => $relationshipType->id,
             'first_name' => 'Arnold',
             'last_name' => 'Schwarzenegger',
-            'gender_id' => $partner->gender->id,
+            'gender_id' => $partner->gender_id,
             'birthdate' => 'exact',
             'birthdayDate' => '1947-07-30',
         ];

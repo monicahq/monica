@@ -13,24 +13,30 @@ abstract class AbstractCalDAVBackend implements ICalDAVBackend, IDAVBackend
 {
     use SyncDAVBackend;
 
+    /**
+     * Get description array.
+     *
+     * @return array
+     */
     public function getDescription()
     {
-        $token = $this->getCurrentSyncToken();
+        $token = DAVSyncPlugin::SYNCTOKEN_PREFIX.$this->refreshSyncToken(null)->id;
 
-        $des = [
+        return [
             'id' => $this->backendUri(),
             'uri' => $this->backendUri(),
-            'principaluri' => PrincipalBackend::getPrincipalUser(),
+            'principaluri' => PrincipalBackend::getPrincipalUser($this->user),
+            '{DAV:}sync-token'  => $token,
+            '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token,
+            '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => $token,
         ];
-        if ($token) {
-            $token = DAVSyncPlugin::SYNCTOKEN_PREFIX.$token->id;
-            $des += [
-                '{DAV:}sync-token'  => $token,
-                '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token,
-                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => $token,
-            ];
-        }
-
-        return $des;
     }
+
+    /**
+     * Get the new exported version of the object.
+     *
+     * @param  mixed  $obj
+     * @return string
+     */
+    abstract protected function refreshObject($obj): string;
 }

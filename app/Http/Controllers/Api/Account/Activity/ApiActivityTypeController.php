@@ -36,8 +36,7 @@ class ApiActivityTypeController extends ApiController
     /**
      * Get the detail of a given activity type.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return ActivityTypeResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $activityTypeId)
@@ -56,19 +55,18 @@ class ApiActivityTypeController extends ApiController
     /**
      * Store the activity type.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return ActivityTypeResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
             $activityType = app(CreateActivityType::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -84,21 +82,20 @@ class ApiActivityTypeController extends ApiController
     /**
      * Update the activity type.
      *
-     * @param Request $request
-     * @param int $activityTypeId
-     *
+     * @param  Request  $request
+     * @param  int  $activityTypeId
      * @return ActivityTypeResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $activityTypeId)
     {
         try {
             $activityType = app(UpdateActivityType::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'activity_type_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'activity_type_id' => $activityTypeId,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                        'activity_type_id' => $activityTypeId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -114,16 +111,15 @@ class ApiActivityTypeController extends ApiController
     /**
      * Delete an activity type.
      *
-     * @param Request $request
-     * @param int $activityTypeId
-     *
+     * @param  Request  $request
+     * @param  int  $activityTypeId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $activityTypeId)
+    public function destroy(Request $request, int $activityTypeId)
     {
         try {
             app(DestroyActivityType::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'activity_type_id' => $activityTypeId,
             ]);
         } catch (ModelNotFoundException $e) {
@@ -134,6 +130,6 @@ class ApiActivityTypeController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $activityTypeId);
+        return $this->respondObjectDeleted($activityTypeId);
     }
 }

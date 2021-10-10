@@ -22,7 +22,7 @@ class LifeEventsController extends Controller
     /**
      * Get the list of life event categories.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
     public function categories(Request $request)
@@ -34,8 +34,9 @@ class LifeEventsController extends Controller
 
     /**
      * Get the list of life event types for a given life event category.
-     * @param  Request $request
-     * @param  int     $lifeEventCategoryId
+     *
+     * @param  Request  $request
+     * @param  int  $lifeEventCategoryId
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
     public function types(Request $request, int $lifeEventCategoryId)
@@ -49,9 +50,8 @@ class LifeEventsController extends Controller
     /**
      * Display the list of life events.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return Collection
      */
     public function index(Request $request, Contact $contact)
@@ -64,6 +64,7 @@ class LifeEventsController extends Controller
                 'id' => $lifeEvent->id,
                 'life_event_type' => $lifeEvent->lifeEventType->name,
                 'default_life_event_type_key' => $lifeEvent->lifeEventType->default_life_event_type_key,
+                'life_event_type_name' => $lifeEvent->lifeEventType->name,
                 'name' => $lifeEvent->name,
                 'note' => $lifeEvent->note,
                 'happened_at' => DateHelper::getShortDate($lifeEvent->happened_at),
@@ -77,23 +78,22 @@ class LifeEventsController extends Controller
     /**
      * Store the life event.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return LifeEvent|\Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Contact $contact)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
-            'life_event_type_id' => $request->get('life_event_type_id'),
-            'happened_at' => $request->get('happened_at'),
-            'name' => $request->get('name'),
-            'note' => $request->get('note'),
-            'has_reminder' => $request->get('has_reminder'),
-            'happened_at_month_unknown' => $request->get('happened_at_month_unknown'),
-            'happened_at_day_unknown' => $request->get('happened_at_day_unknown'),
+            'life_event_type_id' => $request->input('life_event_type_id'),
+            'happened_at' => $request->input('happened_at'),
+            'name' => $request->input('name'),
+            'note' => $request->input('note'),
+            'has_reminder' => $request->input('has_reminder'),
+            'happened_at_month_unknown' => $request->input('happened_at_month_unknown'),
+            'happened_at_day_unknown' => $request->input('happened_at_day_unknown'),
         ];
 
         // create the conversation
@@ -111,15 +111,14 @@ class LifeEventsController extends Controller
     /**
      * Destroy the life event.
      *
-     * @param Request   $request
-     * @param LifeEvent $lifeEvent
-     *
+     * @param  Request  $request
+     * @param  LifeEvent  $lifeEvent
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request, LifeEvent $lifeEvent)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'life_event_id' => $lifeEvent->id,
         ];
 

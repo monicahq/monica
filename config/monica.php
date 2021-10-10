@@ -12,9 +12,9 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '2.15.2',
+    'app_version' => trim(trim(is_file(__DIR__.'/.version') ? file_get_contents(__DIR__.'/.version') : (is_dir(__DIR__.'/../.git') ? exec('git --git-dir '.base_path('.git').' describe --abbrev=0 --tags') : ''), 'v')),
 
-   /*
+    /*
     |--------------------------------------------------------------------------
     | Disable User registration
     |--------------------------------------------------------------------------
@@ -24,7 +24,7 @@ return [
     */
     'disable_signup' => env('APP_DISABLE_SIGNUP', false),
 
-   /*
+    /*
     |--------------------------------------------------------------------------
     | Activate double optin on signup
     |--------------------------------------------------------------------------
@@ -113,21 +113,6 @@ return [
     |
     */
     'policy_compliant' => env('POLICY_COMPLIANT', true),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Specific to the official Monica mobile application
-    |--------------------------------------------------------------------------
-    |
-    | We need to pass a specific client ID and client secret that only the
-    | official mobile application can access - in order to protect the privacy
-    | of the instance (which has a lot of data).
-    | You can check what we do with this data on the mobile application on the
-    | official repository: https://github.com/monicahq/chandler.
-    |
-    */
-    'mobile_client_id' => env('MOBILE_CLIENT_ID', null),
-    'mobile_client_secret' => env('MOBILE_CLIENT_SECRET', null),
 
     /*
     |--------------------------------------------------------------------------
@@ -272,10 +257,33 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Configure default rate limit for route services per minute
+    |--------------------------------------------------------------------------
+    |
+    | Configure rate limit for route services per minute
+    */
+    'rate_limit_api' => env('RATE_LIMIT_PER_MINUTE_API', 60),
+    'rate_limit_oauth' => env('RATE_LIMIT_PER_MINUTE_OAUTH', 5),
+
+    /*
+    |--------------------------------------------------------------------------
     | Default avatar size
     |--------------------------------------------------------------------------
     |
     | The default avatar size.
     */
     'avatar_size' => 200,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default adorable api url
+    |--------------------------------------------------------------------------
+    |
+    | The default adorable api url.
+    |
+    | You can host your own version, see https://github.com/itsthatguy/avatars-api-middleware
+    | or https://hub.docker.com/r/aldrio/adorable-avatars.
+    */
+    'adorable_api' => env('ADORABLE_API', 'https://api.hello-avatar.com/adorables/'),
+
 ];

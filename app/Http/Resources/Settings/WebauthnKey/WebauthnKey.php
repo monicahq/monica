@@ -3,14 +3,17 @@
 namespace App\Http\Resources\Settings\WebauthnKey;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class WebauthnKey extends Resource
+/**
+ * @extends JsonResource<\LaravelWebauthn\Models\WebauthnKey>
+ */
+class WebauthnKey extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)

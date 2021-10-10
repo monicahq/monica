@@ -23,7 +23,7 @@
 
   <div class="col-12 reminders-list">
 
-    @if (! auth()->user()->account->hasLimitations())
+    @if (! $accountHasLimitations)
     <p>{{ trans('people.reminders_description') }}</p>
     @else
     <p>{{ trans('people.reminders_free_plan_warning') }}</p>
@@ -57,20 +57,20 @@
 
         <div class="table-cell list-actions">
           {{-- Only display this if the reminder can be deleted - ie if it's not a reminder added automatically for birthdates --}}
-          @if ($reminder->delible)
-              <a href="{{ route('people.reminders.edit', [$contact, $reminder]) }}" class="edit">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-              </a>
-            <a href="#" onclick="if (confirm('{{ trans('people.reminders_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
-              <i class="fa fa-trash-o" aria-hidden="true"></i>
+          @if ($reminder->delible || ! $reminder->isBirthdayReminder())
+            <a href="{{ route('people.reminders.edit', [$contact, $reminder]) }}" class="edit">
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
             </a>
           @endif
+          <form method="POST" action="{{ route('people.reminders.destroy', [$contact, $reminder]) }}" class="di">
+            @method('DELETE')
+            @csrf
+            <confirm message="{{ trans('people.reminders_delete_confirmation') }}">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </confirm>
+          </form>
         </div>
 
-        <form method="POST" action="{{ route('people.reminders.destroy', [$contact, $reminder]) }}" class="entry-delete-form hidden">
-          {{ method_field('DELETE') }}
-          {{ csrf_field() }}
-        </form>
       </li>
       @endforeach
     </ul>

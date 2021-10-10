@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\VCard;
+namespace Tests\Unit\Services\Instance;
 
 use Tests\TestCase;
 use App\Models\User\User;
@@ -15,7 +15,8 @@ class TokenCleanTest extends TestCase
     use DatabaseTransactions,
         PHPUnitAssertions;
 
-    public function test_tokenclean_left_one_token()
+    /** @test */
+    public function tokenclean_left_one_token()
     {
         $account = factory(Account::class)->create();
         $user = factory(User::class)->create([
@@ -37,7 +38,8 @@ class TokenCleanTest extends TestCase
         ]);
     }
 
-    public function test_tokenclean_left_all_token()
+    /** @test */
+    public function tokenclean_left_all_token()
     {
         $account = factory(Account::class)->create();
         $user = factory(User::class)->create([

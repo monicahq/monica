@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Contacts;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use App\Services\Contact\Document\UploadDocument;
@@ -16,10 +17,19 @@ class DocumentsController extends Controller
     use JsonRespondController;
 
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('limitations')->only('store');
+    }
+
+    /**
      * Display the list of documents.
      *
-     * @param Contact $contact
-     *
+     * @param  Contact  $contact
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request, Contact $contact)
@@ -32,15 +42,16 @@ class DocumentsController extends Controller
     /**
      * Store the document.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return Document
      */
     public function store(Request $request, Contact $contact): Document
     {
+        $contact->throwInactive();
+
         return app(UploadDocument::class)->execute([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'document' => $request->document,
         ]);
@@ -49,23 +60,26 @@ class DocumentsController extends Controller
     /**
      * Delete the document.
      *
-     * @param Request $request
-     * @param Contact $contact
-     * @param Document $document
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
+     * @param  Document  $document
      * @return null|\Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, Contact $contact, Document $document)
+    public function destroy(Request $request, Contact $contact, Document $document): ?JsonResponse
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'document_id' => $document->id,
         ];
 
         try {
-            app(DestroyDocument::class)->execute($data);
+            if (app(DestroyDocument::class)->execute($data)) {
+                return $this->respondObjectDeleted($document->id);
+            }
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }
+
+        return null;
     }
 }

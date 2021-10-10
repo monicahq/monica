@@ -35,7 +35,7 @@ class LocaleHelper
     /**
      * Get the current lang from locale.
      *
-     * @return string  lang, lowercase form.
+     * @return string lang, lowercase form.
      */
     public static function getLang($locale = null)
     {
@@ -52,7 +52,7 @@ class LocaleHelper
     /**
      * Get the current country from locale.
      *
-     * @return string  country, uppercase form.
+     * @return string country, uppercase form.
      */
     public static function getCountry($locale = null)
     {
@@ -70,9 +70,9 @@ class LocaleHelper
      * Extract the current country from locale, i.e. 'en-US' will return 'US'.
      * If no country is present in the locale, it will return null.
      *
-     * @return string|null  country, uppercase form.
+     * @return string|null country, uppercase form.
      */
-    public static function extractCountry($locale = null)
+    public static function extractCountry($locale = null): ?string
     {
         if (is_null($locale)) {
             $locale = App::getLocale();
@@ -82,6 +82,8 @@ class LocaleHelper
 
             return mb_strtoupper($locale);
         }
+
+        return null;
     }
 
     /**
@@ -91,20 +93,31 @@ class LocaleHelper
      */
     public static function getLocaleList()
     {
-        $locales = collect([]);
-        foreach (config('lang-detector.languages') as $lang) {
-            $name = trans('settings.locale_'.$lang);
-            if ($name == 'settings.locale_'.$lang) {
-                // The name of the new language is not already set, even in english
-                $name = $lang;
-            }
-            $locales->push([
+        return collect(config('lang-detector.languages'))->map(function ($lang) {
+            return [
                 'lang' => $lang,
-                'name' => $name,
-            ]);
+                'name' => self::getLocaleName($lang),
+                'name-orig' => self::getLocaleName($lang, $lang),
+            ];
+        });
+    }
+
+    /**
+     * Get the name of one language.
+     *
+     * @param  string  $lang
+     * @param  string  $locale
+     * @return string
+     */
+    private static function getLocaleName($lang, $locale = null): string
+    {
+        $name = trans('settings.locale_'.$lang, [], $locale);
+        if ($name == 'settings.locale_'.$lang) {
+            // The name of the new language is not already set, even in english
+            $name = $lang;
         }
 
-        return $locales->sortByCollator('name');
+        return $name;
     }
 
     /**
@@ -137,13 +150,15 @@ class LocaleHelper
 
     /**
      * Association ISO-639-1 => ISO-639-2.
+     *
+     * @var array<string,string>
      */
     private static $locales = [];
 
     /**
      * Get ISO-639-2/t (three-letter codes) from ISO-639-1 (two-letters code).
      *
-     * @param  string $locale
+     * @param  string  $locale
      * @return string
      */
     public static function getLocaleAlpha($locale)
@@ -168,12 +183,12 @@ class LocaleHelper
     /**
      * Format phone number by country.
      *
-     * @param string $tel
-     * @param string|null $iso
-     * @param int $format
+     * @param  string  $tel
+     * @param  string|null  $iso
+     * @param  int  $format
      * @return string
      */
-    public static function formatTelephoneNumberByISO(string $tel, $iso, int $format = PhoneNumberFormat::INTERNATIONAL) : string
+    public static function formatTelephoneNumberByISO(string $tel, $iso, int $format = PhoneNumberFormat::INTERNATIONAL): string
     {
         if (empty($iso)) {
             return $tel;

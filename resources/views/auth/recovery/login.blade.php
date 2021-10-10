@@ -22,7 +22,7 @@
             @endif
 
             <form action="{{ route('recovery.login') }}" method="post">
-              {{ csrf_field() }}
+              @csrf
 
               <div class="form-group">
                 <label for="recovery">{{ trans('auth.recovery') }}</label>

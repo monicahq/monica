@@ -58,15 +58,16 @@ class ApiMessageControllerTest extends ApiTestCase
     private function addMessage(Conversation $conversation): Message
     {
         $message = factory(Message::class)->create([
-            'account_id' => $conversation->account->id,
-            'contact_id' => $conversation->contact->id,
+            'account_id' => $conversation->account_id,
+            'contact_id' => $conversation->contact_id,
             'conversation_id' => $conversation->id,
         ]);
 
         return $message;
     }
 
-    public function test_it_adds_a_message_to_a_conversation()
+    /** @test */
+    public function it_adds_a_message_to_a_conversation()
     {
         $user = $this->signin();
 
@@ -85,7 +86,8 @@ class ApiMessageControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_updates_a_message()
+    /** @test */
+    public function it_updates_a_message()
     {
         $user = $this->signin();
 
@@ -105,7 +107,8 @@ class ApiMessageControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_destroys_a_message()
+    /** @test */
+    public function it_destroys_a_message()
     {
         $user = $this->signin();
 

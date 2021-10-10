@@ -15,8 +15,9 @@ class ApiContactTagController extends ApiController
 {
     /**
      * Associate one or more tags to the contact.
-     * @param Request $request
-     * @param int  $contactId
+     *
+     * @param  Request  $request
+     * @param  int  $contactId
      */
     public function setTags(Request $request, $contactId)
     {
@@ -25,14 +26,14 @@ class ApiContactTagController extends ApiController
             return $contact;
         }
 
-        $tags = collect($request->get('tags'))
+        $tags = collect($request->input('tags'))
             ->filter(function ($tag) {
                 return ! empty($tag);
             });
 
         foreach ($tags as $tag) {
             app(AssociateTag::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'contact_id' => $contact->id,
                 'name' => $tag,
             ]);
@@ -44,8 +45,8 @@ class ApiContactTagController extends ApiController
     /**
      * Remove all the tags associated with the contact.
      *
-     * @param Request $request
-     * @param int  $contactId
+     * @param  Request  $request
+     * @param  int  $contactId
      */
     public function unsetTags(Request $request, $contactId)
     {
@@ -61,7 +62,7 @@ class ApiContactTagController extends ApiController
 
         foreach ($contactTags as $tag) {
             app(DetachTag::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'contact_id' => $contact->id,
                 'tag_id' => $tag->id,
             ]);
@@ -73,8 +74,8 @@ class ApiContactTagController extends ApiController
     /**
      * Remove one or more specific tags associated with the contact.
      *
-     * @param Request $request
-     * @param int  $contactId
+     * @param  Request  $request
+     * @param  int  $contactId
      */
     public function unsetTag(Request $request, $contactId)
     {
@@ -83,14 +84,14 @@ class ApiContactTagController extends ApiController
             return $contact;
         }
 
-        $tags = collect($request->get('tags'))
+        $tags = collect($request->input('tags'))
             ->filter(function ($tag) {
                 return ! empty($tag);
             });
 
         foreach ($tags as $tag) {
             app(DetachTag::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'contact_id' => $contact->id,
                 'tag_id' => $tag,
             ]);
@@ -102,8 +103,8 @@ class ApiContactTagController extends ApiController
     /**
      * Validate the request for update tag.
      *
-     * @param  Request $request
-     * @param  int $contactId
+     * @param  Request  $request
+     * @param  int  $contactId
      * @return mixed
      */
     private function validateTag(Request $request, $contactId)

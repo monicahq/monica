@@ -8,6 +8,7 @@ use Sabre\CalDAV\CalendarRoot;
 use Sabre\CalDAV\ICSExportPlugin;
 use Sabre\CardDAV\VCFExportPlugin;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Sabre\DAVACL\Plugin as AclPlugin;
 use Sabre\DAVACL\PrincipalCollection;
 use Illuminate\Support\ServiceProvider;
@@ -38,7 +39,11 @@ class DAVServiceProvider extends ServiceProvider
         LaravelSabre::plugins(function () {
             return $this->plugins();
         });
-        LaravelSabre::auth(function (\Illuminate\Http\Request $request) : bool {
+        LaravelSabre::auth(function (\Illuminate\Http\Request $request): bool {
+            if (! $request->user()) {
+                return false;
+            }
+
             if ($request->user()->admin ||
                 config('laravelsabre.users') == null) {
                 return true;
@@ -56,12 +61,14 @@ class DAVServiceProvider extends ServiceProvider
     /**
      * List of nodes for DAV Collection.
      */
-    private function nodes() : array
+    private function nodes(): array
     {
+        $user = Auth::user();
+
         // Initiate custom backends for link between Sabre and Monica
-        $principalBackend = new PrincipalBackend();   // User rights
-        $carddavBackend = new CardDAVBackend();       // Contacts
-        $caldavBackend = new CalDAVBackend();         // Calendar
+        $principalBackend = app(PrincipalBackend::class)->init($user);   // User rights
+        $carddavBackend = app(CardDAVBackend::class)->init($user);       // Contacts
+        $caldavBackend = app(CalDAVBackend::class)->init($user);         // Calendar
 
         return [
             new PrincipalCollection($principalBackend),

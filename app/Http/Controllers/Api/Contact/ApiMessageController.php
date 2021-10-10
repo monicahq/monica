@@ -19,8 +19,7 @@ class ApiMessageController extends ApiController
     /**
      * Store the message.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return ConversationResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request, int $conversationId)
@@ -33,12 +32,12 @@ class ApiMessageController extends ApiController
 
         try {
             app(AddMessageToConversation::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'conversation_id', 'contact_id'])
                 +
                 [
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                     'conversation_id' => $conversation->id,
-                    'contact_id' => $conversation->contact->id,
+                    'contact_id' => $conversation->contact_id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -55,10 +54,9 @@ class ApiMessageController extends ApiController
     /**
      * Update the message.
      *
-     * @param Request $request
-     * @param int $conversationId
-     * @param int $messageId
-     *
+     * @param  Request  $request
+     * @param  int  $conversationId
+     * @param  int  $messageId
      * @return ConversationResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, int $conversationId, int $messageId)
@@ -72,13 +70,13 @@ class ApiMessageController extends ApiController
 
         try {
             app(UpdateMessage::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'conversation_id', 'message_id', 'contact_id'])
                 +
                 [
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => auth()->user()->account_id,
                     'conversation_id' => $conversationId,
                     'message_id' => $message->id,
-                    'contact_id' => $conversation->contact->id,
+                    'contact_id' => $conversation->contact_id,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -95,10 +93,9 @@ class ApiMessageController extends ApiController
     /**
      * Destroy the message.
      *
-     * @param Request $request
-     * @param int $conversationId
-     * @param int $messageId
-     *
+     * @param  Request  $request
+     * @param  int  $conversationId
+     * @param  int  $messageId
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, int $conversationId, int $messageId)
@@ -112,7 +109,7 @@ class ApiMessageController extends ApiController
 
         try {
             app(DestroyMessage::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'conversation_id' => $conversationId,
                 'message_id' => $messageId,
             ]);
@@ -124,6 +121,6 @@ class ApiMessageController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $messageId);
+        return $this->respondObjectDeleted($messageId);
     }
 }

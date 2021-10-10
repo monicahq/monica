@@ -2,21 +2,31 @@
 
 namespace App\Models\Contact;
 
+use App\Models\Account\Photo;
 use App\Models\Account\Account;
+use App\Traits\AmountFormatter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property Account $account
  * @property Contact $contact
- * @property Contact $recipient
+ * @property Contact|null $recipient
+ * @property string $name
+ * @property string $comment
+ * @property string $url
+ * @property Contact $is_for
+ *
  * @method static Builder offered()
  * @method static Builder isIdea()
  */
 class Gift extends Model
 {
+    use AmountFormatter;
+
     /**
      * The attributes that aren't mass assignable.
      *
@@ -30,8 +40,7 @@ class Gift extends Model
      * @var array
      */
     protected $dates = [
-        'offered_at',
-        'received_at',
+        'date',
     ];
 
     /**
@@ -40,9 +49,6 @@ class Gift extends Model
      * @var array
      */
     protected $casts = [
-        'is_an_idea' => 'boolean',
-        'has_been_offered' => 'boolean',
-        'has_been_received' => 'boolean',
     ];
 
     /**
@@ -76,25 +82,35 @@ class Gift extends Model
     }
 
     /**
+     * Get the photos record associated with the gift.
+     *
+     * @return BelongsToMany
+     */
+    public function photos()
+    {
+        return $this->belongsToMany(Photo::class)->withTimestamps();
+    }
+
+    /**
      * Limit results to already offered gifts.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeOffered(Builder $query)
     {
-        return $query->where('has_been_offered', 1);
+        return $query->where('status', 'offered');
     }
 
     /**
      * Limit results to gifts at the idea stage.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeIsIdea(Builder $query)
     {
-        return $query->where('is_an_idea', 1);
+        return $query->where('status', 'idea');
     }
 
     /**
@@ -111,8 +127,7 @@ class Gift extends Model
     /**
      * Set the recipient for the gift.
      *
-     * @param int $value
-     *
+     * @param  int  $value
      * @return void
      */
     public function setRecipientAttribute($value): void
@@ -123,36 +138,17 @@ class Gift extends Model
     /**
      * Get the name of the recipient for this gift.
      *
-     * @return string
+     * @return string|null
      */
-    public function getRecipientNameAttribute()
+    public function getRecipientNameAttribute(): ?string
     {
         if ($this->hasParticularRecipient()) {
             $recipient = $this->recipient;
             if (! is_null($recipient)) {
-                return $this->recipient->first_name;
+                return $recipient->first_name;
             }
         }
-    }
 
-    /**
-     * Toggle a gift between the idea and offered state.
-     * @return void
-     */
-    public function toggle()
-    {
-        $this->has_been_received = false;
-
-        if ($this->is_an_idea == 1) {
-            $this->is_an_idea = false;
-            $this->has_been_offered = true;
-            $this->save();
-
-            return;
-        }
-
-        $this->is_an_idea = true;
-        $this->has_been_offered = false;
-        $this->save();
+        return null;
     }
 }

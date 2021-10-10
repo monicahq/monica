@@ -2,11 +2,9 @@
 
 namespace Tests\Unit\Models;
 
-use Carbon\Carbon;
 use App\Models\User\User;
 use Tests\FeatureTestCase;
 use App\Models\User\Module;
-use App\Models\Contact\Call;
 use App\Models\Account\Photo;
 use App\Models\Account\Place;
 use App\Models\Contact\Gender;
@@ -16,11 +14,9 @@ use App\Models\Account\Weather;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
-use App\Models\Account\Activity;
 use App\Models\Contact\Document;
-use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
-use App\Models\Account\Invitation;
+use App\Models\Instance\AuditLog;
 use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
 use App\Models\Account\ActivityType;
@@ -37,7 +33,8 @@ class AccountTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_has_many_genders()
+    /** @test */
+    public function it_has_many_genders()
     {
         $account = factory(Account::class)->create();
         $gender = factory(Gender::class)->create([
@@ -52,7 +49,8 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->genders()->exists());
     }
 
-    public function test_it_has_many_relationship_types()
+    /** @test */
+    public function it_has_many_relationship_types()
     {
         $account = factory(Account::class)->create();
         $relationshipType = factory(RelationshipType::class)->create([
@@ -65,7 +63,8 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->relationshipTypes()->exists());
     }
 
-    public function test_it_has_many_relationship_type_groups()
+    /** @test */
+    public function it_has_many_relationship_type_groups()
     {
         $contact = factory(Contact::class)->create();
         $account = $contact->account;
@@ -79,7 +78,8 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->relationshipTypeGroups()->exists());
     }
 
-    public function test_it_has_many_modules()
+    /** @test */
+    public function it_has_many_modules()
     {
         $contact = factory(Contact::class)->create();
         $account = $contact->account;
@@ -93,7 +93,8 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->modules()->exists());
     }
 
-    public function test_it_has_many_activity_types()
+    /** @test */
+    public function it_has_many_activity_types()
     {
         $account = factory(Account::class)->create();
         $activityType = factory(ActivityType::class)->create([
@@ -103,7 +104,8 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->activityTypes()->exists());
     }
 
-    public function test_it_has_many_activity_type_categories()
+    /** @test */
+    public function it_has_many_activity_type_categories()
     {
         $account = factory(Account::class)->create();
         $ActivityTypeCategory = factory(ActivityTypeCategory::class)->create([
@@ -113,7 +115,8 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->activityTypeCategories()->exists());
     }
 
-    public function test_it_has_many_conversations()
+    /** @test */
+    public function it_has_many_conversations()
     {
         $account = factory(Account::class)->create([]);
         $conversation = factory(Conversation::class, 2)->create([
@@ -123,7 +126,8 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->conversations()->exists());
     }
 
-    public function test_it_has_many_messages()
+    /** @test */
+    public function it_has_many_messages()
     {
         $account = factory(Account::class)->create([]);
         $conversation = factory(Conversation::class)->create([
@@ -137,7 +141,8 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->messages()->exists());
     }
 
-    public function test_it_has_many_life_event_categories()
+    /** @test */
+    public function it_has_many_life_event_categories()
     {
         $account = factory(Account::class)->create([]);
         $lifeEventCategory = factory(LifeEventCategory::class)->create([
@@ -147,13 +152,15 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->lifeEventCategories()->exists());
     }
 
-    public function test_it_has_many_reminder_outboxes()
+    /** @test */
+    public function it_has_many_reminder_outboxes()
     {
         $reminderOutbox = factory(ReminderOutbox::class)->create([]);
         $this->assertTrue($reminderOutbox->account->reminderOutboxes()->exists());
     }
 
-    public function test_it_has_many_life_event_types()
+    /** @test */
+    public function it_has_many_life_event_types()
     {
         $account = factory(Account::class)->create([]);
         $lifeEventType = factory(LifeEventType::class)->create([
@@ -163,7 +170,8 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->lifeEventTypes()->exists());
     }
 
-    public function test_it_has_many_life_events()
+    /** @test */
+    public function it_has_many_life_events()
     {
         $account = factory(Account::class)->create([]);
         $lifeEvent = factory(LifeEvent::class)->create([
@@ -173,7 +181,8 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->lifeEvents()->exists());
     }
 
-    public function test_it_has_many_documents()
+    /** @test */
+    public function it_has_many_documents()
     {
         $account = factory(Account::class)->create([]);
         $document = factory(Document::class)->create([
@@ -183,7 +192,8 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->documents()->exists());
     }
 
-    public function test_it_has_many_photos()
+    /** @test */
+    public function it_has_many_photos()
     {
         $account = factory(Account::class)->create([]);
         $photo = factory(Photo::class)->create([
@@ -192,13 +202,15 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->photos()->exists());
     }
 
-    public function test_it_has_many_weathers()
+    /** @test */
+    public function it_has_many_weathers()
     {
         $weather = factory(Weather::class)->create([]);
         $this->assertTrue($weather->account->weathers()->exists());
     }
 
-    public function test_it_has_many_places()
+    /** @test */
+    public function it_has_many_places()
     {
         $account = factory(Account::class)->create([]);
         $places = factory(Place::class)->create([
@@ -207,7 +219,8 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->places()->exists());
     }
 
-    public function test_it_has_many_addresses()
+    /** @test */
+    public function it_has_many_addresses()
     {
         $account = factory(Account::class)->create([]);
         $addresses = factory(Address::class)->create([
@@ -216,7 +229,8 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->addresses()->exists());
     }
 
-    public function test_it_has_many_companies()
+    /** @test */
+    public function it_has_many_companies()
     {
         $account = factory(Account::class)->create([]);
         $companies = factory(Company::class)->create([
@@ -225,7 +239,8 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->companies()->exists());
     }
 
-    public function test_it_has_many_occupations()
+    /** @test */
+    public function it_has_many_occupations()
     {
         $account = factory(Account::class)->create([]);
         $occupations = factory(Occupation::class)->create([
@@ -234,70 +249,18 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->occupations()->exists());
     }
 
-    public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()
+    /** @test */
+    public function it_has_many_logs()
     {
-        config(['monica.number_of_allowed_contacts_free_account' => 1]);
-        $contact = factory(Contact::class)->create();
-        $account = $contact->account;
-
-        $user = factory(User::class)->create([
+        $account = factory(Account::class)->create([]);
+        factory(AuditLog::class)->create([
             'account_id' => $account->id,
         ]);
-
-        $this->assertEquals(
-            true,
-            $account->canDowngrade()
-        );
+        $this->assertTrue($account->auditLogs()->exists());
     }
 
-    public function test_user_cant_downgrade_with_two_users()
-    {
-        $contact = factory(Contact::class)->create();
-        $account = $contact->account;
-
-        $user = factory(User::class)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $user = factory(User::class)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $this->assertEquals(
-            false,
-            $account->canDowngrade()
-        );
-    }
-
-    public function test_user_cant_downgrade_with_pending_invitations()
-    {
-        $account = factory(Account::class)->create();
-
-        $invitation = factory(Invitation::class)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $this->assertEquals(
-            false,
-            $account->canDowngrade()
-        );
-    }
-
-    public function test_user_cant_downgrade_with_too_many_contacts()
-    {
-        config(['monica.number_of_allowed_contacts_free_account' => 1]);
-        $account = factory(Account::class)->create();
-
-        $contact = factory(Contact::class, 2)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $this->assertFalse(
-            $account->canDowngrade()
-        );
-    }
-
-    public function test_user_is_subscribed_if_user_can_access_to_paid_version_for_free()
+    /** @test */
+    public function user_is_subscribed_if_user_can_access_to_paid_version_for_free()
     {
         $account = factory(Account::class)->make([
             'has_access_to_paid_version_for_free' => true,
@@ -309,7 +272,8 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_user_is_subscribed_returns_false_if_not_subcribed()
+    /** @test */
+    public function user_is_subscribed_returns_false_if_not_subcribed()
     {
         $account = factory(Account::class)->make([
             'has_access_to_paid_version_for_free' => false,
@@ -321,7 +285,8 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_user_is_subscribed_returns_true_if_monthly_plan_is_set()
+    /** @test */
+    public function user_is_subscribed_returns_true_if_monthly_plan_is_set()
     {
         $account = factory(Account::class)->create();
 
@@ -340,7 +305,8 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_user_is_subscribed_returns_true_if_annual_plan_is_set()
+    /** @test */
+    public function user_is_subscribed_returns_true_if_annual_plan_is_set()
     {
         $account = factory(Account::class)->create();
 
@@ -359,7 +325,8 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_user_is_subscribed_returns_false_if_no_plan_is_set()
+    /** @test */
+    public function user_is_subscribed_returns_false_if_no_plan_is_set()
     {
         $account = factory(Account::class)->create();
 
@@ -369,51 +336,8 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_user_has_limitations_if_not_subscribed_or_exempted_of_subscriptions()
-    {
-        $account = factory(Account::class)->make([
-            'has_access_to_paid_version_for_free' => true,
-        ]);
-
-        $this->assertEquals(
-            false,
-            $account->hasLimitations()
-        );
-
-        // Check that if the ENV variable REQUIRES_SUBSCRIPTION has an effect
-        $account = factory(Account::class)->make([
-            'has_access_to_paid_version_for_free' => false,
-        ]);
-
-        config(['monica.requires_subscription' => false]);
-
-        $this->assertEquals(
-            false,
-            $account->hasLimitations()
-        );
-    }
-
-    public function test_get_timezone_gets_the_first_timezone_it_finds()
-    {
-        $account = factory(Account::class)->create();
-
-        $user1 = factory(User::class)->create([
-            'account_id' => $account->id,
-            'timezone' => 'EN_en',
-        ]);
-
-        $user2 = factory(User::class)->create([
-            'account_id' => $account->id,
-            'timezone' => 'DE_de',
-        ]);
-
-        $this->assertEquals(
-            'EN_en',
-            $account->timezone()
-        );
-    }
-
-    public function test_has_invoices_returns_true_if_a_plan_exists()
+    /** @test */
+    public function has_invoices_returns_true_if_a_plan_exists()
     {
         $account = factory(Account::class)->create();
 
@@ -427,54 +351,16 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->hasInvoices());
     }
 
-    public function test_has_invoices_returns_false_if_a_plan_does_not_exist()
+    /** @test */
+    public function has_invoices_returns_false_if_a_plan_does_not_exist()
     {
         $account = factory(Account::class)->create();
 
         $this->assertFalse($account->hasInvoices());
     }
 
-    public function test_get_reminders_for_month_returns_no_reminders()
-    {
-        $user = $this->signIn();
-
-        $account = $user->account;
-
-        Carbon::setTestNow(Carbon::create(2017, 1, 1));
-        factory(Reminder::class, 3)->create(['account_id' => $account->id]);
-
-        // check if there are reminders for the month of March
-        $this->assertEquals(
-            0,
-            $account->getRemindersForMonth(3)->count()
-        );
-    }
-
-    public function test_get_reminders_for_month_returns_reminders_for_given_month()
-    {
-        $user = $this->signIn();
-
-        $account = $user->account;
-
-        Carbon::setTestNow(Carbon::create(2017, 1, 1));
-
-        // add 3 reminders for the month of March
-        for ($i = 0; $i < 3; $i++) {
-            $reminder = factory(Reminder::class)->create([
-                'account_id' => $account->id,
-                'initial_date' => '2017-03-03 00:00:00',
-            ]);
-
-            $reminder->schedule($user);
-        }
-
-        $this->assertEquals(
-            3,
-            $account->getRemindersForMonth(2)->count()
-        );
-    }
-
-    public function test_it_gets_the_id_of_the_subscribed_plan()
+    /** @test */
+    public function it_gets_the_id_of_the_subscribed_plan()
     {
         config([
             'monica.paid_plan_annual_friendly_name' => 'fakePlan',
@@ -498,7 +384,8 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_it_gets_the_friendly_name_of_the_subscribed_plan()
+    /** @test */
+    public function it_gets_the_friendly_name_of_the_subscribed_plan()
     {
         config([
             'monica.paid_plan_annual_friendly_name' => 'fakePlan',
@@ -522,7 +409,8 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_it_populates_the_account_with_three_default_genders()
+    /** @test */
+    public function it_populates_the_account_with_three_default_genders()
     {
         $account = factory(Account::class)->create();
         $account->populateDefaultGendersTable();
@@ -533,7 +421,8 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_it_populates_the_account_with_the_right_default_genders()
+    /** @test */
+    public function it_populates_the_account_with_the_right_default_genders()
     {
         $account = factory(Account::class)->create();
         $account->populateDefaultGendersTable();
@@ -554,28 +443,8 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_it_replaces_gender_with_another_gender()
-    {
-        $account = factory(Account::class)->create();
-        $gender1 = factory(Gender::class)->create([
-            'account_id' => $account->id,
-        ]);
-        $gender2 = factory(Gender::class)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $contact = factory(Contact::class)->create(['account_id' => $account->id, 'gender_id' => $gender1]);
-        $contact = factory(Contact::class)->create(['account_id' => $account->id, 'gender_id' => $gender1]);
-        $contact = factory(Contact::class)->create(['account_id' => $account->id, 'gender_id' => $gender2]);
-
-        $account->replaceGender($gender1, $gender2);
-        $this->assertEquals(
-            3,
-            $gender2->contacts->count()
-        );
-    }
-
-    public function test_it_gets_default_time_reminder_is_sent_attribute()
+    /** @test */
+    public function it_gets_default_time_reminder_is_sent_attribute()
     {
         $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '14:00']);
 
@@ -585,7 +454,8 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_it_sets_default_time_reminder_is_sent_attribute()
+    /** @test */
+    public function it_sets_default_time_reminder_is_sent_attribute()
     {
         $account = new Account;
         $account->default_time_reminder_is_sent = '14:00';
@@ -596,7 +466,8 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_it_populates_the_account_with_two_default_reminder_rules()
+    /** @test */
+    public function it_populates_the_account_with_two_default_reminder_rules()
     {
         $account = factory(Account::class)->create();
         $account->populateDefaultReminderRulesTable();
@@ -607,7 +478,8 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_it_populates_the_account_with_the_right_default_reminder_rules()
+    /** @test */
+    public function it_populates_the_account_with_the_right_default_reminder_rules()
     {
         $account = factory(Account::class)->create();
         $account->populateDefaultReminderRulesTable();
@@ -623,7 +495,8 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_it_gets_the_relationship_type_object_matching_a_given_name()
+    /** @test */
+    public function it_gets_the_relationship_type_object_matching_a_given_name()
     {
         $account = factory(Account::class)->create();
         $relationshipType = factory(RelationshipType::class)->create([
@@ -634,7 +507,8 @@ class AccountTest extends FeatureTestCase
         $this->assertInstanceOf(RelationshipType::class, $account->getRelationshipTypeByType('partner'));
     }
 
-    public function test_it_gets_the_relationship_type_group_object_matching_a_given_name()
+    /** @test */
+    public function it_gets_the_relationship_type_group_object_matching_a_given_name()
     {
         $account = factory(Account::class)->create();
         $relationshipTypeGroup = factory(RelationshipTypeGroup::class)->create([
@@ -645,7 +519,8 @@ class AccountTest extends FeatureTestCase
         $this->assertInstanceOf(RelationshipTypeGroup::class, $account->getRelationshipTypeGroupByType('love'));
     }
 
-    public function test_it_populates_default_relationship_type_groups_table_if_tables_havent_been_migrated_yet()
+    /** @test */
+    public function it_populates_default_relationship_type_groups_table_if_tables_havent_been_migrated_yet()
     {
         $account = factory(Account::class)->create();
 
@@ -661,7 +536,8 @@ class AccountTest extends FeatureTestCase
         ]);
     }
 
-    public function test_it_skips_default_relationship_type_groups_table_for_types_already_migrated()
+    /** @test */
+    public function it_skips_default_relationship_type_groups_table_for_types_already_migrated()
     {
         $account = factory(Account::class)->create();
         $id = DB::table('default_relationship_type_groups')->insertGetId([
@@ -676,7 +552,8 @@ class AccountTest extends FeatureTestCase
         ]);
     }
 
-    public function test_it_populates_default_relationship_types_table_if_tables_havent_been_migrated_yet()
+    /** @test */
+    public function it_populates_default_relationship_types_table_if_tables_havent_been_migrated_yet()
     {
         $account = factory(Account::class)->create();
         $id = DB::table('default_relationship_type_groups')->insertGetId([
@@ -696,7 +573,8 @@ class AccountTest extends FeatureTestCase
         ]);
     }
 
-    public function test_it_skips_default_relationship_types_table_for_types_already_migrated()
+    /** @test */
+    public function it_skips_default_relationship_types_table_for_types_already_migrated()
     {
         $account = factory(Account::class)->create();
         $id = DB::table('default_relationship_type_groups')->insertGetId([
@@ -717,57 +595,8 @@ class AccountTest extends FeatureTestCase
         ]);
     }
 
-    public function test_it_retrieves_yearly_call_statistics()
-    {
-        $contact = factory(Contact::class)->create();
-        $calls = factory(Call::class, 4)->create([
-            'account_id' => $contact->account_id,
-            'contact_id' => $contact->id,
-            'called_at' => '2018-03-02',
-        ]);
-
-        $calls = factory(Call::class, 2)->create([
-            'account_id' => $contact->account_id,
-            'contact_id' => $contact->id,
-            'called_at' => '1992-03-02',
-        ]);
-
-        $statistics = $contact->account->getYearlyCallStatistics();
-
-        $this->assertTrue(
-            $statistics->contains(4)
-        );
-
-        $this->assertTrue(
-            $statistics->contains(2)
-        );
-    }
-
-    public function test_it_retrieves_yearly_activities_statistics()
-    {
-        $account = factory(Account::class)->create();
-        $contact = factory(Activity::class, 4)->create([
-            'account_id' => $account->id,
-            'date_it_happened' => '2018-03-02',
-        ]);
-
-        $contact = factory(Activity::class, 2)->create([
-            'account_id' => $account->id,
-            'date_it_happened' => '1992-03-02',
-        ]);
-
-        $statistics = $account->getYearlyActivitiesStatistics();
-
-        $this->assertTrue(
-            $statistics->contains(4)
-        );
-
-        $this->assertTrue(
-            $statistics->contains(2)
-        );
-    }
-
-    public function test_it_create_default_account()
+    /** @test */
+    public function it_create_default_account()
     {
         $account = Account::createDefault('John', 'Doe', 'john@doe.com', 'password');
 
@@ -779,7 +608,8 @@ class AccountTest extends FeatureTestCase
         ]);
     }
 
-    public function test_it_throw_an_exception_if_user_already_exist()
+    /** @test */
+    public function it_throw_an_exception_if_user_already_exist()
     {
         $account = Account::createDefault('John', 'Doe', 'john@doe.com', 'password');
 
@@ -790,40 +620,12 @@ class AccountTest extends FeatureTestCase
             'account_id' => $account->id,
         ]);
 
-        $this->expectException(\Illuminate\Validation\UnauthorizedException::class);
+        $this->expectException(\Illuminate\Validation\ValidationException::class);
         $account = Account::createDefault('John', 'Doe', 'john@doe.com', 'password');
     }
 
-    public function test_account_has_reached_contact_limit_on_free_plan()
-    {
-        $account = factory(Account::class)->create();
-        $contact = factory(Contact::class, 11)->create([
-            'account_id' => $account->id,
-        ]);
-
-        config(['monica.number_of_allowed_contacts_free_account' => 10]);
-
-        $this->assertTrue(
-            $account->hasReachedContactLimit()
-        );
-
-        $partials = factory(Contact::class, 5)->state('partial')->create([
-            'account_id' => $account->id,
-        ]);
-
-        config(['monica.number_of_allowed_contacts_free_account' => 15]);
-
-        $this->assertFalse(
-            $account->hasReachedContactLimit()
-        );
-        config(['monica.number_of_allowed_contacts_free_account' => 100]);
-
-        $this->assertFalse(
-            $account->hasReachedContactLimit()
-        );
-    }
-
-    public function test_it_gets_first_user_locale()
+    /** @test */
+    public function it_gets_first_user_locale()
     {
         $account = factory(Account::class)->create();
         $user = factory(User::class)->create([
@@ -841,20 +643,16 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_getting_first_locale_returns_null_if_user_doesnt_exist()
+    /** @test */
+    public function getting_first_locale_returns_null_if_user_doesnt_exist()
     {
         $account = factory(Account::class)->create();
 
         $this->assertNull($account->getFirstLocale());
     }
 
-    /**
-     * Test that default_life_event_categories and types are correctly
-     * populated.
-     *
-     * @return void
-     */
-    public function test_it_populates_default_life_event_tables_upon_creation()
+    /** @test */
+    public function it_populates_default_life_event_tables_upon_creation()
     {
         $account = factory(Account::class)->create();
         $user = factory(User::class)->create([
@@ -871,57 +669,6 @@ class AccountTest extends FeatureTestCase
         $this->assertEquals(
             43,
             DB::table('life_event_types')->where('account_id', $account->id)->get()->count()
-        );
-    }
-
-    public function test_it_tests_account_storage_limit()
-    {
-        config(['monica.requires_subscription' => true]);
-        $account = factory(Account::class)->create([]);
-
-        $document = factory(Document::class)->create([
-            'filesize' => 1000000,
-            'account_id' => $account->id,
-        ]);
-
-        config(['monica.max_storage_size' => 0.1]);
-        $this->assertTrue($account->hasReachedAccountStorageLimit());
-
-        config(['monica.max_storage_size' => 1]);
-        $this->assertFalse($account->hasReachedAccountStorageLimit());
-
-        $photo = factory(Photo::class)->create([
-            'filesize' => 1000000,
-            'account_id' => $account->id,
-        ]);
-
-        config(['monica.max_storage_size' => 2]);
-        $this->assertFalse($account->hasReachedAccountStorageLimit());
-
-        config(['monica.max_storage_size' => 1]);
-        $this->assertTrue($account->hasReachedAccountStorageLimit());
-
-        config(['monica.requires_subscription' => false]);
-        $this->assertFalse($account->hasReachedAccountStorageLimit());
-    }
-
-    public function test_it_calculates_storage_size()
-    {
-        $account = factory(Account::class)->create([]);
-
-        $document = factory(Document::class)->create([
-            'filesize' => 1000000,
-            'account_id' => $account->id,
-        ]);
-
-        $photo = factory(Photo::class)->create([
-            'filesize' => 1000000,
-            'account_id' => $account->id,
-        ]);
-
-        $this->assertEquals(
-            2000000,
-            $account->getStorageSize()
         );
     }
 }

@@ -17,16 +17,16 @@ class ActivityTypesController extends Controller
     /**
      * Store an activity type category.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return ActivityTypeResource
      */
     public function store(Request $request)
     {
         $type = app(CreateActivityType::class)->execute([
-            'account_id' => auth()->user()->account->id,
-            'activity_type_category_id' => $request->get('activity_type_category_id'),
-            'name' => $request->get('name'),
-            'translation_key' => $request->get('translation_key'),
+            'account_id' => auth()->user()->account_id,
+            'activity_type_category_id' => $request->input('activity_type_category_id'),
+            'name' => $request->input('name'),
+            'translation_key' => $request->input('translation_key'),
         ]);
 
         return new ActivityTypeResource($type);
@@ -35,18 +35,18 @@ class ActivityTypesController extends Controller
     /**
      * Update an activity type.
      *
-     * @param Request $request
-     * @param int $activityTypeId
+     * @param  Request  $request
+     * @param  int  $activityTypeId
      * @return ActivityTypeResource
      */
     public function update(Request $request, $activityTypeId)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'activity_type_id' => $activityTypeId,
-            'activity_type_category_id' => $request->get('activity_type_category_id'),
-            'name' => $request->get('name'),
-            'translation_key' => $request->get('translation_key'),
+            'activity_type_category_id' => $request->input('activity_type_category_id'),
+            'name' => $request->input('name'),
+            'translation_key' => $request->input('translation_key'),
         ];
 
         $type = app(UpdateActivityType::class)->execute($data);
@@ -57,15 +57,14 @@ class ActivityTypesController extends Controller
     /**
      * Delete the activity type.
      *
-     * @param Request $request
-     * @param int $activityTypeId
-     *
+     * @param  Request  $request
+     * @param  int  $activityTypeId
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $activityTypeId)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'activity_type_id' => $activityTypeId,
         ];
 

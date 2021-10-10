@@ -14,14 +14,15 @@ class UpdateDeceasedInformationTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_sets_contact_as_not_deceased()
+    /** @test */
+    public function it_sets_contact_as_not_deceased()
     {
         // first we are going to update a contact and set it as deceased,
         // then we are going to update it again and set it as non deceased
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_deceased' => true,
             'is_date_known' => false,
@@ -32,13 +33,13 @@ class UpdateDeceasedInformationTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'is_dead' => 1,
         ]);
 
         // now set the contact as not dead anymore (a zombie, basically)
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_deceased' => false,
             'is_date_known' => false,
@@ -49,19 +50,20 @@ class UpdateDeceasedInformationTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'is_dead' => 0,
             'deceased_special_date_id' => null,
             'deceased_reminder_id' => null,
         ]);
     }
 
-    public function test_it_sets_a_complete_date()
+    /** @test */
+    public function it_sets_a_complete_date()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_deceased' => true,
             'is_date_known' => true,
@@ -77,24 +79,25 @@ class UpdateDeceasedInformationTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'deceased_special_date_id' => $specialDate->id,
         ]);
 
         $this->assertDatabaseHas('special_dates', [
             'id' => $specialDate->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'is_age_based' => false,
             'is_year_unknown' => false,
         ]);
     }
 
-    public function test_it_sets_a_complete_date_with_unknown_year()
+    /** @test */
+    public function it_sets_a_complete_date_with_unknown_year()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_deceased' => true,
             'is_date_known' => true,
@@ -110,24 +113,25 @@ class UpdateDeceasedInformationTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'deceased_special_date_id' => $specialDate->id,
         ]);
 
         $this->assertDatabaseHas('special_dates', [
             'id' => $specialDate->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'is_age_based' => false,
             'is_year_unknown' => true,
         ]);
     }
 
-    public function test_it_sets_a_complete_date_and_sets_a_reminder()
+    /** @test */
+    public function it_sets_a_complete_date_and_sets_a_reminder()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_deceased' => true,
             'is_date_known' => true,
@@ -150,12 +154,13 @@ class UpdateDeceasedInformationTest extends TestCase
         ]);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_date_known' => true,
             'day' => 10,
@@ -168,7 +173,8 @@ class UpdateDeceasedInformationTest extends TestCase
         app(UpdateDeceasedInformation::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_contact_and_account_are_not_linked()
+    /** @test */
+    public function it_throws_an_exception_if_contact_and_account_are_not_linked()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -187,16 +193,17 @@ class UpdateDeceasedInformationTest extends TestCase
         app(UpdateDeceasedInformation::class)->execute($request);
     }
 
-    public function test_it_removes_deceased_reminder()
+    /** @test */
+    public function it_removes_deceased_reminder()
     {
         $reminder = factory(Reminder::class)->create([]);
         $contact = factory(Contact::class)->create([
-            'account_id' => $reminder->account->id,
+            'account_id' => $reminder->account_id,
             'deceased_reminder_id' => $reminder->id,
         ]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_deceased' => true,
             'is_date_known' => true,
@@ -213,16 +220,17 @@ class UpdateDeceasedInformationTest extends TestCase
         ]);
     }
 
-    public function test_it_removes_deceased_special_date()
+    /** @test */
+    public function it_removes_deceased_special_date()
     {
         $special_date = factory(SpecialDate::class)->create();
         $contact = factory(Contact::class)->create([
-            'account_id' => $special_date->account->id,
+            'account_id' => $special_date->account_id,
             'deceased_special_date_id' => $special_date->id,
         ]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_deceased' => true,
             'is_date_known' => true,

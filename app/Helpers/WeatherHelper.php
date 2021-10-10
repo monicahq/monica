@@ -11,13 +11,13 @@ class WeatherHelper
     /**
      * Get the weather for the given address, if it exists.
      *
-     * @param Address|null $address
+     * @param  Address|null  $address
      * @return Weather|null
      */
-    public static function getWeatherForAddress($address)
+    public static function getWeatherForAddress($address): ?Weather
     {
         if (is_null($address)) {
-            return;
+            return null;
         }
 
         $weather = $address->place->weathers()->orderBy('created_at', 'desc')->first();
@@ -38,19 +38,17 @@ class WeatherHelper
     /**
      * Make the call to the weather service.
      *
-     * @param Address $address
+     * @param  Address  $address
      * @return Weather|null
      */
-    private static function callWeatherAPI(Address $address)
+    private static function callWeatherAPI(Address $address): ?Weather
     {
         try {
-            $weather = app(GetWeatherInformation::class)->execute([
+            return app(GetWeatherInformation::class)->execute([
                 'place_id' => $address->place->id,
             ]);
         } catch (\Exception $e) {
-            $weather = null;
+            return null;
         }
-
-        return $weather;
     }
 }

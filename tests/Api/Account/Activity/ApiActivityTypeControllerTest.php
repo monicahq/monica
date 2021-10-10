@@ -34,7 +34,8 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_it_gets_a_list_of_activity_types()
+    /** @test */
+    public function it_gets_a_list_of_activity_types()
     {
         $user = $this->signin();
 
@@ -51,7 +52,8 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_applies_limit_parameter()
+    /** @test */
+    public function it_applies_limit_parameter()
     {
         $user = $this->signin();
 
@@ -78,18 +80,19 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_stores_an_activity_type()
+    /** @test */
+    public function it_stores_an_activity_type()
     {
         $user = $this->signin();
 
         $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/activitytypes', [
-                            'name' => 'Movies',
-                            'activity_type_category_id' => $activityTypeCategory->id,
-                        ]);
+            'name' => 'Movies',
+            'activity_type_category_id' => $activityTypeCategory->id,
+        ]);
 
         $response->assertStatus(200);
 
@@ -103,7 +106,8 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_doesnt_store_an_activity_type_if_query_not_valid()
+    /** @test */
+    public function it_doesnt_store_an_activity_type_if_query_not_valid()
     {
         $user = $this->signin();
 
@@ -114,16 +118,17 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_updates_an_activity_type()
+    /** @test */
+    public function it_updates_an_activity_type()
     {
         $user = $this->signin();
 
         $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $activityType = factory(ActivityType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'activity_type_category_id' => $activityTypeCategory->id,
         ]);
 
@@ -143,7 +148,8 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_doesnt_update_if_activity_type_not_found()
+    /** @test */
+    public function it_doesnt_update_if_activity_type_not_found()
     {
         $user = $this->signin();
 
@@ -156,7 +162,8 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_deletes_an_activity_type()
+    /** @test */
+    public function it_deletes_an_activity_type()
     {
         $user = $this->signin();
 
@@ -186,7 +193,8 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_doesnt_delete_the_activity_type_if_not_found()
+    /** @test */
+    public function it_doesnt_delete_the_activity_type_if_not_found()
     {
         $user = $this->signin();
 
@@ -197,16 +205,17 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_a_single_activity_type()
+    /** @test */
+    public function it_gets_a_single_activity_type()
     {
         $user = $this->signin();
 
         $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $activityType = factory(ActivityType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'activity_type_category_id' => $activityTypeCategory->id,
         ]);
 

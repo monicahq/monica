@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Editing not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'dashboard_blank_title' => 'Herzlich Willkommen auf deinem Account!',
     'dashboard_blank_description' => 'Monica ist der Ort um all deine Interaktionen zu organisieren die dir wichtig sind.',
@@ -29,7 +35,7 @@ return [
     'statistics_gifts' => 'Geschenke',
 
     'reminders_next_months' => 'Ereignisse der nächsten 3 Monate',
-    'reminders_none' => 'Keine Erinnerungen für diesen Monat',
+    'reminders_none' => 'Keine Erinnerungen für diesen Monat.',
 
     'product_changes' => 'Produktänderungen',
     'product_view_details' => 'Details anzeigen',

@@ -7,7 +7,6 @@ use App\Helpers\DateHelper;
 use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use Illuminate\Support\Facades\App;
 use App\Interfaces\MailNotification;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -24,14 +23,19 @@ class UserNotified extends LaravelNotification implements ShouldQueue, MailNotif
      * @var Reminder
      */
     public $reminder;
+    /**
+     * @var int|null
+     */
     public $numberDaysBefore;
 
     /**
      * Create a new message instance.
      *
+     * @param  Reminder  $reminder
+     * @param  int|null  $numberDaysBefore
      * @return void
      */
-    public function __construct(Reminder $reminder, $numberDaysBefore)
+    public function __construct(Reminder $reminder, ?int $numberDaysBefore)
     {
         $this->reminder = $reminder;
         $this->numberDaysBefore = $numberDaysBefore;
@@ -50,13 +54,11 @@ class UserNotified extends LaravelNotification implements ShouldQueue, MailNotif
     /**
      * Get the mail representation of the notification.
      *
-     * @param  User $user
+     * @param  User  $user
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail(User $user) : MailMessage
+    public function toMail(User $user): MailMessage
     {
-        App::setLocale($user->locale);
-
         $contact = Contact::where('account_id', $user->account_id)
             ->findOrFail($this->reminder->contact_id);
 

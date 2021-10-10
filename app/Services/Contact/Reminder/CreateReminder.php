@@ -34,15 +34,17 @@ class CreateReminder extends BaseService
     /**
      * Create a reminder.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Reminder
      */
-    public function execute(array $data) : Reminder
+    public function execute(array $data): Reminder
     {
         $this->validate($data);
 
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $reminder = Reminder::create([
             'account_id' => $data['account_id'],

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Contact;
 
 use App\Models\Contact\Call;
 use Illuminate\Http\Request;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
 use App\Services\Contact\Call\CreateCall;
@@ -32,15 +33,14 @@ class ApiCallController extends ApiController
         }
 
         return CallResource::collection($calls)->additional(['meta' => [
-            'statistics' => auth()->user()->account->getYearlyCallStatistics(),
+            'statistics' => AccountHelper::getYearlyCallStatistics(auth()->user()->account),
         ]]);
     }
 
     /**
      * Get the detail of a given call.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return CallResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $callId)
@@ -59,19 +59,18 @@ class ApiCallController extends ApiController
     /**
      * Store the call.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return CallResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
             $call = app(CreateCall::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -87,21 +86,20 @@ class ApiCallController extends ApiController
     /**
      * Update a call.
      *
-     * @param Request $request
-     * @param int $callId
-     *
+     * @param  Request  $request
+     * @param  int  $callId
      * @return CallResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $callId)
     {
         try {
             $call = app(UpdateCall::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'call_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'call_id' => $callId,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                        'call_id' => $callId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -117,15 +115,14 @@ class ApiCallController extends ApiController
     /**
      * Delete a call.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $callId)
+    public function destroy(Request $request, int $callId)
     {
         try {
             app(DestroyCall::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'call_id' => $callId,
             ]);
         } catch (ModelNotFoundException $e) {
@@ -136,7 +133,7 @@ class ApiCallController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $callId);
+        return $this->respondObjectDeleted($callId);
     }
 
     /**
@@ -159,7 +156,7 @@ class ApiCallController extends ApiController
                 ->paginate($this->getLimitPerPage());
 
         return CallResource::collection($calls)->additional(['meta' => [
-            'statistics' => auth()->user()->account->getYearlyCallStatistics(),
+            'statistics' => AccountHelper::getYearlyCallStatistics(auth()->user()->account),
         ]]);
     }
 }

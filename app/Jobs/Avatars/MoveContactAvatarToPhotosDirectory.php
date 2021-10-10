@@ -44,8 +44,8 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  Contact $contact
-     * @param  bool $dryrun
+     * @param  Contact  $contact
+     * @param  bool  $dryrun
      * @return void
      */
     public function __construct(Contact $contact, $dryrun)
@@ -103,7 +103,7 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
 
         if (! $this->dryrun) {
             $avatarFile = $this->storage->get($avatarFileName);
-            $newStorage->put($newAvatarFilename, $avatarFile, 'public');
+            $newStorage->put($newAvatarFilename, $avatarFile, config('filesystems.default_visibility'));
 
             $this->contact->avatar_location = config('filesystems.default');
             $this->contact->save();
@@ -113,13 +113,13 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
     }
 
     /**
-     * @param string|null $avatarFileName
+     * @param  string|null  $avatarFileName
      * @return Photo|null
      */
-    private function createPhotoObject($avatarFileName)
+    private function createPhotoObject($avatarFileName): ?Photo
     {
         if (is_null($avatarFileName)) {
-            return;
+            return null;
         }
 
         $newAvatarFilename = str_replace('avatars/', '', $avatarFileName);
@@ -189,7 +189,7 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
         return $avatarFileName;
     }
 
-    private function fileExists($avatarFileName) : bool
+    private function fileExists($avatarFileName): bool
     {
         return $this->storage->exists($avatarFileName);
     }

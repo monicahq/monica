@@ -14,6 +14,9 @@ use App\Models\ModelBindingHasherWithContact as Model;
  * A reminder has two states: active and inactive.
  * An inactive reminder is basically a one_time reminder that has already be
  * sent once and has been marked inactive so we don't schedule it again.
+ *
+ * @property string $next_expected_date_human_readable
+ * @property string $next_expected_date
  */
 class Reminder extends Model
 {
@@ -77,12 +80,23 @@ class Reminder extends Model
     /**
      * Scope a query to only include active reminders.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive($query)
     {
         return $query->where('inactive', false);
+    }
+
+    /**
+     * Test if this reminder is the contact's birthday reminder.
+     *
+     * @return bool
+     */
+    public function isBirthdayReminder(): bool
+    {
+        return $this->contact !== null
+            && $this->contact->birthday_reminder_id === $this->id;
     }
 
     /**
@@ -124,7 +138,7 @@ class Reminder extends Model
     /**
      * Schedule the reminder to be sent.
      *
-     * @param User $user
+     * @param  User  $user
      * @return void
      */
     public function schedule(User $user)
@@ -151,8 +165,8 @@ class Reminder extends Model
      * Create all the notifications that are supposed to be sent
      * 30 and 7 days prior to the actual reminder.
      *
-     * @param Carbon $triggerDate
-     * @param User $user
+     * @param  Carbon  $triggerDate
+     * @param  User  $user
      * @return void
      */
     public function scheduleNotifications(Carbon $triggerDate, User $user)

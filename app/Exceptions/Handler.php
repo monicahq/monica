@@ -2,11 +2,8 @@
 
 namespace App\Exceptions;
 
-use Exception;
+use Throwable;
 use Illuminate\Session\TokenMismatchException;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -19,11 +16,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        AuthorizationException::class,
-        HttpException::class,
-        ModelNotFoundException::class,
         OAuthServerException::class,
-        ValidationException::class,
         WrongIdException::class,
     ];
 
@@ -42,10 +35,10 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $e
+     * @param  \Throwable  $e
      * @return void
      */
-    public function report(Exception $e)
+    public function report(Throwable $e)
     {
         if (config('monica.sentry_support') && config('app.env') == 'production' && app()->bound('sentry') && $this->shouldReport($e)) {
             app('sentry')->captureException($e); // @codeCoverageIgnore
@@ -58,15 +51,15 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $e
+     * @param  \Throwable  $e
      * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
      */
-    public function render($request, Exception $e)
+    public function render($request, Throwable $e)
     {
         // hopefully catches those pesky token expiries
         // and send them back to login.
         if ($e instanceof TokenMismatchException) {
-            return redirect()->route('login');
+            return redirect()->route('loginRedirect');
         }
 
         // Convert all non-http exceptions to a proper 500 http exception

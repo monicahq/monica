@@ -38,6 +38,7 @@
         :plan="'{{ $planInformation['type'] }}'"
         :amount="'{{ $planInformation['friendlyPrice'] }}'"
         :callback="'{{ route('settings.subscriptions.payment') }}'"
+        :token="'{{ csrf_token() }}'"
       ></stripe-subscription>
 
       <p>{{ trans('settings.subscriptions_upgrade_charge', ['price' => $planInformation['friendlyPrice'], 'date' => $nextTheoriticalBillingDate]) }}</p>

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Editing not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     'subject_line' => 'Erinnerung für :contact',
@@ -27,4 +33,17 @@ Sie wollten alle :frequency Tage erinnert werden um in Kontakt zu bleiben mit :n
     'confirmation_email_title' => 'Monica – E-Mail-Verifikation',
     'confirmation_email_intro'=> 'Um Ihre E-Mail-Adresse zu validieren, klicken Sie bitte auf den untenstehenden Button',
     'confirmation_email_button' => 'E-Mail-Adresse bestätigen',
+    'confirmation_email_bottom' => 'Wenn Sie kein Konto erstellt haben, ist keine weitere Aktion erforderlich.',
+
+    'password_reset_title' => 'Monica – Passwort-Benachrichtigung zurücksetzen',
+    'password_reset_intro' => 'Sie erhalten diese E-Mail, weil wir eine Anfrage zum Zurücksetzen des Passworts für Ihr Konto erhalten haben.',
+    'password_reset_button' => 'Passwort zurücksetzen',
+    'password_reset_expiration' => 'Dieser Link zum Zurücksetzen des Passworts läuft in :count Minuten ab.',
+    'password_reset_bottom' => 'Wenn Sie keine Passwortzurücksetzung angefordert haben, ist keine weitere Aktion erforderlich.',
+
+    'invitation_title' => 'Monica – Du wurdest von :name eingeladen',
+    'invitation_intro' => 'Sie wurden von :name (:email) eingeladen, um Monica zu verwenden, ein Personal Relationship Management Tool.',
+    'invitation_link' => 'Um die Einladung anzunehmen, klicken Sie auf den folgenden Link:',
+    'invitation_button' => 'Einladung annehmen',
+    'invitation_expiration' => 'Dieser Link läuft in :count Tagen ab.',
 ];

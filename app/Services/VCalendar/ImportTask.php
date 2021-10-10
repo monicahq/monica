@@ -33,10 +33,10 @@ class ImportTask extends BaseService
     /**
      * Export one VCalendar.
      *
-     * @param array $data
+     * @param  array  $data
      * @return array
      */
-    public function execute(array $data) : array
+    public function execute(array $data): array
     {
         $this->validate($data);
 
@@ -53,11 +53,11 @@ class ImportTask extends BaseService
     /**
      * Import one VCalendar.
      *
-     * @param array $data
-     * @param Task $task
+     * @param  array  $data
+     * @param  Task  $task
      * @return array
      */
-    private function process(array $data, Task $task) : array
+    private function process(array $data, Task $task): array
     {
         $entry = $this->getEntry($data);
 
@@ -84,10 +84,10 @@ class ImportTask extends BaseService
      * Check whether this entry contains a VTODO. If not, it
      * can not be imported.
      *
-     * @param VCalendar $entry
+     * @param  VCalendar  $entry
      * @return bool
      */
-    private function canImportCurrentEntry(VCalendar $entry) : bool
+    private function canImportCurrentEntry(VCalendar $entry): bool
     {
         return ! is_null($entry->VTODO);
     }
@@ -95,8 +95,8 @@ class ImportTask extends BaseService
     /**
      * Create the Task object matching the current entry.
      *
-     * @param  Task $task
-     * @param  VCalendar $entry
+     * @param  Task  $task
+     * @param  VCalendar  $entry
      * @return Task
      */
     private function importEntry($task, VCalendar $entry): Task
@@ -112,10 +112,10 @@ class ImportTask extends BaseService
     }
 
     /**
-     * @param array $data
+     * @param  array  $data
      * @return VCalendar|null
      */
-    private function getEntry($data)
+    private function getEntry($data): ?VCalendar
     {
         try {
             $entry = Reader::read($data['entry'], Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
@@ -125,13 +125,15 @@ class ImportTask extends BaseService
         } catch (ParseException $e) {
             // catch parse errors
         }
+
+        return null;
     }
 
     /**
      * Import uid.
      *
-     * @param  Task $task
-     * @param  VCalendar $entry
+     * @param  Task  $task
+     * @param  VCalendar  $entry
      * @return void
      */
     private function importUid(Task $task, VCalendar $entry): void
@@ -144,8 +146,8 @@ class ImportTask extends BaseService
     /**
      * Import uid.
      *
-     * @param  Task $task
-     * @param  VCalendar $entry
+     * @param  Task  $task
+     * @param  VCalendar  $entry
      * @return void
      */
     private function importTimestamp(Task $task, VCalendar $entry): void
@@ -160,8 +162,8 @@ class ImportTask extends BaseService
     }
 
     /**
-     * @param Task $task
-     * @param VCalendar $entry
+     * @param  Task  $task
+     * @param  VCalendar  $entry
      */
     private function importSummary(Task $task, VCalendar $entry)
     {
@@ -172,8 +174,8 @@ class ImportTask extends BaseService
     }
 
     /**
-     * @param Task $task
-     * @param VCalendar $entry
+     * @param  Task  $task
+     * @param  VCalendar  $entry
      */
     private function importCompleted(Task $task, VCalendar $entry)
     {

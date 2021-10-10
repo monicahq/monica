@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Editing not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'yes' => '是',
     'no' => '否',
@@ -7,7 +13,8 @@ return [
     'save' => '保存',
     'add' => '添加',
     'cancel' => '取消',
-    'delete_confirm' => '您确定吗？',
+    'confirm' => '确认',
+    'delete_confirm' => '确定要这样做吗?',
     'delete' => '删除',
     'edit' => '编辑',
     'upload' => '上传',
@@ -21,13 +28,11 @@ return [
     'done' => '完成',
     'back' => '返回',
     'verify' => '验证',
-    'for' => '为',
     'new' => '新',
     'unknown' => '我不知道',
     'load_more' => '载入更多',
-    'loading' => '正在加载...',
+    'loading' => '加载中...',
     'with' => '与',
-    'days' => '天|天',
     'today' => '今天',
     'yesterday' => '昨天',
     'another_day' => '某一天',
@@ -37,11 +42,13 @@ return [
     'upgrade' => '升级解锁',
     'percent_uploaded' => '已上传 {percent}%',
     'retry' => '重试',
+    'filter' => '过滤列表',
     'go_back' => '后退',
+    'file_selected' => '选择了 1 个文件...| 选择了 {count} 个文件...',
 
     'application_title' => 'Monica – 您的私人社交关系管家',
     'application_description' => 'Monica是用来收集并管理您与亲朋好友之间的关系的得力助手。',
-    'application_og_title' => '促进你们之间的感情。一个免费且开源的面向亲朋好友的CRM工具',
+    'application_og_title' => 'Have better relations with your loved ones. Free online CRM for friends and family.',
 
     'markdown_description' => '想用一种美观的方式格式化文本吗？我们以Markdown语法支持粗体、斜体、列表等样式。',
     'markdown_link' => '阅读文档',
@@ -57,14 +64,14 @@ return [
     'main_nav_activities' => '活动',
     'main_nav_tasks' => '任务',
 
-    'footer_remarks' => '有什么意见吗？',
-    'footer_send_email' => '给我发电子邮件',
+    'footer_remarks' => 'Comments?',
+    'footer_send_email' => '给我们发邮件',
     'footer_privacy' => '隐私条款',
     'footer_release' => '版本说明',
     'footer_newsletter' => '新闻简报',
     'footer_source_code' => '捐助',
     'footer_version' => '版本::version',
-    'footer_new_version' => '有新版本可用！',
+    'footer_new_version' => '有新版本的 Monica 可用',
 
     'footer_modal_version_whats_new' => '新增内容',
     'footer_modal_version_release_away' => '您有一个最新发布版本可更新。您应该更新实例. |您已经有:number个版本没有更新，应该更新了。',
@@ -101,19 +108,21 @@ return [
 
     'error_title' => '糟糕! 出错了。',
     'error_unauthorized' => '你没有权限编辑此页',
+    'error_user_account' => '此用户不属于此账号',
     'error_save' => '当储存数据时出现了一个错误',
     'error_try_again' => '出了点问题，请再试一次。',
     'error_id' => '错误代码：:id',
     'error_unavailable' => '服务不可用',
-    'error_maintenance' => '网站维护中，待会见！',
+    'error_maintenance' => '网站维护中，待会见。',
     'error_help' => '待会见！',
     'error_twitter' => '关注我们的<a href="https://twitter.com/:twitter">推特</a>来得知网站的最新消息！',
+    'error_no_term' => '此实例尚无策略',
 
     'default_save_success' => '数据已被保存',
 
     'compliance_title' => '抱歉，打扰您一下',
     'compliance_desc' => '我们更新了<a href=":urlterm" hreflang=":hreflang">用户协议</a> 以及 <a href=":url" hreflang=":hreflang">隐私政策</a>，您需要阅读并同意才能继续使用您的账号。',
-    'compliance_desc_end' => '我们会保护您的隐私安全。',
+    'compliance_desc_end' => '我们会保护您的隐私安全',
     'compliance_terms' => '我已阅读并同意',
 
     // Relationship types
@@ -453,4 +462,10 @@ return [
     'dav_birthdays_description' => ':name的名片生日',
     'dav_tasks' => '任务',
     'dav_tasks_description' => ':name的任务',
+
+    // contact list
+    'contact_list_avatar' => '头像',
+    'contact_list_name' => 'Contact',
+    'contact_list_description' => '描述',
+
 ];

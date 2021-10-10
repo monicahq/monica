@@ -1,11 +1,11 @@
 <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-100 pb3 pt1 pl3 pr3">
   <div class="br2 bg-white mb4">
 
-    @if (config('monica.requires_subscription') && auth()->user()->account->hasLimitations())
+    @if (config('monica.requires_subscription') && $accountHasLimitations)
 
     <div class="">
         <h3>
-            📄 {{ trans('people.document_list_title') }}
+            📄&#8199;{{ trans('people.document_list_title') }}
         </h3>
 
         <div class="section-blank">
@@ -15,7 +15,7 @@
 
     @else
 
-    <document-list hash="{{ $contact->hashID() }}" reach-limit="{{ \Safe\json_encode($contact->account->hasReachedAccountStorageLimit()) }}"></document-list>
+    <document-list hash="{{ $contact->hashID() }}" reach-limit="{{ \Safe\json_encode($hasReachedAccountStorageLimit) }}"></document-list>
 
     @endif
   </div>

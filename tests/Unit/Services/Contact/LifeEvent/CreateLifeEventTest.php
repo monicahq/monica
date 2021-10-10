@@ -16,7 +16,8 @@ class CreateLifeEventTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_stores_a_life_event()
+    /** @test */
+    public function it_stores_a_life_event()
     {
         $contact = factory(Contact::class)->create([]);
         $lifeEventType = factory(LifeEventType::class)->create([
@@ -25,7 +26,7 @@ class CreateLifeEventTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'life_event_type_id' => $lifeEventType->id,
             'happened_at' => now(),
             'name' => 'This is a name',
@@ -40,7 +41,7 @@ class CreateLifeEventTest extends TestCase
         $this->assertDatabaseHas('life_events', [
             'id' => $lifeEvent->id,
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'life_event_type_id' => $lifeEventType->id,
             'name' => 'This is a name',
             'note' => 'This is a note',
@@ -53,7 +54,8 @@ class CreateLifeEventTest extends TestCase
         );
     }
 
-    public function test_it_stores_a_life_event_and_set_a_reminder()
+    /** @test */
+    public function it_stores_a_life_event_and_set_a_reminder()
     {
         $contact = factory(Contact::class)->create([]);
         $lifeEventType = factory(LifeEventType::class)->create([
@@ -62,7 +64,7 @@ class CreateLifeEventTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'life_event_type_id' => $lifeEventType->id,
             'happened_at' => now(),
             'name' => 'This is a name',
@@ -83,7 +85,8 @@ class CreateLifeEventTest extends TestCase
         ]);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -97,13 +100,14 @@ class CreateLifeEventTest extends TestCase
         app(CreateLifeEvent::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_contact_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create();
         $lifeEvent = factory(LifeEvent::class)->create([]);
 
         $request = [
-            'contact_id' => $lifeEvent->contact->id,
+            'contact_id' => $lifeEvent->contact_id,
             'account_id' => $account->id,
             'life_event_type_id' => $lifeEvent->lifeEventType->id,
             'name' => 'This is a name',
@@ -119,14 +123,15 @@ class CreateLifeEventTest extends TestCase
         app(CreateLifeEvent::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_life_event_type_is_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_life_event_type_is_not_linked_to_account()
     {
         $contact = factory(Contact::class)->create([]);
         $lifeEventType = factory(LifeEventType::class)->create([]);
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'life_event_type_id' => $lifeEventType->id,
             'name' => 'This is a name',
             'note' => 'This is a note',

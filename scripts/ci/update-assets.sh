@@ -36,9 +36,6 @@ set -euo pipefail
 
 # Update assets
 echo -e "\033[1;32m# Build assets ...\033[0;37m"
-echo -e "\033[1;36mphp artisan lang:generate\033[0;37m"
-php artisan lang:generate
-echo ""
 echo -e "\033[1;36myarn run production\033[0;37m"
 yarn run production
 echo ""
@@ -63,7 +60,6 @@ if [ -z "${ASSETS_USERNAME:-}" ]; then
   #No username
   echo -e "\033[0;31mMonica asset are not up to date.\033[0;37m"
   echo "Please update the Monica assets yourself by running:"
-  echo " ~ php artisan lang:generate"
   echo " ~ yarn run production"
   exit 2
 fi
@@ -92,7 +88,6 @@ elif [ -n "${ASSETS_GITHUB_TOKEN:-}" ]; then
     echo -e "\033[0;31mMonica asset are not up to date.\033[0;37m"
     echo "We can't commit in $PULL_REQUEST_REPOSITORY to update them directly."
     echo "Please update the Monica assets yourself by running:"
-    echo " ~ php artisan lang:generate"
     echo " ~ yarn run production"
     exit 2
   fi

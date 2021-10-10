@@ -10,20 +10,19 @@ class VCardHelper
     /**
      * Get country model object from given VCard file.
      *
-     * @param VCard $vCard
+     * @param  VCard  $vCard
      * @return string|null
      */
-    public static function getCountryISOFromSabreVCard(VCard $vCard)
+    public static function getCountryISOFromSabreVCard(VCard $vCard): ?string
     {
         $vCardAddress = $vCard->ADR;
 
         if (empty($vCardAddress)) {
-            return;
+            return null;
         }
 
         $country = Arr::get($vCardAddress->getParts(), '6');
-        if (! empty($country)) {
-            return CountriesHelper::find($country);
-        }
+
+        return empty($country) ? null : CountriesHelper::find($country);
     }
 }

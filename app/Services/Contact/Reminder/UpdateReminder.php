@@ -3,6 +3,7 @@
 namespace App\Services\Contact\Reminder;
 
 use App\Services\BaseService;
+use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
 
@@ -34,16 +35,22 @@ class UpdateReminder extends BaseService
     /**
      * Update a reminder.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Reminder
      */
-    public function execute(array $data) : Reminder
+    public function execute(array $data): Reminder
     {
         $this->validate($data);
 
+        /** @var Reminder */
         $reminder = Reminder::where('account_id', $data['account_id'])
             ->where('contact_id', $data['contact_id'])
             ->findOrFail($data['reminder_id']);
+
+        $contact = Contact::where('account_id', $data['account_id'])
+            ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $reminder->update([
             'title' => $data['title'],

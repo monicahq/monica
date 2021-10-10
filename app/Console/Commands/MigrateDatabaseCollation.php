@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\DBHelper;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Console\ConfirmableTrait;
@@ -34,7 +35,7 @@ class MigrateDatabaseCollation extends Command
     {
         if ($this->confirmToProceed()) {
             try {
-                $connection = DB::connection();
+                $connection = DBHelper::connection();
 
                 if ($connection->getDriverName() != 'mysql') {
                     return;
@@ -71,8 +72,8 @@ class MigrateDatabaseCollation extends Command
     /**
      * Switch to utf8mb4.
      *
-     * @param \Illuminate\Database\Connection $connection
-     * @param string $databasename
+     * @param  \Illuminate\Database\Connection  $connection
+     * @param  string  $databasename
      */
     private function toUtf8mb4($connection, $databasename)
     {
@@ -96,8 +97,8 @@ class MigrateDatabaseCollation extends Command
     /**
      * Switch to utf8.
      *
-     * @param \Illuminate\Database\Connection $connection
-     * @param string $databasename
+     * @param  \Illuminate\Database\Connection  $connection
+     * @param  string  $databasename
      */
     private function toUtf8($connection, $databasename)
     {

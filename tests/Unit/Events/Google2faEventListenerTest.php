@@ -24,20 +24,11 @@ class Google2faEventListenerTest extends FeatureTestCase
         $request->session = $this->app['session'];
 
         Google2FA::setRequest($request);
-        app('pragmarx.google2fa')->stateless = false;
+        app('pragmarx.google2fa')->setStateless(false);
     }
 
-    public function test_it_listen_u2f_event()
-    {
-        $user = $this->signIn();
-        $user->google2fa_secret = 'x';
-
-        Event::dispatch('u2f.authentication', ['u2fKey' => null, 'user' => $user]);
-
-        $this->assertTrue($this->app['session']->get('google2fa.auth_passed'));
-    }
-
-    public function test_it_listen_recovery_event()
+    /** @test */
+    public function it_listens_recovery_event()
     {
         $user = $this->signIn();
         $user->google2fa_secret = 'x';
@@ -47,7 +38,8 @@ class Google2faEventListenerTest extends FeatureTestCase
         $this->assertTrue($this->app['session']->get('google2fa.auth_passed'));
     }
 
-    public function test_it_listen_login_remember_event()
+    /** @test */
+    public function it_listens_login_remember_event()
     {
         $user = $this->signIn();
         $user->google2fa_secret = 'x';

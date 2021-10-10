@@ -10,7 +10,8 @@ class EntryTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_get_info_for_journal_entry()
+    /** @test */
+    public function get_info_for_journal_entry()
     {
         $entry = factory(Entry::class)->make([
             'id' => 1,
@@ -23,13 +24,14 @@ class EntryTest extends TestCase
             'type' => 'entry',
             'id' => 1,
             'title' => 'This is the title',
-            'post' => '<p>this is a post</p>',
+            'post' => 'this is a post',
             'day' => 1,
             'day_name' => 'Sun',
             'month' => 1,
             'month_name' => 'JAN',
             'year' => 2017,
             'date' => '2017-01-01 00:00:00',
+            'created_at' => 'Jan 01, 2017 00:00',
         ];
 
         $this->assertEquals(

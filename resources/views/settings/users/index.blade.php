@@ -48,16 +48,15 @@
                   @if ($user->id == auth()->user()->id)
                     {{ trans('settings.users_list_you') }}
                   @else
-                    <a href="#" onclick="if (confirm('{{ trans('settings.users_list_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
-                      <i class="fa fa-trash-o" aria-hidden="true"></i>
-                    </a>
+                    <form method="POST" action="{{ route('settings.users.destroy', $user) }}">
+                      @method('DELETE')
+                      @csrf
+                      <confirm message="{{ trans('settings.users_list_delete_confirmation') }}">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                      </confirm>
+                    </form>
                   @endif
                 </div>
-
-                <form method="POST" action="{{ route('settings.users.destroy', $user) }}" class="entry-delete-form hidden">
-                  {{ method_field('DELETE') }}
-                  {{ csrf_field() }}
-                </form>
               </li>
             @endforeach
             </ul>
@@ -80,15 +79,14 @@
                       {{ trans('settings.users_list_invitations_sent_date', ['date' => \App\Helpers\DateHelper::getShortDate($invitation->created_at)]) }}
                     </div>
                     <div class="table-cell actions">
-                      <a href="#" onclick="if (confirm('{{ trans('settings.users_invitations_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
-                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                      </a>
+                      <form method="POST" action="{{ route('settings.users.invitation.delete', $invitation) }}">
+                        @method('DELETE')
+                        @csrf
+                        <confirm message="{{ trans('settings.users_invitations_delete_confirmation') }}">
+                          <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </confirm>
+                      </form>
                     </div>
-
-                    <form method="POST" action="{{ route('settings.users.invitation.delete', $invitation) }}" class="entry-delete-form hidden">
-                      {{ method_field('DELETE') }}
-                      {{ csrf_field() }}
-                    </form>
                   </li>
               @endforeach
               </ul>

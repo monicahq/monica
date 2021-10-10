@@ -1,0 +1,285 @@
+.settings {
+  .breadcrumb {
+    margin-bottom: 20px;
+  }
+
+  .sidebar-menu {
+    ul {
+      border: 1px solid $border-color;
+      border-radius: 3px;
+    }
+
+    li {
+      padding: 10px;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $border-color;
+      }
+
+      &.selected {
+        background-color: #fafafa;
+
+        i {
+          color: green;
+        }
+      }
+
+      a {
+        width: 100%;
+      }
+
+      i {
+        @if $htmldir == ltr {
+          margin-right: 5px;
+        } @else {
+          margin-left: 5px;
+        }
+        color: #999999;
+      }
+    }
+  }
+
+  .settings-reset,
+  .settings-delete,
+  .settings-group {
+    border: 1px solid;
+    padding: 10px;
+    margin-top: 40px;
+
+    h2 {
+      font-weight: normal;
+      font-size: 16px;
+    }
+
+    h3 {
+      font-weight: normal;
+      font-size: 14px;
+    }
+  }
+
+  .settings-delete {
+    border-color: #d9534f;
+    border-radius: 3px;
+  }
+
+  .settings-reset {
+    border-color: #daa520;
+    border-radius: 3px;
+  }
+
+  .settings-group {
+    border-color: #999999;
+    border-radius: 3px;
+  }
+
+  .warning-zone {
+    margin-bottom: 30px;
+    margin-top: 30px;
+    padding: 10px 10px 5px 15px;
+    border: 1px solid #daa520;
+    border-radius: 3px;
+    background-color: #fffacd;
+  }
+
+  .users-list {
+    h3.with-actions {
+      padding-bottom: 13px;
+
+      a {
+        float: right;
+      }
+    }
+
+    .table-cell.actions {
+      @if $htmldir == ltr {
+        text-align: right;
+      } @else {
+        text-align: left;
+      }
+    }
+  }
+
+  .blank-screen {
+    text-align: center;
+
+    img {
+      margin-bottom: 30px;
+      margin-top: 30px;
+    }
+
+    h2 {
+      font-weight: normal;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      margin-top: 0;
+      border-bottom: 0;
+    }
+
+    p {
+      margin: 0 auto;
+      width: 400px;
+
+      &.cta {
+        margin-top: 40px;
+        margin-bottom: 10px;
+      }
+    }
+
+    .requires-subscription {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #999999;
+    }
+  }
+
+  .subscriptions {
+    .upgrade-benefits {
+      margin-bottom: 20px;
+
+      li {
+        margin-left: 20px;
+        list-style-type: disc;
+      }
+    }
+
+    #label-card-element {
+      margin-bottom: 15px;
+    }
+
+    .downgrade {
+      ul {
+        background-color: #fafafa;
+        border: 1px solid $border-color;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        padding: 25px;
+      }
+
+      li {
+        padding-bottom: 15px;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid $border-color;
+        }
+
+        &:not(:first-child) {
+          margin-top: 10px;
+        }
+
+        &.success {
+          .rule-title {
+            text-decoration: line-through;
+          }
+
+          .icon:after {
+            font-family: FontAwesome;
+            font-size: 17px;
+            content: "\f058";
+            top: 10px;
+            position: relative;;
+          }
+        }
+
+        &.fail {
+          .icon:after {
+            font-family: FontAwesome;
+            font-size: 17px;
+            color: #d9534f;
+            content: "\f057";
+            top: 10px;
+            position: relative;;
+          }
+        }
+
+        .rule-title {
+          font-size: 18px;
+          padding-left: 5px;
+        }
+
+        .rule-to-succeed {
+          font-size: 13px;
+          display: block;
+          padding-left: 27px;
+        }
+      }
+    }
+  }
+
+  .report {
+    .report-summary {
+      background-color: #fafafa;
+      border: 1px solid $border-color;
+      border-radius: 3px;
+      margin-bottom: 30px;
+
+      li {
+        padding: 5px 10px;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid $border-color;
+        }
+
+        span {
+          font-weight: 600;
+        }
+      }
+    }
+
+    .status {
+      text-align: center;
+      width: 95px;
+    }
+
+    .reason {
+      font-style: italic;
+    }
+  }
+
+  &.import {
+    .success {
+      color: #32cd32;
+    }
+
+    .failure {
+      color: #d9534f;
+    }
+
+    .warning {
+      color: #daa520;
+    }
+
+    .date {
+      font-size: 13px;
+      margin-left: 10px;
+    }
+
+    h3.with-actions {
+      padding-bottom: 13px;
+
+      a {
+        float: right;
+      }
+    }
+  }
+
+  &.upload {
+    .warning-zone {
+      padding: 20px 15px;
+
+      ul {
+        @if $htmldir == ltr {
+          margin-left: 20px;
+        } @else {
+          margin-right: 20px;
+        }
+        list-style-type: disc;
+      }
+    }
+  }
+
+  .reminder-info {
+    text-decoration: underline dotted;
+  }
+}

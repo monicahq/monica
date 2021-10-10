@@ -4,6 +4,7 @@ namespace App\Services\Account\Activity;
 
 use Carbon\Carbon;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Collection;
 use App\Models\Account\ActivityType;
 
 class ActivityStatisticService
@@ -11,17 +12,17 @@ class ActivityStatisticService
     /**
      * Return the activities with the contact in a given timeframe.
      *
-     * @param Contact $contact
-     * @param Carbon $startDate
-     * @param Carbon $endDate
-     * @return \Illuminate\Support\Collection
+     * @param  Contact  $contact
+     * @param  Carbon  $startDate
+     * @param  Carbon  $endDate
+     * @return Collection
      */
     public function activitiesWithContactInTimeRange(Contact $contact, Carbon $startDate, Carbon $endDate)
     {
         return $contact->activities()
-                            ->where('date_it_happened', '>=', $startDate)
-                            ->where('date_it_happened', '<=', $endDate)
-                            ->orderBy('date_it_happened', 'desc')
+                            ->where('happened_at', '>=', $startDate)
+                            ->where('happened_at', '<=', $endDate)
+                            ->orderBy('happened_at', 'desc')
                             ->get();
     }
 
@@ -29,20 +30,20 @@ class ActivityStatisticService
      * Get the list of number of activities per year in total done with
      * the contact.
      *
-     * @param  Contact $contact
-     * @return \Illuminate\Support\Collection
+     * @param  Contact  $contact
+     * @return \Illuminate\Database\Eloquent\Collection<\App\Models\Account\ActivityStatistic>
      */
     public function activitiesPerYearWithContact(Contact $contact)
     {
-        return $contact->activityStatistics;
+        return $contact->activityStatistics()->get();
     }
 
     /**
      * Get the list of activities per month for a given year.
      *
-     * @param  Contact $contact
-     * @param  int     $year
-     * @return \Illuminate\Support\Collection
+     * @param  Contact  $contact
+     * @param  int  $year
+     * @return Collection
      */
     public function activitiesPerMonthForYear(Contact $contact, int $year)
     {
@@ -56,7 +57,7 @@ class ActivityStatisticService
             $activitiesInMonth = collect([]);
 
             foreach ($activities as $activity) {
-                if ($activity->date_it_happened->month === $month) {
+                if ($activity->happened_at->month === $month) {
                     $activitiesInMonth->push($activity);
                 }
             }
@@ -87,10 +88,10 @@ class ActivityStatisticService
      * Get the list of unique activity types for activities done with
      * a contact in a given timeframe, along with the number of occurences.
      *
-     * @param Contact $contact
-     * @param Carbon $startDate
-     * @param Carbon $endDate
-     * @return \Illuminate\Support\Collection
+     * @param  Contact  $contact
+     * @param  Carbon  $startDate
+     * @param  Carbon  $endDate
+     * @return Collection
      */
     public function uniqueActivityTypesInTimeRange(Contact $contact, Carbon $startDate, Carbon $endDate)
     {

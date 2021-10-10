@@ -40,10 +40,10 @@ class PopulateLifeEventsTable extends BaseService
     /**
      * Execute the service.
      *
-     * @param array $givenData
+     * @param  array  $givenData
      * @return bool
      */
-    public function execute(array $givenData) : bool
+    public function execute(array $givenData): bool
     {
         $this->data = $givenData;
 
@@ -103,8 +103,9 @@ class PopulateLifeEventsTable extends BaseService
     /**
      * Get the default life event categories.
      *
-     * @throws QueryException if the query does not run for some reasons.
      * @return Collection
+     *
+     * @throws QueryException if the query does not run for some reasons.
      */
     private function getDefaultLifeEventCategories()
     {
@@ -123,25 +124,23 @@ class PopulateLifeEventsTable extends BaseService
     /**
      * Create an entry in the life event category table.
      *
-     * @param object $defaultLifeEventCategory
+     * @param  object  $defaultLifeEventCategory
      * @return LifeEventCategory
      */
     private function feedLifeEventCategory($defaultLifeEventCategory): LifeEventCategory
     {
-        $lifeEventCategory = LifeEventCategory::create([
+        return LifeEventCategory::create([
             'account_id' => $this->data['account_id'],
             'name' => trans('settings.personalization_life_event_category_'.$defaultLifeEventCategory->translation_key),
             'core_monica_data' => true,
             'default_life_event_category_key' => $defaultLifeEventCategory->translation_key,
         ]);
-
-        return $lifeEventCategory;
     }
 
     /**
      * Create an entry in the life event type table.
      *
-     * @param object $defaultLifeEventType
+     * @param  object  $defaultLifeEventType
      * @return void
      */
     private function feedLifeEventType($defaultLifeEventType, $lifeEventCategory)
@@ -149,7 +148,6 @@ class PopulateLifeEventsTable extends BaseService
         LifeEventType::create([
             'account_id' => $this->data['account_id'],
             'life_event_category_id' => $lifeEventCategory->id,
-            'name' => trans('settings.personalization_life_event_type_'.$defaultLifeEventType->translation_key),
             'core_monica_data' => true,
             'specific_information_structure' => $defaultLifeEventType->specific_information_structure,
             'default_life_event_type_key' => $defaultLifeEventType->translation_key,

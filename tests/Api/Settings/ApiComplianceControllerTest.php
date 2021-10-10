@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Api\Contact;
+namespace Tests\Api\Settings;
 
 use Tests\ApiTestCase;
 use App\Models\Settings\Term;
@@ -21,7 +21,8 @@ class ApiComplianceControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_it_gets_a_list_of_terms()
+    /** @test */
+    public function it_gets_a_list_of_terms()
     {
         $term = factory(Term::class, 10)->create([
             'term_version' => rand(1, 100),
@@ -51,7 +52,8 @@ class ApiComplianceControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_a_single_term()
+    /** @test */
+    public function it_gets_a_single_term()
     {
         $term = factory(Term::class)->create([
             'term_version' => rand(1, 100),
@@ -74,7 +76,8 @@ class ApiComplianceControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_doesnt_get_a_single_term()
+    /** @test */
+    public function it_doesnt_get_a_single_term()
     {
         $response = $this->json('GET', '/api/compliance/3');
 

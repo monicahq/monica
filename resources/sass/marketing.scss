@@ -1,0 +1,317 @@
+.marketing {
+
+  &.homepage {
+
+    .top-page {
+      background-color: #4a4a4a;
+      border-bottom: 1px solid #d0d0d0;
+      color: #ffffff;
+      padding-top: 40px;
+      text-align: center;
+
+      .navigation {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+
+        a {
+          border: 1px solid #ffffff;
+          border-radius: 6px;
+          color: #ffffff;
+          padding: 10px;
+          text-decoration: none;
+        }
+      }
+
+      h1 {
+        font-size: 32px;
+        font-weight: 300;
+        margin-bottom: 40px;
+      }
+
+      p {
+        font-size: 18px;
+        font-weight: 300;
+        margin: 0 auto;
+        max-width: 550px;
+
+        &.cta {
+          margin-bottom: 50px;
+          margin-top: 70px;
+
+          a {
+            font-size: 20px;
+            font-weight: 300;
+            padding: 20px 50px;
+          }
+        }
+      }
+
+      .logo {
+        margin-bottom: 20px;
+      }
+    }
+
+    .before-sections {
+      text-align: center;
+
+      h3 {
+        font-size: 25px;
+        font-weight: 300;
+        margin-bottom: 40px;
+        margin-top: 80px;
+      }
+    }
+
+    .section-homepage {
+      border-bottom: 1px solid #d0d0d0;
+      padding: 60px 0;
+
+      .visual {
+        text-align: center;
+      }
+
+      h2 {
+        font-size: 18px;
+        font-weight: 300;
+        margin-bottom: 25px;
+      }
+
+      &.dates {
+        h2 {
+          margin-top: 40px;
+        }
+      }
+
+      &.activities {
+        h2 {
+          margin-top: 130px;
+        }
+      }
+
+      &.features {
+        h3 {
+          font-size: 18px;
+          font-weight: 300;
+          margin-bottom: 40px;
+          text-align: center;
+        }
+
+        ul {
+          li {
+            font-size: 16px;
+            margin: 10px auto;
+            max-width: 60%;
+
+            i {
+              color: #228b22;
+            }
+          }
+        }
+      }
+
+      &.try {
+        text-align: center;
+
+        p {
+          margin-bottom: 50px;
+          margin-top: 70px;
+
+          a {
+            font-size: 20px;
+            font-weight: 300;
+            padding: 20px 50px;
+          }
+        }
+      }
+    }
+
+    .why {
+      background-color: #4a4a4a;
+      color: #ffffff;
+      padding-bottom: 50px;
+
+      h3 {
+        font-size: 20px;
+        font-weight: 300;
+        margin-bottom: 30px;
+        padding-top: 50px;
+        text-align: center;
+      }
+
+      p {
+        font-size: 16px;
+        font-weight: 300;
+        margin: 10px auto 20px;
+        max-width: 550px;
+      }
+    }
+  }
+
+  .footer-marketing {
+    margin-bottom: 40px;
+    padding-top: 40px;
+    text-align: center;
+
+    a {
+      margin-right: 10px;
+    }
+  }
+
+  &.register {
+    background-color: #fafafa;
+    padding-top: 90px;
+    padding-bottom: 40px;
+
+    .offset-md-3-right {
+      margin-right: 25%;
+    }
+
+    .signup-box {
+      background-color: #ffffff;
+      border: 1px solid #d0d0d0;
+      border-radius: 5px;
+      padding: 50px 20px 20px;
+
+      h1 {
+        font-weight: 700;
+        text-align: center;
+      }
+
+      h2, h3 {
+        font-weight: 300;
+        text-align: center;
+      }
+
+      h2 {
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      h3 {
+        font-size: 15px;
+        margin-bottom: 30px;
+      }
+
+      .form-inline {
+        label {
+          display: block;
+        }
+      }
+
+      button {
+        margin-top: 10px;
+        width: 100%;
+      }
+
+      a.action {
+        margin-top: 10px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .help {
+        font-size: 13px;
+        text-align: center;
+      }
+
+      .checkbox {
+        display: none;
+      }
+
+      .links {
+        margin-top: 20px;
+
+        li {
+          font-size: 14px;
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+
+  .subpages {
+    .header {
+      background-color: #4a4a4a;
+      text-align: center;
+    }
+  }
+
+}
+
+.releases, .privacy, .statistics {
+  max-width: 750px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px 30px 100px 30px;
+  margin-top: 50px;
+  background-color: #ffffff;
+  box-shadow: 0px 8px 20px #d0d0d0;
+
+  h2 {
+    text-align: center;
+  }
+
+  h3 {
+    font-size: 15px;
+    margin-top: 30px;
+  }
+}
+
+.releases {
+  ul {
+    list-style-type: disc;
+    margin-left: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .marketing {
+    &.homepage {
+      img {
+        max-width: 100%;
+      }
+
+      .before-sections h3 {
+        margin-bottom: 0;
+      }
+
+      .section-homepage {
+        &.people {
+          .visual {
+            margin-top: 40px;
+          }
+        }
+
+        &.activities {
+          h2 {
+            margin-top: 0;
+          }
+
+          .visual {
+            margin-top: 40px;
+          }
+        }
+
+        &.features {
+          ul li {
+            max-width: 100%;
+          }
+        }
+
+        &.try {
+          padding: 30px 0;
+        }
+      }
+    }
+
+    &.register {
+      .signup-box {
+        .logo {
+          left: 39%;
+          top: -47px;
+        }
+      }
+    }
+  }
+}

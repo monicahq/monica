@@ -2,12 +2,19 @@
 
 namespace App\Http\Resources\Contact;
 
-class ContactSearch extends Contact
+use Illuminate\Http\Resources\Json\JsonResource;
+
+/**
+ * @extends JsonResource<\App\Models\Contact\Contact>
+ */
+class ContactSearch extends JsonResource
 {
+    use ContactBase;
+
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -17,6 +24,7 @@ class ContactSearch extends Contact
             'object' => 'contact',
             'route' => route('people.show', $this),
             'complete_name' => $this->name,
+            'description' => $this->description,
             'initials' => $this->getInitials(),
             'is_me' => $this->isMe(),
             'is_starred' => $this->is_starred,
@@ -27,8 +35,9 @@ class ContactSearch extends Contact
                     'default_avatar_color' => $this->default_avatar_color,
                 ],
             ],
+            'url' => $this->when(! $this->is_partial, route('api.contact', $this->id)),
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
             ],
         ];
     }

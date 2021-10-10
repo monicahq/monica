@@ -25,20 +25,22 @@ class DestroyContact extends BaseService
     /**
      * Destroy a contact.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
-    public function execute(array $data) : bool
+    public function execute(array $data): bool
     {
         $this->validate($data);
 
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
+        $contact->throwInactive();
+
         $this->destroyRelationships($data, $contact);
 
         $contact->deleteAvatars();
-        $contact->deleteEverything();
+        $contact->delete();
 
         return true;
     }
@@ -46,8 +48,8 @@ class DestroyContact extends BaseService
     /**
      * Destroy all associated relationships.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function destroyRelationships(array $data, Contact $contact)
@@ -62,8 +64,8 @@ class DestroyContact extends BaseService
     /**
      * Delete specific relationships.
      *
-     * @param array $data
-     * @param \Illuminate\Support\Collection $relationships
+     * @param  array  $data
+     * @param  \Illuminate\Support\Collection  $relationships
      * @return void
      */
     private function destroySpecificRelationships(array $data, $relationships)

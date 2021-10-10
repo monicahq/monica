@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use Illuminate\View\View;
 use App\Helpers\DateHelper;
+use App\Helpers\FormHelper;
 use Illuminate\Http\Request;
-use App\Helpers\GendersHelper;
+use App\Helpers\GenderHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Relationship\Relationship;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Contact\Contact\CreateContact;
@@ -23,40 +26,41 @@ class RelationshipsController extends Controller
     /**
      * Display the Create relationship page.
      *
-     * @param Contact $contact
-     *
-     * @return \Illuminate\View\View
+     * @param  Contact  $contact
+     * @return View
      */
     public function create(Request $request, Contact $contact)
     {
-        $existingContacts = Contact::search('', Auth::user()->account_id, 20, 'updated_at', 'AND `id` != '.$contact->id);
+        $existingContacts = Contact::search('', Auth::user()->account_id, 'updated_at')
+            ->whereNotIn('id', [$contact->id])
+            ->paginate(20);
 
         return view('people.relationship.new')
             ->withContact($contact)
             ->withPartner(new Contact)
-            ->withGenders(GendersHelper::getGendersInput())
+            ->withGenders(GenderHelper::getGendersInput())
             ->withRelationshipTypes($this->getRelationshipTypesList($contact))
             ->withDefaultGender(auth()->user()->account->default_gender_id)
             ->withDays(DateHelper::getListOfDays())
             ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdate(now(DateHelper::getTimezone())->toDateString())
             ->withExistingContacts(ContactResource::collection($existingContacts))
-            ->withType($request->get('type'));
+            ->withType($request->input('type'))
+            ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Request  $request
+     * @param  Contact  $contact
+     * @return RedirectResponse
      */
     public function store(Request $request, Contact $contact)
     {
         // case of linking to an existing contact
-        if ($request->get('relationship_type') == 'existing') {
-            $partnerId = $request->get('existing_contact_id');
+        if ($request->input('relationship_type') == 'existing') {
+            $partnerId = $request->input('existing_contact_id');
         } else {
 
             // case of creating a new contact
@@ -76,7 +80,7 @@ class RelationshipsController extends Controller
             'account_id' => auth()->user()->account_id,
             'contact_is' => $contact->id,
             'of_contact' => $partnerId,
-            'relationship_type_id' => $request->get('relationship_type_id'),
+            'relationship_type_id' => $request->input('relationship_type_id'),
         ]);
 
         return redirect()->route('people.show', $contact)
@@ -86,13 +90,14 @@ class RelationshipsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Contact $contact
-     * @param Relationship $relationship
-     *
-     * @return \Illuminate\View\View
+     * @param  Contact  $contact
+     * @param  Relationship  $relationship
+     * @return View
      */
     public function edit(Contact $contact, Relationship $relationship)
     {
+        $contact->throwInactive();
+
         $otherContact = $relationship->ofContact;
 
         $now = now();
@@ -117,18 +122,18 @@ class RelationshipsController extends Controller
             ->withDay($day)
             ->withMonth($month)
             ->withAge($age)
-            ->withGenders(GendersHelper::getGendersInput())
-            ->withHasBirthdayReminder($hasBirthdayReminder);
+            ->withGenders(GenderHelper::getGendersInput())
+            ->withHasBirthdayReminder($hasBirthdayReminder)
+            ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Contact $contact
-     * @param Relationship $relationship
-     *
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Request  $request
+     * @param  Contact  $contact
+     * @param  Relationship  $relationship
+     * @return RedirectResponse
      */
     public function update(Request $request, Contact $contact, Relationship $relationship)
     {
@@ -145,6 +150,7 @@ class RelationshipsController extends Controller
 
             app(UpdateContact::class)->execute($datas + [
                 'contact_id' => $otherContact->id,
+                'author_id' => auth()->user()->id,
             ]);
         }
 
@@ -152,7 +158,7 @@ class RelationshipsController extends Controller
         app(UpdateRelationship::class)->execute([
             'account_id' => auth()->user()->account_id,
             'relationship_id' => $relationship->id,
-            'relationship_type_id' => $request->get('relationship_type_id'),
+            'relationship_type_id' => $request->input('relationship_type_id'),
         ]);
 
         return redirect()->route('people.show', $contact)
@@ -162,7 +168,7 @@ class RelationshipsController extends Controller
     /**
      * Validate datas and get an array for create or update a contact.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return array|\Illuminate\Contracts\Validation\Validator
      */
     private function validateAndGetDatas(Request $request)
@@ -179,31 +185,32 @@ class RelationshipsController extends Controller
         }
 
         // this is really ugly. it should be changed
-        if ($request->get('birthdate') == 'exact') {
+        if ($request->input('birthdate') == 'exact') {
             $birthdate = $request->input('birthdayDate');
             $birthdate = DateHelper::parseDate($birthdate);
             $day = $birthdate->day;
             $month = $birthdate->month;
             $year = $birthdate->year;
         } else {
-            $day = $request->get('day');
-            $month = $request->get('month');
-            $year = $request->get('year');
+            $day = $request->input('day');
+            $month = $request->input('month');
+            $year = $request->input('year');
         }
 
         return [
             'account_id' => auth()->user()->account_id,
+            'author_id' => auth()->user()->id,
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'gender_id' => $request->input('gender_id'),
-            'is_birthdate_known' => ! empty($request->get('birthdate')) && $request->get('birthdate') !== 'unknown',
+            'is_birthdate_known' => ! empty($request->input('birthdate')) && $request->input('birthdate') !== 'unknown',
             'birthdate_day' => $day,
             'birthdate_month' => $month,
             'birthdate_year' => $year,
-            'birthdate_is_age_based' => $request->get('birthdate') === 'approximate',
-            'birthdate_age' => $request->get('age'),
-            'birthdate_add_reminder' => ! empty($request->get('addReminder')),
-            'is_partial' => ! $request->get('realContact'),
+            'birthdate_is_age_based' => $request->input('birthdate') === 'approximate',
+            'birthdate_age' => $request->input('age'),
+            'birthdate_add_reminder' => ! empty($request->input('addReminder')),
+            'is_partial' => ! $request->input('realContact'),
             'is_deceased' => false,
             'is_deceased_date_known' => false,
         ];
@@ -212,10 +219,9 @@ class RelationshipsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Contact $contact
-     * @param Relationship $relationship
-     *
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Contact  $contact
+     * @param  Relationship  $relationship
+     * @return RedirectResponse
      */
     public function destroy(Contact $contact, Relationship $relationship)
     {

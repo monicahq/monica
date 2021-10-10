@@ -1,0 +1,137 @@
+name: Cypress tests
+
+on:
+  pull_request:
+    types: [labeled, opened, synchronize, reopened]
+
+env:
+  node-version: 15
+
+
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'cypress')
+    name: Cypress tests with ${{ matrix.browser }} (PHP ${{ matrix.php-version }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [7.4]
+        browser: [chrome]
+        containers: [1, 2, 3, 4, 5, 6, 7, 8]
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: redis
+          coverage: none
+      - name: Check PHP Version
+        run: php -v
+      - name: Check Composer Version
+        run: composer -V
+      - name: Check PHP Extensions
+        run: php -m
+
+    # Composer
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer files
+        uses: actions/cache@v2.1.6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-
+
+      - name: Install composer dependencies
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+
+    # Yarn
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.node-version }}
+      - name: Get yarn cache directory path
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache yarn files
+        uses: actions/cache@v2.1.6
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            ${{ runner.os }}-yarn-
+
+      - name: Install yarn dependencies
+        run: yarn inst
+      - name: Build assets
+        run: yarn run production
+
+    # Prepare
+      - name: Prepare environment
+        run: |
+          cp scripts/ci/.env.mysql .env
+          touch config/.version config/.release config/.commit
+          mkdir -p results/coverage
+          echo "REQUIRES_SUBSCRIPTION=true" >> .env
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Start mysql
+        run: sudo systemctl start mysql.service
+      - name: Create database
+        run: mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+      - name: Prepare database
+        run: mysql --protocol=tcp -u root -proot monica < scripts/database.test.sql
+      - name: Run migrations
+        run: php artisan migrate --no-interaction -vvv
+
+      - name: Run seeds
+        run: php artisan db:seed --no-interaction -vvv
+      - name: Create passport keys
+        run: php artisan passport:keys --no-interaction -vvv
+
+
+    # Cypress
+      - name: Cypress verify
+        run: npx cypress verify
+
+      - name: Find google-chrome
+        run: which google-chrome || true
+      - uses: cypress-io/github-action@v2
+        id: cypress
+        continue-on-error: true
+        with:
+          start: php artisan serve
+          browser: ${{ matrix.browser }}
+          headless: true
+          record: true
+          parallel: true
+          install: false
+          group: github action ${{ matrix.browser }}
+          tag: ${{ github.event_name }}
+          config: baseUrl=http://localhost:8000
+          wait-on: http://localhost:8000
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMIT_INFO_MESSAGE: ${{ github.event.pull_request.title }}
+
+      - name: Cypress infos
+        run: |
+          echo Cypress finished with: ${{ steps.cypress.outcome }}
+          echo See results at ${{ steps.cypress.outputs.dashboardUrl }}

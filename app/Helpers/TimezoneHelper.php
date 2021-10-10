@@ -4,7 +4,6 @@ namespace App\Helpers;
 
 use DateTimeZone;
 use function Safe\substr;
-use Illuminate\Support\Arr;
 
 class TimezoneHelper
 {
@@ -13,18 +12,20 @@ class TimezoneHelper
      *
      * @return array
      */
-    public static function getListOfTimezones() : array
+    public static function getListOfTimezones(): array
     {
         $list = [];
         $timezones = DateTimeZone::listIdentifiers();
 
-        foreach ($timezones as $timezone) {
-            [$tz, $name] = self::formatTimezone($timezone);
-            array_push($list, [
-                'id' => $tz,
-                'timezone' => $timezone,
-                'name' => $name,
-            ]);
+        if ($timezones !== false) {
+            foreach ($timezones as $timezone) {
+                [$tz, $name] = self::formatTimezone($timezone);
+                array_push($list, [
+                    'id' => $tz,
+                    'timezone' => $timezone,
+                    'name' => $name,
+                ]);
+            }
         }
 
         $collect = collect($list)
@@ -33,9 +34,9 @@ class TimezoneHelper
 
         $result = [];
         foreach ($collect as $item) {
-            $values = array_values(Arr::sort($item, function ($value) {
+            $values = $item->sortByCollator(function ($value) {
                 return $value['name'];
-            }));
+            });
             foreach ($values as $val) {
                 array_push($result, $val);
             }
@@ -47,10 +48,10 @@ class TimezoneHelper
     /**
      * Format a timezone to be displayed (english only).
      *
-     * @param string $timezone
+     * @param  string  $timezone
      * @return array int value of the offset, string formatted timezone
      */
-    private static function formatTimezone($timezone) : array
+    private static function formatTimezone($timezone): array
     {
         $dtimezone = new DateTimeZone($timezone);
         $time = now($timezone);
@@ -85,6 +86,8 @@ class TimezoneHelper
     /**
      * Equivalent timezone to convert deprecated timezone.
      *
+     * @var array<string>
+     *
      * @see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
      */
     protected static $equivalentTimezone = [
@@ -110,10 +113,10 @@ class TimezoneHelper
     /**
      * Adjust a timezone with equivalent name (remove deprecated).
      *
-     * @param string $timezone
+     * @param  string  $timezone
      * @return string
      */
-    public static function adjustEquivalentTimezone($timezone) : string
+    public static function adjustEquivalentTimezone($timezone): string
     {
         if (array_key_exists($timezone, self::$equivalentTimezone)) {
             return self::$equivalentTimezone[$timezone];

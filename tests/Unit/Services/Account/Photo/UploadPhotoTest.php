@@ -15,7 +15,8 @@ class UploadPhotoTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_uploads_a_photo()
+    /** @test */
+    public function it_uploads_a_photo()
     {
         Storage::fake('photos');
 
@@ -24,7 +25,8 @@ class UploadPhotoTest extends TestCase
         $file = UploadedFile::fake()->image('imag.png');
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
             'photo' => $file,
         ];
 
@@ -32,7 +34,7 @@ class UploadPhotoTest extends TestCase
 
         $this->assertDatabaseHas('photos', [
             'id' => $photo->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'mime_type' => 'image/png',
         ]);
 
@@ -42,10 +44,11 @@ class UploadPhotoTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [
-            'account_id' => 1,
+            'account_id' => 'wrong',
         ];
 
         $this->expectException(ValidationException::class);
@@ -53,17 +56,19 @@ class UploadPhotoTest extends TestCase
         app(UploadPhoto::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_account_does_not_exist()
+    /** @test */
+    public function it_throws_an_exception_if_account_does_not_exist()
     {
         Storage::fake('photos');
 
         $request = [
-            'account_id' => 12345,
+            'account_id' => 0,
+            'contact_id' => 0,
             'photo' => UploadedFile::fake()->image('document.pdf'),
         ];
 
         $this->expectException(ValidationException::class);
 
-        $uploadService = app(UploadPhoto::class)->execute($request);
+        app(UploadPhoto::class)->execute($request);
     }
 }

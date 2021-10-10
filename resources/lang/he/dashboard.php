@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Editing not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'dashboard_blank_title' => 'ברוך בואך לחשבון שלך!',
     'dashboard_blank_description' => 'מוניקה הוא המקום לארגן את כל המגע החברתי שלך עם אלו שאכפת לך מהם.',
@@ -29,7 +35,7 @@ return [
     'statistics_gifts' => 'מתנות',
 
     'reminders_next_months' => 'אירועים ב־3 החודשים הקרובים',
-    'reminders_none' => 'אין תזכורת לחודש הזה',
+    'reminders_none' => 'אין תזכורת לחודש הזה.',
 
     'product_changes' => 'שינויים במוצר',
     'product_view_details' => 'הצגת פרטים',

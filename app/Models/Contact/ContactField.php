@@ -3,10 +3,12 @@
 namespace App\Models\Contact;
 
 use App\Models\Account\Account;
+use App\Interfaces\LabelInterface;
 use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class ContactField extends Model
+class ContactField extends Model implements LabelInterface
 {
     /**
      * The attributes that aren't mass assignable.
@@ -43,7 +45,17 @@ class ContactField extends Model
     }
 
     /**
-     * Get the contact record associated with the contact field.
+     * Get the label associated with the contact.
+     *
+     * @return BelongsToMany
+     */
+    public function labels()
+    {
+        return $this->belongsToMany(ContactFieldLabel::class);
+    }
+
+    /**
+     * Get the type associated with the contact field.
      *
      * @return BelongsTo
      */
@@ -55,7 +67,7 @@ class ContactField extends Model
     /**
      * Scope a query to only include contact field of email type.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeEmail($query)
@@ -68,7 +80,7 @@ class ContactField extends Model
     /**
      * Scope a query to only include contact field of phone type.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePhone($query)

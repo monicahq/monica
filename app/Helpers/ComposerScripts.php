@@ -21,7 +21,7 @@ class ComposerScripts
                 \Illuminate\Foundation\ComposerScripts::postInstall($event);
             }
             static::clear();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             // catch all
         }
     }
@@ -41,7 +41,7 @@ class ComposerScripts
                 \Illuminate\Foundation\ComposerScripts::postUpdate($event);
             }
             static::clear();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             // catch all
         }
     }
@@ -52,7 +52,7 @@ class ComposerScripts
     protected static function clear()
     {
         if (file_exists(self::CONFIG)) {
-            \unlink(self::CONFIG);
+            \unlink(self::CONFIG); /** @phpstan-ignore-line */
         }
     }
 }

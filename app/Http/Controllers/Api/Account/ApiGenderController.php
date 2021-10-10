@@ -36,8 +36,7 @@ class ApiGenderController extends ApiController
     /**
      * Get the detail of a given gender.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return GenderResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $genderId)
@@ -56,19 +55,18 @@ class ApiGenderController extends ApiController
     /**
      * Store the gender.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return GenderResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
             $gender = app(CreateGender::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -84,21 +82,20 @@ class ApiGenderController extends ApiController
     /**
      * Update a gender.
      *
-     * @param Request $request
-     * @param int $genderId
-     *
+     * @param  Request  $request
+     * @param  int  $genderId
      * @return GenderResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $genderId)
     {
         try {
             $gender = app(UpdateGender::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'gender_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'gender_id' => $genderId,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                        'gender_id' => $genderId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -114,15 +111,14 @@ class ApiGenderController extends ApiController
     /**
      * Delete a gender.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $genderId)
+    public function destroy(Request $request, int $genderId)
     {
         try {
             app(DestroyGender::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'gender_id' => $genderId,
             ]);
         } catch (ModelNotFoundException $e) {
@@ -133,6 +129,6 @@ class ApiGenderController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $genderId);
+        return $this->respondObjectDeleted($genderId);
     }
 }

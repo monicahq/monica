@@ -26,13 +26,14 @@ class UpdateTag extends BaseService
     /**
      * Update a tag.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Tag
      */
-    public function execute(array $data) : Tag
+    public function execute(array $data): Tag
     {
         $this->validate($data);
 
+        /** @var Tag */
         $tag = Tag::where('account_id', $data['account_id'])
                             ->findOrFail($data['tag_id']);
 

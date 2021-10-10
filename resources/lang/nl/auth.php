@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Editing not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     /*
@@ -17,20 +23,20 @@ return [
     'throttle' => 'Te veel inlogpogingen. Probeer opnieuw in :seconds seconden.',
     'not_authorized' => 'Je bent niet gemachtigd om dit te doen',
     'signup_disabled' => 'Registratie is momenteel uitgeschakeld',
+    'signup_error' => 'Er is een fout opgetreden bij het registreren van de gebruiker',
     'back_homepage' => 'Terug naar homepage',
     'mfa_auth_otp' => 'Verifieer met je tweestapsverificatie apparaat',
-    'mfa_auth_u2f' => 'Verifieer met een U2F apparaat',
     'mfa_auth_webauthn' => 'Authenticeer met een beveiligingssleutel (WebAuthn)',
     '2fa_title' => 'Tweestapsverificatie',
     '2fa_wrong_validation' => 'De tweestapsverificatie is mislukt.',
     '2fa_one_time_password' => 'Tweestapsverificatiecode',
     '2fa_recuperation_code' => 'Voer een tweestapsverificatiecode in',
+    '2fa_one_time_or_recuperation' => 'Voer een tweestapsverificatiecode of een herstelcode in',
     '2fa_otp_help' => 'Open je tweestapsverificatiecode-app en kopieer de code',
-    'u2f_otp_extension' => 'U2F wordt alleen ondersteund door Chrome, <a href="{urlquantum}" lang="en">Firefox Quantum</a> en Opera. Voor oudere Firefox installaties, installeer de <a href="{urlext}">U2F Support Extensie</a>.',
 
-    'login_to_account' => 'Aanmelden op uw account',
+    'login_to_account' => 'Inloggen op je account',
     'login_with_recovery' => 'Inloggen met een herstelcode',
-    'login_again' => 'Gelieve nogmaals in te loggen op uw account',
+    'login_again' => 'Gelieve nogmaals in te loggen op je account',
     'email' => 'E-mail',
     'password' => 'Wachtwoord',
     'recovery' => 'Herstelcode',
@@ -53,7 +59,7 @@ return [
     'password_reset_action' => 'Wachtwoord resetten',
     'password_reset_email_content' => 'Klik hier om je wachtwoord te resetten:',
 
-    'register_title_welcome' => 'Welkom bij je nieuwe Monica installatie',
+    'register_title_welcome' => 'Welkom bij je nieuwe Monica-installatie',
     'register_create_account' => 'Je moet een account aanmaken om Monica te kunnen gebruiken',
     'register_title_create' => 'Maak jouw Monica account aan',
     'register_login' => '<a href=":url">Inloggen</a> als je al een account hebt.',
@@ -73,7 +79,7 @@ return [
     'confirmation_title' => 'Verifieer je e-mailadres',
     'confirmation_fresh' => 'Een nieuwe verificatie e-mail is verstuurd naar jouw e-mailadres.',
     'confirmation_check' => 'Voordat je verdergaat, controleer alsjeblieft je e-mail voor een verificatie e-mail.',
-    'confirmation_request_another' => 'Als je de e-mail niet hebt ontvangen <a href=":url">Klik hier om er nog een</a> te sturen.',
+    'confirmation_request_another' => 'Heb je de e-mail niet ontvangen? <a :action>Klik hier om er nog een te sturen.</a>',
 
     'confirmation_again' => 'Als je jouw e-mailadres wilt wijzigen kun je <a href=":url" class="alert-link">hier klikken</a>.',
     'email_change_current_email' => 'Huidige e-mailadres:',

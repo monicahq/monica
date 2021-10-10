@@ -28,10 +28,10 @@ class CreateGender extends BaseService
     /**
      * Create a gender.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Gender
      */
-    public function execute(array $data) : Gender
+    public function execute(array $data): Gender
     {
         $this->validate($data);
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Models\Account\Photo;
+use App\Helpers\AccountHelper;
+use App\Helpers\StorageHelper;
 use App\Models\Contact\Document;
 use App\Http\Controllers\Controller;
 
@@ -13,16 +15,12 @@ class StorageController extends Controller
      */
     public function index()
     {
-        $documents = Document::where('account_id', auth()->user()->account->id)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        $photos = Photo::where('account_id', auth()->user()->account->id)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $documents = Document::where('account_id', auth()->user()->account_id)->get();
+        $photos = Photo::where('account_id', auth()->user()->account_id)->get();
+        $elements = $documents->concat($photos)->sortByDesc('created_at');
 
         // size is in bytes in the database
-        $currentAccountSize = auth()->user()->account->getStorageSize();
+        $currentAccountSize = StorageHelper::getAccountStorageSize(auth()->user()->account);
 
         if ($currentAccountSize != 0) {
             $currentAccountSize = round($currentAccountSize / 1000000);
@@ -31,9 +29,11 @@ class StorageController extends Controller
         // correspondingPercent
         $percentUsage = round($currentAccountSize * 100 / config('monica.max_storage_size'));
 
+        $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
+
         return view('settings.storage.index')
-            ->withDocuments($documents)
-            ->withPhotos($photos)
+            ->withAccountHasLimitations($accountHasLimitations)
+            ->withElements($elements)
             ->withCurrentAccountSize($currentAccountSize)
             ->withAccountLimit(config('monica.max_storage_size'))
             ->withPercentUsage($percentUsage);

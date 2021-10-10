@@ -6,8 +6,8 @@ use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
 use Illuminate\Http\Request;
 use App\Models\Journal\Entry;
+use App\Helpers\JournalHelper;
 use App\Models\Journal\JournalEntry;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Journal\DaysRequest;
 
@@ -25,6 +25,7 @@ class JournalController extends Controller
 
     /**
      * Get all the journal entries.
+     *
      * @return array
      */
     public function list()
@@ -38,7 +39,7 @@ class JournalController extends Controller
         $previousEntryYear = 0;
         $showCalendar = true;
 
-        foreach ($journalEntries as $journalEntry) {
+        foreach ($journalEntries->items() as $journalEntry) {
             if ($previousEntryMonth == $journalEntry->date->month && $previousEntryYear == $journalEntry->date->year) {
                 $showCalendar = false;
             }
@@ -72,7 +73,8 @@ class JournalController extends Controller
 
     /**
      * Gets the details of a single Journal Entry.
-     * @param  JournalEntry $journalEntry
+     *
+     * @param  JournalEntry  $journalEntry
      * @return array
      */
     public function get(JournalEntry $journalEntry)
@@ -87,8 +89,8 @@ class JournalController extends Controller
     {
         $day = auth()->user()->account->days()->create([
             'date' => now(DateHelper::getTimezone()),
-            'rate' => $request->get('rate'),
-            'comment' => $request->get('comment'),
+            'rate' => $request->input('rate'),
+            'comment' => $request->input('comment'),
         ]);
 
         // Log a journal entry
@@ -117,11 +119,12 @@ class JournalController extends Controller
 
     /**
      * Indicates whether the user has already rated the current day.
+     *
      * @return string
      */
     public function hasRated()
     {
-        if (auth()->user()->hasAlreadyRatedToday()) {
+        if (JournalHelper::hasAlreadyRatedToday(auth()->user())) {
             return 'true';
         }
 
@@ -141,7 +144,7 @@ class JournalController extends Controller
     /**
      * Saves the journal entry.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function save(Request $request)
@@ -177,7 +180,7 @@ class JournalController extends Controller
     /**
      * Display the Edit journal entry screen.
      *
-     * @param Entry $entry
+     * @param  Entry  $entry
      * @return \Illuminate\View\View
      */
     public function edit(Entry $entry)
@@ -189,7 +192,7 @@ class JournalController extends Controller
     /**
      * Update a journal entry.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Entry $entry)

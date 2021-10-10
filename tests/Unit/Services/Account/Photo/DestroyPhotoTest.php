@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Document;
+namespace Tests\Unit\Services\Account\Photo;
 
 use Tests\TestCase;
 use App\Models\Account\Photo;
@@ -18,13 +18,14 @@ class DestroyPhotoTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_a_photo()
+    /** @test */
+    public function it_destroys_a_photo()
     {
         $contact = factory(Contact::class)->create([]);
         $photo = $this->uploadPhoto($contact);
 
         $request = [
-            'account_id' => $photo->account->id,
+            'account_id' => $photo->account_id,
             'photo_id' => $photo->id,
         ];
 
@@ -41,7 +42,8 @@ class DestroyPhotoTest extends TestCase
         Storage::disk('photos')->assertMissing('photo.png');
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [
             'photo_id' => 2,
@@ -52,7 +54,8 @@ class DestroyPhotoTest extends TestCase
         app(DestroyPhoto::class)->execute($request);
     }
 
-    public function test_it_throws_a_photo_doesnt_exist()
+    /** @test */
+    public function it_throws_a_photo_doesnt_exist()
     {
         $account = factory(Account::class)->create([]);
         $photo = factory(Photo::class)->create([]);
@@ -72,12 +75,11 @@ class DestroyPhotoTest extends TestCase
         Storage::fake('photos');
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
             'photo' => UploadedFile::fake()->image('photo.png'),
         ];
 
-        $uploadService = new UploadPhoto;
-
-        return $uploadService->execute($request);
+        return app(UploadPhoto::class)->execute($request);
     }
 }

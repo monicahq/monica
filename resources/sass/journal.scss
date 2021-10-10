@@ -1,0 +1,26 @@
+.journal-calendar-text {
+  top: 19px;
+  line-height: 16px;
+  width: 62px;
+}
+
+.journal-calendar-box {
+  width: 62px;
+  @if $htmldir == ltr {
+    margin-right: 11px;
+  } @else {
+    margin-left: 11px;
+  }
+}
+
+.journal-calendar-content {
+  width: calc(100% - 73px);
+}
+
+.journal-line {
+  transition: all .2s;
+
+  &:hover {
+    border-color: #0366d5;
+  }
+}

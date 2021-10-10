@@ -56,7 +56,7 @@
               @include('partials.errors')
 
               <form action="{{ route('settings.storeImport') }}" method="POST" enctype="multipart/form-data">
-                {{ csrf_field() }}
+                @csrf
 
                   <div class="form-group">
                       <label for="vcard">{!! trans('settings.import_upload_form_file') !!}</label>

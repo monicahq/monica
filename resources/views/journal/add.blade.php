@@ -26,7 +26,7 @@
         <div class="row">
           <div class="col-12 col-sm-6 offset-sm-3 offset-sm-3-right">
             <form method="POST" action="{{ route('journal.save') }}">
-              {{ csrf_field() }}
+              @csrf
 
               @include('partials.errors')
 

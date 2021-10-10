@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Jobs;
+namespace Tests\Commands;
 
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -15,7 +15,8 @@ class SendStayInTouchTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_schedules_a_stay_in_touch_job()
+    /** @test */
+    public function it_schedules_a_stay_in_touch_job()
     {
         Bus::fake();
 
@@ -33,7 +34,8 @@ class SendStayInTouchTest extends TestCase
         Bus::assertDispatched(ScheduleStayInTouch::class);
     }
 
-    public function test_it_doesnt_schedule_stay_in_touch_jobs_if_no_date_is_found()
+    /** @test */
+    public function it_doesnt_schedule_stay_in_touch_jobs_if_no_date_is_found()
     {
         Bus::fake();
 

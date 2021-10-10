@@ -24,10 +24,10 @@ class GetGravatarURL extends BaseService
     /**
      * Get Gravatar, if it exists.
      *
-     * @param array $data
+     * @param  array  $data
      * @return string|null
      */
-    public function execute(array $data)
+    public function execute(array $data): ?string
     {
         $this->validate($data);
 
@@ -35,16 +35,18 @@ class GetGravatarURL extends BaseService
             $size = $this->size($data);
 
             return Gravatar::get($data['email'], [
-                    'size' => $size,
-                    'secure' => App::environment('production'),
-                ]);
+                'size' => $size,
+                'secure' => App::environment('production'),
+            ]);
         }
+
+        return null;
     }
 
     /**
      * Test given email.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     private function exists(array $data)

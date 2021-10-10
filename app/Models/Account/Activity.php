@@ -2,20 +2,19 @@
 
 namespace App\Models\Account;
 
-use Parsedown;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Contact\Contact;
+use App\Models\Journal\JournalEntry;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Instance\Emotion\Emotion;
 use App\Interfaces\IsJournalableInterface;
-use App\Models\ModelBindingHasher as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 /**
- * @property Account $account
- * @property Contact $contact
- * @property ActivityType $type
+ * @property int|null $activity_type_id
  */
 class Activity extends Model implements IsJournalableInterface
 {
@@ -40,7 +39,7 @@ class Activity extends Model implements IsJournalableInterface
      *
      * @var array
      */
-    protected $dates = ['date_it_happened'];
+    protected $dates = ['happened_at'];
 
     /**
      * The relations to eager load on every query.
@@ -84,17 +83,23 @@ class Activity extends Model implements IsJournalableInterface
     }
 
     /**
-     * Return the markdown parsed body.
-     *
-     * @return string|null
+     * Get all of the activities journal entries.
      */
-    public function getParsedContentAttribute()
+    public function journalEntries()
     {
-        if (is_null($this->description)) {
-            return;
-        }
+        return $this->morphMany(JournalEntry::class, 'journalable');
+    }
 
-        return (new Parsedown())->text($this->description);
+    /**
+     * Get the emotion records associated with the activity.
+     *
+     * @return BelongsToMany
+     */
+    public function emotions()
+    {
+        return $this->belongsToMany(Emotion::class, 'emotion_activity', 'activity_id', 'emotion_id')
+            ->withPivot('account_id')
+            ->withTimestamps();
     }
 
     /**
@@ -108,23 +113,13 @@ class Activity extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get the description for this activity.
-     *
-     * @return string or null
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
      * Get the key of the title of the activity.
      *
      * @return string or null
      */
     public function getTitle()
     {
-        return $this->type ? $this->type->key : null;
+        return $this->type ? $this->type->translation_key : null;
     }
 
     /**
@@ -132,21 +127,17 @@ class Activity extends Model implements IsJournalableInterface
      */
     public function getContactsForAPI()
     {
-        $attendees = collect([]);
+        $attendees = $this->contacts->filter(function ($contact) {
+            // This should not be possible!
+            return $contact->account_id === $this->account_id;
+        });
 
-        foreach ($this->contacts as $contact) {
-            if ($contact->account_id !== $this->account_id) {
-                // This should not be possible!
-                continue;
-            }
-            $attendees->push(new ContactShortResource($contact));
-        }
-
-        return $attendees;
+        return ContactShortResource::collection($attendees);
     }
 
     /**
      * Gets the information about the activity for the journal.
+     *
      * @return array
      */
     public function getInfoForJournalEntry()
@@ -157,11 +148,11 @@ class Activity extends Model implements IsJournalableInterface
             'activity_type' => (! is_null($this->type) ? $this->type->name : null),
             'summary' => $this->summary,
             'description' => $this->description,
-            'day' => $this->date_it_happened->day,
-            'day_name' => mb_convert_case(DateHelper::getShortDay($this->date_it_happened), MB_CASE_TITLE, 'UTF-8'),
-            'month' => $this->date_it_happened->month,
-            'month_name' => mb_convert_case(DateHelper::getShortMonth($this->date_it_happened), MB_CASE_UPPER, 'UTF-8'),
-            'year' => $this->date_it_happened->year,
+            'day' => $this->happened_at->day,
+            'day_name' => mb_convert_case(DateHelper::getShortDay($this->happened_at), MB_CASE_TITLE, 'UTF-8'),
+            'month' => $this->happened_at->month,
+            'month_name' => mb_convert_case(DateHelper::getShortMonth($this->happened_at), MB_CASE_UPPER, 'UTF-8'),
+            'year' => $this->happened_at->year,
             'attendees' => $this->getContactsForAPI(),
         ];
     }

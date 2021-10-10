@@ -31,7 +31,7 @@ class ImportVCards extends Command
     /**
      * Execute the console command.
      *
-     * @param Filesystem $filesystem
+     * @param  Filesystem  $filesystem
      * @return mixed
      */
     public function handle(Filesystem $filesystem)
@@ -68,10 +68,10 @@ class ImportVCards extends Command
 
         $importJob = $this->import($path, $user);
 
-        return $this->report($importJob);
+        return $this->report($importJob) ? 0 : 1;
     }
 
-    private function acceptedExtensions(Filesystem $filesystem, string $path) : bool
+    private function acceptedExtensions(Filesystem $filesystem, string $path): bool
     {
         switch ($filesystem->extension($path)) {
             case 'vcf':
@@ -92,7 +92,7 @@ class ImportVCards extends Command
             'filename' => $pathName,
         ]);
 
-        dispatch_now(new AddContactFromVCard($importJob));
+        AddContactFromVCard::dispatchSync($importJob);
 
         return $importJob;
     }

@@ -1,10 +1,16 @@
 <?php
 
+/**
+ * ⚠️ Edition not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
-    'message' => 'Thanks for signing up! Please check your emails to confirm your email address.',
-    'success' => 'You have successfully verified your account! You can now login.',
-    'again' => 'You must verify your email before you can access the site.
-                <br/>If you have not received the confirmation email check your spam folder.
-                <br/>To get a new confirmation email please <a href=":url" class="alert-link">click here</a>.',
-    'resend' => 'A confirmation message has been sent. Please check your mailbox.'
+    'message' => 'Děkujeme za registraci! Prosím, zkontrolujte své e-maily a potvrďte svou e-mailovou adresu.',
+    'success' => 'Úspěšně jste ověřili svůj účet! Nyní se můžete přihlásit.',
+    'again' => 'Musíte ověřit svůj e-mail, než budete moci přistupovat na web.
+                <br/>Pokud jste neobdrželi potvrzovací e-mail, zkontrolujte složku s nevyžádanou poštou.
+                <br/>Chcete-li získat nový potvrzovací e-mail, <a href=":url" class="alert-link">klikněte zde</a>.',
+    'resend' => 'Potvrzovací zpráva byla odeslána. Zkontrolujte prosím svou e-mailovou schránku.'
 ];

@@ -14,12 +14,13 @@ class DestroyCompanyTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_a_company()
+    /** @test */
+    public function it_destroys_a_company()
     {
         $company = factory(Company::class)->create([]);
 
         $request = [
-            'account_id' => $company->account->id,
+            'account_id' => $company->account_id,
             'company_id' => $company->id,
         ];
 
@@ -30,7 +31,8 @@ class DestroyCompanyTest extends TestCase
         ]);
     }
 
-    public function test_it_throws_an_exception_if_account_is_not_linked_to_company()
+    /** @test */
+    public function it_throws_an_exception_if_account_is_not_linked_to_company()
     {
         $account = factory(Account::class)->create([]);
         $company = factory(Company::class)->create([]);
@@ -44,7 +46,8 @@ class DestroyCompanyTest extends TestCase
         app(DestroyCompany::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_ids_do_not_exist()
+    /** @test */
+    public function it_throws_an_exception_if_ids_do_not_exist()
     {
         $request = [
             'account_id' => 11111111,

@@ -4,6 +4,7 @@ namespace App\Services\Contact\Contact;
 
 use App\Models\User\User;
 use App\Services\BaseService;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
 
 class SetMeContact extends BaseService
@@ -25,20 +26,22 @@ class SetMeContact extends BaseService
     /**
      * Set a contact as 'me' contact.
      *
-     * @param array $data
+     * @param  array  $data
      * @return User
      */
-    public function execute(array $data) : User
+    public function execute(array $data): User
     {
         $this->validate($data);
 
+        /** @var User */
         $user = User::where('account_id', $data['account_id'])
             ->findOrFail($data['user_id']);
 
-        if ($user->account->hasLimitations()) {
+        if (AccountHelper::hasLimitations($user->account)) {
             abort(402);
         }
 
+        /** @var Contact */
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 

@@ -10,6 +10,18 @@ class ActivityStatistic extends Model
     protected $table = 'activity_statistics';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'account_id',
+        'contact_id',
+        'year',
+        'count',
+    ];
+
+    /**
      * Get the account record associated with the activity statistic.
      */
     public function account()

@@ -26,21 +26,22 @@ class ApiContactFieldControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_contact_fields_get_contact_all()
+    /** @test */
+    public function contact_fields_get_contact_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contactField1 = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contactField2 = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
         ]);
 
@@ -60,7 +61,8 @@ class ApiContactFieldControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_fields_get_contact_all_error()
+    /** @test */
+    public function contact_fields_get_contact_all_error()
     {
         $user = $this->signin();
 
@@ -69,18 +71,19 @@ class ApiContactFieldControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_contact_fields_get_one()
+    /** @test */
+    public function contact_fields_get_one()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contactField1 = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
         $contactField2 = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact1->id,
         ]);
 
@@ -100,7 +103,8 @@ class ApiContactFieldControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_fields_get_one_error()
+    /** @test */
+    public function contact_fields_get_one_error()
     {
         $user = $this->signin();
 
@@ -109,11 +113,12 @@ class ApiContactFieldControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_contact_fields_create()
+    /** @test */
+    public function contact_fields_create()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $field = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
@@ -137,7 +142,7 @@ class ApiContactFieldControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $contactField_id);
         $this->assertDatabaseHas('contact_fields', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $contactField_id,
             'contact_field_type_id' => $field->id,
@@ -145,11 +150,12 @@ class ApiContactFieldControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_fields_create_error()
+    /** @test */
+    public function contact_fields_create_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/contactfields', [
@@ -157,12 +163,13 @@ class ApiContactFieldControllerTest extends ApiTestCase
         ]);
 
         $this->expectDataError($response, [
-            'The data field is required.',
             'The contact field type id field is required.',
+            'The data field is required.',
         ]);
     }
 
-    public function test_contact_fields_create_error_bad_account()
+    /** @test */
+    public function contact_fields_create_error_bad_account()
     {
         $user = $this->signin();
 
@@ -183,14 +190,15 @@ class ApiContactFieldControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_contact_fields_update()
+    /** @test */
+    public function contact_fields_update()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contactField = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -213,7 +221,7 @@ class ApiContactFieldControllerTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $contactField_id);
         $this->assertDatabaseHas('contact_fields', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $contactField_id,
             'contact_field_type_id' => $contactField->contact_field_type_id,
@@ -221,11 +229,12 @@ class ApiContactFieldControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_fields_update_error()
+    /** @test */
+    public function contact_fields_update_error()
     {
         $user = $this->signin();
         $contactField = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/contactfields/'.$contactField->id, [
@@ -233,12 +242,13 @@ class ApiContactFieldControllerTest extends ApiTestCase
         ]);
 
         $this->expectDataError($response, [
-            'The data field is required.',
             'The contact field type id field is required.',
+            'The data field is required.',
         ]);
     }
 
-    public function test_contact_fields_update_error_bad_account()
+    /** @test */
+    public function contact_fields_update_error_bad_account()
     {
         $user = $this->signin();
 
@@ -247,7 +257,7 @@ class ApiContactFieldControllerTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
         $contactField = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
@@ -260,18 +270,19 @@ class ApiContactFieldControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_contact_fields_delete()
+    /** @test */
+    public function contact_fields_delete()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contactField = factory(ContactField::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
         $this->assertDatabaseHas('contact_fields', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $contactField->id,
         ]);
@@ -280,18 +291,21 @@ class ApiContactFieldControllerTest extends ApiTestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('contact_fields', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => $contactField->id,
         ]);
     }
 
-    public function test_contact_fields_delete_error()
+    /** @test */
+    public function contact_fields_delete_error()
     {
         $user = $this->signin();
 
         $response = $this->json('DELETE', '/api/contactfields/0');
 
-        $this->expectNotFound($response);
+        $this->expectDataError($response, [
+            'The selected contact field id is invalid.',
+        ]);
     }
 }

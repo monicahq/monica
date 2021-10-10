@@ -14,7 +14,8 @@ class DestroyAddressTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_an_address()
+    /** @test */
+    public function it_destroys_an_address()
     {
         $address = factory(Address::class)->create([]);
 
@@ -30,7 +31,8 @@ class DestroyAddressTest extends TestCase
         ]);
     }
 
-    public function test_it_throws_an_exception_if_account_is_not_linked_to_address()
+    /** @test */
+    public function it_throws_an_exception_if_account_is_not_linked_to_address()
     {
         $contact = factory(Contact::class)->create([]);
         $address = factory(Address::class)->create([]);
@@ -44,11 +46,30 @@ class DestroyAddressTest extends TestCase
         app(DestroyAddress::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_ids_do_not_exist()
+    /** @test */
+    public function it_throws_an_exception_if_ids_do_not_exist()
     {
         $request = [
             'account_id' => 11111111,
             'address_id' => 11111111,
+        ];
+
+        $this->expectException(ValidationException::class);
+        app(DestroyAddress::class)->execute($request);
+    }
+
+    /** @test */
+    public function it_fails_if_contact_is_archived()
+    {
+        $contact = factory(Contact::class)->state('archived')->create();
+        $address = factory(Address::class)->create([
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $request = [
+            'account_id' => $contact->account_id,
+            'address_id' => $address->id,
         ];
 
         $this->expectException(ValidationException::class);

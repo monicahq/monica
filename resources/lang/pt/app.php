@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Editing not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
     'yes' => 'Sim',
     'no' => 'Não',
@@ -7,7 +13,8 @@ return [
     'save' => 'Salvar',
     'add' => 'Adicionar',
     'cancel' => 'Cancelar',
-    'delete_confirm' => 'Sure?',
+    'confirm' => 'Confirm',
+    'delete_confirm' => 'Are you sure?',
     'delete' => 'Deletar',
     'edit' => 'Editar',
     'upload' => 'Enviar',
@@ -21,13 +28,11 @@ return [
     'done' => 'Concluído',
     'back' => 'Back',
     'verify' => 'Verificar',
-    'for' => 'para',
     'new' => 'new',
-    'unknown' => 'Não sei',
+    'unknown' => 'I don’t know',
     'load_more' => 'Carregar mais',
-    'loading' => 'A carregar...',
+    'loading' => 'Loading…',
     'with' => 'com',
-    'days' => 'dia|dias',
     'today' => 'hoje',
     'yesterday' => 'ontem',
     'another_day' => 'another day',
@@ -37,17 +42,19 @@ return [
     'upgrade' => 'Upgrade to unlock',
     'percent_uploaded' => '{percent}% uploaded',
     'retry' => 'Tentar novamente',
+    'filter' => 'Filter the list',
     'go_back' => 'Retroceder',
+    'file_selected' => 'One file selected…|{count} files selected…',
 
     'application_title' => 'Monica – personal relationship manager',
-    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
-    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
+    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
+    'application_og_title' => 'Have better relations with your loved ones. Free online CRM for friends and family.',
 
-    'markdown_description' => 'Quer formatar seu texto? Suportamos Markdown para adicionar negrito, itálicas, listas e mais.',
+    'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
     'markdown_link' => 'Ler a documentação',
 
     'header_settings_link' => 'Configurações',
-    'header_logout_link' => 'Sair',
+    'header_logout_link' => 'Logout',
     'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Adicionar Pessoa',
@@ -57,14 +64,14 @@ return [
     'main_nav_activities' => 'Atividades',
     'main_nav_tasks' => 'Tarefas',
 
-    'footer_remarks' => 'Alguma observação?',
-    'footer_send_email' => 'Mande-me um email',
+    'footer_remarks' => 'Comments?',
+    'footer_send_email' => 'Send us an email',
     'footer_privacy' => 'Política de Privacidade',
     'footer_release' => 'Notas de versão',
     'footer_newsletter' => 'Boletim informativo',
     'footer_source_code' => 'Contribuir',
     'footer_version' => 'Versão: :version',
-    'footer_new_version' => 'Está disponível uma nova versão',
+    'footer_new_version' => 'A new version of Monica is available',
 
     'footer_modal_version_whats_new' => 'O que há de novo',
     'footer_modal_version_release_away' => 'A sua instalação encontra-se 1 versão atrás da versão mais recente disponível. É recomendado atualizar a sua instalação.|A sua instalação encontra-se :number versões atrás da versão mais recente disponível. É recomendado atualizar a sua instalação.',
@@ -101,19 +108,21 @@ return [
 
     'error_title' => 'Ups! Algo correu mal.',
     'error_unauthorized' => 'Não tem permissões para editar este recurso.',
+    'error_user_account' => 'This user does not belong to the given account.',
     'error_save' => 'Ocorreu um erro ao guardar os dados.',
     'error_try_again' => 'Something went wrong. Please try again.',
     'error_id' => 'Error ID: :id',
-    'error_unavailable' => 'Serviço Indisponível',
-    'error_maintenance' => 'Maintenance in progress. Be right back.',
+    'error_unavailable' => 'Service unavailable',
+    'error_maintenance' => 'Maintenance in progress. We’ll be right back.',
     'error_help' => 'We’ll be right back.',
     'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
+    'error_no_term' => 'There is no policy for this instance yet.',
 
     'default_save_success' => 'Os dados foram guardados.',
 
     'compliance_title' => 'Pedimos desculpa pela interrupção.',
     'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
     'compliance_terms' => 'Accept new terms and privacy policy',
 
     // Relationship types
@@ -129,8 +138,8 @@ return [
     'relationship_type_group_work' => 'Relações laborais',
     'relationship_type_group_other' => 'Other kind of relationships',
 
-    'relationship_type_partner' => 'companheiro(a)',
-    'relationship_type_partner_female' => 'companheiro(a)',
+    'relationship_type_partner' => 'companheiro',
+    'relationship_type_partner_female' => 'companheira',
     'relationship_type_partner_with_name' => ':name’s significant other',
     'relationship_type_partner_female_with_name' => ':name’s significant other',
 
@@ -259,10 +268,10 @@ return [
     'relationship_type_protege_with_name' => ':name’s protege',
     'relationship_type_protege_female_with_name' => ':name’s protege',
 
-    'relationship_type_ex_husband' => 'ex husband',
-    'relationship_type_ex_husband_female' => 'ex wife',
-    'relationship_type_ex_husband_with_name' => ':name’s ex husband',
-    'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
+    'relationship_type_ex_husband' => 'ex-husband',
+    'relationship_type_ex_husband_female' => 'ex-wife',
+    'relationship_type_ex_husband_with_name' => ':name’s ex-husband',
+    'relationship_type_ex_husband_female_with_name' => ':name’s ex-wife',
 
     // emotions
     'emotion_primary_love' => 'Love',
@@ -453,4 +462,10 @@ return [
     'dav_birthdays_description' => ':name’s contact’s birthdays',
     'dav_tasks' => 'Tasks',
     'dav_tasks_description' => ':name’s tasks',
+
+    // contact list
+    'contact_list_avatar' => 'Avatar',
+    'contact_list_name' => 'Contact',
+    'contact_list_description' => 'Description',
+
 ];

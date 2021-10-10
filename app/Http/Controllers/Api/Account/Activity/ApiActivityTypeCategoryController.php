@@ -36,9 +36,8 @@ class ApiActivityTypeCategoryController extends ApiController
     /**
      * Get the detail of a given activity type category.
      *
-     * @param Request $request
-     * @param int $activityTypeCategoryId
-     *
+     * @param  Request  $request
+     * @param  int  $activityTypeCategoryId
      * @return ActivityTypeCategoryResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $activityTypeCategoryId)
@@ -57,19 +56,18 @@ class ApiActivityTypeCategoryController extends ApiController
     /**
      * Store the activity type category.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return ActivityTypeCategoryResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
             $activityTypeCategory = app(CreateActivityTypeCategory::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -85,21 +83,20 @@ class ApiActivityTypeCategoryController extends ApiController
     /**
      * Update the activity type category.
      *
-     * @param Request $request
-     * @param int $activityTypeCategoryId
-     *
+     * @param  Request  $request
+     * @param  int  $activityTypeCategoryId
      * @return ActivityTypeCategoryResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $activityTypeCategoryId)
     {
         try {
             $activityTypeCategory = app(UpdateActivityTypeCategory::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'activity_type_category_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'activity_type_category_id' => $activityTypeCategoryId,
-                ]
+                        'account_id' => auth()->user()->account_id,
+                        'activity_type_category_id' => $activityTypeCategoryId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -115,15 +112,14 @@ class ApiActivityTypeCategoryController extends ApiController
     /**
      * Delete an activity type category.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $activityTypeCategoryId)
+    public function destroy(Request $request, int $activityTypeCategoryId)
     {
         try {
             app(DestroyActivityTypeCategory::class)->execute([
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'activity_type_category_id' => $activityTypeCategoryId,
             ]);
         } catch (ModelNotFoundException $e) {
@@ -134,6 +130,6 @@ class ApiActivityTypeCategoryController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $activityTypeCategoryId);
+        return $this->respondObjectDeleted($activityTypeCategoryId);
     }
 }

@@ -28,15 +28,18 @@ class UpdateCall extends BaseService
     /**
      * Update a call.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Call
      */
-    public function execute(array $data) : Call
+    public function execute(array $data): Call
     {
         $this->validate($data);
 
+        /** @var Call */
         $call = Call::where('account_id', $data['account_id'])
             ->findOrFail($data['call_id']);
+
+        $call->contact->throwInactive();
 
         $call->update([
             'called_at' => $data['called_at'],
@@ -59,8 +62,8 @@ class UpdateCall extends BaseService
     /**
      * Add emotions to the call.
      *
-     * @param array $emotions
-     * @param Call $call
+     * @param  array  $emotions
+     * @param  Call  $call
      * @return void
      */
     private function addEmotions(array $emotions, Call $call)
@@ -81,17 +84,19 @@ class UpdateCall extends BaseService
     /**
      * Update last call information of the contact.
      *
-     * @param Call $call
+     * @param  Call  $call
      * @return void
      */
     private function updateLastCallInfo(Call $call)
     {
-        if (is_null($call->contact->last_talked_to)) {
-            $call->contact->last_talked_to = $call->called_at;
+        /** @var \App\Models\Contact\Contact */
+        $contact = $call->contact;
+        if (is_null($contact->last_talked_to)) {
+            $contact->last_talked_to = $call->called_at;
         } else {
-            $call->contact->last_talked_to = $call->contact->last_talked_to->max($call->called_at);
+            $contact->last_talked_to = $contact->last_talked_to->max($call->called_at);
         }
 
-        $call->contact->save();
+        $contact->save();
     }
 }

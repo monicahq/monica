@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ⚠️ Editing not allowed except for 'en' language.
+ *
+ * @see https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md for translations.
+ */
+
 return [
 
     /*
@@ -17,16 +23,16 @@ return [
     'throttle' => 'عدد كبير جدا من محاولات الدخول. يرجى المحاولة مرة أخرى بعد :seconds ثانية.',
     'not_authorized' => 'ليس لديك الصلاحية لتنفيذ هذا الأمر',
     'signup_disabled' => 'تسجيل الإشتراك معطل حالياً',
+    'signup_error' => 'An error occured trying to register the user',
     'back_homepage' => 'العودة إلى الصفحة الرئيسية',
     'mfa_auth_otp' => 'المصادقة مع جهاز العامل الثنائي الخاص بك',
-    'mfa_auth_u2f' => 'المصادقة باستخدام جهاز U2F',
     'mfa_auth_webauthn' => 'Authenticate with a security key (WebAuthn)',
     '2fa_title' => 'المصادقة الثنائية',
     '2fa_wrong_validation' => 'فشلت المصادقة الثنائية.',
     '2fa_one_time_password' => 'رمز المصادقة الثنائية',
     '2fa_recuperation_code' => 'أدخل رمز استرداد العامل الثنائي',
+    '2fa_one_time_or_recuperation' => 'Enter a two factor authentication code or a recovery code',
     '2fa_otp_help' => 'قم بفتح تطبيق المصادقة الثنائية في هاتفك و انسخ الرمز',
-    'u2f_otp_extension' => 'إن U2F مدعوم محلياً على متصفح كروم، <a href="{urlquantum}" lang="en">فايرفوكس</a> و أوبيرا. في إصدارات فايرفوكس القديمة، قم بتثبيت <a href="{urlext}">داعم U2F الإضافي</a>.',
 
     'login_to_account' => 'تسجيل الدخول إلى حسابك',
     'login_with_recovery' => 'Login with a recovery code',
@@ -73,7 +79,7 @@ return [
     'confirmation_title' => 'Verify Your Email Address',
     'confirmation_fresh' => 'A fresh verification link has been sent to your email address.',
     'confirmation_check' => 'Before proceeding, please check your email for a verification link.',
-    'confirmation_request_another' => 'If you did not receive the email <a href=":url">click here to request another</a>.',
+    'confirmation_request_another' => 'If you did not receive the email <a :action>click here to request another</a>.',
 
     'confirmation_again' => 'إذا أردت تغيير بريدك الإلكتروني يمكنك <a href=":url" class="alert-link">الضغط هنا</a>.',
     'email_change_current_email' => 'البريد الإلكتروني الحالي:',

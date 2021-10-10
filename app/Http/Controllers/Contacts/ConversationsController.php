@@ -24,8 +24,7 @@ class ConversationsController extends Controller
     /**
      * Display the Create conversation page.
      *
-     * @param Contact $contact
-     *
+     * @param  Contact  $contact
      * @return \Illuminate\View\View
      */
     public function create(Request $request, Contact $contact)
@@ -38,7 +37,7 @@ class ConversationsController extends Controller
     /**
      * Display the list of conversations.
      *
-     * @param  Contact $contact
+     * @param  Contact  $contact
      * @return Collection
      */
     public function index(Request $request, Contact $contact)
@@ -66,9 +65,8 @@ class ConversationsController extends Controller
     /**
      * Store the conversation.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Contact $contact)
@@ -112,12 +110,13 @@ class ConversationsController extends Controller
     /**
      * Display a specific conversation.
      *
-     * @param Contact $contact
-     *
+     * @param  Contact  $contact
      * @return \Illuminate\View\View
      */
     public function edit(Request $request, Contact $contact, Conversation $conversation)
     {
+        $contact->throwInactive();
+
         // preparing the messages for the Vue component
         $messages = collect([]);
         foreach ($conversation->messages as $message) {
@@ -138,10 +137,9 @@ class ConversationsController extends Controller
     /**
      * Update the conversation.
      *
-     * @param Request $request
-     * @param Contact $contact
-     * @param Conversation $conversation
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
+     * @param  Conversation  $conversation
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Contact $contact, Conversation $conversation)
@@ -173,7 +171,7 @@ class ConversationsController extends Controller
         // delete all current messages
         foreach ($conversation->messages as $message) {
             $data = [
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'conversation_id' => $conversation->id,
                 'message_id' => $message->id,
             ];
@@ -195,7 +193,7 @@ class ConversationsController extends Controller
     /**
      * Validate datas and get an array for create or update a conversation.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return array|\Illuminate\Contracts\Validation\Validator
      */
     private function validateAndGetDatas(Request $request)
@@ -214,41 +212,41 @@ class ConversationsController extends Controller
         }
 
         // find out what the date is
-        $chosenDate = $request->get('conversationDateRadio');
+        $chosenDate = $request->input('conversationDateRadio');
         if ($chosenDate == 'today') {
-            $date = now()->format('Y-m-d');
+            $date = DateHelper::getDate(now());
         } elseif ($chosenDate == 'yesterday') {
-            $date = now()->subDay()->format('Y-m-d');
+            $date = DateHelper::getDate(now()->subDay());
         } else {
-            $date = $request->get('conversationDate');
+            $date = $request->input('conversationDate');
         }
 
         return [
             'account_id' => auth()->user()->account_id,
             'happened_at' => $date,
-            'contact_field_type_id' => $request->get('contactFieldTypeId'),
+            'contact_field_type_id' => $request->input('contactFieldTypeId'),
         ];
     }
 
     /**
      * Update messages for conversation.
      *
-     * @param Request $request
-     * @param Conversation $conversation
-     * @param string $date
+     * @param  Request  $request
+     * @param  Conversation  $conversation
+     * @param  string  $date
      * @return bool|string|\Illuminate\Contracts\Validation\Validator
      */
     private function updateMessages(Request $request, Conversation $conversation, string $date)
     {
-        $messages = explode(',', $request->get('messages'));
+        $messages = explode(',', $request->input('messages'));
         foreach ($messages as $messageId) {
             $data = [
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
                 'conversation_id' => $conversation->id,
-                'contact_id' => $conversation->contact->id,
+                'contact_id' => $conversation->contact_id,
                 'written_at' => $date,
-                'written_by_me' => ($request->get('who_wrote_'.$messageId) === 'me'),
-                'content' => $request->get('content_'.$messageId),
+                'written_by_me' => ($request->input('who_wrote_'.$messageId) === 'me'),
+                'content' => $request->input('content_'.$messageId),
             ];
 
             try {
@@ -266,16 +264,15 @@ class ConversationsController extends Controller
     /**
      * Delete the conversation.
      *
-     * @param Request $request
-     * @param Contact $contact
-     * @param Conversation $conversation
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
+     * @param  Conversation  $conversation
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Conversation $conversation)
     {
         $data = [
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'conversation_id' => $conversation->id,
         ];
 

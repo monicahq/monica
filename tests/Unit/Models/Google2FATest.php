@@ -13,12 +13,8 @@ class Google2FATest extends TestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testGoogle2faWrongKey()
+    /** @test */
+    public function it_tests_a_wrong_key_for_Google2fa()
     {
         $google2fa = app('pragmarx.google2fa');
 
@@ -29,12 +25,8 @@ class Google2FATest extends TestCase
         $this->assertEquals(false, $result);
     }
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testGoogle2faGoodKey()
+    /** @test */
+    public function it_tests_a_correct_key_for_Google2fa()
     {
         $google2fa = app('pragmarx.google2fa');
 
@@ -46,17 +38,12 @@ class Google2FATest extends TestCase
         $this->assertEquals(true, $result);
     }
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testGoogle2faLogin()
+    /** @test */
+    public function it_logs_in_with_Google2Fa()
     {
         config(['google2fa.enabled' => true]);
 
-        $google2fa = app('pragmarx.google2fa');
-        $google2fa->stateless = false;
+        $google2fa = app('pragmarx.google2fa')->setStateless(false);
         $secret = $google2fa->generateSecretKey(32);
 
         $user = factory(User::class)->create();

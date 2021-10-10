@@ -5,18 +5,15 @@ namespace App\Services\Instance\Weather;
 use Illuminate\Support\Str;
 use App\Models\Account\Place;
 use App\Services\BaseService;
-use function Safe\json_decode;
+use App\Jobs\GetGPSCoordinate;
 use App\Models\Account\Weather;
 use Illuminate\Support\Facades\Log;
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\ClientException;
+use Illuminate\Support\Facades\Http;
 use App\Exceptions\MissingEnvVariableException;
-use App\Services\Instance\Geolocalization\GetGPSCoordinate;
+use Illuminate\Http\Client\HttpClientException;
 
 class GetWeatherInformation extends BaseService
 {
-    protected $client;
-
     /**
      * Get the validation rules that apply to the service.
      *
@@ -32,15 +29,14 @@ class GetWeatherInformation extends BaseService
     /**
      * Get the weather information.
      *
-     * @param array $data
-     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
+     * @param  array  $data
      * @return Weather|null
+     *
      * @throws \Illuminate\Validation\ValidationException if the array that is given in parameter is not valid
      * @throws \App\Exceptions\MissingEnvVariableException if the weather services are not enabled
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException if the Place object is not found
-     * @throws \GuzzleHttp\Exception\ClientException if the request to Darksky crashed
      */
-    public function execute(array $data, GuzzleClient $client = null)
+    public function execute(array $data): ?Weather
     {
         $this->validateWeatherEnvVariables();
 
@@ -52,14 +48,8 @@ class GetWeatherInformation extends BaseService
             $place = $this->fetchGPS($place);
 
             if (is_null($place)) {
-                return;
+                return null;
             }
-        }
-
-        if (! is_null($client)) {
-            $this->client = $client;
-        } else {
-            $this->client = new GuzzleClient();
         }
 
         return $this->query($place);
@@ -84,34 +74,37 @@ class GetWeatherInformation extends BaseService
     /**
      * Actually make the call to Darksky.
      *
-     * @param Place $place
+     * @param  Place  $place
      * @return Weather|null
+     *
      * @throws \Exception
      */
-    private function query(Place $place)
+    private function query(Place $place): ?Weather
     {
         $query = $this->buildQuery($place);
 
         try {
-            $response = $this->client->request('GET', $query);
-            $response = json_decode($response->getBody());
+            $response = Http::get($query);
+            $response->throw();
 
             $weather = new Weather();
-            $weather->weather_json = $response;
+            $weather->weather_json = $response->object();
             $weather->account_id = $place->account_id;
             $weather->place_id = $place->id;
             $weather->save();
 
             return $weather;
-        } catch (ClientException $e) {
+        } catch (HttpClientException $e) {
             Log::error('Error making the call: '.$e);
         }
+
+        return null;
     }
 
     /**
      * Prepare the query that will be send to Darksky.
      *
-     * @param Place $place
+     * @param  Place  $place
      * @return string
      */
     private function buildQuery(Place $place)
@@ -131,14 +124,18 @@ class GetWeatherInformation extends BaseService
     /**
      * Fetch missing longitude/latitude.
      *
-     * @param Place $place
+     * @param  Place  $place
      * @return Place|null
      */
-    private function fetchGPS(Place $place)
+    private function fetchGPS(Place $place): ?Place
     {
-        return app(GetGPSCoordinate::class)->execute([
-            'account_id' => $place->account_id,
-            'place_id' => $place->id,
-        ]);
+        if (config('monica.enable_geolocation') && ! is_null(config('monica.location_iq_api_key'))) {
+            GetGPSCoordinate::dispatchSync($place);
+            $place->refresh();
+
+            return $place;
+        }
+
+        return null;
     }
 }

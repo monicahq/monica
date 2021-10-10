@@ -4,6 +4,7 @@ namespace App\Services\User;
 
 use App\Models\User\User;
 use App\Services\BaseService;
+use App\Models\Account\Account;
 
 class EmailChange extends BaseService
 {
@@ -24,20 +25,23 @@ class EmailChange extends BaseService
     /**
      * Update email of the user.
      *
-     * @param array $data
+     * @param  array  $data
      * @return User
      */
-    public function execute(array $data) : User
+    public function execute(array $data): User
     {
         $this->validate($data);
 
+        /** @var User */
         $user = User::where('account_id', $data['account_id'])
             ->findOrFail($data['user_id']);
 
         // Change email of the user
         $user->email = $data['email'];
 
-        if (config('monica.signup_double_optin')) {
+        /** @var int $count */
+        $count = Account::count();
+        if (config('monica.signup_double_optin') && $count > 1) {
             // Resend validation token
             $user->email_verified_at = null;
             $user->save();
@@ -45,6 +49,7 @@ class EmailChange extends BaseService
             $user->sendEmailVerificationNotification();
         } else {
             $user->save();
+            $user->markEmailAsVerified();
         }
 
         return $user;
