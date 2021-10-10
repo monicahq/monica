@@ -1,3 +1,11 @@
+## [3.3.1](https://github.com/monicahq/monica/compare/v3.3.0...v3.3.1) (2021-10-10)
+
+
+### Bug Fixes
+
+* allow delete any reminder + fix reminder edit data ([#5582](https://github.com/monicahq/monica/issues/5582)) ([981a639](https://github.com/monicahq/monica/commit/981a639013e4b3124a84450b6aeca97dcf0208c2))
+* fix davclient options call ([#5584](https://github.com/monicahq/monica/issues/5584)) ([9c276aa](https://github.com/monicahq/monica/commit/9c276aaa6e12c10b227f4fe95fbe215f67dcde9b))
+
 # [3.3.0](https://github.com/monicahq/monica/compare/v3.2.0...v3.3.0) (2021-10-09)
 
 
