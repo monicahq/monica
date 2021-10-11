@@ -7,6 +7,6 @@
  */
 
 return [
-    'title' => 'Product changes',
-    'note' => 'Note: unfortunately, this page is only in English.',
+    'title' => 'Изменения',
+    'note' => 'Примечание: к сожалению, эта страница только на английском языке.',
 ];
