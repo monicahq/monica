@@ -262,7 +262,7 @@ class ImportVCardTest extends TestCase
             'type' => 'email',
         ]);
 
-        $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [null, $vcard]);
+        $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [null, $vcard, $vcard->serialize(), null]);
 
         $this->assertTrue($contact->exists);
     }
@@ -292,7 +292,7 @@ class ImportVCardTest extends TestCase
             'type' => 'email',
         ]);
 
-        $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [null, $vcard]);
+        $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [null, $vcard, $vcard->serialize(), null]);
 
         $this->assertTrue($contact->exists);
         $this->assertEquals($addressBook->id, $contact->address_book_id);
@@ -420,6 +420,7 @@ class ImportVCardTest extends TestCase
         $result = $this->invokePrivateMethod($importVCard, 'processEntry', [
             ['behaviour' => 'behaviour_add'],
             $vcard,
+            $vcard->serialize(),
         ]);
 
         $this->assertDatabaseHas('contacts', [
@@ -449,6 +450,7 @@ class ImportVCardTest extends TestCase
                 'contact_id' => $contact->id,
             ],
             $vcard,
+            $vcard->serialize(),
         ]);
 
         $this->assertDatabaseHas('contacts', [
@@ -1332,7 +1334,7 @@ class ImportVCardTest extends TestCase
             'UID' => '31fdc242-c974-436e-98de-6b21624d6e34',
         ]);
 
-        $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [null, $vcard]);
+        $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [null, $vcard, $vcard->serialize(), null]);
 
         $this->assertDatabaseHas('contacts', [
             'account_id' => $user->account_id,

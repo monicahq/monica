@@ -194,12 +194,12 @@ class ImportVCard extends BaseService
         }
 
         /**
-         * @var VCard $entry
+         * @var VCard|null $entry
          * @var string $vcard
          */
         ['entry' => $entry, 'vcard' => $vcard] = $this->getEntry($data);
 
-        if (! $entry) {
+        if ($entry === null) {
             return [
                 'error' => 'ERROR_PARSER',
                 'reason' => $this->errorResults['ERROR_PARSER'],
