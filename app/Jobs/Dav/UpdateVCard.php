@@ -11,13 +11,14 @@ use App\Services\VCard\ImportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Traits\Localizable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 
 class UpdateVCard implements ShouldQueue
 {
-    use Batchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, InteractsWithQueue, Queueable, SerializesModels, Localizable;
 
     /**
      * @var User
@@ -60,14 +61,16 @@ class UpdateVCard implements ShouldQueue
             return;
         }
 
-        $newtag = $this->updateCard($this->addressBookName, $this->contact->uri, $this->contact->card);
+        $this->withLocale($this->user->preferredLocale(), function () {
+            $newtag = $this->updateCard($this->addressBookName, $this->contact->uri, $this->contact->card);
 
-        if (! is_null($this->contact->etag) && $newtag !== $this->contact->etag) {
-            Log::warning(__CLASS__.' wrong etag when updating contact. Expected '.$this->contact->etag.', get '.$newtag, [
-                'contacturl' => $this->contact->uri,
-                'carddata' => $this->contact->card,
-            ]);
-        }
+            if (! is_null($this->contact->etag) && $newtag !== $this->contact->etag) {
+                Log::warning(__CLASS__.' wrong etag when updating contact. Expected '.$this->contact->etag.', get '.$newtag, [
+                    'contacturl' => $this->contact->uri,
+                    'carddata' => $this->contact->card,
+                ]);
+            }
+        });
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\User\User;
 use Illuminate\Console\Command;
+use App\Jobs\SynchronizeAddressBooks;
 use App\Services\DavClient\CreateAddressBookSubscription;
 
 class NewAddressBookSubscription extends Command
@@ -40,7 +41,7 @@ class NewAddressBookSubscription extends Command
         $password = $this->option('password') ?? $this->ask('password', 'User password');
 
         try {
-            $addressBook = app(CreateAddressBookSubscription::class)->execute([
+            $addressBookSubscription = app(CreateAddressBookSubscription::class)->execute([
                 'account_id' => $user->account_id,
                 'user_id' => $user->id,
                 'base_uri' => $url,
@@ -51,10 +52,11 @@ class NewAddressBookSubscription extends Command
             $this->error($e->getMessage());
         }
 
-        if (! isset($addressBook)) {
+        if (! isset($addressBookSubscription)) {
             $this->error('Could not add subscription');
         } else {
             $this->info('Subscription added');
+            SynchronizeAddressBooks::dispatch($addressBookSubscription, true);
         }
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Services\DavClient;
 
-use App\Models\User\User;
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Helpers\AccountHelper;
@@ -25,7 +24,6 @@ class SynchronizeAddressBook extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'user_id' => 'required|integer|exists:users,id',
             'addressbook_subscription_id' => 'required|integer|exists:addressbook_subscriptions,id',
             'force' => 'nullable|boolean',
         ];
@@ -45,9 +43,6 @@ class SynchronizeAddressBook extends BaseService
             && ! $account->legacy_free_plan_unlimited_contacts) {
             abort(402);
         }
-
-        $user = User::where('account_id', $data['account_id'])
-            ->findOrFail($data['user_id']);
 
         $subscription = AddressBookSubscription::where('account_id', $data['account_id'])
             ->findOrFail($data['addressbook_subscription_id']);

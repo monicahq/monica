@@ -25,8 +25,8 @@ class SynchronizeAddressBooksTest extends TestCase
                 ->once()
                 ->with([
                     'account_id' => $subscription->account_id,
-                    'user_id' => $subscription->user_id,
                     'addressbook_subscription_id' => $subscription->id,
+                    'force' => false,
                 ]);
         });
 

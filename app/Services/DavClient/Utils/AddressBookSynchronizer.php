@@ -11,6 +11,7 @@ use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
 use App\Services\DavClient\Utils\Traits\WithSyncDto;
 use App\Services\DavClient\Utils\Traits\HasCapability;
+use App\Services\DavClient\UpdateSubscriptionLocalSyncToken;
 
 class AddressBookSynchronizer
 {
@@ -52,9 +53,14 @@ class AddressBookSynchronizer
             );
         }
 
+        $accountId = $this->sync->subscription->account_id;
+        $subscriptionId = $this->sync->subscription->id;
         Bus::batch($batch)
-            ->then(function (Batch $batch) {
-                $this->updateSyncToken();
+            ->then(function (Batch $batch) use ($accountId, $subscriptionId) {
+                app(UpdateSubscriptionLocalSyncToken::class)->execute([
+                    'account_id' => $accountId,
+                    'addressbook_subscription_id' => $subscriptionId,
+                ]);
             })
             ->allowFailures()
             ->dispatch();
@@ -87,7 +93,15 @@ class AddressBookSynchronizer
             );
         }
 
+        $accountId = $this->sync->subscription->account_id;
+        $subscriptionId = $this->sync->subscription->id;
         Bus::batch($batch)
+            ->then(function (Batch $batch) use ($accountId, $subscriptionId) {
+                app(UpdateSubscriptionLocalSyncToken::class)->execute([
+                    'account_id' => $accountId,
+                    'addressbook_subscription_id' => $subscriptionId,
+                ]);
+            })
             ->allowFailures()
             ->dispatch();
     }
@@ -209,18 +223,5 @@ class AddressBookSynchronizer
             ->map(function ($contact, $href): ContactDto {
                 return new ContactDto($href, Arr::get($contact, '200.{DAV:}getetag'));
             });
-    }
-
-    /**
-     * Update the synctoken.
-     *
-     * @return void
-     */
-    private function updateSyncToken(): void
-    {
-        $token = $this->backend()->getCurrentSyncToken($this->sync->addressBookName());
-
-        $this->sync->subscription->localSyncToken = $token->id;
-        $this->sync->subscription->save();
     }
 }
