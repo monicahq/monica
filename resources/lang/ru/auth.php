@@ -77,13 +77,13 @@ return [
     'register_invitation_email' => 'For security purposes, please indicate the email of the person who’ve invited you to join this account. This information is provided in the invitation email.',
 
     'confirmation_title' => 'Подтвердите ваш адрес электронной почты',
-    'confirmation_fresh' => 'A fresh verification link has been sent to your email address.',
+    'confirmation_fresh' => 'На ваш адрес электронной почты выслана ссылка для подтверждения.',
     'confirmation_check' => 'Before proceeding, please check your email for a verification link.',
     'confirmation_request_another' => 'If you did not receive the email <a :action>click here to request another</a>.',
 
-    'confirmation_again' => 'If you want to change your email address you can <a href=":url" class="alert-link">click here</a>.',
-    'email_change_current_email' => 'Current email address:',
-    'email_change_title' => 'Change your email address',
-    'email_change_new' => 'New email address',
-    'email_changed' => 'Your email address has been changed. Check your mailbox to validate it.',
+    'confirmation_again' => 'Если вы хотите изменить свой адрес электронной почты, <a href=":url" class="alert-link">нажмите здесь</a>.',
+    'email_change_current_email' => 'Текущий адрес электронной почты:',
+    'email_change_title' => 'Изменить адрес электронной почты',
+    'email_change_new' => 'Новый адрес электронной почты',
+    'email_changed' => 'Ваш адрес электронной почты изменен. Проверьте свой почтовый ящик, чтобы подтвердить его.',
 ];
