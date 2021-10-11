@@ -61,6 +61,8 @@ class AddressBookContactsPushMissedTest extends TestCase
                     return true;
                 })
                 ->andReturn([
+                    'account_id' => $contact->account_id,
+                    'contact_id' => $contact->id,
                     'carddata' => $card,
                     'uri' => 'uuid3',
                     'etag' => $etag,

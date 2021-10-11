@@ -6,7 +6,7 @@ use App\Models\User\User;
 use Illuminate\Support\Arr;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use App\Models\Contact\Contact;
+use App\Services\VCard\GetEtag;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
@@ -62,7 +62,7 @@ class UpdateVCard implements ShouldQueue
 
         $newtag = $this->updateCard($this->addressBookName, $this->contact->uri, $this->contact->card);
 
-        if ($newtag !== $this->contact->etag) {
+        if (! is_null($this->contact->etag) && $newtag !== $this->contact->etag) {
             Log::warning(__CLASS__.' wrong etag when updating contact. Expected '.$this->contact->etag.', get '.$newtag, [
                 'contacturl' => $this->contact->uri,
                 'carddata' => $this->contact->card,
@@ -98,18 +98,19 @@ class UpdateVCard implements ShouldQueue
                     'user_id' => $this->user->id,
                     'contact_id' => $contact_id,
                     'entry' => $cardData,
+                    'etag' => $this->contact->etag,
                     'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
                     'addressBookName' => $addressBookId === $backend->backendUri() ? null : $addressBookId,
                 ]);
 
             if (! Arr::has($result, 'error')) {
-                $contact = Contact::where('account_id', $this->user->account_id)
-                    ->find($result['contact_id']);
-
-                return '"'.md5($contact->vcard).'"';
+                return app(GetEtag::class)->execute([
+                    'account_id' => $this->user->account_id,
+                    'contact_id' => $result['contact_id'],
+                ]);
             }
         } catch (\Exception $e) {
-            Log::debug(__CLASS__.' updateCard: '.(string) $e, [
+            Log::debug(__CLASS__.' updateCard: '.$e->getMessage(), [
                 $e,
                 'contacturl' => $cardUri,
                 'carddata' => $cardData,

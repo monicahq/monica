@@ -124,6 +124,7 @@ class ImportVCard extends BaseService
                 Rule::in(self::$behaviourTypes),
             ],
             'addressBookName' => 'nullable|string|exists:addressbooks,name',
+            'etag' => 'nullable|string',
         ];
     }
 
@@ -192,9 +193,13 @@ class ImportVCard extends BaseService
             ])->first();
         }
 
-        $entry = $this->getEntry($data);
+        /**
+         * @var VCard|null $entry
+         * @var string $vcard
+         */
+        ['entry' => $entry, 'vcard' => $vcard] = $this->getEntry($data);
 
-        if (! $entry) {
+        if ($entry === null) {
             return [
                 'error' => 'ERROR_PARSER',
                 'reason' => $this->errorResults['ERROR_PARSER'],
@@ -202,7 +207,7 @@ class ImportVCard extends BaseService
             ];
         }
 
-        return $this->processEntry($data, $entry);
+        return $this->processEntry($data, $entry, $vcard);
     }
 
     /**
@@ -210,9 +215,10 @@ class ImportVCard extends BaseService
      *
      * @param  array  $data
      * @param  VCard  $entry
+     * @param  string  $vcard
      * @return array
      */
-    private function processEntry(array $data, VCard $entry): array
+    private function processEntry(array $data, VCard $entry, string $vcard): array
     {
         if (! $this->canImportCurrentEntry($entry)) {
             return [
@@ -225,7 +231,7 @@ class ImportVCard extends BaseService
         $contactId = Arr::get($data, 'contact_id');
         $contact = $this->getExistingContact($entry, $contactId);
 
-        return $this->processEntryContact($data, $entry, $contact);
+        return $this->processEntryContact($data, $entry, $vcard, $contact);
     }
 
     /**
@@ -233,10 +239,11 @@ class ImportVCard extends BaseService
      *
      * @param  array  $data
      * @param  VCard  $entry
+     * @param  string  $vcard
      * @param  Contact|null  $contact
      * @return array
      */
-    private function processEntryContact(array $data, VCard $entry, $contact): array
+    private function processEntryContact(array $data, VCard $entry, string $vcard, ?Contact $contact): array
     {
         $behaviour = $data['behaviour'] ?: self::BEHAVIOUR_ADD;
         if ($contact && $behaviour === self::BEHAVIOUR_ADD) {
@@ -253,7 +260,7 @@ class ImportVCard extends BaseService
             $contact->timestamps = false;
         }
 
-        $contact = $this->importEntry($contact, $entry);
+        $contact = $this->importEntry($contact, $entry, $vcard, Arr::get($data, 'etag'));
 
         if (isset($timestamps)) {
             $contact->timestamps = $timestamps;
@@ -267,25 +274,31 @@ class ImportVCard extends BaseService
 
     /**
      * @param  array  $data
-     * @return VCard|null
+     * @return array
      */
-    private function getEntry($data): ?VCard
+    private function getEntry($data): array
     {
-        $entry = $data['entry'];
+        $entry = $vcard = $data['entry'];
 
         if (! $entry instanceof VCard) {
             try {
                 $entry = Reader::read($entry, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
             } catch (ParseException $e) {
-                return null;
+                return [
+                    'entry' => null,
+                    'vcard' => $vcard,
+                ];
             }
         }
 
-        if ($entry instanceof VCard) {
-            return $entry;
+        if ($vcard instanceof VCard) {
+            $vcard = $entry->serialize();
         }
 
-        return null;
+        return [
+            'entry' => $entry,
+            'vcard' => $vcard,
+        ];
     }
 
     /**
@@ -518,9 +531,11 @@ class ImportVCard extends BaseService
      *
      * @param  Contact|null  $contact
      * @param  VCard  $entry
+     * @param  string  $vcard
+     * @param  string|null  $etag
      * @return Contact
      */
-    private function importEntry(?Contact $contact, VCard $entry): Contact
+    private function importEntry(?Contact $contact, VCard $entry, string $vcard, ?string $etag): Contact
     {
         $contact = $this->importGeneralInformation($contact, $entry);
 
@@ -535,7 +550,8 @@ class ImportVCard extends BaseService
 
         // Save vcard content
         if ($contact->address_book_id) {
-            $contact->vcard = $entry->serialize();
+            $contact->vcard = $vcard;
+            $contact->distant_etag = $etag;
         }
 
         $contact->save();

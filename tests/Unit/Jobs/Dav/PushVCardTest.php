@@ -36,8 +36,8 @@ class PushVCardTest extends TestCase
             'uri' => 'https://test/dav',
         ]);
 
-        $contact = new Contact();
-        $contact->forceFill([
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
             'first_name' => 'John',
             'last_name' => 'Doe',
             'uuid' => 'affacde9-b2fe-4371-9acb-6612aaee6971',
@@ -59,7 +59,7 @@ class PushVCardTest extends TestCase
         });
 
         $pendingBatch = $fake->batch([
-            $job = new PushVCard($addressBookSubscription, new ContactPushDto('https://test/dav/uri', $etag, $card, $mode)),
+            $job = new PushVCard($addressBookSubscription, new ContactPushDto('https://test/dav/uri', $etag, $card, $contact->id, $mode)),
         ]);
         $batch = $pendingBatch->dispatch();
 

@@ -86,7 +86,7 @@ class AppServiceProvider extends ServiceProvider
             $url = $request->getRequestUri();
 
             return Cache::rememberForever('etag.'.$url, function () use ($url) {
-                return md5($url);
+                return sha1($url);
             });
         });
     }

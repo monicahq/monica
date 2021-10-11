@@ -20,7 +20,7 @@ trait CardEtag
             $data = $this->getVTodo($obj, true);
         }
 
-        $etag = md5($data);
+        $etag = sha1($data);
         if ($quotes) {
             $etag = '"'.$etag.'"';
         }

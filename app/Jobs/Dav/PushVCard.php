@@ -4,6 +4,7 @@ namespace App\Jobs\Dav;
 
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -53,17 +54,23 @@ class PushVCard implements ShouldQueue
 
         $headers = [];
 
-        if ($this->contact->mode === 1) {
-            $headers['If-Match'] = $this->contact->etag;
-        } elseif ($this->contact->mode === 2) {
-            $headers['If-Match'] = '*';
+        switch ($this->contact->mode) {
+            case ContactPushDto::MODE_MATCH_ETAG:
+                $headers['If-Match'] = $this->contact->etag;
+                break;
+            case ContactPushDto::MODE_MATCH_ANY:
+                $headers['If-Match'] = '*';
+                break;
         }
 
         $response = $this->subscription->getClient()
             ->request('PUT', $this->contact->uri, $this->contact->card, $headers);
 
-        if (! empty($etag = $response->header('Etag')) && $etag !== $this->contact->etag) {
-            Log::warning(__CLASS__.' wrong etag when updating contact. Expected '.$this->contact->etag.', get '.$etag);
-        }
+        $etag = $response->header('Etag');
+
+        $contact = Contact::where('account_id', $this->subscription->account_id)
+            ->findOrFail($this->contact->contactId);
+        $contact->distant_etag = empty($etag) ? null : $etag;
+        $contact->save();
     }
 }

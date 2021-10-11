@@ -44,7 +44,7 @@ class AddressBookContactsPushTest extends TestCase
         $card = $this->getCard($contact);
         $etag = $this->getEtag($contact, true);
 
-        $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
+        $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($contact, $card, $etag) {
             $mock->shouldReceive('init')->andReturn($mock);
             $mock->shouldReceive('getCard')
                 ->withArgs(function ($name, $uri) {
@@ -53,8 +53,10 @@ class AddressBookContactsPushTest extends TestCase
                     return true;
                 })
                 ->andReturn([
+                    'contact_id' => $contact->id,
                     'carddata' => $card,
                     'etag' => $etag,
+                    'distant_etag' => $etag,
                 ]);
             $mock->shouldReceive('getUuid')
                 ->withArgs(function ($uri) {
@@ -104,7 +106,7 @@ class AddressBookContactsPushTest extends TestCase
         $card = $this->getCard($contact);
         $etag = $this->getEtag($contact, true);
 
-        $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
+        $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($contact, $card, $etag) {
             $mock->shouldReceive('init')->andReturn($mock);
             $mock->shouldReceive('getUuid')
                 ->withArgs(function ($uri) {
@@ -122,8 +124,10 @@ class AddressBookContactsPushTest extends TestCase
                     return true;
                 })
                 ->andReturn([
+                    'contact_id' => $contact->id,
                     'carddata' => $card,
                     'etag' => $etag,
+                    'distant_etag' => $etag,
                 ]);
         });
 

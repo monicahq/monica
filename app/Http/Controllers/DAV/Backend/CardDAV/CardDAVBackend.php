@@ -5,6 +5,7 @@ namespace App\Http\Controllers\DAV\Backend\CardDAV;
 use Sabre\DAV;
 use App\Jobs\Dav\UpdateVCard;
 use App\Models\Contact\Contact;
+use App\Services\VCard\GetEtag;
 use App\Models\Account\AddressBook;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Bus;
@@ -189,11 +190,17 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
                 $carddata = $this->refreshObject($contact);
             }
 
+            $etag = app(GetEtag::class)->execute([
+                'account_id' => $this->user->account_id,
+                'contact_id' => $contact->id,
+            ]);
+
             return [
-                'id' => $contact->hashID(),
+                'contact_id' => $contact->id,
                 'uri' => $this->encodeUri($contact),
                 'carddata' => $carddata,
-                'etag' => '"'.md5($carddata).'"',
+                'etag' => $etag,
+                'distant_etag' => $contact->distant_etag,
                 'lastmodified' => $contact->updated_at->timestamp,
             ];
         } catch (\Exception $e) {
@@ -364,9 +371,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      */
     public function updateCard($addressBookId, $cardUri, $cardData): ?string
     {
-        $dto = new ContactUpdateDto($cardUri, '"'.md5($cardData).'"', $cardData);
-
-        $job = new UpdateVCard($this->user, $addressBookId, $dto);
+        $job = new UpdateVCard($this->user, $addressBookId, new ContactUpdateDto($cardUri, null, $cardData));
 
         Bus::batch([$job])
             ->allowFailures()
