@@ -113,7 +113,7 @@ class ActivitiesController extends Controller
     /**
      * Get all the activities for this contact for a specific year.
      */
-    public function year(Request $request, Contact $contact, ActivityStatisticService $activityStatisticService, int $year)
+    public function year(ActivityStatisticService $activityStatisticService, Contact $contact, int $year)
     {
         $startDate = Carbon::create($year, 1, 1);
         $endDate = Carbon::create($year, 12, 31);
