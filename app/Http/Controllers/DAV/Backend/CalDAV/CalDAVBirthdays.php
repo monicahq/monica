@@ -62,7 +62,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
                     'id' => $obj->id,
                     'uri' => $this->encodeUri($obj),
                     'calendardata' => $calendardata,
-                    'etag' => '"'.md5($calendardata).'"',
+                    'etag' => '"'.sha1($calendardata).'"',
                     'lastmodified' => $obj->updated_at->timestamp,
                 ];
             } catch (\Exception $e) {

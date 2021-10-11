@@ -48,9 +48,15 @@ class AddressBookContactsPush
             ->map(function (string $uri): ?PushVCard {
                 $card = $this->backend()->getCard($this->sync->addressBookName(), $uri);
 
-                return $card !== false
-                    ? new PushVCard($this->sync->subscription, new ContactPushDto($uri, $card['etag'], $card['carddata']))
-                    : null;
+                return $card === false ? null
+                    : new PushVCard($this->sync->subscription,
+                        new ContactPushDto(
+                            $uri,
+                            $card['distant_etag'],
+                            $card['carddata'],
+                            $card['contact_id']
+                        )
+                    );
             });
     }
 
@@ -78,9 +84,16 @@ class AddressBookContactsPush
             })->map(function (string $uri) use ($backend): ?PushVCard {
                 $card = $backend->getCard($this->sync->addressBookName(), $uri);
 
-                return $card !== false
-                    ? new PushVCard($this->sync->subscription, new ContactPushDto($uri, $card['etag'], $card['carddata'], ContactPushDto::MODE_MATCH_ETAG))
-                    : null;
+                return $card === false ? null
+                    : new PushVCard($this->sync->subscription,
+                        new ContactPushDto(
+                            $uri,
+                            $card['distant_etag'],
+                            $card['carddata'],
+                            $card['contact_id'],
+                            $card['distant_etag'] !== null ? ContactPushDto::MODE_MATCH_ETAG : ContactPushDto::MODE_MATCH_ANY
+                        )
+                    );
             });
     }
 }

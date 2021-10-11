@@ -10,7 +10,7 @@ class ContactDto
     public $uri;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $etag;
 
@@ -18,9 +18,9 @@ class ContactDto
      * Create a new ContactDto.
      *
      * @param  string  $uri
-     * @param  string  $etag
+     * @param  string|null  $etag
      */
-    public function __construct(string $uri, string $etag)
+    public function __construct(string $uri, ?string $etag)
     {
         $this->uri = $uri;
         $this->etag = $etag;

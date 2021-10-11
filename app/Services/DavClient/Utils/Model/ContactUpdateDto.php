@@ -16,10 +16,10 @@ class ContactUpdateDto extends ContactDto
      * Create a new ContactUpdateDto.
      *
      * @param  string  $uri
-     * @param  string  $etag
+     * @param  string|null  $etag
      * @param  string|resource  $card
      */
-    public function __construct(string $uri, string $etag, $card)
+    public function __construct(string $uri, ?string $etag, $card)
     {
         parent::__construct($uri, $etag);
         $this->card = self::transformCard($card);
