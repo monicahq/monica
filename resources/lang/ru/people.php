@@ -496,24 +496,24 @@ return [
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
 
     // Photos
-    'photo_title' => 'Photos',
+    'photo_title' => 'Фото',
     'photo_list_title' => 'Related photos',
-    'photo_list_cta' => 'Upload photo',
+    'photo_list_cta' => 'Загрузить фото',
     'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
-    'photo_upload_zone_cta' => 'Upload a photo',
+    'photo_upload_zone_cta' => 'Загрузить фото',
     'photo_current_profile_pic' => 'Current profile picture',
     'photo_make_profile_pic' => 'Make profile picture',
-    'photo_delete' => 'Delete photo',
-    'photo_next' => 'Next photo ❯',
-    'photo_previous' => '❮ Previous photo',
+    'photo_delete' => 'Удалить фото',
+    'photo_next' => 'Следующее фото ❯',
+    'photo_previous' => '❮ Предыдущее фото',
 
     // Avatars
-    'avatar_change_title' => 'Change your avatar',
+    'avatar_change_title' => 'Изменить свой аватар',
     'avatar_question' => 'Which avatar would you like to use?',
-    'avatar_default_avatar' => 'The default avatar',
+    'avatar_default_avatar' => 'Аватар по умолчанию',
     'avatar_adorable_avatar' => 'The Adorable avatar',
     'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
-    'avatar_current' => 'Keep the current avatar',
+    'avatar_current' => 'Оставить текущий аватар',
     'avatar_photo' => 'From a photo that you upload',
     'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
 
