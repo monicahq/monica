@@ -490,16 +490,16 @@ return [
     // documents
     'document_list_title' => 'Документы',
     'document_list_cta' => 'Upload document',
-    'document_list_blank_desc' => 'Here you can store documents related to this person.',
-    'document_upload_zone_cta' => 'Upload a file',
-    'document_upload_zone_progress' => 'Uploading the document…',
+    'document_list_blank_desc' => 'Здесь вы можете хранить документы, связанные с этим человеком.',
+    'document_upload_zone_cta' => 'Загрузить файл',
+    'document_upload_zone_progress' => 'Загрузка документа…',
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
 
     // Photos
     'photo_title' => 'Фото',
     'photo_list_title' => 'Related photos',
     'photo_list_cta' => 'Загрузить фото',
-    'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
+    'photo_list_blank_desc' => 'Вы можете хранить изображения об этом контакте. Загрузите сейчас!',
     'photo_upload_zone_cta' => 'Загрузить фото',
     'photo_current_profile_pic' => 'Current profile picture',
     'photo_make_profile_pic' => 'Make profile picture',
@@ -509,7 +509,7 @@ return [
 
     // Avatars
     'avatar_change_title' => 'Изменить свой аватар',
-    'avatar_question' => 'Which avatar would you like to use?',
+    'avatar_question' => 'Какой аватар вы хотели бы использовать?',
     'avatar_default_avatar' => 'Аватар по умолчанию',
     'avatar_adorable_avatar' => 'Аватар от adorable.io',
     'avatar_gravatar' => 'Gravatar связанный с адресом электронной почты этого человека. <a href="https://gravatar.com/">Gravatar</a> — глобальная система, позволяющая пользователям ассоциировать адреса электронной почты с фотографиями.',
