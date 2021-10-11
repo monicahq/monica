@@ -3,7 +3,6 @@
 namespace Tests\Unit\Services\DavClient;
 
 use Tests\TestCase;
-use GuzzleHttp\Client;
 use Mockery\MockInterface;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\SynchronizeAddressBook;
@@ -27,17 +26,14 @@ class SynchronizeAddressBookTest extends TestCase
                 });
         });
 
-        $client = new Client();
-
         $subscription = AddressBookSubscription::factory()->create();
 
         $request = [
             'account_id' => $subscription->account_id,
-            'user_id' => $subscription->user_id,
             'addressbook_subscription_id' => $subscription->id,
         ];
 
-        (new SynchronizeAddressBook())->execute($request, $client);
+        (new SynchronizeAddressBook())->execute($request);
     }
 
     /** @test */
@@ -53,17 +49,14 @@ class SynchronizeAddressBookTest extends TestCase
                 });
         });
 
-        $client = new Client();
-
         $subscription = AddressBookSubscription::factory()->create();
 
         $request = [
             'account_id' => $subscription->account_id,
-            'user_id' => $subscription->user_id,
             'addressbook_subscription_id' => $subscription->id,
             'force' => true,
         ];
 
-        (new SynchronizeAddressBook())->execute($request, $client);
+        (new SynchronizeAddressBook())->execute($request);
     }
 }

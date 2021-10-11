@@ -21,14 +21,20 @@ class SynchronizeAddressBooks implements ShouldQueue
     public $subscription;
 
     /**
+     * @var bool
+     */
+    private $force;
+
+    /**
      * Create a new job instance.
      *
      * @param  AddressBookSubscription  $subscription
      * @return void
      */
-    public function __construct(AddressBookSubscription $subscription)
+    public function __construct(AddressBookSubscription $subscription, bool $force = false)
     {
         $this->subscription = $subscription;
+        $this->force = $force;
     }
 
     /**
@@ -41,8 +47,8 @@ class SynchronizeAddressBooks implements ShouldQueue
         try {
             app(SynchronizeAddressBook::class)->execute([
                 'account_id' => $this->subscription->account_id,
-                'user_id' => $this->subscription->user_id,
                 'addressbook_subscription_id' => $this->subscription->id,
+                'force' => $this->force,
             ]);
         } catch (\Exception $e) {
             Log::error($e->getMessage(), [$e]);
