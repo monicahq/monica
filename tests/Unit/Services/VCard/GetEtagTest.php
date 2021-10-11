@@ -18,7 +18,7 @@ class GetEtagTest extends TestCase
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
-            'vcard' => 'test'
+            'vcard' => 'test',
         ]);
 
         $etag = app(GetEtag::class)->execute([
