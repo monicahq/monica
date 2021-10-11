@@ -272,7 +272,7 @@ return [
     'activities_add_date_occured' => 'Это происходило…',
     'activities_add_participants' => 'Кто, кроме {name}, участвовал в этой активности? (опционально)',
     'activities_add_emotions_title' => 'Вы хотите отметить свои ощущения во время этой активности? (опционально)',
-    'activities_blank_title' => 'Keep track of what you’ve done with {name} in the past, and what you’ve talked about',
+    'activities_blank_title' => 'Следите за тем, что вы делали с {name} в прошлом, и о чём вы говорили',
     'activities_blank_add_activity' => 'Добавить активность',
     'activities_add_success' => 'Активность была добавлена',
     'activities_add_error' => 'Ошибка при добавлении активности',
@@ -287,7 +287,7 @@ return [
     'activities_profile_year_summary' => 'Here is what you two have done in :year',
     'activities_profile_number_occurences' => ':value activity|:value activities',
     'activities_list_participants' => 'Участники ({total}):',
-    'activities_list_emotions' => 'Emotions felt:',
+    'activities_list_emotions' => 'Испытанные эмоции:',
     'activities_list_date' => 'Happened on',
     'activities_list_category' => 'Категория:',
 
