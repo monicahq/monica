@@ -514,24 +514,24 @@ return [
     'avatar_adorable_avatar' => 'Аватар от adorable.io',
     'avatar_gravatar' => 'Gravatar связанный с адресом электронной почты этого человека. <a href="https://gravatar.com/">Gravatar</a> — глобальная система, позволяющая пользователям ассоциировать адреса электронной почты с фотографиями.',
     'avatar_current' => 'Оставить текущий аватар',
-    'avatar_photo' => 'From a photo that you upload',
-    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
+    'avatar_photo' => 'Загруженное фото',
+    'avatar_crop_new_avatar_photo' => 'Обрезать новый аватар',
 
     // emotions
-    'emotion_this_made_me_feel' => 'This made you feel…',
+    'emotion_this_made_me_feel' => 'Это заставило вас чувствовать себя…',
 
     // logs
-    'auditlogs_link' => 'History',
-    'auditlogs_title' => 'Everything that happened to :name',
-    'auditlogs_breadcrumb' => 'History',
+    'auditlogs_link' => 'История',
+    'auditlogs_title' => 'Всё, что произошло с :name',
+    'auditlogs_breadcrumb' => 'История',
     'auditlogs_author' => 'By :name on :date',
 
     // contact field label
-    'contact_field_label_home' => 'Home',
-    'contact_field_label_work' => 'Work',
-    'contact_field_label_cell' => 'Mobile',
-    'contact_field_label_fax' => 'Fax',
-    'contact_field_label_pager' => 'Pager',
+    'contact_field_label_home' => 'Домашний номер телефона',
+    'contact_field_label_work' => 'Рабочий номер телефона',
+    'contact_field_label_cell' => 'Мобильный номер телефона',
+    'contact_field_label_fax' => 'Номер факса',
+    'contact_field_label_pager' => 'Номер пейджера',
     'contact_field_label_main' => 'Main',
     'contact_field_label_other' => 'Other',
     'contact_field_label_personal' => 'Personal',
