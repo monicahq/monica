@@ -375,8 +375,8 @@ return [
 
     // Deceased
     'deceased_reminder_title' => 'Годовщина смерти :name',
-    'deceased_mark_person_deceased' => 'Mark this as deceased',
-    'deceased_know_date' => 'I know the date that this person died',
+    'deceased_mark_person_deceased' => 'Пометить как умершего',
+    'deceased_know_date' => 'Я знаю дату смерти этого человека',
     'deceased_add_reminder' => 'Добавить напоминание на эту дату',
     'deceased_label' => 'Умерший',
     'deceased_date_label' => 'Дата смерти',
@@ -417,13 +417,13 @@ return [
     'pets_horse' => 'Лошадь',
     'pets_rabbit' => 'Кролик',
     'pets_rat' => 'Крыса',
-    'pets_small_animal' => 'Small animal',
-    'pets_other' => 'Other',
+    'pets_small_animal' => 'Маленькое животное',
+    'pets_other' => 'Другое',
 
     // life events
-    'life_event_list_tab_life_events' => 'Life events',
+    'life_event_list_tab_life_events' => 'События жизни',
     'life_event_list_tab_other' => 'Заметки, напоминания, …',
-    'life_event_list_title' => 'Life events',
+    'life_event_list_title' => 'События жизни',
     'life_event_blank' => 'Log what happens to the life of {name} for your future reference.',
     'life_event_list_cta' => 'Add life event',
     'life_event_create_category' => 'All categories',
