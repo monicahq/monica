@@ -2,9 +2,9 @@
 
 namespace App\Services\DavClient;
 
-use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 use App\Services\BaseService;
 use App\Models\Account\AddressBookSubscription;
+use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 
 class UpdateSubscriptionLocalSyncToken extends BaseService
 {
