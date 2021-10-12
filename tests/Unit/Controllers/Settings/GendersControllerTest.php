@@ -83,6 +83,22 @@ class GendersControllerTest extends FeatureTestCase
     }
 
     /** @test */
+    public function it_stores_a_new_default_gender()
+    {
+        $user = $this->signin();
+
+        $this->assertNull($user->account->default_gender_id);
+
+        $response = $this->json('POST', '/settings/personalization/genders', [
+            'name' => 'new-default-gender',
+            'type' => 'O',
+            'isDefault' => 'true',
+        ]);
+
+        $this->assertEquals($response->getData()->id, $user->account->default_gender_id);
+    }
+
+    /** @test */
     public function it_updates_a_gender()
     {
         $user = $this->signin();
