@@ -77,6 +77,10 @@ class GendersController extends Controller
             ]
         );
 
+        if ($request->input('isDefault')) {
+            $this->updateDefault($gender);
+        }
+
         return $this->formatData($gender);
     }
 
