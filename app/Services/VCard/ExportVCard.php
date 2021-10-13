@@ -288,7 +288,6 @@ class ExportVCard extends BaseService
                     }
                     break;
             }
-            
         }
     }
 
