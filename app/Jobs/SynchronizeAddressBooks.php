@@ -51,7 +51,7 @@ class SynchronizeAddressBooks implements ShouldQueue
                 'force' => $this->force,
             ]);
         } catch (\Exception $e) {
-            Log::error($e->getMessage(), [$e]);
+            Log::error(__CLASS__.' '.__FUNCTION__.':'.$e->getMessage(), [$e]);
         }
         $this->subscription->last_synchronized_at = now();
         $this->subscription->save();

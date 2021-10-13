@@ -65,7 +65,7 @@ class UpdateVCard implements ShouldQueue
             $newtag = $this->updateCard($this->addressBookName, $this->contact->uri, $this->contact->card);
 
             if (! is_null($this->contact->etag) && $newtag !== $this->contact->etag) {
-                Log::warning(__CLASS__.' wrong etag when updating contact. Expected '.$this->contact->etag.', get '.$newtag, [
+                Log::warning(__CLASS__.' '.__FUNCTION__.' wrong etag when updating contact. Expected '.$this->contact->etag.', get '.$newtag, [
                     'contacturl' => $this->contact->uri,
                     'carddata' => $this->contact->card,
                 ]);
@@ -113,10 +113,11 @@ class UpdateVCard implements ShouldQueue
                 ]);
             }
         } catch (\Exception $e) {
-            Log::debug(__CLASS__.' updateCard: '.$e->getMessage(), [
-                $e,
+            Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
                 'contacturl' => $cardUri,
+                'contact_id' => $contact_id,
                 'carddata' => $cardData,
+                $e,
             ]);
             throw $e;
         }
