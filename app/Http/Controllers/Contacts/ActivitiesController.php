@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Contacts;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
-use App\Models\Account\Activity;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Models\Account\ActivityType;
@@ -16,18 +15,6 @@ use App\Http\Resources\Activity\Activity as ActivityResource;
 class ActivitiesController extends Controller
 {
     use JsonRespondController;
-
-    /**
-     * Statistics about an activity.
-     *
-     * @var ActivityStatisticService
-     */
-    protected $activityStatisticService;
-
-    public function __construct(ActivityStatisticService $service)
-    {
-        $this->activityStatisticService = $service;
-    }
 
     /**
      * Get the list of activities.
@@ -126,21 +113,21 @@ class ActivitiesController extends Controller
     /**
      * Get all the activities for this contact for a specific year.
      */
-    public function year(Request $request, Contact $contact, int $year)
+    public function year(ActivityStatisticService $activityStatisticService, Contact $contact, int $year)
     {
         $startDate = Carbon::create($year, 1, 1);
         $endDate = Carbon::create($year, 12, 31);
 
-        $activitiesLastTwelveMonths = $this->activityStatisticService
+        $activitiesLastTwelveMonths = $activityStatisticService
                         ->activitiesWithContactInTimeRange($contact, now()->subMonths(12), now())
                         ->count();
 
-        $uniqueActivityTypes = $this->activityStatisticService
+        $uniqueActivityTypes = $activityStatisticService
                         ->uniqueActivityTypesInTimeRange($contact, $startDate, $endDate);
 
-        $activitiesPerYear = $this->activityStatisticService->activitiesPerYearWithContact($contact);
+        $activitiesPerYear = $activityStatisticService->activitiesPerYearWithContact($contact);
 
-        $activitiesPerMonthForYear = $this->activityStatisticService
+        $activitiesPerMonthForYear = $activityStatisticService
                         ->activitiesPerMonthForYear($contact, $year)
                         ->sortByDesc('month');
 
