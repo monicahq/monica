@@ -519,7 +519,7 @@ class ExportVCardTest extends TestCase
         return [
             ['Discord', 'https://www.discord.app/user/', 'test123', 'URL;VALUE=URI:https://discord.app/user/test123'],
             ['Facebook Profile', 'https://www.facebook.com/', 'test123', 'URL;VALUE=URI:https://www.facebook.com/test123'],
-            ['Website', '', 'http://www.website.com', 'SOCIALPROFILE;TYPE=whatsapp:https://wa.me/test']
+            ['Website', '', 'http://www.website.com', 'SOCIALPROFILE;TYPE=whatsapp:https://wa.me/test'],
         ];
     }
 

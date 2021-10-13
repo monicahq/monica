@@ -281,8 +281,8 @@ class ExportVCard extends BaseService
                             break;
                         default:
                             // If field isn't a supported social profile, but still has a protocol, then export it as a url.
-                            if (!empty($contactField->contactFieldType->protocol)) {
-                                $vcard->add('URL', $this->escape($contactField->contactFieldType->protocol . $contactField->data));
+                            if (! empty($contactField->contactFieldType->protocol)) {
+                                $vcard->add('URL', $this->escape($contactField->contactFieldType->protocol.$contactField->data));
                             }
                             break;
                     }
