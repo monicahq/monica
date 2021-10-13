@@ -482,6 +482,47 @@ class ExportVCardTest extends TestCase
         ];
     }
 
+    /**
+     * @test
+     * @dataProvider contactUrlProvider
+     */
+    public function vcard_add_contact_url($name, $protocol, $data, $result)
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $vCard = new VCard();
+
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $account->id,
+            'name' => $name,
+            'protocol' => $protocol,
+        ]);
+        factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $account->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => $data,
+        ]);
+
+        $exportVCard = app(ExportVCard::class);
+        $this->invokePrivateMethod($exportVCard, 'exportContactFields', [$contact, $vCard]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+        $this->assertStringContainsString($result, $vCard->serialize());
+    }
+
+    public function contactUrlProvider()
+    {
+        return [
+            ['Discord', 'https://www.discord.app/user/', 'test123', 'URL;VALUE=URI:https://discord.app/user/test123'],
+            ['Facebook Profile', 'https://www.facebook.com/', 'test123', 'URL;VALUE=URI:https://www.facebook.com/test123'],
+            ['Website', '', 'http://www.website.com', 'SOCIALPROFILE;TYPE=whatsapp:https://wa.me/test']
+        ];
+    }
+
     /** @test */
     public function vcard_add_addresses_empty()
     {
