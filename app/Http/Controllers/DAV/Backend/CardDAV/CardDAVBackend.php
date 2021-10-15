@@ -204,7 +204,11 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
                 'lastmodified' => $contact->updated_at->timestamp,
             ];
         } catch (\Exception $e) {
-            Log::debug(__CLASS__.' prepareCard: '.(string) $e, [$e, 'carddata' => $carddata, 'contact_id' => $contact->id]);
+            Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
+                'carddata' => $carddata,
+                'contact_id' => $contact->id,
+                $e,
+            ]);
             throw $e;
         }
     }

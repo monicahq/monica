@@ -66,7 +66,10 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
                     'lastmodified' => $obj->updated_at->timestamp,
                 ];
             } catch (\Exception $e) {
-                Log::debug(__CLASS__.' prepareData: '.(string) $e, [$e, 'calendardata' => $calendardata]);
+                Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
+                    'calendardata' => $calendardata,
+                    $e,
+                ]);
             }
         }
 

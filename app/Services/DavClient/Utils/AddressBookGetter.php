@@ -31,7 +31,7 @@ class AddressBookGetter
         try {
             return $this->getAddressBookData();
         } catch (ClientException $e) {
-            Log::error(__CLASS__.' getAddressBookBaseUri: '.$e->getMessage(), [$e]);
+            Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [$e]);
             throw $e;
         }
     }

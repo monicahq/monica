@@ -442,7 +442,7 @@ class ContactsController extends Controller
                 } catch (\Exception $e) {
                     Log::warning(__CLASS__.' update: Failed to delete avatars', [
                         'contact' => $contact,
-                        'exception' => $e,
+                        $e,
                     ]);
                 }
             }

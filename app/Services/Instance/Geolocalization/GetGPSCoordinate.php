@@ -86,7 +86,10 @@ class GetGPSCoordinate extends BaseService
 
             return $place;
         } catch (HttpClientException $e) {
-            Log::error('Error making the call: '.$e);
+            Log::error(__CLASS__.' '.__FUNCTION__.': Error making the call: '.$e->getMessage(), [
+                'query' => Str::of($query)->replace(config('monica.location_iq_api_key'), '******'),
+                $e,
+            ]);
         }
 
         return null;

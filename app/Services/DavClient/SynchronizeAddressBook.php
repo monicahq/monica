@@ -50,10 +50,10 @@ class SynchronizeAddressBook extends BaseService
         try {
             $this->sync($data, $subscription);
         } catch (ClientException $e) {
-            Log::error(__CLASS__.' execute: '.$e->getMessage(), [$e]);
-            if ($e->hasResponse()) {
-                Log::error(__CLASS__.' execute: '.$e->getResponse()->getBody());
-            }
+            Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
+                'body' => $e->hasResponse() ? $e->getResponse()->getBody() : null,
+                $e,
+            ]);
         }
     }
 
