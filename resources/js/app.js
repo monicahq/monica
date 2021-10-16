@@ -182,6 +182,11 @@ Vue.component(
 );
 
 Vue.component(
+  'LastCalled',
+  require('./components/people/calls/LastCalled.vue').default
+);
+
+Vue.component(
   'PhoneCallList',
   require('./components/people/calls/PhoneCallList.vue').default
 );
