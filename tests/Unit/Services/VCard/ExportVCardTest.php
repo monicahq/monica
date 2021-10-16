@@ -496,6 +496,7 @@ class ExportVCardTest extends TestCase
             'account_id' => $account->id,
             'name' => $name,
             'protocol' => $protocol,
+            'type' => "URL"
         ]);
         factory(ContactField::class)->create([
             'contact_id' => $contact->id,
@@ -519,7 +520,7 @@ class ExportVCardTest extends TestCase
         return [
             ['Discord', 'https://www.discord.app/user/', 'test123', 'URL;VALUE=URI:https://discord.app/user/test123'],
             ['Facebook Profile', 'https://www.facebook.com/', 'test123', 'URL;VALUE=URI:https://www.facebook.com/test123'],
-            ['Website', '', 'http://www.website.com', 'SOCIALPROFILE;TYPE=whatsapp:https://wa.me/test'],
+            ['Website', '', 'http://www.website.com', 'URL;VALUE=URI:http://www.website.com'],
         ];
     }
 
