@@ -496,7 +496,7 @@ class ExportVCardTest extends TestCase
             'account_id' => $account->id,
             'name' => $name,
             'protocol' => $protocol,
-            'type' => "URL",
+            'type' => 'URL',
         ]);
         factory(ContactField::class)->create([
             'contact_id' => $contact->id,
