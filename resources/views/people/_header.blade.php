@@ -130,9 +130,3 @@
       @include ('partials.notification')
     </div>
 </div>
-<script>
-  import LastCalled from "../../js/components/people/calls/LastCalled";
-  export default {
-    components: {LastCalled}
-  }
-</script>
