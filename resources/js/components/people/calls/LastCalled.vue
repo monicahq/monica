@@ -1,5 +1,5 @@
 <template>
-  <span>{{ lastCalledMessage }}</span>
+  <span v-cy-name="'last-talked-to'">{{ lastCalledMessage }}</span>
 </template>
 
 <script>
