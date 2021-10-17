@@ -507,18 +507,13 @@ class ExportVCardTest extends TestCase
 
         $exportVCard = app(ExportVCard::class);
         $this->invokePrivateMethod($exportVCard, 'exportContactFields', [$contact, $vCard]);
-
-        $this->assertCount(
-            self::defaultPropsCount + 1,
-            $vCard->children()
-        );
         $this->assertStringContainsString($result, $vCard->serialize());
     }
 
     public function contactUrlProvider()
     {
         return [
-            ['Discord', 'https://www.discord.app/user/', 'test123', 'URL;VALUE=URI:https://discord.app/user/test123'],
+            ['Discord', 'https://www.discord.app/user/', 'test123', 'URL;VALUE=URI:https://www.discord.app/user/test123'],
             ['Facebook Profile', 'https://www.facebook.com/', 'test123', 'URL;VALUE=URI:https://www.facebook.com/test123'],
             ['Website', '', 'http://www.website.com', 'URL;VALUE=URI:http://www.website.com'],
         ];
