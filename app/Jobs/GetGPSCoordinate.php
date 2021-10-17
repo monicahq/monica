@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\Middleware\RateLimited;
+use App\Exceptions\RateLimitedSecondException;
 use App\Services\Instance\Geolocalization\GetGPSCoordinate as GetGPSCoordinateService;
 
 class GetGPSCoordinate implements ShouldQueue
@@ -63,9 +64,13 @@ class GetGPSCoordinate implements ShouldQueue
      */
     public function handle()
     {
-        app(GetGPSCoordinateService::class)->execute([
-            'account_id' => $this->place->account_id,
-            'place_id' => $this->place->id,
-        ]);
+        try {
+            app(GetGPSCoordinateService::class)->execute([
+                'account_id' => $this->place->account_id,
+                'place_id' => $this->place->id,
+            ]);
+        } catch (RateLimitedSecondException $e) {
+            $this->release(15);
+        }
     }
 }

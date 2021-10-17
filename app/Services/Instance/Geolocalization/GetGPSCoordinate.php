@@ -7,7 +7,8 @@ use App\Models\Account\Place;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Http\Client\HttpClientException;
+use Illuminate\Http\Client\RequestException;
+use App\Exceptions\RateLimitedSecondException;
 
 class GetGPSCoordinate extends BaseService
 {
@@ -85,11 +86,15 @@ class GetGPSCoordinate extends BaseService
             $place->save();
 
             return $place;
-        } catch (HttpClientException $e) {
-            Log::error(__CLASS__.' '.__FUNCTION__.': Error making the call: '.$e->getMessage(), [
-                'query' => Str::of($query)->replace(config('monica.location_iq_api_key'), '******'),
-                $e,
-            ]);
+        } catch (RequestException $e) {
+            if ($e->response->status() === 429 && ($error = $e->response->json('error')) && $error === 'Rate Limited Second') {
+                throw new RateLimitedSecondException($e);
+            } else {
+                Log::error(__CLASS__.' '.__FUNCTION__.': Error making the call: '.$e->getMessage(), [
+                    'query' => Str::of($query)->replace(config('monica.location_iq_api_key'), '******'),
+                    $e,
+                ]);
+            }
         }
 
         return null;
