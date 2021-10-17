@@ -5,6 +5,7 @@ namespace Tests\Unit\Services\VCard;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User\User;
+use Sabre\VObject\Reader;
 use App\Models\Contact\Tag;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -45,6 +46,41 @@ class ImportVCardTest extends TestCase
         $vcard = new VCard([
             'N'   => ['John', '', '', '', ''],
         ]);
+
+        $this->assertFalse($this->invokePrivateMethod($importVCard, 'canImportCurrentEntry', [$vcard]));
+    }
+
+    /** @test */
+    public function it_can_not_import_because_empty_firstname_in_vcard()
+    {
+        $account = factory(Account::class)->create([]);
+        $importVCard = new ImportVCard;
+
+        $vcard = new VCard([
+            'N'   => ';;;;',
+        ]);
+
+        $this->assertFalse($this->invokePrivateMethod($importVCard, 'canImportCurrentEntry', [$vcard]));
+    }
+
+    /** @test */
+    public function it_can_not_import_vcard()
+    {
+        $account = factory(Account::class)->create([]);
+        $importVCard = new ImportVCard;
+
+        $vcard = Reader::read('
+BEGIN:VCARD
+VERSION:3.0
+N:;;;;
+FN:
+ORG:;
+EMAIL;TYPE=home;TYPE=pref:mail@example.org
+NOTE:
+NICKNAME:
+TITLE:
+REV:20210900T000102Z
+END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
 
         $this->assertFalse($this->invokePrivateMethod($importVCard, 'canImportCurrentEntry', [$vcard]));
     }

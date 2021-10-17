@@ -866,7 +866,10 @@ class ImportVCard extends BaseService
         ];
 
         if ($entry->ORG) {
-            $request['company'] = $this->formatValue($entry->ORG);
+            $parts = $entry->ORG->getParts();
+            if ($company = Arr::get($parts, '0')) {
+                $request['company'] = $this->formatValue($company);
+            }
         }
 
         if ($entry->ROLE) {
