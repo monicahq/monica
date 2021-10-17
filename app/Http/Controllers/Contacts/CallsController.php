@@ -34,7 +34,7 @@ class CallsController extends Controller
     /**
      * Display the timestamp of the last phone contact.
      *
-     * @param Contact $contact
+     * @param  Contact $contact
      * @return JsonResponse
      */
     public function lastCalled(Contact $contact): JsonResponse

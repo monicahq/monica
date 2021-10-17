@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Helpers\DateHelper;
-use App\Services\Contact\Call\CreateCall;
 use Tests\FeatureTestCase;
+use App\Helpers\DateHelper;
 use App\Models\Contact\Call;
 use App\Models\Contact\Contact;
+use App\Services\Contact\Call\CreateCall;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CallsTest extends FeatureTestCase
@@ -81,7 +81,7 @@ class CallsTest extends FeatureTestCase
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
-            'last_talked_to'
+            'last_talked_to',
         ]);
 
         $this->assertEquals($response->json('last_talked_to'), DateHelper::getShortDate($referenceDate));
@@ -101,7 +101,7 @@ class CallsTest extends FeatureTestCase
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
-            'last_talked_to'
+            'last_talked_to',
         ]);
 
         $this->assertNull($response->json('last_talked_to'));
