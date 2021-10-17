@@ -5,8 +5,8 @@ namespace Tests\Unit\Services\Instance\Geolocalization;
 use Tests\TestCase;
 use App\Models\Account\Place;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Validation\ValidationException;
 use App\Exceptions\RateLimitedSecondException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 

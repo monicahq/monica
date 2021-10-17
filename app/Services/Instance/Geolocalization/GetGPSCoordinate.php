@@ -87,7 +87,7 @@ class GetGPSCoordinate extends BaseService
 
             return $place;
         } catch (RequestException $e) {
-            if ($e->response->status() === 429 && ($error = $e->response->json('error')) && $error === "Rate Limited Second") {
+            if ($e->response->status() === 429 && ($error = $e->response->json('error')) && $error === 'Rate Limited Second') {
                 throw new RateLimitedSecondException($e);
             } else {
                 Log::error(__CLASS__.' '.__FUNCTION__.': Error making the call: '.$e->getMessage(), [
