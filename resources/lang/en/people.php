@@ -144,6 +144,7 @@ return [
 
     // Last called
     'last_called' => 'Last called: :date',
+    'last_talked_to' => 'Last called: {date}',
     'last_called_empty' => 'Last called: unknown',
     'last_activity_date' => 'Last activity together: :date',
     'last_activity_date_empty' => 'Last activity together: unknown',
@@ -535,8 +536,4 @@ return [
     'contact_field_label_main' => 'Main',
     'contact_field_label_other' => 'Other',
     'contact_field_label_personal' => 'Personal',
-
-    'vue' => [
-        'last_called' => 'Last called: {date}',
-    ],
 ];

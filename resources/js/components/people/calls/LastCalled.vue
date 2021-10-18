@@ -28,10 +28,10 @@ export default {
       }
 
       if (!this.lastCalled) {
-        return this.$t('people.vue.last_called', {date: this.initialValue});
+        return this.$t('people.last_talked_to', {date: this.initialValue});
       }
 
-      return this.$t('people.vue.last_called', {date: this.lastCalled});
+      return this.$t('people.last_talked_to', {date: this.lastCalled});
     }
   },
 
