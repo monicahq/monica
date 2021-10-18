@@ -2383,16 +2383,16 @@
         },
         {
             "name": "graham-campbell/result-type",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GrahamCampbell/Result-Type.git",
-                "reference": "84afea85c6841deeea872f36249a206e878a5de0"
+                "reference": "296c015dc30ec4322168c5ad3ee5cc11dae827ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GrahamCampbell/Result-Type/zipball/84afea85c6841deeea872f36249a206e878a5de0",
-                "reference": "84afea85c6841deeea872f36249a206e878a5de0",
+                "url": "https://api.github.com/repos/GrahamCampbell/Result-Type/zipball/296c015dc30ec4322168c5ad3ee5cc11dae827ac",
+                "reference": "296c015dc30ec4322168c5ad3ee5cc11dae827ac",
                 "shasum": ""
             },
             "require": {
@@ -2428,7 +2428,7 @@
             ],
             "support": {
                 "issues": "https://github.com/GrahamCampbell/Result-Type/issues",
-                "source": "https://github.com/GrahamCampbell/Result-Type/tree/v1.0.2"
+                "source": "https://github.com/GrahamCampbell/Result-Type/tree/v1.0.3"
             },
             "funding": [
                 {
@@ -2440,7 +2440,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-08-28T21:34:50+00:00"
+            "time": "2021-10-17T19:48:54+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -3091,16 +3091,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.63.0",
+            "version": "v8.64.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "8f3d280f36a427730c8c8fa34316c79eed38781e"
+                "reference": "3337c029e1bb31d9712d27437cc27010ba302c9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/8f3d280f36a427730c8c8fa34316c79eed38781e",
-                "reference": "8f3d280f36a427730c8c8fa34316c79eed38781e",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/3337c029e1bb31d9712d27437cc27010ba302c9e",
+                "reference": "3337c029e1bb31d9712d27437cc27010ba302c9e",
                 "shasum": ""
             },
             "require": {
@@ -3258,7 +3258,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-10-05T14:04:25+00:00"
+            "time": "2021-10-12T13:43:13+00:00"
         },
         {
             "name": "laravel/passport",
@@ -3525,16 +3525,16 @@
         },
         {
             "name": "laravolt/avatar",
-            "version": "4.1.4",
+            "version": "4.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravolt/avatar.git",
-                "reference": "f50192566e6e4db7fc9623c1c925642acca5ac6a"
+                "reference": "9207253a1e76d6c8441325d6895b57f244aa3580"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravolt/avatar/zipball/f50192566e6e4db7fc9623c1c925642acca5ac6a",
-                "reference": "f50192566e6e4db7fc9623c1c925642acca5ac6a",
+                "url": "https://api.github.com/repos/laravolt/avatar/zipball/9207253a1e76d6c8441325d6895b57f244aa3580",
+                "reference": "9207253a1e76d6c8441325d6895b57f244aa3580",
                 "shasum": ""
             },
             "require": {
@@ -3589,9 +3589,23 @@
             ],
             "support": {
                 "issues": "https://github.com/laravolt/avatar/issues",
-                "source": "https://github.com/laravolt/avatar/tree/4.1.4"
+                "source": "https://github.com/laravolt/avatar/tree/4.1.5"
             },
-            "time": "2021-06-15T23:55:43+00:00"
+            "funding": [
+                {
+                    "url": "https://paypal.me/bayuhendra",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://ko-fi.com/bayuhendra",
+                    "type": "ko_fi"
+                },
+                {
+                    "url": "https://www.patreon.com/uyab",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2021-09-29T08:57:57+00:00"
         },
         {
             "name": "lcobucci/clock",
@@ -5439,21 +5453,21 @@
         },
         {
             "name": "nette/schema",
-            "version": "v1.2.1",
+            "version": "v1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/schema.git",
-                "reference": "f5ed39fc96358f922cedfd1e516f0dadf5d2be0d"
+                "reference": "9a39cef03a5b34c7de64f551538cbba05c2be5df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/schema/zipball/f5ed39fc96358f922cedfd1e516f0dadf5d2be0d",
-                "reference": "f5ed39fc96358f922cedfd1e516f0dadf5d2be0d",
+                "url": "https://api.github.com/repos/nette/schema/zipball/9a39cef03a5b34c7de64f551538cbba05c2be5df",
+                "reference": "9a39cef03a5b34c7de64f551538cbba05c2be5df",
                 "shasum": ""
             },
             "require": {
-                "nette/utils": "^3.1.4 || ^4.0",
-                "php": ">=7.1 <8.1"
+                "nette/utils": "^2.5.7 || ^3.1.5 ||  ^4.0",
+                "php": ">=7.1 <8.2"
             },
             "require-dev": {
                 "nette/tester": "^2.3 || ^2.4",
@@ -5495,9 +5509,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/schema/issues",
-                "source": "https://github.com/nette/schema/tree/v1.2.1"
+                "source": "https://github.com/nette/schema/tree/v1.2.2"
             },
-            "time": "2021-03-04T17:51:11+00:00"
+            "time": "2021-10-15T11:40:02+00:00"
         },
         {
             "name": "nette/utils",
