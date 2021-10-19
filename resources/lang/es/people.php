@@ -163,7 +163,7 @@ return [
     'information_edit_exact' => 'I know this person’s exact birthday…',
     'information_edit_birthdate_label' => 'Cumpleaños',
     'information_no_work_defined' => 'Información de trabajo no definida',
-    'information_work_at' => 'en: company',
+    'information_work_at' => 'en :company',
     'work_add_cta' => 'Actualizar la información de trabajo',
     'work_edit_success' => 'Información de trabajo actualizada',
     'work_edit_title' => 'Actualizar la información de trabajo de :name',
