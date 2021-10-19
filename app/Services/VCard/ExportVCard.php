@@ -250,6 +250,7 @@ class ExportVCard extends BaseService
         $vcard->remove('TEL');
         $vcard->remove('EMAIL');
         $vcard->remove('socialProfile');
+        $vcard->remove('URL');
 
         foreach ($contact->contactFields as $contactField) {
             $type = $this->getContactFieldLabel($contactField);
@@ -261,26 +262,30 @@ class ExportVCard extends BaseService
                     $vcard->add('EMAIL', $this->escape($contactField->data), $type);
                     break;
                 default:
-                    break;
-            }
-            switch ($contactField->contactFieldType->name) {
-                // See https://tools.ietf.org/id/draft-george-vcarddav-vcard-extension-02.html
-                case 'Facebook':
-                    $vcard->add('socialProfile', $this->escape('https://www.facebook.com/'.$contactField->data), ['type' => 'facebook']);
-                    break;
-                case 'Twitter':
-                    $vcard->add('socialProfile', $this->escape('https://twitter.com/'.$contactField->data), ['type' => 'twitter']);
-                    break;
-                case 'Whatsapp':
-                    $vcard->add('socialProfile', $this->escape('https://wa.me/'.$contactField->data), ['type' => 'whatsapp']);
-                    break;
-                case 'Telegram':
-                    $vcard->add('socialProfile', $this->escape('http://t.me/'.$contactField->data), ['type' => 'telegram']);
-                    break;
-                case 'LinkedIn':
-                    $vcard->add('socialProfile', $this->escape('http://www.linkedin.com/in/'.$contactField->data), ['type' => 'linkedin']);
-                    break;
-                default:
+                    switch ($contactField->contactFieldType->name) {
+                        // See https://tools.ietf.org/id/draft-george-vcarddav-vcard-extension-02.html
+                        case 'Facebook':
+                            $vcard->add('socialProfile', $this->escape('https://www.facebook.com/'.$contactField->data), ['type' => 'facebook']);
+                            break;
+                        case 'Twitter':
+                            $vcard->add('socialProfile', $this->escape('https://twitter.com/'.$contactField->data), ['type' => 'twitter']);
+                            break;
+                        case 'Whatsapp':
+                            $vcard->add('socialProfile', $this->escape('https://wa.me/'.$contactField->data), ['type' => 'whatsapp']);
+                            break;
+                        case 'Telegram':
+                            $vcard->add('socialProfile', $this->escape('http://t.me/'.$contactField->data), ['type' => 'telegram']);
+                            break;
+                        case 'LinkedIn':
+                            $vcard->add('socialProfile', $this->escape('http://www.linkedin.com/in/'.$contactField->data), ['type' => 'linkedin']);
+                            break;
+                        default:
+                            // If field isn't a supported social profile, but still has a protocol, then export it as a url.
+                            if (! empty($contactField->contactFieldType->protocol)) {
+                                $vcard->add('URL', $this->escape($contactField->contactFieldType->protocol.$contactField->data));
+                            }
+                            break;
+                    }
                     break;
             }
         }
