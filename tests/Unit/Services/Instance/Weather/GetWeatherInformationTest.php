@@ -25,7 +25,7 @@ class GetWeatherInformationTest extends TestCase
         ]);
 
         config(['monica.enable_weather' => true]);
-        config(['monica.darksky_api_key' => 'test']);
+        config(['monica.weatherapi_key' => 'test']);
 
         $body = file_get_contents(base_path('tests/Fixtures/Services/Instance/Weather/GetWeatherInformationSampleResponse.json'));
         Http::fake([
@@ -64,7 +64,7 @@ class GetWeatherInformationTest extends TestCase
         ]);
 
         config(['monica.enable_weather' => true]);
-        config(['monica.darksky_api_key' => 'test']);
+        config(['monica.weatherapi_key' => 'test']);
         config(['monica.enable_geolocation' => true]);
         config(['monica.location_iq_api_key' => 'test']);
 
@@ -124,7 +124,7 @@ class GetWeatherInformationTest extends TestCase
     }
 
     /** @test */
-    public function it_cant_get_weather_info_if_darksky_api_key_not_provided()
+    public function it_cant_get_weather_info_if_weatherapi_key_not_provided()
     {
         $place = factory(Place::class)->create([
             'latitude' => '34.112456',
@@ -132,7 +132,7 @@ class GetWeatherInformationTest extends TestCase
         ]);
 
         config(['monica.enable_weather' => true]);
-        config(['monica.darksky_api_key' => null]);
+        config(['monica.weatherapi_key' => null]);
 
         $request = [
             'place_id' => $place->id,
@@ -148,7 +148,7 @@ class GetWeatherInformationTest extends TestCase
         $place = factory(Place::class)->create([]);
 
         config(['monica.enable_weather' => true]);
-        config(['monica.darksky_api_key' => 'test']);
+        config(['monica.weatherapi_key' => 'test']);
         config(['monica.enable_geolocation' => false]);
 
         $request = [
@@ -162,7 +162,7 @@ class GetWeatherInformationTest extends TestCase
     public function it_fails_if_wrong_parameters_are_given()
     {
         config(['monica.enable_weather' => true]);
-        config(['monica.darksky_api_key' => 'test']);
+        config(['monica.weatherapi_key' => 'test']);
 
         $request = [];
 
