@@ -7,12 +7,11 @@ use App\Models\Account\Place;
 use App\Services\BaseService;
 use App\Jobs\GetGPSCoordinate;
 use App\Models\Account\Weather;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use App\Exceptions\MissingEnvVariableException;
 use Illuminate\Http\Client\HttpClientException;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\App;
 
 class GetWeatherInformation extends BaseService
 {
@@ -56,7 +55,7 @@ class GetWeatherInformation extends BaseService
             }
         }
 
-        return $this->query($place, App::getLocale());
+    return $this->query($place, 'en' /*App::getLocale()*/);
     }
 
     /**
@@ -126,7 +125,7 @@ class GetWeatherInformation extends BaseService
             $query['lang'] = $lang;
         }
 
-        return Str::finish(config('location.weatherapi_url'), '/').'?'.http_build_query($query);
+        return Str::of(config('location.weatherapi_url'))->rtrim('/').'?'.http_build_query($query);
     }
 
     /**

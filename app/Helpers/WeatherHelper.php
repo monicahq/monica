@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\Account\Weather;
 use App\Models\Contact\Address;
+use Illuminate\Support\Facades\Log;
 use App\Services\Instance\Weather\GetWeatherInformation;
 
 class WeatherHelper
@@ -45,9 +46,14 @@ class WeatherHelper
     {
         try {
             return app(GetWeatherInformation::class)->execute([
-                'place_id' => $address->place->id,
+                'account_id' => $address->account_id,
+                'place_id' => $address->place_id,
             ]);
         } catch (\Exception $e) {
+            Log::error(__CLASS__.' '.__FUNCTION__.': Error getting weather: '.$e->getMessage(), [
+                $address,
+                $e,
+            ]);
             return null;
         }
     }

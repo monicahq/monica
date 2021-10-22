@@ -18,6 +18,8 @@ class Weather extends Model
      * @var array
      */
     protected $fillable = [
+        'account_id',
+        'place_id',
         'weather_json',
     ];
 
@@ -87,11 +89,11 @@ class Weather extends Model
         switch ($this->summary_icon) {
             case 'sunny':
             case 'clear-day':
-                $string = '☀️';
+                $string = '🌞';
                 break;
             case 'clear':
             case 'clear-night':
-                $string = '🌌';
+                $string = '🌃';
                 break;
             case 'light-drizzle':
             case 'patchy-light-drizzle':
