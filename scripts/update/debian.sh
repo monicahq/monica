@@ -34,9 +34,9 @@
 
      yarn run production  ; \
 
-# 7. Update Monica itself.  Per the README, this "will run migration
-#    scripts for database, and flush all cache for config, route, and 
-#    view, as an optimization process. It's easier than running every 
+# 7. Update Monica itself.  Per the README, this "runs migration scripts 
+#    for the database, and flushes all caches for config, route, and
+#    view as an optimization process. It’s easier than running every
 #    required command individually".
 
      php artisan monica:update --force  ; \
