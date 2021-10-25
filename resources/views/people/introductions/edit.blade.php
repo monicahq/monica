@@ -47,6 +47,7 @@
 
                 <div class="form-group">
                   <contact-select
+                    :id="'metThrough'"
                     :required="false"
                     :title="'{{ trans('people.introductions_edit_met_through') }}'"
                     :name="'metThroughId'"
