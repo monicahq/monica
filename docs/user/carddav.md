@@ -79,9 +79,9 @@ After that, you can use any Contacts application on your phone. Be sure to displ
 
 ### Thunderbird
 
-[Thunderbird](https://www.thunderbird.net) does not support CardDAV natively, so you'll need to install a third party Add-on to use CardDAV.
+[Thunderbird](https://www.thunderbird.net) supports CardDAV natively as of version 91.
 
-I recommend to install [CardBook](https://addons.thunderbird.net/thunderbird/addon/cardbook/).
+I recommend installing [CardBook](https://addons.thunderbird.net/thunderbird/addon/cardbook/).
 Download the add-on and install it through Thunderbird's add-on manager.
 
 To add an account:
