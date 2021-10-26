@@ -144,6 +144,7 @@ return [
 
     // Last called
     'last_called' => 'Last called: :date',
+    'last_talked_to' => 'Last called: {date}',
     'last_called_empty' => 'Last called: unknown',
     'last_activity_date' => 'Last activity together: :date',
     'last_activity_date_empty' => 'Last activity together: unknown',
