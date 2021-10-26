@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Contacts\CallsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -156,6 +157,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::resource('people/{contact}/debts', 'Contacts\\DebtController')->except(['index', 'show']);
 
         // Phone calls
+        Route::get('people/{contact}/calls/last', [CallsController::class, 'lastCalled']);
         Route::resource('people/{contact}/calls', 'Contacts\\CallsController')->except(['show']);
 
         // Conversations

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use App\Helpers\DateHelper;
 use App\Models\Contact\Call;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
@@ -28,6 +29,25 @@ class CallsController extends Controller
         $calls = $contact->calls()->get();
 
         return CallResource::collection($calls);
+    }
+
+    /**
+     * Display the timestamp of the last phone contact.
+     *
+     * @param  Contact  $contact
+     * @return JsonResponse
+     */
+    public function lastCalled(Contact $contact): JsonResponse
+    {
+        $lastTalkedTo = $contact->last_talked_to;
+
+        if ($lastTalkedTo !== null) {
+            $lastTalkedTo = DateHelper::getShortDate($contact->last_talked_to);
+        }
+
+        return $this->respond([
+            'last_talked_to' => $lastTalkedTo,
+        ]);
     }
 
     /**
