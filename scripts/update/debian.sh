@@ -77,8 +77,8 @@
 
      chown -R www-data:www-data /var/www/monica  ; \
 
-     find  /var/www/monica -type f -exec chmod 664 {}  ; \
+     find /var/www/monica -type f -exec chmod 664 {} \;
 
-     find /var/www/monica -type d -exec chmod 775 {}
+     find /var/www/monica -type d -exec chmod 775 {} \;
 
 # And that's it!
