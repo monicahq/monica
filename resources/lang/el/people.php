@@ -144,6 +144,7 @@ return [
 
     // Last called
     'last_called' => 'Τελευταία κλήση: :date',
+    'last_talked_to' => 'Last called: {date}',
     'last_called_empty' => 'Τελευταία κλήση: άγνωστο',
     'last_activity_date' => 'Τελευταία δραστηριότητα μαζί: :date',
     'last_activity_date_empty' => 'Τελευταία δραστηριότητα μαζί: άγνωστο',
