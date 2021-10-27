@@ -45,6 +45,7 @@ class AddressBookGetterTest extends TestCase
     public function it_fails_on_server_not_compliant()
     {
         $tester = (new DavTester())
+            ->userPrincipalEmpty()
             ->serviceUrl()
             ->optionsFail()
             ->fake();
@@ -59,6 +60,7 @@ class AddressBookGetterTest extends TestCase
     public function it_fails_if_no_userprincipal()
     {
         $tester = (new DavTester())
+            ->userPrincipalEmpty()
             ->serviceUrl()
             ->optionsOk()
             ->userPrincipalEmpty()
@@ -74,6 +76,7 @@ class AddressBookGetterTest extends TestCase
     public function it_fails_if_no_addressbook()
     {
         $tester = (new DavTester())
+            ->userPrincipalEmpty()
             ->serviceUrl()
             ->optionsOk()
             ->userPrincipal()
@@ -90,11 +93,13 @@ class AddressBookGetterTest extends TestCase
     public function it_fails_if_no_addressbook_url()
     {
         $tester = (new DavTester())
+            ->userPrincipalEmpty()
             ->serviceUrl()
             ->optionsOk()
             ->userPrincipal()
             ->addressbookHome()
             ->resourceTypeHomeOnly()
+            ->optionsOk()
             ->fake();
         $client = $tester->client();
 

@@ -477,11 +477,12 @@ class DavClient
      * If there was no DAV header, or no contents this method will return an
      * empty array.
      *
+     * @param  string  $url
      * @return array
      */
-    public function options(): array
+    public function options(string $url = ''): array
     {
-        $response = $this->request('OPTIONS');
+        $response = $this->request('OPTIONS', $url);
 
         $dav = $response->header('Dav');
         if (empty($dav)) {
