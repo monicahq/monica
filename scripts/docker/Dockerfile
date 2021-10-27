@@ -161,7 +161,7 @@ RUN set -ex; \
     composer clear-cache; \
     rm -rf .composer
 
-## Install node dependencies
+# Install node dependencies
 RUN set -ex; \
     \
     curl -fsSL https://deb.nodesource.com/setup_14.x | bash -; \
@@ -171,6 +171,7 @@ RUN set -ex; \
     yarn run dev; \
     \
     rm -rf /var/lib/apt/lists/*
+
 COPY scripts/docker/entrypoint.sh \
     scripts/docker/cron.sh \
     scripts/docker/queue.sh \
