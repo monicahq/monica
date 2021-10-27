@@ -53,7 +53,7 @@ This list is not exhaustive, as the synchronisation can work on every CardDAV co
 
 Android devices does not support CardDAV natively, so you'll need to install a third-party application to use CardDAV.
 
-I recommend to install [DAVx5](https://www.davx5.com/) which is a great CardDAV client. You will find the application on the [Google Play store](https://play.google.com/store/apps/details?id=at.bitfire.davdroid) or even on [F-Droid store](https://f-droid.org/fr/packages/at.bitfire.davdroid/) for free.
+We recommend to install [DAVx5](https://www.davx5.com/) which is a great CardDAV client. You will find the application on the [Google Play store](https://play.google.com/store/apps/details?id=at.bitfire.davdroid) or even on [F-Droid store](https://f-droid.org/fr/packages/at.bitfire.davdroid/) for free.
 
 To add an account:
 - Click on the `+` button
@@ -81,7 +81,7 @@ After that, you can use any Contacts application on your phone. Be sure to displ
 
 [Thunderbird](https://www.thunderbird.net) supports CardDAV natively as of version 91.
 
-For older versions, or enhanced functionality, I recommend installing [CardBook](https://addons.thunderbird.net/thunderbird/addon/cardbook/).
+For older versions, or enhanced functionality, we recommend installing [CardBook](https://addons.thunderbird.net/thunderbird/addon/cardbook/).
 Download the add-on and install it through Thunderbird's add-on manager.
 
 To add an account:
