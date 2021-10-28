@@ -18,12 +18,12 @@ return [
 
     // contact description clear
     'contact_log_contact_description_cleared' => 'پاک کردن توضیحات.',
-    'settings_log_contact_description_cleared_with_name' => 'Cleared the description of :name.',
+    'settings_log_contact_description_cleared_with_name' => 'پاک کردن توضیحات :name.',
 
     // contact work information update
-    'contact_log_contact_work_updated' => 'Updated work information.',
-    'settings_log_contact_work_updated_with_name' => 'Updated work information of :name.',
+    'contact_log_contact_work_updated' => 'بروزرسانی اطلاعات شغلی',
+    'settings_log_contact_work_updated_with_name' => 'بروزرسانی اطلاعات شغلی :name',
 
     // company created
-    'settings_log_company_created' => 'Created a company called :name.',
+    'settings_log_company_created' => 'ایجاد یک شرکت به نام :name.',
 ];
