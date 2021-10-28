@@ -89,6 +89,7 @@ class UpdateActivity extends BaseService
         ]);
 
         $activity->refresh();
+
         return $activity;
     }
 
