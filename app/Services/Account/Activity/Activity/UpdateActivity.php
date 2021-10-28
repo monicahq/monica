@@ -88,7 +88,7 @@ class UpdateActivity extends BaseService
             'contacts' => $data['contacts'],
         ]);
 
-        return $activity;
+        return $activity->refresh();
     }
 
     /**

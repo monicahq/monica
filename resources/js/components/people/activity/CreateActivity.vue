@@ -85,8 +85,8 @@
         <!-- ACTIVITY CATEGORIES -->
         <div v-if="displayCategory" class="bb b--gray-monica pb3 mb3">
           <activity-type-list
+            v-model="newActivity.activity_type_id"
             :title="$t('people.activities_add_pick_activity')"
-            @input="updateCategory($event)"
           />
         </div>
 
@@ -179,6 +179,7 @@ export default {
         contacts: [],
       },
       todayDate: '',
+      initialEmotions: [],
       participants: [],
       errors: [],
     };
@@ -247,10 +248,6 @@ export default {
     close() {
       this.resetFields();
       this.$emit('cancel');
-    },
-
-    updateCategory(id) {
-      this.newActivity.activity_type_id = parseInt(id);
     },
 
     store() {
