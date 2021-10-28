@@ -60,7 +60,7 @@ return [
     'main_nav_cta' => 'افزودن افراد',
     'main_nav_dashboard' => 'پیشخوان',
     'main_nav_family' => 'مخاطبین',
-    'main_nav_journal' => 'Journal',
+    'main_nav_journal' => 'مجله',
     'main_nav_activities' => 'Activities',
     'main_nav_tasks' => 'Tasks',
 
