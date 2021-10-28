@@ -9,15 +9,15 @@
 return [
 
     //index
-    'people_not_found' => 'Contact not found',
+    'people_not_found' => 'مخاطب یافت نشد',
     'people_list_number_kids' => ':count child|:count children',
     'people_list_last_updated' => 'Last consulted:',
     'people_list_number_reminders' => ':count reminder|:count reminders',
     'people_list_blank_title' => 'You don’t have anyone in your account yet',
-    'people_list_blank_cta' => 'Add someone',
-    'people_list_sort' => 'Sort',
+    'people_list_blank_cta' => 'یک نفر رو اضافه کنید',
+    'people_list_sort' => 'مرتب سازی',
     'people_list_stats' => ':count contact|:count contacts',
-    'people_list_firstnameAZ' => 'Sort by first name A → Z',
+    'people_list_firstnameAZ' => 'مرتب سازی از "الف" تا "ی"',
     'people_list_firstnameZA' => 'Sort by first name Z → A',
     'people_list_lastnameAZ' => 'Sort by last name A → Z',
     'people_list_lastnameZA' => 'Sort by last name Z → A',
