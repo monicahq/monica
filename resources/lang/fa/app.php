@@ -7,11 +7,11 @@
  */
 
 return [
-    'yes' => 'Yes',
-    'no' => 'No',
-    'update' => 'Update',
-    'save' => 'Save',
-    'add' => 'Add',
+    'yes' => 'بله',
+    'no' => 'خیر',
+    'update' => 'به‌روزرسانی',
+    'save' => 'ذخیره',
+    'add' => 'افزودن',
     'cancel' => 'Cancel',
     'confirm' => 'Confirm',
     'delete_confirm' => 'Are you sure?',
