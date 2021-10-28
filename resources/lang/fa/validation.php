@@ -117,12 +117,12 @@ return [
         'array' => ':attribute باید شامل :size آیتم باشد.',
     ],
     'starts_with' => 'فیلد :attribute باید با یکی از مقادیر زیر شروع شود: :values',
-    'string' => 'The :attribute must be a string.',
-    'timezone' => 'The :attribute must be a valid zone.',
-    'unique' => 'The :attribute has already been taken.',
-    'uploaded' => 'The :attribute failed to upload.',
-    'url' => 'The :attribute format is invalid.',
-    'uuid' => 'The :attribute must be a valid UUID.',
+    'string' => 'فیلد :attribute باید متن باشد.',
+    'timezone' => 'فیلد :attribute باید یک منطقه زمانی معتبر باشد.',
+    'unique' => ':attribute قبلا انتخاب شده است.',
+    'uploaded' => ':attribute آپلود نشد.',
+    'url' => 'فرمت :attribute نامعتبر می‌باشد.',
+    'uuid' => 'فیلد :attribute باید یک UUID معتبر باشد.',
 
     /*
     |--------------------------------------------------------------------------
@@ -156,11 +156,11 @@ return [
 
     'vue' => [
         'max' => [
-            'numeric' => '{field} may not be greater than {max}.',
-            'string' => '{field} may not be greater than {max} characters.',
+            'numeric' => '{field} نباید بزرگتر از  {max} باشد.',
+            'string' => '{field} نباید بزرگتر از  {max} کارکتر باشد.',
         ],
-        'required' => '{field} is required.',
-        'url' => '{field} is not a valid URL.',
+        'required' => '{field} الزامیست.',
+        'url' => '{field} یک URL معتبر نیست.',
     ],
 
 ];
