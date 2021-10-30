@@ -4,12 +4,11 @@ namespace Tests\Unit\Services\Instance\Weather;
 
 use Tests\TestCase;
 use App\Models\Account\Place;
-use App\Models\Account\Account;
 use App\Models\Account\Weather;
 use Illuminate\Support\Facades\Http;
+use App\Exceptions\NoCoordinatesException;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\MissingEnvVariableException;
-use App\Exceptions\NoCoordinatesException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Instance\Weather\GetWeatherInformation;
 

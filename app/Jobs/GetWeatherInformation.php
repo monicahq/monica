@@ -3,8 +3,8 @@
 namespace App\Jobs;
 
 use App\Models\Account\Place;
-use Illuminate\Bus\Queueable;
 use Illuminate\Bus\Batchable;
+use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Exceptions\NoCoordinatesException;
