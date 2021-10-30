@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Journal\Entry;
 use App\Helpers\JournalHelper;
@@ -11,8 +12,6 @@ use App\Models\Journal\JournalEntry;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Journal\DaysRequest;
 use App\Services\Journal\CreateJournalEntry;
-use Parsedown;
-use Illuminate\Support\Str;
 
 class JournalController extends Controller
 {

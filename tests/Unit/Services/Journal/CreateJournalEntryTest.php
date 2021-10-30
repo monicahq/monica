@@ -3,16 +3,12 @@
 namespace Tests\Unit\Services\Contact\LifeEvent;
 
 use Tests\TestCase;
+use App\Models\Journal\Entry;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\LifeEvent;
-use App\Models\Contact\LifeEventType;
-use App\Models\Journal\Entry;
-use Illuminate\Validation\ValidationException;
-use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use App\Services\Journal\CreateJournalEntry;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateJournalEntryTest extends TestCase
 {

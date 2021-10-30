@@ -29,7 +29,6 @@ use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\ReminderRule;
 use App\Models\Instance\SpecialDate;
-use App\Models\Journal\JournalEntry;
 use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ReminderOutbox;
 use Illuminate\Database\Eloquent\Model;
