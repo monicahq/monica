@@ -6,8 +6,8 @@ use Tests\TestCase;
 use Mockery\MockInterface;
 use App\Models\Account\Place;
 use Illuminate\Bus\PendingBatch;
-use Illuminate\Support\Facades\Bus;
 use App\Jobs\GetWeatherInformation;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Bus\DatabaseBatchRepository;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Instance\Weather\GetWeatherInformation as GetWeatherInformationService;
@@ -26,7 +26,7 @@ class GetWeatherInformationTest extends TestCase
             'longitude' => '-118.4270732',
         ]);
 
-        $this->mock(GetWeatherInformationService::class, function(MockInterface $mock) use ($place) {
+        $this->mock(GetWeatherInformationService::class, function (MockInterface $mock) use ($place) {
             $mock->shouldReceive('execute')
                 ->once()
                 ->withArgs(function ($data) use ($place) {
