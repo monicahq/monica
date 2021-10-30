@@ -67,7 +67,7 @@ class WeatherTest extends TestCase
         $weather = factory(Weather::class)->create();
 
         $this->assertEquals(
-            'Partly cloudy night',
+            'Partly cloudy',
             $weather->summary
         );
     }
