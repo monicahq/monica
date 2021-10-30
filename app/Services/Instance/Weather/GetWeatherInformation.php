@@ -51,7 +51,7 @@ class GetWeatherInformation extends BaseService
             throw new NoCoordinatesException();
         }
 
-        return $this->query($place, 'en' /*App::getLocale()*/);
+        return $this->query($place, 'en');
     }
 
     /**

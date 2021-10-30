@@ -110,33 +110,47 @@ $factory->define(App\Models\Account\Weather::class, function (Faker\Generator $f
             ])->id;
         },
         'weather_json' => json_decode('
-{
-  "latitude": 45.487685,
-  "longitude": -73.590259,
-  "timezone": "America\/Toronto",
-  "currently": {
-    "time": 1541637005,
-    "summary": "Mostly Cloudy",
-    "icon": "partly-cloudy-night",
-    "nearestStormDistance": 39,
-    "nearestStormBearing": 307,
-    "precipIntensity": 0,
-    "precipProbability": 0,
-    "temperature": 7.57,
-    "apparentTemperature": 3.82,
-    "dewPoint": 1.24,
-    "humidity": 0.64,
-    "pressure": 1009.91,
-    "windSpeed": 6.98,
-    "windGust": 12.99,
-    "windBearing": 249,
-    "cloudCover": 0.73,
-    "uvIndex": 0,
-    "visibility": 16.09,
-    "ozone": 304.17
-  },
-  "offset": -5
-}'),
+        {
+            "location": {
+                "name": "Le Pre-Saint-Gervais",
+                "region": "Ile-de-France",
+                "country": "France",
+                "lat": 48.89,
+                "lon": 2.39,
+                "tz_id": "Europe\/Paris",
+                "localtime_epoch": 1635605324,
+                "localtime": "2021-10-30 16:48"
+            },
+            "current": {
+                "last_updated_epoch": 1635605100,
+                "last_updated": "2021-10-30 16:45",
+                "temp_c": 13,
+                "temp_f": 55.4,
+                "is_day": 0,
+                "condition": {
+                    "text": "Partly cloudy",
+                    "icon": "\/\/cdn.weatherapi.com\/weather\/64x64\/night\/116.png",
+                    "code": 1003
+                },
+                "wind_mph": 5.6,
+                "wind_kph": 9,
+                "wind_degree": 210,
+                "wind_dir": "SSW",
+                "pressure_mb": 1001,
+                "pressure_in": 29.56,
+                "precip_mm": 0,
+                "precip_in": 0,
+                "humidity": 94,
+                "cloud": 75,
+                "feelslike_c": 11.2,
+                "feelslike_f": 52.1,
+                "vis_km": 10,
+                "vis_miles": 6,
+                "uv": 4,
+                "gust_mph": 17.9,
+                "gust_kph": 28.8
+            }
+        }'),
         'created_at' => now(),
     ];
 });

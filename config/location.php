@@ -100,6 +100,6 @@ return [
     | Url to call Weatherapi.
     |
     */
-    'weatherapi_url' => env('WEATHERAPI_URL', 'http://api.weatherapi.com/v1/current.json'),
+    'weatherapi_url' => env('WEATHERAPI_URL', 'https://api.weatherapi.com/v1/current.json'),
 
 ];

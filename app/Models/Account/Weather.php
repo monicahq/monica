@@ -60,17 +60,18 @@ class Weather extends Model
     }
 
     /**
-     * Get the weather summary icon.
+     * Get the weather code.
      *
      * @return string
      */
-    public function getSummaryIconAttribute($value)
+    public function getSummaryCodeAttribute()
     {
         $json = $this->weather_json;
 
+        // currently.icon: Darksky version
         if (!($icon = Arr::get($json, 'currently.icon'))) {
             if (($text = Arr::get($json, 'current.condition.text')) === 'Partly cloudy') {
-                $icon = (bool) Arr::get($json, 'current.is_day') ? 'partly-cloudy-day' : 'partly-cloudy-night';
+                $icon = ((bool) Arr::get($json, 'current.is_day')) ? 'partly-cloudy-day' : 'partly-cloudy-night';
             } else {
                 $icon = Str::of($text)->lower()->replace(' ', '-');
             }
@@ -80,13 +81,23 @@ class Weather extends Model
     }
 
     /**
-     * Get the emoji representing the weather.
+     * Get the weather summary.
+     *
+     * @return string
+     */
+    public function getSummaryAttribute()
+    {
+        return trans('app.weather_'.$this->summary_code);
+    }
+
+    /**
+     * Get the weather icon.
      *
      * @return string
      */
     public function getEmojiAttribute()
     {
-        switch ($this->summary_icon) {
+        switch ($this->summary_code) {
             case 'sunny':
             case 'clear-day':
                 $string = '🌞';
