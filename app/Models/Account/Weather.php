@@ -69,7 +69,7 @@ class Weather extends Model
         $json = $this->weather_json;
 
         // currently.icon: Darksky version
-        if (!($icon = Arr::get($json, 'currently.icon'))) {
+        if (! ($icon = Arr::get($json, 'currently.icon'))) {
             if (($text = Arr::get($json, 'current.condition.text')) === 'Partly cloudy') {
                 $icon = ((bool) Arr::get($json, 'current.is_day')) ? 'partly-cloudy-day' : 'partly-cloudy-night';
             } else {

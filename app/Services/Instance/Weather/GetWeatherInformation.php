@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 use App\Models\Account\Place;
 use App\Services\BaseService;
 use App\Models\Account\Weather;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use App\Exceptions\NoCoordinatesException;
@@ -87,7 +86,6 @@ class GetWeatherInformation extends BaseService
                 'place_id' => $place->id,
                 'weather_json' => $response->object(),
             ]);
-
         } catch (HttpClientException $e) {
             Log::error(__CLASS__.' '.__FUNCTION__.': Error making the call: '.$e->getMessage(), [
                 'query' => Str::of($query)->replace(config('monica.weatherapi_key'), '******'),

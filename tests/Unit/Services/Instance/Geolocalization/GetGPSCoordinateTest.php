@@ -27,7 +27,6 @@ class GetGPSCoordinateTest extends TestCase
             'place_id' => $place->id,
         ];
 
-
         $this->expectException(MissingEnvVariableException::class);
         app(GetGPSCoordinate::class)->execute($request);
     }
