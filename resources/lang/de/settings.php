@@ -504,7 +504,7 @@ return [
     'personalization_life_event_type_first_kiss' => 'Erster Kuss',
 
     'storage_title' => 'Speicher',
-    'storage_account_info' => 'Dein Kontolimit ist :accounLimit MB / Deine aktuelle Nutzung ist :currentAccountSize MB (ungefähr :percentUsage%).',
+    'storage_account_info' => 'Dein Kontolimit ist :accountLimit MB / Deine aktuelle Nutzung ist :currentAccountSize MB (ungefähr :percentUsage%).',
     'storage_upgrade_notice' => 'Upgraden Sie Ihr Konto, um Dokumente und Fotos hochladen zu können.',
     'storage_description' => 'Hier sehen Sie alle Dokumente und Fotos, die Sie über Ihre Kontakte hochgeladen haben.',
 

@@ -144,6 +144,7 @@ return [
 
     // Last called
     'last_called' => 'Letztes Telefonat: :date',
+    'last_talked_to' => 'Letztes Telefonat: {date}',
     'last_called_empty' => 'Letztes Telefonat: unbekannt',
     'last_activity_date' => 'Letzte gemeinsame Aktivität: :date',
     'last_activity_date_empty' => 'Letzte gemeinsame Aktivität: unbekannt',

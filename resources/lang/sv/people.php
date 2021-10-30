@@ -144,6 +144,7 @@ return [
 
     // Last called
     'last_called' => 'Senast anropad: :date',
+    'last_talked_to' => 'Last called: {date}',
     'last_called_empty' => 'Senast anropad: okänd',
     'last_activity_date' => 'Senaste aktiviteten tillsammans: :date',
     'last_activity_date_empty' => 'Senaste aktiviteten tillsammans: okänd',

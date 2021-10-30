@@ -144,6 +144,7 @@ return [
 
     // Last called
     'last_called' => '最近通話: :date',
+    'last_talked_to' => 'Last called: {date}',
     'last_called_empty' => '最近通話: 未知',
     'last_activity_date' => '最近一起的活動: :date',
     'last_activity_date_empty' => '最近一起的活動: 未知',
