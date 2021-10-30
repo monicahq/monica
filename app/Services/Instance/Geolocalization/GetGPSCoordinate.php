@@ -61,9 +61,9 @@ class GetGPSCoordinate extends BaseService
      * Build the query to send with the API call.
      *
      * @param  Place  $place
-     * @return string|null
+     * @return string
      */
-    private function buildQuery(Place $place): ?string
+    private function buildQuery(Place $place): string
     {
         $query = http_build_query([
             'format' => 'json',
@@ -83,10 +83,6 @@ class GetGPSCoordinate extends BaseService
     private function query(Place $place): ?Place
     {
         $query = $this->buildQuery($place);
-
-        if (is_null($query)) {
-            return null;
-        }
 
         try {
             $response = Http::get($query);
