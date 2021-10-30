@@ -443,7 +443,7 @@ return [
     // weather
     'weather_sunny' => 'Ensolarado',
     'weather_clear' => 'Limpo',
-    'weather_clear-day' => 'Clear',
+    'weather_clear-day' => 'Limpo',
     'weather_clear-night' => 'Noite limpa',
     'weather_light-drizzle' => 'Chuvisco leve',
     'weather_patchy-light-drizzle' => 'Garoa leve irregular',
