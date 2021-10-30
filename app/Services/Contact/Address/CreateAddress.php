@@ -36,7 +36,7 @@ class CreateAddress extends BaseService
     /**
      * Create an address.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Address
      */
     public function execute(array $data): Address
@@ -71,7 +71,7 @@ class CreateAddress extends BaseService
     /**
      * Create a place for the given address.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Place
      */
     private function createPlace(array $data)

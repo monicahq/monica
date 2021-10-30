@@ -24,7 +24,7 @@ class DestroyReminder extends BaseService
      * Destroy a reminder and all scheduled reminders that are associated with
      * it (in ReminderOutbox table) thanks to foreign keys.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data): bool

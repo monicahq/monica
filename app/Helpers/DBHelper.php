@@ -11,7 +11,7 @@ class DBHelper
     /**
      * Get connection.
      *
-     * @param string $name
+     * @param  string  $name
      * @return \Illuminate\Database\Connection
      */
     public static function connection($name = null): Connection
@@ -36,7 +36,7 @@ class DBHelper
     /**
      * Test if db version if greater than $version param.
      *
-     * @param string $version
+     * @param  string  $version
      * @return bool
      */
     public static function testVersion($version)

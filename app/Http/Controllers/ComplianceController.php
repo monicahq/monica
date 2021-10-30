@@ -13,8 +13,7 @@ class ComplianceController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return View|Factory
      */
     public function index(Request $request)
@@ -23,8 +22,7 @@ class ComplianceController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return RedirectResponse
      */
     public function store(Request $request)

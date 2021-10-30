@@ -24,7 +24,7 @@ class DeleteMeContact extends BaseService
     /**
      * Set a contact as 'me' contact.
      *
-     * @param array $data
+     * @param  array  $data
      * @return User
      */
     public function execute(array $data): User

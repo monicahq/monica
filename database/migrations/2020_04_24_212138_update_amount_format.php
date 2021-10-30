@@ -91,7 +91,7 @@ class UpdateAmountFormat extends Migration
     /**
      * Get unit adjustement value for the currency.
      *
-     * @param \App\Models\Settings\Currency|int|null $currency
+     * @param  \App\Models\Settings\Currency|int|null  $currency
      * @return int
      */
     private static function unitAdjustment($currency): int

@@ -29,7 +29,7 @@ class ExportVCard extends BaseService
     /**
      * Export one VCard.
      *
-     * @param array $data
+     * @param  array  $data
      * @return VCard
      */
     public function execute(array $data): VCard
@@ -48,7 +48,7 @@ class ExportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
+     * @param  Contact  $contact
      * @return VCard
      */
     private function export(Contact $contact): VCard
@@ -81,8 +81,8 @@ class ExportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param VCard $vcard
+     * @param  Contact  $contact
+     * @param  VCard  $vcard
      */
     private function exportNames(Contact $contact, VCard $vcard)
     {
@@ -100,8 +100,8 @@ class ExportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param VCard $vcard
+     * @param  Contact  $contact
+     * @param  VCard  $vcard
      */
     private function exportGender(Contact $contact, VCard $vcard)
     {
@@ -127,8 +127,8 @@ class ExportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param VCard $vcard
+     * @param  Contact  $contact
+     * @param  VCard  $vcard
      */
     private function exportPhoto(Contact $contact, VCard $vcard)
     {
@@ -146,8 +146,8 @@ class ExportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param VCard $vcard
+     * @param  Contact  $contact
+     * @param  VCard  $vcard
      */
     private function exportWorkInformation(Contact $contact, VCard $vcard)
     {
@@ -161,8 +161,8 @@ class ExportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param VCard $vcard
+     * @param  Contact  $contact
+     * @param  VCard  $vcard
      */
     private function exportBirthday(Contact $contact, VCard $vcard)
     {
@@ -177,8 +177,9 @@ class ExportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param VCard $vcard
+     * @param  Contact  $contact
+     * @param  VCard  $vcard
+     *
      * @see https://tools.ietf.org/html/rfc6350#section-6.3.1
      */
     private function exportAddress(Contact $contact, VCard $vcard)
@@ -204,8 +205,8 @@ class ExportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param VCard $vcard
+     * @param  Contact  $contact
+     * @param  VCard  $vcard
      */
     private function exportContactFields(Contact $contact, VCard $vcard)
     {
@@ -245,7 +246,7 @@ class ExportVCard extends BaseService
     }
 
     /**
-     * @param LabelInterface $labelProvider
+     * @param  LabelInterface  $labelProvider
      * @return array|null
      */
     private function getContactFieldLabel(LabelInterface $labelProvider): ?array
@@ -266,8 +267,8 @@ class ExportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param VCard $vcard
+     * @param  Contact  $contact
+     * @param  VCard  $vcard
      */
     private function exportTimestamp(Contact $contact, VCard $vcard)
     {
@@ -275,8 +276,8 @@ class ExportVCard extends BaseService
     }
 
     /**
-     * @param Contact $contact
-     * @param VCard $vcard
+     * @param  Contact  $contact
+     * @param  VCard  $vcard
      */
     private function exportTags(Contact $contact, VCard $vcard)
     {

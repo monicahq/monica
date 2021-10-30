@@ -13,8 +13,8 @@ trait Subscription
     /**
      * Process the upgrade payment.
      *
-     * @param string $payment_method
-     * @param string $planName
+     * @param  string  $payment_method
+     * @param  string  $planName
      * @return bool|string
      */
     public function subscribe(string $payment_method, string $planName)

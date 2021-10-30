@@ -44,8 +44,8 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  Contact $contact
-     * @param  bool $dryrun
+     * @param  Contact  $contact
+     * @param  bool  $dryrun
      * @return void
      */
     public function __construct(Contact $contact, $dryrun)
@@ -113,7 +113,7 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
     }
 
     /**
-     * @param string|null $avatarFileName
+     * @param  string|null  $avatarFileName
      * @return Photo|null
      */
     private function createPhotoObject($avatarFileName): ?Photo

@@ -30,7 +30,7 @@ class CreateCompany extends BaseService
     /**
      * Create a company.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Company
      */
     public function execute(array $data): Company
@@ -50,8 +50,9 @@ class CreateCompany extends BaseService
     /**
      * Add an audit log.
      *
-     * @param array $data
+     * @param  array  $data
      * @return void
+     *
      * @throws JsonException
      */
     private function log(array $data): void

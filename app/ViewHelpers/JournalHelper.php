@@ -11,8 +11,8 @@ class JournalHelper
     /**
      * Prepare a collection of audit logs.
      *
-     * @param Account $account
-     * @param int $year
+     * @param  Account  $account
+     * @param  int  $year
      * @return Collection
      */
     public static function entriesByYear($account, $year): Collection
@@ -27,9 +27,9 @@ class JournalHelper
     /**
      * Prepare a collection of audit logs.
      *
-     * @param Account $account
-     * @param int $year
-     * @param int $month
+     * @param  Account  $account
+     * @param  int  $year
+     * @param  int  $month
      * @return Collection
      */
     public static function entriesByMonth($account, $year, $month): Collection

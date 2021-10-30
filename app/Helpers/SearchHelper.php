@@ -13,10 +13,10 @@ class SearchHelper
     /**
      * Search contacts by the given query.
      *
-     * @param  string $needle
-     * @param  string $orderByColumn
-     * @param  string $orderByDirection
-     * @param  string|null $addressBookName
+     * @param  string  $needle
+     * @param  string  $orderByColumn
+     * @param  string  $orderByDirection
+     * @param  string|null  $addressBookName
      * @return Builder
      */
     public static function searchContacts(string $needle, string $orderByColumn, string $orderByDirection = 'asc', string $addressBookName = null): Builder

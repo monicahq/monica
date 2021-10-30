@@ -11,8 +11,8 @@ class ComplianceHelper
     /**
      * Give the status for the given term for the given user.
      *
-     * @param User $user
-     * @param Term $term
+     * @param  User  $user
+     * @param  Term  $term
      * @return bool
      */
     public static function hasSignedGivenTerm(User $user, Term $term): bool
@@ -33,7 +33,7 @@ class ComplianceHelper
      * Indicate if the user has accepted the most recent terms and privacy.
      * This really is a shortcut of the `hasSignedGivenTerm` method.
      *
-     * @param User $user
+     * @param  User  $user
      * @return bool
      */
     public static function isCompliantWithCurrentTerm(User $user): bool

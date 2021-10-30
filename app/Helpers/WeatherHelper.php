@@ -11,7 +11,7 @@ class WeatherHelper
     /**
      * Get the weather for the given address, if it exists.
      *
-     * @param Address|null $address
+     * @param  Address|null  $address
      * @return Weather|null
      */
     public static function getWeatherForAddress($address): ?Weather
@@ -38,7 +38,7 @@ class WeatherHelper
     /**
      * Make the call to the weather service.
      *
-     * @param Address $address
+     * @param  Address  $address
      * @return Weather|null
      */
     private static function callWeatherAPI(Address $address): ?Weather

@@ -25,7 +25,7 @@ class CreateJournalEntry extends BaseService
     /**
      * Create a journal entry.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Entry
      */
     public function execute(array $data): Entry
