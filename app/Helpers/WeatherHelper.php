@@ -2,9 +2,11 @@
 
 namespace App\Helpers;
 
+use App\Jobs\GetGPSCoordinate;
 use App\Models\Account\Weather;
 use App\Models\Contact\Address;
-use App\Services\Instance\Weather\GetWeatherInformation;
+use App\Jobs\GetWeatherInformation;
+use Illuminate\Support\Facades\Bus;
 
 class WeatherHelper
 {
@@ -20,16 +22,14 @@ class WeatherHelper
             return null;
         }
 
-        $weather = $address->place->weathers()->orderBy('created_at', 'desc')->first();
+        $weather = $address->place->weathers()
+            ->orderBy('created_at', 'desc')
+            ->first();
 
         // only get weather data if weather is either not existant or if is
         // more than 6h old
-        if (is_null($weather)) {
-            $weather = self::callWeatherAPI($address);
-        } else {
-            if (! $weather->created_at->between(now()->subHours(6), now())) {
-                $weather = self::callWeatherAPI($address);
-            }
+        if (is_null($weather) || ! $weather->created_at->between(now()->subHours(6), now())) {
+            self::callWeatherAPI($address);
         }
 
         return $weather;
@@ -39,16 +39,21 @@ class WeatherHelper
      * Make the call to the weather service.
      *
      * @param  Address  $address
-     * @return Weather|null
      */
-    private static function callWeatherAPI(Address $address): ?Weather
+    private static function callWeatherAPI(Address $address): void
     {
-        try {
-            return app(GetWeatherInformation::class)->execute([
-                'place_id' => $address->place->id,
-            ]);
-        } catch (\Exception $e) {
-            return null;
+        $jobs = [];
+
+        if (is_null($address->place->latitude)
+            && config('monica.enable_geolocation') && ! is_null(config('monica.location_iq_api_key'))) {
+            $jobs[] = new GetGPSCoordinate($address->place);
         }
+
+        if (config('monica.enable_weather') && ! is_null(config('monica.weatherapi_key'))) {
+            $jobs[] = new GetWeatherInformation($address->place);
+        }
+
+        Bus::batch($jobs)
+            ->dispatch();
     }
 }

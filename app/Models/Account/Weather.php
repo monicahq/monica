@@ -2,6 +2,8 @@
 
 namespace App\Models\Account;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +18,8 @@ class Weather extends Model
      * @var array
      */
     protected $fillable = [
+        'account_id',
+        'place_id',
         'weather_json',
     ];
 
@@ -56,49 +60,89 @@ class Weather extends Model
     }
 
     /**
+     * Get the weather code.
+     *
+     * @return string
+     */
+    public function getSummaryCodeAttribute()
+    {
+        $json = $this->weather_json;
+
+        // currently.icon: Darksky version
+        if (! ($icon = Arr::get($json, 'currently.icon'))) {
+            if (($text = Arr::get($json, 'current.condition.text')) === 'Partly cloudy') {
+                $icon = ((bool) Arr::get($json, 'current.is_day')) ? 'partly-cloudy-day' : 'partly-cloudy-night';
+            } else {
+                $icon = Str::of($text)->lower()->replace(' ', '-');
+            }
+        }
+
+        return $icon;
+    }
+
+    /**
      * Get the weather summary.
      *
      * @return string
      */
-    public function getSummaryAttribute($value)
+    public function getSummaryAttribute()
     {
-        $json = $this->weather_json;
-
-        return $json['currently']['summary'];
+        return trans('app.weather_'.$this->summary_code);
     }
 
     /**
-     * Get the weather summary icon.
+     * Get the weather icon.
      *
      * @return string
-     */
-    public function getSummaryIconAttribute($value)
-    {
-        $json = $this->weather_json;
-
-        return $json['currently']['icon'];
-    }
-
-    /**
-     * Get the emoji representing the weather.
      *
-     * @return string
+     * @codeCoverageIgnore
      */
-    public function getEmoji()
+    public function getEmojiAttribute()
     {
-        switch ($this->summary_icon) {
+        switch ($this->summary_code) {
+            case 'sunny':
             case 'clear-day':
-                $string = '☀️';
+                $string = '🌞';
                 break;
+            case 'clear':
             case 'clear-night':
-                $string = '🌌';
+                $string = '🌃';
                 break;
+            case 'light-drizzle':
+            case 'patchy-light-drizzle':
+            case 'patchy-light-rain':
+            case 'light-rain':
+            case 'moderate-rain-at-times':
+            case 'moderate-rain':
+            case 'patchy-rain-possible':
+            case 'heavy-rain-at-times':
+            case 'heavy-rain':
+            case 'light-freezing-rain':
+            case 'moderate-or-heavy-freezing-rain':
+            case 'light-sleet':
+            case 'moderate-or-heavy-rain-shower':
+            case 'light-rain-shower':
+            case 'torrential-rain-shower':
             case 'rain':
                 $string = '🌧️';
                 break;
             case 'snow':
+            case 'blowing-snow':
+            case 'patchy-light-snow':
+            case 'light-snow':
+            case 'patchy-moderate-snow':
+            case 'moderate-snow':
+            case 'patchy-heavy-snow':
+            case 'heavy-snow':
+            case 'light-snow-showers':
+            case 'moderate-or-heavy-snow-showers':
                 $string = '❄️';
                 break;
+            case 'patchy-snow-possible':
+            case 'patchy-sleet-possible':
+            case 'moderate-or-heavy-sleet':
+            case 'light-sleet-showers':
+            case 'moderate-or-heavy-sleet-showers':
             case 'sleet':
                 $string = '🌨️';
                 break;
@@ -106,8 +150,12 @@ class Weather extends Model
                 $string = '💨';
                 break;
             case 'fog':
+            case 'mist':
+            case 'blizzard':
+            case 'freezing-fog':
                 $string = '🌫️';
                 break;
+            case 'overcast':
             case 'cloudy':
                 $string = '☁️';
                 break;
@@ -116,6 +164,21 @@ class Weather extends Model
                 break;
             case 'partly-cloudy-night':
                 $string = '🎑';
+                break;
+            case 'freezing-drizzle':
+            case 'heavy-freezing-drizzle':
+            case 'patchy-freezing-drizzle-possible':
+            case 'ice-pellets':
+            case 'light-showers-of-ice-pellets':
+            case 'moderate-or-heavy-showers-of-ice-pellets':
+                $string = '🧊';
+                break;
+            case 'thundery-outbreaks-possible':
+            case 'patchy-light-rain-with-thunder':
+            case 'moderate-or-heavy-rain-with-thunder':
+            case 'patchy-light-snow-with-thunder':
+            case 'moderate-or-heavy-snow-with-thunder':
+                $string = '⛈️';
                 break;
             default:
                 $string = '🌈';
@@ -137,10 +200,10 @@ class Weather extends Model
     {
         $json = $this->weather_json;
 
-        $temperature = $json['currently']['temperature'];
+        $temperature = Arr::get($json, 'currently.temperature') ?? Arr::get($json, 'current.temp_c');
 
-        if ($scale == 'fahrenheit') {
-            $temperature = 9 / 5 * $temperature + 32;
+        if ($scale === 'fahrenheit') {
+            $temperature = Arr::get($json, 'current.temp_f', 9 / 5 * $temperature + 32);
         }
 
         $temperature = round($temperature, 1);

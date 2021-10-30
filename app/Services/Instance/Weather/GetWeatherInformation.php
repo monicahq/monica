@@ -5,10 +5,10 @@ namespace App\Services\Instance\Weather;
 use Illuminate\Support\Str;
 use App\Models\Account\Place;
 use App\Services\BaseService;
-use App\Jobs\GetGPSCoordinate;
 use App\Models\Account\Weather;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use App\Exceptions\NoCoordinatesException;
 use App\Exceptions\MissingEnvVariableException;
 use Illuminate\Http\Client\HttpClientException;
 
@@ -22,6 +22,7 @@ class GetWeatherInformation extends BaseService
     public function rules()
     {
         return [
+            'account_id' => 'required|integer|exists:accounts,id',
             'place_id' => 'required|integer|exists:places,id',
         ];
     }
@@ -42,17 +43,14 @@ class GetWeatherInformation extends BaseService
 
         $this->validate($data);
 
-        $place = Place::findOrFail($data['place_id']);
+        $place = Place::where('account_id', $data['account_id'])
+            ->findOrFail($data['place_id']);
 
         if (is_null($place->latitude)) {
-            $place = $this->fetchGPS($place);
-
-            if (is_null($place)) {
-                return null;
-            }
+            throw new NoCoordinatesException();
         }
 
-        return $this->query($place);
+        return $this->query($place, 'en');
     }
 
     /**
@@ -62,11 +60,7 @@ class GetWeatherInformation extends BaseService
      */
     private function validateWeatherEnvVariables()
     {
-        if (! config('monica.enable_weather')) {
-            throw new MissingEnvVariableException();
-        }
-
-        if (is_null(config('monica.darksky_api_key'))) {
+        if (! config('monica.enable_weather') || is_null(config('monica.weatherapi_key'))) {
             throw new MissingEnvVariableException();
         }
     }
@@ -79,24 +73,22 @@ class GetWeatherInformation extends BaseService
      *
      * @throws \Exception
      */
-    private function query(Place $place): ?Weather
+    private function query(Place $place, ?string $lang = null): ?Weather
     {
-        $query = $this->buildQuery($place);
+        $query = $this->buildQuery($place, $lang);
 
         try {
             $response = Http::get($query);
             $response->throw();
 
-            $weather = new Weather();
-            $weather->weather_json = $response->object();
-            $weather->account_id = $place->account_id;
-            $weather->place_id = $place->id;
-            $weather->save();
-
-            return $weather;
+            return Weather::create([
+                'account_id' => $place->account_id,
+                'place_id' => $place->id,
+                'weather_json' => $response->object(),
+            ]);
         } catch (HttpClientException $e) {
             Log::error(__CLASS__.' '.__FUNCTION__.': Error making the call: '.$e->getMessage(), [
-                'query' => Str::of($query)->replace(config('monica.darksky_api_key'), '******'),
+                'query' => Str::of($query)->replace(config('monica.weatherapi_key'), '******'),
                 $e,
             ]);
         }
@@ -110,35 +102,19 @@ class GetWeatherInformation extends BaseService
      * @param  Place  $place
      * @return string
      */
-    private function buildQuery(Place $place)
+    private function buildQuery(Place $place, ?string $lang = null)
     {
-        $url = Str::finish(config('location.darksky_url'), '/');
-        $key = config('monica.darksky_api_key');
         $coords = $place->latitude.','.$place->longitude;
 
-        $query = http_build_query([
-            'exclude' => 'alerts,minutely,hourly,daily,flags',
-            'units' => 'si',
-        ]);
-
-        return $url.$key.'/'.$coords.'?'.$query;
-    }
-
-    /**
-     * Fetch missing longitude/latitude.
-     *
-     * @param  Place  $place
-     * @return Place|null
-     */
-    private function fetchGPS(Place $place): ?Place
-    {
-        if (config('monica.enable_geolocation') && ! is_null(config('monica.location_iq_api_key'))) {
-            GetGPSCoordinate::dispatchSync($place);
-            $place->refresh();
-
-            return $place;
+        $query = [
+            'key' => config('monica.weatherapi_key'),
+            'q' => $coords,
+            'lang' => $lang ?? 'en',
+        ];
+        if ($lang !== null && $lang !== 'en') {
+            $query['lang'] = $lang;
         }
 
-        return null;
+        return Str::of(config('location.weatherapi_url'))->rtrim('/').'?'.http_build_query($query);
     }
 }

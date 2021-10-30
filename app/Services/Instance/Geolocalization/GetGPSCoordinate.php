@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\RequestException;
 use App\Exceptions\RateLimitedSecondException;
+use App\Exceptions\MissingEnvVariableException;
 
 class GetGPSCoordinate extends BaseService
 {
@@ -34,6 +35,8 @@ class GetGPSCoordinate extends BaseService
      */
     public function execute(array $data)
     {
+        $this->validateWeatherEnvVariables();
+
         $this->validate($data);
 
         $place = Place::where('account_id', $data['account_id'])
@@ -43,17 +46,25 @@ class GetGPSCoordinate extends BaseService
     }
 
     /**
+     * Make sure that geolocation env variables are set.
+     *
+     * @return void
+     */
+    private function validateWeatherEnvVariables()
+    {
+        if (! config('monica.enable_geolocation') || is_null(config('monica.location_iq_api_key'))) {
+            throw new MissingEnvVariableException();
+        }
+    }
+
+    /**
      * Build the query to send with the API call.
      *
      * @param  Place  $place
-     * @return string|null
+     * @return string
      */
-    private function buildQuery(Place $place): ?string
+    private function buildQuery(Place $place): string
     {
-        if (! config('monica.enable_geolocation') || is_null(config('monica.location_iq_api_key'))) {
-            return null;
-        }
-
         $query = http_build_query([
             'format' => 'json',
             'key' => config('monica.location_iq_api_key'),
@@ -72,10 +83,6 @@ class GetGPSCoordinate extends BaseService
     private function query(Place $place): ?Place
     {
         $query = $this->buildQuery($place);
-
-        if (is_null($query)) {
-            return null;
-        }
 
         try {
             $response = Http::get($query);

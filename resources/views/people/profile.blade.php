@@ -51,7 +51,7 @@
             </div>
 
             <p class="mb0">
-              {{ $weather->getEmoji() }} {{ trans('app.weather_'.$weather->summary_icon) }} / {{ trans('app.weather_current_temperature_'.auth()->user()->temperature_scale, ['temperature' => $weather->temperature(auth()->user()->temperature_scale)]) }}
+              {{ $weather->emoji }} {{ $weather->summary }} / {{ trans('app.weather_current_temperature_'.auth()->user()->temperature_scale, ['temperature' => $weather->temperature(auth()->user()->temperature_scale)]) }}
             </p>
           </div>
           @endif

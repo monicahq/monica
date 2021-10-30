@@ -94,12 +94,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Darksky API Url
+    | Weatherapi Url
     |--------------------------------------------------------------------------
     |
-    | Url to call Darksy api. See https://darksky.net/dev/docs
+    | Url to call Weatherapi.
     |
     */
-    'darksky_url' => env('DARKSKY_URL', 'https://api.darksky.net/forecast/'),
+    'weatherapi_url' => env('WEATHERAPI_URL', 'https://api.weatherapi.com/v1/current.json'),
 
 ];

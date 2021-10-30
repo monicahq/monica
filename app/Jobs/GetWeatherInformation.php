@@ -7,15 +7,13 @@ use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
+use App\Exceptions\NoCoordinatesException;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\Middleware\RateLimited;
-use App\Exceptions\RateLimitedSecondException;
-use App\Services\Instance\Geolocalization\GetGPSCoordinate as GetGPSCoordinateService;
+use App\Services\Instance\Weather\GetWeatherInformation as GetWeatherInformationService;
 
-class GetGPSCoordinate implements ShouldQueue
+class GetWeatherInformation implements ShouldQueue
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * @var Place
@@ -47,35 +45,23 @@ class GetGPSCoordinate implements ShouldQueue
     }
 
     /**
-     * Get the middleware the job should pass through.
-     *
-     * @return array
-     */
-    public function middleware()
-    {
-        return [
-            new RateLimited('GPSCoordinate'),
-        ];
-    }
-
-    /**
      * Execute the job.
      *
      * @return void
      */
     public function handle()
     {
-        if (($batch = $this->batch()) !== null && $batch->cancelled()) {
+        if (! $this->batching()) {
             return;
         }
 
-        try {
-            app(GetGPSCoordinateService::class)->execute([
+        if (is_null($this->place->latitude)) {
+            $this->fail(new NoCoordinatesException());
+        } else {
+            app(GetWeatherInformationService::class)->execute([
                 'account_id' => $this->place->account_id,
                 'place_id' => $this->place->id,
             ]);
-        } catch (RateLimitedSecondException $e) {
-            $this->release(15);
         }
     }
 }
