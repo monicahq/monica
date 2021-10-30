@@ -23,6 +23,8 @@ class JournalController extends Controller
      */
     public function index()
     {
+        $entries = $this->list();
+
         return view('journal.index')->withEntries($entries);
     }
 
@@ -32,8 +34,8 @@ class JournalController extends Controller
      */
     public function list()
     {
-        $entries = collect([]);
         $journalEntries = auth()->user()->account->journalEntries()->get();
+        $entriesCollection = collect([]);
 
         foreach ($journalEntries as $journalEntry) {
             $data = [
@@ -42,23 +44,10 @@ class JournalController extends Controller
                 'title' => $journalEntry->title,
                 'post' => Str::limit($journalEntry->post, 20),
             ];
-            $entries->push($data);
+            $entriesCollection->push($data);
         }
 
-        // get first post
-        $firstPost = $journalEntries->first();
-
-        // I need the pagination items when I send back the array.
-        // There is probably a simpler way to achieve this.
-        return [
-            'total' => $journalEntries->total(),
-            'per_page' => $journalEntries->perPage(),
-            'current_page' => $journalEntries->currentPage(),
-            'next_page_url' => $journalEntries->nextPageUrl(),
-            'prev_page_url' => $journalEntries->previousPageUrl(),
-            'data' => $entries,
-            'post' => $firstPost,
-        ];
+        return $entriesCollection;
     }
 
     /**

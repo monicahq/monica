@@ -32,17 +32,6 @@
           </div>
         </div>
 
-        <!-- load more button -->
-        <div v-if="(journalEntries.per_page * journalEntries.current_page) <= journalEntries.total" class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc">
-          <p class="mb0 pointer" @click="loadMore()">
-            <span v-if="!loadingMore">
-              {{ $t('app.load_more') }}
-            </span>
-            <span v-else class="black-50">
-              {{ $t('app.loading') }}
-            </span>
-          </p>
-        </div>
 
         <!-- blank state -->
         <div v-if="journalEntries.total === 0" class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc">
@@ -57,7 +46,7 @@
       </div>
 
       <div :class="[ dirltr ? 'fl' : 'fr' ]" class="w-70-ns pl3">
-
+        <div v-html="{{ post }}" class="bg-white"></div>
       </div>
     </div>
 
