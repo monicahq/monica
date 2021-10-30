@@ -7,6 +7,7 @@ use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use App\Services\Contact\Contact\UpdateContactIntroduction;
+use App\Http\Resources\Contact\ContactShort as ContactResource;
 
 class IntroductionsController extends Controller
 {
@@ -25,11 +26,17 @@ class IntroductionsController extends Controller
         $contacts = $contact->siblingContacts()
                         ->real()
                         ->active()
-                        ->get();
+                        ->paginate(20);
+
+        $introducer = $contact->getIntroducer();
+        if ($introducer !== null) {
+            $introducer = new ContactResource($introducer);
+        }
 
         return view('people.introductions.edit')
             ->withContact($contact)
-            ->withContacts($contacts);
+            ->withContacts(ContactResource::collection($contacts))
+            ->withIntroducer($introducer);
     }
 
     /**

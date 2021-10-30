@@ -144,6 +144,7 @@ return [
 
     // Last called
     'last_called' => 'Terakhir memanggil: :date',
+    'last_talked_to' => 'Last called: {date}',
     'last_called_empty' => 'Terakhir memanggil: :date',
     'last_activity_date' => 'Aktifitas terakhir bersama: :date',
     'last_activity_date_empty' => 'Aktifitas terakhir bersama: :date',

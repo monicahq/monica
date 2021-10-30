@@ -144,6 +144,7 @@ return [
 
     // Last called
     'last_called' => 'Son arama: :date',
+    'last_talked_to' => 'Last called: {date}',
     'last_called_empty' => 'Son arama: bilinmiyor',
     'last_activity_date' => 'Birlikte son aktivite: :date',
     'last_activity_date_empty' => 'Birlikte son aktivite: bilinmiyor',

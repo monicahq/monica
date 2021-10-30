@@ -144,6 +144,7 @@ return [
 
     // Last called
     'last_called' => 'שיחת הטלפון האחרונה: :date',
+    'last_talked_to' => 'שיחה אחרונה: {date}',
     'last_called_empty' => 'שיחת הטלפון האחרונה: לא ידוע',
     'last_activity_date' => 'פעילות אחרונה יחד: :date',
     'last_activity_date_empty' => 'פעילות אחרונה יחד: לא ידוע',

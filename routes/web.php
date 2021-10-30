@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Contacts\CallsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -152,10 +153,17 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
             'index', 'store', 'update', 'destroy',
         ]);
 
+        // Gifts
+        Route::resource('people/{contact}/gifts', 'Contacts\\GiftController')->only([
+            'index', 'show', 'store', 'update', 'destroy',
+        ]);
+        Route::put('people/{contact}/gifts/{gift}/photo/{photo}', 'Contacts\\GiftController@associate');
+
         // Debt
         Route::resource('people/{contact}/debts', 'Contacts\\DebtController')->except(['index', 'show']);
 
         // Phone calls
+        Route::get('people/{contact}/calls/last', [CallsController::class, 'lastCalled']);
         Route::resource('people/{contact}/calls', 'Contacts\\CallsController')->except(['show']);
 
         // Conversations

@@ -89,11 +89,12 @@ class DavTester extends TestCase
 
     public function addressBookBaseUri()
     {
-        return $this->serviceUrl()
-            ->optionsOk()
-            ->userPrincipal()
+        return $this->userPrincipal('https://test')
+            ->optionsOk('https://test/dav/principals/user@test.com/')
+            ->userPrincipal('https://test/dav/principals/user@test.com/')
             ->addressbookHome()
-            ->resourceTypeAddressBook();
+            ->resourceTypeAddressBook()
+            ->optionsOk('https://test/dav/addressbooks/user@test.com/contacts/');
     }
 
     public function capabilities()
@@ -125,9 +126,9 @@ class DavTester extends TestCase
         return $this->addResponse('https://test/.well-known/carddav', Http::response(null, 301, ['Location' => '/dav/']), null, 'PROPFIND');
     }
 
-    public function optionsOk()
+    public function optionsOk(string $url = 'https://test/dav/')
     {
-        return $this->addResponse('https://test/dav/', Http::response(null, 200, ['Dav' => '1, 3, addressbook']), null, 'OPTIONS');
+        return $this->addResponse($url, Http::response(null, 200, ['Dav' => '1, 3, addressbook']), null, 'OPTIONS');
     }
 
     public function optionsFail()
@@ -135,9 +136,9 @@ class DavTester extends TestCase
         return $this->addResponse('https://test/dav/', Http::response(null, 200, ['Dav' => 'bad']), null, 'OPTIONS');
     }
 
-    public function userPrincipal()
+    public function userPrincipal(string $url = 'https://test/dav/')
     {
-        return $this->addResponse('https://test/dav/', Http::response($this->multistatusHeader().
+        return $this->addResponse($url, Http::response($this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/</d:href>'.
             '<d:propstat>'.

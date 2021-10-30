@@ -78,7 +78,14 @@ class AddressBookGetter
      */
     private function getAddressBookBaseUri(): string
     {
-        $baseUri = $this->client->getServiceUrl();
+        try {
+            // Get the principal of this account
+            $principal = $this->getCurrentUserPrincipal();
+            $baseUri = $this->client->path($principal);
+        } catch (\Exception $e) {
+            $baseUri = $this->client->getServiceUrl();
+        }
+
         if ($baseUri) {
             $this->client->setBaseUri($baseUri);
         }
@@ -95,17 +102,25 @@ class AddressBookGetter
 
         // Get the AddressBook of this principal
         $addressBook = $this->getAddressBookUrl($principal);
+        $addressBookUrl = $this->client->path($addressBook);
+
+        if (! Str::contains($addressBookUrl, 'https://www.googleapis.com')) {
+            // Check the OPTIONS of the server
+            $this->checkOptions(true, $addressBookUrl);
+        }
 
         if ($addressBook === null) {
             throw new DavClientException('No address book found');
         }
 
-        return $this->client->path($addressBook);
+        return $addressBookUrl;
     }
 
     /**
      * Check options of the server.
      *
+     * @param  bool  $addressbook
+     * @param  string  $url
      * @return void
      *
      * @see https://datatracker.ietf.org/doc/html/rfc2518#section-15
@@ -113,11 +128,11 @@ class AddressBookGetter
      *
      * @throws DavServerNotCompliantException
      */
-    private function checkOptions()
+    private function checkOptions(bool $addressbook = false, string $url = '')
     {
-        $options = $this->client->options();
+        $options = $this->client->options($url);
 
-        if (! in_array('1', $options) || ! in_array('3', $options) || ! in_array('addressbook', $options)) {
+        if (! in_array('1', $options) || ! in_array('3', $options) || ($addressbook && ! in_array('addressbook', $options))) {
             throw new DavServerNotCompliantException('server is not compliant with rfc2518 section 15.1, or rfc6352 section 6.1');
         }
     }

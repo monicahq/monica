@@ -7,10 +7,10 @@
  */
 
 return [
-    'message' => 'Thanks for signing up! Please check your emails to confirm your email address.',
-    'success' => 'You have successfully verified your account! You can now login.',
-    'again' => 'You must verify your email before you can access the site.
-                <br/>If you have not received the confirmation email check your spam folder.
-                <br/>To get a new confirmation email please <a href=":url" class="alert-link">click here</a>.',
-    'resend' => 'A confirmation message has been sent. Please check your mailbox.'
+    'message' => 'از ثبت نام شما متشکریم! لطفا ایمیل خود را بررسی کنید ، ما ایمیل فعال سازی برایتان ارسال کرده ایم .',
+    'success' => 'شما با موفقیت حساب خود را تایید کردید! اکنون می توانید وارد شوید.',
+    'again' => 'شما باید ابتدا ایمیل خود را تایید کنید.
+                <br/>اگر ایمیل در اینباکس شما نبود پوشه اسپم نیز سرچ کنید.
+                <br/>و یا برای دریافت ایمیل جدید <a href=":url" class="alert-link">اینجا کلیک کنید</a>.',
+    'resend' => 'ایمیل تایید برای شما ارسال شد، لطفآ ایمیل خود را بررسی نمایید.'
 ];
