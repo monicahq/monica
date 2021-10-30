@@ -422,7 +422,7 @@ export default {
       return this.$refs.upload.forceFileUpload()
         .then(photo => {
           if (photo !== undefined) {
-            axios.put(`gifts/${response.data.data.id}/photo/${photo.id}`);
+            axios.put(`people/${this.hash}/gifts/${response.data.data.id}/photo/${photo.id}`);
             response.data.data.photos.push(photo);
           }
           return response;

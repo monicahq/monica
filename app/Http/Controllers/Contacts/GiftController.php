@@ -94,7 +94,7 @@ class GiftController extends Controller
      * @param  Photo  $photo
      * @return GiftResource|\Illuminate\Http\JsonResponse
      */
-    public function associate(Request $request, Gift $gift, Photo $photo)
+    public function associate(Request $request, Contact $contact, Gift $gift, Photo $photo)
     {
         $gift = app(AssociatePhotoToGift::class)->execute([
             'account_id' => auth()->user()->account_id,

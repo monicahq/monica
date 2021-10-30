@@ -157,7 +157,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::resource('people/{contact}/gifts', 'Contacts\\GiftController')->only([
             'index', 'show', 'store', 'update', 'destroy',
         ]);
-        Route::put('gifts/{gift}/photo/{photo}', 'Contacts\\GiftController@associate');
+        Route::put('people/{contact}/gifts/{gift}/photo/{photo}', 'Contacts\\GiftController@associate');
 
         // Debt
         Route::resource('people/{contact}/debts', 'Contacts\\DebtController')->except(['index', 'show']);
