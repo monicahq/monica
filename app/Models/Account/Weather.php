@@ -94,6 +94,8 @@ class Weather extends Model
      * Get the weather icon.
      *
      * @return string
+     *
+     * @codeCoverageIgnore
      */
     public function getEmojiAttribute()
     {
