@@ -1490,9 +1490,9 @@ class Contact extends Model
      * Get the weather information for this contact, based on the first address
      * on the profile.
      *
-     * @return Weather
+     * @return Weather|null
      */
-    public function getWeather()
+    public function getWeather(): ?Weather
     {
         return WeatherHelper::getWeatherForAddress($this->addresses()->first());
     }

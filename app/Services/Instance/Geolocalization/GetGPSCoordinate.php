@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\RequestException;
 use App\Exceptions\RateLimitedSecondException;
+use App\Exceptions\MissingEnvVariableException;
 
 class GetGPSCoordinate extends BaseService
 {
@@ -34,12 +35,26 @@ class GetGPSCoordinate extends BaseService
      */
     public function execute(array $data)
     {
+        $this->validateWeatherEnvVariables();
+
         $this->validate($data);
 
         $place = Place::where('account_id', $data['account_id'])
             ->findOrFail($data['place_id']);
 
         return $this->query($place);
+    }
+
+    /**
+     * Make sure that geolocation env variables are set.
+     *
+     * @return void
+     */
+    private function validateWeatherEnvVariables()
+    {
+        if (! config('monica.enable_geolocation') || is_null(config('monica.location_iq_api_key'))) {
+            throw new MissingEnvVariableException();
+        }
     }
 
     /**
@@ -50,10 +65,6 @@ class GetGPSCoordinate extends BaseService
      */
     private function buildQuery(Place $place): ?string
     {
-        if (! config('monica.enable_geolocation') || is_null(config('monica.location_iq_api_key'))) {
-            return null;
-        }
-
         $query = http_build_query([
             'format' => 'json',
             'key' => config('monica.location_iq_api_key'),

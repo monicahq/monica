@@ -137,7 +137,6 @@ class Weather extends Model
                 $string = '💨';
                 break;
             case 'fog':
-            case 'freezing-fog':
             case 'mist':
             case 'blizzard':
             case 'freezing-fog':

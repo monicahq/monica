@@ -5,11 +5,11 @@ namespace App\Services\Instance\Weather;
 use Illuminate\Support\Str;
 use App\Models\Account\Place;
 use App\Services\BaseService;
-use App\Jobs\GetGPSCoordinate;
 use App\Models\Account\Weather;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use App\Exceptions\NoCoordinatesException;
 use App\Exceptions\MissingEnvVariableException;
 use Illuminate\Http\Client\HttpClientException;
 
@@ -48,14 +48,10 @@ class GetWeatherInformation extends BaseService
             ->findOrFail($data['place_id']);
 
         if (is_null($place->latitude)) {
-            $place = $this->fetchGPS($place);
-
-            if (is_null($place)) {
-                return null;
-            }
+            throw new NoCoordinatesException();
         }
 
-    return $this->query($place, 'en' /*App::getLocale()*/);
+        return $this->query($place, 'en' /*App::getLocale()*/);
     }
 
     /**
@@ -65,11 +61,7 @@ class GetWeatherInformation extends BaseService
      */
     private function validateWeatherEnvVariables()
     {
-        if (! config('monica.enable_weather')) {
-            throw new MissingEnvVariableException();
-        }
-
-        if (is_null(config('monica.weatherapi_key'))) {
+        if (! config('monica.enable_weather') || is_null(config('monica.weatherapi_key'))) {
             throw new MissingEnvVariableException();
         }
     }
@@ -126,23 +118,5 @@ class GetWeatherInformation extends BaseService
         }
 
         return Str::of(config('location.weatherapi_url'))->rtrim('/').'?'.http_build_query($query);
-    }
-
-    /**
-     * Fetch missing longitude/latitude.
-     *
-     * @param  Place  $place
-     * @return Place|null
-     */
-    private function fetchGPS(Place $place): ?Place
-    {
-        if (config('monica.enable_geolocation') && ! is_null(config('monica.location_iq_api_key'))) {
-            GetGPSCoordinate::dispatchSync($place);
-            $place->refresh();
-
-            return $place;
-        }
-
-        return null;
     }
 }
