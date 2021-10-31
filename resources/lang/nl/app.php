@@ -441,14 +441,14 @@ return [
     'emotion_dread' => 'Doodsangst',
 
     // weather
-    'weather_sunny' => 'Sunny',
+    'weather_sunny' => 'Zonnig',
     'weather_clear' => 'Clear',
     'weather_clear-day' => 'Clear',
     'weather_clear-night' => 'Heldere nacht',
-    'weather_light-drizzle' => 'Light drizzle',
+    'weather_light-drizzle' => 'Lichte motregen',
     'weather_patchy-light-drizzle' => 'Patchy light drizzle',
     'weather_patchy-light-rain' => 'Patchy light rain',
-    'weather_light-rain' => 'Light rain',
+    'weather_light-rain' => 'Lichte regen',
     'weather_moderate-rain-at-times' => 'Moderate rain at times',
     'weather_moderate-rain' => 'Moderate rain',
     'weather_patchy-rain-possible' => 'Patchy rain possible',
