@@ -496,7 +496,7 @@ return [
     'weather_patchy-light-rain-with-thunder' => 'Chuva leve e irregular com trovoadas',
     'weather_moderate-or-heavy-rain-with-thunder' => 'Chuva moderada ou forte com trovoadas',
     'weather_patchy-light-snow-with-thunder' => 'Patchy light snow with thunder',
-    'weather_moderate-or-heavy-snow-with-thunder' => 'Moderate or heavy snow with thunder',
+    'weather_moderate-or-heavy-snow-with-thunder' => 'Neve moderada ou forte com trovoadas',
     'weather_current_temperature_celsius' => ':temperature °C',
     'weather_current_temperature_fahrenheit' => ':temperature °F',
     'weather_current_title' => 'Tempo atual',
