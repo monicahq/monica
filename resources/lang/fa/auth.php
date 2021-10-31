@@ -78,12 +78,12 @@ return [
 
     'confirmation_title' => 'آدرس ایمیل خود را تایید کنید',
     'confirmation_fresh' => 'یک لینک تأیید جدید به آدرس ایمیلتان ارسال  شد.',
-    'confirmation_check' => 'Before proceeding, please check your email for a verification link.',
-    'confirmation_request_another' => 'If you did not receive the email <a :action>click here to request another</a>.',
+    'confirmation_check' => 'قبل از ادامه، لطفاً ایمیل خود را برای لینک تأیید بررسی کنید.',
+    'confirmation_request_another' => 'اگر ایمیل را دریافت نکرده اید  <a :action>برای درخواست مجدد اینجا کلیک کنید</a>.',
 
-    'confirmation_again' => 'If you want to change your email address you can <a href=":url" class="alert-link">click here</a>.',
-    'email_change_current_email' => 'Current email address:',
-    'email_change_title' => 'Change your email address',
-    'email_change_new' => 'New email address',
-    'email_changed' => 'Your email address has been changed. Check your mailbox to validate it.',
+    'confirmation_again' => 'اگر میخواهید ایمیل خود را تغییر دهید می‌توانید <a href=":url" class="alert-link">اینجا کلیک کنید</a>.',
+    'email_change_current_email' => 'ادرس ایمیل فعلی:',
+    'email_change_title' => 'آدرس ایمیل خود را تغییر دهید',
+    'email_change_new' => 'آدرس ایمیل جدید',
+    'email_changed' => 'ادرس ایمیل شما تغییر کرد . صندوق پستی خود را برای تایید ایمیل چک کنید.',
 ];
