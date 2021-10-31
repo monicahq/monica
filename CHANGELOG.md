@@ -1,3 +1,27 @@
+# [3.4.0](https://github.com/monicahq/monica/compare/v3.3.1...v3.4.0) (2021-10-31)
+
+
+### Features
+
+* add dependencies node and yarn in Dockerfile ([#5635](https://github.com/monicahq/monica/issues/5635)) ([48726b5](https://github.com/monicahq/monica/commit/48726b5edf646ef5fd7c4594847b0315fd800e3c))
+* added URLs to be exported in vCards. ([#5609](https://github.com/monicahq/monica/issues/5609)) ([38429a2](https://github.com/monicahq/monica/commit/38429a25a2b1651f6caa3d739c0876d9d2dfa5b4))
+* get weather from weatherapi ([#5668](https://github.com/monicahq/monica/issues/5668)) ([d19b6ad](https://github.com/monicahq/monica/commit/d19b6adc378acda567058a5054c0d6b89694229c))
+* retry get gps coordinate when rate limited second ([#5615](https://github.com/monicahq/monica/issues/5615)) ([8eed44e](https://github.com/monicahq/monica/commit/8eed44e48ecee3f19e57665a67698cb1df8ae8f0))
+* searchable contacts on introductions form ([#5632](https://github.com/monicahq/monica/issues/5632)) ([cc05552](https://github.com/monicahq/monica/commit/cc05552320114e13aed189bccd5d7b7d11eb0bba))
+* update last called attribute ([#5614](https://github.com/monicahq/monica/issues/5614)) ([83e1d68](https://github.com/monicahq/monica/commit/83e1d680861b9242cf4fcf52e8e8476688f4e93d))
+
+
+### Bug Fixes
+
+* fix carddav addressbook add ([#5660](https://github.com/monicahq/monica/issues/5660)) ([ac44cfb](https://github.com/monicahq/monica/commit/ac44cfb4e00cbc2c6223acb7c0bdba9fc5725934))
+* fix creating default gender ([#5607](https://github.com/monicahq/monica/issues/5607)) ([6c5ac48](https://github.com/monicahq/monica/commit/6c5ac48df4eb25ca7da871c2e41d702f25e7630b))
+* fix distant contact etag handle ([#5605](https://github.com/monicahq/monica/issues/5605)) ([1da427f](https://github.com/monicahq/monica/commit/1da427f113e56b3c3c519aaf0ef8b224e35b5d24))
+* fix duplicate reminders on dashboard ([#5569](https://github.com/monicahq/monica/issues/5569)) ([bb97115](https://github.com/monicahq/monica/commit/bb971155d40e5f9f2d85af14e0b0915d67d4a1e5))
+* fix edit an activity with a category ([#5661](https://github.com/monicahq/monica/issues/5661)) ([9128db8](https://github.com/monicahq/monica/commit/9128db8b6f9df6bb1e3c12749c0627b575480311))
+* fix gift api without passport ([#5664](https://github.com/monicahq/monica/issues/5664)) ([7939a5f](https://github.com/monicahq/monica/commit/7939a5f8fcbfd5be671dc02df63e61ac8d4acc63))
+* fix import table layout ([#5662](https://github.com/monicahq/monica/issues/5662)) ([cd138c8](https://github.com/monicahq/monica/commit/cd138c83b41928982d01dae63e9258658bd5dc15))
+* fix vcard company import ([#5616](https://github.com/monicahq/monica/issues/5616)) ([0dd4b23](https://github.com/monicahq/monica/commit/0dd4b23baf799757d0555b07119048571c4a16b1))
+
 ## [3.3.1](https://github.com/monicahq/monica/compare/v3.3.0...v3.3.1) (2021-10-10)
 
 
