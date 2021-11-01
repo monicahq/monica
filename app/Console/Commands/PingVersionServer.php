@@ -56,7 +56,7 @@ class PingVersionServer extends Command
                 ])
                 ->throw();
         } catch (\Illuminate\Http\Client\RequestException $e) {
-            $this->log('RequestException... '+$e->getMessage());
+            $this->log('RequestException... ' + $e->getMessage());
 
             return;
         }
@@ -69,7 +69,6 @@ class PingVersionServer extends Command
 
         $latestVersion = new Version($json['latest_version']);
         $currentVersion = new Version($instance->current_version);
-
 
         if ($latestVersion > $currentVersion) {
             $instance->latest_version = $json['latest_version'];
