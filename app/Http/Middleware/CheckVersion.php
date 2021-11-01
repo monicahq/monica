@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use PharIo\Version\Version;
 use App\Models\Instance\Instance;
 
 class CheckVersion
@@ -18,7 +19,11 @@ class CheckVersion
     {
         $instance = Instance::first();
 
-        if ($instance->latest_version == config('monica.app_version')) {
+        $appVersion = new Version(config('monica.app_version'));
+        $latestVersion = new Version($instance->latest_version);
+        $currentVersion = new Version($instance->current_version);
+
+        if ($latestVersion == $appVersion && $currentVersion != $latestVersion) {
 
             // The instance has been updated to the latest version. We reset
             // the ping data.

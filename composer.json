@@ -39,6 +39,7 @@
         "monicahq/laravel-cloudflare": "^1.0",
         "monicahq/laravel-sabre": "^1.2",
         "ok/ipstack-client": "^1.2",
+        "phar-io/version": "^3.1",
         "pragmarx/countries-laravel": "^0",
         "pragmarx/google2fa": "^8.0",
         "pragmarx/google2fa-laravel": "^1.3",
