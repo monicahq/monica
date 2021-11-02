@@ -2,6 +2,7 @@
 
 namespace App\Models\Account;
 
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\App;
@@ -85,9 +86,29 @@ class Weather extends Model
      *
      * @return string
      */
-    public function getSummaryAttribute()
+    public function getSummaryAttribute(): string
     {
         return trans('app.weather_'.$this->summary_code);
+    }
+
+    /**
+     * Get the weather location.
+     *
+     * @return string
+     */
+    public function getLocationAttribute(): string
+    {
+        return Arr::get($this->weather_json, 'location.name');
+    }
+
+    /**
+     * Get the weather update date.
+     *
+     * @return Carbon
+     */
+    public function getDateAttribute(): Carbon
+    {
+        return Carbon::createFromTimestamp(Arr::get($this->weather_json, 'current.last_updated_epoch'));
     }
 
     /**
@@ -97,7 +118,7 @@ class Weather extends Model
      *
      * @codeCoverageIgnore
      */
-    public function getEmojiAttribute()
+    public function getEmojiAttribute(): string
     {
         switch ($this->summary_code) {
             case 'sunny':
