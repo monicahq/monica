@@ -8,7 +8,6 @@ use OK\Ipstack\Client as Ipstack;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
-use Stevebauman\Location\Drivers\IpInfo;
 use Stevebauman\Location\Facades\Location;
 
 class RequestHelper
@@ -69,7 +68,6 @@ class RequestHelper
         }
 
         if (config('location.ipdata.token') != null) {
-
             $position = self::getIpData($ip);
 
             return [
@@ -90,12 +88,12 @@ class RequestHelper
      * Get data from cache or ipdata.
      *
      * @param  string  $ip
-     * @return  array
+     * @return array
      */
     private static function getIpData(string $ip): array
     {
         return Cache::rememberForever("location.ipdata-{$ip}", function () use ($ip) {
-           return self::callIpData($ip);
+            return self::callIpData($ip);
         });
     }
 
@@ -103,7 +101,7 @@ class RequestHelper
      * Get data from ipdata.
      *
      * @param  string  $ip
-     * @return  array
+     * @return array
      */
     private static function callIpData(string $ip): array
     {
