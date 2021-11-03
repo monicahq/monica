@@ -5,6 +5,7 @@ namespace Tests\Unit\Helpers;
 use Tests\TestCase;
 use Mockery\MockInterface;
 use App\Helpers\RequestHelper;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Request;
 use Stevebauman\Location\Facades\Location;
 
@@ -60,6 +61,26 @@ class RequestHelperTest extends TestCase
         $this->assertEquals(
             'TEST',
             RequestHelper::country(null)
+        );
+    }
+
+    /** @test */
+    public function get_infos_from_ip()
+    {
+        config(['location.ipdata.token' => 'test']);
+
+        $body = file_get_contents(base_path('tests/Fixtures/Helpers/ipdata.json'));
+        Http::fake([
+            'https://api.ipdata.co/*' => Http::response($body, 200),
+        ]);
+
+        $this->assertEquals(
+            [
+                'country' => 'FR',
+                'currency' => 'EUR',
+                'timezone' => 'Europe/Paris',
+            ],
+            RequestHelper::infos('test')
         );
     }
 }

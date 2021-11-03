@@ -5,7 +5,10 @@ namespace App\Helpers;
 use Vectorface\Whip\Whip;
 use Illuminate\Support\Arr;
 use OK\Ipstack\Client as Ipstack;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
+use Stevebauman\Location\Drivers\IpInfo;
 use Stevebauman\Location\Facades\Location;
 
 class RequestHelper
@@ -56,13 +59,24 @@ class RequestHelper
             $ipstack = new Ipstack(config('location.ipstack_apikey'));
             $position = $ipstack->get($ip, true);
 
-            if (! is_null($position) && Arr::get($position, 'country_code', null)) {
+            if (! is_null($position) && Arr::get($position, 'country_code')) {
                 return [
-                    'country' => Arr::get($position, 'country_code', null),
-                    'currency' => Arr::get($position, 'currency.code', null),
-                    'timezone' => Arr::get($position, 'time_zone.id', null),
+                    'country' => Arr::get($position, 'country_code'),
+                    'currency' => Arr::get($position, 'currency.code'),
+                    'timezone' => Arr::get($position, 'time_zone.id'),
                 ];
             }
+        }
+
+        if (config('location.ipdata.token') != null) {
+
+            $position = self::getIpData($ip);
+
+            return [
+                'country' => Arr::get($position, 'country_code'),
+                'currency' => Arr::get($position, 'currency.code'),
+                'timezone' => Arr::get($position, 'time_zone.name'),
+            ];
         }
 
         return [
@@ -70,5 +84,33 @@ class RequestHelper
             'currency' => null,
             'timezone' => null,
         ];
+    }
+
+    /**
+     * Get data from cache or ipdata.
+     *
+     * @param  string  $ip
+     * @return  array
+     */
+    private static function getIpData(string $ip): array
+    {
+        return Cache::rememberForever("location.ipdata-{$ip}", function () use ($ip) {
+           return self::callIpData($ip);
+        });
+    }
+
+    /**
+     * Get data from ipdata.
+     *
+     * @param  string  $ip
+     * @return  array
+     */
+    private static function callIpData(string $ip): array
+    {
+        $token = config('location.ipdata.token', '');
+
+        $url = "https://api.ipdata.co/{$ip}?api-key={$token}";
+
+        return Http::get($url)->throw()->json();
     }
 }
