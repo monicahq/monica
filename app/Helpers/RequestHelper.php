@@ -68,13 +68,17 @@ class RequestHelper
         }
 
         if (config('location.ipdata.token') != null) {
-            $position = self::getIpData($ip);
+            try {
+                $position = self::getIpData($ip);
 
-            return [
-                'country' => Arr::get($position, 'country_code'),
-                'currency' => Arr::get($position, 'currency.code'),
-                'timezone' => Arr::get($position, 'time_zone.name'),
-            ];
+                return [
+                    'country' => Arr::get($position, 'country_code'),
+                    'currency' => Arr::get($position, 'currency.code'),
+                    'timezone' => Arr::get($position, 'time_zone.name'),
+                ];
+            } catch (\Exception $e) {
+                // skip
+            }
         }
 
         return [
@@ -85,25 +89,12 @@ class RequestHelper
     }
 
     /**
-     * Get data from cache or ipdata.
-     *
-     * @param  string  $ip
-     * @return array
-     */
-    private static function getIpData(string $ip): array
-    {
-        return Cache::rememberForever("location.ipdata-{$ip}", function () use ($ip) {
-            return self::callIpData($ip);
-        });
-    }
-
-    /**
      * Get data from ipdata.
      *
      * @param  string  $ip
      * @return array
      */
-    private static function callIpData(string $ip): array
+    private static function getIpData(string $ip): array
     {
         $token = config('location.ipdata.token', '');
 
