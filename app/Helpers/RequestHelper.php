@@ -107,7 +107,7 @@ class RequestHelper
     {
         $token = config('location.ipdata.token', '');
 
-        $url = "https://api.ipdata.co/{$ip}?api-key={$token}";
+        $url = "https://api.ipdata.co/{$ip}?api-key=".$token;
 
         return Http::get($url)->throw()->json();
     }
