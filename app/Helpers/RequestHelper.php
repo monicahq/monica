@@ -68,7 +68,7 @@ class RequestHelper
 
         if (config('location.ipdata.token') != null) {
             try {
-                $position = self::getIpData($ip);
+                $position = static::getIpData($ip);
 
                 return [
                     'country' => Arr::get($position, 'country_code'),

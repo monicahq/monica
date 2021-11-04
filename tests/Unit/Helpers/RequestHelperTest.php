@@ -83,4 +83,24 @@ class RequestHelperTest extends TestCase
             RequestHelper::infos('test')
         );
     }
+
+    /** @test */
+    public function get_infos_from_ip_fail()
+    {
+        config(['location.ipdata.token' => 'test']);
+
+        Http::fake([
+            'https://api.ipdata.co/*' => Http::response(null, 500),
+        ]);
+        Request::instance()->headers->set('Cf-Ipcountry', 'XX');
+
+        $this->assertEquals(
+            [
+                'country' => 'XX',
+                'currency' => null,
+                'timezone' => null,
+            ],
+            RequestHelper::infos('test')
+        );
+    }
 }
