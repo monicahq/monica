@@ -50,7 +50,8 @@
               </div>
             </div>
 
-            <p class="mb0">
+            <p class="mb0{{ $weather->created_at->between(now()->subHours(6), now()) ? '' : ' light-silver' }}"
+              title="{{ $weather->location }} &mdash; {{ DateHelper::getShortDateWithTime($weather->date) }}">
               {{ $weather->emoji }} {{ $weather->summary }} / {{ trans('app.weather_current_temperature_'.auth()->user()->temperature_scale, ['temperature' => $weather->temperature(auth()->user()->temperature_scale)]) }}
             </p>
           </div>
