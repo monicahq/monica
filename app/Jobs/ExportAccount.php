@@ -22,6 +22,7 @@ class ExportAccount
 
     /**
      * Format to use.
+     *
      * @var string
      */
     protected $format;
@@ -35,12 +36,14 @@ class ExportAccount
 
     /**
      * Export as SQL format.
+     *
      * @var string
      */
     public const SQL = 'sql';
 
     /**
      * Export as JSON format.
+     *
      * @var string
      */
     public const JSON = 'json';

@@ -31,7 +31,7 @@ class JsonExportAccount extends BaseService
     /**
      * Export account as Json.
      *
-     * @param array $data
+     * @param  array  $data
      * @return string
      */
     public function execute(array $data): string
@@ -50,8 +50,8 @@ class JsonExportAccount extends BaseService
     /**
      * Export data in temp file.
      *
-     * @param array $data
-     * @param User $user
+     * @param  array  $data
+     * @param  User  $user
      */
     private function writeExport(array $data, User $user)
     {
@@ -112,7 +112,7 @@ class JsonExportAccount extends BaseService
     /**
      * Export the Account table.
      *
-     * @param array $data
+     * @param  array  $data
      * @return mixed
      */
     private function exportAccount(array $data)
@@ -140,7 +140,7 @@ class JsonExportAccount extends BaseService
     /**
      * Export the User table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportUser(Account $account)
     {
@@ -184,7 +184,7 @@ class JsonExportAccount extends BaseService
     /**
      * Export the Contact table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportContact(Account $account)
     {
@@ -327,7 +327,7 @@ class JsonExportAccount extends BaseService
     /**
      * Export the Activity table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportActivity(Account $account)
     {
@@ -351,7 +351,7 @@ class JsonExportAccount extends BaseService
     /**
      * Export the Activity table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportActivityType(Account $account)
     {
@@ -375,7 +375,7 @@ class JsonExportAccount extends BaseService
     /**
      * Export the Activity table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportActivityTypeCategory(Account $account)
     {
@@ -417,9 +417,9 @@ class JsonExportAccount extends BaseService
     /**
      * Create the Insert query for the given table.
      *
-     * @param string $tableName
-     * @param array $foreignKey
-     * @param array $columns
+     * @param  string  $tableName
+     * @param  array  $foreignKey
+     * @param  array  $columns
      * @return mixed
      */
     private function getData($data, array $columns, array $properties = null, callable $callback = null)
@@ -444,9 +444,9 @@ class JsonExportAccount extends BaseService
     /**
      * Create the Insert query for the given table.
      *
-     * @param string $tableName
-     * @param array $foreignKey
-     * @param array $columns
+     * @param  string  $tableName
+     * @param  array  $foreignKey
+     * @param  array  $columns
      * @return mixed
      */
     private function getOneData(Model $model, array $columns, array $properties = null, callable $callback = null)
