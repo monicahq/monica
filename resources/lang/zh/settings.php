@@ -434,7 +434,7 @@ return [
     'personalization_activity_type_modal_question' => '你想如何命名这个新的活动？',
     'personalization_activity_type_modal_edit' => '编辑活动',
     'personalization_activity_type_category_modal_delete' => '删除活动分类',
-    'personalization_activity_type_category_modal_delete_desc' => 'Are you sure you want to delete this category? Deleting it will delete all associated activity types. Activities that belong to this category will not be affected by this deletion.',
+    'personalization_activity_type_category_modal_delete_desc' => '你确定要删除这个分类吗？删除分类也会删除该分类下的所有活动类型，但删除分类不会删除联系人中记录的属于此分类的活动。',
     'personalization_activity_type_modal_delete' => '删除活动',
     'personalization_activity_type_modal_delete_desc' => '您真的要删除这个活动吗？',
     'personalization_activity_type_modal_delete_error' => '我们无法找到这个活动',
