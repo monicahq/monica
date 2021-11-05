@@ -25,7 +25,7 @@ class UpdateContactFieldLabels extends BaseService
     /**
      * Update contact field's labels.
      *
-     * @param array $data
+     * @param  array  $data
      * @return void
      */
     public function execute(array $data)
@@ -35,6 +35,8 @@ class UpdateContactFieldLabels extends BaseService
         $contactField = ContactField::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_field_id']);
 
+        $contactField->contact->throwInactive();
+
         $labelsId = $this->getLabelsId($data);
 
         $this->updateLabels($labelsId, $contactField);
@@ -43,7 +45,7 @@ class UpdateContactFieldLabels extends BaseService
     /**
      * Get ContactFieldLabel ids.
      *
-     * @param array $data
+     * @param  array  $data
      * @return array
      */
     private function getLabelsId(array $data): array
@@ -71,8 +73,8 @@ class UpdateContactFieldLabels extends BaseService
     /**
      * Update contactField's labels.
      *
-     * @param array $labelsId
-     * @param ContactField $contactField
+     * @param  array  $labelsId
+     * @param  ContactField  $contactField
      * @return void
      */
     private function updateLabels(array $labelsId, ContactField $contactField)

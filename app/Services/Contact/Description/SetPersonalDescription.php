@@ -21,7 +21,7 @@ class SetPersonalDescription extends BaseService
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_id' => 'required|integer|exists:contacts,id',
             'author_id' => 'required|integer|exists:users,id',
-            'description' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
         ];
     }
 
@@ -31,30 +31,32 @@ class SetPersonalDescription extends BaseService
      * as unparsed markdown content. The UI is responsible for parsing and
      * displaying the proper content.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data): Contact
     {
         $this->validate($data);
 
-        /** @var Contact */
+        /** @var Contact $contact */
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $contact->description = $data['description'];
         $contact->save();
 
         $this->log($data, $contact);
 
-        return $contact;
+        return $contact->refresh();
     }
 
     /**
      * Add an audit log.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function log(array $data, Contact $contact): void

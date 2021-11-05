@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
 use Sabre\DAV;
-use Illuminate\Support\Arr;
+use App\Jobs\Dav\UpdateVCard;
 use App\Models\Contact\Contact;
+use App\Services\VCard\GetEtag;
 use App\Models\Account\AddressBook;
 use App\Services\VCard\ExportVCard;
-use App\Services\VCard\ImportVCard;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\CardDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
@@ -20,6 +20,7 @@ use App\Services\Contact\Contact\SetMeContact;
 use App\Http\Controllers\DAV\Backend\IDAVBackend;
 use App\Http\Controllers\DAV\Backend\SyncDAVBackend;
 use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
+use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 
 class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 {
@@ -49,7 +50,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *   {urn:ietf:params:xml:ns:carddav}addressbook-description
      *   {http://calendarserver.org/ns/}getctag
      *
-     * @param string $principalUri
+     * @param  string  $principalUri
      * @return array
      */
     public function getAddressBooksForUser($principalUri)
@@ -57,11 +58,11 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         $result = [];
         $result[] = $this->getDefaultAddressBook();
 
-        $addressbooks = AddressBook::where('account_id', Auth::user()->account_id)
+        $addressBooks = AddressBook::where('account_id', $this->user->account_id)
             ->get();
 
-        foreach ($addressbooks as $addressbook) {
-            $result[] = $this->getAddressBookDetails($addressbook);
+        foreach ($addressBooks as $addressBook) {
+            $result[] = $this->getAddressBookDetails($addressBook);
         }
 
         return $result;
@@ -74,24 +75,24 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         $me = auth()->user()->me;
         if ($me) {
             $des += [
-                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card' => '/'.config('laravelsabre.path').'/addressbooks/'.Auth::user()->email.'/contacts/'.$this->encodeUri($me),
+                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card' => '/'.config('laravelsabre.path').'/addressbooks/'.$this->user->email.'/contacts/'.$this->encodeUri($me),
             ];
         }
 
         return $des;
     }
 
-    private function getAddressBookDetails($addressbook)
+    private function getAddressBookDetails($addressBook)
     {
-        $id = $addressbook ? $addressbook->name : $this->backendUri();
-        $token = $this->getCurrentSyncToken($addressbook);
+        $id = $addressBook ? $addressBook->name : $this->backendUri();
+        $token = $this->getCurrentSyncToken($addressBook);
 
         $des = [
             'id'                => $id,
             'uri'               => $id,
-            'principaluri'      => PrincipalBackend::getPrincipalUser(),
+            'principaluri'      => PrincipalBackend::getPrincipalUser($this->user),
             '{DAV:}displayname' => trans('app.dav_contacts'),
-            '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $addressbook ? $addressbook->description : trans('app.dav_contacts_description', ['name' => Auth::user()->name]),
+            '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $addressBook ? $addressBook->description : trans('app.dav_contacts_description', ['name' => $this->user->name]),
         ];
         if ($token) {
             $des += [
@@ -107,7 +108,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Extension for Calendar objects.
      *
-     * @var string
+     * @return string
      */
     public function getExtension()
     {
@@ -164,13 +165,13 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * The limit is 'suggestive'. You are free to ignore it.
      *
-     * @param string $addressBookId
-     * @param string $syncToken
-     * @param int $syncLevel
-     * @param int $limit
-     * @return array
+     * @param  string  $addressBookId
+     * @param  string  $syncToken
+     * @param  int  $syncLevel
+     * @param  int  $limit
+     * @return array|null
      */
-    public function getChangesForAddressBook($addressBookId, $syncToken, $syncLevel, $limit = null)
+    public function getChangesForAddressBook($addressBookId, $syncToken, $syncLevel, $limit = null): ?array
     {
         return $this->getChanges($addressBookId, $syncToken);
     }
@@ -178,41 +179,62 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Prepare datas for this contact.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      * @return array
      */
-    private function prepareCard($contact): array
+    public function prepareCard($contact): array
     {
+        $carddata = $contact->vcard;
         try {
-            $carddata = $contact->vcard;
             if (empty($carddata)) {
-                $vcard = app(ExportVCard::class)
-                    ->execute([
-                        'account_id' => Auth::user()->account_id,
-                        'contact_id' => $contact->id,
-                    ]);
-
-                $carddata = $vcard->serialize();
+                $carddata = $this->refreshObject($contact);
             }
 
+            $etag = app(GetEtag::class)->execute([
+                'account_id' => $this->user->account_id,
+                'contact_id' => $contact->id,
+            ]);
+
             return [
-                'id' => $contact->hashID(),
+                'contact_id' => $contact->id,
                 'uri' => $this->encodeUri($contact),
                 'carddata' => $carddata,
-                'etag' => '"'.md5($carddata).'"',
+                'etag' => $etag,
+                'distant_etag' => $contact->distant_etag,
                 'lastmodified' => $contact->updated_at->timestamp,
             ];
         } catch (\Exception $e) {
-            Log::debug(__CLASS__.' prepareCard: '.(string) $e);
+            Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
+                'carddata' => $carddata,
+                'contact_id' => $contact->id,
+                $e,
+            ]);
             throw $e;
         }
     }
 
     /**
+     * Get the new exported version of the object.
+     *
+     * @param  mixed  $obj  contact
+     * @return string
+     */
+    protected function refreshObject($obj): string
+    {
+        $vcard = app(ExportVCard::class)
+            ->execute([
+                'account_id' => $this->user->account_id,
+                'contact_id' => $obj->id,
+            ]);
+
+        return $vcard->serialize();
+    }
+
+    /**
      * Returns the contact for the specific uuid.
      *
-     * @param mixed|null $collectionId
-     * @param string  $uuid
+     * @param  mixed|null  $collectionId
+     * @param  string  $uuid
      * @return Contact
      */
     public function getObjectUuid($collectionId, $uuid)
@@ -220,13 +242,13 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         $addressBook = null;
         if ($collectionId && $collectionId != $this->backendUri()) {
             $addressBook = AddressBook::where([
-                'account_id' => Auth::user()->account_id,
+                'account_id' => $this->user->account_id,
                 'name' => $collectionId,
             ])->first();
         }
 
         return Contact::where([
-            'account_id' => Auth::user()->account_id,
+            'account_id' => $this->user->account_id,
             'uuid' => $uuid,
             'address_book_id' => $addressBook ? $addressBook->id : null,
         ])->first();
@@ -235,11 +257,12 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Returns the collection of all active contacts.
      *
-     * @return \Illuminate\Support\Collection
+     * @param  string|null  $collectionId
+     * @return \Illuminate\Support\Collection<array-key, Contact>
      */
-    public function getObjects($addressBookId)
+    public function getObjects($collectionId)
     {
-        return Auth::user()->account->contacts($addressBookId)
+        return $this->user->account->contacts($collectionId)
                     ->active()
                     ->get();
     }
@@ -260,12 +283,12 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * calculating them. If they are specified, you can also ommit carddata.
      * This may speed up certain requests, especially with large cards.
      *
-     * @param mixed $collectionId
+     * @param  mixed  $addressbookId
      * @return array
      */
-    public function getCards($collectionId)
+    public function getCards($addressbookId)
     {
-        $contacts = $this->getObjects($collectionId);
+        $contacts = $this->getObjects($addressbookId);
 
         return $contacts->map(function ($contact) {
             return $this->prepareCard($contact);
@@ -280,8 +303,8 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * If the card does not exist, you must return false.
      *
-     * @param mixed $addressBookId
-     * @param string $cardUri
+     * @param  mixed  $addressBookId
+     * @param  string  $cardUri
      * @return array|bool
      */
     public function getCard($addressBookId, $cardUri)
@@ -315,9 +338,9 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * If you don't return an ETag, you can just return null.
      *
-     * @param mixed $addressBookId
-     * @param string $cardUri
-     * @param string $cardData
+     * @param  mixed  $addressBookId
+     * @param  string  $cardUri
+     * @param  string  $cardData
      * @return string|null
      */
     public function createCard($addressBookId, $cardUri, $cardData)
@@ -345,44 +368,18 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * If you don't return an ETag, you can just return null.
      *
-     * @param mixed $addressBookId
-     * @param string $cardUri
-     * @param string $cardData
+     * @param  mixed  $addressBookId
+     * @param  string  $cardUri
+     * @param  string|resource  $cardData
      * @return string|null
      */
     public function updateCard($addressBookId, $cardUri, $cardData): ?string
     {
-        $contact_id = null;
-        if ($cardUri) {
-            $contact = $this->getObject($addressBookId, $cardUri);
+        $job = new UpdateVCard($this->user, $addressBookId, new ContactUpdateDto($cardUri, null, $cardData));
 
-            if ($contact) {
-                $contact_id = $contact->id;
-            }
-        }
-
-        try {
-            $result = app(ImportVCard::class)
-                ->execute([
-                    'account_id' => Auth::user()->account_id,
-                    'user_id' => Auth::user()->id,
-                    'contact_id' => $contact_id,
-                    'entry' => $cardData,
-                    'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
-                    'addressBookName' => $addressBookId == $this->backendUri() ? null : $addressBookId,
-                ]);
-
-            if (! Arr::has($result, 'error')) {
-                $contact = Contact::where('account_id', Auth::user()->account_id)
-                    ->find($result['contact_id']);
-                $card = $this->prepareCard($contact);
-
-                return $card['etag'];
-            }
-        } catch (\Exception $e) {
-            Log::debug(__CLASS__.' updateCard: '.(string) $e);
-            throw $e;
-        }
+        Bus::batch([$job])
+            ->allowFailures()
+            ->dispatch();
 
         return null;
     }
@@ -390,8 +387,8 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Deletes a card.
      *
-     * @param mixed $addressBookId
-     * @param string $cardUri
+     * @param  mixed  $addressBookId
+     * @param  string  $cardUri
      * @return bool
      */
     public function deleteCard($addressBookId, $cardUri)
@@ -411,8 +408,8 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * Read the PropPatch documentation for more info and examples.
      *
-     * @param string $addressBookId
-     * @param \Sabre\DAV\PropPatch $propPatch
+     * @param  string  $addressBookId
+     * @param  \Sabre\DAV\PropPatch  $propPatch
      * @return bool|null
      */
     public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch): ?bool
@@ -422,8 +419,8 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
             $data = [
                 'contact_id' => $contact->id,
-                'account_id' => auth()->user()->account_id,
-                'user_id' => auth()->user()->id,
+                'account_id' => $this->user->account_id,
+                'user_id' => $this->user->id,
             ];
 
             app(SetMeContact::class)->execute($data);
@@ -440,9 +437,9 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * This method should return the id of the new address book. The id can be
      * in any format, including ints, strings, arrays or objects.
      *
-     * @param string $principalUri
-     * @param string $url Just the 'basename' of the url.
-     * @param array $properties
+     * @param  string  $principalUri
+     * @param  string  $url  Just the 'basename' of the url.
+     * @param  array  $properties
      * @return int|bool
      */
     public function createAddressBook($principalUri, $url, array $properties)
@@ -453,7 +450,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Deletes an entire addressbook and all its contents.
      *
-     * @param mixed $addressBookId
+     * @param  mixed  $addressBookId
      * @return bool|null
      */
     public function deleteAddressBook($addressBookId)

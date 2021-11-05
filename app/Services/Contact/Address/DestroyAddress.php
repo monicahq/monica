@@ -24,7 +24,7 @@ class DestroyAddress extends BaseService
     /**
      * Destroy an address.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data): bool
@@ -33,6 +33,8 @@ class DestroyAddress extends BaseService
 
         $address = Address::where('account_id', $data['account_id'])
             ->findOrFail($data['address_id']);
+
+        $address->contact->throwInactive();
 
         app(DestroyPlace::class)->execute([
             'account_id' => $data['account_id'],

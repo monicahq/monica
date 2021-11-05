@@ -28,6 +28,7 @@ class ExportAccount
 
     /**
      * Storage disk used to store the exported file.
+     *
      * @var string
      */
     public const STORAGE = 'public';
@@ -47,8 +48,8 @@ class ExportAccount
     /**
      * Create a new job instance.
      *
-     * @param string $format
-     * @param string|null $path
+     * @param  string  $format
+     * @param  string|null  $path
      */
     public function __construct(string $format = self::SQL, $path = null)
     {

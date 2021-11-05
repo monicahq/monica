@@ -44,7 +44,7 @@ class UploadPhoto extends BaseService
     /**
      * Upload a photo.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Photo|null
      */
     public function execute(array $data): ?Photo
@@ -53,6 +53,8 @@ class UploadPhoto extends BaseService
 
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $array = null;
         if (Arr::has($data, 'photo')) {
@@ -84,7 +86,10 @@ class UploadPhoto extends BaseService
             'original_filename' => $photo->getClientOriginalName(),
             'filesize' => $photo->getSize(),
             'mime_type' => (new \Mimey\MimeTypes)->getMimeType($photo->guessClientExtension()),
-            'new_filename' => $photo->storePublicly('photos', config('filesystems.default')),
+            'new_filename' => $photo->store('photos', [
+                'disk' => config('filesystems.default'),
+                'visibility' => config('filesystems.default_visibility'),
+            ]),
         ];
     }
 
@@ -138,15 +143,15 @@ class UploadPhoto extends BaseService
     /**
      * Store the decoded image in the temp file.
      *
-     * @param string $disk
-     * @param \Intervention\Image\Image $image
-     * @param string $filename
+     * @param  string  $disk
+     * @param  \Intervention\Image\Image  $image
+     * @param  string  $filename
      * @return string|null
      */
     private function storeImage(string $disk, $image, string $filename): ?string
     {
         $result = Storage::disk($disk)
-            ->put($path = $filename, (string) $image->stream(), 'public');
+            ->put($path = $filename, (string) $image->stream(), config('filesystems.default_visibility'));
 
         return $result ? $path : null;
     }
@@ -154,7 +159,7 @@ class UploadPhoto extends BaseService
     /**
      * Determines if the source photo is a valid encoded photo.
      *
-     * @param string $data
+     * @param  string  $data
      * @return bool
      */
     private function isValidPhoto(string $data): bool
@@ -165,7 +170,7 @@ class UploadPhoto extends BaseService
     /**
      * Determines if source data is binary data.
      *
-     * @param string $data
+     * @param  string  $data
      * @return bool
      */
     private function isBinary(string $data): bool
@@ -178,7 +183,7 @@ class UploadPhoto extends BaseService
     /**
      * Determines if source data is data-url format.
      *
-     * @param string $data
+     * @param  string  $data
      * @return bool
      */
     private function isDataUrl(string $data): bool
@@ -200,7 +205,7 @@ class UploadPhoto extends BaseService
     /**
      * Determines if source data is base64 encoded.
      *
-     * @param string $data
+     * @param  string  $data
      * @return bool
      */
     private function isBase64(string $data): bool

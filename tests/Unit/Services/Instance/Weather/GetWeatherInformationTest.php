@@ -3,12 +3,10 @@
 namespace Tests\Unit\Services\Instance\Weather;
 
 use Tests\TestCase;
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
 use App\Models\Account\Place;
-use GuzzleHttp\Psr7\Response;
 use App\Models\Account\Weather;
-use GuzzleHttp\Handler\MockHandler;
+use Illuminate\Support\Facades\Http;
+use App\Exceptions\NoCoordinatesException;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\MissingEnvVariableException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -19,7 +17,7 @@ class GetWeatherInformationTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
-    public function it_gets_weather_information()
+    public function it_gets_weather_information_normal()
     {
         $place = factory(Place::class)->create([
             'latitude' => '34.112456',
@@ -27,18 +25,19 @@ class GetWeatherInformationTest extends TestCase
         ]);
 
         config(['monica.enable_weather' => true]);
-        config(['monica.darksky_api_key' => 'test']);
+        config(['monica.weatherapi_key' => 'test']);
 
         $body = file_get_contents(base_path('tests/Fixtures/Services/Instance/Weather/GetWeatherInformationSampleResponse.json'));
-        $mock = new MockHandler([new Response(200, [], $body)]);
-        $handler = HandlerStack::create($mock);
-        $client = new Client(['handler' => $handler]);
+        Http::fake([
+            'api.weatherapi.com/v1/*' => Http::response($body, 200),
+        ]);
 
         $request = [
+            'account_id' => $place->account_id,
             'place_id' => $place->id,
         ];
 
-        $weather = app(GetWeatherInformation::class)->execute($request, $client);
+        $weather = app(GetWeatherInformation::class)->execute($request);
 
         $this->assertDatabaseHas('weather', [
             'id' => $weather->id,
@@ -47,7 +46,7 @@ class GetWeatherInformationTest extends TestCase
         ]);
 
         $this->assertEquals(
-            'Partly Cloudy',
+            'Partly cloudy',
             $weather->summary
         );
 
@@ -76,7 +75,7 @@ class GetWeatherInformationTest extends TestCase
     }
 
     /** @test */
-    public function it_cant_get_weather_info_if_darksky_api_key_not_provided()
+    public function it_cant_get_weather_info_if_weatherapi_key_not_provided()
     {
         $place = factory(Place::class)->create([
             'latitude' => '34.112456',
@@ -84,9 +83,10 @@ class GetWeatherInformationTest extends TestCase
         ]);
 
         config(['monica.enable_weather' => true]);
-        config(['monica.darksky_api_key' => null]);
+        config(['monica.weatherapi_key' => null]);
 
         $request = [
+            'account_id' => $place->account_id,
             'place_id' => $place->id,
         ];
 
@@ -100,21 +100,23 @@ class GetWeatherInformationTest extends TestCase
         $place = factory(Place::class)->create([]);
 
         config(['monica.enable_weather' => true]);
-        config(['monica.darksky_api_key' => 'test']);
+        config(['monica.weatherapi_key' => 'test']);
         config(['monica.enable_geolocation' => false]);
 
         $request = [
+            'account_id' => $place->account_id,
             'place_id' => $place->id,
         ];
 
-        $this->assertNull(app(GetWeatherInformation::class)->execute($request));
+        $this->expectException(NoCoordinatesException::class);
+        app(GetWeatherInformation::class)->execute($request);
     }
 
     /** @test */
     public function it_fails_if_wrong_parameters_are_given()
     {
         config(['monica.enable_weather' => true]);
-        config(['monica.darksky_api_key' => 'test']);
+        config(['monica.weatherapi_key' => 'test']);
 
         $request = [];
 

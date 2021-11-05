@@ -19,7 +19,7 @@ class ContactHelper
     /**
      * Prepare a collection of audit logs.
      *
-     * @param mixed $logs
+     * @param  mixed  $logs
      * @return Collection
      */
     public static function getListOfAuditLogs($logs): Collection
@@ -27,7 +27,7 @@ class ContactHelper
         $logsCollection = collect();
 
         foreach ($logs as $log) {
-            $description = trans('app.contact_log_'.$log->action);
+            $description = trans('logs.contact_log_'.$log->action);
 
             $logsCollection->push([
                 'author_name' => ($log->author) ? $log->author->name : $log->author_name,

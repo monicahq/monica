@@ -53,7 +53,7 @@ This list is not exhaustive, as the synchronisation can work on every CardDAV co
 
 Android devices does not support CardDAV natively, so you'll need to install a third-party application to use CardDAV.
 
-I recommend to install [DAVx5](https://www.davx5.com/) which is a great CardDAV client. You will find the application on the [Google Play store](https://play.google.com/store/apps/details?id=at.bitfire.davdroid) or even on [F-Droid store](https://f-droid.org/fr/packages/at.bitfire.davdroid/) for free.
+We recommend installing [DAVx5](https://www.davx5.com/) which is a great CardDAV client. You will find the application on the [Google Play store](https://play.google.com/store/apps/details?id=at.bitfire.davdroid) or even on [F-Droid store](https://f-droid.org/fr/packages/at.bitfire.davdroid/) for free.
 
 To add an account:
 - Click on the `+` button
@@ -79,9 +79,9 @@ After that, you can use any Contacts application on your phone. Be sure to displ
 
 ### Thunderbird
 
-[Thunderbird](https://www.thunderbird.net) does not support CardDAV natively, so you'll need to install a third party Add-on to use CardDAV.
+[Thunderbird](https://www.thunderbird.net) supports CardDAV natively as of version 91.
 
-I recommend to install [CardBook](https://addons.thunderbird.net/thunderbird/addon/cardbook/).
+For older versions, or enhanced functionality, we recommend installing [CardBook](https://addons.thunderbird.net/thunderbird/addon/cardbook/).
 Download the add-on and install it through Thunderbird's add-on manager.
 
 To add an account:
@@ -112,9 +112,9 @@ Windows 10 Contacts application support CardDAV. It is used to synchronize iClou
 - Click on **Connect**, then **OK**
 
 
-After this step, the application will try to synchronize with iCloud servers. It will fails, but it's normal as we don't have an account on it.
+After this step, the application will try to synchronize with iCloud servers. It will fail, but it's normal as we don't have an account on it.
 
-Fix the settings by:
+Fix the settings:
 - Open the **Mail** application
 - Open on the wheel ![wheel](/docs/images/windows10_wheel.png) to go to the settings. If the settings are not reachable, add a fake POP, IMAP account
 - Click on your Monica account settings — it is named _iCloud_ at this point — and select **Change parameters**

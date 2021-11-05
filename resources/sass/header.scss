@@ -17,7 +17,7 @@
   position: relative;
 
   span {
-    color: #d7d7d7;
+    color: #d0d0d0;
     font-size: 12px;
     left: 10px;
     position: absolute;
@@ -26,7 +26,7 @@
 
   input {
     border: 0;
-    color: #fff;
+    color: #ffffff;
     padding-left: 29px;
   }
 }
@@ -58,7 +58,7 @@
 }
 
 .header-nav-item-link {
-  color: #fff;
+  color: #ffffff;
   font-weight: 300;
   padding: 3px 11px;
   text-decoration: none;
@@ -66,7 +66,7 @@
   &:hover {
     background-color: #497193;
     border-radius: 3px;
-    color: #fff;
+    color: #ffffff;
     padding: 3px 11px;
     text-decoration: none;
   }
@@ -80,18 +80,20 @@
 .header-search-input {
   background: #497193;
   border-color: #497193;
-  color: white;
+  color: #ffffff;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    opacity: 0.5;
+    color: #f2f4f8;
   }
   &:-ms-input-placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    opacity: 0.5;
+    color: #f2f4f8;
   }
 
   &:focus {
-    background: white;
-    color: rgb(50, 50, 50);
+    background: #f2f4f8;
+    color: #313436;
   }
 }
 
@@ -103,9 +105,9 @@
 
 .header-search-result {
   position: relative;
-  background: white;
-  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.3);
-  border-bottom: 1px solid #eee;
+  background: #ffffff;
+  box-shadow: 0 3px 3px 0 #999999;
+  border-bottom: 1px solid #eeeeee;
 
   a {
     color: inherit;
@@ -141,7 +143,7 @@
     text-align: center;
     padding-top: 6px;
     font-size: 15px;
-    color: #fff;
+    color: #ffffff;
   }
 
   &:last-child {
@@ -150,7 +152,7 @@
 }
 
 .header-search-result:hover {
-  background: #f5f5f5;
+  background: #fafafa;
 }
 
 .pulse {
@@ -162,7 +164,7 @@
   &:before {
     position: absolute;
     content: '';
-    background-color:#19a974;
+    background-color:#32cd32;
     border-radius:50%;
     width: 9px;
     height: 9px;
@@ -200,12 +202,11 @@
 @media (max-width: 767px) {
   header {
     .mobile-menu {
-      background-color: #58748c;
       border: 1px solid #325776;
       margin-bottom: 20px;
 
       li {
-        border-bottom: 1px solid #475b6b;
+        border-bottom: 1px solid #497193;
         margin-bottom: 0;
         padding: 4px 0;
 

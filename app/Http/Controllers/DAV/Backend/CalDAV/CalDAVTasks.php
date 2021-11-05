@@ -6,7 +6,6 @@ use Illuminate\Support\Arr;
 use App\Models\Contact\Task;
 use App\Services\Task\DestroyTask;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use App\Services\VCalendar\ExportTask;
 use App\Services\VCalendar\ImportTask;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
@@ -30,8 +29,8 @@ class CalDAVTasks extends AbstractCalDAVBackend
         return parent::getDescription()
         + [
             '{DAV:}displayname' => trans('app.dav_tasks'),
-            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => trans('app.dav_tasks_description', ['name' => Auth::user()->name]),
-            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => Auth::user()->timezone,
+            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => trans('app.dav_tasks_description', ['name' => $this->user->name]),
+            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => $this->user->timezone,
             '{'.CalDAVPlugin::NS_CALDAV.'}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VTODO']),
             '{'.CalDAVPlugin::NS_CALDAV.'}schedule-calendar-transp' => new ScheduleCalendarTransp(ScheduleCalendarTransp::TRANSPARENT),
         ];
@@ -40,11 +39,12 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Returns the collection of all tasks.
      *
+     * @param  mixed|null  $collectionId
      * @return \Illuminate\Support\Collection
      */
     public function getObjects($collectionId)
     {
-        return Auth::user()->account
+        return $this->user->account
                     ->tasks()
                     ->get();
     }
@@ -52,14 +52,14 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Returns the contact for the specific uuid.
      *
-     * @param mixed|null $collectionId
-     * @param string  $uuid
+     * @param  mixed|null  $collectionId
+     * @param  string  $uuid
      * @return mixed
      */
     public function getObjectUuid($collectionId, $uuid)
     {
         return Task::where([
-            'account_id' => Auth::user()->account_id,
+            'account_id' => $this->user->account_id,
             'uuid' => $uuid,
         ])->first();
     }
@@ -67,7 +67,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Extension for Calendar objects.
      *
-     * @var string
+     * @return string
      */
     public function getExtension()
     {
@@ -77,34 +77,49 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Datas for this task.
      *
-     * @param mixed $task
+     * @param  mixed  $obj
      * @return array
      */
-    public function prepareData($task)
+    public function prepareData($obj)
     {
-        if ($task instanceof Task) {
+        $calendardata = null;
+        if ($obj instanceof Task) {
             try {
-                $vcal = app(ExportTask::class)
-                    ->execute([
-                        'account_id' => Auth::user()->account_id,
-                        'task_id' => $task->id,
-                    ]);
-
-                $calendardata = $vcal->serialize();
+                $calendardata = $this->refreshObject($obj);
 
                 return [
-                    'id' => $task->id,
-                    'uri' => $this->encodeUri($task),
+                    'id' => $obj->id,
+                    'uri' => $this->encodeUri($obj),
                     'calendardata' => $calendardata,
-                    'etag' => '"'.md5($calendardata).'"',
-                    'lastmodified' => $task->updated_at->timestamp,
+                    'etag' => '"'.sha1($calendardata).'"',
+                    'lastmodified' => $obj->updated_at->timestamp,
                 ];
             } catch (\Exception $e) {
-                Log::debug(__CLASS__.' prepareData: '.(string) $e);
+                Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
+                    'calendardata' => $calendardata,
+                    $e,
+                ]);
             }
         }
 
         return [];
+    }
+
+    /**
+     * Get the new exported version of the object.
+     *
+     * @param  mixed  $obj  task
+     * @return string
+     */
+    protected function refreshObject($obj): string
+    {
+        $vcal = app(ExportTask::class)
+            ->execute([
+                'account_id' => $this->user->account_id,
+                'task_id' => $obj->id,
+            ]);
+
+        return $vcal->serialize();
     }
 
     /**
@@ -120,8 +135,8 @@ class CalDAVTasks extends AbstractCalDAVBackend
      * calendar-data. If the result of a subsequent GET to this object is not
      * the exact same as this request body, you should omit the ETag.
      *
-     * @param string $objectUri
-     * @param string $calendarData
+     * @param  string  $objectUri
+     * @param  string  $calendarData
      * @return string|null
      */
     public function updateOrCreateCalendarObject($calendarId, $objectUri, $calendarData): ?string
@@ -138,13 +153,13 @@ class CalDAVTasks extends AbstractCalDAVBackend
         try {
             $result = app(ImportTask::class)
                 ->execute([
-                    'account_id' => Auth::user()->account_id,
+                    'account_id' => $this->user->account_id,
                     'task_id' => $task_id,
                     'entry' => $calendarData,
                 ]);
 
             if (! Arr::has($result, 'error')) {
-                $task = Task::where('account_id', Auth::user()->account_id)
+                $task = Task::where('account_id', $this->user->account_id)
                     ->find($result['task_id']);
 
                 $calendar = $this->prepareData($task);
@@ -152,7 +167,12 @@ class CalDAVTasks extends AbstractCalDAVBackend
                 return $calendar['etag'];
             }
         } catch (\Exception $e) {
-            Log::debug(__CLASS__.' updateOrCreateCalendarObject: '.(string) $e);
+            Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
+                'calendarId' => $calendarId,
+                'objectUri' => $objectUri,
+                'calendarData' => $calendarData,
+                $e,
+            ]);
         }
 
         return null;
@@ -163,7 +183,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
      *
      * The object uri is only the basename, or filename and not a full path.
      *
-     * @param string $objectUri
+     * @param  string  $objectUri
      * @return void
      */
     public function deleteCalendarObject($objectUri)
@@ -174,11 +194,14 @@ class CalDAVTasks extends AbstractCalDAVBackend
             try {
                 app(DestroyTask::class)
                     ->execute([
-                        'account_id' => Auth::user()->account_id,
+                        'account_id' => $this->user->account_id,
                         'task_id' => $task->id,
                     ]);
             } catch (\Exception $e) {
-                Log::debug(__CLASS__.' deleteCalendarObject: '.(string) $e);
+                Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
+                    'objectUri' => $objectUri,
+                    $e,
+                ]);
             }
         }
     }

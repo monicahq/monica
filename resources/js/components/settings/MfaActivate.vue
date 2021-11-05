@@ -1,6 +1,3 @@
-<style scoped>
-</style>
-
 <template>
   <div>
     <notifications group="mfa" position="bottom right" :duration="5000" width="400" />
@@ -8,7 +5,7 @@
     <h3>{{ $t('settings.2fa_otp_title') }}</h3>
 
     <div class="form-group">
-      <a v-if="activated" class="btn btn-warning" href="" @click.prevent="showDisableModal">
+      <a v-if="selectActivated" class="btn btn-warning" href="" @click.prevent="showDisableModal">
         {{ $t('settings.2fa_disable_title') }}
       </a>
       <a v-else class="btn btn-primary" href="" @click.prevent="showEnableModal">
@@ -22,9 +19,8 @@
 
         <div class="panel-body">
           {{ $t('settings.2fa_enable_otp') }}
+          <div v-html="image"></div>
           <p>
-            <img id="barcode" alt="Image of QR barcode" :src="image" />
-            <br />
             {{ $t('settings.2fa_enable_otp_help') }}
             <code id="secretkey">
               {{ secret }}
@@ -64,8 +60,8 @@
           <form-input
             :id="'one_time_password2'"
             v-model="one_time_password"
-            :title="$t('auth.2fa_one_time_password')"
-            :input-type="'number'"
+            :title="$t('auth.2fa_one_time_or_recuperation')"
+            :input-type="'text'"
             :width="100"
             :required="true"
           />
@@ -101,6 +97,7 @@ export default {
 
   data() {
     return {
+      selectActivated: false,
       errorMessage: '',
       infoMessage: '',
       success: false,
@@ -110,12 +107,22 @@ export default {
     };
   },
 
+  watch: {
+    activated: function (val) {
+      this.selectActivated = val;
+    }
+  },
+
+  mounted() {
+    this.selectActivated = this.activated;
+  },
+
   methods: {
     register() {
       axios.post('settings/security/2fa-enable', { one_time_password: this.one_time_password })
         .then(response => {
           this.closeEnableModal();
-          this.activated = response.data.success;
+          this.selectActivated = response.data.success;
           if (response.data.success) {
             this.notify(this.$t('settings.2fa_enable_success'), true);
           } else {
@@ -131,7 +138,7 @@ export default {
       axios.post('settings/security/2fa-disable', { one_time_password: this.one_time_password })
         .then(response => {
           this.closeDisableModal();
-          this.activated = ! response.data.success;
+          this.selectActivated = ! response.data.success;
           if (response.data.success) {
             this.notify(this.$t('settings.2fa_disable_success'), true);
           } else {

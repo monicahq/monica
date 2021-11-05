@@ -25,7 +25,7 @@ class UpdateRelationship extends BaseService
     /**
      * Update a relationship.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Relationship
      */
     public function execute(array $data): Relationship
@@ -34,6 +34,8 @@ class UpdateRelationship extends BaseService
 
         $relationship = Relationship::where('account_id', $data['account_id'])
             ->findOrFail($data['relationship_id']);
+
+        $relationship->contactIs->throwInactive();
 
         $newRelationshipType = RelationshipType::where('account_id', $data['account_id'])
             ->findOrFail($data['relationship_type_id']);
@@ -52,8 +54,8 @@ class UpdateRelationship extends BaseService
     /**
      * Update one relationship.
      *
-     * @param Relationship $relationship
-     * @param RelationshipType $relationshipType
+     * @param  Relationship  $relationship
+     * @param  RelationshipType  $relationshipType
      * @return Relationship
      */
     private function updateRelationship(Relationship $relationship, RelationshipType $relationshipType): Relationship

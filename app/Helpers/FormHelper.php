@@ -10,23 +10,18 @@ class FormHelper
      * Get the name order that will be used when rendered the Add/Edit forms
      * about contacts.
      *
-     * @param User $user
+     * @param  User  $user
      * @return string
      */
     public static function getNameOrderForForms(User $user): string
     {
-        $nameOrder = '';
+        $nameOrder = 'firstname';
 
         switch ($user->name_order) {
-            case 'firstname_lastname':
-            case 'firstname_lastname_nickname':
-            case 'firstname_nickname_lastname':
-            case 'nickname':
-                $nameOrder = 'firstname';
-                break;
             case 'lastname_firstname':
             case 'lastname_firstname_nickname':
             case 'lastname_nickname_firstname':
+            case 'nickname_lastname_firstname':
                 $nameOrder = 'lastname';
                 break;
         }

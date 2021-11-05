@@ -13,6 +13,7 @@ return [
     'journal_add' => 'Add a journal entry',
     'journal_edit' => 'Edit a journal entry',
     'journal_empty' => 'Empty journal',
+    'journal_created_at' => 'Created at {date}',
     'journal_created_automatically' => 'Created automatically',
     'journal_entry_type_journal' => 'Journal entry',
     'journal_entry_type_activity' => 'Aktivitet',

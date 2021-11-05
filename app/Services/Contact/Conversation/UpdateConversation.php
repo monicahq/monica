@@ -31,7 +31,7 @@ class UpdateConversation extends BaseService
     /**
      * Update a conversation.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Conversation
      */
     public function execute(array $data): Conversation
@@ -41,6 +41,8 @@ class UpdateConversation extends BaseService
         /** @var Conversation */
         $conversation = Conversation::where('account_id', $data['account_id'])
                                     ->findOrFail($data['conversation_id']);
+
+        $conversation->contact->throwInactive();
 
         ContactFieldType::where('account_id', $data['account_id'])
                             ->findOrFail($data['contact_field_type_id']);

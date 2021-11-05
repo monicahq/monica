@@ -60,7 +60,7 @@ class UpdateBirthdayInformation extends BaseService
     /**
      * Update the information about the birthday.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data)
@@ -71,6 +71,8 @@ class UpdateBirthdayInformation extends BaseService
         /** @var Contact */
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $this->clearRelatedReminder($contact);
 
@@ -84,7 +86,7 @@ class UpdateBirthdayInformation extends BaseService
     /**
      * Delete related reminder.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      * @return void
      */
     private function clearRelatedReminder(Contact $contact)
@@ -102,7 +104,7 @@ class UpdateBirthdayInformation extends BaseService
     /**
      * Delete related special date.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      * @return void
      */
     private function clearRelatedSpecialDate(Contact $contact)
@@ -116,9 +118,8 @@ class UpdateBirthdayInformation extends BaseService
     /**
      * Update birthday information depending on the type of information.
      *
-     * @param array $data
-     * @param Contact $contact
-     *
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function manageBirthday(array $data, Contact $contact): void
@@ -138,8 +139,8 @@ class UpdateBirthdayInformation extends BaseService
      * Case where the birthday is approximate. That means the birthdate is based
      * on the estimated age of the contact.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function approximate(array $data, Contact $contact)
@@ -151,7 +152,7 @@ class UpdateBirthdayInformation extends BaseService
      * Case where we have a year, month and day for the birthday.
      *
      * @param  array  $data
-     * @param Contact $contact
+     * @param  Contact  $contact
      * @return void
      */
     private function exact(array $data, Contact $contact)
@@ -169,9 +170,9 @@ class UpdateBirthdayInformation extends BaseService
     /**
      * Set a reminder for the given special date, if required.
      *
-     * @param array  $data
-     * @param Contact $contact
-     * @param SpecialDate $specialDate
+     * @param  array  $data
+     * @param  Contact  $contact
+     * @param  SpecialDate  $specialDate
      * @return void
      */
     private function setReminder(array $data, Contact $contact, SpecialDate $specialDate)
@@ -180,23 +181,21 @@ class UpdateBirthdayInformation extends BaseService
             return;
         }
 
-        if ($data['add_reminder']) {
-            $reminder = app(CreateReminder::class)->execute([
-                'account_id' => $data['account_id'],
-                'contact_id' => $data['contact_id'],
-                'initial_date' => DateHelper::getDate($specialDate),
-                'frequency_type' => 'year',
-                'frequency_number' => 1,
-                'title' => trans(
-                    ($data['is_deceased'] ?
-                        'people.people_add_birthday_reminder_deceased' : 'people.people_add_birthday_reminder'),
-                    ['name' => $contact->first_name]
-                ),
-                'delible' => false,
-            ]);
+        $reminder = app(CreateReminder::class)->execute([
+            'account_id' => $data['account_id'],
+            'contact_id' => $data['contact_id'],
+            'initial_date' => DateHelper::getDate($specialDate),
+            'frequency_type' => 'year',
+            'frequency_number' => 1,
+            'title' => trans(
+                ($data['is_deceased'] ?
+                    'people.people_add_birthday_reminder_deceased' : 'people.people_add_birthday_reminder'),
+                ['name' => $contact->first_name]
+            ),
+            'delible' => false,
+        ]);
 
-            $contact->birthday_reminder_id = $reminder->id;
-            $contact->save();
-        }
+        $contact->birthday_reminder_id = $reminder->id;
+        $contact->save();
     }
 }

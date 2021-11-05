@@ -45,7 +45,7 @@ class StayInTouchEmail extends LaravelNotification implements ShouldQueue, MailN
     /**
      * Get the mail representation of the notification.
      *
-     * @param  User $user
+     * @param  User  $user
      * @return MailMessage
      */
     public function toMail(User $user): MailMessage
@@ -63,7 +63,7 @@ class StayInTouchEmail extends LaravelNotification implements ShouldQueue, MailN
     /**
      * Use in test to check the parameter notification.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      * @return bool
      */
     public function assertSentFor(Contact $contact): bool

@@ -14,31 +14,32 @@ Monica uses the concept of releases and tries to follow
 or if you have installed Monica on your own server, you need to follow the steps below to update it, **every single time**, or you will run into problems.
 
 1. Always make a backup of your data before upgrading.
-1. Check that your backup is valid.
-1. Read the [release notes](https://github.com/monicahq/monica/blob/master/CHANGELOG.md) to check for breaking changes.
-1. Update sources:
+2. Check that your backup is valid.
+3. Read the [release notes](https://github.com/monicahq/monica/blob/master/CHANGELOG.md) to check for breaking changes.
+4. Update sources:
     1. Consider check out a tagged version of Monica since `master` branch may not always be stable.
        Find the latest official version on the [release page](https://github.com/monicahq/monica/releases)
        ```sh
        # Get latest tags from GitHub
        git fetch
        # Clone the desired version
-       git checkout tags/v1.6.2
+       git checkout tags/v2.18.0
        ```
-    1. Or check out `master`
+    2. Or check out `master`
        ```sh
        git pull origin master
        ```
-1. Update the dependencies of the project:
+5. Update the dependencies of the project:
    ```sh
-   composer install --no-interaction --no-dev --ignore-platform-reqs
+   composer install --no-interaction --no-dev
    ```
-1. Then, run the following command to make the proper update:
+6. Run `yarn install` to install frontend packages, then `yarn run production` to build the assets (js, css).
+7. Then, run the following command to make the proper update:
    ```sh
    php artisan monica:update --force
    ```
 
-The `monica:update` command will run migrations scripts for database, and flush all cache for config, route, and view, as an optimization process. It's easier than run every need command independently.
+The `monica:update` command runs migration scripts for the database, and flushes all caches for config, route, and view as an optimization process. It’s easier than running every required command individually.
 
 
 Note: if you have just change some setting in your `.env` file, as the configuration of the application is cached, any update on the `.env` file will not be detected after that. You may have to run `php artisan config:cache` manually after every update of `.env` file.
@@ -222,7 +223,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 And this, at the very end of the file (after the last `INSERT INTO...` statement:
 
 ```
-SET FOREIGN_KEY_CHECKS = 0
+SET FOREIGN_KEY_CHECKS = 1
 ```
 
 **Notes:**

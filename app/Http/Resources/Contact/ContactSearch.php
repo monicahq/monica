@@ -14,7 +14,7 @@ class ContactSearch extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -24,6 +24,7 @@ class ContactSearch extends JsonResource
             'object' => 'contact',
             'route' => route('people.show', $this),
             'complete_name' => $this->name,
+            'description' => $this->description,
             'initials' => $this->getInitials(),
             'is_me' => $this->isMe(),
             'is_starred' => $this->is_starred,

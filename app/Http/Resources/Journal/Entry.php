@@ -13,7 +13,7 @@ class Entry extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -23,6 +23,7 @@ class Entry extends JsonResource
             'object' => 'entry',
             'title' => $this->title,
             'post' => $this->post,
+            'date' => $this->date,
             'url' => route('api.entry', $this->id),
             'account' => [
                 'id' => $this->account_id,

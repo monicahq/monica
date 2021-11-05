@@ -12,7 +12,7 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '2.19.1',
+    'app_version' => trim(trim(is_file(__DIR__.'/.version') ? file_get_contents(__DIR__.'/.version') : (is_dir(__DIR__.'/../.git') ? exec('git --git-dir '.base_path('.git').' describe --abbrev=0 --tags') : ''), 'v')),
 
     /*
     |--------------------------------------------------------------------------
@@ -249,11 +249,20 @@ return [
     | API key for weather data.
     |--------------------------------------------------------------------------
     |
-    | To provide weather information, we use Darksky.
-    | Darksky provides an api with 1000 free API calls per day.
-    | https://darksky.net/dev/register
+    | To provide weather information, we use WeatherAPI.
+    | See https://www.weatherapi.com/
     */
-    'darksky_api_key' => env('DARKSKY_API_KEY', null),
+    'weatherapi_key' => env('WEATHERAPI_KEY', null),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Configure default rate limit for route services per minute
+    |--------------------------------------------------------------------------
+    |
+    | Configure rate limit for route services per minute
+    */
+    'rate_limit_api' => env('RATE_LIMIT_PER_MINUTE_API', 60),
+    'rate_limit_oauth' => env('RATE_LIMIT_PER_MINUTE_OAUTH', 5),
 
     /*
     |--------------------------------------------------------------------------
@@ -263,4 +272,17 @@ return [
     | The default avatar size.
     */
     'avatar_size' => 200,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default adorable api url
+    |--------------------------------------------------------------------------
+    |
+    | The default adorable api url.
+    |
+    | You can host your own version, see https://github.com/itsthatguy/avatars-api-middleware
+    | or https://hub.docker.com/r/aldrio/adorable-avatars.
+    */
+    'adorable_api' => env('ADORABLE_API', 'https://api.hello-avatar.com/adorables/'),
+
 ];

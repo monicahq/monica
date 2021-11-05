@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
-use function Safe\preg_split;
 use App\Helpers\StorageHelper;
 use App\Helpers\WeatherHelper;
 use Illuminate\Support\Carbon;
@@ -28,6 +27,7 @@ use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingHasher as Model;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -38,6 +38,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /**
  * @method static \Illuminate\Database\Eloquent\Builder search()
+ *
  * @property \App\Models\Instance\SpecialDate|null $birthdate
  */
 class Contact extends Model
@@ -78,6 +79,7 @@ class Contact extends Model
         'middle_name',
         'last_name',
         'nickname',
+        'description',
         'gender_id',
         'account_id',
         'created_at',
@@ -98,6 +100,7 @@ class Contact extends Model
      * @var array<string>
      */
     protected $fillable = [
+        'uuid',
         'first_name',
         'middle_name',
         'last_name',
@@ -115,6 +118,10 @@ class Contact extends Model
         'last_consulted_at',
         'created_at',
         'first_met_additional_info',
+        'address_book_id',
+        'vcard',
+        'avatar_gravatar_url',
+        'avatar_source',
     ];
 
     /**
@@ -156,16 +163,6 @@ class Contact extends Model
      * @var string
      */
     protected $nameOrder = 'firstname_lastname';
-
-    /**
-     * Get Searchable Fields.
-     *
-     * @return array
-     */
-    public function getSearchableFields()
-    {
-        return $this->searchable_columns;
-    }
 
     /**
      * Get the user associated with the contact.
@@ -273,16 +270,6 @@ class Contact extends Model
     public function reminders()
     {
         return $this->hasMany(Reminder::class);
-    }
-
-    /**
-     * Get only the active reminder records associated with the contact.
-     *
-     * @return HasMany
-     */
-    public function activeReminders()
-    {
-        return $this->hasMany(Reminder::class)->active();
     }
 
     /**
@@ -497,8 +484,9 @@ class Contact extends Model
 
     /**
      * Sort the contacts according a given criteria.
-     * @param Builder $builder
-     * @param string $criteria
+     *
+     * @param  Builder  $builder
+     * @param  string  $criteria
      * @return Builder
      */
     public function scopeSortedBy(Builder $builder, string $criteria): Builder
@@ -523,8 +511,9 @@ class Contact extends Model
 
     /**
      * Sort the contacts using last activity.
-     * @param Builder $builder
-     * @param string $order
+     *
+     * @param  Builder  $builder
+     * @param  string  $order
      * @return Builder
      */
     private function sortedByLastActivity(Builder $builder, string $order): Builder
@@ -542,7 +531,7 @@ class Contact extends Model
      * Scope a query to only include contacts who are not only a kid or a
      * significant other without being a contact.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeReal($query)
@@ -553,7 +542,7 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are active.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeActive($query)
@@ -564,7 +553,7 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are alive.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeAlive($query)
@@ -575,7 +564,7 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are dead.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeDead($query)
@@ -586,7 +575,7 @@ class Contact extends Model
     /**
      * Scope a query to only include contacts who are not active.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeNotActive($query)
@@ -595,12 +584,46 @@ class Contact extends Model
     }
 
     /**
+     * Scope a query to include contacts whose notes contain the search phrase.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeNotes($query, int $accountId = null, string $needle)
+    {
+        $maccountId = $accountId ?? Auth::user()->account_id;
+
+        return $query->orWhereHas('notes', function ($query) use ($maccountId, $needle) {
+            return $query->where([
+                ['account_id', $maccountId],
+                ['body', 'like', "%$needle%"],
+            ]);
+        });
+    }
+
+    /**
+     * Scope a query to include contacts whose introduction notes contain the search phrase.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeIntroductionAdditionalInformation($query, int $accountId = null, string $needle)
+    {
+        $maccountId = $accountId ?? Auth::user()->account_id;
+
+        return $query->orWhere([
+            ['account_id', $maccountId],
+            ['first_met_additional_info', 'like', "%$needle%"],
+        ]);
+    }
+
+    /**
      * Scope a query to only include contacts from given address book.
      * 'null' value for address book is the default address book.
      *
-     * @param Builder $query
-     * @param int|null $accountId
-     * @param string|null $addressBookName
+     * @param  Builder  $query
+     * @param  int|null  $accountId
+     * @param  string|null  $addressBookName
      * @return Builder
      */
     public function scopeAddressBook($query, int $accountId = null, string $addressBookName = null)
@@ -620,7 +643,7 @@ class Contact extends Model
      * Mutator first_name.
      * Get the first name of the contact.
      *
-     * @param string|null $value
+     * @param  string|null  $value
      */
     public function setFirstNameAttribute($value)
     {
@@ -632,7 +655,7 @@ class Contact extends Model
      *
      * It doesn't run ucfirst on purpose.
      *
-     * @param string|null $value
+     * @param  string|null  $value
      */
     public function setLastNameAttribute($value)
     {
@@ -643,7 +666,7 @@ class Contact extends Model
     /**
      * Set the name order attribute.
      *
-     * @param string $value
+     * @param  string  $value
      * @return void
      */
     public function nameOrder($value)
@@ -654,7 +677,7 @@ class Contact extends Model
     /**
      * Mutator last_name.
      *
-     * @param string|null $value
+     * @param  string|null  $value
      */
     public function setNicknameAttribute($value)
     {
@@ -879,7 +902,7 @@ class Contact extends Model
      * Get all the contacts related to the current contact by a specific
      * relationship type group.
      *
-     * @param  string $type
+     * @param  string  $type
      * @return Collection|null
      */
     public function getRelationshipsByRelationshipTypeGroup(string $type): ?Collection
@@ -898,7 +921,7 @@ class Contact extends Model
     /**
      * Set the default avatar color for this object.
      *
-     * @param string|null $color
+     * @param  string|null  $color
      * @return void
      */
     public function setAvatarColor($color = null)
@@ -920,9 +943,9 @@ class Contact extends Model
     /**
      * Set the name of the contact.
      *
-     * @param  string $firstName
-     * @param  string $middleName
-     * @param  string $lastName
+     * @param  string  $firstName
+     * @param  string  $middleName
+     * @param  string  $lastName
      * @return bool
      */
     public function setName(string $firstName, string $lastName = null, string $middleName = null)
@@ -1030,17 +1053,50 @@ class Contact extends Model
             return '';
         }
 
-        try {
-            $matches = preg_split('/\?/', $this->avatar_default_url);
+        if (config('filesystems.default_visibility') === 'public') {
+            $matches = Str::of($this->avatar_default_url)->split('/\?/');
+
             $url = asset(StorageHelper::disk(config('filesystems.default'))->url($matches[0]));
-            if (count($matches) > 1) {
+            if ($matches->count() > 1) {
                 $url .= '?'.$matches[1];
             }
 
             return $url;
-        } catch (\Exception $e) {
-            return '';
         }
+
+        return route('storage', ['file' => $this->avatar_default_url]);
+    }
+
+    /**
+     * Get the adorable avatar URL.
+     *
+     * @param  string|null  $value
+     * @return string|null
+     */
+    public function getAvatarAdorableUrlAttribute(?string $value): ?string
+    {
+        if (isset($value) && $value !== '') {
+            return Str::of($value)
+                ->after('https://api.adorable.io/avatars/')
+                ->ltrim('/')
+                ->start(Str::finish(config('monica.adorable_api'), '/'));
+        }
+
+        return null;
+    }
+
+    /**
+     * Set the adorable avatar URL.
+     *
+     * @param  string|null  $value
+     * @return void
+     */
+    public function setAvatarAdorableUrlAttribute(?string $value)
+    {
+        if (isset($value) && $value !== '') {
+            $value = Str::of($value)->replace(Str::finish(config('monica.adorable_api'), '/'), '');
+        }
+        $this->attributes['avatar_adorable_url'] = $value;
     }
 
     /**
@@ -1095,8 +1151,8 @@ class Contact extends Model
     /**
      * Delete avatar file for one size.
      *
-     * @param Filesystem $storage
-     * @param int $size
+     * @param  Filesystem  $storage
+     * @param  int  $size
      */
     private function deleteAvatarSize(Filesystem $storage, int $size = null)
     {
@@ -1170,6 +1226,7 @@ class Contact extends Model
 
     /**
      * Indicates whether the contact has information about how they first met.
+     *
      * @return bool
      */
     public function hasFirstMetInformation()
@@ -1203,10 +1260,10 @@ class Contact extends Model
      * Sets a Special Date for this contact, for a specific occasion (birthday,
      * decease date,...) of which we know the date.
      *
-     * @param string $occasion
-     * @param int $year
-     * @param int $month
-     * @param int $day
+     * @param  string  $occasion
+     * @param  int  $year
+     * @param  int  $month
+     * @param  int  $day
      * @return SpecialDate|null
      */
     public function setSpecialDate($occasion, int $year, int $month, int $day): ?SpecialDate
@@ -1321,6 +1378,7 @@ class Contact extends Model
 
     /**
      * Get the link to this contact, or the related real contact.
+     *
      * @return string
      */
     public function getLink()
@@ -1336,8 +1394,9 @@ class Contact extends Model
     /**
      * Get the contacts that have all the provided $tags
      * or if $tags is NONE get contacts that have no tags.
-     * @param Builder $query
-     * @param mixed $tags string or Tag
+     *
+     * @param  Builder  $query
+     * @param  mixed  $tags  string or Tag
      * @return Builder $query
      */
     public function scopeTags($query, $tags)
@@ -1383,7 +1442,7 @@ class Contact extends Model
      * Update the frequency for which user has to be warned to stay in touch
      * with the contact.
      *
-     * @param  int $frequency
+     * @param  int  $frequency
      * @return bool
      */
     public function updateStayInTouchFrequency($frequency)
@@ -1406,8 +1465,8 @@ class Contact extends Model
     /**
      * Update the date the notification about staying in touch should be sent.
      *
-     * @param int $frequency
-     * @param Carbon|null $triggerDate
+     * @param  int  $frequency
+     * @param  Carbon|null  $triggerDate
      */
     public function setStayInTouchTriggerDate($frequency, $triggerDate = null)
     {
@@ -1432,9 +1491,9 @@ class Contact extends Model
      * Get the weather information for this contact, based on the first address
      * on the profile.
      *
-     * @return Weather
+     * @return Weather|null
      */
-    public function getWeather()
+    public function getWeather(): ?Weather
     {
         return WeatherHelper::getWeatherForAddress($this->addresses()->first());
     }
@@ -1451,5 +1510,14 @@ class Contact extends Model
         $this->save();
 
         $this->timestamps = $timestamps;
+    }
+
+    public function throwInactive()
+    {
+        if (! $this->is_active) {
+            throw ValidationException::withMessages([
+                trans('people.archived_contact_readonly'),
+            ]);
+        }
     }
 }

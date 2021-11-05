@@ -26,8 +26,7 @@ class RelationshipsController extends Controller
     /**
      * Display the Create relationship page.
      *
-     * @param Contact $contact
-     *
+     * @param  Contact  $contact
      * @return View
      */
     public function create(Request $request, Contact $contact)
@@ -53,9 +52,8 @@ class RelationshipsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return RedirectResponse
      */
     public function store(Request $request, Contact $contact)
@@ -92,13 +90,14 @@ class RelationshipsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Contact $contact
-     * @param Relationship $relationship
-     *
+     * @param  Contact  $contact
+     * @param  Relationship  $relationship
      * @return View
      */
     public function edit(Contact $contact, Relationship $relationship)
     {
+        $contact->throwInactive();
+
         $otherContact = $relationship->ofContact;
 
         $now = now();
@@ -131,10 +130,9 @@ class RelationshipsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Contact $contact
-     * @param Relationship $relationship
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
+     * @param  Relationship  $relationship
      * @return RedirectResponse
      */
     public function update(Request $request, Contact $contact, Relationship $relationship)
@@ -152,6 +150,7 @@ class RelationshipsController extends Controller
 
             app(UpdateContact::class)->execute($datas + [
                 'contact_id' => $otherContact->id,
+                'author_id' => auth()->user()->id,
             ]);
         }
 
@@ -169,7 +168,7 @@ class RelationshipsController extends Controller
     /**
      * Validate datas and get an array for create or update a contact.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return array|\Illuminate\Contracts\Validation\Validator
      */
     private function validateAndGetDatas(Request $request)
@@ -220,9 +219,8 @@ class RelationshipsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Contact $contact
-     * @param Relationship $relationship
-     *
+     * @param  Contact  $contact
+     * @param  Relationship  $relationship
      * @return RedirectResponse
      */
     public function destroy(Contact $contact, Relationship $relationship)

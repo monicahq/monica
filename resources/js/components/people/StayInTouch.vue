@@ -10,6 +10,10 @@
     display: block;
     color:#f57f6c;
   }
+
+  .dashed {
+    border-bottom-style: dashed;
+  }
 </style>
 
 <template>
@@ -23,7 +27,7 @@
 
     <!-- Contact has a frequency set -->
     <div v-else class="di">
-      <span>
+      <span v-tooltip.bottom="$t('people.stay_in_touch_next_date', { date: formatDate(next_trigger_date) })" class="bb dashed dib pointer nowrap-link">
         {{ $tc('people.stay_in_touch_frequency', frequency, { count: frequency }) }}
       </span>
       <a class="pointer" href="" @click.prevent="showUpdate">
@@ -167,25 +171,7 @@ import { SweetModal } from 'sweet-modal-vue';
 import { ToggleButton } from 'vue-js-toggle-button';
 import { validationMixin } from 'vuelidate';
 import { required, numeric } from 'vuelidate/lib/validators';
-
-const StayInTouchLabel = Vue.component('stay-in-touch-label', {
-
-  props: {
-    value: {
-      type: Number,
-      default: 0,
-    },
-  },
-  render(createElement) {
-    const text = this.$tc('people.stay_in_touch_modal_label', this.value, {count: '[slot]'});
-    const texts = _.split(text, '[slot]');
-    return createElement('div', [
-      createElement('span', texts[0]),
-      this.$slots.default,
-      createElement('span', texts[1]),
-    ]);
-  },
-});
+import StayInTouchLabel from './StayInTouchLabel';
 
 export default {
 
@@ -245,6 +231,7 @@ export default {
         this.frequency = 0;
       } else {
         this.frequency = parseInt(this.contact.stay_in_touch_frequency);
+        this.next_trigger_date = this.contact.stay_in_touch_trigger_date;
       }
       this.isActive = (this.frequency > 0);
 
@@ -253,6 +240,14 @@ export default {
       // the counter
       this.stateInput = this.isActive;
       this.frequencyInput = this.frequency;
+    },
+    
+    formatDate(dateAsString) {
+      const moment = require('moment-timezone');
+      moment.locale(this._i18n.locale);
+      moment.tz.setDefault('UTC');
+      var date = moment.tz(moment(dateAsString), this.$root.timezone);
+      return date.format('LL');
     },
 
     showUpdate() {
@@ -284,6 +279,7 @@ export default {
           this.$refs.updateModal.close();
           this.isActive = this.stateInput;
           this.frequency = this.frequencyInput;
+          this.next_trigger_date = response.data.trigger_date;
 
           this.$notify({
             group: 'main',

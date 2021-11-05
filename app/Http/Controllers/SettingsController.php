@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\AccountHelper;
+use Illuminate\Support\Carbon;
 use App\Helpers\TimezoneHelper;
 use App\Models\Contact\Contact;
 use App\Jobs\AddContactFromVCard;
@@ -28,8 +29,18 @@ use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
 
-class SettingsController
+class SettingsController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('limitations')->only(['inviteUser', 'storeImport']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -37,19 +48,6 @@ class SettingsController
      */
     public function index()
     {
-        // names order
-        $namesOrder = [
-            'firstname_lastname',
-            'lastname_firstname',
-            'firstname_lastname_nickname',
-            'firstname_nickname_lastname',
-            'lastname_firstname_nickname',
-            'lastname_nickname_firstname',
-            'nickname_firstname_lastname',
-            'nickname_lastname_firstname',
-            'nickname',
-        ];
-
         $meContact = null;
 
         $search = auth()->user()->first_name.' '.
@@ -72,7 +70,7 @@ class SettingsController
                 ->withAccountHasLimitations($accountHasLimitations)
                 ->withMeContact($meContact ? new ContactResource($meContact) : null)
                 ->withExistingContacts(ContactResource::collection($existingContacts))
-                ->withNamesOrder($namesOrder)
+                ->withNamesOrder(User::NAMES_ORDER)
                 ->withLocales(LocaleHelper::getLocaleList()->sortByCollator('name-orig'))
                 ->withHours(DateHelper::getListOfHours())
                 ->withSelectedTimezone(TimezoneHelper::adjustEquivalentTimezone(DateHelper::getTimezone()))
@@ -84,8 +82,7 @@ class SettingsController
     /**
      * Save user settings.
      *
-     * @param SettingsRequest $request
-     *
+     * @param  SettingsRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function save(SettingsRequest $request)
@@ -100,13 +97,12 @@ class SettingsController
                 'locale',
                 'currency_id',
                 'name_order',
-            ]) + [
-                'fluid_container' => $request->input('layout'),
-                'temperature_scale' => $request->input('temperature_scale'),
-            ]
+                'fluid_container',
+                'temperature_scale',
+            ])
         );
 
-        if ($user->email != $request->input('email')) {
+        if ($user->email !== $request->input('email')) {
             app(EmailChange::class)->execute([
                 'account_id' => $user->account_id,
                 'email' => $request->input('email'),
@@ -129,8 +125,7 @@ class SettingsController
     /**
      * Delete user account.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function delete(Request $request)
@@ -154,8 +149,7 @@ class SettingsController
     /**
      * Reset user account.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function reset(Request $request)
@@ -189,12 +183,14 @@ class SettingsController
      */
     public function exportToSql()
     {
-        $path = dispatch_now(new ExportAccount(ExportAccount::SQL));
+        $path = ExportAccountAsSQL::dispatchSync(ExportAccount::SQL);
 
         $adapter = disk_adapter(ExportAccount::STORAGE);
 
+        $exportdate = Carbon::now(DateHelper::getTimezone())->format('Y-m-d');
+
         return response()
-            ->download($adapter->getPathPrefix().$path, 'monica.sql')
+            ->download($adapter->getPathPrefix().$path, "monica-export.$exportdate.sql")
             ->deleteFileAfterSend(true);
     }
 
@@ -248,7 +244,7 @@ class SettingsController
 
     public function storeImport(ImportsRequest $request)
     {
-        $filename = $request->file('vcard')->store('imports', 'public');
+        $filename = $request->file('vcard')->store('imports', config('filesystems.default'));
 
         $importJob = auth()->user()->account->importjobs()->create([
             'user_id' => auth()->user()->id,
@@ -256,7 +252,7 @@ class SettingsController
             'filename' => $filename,
         ]);
 
-        dispatch(new AddContactFromVCard($importJob, $request->input('behaviour')));
+        AddContactFromVCard::dispatch($importJob, $request->input('behaviour'));
 
         return redirect()->route('settings.import');
     }
@@ -310,8 +306,7 @@ class SettingsController
     /**
      * Store a newly created resource in storage.
      *
-     * @param InvitationRequest $request
-     *
+     * @param  InvitationRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function inviteUser(InvitationRequest $request)
@@ -357,8 +352,7 @@ class SettingsController
     /**
      * Remove the specified resource from storage.
      *
-     * @param Invitation $invitation
-     *
+     * @param  Invitation  $invitation
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroyInvitation(Invitation $invitation)
@@ -372,8 +366,7 @@ class SettingsController
     /**
      * Delete additional user account.
      *
-     * @param int $userID
-     *
+     * @param  int  $userID
      * @return \Illuminate\Http\RedirectResponse
      */
     public function deleteAdditionalUser($userID)
@@ -404,8 +397,7 @@ class SettingsController
     /**
      * Destroy the tag.
      *
-     * @param int $tagId
-     *
+     * @param  int  $tagId
      * @return \Illuminate\Http\RedirectResponse
      */
     public function deleteTag($tagId)
@@ -454,7 +446,7 @@ class SettingsController
      * about the contact (notes, reminders, ...).
      * Possible values: life-events | notes.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return string
      */
     public function updateDefaultProfileView(Request $request)

@@ -28,7 +28,7 @@ class DestroyConversation extends BaseService
     /**
      * Destroy a conversation.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data): bool
@@ -37,6 +37,8 @@ class DestroyConversation extends BaseService
 
         $conversation = Conversation::where('account_id', $data['account_id'])
                                     ->findOrFail($data['conversation_id']);
+
+        $conversation->contact->throwInactive();
 
         $conversation->delete();
 

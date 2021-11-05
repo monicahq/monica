@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use App\Helpers\DateHelper;
 use App\Models\Contact\Call;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
@@ -20,8 +21,7 @@ class CallsController extends Controller
     /**
      * Display the list of calls.
      *
-     * @param Contact $contact
-     *
+     * @param  Contact  $contact
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request, Contact $contact)
@@ -32,9 +32,28 @@ class CallsController extends Controller
     }
 
     /**
+     * Display the timestamp of the last phone contact.
+     *
+     * @param  Contact  $contact
+     * @return JsonResponse
+     */
+    public function lastCalled(Contact $contact): JsonResponse
+    {
+        $lastTalkedTo = $contact->last_talked_to;
+
+        if ($lastTalkedTo !== null) {
+            $lastTalkedTo = DateHelper::getShortDate($contact->last_talked_to);
+        }
+
+        return $this->respond([
+            'last_talked_to' => $lastTalkedTo,
+        ]);
+    }
+
+    /**
      * Store a call.
      *
-     * @param  Contact $contact
+     * @param  Contact  $contact
      * @return Call
      */
     public function store(Request $request, Contact $contact)
@@ -52,8 +71,8 @@ class CallsController extends Controller
     /**
      * Update a call.
      *
-     * @param  Contact $contact
-     * @param  Call $call
+     * @param  Contact  $contact
+     * @param  Call  $call
      * @return Call
      */
     public function update(Request $request, Contact $contact, Call $call)
@@ -71,10 +90,9 @@ class CallsController extends Controller
     /**
      * Delete the call.
      *
-     * @param Request $request
-     * @param Contact $contact
-     * @param Call $call
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
+     * @param  Call  $call
      * @return null|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Call $call): ?JsonResponse
@@ -84,12 +102,8 @@ class CallsController extends Controller
             'call_id' => $call->id,
         ];
 
-        try {
-            if (app(DestroyCall::class)->execute($data)) {
-                return $this->respondObjectDeleted($call->id);
-            }
-        } catch (\Exception $e) {
-            return $this->respondNotFound();
+        if (app(DestroyCall::class)->execute($data)) {
+            return $this->respondObjectDeleted($call->id);
         }
 
         return null;

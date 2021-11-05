@@ -27,7 +27,7 @@ class ClearPersonalDescription extends BaseService
     /**
      * Clear a contact's description.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data): Contact
@@ -37,6 +37,8 @@ class ClearPersonalDescription extends BaseService
         /** @var Contact */
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $contact->description = null;
         $contact->save();
@@ -49,8 +51,8 @@ class ClearPersonalDescription extends BaseService
     /**
      * Add an audit log.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function log(array $data, Contact $contact): void

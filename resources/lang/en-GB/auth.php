@@ -23,7 +23,7 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'not_authorized' => 'You are not authorized to execute this action',
     'signup_disabled' => 'Registration is currently disabled',
-    'signup_error' => 'An error occured trying to register the user',
+    'signup_error' => 'An error occurred trying to register the user',
     'back_homepage' => 'Back to homepage',
     'mfa_auth_otp' => 'Authenticate with your two factor device',
     'mfa_auth_webauthn' => 'Authenticate with a security key (WebAuthn)',
@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => 'The two factor authentication has failed.',
     '2fa_one_time_password' => 'Two factor authentication code',
     '2fa_recuperation_code' => 'Enter a two factor recovery code',
+    '2fa_one_time_or_recuperation' => 'Enter a two factor authentication code or a recovery code',
     '2fa_otp_help' => 'Open up your two factor authentication mobile app and copy the code',
 
     'login_to_account' => 'Login to your account',

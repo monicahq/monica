@@ -5,7 +5,7 @@
  */
 
 /** Coverage files destination. */
-const STORAGE = '/results/coverage';
+const STORAGE = '/results/cov';
 
 $root = realpath(__DIR__.'/../../');
 

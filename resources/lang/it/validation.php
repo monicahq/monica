@@ -154,4 +154,13 @@ return [
 
     'attributes' => [],
 
+    'vue' => [
+        'max' => [
+            'numeric' => '{field} non può essere maggiore di {max}.',
+            'string' => '{field} non può essere maggiore di {max} caratteri.',
+        ],
+        'required' => '{field} è obbligatorio.',
+        'url' => '{field} non è un URL valido.',
+    ],
+
 ];

@@ -20,7 +20,7 @@ class SentryRelease extends Command
     protected $signature = 'sentry:release
                             {--force : Force the operation to run when in production.}
                             {--release= : release version for sentry.}
-                            {--store-release : store release version in .sentry-release file.}
+                            {--store-release : store release version in config/.release file.}
                             {--commit= : commit associated with this release.}
                             {--environment= : sentry environment.}';
 
@@ -53,15 +53,6 @@ class SentryRelease extends Command
     private const SENTRY_URL = 'https://sentry.io/get-cli/';
 
     /**
-     * Create a new command.
-     */
-    public function __construct()
-    {
-        $this->install_dir = env('SENTRY_ROOT', getenv('HOME').'/.local/bin');
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
@@ -73,6 +64,8 @@ class SentryRelease extends Command
         }
 
         if ($this->confirmToProceed()) {
+            $this->install_dir = env('SENTRY_ROOT', getenv('HOME').'/.local/bin');
+
             $release = $this->option('release') ?? config('sentry.release');
             $commit = $this->option('commit') ??
                     (is_dir(__DIR__.'/../../../.git') ? trim(exec('git log --pretty="%H" -n1 HEAD')) : $release);
@@ -91,8 +84,8 @@ class SentryRelease extends Command
 
             if ($this->option('store-release')) {
                 // Set sentry release
-                $this->line('Store release in .sentry-release file', null, OutputInterface::VERBOSITY_VERBOSE);
-                file_put_contents(__DIR__.'/../../../.sentry-release', $release);
+                $this->line('Store release in config/.release file', null, OutputInterface::VERBOSITY_VERBOSE);
+                file_put_contents(__DIR__.'/../../../config/.release', $release);
             }
         }
     }

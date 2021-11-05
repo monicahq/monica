@@ -8,7 +8,7 @@
   <div>
     <div class="">
       <h3 class="mb2">
-        🍿 {{ $t('people.activity_title') }}
+        🍿&#8199;{{ $t('people.activity_title') }}
 
         <span class="fr relative btn-title">
           <a v-if="displayLogActivity == false" v-cy-name="'add-activity-button'" class="btn edit-information" @click="displayLogActivity = true">
@@ -66,7 +66,7 @@
                 <li v-if="activity.attendees.total > 1" class="di">
                   <ul class="di list" :class="[ dirltr ? 'mr3' : 'ml3' ]">
                     <li class="di">
-                      {{ $t('people.activities_list_participants') }}
+                      {{ $t('people.activities_list_participants', { total: activity.attendees.total - 1}) }}
                     </li>
                     <li v-for="attendee in activity.attendees.contacts.filter(c => c.id !== contactId)" :key="attendee.id" class="di mr2">
                       <a :href="'people/' + attendee.hash_id">{{ attendee.complete_name }}</a>
@@ -122,7 +122,7 @@
                          :name="name"
                          :activity="activity"
                          :contact-id="contactId"
-                         @update="updateList($event)"
+                         @update="$set(activity, 'edit', false); updateList($event)"
                          @cancel="$set(activity, 'edit', false); displayLogActivity = false"
         />
       </div>
@@ -195,7 +195,7 @@ export default {
     },
 
     compiledMarkdown (text) {
-      return marked(text, { sanitize: true });
+      return text !== undefined && text !== null ? marked(text, { sanitize: true }) : '';
     },
 
     getActivities() {
@@ -205,9 +205,9 @@ export default {
         });
     },
 
-    updateList: function (activity) {
+    updateList(activity) {
       this.displayLogActivity = false;
-      this.getActivities();
+      Vue.set(this.activities, this.activities.indexOf(this.activities.find(item => item.id === activity.id)), activity);
     },
 
     showDestroyActivity(activity) {

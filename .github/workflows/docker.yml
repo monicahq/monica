@@ -5,20 +5,27 @@ on:
     branches:
       - master
 
+env:
+  php-version: '8.0'
+  node-version: 15
+
 jobs:
   docker-run:
     runs-on: ubuntu-latest
+    name: Docker build master
+
     strategy:
       fail-fast: false
-    name: Docker build master
 
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Docker meta
         id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v1
+        uses: crazy-max/ghaction-docker-meta@v3.6.0
         with:
           images: ghcr.io/monicahq/monica
           tag-sha: true
@@ -33,6 +40,42 @@ jobs:
           username: ${{ secrets.CR_USER }}
           password: ${{ secrets.CR_PAT }}
 
+    # Composer
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer files
+        uses: actions/cache@v2.1.6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ env.php-version }}
+            ${{ runner.os }}-composer-
+
+    # Yarn
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.node-version }}
+      - name: Get yarn cache directory path
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache yarn files
+        uses: actions/cache@v2.1.6
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            ${{ runner.os }}-yarn-
+
+    # Install
+      - name: Install
+        run: scripts/docker/build.sh --skip-build $GITHUB_SHA
+
+    # Build docker
       - name: Docker build
         id: docker_build
         uses: docker/build-push-action@v2

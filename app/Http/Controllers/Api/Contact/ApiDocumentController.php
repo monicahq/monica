@@ -16,10 +16,20 @@ use App\Http\Resources\Document\Document as DocumentResource;
 class ApiDocumentController extends ApiController
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('limitations')->only('store');
+        parent::__construct();
+    }
+
+    /**
      * Get the list of documents.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
@@ -38,9 +48,8 @@ class ApiDocumentController extends ApiController
     /**
      * Get the list of documents for a specific contact.
      *
-     * @param Request $request
-     * @param int $contactId
-     *
+     * @param  Request  $request
+     * @param  int  $contactId
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function contact(Request $request, $contactId)
@@ -67,9 +76,8 @@ class ApiDocumentController extends ApiController
     /**
      * Get the detail of a given document.
      *
-     * @param Request $request
-     * @param int $documentId
-     *
+     * @param  Request  $request
+     * @param  int  $documentId
      * @return DocumentResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $documentId)
@@ -87,8 +95,7 @@ class ApiDocumentController extends ApiController
     /**
      * Store a document.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return DocumentResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -115,9 +122,8 @@ class ApiDocumentController extends ApiController
     /**
      * Destroy a document.
      *
-     * @param Request $request
-     * @param int $documentId
-     *
+     * @param  Request  $request
+     * @param  int  $documentId
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, int $documentId)

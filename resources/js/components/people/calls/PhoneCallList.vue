@@ -1,11 +1,8 @@
-<style scoped>
-</style>
-
 <template>
   <div>
     <div class="">
       <h3 class="mb2">
-        ☎️ {{ $t('people.call_title') }}
+        ☎️&#8199;{{ $t('people.call_title') }}
 
         <span class="fr relative" style="top: -7px;">
           <a v-if="displayLogCall == false" v-cy-name="'add-call-button'" class="btn edit-information" href="" @click.prevent="displayLogCall = true">
@@ -326,7 +323,7 @@ export default {
     },
 
     compiledMarkdown (text) {
-      return marked(text, { sanitize: true });
+      return text !== undefined && text !== null ? marked(text, { sanitize: true }) : '';
     },
 
     resetFields() {
@@ -348,6 +345,7 @@ export default {
           this.resetFields();
           this.displayLogCall = false;
           this.chosenEmotions = [];
+          this.updateLastCalled();
 
           this.$notify({
             group: 'main',
@@ -364,6 +362,7 @@ export default {
           this.getCalls();
           this.editCallId = 0;
           this.chosenEmotions = [];
+          this.updateLastCalled();
 
           this.$notify({
             group: 'main',
@@ -372,6 +371,10 @@ export default {
             type: 'success'
           });
         });
+    },
+
+    updateLastCalled() {
+      this.$parent.$refs.lastCalledAttribute.getLastCalled();
     },
 
     showEditBox(call) {
@@ -393,6 +396,7 @@ export default {
       axios.delete('people/' + this.hash + '/calls/' + this.destroyCallId)
         .then(response => {
           this.calls.splice(this.calls.indexOf(call), 1);
+          this.updateLastCalled();
         });
     },
 

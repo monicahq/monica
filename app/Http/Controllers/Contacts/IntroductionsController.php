@@ -7,6 +7,7 @@ use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use App\Services\Contact\Contact\UpdateContactIntroduction;
+use App\Http\Resources\Contact\ContactShort as ContactResource;
 
 class IntroductionsController extends Controller
 {
@@ -15,32 +16,40 @@ class IntroductionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Contact $contact
-     *
+     * @param  Contact  $contact
      * @return \Illuminate\View\View
      */
     public function edit(Contact $contact)
     {
+        $contact->throwInactive();
+
         $contacts = $contact->siblingContacts()
                         ->real()
                         ->active()
-                        ->get();
+                        ->paginate(20);
+
+        $introducer = $contact->getIntroducer();
+        if ($introducer !== null) {
+            $introducer = new ContactResource($introducer);
+        }
 
         return view('people.introductions.edit')
             ->withContact($contact)
-            ->withContacts($contacts);
+            ->withContacts(ContactResource::collection($contacts))
+            ->withIntroducer($introducer);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Contact $contact)
     {
+        $contact->throwInactive();
+
         $contact = app(UpdateContactIntroduction::class)->execute([
             'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,

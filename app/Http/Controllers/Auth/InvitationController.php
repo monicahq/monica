@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RedirectsUsers;
+use Illuminate\Validation\Rules\Password as PasswordRules;
 
 class InvitationController extends Controller
 {
@@ -37,8 +38,7 @@ class InvitationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $key
-     *
+     * @param  string  $key
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function show($key)
@@ -68,7 +68,7 @@ class InvitationController extends Controller
             'first_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'email_security' => 'required',
-            'password' => 'required|min:6|confirmed',
+            'password' => ['required', 'confirmed', PasswordRules::defaults()],
             'policy' => 'required',
         ]);
     }
@@ -76,9 +76,8 @@ class InvitationController extends Controller
     /**
      * Store the specified resource.
      *
-     * @param Request $request
-     * @param string $key
-     *
+     * @param  Request  $request
+     * @param  string  $key
      * @return null|\Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, $key)
@@ -110,8 +109,8 @@ class InvitationController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array $data
-     * @param  mixed $invitation
+     * @param  array  $data
+     * @param  mixed  $invitation
      * @return \App\Models\User\User
      */
     protected function create(array $data, $invitation)
@@ -129,7 +128,7 @@ class InvitationController extends Controller
         $user->save();
 
         // send me an alert
-        dispatch(new SendNewUserAlert($user));
+        SendNewUserAlert::dispatch($user);
 
         return $user;
     }

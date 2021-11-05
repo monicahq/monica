@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rules\Password as PasswordRules;
+
 class PasswordChangeRequest extends AuthorizedRequest
 {
     /**
@@ -13,7 +15,7 @@ class PasswordChangeRequest extends AuthorizedRequest
     {
         return [
             'password_current' => 'required',
-            'password' => 'required|confirmed|min:6',
+            'password' => ['required', 'confirmed', PasswordRules::defaults()],
         ];
     }
 }

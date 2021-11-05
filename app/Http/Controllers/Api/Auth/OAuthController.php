@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Models\User\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use function Safe\json_decode;
 use Illuminate\Http\JsonResponse;
@@ -47,7 +48,7 @@ class OAuthController extends Controller
     /**
      * Display a log in form for oauth accessToken.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\View\View
      */
     public function index(Request $request)
@@ -60,7 +61,7 @@ class OAuthController extends Controller
     /**
      * Log in a user and returns an accessToken.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Symfony\Component\HttpFoundation\Response|null
      */
     public function login(Request $request): ?Response
@@ -94,7 +95,7 @@ class OAuthController extends Controller
     /**
      * Fix request parameters.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return void
      */
     private function fixRequest(Request $request)
@@ -107,7 +108,7 @@ class OAuthController extends Controller
     /**
      * Validate the request.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse|true
      */
     private function validateRequest(Request $request)
@@ -134,7 +135,7 @@ class OAuthController extends Controller
     /**
      * Log in a user and returns an accessToken.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function verify(Request $request): JsonResponse
@@ -150,7 +151,7 @@ class OAuthController extends Controller
     /**
      * Handle the verify request.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse|null
      */
     private function handleVerify(Request $request): ?JsonResponse
@@ -183,19 +184,19 @@ class OAuthController extends Controller
     /**
      * Proxy a request to the OAuth server.
      *
-     * @param array $data the data to send to the server
-     *
+     * @param  array  $data  the data to send to the server
      * @return array
+     *
      * @throws \Safe\Exceptions\JsonException
      */
     private function proxy(array $data = []): array
     {
-        $url = App::runningUnitTests() ? config('app.url').'/oauth/token' : route('passport.token');
+        $url = App::runningUnitTests() ? Str::of(config('app.url'))->ltrim('/').'/oauth/token' : route('passport.token');
         /** @var \Illuminate\Http\Response */
         $response = app(Kernel::class)->handle(Request::create($url, 'POST', [
             'grant_type' => $data['grantType'],
-            'client_id' => config('passport.personal_access_client.id'),
-            'client_secret' => config('passport.personal_access_client.secret'),
+            'client_id' => config('passport.password_grant_client.id'),
+            'client_secret' => config('passport.password_grant_client.secret'),
             'username' => $data['username'],
             'password' => $data['password'],
             'scope' => '',

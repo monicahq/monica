@@ -65,6 +65,38 @@ class ApiActivitiesTest extends ApiTestCase
         'updated_at',
     ];
 
+    protected $jsonActivityNoCategory = [
+        'id',
+        'object',
+        'summary',
+        'description',
+        'happened_at',
+        'attendees' => [
+            'total',
+            'contacts' => [
+                '*' => [
+                    'id',
+                    'object',
+                    'first_name',
+                    'last_name',
+                    'complete_name',
+                ],
+            ],
+        ],
+        'emotions' => [
+            '*' => [
+                'id',
+                'object',
+                'name',
+            ],
+        ],
+        'account' => [
+            'id',
+        ],
+        'created_at',
+        'updated_at',
+    ];
+
     /** @test */
     public function activities_get_all()
     {
@@ -317,7 +349,7 @@ class ApiActivitiesTest extends ApiTestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonActivity,
+            'data' => $this->jsonActivityNoCategory,
         ]);
         $activity_id = $response->json('data.id');
         $this->assertEquals($activity->id, $activity_id);
@@ -332,6 +364,61 @@ class ApiActivitiesTest extends ApiTestCase
             'id' => $activity_id,
             'summary' => 'the activity',
             'happened_at' => '2018-05-01',
+        ]);
+        $this->assertDatabaseHas('activity_contact', [
+            'account_id' => $user->account_id,
+            'contact_id' => $contact->id,
+            'activity_id' => $activity_id,
+        ]);
+    }
+
+    /** @test */
+    public function activities_update_category()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $activity = factory(Activity::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $activityType = factory(ActivityType::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('PUT', '/api/activities/'.$activity->id, [
+            'contacts' => [$contact->id],
+            'description' => 'the description',
+            'summary' => 'the activity',
+            'happened_at' => '2018-05-01',
+            'activity_type_id' => $activityType->id,
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => $this->jsonActivity,
+        ]);
+        $activity_id = $response->json('data.id');
+        $this->assertEquals($activity->id, $activity_id);
+        $response->assertJsonFragment([
+            'object' => 'activity',
+            'id' => $activity_id,
+        ]);
+
+        $activity_type_id = $response->json('data.activity_type.id');
+        $this->assertEquals($activityType->id, $activity_type_id);
+        $response->assertJsonFragment([
+            'object' => 'activityType',
+            'id' => $activity_type_id,
+        ]);
+
+        $this->assertGreaterThan(0, $activity_id);
+        $this->assertDatabaseHas('activities', [
+            'account_id' => $user->account_id,
+            'id' => $activity_id,
+            'summary' => 'the activity',
+            'happened_at' => '2018-05-01',
+            'activity_type_id' => $activityType->id,
         ]);
         $this->assertDatabaseHas('activity_contact', [
             'account_id' => $user->account_id,
@@ -379,7 +466,7 @@ class ApiActivitiesTest extends ApiTestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonActivity,
+            'data' => $this->jsonActivityNoCategory,
         ]);
         $activity_id = $response->json('data.id');
         $this->assertEquals($activity->id, $activity_id);

@@ -23,7 +23,7 @@ class DestroyContactField extends BaseService
     /**
      * Destroy an address.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data): bool
@@ -32,6 +32,8 @@ class DestroyContactField extends BaseService
 
         $contactField = ContactField::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_field_id']);
+
+        $contactField->contact->throwInactive();
 
         $contactField->delete();
 

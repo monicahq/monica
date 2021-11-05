@@ -4,6 +4,7 @@ namespace App\Models\User;
 
 use Carbon\Carbon;
 use App\Traits\HasUuid;
+use App\Helpers\FormHelper;
 use App\Jobs\SendVerifyEmail;
 use App\Models\Settings\Term;
 use App\Models\Account\Account;
@@ -65,6 +66,24 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     protected $casts = [
         'profile_new_life_event_badge_seen' => 'boolean',
         'admin' => 'boolean',
+        'fluid_container' => 'boolean',
+    ];
+
+    /**
+     * Available names order.
+     *
+     * @var array
+     */
+    public const NAMES_ORDER = [
+        'firstname_lastname',
+        'lastname_firstname',
+        'firstname_lastname_nickname',
+        'firstname_nickname_lastname',
+        'lastname_firstname_nickname',
+        'lastname_nickname_firstname',
+        'nickname_firstname_lastname',
+        'nickname_lastname_firstname',
+        'nickname',
     ];
 
     /**
@@ -120,7 +139,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     /**
      * Assigns a default value just in case the sort order is empty.
      *
-     * @param string $value
+     * @param  string  $value
      * @return string
      */
     public function getContactsSortOrderAttribute($value): string
@@ -135,7 +154,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
      */
     public function getFluidLayout(): string
     {
-        if ($this->fluid_container == 'true') {
+        if ($this->fluid_container) {
             return 'container-fluid';
         } else {
             return 'container';
@@ -152,7 +171,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     {
         $completeName = '';
 
-        if ($this->name_order == 'firstname_lastname' || $this->name_order == 'firstname_lastname_nickname') {
+        if (FormHelper::getNameOrderForForms($this) === 'firstname') {
             $completeName = $this->first_name;
 
             if ($this->last_name !== '') {
@@ -172,7 +191,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     /**
      * Ecrypt the user's google_2fa secret.
      *
-     * @param string  $value
+     * @param  string  $value
      * @return void
      */
     public function setGoogle2faSecretAttribute($value): void
@@ -194,7 +213,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     /**
      * Indicate if the user has accepted the most current terms and privacy.
      *
-     * @param string|null $value
+     * @param  string|null  $value
      * @return bool
      */
     public function getPolicyCompliantAttribute($value): bool
@@ -207,7 +226,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
      * This is affected by the user settings regarding the hour of the day he
      * wants to be reminded.
      *
-     * @param Carbon|null $date
+     * @param  Carbon|null  $date
      * @return bool
      */
     public function isTheRightTimeToBeReminded($date)
@@ -257,5 +276,27 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     public function preferredLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * Try using a recovery code.
+     *
+     * @param  string  $recovery
+     * @return bool
+     */
+    public function recoveryChallenge(string $recovery): bool
+    {
+        $recoveryCodes = $this->recoveryCodes()->unused()->get();
+
+        foreach ($recoveryCodes as $recoveryCode) {
+            if ($recoveryCode->recovery === $recovery) {
+                $recoveryCode->used = true;
+                $recoveryCode->save();
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }

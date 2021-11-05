@@ -33,9 +33,10 @@ class AddMultipleGendersChoices extends Migration
 
     /**
      * Alter an enum field constraints. Source: https://stackoverflow.com/a/36198549.
+     *
      * @param $table
      * @param $field
-     * @param array $options
+     * @param  array  $options
      */
     protected function alterEnum($table, $field, array $options)
     {

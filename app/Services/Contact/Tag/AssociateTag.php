@@ -25,7 +25,7 @@ class AssociateTag extends BaseService
     /**
      * Associate a tag to a contact.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Tag
      */
     public function execute(array $data): Tag
@@ -34,6 +34,8 @@ class AssociateTag extends BaseService
 
         $contact = Contact::where('account_id', $data['account_id'])
                             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         // check if the tag already exists in the account
         $tag = $this->tagExistOrCreate($data);

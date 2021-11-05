@@ -38,7 +38,7 @@ class UpdateAvatar extends BaseService
     /**
      * Update message in a conversation.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data): Contact
@@ -48,6 +48,8 @@ class UpdateAvatar extends BaseService
         /** @var Contact */
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         if (isset($data['photo_id'])) {
             Photo::where('account_id', $data['account_id'])

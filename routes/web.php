@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Contacts\CallsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,8 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/dashboard/debts', 'DashboardController@debts');
         Route::post('/dashboard/setTab', 'DashboardController@setTab');
     });
+
+    Route::get('/store/{file}', 'StorageController@show')->where('file', '.*')->name('storage');
 
     Route::get('/compliance', 'ComplianceController@index')->name('compliance');
     Route::post('/compliance/sign', 'ComplianceController@store');
@@ -150,10 +153,17 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
             'index', 'store', 'update', 'destroy',
         ]);
 
+        // Gifts
+        Route::resource('people/{contact}/gifts', 'Contacts\\GiftController')->only([
+            'index', 'show', 'store', 'update', 'destroy',
+        ]);
+        Route::put('people/{contact}/gifts/{gift}/photo/{photo}', 'Contacts\\GiftController@associate');
+
         // Debt
         Route::resource('people/{contact}/debts', 'Contacts\\DebtController')->except(['index', 'show']);
 
         // Phone calls
+        Route::get('people/{contact}/calls/last', [CallsController::class, 'lastCalled']);
         Route::resource('people/{contact}/calls', 'Contacts\\CallsController')->except(['show']);
 
         // Conversations
@@ -235,7 +245,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         });
 
         Route::get('/settings/export', 'SettingsController@export')->name('export');
-        Route::post('/settings/exportToSql', 'SettingsController@exportToSql')->name('sql');
+        Route::post('/settings/exportToSql', 'SettingsController@exportToSQL')->name('sql');
         Route::post('/settings/exportToJson', 'SettingsController@exportToJson')->name('json');
         Route::get('/settings/import', 'SettingsController@import')->name('import');
         Route::get('/settings/import/report/{importjobid}', 'SettingsController@report')->name('report');
@@ -258,6 +268,8 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
             Route::get('/settings/subscriptions', 'Settings\\SubscriptionsController@index')->name('index');
             Route::get('/settings/subscriptions/upgrade', 'Settings\\SubscriptionsController@upgrade')->name('upgrade');
             Route::get('/settings/subscriptions/upgrade/success', 'Settings\\SubscriptionsController@upgradeSuccess')->name('upgrade.success');
+            Route::get('/settings/subscriptions/update', 'Settings\\SubscriptionsController@update')->name('update');
+            Route::post('/settings/subscriptions/update', 'Settings\\SubscriptionsController@processUpdate');
             Route::get('/settings/subscriptions/confirmPayment/{id}', 'Settings\\SubscriptionsController@confirmPayment')->name('confirm');
             Route::post('/settings/subscriptions/processPayment', 'Settings\\SubscriptionsController@processPayment')->name('payment');
             Route::get('/settings/subscriptions/invoice/{invoice}', 'Settings\\SubscriptionsController@downloadInvoice')->name('invoice');

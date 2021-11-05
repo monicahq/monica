@@ -29,7 +29,7 @@ class GetAvatarsFromInternet extends BaseService
      * Contact object.
      * - Gravatar only gives an avatar only if it's set.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data): Contact
@@ -47,7 +47,7 @@ class GetAvatarsFromInternet extends BaseService
     /**
      * Generate the UUID used to identify the contact in the Adorable service.
      *
-     * @param Contact  $contact
+     * @param  Contact  $contact
      * @return Contact
      */
     private function generateUUID(Contact $contact)
@@ -63,7 +63,7 @@ class GetAvatarsFromInternet extends BaseService
     /**
      * Get the adorable avatar.
      *
-     * @param Contact  $contact
+     * @param  Contact  $contact
      * @return Contact
      */
     private function getAdorable(Contact $contact)
@@ -87,7 +87,7 @@ class GetAvatarsFromInternet extends BaseService
     /**
      * Query Gravatar (if it exists) for the contact's email address.
      *
-     * @param Contact  $contact
+     * @param  Contact  $contact
      * @return Contact
      */
     private function getGravatar(Contact $contact)

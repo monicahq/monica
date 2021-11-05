@@ -39,7 +39,7 @@ class ApiContactController extends ApiController
      * We will only retrieve the contacts that are "real", not the partials
      * ones.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return JsonResource|JsonResponse
      */
     public function index(Request $request)
@@ -82,8 +82,8 @@ class ApiContactController extends ApiController
     /**
      * Get the detail of a given contact.
      *
-     * @param Request $request
-     * @param int $id
+     * @param  Request  $request
+     * @param  int  $id
      * @return ContactResource|JsonResponse
      */
     public function show(Request $request, int $id)
@@ -104,8 +104,7 @@ class ApiContactController extends ApiController
     /**
      * Store the contact.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return ContactResource|JsonResponse
      */
     public function store(Request $request)
@@ -133,8 +132,7 @@ class ApiContactController extends ApiController
     /**
      * Update the contact.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return ContactResource|JsonResponse
      */
     public function update(Request $request, $contactId)
@@ -146,6 +144,7 @@ class ApiContactController extends ApiController
                     [
                         'contact_id' => $contactId,
                         'account_id' => auth()->user()->account_id,
+                        'author_id' => auth()->user()->id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -162,8 +161,7 @@ class ApiContactController extends ApiController
     /**
      * Delete a contact.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return JsonResponse
      */
     public function destroy(Request $request, $contactId)
@@ -180,9 +178,8 @@ class ApiContactController extends ApiController
     /**
      * Set a contact as 'me'.
      *
-     * @param Request $request
-     * @param int $contactId
-     *
+     * @param  Request  $request
+     * @param  int  $contactId
      * @return string
      */
     public function setMe(Request $request, $contactId)
@@ -207,8 +204,7 @@ class ApiContactController extends ApiController
     /**
      * Removes contact as 'me' association.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return string
      */
     public function removeMe(Request $request)
@@ -226,9 +222,8 @@ class ApiContactController extends ApiController
     /**
      * Set the contact career.
      *
-     * @param Request $request
-     * @param int $contactId
-     *
+     * @param  Request  $request
+     * @param  int  $contactId
      * @return ContactResource|JsonResponse
      */
     public function updateWork(Request $request, $contactId)
@@ -256,9 +251,8 @@ class ApiContactController extends ApiController
     /**
      * Set the contact food preferences.
      *
-     * @param Request $request
-     * @param int $contactId
-     *
+     * @param  Request  $request
+     * @param  int  $contactId
      * @return ContactResource|JsonResponse
      */
     public function updateFoodPreferences(Request $request, $contactId)
@@ -285,9 +279,8 @@ class ApiContactController extends ApiController
     /**
      * Set how you met the contact.
      *
-     * @param Request $request
-     * @param int $contactId
-     *
+     * @param  Request  $request
+     * @param  int  $contactId
      * @return ContactResource|JsonResponse
      */
     public function updateIntroduction(Request $request, $contactId)

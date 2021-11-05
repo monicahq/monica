@@ -3,9 +3,10 @@
 ###
 ### This file is used for dev purpose.
 ### The standard monica image definition will be found here: https://github.com/monicahq/docker
+### This file is based off of the `apache` variant in the above mentioned repo
 ###
 
-FROM php:7.3-apache
+FROM php:8.0-apache
 
 # opencontainers annotations https://github.com/opencontainers/image-spec/blob/master/annotations.md
 LABEL org.opencontainers.image.authors="Alexis Saettler <alexis@saettler.org>" \
@@ -41,13 +42,14 @@ RUN set -ex; \
         libgmp-dev \
         libmemcached-dev \
         libmagickwand-dev \
+        libwebp-dev \
     ; \
     \
     debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
     if [ ! -e /usr/include/gmp.h ]; then ln -s /usr/include/$debMultiarch/gmp.h /usr/include/gmp.h; fi;\
     docker-php-ext-configure intl; \
-    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/; \
-    docker-php-ext-configure gmp --with-gmp="/usr/include/$debMultiarch"; \
+    docker-php-ext-configure gd --with-jpeg --with-freetype --with-webp; \
+    docker-php-ext-configure gmp; \
     docker-php-ext-install -j$(nproc) \
         intl \
         zip \
@@ -63,13 +65,11 @@ RUN set -ex; \
     pecl install APCu; \
     pecl install memcached; \
     pecl install redis; \
-    pecl install imagick; \
     \
     docker-php-ext-enable \
         apcu \
         memcached \
         redis \
-        imagick \
     ; \
     \
 # reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
@@ -139,23 +139,7 @@ WORKDIR /var/www/html
 # Copy the local (outside Docker) source into the working directory,
 # copy system files into their proper homes, and set file ownership
 # correctly
-COPY --chown=www-data:www-data \
-    readme.md \
-    CONTRIBUTING.md \
-    CHANGELOG.md \
-    CONTRIBUTORS \
-    LICENSE \
-    artisan \
-    composer.json \
-    composer.lock \
-    ./
-COPY --chown=www-data:www-data app ./app
-COPY --chown=www-data:www-data bootstrap ./bootstrap
-COPY --chown=www-data:www-data config ./config
-COPY --chown=www-data:www-data database ./database
-COPY --chown=www-data:www-data public ./public
-COPY --chown=www-data:www-data resources ./resources
-COPY --chown=www-data:www-data routes ./routes
+COPY --chown=www-data:www-data . ./
 
 RUN set -ex; \
     \
@@ -173,9 +157,20 @@ RUN install-composer.sh
 RUN set -ex; \
     \
     mkdir -p storage/framework/views; \
-    composer install --no-interaction --no-progress --no-dev --ignore-platform-reqs; \
+    composer install --no-interaction --no-progress --no-dev; \
     composer clear-cache; \
     rm -rf .composer
+
+# Install node dependencies
+RUN set -ex; \
+    \
+    curl -fsSL https://deb.nodesource.com/setup_14.x | bash -; \
+    apt-get install -y nodejs; \
+    npm install -g yarn; \
+    yarn run inst; \
+    yarn run dev; \
+    \
+    rm -rf /var/lib/apt/lists/*
 
 COPY scripts/docker/entrypoint.sh \
     scripts/docker/cron.sh \

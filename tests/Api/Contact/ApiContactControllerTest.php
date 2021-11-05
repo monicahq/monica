@@ -522,14 +522,14 @@ class ApiContactControllerTest extends ApiTestCase
 
         $initialContact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
-            'first_name' => 'roger',
+            'created_at' => now()->addDays(-1),
         ]);
 
         $field = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
         ]);
 
-        $initialContactField = factory(ContactField::class)->create([
+        $contactField = factory(ContactField::class)->create([
             'contact_id' => $initialContact->id,
             'account_id' => $user->account_id,
             'contact_field_type_id' => $field->id,
@@ -539,14 +539,13 @@ class ApiContactControllerTest extends ApiTestCase
         while ($counter < 12) {
             $contact = factory(Contact::class)->create([
                 'account_id' => $user->account_id,
-                'first_name' => 'roger',
             ]);
 
             $field = factory(ContactFieldType::class)->create([
                 'account_id' => $user->account_id,
             ]);
 
-            $contactField = factory(ContactField::class)->create([
+            factory(ContactField::class)->create([
                 'contact_id' => $contact->id,
                 'account_id' => $user->account_id,
                 'contact_field_type_id' => $field->id,
@@ -564,7 +563,7 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
 
         $response->assertJsonFragment([
-            'id' => $initialContact->id,
+            'id' => $contactField->id,
             'object' => 'contactfield',
             'account' => [
                 'id' => $user->account_id,

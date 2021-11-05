@@ -515,6 +515,8 @@ class ContactTest extends FeatureTestCase
     /** @test */
     public function it_returns_the_url_of_the_avatar()
     {
+        config(['monica.adorable_api' => 'adorable_api']);
+
         // default
         $contact = factory(Contact::class)->create([
             'avatar_default_url' => 'defaultURL',
@@ -522,18 +524,18 @@ class ContactTest extends FeatureTestCase
         ]);
 
         $this->assertStringContainsString(
-            'storage/defaultURL',
+            'store/defaultURL',
             $contact->getAvatarURL()
         );
 
         // adorable
         $contact = factory(Contact::class)->create([
-            'avatar_adorable_url' => 'adorableURL',
+            'avatar_adorable_url' => 'adorable_api/adorableURL',
             'avatar_source' => 'adorable',
         ]);
 
         $this->assertEquals(
-            'adorableURL',
+            'adorable_api/adorableURL',
             $contact->getAvatarURL()
         );
 
@@ -557,7 +559,7 @@ class ContactTest extends FeatureTestCase
         $contact->save();
 
         $this->assertEquals(
-            config('app.url').'/storage/'.$photo->new_filename,
+            config('app.url').'/store/'.$photo->new_filename,
             $contact->getAvatarURL()
         );
     }
@@ -1001,7 +1003,7 @@ class ContactTest extends FeatureTestCase
             'timezone' => 'America/New_York',
         ]);
 
-        dispatch(new ScheduleStayInTouch($contact));
+        ScheduleStayInTouch::dispatch($contact);
 
         NotificationFacade::assertSentTo($user, StayInTouchEmail::class,
             function ($notification, $channels) use ($contact) {

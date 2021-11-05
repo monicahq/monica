@@ -30,7 +30,7 @@ class SqlExportAccount extends BaseService
     /**
      * Export account as SQL.
      *
-     * @param array $data
+     * @param  array  $data
      * @return string
      */
     public function execute(array $data): string
@@ -49,8 +49,8 @@ class SqlExportAccount extends BaseService
     /**
      * Export data in temp file.
      *
-     * @param array $data
-     * @param User $user
+     * @param  array  $data
+     * @param  User  $user
      */
     private function writeExport(array $data, User $user)
     {
@@ -108,7 +108,6 @@ SET FOREIGN_KEY_CHECKS=0;
         $this->exportRelationship($data);
         $this->exportReminderOutbox($data);
         $this->exportReminderRule($data);
-        $this->exportReminderSent($data);
         $this->exportReminder($data);
         $this->exportSpecialDate($data);
         $this->exportTag($data);
@@ -126,10 +125,10 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Create the Insert query for the given table.
      *
-     * @param string $tableName
-     * @param string $foreignKey
-     * @param array $columns
-     * @param array $data
+     * @param  string  $tableName
+     * @param  string  $foreignKey
+     * @param  array  $columns
+     * @param  array  $data
      * @return void
      */
     private function buildInsertSQLQuery(string $tableName, string $foreignKey, array $columns, array $data)
@@ -188,7 +187,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Account table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportAccount(array $data)
     {
@@ -206,7 +205,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Activity table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportActivity(array $data)
     {
@@ -229,7 +228,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Activity Contact table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportActivityContact(array $data)
     {
@@ -247,7 +246,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Activity Statistic table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportActivityStatistic(array $data)
     {
@@ -269,7 +268,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Activity Type Category table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportActivityTypeCategory(array $data)
     {
@@ -290,7 +289,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Activity Type table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportActivityType(array $data)
     {
@@ -313,7 +312,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Address table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportAddress(array $data)
     {
@@ -335,7 +334,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Call table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportCall(array $data)
     {
@@ -358,7 +357,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Company table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportCompany(array $data)
     {
@@ -380,7 +379,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Contact Field Type table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportContactFieldType(array $data)
     {
@@ -404,7 +403,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Contact Field table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportContactField(array $data)
     {
@@ -426,7 +425,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Contact Tag table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportContactTag(array $data)
     {
@@ -446,7 +445,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Contact table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportContact(array $data)
     {
@@ -506,7 +505,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Conversation table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportConversation(array $data)
     {
@@ -527,7 +526,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Day table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportDays(array $data)
     {
@@ -549,7 +548,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Debt table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportDebt(array $data)
     {
@@ -574,7 +573,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Document table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportDocument(array $data)
     {
@@ -600,7 +599,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Emotion Call table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportEmotionCall(array $data)
     {
@@ -621,7 +620,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Entries table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportEntries(array $data)
     {
@@ -642,7 +641,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Gender table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportGender(array $data)
     {
@@ -663,7 +662,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Gift table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportGift(array $data)
     {
@@ -690,7 +689,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Invitation table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportInvitation(array $data)
     {
@@ -712,7 +711,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Journal Entry table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportJournalEntry(array $data)
     {
@@ -734,7 +733,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Life Event Category table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportLifeEventCategory(array $data)
     {
@@ -756,7 +755,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Life Event Type table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportLifeEventType(array $data)
     {
@@ -780,7 +779,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Life Event table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportLifeEvent(array $data)
     {
@@ -808,7 +807,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Message table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportMessage(array $data)
     {
@@ -832,7 +831,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Metadata love relationship table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportMetaDataLoveRelationship(array $data)
     {
@@ -858,7 +857,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Module table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportModule(array $data)
     {
@@ -881,7 +880,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Note table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportNote(array $data)
     {
@@ -904,7 +903,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Occupation table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportOccupation(array $data)
     {
@@ -932,7 +931,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Pet table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportPet(array $data)
     {
@@ -954,7 +953,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Photo table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportPhoto(array $data)
     {
@@ -977,7 +976,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Place table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportPlace(array $data)
     {
@@ -1003,7 +1002,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Recovery Code table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportRecoveryCode(array $data)
     {
@@ -1025,7 +1024,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Relationship Type Group table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportRelationTypeGroup(array $data)
     {
@@ -1046,7 +1045,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Relationship Type table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportRelationType(array $data)
     {
@@ -1069,7 +1068,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Relationship.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportRelationship(array $data)
     {
@@ -1091,7 +1090,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Reminder Outbox table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportReminderOutbox(array $data)
     {
@@ -1115,7 +1114,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Reminder Rule table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportReminderRule(array $data)
     {
@@ -1134,37 +1133,9 @@ SET FOREIGN_KEY_CHECKS=0;
     }
 
     /**
-     * Export the Reminder Sent table.
-     *
-     * @param array $data
-     */
-    private function exportReminderSent(array $data)
-    {
-        $columns = [
-            'id',
-            'account_id',
-            'reminder_id',
-            'user_id',
-            'planned_date',
-            'sent_date',
-            'nature',
-            'frequency_type',
-            'frequency_number',
-            'html_content',
-            'text_content',
-            'created_at',
-            'updated_at',
-        ];
-
-        $foreignKey = 'account_id';
-
-        $this->buildInsertSQLQuery('reminder_sent', $foreignKey, $columns, $data);
-    }
-
-    /**
      * Export the Reminder table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportReminder(array $data)
     {
@@ -1191,7 +1162,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Special Date table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportSpecialDate(array $data)
     {
@@ -1215,7 +1186,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Tag table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportTag(array $data)
     {
@@ -1237,7 +1208,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Task table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportTask(array $data)
     {
@@ -1262,7 +1233,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Term User table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportTermUser(array $data)
     {
@@ -1283,7 +1254,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the User table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportUser(array $data)
     {
@@ -1324,7 +1295,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Weather table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportWeather(array $data)
     {
@@ -1346,7 +1317,7 @@ SET FOREIGN_KEY_CHECKS=0;
      * Export the Contact Photo table.
      * This is custom as we need to loop on the contacts for this account.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportContactPhoto(array $data)
     {
@@ -1377,7 +1348,7 @@ SET FOREIGN_KEY_CHECKS=0;
     /**
      * Export the Audit logs table.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function exportAuditLogs(array $data)
     {

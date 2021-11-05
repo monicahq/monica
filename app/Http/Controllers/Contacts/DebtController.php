@@ -13,8 +13,7 @@ class DebtController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Contact $contact
-     *
+     * @param  Contact  $contact
      * @return \Illuminate\View\View
      */
     public function index(Contact $contact)
@@ -26,8 +25,7 @@ class DebtController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param Contact $contact
-     *
+     * @param  Contact  $contact
      * @return \Illuminate\View\View
      */
     public function create(Contact $contact)
@@ -41,13 +39,14 @@ class DebtController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param DebtRequest $request
-     * @param Contact $contact
-     *
+     * @param  DebtRequest  $request
+     * @param  Contact  $contact
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(DebtRequest $request, Contact $contact)
     {
+        $contact->throwInactive();
+
         $contact->debts()->create(
             $request->only([
                 'in_debt',
@@ -67,9 +66,8 @@ class DebtController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Contact $contact
-     * @param Debt $debt
-     *
+     * @param  Contact  $contact
+     * @param  Debt  $debt
      * @return void
      */
     public function show(Contact $contact, Debt $debt): void
@@ -80,13 +78,14 @@ class DebtController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Contact $contact
-     * @param Debt $debt
-     *
+     * @param  Contact  $contact
+     * @param  Debt  $debt
      * @return \Illuminate\View\View
      */
     public function edit(Contact $contact, Debt $debt)
     {
+        $contact->throwInactive();
+
         return view('people.debt.edit')
             ->withContact($contact)
             ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account))
@@ -96,14 +95,15 @@ class DebtController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param DebtRequest $request
-     * @param Contact $contact
-     * @param Debt $debt
-     *
+     * @param  DebtRequest  $request
+     * @param  Contact  $contact
+     * @param  Debt  $debt
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(DebtRequest $request, Contact $contact, Debt $debt)
     {
+        $contact->throwInactive();
+
         $debt->update(
             $request->only([
                 'in_debt',
@@ -123,13 +123,14 @@ class DebtController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Contact $contact
-     * @param Debt $debt
-     *
+     * @param  Contact  $contact
+     * @param  Debt  $debt
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Contact $contact, Debt $debt)
     {
+        $contact->throwInactive();
+
         $debt->delete();
 
         return redirect()->route('people.show', $contact)

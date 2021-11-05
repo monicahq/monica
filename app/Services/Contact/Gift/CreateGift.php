@@ -40,15 +40,17 @@ class CreateGift extends BaseService
     /**
      * Create a tag.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Gift
      */
     public function execute(array $data): Gift
     {
         $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         if (isset($data['recipient_id'])) {
             Contact::where('account_id', $data['account_id'])

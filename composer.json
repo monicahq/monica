@@ -9,17 +9,16 @@
     ],
     "license": "AGPL",
     "require": {
-        "php": "^7.3",
+        "php": "^7.4 || ^8.0",
         "ext-bcmath": "*",
         "ext-gd": "*",
         "ext-gmp": "*",
-        "ext-imagick": "*",
         "ext-intl": "*",
         "ext-redis": "*",
-        "asbiin/laravel-webauthn": "^0",
+        "asbiin/laravel-webauthn": "^1.0",
         "bacon/bacon-qr-code": "^2.0",
-        "creativeorange/gravatar": "~1.0",
-        "doctrine/dbal": "^2.9.3",
+        "creativeorange/gravatar": "^1.0",
+        "doctrine/dbal": "^3.0",
         "erusev/parsedown": "^1.7",
         "facade/ignition": "^2.0",
         "fideloper/proxy": "^4.0",
@@ -30,8 +29,7 @@
         "laravel/framework": "^8.0",
         "laravel/passport": "^10.0",
         "laravel/socialite": "^5.0",
-        "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.0",
+        "laravel/ui": "^3.0",
         "laravolt/avatar": "^4.0",
         "league/flysystem-aws-s3-v3": "~1.0",
         "league/flysystem-cached-adapter": "^1.0",
@@ -44,12 +42,12 @@
         "pragmarx/countries-laravel": "^0",
         "pragmarx/google2fa": "^8.0",
         "pragmarx/google2fa-laravel": "^1.3",
-        "pragmarx/recovery": "^0",
+        "pragmarx/random": "^0",
         "predis/predis": "^1.1",
-        "ralouphie/mimey": "^2.0",
         "sabre/dav": "^4.0",
         "sentry/sentry-laravel": "^2.0",
-        "stevebauman/location": "^5.2",
+        "spatie/macroable": "^1.0",
+        "stevebauman/location": "^6.1",
         "symfony/translation": "^5.0",
         "thecodingmachine/safe": "^1.0",
         "vectorface/whip": "^0.4",
@@ -58,7 +56,9 @@
         "web-token/jwt-key-mgmt": "^2.1",
         "web-token/jwt-signature-algorithm-ecdsa": "^2.1",
         "web-token/jwt-signature-algorithm-eddsa": "^2.1",
-        "web-token/jwt-signature-algorithm-rsa": "^2.1"
+        "web-token/jwt-signature-algorithm-rsa": "^2.1",
+        "werk365/etagconditionals": "^1.2",
+        "xantios/mimey": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3",
@@ -66,11 +66,12 @@
         "khanamiryan/qrcode-detector-decoder": "^1.0",
         "laravel/dusk": "^6.0",
         "laravel/legacy-factories": "^1.0",
-        "matthiasnoback/live-code-coverage": "^1.0",
+        "laravel/tinker": "^2.6",
+        "matthiasnoback/live-code-coverage": "^1",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^5.0",
         "nunomaduro/larastan": "^0",
-        "phpunit/phpcov": "^7.0",
+        "phpunit/phpcov": "^8.0",
         "phpunit/phpunit": "^9.0",
         "psalm/plugin-laravel": "^1.4",
         "roave/security-advisories": "dev-master",
@@ -93,8 +94,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
-            "Tests\\": "tests/"
+            "App\\": "app/"
         },
         "classmap": [
             "database/seeds",
@@ -107,7 +107,12 @@
     "autoload-dev": {
         "classmap": [
             "tests/TestCase.php"
-        ]
+        ],
+        "psr-4": {
+            "Tests\\": "tests/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
     },
     "scripts": {
         "pre-install-cmd": [

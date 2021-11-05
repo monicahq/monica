@@ -37,7 +37,7 @@ class UpdateAddress extends BaseService
     /**
      * Update an address.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Address
      */
     public function execute(array $data): Address
@@ -49,8 +49,10 @@ class UpdateAddress extends BaseService
             ->where('contact_id', $data['contact_id'])
             ->findOrFail($data['address_id']);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $this->updatePlace($data, $address);
 
@@ -72,8 +74,8 @@ class UpdateAddress extends BaseService
     /**
      * Create a place for the given address.
      *
-     * @param array $data
-     * @param Address $address
+     * @param  array  $data
+     * @param  Address  $address
      * @return Place
      */
     private function updatePlace(array $data, Address $address)

@@ -31,6 +31,7 @@ return [
     '2fa_wrong_validation' => 'De tweestapsverificatie is mislukt.',
     '2fa_one_time_password' => 'Tweestapsverificatiecode',
     '2fa_recuperation_code' => 'Voer een tweestapsverificatiecode in',
+    '2fa_one_time_or_recuperation' => 'Voer een tweestapsverificatiecode of een herstelcode in',
     '2fa_otp_help' => 'Open je tweestapsverificatiecode-app en kopieer de code',
 
     'login_to_account' => 'Inloggen op je account',

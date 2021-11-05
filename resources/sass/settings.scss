@@ -17,7 +17,7 @@
       }
 
       &.selected {
-        background-color: #f7fbfc;
+        background-color: #fafafa;
 
         i {
           color: green;
@@ -34,7 +34,7 @@
         } @else {
           margin-left: 5px;
         }
-        color: #999;
+        color: #999999;
       }
     }
   }
@@ -63,12 +63,12 @@
   }
 
   .settings-reset {
-    border-color: #f0ad4e;
+    border-color: #daa520;
     border-radius: 3px;
   }
 
   .settings-group {
-    border-color: #999;
+    border-color: #999999;
     border-radius: 3px;
   }
 
@@ -76,9 +76,9 @@
     margin-bottom: 30px;
     margin-top: 30px;
     padding: 10px 10px 5px 15px;
-    border: 1px solid #f1c897;
+    border: 1px solid #daa520;
     border-radius: 3px;
-    background-color: #ffe8bc;
+    background-color: #fffacd;
   }
 
   .users-list {
@@ -130,7 +130,7 @@
     .requires-subscription {
       margin-top: 20px;
       font-size: 13px;
-      color: #999;
+      color: #999999;
     }
   }
 
@@ -150,7 +150,7 @@
 
     .downgrade {
       ul {
-        background-color: #f8f8f8;
+        background-color: #fafafa;
         border: 1px solid $border-color;
         border-radius: 6px;
         margin-bottom: 20px;
@@ -176,7 +176,6 @@
           .icon:after {
             font-family: FontAwesome;
             font-size: 17px;
-            color: #0eb0b7;
             content: "\f058";
             top: 10px;
             position: relative;;
@@ -187,7 +186,7 @@
           .icon:after {
             font-family: FontAwesome;
             font-size: 17px;
-            color: #cd4400;
+            color: #d9534f;
             content: "\f057";
             top: 10px;
             position: relative;;
@@ -240,7 +239,7 @@
 
   &.import {
     .success {
-      color: #5cb85c;
+      color: #32cd32;
     }
 
     .failure {
@@ -248,7 +247,7 @@
     }
 
     .warning {
-      color: #f0ad4e;
+      color: #daa520;
     }
 
     .date {

@@ -5,6 +5,7 @@ namespace App\Services\Contact\Avatar;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\Cache;
 use Laravolt\Avatar\Facade as Avatar;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -27,7 +28,7 @@ class GenerateDefaultAvatar extends BaseService
      * Generate the default image for the avatar, based on the initals of the
      * contact and returns the filename.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data)
@@ -47,13 +48,15 @@ class GenerateDefaultAvatar extends BaseService
         $contact->avatar_default_url = $filename;
         $contact->save();
 
+        Cache::forget('etag'.Str::before('?', $filename));
+
         return $contact;
     }
 
     /**
      * Create an uuid for the contact if it does not exist.
      *
-     * @param Contact  $contact
+     * @param  Contact  $contact
      * @return Contact
      */
     private function generateContactUUID(Contact $contact)
@@ -69,7 +72,7 @@ class GenerateDefaultAvatar extends BaseService
     /**
      * Create a new avatar for the contact based on the name of the contact.
      *
-     * @param Contact  $contact
+     * @param  Contact  $contact
      * @return string
      */
     private function createNewAvatar(Contact $contact)
@@ -83,7 +86,7 @@ class GenerateDefaultAvatar extends BaseService
 
             $filename = 'avatars/'.$contact->uuid.'.jpg';
             Storage::disk(config('filesystems.default'))
-                ->put($filename, $img, 'public');
+                ->put($filename, $img, config('filesystems.default_visibility'));
 
             // This will force the browser to reload the new avatar
             return $filename.'?'.now()->format('U');
@@ -97,7 +100,7 @@ class GenerateDefaultAvatar extends BaseService
     /**
      * Delete the existing default avatar.
      *
-     * @param Contact  $contact
+     * @param  Contact  $contact
      * @return Contact
      */
     private function deleteExistingDefaultAvatar(Contact $contact)

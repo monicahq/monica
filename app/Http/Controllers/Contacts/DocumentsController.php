@@ -17,10 +17,19 @@ class DocumentsController extends Controller
     use JsonRespondController;
 
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('limitations')->only('store');
+    }
+
+    /**
      * Display the list of documents.
      *
-     * @param Contact $contact
-     *
+     * @param  Contact  $contact
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request, Contact $contact)
@@ -33,13 +42,14 @@ class DocumentsController extends Controller
     /**
      * Store the document.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return Document
      */
     public function store(Request $request, Contact $contact): Document
     {
+        $contact->throwInactive();
+
         return app(UploadDocument::class)->execute([
             'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
@@ -50,10 +60,9 @@ class DocumentsController extends Controller
     /**
      * Delete the document.
      *
-     * @param Request $request
-     * @param Contact $contact
-     * @param Document $document
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
+     * @param  Document  $document
      * @return null|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Document $document): ?JsonResponse
