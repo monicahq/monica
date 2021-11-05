@@ -48,7 +48,7 @@ return [
     'people_add_title' => '添加一位新的联系人',
     'people_add_missing' => 'No person found – add a new one now',
     'people_add_firstname' => '名字',
-    'people_add_middlename' => 'Middle name (optional)',
+    'people_add_middlename' => '中间名（可选）',
     'people_add_lastname' => '姓氏（选填）',
     'people_add_email' => '邮箱（选填）',
     'people_add_nickname' => '昵称（选填）',
