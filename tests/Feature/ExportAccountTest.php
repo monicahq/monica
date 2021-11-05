@@ -18,7 +18,7 @@ class ExportAccountTest extends FeatureTestCase
 
         $user = $this->signIn();
 
-        $path = ExportAccountAsSQL::dispatchSync();
+        $path = ExportAccount::dispatchSync();
 
         $this->assertStringStartsWith('exports/', $path);
         $this->assertStringEndsWith('.sql', $path);

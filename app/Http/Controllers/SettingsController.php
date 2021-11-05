@@ -183,7 +183,7 @@ class SettingsController extends Controller
      */
     public function exportToSql()
     {
-        $path = ExportAccountAsSQL::dispatchSync(ExportAccount::SQL);
+        $path = ExportAccount::dispatchSync(ExportAccount::SQL);
 
         $adapter = disk_adapter(ExportAccount::STORAGE);
 
