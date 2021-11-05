@@ -35,10 +35,10 @@ return [
 
     'export_title' => '导出帐户数据',
     'export_be_patient' => 'Click the button to start the export. It may take several minutes to process the export – please be patient and do not repeatedly click the button.',
-    'export_title_sql' => 'Export data to SQL',
-    'export_sql_explanation' => 'Exporting your data in SQL format allows you to take your data and import it to your own Monica instance. This is only useful if you are running Monica on your own server.',
-    'export_sql_cta' => 'Export data to SQL',
-    'export_sql_link_instructions' => '<a href=":url">Read the instructions</a> to learn how to import this file into your instance.',
+    'export_title_sql' => '将数据导出为 SQL',
+    'export_sql_explanation' => '以 SQL 格式导出数据使以便将数据导入到自己的 Monica 实例中。这只在你有自己的服务器时有效。',
+    'export_sql_cta' => '将数据导出为 SQL',
+    'export_sql_link_instructions' => '<a href=":url">阅读说明</a> 了解有关将次文件导入到你的实例的详细信息。',
 
     'firstname' => '名',
     'lastname' => '姓氏',
@@ -103,13 +103,13 @@ return [
 
     'security_title' => '安全',
     'security_help' => '更改您的帐户的安全选项。',
-    'password_change' => 'Change your password',
+    'password_change' => '修改密码',
     'password_current' => '当前密码',
     'password_current_placeholder' => '输入当前密码',
     'password_new1' => '新密码',
-    'password_new1_placeholder' => 'Enter your new password',
-    'password_new2' => 'Confirm your new password',
-    'password_new2_placeholder' => 'Retype your new password',
+    'password_new1_placeholder' => '请输入新密码',
+    'password_new2' => '确认新密码',
+    'password_new2_placeholder' => '请再次输入新密码',
     'password_btn' => '更改密码',
     '2fa_title' => '双重验证',
     '2fa_otp_title' => '用于二次验证的App',
@@ -413,7 +413,7 @@ return [
 
     'personalization_module_save' => '更改已被保存',
     'personalization_module_title' => '功能',
-    'personalization_module_desc' => 'You may not need all of Monica’s features. Below you can toggle specific features that are used on a contact sheet. This change will affect ALL your contacts. Turning off a feature does not delete any data, it simply hides the feature.',
+    'personalization_module_desc' => '你不必启用 Monica 的所有功能。你可以在下方切换联系人表上启用的功能。 此更改将影响你的所有联系人。 关闭功能不会删除任何数据，只会隐藏该功能。',
 
     'personalisation_paid_upgrade' => '这是一个高级功能，需要付费订阅才能激活。通过访问 <a href=":url">设置 > 订阅</a> 来升级您的帐户。',
     'personalisation_paid_upgrade_vue' => '这是一个高级功能，需要付费订阅才能激活。通过访问 <a href="{url}">设置 > 订阅</a> 来升级您的帐户。',
@@ -442,7 +442,7 @@ return [
 
     'personalization_life_event_category_title' => '生活事件分类',
     'personalization_live_event_category_table_name' => 'Name',
-    'personalization_life_event_category_description' => 'A life event can have a type and a category. Your account comes with a set of predefined categories and types by default, but you can customize life event types here.',
+    'personalization_life_event_category_description' => '生命事件可能有不同分类。 你的帐户默认包含一组预定义的分类，你可以在这里自定义生命事件分类。',
     'personalization_live_event_category_table_actions' => 'Actions',
     'personalization_life_event_type_add_button' => 'Add a new life event type',
     'personalization_life_event_type_modal_add' => 'Add a new life event type',
@@ -504,7 +504,7 @@ return [
     'personalization_life_event_type_first_kiss' => '初吻',
 
     'storage_title' => '存储空间',
-    'storage_account_info' => 'Your account limit is :accountLimit MB. Your current usage is :currentAccountSize MB (about :percentUsage%).',
+    'storage_account_info' => '你的账户容量为 :accountLimit MB.。你已经使用了 :currentAccountSize MB（约 :percentUsage%）。',
     'storage_upgrade_notice' => '升级您的帐户, 以便上传文档和照片。',
     'storage_description' => '在这里, 您可以看到上传的有关您的联系人的所有文档和照片。',
 
