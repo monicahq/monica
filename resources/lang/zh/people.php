@@ -28,7 +28,7 @@ return [
     'people_list_contacts_per_tags' => ':count contact|:count contacts',
     'people_list_show_dead' => '显示已故人员 (:count)',
     'people_list_hide_dead' => '隐藏已故人员 (:count)',
-    'people_search' => 'Search your contacts…',
+    'people_search' => '搜索联系人',
     'people_search_no_results' => '未找到任何结果',
     'people_search_next' => '下一页',
     'people_search_prev' => 'Previous',
@@ -115,7 +115,7 @@ return [
     'call_emotions' => '情绪：',
 
     // Conversation
-    'conversation_blank' => 'Record conversations you have with :name on social media, SMS…',
+    'conversation_blank' => '记录你和 :name 在社交媒体或 SMS 等平台的对话。',
     'conversation_delete_link' => '删除对话',
     'conversation_edit_title' => '编辑对话',
     'conversation_edit_delete' => '您是否要删除这个对话？操作无法撤销。',
@@ -423,7 +423,7 @@ return [
 
     // life events
     'life_event_list_tab_life_events' => '生活事件',
-    'life_event_list_tab_other' => 'Notes, reminders, …',
+    'life_event_list_tab_other' => '注释',
     'life_event_list_title' => '生活事件',
     'life_event_blank' => '记录在{name} 身上发生的事情以供将来参考',
     'life_event_list_cta' => '添加生活事件',
