@@ -64,7 +64,7 @@ return [
     'main_nav_activities' => '活动',
     'main_nav_tasks' => '任务',
 
-    'footer_remarks' => 'Comments?',
+    'footer_remarks' => '想发送反馈？',
     'footer_send_email' => '给我们发邮件',
     'footer_privacy' => '隐私条款',
     'footer_release' => '版本说明',
