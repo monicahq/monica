@@ -440,7 +440,7 @@ return [
     'personalization_activity_type_modal_delete_error' => '我们无法找到这个活动',
     'personalization_activity_type_category_modal_delete_error' => '我们无法找到这个活动分类',
 
-    'personalization_life_event_category_title' => 'Life event categories',
+    'personalization_life_event_category_title' => '生活事件分类',
     'personalization_live_event_category_table_name' => 'Name',
     'personalization_life_event_category_description' => 'A life event can have a type and a category. Your account comes with a set of predefined categories and types by default, but you can customize life event types here.',
     'personalization_live_event_category_table_actions' => 'Actions',
