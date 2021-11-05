@@ -511,7 +511,7 @@ return [
 
     // contact list
     'contact_list_avatar' => '头像',
-    'contact_list_name' => 'Contact',
+    'contact_list_name' => '联系人',
     'contact_list_description' => '描述',
 
 ];
