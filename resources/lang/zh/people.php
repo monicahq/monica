@@ -503,7 +503,7 @@ return [
     'photo_list_blank_desc' => '您可以存储有关此联系人的图像。立即上传一个!',
     'photo_upload_zone_cta' => '上传照片',
     'photo_current_profile_pic' => '目前头像',
-    'photo_make_profile_pic' => '制作头像',
+    'photo_make_profile_pic' => '设为头像',
     'photo_delete' => '删除照片',
     'photo_next' => 'Next photo ❯',
     'photo_previous' => '❮ Previous photo',
