@@ -41,6 +41,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Position
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the position instance that is created
+    | and returned from the above drivers. The instance you
+    | create must extend the built-in Position class.
+    |
+    */
+    'position' => Stevebauman\Location\Position::class,
+
+    /*
+    |--------------------------------------------------------------------------
     | MaxMind Configuration
     |--------------------------------------------------------------------------
     |
@@ -68,6 +80,42 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | IP API Pro Configuration
+    |--------------------------------------------------------------------------
+    |
+    | The configuration for the IP API Pro driver.
+    |
+    */
+    'ip_api' => [
+        'token' => env('IP_API_TOKEN'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | IPInfo Configuration
+    |--------------------------------------------------------------------------
+    |
+    | The configuration for the IPInfo driver.
+    |
+    */
+    'ipinfo' => [
+        'token' => env('IPINFO_TOKEN'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | IPData Configuration
+    |--------------------------------------------------------------------------
+    |
+    | The configuration for the IPData driver.
+    |
+    */
+    'ipdata' => [
+        'token' => env('IPDATA_TOKEN'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Localhost Testing
     |--------------------------------------------------------------------------
     |
@@ -78,7 +126,7 @@ return [
     |
     */
     'testing' => [
-        'enabled' => false,
+        'enabled' => env('LOCATION_TESTING', false),
         'ip' => '66.102.0.0',
     ],
 
