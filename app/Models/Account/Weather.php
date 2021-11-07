@@ -111,6 +111,7 @@ class Weather extends Model
         if (($timestamp = Arr::get($this->weather_json, 'current.last_updated_epoch')) !== null) {
             return Carbon::createFromTimestamp($timestamp);
         }
+
         return null;
     }
 
