@@ -1,23 +1,19 @@
+import Emitter from 'tiny-emitter';
+const emitter = new Emitter();
+
 export default {
   /**
-   * Update the default tab view.
+   * Flash a message.
    *
-   * @param {string} view
+   * @param {string} message
+   * @param {string} level
    */
-  updateDefaultProfileView(view) {
-    axios.post('settings/updateDefaultProfileView', { name: view })
-      .then(response => {
-        this.global_profile_default_view = view;
-      });
+  flash (message, level = 'success') {
+    this.$emitt('flash', { message, level });
   },
 
-  /**
-   * Fix avatar in case img is on error.
-   *
-   * @param {event} event
-   */
-  fixAvatarDisplay(event) {
-    event.srcElement.classList = ['hidden'];
-    event.srcElement.nextElementSibling.classList.remove('hidden');
-  }
+  $on: (...args) => emitter.on(...args),
+  $once: (...args) => emitter.once(...args),
+  $off: (...args) => emitter.off(...args),
+  $emitt: (...args) => emitter.emit(...args),
 };

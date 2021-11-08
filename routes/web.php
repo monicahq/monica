@@ -40,7 +40,7 @@ Route::middleware(['auth', '2fa'])->group(function () {
 
 Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
     Route::name('dashboard.')->group(function () {
-        Route::get('/dashboard', 'DashboardController@index')->name('index');
+        Route::get('/dashboard', 'Dashboard\\DashboardController@index')->name('index');
         Route::get('/dashboard/calls', 'DashboardController@calls');
         Route::get('/dashboard/notes', 'DashboardController@notes');
         Route::get('/dashboard/debts', 'DashboardController@debts');

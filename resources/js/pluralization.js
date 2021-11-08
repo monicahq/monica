@@ -1,7 +1,7 @@
 /**
- * Pluralization form for every langage not following engl-ish like form.
+ * Pluralization form for every language not following engl-ish like form.
  *
- * 'plurals' functions represent possible plural form transformations.
+ * plurals functions represent possible plural form transformations.
  * This return a list of lang/plural function to apply.
  *
  * @see https://github.com/laravel/framework/blob/master/src/Illuminate/Translation/MessageSelector.php
@@ -37,17 +37,16 @@ function pluralF (choice, choicesLength) {
 }
 
 export default {
-  'ar': pluralE,
-  'cs': pluralC,
-  'fr': pluralB,
-  'he': pluralF,
-  'hr': pluralD,
-  'id': pluralA,
-  'ja': pluralA,
-  'ru': pluralD,
-  'tr': pluralA,
-  'uk': pluralD,
-  'vi': pluralA,
-  'zh': pluralA,
-  'zh-TW': pluralA,
+  ar: pluralE,
+  cs: pluralC,
+  fr: pluralB,
+  he: pluralF,
+  hr: pluralD,
+  id: pluralA,
+  ja: pluralA,
+  ru: pluralD,
+  tr: pluralA,
+  uk: pluralD,
+  vi: pluralA,
+  zh: pluralA,
 };

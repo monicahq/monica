@@ -78,7 +78,7 @@ jobs:
           mkdir -p public/js public/css results/coverage
           {\
             echo "{"; \
-            for f in app.js manifest.js vendor.js app-ltr.css app-rtl.css stripe.js stripe.css; do \
+            for f in app.js manifest.js vendor.js app.css app.css stripe.js stripe.css; do \
               [[ $first == 1 ]] && echo -n "," || first=1; \
               k=${f##*.}/$f; \
               echo "\"/$k\": \"/$k\""; \

@@ -39,6 +39,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\CheckVersion::class,
             \App\Http\Middleware\CheckCompliance::class,
             \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
+            \App\Http\Middleware\HandleInertiaRequests::class,
         ],
 
         'api' => [

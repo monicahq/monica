@@ -7,7 +7,7 @@
     <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
     <title>{{ trans('app.application_title') }}</title>
 
-    <link rel="stylesheet" href="{{ asset(mix('css/app-'.htmldir().'.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
     <meta name="description" content="{{ trans('app.application_description') }}">
     <link rel="author" href="@djaiss">
     <meta property="og:title" content="{{ trans('app.application_og_title') }}" />
