@@ -14,7 +14,7 @@ return [
     'add' => 'Προσθήκη',
     'cancel' => 'Ακύρωση',
     'confirm' => 'Επιβεβαίωση',
-    'delete_confirm' => 'Are you sure?',
+    'delete_confirm' => 'Είστε σίγουροι;',
     'delete' => 'Διαγραφή',
     'edit' => 'Επεξεργασία',
     'upload' => 'Μεταφόρτωση',
@@ -44,7 +44,7 @@ return [
     'retry' => 'Ξαναδοκιμάστε',
     'filter' => 'Φιλτράρισμα λίστας',
     'go_back' => 'Επιστροφή',
-    'file_selected' => 'One file selected…|{count} files selected…',
+    'file_selected' => 'Επιλέχθηκε ένα αρχείο…|{count} επιλεγμένα αρχεία…',
 
     'application_title' => 'Monica – διαχειριστής προσωπικών σχέσεων',
     'application_description' => 'Το Monica είναι ένα εργαλείο που διαχειρίζεται τις επαφές σας με τους αγαπημένους σας, τους φίλους και την οικογένεια.',
