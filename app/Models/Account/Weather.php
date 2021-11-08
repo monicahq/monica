@@ -86,7 +86,7 @@ class Weather extends Model
      *
      * @return string
      */
-    public function getSummaryAttribute(): string
+    public function getSummaryAttribute(): ?string
     {
         return trans('app.weather_'.$this->summary_code);
     }
@@ -96,7 +96,7 @@ class Weather extends Model
      *
      * @return string
      */
-    public function getLocationAttribute(): string
+    public function getLocationAttribute(): ?string
     {
         return Arr::get($this->weather_json, 'location.name');
     }
@@ -106,9 +106,13 @@ class Weather extends Model
      *
      * @return Carbon
      */
-    public function getDateAttribute(): Carbon
+    public function getDateAttribute(): ?Carbon
     {
-        return Carbon::createFromTimestamp(Arr::get($this->weather_json, 'current.last_updated_epoch'));
+        if (($timestamp = Arr::get($this->weather_json, 'current.last_updated_epoch')) !== null) {
+            return Carbon::createFromTimestamp($timestamp);
+        }
+
+        return null;
     }
 
     /**
