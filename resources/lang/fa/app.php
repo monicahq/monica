@@ -441,11 +441,11 @@ return [
     'emotion_dread' => 'Dread',
 
     // weather
-    'weather_sunny' => 'Sunny',
-    'weather_clear' => 'Clear',
-    'weather_clear-day' => 'Clear',
+    'weather_sunny' => 'آفتابی',
+    'weather_clear' => 'پاک سازی',
+    'weather_clear-day' => 'پاک',
     'weather_clear-night' => 'Clear night',
-    'weather_light-drizzle' => 'Light drizzle',
+    'weather_light-drizzle' => 'نم نم باران خفیف',
     'weather_patchy-light-drizzle' => 'Patchy light drizzle',
     'weather_patchy-light-rain' => 'Patchy light rain',
     'weather_light-rain' => 'Light rain',
