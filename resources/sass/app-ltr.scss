@@ -237,6 +237,7 @@ kbd {
 // Generic styles
 body {
   color: #4a4a4a;
+  overflow-y: overlay;
   @if $htmldir == rtl {
     text-align: right;
   }
