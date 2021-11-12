@@ -20,7 +20,9 @@ class Debt extends ExportResource
     public function data(): ?array
     {
         return  [
-            'in_debt' => $this->in_debt === 'yes',
+            'properties' => [
+                'in_debt' => $this->in_debt === 'yes',
+            ],
         ];
     }
 }
