@@ -44,6 +44,7 @@ class JournalEntry extends ExportResource
                     ];
             }
         }
+
         return null;
     }
 }
