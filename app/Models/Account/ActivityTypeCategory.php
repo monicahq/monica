@@ -2,12 +2,15 @@
 
 namespace App\Models\Account;
 
+use App\Traits\HasUuid;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ActivityTypeCategory extends Model
 {
+    use HasUuid;
+
     protected $table = 'activity_type_categories';
 
     protected $appends = ['name'];

@@ -11,6 +11,7 @@ class AddUuids extends Migration
         'users',
         'activities',
         'activity_types',
+        'activity_type_categories',
         'contact_field_types',
         'photos',
     ];
