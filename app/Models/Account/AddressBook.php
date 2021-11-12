@@ -2,10 +2,10 @@
 
 namespace App\Models\Account;
 
+use App\Traits\HasUuid;
 use App\Models\User\User;
 use App\Models\Contact\Contact;
 use App\Models\ModelBinding as Model;
-use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

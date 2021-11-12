@@ -16,7 +16,7 @@ class LifeEvent extends ExportResource
         'name',
         'note',
         'happened_at',
-        'specific_information'
+        'specific_information',
     ];
 
     public function data(): ?array

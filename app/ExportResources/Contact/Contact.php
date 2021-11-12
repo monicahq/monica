@@ -3,8 +3,8 @@
 namespace App\ExportResources\Contact;
 
 use App\ExportResources\Instance\SpecialDate;
-use App\Models\Contact\Reminder as ContactReminder;
 use App\Services\Account\Settings\ExportResource;
+use App\Models\Contact\Reminder as ContactReminder;
 
 class Contact extends ExportResource
 {
@@ -47,7 +47,7 @@ class Contact extends ExportResource
                     'avatar_adorable_url' => $this->avatar_adorable_url,
                     'avatar_default_url' => $this->avatar_default_url,
                     $this->mergeWhen($this->avatarPhoto !== null, function () {
-                        return ['avatar_photo' => $this->avatarPhoto->uuid ];
+                        return ['avatar_photo' => $this->avatarPhoto->uuid];
                     }),
                     'has_avatar' => $this->has_avatar,
                     'avatar_external_url' => $this->avatar_external_url,
@@ -61,8 +61,8 @@ class Contact extends ExportResource
                         return $tag->name;
                     })->toArray();
                 }),
-                $this->mergeWhen($this->gender !== null, function() {
-                    return ['gender' => $this->gender->type,];
+                $this->mergeWhen($this->gender !== null, function () {
+                    return ['gender' => $this->gender->type];
                 }),
                 $this->mergeWhen($this->birthdate, [
                     'birthdate' => new SpecialDate($this->birthdate),
@@ -70,16 +70,16 @@ class Contact extends ExportResource
                 $this->mergeWhen($this->deceasedDate, [
                     'deceased_date' => new SpecialDate($this->deceasedDate),
                 ]),
-                $this->mergeWhen($this->deceased_reminder_id, function() {
+                $this->mergeWhen($this->deceased_reminder_id, function () {
                     return ['deceased_reminder' => new Reminder(ContactReminder::find($this->deceased_reminder_id))];
                 }),
                 $this->mergeWhen($this->firstMetDate, [
-                    'first_met_date' => new SpecialDate($this->firstMetDate)
+                    'first_met_date' => new SpecialDate($this->firstMetDate),
                 ]),
                 $this->mergeWhen($this->getIntroducer() !== null, function () {
                     return ['first_met_through' => $this->getIntroducer()->uuid];
                 }),
-                $this->mergeWhen($this->first_met_reminder_id !== null, function() {
+                $this->mergeWhen($this->first_met_reminder_id !== null, function () {
                     return ['first_met_reminder' => new Reminder(ContactReminder::find($this->first_met_reminder_id))];
                 }),
             ],

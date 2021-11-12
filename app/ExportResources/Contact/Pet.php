@@ -12,7 +12,7 @@ class Pet extends ExportResource
     ];
 
     protected $properties = [
-        'name'
+        'name',
     ];
 
     public function data(): ?array

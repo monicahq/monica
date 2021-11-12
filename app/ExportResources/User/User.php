@@ -54,7 +54,7 @@ class User extends ExportResource
                 $this->mergeWhen($this->me !== null, function () {
                     return ['me_contact' => $this->me->uuid];
                 }),
-            ]
+            ],
         ];
     }
 }

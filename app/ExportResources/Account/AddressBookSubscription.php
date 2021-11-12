@@ -22,7 +22,7 @@ class AddressBookSubscription extends ExportResource
         'active',
         'capabilities',
         'frequency',
-        'last_syncronized_at'
+        'last_syncronized_at',
     ];
 
     public function data(): ?array
@@ -33,11 +33,12 @@ class AddressBookSubscription extends ExportResource
                 'sync_token' => $this->syncToken,
                 $this->merge(function () {
                     $localSyncToken = SyncToken::where('account_id', $this->account_id)->find($this->localSyncToken);
+
                     return [
                         'local_sync_token' => new SyncTokenResource($localSyncToken),
                     ];
                 }),
-            ]
+            ],
         ];
     }
 }
