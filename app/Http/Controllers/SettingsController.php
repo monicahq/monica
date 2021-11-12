@@ -201,7 +201,7 @@ class SettingsController extends Controller
      */
     public function exportToJson()
     {
-        $path = dispatch_now(new ExportAccount(ExportAccount::JSON));
+        $path = ExportAccount::dispatchSync(ExportAccount::JSON);
 
         $adapter = disk_adapter(ExportAccount::STORAGE);
 

@@ -82,9 +82,10 @@ class ExportResource extends JsonResource
         }
 
         foreach ($columns as $column) {
-            if (($value = $this->{$column}) !== null) {
-                $result[$column] = $value;
-            }
+            $result[$column] = $this->{$column};
+            // if (($value = $this->{$column}) !== null) {
+            //     $result[$column] = $value;
+            // }
         }
 
         if ($properties !== null) {

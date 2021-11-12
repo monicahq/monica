@@ -6,6 +6,9 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddUuids extends Migration
 {
+    /**
+     * @var array
+     */
     private $tables = [
         'accounts',
         'users',

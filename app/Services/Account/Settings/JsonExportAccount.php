@@ -5,6 +5,7 @@ namespace App\Services\Account\Settings;
 use App\Models\User\User;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
+use function Safe\json_encode;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\Storage;
 use App\ExportResources\Account\Account as AccountResource;

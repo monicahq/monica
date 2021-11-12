@@ -3,6 +3,7 @@
 namespace App\Models\Contact;
 
 use App\Traits\HasUuid;
+use function Safe\sprintf;
 use App\Helpers\StorageHelper;
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
