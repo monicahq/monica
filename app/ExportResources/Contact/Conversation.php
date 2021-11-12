@@ -12,7 +12,7 @@ class Conversation extends ExportResource
     ];
 
     protected $properties = [
-        'happened_at'
+        'happened_at',
     ];
 
     public function data(): ?array

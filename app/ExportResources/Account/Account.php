@@ -2,12 +2,12 @@
 
 namespace App\ExportResources\Account;
 
-use App\Services\Account\Settings\ExportResource;
-use App\ExportResources\Contact\Contact;
-use App\ExportResources\Contact\ContactFieldType;
-use App\ExportResources\Relationship\Relationship;
 use App\ExportResources\User\User;
+use App\ExportResources\Contact\Contact;
 use App\ExportResources\Contact\Document;
+use App\ExportResources\Contact\ContactFieldType;
+use App\Services\Account\Settings\ExportResource;
+use App\ExportResources\Relationship\Relationship;
 
 class Account extends ExportResource
 {

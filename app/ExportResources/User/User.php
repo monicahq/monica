@@ -43,6 +43,7 @@ class User extends ExportResource
                 $this->mergeWhen($this->invited_by_user_id !== null, function () {
                     $invited_by_user = Contact::where('account_id', $this->account_id)
                                                 ->find($this->invited_by_user_id);
+
                     return [
                         'invited_by_user' => $invited_by_user->uuid,
                     ];
@@ -50,7 +51,7 @@ class User extends ExportResource
                 $this->mergeWhen($this->me !== null, function () {
                     return ['me_contact' => $this->me->uuid];
                 }),
-            ]
+            ],
         ];
     }
 }

@@ -18,7 +18,7 @@ class Relationship extends ExportResource
                 'type' => $this->relationshipType->name,
                 'contact_is' => $this->contactIs->uuid,
                 'of_contact' => $this->ofContact->uuid,
-            ]
+            ],
         ];
     }
 }
