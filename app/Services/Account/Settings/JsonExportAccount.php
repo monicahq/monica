@@ -55,8 +55,8 @@ class JsonExportAccount extends BaseService
      */
     private function writeExport(array $data, User $user)
     {
-        $result = new class {};
-        $result->account = $this->exportAccount($data);
+        $result = [];
+        $result['account'] = $this->exportAccount($data);
 
         // $this->exportAddress($data);
         // $this->exportCompany($data);

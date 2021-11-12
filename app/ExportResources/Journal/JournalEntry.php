@@ -30,7 +30,6 @@ class JournalEntry extends ExportResource
                             'date' => $data['date'],
                         ],
                     ];
-                    break;
                 case 'day':
                     return [
                         'uuid' => $this->journalable->uuid,
@@ -43,8 +42,8 @@ class JournalEntry extends ExportResource
                             'year' => $data['year'],
                         ],
                     ];
-                    break;
             }
         }
+        return null;
     }
 }
