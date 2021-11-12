@@ -2,9 +2,9 @@
 
 namespace App\ExportResources\Account;
 
-use App\Services\Account\Settings\ExportResource;
-use App\ExportResources\Contact\Contact;
 use App\ExportResources\User\User;
+use App\ExportResources\Contact\Contact;
+use App\Services\Account\Settings\ExportResource;
 
 class Account extends ExportResource
 {

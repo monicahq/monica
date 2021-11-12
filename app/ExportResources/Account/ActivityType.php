@@ -22,12 +22,12 @@ class ActivityType extends ExportResource
     {
         return  [
             'properties' => [
-                $this->mergeWhen($this->category !== null, function() {
+                $this->mergeWhen($this->category !== null, function () {
                     return [
-                        'category' => $this->category->uuid
+                        'category' => $this->category->uuid,
                     ];
                 }),
-            ]
+            ],
         ];
     }
 }

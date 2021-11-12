@@ -17,7 +17,7 @@ class Gift extends ExportResource
         'url',
         'amount',
         'status',
-        'date'
+        'date',
     ];
 
     public function data(): ?array

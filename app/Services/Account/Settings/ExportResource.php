@@ -3,13 +3,13 @@
 namespace App\Services\Account\Settings;
 
 use ArrayAccess;
-use Illuminate\Contracts\Routing\UrlRoutable;
+use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Routing\UrlRoutable;
+use Illuminate\Http\Resources\DelegatesToResource;
 use Illuminate\Database\Eloquent\JsonEncodingException;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
-use Illuminate\Http\Resources\DelegatesToResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use JsonSerializable;
 
 class ExportResource implements ArrayAccess, JsonSerializable, UrlRoutable
 {

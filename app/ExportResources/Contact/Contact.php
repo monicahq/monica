@@ -2,10 +2,10 @@
 
 namespace App\ExportResources\Contact;
 
-use App\ExportResources\Account\ContactActivity;
 use App\ExportResources\Account\Photo;
-use App\Services\Account\Settings\ExportResource;
 use App\ExportResources\Instance\SpecialDate;
+use App\ExportResources\Account\ContactActivity;
+use App\Services\Account\Settings\ExportResource;
 
 class Contact extends ExportResource
 {

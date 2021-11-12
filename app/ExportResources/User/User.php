@@ -43,7 +43,7 @@ class User extends ExportResource
                 'currency' => $this->currency !== null ? $this->currency->iso : null,
                 'invited_by_user' => $invited_by_user !== null ? $invited_by_user->uuid : null,
                 'me_contact' => $this->me !== null ? $this->me->uuid : null,
-            ]
+            ],
         ];
     }
 }
