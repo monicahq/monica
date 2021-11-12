@@ -6,8 +6,8 @@ use Tests\FeatureTestCase;
 use App\Jobs\ExportAccount;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Testing\AssertableJsonString;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ExportAccountTest extends FeatureTestCase
 {
@@ -130,7 +130,7 @@ class ExportAccountTest extends FeatureTestCase
                         ],
                     ],
                 ],
-            ]
+            ],
         ]);
     }
 
@@ -206,7 +206,7 @@ class ExportAccountTest extends FeatureTestCase
                                 'avatar_file_name',
                                 'avatar_location',
                                 'gravatar_url',
-                                'default_avatar_color'
+                                'default_avatar_color',
                             ],
                             'gender',
                         ],
@@ -271,7 +271,7 @@ class ExportAccountTest extends FeatureTestCase
                         ],
                     ],
                 ],
-            ]
+            ],
         ]);
     }
 }
