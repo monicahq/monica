@@ -22,9 +22,9 @@ class Activity extends ExportResource
     {
         return  [
             'properties' => [
-                $this->mergeWhen($this->type !== null, function() {
+                $this->mergeWhen($this->type !== null, function () {
                     return [
-                            'type' => $this->type->uuid
+                        'type' => $this->type->uuid,
                     ];
                 }),
             ],

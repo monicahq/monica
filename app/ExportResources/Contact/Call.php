@@ -2,8 +2,8 @@
 
 namespace App\ExportResources\Contact;
 
-use App\ExportResources\Instance\Emotion\EmotionName;
 use App\Services\Account\Settings\ExportResource;
+use App\ExportResources\Instance\Emotion\EmotionName;
 
 class Call extends ExportResource
 {

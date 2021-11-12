@@ -3,9 +3,9 @@
 namespace App\ExportResources\Contact;
 
 use App\ExportResources\Account\Photo;
-use App\Services\Account\Settings\ExportResource;
 use App\ExportResources\Instance\SpecialDate;
 use App\Models\Contact\Reminder as ContactReminder;
+use App\Services\Account\Settings\ExportResource;
 
 class Contact extends ExportResource
 {
