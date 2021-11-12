@@ -10,6 +10,7 @@ use Illuminate\Http\Resources\DelegatesToResource;
 use Illuminate\Database\Eloquent\JsonEncodingException;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\MissingValue;
 
 class ExportResource implements ArrayAccess, JsonSerializable, UrlRoutable
 {
@@ -100,7 +101,7 @@ class ExportResource implements ArrayAccess, JsonSerializable, UrlRoutable
 
         return is_array($this->resource)
             ? $this->resource
-            : $this->getOneData($this->columns, $this->properties, $this->data());
+            : $this->transform($this->columns, $this->properties, $this->data());
     }
 
     /**
@@ -144,12 +145,12 @@ class ExportResource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Create the Insert query for the given table.
      *
-     * @param  string  $tableName
-     * @param  array  $foreignKey
      * @param  array  $columns
+     * @param  array  $properties
+     * @param  array  $data
      * @return array|null
      */
-    protected function getOneData(array $columns, array $properties = null, array $data = null): ?array
+    protected function transform(array $columns, array $properties = null, array $data = null): ?array
     {
         $result = [];
 
@@ -158,23 +159,18 @@ class ExportResource implements ArrayAccess, JsonSerializable, UrlRoutable
         }
 
         foreach ($columns as $column) {
-            $result[$column] = $this->{$column} ?? $this->resource->getAttributeValue($column);
-        }
-
-        if ($properties !== null) {
-            $result['properties'] = [];
-            foreach ($properties as $property) {
-                $result['properties'][$property] = $this->{$property};
-                // $this->setSimpleProperty($result, $property, $this->resource);
+            if (($value = $this->{$column}) !== null) {
+                $result[$column] = $value;
             }
         }
 
-        // $result[] = $this->mergeWhen($data != null, $data);
-        if ($data !== null) {
-            // if (! isset($result->properties)) {
-            //     $result->properties = [];
-            // }
+        if ($properties !== null) {
+            $result['properties'] = collect($properties)->mapWithKeys(function ($item, $key) {
+                return ($value = $this->{$item}) !== null ? [$item => $value] : new MissingValue();
+            })->toArray();
+        }
 
+        if ($data !== null) {
             foreach ($data as $key => $value) {
                 if (isset($result[$key]) && is_array($result[$key])) {
                     $result[$key] = array_merge($result[$key], $value);
@@ -186,50 +182,4 @@ class ExportResource implements ArrayAccess, JsonSerializable, UrlRoutable
 
         return $result;
     }
-
-    // protected function setSimpleProperty(object $obj, string $name, ?string $prop = null): bool
-    // {
-    //     if ($this->resource === null || ! $this->resource->exists()) {
-    //         return false;
-    //     }
-
-    //     $prop = $prop ?? $name;
-
-    //     $value = $this->{$prop} ?? $this->resource->getAttributeValue($prop);
-    //     if ($value === null) {
-    //         return false;
-    //     }
-
-    //     $obj->properties[$name] = $value;
-
-    //     return true;
-    // }
-
-    // protected function setComplexProperty(string $name, array $values, ?string $type = 'array', ?string $prop = null)
-    // {
-    //     if ($this->resource === null) {
-    //         return null;
-    //     }
-
-    //     $prop = $prop ?? $name;
-
-    //     $result = new class {};
-    //     $result->type = $type ?? 'array';
-    //     $result->properties = [];
-
-    //     $data = $this->resource->{$prop} ?? $this->resource->getAttributeValue($prop);
-    //     if ($data === null) {
-    //         return null;
-    //     }
-
-    //     foreach ($values as $value => $type) {
-    //         if (is_int($value)) {
-    //             $value = $type;
-    //             $type = null;
-    //         }
-    //         $this->setSimpleProperty($result, $value, $data, $type);
-    //     }
-
-    //     return $result;
-    // }
 }

@@ -8,6 +8,7 @@ use App\ExportResources\Contact\ContactFieldType;
 use App\ExportResources\Relationship\Relationship;
 use App\ExportResources\User\User;
 use App\ExportResources\Contact\Document;
+use App\ExportResources\Journal\JournalEntry;
 
 class Account extends ExportResource
 {
@@ -47,6 +48,7 @@ class Account extends ExportResource
             'life_event_types' => LifeEventType::collection($this->lifeEventTypes),
             'life_event_categories' => LifeEventCategory::collection($this->lifeEventCategories),
             'contact_field_types' => ContactFieldType::collection($this->contactFieldTypes),
+            'journal_entries' => JournalEntry::collection($this->journalEntries()->entry()->get()),
         ];
     }
 }

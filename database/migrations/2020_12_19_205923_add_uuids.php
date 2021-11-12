@@ -14,11 +14,14 @@ class AddUuids extends Migration
         'activity_type_categories',
         'contact_field_types',
         'photos',
+        'documents',
         'life_events',
         'life_event_categories',
         'life_event_types',
         'addressbooks',
         'addressbook_subscriptions',
+        'entries',
+        'days',
     ];
 
     /**

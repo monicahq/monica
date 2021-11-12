@@ -2,7 +2,6 @@
 
 namespace App\ExportResources\Contact;
 
-use App\ExportResources\Account\Photo;
 use App\ExportResources\Instance\SpecialDate;
 use App\Models\Contact\Reminder as ContactReminder;
 use App\Services\Account\Settings\ExportResource;
@@ -85,9 +84,7 @@ class Contact extends ExportResource
                 }),
             ],
             $this->mergeWhen($this->activities->count() > 0, [
-                'activities' => $this->activities->map(function ($activity) {
-                    return $activity->uuid;
-                })->toArray(),
+                'activities' => $this->activities->mapUuid(),
             ]),
             $this->mergeWhen($this->calls->count() > 0, [
                 'calls' => Call::collection($this->calls),
@@ -102,14 +99,10 @@ class Contact extends ExportResource
                 'gifts' => Gift::collection($this->gifts),
             ]),
             $this->mergeWhen($this->photos->count() > 0, [
-                'photos' => $this->photos->map(function ($photo) {
-                    return $photo->uuid;
-                })->toArray(),
+                'photos' => $this->photos->mapUuid(),
             ]),
             $this->mergeWhen($this->documents->count() > 0, [
-                'documents' => $this->documents->map(function ($document) {
-                    return $document->uuid;
-                })->toArray(),
+                'documents' => $this->documents->mapUuid(),
             ]),
             $this->mergeWhen($this->notes->count() > 0, [
                 'notes' => Note::collection($this->notes),

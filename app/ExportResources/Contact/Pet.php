@@ -19,9 +19,9 @@ class Pet extends ExportResource
     {
         return  [
             'properties' => [
-                $this->mergeWhen($this->petCategory !== null, [
-                    'category' => $this->petCategory->name,
-                ]),
+                $this->mergeWhen($this->petCategory !== null, function () {
+                    return ['category' => $this->petCategory->name];
+                }),
             ],
         ];
     }

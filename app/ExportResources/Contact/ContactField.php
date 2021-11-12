@@ -20,9 +20,7 @@ class ContactField extends ExportResource
         return  [
             'properties' => [
                 $this->mergeWhen($this->contactFieldType !== null, function () {
-                    return [
-                        'type' => $this->contactFieldType->uuid,
-                    ];
+                    return ['type' => $this->contactFieldType->uuid];
                 }),
             ],
         ];

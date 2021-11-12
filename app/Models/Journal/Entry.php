@@ -7,6 +7,7 @@ use App\Traits\Journalable;
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
 use App\Interfaces\IsJournalableInterface;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Entry extends Model implements IsJournalableInterface
 {
-    use Journalable;
+    use Journalable, HasUuid;
 
     protected $table = 'entries';
 

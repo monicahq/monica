@@ -32,5 +32,16 @@ class MacroServiceProvider extends ServiceProvider
                 return CollectionHelper::groupByItemsProperty($collect, $property);
             });
         }
+
+        if (! Collection::hasMacro('mapUuid')) {
+            Collection::macro('mapUuid', function () {
+                /** @var Collection */
+                $collect = $this;
+
+                return $collect->map(function ($item) {
+                    return $item->uuid;
+                })->toArray();
+            });
+        }
     }
 }

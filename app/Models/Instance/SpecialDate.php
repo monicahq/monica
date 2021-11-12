@@ -6,6 +6,7 @@ use App\Helpers\DateHelper;
 use Illuminate\Support\Carbon;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -26,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class SpecialDate extends Model
 {
+    use HasUuid;
+
     /**
      * The table associated with the model.
      *

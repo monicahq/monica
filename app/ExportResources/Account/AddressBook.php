@@ -20,9 +20,8 @@ class AddressBook extends ExportResource
     public function data(): ?array
     {
         return  [
-            'contacts' => $this->contacts->map(function ($contact) {
-                return $contact->uuid;
-            })->toArray(),
+            'user' => $this->user->uuid,
+            'contacts' => $this->contacts->mapUuid(),
         ];
     }
 }

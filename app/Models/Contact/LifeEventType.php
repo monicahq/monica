@@ -27,6 +27,15 @@ class LifeEventType extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'core_monica_data' => 'boolean',
+    ];
+
+    /**
      * Get the account record associated with the life event type.
      *
      * @return BelongsTo

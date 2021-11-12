@@ -22,6 +22,15 @@ class ContactFieldType extends Model
     protected $table = 'contact_field_types';
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'delible' => 'boolean',
+    ];
+
+    /**
      * Email type contact field.
      *
      * @var string

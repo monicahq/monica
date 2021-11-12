@@ -14,7 +14,7 @@ class LifeEventType extends ExportResource
 
     protected $properties = [
         'name',
-        'default_life_event_category_key',
+        'default_life_event_type_key',
         'core_monica_data',
         'specific_information_structure',
     ];

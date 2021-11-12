@@ -25,14 +25,10 @@ class Gift extends ExportResource
         return  [
             'properties' => [
                 $this->mergeWhen($this->recipient !== null, function () {
-                    return [
-                        'recipient' => $this->recipient->uuid,
-                    ];
+                    return ['recipient' => $this->recipient->uuid];
                 }),
                 $this->mergeWhen($this->photos->count() > 0, [
-                    'photos' => $this->photos->map(function ($photo) {
-                        return $photo->uuid;
-                    })->toArray(),
+                    'photos' => $this->photos->mapUuid(),
                 ]),
             ],
         ];

@@ -4,6 +4,7 @@ namespace App\ExportResources\User;
 
 use App\Models\Contact\Contact;
 use App\Services\Account\Settings\ExportResource;
+use Illuminate\Http\Resources\MissingValue;
 
 class User extends ExportResource
 {
@@ -19,7 +20,6 @@ class User extends ExportResource
     ];
 
     protected $properties = [
-        'admin',
         'locale',
         'metric',
         'fluid_container',
@@ -41,11 +41,15 @@ class User extends ExportResource
                     'currency' => $this->currency->iso,
                 ]),
                 $this->mergeWhen($this->invited_by_user_id !== null, function () {
-                    $invited_by_user = Contact::where('account_id', $this->account_id)
-                                                ->find($this->invited_by_user_id);
-                    return [
-                        'invited_by_user' => $invited_by_user->uuid,
-                    ];
+                    try {
+                        $invited_by_user = Contact::where('account_id', $this->account_id)
+                                                    ->findOrFail($this->invited_by_user_id);
+                        return [
+                            'invited_by_user' => $invited_by_user->uuid,
+                        ];
+                    } catch (\Exception $e) {
+                        return new MissingValue();
+                    }
                 }),
                 $this->mergeWhen($this->me !== null, function () {
                     return ['me_contact' => $this->me->uuid];

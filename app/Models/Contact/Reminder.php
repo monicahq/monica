@@ -35,6 +35,7 @@ class Reminder extends Model
     protected $casts = [
         'is_birthday' => 'boolean',
         'delible' => 'boolean',
+        'inactive' => 'boolean',
         'initial_date' => 'date:Y-m-d',
     ];
 
