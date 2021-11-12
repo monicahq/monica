@@ -8,12 +8,13 @@ use function safe\json_encode;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Services\DavClient\Utils\Dav\DavClient;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AddressBookSubscription extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuid;
 
     protected $table = 'addressbook_subscriptions';
 

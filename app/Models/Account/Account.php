@@ -483,6 +483,26 @@ class Account extends Model
     }
 
     /**
+     * Get the Address Books records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function addressBooks()
+    {
+        return $this->hasMany(AddressBook::class);
+    }
+
+    /**
+     * Get the Address Book Subscriptions records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function addressBookSubscriptions()
+    {
+        return $this->hasMany(AddressBookSubscription::class);
+    }
+
+    /**
      * Get the Company records associated with the account.
      *
      * @return HasMany

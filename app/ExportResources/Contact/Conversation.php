@@ -4,7 +4,7 @@ namespace App\ExportResources\Contact;
 
 use App\Services\Account\Settings\ExportResource;
 
-class ContactField extends ExportResource
+class Conversation extends ExportResource
 {
     protected $columns = [
         'created_at',
@@ -12,7 +12,7 @@ class ContactField extends ExportResource
     ];
 
     protected $properties = [
-        'data',
+        'happened_at'
     ];
 
     public function data(): ?array
@@ -20,10 +20,9 @@ class ContactField extends ExportResource
         return  [
             'properties' => [
                 $this->mergeWhen($this->contactFieldType !== null, function () {
-                    return [
-                        'type' => $this->contactFieldType->uuid,
-                    ];
+                    return ['contact_field_type' => $this->contactFieldType->uuid];
                 }),
+                'messages' => Message::collection($this->messages),
             ],
         ];
     }

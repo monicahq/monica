@@ -4,11 +4,14 @@ namespace App\Models\Contact;
 
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LifeEventType extends Model
 {
+    use HasUuid;
+
     protected $table = 'life_event_types';
 
     /**

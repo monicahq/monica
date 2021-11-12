@@ -4,7 +4,7 @@ namespace App\ExportResources\Contact;
 
 use App\Services\Account\Settings\ExportResource;
 
-class ContactField extends ExportResource
+class Pet extends ExportResource
 {
     protected $columns = [
         'created_at',
@@ -12,18 +12,16 @@ class ContactField extends ExportResource
     ];
 
     protected $properties = [
-        'data',
+        'name'
     ];
 
     public function data(): ?array
     {
         return  [
             'properties' => [
-                $this->mergeWhen($this->contactFieldType !== null, function () {
-                    return [
-                        'type' => $this->contactFieldType->uuid,
-                    ];
-                }),
+                $this->mergeWhen($this->petCategory !== null, [
+                    'category' => $this->petCategory->name,
+                ]),
             ],
         ];
     }

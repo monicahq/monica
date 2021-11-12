@@ -29,6 +29,11 @@ class Gift extends ExportResource
                         'recipient' => $this->recipient->uuid,
                     ];
                 }),
+                $this->mergeWhen($this->photos->count() > 0, [
+                    'photos' => $this->photos->map(function ($photo) {
+                        return $photo->uuid;
+                    })->toArray(),
+                ]),
             ],
         ];
     }

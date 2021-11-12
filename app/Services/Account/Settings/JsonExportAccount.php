@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\Storage;
+use App\ExportResources\Account\Account as AccountResource;
 
 class JsonExportAccount extends BaseService
 {
@@ -117,7 +118,7 @@ class JsonExportAccount extends BaseService
     {
         $account = Account::find($data['account_id']);
 
-        $exporter = new \App\ExportResources\Account\Account($account);
+        $exporter = new AccountResource($account);
 
         return $exporter->resolve();
     }

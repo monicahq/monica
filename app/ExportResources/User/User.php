@@ -13,7 +13,6 @@ class User extends ExportResource
         'last_name',
         'email',
         'email_verified_at',
-        'password',
         'google2fa_secret',
         'created_at',
         'updated_at',
@@ -36,13 +35,21 @@ class User extends ExportResource
 
     public function data(): ?array
     {
-        $invited_by_user = Contact::where('account_id', $this->account_id)->find($this->invited_by_user_id);
-
         return  [
             'properties' => [
-                'currency' => $this->currency !== null ? $this->currency->iso : null,
-                'invited_by_user' => $invited_by_user !== null ? $invited_by_user->uuid : null,
-                'me_contact' => $this->me !== null ? $this->me->uuid : null,
+                $this->mergeWhen($this->currency !== null, [
+                    'currency' => $this->currency->iso,
+                ]),
+                $this->mergeWhen($this->invited_by_user_id !== null, function () {
+                    $invited_by_user = Contact::where('account_id', $this->account_id)
+                                                ->find($this->invited_by_user_id);
+                    return [
+                        'invited_by_user' => $invited_by_user->uuid,
+                    ];
+                }),
+                $this->mergeWhen($this->me !== null, function () {
+                    return ['me_contact' => $this->me->uuid];
+                }),
             ]
         ];
     }
