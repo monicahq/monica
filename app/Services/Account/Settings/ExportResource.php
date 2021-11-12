@@ -2,15 +2,7 @@
 
 namespace App\Services\Account\Settings;
 
-use ArrayAccess;
-use JsonSerializable;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Resources\MissingValue;
-use Illuminate\Contracts\Routing\UrlRoutable;
-use Illuminate\Http\Resources\DelegatesToResource;
-use Illuminate\Database\Eloquent\JsonEncodingException;
-use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ExportResource extends JsonResource
