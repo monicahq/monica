@@ -24,7 +24,7 @@ class LifeEvent extends ExportResource
         return  [
             'properties' => [
                 $this->mergeWhen($this->lifeEventType != null, function () {
-                     return ['type' => $this->lifeEventType->uuid];
+                    return ['type' => $this->lifeEventType->uuid];
                 }),
             ],
         ];

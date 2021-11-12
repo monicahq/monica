@@ -2,11 +2,11 @@
 
 namespace App\Models\Instance;
 
+use App\Traits\HasUuid;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Carbon;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

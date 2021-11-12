@@ -4,10 +4,10 @@ namespace App\Models\Journal;
 
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
+use Illuminate\Database\Eloquent\Builder;
 use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property int $id

@@ -2,12 +2,12 @@
 
 namespace App\Models\Journal;
 
+use App\Traits\HasUuid;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
 use App\Interfaces\IsJournalableInterface;
-use App\Traits\HasUuid;
 
 class Day extends Model implements IsJournalableInterface
 {

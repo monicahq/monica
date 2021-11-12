@@ -3,8 +3,8 @@
 namespace App\ExportResources\User;
 
 use App\Models\Contact\Contact;
-use App\Services\Account\Settings\ExportResource;
 use Illuminate\Http\Resources\MissingValue;
+use App\Services\Account\Settings\ExportResource;
 
 class User extends ExportResource
 {
@@ -44,6 +44,7 @@ class User extends ExportResource
                     try {
                         $invited_by_user = Contact::where('account_id', $this->account_id)
                                                     ->findOrFail($this->invited_by_user_id);
+
                         return [
                             'invited_by_user' => $invited_by_user->uuid,
                         ];
