@@ -22,10 +22,21 @@ class ExportResource extends JsonResource
     protected $properties = null;
 
     /**
+     * Create a new resource instance.
+     *
+     * @param  mixed  $resource
+     * @return void
+     */
+    final public function __construct($resource)
+    {
+        $this->resource = $resource;
+    }
+
+    /**
      * Create a new anonymous resource collection.
      *
      * @param  mixed  $resource
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return CountResourceCollection
      */
     public static function collection($resource)
     {
