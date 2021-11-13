@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Services\Account\Settings;
+namespace App\ExportResources;
 
 use Illuminate\Http\Resources\MissingValue;
+use App\ExportResources\CountResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ExportResource extends JsonResource
@@ -22,14 +23,18 @@ class ExportResource extends JsonResource
     protected $properties = null;
 
     /**
-     * Create a new resource instance.
+     * Create a new anonymous resource collection.
      *
      * @param  mixed  $resource
-     * @return void
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function __construct($resource)
+    public static function collection($resource)
     {
-        $this->resource = $resource;
+        return tap(new CountResourceCollection($resource, static::class), function ($collection) {
+            if (property_exists(static::class, 'preserveKeys')) {
+                $collection->preserveKeys = (new static([]))->preserveKeys === true;
+            }
+        });
     }
 
     /**
@@ -75,9 +80,6 @@ class ExportResource extends JsonResource
 
         foreach ($columns as $column) {
             $result[$column] = $this->{$column};
-            // if (($value = $this->{$column}) !== null) {
-            //     $result[$column] = $value;
-            // }
         }
 
         if ($properties !== null) {

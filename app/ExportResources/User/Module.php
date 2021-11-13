@@ -1,19 +1,20 @@
 <?php
 
-namespace App\ExportResources\Contact;
+namespace App\ExportResources\User;
 
 use App\ExportResources\ExportResource;
 
-class Note extends ExportResource
+class Module extends ExportResource
 {
     protected $columns = [
+        'key',
+        'translation_key',
         'created_at',
         'updated_at',
     ];
 
     protected $properties = [
-        'body',
-        'is_favorite',
-        'favorited_at',
+        'active',
+        'delible',
     ];
 }

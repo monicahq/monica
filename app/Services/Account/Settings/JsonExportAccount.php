@@ -58,43 +58,6 @@ class JsonExportAccount extends BaseService
         $result = [];
         $result['account'] = $this->exportAccount($data);
 
-        // $this->exportAddress($data);
-        // $this->exportCompany($data);
-
-        // $this->exportContactFieldType($data); // config
-
-        // $this->exportConversation($data);
-        // $this->exportDays($data);
-        // $this->exportEmotionCall($data);
-        // $this->exportEntries($data);
-        // $this->exportInvitation($data);
-        // $this->exportJournalEntry($data);
-        // $this->exportLifeEventCategory($data);
-        // $this->exportLifeEventType($data);
-        // $this->exportLifeEvent($data);
-        // $this->exportMessage($data);
-        // $this->exportMetaDataLoveRelationship($data);
-        // $this->exportModule($data);
-        // $this->exportNote($data);
-        // $this->exportOccupation($data);
-        // $this->exportPet($data);
-        // $this->exportPlace($data);
-        // $this->exportRecoveryCode($data);
-        // $this->exportRelationTypeGroup($data);
-        // $this->exportRelationType($data);
-        // $this->exportRelationship($data);
-        // $this->exportReminderOutbox($data);
-        // $this->exportReminderRule($data);
-        // $this->exportReminderSent($data);
-        // $this->exportReminder($data);
-        // $this->exportSpecialDate($data);
-        // $this->exportTag($data);
-        // $this->exportTask($data);
-        // $this->exportTermUser($data);
-        // $this->exportWeather($data);
-        // $this->exportContactPhoto($data);
-        // $this->exportAuditLogs($data);
-
         $this->writeToTempFile(json_encode($result, JSON_PRETTY_PRINT));
     }
 

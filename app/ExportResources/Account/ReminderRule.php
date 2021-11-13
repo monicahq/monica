@@ -1,19 +1,18 @@
 <?php
 
-namespace App\ExportResources\Contact;
+namespace App\ExportResources\Account;
 
 use App\ExportResources\ExportResource;
 
-class Note extends ExportResource
+class ReminderRule extends ExportResource
 {
     protected $columns = [
+        'number_of_days_before',
         'created_at',
         'updated_at',
     ];
 
     protected $properties = [
-        'body',
-        'is_favorite',
-        'favorited_at',
+        'active',
     ];
 }

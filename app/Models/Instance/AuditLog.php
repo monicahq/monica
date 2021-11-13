@@ -39,6 +39,15 @@ class AuditLog extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'should_appear_on_dashboard' => 'boolean',
+    ];
+
+    /**
      * Get the Account record associated with the audit log.
      *
      * @return BelongsTo

@@ -2,7 +2,7 @@
 
 namespace App\ExportResources\User;
 
-use App\Services\Account\Settings\ExportResource;
+use App\ExportResources\ExportResource;
 
 class SyncToken extends ExportResource
 {

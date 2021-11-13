@@ -2,7 +2,7 @@
 
 namespace App\ExportResources\Account;
 
-use App\Services\Account\Settings\ExportResource;
+use App\ExportResources\ExportResource;
 
 class LifeEventType extends ExportResource
 {

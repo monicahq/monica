@@ -2,7 +2,7 @@
 
 namespace App\ExportResources\Relationship;
 
-use App\Services\Account\Settings\ExportResource;
+use App\ExportResources\ExportResource;
 
 class Relationship extends ExportResource
 {

@@ -4,7 +4,7 @@ namespace App\ExportResources\User;
 
 use App\Models\Contact\Contact;
 use Illuminate\Http\Resources\MissingValue;
-use App\Services\Account\Settings\ExportResource;
+use App\ExportResources\ExportResource;
 
 class User extends ExportResource
 {

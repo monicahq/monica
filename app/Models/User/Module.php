@@ -26,6 +26,7 @@ class Module extends Model
      */
     protected $casts = [
         'active' => 'boolean',
+        'delible' => 'boolean',
     ];
 
     /**

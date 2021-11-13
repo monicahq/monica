@@ -2,7 +2,7 @@
 
 namespace App\ExportResources\Contact;
 
-use App\Services\Account\Settings\ExportResource;
+use App\ExportResources\ExportResource;
 
 class Task extends ExportResource
 {

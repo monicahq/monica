@@ -3,7 +3,7 @@
 namespace App\ExportResources\Account;
 
 use App\Models\User\SyncToken;
-use App\Services\Account\Settings\ExportResource;
+use App\ExportResources\ExportResource;
 use App\ExportResources\User\SyncToken as SyncTokenResource;
 
 class AddressBookSubscription extends ExportResource

@@ -2,7 +2,7 @@
 
 namespace App\ExportResources\Instance\Emotion;
 
-use App\Services\Account\Settings\ExportResource;
+use App\ExportResources\ExportResource;
 
 class Emotion extends ExportResource
 {

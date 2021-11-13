@@ -2,7 +2,7 @@
 
 namespace App\ExportResources\Instance;
 
-use App\Services\Account\Settings\ExportResource;
+use App\ExportResources\ExportResource;
 
 class SpecialDate extends ExportResource
 {

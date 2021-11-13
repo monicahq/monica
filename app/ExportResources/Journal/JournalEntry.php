@@ -2,7 +2,7 @@
 
 namespace App\ExportResources\Journal;
 
-use App\Services\Account\Settings\ExportResource;
+use App\ExportResources\ExportResource;
 
 class JournalEntry extends ExportResource
 {
