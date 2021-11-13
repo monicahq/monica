@@ -3,8 +3,8 @@
 namespace App\ExportResources\User;
 
 use App\Models\Contact\Contact;
-use Illuminate\Http\Resources\MissingValue;
 use App\ExportResources\ExportResource;
+use Illuminate\Http\Resources\MissingValue;
 
 class User extends ExportResource
 {

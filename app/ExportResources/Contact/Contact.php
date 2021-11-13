@@ -2,8 +2,8 @@
 
 namespace App\ExportResources\Contact;
 
-use App\ExportResources\Instance\SpecialDate;
 use App\ExportResources\ExportResource;
+use App\ExportResources\Instance\SpecialDate;
 use App\Models\Contact\Reminder as ContactReminder;
 
 class Contact extends ExportResource
