@@ -66,7 +66,7 @@ class DayTest extends TestCase
             'month_name' => strtoupper($date->format('M')),
             'year' => $date->year,
             'happens_today' => true,
-            'date' => $date->addMicroseconds(-1*$date->microsecond),
+            'date' => $date->addMicroseconds(-1 * $date->microsecond),
         ];
 
         $this->assertEquals(
