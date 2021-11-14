@@ -2,6 +2,7 @@
 
 namespace App\ExportResources;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Resources\MissingValue;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -38,9 +39,30 @@ class ExportResource extends JsonResource
      * @param  mixed  $resource
      * @return CountResourceCollection
      */
-    public static function collection($resource)
+    public static function countCollection($resource)
     {
+        if ($resource->count() === 0) {
+            return new MissingValue();
+        }
         return tap(new CountResourceCollection($resource, static::class), function ($collection) {
+            if (property_exists(static::class, 'preserveKeys')) {
+                $collection->preserveKeys = (new static([]))->preserveKeys === true;
+            }
+        });
+    }
+
+    /**
+     * Create a new anonymous resource collection.
+     *
+     * @param  mixed  $resource
+     * @return MapUuidResourceCollection
+     */
+    public static function uuidCollection($resource)
+    {
+        if ($resource->count() === 0) {
+            return new MissingValue();
+        }
+        return tap(new MapUuidResourceCollection($resource, static::class), function ($collection) {
             if (property_exists(static::class, 'preserveKeys')) {
                 $collection->preserveKeys = (new static([]))->preserveKeys === true;
             }
@@ -92,12 +114,6 @@ class ExportResource extends JsonResource
             $result[$column] = $this->{$column};
         }
 
-        if ($properties !== null) {
-            $result['properties'] = collect($properties)->mapWithKeys(function ($item, $key) {
-                return ($value = $this->{$item}) !== null ? [$item => $value] : new MissingValue();
-            })->toArray();
-        }
-
         if ($data !== null) {
             foreach ($data as $key => $value) {
                 if (isset($result[$key]) && is_array($result[$key])) {
@@ -106,6 +122,12 @@ class ExportResource extends JsonResource
                     $result[$key] = $value;
                 }
             }
+        }
+
+        if ($properties !== null) {
+            $result['properties'] = array_merge(collect($properties)->mapWithKeys(function ($item, $key) {
+                return ($value = $this->{$item}) !== null ? [$item => $value] : new MissingValue();
+            })->toArray(), Arr::get($result, 'properties', []));
         }
 
         return $result;

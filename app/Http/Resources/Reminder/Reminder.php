@@ -21,6 +21,7 @@ class Reminder extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'reminder',
             'title' => $this->title,
             'description' => $this->description,

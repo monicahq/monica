@@ -4,9 +4,8 @@ namespace App\ExportResources;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Resources\MissingValue;
 
-class CountResourceCollection extends AnonymousResourceCollection
+class MapUuidResourceCollection extends AnonymousResourceCollection
 {
     /**
      * Transform the resource into a JSON array.
@@ -19,7 +18,7 @@ class CountResourceCollection extends AnonymousResourceCollection
         return [
             'count' => $this->count(),
             'type' => Str::of($this->collects)->afterLast('\\')->kebab()->replace('-','_'),
-            'values' => parent::toArray($request),
+            'values' => $this->collection->mapUuid(),
         ];
     }
 }

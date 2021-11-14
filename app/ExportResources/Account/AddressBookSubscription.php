@@ -6,7 +6,7 @@ use App\Models\User\SyncToken;
 use App\ExportResources\ExportResource;
 use App\ExportResources\User\SyncToken as SyncTokenResource;
 
-class AddressBookSubscription extends ExportResource
+class AddressbookSubscription extends ExportResource
 {
     protected $columns = [
         'uuid',

@@ -22,6 +22,7 @@ class Relationship extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'relationship',
             'contact_is' => new ContactShortResource($this->contactIs),
             'relationship_type' => new RelationshipTypeResource($this->relationshipType),

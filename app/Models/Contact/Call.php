@@ -2,6 +2,7 @@
 
 namespace App\Models\Contact;
 
+use App\Traits\HasUuid;
 use App\Models\Account\Account;
 use App\Models\Instance\Emotion\Emotion;
 use App\Models\ModelBindingWithContact as Model;
@@ -13,6 +14,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Call extends Model
 {
+    use HasUuid;
+
     /**
      * The attributes that aren't mass assignable.
      *

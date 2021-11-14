@@ -22,6 +22,7 @@ class Activity extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'activity',
             'summary' => $this->summary,
             'description' => $this->description,

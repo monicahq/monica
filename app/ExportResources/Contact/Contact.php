@@ -2,6 +2,8 @@
 
 namespace App\ExportResources\Contact;
 
+use App\ExportResources\Account\Activity;
+use App\ExportResources\Account\Photo;
 use App\ExportResources\ExportResource;
 use App\ExportResources\Instance\SpecialDate;
 use App\Models\Contact\Reminder as ContactReminder;
@@ -83,51 +85,23 @@ class Contact extends ExportResource
                     return ['first_met_reminder' => new Reminder(ContactReminder::find($this->first_met_reminder_id))];
                 }),
             ],
-            $this->mergeWhen($this->activities->count() > 0, [
-                'activities' => $this->activities->mapUuid(),
-            ]),
-            $this->mergeWhen($this->calls->count() > 0, [
-                'calls' => Call::collection($this->calls),
-            ]),
-            $this->mergeWhen($this->contactFields->count() > 0, [
-                'contact_fields' => ContactField::collection($this->contactFields),
-            ]),
-            $this->mergeWhen($this->debts->count() > 0, [
-                'debts' => Debt::collection($this->debts),
-            ]),
-            $this->mergeWhen($this->gifts->count() > 0, [
-                'gifts' => Gift::collection($this->gifts),
-            ]),
-            $this->mergeWhen($this->photos->count() > 0, [
-                'photos' => $this->photos->mapUuid(),
-            ]),
-            $this->mergeWhen($this->documents->count() > 0, [
-                'documents' => $this->documents->mapUuid(),
-            ]),
-            $this->mergeWhen($this->notes->count() > 0, [
-                'notes' => Note::collection($this->notes),
-            ]),
-            $this->mergeWhen($this->reminders->count() > 0, [
-                'reminders' => Reminder::collection($this->reminders),
-            ]),
-            $this->mergeWhen($this->tasks->count() > 0, [
-                'tasks' => Task::collection($this->tasks),
-            ]),
-            $this->mergeWhen($this->addresses->count() > 0, [
-                'addresses' => Address::collection($this->addresses),
-            ]),
-            $this->mergeWhen($this->pets->count() > 0, [
-                'pets' => Pet::collection($this->pets),
-            ]),
-            $this->mergeWhen($this->conversations->count() > 0, [
-                'conversations' => Conversation::collection($this->conversations),
-            ]),
-            $this->mergeWhen($this->lifeEvents->count() > 0, [
-                'life_events' => LifeEvent::collection($this->lifeEvents),
-            ]),
-            // $this->mergeWhen($this->occupations->count() > 0, [
-            //     'occupations' => Occupation::collection($this->occupations),
-            // ]),
+            'data' => [
+                Call::countCollection($this->calls),
+                ContactField::countCollection($this->contactFields),
+                Debt::countCollection($this->debts),
+                Gift::countCollection($this->gifts),
+                Note::countCollection($this->notes),
+                Reminder::countCollection($this->reminders),
+                Task::countCollection($this->tasks),
+                Address::countCollection($this->addresses),
+                Pet::countCollection($this->pets),
+                Conversation::countCollection($this->conversations),
+                LifeEvent::countCollection($this->lifeEvents),
+                Activity::uuidCollection($this->activities),
+                Photo::uuidCollection($this->photos),
+                Document::uuidCollection($this->documents),
+                //     Occupation::collection($this->occupations),
+            ],
         ];
     }
 }

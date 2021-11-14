@@ -21,6 +21,7 @@ class ContactSearch extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'contact',
             'route' => route('people.show', $this),
             'complete_name' => $this->name,

@@ -21,6 +21,7 @@ class LifeEventType extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'lifeeventtype',
             'name' => $this->name,
             'core_monica_data' => (bool) $this->core_monica_data,

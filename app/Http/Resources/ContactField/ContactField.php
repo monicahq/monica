@@ -22,6 +22,7 @@ class ContactField extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'contactfield',
             'content' => $this->data,
             'contact_field_type' => new ContactFieldTypeResource($this->contactFieldType),

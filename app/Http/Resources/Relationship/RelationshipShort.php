@@ -21,6 +21,7 @@ class RelationshipShort extends JsonResource
         return [
             'relationship' => [
                 'id' => $this->id,
+                'uuid' => $this->uuid,
                 'name' => $this->relationshipType->name,
             ],
             'contact' => new ContactShortResource($this->ofContact),

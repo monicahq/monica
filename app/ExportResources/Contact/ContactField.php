@@ -7,6 +7,7 @@ use App\ExportResources\ExportResource;
 class ContactField extends ExportResource
 {
     protected $columns = [
+        'uuid',
         'created_at',
         'updated_at',
     ];

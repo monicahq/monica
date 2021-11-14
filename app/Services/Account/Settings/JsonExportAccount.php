@@ -56,6 +56,11 @@ class JsonExportAccount extends BaseService
     private function writeExport(array $data, User $user)
     {
         $result = [];
+        $result['version'] = '1.0';
+        $result['app_version'] = config('monica.app_version');
+        $result['export_date'] = now();
+        $result['url'] = config('app.url');
+        $result['exported_by'] = $user->uuid;
         $result['account'] = $this->exportAccount($data);
 
         $this->writeToTempFile(json_encode($result, JSON_PRETTY_PRINT));

@@ -4,7 +4,7 @@ namespace App\ExportResources\Account;
 
 use App\ExportResources\ExportResource;
 
-class AddressBook extends ExportResource
+class Addressbook extends ExportResource
 {
     protected $columns = [
         'uuid',
@@ -13,8 +13,8 @@ class AddressBook extends ExportResource
     ];
 
     protected $properties = [
-        'description',
         'name',
+        'description',
     ];
 
     public function data(): ?array

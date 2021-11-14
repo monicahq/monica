@@ -21,6 +21,7 @@ class Pet extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'pet',
             'name' => $this->name,
             'pet_category' => PetCategory::make($this->petCategory),

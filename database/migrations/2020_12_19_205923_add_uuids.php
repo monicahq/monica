@@ -21,10 +21,21 @@ class AddUuids extends Migration
         'life_events',
         'life_event_categories',
         'life_event_types',
+        'addresses',
         'addressbooks',
         'addressbook_subscriptions',
         'entries',
         'days',
+        'calls',
+        'contact_fields',
+        'conversations',
+        'debts',
+        'gifts',
+        'messages',
+        'notes',
+        'pets',
+        'reminders',
+        'relationships',
     ];
 
     /**

@@ -21,6 +21,7 @@ class ActivityType extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'activityType',
             'name' => $this->name,
             'location_type' => $this->location_type,
