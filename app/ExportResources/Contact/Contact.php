@@ -2,9 +2,9 @@
 
 namespace App\ExportResources\Contact;
 
-use App\ExportResources\Account\Activity;
 use App\ExportResources\Account\Photo;
 use App\ExportResources\ExportResource;
+use App\ExportResources\Account\Activity;
 use App\ExportResources\Instance\SpecialDate;
 use App\Models\Contact\Reminder as ContactReminder;
 

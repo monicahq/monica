@@ -17,7 +17,7 @@ class MapUuidResourceCollection extends AnonymousResourceCollection
     {
         return [
             'count' => $this->count(),
-            'type' => Str::of($this->collects)->afterLast('\\')->kebab()->replace('-','_'),
+            'type' => Str::of($this->collects)->afterLast('\\')->kebab()->replace('-', '_'),
             'values' => $this->collection->mapUuid(),
         ];
     }
