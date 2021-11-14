@@ -9,6 +9,7 @@ use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
+use App\Traits\HasUuid;
 
 /**
  * A reminder has two states: active and inactive.
@@ -20,6 +21,8 @@ use App\Models\ModelBindingHasherWithContact as Model;
  */
 class Reminder extends Model
 {
+    use HasUuid;
+
     /**
      * The attributes that aren't mass assignable.
      *
