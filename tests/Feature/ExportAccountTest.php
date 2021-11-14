@@ -96,7 +96,7 @@ class ExportAccountTest extends FeatureTestCase
                             ],
                         ],
                     ],
-                   'activity_type_categories' => [
+                    'activity_type_categories' => [
                         '*' => [
                             'uuid',
                             'created_at',
@@ -220,7 +220,7 @@ class ExportAccountTest extends FeatureTestCase
                             ],
                         ],
                     ],
-                   'activity_type_categories' => [
+                    'activity_type_categories' => [
                         '*' => [
                             'uuid',
                             'created_at',
