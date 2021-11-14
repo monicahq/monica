@@ -2,10 +2,10 @@
 
 namespace App\Models\Relationship;
 
+use App\Traits\HasUuid;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\ModelBinding as Model;
-use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**

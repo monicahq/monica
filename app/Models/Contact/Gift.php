@@ -2,12 +2,12 @@
 
 namespace App\Models\Contact;
 
+use App\Traits\HasUuid;
 use App\Models\Account\Photo;
 use App\Models\Account\Account;
 use App\Traits\AmountFormatter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingWithContact as Model;
-use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

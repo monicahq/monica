@@ -2,11 +2,11 @@
 
 namespace App\Models\Contact;
 
+use App\Traits\HasUuid;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingWithContact as Model;
-use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
