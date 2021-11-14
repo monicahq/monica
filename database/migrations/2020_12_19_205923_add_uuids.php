@@ -45,9 +45,12 @@ class AddUuids extends Migration
      */
     public function up()
     {
-        foreach ($this->tables as $table) {
-            Schema::table($table, function (Blueprint $table) {
+        foreach ($this->tables as $name) {
+            Schema::table($name, function (Blueprint $table) use ($name) {
                 $table->uuid('uuid')->after('id')->nullable();
+                if ($name !== 'accounts') {
+                    $table->index(['account_id', 'uuid']);
+                }
             });
         }
     }

@@ -56,7 +56,7 @@ class JsonExportAccount extends BaseService
     private function writeExport(array $data, User $user)
     {
         $result = [];
-        $result['version'] = '1.0';
+        $result['version'] = '1.0-preview.1';
         $result['app_version'] = config('monica.app_version');
         $result['export_date'] = now();
         $result['url'] = config('app.url');
