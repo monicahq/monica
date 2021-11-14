@@ -13,7 +13,8 @@ class ExportAccountTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_exports_account_file()
+    /** @test */
+    public function it_exports_account_file()
     {
         Storage::fake();
         Storage::fake('local');
@@ -27,7 +28,8 @@ class ExportAccountTest extends FeatureTestCase
         Storage::disk('public')->assertExists($path);
     }
 
-    public function test_it_exports_json_file()
+    /** @test */
+    public function it_exports_json_file()
     {
         Storage::fake();
         Storage::fake('local');
@@ -46,37 +48,43 @@ class ExportAccountTest extends FeatureTestCase
         $test->assertStructure([
             'account' => [
                 'uuid',
-                'users' => [
-                    'count',
-                    'values' => [
-                        '*' => [
-                            'uuid',
-                            'first_name',
-                            'last_name',
-                            'email',
-                            'email_verified_at',
-                            'created_at',
-                            'updated_at',
-                            'properties' => [
-                                'locale',
-                                'metric',
-                                'fluid_container',
-                                'contacts_sort_order',
-                                'name_order',
-                                'dashboard_active_tab',
-                                'gifts_active_tab',
-                                'profile_active_tab',
-                                'timezone',
-                                'profile_new_life_event_badge_seen',
-                                'temperature_scale',
-                                'currency',
+                'created_at',
+                'updated_at',
+                'data' => [
+                    '*' => [
+                        'count',
+                        'type',
+                        'values' => [
+                            '*' => [
+                                'uuid',
+                                'created_at',
+                                'updated_at',
+                                'properties',
                             ],
                         ],
                     ],
                 ],
-                'activity_types' => [
-                    'count',
-                    'values' => [
+                'properties' => [
+                    'modules' => [
+                        '*' => [
+                            'key',
+                            'translation_key',
+                            'created_at',
+                            'updated_at',
+                            'properties',
+                        ],
+                    ],
+                    'reminder_rules' => [
+                        '*' => [
+                            'number_of_days_before',
+                            'created_at',
+                            'updated_at',
+                            'properties',
+                        ],
+                    ],
+                ],
+                'instance' => [
+                    'activity_types' => [
                         '*' => [
                             'uuid',
                             'created_at',
@@ -88,10 +96,7 @@ class ExportAccountTest extends FeatureTestCase
                             ],
                         ],
                     ],
-                ],
-                'activity_type_categories' => [
-                    'count',
-                    'values' => [
+                   'activity_type_categories' => [
                         '*' => [
                             'uuid',
                             'created_at',
@@ -102,10 +107,7 @@ class ExportAccountTest extends FeatureTestCase
                             ],
                         ],
                     ],
-                ],
-                'life_event_types' => [
-                    'count',
-                    'values' => [
+                    'life_event_types' => [
                         '*' => [
                             'uuid',
                             'created_at',
@@ -117,10 +119,7 @@ class ExportAccountTest extends FeatureTestCase
                             ],
                         ],
                     ],
-                ],
-                'life_event_categories' => [
-                    'count',
-                    'values' => [
+                    'life_event_categories' => [
                         '*' => [
                             'uuid',
                             'created_at',
@@ -132,10 +131,7 @@ class ExportAccountTest extends FeatureTestCase
                             ],
                         ],
                     ],
-                ],
-                'contact_field_types' => [
-                    'count',
-                    'values' => [
+                    'contact_field_types' => [
                         '*' => [
                             'uuid',
                             'created_at',
@@ -152,7 +148,8 @@ class ExportAccountTest extends FeatureTestCase
         ]);
     }
 
-    public function test_it_exports_json_file_contacts()
+    /** @test */
+    public function it_exports_json_file_contacts()
     {
         Storage::fake();
         Storage::fake('local');
@@ -175,70 +172,43 @@ class ExportAccountTest extends FeatureTestCase
         $test->assertStructure([
             'account' => [
                 'uuid',
-                'users' => [
-                    'count',
-                    'values' => [
-                        '*' => [
-                            'uuid',
-                            'first_name',
-                            'last_name',
-                            'email',
-                            'email_verified_at',
-                            'created_at',
-                            'updated_at',
-                            'properties' => [
-                                'locale',
-                                'metric',
-                                'fluid_container',
-                                'contacts_sort_order',
-                                'name_order',
-                                'dashboard_active_tab',
-                                'gifts_active_tab',
-                                'profile_active_tab',
-                                'timezone',
-                                'profile_new_life_event_badge_seen',
-                                'temperature_scale',
-                                'currency',
+                'created_at',
+                'updated_at',
+                'data' => [
+                    '*' => [
+                        'count',
+                        'type',
+                        'values' => [
+                            '*' => [
+                                'uuid',
+                                'created_at',
+                                'updated_at',
+                                'properties',
                             ],
                         ],
                     ],
                 ],
-                'contacts' => [
-                    'count',
-                    'values' => [
+                'properties' => [
+                    'modules' => [
                         '*' => [
-                            'uuid',
+                            'key',
+                            'translation_key',
                             'created_at',
                             'updated_at',
-                            'properties' => [
-                                'first_name',
-                                'last_name',
-                                'is_starred',
-                                'is_partial',
-                                'is_active',
-                                'is_dead',
-                                'number_of_views',
-                                'avatar' => [
-                                    'avatar_source',
-                                    'avatar_gravatar_url',
-                                    'avatar_adorable_uuid',
-                                    'avatar_adorable_url',
-                                    'avatar_default_url',
-                                    'has_avatar',
-                                    'avatar_external_url',
-                                    'avatar_file_name',
-                                    'avatar_location',
-                                    'gravatar_url',
-                                    'default_avatar_color',
-                                ],
-                                'gender',
-                            ],
+                            'properties',
+                        ],
+                    ],
+                    'reminder_rules' => [
+                        '*' => [
+                            'number_of_days_before',
+                            'created_at',
+                            'updated_at',
+                            'properties',
                         ],
                     ],
                 ],
-                'activity_types' => [
-                    'count',
-                    'values' => [
+                'instance' => [
+                    'activity_types' => [
                         '*' => [
                             'uuid',
                             'created_at',
@@ -250,10 +220,7 @@ class ExportAccountTest extends FeatureTestCase
                             ],
                         ],
                     ],
-                ],
-                'activity_type_categories' => [
-                    'count',
-                    'values' => [
+                   'activity_type_categories' => [
                         '*' => [
                             'uuid',
                             'created_at',
@@ -264,10 +231,7 @@ class ExportAccountTest extends FeatureTestCase
                             ],
                         ],
                     ],
-                ],
-                'life_event_types' => [
-                    'count',
-                    'values' => [
+                    'life_event_types' => [
                         '*' => [
                             'uuid',
                             'created_at',
@@ -279,10 +243,7 @@ class ExportAccountTest extends FeatureTestCase
                             ],
                         ],
                     ],
-                ],
-                'life_event_categories' => [
-                    'count',
-                    'values' => [
+                    'life_event_categories' => [
                         '*' => [
                             'uuid',
                             'created_at',
@@ -294,10 +255,7 @@ class ExportAccountTest extends FeatureTestCase
                             ],
                         ],
                     ],
-                ],
-                'contact_field_types' => [
-                    'count',
-                    'values' => [
+                    'contact_field_types' => [
                         '*' => [
                             'uuid',
                             'created_at',
