@@ -5,11 +5,14 @@ namespace App\Models\Contact;
 use App\Models\Account\Account;
 use App\Interfaces\LabelInterface;
 use App\Models\ModelBindingWithContact as Model;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ContactField extends Model implements LabelInterface
 {
+    use HasUuid;
+
     /**
      * The attributes that aren't mass assignable.
      *

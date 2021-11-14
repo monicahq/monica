@@ -4,10 +4,13 @@ namespace App\Models\Contact;
 
 use App\Models\Account\Account;
 use App\Models\ModelBindingHasher as Model;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Message extends Model
 {
+    use HasUuid;
+
     /**
      * The attributes that aren't mass assignable.
      *

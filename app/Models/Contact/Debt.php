@@ -8,6 +8,7 @@ use App\Models\Settings\Currency;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
+use App\Traits\HasUuid;
 
 /**
  * @property Account $account
@@ -20,7 +21,7 @@ use App\Models\ModelBindingHasherWithContact as Model;
  */
 class Debt extends Model
 {
-    use AmountFormatter;
+    use AmountFormatter, HasUuid;
 
     /**
      * The attributes that aren't mass assignable.

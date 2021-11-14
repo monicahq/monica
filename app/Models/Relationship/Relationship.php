@@ -5,6 +5,7 @@ namespace App\Models\Relationship;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\ModelBinding as Model;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Relationship extends Model
 {
+    use HasUuid;
+
     /**
      * All of the relationships to be touched.
      *

@@ -4,10 +4,13 @@ namespace App\Models\Contact;
 
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Pet extends Model
 {
+    use HasUuid;
+
     /**
      * The attributes that aren't mass assignable.
      *

@@ -37,7 +37,7 @@ class ExportResource extends JsonResource
      * Create a new anonymous resource collection.
      *
      * @param  mixed  $resource
-     * @return CountResourceCollection
+     * @return CountResourceCollection|MissingValue
      */
     public static function countCollection($resource)
     {
@@ -56,7 +56,7 @@ class ExportResource extends JsonResource
      * Create a new anonymous resource collection.
      *
      * @param  mixed  $resource
-     * @return MapUuidResourceCollection
+     * @return MapUuidResourceCollection|MissingValue
      */
     public static function uuidCollection($resource)
     {
