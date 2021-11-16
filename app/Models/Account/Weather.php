@@ -63,9 +63,9 @@ class Weather extends Model
     /**
      * Get the weather code.
      *
-     * @return string
+     * @return string|null
      */
-    public function getSummaryCodeAttribute()
+    public function getSummaryCodeAttribute(): ?string
     {
         $json = $this->weather_json;
 
@@ -74,7 +74,7 @@ class Weather extends Model
             if (($text = Arr::get($json, 'current.condition.text')) === 'Partly cloudy') {
                 $icon = ((bool) Arr::get($json, 'current.is_day')) ? 'partly-cloudy-day' : 'partly-cloudy-night';
             } else {
-                $icon = Str::of($text)->lower()->replace(' ', '-');
+                $icon = (string) Str::of($text)->lower()->replace(' ', '-');
             }
         }
 
@@ -84,17 +84,22 @@ class Weather extends Model
     /**
      * Get the weather summary.
      *
-     * @return string
+     * @return string|null
      */
     public function getSummaryAttribute(): ?string
     {
-        return trans('app.weather_'.$this->summary_code);
+        $summary_code = $this->summary_code;
+        if (empty($summary_code)) {
+            return null;
+        }
+
+        return trans('app.weather_'.$summary_code);
     }
 
     /**
      * Get the weather location.
      *
-     * @return string
+     * @return string|null
      */
     public function getLocationAttribute(): ?string
     {
