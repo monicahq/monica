@@ -102,7 +102,7 @@ class GetGPSCoordinate extends BaseService
         } catch (RequestException $e) {
             if ($e->response->status() === 429 && ($error = $e->response->json('error')) && $error === 'Rate Limited Second') {
                 throw new RateLimitedSecondException($e);
-            } else if ($e->response->status() !== 404 && $e->response->status() !== 400) {
+            } elseif ($e->response->status() !== 404 && $e->response->status() !== 400) {
                 Log::error(__CLASS__.' '.__FUNCTION__.': Error making the call: '.$e->getMessage(), [
                     'query' => Str::of($query)->replace(config('monica.location_iq_api_key'), '******'),
                     $e,

@@ -92,6 +92,7 @@ class Weather extends Model
         if (empty($summary_code)) {
             return null;
         }
+
         return trans('app.weather_'.$summary_code);
     }
 
