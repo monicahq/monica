@@ -61,9 +61,9 @@ class GetGPSCoordinate extends BaseService
      * Build the query to send with the API call.
      *
      * @param  Place  $place
-     * @return string
+     * @return string|null
      */
-    private function buildQuery(Place $place): string
+    private function buildQuery(Place $place): ?string
     {
         if (($q = $place->getAddressAsString()) === null) {
             return null;
