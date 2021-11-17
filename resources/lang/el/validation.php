@@ -19,9 +19,9 @@ return [
     |
     */
 
-    'accepted' => 'The :attribute must be accepted.',
-    'active_url' => 'The :attribute is not a valid URL.',
-    'after' => 'The :attribute must be a date after :date.',
+    'accepted' => 'Το :attribute πρέπει να γίνει αποδεκτό.',
+    'active_url' => 'Το :attribute δεν είναι έγκυρο URL.',
+    'after' => 'To :attribute πρέπει να είναι μια ημερομηνία μετά τις :date.',
     'after_or_equal' => 'The :attribute must be a date after or equal to :date.',
     'alpha' => 'The :attribute may only contain letters.',
     'alpha_dash' => 'The :attribute may only contain letters, numbers, dashes and underscores.',
@@ -156,11 +156,11 @@ return [
 
     'vue' => [
         'max' => [
-            'numeric' => '{field} may not be greater than {max}.',
-            'string' => '{field} may not be greater than {max} characters.',
+            'numeric' => '{field} δεν μπορεί να είναι μεγαλύτερο από {max}.',
+            'string' => '{field} δεν μπορεί να είναι μεγαλύτερο από {max} χαρακτήρες.',
         ],
-        'required' => '{field} is required.',
-        'url' => '{field} is not a valid URL.',
+        'required' => '{field} απαιτείται.',
+        'url' => '{field} δεν είναι έγκυρη διεύθυνση URL.',
     ],
 
 ];

@@ -7,11 +7,11 @@
  */
 
 return [
-    'type_birthday' => 'Wish happy birthday to',
-    'type_phone_call' => 'Call',
-    'type_lunch' => 'Lunch with',
-    'type_hangout' => 'Hangout with',
+    'type_birthday' => 'Ευχόμαστε ευτυχισμένα γενέθλια στο άτομο',
+    'type_phone_call' => 'Κλήση',
+    'type_lunch' => 'Γεύμα με',
+    'type_hangout' => 'Βρέθηκα με',
     'type_email' => 'Email',
-    'type_birthday_kid' => 'Wish happy birthday to the kid of',
+    'type_birthday_kid' => 'Ευχηθείτε χαρούμενα γενέθλια στο παιδί του ατόμου',
 
 ];
