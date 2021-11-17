@@ -367,7 +367,7 @@ return [
     'introductions_no_met_through' => 'Ingen',
     'introductions_first_met_date' => 'Dato dere møttes',
     'introductions_no_first_met_date' => 'Jeg vet ikke hvilken dato vi møttes',
-    'introductions_first_met_date_known' => 'This is the date we met',
+    'introductions_first_met_date_known' => 'Dette er den datoen vi møttes',
     'introductions_add_reminder' => 'Add a reminder to celebrate this encounter on the anniversary this event happened',
     'introductions_update_success' => 'You’ve successfully updated the information about how you met this person',
     'introductions_met_through' => 'Met through <a href=":url">:name</a>',
