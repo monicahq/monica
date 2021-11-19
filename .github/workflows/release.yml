@@ -157,4 +157,4 @@ jobs:
           workflow: Release update
           repo: monicahq/docker
           token: ${{ secrets.DOCKER_GITHUB_TOKEN }}
-          inputs: '{ "release": "v${{ needs.semantic.outputs.new_release_version }}" }'"
+          inputs: '{ "release": "v${{ needs.semantic.outputs.new_release_version }}" }'
