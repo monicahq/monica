@@ -143,3 +143,18 @@ jobs:
         with:
           name: assets
           path: ${{ steps.package.outputs.assets }}
+
+  docker-workflow:
+    needs: [semantic, package]
+    runs-on: ubuntu-latest
+    name: Docker release create
+    if: needs.semantic.outputs.new_release_published == 'true'
+
+    steps:
+      - name: Dispatch docker release
+        uses: benc-uk/workflow-dipatch@v1
+        with:
+          workflow: Release update
+          repo: monicahq/docker
+          token: ${{ secrets.DOCKER_GITHUB_TOKEN }}
+          inputs: '{ "release": "v${{ needs.semantic.outputs.new_release_version }}" }'"

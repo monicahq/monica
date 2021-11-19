@@ -62,7 +62,7 @@ class ScheduleStayInTouchTest extends TestCase
     {
         NotificationFacade::fake();
 
-        Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0, 'America/New_York'));
+        Carbon::setTestNow(Carbon::create(2017, 1, 1, 0, 0, 0, 'America/New_York'));
 
         config(['monica.requires_subscription' => true]);
 
@@ -96,7 +96,7 @@ class ScheduleStayInTouchTest extends TestCase
     {
         NotificationFacade::fake();
 
-        Carbon::setTestNow(Carbon::create(2019, 1, 1, 7, 0, 0, 'America/New_York'));
+        Carbon::setTestNow(Carbon::create(2019, 1, 1, 0, 0, 0, 'America/New_York'));
 
         $account = factory(Account::class)->create([
             'default_time_reminder_is_sent' => '07:00',
