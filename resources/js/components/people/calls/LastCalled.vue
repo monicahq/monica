@@ -37,7 +37,7 @@ export default {
 
   methods: {
     getLastCalled() {
-      axios.get('people/' + this.hash + '/calls/last')
+      axios.get(`people/${this.hash}/calls/last`)
         .then(response => {
           this.lastCalled = response.data.last_talked_to;
         });
