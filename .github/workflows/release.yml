@@ -152,7 +152,7 @@ jobs:
 
     steps:
       - name: Dispatch docker release
-        uses: benc-uk/workflow-dipatch@v1
+        uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: Release update
           repo: monicahq/docker
