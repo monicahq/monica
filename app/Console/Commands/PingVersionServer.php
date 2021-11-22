@@ -6,8 +6,10 @@ use PharIo\Version\Version;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 use App\Models\Instance\Instance;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Console\ConfirmableTrait;
+use Illuminate\Http\Client\RequestException;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class PingVersionServer extends Command
@@ -47,7 +49,7 @@ class PingVersionServer extends Command
 
         // Query version.monicahq.com
         try {
-            $this->log('Call url:'.config('monica.weekly_ping_server_url'));
+            $this->log('Call url: '.config('monica.weekly_ping_server_url'));
             $response = Http::acceptJson()
                 ->post(config('monica.weekly_ping_server_url'), [
                     'uuid' => $instance->uuid,
@@ -55,8 +57,9 @@ class PingVersionServer extends Command
                     'contacts' => Contact::count(),
                 ])
                 ->throw();
-        } catch (\Illuminate\Http\Client\RequestException $e) {
-            $this->log('RequestException... ' + $e->getMessage());
+        } catch (RequestException $e) {
+            $this->error('Error calling "'.config('monica.weekly_ping_server_url').'": ' + $e->getMessage());
+            Log::error(__CLASS__.' Error calling "'.config('monica.weekly_ping_server_url').'": ' + $e->getMessage(), [$e]);
 
             return;
         }
