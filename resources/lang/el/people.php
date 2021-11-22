@@ -302,12 +302,12 @@ return [
     'notes_delete_confirmation' => 'Are you sure you want to delete this note? Deletion is permanent',
 
     // gifts
-    'gifts_title' => 'Gifts',
-    'gifts_add_success' => 'The gift has been added successfully',
-    'gifts_delete_success' => 'The gift has been deleted successfully',
-    'gifts_delete_confirmation' => 'Are you sure you want to delete this gift?',
-    'gifts_add_gift' => 'Add a gift',
-    'gifts_link' => 'Link',
+    'gifts_title' => 'Δώρα',
+    'gifts_add_success' => 'Το δώρο έχει προστεθεί με επιτυχία',
+    'gifts_delete_success' => 'Το δώρο έχει διαγραφεί με επιτυχία',
+    'gifts_delete_confirmation' => 'Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτό το δώρο;',
+    'gifts_add_gift' => 'Προσθέστε ένα δώρο',
+    'gifts_link' => 'Σύνδεσμος',
     'gifts_for' => 'For: {name}',
     'gifts_delete_cta' => 'Delete',
     'gifts_add_title' => 'Gift management for :name',
@@ -335,7 +335,7 @@ return [
     'gifts_add_date' => 'Date (optional)',
 
     // debts
-    'debt_delete_confirmation' => 'Are you sure you want to delete this debt?',
+    'debt_delete_confirmation' => 'Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτό το χρέος;',
     'debt_delete_success' => 'The debt has been deleted successfully',
     'debt_add_success' => 'The debt has been added successfully',
     'debt_title' => 'Χρέη',
@@ -489,9 +489,9 @@ return [
     'life_event_sentence_first_kiss' => 'Kissed for the first time',
 
     // documents
-    'document_list_title' => 'Documents',
-    'document_list_cta' => 'Upload document',
-    'document_list_blank_desc' => 'Here you can store documents related to this person.',
+    'document_list_title' => 'Έγγραφα',
+    'document_list_cta' => 'Μεταφόρτωση εγγράφου',
+    'document_list_blank_desc' => 'Εδώ μπορείτε να αποθηκεύσετε έγγραφα που σχετίζονται με αυτό το άτομο.',
     'document_upload_zone_cta' => 'Μεταφορτώστε ένα αρχείο',
     'document_upload_zone_progress' => 'Μεταφόρτωση του εγγράφου…',
     'document_upload_zone_error' => 'Παρουσιάστηκε σφάλμα κατά τη μεταφόρτωση του εγγράφου. Παρακαλώ δοκιμάστε ξανά παρακάτω.',
