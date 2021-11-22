@@ -269,7 +269,7 @@ return [
     'activities_item_information' => ':Activity. Συνέβη στις :date',
     'activities_add_title' => 'Τι κάνατε με {name};',
     'activities_summary' => 'Περιγράψτε τι κάνατε',
-    'activities_add_pick_activity' => 'Would you like to categorize this activity? You don’t have to, but it will give you statistics later on (optional)',
+    'activities_add_pick_activity' => 'Θα θέλατε να κατηγοριοποιήσετε αυτήν τη δραστηριότητα; Δεν χρειάζεται, αλλά θα σας δώσει στατιστικά αργότερα (προαιρετικό)',
     'activities_add_date_occured' => 'Η δραστηριότητα συνέβη την…',
     'activities_add_participants' => 'Ποιοι, εκτός από την επαφή {name}, συμμετείχαν σε αυτή τη δραστηριότητα; (προαιρετικό)',
     'activities_add_emotions_title' => 'Θέλετε να καταγράψετε πώς αισθανθήκατε κατά τη διάρκεια αυτής της δραστηριότητας; (προαιρετικό)',
@@ -288,7 +288,7 @@ return [
     'activities_profile_year_summary' => 'Δείτε εδώ τι έχετε κάνει εσείς οι δύο το :year',
     'activities_profile_number_occurences' => ':value δραστηριότητα|:value δραστηριότητες',
     'activities_list_participants' => 'Συμμετέχοντες ({total}):',
-    'activities_list_emotions' => 'Emotions felt:',
+    'activities_list_emotions' => 'Συναισθήματα:',
     'activities_list_date' => 'Συνέβη στις',
     'activities_list_category' => 'Κατηγορία:',
 
