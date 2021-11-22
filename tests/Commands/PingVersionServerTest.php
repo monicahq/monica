@@ -2,10 +2,9 @@
 
 namespace Tests\Commands;
 
-use App\Models\Instance\Instance;
 use Tests\TestCase;
+use App\Models\Instance\Instance;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PingVersionServerTest extends TestCase
