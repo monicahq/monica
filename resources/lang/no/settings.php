@@ -192,7 +192,7 @@ return [
     'subscriptions_account_cancel_action' => 'Avslutt abonnement',
     'subscriptions_account_cancel' => 'Du kan avslutte abonnementet når som helst.',
     'subscriptions_account_free_plan' => 'Du er på en gratis abonnementsplan.',
-    'subscriptions_account_free_plan_upgrade' => 'Du kan oppgradere kontoen din til planen :name, som koster $:price per måned. Her er fordelene:',
+    'subscriptions_account_free_plan_upgrade' => 'Du kan oppgradere kontoen din til planen :name, som koster kr:price per måned. Her er fordelene:',
     'subscriptions_account_free_plan_benefits_users' => 'Ubegrenset antall brukere',
     'subscriptions_account_free_plan_benefits_reminders' => 'Påminnelser via e-post',
     'subscriptions_account_free_plan_benefits_import_data_vcard' => 'Importer kontaktene dine med vCard',
