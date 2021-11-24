@@ -423,7 +423,7 @@ return [
 
     // life events
     'life_event_list_tab_life_events' => 'Livets hendelser',
-    'life_event_list_tab_other' => 'Notes, reminders, …',
+    'life_event_list_tab_other' => 'Notater, påminnelser, …',
     'life_event_list_title' => 'Life events',
     'life_event_blank' => 'Log what happens to the life of {name} for your future reference.',
     'life_event_list_cta' => 'Add life event',
