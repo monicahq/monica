@@ -361,7 +361,7 @@ return [
     // Introductions
     'introductions_sidebar_title' => 'Πώς γνωριστήκατε;',
     'introductions_blank_cta' => 'Αναφέρετε πώς γνωριστήκατε με την επαφή :name',
-    'introductions_title_edit' => 'How did you meet :name?',
+    'introductions_title_edit' => 'Πως γνωριστήκατε με την επαφή :name;',
     'introductions_additional_info' => 'Εξηγήστε πώς και πού γνωριστήκατε',
     'introductions_edit_met_through' => 'Σας έχει συστήσει κάποιος σε αυτό το άτομο;',
     'introductions_no_met_through' => 'Κανένας',
