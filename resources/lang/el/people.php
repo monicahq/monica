@@ -174,7 +174,7 @@ return [
 
     // food preferences
     'food_preferences_add_success' => 'Οι διατροφικές προτιμήσεις έχουν αποθηκευτεί',
-    'food_preferences_edit_description' => 'Perhaps :firstname or someone in the :family’s family has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
+    'food_preferences_edit_description' => 'Ίσως η επαφή με το όνομα :firstname ή κάποιος άλλος στην οικογένεια :family να έχει αλλεργία. Ή δεν του αρέσει ένα συγκεκριμένο μπουκάλι κρασί. Σημειώστε το εδώ για να το θυμάστε την επόμενη φορά που θα τους καλέσετε για δείπνο',
     'food_preferences_edit_description_no_last_name' => 'Ίσως η επαφή με το όνομα :firstname να έχει αλλεργία. Ή δεν του αρέσει ένα συγκεκριμένο μπουκάλι κρασί. Σημειώστε το εδώ για να το θυμάστε την επόμενη φορά που θα τον καλέσετε για δείπνο',
     'food_preferences_edit_title' => 'Προσδιορίστε τις διατροφικές προτιμήσεις',
     'food_preferences_edit_cta' => 'Αποθήκευση διατροφικών προτιμήσεων',
