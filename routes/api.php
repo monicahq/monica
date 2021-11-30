@@ -146,6 +146,7 @@ Route::group(['middleware' => ['auth:api']], function () {
          */
         Route::apiResource('contactfieldtypes', 'Settings\\ApiContactFieldTypeController');
         Route::apiResource('logs', 'Settings\\ApiAuditLogController');
+        Route::post('exportToSql', 'Settings\\ApiExportController@exportToSql');
 
         /*
          * MISC
