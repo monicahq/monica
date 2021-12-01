@@ -6,7 +6,8 @@ use App\Helpers\DateHelper;
 use Illuminate\Support\Carbon;
 use App\Jobs\ExportAccountAsSQL;
 
-trait SQLExporter {
+trait SQLExporter
+{
     /**
      * Exports the data of the account in SQL format.
      *

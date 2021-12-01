@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers\Api\Settings;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Api\ApiController;
 use App\Traits\SQLExporter;
-
+use App\Http\Controllers\Api\ApiController;
 
 class ApiExportController extends ApiController
 {
