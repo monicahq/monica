@@ -33,7 +33,6 @@ class SettingsController extends Controller
     /**
      * SettingsController@exportToSql uses this trait.
      */
-
     use SQLExporter;
 
     /**
@@ -180,7 +179,6 @@ class SettingsController extends Controller
         return view('settings.export')
             ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account));
     }
-
 
     /**
      * Display the import view.
