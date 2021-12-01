@@ -28,9 +28,16 @@ use App\Services\Account\Settings\DestroyAccount;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
+use App\Traits\SQLExporter;
 
 class SettingsController extends Controller
 {
+    /**
+     * SettingsController@exportToSql uses this trait.
+     */
+
+    use SQLExporter;
+
     /**
      * Instantiate a new controller instance.
      *
@@ -176,23 +183,6 @@ class SettingsController extends Controller
             ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account));
     }
 
-    /**
-     * Exports the data of the account in SQL format.
-     *
-     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response|null
-     */
-    public function exportToSql()
-    {
-        $path = ExportAccountAsSQL::dispatchSync();
-
-        $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
-
-        $exportdate = Carbon::now(DateHelper::getTimezone())->format('Y-m-d');
-
-        return response()
-            ->download($adapter->getPathPrefix().$path, "monica-export.$exportdate.sql")
-            ->deleteFileAfterSend(true);
-    }
 
     /**
      * Display the import view.
