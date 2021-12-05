@@ -45,7 +45,7 @@ class AddDefaultValueToAttribute extends BaseService implements ServiceInterface
     /**
      * Add a default value to an attribute.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Attribute
      */
     public function execute(array $data): Attribute

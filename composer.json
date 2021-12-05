@@ -21,8 +21,8 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^5.10",
-        "phpstan/phpstan": "^1.2",
         "phpunit/phpunit": "^9.5.10",
+        "psalm/plugin-laravel": "^1.5",
         "vimeo/psalm": "^4.14"
     },
     "autoload": {

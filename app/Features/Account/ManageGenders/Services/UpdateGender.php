@@ -41,7 +41,7 @@ class UpdateGender extends BaseService implements ServiceInterface
     /**
      * Update a gender.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Gender
      */
     public function execute(array $data): Gender

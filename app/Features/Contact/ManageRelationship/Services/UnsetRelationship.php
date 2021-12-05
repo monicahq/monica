@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class UnsetRelationship extends BaseService implements ServiceInterface
 {
     private RelationshipType $relationshipType;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -49,7 +50,7 @@ class UnsetRelationship extends BaseService implements ServiceInterface
     /**
      * Unset an existing relationship between two contacts.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data): void
     {
@@ -66,7 +67,7 @@ class UnsetRelationship extends BaseService implements ServiceInterface
         $this->unsetRelationship($this->contact, $otherContact);
         $this->unsetRelationship($otherContact, $this->contact);
 
-        $this->log($otherContact, $this->relationshipType);
+        $this->log($otherContact);
     }
 
     private function unsetRelationship(Contact $contact, Contact $otherContact): void

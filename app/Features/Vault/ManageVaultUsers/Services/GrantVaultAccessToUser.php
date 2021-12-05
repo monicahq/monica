@@ -50,7 +50,7 @@ class GrantVaultAccessToUser extends BaseService implements ServiceInterface
     /**
      * Grant the access to the given vault to the given user.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data): void
     {

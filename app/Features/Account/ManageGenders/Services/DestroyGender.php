@@ -40,7 +40,7 @@ class DestroyGender extends BaseService implements ServiceInterface
     /**
      * Destroy a gender.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data): void
     {

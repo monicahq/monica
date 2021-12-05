@@ -126,7 +126,6 @@ class UpdateNoteTest extends TestCase
             'vault_id' => $vault->id,
             'author_id' => $author->id,
             'contact_id' => $contact->id,
-            'author_id' => $author->id,
             'note_id' => $note->id,
             'title' => 'super title',
             'body' => 'super body',

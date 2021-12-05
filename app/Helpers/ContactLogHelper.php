@@ -12,8 +12,7 @@ class ContactLogHelper
      * A log is stored in a json file and needs some kind of processing to make
      * it understandable by a human.
      *
-     * @param ContactLog $log
-     *
+     * @param  ContactLog  $log
      * @return string
      */
     public static function process(ContactLog $log): string

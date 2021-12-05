@@ -46,7 +46,7 @@ class AssociateInformationToTemplate extends BaseService implements ServiceInter
     /**
      * Associate a template with an information.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Template
      */
     public function execute(array $data): Template

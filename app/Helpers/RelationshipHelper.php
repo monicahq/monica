@@ -12,7 +12,7 @@ class RelationshipHelper
      * relationship is "son -> father".
      * We need to search this by name.
      *
-     * @param RelationshipType $relationshipType
+     * @param  RelationshipType  $relationshipType
      * @return RelationshipType
      */
     public static function getReverseRelationshipType(RelationshipType $relationshipType): RelationshipType

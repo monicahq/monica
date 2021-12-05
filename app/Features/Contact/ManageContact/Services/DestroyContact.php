@@ -44,7 +44,7 @@ class DestroyContact extends BaseService implements ServiceInterface
     /**
      * Destroy a contact.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data): void
     {

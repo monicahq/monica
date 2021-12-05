@@ -42,7 +42,7 @@ class DestroyAttribute extends BaseService implements ServiceInterface
     /**
      * Destroy an attribute.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data): void
     {

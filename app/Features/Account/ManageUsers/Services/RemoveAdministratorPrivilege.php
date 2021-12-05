@@ -39,7 +39,7 @@ class RemoveAdministratorPrivilege extends BaseService implements ServiceInterfa
     /**
      * Remove the administrator permission from another user.
      *
-     * @param array $data
+     * @param  array  $data
      * @return User
      */
     public function execute(array $data): User

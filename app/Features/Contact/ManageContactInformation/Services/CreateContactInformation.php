@@ -51,7 +51,7 @@ class CreateContactInformation extends BaseService implements ServiceInterface
     /**
      * Create a contact information.
      *
-     * @param array $data
+     * @param  array  $data
      * @return ContactInformation
      */
     public function execute(array $data): ContactInformation

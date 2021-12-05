@@ -40,7 +40,7 @@ class CreateRelationshipGroupType extends BaseService implements ServiceInterfac
     /**
      * Create a relationship group type.
      *
-     * @param array $data
+     * @param  array  $data
      * @return RelationshipGroupType
      */
     public function execute(array $data): RelationshipGroupType

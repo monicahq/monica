@@ -60,7 +60,7 @@ class CreateContactTest extends TestCase
 
         $account = $this->createAccount();
         $regis = User::factory()->create([
-                'account_id' => $account->id,
+            'account_id' => $account->id,
         ]);
         $vault = Vault::factory()->create();
         $this->executeService($regis, $account, $vault);

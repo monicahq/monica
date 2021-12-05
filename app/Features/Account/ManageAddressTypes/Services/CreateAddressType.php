@@ -40,7 +40,7 @@ class CreateAddressType extends BaseService implements ServiceInterface
     /**
      * Create an address type.
      *
-     * @param array $data
+     * @param  array  $data
      * @return AddressType
      */
     public function execute(array $data): AddressType

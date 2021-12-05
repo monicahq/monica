@@ -46,7 +46,7 @@ class AssignLabel extends BaseService implements ServiceInterface
     /**
      * Assign a label to the contact.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data): void
     {

@@ -42,7 +42,7 @@ class CreateInformation extends BaseService implements ServiceInterface
     /**
      * Create an information.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Information
      */
     public function execute(array $data): Information

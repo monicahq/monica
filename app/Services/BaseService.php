@@ -49,7 +49,7 @@ abstract class BaseService
     /**
      * Validate an array against a set of rules.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function validateRules(array $data): bool
@@ -86,7 +86,7 @@ abstract class BaseService
     /**
      * Validate that the author of the action belongs to the account.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function validateAuthorBelongsToAccount(array $data): void
     {
@@ -97,7 +97,7 @@ abstract class BaseService
     /**
      * Validate that the author of the action is the account administrator.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function validateAuthorIsAccountAdministrator(): void
     {
@@ -109,7 +109,7 @@ abstract class BaseService
     /**
      * Validate that the vault belongs to the account.
      *
-     * @param array $data
+     * @param  array  $data
      */
     private function validateVaultExists(array $data): void
     {
@@ -121,7 +121,7 @@ abstract class BaseService
      * Validate that the user has the right to do what he's supposed to do in
      * the given vault.
      *
-     * @param string $permission
+     * @param  string  $permission
      */
     public function validateUserPermissionInVault(string $permission): void
     {
@@ -138,7 +138,7 @@ abstract class BaseService
     /**
      * Validate that the contact belongs to the account.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function validateContactBelongsToVault(array $data): void
     {
@@ -149,8 +149,8 @@ abstract class BaseService
     /**
      * Returns the value if it's defined, or false otherwise.
      *
-     * @param mixed $data
-     * @param mixed $index
+     * @param  mixed  $data
+     * @param  mixed  $index
      * @return mixed
      */
     public function valueOrFalse($data, $index)
@@ -165,9 +165,8 @@ abstract class BaseService
     /**
      * Checks if the value is empty or null.
      *
-     * @param mixed $data
-     * @param mixed $index
-     *
+     * @param  mixed  $data
+     * @param  mixed  $index
      * @return mixed
      */
     public function valueOrNull($data, $index)

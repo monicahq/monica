@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Information extends Model
 {
@@ -45,7 +47,7 @@ class Information extends Model
     /**
      * Get the attribute values associated with the information.
      *
-     * @return hasMany
+     * @return HasMany
      */
     public function attributes()
     {
@@ -55,7 +57,7 @@ class Information extends Model
     /**
      * Get the templates associated with the information.
      *
-     * @return belongsToMany
+     * @return BelongsToMany
      */
     public function templates()
     {

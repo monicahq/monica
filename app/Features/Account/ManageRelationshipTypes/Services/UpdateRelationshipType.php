@@ -44,7 +44,7 @@ class UpdateRelationshipType extends BaseService implements ServiceInterface
     /**
      * Update a relationship type.
      *
-     * @param array $data
+     * @param  array  $data
      * @return RelationshipType
      */
     public function execute(array $data): RelationshipType

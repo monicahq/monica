@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,8 +27,6 @@ Route::get('/', function () {
 require __DIR__.'/auth.php';
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('logout', 'Auth\\LoginController@logout');
-
     Route::get('dashboard', 'Dashboard\\DashboardController@index')->name('dashboard');
 
     Route::get('home', 'HomeController@index')->name('home');

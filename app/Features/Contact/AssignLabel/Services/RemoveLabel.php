@@ -46,7 +46,7 @@ class RemoveLabel extends BaseService implements ServiceInterface
     /**
      * Remove a label from the contact.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data): void
     {

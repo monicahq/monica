@@ -50,7 +50,7 @@ class SetRelationship extends BaseService implements ServiceInterface
      * When a relationship is created (father -> son), we need to create
      * the inverse relationship (son -> father) as well.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data): void
     {

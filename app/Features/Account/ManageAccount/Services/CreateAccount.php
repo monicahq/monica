@@ -37,7 +37,7 @@ class CreateAccount extends BaseService implements ServiceInterface
     /**
      * Create an account.
      *
-     * @param array $data
+     * @param  array  $data
      * @return User
      */
     public function execute(array $data): User

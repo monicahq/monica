@@ -38,7 +38,7 @@ class DestroyAccount extends BaseService implements ServiceInterface
     /**
      * Delete an account.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data): void
     {

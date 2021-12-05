@@ -52,7 +52,7 @@ class UpdateContactInformation extends BaseService implements ServiceInterface
     /**
      * Update a contact information.
      *
-     * @param array $data
+     * @param  array  $data
      * @return ContactInformation
      */
     public function execute(array $data): ContactInformation

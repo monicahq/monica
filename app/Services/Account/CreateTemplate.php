@@ -41,7 +41,7 @@ class CreateTemplate extends BaseService implements ServiceInterface
     /**
      * Create a template.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Template
      */
     public function execute(array $data): Template

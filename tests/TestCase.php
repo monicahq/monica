@@ -46,7 +46,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * Create a vault.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return Vault
      */
     public function createVault(Account $account): Vault

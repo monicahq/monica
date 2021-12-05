@@ -41,7 +41,7 @@ class UpdateRelationshipGroupType extends BaseService implements ServiceInterfac
     /**
      * Update a relationship type.
      *
-     * @param array $data
+     * @param  array  $data
      * @return RelationshipGroupType
      */
     public function execute(array $data): RelationshipGroupType

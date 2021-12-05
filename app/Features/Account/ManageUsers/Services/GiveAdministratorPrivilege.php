@@ -39,7 +39,7 @@ class GiveAdministratorPrivilege extends BaseService implements ServiceInterface
     /**
      * Give the administrator permission to another user.
      *
-     * @param array $data
+     * @param  array  $data
      * @return User
      */
     public function execute(array $data): User

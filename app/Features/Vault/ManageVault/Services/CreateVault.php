@@ -45,7 +45,7 @@ class CreateVault extends BaseService implements ServiceInterface
     /**
      * Create a vault.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Vault
      */
     public function execute(array $data): Vault

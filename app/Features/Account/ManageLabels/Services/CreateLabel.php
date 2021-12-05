@@ -42,7 +42,7 @@ class CreateLabel extends BaseService implements ServiceInterface
     /**
      * Create a label.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Label
      */
     public function execute(array $data): Label

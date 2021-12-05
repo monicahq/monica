@@ -41,7 +41,7 @@ class UpdateLabel extends BaseService implements ServiceInterface
     /**
      * Update a label.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Label
      */
     public function execute(array $data): Label

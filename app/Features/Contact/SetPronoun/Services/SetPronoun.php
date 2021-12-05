@@ -46,7 +46,7 @@ class SetPronoun extends BaseService implements ServiceInterface
     /**
      * Set a contact's pronoun.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data): void
     {

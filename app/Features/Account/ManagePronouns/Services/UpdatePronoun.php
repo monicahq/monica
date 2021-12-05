@@ -41,7 +41,7 @@ class UpdatePronoun extends BaseService implements ServiceInterface
     /**
      * Update a gender.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Pronoun
      */
     public function execute(array $data): Pronoun

@@ -45,7 +45,7 @@ class RemovePronoun extends BaseService implements ServiceInterface
     /**
      * Unset a contact's pronoun.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data): void
     {

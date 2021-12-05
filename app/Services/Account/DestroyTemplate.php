@@ -41,7 +41,7 @@ class DestroyTemplate extends BaseService implements ServiceInterface
     /**
      * Destroy a template.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data): void
     {

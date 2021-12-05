@@ -51,7 +51,8 @@ class SetupAccount implements ShouldQueue
 
     /**
      * Create a new job instance.
-     * @param User $user
+     *
+     * @param  User  $user
      */
     public function __construct(User $user)
     {
@@ -368,8 +369,8 @@ class SetupAccount implements ShouldQueue
     /**
      * Add a default value to an attribute.
      *
-     * @param Attribute $attribute
-     * @param string $name
+     * @param  Attribute  $attribute
+     * @param  string  $name
      */
     private function addDefaultValue(Attribute $attribute, string $name): void
     {
@@ -386,7 +387,7 @@ class SetupAccount implements ShouldQueue
     /**
      * Associate the information to the template.
      *
-     * @param Information $information
+     * @param  Information  $information
      */
     private function associateToTemplate(Information $information): void
     {

@@ -40,7 +40,7 @@ class CreateGender extends BaseService implements ServiceInterface
     /**
      * Create a gender.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Gender
      */
     public function execute(array $data): Gender

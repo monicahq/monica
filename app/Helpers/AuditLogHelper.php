@@ -14,8 +14,7 @@ class AuditLogHelper
      * A log is stored in a json file and needs some kind of processing to make
      * it understandable by a human.
      *
-     * @param AuditLog $log
-     *
+     * @param  AuditLog  $log
      * @return string
      */
     public static function process(AuditLog $log): string

@@ -43,7 +43,7 @@ class UpdateVault extends BaseService implements ServiceInterface
     /**
      * Update a vault.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Vault
      */
     public function execute(array $data): Vault

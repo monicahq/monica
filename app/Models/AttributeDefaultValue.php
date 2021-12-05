@@ -13,7 +13,7 @@ class AttributeDefaultValue extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'attribute_id', 'value',

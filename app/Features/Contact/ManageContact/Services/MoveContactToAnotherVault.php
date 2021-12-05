@@ -13,6 +13,7 @@ use App\Exceptions\NotEnoughPermissionException;
 
 class MoveContactToAnotherVault extends BaseService implements ServiceInterface
 {
+    private array $data;
     private Vault $newVault;
 
     /**
@@ -49,7 +50,7 @@ class MoveContactToAnotherVault extends BaseService implements ServiceInterface
     /**
      * Move a contact from one vault to another.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data): Contact

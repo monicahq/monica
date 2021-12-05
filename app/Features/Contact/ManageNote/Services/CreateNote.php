@@ -49,7 +49,7 @@ class CreateNote extends BaseService implements ServiceInterface
     /**
      * Create a note.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Note
      */
     public function execute(array $data): Note

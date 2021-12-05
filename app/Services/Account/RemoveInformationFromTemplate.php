@@ -44,7 +44,7 @@ class RemoveInformationFromTemplate extends BaseService implements ServiceInterf
     /**
      * Remove an information from a template.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Template
      */
     public function execute(array $data): Template

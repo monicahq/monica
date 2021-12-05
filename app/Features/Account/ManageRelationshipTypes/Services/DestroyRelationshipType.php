@@ -42,7 +42,7 @@ class DestroyRelationshipType extends BaseService implements ServiceInterface
     /**
      * Destroy a relationship type.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data): void
     {

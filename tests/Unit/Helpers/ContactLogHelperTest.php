@@ -108,7 +108,7 @@ class ContactLogHelperTest extends TestCase
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
         $sentence = ContactLogHelper::process($log);
         $this->assertEquals(
-            'Set the contact <a href="'.$url.'">'.$contact->name. '</a> as Father',
+            'Set the contact <a href="'.$url.'">'.$contact->name.'</a> as Father',
             $sentence
         );
     }
@@ -144,7 +144,7 @@ class ContactLogHelperTest extends TestCase
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
         $sentence = ContactLogHelper::process($log);
         $this->assertEquals(
-            'Removed the contact <a href="'.$url.'">'.$contact->name. '</a> as Father',
+            'Removed the contact <a href="'.$url.'">'.$contact->name.'</a> as Father',
             $sentence
         );
     }

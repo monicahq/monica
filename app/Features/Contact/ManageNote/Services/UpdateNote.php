@@ -49,7 +49,7 @@ class UpdateNote extends BaseService implements ServiceInterface
     /**
      * Update a note.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Note
      */
     public function execute(array $data): Note

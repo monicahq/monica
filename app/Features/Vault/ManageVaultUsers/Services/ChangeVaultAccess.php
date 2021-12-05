@@ -4,6 +4,7 @@ namespace App\Features\Vault\ManageVaultUsers\Services;
 
 use App\Models\User;
 use App\Models\Vault;
+use App\Helpers\VaultHelper;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +50,7 @@ class ChangeVaultAccess extends BaseService implements ServiceInterface
     /**
      * Change the access type of the given user in the given vault.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data): void
     {
@@ -90,7 +91,7 @@ class ChangeVaultAccess extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'user_name' => $this->user->name,
                 'vault_name' => $this->vault->name,
-                'permission_type' => $this->vault->friendlyType,
+                'permission_type' => VaultHelper::getPermissionFriendlyName($this->data['permission']),
             ]),
         ]);
     }

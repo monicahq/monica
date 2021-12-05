@@ -41,7 +41,7 @@ class UpdateAddressType extends BaseService implements ServiceInterface
     /**
      * Update an address type.
      *
-     * @param array $data
+     * @param  array  $data
      * @return AddressType
      */
     public function execute(array $data): AddressType

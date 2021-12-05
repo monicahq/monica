@@ -40,7 +40,7 @@ class CreatePronoun extends BaseService implements ServiceInterface
     /**
      * Create a pronoun.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Pronoun
      */
     public function execute(array $data): Pronoun

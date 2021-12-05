@@ -5,6 +5,7 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'register_title' => 'Create an account now',
     'register_email' => 'Your email address',
+    'register_email' => 'Your email address',
     'register_email_help' => 'We\'ll never spam. You\'ll receive one email to confirm your email address once you sign up, and won\'t be added to any nasty email marketing campaigns, nor will you receive emails from a sales team.',
     'register_password' => 'Enter a hard-to-guess password',
     'register_cta' => 'Create your account →',

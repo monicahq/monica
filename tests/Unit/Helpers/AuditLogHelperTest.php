@@ -698,7 +698,7 @@ class AuditLogHelperTest extends TestCase
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
         $sentence = AuditLogHelper::process($log);
         $this->assertEquals(
-            'Copied the contact <a href="'.$url.'">'.$contact->name. '</a> from the vault Original vault to the vault Target vault',
+            'Copied the contact <a href="'.$url.'">'.$contact->name.'</a> from the vault Original vault to the vault Target vault',
             $sentence
         );
     }
@@ -776,7 +776,7 @@ class AuditLogHelperTest extends TestCase
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
         $sentence = AuditLogHelper::process($log);
         $this->assertEquals(
-            'Set the contact <a href="'.$url.'">'.$contact->name. '</a> as Father of Ross Bing (deleted)',
+            'Set the contact <a href="'.$url.'">'.$contact->name.'</a> as Father of Ross Bing (deleted)',
             $sentence
         );
 
@@ -795,7 +795,7 @@ class AuditLogHelperTest extends TestCase
         $url = env('APP_URL').'/vaults/'.$otherContact->vault->id.'/contacts/'.$otherContact->id;
         $sentence = AuditLogHelper::process($log);
         $this->assertEquals(
-            'Set the contact Jess (deleted) as Father of <a href="'.$url.'">'. $otherContact->name.'</a>',
+            'Set the contact Jess (deleted) as Father of <a href="'.$url.'">'.$otherContact->name.'</a>',
             $sentence
         );
 
@@ -814,7 +814,7 @@ class AuditLogHelperTest extends TestCase
         $urlOtherContact = env('APP_URL').'/vaults/'.$otherContact->vault->id.'/contacts/'.$otherContact->id;
         $sentence = AuditLogHelper::process($log);
         $this->assertEquals(
-            'Set the contact <a href="'.$urlContact.'">'.$contact->name.'</a> as Father of <a href="'.$urlOtherContact.'">'. $otherContact->name.'</a>',
+            'Set the contact <a href="'.$urlContact.'">'.$contact->name.'</a> as Father of <a href="'.$urlOtherContact.'">'.$otherContact->name.'</a>',
             $sentence
         );
     }
@@ -852,7 +852,7 @@ class AuditLogHelperTest extends TestCase
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
         $sentence = AuditLogHelper::process($log);
         $this->assertEquals(
-            'Unset the contact <a href="'.$url.'">'.$contact->name. '</a> as related to Ross Bing (deleted)',
+            'Unset the contact <a href="'.$url.'">'.$contact->name.'</a> as related to Ross Bing (deleted)',
             $sentence
         );
 
@@ -870,7 +870,7 @@ class AuditLogHelperTest extends TestCase
         $url = env('APP_URL').'/vaults/'.$otherContact->vault->id.'/contacts/'.$otherContact->id;
         $sentence = AuditLogHelper::process($log);
         $this->assertEquals(
-            'Unset the contact Jess (deleted) as related to <a href="'.$url.'">'. $otherContact->name.'</a>',
+            'Unset the contact Jess (deleted) as related to <a href="'.$url.'">'.$otherContact->name.'</a>',
             $sentence
         );
 
@@ -888,7 +888,7 @@ class AuditLogHelperTest extends TestCase
         $urlOtherContact = env('APP_URL').'/vaults/'.$otherContact->vault->id.'/contacts/'.$otherContact->id;
         $sentence = AuditLogHelper::process($log);
         $this->assertEquals(
-            'Unset the contact <a href="'.$urlContact.'">'.$contact->name.'</a> as related to <a href="'.$urlOtherContact.'">'. $otherContact->name.'</a>',
+            'Unset the contact <a href="'.$urlContact.'">'.$contact->name.'</a> as related to <a href="'.$urlOtherContact.'">'.$otherContact->name.'</a>',
             $sentence
         );
     }
