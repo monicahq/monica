@@ -412,8 +412,8 @@ return [
     'personalization_reminder_rule_desc' => 'Για κάθε υπενθύμιση που ορίζετε, η Monica μπορεί να σας στείλει ένα email αρκετές ημέρες πριν από το γεγονός. Εδώ μπορείτε να προσαρμόσετε αυτές τις ρυθμίσεις ειδοποιήσεων. Αυτές οι ειδοποιήσεις ισχύουν μόνο για μηνιαίες και ετήσιες υπενθυμίσεις.',
 
     'personalization_module_save' => 'Η αλλαγή έχει αποθηκευτεί',
-    'personalization_module_title' => 'Features',
-    'personalization_module_desc' => 'You may not need all of Monica’s features. Below you can toggle specific features that are used on a contact sheet. This change will affect ALL your contacts. Turning off a feature does not delete any data, it simply hides the feature.',
+    'personalization_module_title' => 'Δυνατότητες',
+    'personalization_module_desc' => 'Μπορεί να μην χρειάζεστε όλες τις δυνατότητες της Monica. Παρακάτω μπορείτε να αλλάξετε συγκεκριμένες λειτουργίες που δε χρειάζεστε στις καρτέλες επαφών. Αυτή η αλλαγή θα επηρεάσει την εμφάνιση σε ΟΛΕΣ τις επαφές σας. Η απενεργοποίηση μιας λειτουργίας δεν διαγράφει δεδομένα, απλώς αποκρύπτει τη δυνατότητα από τις καρτέλες επαφών.',
 
     'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href=":url">Settings > Subscription</a>.',
     'personalisation_paid_upgrade_vue' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting <a href="{url}">Settings > Subscription</a>.',
@@ -528,11 +528,11 @@ return [
     'archive_desc' => 'This will archive all of the contacts in your account.',
     'archive_cta' => 'Archive all of your contacts',
 
-    'logs_title' => 'Everything that has happened to this account',
-    'logs_actor' => 'Actor',
-    'logs_timestamp' => 'Timestamp',
-    'logs_description' => 'Description',
-    'logs_subject' => 'Subject',
-    'logs_size' => 'Size (Kb)',
-    'logs_object' => 'Object',
+    'logs_title' => 'Όλα όσα έχουν συμβεί σε αυτόν τον λογαριασμό',
+    'logs_actor' => 'Χρήστης',
+    'logs_timestamp' => 'Χρονοσήμανση',
+    'logs_description' => 'Περιγραφή',
+    'logs_subject' => 'Θέμα',
+    'logs_size' => 'Μέγεθος (Kb)',
+    'logs_object' => 'Αντικείμενο',
 ];
