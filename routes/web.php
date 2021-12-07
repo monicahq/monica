@@ -3,6 +3,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use App\Http\Controllers\Vault\VaultController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,14 +30,19 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', 'Dashboard\\DashboardController@index')->name('dashboard');
 
-    Route::get('home', 'HomeController@index')->name('home');
+    // vaults
+    Route::get('vaults', [VaultController::class, 'index'])->name('vault.index');
+    Route::get('vaults/new', [VaultController::class, 'new'])->name('vault.new');
+    Route::post('vaults', [VaultController::class, 'store'])->name('vault.store');
+
+    Route::middleware(['vault'])->prefix('vaults/{vault}')->group(function () {
+        Route::get('', [VaultController::class, 'show'])->name('vault.show');
+    });
+
     Route::get('contacts', 'ContactController@index');
 
     Route::get('settings', 'Settings\\SettingsController@index')->name('settings.index');
     Route::resource('settings/information', 'Settings\\InformationController');
-
-    // vaults
-    Route::get('vaults/{vault}', 'HomeController@index')->name('vault.show');
 
     // contacts
     Route::get('vaults/{vault}/contacts/{contact}', 'HomeController@index')->name('contact.show');

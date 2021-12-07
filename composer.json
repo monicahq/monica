@@ -9,12 +9,14 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.4.3",
+        "itsgoingd/clockwork": "^5.1",
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.5",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
+        "brianium/paratest": "^6.4",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/breeze": "^1.4",

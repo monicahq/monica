@@ -58,10 +58,6 @@ class CreateAccountTest extends TestCase
             'is_account_administrator' => true,
         ]);
 
-        $this->assertDatabaseHas('user_vault', [
-            'user_id' => $user->id,
-        ]);
-
         $this->assertInstanceOf(
             User::class,
             $user
@@ -73,10 +69,6 @@ class CreateAccountTest extends TestCase
 
         Queue::assertPushed(CreateAuditLog::class, function ($job) {
             return $job->auditLog['action_name'] === 'account_created';
-        });
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'vault_created';
         });
     }
 }

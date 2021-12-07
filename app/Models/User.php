@@ -3,17 +3,17 @@
 namespace App\Models;
 
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, HasFactory, HasApiTokens, MustVerifyEmail;
+    use Notifiable, HasFactory, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
