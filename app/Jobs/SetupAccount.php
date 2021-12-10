@@ -3,26 +3,25 @@
 namespace App\Jobs;
 
 use App\Models\User;
-use App\Models\Account;
 use App\Models\Template;
 use App\Models\Attribute;
 use App\Models\Information;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
-use App\Services\Account\CreateTemplate;
 use Illuminate\Queue\InteractsWithQueue;
-use App\Services\Account\CreateAttribute;
-use App\Services\Account\CreateInformation;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Services\Account\AddDefaultValueToAttribute;
-use App\Services\Account\AssociateInformationToTemplate;
-use App\Features\Account\ManageGenders\Services\CreateGender;
-use App\Features\Account\ManagePronouns\Services\CreatePronoun;
-use App\Features\Account\ManageAddressTypes\Services\CreateAddressType;
-use App\Features\Account\ManageRelationshipTypes\Services\CreateRelationshipGroupType;
-use App\Features\Account\ManageContactInformationTypes\Services\CreateContactInformationType;
+use App\Services\Account\Template\CreateTemplate;
+use App\Services\Account\Template\CreateAttribute;
+use App\Services\Account\ManageGenders\CreateGender;
+use App\Services\Account\Template\CreateInformation;
+use App\Services\Account\ManagePronouns\CreatePronoun;
+use App\Services\Account\Template\AddDefaultValueToAttribute;
+use App\Services\Account\ManageAddressTypes\CreateAddressType;
+use App\Services\Account\Template\AssociateInformationToTemplate;
+use App\Services\Account\ManageRelationshipTypes\CreateRelationshipGroupType;
+use App\Services\Account\ManageContactInformationTypes\CreateContactInformationType;
 
 class SetupAccount implements ShouldQueue
 {

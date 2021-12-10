@@ -4,7 +4,7 @@ namespace Tests\Features\Vault\ManageVault\ViewHelpers;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Features\Vault\ManageVault\ViewHelpers\VaultCreateViewHelper;
+use App\Http\Controllers\Vault\ViewHelpers\VaultCreateViewHelper;
 
 class VaultCreateViewHelperTest extends TestCase
 {
