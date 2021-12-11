@@ -14,14 +14,22 @@
           <ul class="text-sm">
             <li class="inline mr-2 text-gray-600">You are here:</li>
             <li class="inline mr-2">
-              <Link :href="data.url.back" class="text-sky-500 hover:text-blue-900">All the vaults</Link>
+              <Link :href="data.url.settings" class="text-sky-500 hover:text-blue-900">Settings</Link>
             </li>
             <li class="inline mr-2 relative">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline relative icon-breadcrumb" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">Add a new vault</li>
+            <li class="inline mr-2">
+              <Link :href="data.url.back" class="text-sky-500 hover:text-blue-900">Users</Link>
+            </li>
+            <li class="inline mr-2 relative">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline relative icon-breadcrumb" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </li>
+            <li class="inline">Invite a new user</li>
           </ul>
         </div>
       </div>
@@ -31,18 +39,30 @@
       <div class="max-w-lg mx-auto px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
 
         <form @submit.prevent="submit()" class="bg-white border border-gray-200 rounded-lg mb-6">
+
+          <!-- title -->
           <div class="p-5 border-b border-gray-200 bg-blue-50 section-head">
-            <h1 class="text-center text-2xl mb-1 font-medium">Create a new vault</h1>
-            <p class="text-center">Vaults contain all your contacts data.</p>
+            <h1 class="text-center text-2xl mb-1 font-medium">Invite someone</h1>
+            <p class="text-center">This user will be part of your account, but won't get access to your vaults unless you give specific access to them. This person will be able to create vaults as well.</p>
           </div>
+
+          <!-- form -->
           <div class="p-5 border-b border-gray-200">
-            <text-input v-model="form.name" :autofocus="true" :div-outer-class="'mb-5'" :input-class="'block w-full'" :required="true" :maxlength="255" :label="'Vault name'" />
-            <text-area v-model="form.description" :label="'Description'" :maxlength="255" :textarea-class="'block w-full'" />
+            <errors :errors="form.errors" />
+
+            <text-input v-model="form.email"
+              :label="'Email address to send the invitation to'"
+              :type="'email'" :autofocus="true"
+              :div-outer-class="'mb-5'"
+              :input-class="'block w-full'"
+              :required="true"
+              :autocomplete="false"
+              :maxlength="255" />
          </div>
 
           <div class="p-5 flex justify-between">
             <pretty-link :href="data.url.back" :text="'Cancel'" :classes="'mr-3'" />
-            <pretty-button :href="'data.url.vault.create'" :text="'Create a vault'" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-button :href="'data.url.vault.create'" :text="'Send invitation'" :state="loadingState" :icon="'check'" :classes="'save'" />
           </div>
         </form>
       </div>
@@ -55,8 +75,10 @@ import Layout from '@/Shared/Layout';
 import PrettyLink from '@/Shared/PrettyLink';
 import PrettyButton from '@/Shared/PrettyButton';
 import TextInput from '@/Shared/TextInput';
+import Errors from '@/Shared/Errors';
 import TextArea from '@/Shared/TextArea';
 import { Link } from '@inertiajs/inertia-vue3';
+import BreezeValidationErrors from '@/Components/ValidationErrors.vue'
 
 export default {
   components: {
@@ -64,8 +86,10 @@ export default {
     PrettyLink,
     PrettyButton,
     TextInput,
+    Errors,
     TextArea,
     Link,
+    BreezeValidationErrors,
   },
 
   props: {
@@ -83,8 +107,8 @@ export default {
     return {
       loadingState: '',
       form: {
-        name: '',
-        description: '',
+        email: '',
+        errors: [],
       },
     };
   },
@@ -95,11 +119,12 @@ export default {
 
       axios.post(this.data.url.store, this.form)
         .then(response => {
-          localStorage.success = 'The vault has been created';
+          localStorage.success = 'Invitation sent';
           this.$inertia.visit(response.data.data);
         })
         .catch(error => {
           this.loadingState = null;
+          this.form.errors = error.response.data;
         });
     },
   },

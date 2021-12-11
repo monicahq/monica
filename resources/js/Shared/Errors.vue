@@ -1,0 +1,84 @@
+<style lang="scss" scoped>
+.border-red {
+  background-color: #fff5f5;
+  border-color: #fc8181;
+  color: #c53030;
+}
+</style>
+
+<template>
+  <div>
+    <div v-if="dataerror || exception" class="border-red border rounded p-3 mb-3" v-bind="$attrs">
+      <p class="text-sm mb-2">We can't process this request.</p>
+      <template v-if="dataerror">
+        <p v-if="flatten[0] != 'The given data was invalid.'" class="mb0">
+          {{ flatten[0] }}
+        </p>
+        <template v-if="display(flatten[1])">
+          <p v-for="errorsList in flatten[1]" :key="errorsList.id">
+            <span v-for="error in errorsList" :key="error.id" class="mb0 mt2">
+              {{ error }}
+            </span>
+          </p>
+        </template>
+      </template>
+      <template v-else-if="exception">
+        <p class="mb0">
+          {{ errors.message }}
+        </p>
+        <p>
+          <a href="" @click.prevent="toggle">More errors</a>
+        </p>
+        <p v-show="traces">
+          <span class="mb0">
+            Exception {{ errors.exception }}
+          </span>
+          <br />
+          <span v-for="trace in errors.trace" :key="trace.id">
+            {{ trace.class }}{{ trace.type }}{{ trace.function }}<br />
+          </span>
+        </p>
+      </template>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  inheritAttrs: false,
+
+  props: {
+    errors: {
+      type: [Object, Array],
+      default: null,
+    }
+  },
+
+  data() {
+    return {
+      traces: false,
+    };
+  },
+
+  computed: {
+    dataerror() {
+      return this.errors !== null && (this.errors.errors !== undefined || this.flatten.length > 0);
+    },
+    flatten() {
+      return _.flatten(_.toArray(this.errors));
+    },
+    exception() {
+      return this.errors !== null && this.errors.exception !== undefined;
+    },
+  },
+
+  methods: {
+    display(val) {
+      return _.isObject(val);
+    },
+    toggle() {
+      this.traces = !this.traces;
+    }
+  }
+};
+</script>

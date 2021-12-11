@@ -5,3 +5,7 @@
 body {
     color: #343a4b;
 }
+
+.icon-breadcrumb {
+    top: -1px;
+}

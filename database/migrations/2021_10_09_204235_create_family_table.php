@@ -45,6 +45,7 @@ class CreateFamilyTable extends Migration
     public function down()
     {
         Schema::dropIfExists('group_types');
-        Schema::dropIfExists('families');
+        Schema::dropIfExists('groups');
+        Schema::dropIfExists('contact_group');
     }
 }

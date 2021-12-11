@@ -216,6 +216,10 @@ class AuditLogHelper
                 $sentence = AuditLogHelper::noteDestroyed($log);
                 break;
 
+            case 'user_invited':
+                $sentence = AuditLogHelper::userInvited($log);
+                break;
+
             default:
                 $sentence = 'No translation';
                 break;
@@ -955,6 +959,15 @@ class AuditLogHelper
                 'contact_name' => $log->object->{'contact_name'},
             ]);
         }
+
+        return $sentence;
+    }
+
+    private static function userInvited(AuditLog $log): string
+    {
+        $sentence = trans('log.user_invited', [
+            'user_email' => $log->object->{'user_email'},
+        ]);
 
         return $sentence;
     }

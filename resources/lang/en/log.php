@@ -95,4 +95,7 @@ return [
     'relationship_unset_first_contact_deleted' => 'Unset the contact :contact_name (deleted) as related to <a href=":other_contact_url">:other_contact_name</a>',
     'relationship_unset_second_contact_deleted' => 'Unset the contact <a href=":contact_url">:contact_name</a> as related to :other_contact_name (deleted)',
     'relationship_unset_object_deleted' => 'Unset the contact :contact_name (deleted) as related to :other_contact_name (deleted)',
+
+    // users
+    'user_invited' => 'Invited :user_email to the account',
 ];

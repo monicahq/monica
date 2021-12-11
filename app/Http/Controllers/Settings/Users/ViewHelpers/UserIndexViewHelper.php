@@ -1,21 +1,15 @@
 <?php
 
-namespace App\Services\Vault\ManageUsers\ViewHelpers;
+namespace App\Http\Controllers\Settings\Users\ViewHelpers;
 
-use App\Models\Account;
+use App\Models\User;
 use App\Helpers\DateHelper;
 
 class UserIndexViewHelper
 {
-    /**
-     * Get all the users in the account.
-     *
-     * @param  Account  $account
-     * @return array
-     */
-    public static function data(Account $account): array
+    public static function data(User $loggedUser): array
     {
-        $users = $account->users;
+        $users = $loggedUser->account->users;
 
         $userCollection = collect();
         foreach ($users as $user) {
@@ -24,8 +18,9 @@ class UserIndexViewHelper
                 'email' => $user->email,
                 'name' => $user->name,
                 'is_account_administrator' => $user->is_account_administrator,
-                'invitation_code' => $user->invitation_code,
-                'invitation_accepted_at' => DateHelper::formatDate($user->invitation_accepted_at),
+                'invitation_code' => $user->invitation_code ? $user->invitation_code : null,
+                'invitation_accepted_at' => $user->invitation_accepted_at ? DateHelper::formatDate($user->invitation_accepted_at) : null,
+                'is_logged_user' => $user->id === $loggedUser->id,
                 'url' => [
                     'show' => route('settings.user.show', [
                         'user' => $user,
@@ -37,8 +32,11 @@ class UserIndexViewHelper
         return [
             'users' => $userCollection,
             'url' => [
-                'vault' => [
-                    'new' => route('vault.new'),
+                'settings' => [
+                    'index' => route('settings.index'),
+                ],
+                'users' => [
+                    'create' => route('settings.user.create'),
                 ],
             ],
         ];

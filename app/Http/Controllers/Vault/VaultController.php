@@ -5,18 +5,14 @@ namespace App\Http\Controllers\Vault;
 use Inertia\Inertia;
 use App\Models\Vault;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Vault\ManageVault\CreateVault;
+use App\Http\Controllers\Vault\ViewHelpers\VaultIndexViewHelper;
+use App\Http\Controllers\Vault\ViewHelpers\VaultCreateViewHelper;
 
 class VaultController extends Controller
 {
-    /**
-     * Show all the vaults of the user.
-     *
-     * @return Response
-     */
     public function index()
     {
         return Inertia::render('Vault/Index', [
@@ -25,12 +21,7 @@ class VaultController extends Controller
         ]);
     }
 
-    /**
-     * Display the create vault page.
-     *
-     * @return Response
-     */
-    public function new()
+    public function create()
     {
         return Inertia::render('Vault/Create', [
             'layoutData' => VaultIndexViewHelper::layoutData(),
@@ -38,12 +29,6 @@ class VaultController extends Controller
         ]);
     }
 
-    /**
-     * Store the vault.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
     public function store(Request $request)
     {
         $data = [
@@ -61,13 +46,6 @@ class VaultController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the vault.
-     *
-     * @param  Request  $request
-     * @param  int  $vaultId
-     * @return Response
-     */
     public function show(Request $request, int $vaultId)
     {
         $vault = Vault::find($vaultId);

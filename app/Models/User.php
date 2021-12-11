@@ -25,8 +25,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'first_name',
         'last_name',
         'email',
+        'email_verified_at',
         'password',
         'is_account_administrator',
+        'invitation_code',
+        'invitation_accepted_at',
     ];
 
     /**
@@ -45,6 +48,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'invitation_accepted_at' => 'datetime',
         'is_account_administrator' => 'boolean',
     ];
 
@@ -82,10 +86,14 @@ class User extends Authenticatable implements MustVerifyEmail
      * Get the name of the user.
      *
      * @param  mixed  $value
-     * @return string
+     * @return null|string
      */
-    public function getNameAttribute($value): string
+    public function getNameAttribute($value): ?string
     {
+        if (! $this->first_name) {
+            return null;
+        }
+
         return $this->first_name.' '.$this->last_name;
     }
 }

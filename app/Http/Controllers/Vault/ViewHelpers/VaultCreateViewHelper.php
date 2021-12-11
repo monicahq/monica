@@ -6,11 +6,6 @@ use function route;
 
 class VaultCreateViewHelper
 {
-    /**
-     * Get all the data needed for the page.
-     *
-     * @return array
-     */
     public static function data(): array
     {
         return [

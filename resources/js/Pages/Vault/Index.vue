@@ -36,7 +36,7 @@ input[type=checkbox] {
           <p class="mb-3">Monica is there to help you build better relationships.</p>
           <p class="mb-3">Contacts in Monica are stored in vaults. You can have as many vaults as you want: one vault for your personal life, one for your professional life, and/or one vault shared with your spouse.</p>
           <div class="text-center">
-            <pretty-link :href="data.url.vault.new" :text="'Create a vault'" :icon="'plus'" />
+            <pretty-link :href="data.url.vault.create" :text="'Create a vault'" :icon="'plus'" />
           </div>
         </div>
       </div>
@@ -44,7 +44,7 @@ input[type=checkbox] {
       <div v-if="data.vaults.length > 0" class="max-w-4xl mx-auto px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between mb-6">
           <h3>All the vaults in the account</h3>
-          <pretty-link :href="data.url.vault.new" :text="'Create a vault'" :icon="'plus'" />
+          <pretty-link :href="data.url.vault.create" :text="'Create a vault'" :icon="'plus'" />
         </div>
 
         <div class="vault-list grid grid-cols-1 sm:grid-cols-3 gap-6">

@@ -4,17 +4,9 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\Vault\VaultController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Controllers\Settings\SettingsController;
+use App\Http\Controllers\Settings\Users\UserController;
+use App\Http\Controllers\Auth\AcceptInvitationController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -27,21 +19,34 @@ Route::get('/', function () {
 
 require __DIR__.'/auth.php';
 
+Route::get('invitation/{code}', [AcceptInvitationController::class, 'show'])->name('invitation.show');
+Route::post('invitation', [AcceptInvitationController::class, 'store'])->name('invitation.store');
+
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', 'Dashboard\\DashboardController@index')->name('dashboard');
-
     // vaults
-    Route::get('vaults', [VaultController::class, 'index'])->name('vault.index');
-    Route::get('vaults/new', [VaultController::class, 'new'])->name('vault.new');
-    Route::post('vaults', [VaultController::class, 'store'])->name('vault.store');
+    Route::prefix('vaults')->group(function () {
+        Route::get('', [VaultController::class, 'index'])->name('vault.index');
+        Route::get('create', [VaultController::class, 'create'])->name('vault.create');
+        Route::post('', [VaultController::class, 'store'])->name('vault.store');
 
-    Route::middleware(['vault'])->prefix('vaults/{vault}')->group(function () {
-        Route::get('', [VaultController::class, 'show'])->name('vault.show');
+        Route::middleware(['vault'])->prefix('{vault}')->group(function () {
+            Route::get('', [VaultController::class, 'show'])->name('vault.show');
+        });
+    });
+
+    // settings
+    Route::prefix('settings')->group(function () {
+        Route::get('', [SettingsController::class, 'index'])->name('settings.index');
+
+        // users
+        Route::get('users', [UserController::class, 'index'])->name('settings.user.index');
+        Route::get('users/create', [UserController::class, 'create'])->name('settings.user.create');
+        Route::post('users', [UserController::class, 'store'])->name('settings.user.store');
+        Route::get('users/{user}', [UserController::class, 'show'])->name('settings.user.show');
     });
 
     Route::get('contacts', 'ContactController@index');
 
-    Route::get('settings', 'Settings\\SettingsController@index')->name('settings.index');
     Route::resource('settings/information', 'Settings\\InformationController');
 
     // contacts

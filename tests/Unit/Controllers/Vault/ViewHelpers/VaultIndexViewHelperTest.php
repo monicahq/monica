@@ -33,6 +33,7 @@ class VaultIndexViewHelperTest extends TestCase
                 ],
                 'url' => [
                     'vaults' => env('APP_URL').'/vaults',
+                    'settings' => env('APP_URL').'/settings',
                     'logout' => env('APP_URL').'/logout',
                 ],
             ],
@@ -66,7 +67,7 @@ class VaultIndexViewHelperTest extends TestCase
         $this->assertEquals(
             [
                 'vault' => [
-                    'new' => env('APP_URL').'/vaults/new',
+                    'create' => env('APP_URL').'/vaults/create',
                 ],
             ],
             $array['url']

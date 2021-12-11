@@ -1352,4 +1352,21 @@ class AuditLogHelperTest extends TestCase
             $sentence
         );
     }
+
+    /** @test */
+    public function user_invited(): void
+    {
+        $log = AuditLog::factory()->create([
+            'action_name' => 'user_invited',
+            'objects' => json_encode([
+                'user_email' => 'admin@admin.com',
+            ]),
+        ]);
+
+        $sentence = AuditLogHelper::process($log);
+        $this->assertEquals(
+            'Invited admin@admin.com to the account',
+            $sentence
+        );
+    }
 }

@@ -38,6 +38,7 @@
         :id="id"
         :required="required"
         :autofocus="autofocus"
+        :autocomplete="autocomplete"
         @focus="showMaxLength"
         @blur="displayMaxLength = false"
       >
@@ -100,6 +101,10 @@ export default {
     autofocus: {
       type: Boolean,
       default: false,
+    },
+    autocomplete: {
+      type: Boolean,
+      default: true,
     },
     maxlength: {
       type: Number,
