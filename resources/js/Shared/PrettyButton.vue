@@ -55,6 +55,11 @@ button {
     <span v-if="state != 'loading'">
       {{ text }}
     </span>
+
+    <!-- arrow icon -->
+    <svg v-if="icon === 'arrow' && state != 'loading'" xmlns="http://www.w3.org/2000/svg" class="ml-1 h-5 w-5 inline relative icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+    </svg>
   </button>
 </template>
 

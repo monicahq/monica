@@ -9,7 +9,7 @@
 <template>
   <div>
     <div v-if="dataerror || exception" class="border-red border rounded p-3 mb-3" v-bind="$attrs">
-      <p class="text-sm mb-2">We can't process this request.</p>
+      <p class="text-sm mb-2">Oops! Something went wrong.</p>
       <template v-if="dataerror">
         <p v-if="flatten[0] != 'The given data was invalid.'" class="mb0">
           {{ flatten[0] }}

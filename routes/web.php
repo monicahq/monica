@@ -7,6 +7,7 @@ use App\Http\Controllers\Vault\VaultController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Settings\Users\UserController;
 use App\Http\Controllers\Auth\AcceptInvitationController;
+use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -38,11 +39,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('settings')->group(function () {
         Route::get('', [SettingsController::class, 'index'])->name('settings.index');
 
-        // users
-        Route::get('users', [UserController::class, 'index'])->name('settings.user.index');
-        Route::get('users/create', [UserController::class, 'create'])->name('settings.user.create');
-        Route::post('users', [UserController::class, 'store'])->name('settings.user.store');
-        Route::get('users/{user}', [UserController::class, 'show'])->name('settings.user.show');
+        // only for administrators
+        Route::middleware(['administrator'])->group(function () {
+            // users
+            Route::prefix('users')->group(function () {
+                Route::get('', [UserController::class, 'index'])->name('settings.user.index');
+                Route::get('create', [UserController::class, 'create'])->name('settings.user.create');
+                Route::post('', [UserController::class, 'store'])->name('settings.user.store');
+                Route::get('{user}', [UserController::class, 'show'])->name('settings.user.show');
+            });
+
+            // cancel
+            Route::get('cancel', [CancelAccountController::class, 'index'])->name('settings.cancel.index');
+            Route::put('cancel', [CancelAccountController::class, 'destroy'])->name('settings.cancel.destroy');
+        });
     });
 
     Route::get('contacts', 'ContactController@index');
