@@ -21,28 +21,28 @@ return [
     'notification_description' => 'В :count дней (на :date) произойдет следующее событие:',
 
     'stay_in_touch_subject_line' => 'Оставайтесь на связи с :name',
-    'stay_in_touch_subject_description' => 'You asked to be reminded to stay in touch with :name every :frequency day.|You asked to be reminded to stay in touch with :name every :frequency days.',
+    'stay_in_touch_subject_description' => 'Вы попросили напоминать о том, чтобы оставаться на связи с :name каждые :frequency день. Вы попросили напоминать о том, чтобы оставаться на связи с :name каждые :frequency дней.',
 
     'notifications_whoops' => 'Упс!',
     'notifications_hello' => 'Привет!',
     'notifications_regards' => 'С уважением',
-    'notifications_footer' => 'If you’re having trouble clicking the ":actionText" button, copy and paste the URL below into your web browser: [:actionURL](:actionURL)',
+    'notifications_footer' => 'Если у вас возникли проблемы с нажатием на кнопку «:actionText», скопируйте и вставьте следующий URL-адрес в веб-браузер: [:actionURL](:actionURL)',
     'notifications_rights' => 'Все права защищены',
 
     'confirmation_email_title' => 'Monica – проверка электронной почты',
     'confirmation_email_intro'=> 'Для подтверждения электронной почты нажмите на кнопку ниже',
     'confirmation_email_button' => 'Подтвердите email',
-    'confirmation_email_bottom' => 'If you did not create an account, no further action is required.',
+    'confirmation_email_bottom' => 'Если вы не регистрировали аккаунт, никаких дальнейших действий не требуется.',
 
     'password_reset_title' => 'Monica – сброс пароля уведомления',
-    'password_reset_intro' => 'You are receiving this email because we received a password reset request for your account.',
+    'password_reset_intro' => 'Вы получили это письмо, потому что мы получили запрос на сброс пароля для вашего аккаунта.',
     'password_reset_button' => 'Сбросить пароль',
-    'password_reset_expiration' => 'This password reset link will expire in :count minutes.',
-    'password_reset_bottom' => 'If you did not request a password reset, no further action is required.',
+    'password_reset_expiration' => 'Эта ссылка для сброса пароля истекает через :count минут.',
+    'password_reset_bottom' => 'Если вы не запрашивали сброс пароля, никаких дальнейших действий не требуется.',
 
     'invitation_title' => 'Monica – Вас пригласил :name',
-    'invitation_intro' => 'You’ve been invited by :name (:email) to use Monica, a nice Personal Relationship Management tool.',
-    'invitation_link' => 'To accept the invitation, click on the link below:',
+    'invitation_intro' => 'Вы были приглашены :name (:email) для использования Monica, отличного инструмента управления личными отношениями.',
+    'invitation_link' => 'Чтобы принять приглашение, нажмите на ссылку ниже:',
     'invitation_button' => 'Принять приглашение',
     'invitation_expiration' => 'Срок действия этой ссылки истекает через :count дней.',
 ];
