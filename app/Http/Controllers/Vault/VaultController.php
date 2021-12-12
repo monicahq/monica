@@ -17,7 +17,7 @@ class VaultController extends Controller
     {
         return Inertia::render('Vault/Index', [
             'layoutData' => VaultIndexViewHelper::layoutData(),
-            'data' => VaultIndexViewHelper::data(Auth::user()->account),
+            'data' => VaultIndexViewHelper::data(Auth::user()),
         ]);
     }
 

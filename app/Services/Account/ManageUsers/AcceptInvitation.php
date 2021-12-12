@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use Illuminate\Support\Facades\Hash;
 
 class AcceptInvitation extends BaseService implements ServiceInterface
 {
@@ -58,6 +59,7 @@ class AcceptInvitation extends BaseService implements ServiceInterface
         $this->user->last_name = $this->data['last_name'];
         $this->user->invitation_accepted_at = Carbon::now();
         $this->user->email_verified_at = Carbon::now();
+        $this->user->password = Hash::make($this->data['password']);
         $this->user->save();
     }
 }

@@ -44,9 +44,13 @@ class VaultIndexViewHelperTest extends TestCase
     /** @test */
     public function it_gets_the_data_needed_for_the_view(): void
     {
-        $vault = Vault::factory()->create();
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create([
+            'account_id' => $user->account_id,
+        ]);
+        $user->vaults()->sync([$vault->id => ['permission' => Vault::PERMISSION_MANAGE]]);
 
-        $array = VaultIndexViewHelper::data($vault->account);
+        $array = VaultIndexViewHelper::data($user);
 
         $this->assertEquals(2, count($array));
 

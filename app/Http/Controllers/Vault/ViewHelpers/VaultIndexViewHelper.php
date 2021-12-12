@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Vault\ViewHelpers;
 
 use function route;
+use App\Models\User;
 use App\Models\Vault;
 use function collect;
-use App\Models\Account;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class VaultIndexViewHelper
@@ -34,9 +35,13 @@ class VaultIndexViewHelper
         ];
     }
 
-    public static function data(Account $account): array
+    public static function data(User $user): array
     {
-        $vaults = Vault::where('account_id', $account->id)
+        $vaultIds = DB::table('user_vault')->where('user_id', $user->id)
+            ->pluck('vault_id')->toArray();
+
+        $vaults = Vault::where('account_id', $user->account->id)
+            ->whereIn('id', $vaultIds)
             ->orderBy('name', 'asc')
             ->get();
 
