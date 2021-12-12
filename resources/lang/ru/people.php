@@ -90,7 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Оставаться на связи',
     'stay_in_touch_frequency' => 'Будьте на связи каждый день|Оставайтесь на связи каждые {count} дней',
-    'stay_in_touch_next_date' => 'Next due: {date}',
+    'stay_in_touch_next_date' => 'Следующая дата: {date}',
     'stay_in_touch_invalid' => 'Частота должна быть числом больше 0.',
     'stay_in_touch_premium' => 'Вам нужно обновить свой аккаунт, чтобы использовать эту функцию',
     'stay_in_touch_modal_title' => 'Оставаться на связи',
@@ -144,7 +144,7 @@ return [
 
     // Last called
     'last_called' => 'Последний звонок: :date',
-    'last_talked_to' => 'Last called: {date}',
+    'last_talked_to' => 'Последний звонок: {date}',
     'last_called_empty' => 'Последний звонок: неизвестно',
     'last_activity_date' => 'Последняя активность вместе: :date',
     'last_activity_date_empty' => 'Последняя активность вместе: неизвестно',
@@ -280,7 +280,7 @@ return [
     'activities_update_success' => 'Активность была обновлена',
     'activities_delete_success' => 'Активность была удалена',
     'activities_who_was_involved' => 'Кто был вовлечен?',
-    'activities_activity' => 'Activity Category',
+    'activities_activity' => 'Активная категория',
     'activities_view_activities_report' => 'Просмотр отчёта о действиях',
     'activities_profile_title' => 'Отчёт о действиях между :name и вами',
     'activities_profile_subtitle' => 'You’ve logged :total_activities activity with :name in total and :activities_last_twelve_months in the last 12 months so far.|You’ve logged :total_activities activities with :name in total and :activities_last_twelve_months in the last 12 months so far.',
@@ -388,12 +388,12 @@ return [
     'contact_info_title' => 'Контактная информация',
     'contact_info_form_content' => 'Содержание',
     'contact_info_form_contact_type' => 'Тип контакта',
-    'contact_info_form_personalize' => 'Personalize',
+    'contact_info_form_personalize' => 'Персонализация',
     'contact_info_address' => 'Живёт в',
 
     // Addresses
     'contact_address_title' => 'Адреса',
-    'contact_address_form_name' => 'Label (optional)',
+    'contact_address_form_name' => 'Заголовок (необязательно)',
     'contact_address_form_street' => 'Улица (необязательно)',
     'contact_address_form_city' => 'Город (необязательно)',
     'contact_address_form_province' => 'Область (необязательно)',
@@ -406,8 +406,8 @@ return [
     'pets_kind' => 'Вид питомца',
     'pets_name' => 'Name (optional)',
     'pets_create_success' => 'Питомец был успешно добавлен',
-    'pets_update_success' => 'The pet has been updated',
-    'pets_delete_success' => 'The pet has been deleted',
+    'pets_update_success' => 'Домашнее животное было обновленно',
+    'pets_delete_success' => 'Домашнее животное было удалено',
     'pets_title' => 'Питомцы',
     'pets_reptile' => 'Пресмыкающееся',
     'pets_bird' => 'Птица',
@@ -503,7 +503,7 @@ return [
     'photo_list_blank_desc' => 'Вы можете хранить изображения об этом контакте. Загрузите сейчас!',
     'photo_upload_zone_cta' => 'Загрузить фото',
     'photo_current_profile_pic' => 'Current profile picture',
-    'photo_make_profile_pic' => 'Make profile picture',
+    'photo_make_profile_pic' => 'Установи изображение профиля',
     'photo_delete' => 'Удалить фото',
     'photo_next' => 'Следующее фото ❯',
     'photo_previous' => '❮ Предыдущее фото',
@@ -525,7 +525,7 @@ return [
     'auditlogs_link' => 'История',
     'auditlogs_title' => 'Всё, что произошло с :name',
     'auditlogs_breadcrumb' => 'История',
-    'auditlogs_author' => 'By :name on :date',
+    'auditlogs_author' => 'По :name в :date',
 
     // contact field label
     'contact_field_label_home' => 'Домашний номер телефона',
@@ -533,7 +533,7 @@ return [
     'contact_field_label_cell' => 'Мобильный номер телефона',
     'contact_field_label_fax' => 'Номер факса',
     'contact_field_label_pager' => 'Номер пейджера',
-    'contact_field_label_main' => 'Main',
-    'contact_field_label_other' => 'Other',
-    'contact_field_label_personal' => 'Personal',
+    'contact_field_label_main' => 'Основной',
+    'contact_field_label_other' => 'Другое',
+    'contact_field_label_personal' => 'Личные',
 ];
