@@ -25,7 +25,7 @@ jobs:
 
       - name: Docker meta
         id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v3.6.0
+        uses: crazy-max/ghaction-docker-meta@v3.6.2
         with:
           images: ghcr.io/monicahq/monica
           tag-sha: true
