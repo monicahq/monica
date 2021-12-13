@@ -458,20 +458,6 @@ class SetupAccount implements ShouldQueue
 
     private function addRelationshipTypes(): void
     {
-        $types = collect([
-            trans('account.relationship_type_family'),
-            trans('account.relationship_type_work'),
-            trans('account.relationship_type_friend'),
-        ]);
-
-        foreach ($types as $type) {
-            (new CreateRelationshipGroupType)->execute([
-                'account_id' => $this->user->account_id,
-                'author_id' => $this->user->id,
-                'name' => $type,
-            ]);
-        }
-
         // Love type
         $group = (new CreateRelationshipGroupType)->execute([
             'account_id' => $this->user->account_id,
@@ -581,7 +567,7 @@ class SetupAccount implements ShouldQueue
         $group = (new CreateRelationshipGroupType)->execute([
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
-            'name' => trans('account.relationship_type_friend'),
+            'name' => trans('account.relationship_type_friend_title'),
         ]);
 
         DB::table('relationship_types')->insert([

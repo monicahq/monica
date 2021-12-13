@@ -19,9 +19,18 @@
         <h2 class="text-lg text-center mb-6">Account settings</h2>
         <div class="bg-white border border-gray-200 rounded-lg mb-6 p-5">
           <ul v-if="data.is_account_administrator">
-            <li class="mb-2"><span class="mr-1">🥸</span> <Link :href="data.url.users.index" class="text-sky-500 hover:text-blue-900">Manage users</Link></li>
-            <li class="mb-2"><span class="mr-1">🎃</span> Personalize your contacts data</li>
-            <li><span class="mr-1">💩</span> <Link :href="data.url.cancel.index" class="text-sky-500 hover:text-blue-900">Cancel your account</Link></li>
+            <li class="mb-2">
+              <span class="mr-1">🥸</span>
+              <Link :href="data.url.users.index" class="text-sky-500 hover:text-blue-900">Manage users</Link>
+            </li>
+            <li class="mb-2">
+              <span class="mr-1">🎃</span>
+              <Link :href="data.url.personalize.index" class="text-sky-500 hover:text-blue-900">Personalize your contacts data</Link>
+            </li>
+            <li>
+              <span class="mr-1">💩</span>
+              <Link :href="data.url.cancel.index" class="text-sky-500 hover:text-blue-900">Cancel your account</Link>
+            </li>
           </ul>
         </div>
       </div>
@@ -50,15 +59,6 @@ export default {
       type: Array,
       default: [],
     },
-  },
-
-  data() {
-    return {
-      addMode: false,
-    };
-  },
-
-  methods: {
   },
 };
 </script>

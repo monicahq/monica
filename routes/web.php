@@ -7,7 +7,10 @@ use App\Http\Controllers\Vault\VaultController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Settings\Users\UserController;
 use App\Http\Controllers\Auth\AcceptInvitationController;
+use App\Http\Controllers\Settings\Personalize\PersonalizeController;
 use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
+use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipController;
+use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipTypeController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -47,6 +50,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::get('create', [UserController::class, 'create'])->name('settings.user.create');
                 Route::post('', [UserController::class, 'store'])->name('settings.user.store');
                 Route::get('{user}', [UserController::class, 'show'])->name('settings.user.show');
+            });
+
+            // personalize
+            Route::prefix('personalize')->group(function () {
+                Route::get('', [PersonalizeController::class, 'index'])->name('settings.personalize.index');
+
+                // relationship group types
+                Route::get('relationships', [PersonalizeRelationshipController::class, 'index'])->name('settings.personalize.relationship.index');
+                Route::post('relationships', [PersonalizeRelationshipController::class, 'store'])->name('settings.personalize.relationship.grouptype.store');
+                Route::put('relationships/{groupType}', [PersonalizeRelationshipController::class, 'update'])->name('settings.personalize.relationship.grouptype.update');
+                Route::delete('relationships/{groupType}', [PersonalizeRelationshipController::class, 'destroy'])->name('settings.personalize.relationship.grouptype.destroy');
+
+                // relationship group types
+                Route::post('relationships/{groupType}/types', [PersonalizeRelationshipTypeController::class, 'store'])->name('settings.personalize.relationship.type.store');
+                Route::put('relationships/{groupType}/types/{type}', [PersonalizeRelationshipTypeController::class, 'update'])->name('settings.personalize.relationship.type.update');
+                Route::delete('relationships/{groupType}/types/{type}', [PersonalizeRelationshipTypeController::class, 'destroy'])->name('settings.personalize.relationship.type.destroy');
             });
 
             // cancel

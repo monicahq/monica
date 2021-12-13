@@ -208,7 +208,7 @@ class SetupAccountTest extends TestCase
             'name' => trans('account.relationship_type_work'),
         ]);
         $this->assertDatabaseHas('relationship_group_types', [
-            'name' => trans('account.relationship_type_friend'),
+            'name' => trans('account.relationship_type_friend_title'),
         ]);
 
         $this->assertDatabaseHas('genders', [

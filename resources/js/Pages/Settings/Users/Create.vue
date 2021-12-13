@@ -53,7 +53,6 @@
             <text-input v-model="form.email"
               :label="'Email address to send the invitation to'"
               :type="'email'" :autofocus="true"
-              :div-outer-class="'mb-5'"
               :input-class="'block w-full'"
               :required="true"
               :autocomplete="false"
@@ -62,7 +61,7 @@
 
           <div class="p-5 flex justify-between">
             <pretty-link :href="data.url.back" :text="'Cancel'" :classes="'mr-3'" />
-            <pretty-button :href="'data.url.vault.create'" :text="'Send invitation'" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-button :text="'Send invitation'" :state="loadingState" :icon="'check'" :classes="'save'" />
           </div>
         </form>
       </div>
@@ -78,7 +77,6 @@ import TextInput from '@/Shared/TextInput';
 import Errors from '@/Shared/Errors';
 import TextArea from '@/Shared/TextArea';
 import { Link } from '@inertiajs/inertia-vue3';
-import BreezeValidationErrors from '@/Components/ValidationErrors.vue'
 
 export default {
   components: {
@@ -89,7 +87,6 @@ export default {
     Errors,
     TextArea,
     Link,
-    BreezeValidationErrors,
   },
 
   props: {

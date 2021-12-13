@@ -32,13 +32,14 @@
         :class="localInputClasses"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
-        ref="input"
+        :ref="ref"
         :type="type"
         :maxlength="maxlength"
         :id="id"
         :required="required"
         :autofocus="autofocus"
         :autocomplete="autocomplete"
+        @keydown.esc="sendEscKey"
         @focus="showMaxLength"
         @blur="displayMaxLength = false"
       >
@@ -110,6 +111,10 @@ export default {
       type: Number,
       default: null,
     },
+    ref: {
+      type: String,
+      default: 'input',
+    },
   },
 
   data() {
@@ -141,7 +146,11 @@ export default {
 
     showMaxLength() {
       this.displayMaxLength = true;
-    }
+    },
+
+    sendEscKey() {
+      this.$emit('esc-key-pressed');
+    },
   }
 }
 </script>
