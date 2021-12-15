@@ -21,8 +21,9 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'account_created',
             'objects' => json_encode([]),
         ]);
+        $user = User::factory()->create();
 
-        $sentence = AuditLogHelper::process($log);
+        $sentence = AuditLogHelper::process($log, $user);
 
         $this->assertIsString($sentence);
         $this->assertEquals(
@@ -42,7 +43,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Created the vault Mon vault (deleted)',
             $sentence
@@ -58,7 +60,8 @@ class AuditLogHelperTest extends TestCase
         ]);
 
         $url = env('APP_URL').'/vaults/'.$vault->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Created the vault <a href="'.$url.'">'.$vault->name.'</a>',
             $sentence
@@ -76,7 +79,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Updated the vault Mon vault (deleted)',
             $sentence
@@ -92,7 +96,8 @@ class AuditLogHelperTest extends TestCase
         ]);
 
         $url = env('APP_URL').'/vaults/'.$vault->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Updated the vault <a href="'.$url.'">'.$vault->name.'</a>',
             $sentence
@@ -109,7 +114,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Deleted the vault Mon vault',
             $sentence
@@ -128,7 +134,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Grant the Manager permission to Regis Freyd to the vault My Vault',
             $sentence
@@ -147,7 +154,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Changed the permission of Regis Freyd to Manager in the vault My Vault',
             $sentence
@@ -164,7 +172,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Created the gender Male',
             $sentence
@@ -181,7 +190,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Updated the gender Male',
             $sentence
@@ -198,7 +208,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Deleted the gender Male',
             $sentence
@@ -215,7 +226,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Created the label Male',
             $sentence
@@ -232,7 +244,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Updated the label Male',
             $sentence
@@ -249,7 +262,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Deleted the label Male',
             $sentence
@@ -266,7 +280,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Created the contact information type Male',
             $sentence
@@ -283,7 +298,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Updated the contact information type Male',
             $sentence
@@ -300,7 +316,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Deleted the contact information type Male',
             $sentence
@@ -317,7 +334,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Created the address type Male',
             $sentence
@@ -334,7 +352,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Updated the address type Male',
             $sentence
@@ -351,7 +370,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Deleted the address type Male',
             $sentence
@@ -368,7 +388,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Created the pronoun Male',
             $sentence
@@ -385,7 +406,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Updated the pronoun Male',
             $sentence
@@ -402,7 +424,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Deleted the pronoun Male',
             $sentence
@@ -419,7 +442,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Created the relationship group type Male',
             $sentence
@@ -436,7 +460,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Updated the relationship group type Family',
             $sentence
@@ -453,7 +478,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Deleted the relationship group type Family',
             $sentence
@@ -471,7 +497,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Created the relationship type Father in the group type Family',
             $sentence
@@ -489,7 +516,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Updated the relationship type Father in the group type Family',
             $sentence
@@ -507,7 +535,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Deleted the relationship type Father in the group type Family',
             $sentence
@@ -525,7 +554,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Gave administrator privilege to Regis Freyd',
             $sentence
@@ -540,7 +570,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Gave administrator privilege to '.$user->name,
             $sentence
@@ -558,7 +589,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Removed administrator privilege of Regis Freyd',
             $sentence
@@ -573,7 +605,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Removed administrator privilege of '.$user->name,
             $sentence
@@ -591,7 +624,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Created the contact Monica Geller (deleted)',
             $sentence
@@ -607,9 +641,10 @@ class AuditLogHelperTest extends TestCase
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault_id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Created the contact <a href="'.$url.'">'.$contact->name.'</a>',
+            'Created the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }
@@ -625,7 +660,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Updated the contact Monica Geller (deleted)',
             $sentence
@@ -641,9 +677,10 @@ class AuditLogHelperTest extends TestCase
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault_id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Updated the contact <a href="'.$url.'">'.$contact->name.'</a>',
+            'Updated the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }
@@ -658,7 +695,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Deleted the contact Monica Geller',
             $sentence
@@ -678,7 +716,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Copied the contact Monica Geller (deleted) from the vault Original vault to the vault Target vault',
             $sentence
@@ -691,14 +730,15 @@ class AuditLogHelperTest extends TestCase
                 'original_vault_name' => 'Original vault',
                 'target_vault_name' => 'Target vault',
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Copied the contact <a href="'.$url.'">'.$contact->name.'</a> from the vault Original vault to the vault Target vault',
+            'Copied the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a> from the vault Original vault to the vault Target vault',
             $sentence
         );
     }
@@ -716,7 +756,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Moved the contact Monica Geller (deleted) from the vault Original vault to the vault Target vault',
             $sentence
@@ -729,14 +770,15 @@ class AuditLogHelperTest extends TestCase
                 'original_vault_name' => 'Original vault',
                 'target_vault_name' => 'Target vault',
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Moved the contact <a href="'.$url.'">'.$contact->name.'</a> from the vault Original vault to the vault Target vault',
+            'Moved the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a> from the vault Original vault to the vault Target vault',
             $sentence
         );
     }
@@ -755,7 +797,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Set the contact Monica Geller (deleted) as Father of Ross Bing (deleted)',
             $sentence
@@ -766,7 +809,7 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'relationship_set',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
                 'other_contact_id' => 345,
                 'other_contact_name' => 'Ross Bing',
                 'relationship_name' => 'Father',
@@ -774,9 +817,10 @@ class AuditLogHelperTest extends TestCase
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Set the contact <a href="'.$url.'">'.$contact->name.'</a> as Father of Ross Bing (deleted)',
+            'Set the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a> as Father of Ross Bing (deleted)',
             $sentence
         );
 
@@ -793,7 +837,8 @@ class AuditLogHelperTest extends TestCase
         ]);
 
         $url = env('APP_URL').'/vaults/'.$otherContact->vault->id.'/contacts/'.$otherContact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Set the contact Jess (deleted) as Father of <a href="'.$url.'">'.$otherContact->name.'</a>',
             $sentence
@@ -803,7 +848,7 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'relationship_set',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
                 'other_contact_id' => $otherContact->id,
                 'other_contact_name' => $otherContact->name,
                 'relationship_name' => 'Father',
@@ -812,9 +857,10 @@ class AuditLogHelperTest extends TestCase
 
         $urlContact = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
         $urlOtherContact = env('APP_URL').'/vaults/'.$otherContact->vault->id.'/contacts/'.$otherContact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Set the contact <a href="'.$urlContact.'">'.$contact->name.'</a> as Father of <a href="'.$urlOtherContact.'">'.$otherContact->name.'</a>',
+            'Set the contact <a href="'.$urlContact.'">'.$contact->getName($loggedUser).'</a> as Father of <a href="'.$urlOtherContact.'">'.$otherContact->name.'</a>',
             $sentence
         );
     }
@@ -832,7 +878,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Unset the contact Monica Geller (deleted) as related to Ross Bing (deleted)',
             $sentence
@@ -843,16 +890,17 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'relationship_unset',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
                 'other_contact_id' => 345,
                 'other_contact_name' => 'Ross Bing',
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Unset the contact <a href="'.$url.'">'.$contact->name.'</a> as related to Ross Bing (deleted)',
+            'Unset the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a> as related to Ross Bing (deleted)',
             $sentence
         );
 
@@ -868,7 +916,8 @@ class AuditLogHelperTest extends TestCase
         ]);
 
         $url = env('APP_URL').'/vaults/'.$otherContact->vault->id.'/contacts/'.$otherContact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Unset the contact Jess (deleted) as related to <a href="'.$url.'">'.$otherContact->name.'</a>',
             $sentence
@@ -878,7 +927,7 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'relationship_unset',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
                 'other_contact_id' => $otherContact->id,
                 'other_contact_name' => $otherContact->name,
             ]),
@@ -886,9 +935,10 @@ class AuditLogHelperTest extends TestCase
 
         $urlContact = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
         $urlOtherContact = env('APP_URL').'/vaults/'.$otherContact->vault->id.'/contacts/'.$otherContact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Unset the contact <a href="'.$urlContact.'">'.$contact->name.'</a> as related to <a href="'.$urlOtherContact.'">'.$otherContact->name.'</a>',
+            'Unset the contact <a href="'.$urlContact.'">'.$contact->getName($loggedUser).'</a> as related to <a href="'.$urlOtherContact.'">'.$otherContact->name.'</a>',
             $sentence
         );
     }
@@ -905,7 +955,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Set the pronoun She/He to the contact Monica Geller (deleted)',
             $sentence
@@ -916,15 +967,16 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'pronoun_set',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
                 'pronoun_name' => 'She/He',
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Set the pronoun She/He to the contact <a href="'.$url.'">'.$contact->name.'</a>',
+            'Set the pronoun She/He to the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }
@@ -940,7 +992,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Unset the pronoun of the contact Monica Geller (deleted)',
             $sentence
@@ -951,14 +1004,15 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'pronoun_unset',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Unset the pronoun of the contact <a href="'.$url.'">'.$contact->name.'</a>',
+            'Unset the pronoun of the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }
@@ -975,7 +1029,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Assigned the label Label name to the contact Monica Geller (deleted)',
             $sentence
@@ -986,15 +1041,16 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'label_assigned',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
                 'label_name' => 'Label name',
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Assigned the label Label name to the contact <a href="'.$url.'">'.$contact->name.'</a>',
+            'Assigned the label Label name to the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }
@@ -1011,7 +1067,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Removed the label Label name from the contact Monica Geller (deleted)',
             $sentence
@@ -1022,15 +1079,16 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'label_removed',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
                 'label_name' => 'Label name',
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Removed the label Label name from the contact <a href="'.$url.'">'.$contact->name.'</a>',
+            'Removed the label Label name from the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }
@@ -1047,7 +1105,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Created the contact information Facebook for the contact Monica Geller (deleted)',
             $sentence
@@ -1058,15 +1117,16 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'contact_information_created',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
                 'contact_information_type_name' => 'Facebook',
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Created the contact information Facebook for the contact <a href="'.$url.'">'.$contact->name.'</a>',
+            'Created the contact information Facebook for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }
@@ -1083,7 +1143,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Updated the contact information Facebook for the contact Monica Geller (deleted)',
             $sentence
@@ -1094,15 +1155,16 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'contact_information_updated',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
                 'contact_information_type_name' => 'Facebook',
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Updated the contact information Facebook for the contact <a href="'.$url.'">'.$contact->name.'</a>',
+            'Updated the contact information Facebook for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }
@@ -1119,7 +1181,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Deleted the contact information Facebook for the contact Monica Geller (deleted)',
             $sentence
@@ -1130,15 +1193,16 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'contact_information_destroyed',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
                 'contact_information_type_name' => 'Facebook',
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Deleted the contact information Facebook for the contact <a href="'.$url.'">'.$contact->name.'</a>',
+            'Deleted the contact information Facebook for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }
@@ -1155,7 +1219,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Created the contact address Home for the contact Monica Geller (deleted)',
             $sentence
@@ -1166,15 +1231,16 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'contact_address_created',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
                 'address_type_name' => 'Home',
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Created the contact address Home for the contact <a href="'.$url.'">'.$contact->name.'</a>',
+            'Created the contact address Home for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }
@@ -1191,7 +1257,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Updated the contact address Home for the contact Monica Geller (deleted)',
             $sentence
@@ -1202,15 +1269,16 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'contact_address_updated',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
                 'address_type_name' => 'Home',
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Updated the contact address Home for the contact <a href="'.$url.'">'.$contact->name.'</a>',
+            'Updated the contact address Home for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }
@@ -1227,7 +1295,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Deleted the contact address Home for the contact Monica Geller (deleted)',
             $sentence
@@ -1238,15 +1307,16 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'contact_address_destroyed',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
                 'address_type_name' => 'Home',
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Deleted the contact address Home for the contact <a href="'.$url.'">'.$contact->name.'</a>',
+            'Deleted the contact address Home for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }
@@ -1262,7 +1332,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Wrote a note for the contact Monica Geller (deleted)',
             $sentence
@@ -1273,14 +1344,15 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'note_created',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Wrote a note for the contact <a href="'.$url.'">'.$contact->name.'</a>',
+            'Wrote a note for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }
@@ -1296,7 +1368,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Updated the note for the contact Monica Geller (deleted)',
             $sentence
@@ -1307,14 +1380,15 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'note_updated',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Updated the note for the contact <a href="'.$url.'">'.$contact->name.'</a>',
+            'Updated the note for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }
@@ -1330,7 +1404,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Deleted the note for the contact Monica Geller (deleted)',
             $sentence
@@ -1341,14 +1416,15 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'note_destroyed',
             'objects' => json_encode([
                 'contact_id' => $contact->id,
-                'contact_name' => $contact->name,
+                'contact_name' => $contact->getName($loggedUser),
             ]),
         ]);
 
         $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Deleted the note for the contact <a href="'.$url.'">'.$contact->name.'</a>',
+            'Deleted the note for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }
@@ -1363,7 +1439,8 @@ class AuditLogHelperTest extends TestCase
             ]),
         ]);
 
-        $sentence = AuditLogHelper::process($log);
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
             'Invited admin@admin.com to the account',
             $sentence

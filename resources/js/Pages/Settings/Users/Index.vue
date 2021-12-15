@@ -47,7 +47,7 @@
 
         <!-- title + cta -->
         <div class="flex items-center justify-between mb-6">
-          <h3>All users in this account</h3>
+          <h3><span class="mr-1">🥸</span> All users in this account</h3>
           <pretty-link :href="data.url.users.create" :text="'Invite a new user'" :icon="'plus'" />
         </div>
 

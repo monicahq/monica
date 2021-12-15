@@ -11,6 +11,9 @@ class SettingsIndexViewHelper
         return [
             'is_account_administrator' => $user->is_account_administrator,
             'url' => [
+                'preferences' => [
+                    'index' => route('settings.preferences.index'),
+                ],
                 'users' => [
                     'index' => route('settings.user.index'),
                 ],

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Features\Account\ManageUsers\Services;
+namespace Tests\Unit\Services\Account\ManageUsers;
 
 use Carbon\Carbon;
 use Tests\TestCase;

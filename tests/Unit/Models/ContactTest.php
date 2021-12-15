@@ -112,41 +112,4 @@ class ContactTest extends TestCase
 
         $this->assertTrue($ross->notes()->exists());
     }
-
-    /** @test */
-    public function it_gets_the_full_name_of_the_contact()
-    {
-        $ross = Contact::factory()->create([
-            'first_name' => 'ross',
-            'middle_name' => null,
-            'last_name' => null,
-        ]);
-
-        $this->assertEquals(
-            'ross',
-            $ross->name
-        );
-
-        $ross = Contact::factory()->create([
-            'first_name' => 'ross',
-            'last_name' => 'geller',
-            'middle_name' => null,
-        ]);
-
-        $this->assertEquals(
-            'ross geller',
-            $ross->name
-        );
-
-        $ross = Contact::factory()->create([
-            'first_name' => 'ross',
-            'last_name' => 'geller',
-            'middle_name' => 'junior',
-        ]);
-
-        $this->assertEquals(
-            'ross junior geller',
-            $ross->name
-        );
-    }
 }

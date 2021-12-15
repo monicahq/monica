@@ -39,6 +39,7 @@
         :required="required"
         :autofocus="autofocus"
         :autocomplete="autocomplete"
+        :disabled="disabled"
         @keydown.esc="sendEscKey"
         @focus="showMaxLength"
         @blur="displayMaxLength = false"
@@ -99,6 +100,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     autofocus: {
       type: Boolean,
       default: false,
@@ -136,7 +141,7 @@ export default {
   },
 
   created() {
-    this.localInputClasses = 'border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm ' + this.inputClass;
+    this.localInputClasses = 'border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-slate-50 ' + this.inputClass;
   },
 
   methods: {

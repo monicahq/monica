@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Vault\ManageVault\ViewHelpers;
+namespace Tests\Unit\Controllers\Vault\ViewHelpers;
 
 use function env;
 use Tests\TestCase;

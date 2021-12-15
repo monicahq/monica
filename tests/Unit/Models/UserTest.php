@@ -54,7 +54,7 @@ class UserTest extends TestCase
 
         $this->assertEquals(
             'Dwight Schrute',
-            $rachel->name
+            $rachel->name,
         );
     }
 }

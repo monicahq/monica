@@ -30,6 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_account_administrator',
         'invitation_code',
         'invitation_accepted_at',
+        'name_order',
     ];
 
     /**

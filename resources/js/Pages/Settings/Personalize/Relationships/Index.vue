@@ -51,6 +51,13 @@
 
     <main class="sm:mt-20 relative">
       <div class="max-w-3xl mx-auto px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+        <!-- title + cta -->
+        <div class="sm:flex items-center justify-between mb-6 sm:mt-0 mt-8">
+          <h3 class="mb-4 sm:mb-0"><span class="mr-1">🥸</span> All the relationship types</h3>
+          <pretty-button @click="showGroupTypeModal" v-if="!createGroupTypeModalShown" :text="'Add a new group type'" :icon="'plus'" />
+        </div>
+
+        <!-- help text -->
         <div class="px-3 py-2 border mb-6 flex rounded text-sm bg-slate-50">
           <svg xmlns="http://www.w3.org/2000/svg" class="grow h-6 pr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -64,12 +71,6 @@
             </ul>
             <p class="mb-2">We call them a relation, and its reverse relation. For each relation you define, you need to define its counterpart.</p>
           </div>
-        </div>
-
-        <!-- title + cta -->
-        <div class="flex items-center justify-between mb-6">
-          <h3>All the relationship types</h3>
-          <pretty-button @click="showGroupTypeModal" v-if="!createGroupTypeModalShown" :text="'Add a new group type'" :icon="'plus'" />
         </div>
 
         <!-- modal to create a new group type -->

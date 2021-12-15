@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\NameHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -129,22 +130,13 @@ class Contact extends Model
     }
 
     /**
-     * Get the full name of the contact.
+     * Get the name of the contact, according to the user preference.
      *
+     * @param  User  $user
      * @return string
      */
-    public function getNameAttribute(): string
+    public function getName(User $user): string
     {
-        $completeName = $this->first_name;
-
-        if (! is_null($this->middle_name)) {
-            $completeName = $completeName.' '.$this->middle_name;
-        }
-
-        if (! is_null($this->last_name)) {
-            $completeName = $completeName.' '.$this->last_name;
-        }
-
-        return $completeName;
+        return NameHelper::formatContactName($user, $this);
     }
 }
