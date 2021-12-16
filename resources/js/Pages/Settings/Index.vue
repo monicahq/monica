@@ -22,19 +22,19 @@
         <div class="bg-white border border-gray-200 rounded-lg mb-6 p-5">
           <ul>
             <li class="mb-2">
-              <span class="mr-1">🥳</span>
+              <span class="mr-2">🥳</span>
               <inertia-link :href="data.url.preferences.index" class="text-sky-500 hover:text-blue-900">User preferences</inertia-link>
             </li>
             <li v-if="data.is_account_administrator" class="mb-2">
-              <span class="mr-1">🥸</span>
+              <span class="mr-2">🥸</span>
               <inertia-link :href="data.url.users.index" class="text-sky-500 hover:text-blue-900">Manage users</inertia-link>
             </li>
             <li v-if="data.is_account_administrator" class="mb-2">
-              <span class="mr-1">🎃</span>
+              <span class="mr-2">🎃</span>
               <inertia-link :href="data.url.personalize.index" class="text-sky-500 hover:text-blue-900">Personalize your contacts data</inertia-link>
             </li>
             <li v-if="data.is_account_administrator">
-              <span class="mr-1">💩</span>
+              <span class="mr-2">💩</span>
               <inertia-link :href="data.url.cancel.index" class="text-sky-500 hover:text-blue-900">Cancel your account</inertia-link>
             </li>
           </ul>

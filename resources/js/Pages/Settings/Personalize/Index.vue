@@ -34,9 +34,10 @@
         </h2>
         <div class="bg-white border border-gray-200 rounded-lg p-5">
           <ul>
-            <li class="mb-2"><span class="mr-1">🥸</span> <inertia-link :href="data.url.manage_relationships" class="text-sky-500 hover:text-blue-900">Manage relationship types</inertia-link></li>
-            <li class="mb-2"><span class="mr-1">🏷</span> <inertia-link :href="data.url.manage_labels" class="text-sky-500 hover:text-blue-900">Manage labels</inertia-link></li>
-            <li class=""><span class="mr-1">🚻</span> <inertia-link :href="data.url.manage_genders" class="text-sky-500 hover:text-blue-900">Manage genders</inertia-link></li>
+            <li class="mb-2"><span class="mr-2">🥸</span> <inertia-link :href="data.url.manage_relationships" class="text-sky-500 hover:text-blue-900">Manage relationship types</inertia-link></li>
+            <li class="mb-2"><span class="mr-2">🏷</span> <inertia-link :href="data.url.manage_labels" class="text-sky-500 hover:text-blue-900">Manage labels</inertia-link></li>
+            <li class="mb-2"><span class="mr-2">👩‍🔬</span> <inertia-link :href="data.url.manage_pronouns" class="text-sky-500 hover:text-blue-900">Manage pronouns</inertia-link></li>
+            <li class=""><span class="mr-2">🚻</span> <inertia-link :href="data.url.manage_genders" class="text-sky-500 hover:text-blue-900">Manage genders</inertia-link></li>
           </ul>
         </div>
       </div>

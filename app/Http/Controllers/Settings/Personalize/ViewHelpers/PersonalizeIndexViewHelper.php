@@ -13,6 +13,7 @@ class PersonalizeIndexViewHelper
                 'manage_relationships' => route('settings.personalize.relationship.index'),
                 'manage_labels' => route('settings.personalize.label.index'),
                 'manage_genders' => route('settings.personalize.gender.index'),
+                'manage_pronouns' => route('settings.personalize.pronoun.index'),
             ],
         ];
     }

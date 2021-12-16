@@ -12,6 +12,7 @@ use App\Http\Controllers\Settings\Preferences\PreferencesController;
 use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
 use App\Http\Controllers\Settings\Personalize\Labels\PersonalizeLabelController;
 use App\Http\Controllers\Settings\Personalize\Genders\PersonalizeGenderController;
+use App\Http\Controllers\Settings\Personalize\Pronouns\PersonalizePronounController;
 use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipController;
 use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipTypeController;
 
@@ -87,6 +88,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::post('genders', [PersonalizeGenderController::class, 'store'])->name('settings.personalize.gender.store');
                 Route::put('genders/{gender}', [PersonalizeGenderController::class, 'update'])->name('settings.personalize.gender.update');
                 Route::delete('genders/{gender}', [PersonalizeGenderController::class, 'destroy'])->name('settings.personalize.gender.destroy');
+
+                // pronouns
+                Route::get('pronouns', [PersonalizePronounController::class, 'index'])->name('settings.personalize.pronoun.index');
+                Route::post('pronouns', [PersonalizePronounController::class, 'store'])->name('settings.personalize.pronoun.store');
+                Route::put('pronouns/{pronoun}', [PersonalizePronounController::class, 'update'])->name('settings.personalize.pronoun.update');
+                Route::delete('pronouns/{pronoun}', [PersonalizePronounController::class, 'destroy'])->name('settings.personalize.pronoun.destroy');
             });
 
             // cancel
