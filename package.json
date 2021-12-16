@@ -6,6 +6,7 @@
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
+        "lint": "eslint --ext .js,.vue *.js .*.js resources/js/",
         "prod": "npm run production",
         "production": "mix --production",
         "pretest": "DB_CONNECTION=testing php artisan migrate:fresh && DB_CONNECTION=testing php artisan db:seed",
@@ -20,6 +21,14 @@
         "@vue/compiler-sfc": "^3.0.5",
         "autoprefixer": "^10.4.0",
         "axios": "^0.21",
+        "eslint": "^7.11.0",
+        "eslint-config-standard": "^16.0.3",
+        "eslint-plugin-cypress": ">=2.11.2",
+        "eslint-plugin-import": ">=2.22.1",
+        "eslint-plugin-node": ">=11.1.0",
+        "eslint-plugin-promise": ">=4.2.1",
+        "eslint-plugin-standard": ">=4.0.0",
+        "eslint-plugin-vue": "^7.0.1",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.4.4",
@@ -30,5 +39,17 @@
         "tiny-emitter": "^2.1.0",
         "vue": "^3.0.5",
         "vue-loader": "^16.1.2"
+    },
+    "lint-staged": {
+        "linters": {
+            "*.js|.*.js|resources/js/**/*.{vue,js}": [
+                "yarn lint --fix"
+            ]
+        }
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
     }
 }
