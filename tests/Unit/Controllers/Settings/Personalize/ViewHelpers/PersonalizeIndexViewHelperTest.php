@@ -22,6 +22,7 @@ class PersonalizeIndexViewHelperTest extends TestCase
                     'back' => env('APP_URL').'/settings',
                     'manage_relationships' => env('APP_URL').'/settings/personalize/relationships',
                     'manage_labels' => env('APP_URL').'/settings/personalize/labels',
+                    'manage_genders' => env('APP_URL').'/settings/personalize/genders',
                 ],
             ],
             $array

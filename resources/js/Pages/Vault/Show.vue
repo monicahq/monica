@@ -3,23 +3,19 @@
 </style>
 
 <template>
-  <Layout title="Dashboard" :inside-vault="true" :layoutData="layoutData">
+  <layout title="Dashboard" :inside-vault="true" :layout-data="layoutData">
     <main class="sm:mt-24 relative">
       d
     </main>
-  </Layout>
+  </layout>
 </template>
 
 <script>
 import Layout from '@/Shared/Layout';
-import { Link } from '@inertiajs/inertia-vue3';
-import PrettyLink from '@/Shared/PrettyLink';
 
 export default {
   components: {
     Layout,
-    Link,
-    PrettyLink,
   },
 
   props: {
@@ -29,7 +25,7 @@ export default {
     },
     data: {
       type: Array,
-      default: [],
+      default: () => [],
     },
   },
 

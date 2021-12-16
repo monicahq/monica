@@ -29,17 +29,17 @@
 
     <div class="relative component">
       <input
+        :id="id"
+        :ref="ref"
         :class="localInputClasses"
         :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)"
-        :ref="ref"
         :type="type"
         :maxlength="maxlength"
-        :id="id"
         :required="required"
         :autofocus="autofocus"
         :autocomplete="autocomplete"
         :disabled="disabled"
+        @input="$emit('update:modelValue', $event.target.value)"
         @keydown.esc="sendEscKey"
         @focus="showMaxLength"
         @blur="displayMaxLength = false"
@@ -57,7 +57,6 @@
 
 <script>
 export default {
-  emits: ['update:modelValue'],
 
   props: {
     id: {
@@ -121,6 +120,7 @@ export default {
       default: 'input',
     },
   },
+  emits: ['update:modelValue'],
 
   data() {
     return {
@@ -146,7 +146,7 @@ export default {
 
   methods: {
     focus() {
-      this.$refs.input.focus()
+      this.$refs.input.focus();
     },
 
     showMaxLength() {
@@ -157,5 +157,5 @@ export default {
       this.$emit('esc-key-pressed');
     },
   }
-}
+};
 </script>

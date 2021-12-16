@@ -24,7 +24,9 @@
     levelClass, isOpen ? isVisibleClass : ''
   ]"
   >
-    <span class="mr-1">👋</span> {{ messageText }}
+    <span class="mr-1">
+      👋
+    </span> {{ messageText }}
   </div>
 </template>
 

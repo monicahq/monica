@@ -33,9 +33,9 @@
           <span class="mb0">
             Exception {{ errors.exception }}
           </span>
-          <br />
+          <br>
           <span v-for="trace in errors.trace" :key="trace.id">
-            {{ trace.class }}{{ trace.type }}{{ trace.function }}<br />
+            {{ trace.class }}{{ trace.type }}{{ trace.function }}<br>
           </span>
         </p>
       </template>

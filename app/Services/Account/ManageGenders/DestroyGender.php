@@ -19,8 +19,8 @@ class DestroyGender extends BaseService implements ServiceInterface
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'gender_id' => 'required|integer|exists:genders,id',
             'author_id' => 'required|integer|exists:users,id',
+            'gender_id' => 'required|integer|exists:genders,id',
         ];
     }
 

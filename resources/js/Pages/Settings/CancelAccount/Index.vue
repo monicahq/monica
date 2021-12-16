@@ -6,7 +6,7 @@
 </style>
 
 <template>
-  <Layout :layoutData="layoutData">
+  <layout :layout-data="layoutData">
     <!-- breadcrumb -->
     <nav class="sm:border-b bg-white">
       <div class="max-w-8xl mx-auto px-4 sm:px-6 py-2 hidden md:block">
@@ -14,7 +14,7 @@
           <ul class="text-sm">
             <li class="inline mr-2 text-gray-600">You are here:</li>
             <li class="inline mr-2">
-              <Link :href="data.url.settings" class="text-sky-500 hover:text-blue-900">Settings</Link>
+              <inertia-link :href="data.url.settings" class="text-sky-500 hover:text-blue-900">Settings</inertia-link>
             </li>
             <li class="inline mr-2 relative">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline relative icon-breadcrumb" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -29,12 +29,12 @@
 
     <main class="sm:mt-24 relative">
       <div class="max-w-lg mx-auto px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
-
-        <form @submit.prevent="destroy()" class="bg-white border border-gray-200 rounded-lg mb-6">
-
+        <form class="bg-white border border-gray-200 rounded-lg mb-6" @submit.prevent="destroy()">
           <!-- title -->
           <div class="p-5 border-b border-gray-200 bg-blue-50 section-head">
-            <h1 class="text-center text-2xl mb-4 font-medium">Cancel your account</h1>
+            <h1 class="text-center text-2xl mb-4 font-medium">
+              Cancel your account
+            </h1>
             <p class="mb-2">Thanks for giving Monica a try.</p>
             <p class="mb-2">Once you cancel,</p>
             <ul class="pl-6 list-disc">
@@ -49,12 +49,13 @@
             <errors :errors="form.errors" />
 
             <text-input v-model="form.password"
-              :label="'Please enter your password to cancel the account'"
-              :type="'password'" :autofocus="true"
-              :input-class="'block w-full'"
-              :required="true"
-              :autocomplete="false"
-              :maxlength="255" />
+                        :label="'Please enter your password to cancel the account'"
+                        :type="'password'" :autofocus="true"
+                        :input-class="'block w-full'"
+                        :required="true"
+                        :autocomplete="false"
+                        :maxlength="255"
+            />
           </div>
 
           <div class="p-5 flex justify-between">
@@ -64,7 +65,7 @@
         </form>
       </div>
     </main>
-  </Layout>
+  </layout>
 </template>
 
 <script>
@@ -73,7 +74,6 @@ import PrettyLink from '@/Shared/PrettyLink';
 import PrettyButton from '@/Shared/PrettyButton';
 import TextInput from '@/Shared/TextInput';
 import Errors from '@/Shared/Errors';
-import { Link } from '@inertiajs/inertia-vue3';
 
 export default {
   components: {
@@ -82,7 +82,6 @@ export default {
     PrettyButton,
     TextInput,
     Errors,
-    Link,
   },
 
   props: {

@@ -28,18 +28,18 @@
     </label>
 
     <div class="relative">
-      <textarea @input="$emit('update:modelValue', $event.target.value)"
-        v-model="modelValue"
-        :id="id"
-        :class="localTextAreaClasses"
-        :required="required"
-        :type="type"
-        :rows="rows"
-        :maxlength="maxlength"
-        @keydown.esc="sendEscKey"
-        @focus="showMaxLength"
-        @blur="displayMaxLength = false"
-      ></textarea>
+      <textarea :id="id"
+                v-model="proxyValue"
+                :class="localTextAreaClasses"
+                :required="required"
+                :type="type"
+                :rows="rows"
+                :maxlength="maxlength"
+                @input="$emit('update:modelValue', $event.target.value)"
+                @keydown.esc="sendEscKey"
+                @focus="showMaxLength"
+                @blur="displayMaxLength = false"
+      />
       <span v-if="maxlength && displayMaxLength" class="length absolute text-xs rounded">
         {{ charactersLeft }}
       </span>
@@ -109,11 +109,16 @@ export default {
     };
   },
 
-  created() {
-    this.localTextAreaClasses = 'border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm ' + this.textareaClass;
-  },
-
   computed: {
+    proxyValue: {
+      get() {
+        return this.modelValue;
+      },
+      set(value) {
+        this.$emit('update:modelValue', value);
+      },
+    },
+
     charactersLeft() {
       var char = 0;
       if (this.modelValue) {
@@ -122,6 +127,10 @@ export default {
 
       return `${this.maxlength - char} / ${this.maxlength}`;
     },
+  },
+
+  created() {
+    this.localTextAreaClasses = 'border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm ' + this.textareaClass;
   },
 
   methods: {

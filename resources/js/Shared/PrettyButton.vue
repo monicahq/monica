@@ -37,18 +37,21 @@ button {
 
 <template>
   <button :class="classes" :disabled="state == 'loading'" class="relative text-sm" name="save" type="submit">
-
-    <span v-if="state == 'loading'">Loading…</span>
+    <span v-if="state == 'loading'">
+      Loading…
+    </span>
 
     <!-- + icon -->
     <svg v-if="icon === 'plus' && state != 'loading'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline relative icon" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor"
+         stroke="currentColor"
     >
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
     </svg>
 
     <!-- check icon -->
-    <svg v-if="icon === 'check' && state != 'loading'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline relative icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <svg v-if="icon === 'check' && state != 'loading'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline relative icon" fill="none" viewBox="0 0 24 24"
+         stroke="currentColor"
+    >
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
     </svg>
 
@@ -57,7 +60,9 @@ button {
     </span>
 
     <!-- arrow icon -->
-    <svg v-if="icon === 'arrow' && state != 'loading'" xmlns="http://www.w3.org/2000/svg" class="ml-1 h-5 w-5 inline relative icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <svg v-if="icon === 'arrow' && state != 'loading'" xmlns="http://www.w3.org/2000/svg" class="ml-1 h-5 w-5 inline relative icon" fill="none" viewBox="0 0 24 24"
+         stroke="currentColor"
+    >
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
     </svg>
   </button>

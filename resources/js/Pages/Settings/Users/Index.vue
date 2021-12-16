@@ -21,7 +21,7 @@
 </style>
 
 <template>
-  <Layout title="Dashboard" :layoutData="layoutData">
+  <layout title="Dashboard" :layout-data="layoutData">
     <!-- breadcrumb -->
     <nav class="sm:border-b bg-white">
       <div class="max-w-8xl mx-auto px-4 sm:px-6 py-2 hidden md:block">
@@ -29,7 +29,7 @@
           <ul class="text-sm">
             <li class="inline mr-2 text-gray-600">You are here:</li>
             <li class="inline mr-2">
-              <Link :href="data.url.settings.index" class="text-sky-500 hover:text-blue-900">Settings</Link>
+              <inertia-link :href="data.url.settings.index" class="text-sky-500 hover:text-blue-900">Settings</inertia-link>
             </li>
             <li class="inline mr-2 relative">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline relative icon-breadcrumb" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -44,17 +44,19 @@
 
     <main class="sm:mt-24 relative">
       <div class="max-w-3xl mx-auto px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
-
         <!-- title + cta -->
         <div class="flex items-center justify-between mb-6">
-          <h3><span class="mr-1">🥸</span> All users in this account</h3>
+          <h3>
+            <span class="mr-1">
+              🥸
+            </span> All users in this account
+          </h3>
           <pretty-link :href="data.url.users.create" :text="'Invite a new user'" :icon="'plus'" />
         </div>
 
         <!-- list of users -->
         <ul class="bg-white border border-gray-200 rounded-lg mb-6 user-list">
           <li v-for="user in data.users" :key="user.id" class="px-5 py-2 border-b border-gray-200 hover:bg-slate-50">
-
             <!-- case user has been invited -->
             <div v-if="!user.name" class="flex justify-between items-center">
               <div>
@@ -86,18 +88,16 @@
         </ul>
       </div>
     </main>
-  </Layout>
+  </layout>
 </template>
 
 <script>
 import Layout from '@/Shared/Layout';
-import { Link } from '@inertiajs/inertia-vue3';
 import PrettyLink from '@/Shared/PrettyLink';
 
 export default {
   components: {
     Layout,
-    Link,
     PrettyLink,
   },
 
@@ -108,7 +108,7 @@ export default {
     },
     data: {
       type: Array,
-      default: [],
+      default: () => [],
     },
   },
 

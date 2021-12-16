@@ -6,7 +6,7 @@
 </style>
 
 <template>
-  <Layout :layoutData="layoutData">
+  <layout :layout-data="layoutData">
     <!-- breadcrumb -->
     <nav class="sm:border-b bg-white">
       <div class="max-w-8xl mx-auto px-4 sm:px-6 py-2 hidden md:block">
@@ -14,7 +14,7 @@
           <ul class="text-sm">
             <li class="inline mr-2 text-gray-600">You are here:</li>
             <li class="inline mr-2">
-              <Link :href="data.url.settings" class="text-sky-500 hover:text-blue-900">Settings</Link>
+              <inertia-link :href="data.url.settings" class="text-sky-500 hover:text-blue-900">Settings</inertia-link>
             </li>
             <li class="inline mr-2 relative">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline relative icon-breadcrumb" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -29,26 +29,27 @@
 
     <main class="sm:mt-20 relative">
       <div class="max-w-md mx-auto px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
-        <h2 class="text-lg text-center mb-6">Personalize the account</h2>
+        <h2 class="text-lg text-center mb-6">
+          Personalize the account
+        </h2>
         <div class="bg-white border border-gray-200 rounded-lg p-5">
           <ul>
-            <li class="mb-2"><span class="mr-1">🥸</span> <Link :href="data.url.manage_relationships" class="text-sky-500 hover:text-blue-900">Manage relationship types</Link></li>
-            <li class=""><span class="mr-1">🏷</span> <Link :href="data.url.manage_labels" class="text-sky-500 hover:text-blue-900">Manage labels</Link></li>
+            <li class="mb-2"><span class="mr-1">🥸</span> <inertia-link :href="data.url.manage_relationships" class="text-sky-500 hover:text-blue-900">Manage relationship types</inertia-link></li>
+            <li class="mb-2"><span class="mr-1">🏷</span> <inertia-link :href="data.url.manage_labels" class="text-sky-500 hover:text-blue-900">Manage labels</inertia-link></li>
+            <li class=""><span class="mr-1">🚻</span> <inertia-link :href="data.url.manage_genders" class="text-sky-500 hover:text-blue-900">Manage genders</inertia-link></li>
           </ul>
         </div>
       </div>
     </main>
-  </Layout>
+  </layout>
 </template>
 
 <script>
 import Layout from '@/Shared/Layout';
-import { Link } from '@inertiajs/inertia-vue3';
 
 export default {
   components: {
     Layout,
-    Link,
   },
 
   props: {
