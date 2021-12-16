@@ -2,7 +2,6 @@
 
 namespace App\Services\Account\ManageLabels;
 
-use App\Models\User;
 use App\Models\Label;
 use Illuminate\Support\Str;
 use App\Jobs\CreateAuditLog;

@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\AcceptInvitationController;
 use App\Http\Controllers\Settings\Personalize\PersonalizeController;
 use App\Http\Controllers\Settings\Preferences\PreferencesController;
 use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
+use App\Http\Controllers\Settings\Personalize\Labels\PersonalizeLabelController;
 use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipController;
 use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipTypeController;
 
@@ -73,6 +74,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::post('relationships/{groupType}/types', [PersonalizeRelationshipTypeController::class, 'store'])->name('settings.personalize.relationship.type.store');
                 Route::put('relationships/{groupType}/types/{type}', [PersonalizeRelationshipTypeController::class, 'update'])->name('settings.personalize.relationship.type.update');
                 Route::delete('relationships/{groupType}/types/{type}', [PersonalizeRelationshipTypeController::class, 'destroy'])->name('settings.personalize.relationship.type.destroy');
+
+                // labels
+                Route::get('labels', [PersonalizeLabelController::class, 'index'])->name('settings.personalize.label.index');
+                Route::post('labels', [PersonalizeLabelController::class, 'store'])->name('settings.personalize.label.store');
+                Route::put('labels/{label}', [PersonalizeLabelController::class, 'update'])->name('settings.personalize.label.update');
+                Route::delete('labels/{label}', [PersonalizeLabelController::class, 'destroy'])->name('settings.personalize.label.destroy');
             });
 
             // cancel

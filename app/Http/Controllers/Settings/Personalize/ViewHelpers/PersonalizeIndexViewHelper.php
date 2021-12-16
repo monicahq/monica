@@ -11,6 +11,7 @@ class PersonalizeIndexViewHelper
                 'settings' => route('settings.index'),
                 'back' => route('settings.index'),
                 'manage_relationships' => route('settings.personalize.relationship.index'),
+                'manage_labels' => route('settings.personalize.label.index'),
             ],
         ];
     }

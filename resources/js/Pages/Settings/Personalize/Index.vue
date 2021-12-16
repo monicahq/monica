@@ -30,9 +30,10 @@
     <main class="sm:mt-20 relative">
       <div class="max-w-md mx-auto px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <h2 class="text-lg text-center mb-6">Personalize the account</h2>
-        <div class="bg-white border border-gray-200 rounded-lg mb-6 p-5">
+        <div class="bg-white border border-gray-200 rounded-lg p-5">
           <ul>
             <li class="mb-2"><span class="mr-1">🥸</span> <Link :href="data.url.manage_relationships" class="text-sky-500 hover:text-blue-900">Manage relationship types</Link></li>
+            <li class=""><span class="mr-1">🏷</span> <Link :href="data.url.manage_labels" class="text-sky-500 hover:text-blue-900">Manage labels</Link></li>
           </ul>
         </div>
       </div>

@@ -90,7 +90,7 @@
           </div>
 
           <div class="p-5 flex justify-between">
-            <pretty-link @click="createGroupTypeModalShown = false" :text="'Cancel'" :classes="'mr-3'" />
+            <pretty-span @click="createGroupTypeModalShown = false" :text="'Cancel'" :classes="'mr-3'" />
             <pretty-button :text="'Create group type'" :state="loadingState" :icon="'plus'" :classes="'save'" />
           </div>
         </form>
@@ -245,7 +245,6 @@
 import Layout from '@/Shared/Layout';
 import { Link } from '@inertiajs/inertia-vue3';
 import PrettyButton from '@/Shared/PrettyButton';
-import PrettyLink from '@/Shared/PrettyLink';
 import PrettySpan from '@/Shared/PrettySpan';
 import TextInput from '@/Shared/TextInput';
 import Errors from '@/Shared/Errors';
@@ -255,7 +254,6 @@ export default {
     Layout,
     Link,
     PrettyButton,
-    PrettyLink,
     PrettySpan,
     TextInput,
     Errors,

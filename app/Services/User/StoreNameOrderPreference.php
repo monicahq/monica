@@ -8,7 +8,6 @@ use App\Interfaces\ServiceInterface;
 
 class StoreNameOrderPreference extends BaseService implements ServiceInterface
 {
-    private User $user;
     private array $data;
 
     /**

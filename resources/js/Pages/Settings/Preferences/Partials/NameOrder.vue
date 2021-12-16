@@ -41,6 +41,9 @@ pre {
     <!-- edit mode -->
     <form v-if="editMode" @submit.prevent="submit()" class="bg-white border border-gray-200 rounded-lg mb-6">
       <div class="px-5 py-2 border-b border-gray-200">
+
+        <Errors :errors="form.errors" />
+
         <div class="flex items-center mb-2">
           <input v-model="form.nameOrder" id="first_name_last_name" value="%first_name% %last_name%" name="name-order" type="radio" class="h-4 w-4 text-sky-500 border-gray-300">
           <label for="first_name_last_name" class="ml-3 block text-sm font-medium text-gray-700 cursor-pointer">
