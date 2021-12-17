@@ -13,6 +13,7 @@ use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
 use App\Http\Controllers\Settings\Personalize\Labels\PersonalizeLabelController;
 use App\Http\Controllers\Settings\Personalize\Genders\PersonalizeGenderController;
 use App\Http\Controllers\Settings\Personalize\Pronouns\PersonalizePronounController;
+use App\Http\Controllers\Settings\Personalize\AddressTypes\PersonalizeAddressTypeController;
 use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipController;
 use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipTypeController;
 
@@ -94,6 +95,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::post('pronouns', [PersonalizePronounController::class, 'store'])->name('settings.personalize.pronoun.store');
                 Route::put('pronouns/{pronoun}', [PersonalizePronounController::class, 'update'])->name('settings.personalize.pronoun.update');
                 Route::delete('pronouns/{pronoun}', [PersonalizePronounController::class, 'destroy'])->name('settings.personalize.pronoun.destroy');
+
+                // address types
+                Route::get('addressTypes', [PersonalizeAddressTypeController::class, 'index'])->name('settings.personalize.address_type.index');
+                Route::post('addressTypes', [PersonalizeAddressTypeController::class, 'store'])->name('settings.personalize.address_type.store');
+                Route::put('addressTypes/{addressType}', [PersonalizeAddressTypeController::class, 'update'])->name('settings.personalize.address_type.update');
+                Route::delete('addressTypes/{addressType}', [PersonalizeAddressTypeController::class, 'destroy'])->name('settings.personalize.address_type.destroy');
             });
 
             // cancel

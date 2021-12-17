@@ -14,6 +14,7 @@ class PersonalizeIndexViewHelper
                 'manage_labels' => route('settings.personalize.label.index'),
                 'manage_genders' => route('settings.personalize.gender.index'),
                 'manage_pronouns' => route('settings.personalize.pronoun.index'),
+                'manage_address_types' => route('settings.personalize.address_type.index'),
             ],
         ];
     }
