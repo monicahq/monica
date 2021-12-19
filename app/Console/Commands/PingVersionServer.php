@@ -58,8 +58,8 @@ class PingVersionServer extends Command
                 ])
                 ->throw();
         } catch (RequestException $e) {
-            $this->error('Error calling "'.config('monica.weekly_ping_server_url').'": ' + $e->getMessage());
-            Log::error(__CLASS__.' Error calling "'.config('monica.weekly_ping_server_url').'": ' + $e->getMessage(), [$e]);
+            $this->error('Error calling "'.config('monica.weekly_ping_server_url').'": '.$e->getMessage());
+            Log::error(__CLASS__.' Error calling "'.config('monica.weekly_ping_server_url').'": '.$e->getMessage(), [$e]);
 
             return;
         }
