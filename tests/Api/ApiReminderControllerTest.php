@@ -367,4 +367,43 @@ class ApiReminderControllerTest extends ApiTestCase
             'The selected reminder id is invalid.',
         ]);
     }
+
+    /** @test */
+    public function it_gets_all_upcoming_reminders()
+    {
+        $user = $this->signin();
+
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        // add 2 reminders for the month of March
+        $reminder1 = factory(Reminder::class)->create([
+            'account_id' => $user->account_id,
+            'initial_date' => '2017-03-03 00:00:00',
+        ]);
+        $reminder1->schedule($user);
+
+        $reminder2 = factory(Reminder::class)->create([
+            'account_id' => $user->account_id,
+            'initial_date' => '2017-03-03 00:00:00',
+            'delible' => false,
+        ]);
+        $reminder2->schedule($user);
+
+        $response = $this->json('GET', '/api/reminders/upcoming/2');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => ['*' => $this->jsonReminder],
+        ]);
+        $response->assertJsonFragment([
+            'object' => 'reminder',
+            'reminder_id' => $reminder1->id,
+            'delible' => true,
+        ]);
+        $response->assertJsonFragment([
+            'object' => 'reminder',
+            'reminder_id' => $reminder2->id,
+            'delible' => false,
+        ]);
+    }
 }
