@@ -13,8 +13,8 @@ class ActivityType extends ExportResource
     ];
 
     protected $properties = [
-        'name',
         'translation_key',
+        'name',
         'location_type',
     ];
 

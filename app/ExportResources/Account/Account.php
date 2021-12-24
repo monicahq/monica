@@ -2,6 +2,7 @@
 
 namespace App\ExportResources\Account;
 
+use App\Models\Contact\Gender;
 use App\ExportResources\User\User;
 use App\ExportResources\User\Module;
 use App\ExportResources\ExportResource;
@@ -11,6 +12,7 @@ use App\ExportResources\Instance\AuditLog;
 use App\ExportResources\Journal\JournalEntry;
 use App\ExportResources\Contact\ContactFieldType;
 use App\ExportResources\Relationship\Relationship;
+use App\ExportResources\Contact\Gender as GenderResource;
 
 class Account extends ExportResource
 {
@@ -38,6 +40,10 @@ class Account extends ExportResource
                 Activity::countCollection($this->activities),
             ],
             'properties' => [
+                'default_gender' => $this->when($this->default_gender_id !== null, function() {
+                    $defaultGender = Gender::where(['account_id' => $this->id])->find($this->default_gender_id);
+                    return $defaultGender->uuid;
+                }),
                 'journal_entries' => JournalEntry::collection($this->journalEntries()->entry()->get()),
                 'modules' => Module::collection($this->modules),
                 'reminder_rules' => ReminderRule::collection($this->reminderRules),
@@ -46,9 +52,10 @@ class Account extends ExportResource
             'instance' => [
                 'activity_types' => ActivityType::collection($this->activityTypes),
                 'activity_type_categories' => ActivityTypeCategory::collection($this->activityTypeCategories),
+                'contact_field_types' => ContactFieldType::collection($this->contactFieldTypes),
+                'genders' => GenderResource::collection($this->genders),
                 'life_event_types' => LifeEventType::collection($this->lifeEventTypes),
                 'life_event_categories' => LifeEventCategory::collection($this->lifeEventCategories),
-                'contact_field_types' => ContactFieldType::collection($this->contactFieldTypes),
             ],
         ];
     }

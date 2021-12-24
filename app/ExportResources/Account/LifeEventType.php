@@ -14,7 +14,6 @@ class LifeEventType extends ExportResource
 
     protected $properties = [
         'name',
-        'default_life_event_type_key',
         'core_monica_data',
         'specific_information_structure',
     ];
@@ -23,6 +22,7 @@ class LifeEventType extends ExportResource
     {
         return  [
             'properties' => [
+                'translation_key' => $this->default_life_event_type_key,
                 $this->mergeWhen($this->lifeEventCategory !== null, function () {
                     return [
                         'category' => $this->lifeEventCategory->uuid,

@@ -23,6 +23,7 @@ class LifeEventCategory extends Model
         'name',
         'account_id',
         'default_life_event_category_key',
+        'core_monica_data',
     ];
 
     /**

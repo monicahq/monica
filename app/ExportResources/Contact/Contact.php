@@ -64,7 +64,7 @@ class Contact extends ExportResource
                     })->toArray();
                 }),
                 $this->mergeWhen($this->gender !== null, function () {
-                    return ['gender' => $this->gender->type];
+                    return ['gender' => $this->gender->uuid];
                 }),
                 $this->mergeWhen($this->birthdate, [
                     'birthdate' => new SpecialDate($this->birthdate),

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\ExportResources\Account;
+namespace App\ExportResources\Contact;
 
 use App\ExportResources\ExportResource;
 
-class ActivityTypeCategory extends ExportResource
+class Gender extends ExportResource
 {
     protected $columns = [
         'uuid',
@@ -13,7 +13,7 @@ class ActivityTypeCategory extends ExportResource
     ];
 
     protected $properties = [
-        'translation_key',
         'name',
+        'type',
     ];
 }

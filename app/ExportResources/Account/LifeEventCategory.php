@@ -13,8 +13,15 @@ class LifeEventCategory extends ExportResource
     ];
 
     protected $properties = [
-        'name',
-        'default_life_event_category_key',
         'core_monica_data',
     ];
+
+    public function data(): ?array
+    {
+        return [
+            'properties' => [
+                'translation_key' => $this->default_life_event_category_key,
+            ],
+        ];
+    }
 }

@@ -36,6 +36,7 @@ class AddUuids extends Migration
         'pets',
         'reminders',
         'relationships',
+        'genders',
     ];
 
     /**
@@ -46,12 +47,17 @@ class AddUuids extends Migration
     public function up()
     {
         foreach ($this->tables as $name) {
-            Schema::table($name, function (Blueprint $table) use ($name) {
-                $table->uuid('uuid')->after('id')->nullable();
-                if ($name !== 'accounts') {
-                    $table->index(['account_id', 'uuid']);
-                }
-            });
+            if (!Schema::hasColumn($name, 'uuid')) {
+                Schema::table($name, function (Blueprint $table) use ($name) {
+                    $table->uuid('uuid')->after('id')->nullable();
+                    if ($name !== 'accounts') {
+                        if (Schema::hasColumn('table', 'column')) {
+
+                        }
+                        $table->index(['account_id', 'uuid']);
+                    }
+                });
+            }
         }
     }
 
@@ -62,9 +68,16 @@ class AddUuids extends Migration
      */
     public function down()
     {
-        foreach ($this->tables as $table) {
-            if (Schema::hasColumn($table, 'uuid')) {
-                Schema::table($table, function (Blueprint $table) {
+        foreach ($this->tables as $name) {
+            if (Schema::hasColumn($name, 'uuid')) {
+                Schema::table($name, function (Blueprint $table) use ($name) {
+                    if ($name !== 'accounts') {
+                        try {
+                        //$table->dropIndex(['account_id', 'uuid']);
+                        } catch (\Exception $e) {
+                            //
+                        }
+                    }
                     $table->dropColumn('uuid');
                 });
             }
