@@ -5,7 +5,7 @@ on:
     types: [labeled, opened, synchronize, reopened]
 
 env:
-  node-version: 15
+  node-version: 16
 
 
 jobs:

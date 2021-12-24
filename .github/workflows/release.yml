@@ -12,7 +12,7 @@ on:
 
 env:
   php-version: '8.0'
-  node-version: 15
+  node-version: 16
 
 
 jobs:
