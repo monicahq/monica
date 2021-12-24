@@ -40,8 +40,9 @@ class Account extends ExportResource
                 Activity::countCollection($this->activities),
             ],
             'properties' => [
-                'default_gender' => $this->when($this->default_gender_id !== null, function() {
+                'default_gender' => $this->when($this->default_gender_id !== null, function () {
                     $defaultGender = Gender::where(['account_id' => $this->id])->find($this->default_gender_id);
+
                     return $defaultGender->uuid;
                 }),
                 'journal_entries' => JournalEntry::collection($this->journalEntries()->entry()->get()),
