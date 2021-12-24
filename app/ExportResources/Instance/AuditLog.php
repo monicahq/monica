@@ -23,8 +23,12 @@ class AuditLog extends ExportResource
     {
         return  [
             'properties' => [
-                'author' => $this->author->uuid,
-                'contact' => $this->contact->uuid,
+                'author' => $this->when($this->author !== null, function () {
+                    return $this->author->uuid;
+                }),
+                'contact' => $this->when($this->contact !== null, function () {
+                    return $this->contact->uuid;
+                }),
             ],
         ];
     }
