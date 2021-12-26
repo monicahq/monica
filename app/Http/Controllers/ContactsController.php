@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Log;
 use App\Jobs\UpdateLastConsultedDate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
-use Barryvdh\Debugbar\Facade as Debugbar;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use App\Services\User\UpdateViewPreference;
 use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
