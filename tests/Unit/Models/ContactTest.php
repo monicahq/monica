@@ -989,7 +989,7 @@ class ContactTest extends FeatureTestCase
         config(['monica.requires_subscription' => false]);
         NotificationFacade::fake();
 
-        Carbon::setTestNow(Carbon::create(2017, 1, 1, 12, 0, 0, 'America/New_York'));
+        Carbon::setTestNow(Carbon::create(2017, 1, 1, 12, 0, 0));
 
         $account = factory(Account::class)->create([]);
         $contact = factory(Contact::class)->create([
