@@ -1,3 +1,16 @@
+# [3.5.0](https://github.com/monicahq/monica/compare/v3.4.0...v3.5.0) (2021-11-19)
+
+
+### Bug Fixes
+
+* fix display empty weather ([#5685](https://github.com/monicahq/monica/issues/5685)) ([1afa06e](https://github.com/monicahq/monica/commit/1afa06ec1fccd3dbd5c2fe68728e33a70ce2a1c4))
+* fix weather get attribute ([#5705](https://github.com/monicahq/monica/issues/5705)) ([25e5e59](https://github.com/monicahq/monica/commit/25e5e59b56f1f7d63bde5247e821a68341ad4c9e))
+
+
+### Features
+
+* use ipdata to get infos from ip ([#5680](https://github.com/monicahq/monica/issues/5680)) ([339b0fe](https://github.com/monicahq/monica/commit/339b0feb6dc1d4c9b447984abc4dd8eb3160ece7))
+
 # [3.4.0](https://github.com/monicahq/monica/compare/v3.3.1...v3.4.0) (2021-10-31)
 
 

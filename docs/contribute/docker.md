@@ -12,8 +12,8 @@ Edit `.env` to set `DB_HOST=mysql` (as `mysql` is the creative name of the MySQL
 Then run:
 
 ```sh
-docker-compose build
-docker-compose up
+docker-compose -f docker-compose.dev.yml build
+docker-compose -f docker-compose.dev.yml up
 ```
 
 ## Use Docker directly to run with your own database

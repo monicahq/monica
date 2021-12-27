@@ -30,11 +30,11 @@ Go to the [Settings > API](https://app.monicahq.com/settings/api) page, and Crea
 
 Save this token to authenticate with CardDAV and CalDAV.
 
-The login is you email login.
+The login is your email login.
 
 ## CardDAV and CalDAV urls 
 
-On the [Settings > DAV Resources](https://app.monicahq.com/settings/dav) page of you instance you will find some help about the URL to use.
+On the [Settings > DAV Resources](https://app.monicahq.com/settings/dav) page of your instance you will find some help about the URL to use.
 
 **In most of the cases, the base url should work.** So just copy/paste it to your client app to see the magic happen !
 
@@ -51,7 +51,7 @@ This list is not exhaustive, as the synchronisation can work on every CardDAV co
 
 ### Android
 
-Android devices does not support CardDAV natively, so you'll need to install a third-party application to use CardDAV.
+Android devices do not support CardDAV natively, so you'll need to install a third-party application to use CardDAV.
 
 We recommend installing [DAVx5](https://www.davx5.com/) which is a great CardDAV client. You will find the application on the [Google Play store](https://play.google.com/store/apps/details?id=at.bitfire.davdroid) or even on [F-Droid store](https://f-droid.org/fr/packages/at.bitfire.davdroid/) for free.
 
@@ -140,7 +140,7 @@ Fix the settings:
 
 Your contacts and calendar are now syncing.
 - On **Contacts** application, be sure to display your Monica contacts account on the **Filter**
-- On **Calendar** application, display you Contacts' Anniversary calendar
+- On **Calendar** application, display your Contacts' Anniversary calendar
 
 
 ### Outlook (Microsoft Office)

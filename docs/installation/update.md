@@ -223,7 +223,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 And this, at the very end of the file (after the last `INSERT INTO...` statement:
 
 ```
-SET FOREIGN_KEY_CHECKS = 0
+SET FOREIGN_KEY_CHECKS = 1
 ```
 
 **Notes:**

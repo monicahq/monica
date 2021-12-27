@@ -67,7 +67,7 @@ class DavClient
     {
         $uri = GuzzleUtils::uriFor($this->baseUri);
 
-        return (string) (is_null($path) || empty($path) ? $uri : $uri->withPath($path));
+        return (string) (is_null($path) || empty($path) ? $uri : $uri->withPath((string) Str::of($path)->start('/')));
     }
 
     /**

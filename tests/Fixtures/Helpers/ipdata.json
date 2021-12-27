@@ -1,0 +1,48 @@
+{
+    "ip": "12.34.56.78",
+    "is_eu": true,
+    "city": "Paris",
+    "region": "\u00cele-de-France",
+    "region_code": "IDF",
+    "country_name": "France",
+    "country_code": "FR",
+    "continent_name": "Europe",
+    "continent_code": "EU",
+    "latitude": 0,
+    "longitude": 0,
+    "postal": "75000",
+    "calling_code": "33",
+    "flag": "https://ipdata.co/flags/fr.png",
+    "emoji_flag": "\ud83c\uddeb\ud83c\uddf7",
+    "emoji_unicode": "U+1F1EB U+1F1F7",
+    "languages": [
+        {
+            "name": "French",
+            "native": "Fran\u00e7ais"
+        }
+    ],
+    "currency": {
+        "name": "Euro",
+        "code": "EUR",
+        "symbol": "\u20ac",
+        "native": "\u20ac",
+        "plural": "euros"
+    },
+    "time_zone": {
+        "name": "Europe/Paris",
+        "abbr": "CET",
+        "offset": "+0100",
+        "is_dst": false,
+        "current_time": "2021-11-01T00:00:00+01:00"
+    },
+    "threat": {
+        "is_tor": false,
+        "is_proxy": false,
+        "is_anonymous": false,
+        "is_known_attacker": false,
+        "is_known_abuser": false,
+        "is_threat": false,
+        "is_bogon": false
+    },
+    "count": "0"
+}
