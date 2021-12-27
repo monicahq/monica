@@ -34,13 +34,14 @@ class Handler extends ExceptionHandler
      * Register the exception handling callbacks for the application.
      *
      * @return void
+     * @codeCoverageIgnore
      */
     public function register()
     {
         if (config('monica.sentry_support') && config('app.env') == 'production') {
             $this->reportable(function (Throwable $e) {
                 if ($this->shouldReport($e) && app()->bound('sentry')) {
-                    app('sentry')->captureException($e); // @codeCoverageIgnore
+                    app('sentry')->captureException($e);
                 }
             });
         }
