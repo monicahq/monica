@@ -20,8 +20,8 @@ class CheckVersion
         $instance = Instance::first();
 
         $appVersion = new Version(config('monica.app_version'));
-        $latestVersion = new Version($instance->latest_version);
-        $currentVersion = new Version($instance->current_version);
+        $latestVersion = new Version($instance->latest_version ?? '0.0.0');
+        $currentVersion = new Version($instance->current_version ?? '0.0.0');
 
         if ($latestVersion == $appVersion && $currentVersion != $latestVersion) {
 
