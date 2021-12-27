@@ -234,19 +234,17 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
             return false;
         }
 
+        $now = now($this->timezone);
         $isTheRightTime = true;
 
         // compare date with current date for the user
-        if (! $date->isSameDay(now($this->timezone))) {
+        if (! $date->isSameDay($now)) {
             $isTheRightTime = false;
         }
 
         // compare current hour for the user with the hour they want to be
         // reminded as per the hour set on the profile
-        $currentHourOnUserTimezone = now($this->timezone)->format('H:00');
-        $defaultHourReminderShouldBeSent = $this->account->default_time_reminder_is_sent;
-
-        if ($defaultHourReminderShouldBeSent != $currentHourOnUserTimezone) {
+        if(! $now->isSameHour($this->account->default_time_reminder_is_sent)) {
             $isTheRightTime = false;
         }
 
