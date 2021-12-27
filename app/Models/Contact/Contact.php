@@ -1473,7 +1473,7 @@ class Contact extends Model
         $timestamps = $this->timestamps;
         $this->timestamps = false;
 
-        if ($frequency == 0) {
+        if ($frequency === 0) {
             $this->stay_in_touch_trigger_date = null;
         } else {
             $triggerDate = $triggerDate ?? now();
