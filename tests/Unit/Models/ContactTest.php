@@ -989,16 +989,10 @@ class ContactTest extends FeatureTestCase
         config(['monica.requires_subscription' => false]);
         NotificationFacade::fake();
 
-        Carbon::setTestNow(Carbon::create(2017, 1, 1, 5, 0, 0));
-
-        // dump(now());
-        // dump(now('America/New_York'));
-
-        $x = now()->isSameDay(now('America/New_York'));
-        dump($x);
+        Carbon::setTestNow(Carbon::create(2017, 1, 1, 15, 0, 0));
 
         $account = factory(Account::class)->create([
-            'default_time_reminder_is_sent' => '00:00',
+            'default_time_reminder_is_sent' => '10:00',
         ]);
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
