@@ -31,20 +31,20 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * Report or log an exception.
+     * Register the exception handling callbacks for the application.
      *
-     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-     *
-     * @param  \Throwable  $e
      * @return void
+     * @codeCoverageIgnore
      */
-    public function report(Throwable $e)
+    public function register()
     {
-        if (config('monica.sentry_support') && config('app.env') == 'production' && app()->bound('sentry') && $this->shouldReport($e)) {
-            app('sentry')->captureException($e); // @codeCoverageIgnore
+        if (config('monica.sentry_support') && config('app.env') == 'production') {
+            $this->reportable(function (Throwable $e) {
+                if ($this->shouldReport($e) && app()->bound('sentry')) {
+                    app('sentry')->captureException($e);
+                }
+            });
         }
-
-        parent::report($e);
     }
 
     /**
