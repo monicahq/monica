@@ -42,7 +42,7 @@
       <div class="row">
         <div class="col-12 col-sm-3 profile-sidebar">
 
-          @if (! is_null($weather))
+          @if (! is_null($weather) && $weather->summary)
           <div class="ba b--near-white br2 bg-gray-monica pa3 mb3 f6">
             <div class="w-100 dt">
               <div class="dtc">

@@ -61,14 +61,18 @@ class GetGPSCoordinate extends BaseService
      * Build the query to send with the API call.
      *
      * @param  Place  $place
-     * @return string
+     * @return string|null
      */
-    private function buildQuery(Place $place): string
+    private function buildQuery(Place $place): ?string
     {
+        if (($q = $place->getAddressAsString()) === null) {
+            return null;
+        }
+
         $query = http_build_query([
             'format' => 'json',
             'key' => config('monica.location_iq_api_key'),
-            'q' => $place->getAddressAsString(),
+            'q' => $q,
         ]);
 
         return Str::finish(config('location.location_iq_url'), '/').'search.php?'.$query;
@@ -82,7 +86,9 @@ class GetGPSCoordinate extends BaseService
      */
     private function query(Place $place): ?Place
     {
-        $query = $this->buildQuery($place);
+        if (($query = $this->buildQuery($place)) === null) {
+            return null;
+        }
 
         try {
             $response = Http::get($query);
@@ -96,7 +102,7 @@ class GetGPSCoordinate extends BaseService
         } catch (RequestException $e) {
             if ($e->response->status() === 429 && ($error = $e->response->json('error')) && $error === 'Rate Limited Second') {
                 throw new RateLimitedSecondException($e);
-            } else {
+            } elseif ($e->response->status() !== 404 && $e->response->status() !== 400) {
                 Log::error(__CLASS__.' '.__FUNCTION__.': Error making the call: '.$e->getMessage(), [
                     'query' => Str::of($query)->replace(config('monica.location_iq_api_key'), '******'),
                     $e,

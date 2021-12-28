@@ -10,7 +10,7 @@ return [
 
     //index
     'people_not_found' => '联系人未找到',
-    'people_list_number_kids' => ':count child|:count children',
+    'people_list_number_kids' => ':count 个孩子',
     'people_list_last_updated' => '最近更新:',
     'people_list_number_reminders' => ':count 个提醒',
     'people_list_blank_title' => '您还没有任何联系人',
@@ -25,14 +25,14 @@ return [
     'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date, oldest to newest',
     'people_list_filter_tag' => '拥有以下标签的联系人：',
     'people_list_clear_filter' => '清除筛选',
-    'people_list_contacts_per_tags' => ':count contact|:count contacts',
+    'people_list_contacts_per_tags' => ':count 个联系人',
     'people_list_show_dead' => '显示已故人员 (:count)',
     'people_list_hide_dead' => '隐藏已故人员 (:count)',
-    'people_search' => 'Search your contacts…',
+    'people_search' => '搜索联系人',
     'people_search_no_results' => '未找到任何结果',
     'people_search_next' => '下一页',
-    'people_search_prev' => 'Previous',
-    'people_search_rows_per_page' => 'Rows per page',
+    'people_search_prev' => '上一页',
+    'people_search_rows_per_page' => '每页行数',
     'people_search_of' => '/',
     'people_search_page' => '页',
     'people_search_all' => '所有',
@@ -42,13 +42,13 @@ return [
     'people_list_account_upgrade_cta' => '立即升级',
     'people_list_untagged' => '查看未加标签的联系人',
     'people_list_filter_untag' => '所有未加标签的联系人',
-    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
+    'archived_contact_readonly' => '无法编辑已归档的联系人，请先解除归档。',
 
     // people add
     'people_add_title' => '添加一位新的联系人',
-    'people_add_missing' => 'No person found – add a new one now',
+    'people_add_missing' => '列表为空 — — 现在添加一个新的',
     'people_add_firstname' => '名字',
-    'people_add_middlename' => 'Middle name (optional)',
+    'people_add_middlename' => '中间名（可选）',
     'people_add_lastname' => '姓氏（选填）',
     'people_add_email' => '邮箱（选填）',
     'people_add_nickname' => '昵称（选填）',
@@ -58,13 +58,13 @@ return [
     'people_add_gender' => '性别',
     'people_delete_success' => '联系人已被删除',
     'people_delete_message' => '删除联系人',
-    'people_delete_confirmation' => 'Are you sure you want to delete :name’s contact? Deletion is immediate and permanent.',
+    'people_delete_confirmation' => '确实要删除 :name 的联系人吗？删除将立即生效且无法恢复。',
     'people_add_birthday_reminder' => '祝 :name 生日快乐',
     'people_add_birthday_reminder_deceased' => 'On this date, :name would have celebrated their birthday',
     'people_add_import' => '是否要 <a href=":url">导入您的联系人</a>？',
     'people_edit_email_error' => '您的联系人中已经有人使用此电子邮件，请更换一个',
     'people_export' => '导出为 vCard',
-    'people_add_reminder_for_birthday' => 'Create an annual birthday reminder',
+    'people_add_reminder_for_birthday' => '创建年度生日提醒',
 
     // show
     'section_contact_information' => '联系人信息',
@@ -115,7 +115,7 @@ return [
     'call_emotions' => '情绪：',
 
     // Conversation
-    'conversation_blank' => 'Record conversations you have with :name on social media, SMS…',
+    'conversation_blank' => '记录你和 :name 在社交媒体或 SMS 等平台的对话。',
     'conversation_delete_link' => '删除对话',
     'conversation_edit_title' => '编辑对话',
     'conversation_edit_delete' => '您是否要删除这个对话？操作无法撤销。',
@@ -137,7 +137,7 @@ return [
     'conversation_list_cta' => '记录对话',
 
     // age - birthday
-    'birthdate_not_set' => 'Birthday is not set',
+    'birthdate_not_set' => '未设置生日',
     'age_approximate_in_years' => '大概:age岁',
     'age_exact_in_years' => ':age岁',
     'age_exact_birthdate' => '出生:date',
@@ -423,7 +423,7 @@ return [
 
     // life events
     'life_event_list_tab_life_events' => '生活事件',
-    'life_event_list_tab_other' => 'Notes, reminders, …',
+    'life_event_list_tab_other' => '便签，提醒...',
     'life_event_list_title' => '生活事件',
     'life_event_blank' => '记录在{name} 身上发生的事情以供将来参考',
     'life_event_list_cta' => '添加生活事件',
@@ -503,10 +503,10 @@ return [
     'photo_list_blank_desc' => '您可以存储有关此联系人的图像。立即上传一个!',
     'photo_upload_zone_cta' => '上传照片',
     'photo_current_profile_pic' => '目前头像',
-    'photo_make_profile_pic' => '制作头像',
+    'photo_make_profile_pic' => '设为头像',
     'photo_delete' => '删除照片',
-    'photo_next' => 'Next photo ❯',
-    'photo_previous' => '❮ Previous photo',
+    'photo_next' => '下一张照片 ❯',
+    'photo_previous' => '❮ 上一张照片',
 
     // Avatars
     'avatar_change_title' => '更换头像',
@@ -516,7 +516,7 @@ return [
     'avatar_gravatar' => '此用户的电子邮件地址 与Gravatar关联 。 <a href="https://gravatar.com/">Gravatar</a> 是全球通用的头像服务。',
     'avatar_current' => '保持当前头像',
     'avatar_photo' => '从您上传的照片',
-    'avatar_crop_new_avatar_photo' => 'Crop new avatar photo',
+    'avatar_crop_new_avatar_photo' => '裁剪新头像照片',
 
     // emotions
     'emotion_this_made_me_feel' => '这让你觉得...',

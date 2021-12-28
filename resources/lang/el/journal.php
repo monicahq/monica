@@ -9,10 +9,10 @@
 return [
     'journal_rate' => 'Πώς ήταν η μέρα σας? Μπορείτε να αξιολογήσετε μια φορά την ημέρα.',
     'journal_come_back' => 'Ευχαριστούμε. Ελάτε αύριο για να αξιολογήσετε τη μέρα σας και πάλι.',
-    'journal_description' => 'Note: the journal lists both manual journal entries, and automatic entries like Activities done with your contacts. While you can delete journal entries manually, you’ll have to delete the activity directly on the contact page.',
+    'journal_description' => 'Σημείωση: το ημερολόγιο παραθέτει τόσο τις χειροκίνητες εγγραφές ημερολογίου όσο και τις αυτόματες εγγραφές όπως Δραστηριότητες που έγιναν με τις επαφές σας. Ενώ μπορείτε να διαγράψετε χειροκίνητα τις εγγραφές ημερολογίου, θα πρέπει να διαγράψετε τη Δραστηριότητα απευθείας στη σελίδα της επαφής.',
     'journal_add' => 'Προσθήκη καταχώρησης ημερολογίου',
     'journal_edit' => 'Επεξεργασία μιας καταχώρησης ημερολογίου',
-    'journal_empty' => 'Empty journal',
+    'journal_empty' => 'Κενό ημερολόγιο',
     'journal_created_at' => 'Δημιουργήθηκε στις {date}',
     'journal_created_automatically' => 'Δημιουργήθηκε αυτόματα',
     'journal_entry_type_journal' => 'Καταχώρηση ημερολογίου',
