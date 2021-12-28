@@ -113,7 +113,7 @@ class ExportAccountTest extends FeatureTestCase
                             'created_at',
                             'updated_at',
                             'properties' => [
-                                'default_life_event_type_key',
+                                'translation_key',
                                 'core_monica_data',
                                 'category',
                             ],
@@ -125,8 +125,7 @@ class ExportAccountTest extends FeatureTestCase
                             'created_at',
                             'updated_at',
                             'properties' => [
-                                'name',
-                                'default_life_event_category_key',
+                                'translation_key',
                                 'core_monica_data',
                             ],
                         ],
@@ -237,7 +236,7 @@ class ExportAccountTest extends FeatureTestCase
                             'created_at',
                             'updated_at',
                             'properties' => [
-                                'default_life_event_type_key',
+                                'translation_key',
                                 'core_monica_data',
                                 'category',
                             ],
@@ -249,8 +248,7 @@ class ExportAccountTest extends FeatureTestCase
                             'created_at',
                             'updated_at',
                             'properties' => [
-                                'name',
-                                'default_life_event_category_key',
+                                'translation_key',
                                 'core_monica_data',
                             ],
                         ],
