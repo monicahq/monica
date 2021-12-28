@@ -244,7 +244,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
 
         // compare current hour for the user with the hour they want to be
         // reminded as per the hour set on the profile
-        if(! $now->isSameHour($this->account->default_time_reminder_is_sent)) {
+        if (! $now->isSameHour($this->account->default_time_reminder_is_sent)) {
             $isTheRightTime = false;
         }
 
