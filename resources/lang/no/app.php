@@ -441,9 +441,9 @@ return [
     'emotion_dread' => 'Frykt',
 
     // weather
-    'weather_sunny' => 'Solfylt',
-    'weather_clear' => 'Slett',
-    'weather_clear-day' => 'Fjern',
+    'weather_sunny' => 'Sol',
+    'weather_clear' => 'Klart',
+    'weather_clear-day' => 'Klart',
     'weather_clear-night' => 'Klart (natt)',
     'weather_light-drizzle' => 'Lett yr',
     'weather_patchy-light-drizzle' => 'Stedvis lett yr',

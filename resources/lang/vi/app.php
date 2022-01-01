@@ -441,11 +441,11 @@ return [
     'emotion_dread' => 'Dread',
 
     // weather
-    'weather_sunny' => 'Sunny',
-    'weather_clear' => 'Clear',
-    'weather_clear-day' => 'Clear',
+    'weather_sunny' => 'Có nắng',
+    'weather_clear' => 'Trời quang, ít mây',
+    'weather_clear-day' => 'Ngày đẹp trời',
     'weather_clear-night' => 'Đêm quang đãng',
-    'weather_light-drizzle' => 'Light drizzle',
+    'weather_light-drizzle' => 'Mưa phùn',
     'weather_patchy-light-drizzle' => 'Patchy light drizzle',
     'weather_patchy-light-rain' => 'Patchy light rain',
     'weather_light-rain' => 'Light rain',
