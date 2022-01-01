@@ -247,6 +247,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/settings/export', 'SettingsController@export')->name('export');
         Route::post('/settings/exportToSql', 'SettingsController@exportToSQL')->name('sql');
         Route::post('/settings/exportToJson', 'SettingsController@exportToJson')->name('json');
+        Route::post('/settings/export/{uuid}', 'SettingsController@exportDownload')->name('export.show');
         Route::get('/settings/import', 'SettingsController@import')->name('import');
         Route::get('/settings/import/report/{importjobid}', 'SettingsController@report')->name('report');
         Route::get('/settings/import/upload', 'SettingsController@upload')->name('upload');

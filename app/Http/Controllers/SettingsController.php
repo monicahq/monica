@@ -17,6 +17,7 @@ use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
 use App\Exceptions\StripeException;
+use App\Helpers\StorageHelper;
 use App\Http\Requests\ImportsRequest;
 use App\Notifications\InvitationMail;
 use App\Http\Requests\SettingsRequest;
@@ -28,6 +29,7 @@ use App\Services\Account\Settings\DestroyAccount;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
+use App\Models\Account\ExportJob;
 
 class SettingsController extends Controller
 {
@@ -172,8 +174,16 @@ class SettingsController extends Controller
      */
     public function export()
     {
+        $exports = ExportJob::where([
+            'account_id' => auth()->user()->account_id,
+            'user_id' => auth()->user()->id
+        ])
+            ->orderByDesc('created_at')
+            ->get();
+
         return view('settings.export')
-            ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account));
+            ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account))
+            ->withExports($exports);
     }
 
     /**
@@ -183,15 +193,10 @@ class SettingsController extends Controller
      */
     public function exportToSql()
     {
-        $path = ExportAccount::dispatchSync(ExportAccount::SQL);
+        $job = $this->newExport(ExportJob::SQL);
+        ExportAccount::dispatch($job);
 
-        $adapter = disk_adapter(ExportAccount::STORAGE);
-
-        $exportdate = Carbon::now(DateHelper::getTimezone())->format('Y-m-d');
-
-        return response()
-            ->download($adapter->getPathPrefix().$path, "monica-export.$exportdate.sql")
-            ->deleteFileAfterSend(true);
+        return redirect()->route('settings.export');
     }
 
     /**
@@ -201,13 +206,69 @@ class SettingsController extends Controller
      */
     public function exportToJson()
     {
-        $path = ExportAccount::dispatchSync(ExportAccount::JSON);
+        $job = $this->newExport(ExportJob::JSON);
+        ExportAccount::dispatch($job);
 
-        $adapter = disk_adapter(ExportAccount::STORAGE);
+        return redirect()->route('settings.export');
+    }
 
-        return response()
-            ->download($adapter->getPathPrefix().$path, 'monica.json', ['Content-Type' => 'application/json; charset=utf-8'])
-            ->deleteFileAfterSend(true);
+    /**
+     * Create a new ExportJob.
+     *
+     * @param  string  $type
+     * @return ExportJob
+     */
+    private function newExport(string $type): ExportJob
+    {
+        $exports = ExportJob::where([
+            'account_id' => auth()->user()->account_id,
+            'user_id' => auth()->user()->id
+        ])
+            ->orderBy('created_at');
+        if ($exports->count() >= config('monica.export_limit')) {
+            $job = $exports->first();
+            try {
+                StorageHelper::disk($job->location)
+                    ->delete($job->filename);
+            } finally {
+                $job->delete();
+            }
+        }
+
+        return ExportJob::create([
+            'account_id' => auth()->user()->account_id,
+            'user_id' => auth()->user()->id,
+            'type' => $type,
+        ]);
+    }
+
+    /**
+     * Exports the data of the account in SQL format.
+     *
+     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response|null
+     */
+    public function exportDownload(Request $request, string $uuid)
+    {
+        $job = ExportJob::where([
+            'account_id' => auth()->user()->account_id,
+            'user_id' => auth()->user()->id,
+            'uuid' => $uuid,
+        ])->firstOrFail();
+
+        $x = $job->status;
+        if ($job->status !== ExportJob::EXPORT_DONE) {
+            return redirect()->route('settings.export')
+                ->withErrors('Status not done');
+        }
+        $disk = StorageHelper::disk($job->location);
+
+        return $disk->response($job->filename,
+                "monica.{$job->type}",
+                [
+                    'Content-Type' => "application/{$job->type}; charset=utf-8",
+                    'Content-Disposition' => "attachment; filename=monica.{$job->type}",
+                ]
+            );
     }
 
     /**

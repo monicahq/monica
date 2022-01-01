@@ -285,4 +285,14 @@ return [
     */
     'adorable_api' => env('ADORABLE_API', 'https://api.hello-avatar.com/adorables/'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Export limit
+    |--------------------------------------------------------------------------
+    |
+    | Maximum number of exports.
+    |
+    */
+    'export_limit' => 5,
+
 ];

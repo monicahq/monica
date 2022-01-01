@@ -52,6 +52,53 @@
               @csrf
               <p><button type="submit" class="btn">{{ trans('settings.export_json_cta') }}</button></p>
             </form>
+
+            <h4>{{ trans('settings.export_last_title') }}</h4>
+            @if ($exports->count() === 0)
+              <em>{{ trans('settings.export_empty_title') }}</em>
+            @else
+              <ul class="table">
+                <li class="table-row">
+                  <div class="table-cell table-header">
+                    {{ trans('settings.export_header_type') }}
+                  </div>
+                  <div class="table-cell table-header date">
+                    {{ trans('settings.export_header_timestamp') }}
+                  </div>
+                  <div class="table-cell table-header">
+                    {{ trans('settings.export_header_status') }}
+                  </div>
+                  <div class="table-cell table-header">
+                    {{ trans('settings.export_header_actions') }}
+                  </div>
+                </li>
+                @foreach ($exports as $export)
+                <li class="table-row">
+                  <div class="table-cell table-cell">
+                    {{ trans("settings.export_type_{$export['type']}") }}
+                  </div>
+                  <div class="table-cell table-cell date">
+                    {{ \App\Helpers\DateHelper::getShortDateWithTime($export['created_at']) }}
+                  </div>
+                  <div class="table-cell table-cell">
+                    {{ trans("settings.export_status_{$export['status']}") }}
+                  </div>
+                  <div class="table-cell actions table-cell">
+                    @if ($export['status'] === \App\Models\Account\ExportJob::EXPORT_DONE)
+                      <form method="POST" action="{{ route('settings.export.show', ['uuid' => $export['uuid']]) }}">
+                        @csrf
+                        <a href="#" onclick="this.parentNode.submit(); return false">
+                          {{ trans('app.download') }}
+                        </a>
+                      </form>
+
+                    @endif
+                  </div>
+                </li>
+                @endforeach
+              </ul>
+            @endif
+
           </div>
         </div>
 
