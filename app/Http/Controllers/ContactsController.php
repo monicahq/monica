@@ -183,7 +183,8 @@ class ContactsController extends Controller
             ->withDefaultGender(auth()->user()->account->default_gender_id)
             ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()))
             ->withFirstName($request->input('first_name'))
-            ->withLastName($request->input('last_name'));
+            ->withLastName($request->input('last_name'))
+            ->withEmail($request->input('email'));
     }
 
     /**
