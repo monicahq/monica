@@ -641,7 +641,7 @@ class Contact extends Model
     /**
      * Get contacts ordered by user preferences.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeOrderByUserPreference(Builder $query): Builder
