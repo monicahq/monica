@@ -139,7 +139,6 @@ return [
 
     'password_rules' => env('APP_PASSWORD_RULES', 'mixedCase,letters,numbers,symbols,uncompromised'),
 
-
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

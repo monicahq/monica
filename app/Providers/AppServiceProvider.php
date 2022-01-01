@@ -77,6 +77,7 @@ class AppServiceProvider extends ServiceProvider
             if (in_array('uncompromised', $config)) {
                 $rules = $rules->uncompromised();
             }
+
             return $rules;
         });
 
