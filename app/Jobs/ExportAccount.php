@@ -32,16 +32,9 @@ class ExportAccount implements ShouldQueue
     protected $exportJob;
 
     /**
-     * Storage disk used to store the exported file.
-     *
-     * @var string
-     */
-    public const STORAGE = 'public';
-
-    /**
      * Create a new job instance.
      *
-     * @param  string  $format
+     * @param  ExportJob  $exportJob
      * @param  string|null  $path
      */
     public function __construct(ExportJob $exportJob, string $path = null)
