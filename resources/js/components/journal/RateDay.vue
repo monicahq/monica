@@ -64,7 +64,8 @@
                 </svg>
 
                 <!-- mediocre day monochrome -->
-                <svg v-if="!showMediocreSmileyColor" v-cy-name="'medium-reaction-button'" width="42px" height="41px" viewBox="0 0 42 41" version="1.1"
+                <svg v-if="!showMediocreSmileyColor" v-cy-name="'medium-reaction-button'" width="42px" height="41px" viewBox="0 0 42 41"
+                     version="1.1"
                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                      class="pointer" :class="{ selected: day.rate == 2 }" @click="showComment(2)" @mouseover="showMediocreSmileyColor = true"
                 >
