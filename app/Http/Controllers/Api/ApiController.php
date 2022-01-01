@@ -104,6 +104,7 @@ class ApiController extends Controller
                 'journal_url' => route('api.journal'),
                 'notes_url' => route('api.notes'),
                 'relationships_url' => route('api.relationships', ['contact' => ':contactId']),
+                'reminders_url' => route('api.reminders'),
                 'statistics_url' => route('api.statistics'),
             ],
         ]);
