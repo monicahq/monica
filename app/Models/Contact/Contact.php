@@ -639,6 +639,51 @@ class Contact extends Model
     }
 
     /**
+     * Get contacts ordered by user preferences.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeOrderByUserPreference(Builder $query): Builder
+    {
+        switch (Auth::user()->name_order) {
+            case 'firstname_lastname':
+                $query = $query->orderBy('first_name')
+                    ->orderBy('last_name');
+                break;
+            case 'firstname_lastname_nickname':
+                $query = $query->orderBy('first_name')
+                    ->orderBy('last_name')
+                    ->orderBy('nickname');
+                break;
+            case 'firstname_nickname_lastname':
+                $query = $query->orderBy('first_name')
+                    ->orderBy('nickname')
+                    ->orderBy('last_name');
+                break;
+            case 'nickname':
+                $query = $query->orderBy('nickname');
+                break;
+            case 'lastname_firstname':
+                $query = $query->orderBy('last_name')
+                    ->orderby('first_name');
+                break;
+            case 'lastname_firstname_nickname':
+                $query = $query->orderBy('last_name')
+                    ->orderby('first_name')
+                    ->orderby('nickname');
+                break;
+            case 'lastname_nickname_firstname':
+                $query = $query->orderBy('last_name')
+                    ->orderby('nickname')
+                    ->orderby('first_name');
+                break;
+        }
+
+        return $query;
+    }
+
+    /**
      * Mutator first_name.
      * Get the first name of the contact.
      *

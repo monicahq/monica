@@ -26,6 +26,7 @@ class IntroductionsController extends Controller
         $contacts = $contact->siblingContacts()
                         ->real()
                         ->active()
+                        ->orderByUserPreference()
                         ->paginate(20);
 
         $introducer = $contact->getIntroducer();
