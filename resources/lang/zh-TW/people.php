@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => '常聯絡*',
     'stay_in_touch_frequency' => '常聯絡*提醒頻率：每天|常聯絡*提醒頻率：每 {count} 天',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => '頻率必須大於0。',
     'stay_in_touch_premium' => '您需要升級到高階賬戶來使用這個功能！',
     'stay_in_touch_modal_title' => '常聯絡*',
@@ -143,6 +144,7 @@ return [
 
     // Last called
     'last_called' => '最近通話: :date',
+    'last_talked_to' => 'Last called: {date}',
     'last_called_empty' => '最近通話: 未知',
     'last_activity_date' => '最近一起的活動: :date',
     'last_activity_date_empty' => '最近一起的活動: 未知',
@@ -285,7 +287,7 @@ return [
     'activities_profile_year_summary_activity_types' => ':year年活動型別彙總',
     'activities_profile_year_summary' => ':year年你們一起進行的活動',
     'activities_profile_number_occurences' => ':value 次活動',
-    'activities_list_participants' => '參與者：',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => '我感覺:',
     'activities_list_date' => '發生於',
     'activities_list_category' => '分類：',

@@ -20,8 +20,8 @@ class DAVRedirect extends ServerPlugin
     /**
      * This method intercepts GET requests to collections and returns the html.
      *
-     * @param RequestInterface $request
-     * @param ResponseInterface $response
+     * @param  RequestInterface  $request
+     * @param  ResponseInterface  $response
      * @return bool
      */
     public function httpGet(RequestInterface $request, ResponseInterface $response)

@@ -42,3 +42,5 @@ parameters:
           path: */Helpers/InstanceHelper.php
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::recurring\(\)\.#'
           path: */Traits/Subscription.php
+        - message: '#Function dns_get_record is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\dns_get_record;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.#'
+          path: */Services/DavClient/Utils/Dav/ServiceUrlQuery.php

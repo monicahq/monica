@@ -147,6 +147,9 @@ class AccountHelperTest extends TestCase
     public function get_reminders_for_month_returns_no_reminders(): void
     {
         $account = factory(Account::class)->create();
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
         factory(Reminder::class, 3)->create([
@@ -154,7 +157,7 @@ class AccountHelperTest extends TestCase
         ]);
 
         // check if there are reminders for the month of March
-        $this->assertCount(0, AccountHelper::getUpcomingRemindersForMonth($account, 3));
+        $this->actingAs($user)->assertCount(0, AccountHelper::getUpcomingRemindersForMonth($account, 3));
     }
 
     /** @test */
@@ -177,7 +180,34 @@ class AccountHelperTest extends TestCase
             $reminder->schedule($user);
         }
 
-        $this->assertCount(3, AccountHelper::getUpcomingRemindersForMonth($account, 2));
+        $this->actingAs($user)->assertCount(3, AccountHelper::getUpcomingRemindersForMonth($account, 2));
+    }
+
+    /** @test */
+    public function get_reminders_for_month_returns_reminders_for_current_user_only(): void
+    {
+        $account = factory(Account::class)->create();
+        $user1 = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $user2 = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        // add 3 reminders for the month of March
+        for ($i = 0; $i < 3; $i++) {
+            $reminder = factory(Reminder::class)->create([
+                'account_id' => $account->id,
+                'initial_date' => '2017-03-03 00:00:00',
+            ]);
+
+            $reminder->schedule($user1);
+            $reminder->schedule($user2);
+        }
+
+        $this->actingAs($user1)->assertCount(3, AccountHelper::getUpcomingRemindersForMonth($account, 2));
     }
 
     /** @test */

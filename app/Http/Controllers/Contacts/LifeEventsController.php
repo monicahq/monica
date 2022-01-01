@@ -22,7 +22,7 @@ class LifeEventsController extends Controller
     /**
      * Get the list of life event categories.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
     public function categories(Request $request)
@@ -34,8 +34,9 @@ class LifeEventsController extends Controller
 
     /**
      * Get the list of life event types for a given life event category.
-     * @param  Request $request
-     * @param  int     $lifeEventCategoryId
+     *
+     * @param  Request  $request
+     * @param  int  $lifeEventCategoryId
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
     public function types(Request $request, int $lifeEventCategoryId)
@@ -49,9 +50,8 @@ class LifeEventsController extends Controller
     /**
      * Display the list of life events.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return Collection
      */
     public function index(Request $request, Contact $contact)
@@ -78,9 +78,8 @@ class LifeEventsController extends Controller
     /**
      * Store the life event.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return LifeEvent|\Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Contact $contact)
@@ -112,9 +111,8 @@ class LifeEventsController extends Controller
     /**
      * Destroy the life event.
      *
-     * @param Request   $request
-     * @param LifeEvent $lifeEvent
-     *
+     * @param  Request  $request
+     * @param  LifeEvent  $lifeEvent
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request, LifeEvent $lifeEvent)

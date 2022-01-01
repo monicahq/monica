@@ -12,7 +12,7 @@ class EmailMessaging
     /**
      * Get the mail representation to verify an email.
      *
-     * @param  User $user
+     * @param  User  $user
      * @return MailMessage
      */
     public static function verifyEmailMail(User $user, $verificationUrl): MailMessage
@@ -30,7 +30,7 @@ class EmailMessaging
     /**
      * Get the mail representation to reset a password.
      *
-     * @param  User $user
+     * @param  User  $user
      * @return MailMessage
      */
     public static function resetPasswordMail(User $user, $token): MailMessage

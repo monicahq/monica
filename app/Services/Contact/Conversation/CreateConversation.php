@@ -32,7 +32,7 @@ class CreateConversation extends BaseService
     /**
      * Create a conversation.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Conversation
      */
     public function execute(array $data): Conversation

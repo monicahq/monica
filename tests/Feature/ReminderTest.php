@@ -22,13 +22,13 @@ class ReminderTest extends FeatureTestCase
         $reminder->frequency_type = 'year';
         $reminder->frequency_number = 1;
 
-        Carbon::setTestNow(Carbon::create(2000, 4, 30, 21, 59, 59, 'UTC'));
+        Carbon::setTestNow(Carbon::create(2000, 4, 30, 21, 59, 59));
         $this->assertEquals(
             '2000-05-01',
             $reminder->calculateNextExpectedDateOnTimezone()->toDateString()
         );
 
-        Carbon::setTestNow(Carbon::create(2000, 4, 30, 22, 00, 00, 'UTC'));
+        Carbon::setTestNow(Carbon::create(2000, 4, 30, 22, 00, 00));
         $this->assertEquals(
             '2001-05-01',
             $reminder->calculateNextExpectedDateOnTimezone()->toDateString()

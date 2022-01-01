@@ -24,7 +24,7 @@ class DestroyLifeEvent extends BaseService
     /**
      * Destroy a life event.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data): bool

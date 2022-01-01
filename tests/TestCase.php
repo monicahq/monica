@@ -13,8 +13,8 @@ abstract class TestCase extends BaseTestCase
     /**
      * Call protected/private method of a class.
      *
-     * @param  object &$object
-     * @param  string $methodName
+     * @param  object  &$object
+     * @param  string  $methodName
      * @param  array  $parameters
      * @return mixed
      */
@@ -30,8 +30,8 @@ abstract class TestCase extends BaseTestCase
     /**
      * Set protected/private property of a class.
      *
-     * @param  object &$object
-     * @param  string $propertyName
+     * @param  object  &$object
+     * @param  string  $propertyName
      * @param  mixed  $value
      * @return void
      */
@@ -45,10 +45,26 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
+     * Get protected/private property of a class.
+     *
+     * @param  object  &$object
+     * @param  string  $propertyName
+     * @return mixed
+     */
+    public function getPrivateValue(&$object, string $propertyName)
+    {
+        $reflection = new \ReflectionClass(get_class($object));
+        $property = $reflection->getProperty($propertyName);
+        $property->setAccessible(true);
+
+        return $property->getValue($object);
+    }
+
+    /**
      * Test that the response contains an ObjectDeleted response.
      *
-     * @param TestResponse $response
-     * @param int $id
+     * @param  TestResponse  $response
+     * @param  int  $id
      */
     public function expectObjectDeleted(TestResponse $response, int $id)
     {

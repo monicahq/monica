@@ -25,7 +25,7 @@ class AttachContactToActivity extends BaseService
     /**
      * Validate all datas to execute the service.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function validate(array $data): bool
@@ -46,7 +46,7 @@ class AttachContactToActivity extends BaseService
     /**
      * Attach contacts to an activity.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Activity
      */
     public function execute(array $data): Activity
@@ -64,8 +64,8 @@ class AttachContactToActivity extends BaseService
     /**
      * Create the association.
      *
-     * @param array $data
-     * @param Activity $activity
+     * @param  array  $data
+     * @param  Activity  $activity
      * @return void
      */
     private function attach(array $data, Activity $activity)

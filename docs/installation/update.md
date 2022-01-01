@@ -39,7 +39,7 @@ or if you have installed Monica on your own server, you need to follow the steps
    php artisan monica:update --force
    ```
 
-The `monica:update` command will run migrations scripts for database, and flush all cache for config, route, and view, as an optimization process. It's easier than run every need command independently.
+The `monica:update` command runs migration scripts for the database, and flushes all caches for config, route, and view as an optimization process. It’s easier than running every required command individually.
 
 
 Note: if you have just change some setting in your `.env` file, as the configuration of the application is cached, any update on the `.env` file will not be detected after that. You may have to run `php artisan config:cache` manually after every update of `.env` file.
@@ -223,7 +223,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 And this, at the very end of the file (after the last `INSERT INTO...` statement:
 
 ```
-SET FOREIGN_KEY_CHECKS = 0
+SET FOREIGN_KEY_CHECKS = 1
 ```
 
 **Notes:**

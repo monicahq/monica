@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\Contact\Contact;
 
 use Tests\TestCase;
 use App\Models\User\User;
+use function Safe\json_encode;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Queue;
 use App\Jobs\AuditLog\LogAccountAudit;

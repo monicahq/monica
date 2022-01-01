@@ -27,7 +27,7 @@ class UpdateActivityType extends BaseService
     /**
      * Update an activity type.
      *
-     * @param array $data
+     * @param  array  $data
      * @return ActivityType
      */
     public function execute(array $data): ActivityType

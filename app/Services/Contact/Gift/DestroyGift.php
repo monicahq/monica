@@ -23,7 +23,7 @@ class DestroyGift extends BaseService
     /**
      * Destroy a gift.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data)

@@ -19,7 +19,7 @@ class MoveAvatarEvent extends Event
     /**
      * Create a new event instance.
      *
-     * @param Contact  $contact
+     * @param  Contact  $contact
      * @return void
      */
     public function __construct($contact)

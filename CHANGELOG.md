@@ -1,3 +1,75 @@
+# [3.5.0](https://github.com/monicahq/monica/compare/v3.4.0...v3.5.0) (2021-11-19)
+
+
+### Bug Fixes
+
+* fix display empty weather ([#5685](https://github.com/monicahq/monica/issues/5685)) ([1afa06e](https://github.com/monicahq/monica/commit/1afa06ec1fccd3dbd5c2fe68728e33a70ce2a1c4))
+* fix weather get attribute ([#5705](https://github.com/monicahq/monica/issues/5705)) ([25e5e59](https://github.com/monicahq/monica/commit/25e5e59b56f1f7d63bde5247e821a68341ad4c9e))
+
+
+### Features
+
+* use ipdata to get infos from ip ([#5680](https://github.com/monicahq/monica/issues/5680)) ([339b0fe](https://github.com/monicahq/monica/commit/339b0feb6dc1d4c9b447984abc4dd8eb3160ece7))
+
+# [3.4.0](https://github.com/monicahq/monica/compare/v3.3.1...v3.4.0) (2021-10-31)
+
+
+### Features
+
+* add dependencies node and yarn in Dockerfile ([#5635](https://github.com/monicahq/monica/issues/5635)) ([48726b5](https://github.com/monicahq/monica/commit/48726b5edf646ef5fd7c4594847b0315fd800e3c))
+* added URLs to be exported in vCards. ([#5609](https://github.com/monicahq/monica/issues/5609)) ([38429a2](https://github.com/monicahq/monica/commit/38429a25a2b1651f6caa3d739c0876d9d2dfa5b4))
+* get weather from weatherapi ([#5668](https://github.com/monicahq/monica/issues/5668)) ([d19b6ad](https://github.com/monicahq/monica/commit/d19b6adc378acda567058a5054c0d6b89694229c))
+* retry get gps coordinate when rate limited second ([#5615](https://github.com/monicahq/monica/issues/5615)) ([8eed44e](https://github.com/monicahq/monica/commit/8eed44e48ecee3f19e57665a67698cb1df8ae8f0))
+* searchable contacts on introductions form ([#5632](https://github.com/monicahq/monica/issues/5632)) ([cc05552](https://github.com/monicahq/monica/commit/cc05552320114e13aed189bccd5d7b7d11eb0bba))
+* update last called attribute ([#5614](https://github.com/monicahq/monica/issues/5614)) ([83e1d68](https://github.com/monicahq/monica/commit/83e1d680861b9242cf4fcf52e8e8476688f4e93d))
+
+
+### Bug Fixes
+
+* fix carddav addressbook add ([#5660](https://github.com/monicahq/monica/issues/5660)) ([ac44cfb](https://github.com/monicahq/monica/commit/ac44cfb4e00cbc2c6223acb7c0bdba9fc5725934))
+* fix creating default gender ([#5607](https://github.com/monicahq/monica/issues/5607)) ([6c5ac48](https://github.com/monicahq/monica/commit/6c5ac48df4eb25ca7da871c2e41d702f25e7630b))
+* fix distant contact etag handle ([#5605](https://github.com/monicahq/monica/issues/5605)) ([1da427f](https://github.com/monicahq/monica/commit/1da427f113e56b3c3c519aaf0ef8b224e35b5d24))
+* fix duplicate reminders on dashboard ([#5569](https://github.com/monicahq/monica/issues/5569)) ([bb97115](https://github.com/monicahq/monica/commit/bb971155d40e5f9f2d85af14e0b0915d67d4a1e5))
+* fix edit an activity with a category ([#5661](https://github.com/monicahq/monica/issues/5661)) ([9128db8](https://github.com/monicahq/monica/commit/9128db8b6f9df6bb1e3c12749c0627b575480311))
+* fix gift api without passport ([#5664](https://github.com/monicahq/monica/issues/5664)) ([7939a5f](https://github.com/monicahq/monica/commit/7939a5f8fcbfd5be671dc02df63e61ac8d4acc63))
+* fix import table layout ([#5662](https://github.com/monicahq/monica/issues/5662)) ([cd138c8](https://github.com/monicahq/monica/commit/cd138c83b41928982d01dae63e9258658bd5dc15))
+* fix vcard company import ([#5616](https://github.com/monicahq/monica/issues/5616)) ([0dd4b23](https://github.com/monicahq/monica/commit/0dd4b23baf799757d0555b07119048571c4a16b1))
+
+## [3.3.1](https://github.com/monicahq/monica/compare/v3.3.0...v3.3.1) (2021-10-10)
+
+
+### Bug Fixes
+
+* allow delete any reminder + fix reminder edit data ([#5582](https://github.com/monicahq/monica/issues/5582)) ([981a639](https://github.com/monicahq/monica/commit/981a639013e4b3124a84450b6aeca97dcf0208c2))
+* fix davclient options call ([#5584](https://github.com/monicahq/monica/issues/5584)) ([9c276aa](https://github.com/monicahq/monica/commit/9c276aaa6e12c10b227f4fe95fbe215f67dcde9b))
+
+# [3.3.0](https://github.com/monicahq/monica/compare/v3.2.0...v3.3.0) (2021-10-09)
+
+
+### Bug Fixes
+
+* :bug: people tags filter link ([#5568](https://github.com/monicahq/monica/issues/5568)) ([0cabd16](https://github.com/monicahq/monica/commit/0cabd166525b56cc290c7a593497790c3703126d))
+* docker dev add version ([#5529](https://github.com/monicahq/monica/issues/5529)) ([781f805](https://github.com/monicahq/monica/commit/781f805da7a727f03d7057790f76229ffc0d6eaa))
+* fix dav client options checks ([#5532](https://github.com/monicahq/monica/issues/5532)) ([3812232](https://github.com/monicahq/monica/commit/38122320e2be0289aa6aa0bec6fbd48cbf71bb65))
+* fix import vcard photo ([#5577](https://github.com/monicahq/monica/issues/5577)) ([741f5a7](https://github.com/monicahq/monica/commit/741f5a7a7570bacf6b13294f58cb755e0e03797a))
+* fix quick contact creation ([#5572](https://github.com/monicahq/monica/issues/5572)) ([bab87db](https://github.com/monicahq/monica/commit/bab87db46611fd1ae1ebbb3f40619356d886f298))
+* nickname label wrong on contact edit ([#5576](https://github.com/monicahq/monica/issues/5576)) ([dd7970c](https://github.com/monicahq/monica/commit/dd7970ca51b2c11694ef0493abb024127c100f04))
+* null reference on gift photo upload ([#5547](https://github.com/monicahq/monica/issues/5547)) ([2c33e0b](https://github.com/monicahq/monica/commit/2c33e0b8ddb0e5f4ac108b75a81b0d2ae8858264)), closes [#5516](https://github.com/monicahq/monica/issues/5516) [#5397](https://github.com/monicahq/monica/issues/5397)
+* package.json & yarn.lock to reduce vulnerabilities ([#5580](https://github.com/monicahq/monica/issues/5580)) ([57ae565](https://github.com/monicahq/monica/commit/57ae565abe3c953fb610753b300ebbf5fe36a247))
+
+
+### Features
+
+* add a script to build docker dev ([#5531](https://github.com/monicahq/monica/issues/5531)) ([2655231](https://github.com/monicahq/monica/commit/2655231b4fdd3bc44b13e9800282873ecb608062))
+* add configurable rate limit for api and oauth ([#5489](https://github.com/monicahq/monica/issues/5489)) ([bc50181](https://github.com/monicahq/monica/commit/bc50181780332ba79d8c9cc8305981df5932cad0))
+* add new stackerrorlog log channel ([#5578](https://github.com/monicahq/monica/issues/5578)) ([5fd6eb2](https://github.com/monicahq/monica/commit/5fd6eb29554b6a19c5d8c3c73db302b9bbd39ee1))
+* add next reminder date to stayintouch ([#5491](https://github.com/monicahq/monica/issues/5491)) ([c544deb](https://github.com/monicahq/monica/commit/c544deb3d102d1e96dc513e083dcbf36b4bba9a0))
+* add total of participants in activity ([#5474](https://github.com/monicahq/monica/issues/5474)) ([9194eb3](https://github.com/monicahq/monica/commit/9194eb31670612ff4db77bf06677c1854337eecc))
+* carddav client ([#3851](https://github.com/monicahq/monica/issues/3851)) ([e6c92cf](https://github.com/monicahq/monica/commit/e6c92cf00580340c27d5327f6eb88e6e4cc5a61b))
+* import vcard using uuid ([#5533](https://github.com/monicahq/monica/issues/5533)) ([160b36e](https://github.com/monicahq/monica/commit/160b36eed2841902f24553bc071ea7b8a01a144d))
+* use Http facade for DavClient ([#5573](https://github.com/monicahq/monica/issues/5573)) ([a669e98](https://github.com/monicahq/monica/commit/a669e98f83d98bd8997553d133a30c9c0602f80e))
+* use queue to update contacts with carddav ([#5575](https://github.com/monicahq/monica/issues/5575)) ([0e989fe](https://github.com/monicahq/monica/commit/0e989fec3504a084515c8eb4c7ce6cebc30263cf))
+
 # [3.2.0](https://github.com/monicahq/monica/compare/v3.1.3...v3.2.0) (2021-08-26)
 
 

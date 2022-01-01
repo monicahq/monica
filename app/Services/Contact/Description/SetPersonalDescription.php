@@ -31,7 +31,7 @@ class SetPersonalDescription extends BaseService
      * as unparsed markdown content. The UI is responsible for parsing and
      * displaying the proper content.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data): Contact
@@ -55,8 +55,8 @@ class SetPersonalDescription extends BaseService
     /**
      * Add an audit log.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function log(array $data, Contact $contact): void

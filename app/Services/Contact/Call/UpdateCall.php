@@ -28,7 +28,7 @@ class UpdateCall extends BaseService
     /**
      * Update a call.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Call
      */
     public function execute(array $data): Call
@@ -62,8 +62,8 @@ class UpdateCall extends BaseService
     /**
      * Add emotions to the call.
      *
-     * @param array $emotions
-     * @param Call $call
+     * @param  array  $emotions
+     * @param  Call  $call
      * @return void
      */
     private function addEmotions(array $emotions, Call $call)
@@ -84,7 +84,7 @@ class UpdateCall extends BaseService
     /**
      * Update last call information of the contact.
      *
-     * @param Call $call
+     * @param  Call  $call
      * @return void
      */
     private function updateLastCallInfo(Call $call)

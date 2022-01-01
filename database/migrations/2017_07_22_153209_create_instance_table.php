@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Str;
 use App\Models\Instance\Instance;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -27,7 +28,7 @@ class CreateInstanceTable extends Migration
         $instance = new Instance;
         $instance->current_version = config('monica.app_version');
         $instance->latest_version = config('monica.app_version');
-        $instance->uuid = uniqid();
+        $instance->uuid = Str::uuid();
         $instance->save();
     }
 }

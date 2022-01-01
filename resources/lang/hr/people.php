@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Ostani u kontaktu',
     'stay_in_touch_frequency' => 'Ostanite u kontaktu svaki dan|Ostanite u kontaktu svaka/ih {count} dana',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => 'Učestalost treba biti broj veći od 0.',
     'stay_in_touch_premium' => 'Potrebno je nadograditi račun za korištenje ove opcije',
     'stay_in_touch_modal_title' => 'Ostani u kontaktu',
@@ -143,6 +144,7 @@ return [
 
     // Last called
     'last_called' => 'Last called: :date',
+    'last_talked_to' => 'Last called: {date}',
     'last_called_empty' => 'Last called: unknown',
     'last_activity_date' => 'Last activity together: :date',
     'last_activity_date_empty' => 'Last activity together: unknown',
@@ -285,7 +287,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'Here is a breakdown of the type of activities you’ve done together in :year',
     'activities_profile_year_summary' => 'Pregled aktivnosti u godini :year',
     'activities_profile_number_occurences' => ':value aktivnost|:value aktivnosti',
-    'activities_list_participants' => 'Participants:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'Emotions felt:',
     'activities_list_date' => 'Happened on',
     'activities_list_category' => 'Category:',

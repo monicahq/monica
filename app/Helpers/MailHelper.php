@@ -12,8 +12,8 @@ class MailHelper
      * notification class.
      * Yes, this is weird, but it's the only way to do it (as of Laravel 5.7).
      *
-     * @param MailNotification $notification
-     * @param User $user
+     * @param  MailNotification  $notification
+     * @param  User  $user
      * @return string
      */
     public static function emailView($notification, $user)

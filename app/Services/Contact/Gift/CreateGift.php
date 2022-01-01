@@ -40,7 +40,7 @@ class CreateGift extends BaseService
     /**
      * Create a tag.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Gift
      */
     public function execute(array $data): Gift

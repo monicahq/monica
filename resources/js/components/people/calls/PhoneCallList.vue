@@ -345,6 +345,7 @@ export default {
           this.resetFields();
           this.displayLogCall = false;
           this.chosenEmotions = [];
+          this.updateLastCalled();
 
           this.$notify({
             group: 'main',
@@ -361,6 +362,7 @@ export default {
           this.getCalls();
           this.editCallId = 0;
           this.chosenEmotions = [];
+          this.updateLastCalled();
 
           this.$notify({
             group: 'main',
@@ -369,6 +371,10 @@ export default {
             type: 'success'
           });
         });
+    },
+
+    updateLastCalled() {
+      this.$parent.$refs.lastCalledAttribute.getLastCalled();
     },
 
     showEditBox(call) {
@@ -390,6 +396,7 @@ export default {
       axios.delete('people/' + this.hash + '/calls/' + this.destroyCallId)
         .then(response => {
           this.calls.splice(this.calls.indexOf(call), 1);
+          this.updateLastCalled();
         });
     },
 

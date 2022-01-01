@@ -33,8 +33,7 @@ class ApiPetController extends ApiController
     /**
      * Get the detail of a given pet.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return PetResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id)
@@ -53,8 +52,7 @@ class ApiPetController extends ApiController
     /**
      * Store the pet.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return PetResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -79,9 +77,8 @@ class ApiPetController extends ApiController
     /**
      * Update the pet.
      *
-     * @param Request $request
-     * @param int $petId
-     *
+     * @param  Request  $request
+     * @param  int  $petId
      * @return PetResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $petId)
@@ -111,7 +108,7 @@ class ApiPetController extends ApiController
     /**
      * Validate the request for update.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse|true
      */
     private function validateUpdate(Request $request)
@@ -141,9 +138,8 @@ class ApiPetController extends ApiController
     /**
      * Delete a pet.
      *
-     * @param Request $request
-     * @param int $petId
-     *
+     * @param  Request  $request
+     * @param  int  $petId
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $petId)
@@ -164,9 +160,8 @@ class ApiPetController extends ApiController
     /**
      * Get the list of pets for the given contact.
      *
-     * @param Request $request
-     * @param int $contactId
-     *
+     * @param  Request  $request
+     * @param  int  $contactId
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function pets(Request $request, $contactId)

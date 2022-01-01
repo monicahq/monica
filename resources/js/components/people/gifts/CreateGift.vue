@@ -242,6 +242,10 @@ export default {
   },
 
   props: {
+    hash: {
+      type: String,
+      default: '',
+    },
     contactId: {
       type: Number,
       default: 0,
@@ -386,7 +390,8 @@ export default {
       }
 
       const method = this.gift ? 'put' : 'post';
-      const url = this.gift ? 'api/gifts/'+this.gift.id : 'api/gifts';
+      const url = `people/${this.hash}/gifts${this.gift ? '/'+this.gift.id : ''}`;
+
 
       const vm = this;
       axios[method](url, this.newGift)
@@ -417,7 +422,7 @@ export default {
       return this.$refs.upload.forceFileUpload()
         .then(photo => {
           if (photo !== undefined) {
-            axios.put('api/gifts/'+response.data.data.id+'/photo/'+photo.id);
+            axios.put(`people/${this.hash}/gifts/${response.data.data.id}/photo/${photo.id}`);
             response.data.data.photos.push(photo);
           }
           return response;
@@ -437,7 +442,7 @@ export default {
     },
 
     deletePhoto(photo) {
-      axios.delete('api/photos/' + photo.id)
+      axios.delete(`people/${this.hash}/photos/${photo.id}`)
         .then(response => {
           this.photos.splice(this.photos.indexOf(photo), 1);
           if (this.photos.length == 0) {

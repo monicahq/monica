@@ -122,7 +122,7 @@
                          :name="name"
                          :activity="activity"
                          :contact-id="contactId"
-                         @update="updateList($event)"
+                         @update="$set(activity, 'edit', false); updateList($event)"
                          @cancel="$set(activity, 'edit', false); displayLogActivity = false"
         />
       </div>
@@ -205,9 +205,9 @@ export default {
         });
     },
 
-    updateList: function (activity) {
+    updateList(activity) {
       this.displayLogActivity = false;
-      this.getActivities();
+      Vue.set(this.activities, this.activities.indexOf(this.activities.find(item => item.id === activity.id)), activity);
     },
 
     showDestroyActivity(activity) {

@@ -27,7 +27,7 @@ class ExportVCalendar extends BaseService
     /**
      * Export one VCalendar.
      *
-     * @param array $data
+     * @param  array  $data
      * @return VCalendar
      */
     public function execute(array $data): VCalendar
@@ -41,12 +41,12 @@ class ExportVCalendar extends BaseService
     }
 
     /**
-     * @param SpecialDate $date
+     * @param  SpecialDate  $date
      * @return VCalendar
      */
     private function export(SpecialDate $date): VCalendar
     {
-        // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc5545
+        // The standard for most of these fields can be found on https://datatracker.ietf.org/doc/html/rfc5545
         if (! $date->uuid) {
             $date->forceFill([
                 'uuid' => Str::uuid(),
@@ -65,7 +65,7 @@ class ExportVCalendar extends BaseService
     }
 
     /**
-     * @param VCalendar $vcal
+     * @param  VCalendar  $vcal
      * @return void
      */
     private function exportTimezone(VCalendar $vcal)
@@ -76,8 +76,8 @@ class ExportVCalendar extends BaseService
     }
 
     /**
-     * @param SpecialDate $date
-     * @param VEvent $vevent
+     * @param  SpecialDate  $date
+     * @param  VEvent  $vevent
      * @return void
      */
     private function exportBirthday(SpecialDate $date, VEvent $vevent)

@@ -36,8 +36,7 @@ class ApiTaskController extends ApiController
     /**
      * Get the detail of a given task.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return TaskResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $taskId)
@@ -56,8 +55,7 @@ class ApiTaskController extends ApiController
     /**
      * Store the task.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return TaskResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -81,9 +79,8 @@ class ApiTaskController extends ApiController
     /**
      * Update the task.
      *
-     * @param Request $request
-     * @param int $taskId
-     *
+     * @param  Request  $request
+     * @param  int  $taskId
      * @return TaskResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $taskId)
@@ -109,8 +106,7 @@ class ApiTaskController extends ApiController
     /**
      * Delete a task.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $taskId)

@@ -21,7 +21,11 @@ $factory->define(App\Models\Instance\SpecialDate::class, function (Faker\Generat
 });
 
 $factory->define(App\Models\Instance\Instance::class, function (Faker\Generator $faker) {
-    return [];
+    return [
+        'uuid' => $faker->uuid,
+        'latest_version' => '1.0.0',
+        'current_version' => '1.0.0',
+    ];
 });
 
 $factory->define(App\Models\Instance\Emotion\Emotion::class, function (Faker\Generator $faker) {

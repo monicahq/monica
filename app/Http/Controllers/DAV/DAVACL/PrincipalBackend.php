@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\DAV\DAVACL;
 
 use Sabre\DAV;
+use App\Traits\WithUser;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\DAVACL\PrincipalBackend\AbstractBackend;
 
 class PrincipalBackend extends AbstractBackend
 {
+    use WithUser;
+
     /**
      * This is the prefix that will be used to generate principal urls.
      *
@@ -18,22 +20,22 @@ class PrincipalBackend extends AbstractBackend
     public const PRINCIPAL_PREFIX = 'principals/';
 
     /**
-     * Get the principal for current user.
+     * Get the principal for user.
      *
      * @return string
      */
-    public static function getPrincipalUser(): string
+    public static function getPrincipalUser($user): string
     {
-        return static::PRINCIPAL_PREFIX.Auth::user()->email;
+        return static::PRINCIPAL_PREFIX.$user->email;
     }
 
     protected function getPrincipals()
     {
         return [
             [
-                'uri'               => static::getPrincipalUser(),
-                '{DAV:}displayname' => Auth::user()->name,
-                '{'.SabreServer::NS_SABREDAV.'}email-address' => Auth::user()->email,
+                'uri'               => static::getPrincipalUser($this->user),
+                '{DAV:}displayname' => $this->user->name,
+                '{'.SabreServer::NS_SABREDAV.'}email-address' => $this->user->email,
             ],
         ];
     }
@@ -51,7 +53,7 @@ class PrincipalBackend extends AbstractBackend
      *     field that's actually injected in a number of other properties. If
      *     you have an email address, use this property.
      *
-     * @param string $prefixPath
+     * @param  string  $prefixPath
      * @return array
      */
     public function getPrincipalsByPrefix($prefixPath)
@@ -68,7 +70,7 @@ class PrincipalBackend extends AbstractBackend
      * The returned structure should be the exact same as from
      * getPrincipalsByPrefix.
      *
-     * @param string $path
+     * @param  string  $path
      * @return array
      */
     public function getPrincipalByPath($path)
@@ -94,8 +96,8 @@ class PrincipalBackend extends AbstractBackend
      *
      * Read the PropPatch documentation for more info and examples.
      *
-     * @param string $path
-     * @param \Sabre\DAV\PropPatch $propPatch
+     * @param  string  $path
+     * @param  \Sabre\DAV\PropPatch  $propPatch
      * @return void
      */
     public function updatePrincipal($path, DAV\PropPatch $propPatch)
@@ -126,9 +128,9 @@ class PrincipalBackend extends AbstractBackend
      * searching at all, but keep in mind that this may stop certain features
      * from working.
      *
-     * @param string $prefixPath
-     * @param array $searchProperties
-     * @param string $test
+     * @param  string  $prefixPath
+     * @param  array  $searchProperties
+     * @param  string  $test
      * @return array
      */
     public function searchPrincipals($prefixPath, array $searchProperties, $test = 'allof')
@@ -160,7 +162,7 @@ class PrincipalBackend extends AbstractBackend
     /**
      * Returns the list of members for a group-principal.
      *
-     * @param string $principal
+     * @param  string  $principal
      * @return array
      */
     public function getGroupMemberSet($principal)
@@ -170,13 +172,15 @@ class PrincipalBackend extends AbstractBackend
             return [];
         }
 
-        return [$principal['uri']];
+        return [
+            $principal['uri'],
+        ];
     }
 
     /**
      * Returns the list of groups a principal is a member of.
      *
-     * @param string $principal
+     * @param  string  $principal
      * @return array
      */
     public function getGroupMembership($principal)
@@ -189,8 +193,8 @@ class PrincipalBackend extends AbstractBackend
      *
      * The principals should be passed as a list of uri's.
      *
-     * @param string $principal
-     * @param array $members
+     * @param  string  $principal
+     * @param  array  $members
      * @return void
      */
     public function setGroupMemberSet($principal, array $members)

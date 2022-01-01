@@ -25,7 +25,7 @@ class CreateLifeEventType extends BaseService
     /**
      * Create a life event type.
      *
-     * @param array $data
+     * @param  array  $data
      * @return LifeEventType
      */
     public function execute(array $data): LifeEventType

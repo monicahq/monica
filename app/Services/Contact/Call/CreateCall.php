@@ -30,7 +30,7 @@ class CreateCall extends BaseService
     /**
      * Create a call.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Call
      */
     public function execute(array $data): Call
@@ -59,8 +59,8 @@ class CreateCall extends BaseService
     /**
      * Add emotions to the call.
      *
-     * @param array $emotions
-     * @param Call $call
+     * @param  array  $emotions
+     * @param  Call  $call
      * @return void
      */
     private function addEmotions(array $emotions, Call $call)
@@ -77,8 +77,8 @@ class CreateCall extends BaseService
     /**
      * Update last call information of the contact.
      *
-     * @param Contact $contact
-     * @param Call $call
+     * @param  Contact  $contact
+     * @param  Call  $call
      * @return void
      */
     private function updateLastCallInfo(Contact $contact, Call $call)

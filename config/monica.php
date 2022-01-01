@@ -249,11 +249,10 @@ return [
     | API key for weather data.
     |--------------------------------------------------------------------------
     |
-    | To provide weather information, we use Darksky.
-    | Darksky provides an api with 1000 free API calls per day.
-    | https://darksky.net/dev/register
+    | To provide weather information, we use WeatherAPI.
+    | See https://www.weatherapi.com/
     */
-    'darksky_api_key' => env('DARKSKY_API_KEY', null),
+    'weatherapi_key' => env('WEATHERAPI_KEY', null),
 
     /*
     |--------------------------------------------------------------------------

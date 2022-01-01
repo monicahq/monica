@@ -1,27 +1,41 @@
 {
-    "latitude":34.112456,
-    "longitude":-118.4270732,
-    "timezone":"America/Los_Angeles",
-    "currently":{
-        "time":1545426311,
-        "summary":"Partly Cloudy",
-        "icon":"partly-cloudy-day",
-        "nearestStormDistance":10,
-        "nearestStormBearing":296,
-        "precipIntensity":0,
-        "precipProbability":0,
-        "temperature":67.94,
-        "apparentTemperature":67.94,
-        "dewPoint":41.87,
-        "humidity":0.39,
-        "pressure":1014.57,
-        "windSpeed":3.35,
-        "windGust":6.12,
-        "windBearing":232,
-        "cloudCover":0.28,
-        "uvIndex":2,
-        "visibility":10,
-        "ozone":277.93
+    "location": {
+        "name": "Le Pre-Saint-Gervais",
+        "region": "Ile-de-France",
+        "country": "France",
+        "lat": 48.89,
+        "lon": 2.39,
+        "tz_id": "Europe\/Paris",
+        "localtime_epoch": 1635605324,
+        "localtime": "2021-10-30 16:48"
     },
-    "offset":-8
+    "current": {
+        "last_updated_epoch": 1635605100,
+        "last_updated": "2021-10-30 16:45",
+        "temp_c": 13,
+        "temp_f": 55.4,
+        "is_day": 0,
+        "condition": {
+            "text": "Partly cloudy",
+            "icon": "\/\/cdn.weatherapi.com\/weather\/64x64\/night\/116.png",
+            "code": 1003
+        },
+        "wind_mph": 5.6,
+        "wind_kph": 9,
+        "wind_degree": 210,
+        "wind_dir": "SSW",
+        "pressure_mb": 1001,
+        "pressure_in": 29.56,
+        "precip_mm": 0,
+        "precip_in": 0,
+        "humidity": 94,
+        "cloud": 75,
+        "feelslike_c": 11.2,
+        "feelslike_f": 52.1,
+        "vis_km": 10,
+        "vis_miles": 6,
+        "uv": 4,
+        "gust_mph": 17.9,
+        "gust_kph": 28.8
+    }
 }

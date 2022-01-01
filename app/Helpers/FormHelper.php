@@ -10,7 +10,7 @@ class FormHelper
      * Get the name order that will be used when rendered the Add/Edit forms
      * about contacts.
      *
-     * @param User $user
+     * @param  User  $user
      * @return string
      */
     public static function getNameOrderForForms(User $user): string

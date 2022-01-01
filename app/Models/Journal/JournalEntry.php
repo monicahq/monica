@@ -63,7 +63,7 @@ class JournalEntry extends Model
     /**
      * Adds a new entry in the journal.
      *
-     * @param \App\Interfaces\IsJournalableInterface $resourceToLog
+     * @param  \App\Interfaces\IsJournalableInterface  $resourceToLog
      * @return self
      */
     public static function add(IsJournalableInterface $resourceToLog): self
@@ -85,7 +85,7 @@ class JournalEntry extends Model
     /**
      * Update an entry in the journal.
      *
-     * @param \App\Interfaces\IsJournalableInterface $resourceToLog
+     * @param  \App\Interfaces\IsJournalableInterface  $resourceToLog
      * @return self
      */
     public function edit(IsJournalableInterface $resourceToLog): self

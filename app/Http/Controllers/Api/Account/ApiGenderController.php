@@ -36,8 +36,7 @@ class ApiGenderController extends ApiController
     /**
      * Get the detail of a given gender.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return GenderResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $genderId)
@@ -56,8 +55,7 @@ class ApiGenderController extends ApiController
     /**
      * Store the gender.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return GenderResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -84,9 +82,8 @@ class ApiGenderController extends ApiController
     /**
      * Update a gender.
      *
-     * @param Request $request
-     * @param int $genderId
-     *
+     * @param  Request  $request
+     * @param  int  $genderId
      * @return GenderResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $genderId)
@@ -114,8 +111,7 @@ class ApiGenderController extends ApiController
     /**
      * Delete a gender.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, int $genderId)

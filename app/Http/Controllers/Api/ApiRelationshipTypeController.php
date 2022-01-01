@@ -12,8 +12,7 @@ class ApiRelationshipTypeController extends ApiController
     /**
      * Get all relationship types in an instance.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
@@ -31,8 +30,7 @@ class ApiRelationshipTypeController extends ApiController
     /**
      * Get the detail of a given relationship type.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return RelationshipTypeResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id)

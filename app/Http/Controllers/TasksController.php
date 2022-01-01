@@ -28,7 +28,7 @@ class TasksController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Task
      */
     public function store(Request $request): Task
@@ -44,8 +44,8 @@ class TasksController extends Controller
     /**
      * Update a task.
      *
-     * @param Request $request
-     * @param Task $task
+     * @param  Request  $request
+     * @param  Task  $task
      * @return Task
      */
     public function update(Request $request, Task $task): Task
@@ -63,8 +63,7 @@ class TasksController extends Controller
     /**
      * Destroy the task.
      *
-     * @param Task $task
-     *
+     * @param  Task  $task
      * @return null|\Illuminate\Http\JsonResponse
      */
     public function destroy(Task $task): ?JsonResponse

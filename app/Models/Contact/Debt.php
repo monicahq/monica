@@ -12,6 +12,7 @@ use App\Models\ModelBindingHasherWithContact as Model;
  * @property Account $account
  * @property Contact $contact
  * @property int $amount
+ *
  * @method static Builder due()
  * @method static Builder owed()
  * @method static Builder inProgress()
@@ -58,7 +59,7 @@ class Debt extends Model
     /**
      * Limit results to unpaid/unreceived debt.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeInProgress(Builder $query)
@@ -69,7 +70,7 @@ class Debt extends Model
     /**
      * Limit results to due debt.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeDue(Builder $query)
@@ -80,7 +81,7 @@ class Debt extends Model
     /**
      * Limit results to owed debt.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeOwed(Builder $query)

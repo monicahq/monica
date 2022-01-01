@@ -25,7 +25,7 @@ class DestroyRelationship extends BaseService
     /**
      * Destroy a relationship.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data): bool
@@ -49,7 +49,7 @@ class DestroyRelationship extends BaseService
     /**
      * Delete relationship.
      *
-     * @param Relationship $relationship
+     * @param  Relationship  $relationship
      */
     private function deleteRelationship(Relationship $relationship)
     {
@@ -64,7 +64,7 @@ class DestroyRelationship extends BaseService
     /**
      * Delete partial contact.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      */
     private function deletePartialContact(Contact $contact)
     {

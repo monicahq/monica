@@ -15,6 +15,7 @@ class AddressTest extends FeatureTestCase
     /**
      * Returns an array containing a user object along with
      * a contact for that user.
+     *
      * @return array
      */
     private function fetchUser()

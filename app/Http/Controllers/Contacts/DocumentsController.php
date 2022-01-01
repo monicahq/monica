@@ -29,8 +29,7 @@ class DocumentsController extends Controller
     /**
      * Display the list of documents.
      *
-     * @param Contact $contact
-     *
+     * @param  Contact  $contact
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request, Contact $contact)
@@ -43,9 +42,8 @@ class DocumentsController extends Controller
     /**
      * Store the document.
      *
-     * @param Request $request
-     * @param Contact $contact
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
      * @return Document
      */
     public function store(Request $request, Contact $contact): Document
@@ -62,10 +60,9 @@ class DocumentsController extends Controller
     /**
      * Delete the document.
      *
-     * @param Request $request
-     * @param Contact $contact
-     * @param Document $document
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
+     * @param  Document  $document
      * @return null|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Document $document): ?JsonResponse

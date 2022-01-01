@@ -23,9 +23,10 @@ class DestroyAccount extends BaseService
     /**
      * Completely delete an account.
      *
-     * @param array $data
-     * @throws StripeException
+     * @param  array  $data
      * @return void
+     *
+     * @throws StripeException
      */
     public function execute(array $data): void
     {
@@ -45,7 +46,7 @@ class DestroyAccount extends BaseService
     /**
      * Destroy the documents.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return void
      */
     private function destroyDocuments(Account $account)
@@ -58,7 +59,7 @@ class DestroyAccount extends BaseService
     /**
      * Destroy the photos.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return void
      */
     private function destroyPhotos(Account $account)
@@ -71,9 +72,10 @@ class DestroyAccount extends BaseService
     /**
      * Cancel Stripe subscription.
      *
-     * @param Account $account
-     * @throws StripeException
+     * @param  Account  $account
      * @return void
+     *
+     * @throws StripeException
      */
     private function cancelStripe(Account $account)
     {

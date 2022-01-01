@@ -15,9 +15,8 @@ class ApiAvatarController extends ApiController
     /**
      * Update a contact's avatar.
      *
-     * @param Request $request
-     * @param int $contactId
-     *
+     * @param  Request  $request
+     * @param  int  $contactId
      * @return ContactResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $contactId)

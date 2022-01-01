@@ -29,7 +29,7 @@ class LogAccountAction extends BaseService
     /**
      * Log an action that happened in an account.
      *
-     * @param array $data
+     * @param  array  $data
      * @return AuditLog
      */
     public function execute(array $data): AuditLog

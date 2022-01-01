@@ -40,7 +40,7 @@ class PopulateLifeEventsTable extends BaseService
     /**
      * Execute the service.
      *
-     * @param array $givenData
+     * @param  array  $givenData
      * @return bool
      */
     public function execute(array $givenData): bool
@@ -103,8 +103,9 @@ class PopulateLifeEventsTable extends BaseService
     /**
      * Get the default life event categories.
      *
-     * @throws QueryException if the query does not run for some reasons.
      * @return Collection
+     *
+     * @throws QueryException if the query does not run for some reasons.
      */
     private function getDefaultLifeEventCategories()
     {
@@ -123,7 +124,7 @@ class PopulateLifeEventsTable extends BaseService
     /**
      * Create an entry in the life event category table.
      *
-     * @param object $defaultLifeEventCategory
+     * @param  object  $defaultLifeEventCategory
      * @return LifeEventCategory
      */
     private function feedLifeEventCategory($defaultLifeEventCategory): LifeEventCategory
@@ -139,7 +140,7 @@ class PopulateLifeEventsTable extends BaseService
     /**
      * Create an entry in the life event type table.
      *
-     * @param object $defaultLifeEventType
+     * @param  object  $defaultLifeEventType
      * @return void
      */
     private function feedLifeEventType($defaultLifeEventType, $lifeEventCategory)

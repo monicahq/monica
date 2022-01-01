@@ -18,6 +18,7 @@ class StorageControllerTest extends FeatureTestCase
     /**
      * Returns an array containing a user object along with
      * a contact for that user.
+     *
      * @return array
      */
     private function fetchUser()
@@ -45,7 +46,7 @@ class StorageControllerTest extends FeatureTestCase
         $response->assertStatus(200);
         $response->assertHeader('Last-Modified', 'Sat, 19 Jun 2021 07:00:00 GMT');
         $response->assertHeader('Cache-Control', 'max-age=2628000, private');
-        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+        $response->assertHeader('etag', '"'.sha1('/store/'.$file).'"');
     }
 
     /** @test */
@@ -62,7 +63,7 @@ class StorageControllerTest extends FeatureTestCase
         $response->assertStatus(200);
         $response->assertHeader('Last-Modified', 'Sat, 19 Jun 2021 07:00:00 GMT');
         $response->assertHeader('Cache-Control', 'max-age=2628000, private');
-        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+        $response->assertHeader('etag', '"'.sha1('/store/'.$file).'"');
     }
 
     /** @test */
@@ -79,7 +80,7 @@ class StorageControllerTest extends FeatureTestCase
         $response->assertStatus(200);
         $response->assertHeader('Last-Modified', 'Sat, 19 Jun 2021 07:00:00 GMT');
         $response->assertHeader('Cache-Control', 'max-age=2628000, private');
-        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+        $response->assertHeader('etag', '"'.sha1('/store/'.$file).'"');
     }
 
     /** @test */
@@ -122,7 +123,7 @@ class StorageControllerTest extends FeatureTestCase
         $response->assertStatus(200);
         $response->assertHeader('Last-Modified', 'Sat, 19 Jun 2021 07:00:00 GMT');
         $response->assertHeader('Cache-Control', 'max-age=2628000, private');
-        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+        $response->assertHeader('etag', '"'.sha1('/store/'.$file).'"');
     }
 
     /** @test */
@@ -141,7 +142,7 @@ class StorageControllerTest extends FeatureTestCase
         $response->assertNoContent(304);
         $response->assertHeaderMissing('Last-Modified');
         $response->assertHeader('Cache-Control', 'max-age=2628000, private');
-        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+        $response->assertHeader('etag', '"'.sha1('/store/'.$file).'"');
     }
 
     /** @test */
@@ -160,7 +161,7 @@ class StorageControllerTest extends FeatureTestCase
         $response->assertStatus(200);
         $response->assertHeader('Last-Modified', 'Sat, 19 Jun 2021 07:00:00 GMT');
         $response->assertHeader('Cache-Control', 'max-age=2628000, private');
-        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+        $response->assertHeader('etag', '"'.sha1('/store/'.$file).'"');
     }
 
     /** @test */
@@ -241,13 +242,13 @@ class StorageControllerTest extends FeatureTestCase
         $file = $this->storeImage($contact);
 
         $response = $this->get('/store/'.$file, [
-            'If-Match' => '"'.md5('/store/'.$file).'"',
+            'If-Match' => '"'.sha1('/store/'.$file).'"',
         ]);
 
         $response->assertNoContent(200);
         $response->assertHeader('Last-Modified', 'Sat, 19 Jun 2021 07:00:00 GMT');
         $response->assertHeader('Cache-Control', 'max-age=2628000, private');
-        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+        $response->assertHeader('etag', '"'.sha1('/store/'.$file).'"');
     }
 
     /** @test */
@@ -266,7 +267,7 @@ class StorageControllerTest extends FeatureTestCase
         $response->assertNoContent(200);
         $response->assertHeader('Last-Modified', 'Sat, 19 Jun 2021 07:00:00 GMT');
         $response->assertHeader('Cache-Control', 'max-age=2628000, private');
-        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+        $response->assertHeader('etag', '"'.sha1('/store/'.$file).'"');
     }
 
     /** @test */
@@ -279,13 +280,13 @@ class StorageControllerTest extends FeatureTestCase
         $file = $this->storeImage($contact);
 
         $response = $this->get('/store/'.$file, [
-            'If-None-Match' => '"'.md5('/store/'.$file).'"',
+            'If-None-Match' => '"'.sha1('/store/'.$file).'"',
         ]);
 
         $response->assertNoContent(304);
         $response->assertHeaderMissing('Last-Modified');
         $response->assertHeader('Cache-Control', 'max-age=2628000, private');
-        $response->assertHeader('etag', '"'.md5('/store/'.$file).'"');
+        $response->assertHeader('etag', '"'.sha1('/store/'.$file).'"');
     }
 
     public function storeImage(Contact $contact)

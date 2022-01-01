@@ -25,7 +25,7 @@ class AssociatePhotoToGift extends BaseService
     /**
      * Link a photo to a gift.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function execute(array $data)
     {
@@ -40,5 +40,7 @@ class AssociatePhotoToGift extends BaseService
         $gift->contact->throwInactive();
 
         $gift->photos()->syncWithoutDetaching([$photo->id]);
+
+        return $gift;
     }
 }

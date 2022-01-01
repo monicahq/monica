@@ -25,7 +25,7 @@ class DestroyContact extends BaseService
     /**
      * Destroy a contact.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data): bool
@@ -48,8 +48,8 @@ class DestroyContact extends BaseService
     /**
      * Destroy all associated relationships.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function destroyRelationships(array $data, Contact $contact)
@@ -64,8 +64,8 @@ class DestroyContact extends BaseService
     /**
      * Delete specific relationships.
      *
-     * @param array $data
-     * @param \Illuminate\Support\Collection $relationships
+     * @param  array  $data
+     * @param  \Illuminate\Support\Collection  $relationships
      * @return void
      */
     private function destroySpecificRelationships(array $data, $relationships)

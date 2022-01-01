@@ -2,26 +2,28 @@
 
 namespace App\Http\Controllers\DAV\Backend;
 
+use App\Traits\WithUser;
 use Illuminate\Support\Str;
 use App\Models\User\SyncToken;
-use Illuminate\Support\Facades\Auth;
 
 trait SyncDAVBackend
 {
+    use WithUser;
+
     /**
      * This method returns a sync-token for this collection.
      *
      * If null is returned from this function, the plugin assumes there's no
      * sync information available.
      *
-     * @param string|null $collectionId
+     * @param  string|null  $collectionId
      * @return SyncToken|null
      */
-    protected function getCurrentSyncToken($collectionId): ?SyncToken
+    public function getCurrentSyncToken($collectionId): ?SyncToken
     {
         $tokens = SyncToken::where([
-            'account_id' => Auth::user()->account_id,
-            'user_id' => Auth::user()->id,
+            'account_id' => $this->user->account_id,
+            'user_id' => $this->user->id,
             'name' => $collectionId ?? $this->backendUri(),
         ])
             ->orderBy('created_at')
@@ -33,7 +35,7 @@ trait SyncDAVBackend
     /**
      * Create or refresh the token if a change happened.
      *
-     * @param string|null $collectionId
+     * @param  string|null  $collectionId
      * @return SyncToken
      */
     public function refreshSyncToken($collectionId): SyncToken
@@ -50,15 +52,16 @@ trait SyncDAVBackend
     /**
      * Get SyncToken by token id.
      *
-     * @param string|null $collectionId
+     * @param  string|null  $collectionId
+     * @param  string  $syncToken
      * @return SyncToken|null
      */
     protected function getSyncToken($collectionId, $syncToken)
     {
         /** @var SyncToken|null */
         return SyncToken::where([
-            'account_id' => Auth::user()->account_id,
-            'user_id' => Auth::user()->id,
+            'account_id' => $this->user->account_id,
+            'user_id' => $this->user->id,
             'name' => $collectionId ?? $this->backendUri(),
         ])
             ->find($syncToken);
@@ -67,14 +70,14 @@ trait SyncDAVBackend
     /**
      * Create a token with now timestamp.
      *
-     * @param string|null $collectionId
+     * @param  string|null  $collectionId
      * @return SyncToken
      */
     private function createSyncTokenNow($collectionId)
     {
         return SyncToken::create([
-            'account_id' => Auth::user()->account_id,
-            'user_id' => Auth::user()->id,
+            'account_id' => $this->user->account_id,
+            'user_id' => $this->user->id,
             'name' => $collectionId ?? $this->backendUri(),
             'timestamp' => now(),
         ]);
@@ -83,7 +86,7 @@ trait SyncDAVBackend
     /**
      * Returns the last modification date.
      *
-     * @param string|null $collectionId
+     * @param  string|null  $collectionId
      * @return \Carbon\Carbon|null
      */
     public function getLastModified($collectionId)
@@ -142,8 +145,8 @@ trait SyncDAVBackend
      *
      * The limit is 'suggestive'. You are free to ignore it.
      *
-     * @param string $calendarId
-     * @param string $syncToken
+     * @param  string  $calendarId
+     * @param  string  $syncToken
      * @return array|null
      */
     public function getChanges($calendarId, $syncToken): ?array
@@ -179,6 +182,8 @@ trait SyncDAVBackend
                 return $this->encodeUri($obj);
             })->values()->toArray(),
             'modified' => $modified->map(function ($obj) {
+                $this->refreshObject($obj);
+
                 return $this->encodeUri($obj);
             })->values()->toArray(),
             'deleted' => [],
@@ -210,7 +215,7 @@ trait SyncDAVBackend
     /**
      * Returns the contact uuid for the specific uri.
      *
-     * @param string  $uri
+     * @param  string  $uri
      * @return string
      */
     public function getUuid($uri): string
@@ -221,8 +226,8 @@ trait SyncDAVBackend
     /**
      * Returns the contact for the specific uri.
      *
-     * @param string|null $collectionId
-     * @param string  $uri
+     * @param  string|null  $collectionId
+     * @param  string  $uri
      * @return mixed
      */
     public function getObject($collectionId, $uri)
@@ -237,8 +242,8 @@ trait SyncDAVBackend
     /**
      * Returns the object for the specific uuid.
      *
-     * @param string|null $collectionId
-     * @param string  $uuid
+     * @param  string|null  $collectionId
+     * @param  string  $uuid
      * @return mixed
      */
     abstract public function getObjectUuid($collectionId, $uuid);
@@ -246,10 +251,18 @@ trait SyncDAVBackend
     /**
      * Returns the collection of objects.
      *
-     * @param string|null $collectionId
+     * @param  string|null  $collectionId
      * @return \Illuminate\Support\Collection
      */
     abstract public function getObjects($collectionId);
 
     abstract public function getExtension();
+
+    /**
+     * Get the new exported version of the object.
+     *
+     * @param  mixed  $obj
+     * @return string
+     */
+    abstract protected function refreshObject($obj): string;
 }

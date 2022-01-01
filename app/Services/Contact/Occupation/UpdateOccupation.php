@@ -36,7 +36,7 @@ class UpdateOccupation extends BaseService
     /**
      * Update a occupation.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Occupation
      */
     public function execute(array $data): Occupation

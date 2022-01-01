@@ -90,6 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Stay in touch',
     'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
+    'stay_in_touch_next_date' => 'Next due: {date}',
     'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
     'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
     'stay_in_touch_modal_title' => 'Stay in touch',
@@ -143,6 +144,7 @@ return [
 
     // Last called
     'last_called' => 'Останній виклик: :date',
+    'last_talked_to' => 'Last called: {date}',
     'last_called_empty' => 'Останній виклик: невідомо',
     'last_activity_date' => 'Остання активність разом: :date',
     'last_activity_date_empty' => 'Остання активність разом: невідомо',
@@ -285,7 +287,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'Here is a breakdown of the type of activities you’ve done together in :year',
     'activities_profile_year_summary' => 'Here is what you two have done in :year',
     'activities_profile_number_occurences' => ':value activity|:value activities',
-    'activities_list_participants' => 'Participants:',
+    'activities_list_participants' => 'Participants ({total}):',
     'activities_list_emotions' => 'Emotions felt:',
     'activities_list_date' => 'Happened on',
     'activities_list_category' => 'Category:',

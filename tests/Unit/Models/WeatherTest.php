@@ -34,7 +34,7 @@ class WeatherTest extends TestCase
         $weather = factory(Weather::class)->create();
 
         $this->assertEquals(
-            7.6,
+            13,
             $weather->temperature()
         );
     }
@@ -45,7 +45,7 @@ class WeatherTest extends TestCase
         $weather = factory(Weather::class)->create();
 
         $this->assertEquals(
-            7.6,
+            13,
             $weather->temperature('celsius')
         );
     }
@@ -56,7 +56,7 @@ class WeatherTest extends TestCase
         $weather = factory(Weather::class)->create();
 
         $this->assertEquals(
-            45.6,
+            55.4,
             $weather->temperature('fahrenheit')
         );
     }
@@ -67,19 +67,19 @@ class WeatherTest extends TestCase
         $weather = factory(Weather::class)->create();
 
         $this->assertEquals(
-            'Mostly Cloudy',
+            'Partly cloudy',
             $weather->summary
         );
     }
 
     /** @test */
-    public function it_gets_current_icon()
+    public function it_gets_current_code()
     {
         $weather = factory(Weather::class)->create();
 
         $this->assertEquals(
             'partly-cloudy-night',
-            $weather->summaryIcon
+            $weather->summary_code
         );
     }
 
@@ -90,7 +90,7 @@ class WeatherTest extends TestCase
 
         $this->assertEquals(
             '🎑',
-            $weather->getEmoji()
+            $weather->emoji
         );
     }
 }

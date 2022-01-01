@@ -66,10 +66,9 @@ class NotesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param NotesRequest $request
-     * @param Contact $contact
-     * @param Note $note
-     *
+     * @param  NotesRequest  $request
+     * @param  Contact  $contact
+     * @param  Note  $note
      * @return Note
      */
     public function update(NotesRequest $request, Contact $contact, Note $note): Note
@@ -89,9 +88,8 @@ class NotesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Contact $contact
-     * @param Note $note
-     *
+     * @param  Contact  $contact
+     * @param  Note  $note
      * @return void
      */
     public function destroy(Contact $contact, Note $note): void

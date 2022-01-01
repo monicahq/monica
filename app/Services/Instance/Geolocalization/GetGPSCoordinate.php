@@ -7,7 +7,9 @@ use App\Models\Account\Place;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Http\Client\HttpClientException;
+use Illuminate\Http\Client\RequestException;
+use App\Exceptions\RateLimitedSecondException;
+use App\Exceptions\MissingEnvVariableException;
 
 class GetGPSCoordinate extends BaseService
 {
@@ -28,11 +30,13 @@ class GetGPSCoordinate extends BaseService
      * Get the latitude and longitude from a place.
      * This method uses LocationIQ to process the geocoding.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Place|null
      */
     public function execute(array $data)
     {
+        $this->validateWeatherEnvVariables();
+
         $this->validate($data);
 
         $place = Place::where('account_id', $data['account_id'])
@@ -42,21 +46,33 @@ class GetGPSCoordinate extends BaseService
     }
 
     /**
+     * Make sure that geolocation env variables are set.
+     *
+     * @return void
+     */
+    private function validateWeatherEnvVariables()
+    {
+        if (! config('monica.enable_geolocation') || is_null(config('monica.location_iq_api_key'))) {
+            throw new MissingEnvVariableException();
+        }
+    }
+
+    /**
      * Build the query to send with the API call.
      *
-     * @param Place $place
+     * @param  Place  $place
      * @return string|null
      */
     private function buildQuery(Place $place): ?string
     {
-        if (! config('monica.enable_geolocation') || is_null(config('monica.location_iq_api_key'))) {
+        if (($q = $place->getAddressAsString()) === null) {
             return null;
         }
 
         $query = http_build_query([
             'format' => 'json',
             'key' => config('monica.location_iq_api_key'),
-            'q' => $place->getAddressAsString(),
+            'q' => $q,
         ]);
 
         return Str::finish(config('location.location_iq_url'), '/').'search.php?'.$query;
@@ -65,14 +81,12 @@ class GetGPSCoordinate extends BaseService
     /**
      * Actually make the call to the reverse geocoding API.
      *
-     * @param Place $place
+     * @param  Place  $place
      * @return Place|null
      */
     private function query(Place $place): ?Place
     {
-        $query = $this->buildQuery($place);
-
-        if (is_null($query)) {
+        if (($query = $this->buildQuery($place)) === null) {
             return null;
         }
 
@@ -85,8 +99,15 @@ class GetGPSCoordinate extends BaseService
             $place->save();
 
             return $place;
-        } catch (HttpClientException $e) {
-            Log::error('Error making the call: '.$e);
+        } catch (RequestException $e) {
+            if ($e->response->status() === 429 && ($error = $e->response->json('error')) && $error === 'Rate Limited Second') {
+                throw new RateLimitedSecondException($e);
+            } elseif ($e->response->status() !== 404 && $e->response->status() !== 400) {
+                Log::error(__CLASS__.' '.__FUNCTION__.': Error making the call: '.$e->getMessage(), [
+                    'query' => Str::of($query)->replace(config('monica.location_iq_api_key'), '******'),
+                    $e,
+                ]);
+            }
         }
 
         return null;

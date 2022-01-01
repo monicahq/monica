@@ -30,7 +30,7 @@ class UpdateContactField extends BaseService
     /**
      * Update a contact field.
      *
-     * @param array $data
+     * @param  array  $data
      * @return ContactField
      */
     public function execute(array $data): ContactField

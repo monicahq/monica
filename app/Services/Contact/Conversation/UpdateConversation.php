@@ -31,7 +31,7 @@ class UpdateConversation extends BaseService
     /**
      * Update a conversation.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Conversation
      */
     public function execute(array $data): Conversation

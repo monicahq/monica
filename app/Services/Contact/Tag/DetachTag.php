@@ -25,7 +25,7 @@ class DetachTag extends BaseService
     /**
      * Detach the tag associated with a contact.
      *
-     * @param array $data
+     * @param  array  $data
      * @return void
      */
     public function execute(array $data)

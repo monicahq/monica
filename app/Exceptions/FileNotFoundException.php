@@ -14,7 +14,7 @@ class FileNotFoundException extends FileNotFoundExceptionBase
     /**
      * Create a new instance.
      *
-     * @param string $fileName
+     * @param  string  $fileName
      * @return void
      */
     public function __construct($fileName)

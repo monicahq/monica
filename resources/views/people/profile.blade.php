@@ -42,7 +42,7 @@
       <div class="row">
         <div class="col-12 col-sm-3 profile-sidebar">
 
-          @if (! is_null($weather))
+          @if (! is_null($weather) && $weather->summary)
           <div class="ba b--near-white br2 bg-gray-monica pa3 mb3 f6">
             <div class="w-100 dt">
               <div class="dtc">
@@ -50,8 +50,9 @@
               </div>
             </div>
 
-            <p class="mb0">
-              {{ $weather->getEmoji() }} {{ trans('app.weather_'.$weather->summary_icon) }} / {{ trans('app.weather_current_temperature_'.auth()->user()->temperature_scale, ['temperature' => $weather->temperature(auth()->user()->temperature_scale)]) }}
+            <p class="mb0{{ $weather->created_at->between(now()->subHours(6), now()) ? '' : ' light-silver' }}"
+              title="{{ $weather->location }} &mdash; {{ DateHelper::getShortDateWithTime($weather->date) }}">
+              {{ $weather->emoji }} {{ $weather->summary }} / {{ trans('app.weather_current_temperature_'.auth()->user()->temperature_scale, ['temperature' => $weather->temperature(auth()->user()->temperature_scale)]) }}
             </p>
           </div>
           @endif

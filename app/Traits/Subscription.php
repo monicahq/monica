@@ -12,8 +12,8 @@ trait Subscription
     /**
      * Process the upgrade payment.
      *
-     * @param string $payment_method
-     * @param string $planName
+     * @param  string  $payment_method
+     * @param  string  $planName
      * @return bool|string
      */
     public function subscribe(string $payment_method, string $planName)
@@ -36,8 +36,8 @@ trait Subscription
     /**
      * Update an existing subscription.
      *
-     * @param string $planName
-     * @param \Laravel\Cashier\Subscription $subscription
+     * @param  string  $planName
+     * @param  \Laravel\Cashier\Subscription  $subscription
      * @return \Laravel\Cashier\Subscription
      */
     public function updateSubscription(string $planName, \Laravel\Cashier\Subscription $subscription)

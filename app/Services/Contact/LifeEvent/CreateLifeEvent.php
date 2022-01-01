@@ -34,7 +34,7 @@ class CreateLifeEvent extends BaseService
     /**
      * Create a life event.
      *
-     * @param array $data
+     * @param  array  $data
      * @return LifeEvent
      */
     public function execute(array $data): LifeEvent
@@ -70,8 +70,8 @@ class CreateLifeEvent extends BaseService
     /**
      * Add yearly reminder if necessary.
      *
-     * @param array $data
-     * @param LifeEvent $lifeEvent
+     * @param  array  $data
+     * @param  LifeEvent  $lifeEvent
      */
     private function addYearlyReminder($data, $lifeEvent)
     {

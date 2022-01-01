@@ -18,7 +18,7 @@ class PetCategory extends Model
     /**
      * Scope a query to only include pet categories that are considered `common`.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeCommon($query)

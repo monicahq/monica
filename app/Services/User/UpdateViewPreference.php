@@ -25,7 +25,7 @@ class UpdateViewPreference extends BaseService
     /**
      * Set the contact view preference.
      *
-     * @param array $data
+     * @param  array  $data
      * @return User
      */
     public function execute(array $data): User
