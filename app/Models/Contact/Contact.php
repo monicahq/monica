@@ -672,12 +672,12 @@ class Contact extends Model
                 $query = $query->orderBy('last_name')
                     ->orderby('first_name')
                     ->orderby('nickname');
-              break;
+                break;
             case 'lastname_nickname_firstname':
                 $query = $query->orderBy('last_name')
                     ->orderby('nickname')
                     ->orderby('first_name');
-              break;
+                break;
         }
 
         return $query;
