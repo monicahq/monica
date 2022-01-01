@@ -60,13 +60,13 @@ export default {
 
         // attempt to extract name and email from 'first last <email@example.com>' format
         // https://stackoverflow.com/questions/9558608/regex-for-parsing-name-and-email-from-a-single-string
-        const emailAndNameMatch = keyword.match(/(.*[^\s*<])?\s*<(.*)>/)
+        const emailAndNameMatch = keyword.match(/(.*[^\s*<])?\s*<(.*)>/);
 
         if(emailAndNameMatch === null) {
-          names = keyword
+          names = keyword;
         } else {
-          names = emailAndNameMatch[1]
-          email = emailAndNameMatch[2]
+          names = emailAndNameMatch[1];
+          email = emailAndNameMatch[2];
         }
 
         names = names.split(' ').map(name => _.capitalize(name));
@@ -88,7 +88,7 @@ export default {
           params.set('last_name', last_name);
         }
         if (email) {
-          params.set('email', email)
+          params.set('email', email);
         }
 
         window.location = 'people/add' + (params != '' ? '?' + params : '');
