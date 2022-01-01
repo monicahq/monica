@@ -57,7 +57,28 @@ class AppServiceProvider extends ServiceProvider
         );
 
         Password::defaults(function () {
-            return Password::min(6);
+            if (! $this->app->environment('production')) {
+                return Password::min(6);
+            }
+            $rules = Password::min(config('app.password_min'));
+            $config = explode(',', config('app.password_rules'));
+            if (in_array('mixedCase', $config)) {
+                $rules = $rules->mixedCase();
+            }
+            if (in_array('letters', $config)) {
+                $rules = $rules->letters();
+            }
+            if (in_array('numbers', $config)) {
+                $rules = $rules->numbers();
+            }
+            if (in_array('symbols', $config)) {
+                $rules = $rules->symbols();
+            }
+            if (in_array('uncompromised', $config)) {
+                $rules = $rules->uncompromised();
+            }
+
+            return $rules;
         });
 
         if (config('database.use_utf8mb4')

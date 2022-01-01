@@ -38,7 +38,7 @@ return [
     'another_day' => 'another day',
     'date' => 'Дата',
     'type' => 'Тип',
-    'zoom' => 'Zoom',
+    'zoom' => 'Масштаб',
     'upgrade' => 'Upgrade to unlock',
     'percent_uploaded' => '{percent}% загружено',
     'retry' => 'Повторить',
@@ -92,7 +92,7 @@ return [
     'breadcrumb_add_significant_other' => 'Add significant other',
     'breadcrumb_edit_significant_other' => 'Edit significant other',
     'breadcrumb_add_note' => 'Добавить заметку',
-    'breadcrumb_edit_note' => 'Edit a note',
+    'breadcrumb_edit_note' => 'Редактировать заметку',
     'breadcrumb_api' => 'API',
     'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'How did you meet',
@@ -104,7 +104,7 @@ return [
     'gender_male' => 'Мужской',
     'gender_female' => 'Женский',
     'gender_none' => 'Неизвестно',
-    'gender_no_gender' => 'No gender',
+    'gender_no_gender' => 'Нет полов',
 
     'error_title' => 'Ой, что-то пошло не так.',
     'error_unauthorized' => 'У вас нет прав для редактирования этого ресурса.',
@@ -148,8 +148,8 @@ return [
     'relationship_type_spouse_with_name' => ':name’s spouse',
     'relationship_type_spouse_female_with_name' => ':name’s spouse',
 
-    'relationship_type_date' => 'date',
-    'relationship_type_date_female' => 'date',
+    'relationship_type_date' => 'дата',
+    'relationship_type_date_female' => 'дата',
     'relationship_type_date_with_name' => ':name’s date',
     'relationship_type_date_female_with_name' => ':name’s date',
 

@@ -8,7 +8,7 @@
 
 return [
     'dashboard_blank_title' => 'Добро пожаловать в ваш аккаунт!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the people you care about.',
+    'dashboard_blank_description' => 'Моника это место, чтобы организовать все взаимодействия, которые у вас есть с людьми, о которых вы заботитесь.',
     'dashboard_blank_cta' => 'Добавьте ваш первый контакт',
     'dashboard_blank_illustration' => 'Иллюстрация <a href=":url">Freepik</a>',
 
@@ -18,7 +18,7 @@ return [
     'tab_favorite_notes' => 'Избранные заметки',
     'tab_calls_blank' => 'Вы еще не внесли ни одного звонка.',
     'tab_debts' => 'Долги',
-    'tab_debts_blank' => 'You haven’t logged any debts yet.',
+    'tab_debts_blank' => 'Вы еще не зарегистрировали ни одного долга.',
     'tab_tasks' => 'Задачи',
     'tab_tasks_blank' => 'У Вас еще нет задач.',
 
@@ -38,5 +38,5 @@ return [
     'reminders_none' => 'Нет напоминаний в этом месяце.',
 
     'product_changes' => 'Изменения',
-    'product_view_details' => 'View details',
+    'product_view_details' => 'Детали',
 ];

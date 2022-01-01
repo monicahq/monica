@@ -53,10 +53,25 @@ export default {
       if (contact.item.id > 0) {
         window.location = contact.item.route;
       } else {
-        const names = contact.item.keyword.split(' ').map(name => _.capitalize(name));
+        // contact with ID = -1 is the 'add person' contact
 
-        let first_name;
-        let last_name;
+        const keyword = contact.item.keyword.trim();
+        let names, email;
+
+        // attempt to extract name and email from 'first last <email@example.com>' format
+        // https://stackoverflow.com/questions/9558608/regex-for-parsing-name-and-email-from-a-single-string
+        const emailAndNameMatch = keyword.match(/(.*[^\s*<])?\s*<(.*)>/);
+
+        if(emailAndNameMatch === null) {
+          names = keyword;
+        } else {
+          names = emailAndNameMatch[1];
+          email = emailAndNameMatch[2];
+        }
+
+        names = names.split(' ').map(name => _.capitalize(name));
+
+        let first_name, last_name;
         if (this.formNameOrder == 'firstname') {
           first_name = names[0];
           last_name = names.slice(1).join(' ');
@@ -65,13 +80,15 @@ export default {
           last_name = names[0];
         }
 
-
         const params = new URLSearchParams();
         if (first_name) {
           params.set('first_name', first_name);
         }
         if (last_name) {
           params.set('last_name', last_name);
+        }
+        if (email) {
+          params.set('email', email);
         }
 
         window.location = 'people/add' + (params != '' ? '?' + params : '');
