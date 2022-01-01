@@ -124,6 +124,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Password strength
+    |--------------------------------------------------------------------------
+    |
+    | You can configure password strength requirements here.
+    | - password_min is the minimum length of the password.
+    | - password_rules are requirements that can be added on the password:
+    |   mixedCase, letters, numbers, symbols, uncompromised.
+    |   See https://laravel.com/docs/8.x/validation#validating-passwords
+    |
+    */
+
+    'password_min' => (int) env('APP_PASSWORD_MIN', 8),
+
+    'password_rules' => env('APP_PASSWORD_RULES', 'mixedCase,letters,numbers,symbols,uncompromised'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
     |
