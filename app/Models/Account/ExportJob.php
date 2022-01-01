@@ -2,8 +2,8 @@
 
 namespace App\Models\Account;
 
-use App\Models\User\User;
 use App\Traits\HasUuid;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -29,7 +29,6 @@ class ExportJob extends Model
      * @var string
      */
     public const JSON = 'json';
-
 
     /**
      * The attributes that are mass assignable.

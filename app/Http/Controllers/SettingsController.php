@@ -9,15 +9,15 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\AccountHelper;
-use Illuminate\Support\Carbon;
+use App\Helpers\StorageHelper;
 use App\Helpers\TimezoneHelper;
 use App\Models\Contact\Contact;
 use App\Jobs\AddContactFromVCard;
+use App\Models\Account\ExportJob;
 use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
 use App\Exceptions\StripeException;
-use App\Helpers\StorageHelper;
 use App\Http\Requests\ImportsRequest;
 use App\Notifications\InvitationMail;
 use App\Http\Requests\SettingsRequest;
@@ -29,7 +29,6 @@ use App\Services\Account\Settings\DestroyAccount;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
-use App\Models\Account\ExportJob;
 
 class SettingsController extends Controller
 {
@@ -176,7 +175,7 @@ class SettingsController extends Controller
     {
         $exports = ExportJob::where([
             'account_id' => auth()->user()->account_id,
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
         ])
             ->orderByDesc('created_at')
             ->get();
@@ -222,7 +221,7 @@ class SettingsController extends Controller
     {
         $exports = ExportJob::where([
             'account_id' => auth()->user()->account_id,
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
         ])
             ->orderBy('created_at');
         if ($exports->count() >= config('monica.export_limit')) {

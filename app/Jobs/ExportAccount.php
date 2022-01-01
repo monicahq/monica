@@ -2,19 +2,18 @@
 
 namespace App\Jobs;
 
+use Throwable;
 use Illuminate\Http\File;
+use Illuminate\Bus\Queueable;
 use App\Helpers\StorageHelper;
 use App\Models\Account\ExportJob;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Services\Account\Settings\SqlExportAccount;
 use App\Services\Account\Settings\JsonExportAccount;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Throwable;
 
 class ExportAccount implements ShouldQueue
 {
