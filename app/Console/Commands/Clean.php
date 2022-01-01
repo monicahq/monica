@@ -44,7 +44,7 @@ class Clean extends Command
     /**
      * Handle TokenDeleteEvent event.
      *
-     * @param SyncToken $token
+     * @param  SyncToken  $token
      */
     private function handleTokenDelete($token)
     {

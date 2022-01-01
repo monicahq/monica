@@ -26,7 +26,7 @@ class UpdateTag extends BaseService
     /**
      * Update a tag.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Tag
      */
     public function execute(array $data): Tag

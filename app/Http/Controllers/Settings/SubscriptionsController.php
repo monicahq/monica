@@ -31,11 +31,11 @@ class SubscriptionsController extends Controller
      */
     public function index()
     {
-        $account = auth()->user()->account;
-
         if (! config('monica.requires_subscription')) {
             return redirect()->route('settings.index');
         }
+
+        $account = auth()->user()->account;
 
         $subscription = $account->getSubscribedPlan();
         if (! $account->isSubscribed() && (! $subscription || $subscription->ended())) {
@@ -44,27 +44,22 @@ class SubscriptionsController extends Controller
             ]);
         }
 
-        try {
-            $nextBillingDate = $account->getNextBillingDate();
-        } catch (StripeException $e) {
-            $nextBillingDate = trans('app.unknown');
-        }
-
         $hasInvoices = $account->hasStripeId() && $account->hasInvoices();
         $invoices = null;
         if ($hasInvoices) {
             $invoices = $account->invoices();
         }
 
-        $planInformation = InstanceHelper::getPlanInformationFromConfig($subscription->name);
-
-        if ($planInformation === null) {
-            abort(404);
+        try {
+            $planInformation = $this->stripeCall(function () use ($subscription) {
+                return InstanceHelper::getPlanInformationFromSubscription($subscription);
+            });
+        } catch (StripeException $e) {
+            $planInformation = null;
         }
 
         return view('settings.subscriptions.account', [
             'planInformation' => $planInformation,
-            'nextBillingDate' => $nextBillingDate,
             'subscription' => $subscription,
             'hasInvoices' => $hasInvoices,
             'invoices' => $invoices,
@@ -75,7 +70,7 @@ class SubscriptionsController extends Controller
     /**
      * Display the upgrade view page.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return View|Factory|RedirectResponse
      */
     public function upgrade(Request $request)
@@ -89,6 +84,10 @@ class SubscriptionsController extends Controller
         }
 
         $plan = $request->query('plan');
+        if ($plan !== 'monthly' && $plan !== 'annual') {
+            abort(404);
+        }
+
         $planInformation = InstanceHelper::getPlanInformationFromConfig($plan);
 
         if ($planInformation === null) {
@@ -103,9 +102,82 @@ class SubscriptionsController extends Controller
     }
 
     /**
+     * Display the update view page.
+     *
+     * @param  Request  $request
+     * @return View|Factory|RedirectResponse
+     */
+    public function update(Request $request)
+    {
+        if (! config('monica.requires_subscription')) {
+            return redirect()->route('settings.index');
+        }
+
+        $account = auth()->user()->account;
+
+        $subscription = $account->getSubscribedPlan();
+        if (! $account->isSubscribed() && (! $subscription || $subscription->ended())) {
+            return view('settings.subscriptions.blank', [
+                'numberOfCustomers' => InstanceHelper::getNumberOfPaidSubscribers(),
+            ]);
+        }
+
+        $planInformation = InstanceHelper::getPlanInformationFromSubscription($subscription);
+
+        if ($planInformation === null) {
+            abort(404);
+        }
+
+        $plans = collect();
+        foreach (['monthly', 'annual'] as $plan) {
+            $plans->push(InstanceHelper::getPlanInformationFromConfig($plan));
+        }
+
+        $legacyPlan = null;
+        if (! $plans->contains(function ($value) use ($planInformation) {
+            return $value['id'] === $planInformation['id'];
+        })) {
+            $legacyPlan = $planInformation;
+        }
+
+        return view('settings.subscriptions.update', [
+            'planInformation' => $planInformation,
+            'plans' => $plans,
+            'legacyPlan' => $legacyPlan,
+        ]);
+    }
+
+    /**
+     * Process the update process.
+     *
+     * @param  Request  $request
+     * @return View|Factory|RedirectResponse
+     */
+    public function processUpdate(Request $request)
+    {
+        $account = auth()->user()->account;
+
+        $subscription = $account->getSubscribedPlan();
+        if (! $account->isSubscribed() && ! $subscription) {
+            return redirect()->route('settings.index');
+        }
+
+        try {
+            $account->updateSubscription($request->input('frequency'), $subscription);
+        } catch (StripeException $e) {
+            return back()
+                ->withInput()
+                ->withErrors($e->getMessage());
+        }
+
+        return redirect()->route('settings.subscriptions.index');
+    }
+
+    /**
      * Display the confirm view page.
      *
      * @return View|Factory|RedirectResponse
+     *
      * @throws ApiErrorException
      */
     public function confirmPayment($id)
@@ -141,7 +213,7 @@ class SubscriptionsController extends Controller
     /**
      * Display the downgrade success page.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return View|Factory|RedirectResponse
      */
     public function downgradeSuccess(Request $request)
@@ -200,7 +272,7 @@ class SubscriptionsController extends Controller
             ->with('numberOfPendingInvitations', $account->invitations()->count())
             ->with('numberOfUsers', $account->users()->count())
             ->with('accountHasLimitations', AccountHelper::hasLimitations($account))
-            ->with('hasReachedContactLimit', AccountHelper::hasReachedContactLimit($account))
+            ->with('hasReachedContactLimit', ! AccountHelper::isBelowContactLimit($account))
             ->with('canDowngrade', AccountHelper::canDowngrade($account));
     }
 
@@ -211,17 +283,19 @@ class SubscriptionsController extends Controller
      */
     public function processDowngrade()
     {
-        if (! AccountHelper::canDowngrade(auth()->user()->account)) {
+        $account = auth()->user()->account;
+
+        if (! AccountHelper::canDowngrade($account)) {
             return redirect()->route('settings.subscriptions.downgrade');
         }
 
-        $subscription = auth()->user()->account->getSubscribedPlan();
-        if (! auth()->user()->account->isSubscribed() && ! $subscription) {
+        $subscription = $account->getSubscribedPlan();
+        if (! $account->isSubscribed() && ! $subscription) {
             return redirect()->route('settings.index');
         }
 
         try {
-            auth()->user()->account->subscriptionCancel();
+            $account->subscriptionCancel();
         } catch (StripeException $e) {
             return back()
                 ->withInput()
@@ -234,7 +308,7 @@ class SubscriptionsController extends Controller
     /**
      * Process the upgrade payment.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return RedirectResponse
      */
     public function processPayment(Request $request)
@@ -263,7 +337,7 @@ class SubscriptionsController extends Controller
     /**
      * Download the invoice as PDF.
      *
-     * @param mixed $invoiceId
+     * @param  mixed  $invoiceId
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function downloadInvoice($invoiceId)
@@ -277,7 +351,7 @@ class SubscriptionsController extends Controller
     /**
      * Download the invoice as PDF.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse|null
      */
     public function forceCompletePaymentOnTesting(Request $request): ?RedirectResponse

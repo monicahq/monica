@@ -19,12 +19,12 @@ return [
     |
     */
 
-    'reset' => 'Your password has been reset!',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'token' => 'This password reset token is invalid.',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'changed' => 'Password changed successfully.',
-    'invalid' => 'Current password you entered is not correct.',
-    'throttled' => 'Please wait before retrying.',
+    'reset' => 'رمز عبور شما با موفقیت تغییر کرد!',
+    'sent' => 'اگر ایمیل وارد شده موجود باشد ،یک لینک برای بازنشانی رمز به ان ارسال کردیم.',
+    'token' => 'توکن بازنشانی رمز عبور معتبر نمی باشد.',
+    'user' => 'اگر ایمیل وارد شده موجود باشد ،یک لینک برای بازنشانی رمز به ان ارسال کردیم.',
+    'changed' => 'رمز عبور با موفقیت تغییر کرد.',
+    'invalid' => 'رمز عبور فعلی وارد شده صحیح نمی باشد.',
+    'throttled' => 'لطفا قبل از تلاش مجدد صبر کنید.',
 
 ];

@@ -17,6 +17,7 @@
 
     <template v-if="displayCreateGift">
       <create-gift
+        :hash="hash"
         :contact-id="contactId"
         :family-contacts="familyContacts"
         :reach-limit="reachLimit"
@@ -80,6 +81,7 @@
         </gift>
         <create-gift
           v-else
+          :hash="hash"
           :gift="gift"
           :contact-id="contactId"
           :family-contacts="familyContacts"
@@ -193,7 +195,7 @@ export default {
     },
 
     getGifts() {
-      axios.get('api/contacts/' + this.contactId + '/gifts')
+      axios.get(`people/${this.hash}/gifts`)
         .then(response => {
           this.gifts = response.data.data;
         });
@@ -208,7 +210,7 @@ export default {
         gift.date = null;
       }
       gift.contact_id = this.contactId;
-      axios.put('api/gifts/' + gift.id, gift)
+      axios.put(`people/${this.hash}/gifts/${gift.id}`, gift)
         .then(response => {
           Vue.set(gift, 'status', response.data.data.status);
           Vue.set(gift, 'date', response.data.data.date);
@@ -221,7 +223,7 @@ export default {
     },
 
     trash(gift) {
-      axios.delete('api/gifts/' + gift.id)
+      axios.delete(`people/${this.hash}/gifts/${gift.id}`)
         .then(response => {
           this.gifts.splice(this.gifts.indexOf(gift), 1);
           this.closeDeleteModal();

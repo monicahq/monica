@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Aug 26, 2021",
+            "title": "New feature: change subscription frequency",
+            "description": "You can now change the frequency of your subscription: ![image](img/changelogs/2021-08-26-subscription.png) ![image](img/changelogs/2021-08-26-update.png)"
+        },
+        {
             "date": "May 11, 2020",
             "title": "New feature: crop an avatar photo",
             "description": "When uploading a new avatar for a contact, you are now invited to crop it to keep a square format.\n\n Choose a new file to upload, then select the zone to keep: ![image](img/changelogs/2020-05-11-crop-avatar-1.png) After validation, you can now save the new avatar: ![image](img/changelogs/2020-05-11-crop-avatar-2.png)"

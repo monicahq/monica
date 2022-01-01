@@ -13,7 +13,7 @@ return [
     'journal_add' => '添加日记条目',
     'journal_edit' => '编辑日记条目',
     'journal_empty' => '暂无日记',
-    'journal_created_at' => 'Created at {date}',
+    'journal_created_at' => '创建于 {date}',
     'journal_created_automatically' => '自动创建',
     'journal_entry_type_journal' => '记录条目',
     'journal_entry_type_activity' => '活动',

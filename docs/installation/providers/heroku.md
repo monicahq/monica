@@ -19,7 +19,7 @@ Before deployment, Heroku will ask you to define a few variables.
 - In addition, you can edit the email address Monica will send emails to (`MAIL_FROM_ADDRESS`), the name of the sender (`MAIL_FROM_NAME`), where emails should link to (`APP_URL`) and some other important variables on that screen.
 
 After deployment, click on ![Manage App](../../images/heroku_manage_app.png) to open the dashboard of your new application:
-![Heroku Dashbord](../../images/heroku_dashboard.png)
+![Heroku Dashboard](../../images/heroku_dashboard.png)
 
 Click on **Heroku Scheduler** to open scheduler dashboard. Create a new job, and define a new job to run this command every 10 minutes or every hour at 00 minutes:
 ```sh
@@ -126,7 +126,7 @@ You can update your Monica instance to the latest version by cloning the reposit
 
 Clone the Monica repository to your local environment by `git clone https://github.com/monicahq/monica`, and add heroku git repository by `heroku git:remote -a (heroku app name)`. Then, push to heroku by `git push heroku master`. Heroku will build and update the repository, automatically.
 
-See more information about updating Monica (including Heroku-spcific things) [here](https://github.com/monicahq/monica/blob/master/docs/installation/update.md).
+See more information about updating Monica (including Heroku-specific things) [here](https://github.com/monicahq/monica/blob/master/docs/installation/update.md).
 
 
 ## Update from 2.x to 3.x

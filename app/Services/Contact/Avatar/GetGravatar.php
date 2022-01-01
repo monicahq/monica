@@ -45,7 +45,7 @@ class GetGravatar extends BaseService
     /**
      * Get the emails of the contact, based on the contact fields.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      * @return Collection
      */
     private function getEmails(Contact $contact)
@@ -76,7 +76,7 @@ class GetGravatar extends BaseService
     /**
      * Query Gravatar (if it exists) for the contact's email address.
      *
-     * @param Contact  $contact
+     * @param  Contact  $contact
      * @return Contact
      */
     private function getGravatar(Contact $contact)

@@ -27,8 +27,7 @@ class CreateRelationship extends BaseService
     /**
      * Set a relationship between two contacts.
      *
-     * @param array $data
-     *
+     * @param  array  $data
      * @return Relationship
      */
     public function execute(array $data): Relationship
@@ -37,6 +36,8 @@ class CreateRelationship extends BaseService
 
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_is']);
+
+        $contact->throwInactive();
 
         $otherContact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['of_contact']);
@@ -59,10 +60,9 @@ class CreateRelationship extends BaseService
     /**
      * Set a relationship between two contacts.
      *
-     * @param Contact $contact
-     * @param Contact $otherContact
-     * @param RelationshipType $relationshipType
-     *
+     * @param  Contact  $contact
+     * @param  Contact  $otherContact
+     * @param  RelationshipType  $relationshipType
      * @return Relationship
      */
     public function setRelationship(Contact $contact, Contact $otherContact, RelationshipType $relationshipType): Relationship

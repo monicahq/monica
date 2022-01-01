@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use Stripe\Plan;
 use Stripe\Stripe;
 use Stripe\Product;
-use Stripe\ApiResource;
 use Tests\FeatureTestCase;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Subscription;
@@ -28,7 +27,12 @@ class AccountSubscriptionTest extends FeatureTestCase
     /**
      * @var string
      */
-    protected static $planId;
+    protected static $monthlyPlanId;
+
+    /**
+     * @var string
+     */
+    protected static $annualPlanId;
 
     public function setUp(): void
     {
@@ -40,9 +44,12 @@ class AccountSubscriptionTest extends FeatureTestCase
             config([
                 'services.stripe.secret' => env('STRIPE_SECRET'),
                 'monica.requires_subscription' => true,
+                'monica.paid_plan_monthly_friendly_name' => 'Monthly',
+                'monica.paid_plan_monthly_id' => 'monthly',
+                'monica.paid_plan_monthly_price' => 100,
                 'monica.paid_plan_annual_friendly_name' => 'Annual',
                 'monica.paid_plan_annual_id' => 'annual',
-                'monica.paid_plan_annual_price' => 100,
+                'monica.paid_plan_annual_price' => 500,
             ]);
         }
     }
@@ -54,10 +61,11 @@ class AccountSubscriptionTest extends FeatureTestCase
         }
 
         Stripe::setApiVersion('2019-03-14');
-        Stripe::setApiKey(getenv('STRIPE_SECRET'));
+        Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        static::$productId = static::$stripePrefix.'product-1'.Str::random(10);
-        static::$planId = static::$stripePrefix.'monthly-10-'.Str::random(10);
+        static::$productId = static::$stripePrefix.'product-'.Str::random(10);
+        static::$monthlyPlanId = static::$stripePrefix.'monthly-'.Str::random(10);
+        static::$annualPlanId = static::$stripePrefix.'annual-'.Str::random(10);
 
         Product::create([
             'id' => static::$productId,
@@ -66,12 +74,21 @@ class AccountSubscriptionTest extends FeatureTestCase
         ]);
 
         Plan::create([
-            'id' => static::$planId,
+            'id' => static::$monthlyPlanId,
+            'nickname' => 'Monthly',
+            'currency' => 'USD',
+            'interval' => 'month',
+            'billing_scheme' => 'per_unit',
+            'amount' => 100,
+            'product' => static::$productId,
+        ]);
+        Plan::create([
+            'id' => static::$annualPlanId,
             'nickname' => 'Annual',
             'currency' => 'USD',
             'interval' => 'year',
             'billing_scheme' => 'per_unit',
-            'amount' => 100,
+            'amount' => 500,
             'product' => static::$productId,
         ]);
     }
@@ -80,19 +97,27 @@ class AccountSubscriptionTest extends FeatureTestCase
     {
         parent::tearDownAfterClass();
 
-        if (static::$planId) {
-            static::deleteStripeResource(new Plan(static::$planId));
+        if (static::$monthlyPlanId) {
+            static::deleteStripeResource(new Plan(static::$monthlyPlanId));
+            static::$monthlyPlanId = null;
+        }
+        if (static::$annualPlanId) {
+            static::deleteStripeResource(new Plan(static::$annualPlanId));
+            static::$annualPlanId = null;
         }
         if (static::$productId) {
             static::deleteStripeResource(new Product(static::$productId));
+            static::$productId = null;
         }
     }
 
-    protected static function deleteStripeResource(ApiResource $resource)
+    protected static function deleteStripeResource($resource)
     {
         try {
-            $resource->delete();
-        } catch (InvalidRequest $e) {
+            if (method_exists($resource, 'delete')) {
+                $resource->delete();
+            }
+        } catch (\Stripe\Exception\ApiErrorException $e) {
             //
         }
     }
@@ -129,22 +154,6 @@ class AccountSubscriptionTest extends FeatureTestCase
         ]);
 
         $this->assertEquals('Annual', $user->account->getSubscribedPlanName());
-    }
-
-    public function test_it_get_next_billing_date()
-    {
-        $user = $this->signin();
-
-        factory(Subscription::class)->create([
-            'account_id' => $user->account_id,
-            'name' => 'Annual',
-            'stripe_plan' => 'annual',
-            'stripe_id' => 'test',
-            'quantity' => 1,
-        ]);
-
-        $this->expectException(\App\Exceptions\StripeException::class);
-        $user->account->getNextBillingDate();
     }
 
     public function test_it_throw_an_error_on_cancel()
@@ -214,7 +223,7 @@ class AccountSubscriptionTest extends FeatureTestCase
             'plan' => 'annual',
         ]);
 
-        $response->assertSee('Your payment is currently incomplete, please');
+        $response->assertSee('Extra confirmation is needed to process your payment.');
     }
 
     public function test_it_subscribe_with_error()
@@ -246,6 +255,50 @@ class AccountSubscriptionTest extends FeatureTestCase
 
             return;
         }
-        $this->fails();
+        $this->fail();
+    }
+
+    public function test_it_get_blank_page_on_update_if_not_subscribed()
+    {
+        $this->signin();
+
+        $response = $this->get('/settings/subscriptions/update');
+
+        $response->assertSee('Upgrade Monica today and have more meaningful relationships.');
+    }
+
+    public function test_it_get_subscription_update()
+    {
+        $user = $this->signin();
+        $user->email = 'test_it_subscribe@monica-test.com';
+        $user->save();
+
+        $response = $this->post('/settings/subscriptions/processPayment', [
+            'payment_method' => 'pm_card_visa',
+            'plan' => 'annual',
+        ]);
+
+        $response = $this->get('/settings/subscriptions/update');
+
+        $response->assertSee('Monthly – $1.00');
+        $response->assertSee('Annual – $5.00');
+    }
+
+    public function test_it_process_subscription_update()
+    {
+        $user = $this->signin();
+        $user->email = 'test_it_subscribe@monica-test.com';
+        $user->save();
+
+        $response = $this->post('/settings/subscriptions/processPayment', [
+            'payment_method' => 'pm_card_visa',
+            'plan' => 'monthly',
+        ]);
+
+        $response = $this->followingRedirects()->post('/settings/subscriptions/update', [
+            'frequency' => 'annual',
+        ]);
+
+        $response->assertSee('You are on the Annual plan.');
     }
 }

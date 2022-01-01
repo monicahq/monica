@@ -126,7 +126,9 @@
         <UndefinedMagicMethod>
             <errorLevel type="suppress">
                 <file name="app/Traits/Searchable.php" />
+                <file name="app/Http/Controllers/SettingsController.php" />
                 <file name="app/Http/Controllers/Api/ApiContactController.php" />
+                <file name="app/Http/Controllers/Contacts/RelationshipsController.php" />
             </errorLevel>
         </UndefinedMagicMethod>
 
@@ -155,6 +157,12 @@
                 <file name="routes/console.php" />
             </errorLevel>
         </InvalidScope>
+
+        <ParamNameMismatch>
+            <errorLevel type="suppress">
+                <file name="app/Http/Controllers/DAV/Backend/CardDAV/AddressBookRoot.php" />
+            </errorLevel>
+        </ParamNameMismatch>
 
     </issueHandlers>
 </psalm>

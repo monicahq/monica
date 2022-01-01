@@ -29,7 +29,7 @@ class InvitationMail extends LaravelNotification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      *
-     * @param  Invitation $invitation
+     * @param  Invitation  $invitation
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail(Invitation $invitation): MailMessage
@@ -48,7 +48,7 @@ class InvitationMail extends LaravelNotification implements ShouldQueue
     /**
      * Get the verification URL for the given notifiable.
      *
-     * @param  Invitation $invitation
+     * @param  Invitation  $invitation
      * @return string
      */
     protected function acceptInvitationUrl(Invitation $invitation)

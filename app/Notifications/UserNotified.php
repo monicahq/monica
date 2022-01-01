@@ -31,8 +31,8 @@ class UserNotified extends LaravelNotification implements ShouldQueue, MailNotif
     /**
      * Create a new message instance.
      *
-     * @param Reminder $reminder
-     * @param int|null $numberDaysBefore
+     * @param  Reminder  $reminder
+     * @param  int|null  $numberDaysBefore
      * @return void
      */
     public function __construct(Reminder $reminder, ?int $numberDaysBefore)
@@ -54,7 +54,7 @@ class UserNotified extends LaravelNotification implements ShouldQueue, MailNotif
     /**
      * Get the mail representation of the notification.
      *
-     * @param  User $user
+     * @param  User  $user
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail(User $user): MailMessage

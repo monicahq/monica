@@ -63,6 +63,6 @@ class ResizeAvatars implements ShouldQueue
         $avatar = Image::make($avatarFile);
         $avatar->fit($size);
 
-        $storage->put($avatarFileName, (string) $avatar->stream(), 'public');
+        $storage->put($avatarFileName, (string) $avatar->stream(), config('filesystems.default_visibility'));
     }
 }

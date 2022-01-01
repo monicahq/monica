@@ -99,10 +99,9 @@ class AddressesController extends Controller
     /**
      * Destroy the address.
      *
-     * @param Request $request
-     * @param Contact $contact
-     * @param Address $address
-     *
+     * @param  Request  $request
+     * @param  Contact  $contact
+     * @param  Address  $address
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Address $address)

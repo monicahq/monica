@@ -46,7 +46,7 @@ class Command
     /**
      * Set the current backend command.
      *
-     * @param CommandCallerContract $executor
+     * @param  CommandCallerContract  $executor
      */
     public static function setBackend(CommandCallerContract $executor): void
     {
@@ -58,8 +58,9 @@ class Command
      *
      * @param  string  $method
      * @param  array  $args
-     * @throws \RuntimeException
      * @return mixed
+     *
+     * @throws \RuntimeException
      */
     public static function __callStatic($method, $args)
     {

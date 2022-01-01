@@ -524,7 +524,7 @@ class ContactTest extends FeatureTestCase
         ]);
 
         $this->assertStringContainsString(
-            'storage/defaultURL',
+            'store/defaultURL',
             $contact->getAvatarURL()
         );
 
@@ -559,7 +559,7 @@ class ContactTest extends FeatureTestCase
         $contact->save();
 
         $this->assertEquals(
-            config('app.url').'/storage/'.$photo->new_filename,
+            config('app.url').'/store/'.$photo->new_filename,
             $contact->getAvatarURL()
         );
     }
@@ -989,9 +989,11 @@ class ContactTest extends FeatureTestCase
         config(['monica.requires_subscription' => false]);
         NotificationFacade::fake();
 
-        Carbon::setTestNow(Carbon::create(2017, 1, 1, 12, 0, 0, 'America/New_York'));
+        Carbon::setTestNow(Carbon::create(2017, 1, 1, 15, 0, 0));
 
-        $account = factory(Account::class)->create([]);
+        $account = factory(Account::class)->create([
+            'default_time_reminder_is_sent' => '10:00',
+        ]);
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
             'stay_in_touch_frequency' => 3,

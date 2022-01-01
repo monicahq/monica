@@ -2,8 +2,11 @@
 
 namespace App\Services\Contact\Contact;
 
+use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
+use App\Helpers\AccountHelper;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Services\Contact\Description\SetPersonalDescription;
@@ -25,6 +28,7 @@ class UpdateContact extends BaseService
             'account_id' => 'required|integer|exists:accounts,id',
             'author_id' => 'required|integer|exists:users,id',
             'contact_id' => 'required|integer',
+            'uuid' => 'nullable|string',
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
@@ -51,7 +55,7 @@ class UpdateContact extends BaseService
     /**
      * Update a contact.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data): Contact
@@ -62,6 +66,18 @@ class UpdateContact extends BaseService
         /* @var Contact */
         $this->contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $this->contact->throwInactive();
+
+        // Test is the account is limited and the contact should be updated as real contact
+        $account = Account::find($data['account_id']);
+        if ($this->contact->is_partial
+            && ! $this->valueOrFalse($this->data, 'is_partial')
+            && AccountHelper::hasReachedContactLimit($account)
+            && AccountHelper::hasLimitations($account)
+            && ! $account->legacy_free_plan_unlimited_contacts) {
+            abort(402);
+        }
 
         $this->updateGeneralInformation();
         $this->updateDescription();
@@ -78,6 +94,7 @@ class UpdateContact extends BaseService
             $this->data,
             [
                 'author_id',
+                'uuid',
                 'is_birthdate_known',
                 'birthdate_day',
                 'birthdate_month',
@@ -94,6 +111,10 @@ class UpdateContact extends BaseService
                 'description',
             ]
         );
+
+        if (! empty($uuid = Arr::get($this->data, 'uuid')) && Uuid::isValid($uuid)) {
+            $dataOnly['uuid'] = $uuid;
+        }
 
         $oldName = $this->contact->name;
         $this->contact->update($dataOnly);

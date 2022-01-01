@@ -23,32 +23,13 @@ class SetupFrontEndTestUser extends Command
     protected $description = 'Create a user exclusively for front-end testing with Cypress.';
 
     /**
-     * The migrator instance.
-     *
-     * @var \Illuminate\Database\Migrations\Migrator
-     */
-    protected $migrator;
-
-    /**
-     * Create a new command.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->migrator = app('migrator');
-    }
-
-    /**
      * Execute the console command.
      *
      * @return void
      */
     public function handle(): void
     {
-        $this->migrator->setConnection($this->option('database'));
+        app('migrator')->setConnection($this->option('database'));
 
         $user = factory(User::class)->create();
         $user->account->populateDefaultFields();

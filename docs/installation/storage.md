@@ -79,7 +79,7 @@ DEFAULT_FILESYSTEM=s3
 ### (Optional) Use another S3 provider
 
 *AWS_ENDPOINT* variable can be used to define a S3-compatible provider other than Amazon, like [Digitalocean](https://www.digitalocean.com/products/spaces/) or [Minio](https://min.io/).
-   example: `AWS_ENDPOINT=https://nyc3.digitaloceanspaces.com`
+   example: `AWS_ENDPOINT=nyc3.digitaloceanspaces.com`
 
 
 ### Move avatars to S3 storage

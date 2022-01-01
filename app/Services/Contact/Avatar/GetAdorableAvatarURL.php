@@ -24,7 +24,7 @@ class GetAdorableAvatarURL extends BaseService
      * Get an url for an adorable avatar.
      * - http://avatars.adorable.io/ gives avatars based on a random string.
      *
-     * @param array $data
+     * @param  array  $data
      * @return string|null
      */
     public function execute(array $data)

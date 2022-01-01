@@ -24,7 +24,7 @@ class DestroyAllPhotos extends BaseService
     /**
      * Destroy all photos in an account.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data): bool

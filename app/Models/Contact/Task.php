@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $uuid
  * @property bool $completed
  * @property \Carbon\Carbon|null $completed_at
+ *
  * @method static Builder completed()
  * @method static Builder inProgress()
  */
@@ -79,7 +80,7 @@ class Task extends Model
     /**
      * Limit tasks to completed ones.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeCompleted(Builder $query)
@@ -90,7 +91,7 @@ class Task extends Model
     /**
      * Limit tasks to in-progress ones.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeInProgress(Builder $query)

@@ -41,7 +41,7 @@ class LoginListener
     /**
      * Handle the Illuminate login event.
      *
-     * @param  Login $event
+     * @param  Login  $event
      * @return void
      */
     public function onLogin(Login $event)
@@ -55,7 +55,7 @@ class LoginListener
     /**
      * Handle the Google2fa Login event.
      *
-     * @param  LoginSucceeded $event
+     * @param  LoginSucceeded  $event
      * @return void
      */
     public function onGoogle2faLogin(LoginSucceeded $event)
@@ -66,7 +66,7 @@ class LoginListener
     /**
      * Handle the Webauthn login event.
      *
-     * @param WebauthnLogin $event
+     * @param  WebauthnLogin  $event
      */
     public function onWebauthnLogin(WebauthnLogin $event)
     {
@@ -76,7 +76,7 @@ class LoginListener
     /**
      * Handle the recovery login event.
      *
-     * @param  RecoveryLogin $event
+     * @param  RecoveryLogin  $event
      * @return void
      */
     public function onRecoveryLogin(RecoveryLogin $event)
@@ -88,7 +88,7 @@ class LoginListener
     /**
      * Force register Google2fa login.
      *
-     * @param User $user
+     * @param  User  $user
      */
     private function registerGoogle2fa(User $user)
     {
@@ -100,7 +100,7 @@ class LoginListener
     /**
      * Force register Webauthn login.
      *
-     * @param User $user
+     * @param  User  $user
      */
     private function registerWebauthn(User $user)
     {

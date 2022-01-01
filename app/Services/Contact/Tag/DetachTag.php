@@ -25,7 +25,7 @@ class DetachTag extends BaseService
     /**
      * Detach the tag associated with a contact.
      *
-     * @param array $data
+     * @param  array  $data
      * @return void
      */
     public function execute(array $data)
@@ -34,6 +34,8 @@ class DetachTag extends BaseService
 
         $contact = Contact::where('account_id', $data['account_id'])
                             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         Tag::where('account_id', $data['account_id'])
             ->findOrFail($data['tag_id']);

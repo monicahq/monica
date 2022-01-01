@@ -57,4 +57,22 @@ class DestroyAddressTest extends TestCase
         $this->expectException(ValidationException::class);
         app(DestroyAddress::class)->execute($request);
     }
+
+    /** @test */
+    public function it_fails_if_contact_is_archived()
+    {
+        $contact = factory(Contact::class)->state('archived')->create();
+        $address = factory(Address::class)->create([
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $request = [
+            'account_id' => $contact->account_id,
+            'address_id' => $address->id,
+        ];
+
+        $this->expectException(ValidationException::class);
+        app(DestroyAddress::class)->execute($request);
+    }
 }

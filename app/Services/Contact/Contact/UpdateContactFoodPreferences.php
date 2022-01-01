@@ -25,7 +25,7 @@ class UpdateContactFoodPreferences extends BaseService
     /**
      * Update the food preferences of the given contact.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data): Contact
@@ -36,6 +36,7 @@ class UpdateContactFoodPreferences extends BaseService
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
+        $contact->throwInactive();
         if ($contact->is_partial) {
             throw ValidationException::withMessages([
                 'contact_id' => 'The contact can\'t be a partial contact',

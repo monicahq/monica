@@ -3,7 +3,7 @@
 set -eo pipefail
 
 SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && /bin/pwd -P)
-source $SELF_PATH/realpath.sh
+source $SELF_PATH/../realpath.sh
 ROOT=$(realpath $SELF_PATH/../..)
 
 version=$1
@@ -44,7 +44,7 @@ ln -s $ROOT/CONTRIBUTING.md $package/
 ln -s $ROOT/CONTRIBUTORS $package/
 ln -s $ROOT/composer.json $package/
 ln -s $ROOT/composer.lock $package/
-ln -s $ROOT/LICENSE $package/
+ln -s $ROOT/LICENSE.md $package/
 ln -s $ROOT/nginx_app.conf $package/
 ln -s $ROOT/package.json $package/
 ln -s $ROOT/Procfile $package/

@@ -21,8 +21,7 @@ class ApiUserController extends ApiController
     /**
      * Get the detail of the authenticated user.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return UserResource
      */
     public function show(Request $request): UserResource
@@ -33,9 +32,8 @@ class ApiUserController extends ApiController
     /**
      * Get the state of a specific term for the user.
      *
-     * @param Request $request
-     * @param int $termId
-     *
+     * @param  Request  $request
+     * @param  int  $termId
      * @return JsonResponse
      */
     public function get(Request $request, $termId)
@@ -71,8 +69,7 @@ class ApiUserController extends ApiController
     /**
      * Get all the policies ever signed by the authenticated user.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return JsonResponse
      */
     public function getSignedPolicies(Request $request)
@@ -106,8 +103,7 @@ class ApiUserController extends ApiController
     /**
      * Sign the latest policy for the authenticated user.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return JsonResponse
      */
     public function set(Request $request)

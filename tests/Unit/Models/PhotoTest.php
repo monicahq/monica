@@ -40,7 +40,7 @@ class PhotoTest extends TestCase
     {
         $photo = factory(Photo::class)->create();
         $this->assertEquals(
-            config('app.url').'/storage/'.$photo->new_filename,
+            config('app.url').'/store/'.$photo->new_filename,
             $photo->url()
         );
     }

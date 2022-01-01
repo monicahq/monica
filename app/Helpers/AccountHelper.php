@@ -35,7 +35,7 @@ class AccountHelper
      * Indicate whether an account has reached the contact limit if the account
      * is on a free trial.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return bool
      */
     public static function hasReachedContactLimit(Account $account): bool
@@ -44,9 +44,20 @@ class AccountHelper
     }
 
     /**
+     * Indicate whether an account has not reached the contact limit of free accounts.
+     *
+     * @param  Account  $account
+     * @return bool
+     */
+    public static function isBelowContactLimit(Account $account): bool
+    {
+        return $account->allContacts()->real()->active()->count() <= config('monica.number_of_allowed_contacts_free_account');
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return bool
      */
     public static function canDowngrade(Account $account): bool
@@ -77,7 +88,7 @@ class AccountHelper
     /**
      * Get the default gender for this account.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return string
      */
     public static function getDefaultGender(Account $account): string
@@ -103,8 +114,8 @@ class AccountHelper
      * - 1 means month+1
      * - 2 means month+2...
      *
-     * @param Account $account
-     * @param int $month
+     * @param  Account  $account
+     * @param  int  $month
      */
     public static function getUpcomingRemindersForMonth(Account $account, int $month)
     {
@@ -120,7 +131,10 @@ class AccountHelper
         return $account->reminderOutboxes()
             ->with(['reminder', 'reminder.contact'])
             ->whereBetween('planned_date', [$startOfMonth, $endOfMonth])
-            ->where('nature', 'reminder')
+            ->where([
+                'user_id' => auth()->user()->id,
+                'nature' => 'reminder',
+            ])
             ->orderBy('planned_date', 'asc')
             ->get();
     }
@@ -128,7 +142,7 @@ class AccountHelper
     /**
      * Get the number of activities grouped by year.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return Collection
      */
     public static function getYearlyActivitiesStatistics(Account $account): Collection

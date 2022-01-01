@@ -99,7 +99,7 @@ class Account extends Model
     /**
      * Get the addressBook's contacts.
      *
-     * @param string|null $addressBookName
+     * @param  string|null  $addressBookName
      * @return HasMany<Contact>
      */
     public function contacts(string $addressBookName = null)
@@ -616,11 +616,11 @@ class Account extends Model
     /**
      * Create a new account and associate a new User.
      *
-     * @param string $first_name
-     * @param string $last_name
-     * @param string $email
-     * @param string $password
-     * @param string $ipAddress
+     * @param  string  $first_name
+     * @param  string  $last_name
+     * @param  string  $email
+     * @param  string  $password
+     * @param  string  $ipAddress
      * @return self
      */
     public static function createDefault($first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
@@ -683,7 +683,7 @@ class Account extends Model
     /**
      * Gets the RelationshipType object matching the given type.
      *
-     * @param  string $relationshipTypeName
+     * @param  string  $relationshipTypeName
      * @return RelationshipType|null
      */
     public function getRelationshipTypeByType(string $relationshipTypeName)
@@ -694,7 +694,7 @@ class Account extends Model
     /**
      * Gets the RelationshipType object matching the given type.
      *
-     * @param  string $relationshipTypeGroupName
+     * @param  string  $relationshipTypeGroupName
      * @return RelationshipTypeGroup|null
      */
     public function getRelationshipTypeGroupByType(string $relationshipTypeGroupName)

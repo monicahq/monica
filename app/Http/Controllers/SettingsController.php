@@ -48,19 +48,6 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        // names order
-        $namesOrder = [
-            'firstname_lastname',
-            'lastname_firstname',
-            'firstname_lastname_nickname',
-            'firstname_nickname_lastname',
-            'lastname_firstname_nickname',
-            'lastname_nickname_firstname',
-            'nickname_firstname_lastname',
-            'nickname_lastname_firstname',
-            'nickname',
-        ];
-
         $meContact = null;
 
         $search = auth()->user()->first_name.' '.
@@ -83,7 +70,7 @@ class SettingsController extends Controller
                 ->withAccountHasLimitations($accountHasLimitations)
                 ->withMeContact($meContact ? new ContactResource($meContact) : null)
                 ->withExistingContacts(ContactResource::collection($existingContacts))
-                ->withNamesOrder($namesOrder)
+                ->withNamesOrder(User::NAMES_ORDER)
                 ->withLocales(LocaleHelper::getLocaleList()->sortByCollator('name-orig'))
                 ->withHours(DateHelper::getListOfHours())
                 ->withSelectedTimezone(TimezoneHelper::adjustEquivalentTimezone(DateHelper::getTimezone()))
@@ -95,8 +82,7 @@ class SettingsController extends Controller
     /**
      * Save user settings.
      *
-     * @param SettingsRequest $request
-     *
+     * @param  SettingsRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function save(SettingsRequest $request)
@@ -111,13 +97,12 @@ class SettingsController extends Controller
                 'locale',
                 'currency_id',
                 'name_order',
-            ]) + [
-                'fluid_container' => $request->input('layout'),
-                'temperature_scale' => $request->input('temperature_scale'),
-            ]
+                'fluid_container',
+                'temperature_scale',
+            ])
         );
 
-        if ($user->email != $request->input('email')) {
+        if ($user->email !== $request->input('email')) {
             app(EmailChange::class)->execute([
                 'account_id' => $user->account_id,
                 'email' => $request->input('email'),
@@ -140,8 +125,7 @@ class SettingsController extends Controller
     /**
      * Delete user account.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function delete(Request $request)
@@ -165,8 +149,7 @@ class SettingsController extends Controller
     /**
      * Reset user account.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function reset(Request $request)
@@ -307,8 +290,7 @@ class SettingsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param InvitationRequest $request
-     *
+     * @param  InvitationRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function inviteUser(InvitationRequest $request)
@@ -354,8 +336,7 @@ class SettingsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Invitation $invitation
-     *
+     * @param  Invitation  $invitation
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroyInvitation(Invitation $invitation)
@@ -369,8 +350,7 @@ class SettingsController extends Controller
     /**
      * Delete additional user account.
      *
-     * @param int $userID
-     *
+     * @param  int  $userID
      * @return \Illuminate\Http\RedirectResponse
      */
     public function deleteAdditionalUser($userID)
@@ -401,8 +381,7 @@ class SettingsController extends Controller
     /**
      * Destroy the tag.
      *
-     * @param int $tagId
-     *
+     * @param  int  $tagId
      * @return \Illuminate\Http\RedirectResponse
      */
     public function deleteTag($tagId)
@@ -451,7 +430,7 @@ class SettingsController extends Controller
      * about the contact (notes, reminders, ...).
      * Possible values: life-events | notes.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return string
      */
     public function updateDefaultProfileView(Request $request)

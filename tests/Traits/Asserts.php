@@ -9,7 +9,7 @@ trait Asserts
     /**
      * Test that the response contains a not found notification.
      *
-     * @param TestResponse $response
+     * @param  TestResponse  $response
      */
     public function expectNotFound(TestResponse $response)
     {
@@ -26,7 +26,7 @@ trait Asserts
     /**
      * Test that the response contains a not authorized notification.
      *
-     * @param TestResponse $response
+     * @param  TestResponse  $response
      */
     public function expectNotAuthorized(TestResponse $response)
     {
@@ -43,8 +43,8 @@ trait Asserts
     /**
      * Test that the response contains a data error notification.
      *
-     * @param TestResponse $response
-     * @param string|array $message
+     * @param  TestResponse  $response
+     * @param  string|array  $message
      */
     public function expectDataError(TestResponse $response, $message = '')
     {
@@ -61,8 +61,8 @@ trait Asserts
     /**
      * Test that the response contains an invalid parameter notification.
      *
-     * @param TestResponse $response
-     * @param string|array $message
+     * @param  TestResponse  $response
+     * @param  string|array  $message
      */
     public function expectInvalidParameter(TestResponse $response, $message = '')
     {

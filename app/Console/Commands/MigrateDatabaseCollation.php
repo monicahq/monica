@@ -72,8 +72,8 @@ class MigrateDatabaseCollation extends Command
     /**
      * Switch to utf8mb4.
      *
-     * @param \Illuminate\Database\Connection $connection
-     * @param string $databasename
+     * @param  \Illuminate\Database\Connection  $connection
+     * @param  string  $databasename
      */
     private function toUtf8mb4($connection, $databasename)
     {
@@ -97,8 +97,8 @@ class MigrateDatabaseCollation extends Command
     /**
      * Switch to utf8.
      *
-     * @param \Illuminate\Database\Connection $connection
-     * @param string $databasename
+     * @param  \Illuminate\Database\Connection  $connection
+     * @param  string  $databasename
      */
     private function toUtf8($connection, $databasename)
     {

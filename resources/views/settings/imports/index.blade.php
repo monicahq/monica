@@ -57,17 +57,18 @@
               <span class="date">{{ \App\Helpers\DateHelper::getShortDateWithTime($importJob->created_at) }}</span>
             </div>
             <div class="table-cell">
+              @if (is_null($importJob->ended_at))
+                {{ trans('settings.import_in_progress') }}
+              @endif
               @if($importJob->failed_reason)
                 {{ $importJob->failed_reason }}
               @elseif (! is_null($importJob->ended_at))
-              {{ trans_choice('settings.import_result_stat', $importJob->contacts_found, ['total_contacts' => $importJob->contacts_found, 'total_imported' => $importJob->contacts_imported, 'total_skipped' => $importJob->contacts_skipped]) }}
+                {{ trans_choice('settings.import_result_stat', $importJob->contacts_found, ['total_contacts' => $importJob->contacts_found, 'total_imported' => $importJob->contacts_imported, 'total_skipped' => $importJob->contacts_skipped]) }}
               @endif
             </div>
             <div class="table-cell">
               @if (! is_null($importJob->ended_at))
-              <a href="{{ route('settings.report', $importJob) }}">{{ trans('settings.import_view_report') }}</a>
-              @else
-              {{ trans('settings.import_in_progress') }}
+                <a href="{{ route('settings.report', $importJob) }}">{{ trans('settings.import_view_report') }}</a>
               @endif
             </div>
           </li>

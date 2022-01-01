@@ -249,11 +249,20 @@ return [
     | API key for weather data.
     |--------------------------------------------------------------------------
     |
-    | To provide weather information, we use Darksky.
-    | Darksky provides an api with 1000 free API calls per day.
-    | https://darksky.net/dev/register
+    | To provide weather information, we use WeatherAPI.
+    | See https://www.weatherapi.com/
     */
-    'darksky_api_key' => env('DARKSKY_API_KEY', null),
+    'weatherapi_key' => env('WEATHERAPI_KEY', null),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Configure default rate limit for route services per minute
+    |--------------------------------------------------------------------------
+    |
+    | Configure rate limit for route services per minute
+    */
+    'rate_limit_api' => env('RATE_LIMIT_PER_MINUTE_API', 60),
+    'rate_limit_oauth' => env('RATE_LIMIT_PER_MINUTE_OAUTH', 5),
 
     /*
     |--------------------------------------------------------------------------

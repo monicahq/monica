@@ -25,8 +25,7 @@ class ApiCurrencyController extends ApiController
     /**
      * Get the detail of a given currency.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return CurrencyResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $currencyId)

@@ -31,7 +31,7 @@ class UpdateGravatar implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  Contact $contact
+     * @param  Contact  $contact
      * @return void
      */
     public function __construct(Contact $contact)

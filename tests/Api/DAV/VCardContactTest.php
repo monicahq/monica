@@ -331,7 +331,7 @@ class VCardContactTest extends ApiTestCase
 
         $response->assertStatus(204);
         $response->assertHeader('X-Sabre-Version');
-        $response->assertHeader('ETag');
+        //$response->assertHeader('ETag'); // etag no more sent
     }
 
     public function test_carddav_contacts_report_version4()

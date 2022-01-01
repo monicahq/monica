@@ -135,7 +135,7 @@
               @foreach ($tagsCount as $tag)
                 @if ($tag->contact_count > 0)
                 <li>
-                    <span class="pretty-tag"><a href="{{ route('people.index') }}?{{$url}}tag{{$tagCount}}={{ $tag->name_slug }}">{{ $tag->name }}</a></span>
+                    <span class="pretty-tag"><a href="{{ route('people.index') }}?{{$url}}tags[]={{ urlencode($tag->name) }}">{{ $tag->name }}</a></span>
                     <span class="number-contacts-per-tag">{{ trans_choice('people.people_list_contacts_per_tags', $tag->contact_count, ['count' => $tag->contact_count]) }}</span>
                 </li>
                 @endif

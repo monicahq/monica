@@ -3,17 +3,19 @@
 namespace App\Jobs;
 
 use App\Models\Account\Place;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\Middleware\RateLimited;
+use App\Exceptions\RateLimitedSecondException;
 use App\Services\Instance\Geolocalization\GetGPSCoordinate as GetGPSCoordinateService;
 
 class GetGPSCoordinate implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * @var Place
@@ -63,9 +65,17 @@ class GetGPSCoordinate implements ShouldQueue
      */
     public function handle()
     {
-        app(GetGPSCoordinateService::class)->execute([
-            'account_id' => $this->place->account_id,
-            'place_id' => $this->place->id,
-        ]);
+        if (($batch = $this->batch()) !== null && $batch->cancelled()) {
+            return;
+        }
+
+        try {
+            app(GetGPSCoordinateService::class)->execute([
+                'account_id' => $this->place->account_id,
+                'place_id' => $this->place->id,
+            ]);
+        } catch (RateLimitedSecondException $e) {
+            $this->release(15);
+        }
     }
 }

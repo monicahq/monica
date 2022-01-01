@@ -10,11 +10,14 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use App\Notifications\EmailMessaging;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Werk365\EtagConditionals\EtagConditionals;
 use Illuminate\Auth\Notifications\ResetPassword;
 
 class AppServiceProvider extends ServiceProvider
@@ -53,6 +56,31 @@ class AppServiceProvider extends ServiceProvider
             'partials.check', 'App\Http\ViewComposers\InstanceViewComposer'
         );
 
+        Password::defaults(function () {
+            if (! $this->app->environment('production')) {
+                return Password::min(6);
+            }
+            $rules = Password::min(config('app.password_min'));
+            $config = explode(',', config('app.password_rules'));
+            if (in_array('mixedCase', $config)) {
+                $rules = $rules->mixedCase();
+            }
+            if (in_array('letters', $config)) {
+                $rules = $rules->letters();
+            }
+            if (in_array('numbers', $config)) {
+                $rules = $rules->numbers();
+            }
+            if (in_array('symbols', $config)) {
+                $rules = $rules->symbols();
+            }
+            if (in_array('uncompromised', $config)) {
+                $rules = $rules->uncompromised();
+            }
+
+            return $rules;
+        });
+
         if (config('database.use_utf8mb4')
             && DBHelper::connection()->getDriverName() == 'mysql'
             && ! DBHelper::testVersion('5.7.7')) {
@@ -73,6 +101,14 @@ class AppServiceProvider extends ServiceProvider
                 Limit::perMinute(60),
                 Limit::perDay(5000),
             ];
+        });
+
+        EtagConditionals::etagGenerateUsing(function (\Illuminate\Http\Request $request, \Symfony\Component\HttpFoundation\Response $response) {
+            $url = $request->getRequestUri();
+
+            return Cache::rememberForever('etag.'.$url, function () use ($url) {
+                return sha1($url);
+            });
         });
     }
 

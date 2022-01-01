@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\Contact;
 
+use Ramsey\Uuid\Uuid;
 use App\Models\User\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -10,6 +11,7 @@ use App\Helpers\AccountHelper;
 use function Safe\json_encode;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Account\AddressBook;
 use App\Jobs\AuditLog\LogAccountAudit;
 use App\Models\Contact\ContactFieldType;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
@@ -28,6 +30,8 @@ class CreateContact extends BaseService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'author_id' => 'required|integer|exists:users,id',
+            'uuid' => 'nullable|string',
+            'address_book_id' => 'nullable|integer|exists:addressbooks,id',
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
@@ -55,7 +59,7 @@ class CreateContact extends BaseService
     /**
      * Create a contact.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data): Contact
@@ -69,6 +73,35 @@ class CreateContact extends BaseService
             abort(402);
         }
 
+        if (Arr::get($data, 'address_book_id')) {
+            AddressBook::where('account_id', $data['account_id'])
+                ->findOrFail($data['address_book_id']);
+        }
+
+        $contact = $this->create($data);
+
+        $this->updateBirthDayInformation($data, $contact);
+        $this->updateDeceasedInformation($data, $contact);
+        $this->updateEmail($data, $contact);
+        $this->generateUUID($contact);
+        $this->addAvatars($contact);
+
+        $this->log($data, $contact);
+
+        // we query the DB again to fill the object with all the new properties
+        $contact->refresh();
+
+        return $contact;
+    }
+
+    /**
+     * Create the contact.
+     *
+     * @param  array  $data
+     * @return Contact
+     */
+    private function create(array $data): Contact
+    {
         // filter out the data that shall not be updated here
         $dataOnly = Arr::except(
             $data,
@@ -91,42 +124,31 @@ class CreateContact extends BaseService
             ]
         );
 
-        $contact = Contact::create($dataOnly);
+        if (! empty($uuid = Arr::get($data, 'uuid')) && Uuid::isValid($uuid)) {
+            $dataOnly['uuid'] = $uuid;
+        }
 
-        $this->updateBirthDayInformation($data, $contact);
-
-        $this->updateDeceasedInformation($data, $contact);
-
-        $this->updateEmail($data, $contact);
-
-        $this->generateUUID($contact);
-
-        $this->addAvatars($contact);
-
-        $this->log($data, $contact);
-
-        // we query the DB again to fill the object with all the new properties
-        $contact->refresh();
-
-        return $contact;
+        return Contact::create($dataOnly);
     }
 
     /**
      * Generates a UUID for this contact.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      * @return void
      */
     private function generateUUID(Contact $contact)
     {
-        $contact->uuid = Str::uuid()->toString();
-        $contact->save();
+        if (empty($contact->uuid)) {
+            $contact->uuid = Str::uuid()->toString();
+            $contact->save();
+        }
     }
 
     /**
      * Add the different default avatars.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      * @return void
      */
     private function addAvatars(Contact $contact)
@@ -145,8 +167,8 @@ class CreateContact extends BaseService
     /**
      * Update the information about the birthday.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function updateBirthDayInformation(array $data, Contact $contact)
@@ -168,8 +190,8 @@ class CreateContact extends BaseService
     /**
      * Adds a contact field containing the email address.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function updateEmail(array $data, Contact $contact)
@@ -183,7 +205,7 @@ class CreateContact extends BaseService
             return;
         }
 
-        $contactField = app(CreateContactField::class)->execute([
+        app(CreateContactField::class)->execute([
             'account_id' => $data['account_id'],
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
@@ -194,8 +216,8 @@ class CreateContact extends BaseService
     /**
      * Update the information about the date of death.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function updateDeceasedInformation(array $data, Contact $contact)
@@ -215,8 +237,8 @@ class CreateContact extends BaseService
     /**
      * Add an audit log.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function log(array $data, Contact $contact): void

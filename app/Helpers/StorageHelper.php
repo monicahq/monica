@@ -12,7 +12,7 @@ class StorageHelper
     /**
      * Get a filesystem instance.
      *
-     * @param string $name
+     * @param  string  $name
      * @return \Illuminate\Filesystem\FilesystemAdapter
      */
     public static function disk($name = null): FilesystemAdapter
@@ -26,7 +26,7 @@ class StorageHelper
     /**
      * Get the storage size of the account, in bytes.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return int
      */
     public static function getAccountStorageSize(Account $account): int
@@ -44,7 +44,7 @@ class StorageHelper
     /**
      * Indicates whether the account has the reached the maximum storage size.
      *
-     * @param Account $account
+     * @param  Account  $account
      * @return bool
      */
     public static function hasReachedAccountStorageLimit(Account $account): bool

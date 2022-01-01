@@ -2,6 +2,7 @@
 
 use App\Helpers\MoneyHelper;
 use App\Models\Account\Account;
+use Illuminate\Support\Facades\DB;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency as MoneyCurrency;
 use Illuminate\Support\Facades\Schema;
@@ -90,7 +91,7 @@ class UpdateAmountFormat extends Migration
     /**
      * Get unit adjustement value for the currency.
      *
-     * @param \App\Models\Settings\Currency|int|null $currency
+     * @param  \App\Models\Settings\Currency|int|null  $currency
      * @return int
      */
     private static function unitAdjustment($currency): int

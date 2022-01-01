@@ -26,7 +26,7 @@ class CreateActivityType extends BaseService
     /**
      * Create an activity type.
      *
-     * @param array $data
+     * @param  array  $data
      * @return ActivityType
      */
     public function execute(array $data): ActivityType

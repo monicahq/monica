@@ -31,7 +31,7 @@ return [
     '2fa_wrong_validation' => 'Falha na autenticação de dois fatores.',
     '2fa_one_time_password' => 'Código de autenticação de dois fatores',
     '2fa_recuperation_code' => 'Digite um código de recuperação de dois fatores',
-    '2fa_one_time_or_recuperation' => 'Enter a two factor authentication code or a recovery code',
+    '2fa_one_time_or_recuperation' => 'Digite um código de autenticação de dois fatores ou um código de recuperação',
     '2fa_otp_help' => 'Abra seu aplicativo para autenticação de dois fatores e copie o código',
 
     'login_to_account' => 'Entre na sua conta',
@@ -82,8 +82,8 @@ return [
     'confirmation_request_another' => 'Se você não recebeu o email <a :action> clique aqui para solicitar outro</a>.',
 
     'confirmation_again' => 'Se você desejar alterar seu endereço de email, você pode <a href=":url" class="alert-link">clicar aqui</a>.',
-    'email_change_current_email' => 'Current email address:',
-    'email_change_title' => 'Change your email address',
-    'email_change_new' => 'New email address',
-    'email_changed' => 'Your email address has been changed. Check your mailbox to validate it.',
+    'email_change_current_email' => 'Endereço de e-mail atual:',
+    'email_change_title' => 'Alterar o seu endereço de e-mail',
+    'email_change_new' => 'Novo endereço de e-mail',
+    'email_changed' => 'Seu endereço de e-mail foi alterado. Verifique sua caixa de entrada para validá-lo.',
 ];

@@ -16,6 +16,8 @@ class AvatarController extends Controller
      */
     public function edit(Contact $contact)
     {
+        $contact->throwInactive();
+
         return view('people.avatar.edit')
             ->withContact($contact);
     }
@@ -23,8 +25,8 @@ class AvatarController extends Controller
     /**
      * Update the avatar of the contact.
      *
-     * @param Request $request
-     * @param Contact $contact
+     * @param  Request  $request
+     * @param  Contact  $contact
      */
     public function update(Request $request, Contact $contact)
     {
@@ -71,9 +73,9 @@ class AvatarController extends Controller
     /**
      * Set the given photo as avatar.
      *
-     * @param Request $request
-     * @param Contact $contact
-     * @param int $photoId
+     * @param  Request  $request
+     * @param  Contact  $contact
+     * @param  int  $photoId
      */
     public function photo(Request $request, Contact $contact, $photoId)
     {

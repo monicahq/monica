@@ -31,7 +31,7 @@ return [
     '2fa_wrong_validation' => 'Ο έλεγχος ταυτότητας δύο παραγόντων απέτυχε.',
     '2fa_one_time_password' => 'Κωδικός ελέγχου ταυτότητας δύο παραγόντων',
     '2fa_recuperation_code' => 'Πληκτρολογήστε έναν κωδικό ελέγχου ταυτότητας δύο παραγόντων',
-    '2fa_one_time_or_recuperation' => 'Enter a two factor authentication code or a recovery code',
+    '2fa_one_time_or_recuperation' => 'Εισάγετε έναν κωδικό πιστοποίησης 2 παραγόντων (2FA) ή έναν κωδικό ανάκτησης',
     '2fa_otp_help' => 'Ανοίξτε την εφαρμογή ελέγχου ταυτότητας δύο παραγόντων στο κινητό σας και αντιγράψτε τον κωδικό',
 
     'login_to_account' => 'Συνδεθείτε στο λογαριασμό σας',

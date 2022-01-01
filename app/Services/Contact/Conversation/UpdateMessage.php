@@ -35,15 +35,17 @@ class UpdateMessage extends BaseService
     /**
      * Update message in a conversation.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Message
      */
     public function execute(array $data): Message
     {
         $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
                 ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         Conversation::where('contact_id', $data['contact_id'])
                     ->where('account_id', $data['account_id'])

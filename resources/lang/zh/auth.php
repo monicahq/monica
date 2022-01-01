@@ -23,7 +23,7 @@ return [
     'throttle' => '登录失败次数太多。请 :seconds 后再试。',
     'not_authorized' => '您无权执行此操作',
     'signup_disabled' => '注册当前已停用',
-    'signup_error' => 'An error occured trying to register the user',
+    'signup_error' => '尝试注册用户时出错',
     'back_homepage' => '回到主页',
     'mfa_auth_otp' => '使用二次验证设备进行认证',
     'mfa_auth_webauthn' => '使用安全钥匙验证(WebAuthn)',
@@ -31,7 +31,7 @@ return [
     '2fa_wrong_validation' => '二次验证失败',
     '2fa_one_time_password' => '验证码',
     '2fa_recuperation_code' => '输入二次验证恢复码',
-    '2fa_one_time_or_recuperation' => 'Enter a two factor authentication code or a recovery code',
+    '2fa_one_time_or_recuperation' => '输入两步验证代码或恢复代码',
     '2fa_otp_help' => '打开您的二次验证APP并复制验证码',
 
     'login_to_account' => '登录您的账号',

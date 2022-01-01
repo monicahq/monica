@@ -137,6 +137,7 @@ class Activity extends Model implements IsJournalableInterface
 
     /**
      * Gets the information about the activity for the journal.
+     *
      * @return array
      */
     public function getInfoForJournalEntry()

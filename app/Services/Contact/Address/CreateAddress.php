@@ -36,15 +36,17 @@ class CreateAddress extends BaseService
     /**
      * Create an address.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Address
      */
     public function execute(array $data): Address
     {
         $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $place = $this->createPlace($data);
 
@@ -69,7 +71,7 @@ class CreateAddress extends BaseService
     /**
      * Create a place for the given address.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Place
      */
     private function createPlace(array $data)

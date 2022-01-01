@@ -26,7 +26,7 @@ class UpdateCompany extends BaseService
     /**
      * Update a company.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Company
      */
     public function execute(array $data): Company

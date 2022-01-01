@@ -10,12 +10,12 @@ trait Searchable
     /**
      * Search for needle in the columns defined by $searchable_columns.
      *
-     * @param  Builder $builder query builder
-     * @param  string $needle
+     * @param  Builder  $builder  query builder
+     * @param  string  $needle
      * @param  int  $accountId
-     * @param  string $orderByColumn
-     * @param  string $orderByDirection
-     * @param  string $sortOrder
+     * @param  string  $orderByColumn
+     * @param  string  $orderByDirection
+     * @param  string  $sortOrder
      * @return Builder|null
      */
     public function scopeSearch(Builder $builder, string $needle, int $accountId, string $orderByColumn, string $orderByDirection = 'asc', string $sortOrder = null): ?Builder
@@ -49,7 +49,7 @@ trait Searchable
      * Build a query based on the array that contains column names.
      *
      * @param  array  $array
-     * @param  string $searchTerm
+     * @param  string  $searchTerm
      * @return string
      */
     private function buildQuery(array $array, string $searchTerm): string

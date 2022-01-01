@@ -47,7 +47,7 @@ class Tag extends Model
      */
     public static function contactsCount()
     {
-        return DB::table('contact_tag')->selectRaw('COUNT(tag_id) AS contact_count, name, name_slug')
+        return DB::table('contact_tag')->selectRaw('COUNT(tag_id) AS contact_count, name, tag_id AS id')
                     ->join('tags', function ($join) {
                         $join->on('tags.id', '=', 'contact_tag.tag_id')
                            ->on('tags.account_id', '=', 'contact_tag.account_id');

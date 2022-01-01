@@ -37,8 +37,7 @@ class ApiAddressController extends ApiController
     /**
      * Get the detail of a given address.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return AddressResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id)
@@ -57,8 +56,7 @@ class ApiAddressController extends ApiController
     /**
      * Store the address.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return AddressResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -85,9 +83,8 @@ class ApiAddressController extends ApiController
     /**
      * Update the address.
      *
-     * @param Request $request
-     * @param int $addressId
-     *
+     * @param  Request  $request
+     * @param  int  $addressId
      * @return AddressResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $addressId)
@@ -115,8 +112,7 @@ class ApiAddressController extends ApiController
     /**
      * Delete an address.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, int $addressId)

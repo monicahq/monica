@@ -26,7 +26,7 @@
 
   input {
     border: 0;
-    color: #fff;
+    color: #ffffff;
     padding-left: 29px;
   }
 }
@@ -58,7 +58,7 @@
 }
 
 .header-nav-item-link {
-  color: #fff;
+  color: #ffffff;
   font-weight: 300;
   padding: 3px 11px;
   text-decoration: none;
@@ -66,7 +66,7 @@
   &:hover {
     background-color: #497193;
     border-radius: 3px;
-    color: #fff;
+    color: #ffffff;
     padding: 3px 11px;
     text-decoration: none;
   }
@@ -80,18 +80,20 @@
 .header-search-input {
   background: #497193;
   border-color: #497193;
-  color: white;
+  color: #ffffff;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    opacity: 0.5;
+    color: #f2f4f8;
   }
   &:-ms-input-placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    opacity: 0.5;
+    color: #f2f4f8;
   }
 
   &:focus {
-    background: white;
-    color: rgb(50, 50, 50);
+    background: #f2f4f8;
+    color: #313436;
   }
 }
 
@@ -103,9 +105,9 @@
 
 .header-search-result {
   position: relative;
-  background: white;
-  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.3);
-  border-bottom: 1px solid #eee;
+  background: #ffffff;
+  box-shadow: 0 3px 3px 0 #999999;
+  border-bottom: 1px solid #eeeeee;
 
   a {
     color: inherit;
@@ -141,7 +143,7 @@
     text-align: center;
     padding-top: 6px;
     font-size: 15px;
-    color: #fff;
+    color: #ffffff;
   }
 
   &:last-child {
@@ -200,7 +202,6 @@
 @media (max-width: 767px) {
   header {
     .mobile-menu {
-      background-color: #58748c;
       border: 1px solid #325776;
       margin-bottom: 20px;
 

@@ -18,8 +18,7 @@ class ApiPhotoController extends ApiController
     /**
      * Get the list of photos.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
@@ -38,9 +37,8 @@ class ApiPhotoController extends ApiController
     /**
      * Get the list of photos for a specific contact.
      *
-     * @param Request $request
-     * @param int $contactId
-     *
+     * @param  Request  $request
+     * @param  int  $contactId
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function contact(Request $request, $contactId)
@@ -66,9 +64,8 @@ class ApiPhotoController extends ApiController
     /**
      * Get the detail of a given photo.
      *
-     * @param Request $request
-     * @param int $photoId
-     *
+     * @param  Request  $request
+     * @param  int  $photoId
      * @return PhotoResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $photoId)
@@ -86,8 +83,7 @@ class ApiPhotoController extends ApiController
     /**
      * Store a photo.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return PhotoResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -114,9 +110,8 @@ class ApiPhotoController extends ApiController
     /**
      * Destroy a photo.
      *
-     * @param Request $request
-     * @param int $photoId
-     *
+     * @param  Request  $request
+     * @param  int  $photoId
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, int $photoId)

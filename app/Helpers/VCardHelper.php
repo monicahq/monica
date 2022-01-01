@@ -10,7 +10,7 @@ class VCardHelper
     /**
      * Get country model object from given VCard file.
      *
-     * @param VCard $vCard
+     * @param  VCard  $vCard
      * @return string|null
      */
     public static function getCountryISOFromSabreVCard(VCard $vCard): ?string

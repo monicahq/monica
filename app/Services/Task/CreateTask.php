@@ -26,7 +26,7 @@ class CreateTask extends BaseService
     /**
      * Create a task.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Task
      */
     public function execute(array $data): Task

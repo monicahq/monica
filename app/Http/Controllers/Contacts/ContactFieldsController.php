@@ -35,7 +35,8 @@ class ContactFieldsController extends Controller
 
     /**
      * Get all the contact field types.
-     * @param  Contact $contact
+     *
+     * @param  Contact  $contact
      */
     public function getContactFieldTypes(Contact $contact)
     {

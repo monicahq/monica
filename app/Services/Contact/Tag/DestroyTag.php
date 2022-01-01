@@ -23,7 +23,7 @@ class DestroyTag extends BaseService
     /**
      * Destroy a tag.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data)

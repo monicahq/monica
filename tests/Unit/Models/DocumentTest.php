@@ -40,7 +40,7 @@ class DocumentTest extends TestCase
         $document = factory(Document::class)->create();
 
         $this->assertEquals(
-            config('app.url').'/storage/'.$document->new_filename,
+            config('app.url').'/store/'.$document->new_filename,
             $document->getDownloadLink()
         );
     }

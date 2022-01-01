@@ -19,7 +19,7 @@
   background-repeat: repeat-x;
   background-position: -1px -1px;
   background-size: 110% 110%;
-  border: 1px solid rgba(27,31,35,0.2);
+  border: 1px solid #d0d0d0;
   border-radius: 0.25em;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -28,20 +28,20 @@
 
   &:hover, &:focus {
     text-decoration: none;
-    background-color: #e5e5e5;
-    background-image: -webkit-linear-gradient(270deg, #d7e3ec 0%, #e5e5e5 90%);
-    background-image: linear-gradient(-180deg, #d7e3ec 0%, #e5e5e5 90%);
+    background-color: #d0d0d0;
+    background-image: -webkit-linear-gradient(270deg, #d7e3ec 0%, #d0d0d0 90%);
+    background-image: linear-gradient(-180deg, #d7e3ec 0%, #d0d0d0 90%);
     background-position: 0 -0.5em;
     background-repeat: repeat-x;
-    border-color: rgba(27,31,35,0.35);
+    border-color: #999999;
     color: #0366d5;
   }
 
   &:active {
     background-color: #d0d0d0;
     background-image: none;
-    border-color: rgba(27,31,35,0.35);
-    box-shadow: inset 0 0.15em 0.3em rgba(27,31,35,0.15)
+    border-color: #999999;
+    box-shadow: inset 0 0.15em 0.3em #eeeeee;
   }
 
   &:disabled {
@@ -55,7 +55,7 @@
 }
 
 .btn-primary {
-  color: #fff;
+  color: #ffffff;
   background-color: #228b22;
   background-image: -webkit-linear-gradient(270deg, #32cd32 0%, #228b22 90%);
   background-image: linear-gradient(-180deg, #32cd32 0%, #228b22 90%);
@@ -66,18 +66,18 @@
     background-image: linear-gradient(-180deg, #32cd32 0%, #228b22 90%);
     background-position: 0 -0.5em;
     border-color: #228b22;
-    color: #edd077;
+    color: #ffd700;
   }
 }
 
 .btn-danger {
-  color: #900;
+  color: #b22222;
 
   &:hover, &:focus {
     background-color: #b22222;
     background-image: linear-gradient(#d9534f, #b22222);
-    border-color: #d9534f;
-    color: #fff;
+    border-color: #b22222;
+    color: #ffffff;
   }
 }
 
@@ -87,8 +87,8 @@
   &:hover, &:focus {
     background-color: #daa520;
     background-image: linear-gradient(#fffacd, #daa520);
-    border-color: #fffacd;
-    color: #fff;
+    border-color: #daa520;
+    color: #ffffff;
   }
 }
 
@@ -102,10 +102,10 @@
 }
 
 .small-btn {
-  background: #fff;
+  background: #ffffff;
   color: #4a4a4a;
   opacity: 0.8;
-  box-shadow: 1px 0px 1px rgba(43, 45, 80, 0.16), -1px 1px 1px rgba(43, 45, 80, 0.16), 0px 1px 4px rgba(43, 45, 80, 0.18);
+  box-shadow: 1px 0px 1px #d0d0d0, -1px 1px 1px #d0d0d0, 0px 1px 4px #d0d0d0;
   border-radius: 11px;
   font-weight: 500;
   text-decoration: none;

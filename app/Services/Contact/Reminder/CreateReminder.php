@@ -34,7 +34,7 @@ class CreateReminder extends BaseService
     /**
      * Create a reminder.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Reminder
      */
     public function execute(array $data): Reminder
@@ -43,6 +43,8 @@ class CreateReminder extends BaseService
 
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         $reminder = Reminder::create([
             'account_id' => $data['account_id'],

@@ -36,7 +36,7 @@ class UpdateOccupation extends BaseService
     /**
      * Update a occupation.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Occupation
      */
     public function execute(array $data): Occupation
@@ -48,6 +48,8 @@ class UpdateOccupation extends BaseService
             ->where('contact_id', $data['contact_id'])
             ->where('company_id', $data['company_id'])
             ->findOrFail($data['occupation_id']);
+
+        $occupation->contact->throwInactive();
 
         $occupation->update([
             'title' => $data['title'],

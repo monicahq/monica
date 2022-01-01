@@ -21,6 +21,7 @@ class UpdateAllGravatars implements ShouldQueue
     {
         $contacts = Contact::where('avatar_source', 'gravatar')
             ->orWhere('avatar_gravatar_url', '<>', '')
+            ->active()
             ->get();
 
         foreach ($contacts as $contact) {

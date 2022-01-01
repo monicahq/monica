@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\PasswordReset;
 use App\Http\Requests\PasswordChangeRequest;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\RedirectsUsers;
@@ -24,7 +25,7 @@ class PasswordChangeController extends Controller
     /**
      * Get useful parameters from request.
      *
-     * @param \App\Http\Requests\PasswordChangeRequest $request
+     * @param  \App\Http\Requests\PasswordChangeRequest  $request
      * @return array
      */
     protected function credentials(PasswordChangeRequest $request)
@@ -37,7 +38,7 @@ class PasswordChangeController extends Controller
     /**
      * Change user password.
      *
-     * @param \App\Http\Requests\PasswordChangeRequest $request
+     * @param  \App\Http\Requests\PasswordChangeRequest  $request
      */
     public function passwordChange(PasswordChangeRequest $request)
     {
@@ -45,7 +46,7 @@ class PasswordChangeController extends Controller
 
         $response = $this->validateAndPasswordChange($credentials);
 
-        return $response == 'passwords.changed'
+        return $response === 'passwords.changed'
             ? $this->sendChangedResponse($response)
             : $this->sendChangedFailedResponse($response);
     }
@@ -53,8 +54,7 @@ class PasswordChangeController extends Controller
     /**
      * Validate a password change request and update password of the user.
      *
-     * @param array $credentials
-     *
+     * @param  array  $credentials
      * @return string|Authenticatable
      */
     protected function validateAndPasswordChange($credentials)
@@ -74,8 +74,7 @@ class PasswordChangeController extends Controller
     /**
      * Validate a password change request with the given credentials.
      *
-     * @param array $credentials
-     *
+     * @param  array  $credentials
      * @return string|Authenticatable
      *
      * @throws \UnexpectedValueException
@@ -92,8 +91,7 @@ class PasswordChangeController extends Controller
     /**
      * Get the user with the given credentials.
      *
-     * @param array $credentials
-     *
+     * @param  array  $credentials
      * @return null|Authenticatable
      */
     protected function getUser(array $credentials): ?Authenticatable
@@ -116,8 +114,8 @@ class PasswordChangeController extends Controller
     /**
      * Set the new password if all validation has passed.
      *
-     * @param User $user
-     * @param string $password
+     * @param  User  $user
+     * @param  string  $password
      * @return void
      */
     protected function setNewPassword($user, $password)
@@ -128,13 +126,15 @@ class PasswordChangeController extends Controller
 
         $user->save();
 
+        event(new PasswordReset($user));
+
         Auth::guard()->login($user);
     }
 
     /**
      * Get the response for a successful password change.
      *
-     * @param string $response
+     * @param  string  $response
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function sendChangedResponse($response)
@@ -146,7 +146,7 @@ class PasswordChangeController extends Controller
     /**
      * Get the response for a failed password change.
      *
-     * @param string $response
+     * @param  string  $response
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function sendChangedFailedResponse($response)

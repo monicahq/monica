@@ -310,4 +310,24 @@ class UpdateCallTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
         app(UpdateCall::class)->execute($request);
     }
+
+    /** @test */
+    public function it_fails_if_contact_is_archived()
+    {
+        $contact = factory(Contact::class)->state('archived')->create([]);
+        $call = factory(Call::class)->create([
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $request = [
+            'account_id' => $call->account_id,
+            'call_id' => $call->id,
+            'called_at' => now(),
+            'content' => 'this is the content',
+        ];
+
+        $this->expectException(ValidationException::class);
+        app(UpdateCall::class)->execute($request);
+    }
 }

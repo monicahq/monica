@@ -42,23 +42,32 @@ sudo apt install -y git
 
 **PHP:**
 
+If you are using Debian 10 or lower, PHP 7.4 is not available from the Debian project directly.  Instead use the [deb.sury.org](https://deb.sury.org/) package repository from Ondřej Surý, maintainer of the mainline Debian packages.
+
+```sh
+sudo wget -q https://packages.sury.org/php/apt.gpg -O /etc/apt/trusted.gpg.d/php-sury.gpg
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php-sury.list
+sudo apt update
+```
+
+
 Install PHP 7.4 with these extensions:
 
 ```sh
-sudo apt install -y php php-bcmath php-curl php-gd php-gmp \
-    php-intl php-mbstring php-mysql php-redis php-xml php-zip
+sudo apt install -y php7.4 php7.4-bcmath php7.4-curl php7.4-gd php7.4-gmp \
+    php7.4-intl php7.4-mbstring php7.4-mysql php7.4-redis php7.4-xml php7.4-zip
 ```
 
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager.
 
 ```sh
-sudo apt install -y composer
+wget -q -O - https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin/ --filename=composer
 ```
 
 **Node.js:** Install node.js with package manager.
 
 ```sh
-curl -fsSL https://deb.nodesource.com/setup_14.x | sudo bash -
+wget -q -O - https://deb.nodesource.com/setup_14.x | sudo bash -
 sudo apt install -y nodejs
 ```
 
@@ -163,7 +172,7 @@ To do this, setup a cron that runs every minute that triggers the following comm
 Run the crontab command:
 
 ```sh
-crontab -u www-data -e
+sudo crontab -u www-data -e
 ```
 
 Then, in the `crontab` editor window you just opened, paste the following at the end of the document:

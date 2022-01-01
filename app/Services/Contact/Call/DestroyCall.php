@@ -24,7 +24,7 @@ class DestroyCall extends BaseService
     /**
      * Destroy a call.
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
      */
     public function execute(array $data): bool
@@ -35,6 +35,8 @@ class DestroyCall extends BaseService
             ->findOrFail($data['call_id']);
 
         $contact = $call->contact;
+
+        $contact->throwInactive();
 
         // delete all associations with emotions
         $call->emotions()->sync([]);
@@ -49,7 +51,7 @@ class DestroyCall extends BaseService
     /**
      * Update last call information of the contact.
      *
-     * @param Contact $contact
+     * @param  Contact  $contact
      * @return void
      */
     private function updateLastCallInfo(Contact $contact)

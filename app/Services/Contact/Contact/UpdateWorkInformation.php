@@ -30,7 +30,7 @@ class UpdateWorkInformation extends BaseService
     /**
      * Update a contact.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Contact
      */
     public function execute(array $data): Contact
@@ -41,6 +41,7 @@ class UpdateWorkInformation extends BaseService
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
+        $contact->throwInactive();
         if ($contact->is_partial) {
             throw ValidationException::withMessages([
                 'contact_id' => 'The contact can\'t be a partial contact',
@@ -61,8 +62,8 @@ class UpdateWorkInformation extends BaseService
     /**
      * Add an audit log.
      *
-     * @param array $data
-     * @param Contact $contact
+     * @param  array  $data
+     * @param  Contact  $contact
      * @return void
      */
     private function log(array $data, Contact $contact): void

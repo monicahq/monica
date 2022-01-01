@@ -7,9 +7,9 @@
  */
 
 return [
-    'user_unauthenticated' => 'You need to log in before doing a Webauthn authentication',
-    'auth_data_not_found' => 'Authentication data not found',
-    'create_data_not_found' => 'Register data not found',
-    'object_not_found' => 'Object not found',
+    'user_unauthenticated' => 'Você precisa fazer login antes de fazer uma autenticação de Webauthn',
+    'auth_data_not_found' => 'Dados de autenticação não encontrados',
+    'create_data_not_found' => 'Registro de dados não encontrado',
+    'object_not_found' => 'Objeto não encontrado',
 
 ];

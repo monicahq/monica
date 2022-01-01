@@ -9,7 +9,7 @@
 return [
     'dashboard_blank_title' => 'Chào mừng đến với tài khoản của bạn!',
     'dashboard_blank_description' => 'Monica là nơi sắp xếp tất cả tương tác của bạn với người mà bạn quan tâm.',
-    'dashboard_blank_cta' => 'Add your first contact',
+    'dashboard_blank_cta' => 'Thêm liên hệ đầu tiên',
     'dashboard_blank_illustration' => 'Minh họa bởi <a href=":url">Freepik</a>',
 
     'notes_title' => 'Bạn chưa có ghi chú gắn dấu sao nào.',
@@ -19,18 +19,18 @@ return [
     'tab_calls_blank' => 'Bạn chưa ghi nhật ký cuộc gọi nào.',
     'tab_debts' => 'Khoản nợ',
     'tab_debts_blank' => 'Bạn chưa ghi khoản nợ nào.',
-    'tab_tasks' => 'Tasks',
-    'tab_tasks_blank' => 'You haven’t any tasks yet.',
+    'tab_tasks' => 'Nhiệm vụ',
+    'tab_tasks_blank' => 'Bạn chưa có nhiệm vụ nào.',
 
-    'tasks_add_task_placeholder' => 'What is this task about?',
-    'tasks_tab_your_contacts' => 'Tasks related to your contacts',
-    'tasks_tab_your_tasks' => 'Your tasks',
-    'tasks_add_note' => 'Press <kbd>Enter</kbd> to add the task.',
-    'task_add_cta' => 'Add a task',
+    'tasks_add_task_placeholder' => 'Nhiệm vụ này làm gì?',
+    'tasks_tab_your_contacts' => 'Nhiệm vụ liên quan đến liên hệ của bạn',
+    'tasks_tab_your_tasks' => 'Nhiệm vụ của bạn',
+    'tasks_add_note' => 'Nhấn <kbd>Enter</kbd> để thêm nhiệm vụ.',
+    'task_add_cta' => 'Thêm nhiệm vụ',
 
-    'debts_you_owe' => 'You owe',
+    'debts_you_owe' => 'Bạn nợ',
 
-    'statistics_contacts' => 'Contacts',
+    'statistics_contacts' => 'Danh bạ',
     'statistics_activities' => 'Hoạt động',
     'statistics_gifts' => 'Quà tặng',
 

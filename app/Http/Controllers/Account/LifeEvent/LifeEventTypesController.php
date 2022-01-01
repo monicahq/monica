@@ -17,7 +17,7 @@ class LifeEventTypesController extends Controller
     /**
      * Store a life event type.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return LifeEventTypeResource
      */
     public function store(Request $request)
@@ -34,8 +34,8 @@ class LifeEventTypesController extends Controller
     /**
      * Update a life event type.
      *
-     * @param Request $request
-     * @param int $liveEventTypeId
+     * @param  Request  $request
+     * @param  int  $liveEventTypeId
      * @return LifeEventTypeResource
      */
     public function update(Request $request, $liveEventTypeId)
@@ -55,9 +55,8 @@ class LifeEventTypesController extends Controller
     /**
      * Delete the life event type.
      *
-     * @param Request $request
-     * @param int $lifeEventTypeId
-     *
+     * @param  Request  $request
+     * @param  int  $lifeEventTypeId
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $lifeEventTypeId)

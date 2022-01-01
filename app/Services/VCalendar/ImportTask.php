@@ -33,7 +33,7 @@ class ImportTask extends BaseService
     /**
      * Export one VCalendar.
      *
-     * @param array $data
+     * @param  array  $data
      * @return array
      */
     public function execute(array $data): array
@@ -53,8 +53,8 @@ class ImportTask extends BaseService
     /**
      * Import one VCalendar.
      *
-     * @param array $data
-     * @param Task $task
+     * @param  array  $data
+     * @param  Task  $task
      * @return array
      */
     private function process(array $data, Task $task): array
@@ -84,7 +84,7 @@ class ImportTask extends BaseService
      * Check whether this entry contains a VTODO. If not, it
      * can not be imported.
      *
-     * @param VCalendar $entry
+     * @param  VCalendar  $entry
      * @return bool
      */
     private function canImportCurrentEntry(VCalendar $entry): bool
@@ -95,8 +95,8 @@ class ImportTask extends BaseService
     /**
      * Create the Task object matching the current entry.
      *
-     * @param  Task $task
-     * @param  VCalendar $entry
+     * @param  Task  $task
+     * @param  VCalendar  $entry
      * @return Task
      */
     private function importEntry($task, VCalendar $entry): Task
@@ -112,7 +112,7 @@ class ImportTask extends BaseService
     }
 
     /**
-     * @param array $data
+     * @param  array  $data
      * @return VCalendar|null
      */
     private function getEntry($data): ?VCalendar
@@ -132,8 +132,8 @@ class ImportTask extends BaseService
     /**
      * Import uid.
      *
-     * @param  Task $task
-     * @param  VCalendar $entry
+     * @param  Task  $task
+     * @param  VCalendar  $entry
      * @return void
      */
     private function importUid(Task $task, VCalendar $entry): void
@@ -146,8 +146,8 @@ class ImportTask extends BaseService
     /**
      * Import uid.
      *
-     * @param  Task $task
-     * @param  VCalendar $entry
+     * @param  Task  $task
+     * @param  VCalendar  $entry
      * @return void
      */
     private function importTimestamp(Task $task, VCalendar $entry): void
@@ -162,8 +162,8 @@ class ImportTask extends BaseService
     }
 
     /**
-     * @param Task $task
-     * @param VCalendar $entry
+     * @param  Task  $task
+     * @param  VCalendar  $entry
      */
     private function importSummary(Task $task, VCalendar $entry)
     {
@@ -174,8 +174,8 @@ class ImportTask extends BaseService
     }
 
     /**
-     * @param Task $task
-     * @param VCalendar $entry
+     * @param  Task  $task
+     * @param  VCalendar  $entry
      */
     private function importCompleted(Task $task, VCalendar $entry)
     {

@@ -41,7 +41,7 @@ class UpdateGift extends BaseService
     /**
      * Update a gift.
      *
-     * @param array $data
+     * @param  array  $data
      * @return Gift
      */
     public function execute(array $data): Gift
@@ -51,8 +51,10 @@ class UpdateGift extends BaseService
         $gift = Gift::where('account_id', $data['account_id'])
                     ->findOrFail((int) $data['gift_id']);
 
-        Contact::where('account_id', $data['account_id'])
-        ->findOrFail($data['contact_id']);
+        $contact = Contact::where('account_id', $data['account_id'])
+            ->findOrFail($data['contact_id']);
+
+        $contact->throwInactive();
 
         if (isset($data['recipient_id'])) {
             Contact::where('account_id', $data['account_id'])
