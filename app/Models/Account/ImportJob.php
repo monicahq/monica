@@ -202,7 +202,9 @@ class ImportJob extends Model
      */
     private function getEntries()
     {
-        $this->entries = new VCardReader($this->physicalFile, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
+        if ($this->physicalFile !== null) {
+            $this->entries = new VCardReader($this->physicalFile, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
+        }
     }
 
     /**
