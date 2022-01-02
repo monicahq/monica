@@ -9,8 +9,8 @@ use App\Models\Account\ExportJob;
 use Illuminate\Support\Facades\Storage;
 use App\Notifications\ExportAccountDone;
 use Illuminate\Support\Facades\Notification;
-use App\Services\Account\Settings\JsonExportAccount;
 use App\Services\Account\Settings\SqlExportAccount;
+use App\Services\Account\Settings\JsonExportAccount;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ExportAccountTest extends TestCase
