@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
+use Carbon\Carbon;
 use function Safe\date;
 use function Safe\strtotime;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
@@ -118,7 +118,7 @@ class DateHelper
     }
 
     /**
-     * Get timezone of the current user, or null.
+     * Get the timezone of the current user, or null.
      *
      * @return string|null
      */
@@ -130,10 +130,10 @@ class DateHelper
     /**
      * Return a date in a short format like "Oct 29, 1981".
      *
-     * @param  string  $date
+     * @param  Carbon  $date
      * @return string
      */
-    public static function getShortDate($date): string
+    public static function getShortDate(Carbon $date): string
     {
         return self::formatDate($date, 'format.short_date_year');
     }
@@ -141,58 +141,56 @@ class DateHelper
     /**
      * Return a date in a full format like "October 29, 1981".
      *
-     * @param  string|int  $date
+     * @param  Carbon  $date
      * @return string
      */
-    public static function getFullDate($date): string
+    public static function getFullDate(Carbon $date): string
     {
         return self::formatDate($date, 'format.full_date_year');
     }
 
     /**
-     * Return the month of the date according to the timezone of the user
-     * like "Oct", or "Dec".
+     * Return the month of the date like "Oct", or "Dec".
      *
-     * @param  string  $date
+     * @param  Carbon  $date
      * @return string
      */
-    public static function getShortMonth($date): string
+    public static function getShortMonth(Carbon $date): string
     {
         return self::formatDate($date, 'format.short_month');
     }
 
     /**
-     * Return the month and year of the date according to the timezone of the user
-     * like "October 2010", or "March 2032".
+     * Return the month and year of the date like "October 2010",
+     * or "March 2032".
      *
-     * @param  string  $date
+     * @param  Carbon  $date
      * @return string
      */
-    public static function getFullMonthAndDate($date): string
+    public static function getFullMonthAndDate(Carbon $date): string
     {
         return self::formatDate($date, 'format.full_month_year');
     }
 
     /**
-     * Return the day of the date according to the timezone of the user
-     * like "Mon", or "Wed".
+     * Return the day of the date like "Mon", or "Wed".
      *
-     * @param  \Carbon\Carbon  $date
+     * @param  Carbon  $date
      * @return string
      */
-    public static function getShortDay($date): string
+    public static function getShortDay(Carbon $date): string
     {
         return self::formatDate($date, 'format.short_day');
     }
 
     /**
-     * Return a date according to the timezone of the user, in a short format
+     * Return a date in a short format
      * like "Oct 29".
      *
-     * @param  \Carbon\Carbon  $date
+     * @param  Carbon  $date
      * @return string
      */
-    public static function getShortDateWithoutYear($date): string
+    public static function getShortDateWithoutYear(Carbon $date): string
     {
         return self::formatDate($date, 'format.short_date');
     }
@@ -201,24 +199,28 @@ class DateHelper
      * Return a date and the time according to the timezone of the user, in a short format
      * like "Oct 29, 1981 19:32".
      *
-     * @param  \Carbon\Carbon  $date
+     * @param  Carbon  $date
      * @return string
      */
-    public static function getShortDateWithTime($date): string
+    public static function getShortDateWithTime(Carbon $date): string
     {
-        return self::formatDate($date, 'format.short_date_year_time');
+        return self::formatDate($date, 'format.short_date_year_time', true);
     }
 
     /**
      * Return a date in a given format.
      *
-     * @param  string  $date
+     * @param  Carbon  $date
+     * @param  string  $format
+     * @param  bool  $withTimezone
      * @return string
      */
-    private static function formatDate($date, $format): string
+    private static function formatDate(Carbon $date, string $format, bool $withTimezone = false): string
     {
-        $date = Carbon::parse($date);
         $format = trans($format, [], Carbon::getLocale());
+        if ($withTimezone) {
+            $date = $date->setTimezone(static::getTimezone());
+        }
 
         return $date->translatedFormat($format) ?: '';
     }
@@ -226,22 +228,22 @@ class DateHelper
     /**
      * Add a given number of week/month/year to a date.
      *
-     * @param  \Carbon\Carbon  $date  the start date
+     * @param  Carbon  $date  the start date
      * @param  string  $frequency  week/month/year
      * @param  int  $number  the number of week/month/year to increment to
-     * @return \Carbon\Carbon
+     * @return Carbon
      */
-    public static function addTimeAccordingToFrequencyType(\Carbon\Carbon $date, string $frequency, int $number): \Carbon\Carbon
+    public static function addTimeAccordingToFrequencyType(Carbon $date, string $frequency, int $number): Carbon
     {
         switch ($frequency) {
             case 'week':
-                $date->addWeeks($number);
+                $date = $date->addWeeks($number);
                 break;
             case 'month':
-                $date->addMonths($number);
+                $date = $date->addMonths($number);
                 break;
             default:
-                $date->addYears($number);
+                $date = $date->addYears($number);
                 break;
         }
 
@@ -274,10 +276,10 @@ class DateHelper
     public static function getNextTheoriticalBillingDate(string $interval): Carbon
     {
         if ($interval == 'monthly') {
-            return now()->addMonth();
+            return now(static::getTimezone())->addMonth();
         }
 
-        return now()->addYear();
+        return now(static::getTimezone())->addYear();
     }
 
     /**

@@ -53,6 +53,7 @@
     <env name="MAIL_MAILER" value="array"/>
     <env name="QUEUE_CONNECTION" value="sync"/>
     <env name="SESSION_DRIVER" value="array"/>
+    <env name="DEFAULT_FILESYSTEM" value="public"/>
     <env name="DEBUGBAR_ENABLED" value="false"/>
     <env name="APP_DEFAULT_LOCALE" value="en"/>
     <env name="LOG_CHANNEL" value="testing"/>

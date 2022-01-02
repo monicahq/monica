@@ -175,8 +175,8 @@ class Reminder extends Model
         $reminderRules = $this->account->reminderRules()->where('active', 1)->get();
 
         foreach ($reminderRules as $reminderRule) {
-            $datePrior = Carbon::createFromFormat('Y-m-d', $date);
-            $datePrior->subDays($reminderRule->number_of_days_before);
+            $datePrior = Carbon::createFromFormat('Y-m-d', $date)
+                ->subDays($reminderRule->number_of_days_before);
 
             if ($datePrior->lessThanOrEqualTo(now())) {
                 continue;
