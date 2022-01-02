@@ -82,7 +82,6 @@ class ExportAccountTest extends TestCase
         );
     }
 
-
     /** @test */
     public function it_exports_account_file()
     {
