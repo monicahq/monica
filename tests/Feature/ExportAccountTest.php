@@ -3,9 +3,9 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
+use Illuminate\Support\Carbon;
 use App\Models\Account\ExportJob;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Carbon;
 
 class ExportAccountTest extends FeatureTestCase
 {
