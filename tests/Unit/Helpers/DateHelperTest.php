@@ -15,7 +15,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetShortDateWithEnglishLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('en');
 
         $this->assertEquals(
@@ -26,7 +26,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetShortDateWithFrenchLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('fr');
 
         $this->assertEquals(
@@ -37,7 +37,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetShortDateWithUnknownLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('jp');
 
         $this->assertEquals(
@@ -48,7 +48,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetFullDateWithEnglishLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('en');
 
         $this->assertEquals(
@@ -59,7 +59,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetFullDateWithFrenchLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('fr');
 
         $this->assertEquals(
@@ -70,7 +70,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetFullDateWithUnknownLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('jp');
 
         $this->assertEquals(
@@ -81,7 +81,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetShortDateWithTimeWithEnglishLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('en');
 
         $this->assertEquals(
@@ -92,7 +92,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetShortDateWithTimeWithFrenchLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('fr');
 
         $this->assertEquals(
@@ -103,7 +103,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetShortDateWithTimeWithUnknownLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('jp');
 
         $this->assertEquals(
@@ -114,7 +114,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function test_get_short_date_without_year_returns_a_date()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('en');
 
         $this->assertEquals(
@@ -132,7 +132,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function test_it_returns_the_default_short_date()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale(null);
 
         $this->assertEquals(
@@ -343,7 +343,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetShortMonthWithEnglishLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('en');
 
         $this->assertEquals(
@@ -354,7 +354,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetShortMonthWithFrenchLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('fr');
 
         $this->assertEquals(
@@ -365,7 +365,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetShortMonthWithUnknownLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('jp');
 
         $this->assertEquals(
@@ -376,7 +376,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetFullMonthAndDateWithEnglishLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('en');
 
         $this->assertEquals(
@@ -387,7 +387,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetFullMonthAndDateWithFrenchLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('fr');
 
         $this->assertEquals(
@@ -398,7 +398,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetFullMonthAndDateWithUnknownLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('jp');
 
         $this->assertEquals(
@@ -409,7 +409,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetShortDayWithEnglishLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('en');
 
         $this->assertEquals(
@@ -420,7 +420,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetShortDayWithFrenchLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('fr');
 
         $this->assertEquals(
@@ -431,7 +431,7 @@ class DateHelperTest extends FeatureTestCase
 
     public function testGetShortDayWithUnknownLocale()
     {
-        $date = '2017-01-22 17:56:03';
+        $date = Carbon::parse('2017-01-22 17:56:03');
         App::setLocale('jp');
 
         $this->assertEquals(

@@ -6,6 +6,7 @@ use function Safe\json_decode;
 use App\Models\Account\Account;
 use App\Models\Instance\Instance;
 use App\Models\Settings\Currency;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use function Safe\file_get_contents;
 
@@ -83,7 +84,7 @@ class InstanceHelper
             'id' => $plan->id,
             'price' => $plan->amount,
             'friendlyPrice' => $amount,
-            'nextBillingDate' => DateHelper::getFullDate($stripeSubscription->current_period_end),
+            'nextBillingDate' => DateHelper::getFullDate(Carbon::parse($stripeSubscription->current_period_end)),
         ];
     }
 
