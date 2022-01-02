@@ -134,7 +134,7 @@ class SpecialDate extends Model
     public function createFromAge(int $age)
     {
         $this->is_age_based = true;
-        $this->date = now()->subYears($age)->month(1)->day(1);
+        $this->date = now(DateHelper::getTimezone())->subYears($age)->month(1)->day(1);
         $this->save();
 
         return $this;

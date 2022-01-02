@@ -118,7 +118,7 @@ class DateHelper
     }
 
     /**
-     * Get timezone of the current user, or null.
+     * Get the timezone of the current user, or null.
      *
      * @return string|null
      */
@@ -150,8 +150,7 @@ class DateHelper
     }
 
     /**
-     * Return the month of the date according to the timezone of the user
-     * like "Oct", or "Dec".
+     * Return the month of the date like "Oct", or "Dec".
      *
      * @param  Carbon  $date
      * @return string
@@ -162,8 +161,8 @@ class DateHelper
     }
 
     /**
-     * Return the month and year of the date according to the timezone of the user
-     * like "October 2010", or "March 2032".
+     * Return the month and year of the date like "October 2010",
+     * or "March 2032".
      *
      * @param  Carbon  $date
      * @return string
@@ -174,8 +173,7 @@ class DateHelper
     }
 
     /**
-     * Return the day of the date according to the timezone of the user
-     * like "Mon", or "Wed".
+     * Return the day of the date like "Mon", or "Wed".
      *
      * @param  Carbon  $date
      * @return string
@@ -186,7 +184,7 @@ class DateHelper
     }
 
     /**
-     * Return a date according to the timezone of the user, in a short format
+     * Return a date in a short format
      * like "Oct 29".
      *
      * @param  Carbon  $date
@@ -206,7 +204,7 @@ class DateHelper
      */
     public static function getShortDateWithTime(Carbon $date): string
     {
-        return self::formatDate($date, 'format.short_date_year_time');
+        return self::formatDate($date, 'format.short_date_year_time', true);
     }
 
     /**
@@ -214,12 +212,15 @@ class DateHelper
      *
      * @param  Carbon  $date
      * @param  string  $format
+     * @param  bool  $withTimezone
      * @return string
      */
-    private static function formatDate(Carbon $date, $format): string
+    private static function formatDate(Carbon $date, string $format, bool $withTimezone = false): string
     {
         $format = trans($format, [], Carbon::getLocale());
-        $date = $date->setTimezone(self::getTimezone());
+        if ($withTimezone) {
+            $date = $date->setTimezone(static::getTimezone());
+        }
 
         return $date->translatedFormat($format) ?: '';
     }
@@ -275,10 +276,10 @@ class DateHelper
     public static function getNextTheoriticalBillingDate(string $interval): Carbon
     {
         if ($interval == 'monthly') {
-            return now()->addMonth();
+            return now(static::getTimezone())->addMonth();
         }
 
-        return now()->addYear();
+        return now(static::getTimezone())->addYear();
     }
 
     /**

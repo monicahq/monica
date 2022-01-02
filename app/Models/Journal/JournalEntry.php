@@ -2,11 +2,13 @@
 
 namespace App\Models\Journal;
 
+use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
 use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @property int $id
@@ -70,7 +72,7 @@ class JournalEntry extends Model
     {
         $journal = new self;
         $journal->account_id = $resourceToLog->account_id;
-        $journal->date = now();
+        $journal->date = now(DateHelper::getTimezone());
         if ($resourceToLog instanceof \App\Models\Account\Activity) {
             $journal->date = $resourceToLog->happened_at;
         } elseif ($resourceToLog instanceof \App\Models\Journal\Entry) {
