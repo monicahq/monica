@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use Carbon\Carbon;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use Illuminate\Bus\Queueable;
@@ -51,12 +52,14 @@ class ExportAccountDone extends Notification implements ShouldQueue, MailNotific
      */
     public function toMail(User $user): MailMessage
     {
+        $date = Carbon::parse($this->exportJob->created_at)
+            ->setTimezone($user->timezone);
+
         return (new MailMessage)
+            ->success()
             ->subject(trans('mail.export_title'))
             ->greeting(trans('mail.greetings', ['username' => $user->first_name]))
-            ->line(trans('mail.export_description', [
-                'date' => DateHelper::getShortDate($this->exportJob->created_at),
-            ]))
+            ->line(trans('mail.export_description', ['date' => DateHelper::getShortDate($date)]))
             ->action(trans('mail.export_download'), route('settings.export'));
     }
 }

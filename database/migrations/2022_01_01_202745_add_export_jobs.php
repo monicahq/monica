@@ -19,7 +19,7 @@ class AddExportJobs extends Migration
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('user_id');
             $table->string('type', 4);
-            $table->string('status', 5)->nullable();
+            $table->string('status', 6)->nullable();
             $table->string('location', 6)->nullable();
             $table->string('filename', 256)->nullable();
             $table->datetime('started_at')->nullable();

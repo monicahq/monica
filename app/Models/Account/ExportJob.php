@@ -16,7 +16,7 @@ class ExportJob extends Model
     public const EXPORT_TODO = 'todo';
     public const EXPORT_DOING = 'doing';
     public const EXPORT_DONE = 'done';
-    public const EXPORT_FAILED = 'faile';
+    public const EXPORT_FAILED = 'failed';
 
     /**
      * Export as SQL format.
