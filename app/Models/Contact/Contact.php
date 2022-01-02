@@ -25,7 +25,9 @@ use IlluminateAgnostic\Arr\Support\Arr;
 use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Prunable;
 use App\Models\ModelBindingHasher as Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -42,7 +44,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
  */
 class Contact extends Model
 {
-    use Searchable;
+    use Searchable, SoftDeletes, Prunable;
 
     /** @var array<string> */
     protected $dates = [
@@ -1562,6 +1564,31 @@ class Contact extends Model
             throw ValidationException::withMessages([
                 trans('people.archived_contact_readonly'),
             ]);
+        }
+    }
+
+    /**
+     * Get the prunable model query.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function prunable()
+    {
+        return static::where('deleted_at', '<=', now()->subWeek());
+    }
+
+    /**
+     * Prepare the model for pruning.
+     *
+     * @return void
+     */
+    protected function pruning()
+    {
+        try {
+            Storage::disk(config('filesystems.default'))
+                ->delete($this->avatar_default_url);
+        } catch (FileNotFoundException $e) {
+            // continue
         }
     }
 }

@@ -268,6 +268,19 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     }
 
     /**
+     * Returns the collection of deleted contacts.
+     *
+     * @param  string|null  $collectionId
+     * @return \Illuminate\Support\Collection<array-key, Contact>
+     */
+    public function getDeletedObjects($collectionId)
+    {
+        return $this->user->account->contacts($collectionId)
+                    ->onlyTrashed()
+                    ->get();
+    }
+
+    /**
      * Returns all cards for a specific addressbook id.
      *
      * This method should return the following properties for each card:
@@ -393,6 +406,14 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      */
     public function deleteCard($addressBookId, $cardUri)
     {
+        $contact = $this->getObject($addressBookId, $cardUri);
+
+        if ($contact) {
+            $contact->delete();
+
+            return true;
+        }
+
         return false;
     }
 

@@ -175,6 +175,11 @@ trait SyncDAVBackend
             return is_null($timestamp) ||
                    $obj->created_at >= $timestamp;
         });
+        $deleted = $this->getDeletedObjects($calendarId)
+            ->filter(function ($obj) use ($timestamp) {
+                return is_null($timestamp) ||
+                       $obj->deleted_at >= $timestamp;
+            });
 
         return [
             'syncToken' => $this->refreshSyncToken($calendarId)->id,
@@ -186,7 +191,9 @@ trait SyncDAVBackend
 
                 return $this->encodeUri($obj);
             })->values()->toArray(),
-            'deleted' => [],
+            'deleted' => $deleted->map(function ($obj) {
+                return $this->encodeUri($obj);
+            })->values()->toArray(),
         ];
     }
 
@@ -255,6 +262,14 @@ trait SyncDAVBackend
      * @return \Illuminate\Support\Collection
      */
     abstract public function getObjects($collectionId);
+
+    /**
+     * Returns the collection of objects.
+     *
+     * @param  string|null  $collectionId
+     * @return \Illuminate\Support\Collection
+     */
+    abstract public function getDeletedObjects($collectionId);
 
     abstract public function getExtension();
 

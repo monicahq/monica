@@ -52,6 +52,7 @@ class Kernel extends ConsoleKernel
         if (config('trustedproxy.cloudflare')) {
             $this->scheduleCommand($schedule, 'cloudflare:reload', 'daily'); // @codeCoverageIgnore
         }
+        $this->scheduleCommand($schedule, 'model:prune', 'daily');
     }
 
     /**
