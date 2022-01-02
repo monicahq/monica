@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Mockery\MockInterface;
 use App\Jobs\ExportAccount;
 use App\Models\Account\ExportJob;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Storage;
 use App\Notifications\ExportAccountDone;
 use Illuminate\Support\Facades\Notification;
@@ -243,16 +244,11 @@ class ExportAccountTest extends TestCase
         Storage::fake();
         Storage::fake('local');
 
-        $user = $this->signIn();
-
+        $job = ExportJob::factory()->create();
         factory(Contact::class, 5)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $job->account->id,
         ]);
 
-        $job = ExportJob::factory()->create([
-            'account_id' => $user->account->id,
-            'user_id' => $user->id,
-        ]);
         ExportAccount::dispatchSync($job);
 
         $job->refresh();

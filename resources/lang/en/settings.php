@@ -42,6 +42,7 @@ return [
     'export_title_json' => 'Export to Json',
     'export_submitted' => 'Your export has been submitted, it will be available in a few moment…',
     'export_json_explanation' => 'Exporting your data in Json format for backup.',
+    'export_json_beta' => 'Json export is in preview mode. Tell us what you think about it:',
     'export_json_cta' => 'Export to Json',
     'export_header_type' => 'Type',
     'export_header_timestamp' => 'Creation date',

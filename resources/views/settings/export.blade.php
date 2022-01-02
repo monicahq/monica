@@ -57,6 +57,10 @@
 
             <h4>{{ trans('settings.export_title_json') }}</h4>
             <p>{{ trans('settings.export_json_explanation') }}</p>
+            <div class="alert alert-success">
+              {{ trans('settings.export_json_beta') }}
+              <a href="https://github.com/monicahq/monica/discussions/5824" target="_blank">https://github.com/monicahq/monica/discussions/5824</a>
+            </div>
             <form method="POST" action="{{ route('settings.json') }}">
               @csrf
               <p><button type="submit" class="btn">{{ trans('settings.export_json_cta') }}</button></p>
