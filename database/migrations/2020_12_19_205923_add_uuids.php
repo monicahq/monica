@@ -50,11 +50,7 @@ class AddUuids extends Migration
             if (! Schema::hasColumn($name, 'uuid')) {
                 Schema::table($name, function (Blueprint $table) use ($name) {
                     $table->uuid('uuid')->after('id')->nullable();
-                    if ($name !== 'accounts') {
-                        if (Schema::hasColumn('table', 'column')) {
-                        }
-                        $table->index(['account_id', 'uuid']);
-                    }
+                    $table->index($name === 'accounts' ? ['uuid'] : ['account_id', 'uuid']);
                 });
             }
         }
@@ -70,14 +66,12 @@ class AddUuids extends Migration
         foreach ($this->tables as $name) {
             if (Schema::hasColumn($name, 'uuid')) {
                 Schema::table($name, function (Blueprint $table) use ($name) {
-                    if ($name !== 'accounts') {
-                        try {
-                            //$table->dropIndex(['account_id', 'uuid']);
-                        } catch (\Exception $e) {
-                            //
-                        }
+                    try {
+                        $table->dropIndex($name === 'accounts' ? ['uuid'] : ['account_id', 'uuid']);
+                        $table->dropColumn('uuid');
+                    } catch (\Exception $e) {
+                        //
                     }
-                    $table->dropColumn('uuid');
                 });
             }
         }
