@@ -40,7 +40,7 @@ return [
     'export_sql_cta' => 'Export to SQL',
     'export_sql_link_instructions' => 'Note: <a href=":url">read the instructions</a> to learn more about importing this file to your instance.',
     'export_title_json' => 'Export to Json',
-    'export_submitted' => 'Your export has been submitted, it will be available in a few moments…',
+    'export_submitted' => 'Your export has been submitted, it will be available in a few moment…',
     'export_json_explanation' => 'Exporting your data in Json format for backup.',
     'export_json_cta' => 'Export to Json',
     'export_header_type' => 'Type',
@@ -55,6 +55,7 @@ return [
     'export_status_doing' => 'Doing',
     'export_status_done' => 'Done',
     'export_status_faile' => 'Failed',
+    'export_not_done' => 'Download impossible, this export is not done yet.',
 
     'firstname' => 'First name',
     'lastname' => 'Last name',

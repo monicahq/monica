@@ -13,10 +13,10 @@ class ExportJob extends Model
 {
     use HasUuid, HasFactory;
 
-    const EXPORT_TODO = 'todo';
-    const EXPORT_DOING = 'doing';
-    const EXPORT_DONE = 'done';
-    const EXPORT_FAILED = 'faile';
+    public const EXPORT_TODO = 'todo';
+    public const EXPORT_DOING = 'doing';
+    public const EXPORT_DONE = 'done';
+    public const EXPORT_FAILED = 'faile';
 
     /**
      * Export as SQL format.

@@ -34,6 +34,15 @@
 
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
+
+            @include ('partials.errors')
+
+            @if (session('status'))
+              <div class="alert alert-success">
+                {{ session('status') }}
+              </div>
+            @endif
+
             <h3>{{ trans('settings.export_title') }}</h3>
             <h4>{{ trans('settings.export_title_sql') }}</h4>
             <p>{{ trans('settings.export_sql_explanation') }}</p>

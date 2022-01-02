@@ -17,7 +17,7 @@ class ExportAccountTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
-    public function it_exports_account()
+    public function it_exports_account_json()
     {
         Notification::fake();
 
@@ -35,6 +35,39 @@ class ExportAccountTest extends TestCase
                     'user_id' => $job->user_id
                 ])
                 ->andReturn('temp/test.json');
+        });
+
+        ExportAccount::dispatchSync($job);
+        $job->refresh();
+
+        Storage::disk('public')->assertExists($job->filename);
+
+        Notification::assertSentTo(
+            [$job->user], ExportAccountDone::class
+        );
+    }
+
+    /** @test */
+    public function it_exports_account_sql()
+    {
+        Notification::fake();
+
+        Storage::fake();
+        $fake = Storage::fake('local');
+        $fake->put('temp/test.sql', 'null');
+
+        $job = ExportJob::factory()->create([
+            'type' => 'sql',
+        ]);
+
+        $this->mock(JsonExportAccount::class, function (MockInterface $mock) use ($job) {
+            $mock->shouldReceive('execute')
+                ->once()
+                ->with([
+                    'account_id' => $job->account_id,
+                    'user_id' => $job->user_id
+                ])
+                ->andReturn('temp/test.sql');
         });
 
         ExportAccount::dispatchSync($job);

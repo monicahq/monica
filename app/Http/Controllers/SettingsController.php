@@ -246,6 +246,8 @@ class SettingsController extends Controller
     /**
      * Exports the data of the account in SQL format.
      *
+     * @param  Request  $request
+     * @param  string   $uuid
      * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response|null
      */
     public function exportDownload(Request $request, string $uuid)
@@ -256,10 +258,9 @@ class SettingsController extends Controller
             'uuid' => $uuid,
         ])->firstOrFail();
 
-        $x = $job->status;
         if ($job->status !== ExportJob::EXPORT_DONE) {
             return redirect()->route('settings.export')
-                ->withErrors('Status not done');
+                ->withErrors(trans('settings.export_not_done'));
         }
         $disk = StorageHelper::disk($job->location);
 
