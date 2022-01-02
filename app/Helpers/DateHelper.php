@@ -213,6 +213,7 @@ class DateHelper
      * Return a date in a given format.
      *
      * @param  Carbon  $date
+     * @param  string  $format
      * @return string
      */
     private static function formatDate(Carbon $date, $format): string
@@ -235,13 +236,13 @@ class DateHelper
     {
         switch ($frequency) {
             case 'week':
-                $date = $date->copy()->addWeeks($number);
+                $date = $date->addWeeks($number);
                 break;
             case 'month':
-                $date = $date->copy()->addMonths($number);
+                $date = $date->addMonths($number);
                 break;
             default:
-                $date = $date->copy()->addYears($number);
+                $date = $date->addYears($number);
                 break;
         }
 

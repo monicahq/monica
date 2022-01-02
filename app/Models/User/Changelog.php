@@ -16,6 +16,15 @@ class Changelog extends Model
     protected $guarded = ['id'];
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'created_at',
+    ];
+
+    /**
      * Get the user records associated with the tag.
      */
     public function users()
