@@ -8,7 +8,6 @@ use App\Models\ModelBinding as Model;
 use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * @property int $id
