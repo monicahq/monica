@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
 use App\Jobs\ExportAccount;
-use App\Models\Account\ExportJob;
 use App\Models\Contact\Contact;
+use App\Models\Account\ExportJob;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\AssertableJsonString;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
