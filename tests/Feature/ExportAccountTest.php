@@ -3,297 +3,79 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
-use App\Jobs\ExportAccount;
-use App\Models\Contact\Contact;
 use App\Models\Account\ExportJob;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Testing\AssertableJsonString;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Carbon;
 
 class ExportAccountTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
     /** @test */
-    public function it_exports_account_file()
+    public function it_create_export_job_json()
     {
-        Storage::fake();
-        Storage::fake('local');
+        config(['queue.default' => 'database']);
 
-        $job = ExportJob::factory()->create();
-        ExportAccount::dispatchSync($job);
+        $user = $this->signin();
 
-        $job->refresh();
+        $response = $this->json('POST', '/settings/exportToJson');
 
-        $this->assertStringStartsWith('exports/', $job->filename);
-        $this->assertStringEndsWith('.json', $job->filename);
-        Storage::disk('public')->assertExists($job->filename);
-    }
+        $response->assertStatus(302);
 
-    /** @test */
-    public function it_exports_account_file_sql()
-    {
-        Storage::fake();
-        Storage::fake('local');
-
-        $job = ExportJob::factory()->create([
-            'type' => 'sql',
-        ]);
-        ExportAccount::dispatchSync($job);
-
-        $job->refresh();
-
-        $this->assertStringStartsWith('exports/', $job->filename);
-        $this->assertStringEndsWith('.sql', $job->filename);
-        Storage::disk('public')->assertExists($job->filename);
-    }
-
-    /** @test */
-    public function it_exports_json_file()
-    {
-        Storage::fake();
-        Storage::fake('local');
-
-        $job = ExportJob::factory()->create();
-        ExportAccount::dispatchSync($job);
-
-        $job->refresh();
-
-        $this->assertStringStartsWith('exports/', $job->filename);
-        $this->assertStringEndsWith('.json', $job->filename);
-        Storage::disk('public')->assertExists($job->filename);
-
-        $json = Storage::disk('public')->get($job->filename);
-        $test = new AssertableJsonString($json);
-
-        $test->assertStructure([
-            'account' => [
-                'uuid',
-                'created_at',
-                'updated_at',
-                'data' => [
-                    '*' => [
-                        'count',
-                        'type',
-                        'values' => [
-                            '*' => [
-                                'uuid',
-                                'created_at',
-                                'updated_at',
-                                'properties',
-                            ],
-                        ],
-                    ],
-                ],
-                'properties' => [
-                    'modules' => [
-                        '*' => [
-                            'key',
-                            'translation_key',
-                            'created_at',
-                            'updated_at',
-                            'properties',
-                        ],
-                    ],
-                    'reminder_rules' => [
-                        '*' => [
-                            'number_of_days_before',
-                            'created_at',
-                            'updated_at',
-                            'properties',
-                        ],
-                    ],
-                ],
-                'instance' => [
-                    'activity_types' => [
-                        '*' => [
-                            'uuid',
-                            'created_at',
-                            'updated_at',
-                            'properties' => [
-                                'name',
-                                'translation_key',
-                                'category',
-                            ],
-                        ],
-                    ],
-                    'activity_type_categories' => [
-                        '*' => [
-                            'uuid',
-                            'created_at',
-                            'updated_at',
-                            'properties' => [
-                                'name',
-                                'translation_key',
-                            ],
-                        ],
-                    ],
-                    'life_event_types' => [
-                        '*' => [
-                            'uuid',
-                            'created_at',
-                            'updated_at',
-                            'properties' => [
-                                'translation_key',
-                                'core_monica_data',
-                                'category',
-                            ],
-                        ],
-                    ],
-                    'life_event_categories' => [
-                        '*' => [
-                            'uuid',
-                            'created_at',
-                            'updated_at',
-                            'properties' => [
-                                'translation_key',
-                                'core_monica_data',
-                            ],
-                        ],
-                    ],
-                    'contact_field_types' => [
-                        '*' => [
-                            'uuid',
-                            'created_at',
-                            'updated_at',
-                            'properties' => [
-                                'name',
-                                'fontawesome_icon',
-                                'delible',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ]);
-    }
-
-    /** @test */
-    public function it_exports_json_file_contacts()
-    {
-        Storage::fake();
-        Storage::fake('local');
-
-        $user = $this->signIn();
-
-        factory(Contact::class, 5)->create([
-            'account_id' => $user->account->id,
-        ]);
-
-        $job = ExportJob::factory()->create([
-            'account_id' => $user->account->id,
+        $this->assertDatabaseHas('export_jobs', [
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
+            'type' => ExportJob::JSON,
+            'status' => ExportJob::EXPORT_TODO,
         ]);
-        ExportAccount::dispatchSync($job);
+    }
 
-        $job->refresh();
+    /** @test */
+    public function it_create_export_job_sql()
+    {
+        config(['queue.default' => 'database']);
 
-        $this->assertStringStartsWith('exports/', $job->filename);
-        $this->assertStringEndsWith('.json', $job->filename);
-        Storage::disk('public')->assertExists($job->filename);
+        $user = $this->signin();
 
-        $json = Storage::disk('public')->get($job->filename);
-        $test = new AssertableJsonString($json);
+        $response = $this->json('POST', '/settings/exportToSql');
 
-        $test->assertStructure([
-            'account' => [
-                'uuid',
-                'created_at',
-                'updated_at',
-                'data' => [
-                    '*' => [
-                        'count',
-                        'type',
-                        'values' => [
-                            '*' => [
-                                'uuid',
-                                'created_at',
-                                'updated_at',
-                                'properties',
-                            ],
-                        ],
-                    ],
-                ],
-                'properties' => [
-                    'modules' => [
-                        '*' => [
-                            'key',
-                            'translation_key',
-                            'created_at',
-                            'updated_at',
-                            'properties',
-                        ],
-                    ],
-                    'reminder_rules' => [
-                        '*' => [
-                            'number_of_days_before',
-                            'created_at',
-                            'updated_at',
-                            'properties',
-                        ],
-                    ],
-                ],
-                'instance' => [
-                    'activity_types' => [
-                        '*' => [
-                            'uuid',
-                            'created_at',
-                            'updated_at',
-                            'properties' => [
-                                'name',
-                                'translation_key',
-                                'category',
-                            ],
-                        ],
-                    ],
-                    'activity_type_categories' => [
-                        '*' => [
-                            'uuid',
-                            'created_at',
-                            'updated_at',
-                            'properties' => [
-                                'name',
-                                'translation_key',
-                            ],
-                        ],
-                    ],
-                    'life_event_types' => [
-                        '*' => [
-                            'uuid',
-                            'created_at',
-                            'updated_at',
-                            'properties' => [
-                                'translation_key',
-                                'core_monica_data',
-                                'category',
-                            ],
-                        ],
-                    ],
-                    'life_event_categories' => [
-                        '*' => [
-                            'uuid',
-                            'created_at',
-                            'updated_at',
-                            'properties' => [
-                                'translation_key',
-                                'core_monica_data',
-                            ],
-                        ],
-                    ],
-                    'contact_field_types' => [
-                        '*' => [
-                            'uuid',
-                            'created_at',
-                            'updated_at',
-                            'properties' => [
-                                'name',
-                                'fontawesome_icon',
-                                'delible',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+        $response->assertStatus(302);
+
+        $this->assertDatabaseHas('export_jobs', [
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'type' => ExportJob::SQL,
+            'status' => ExportJob::EXPORT_TODO,
+        ]);
+    }
+
+    /** @test */
+    public function it_delete_old_export()
+    {
+        config(['queue.default' => 'database']);
+
+        $user = $this->signin();
+
+        Carbon::setTestNow(Carbon::create(2022, 1, 1, 0, 0, 0));
+        $exportJob = ExportJob::factory()->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'status' => ExportJob::EXPORT_DONE,
+        ]);
+
+        Carbon::setTestNow(Carbon::create(2022, 1, 2, 0, 0, 0));
+        ExportJob::factory()->count(4)->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'status' => ExportJob::EXPORT_DONE,
+        ]);
+
+        $response = $this->json('POST', '/settings/exportToJson');
+
+        $response->assertStatus(302);
+
+        $this->assertDatabaseMissing('export_jobs', [
+            'id' => $exportJob->id,
         ]);
     }
 }
