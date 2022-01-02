@@ -14,7 +14,7 @@ class AddExportJobs extends Migration
     public function up()
     {
         Schema::create('export_jobs', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->uuid('uuid')->nullable()->index();
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('user_id');

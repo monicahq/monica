@@ -150,4 +150,19 @@ class CollectionHelperTest extends FeatureTestCase
             $collection->toArray()
         );
     }
+
+    /** @test */
+    public function it_maps_uuid()
+    {
+        $collection = collect();
+        for ($i = 1; $i <= 3; $i++) {
+            $uuid = new \stdClass();
+            $uuid->uuid = $i;
+            $collection->push($uuid);
+        }
+
+        $uuids = $collection->mapUuid();
+
+        $this->assertEquals([1, 2, 3], $uuids);
+    }
 }
