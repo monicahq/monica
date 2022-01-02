@@ -50,7 +50,7 @@ class ExportAccount implements ShouldQueue
      */
     public function handle()
     {
-        $this->start();
+        $this->exportJob->start();
 
         $tempFileName = '';
         switch ($this->exportJob->type) {
@@ -77,7 +77,7 @@ class ExportAccount implements ShouldQueue
             $this->exportJob->location = config('filesystems.default');
             $this->exportJob->filename = $file;
 
-            $this->end();
+            $this->exportJob->end();
         } catch (Throwable $e) {
             $this->fail($e);
         } finally {
@@ -89,20 +89,6 @@ class ExportAccount implements ShouldQueue
         }
     }
 
-    private function start()
-    {
-        $this->exportJob->status = ExportJob::EXPORT_DOING;
-        $this->exportJob->started_at = now();
-        $this->exportJob->save();
-    }
-
-    private function end()
-    {
-        $this->exportJob->status = ExportJob::EXPORT_DONE;
-        $this->exportJob->ended_at = now();
-        $this->exportJob->save();
-    }
-
     /**
      * Handle a job failure.
      *
@@ -112,6 +98,5 @@ class ExportAccount implements ShouldQueue
     {
         $this->exportJob->status = ExportJob::EXPORT_FAILED;
         $this->exportJob->save();
-        throw $exception;
     }
 }

@@ -195,7 +195,8 @@ class SettingsController extends Controller
         $job = $this->newExport(ExportJob::SQL);
         ExportAccount::dispatch($job);
 
-        return redirect()->route('settings.export');
+        return redirect()->route('settings.export')
+            ->withStatus(trans('settings.export_submitted'));
     }
 
     /**
@@ -208,7 +209,8 @@ class SettingsController extends Controller
         $job = $this->newExport(ExportJob::JSON);
         ExportAccount::dispatch($job);
 
-        return redirect()->route('settings.export');
+        return redirect()->route('settings.export')
+            ->withStatus(trans('settings.export_submitted'));
     }
 
     /**

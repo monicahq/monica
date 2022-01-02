@@ -5,11 +5,13 @@ namespace App\Models\Account;
 use App\Traits\HasUuid;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
+use App\Notifications\ExportAccountDone;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ExportJob extends Model
 {
-    use HasUuid;
+    use HasUuid, HasFactory;
 
     const EXPORT_TODO = 'todo';
     const EXPORT_DOING = 'doing';
@@ -82,5 +84,31 @@ class ExportJob extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Start the export job.
+     *
+     * @return void
+     */
+    public function start(): void
+    {
+        $this->status = self::EXPORT_DOING;
+        $this->started_at = now();
+        $this->save();
+    }
+
+    /**
+     * End the export job.
+     *
+     * @return void
+     */
+    public function end(): void
+    {
+        $this->status = self::EXPORT_DONE;
+        $this->ended_at = now();
+        $this->save();
+
+        $this->user->notify(new ExportAccountDone($this));
     }
 }
