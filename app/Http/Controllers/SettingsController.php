@@ -247,7 +247,7 @@ class SettingsController extends Controller
      * Exports the data of the account in SQL format.
      *
      * @param  Request  $request
-     * @param  string   $uuid
+     * @param  string  $uuid
      * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response|null
      */
     public function exportDownload(Request $request, string $uuid)

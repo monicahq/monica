@@ -65,7 +65,7 @@ class ExportAccountTest extends TestCase
                 ->once()
                 ->with([
                     'account_id' => $job->account_id,
-                    'user_id' => $job->user_id
+                    'user_id' => $job->user_id,
                 ])
                 ->andReturn('temp/test.sql');
         });
