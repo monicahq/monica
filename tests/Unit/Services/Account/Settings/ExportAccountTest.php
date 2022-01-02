@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Notifications\ExportAccountDone;
 use Illuminate\Support\Facades\Notification;
 use App\Services\Account\Settings\JsonExportAccount;
+use App\Services\Account\Settings\SqlExportAccount;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ExportAccountTest extends TestCase
@@ -60,7 +61,7 @@ class ExportAccountTest extends TestCase
             'type' => 'sql',
         ]);
 
-        $this->mock(JsonExportAccount::class, function (MockInterface $mock) use ($job) {
+        $this->mock(SqlExportAccount::class, function (MockInterface $mock) use ($job) {
             $mock->shouldReceive('execute')
                 ->once()
                 ->with([

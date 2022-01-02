@@ -53,14 +53,9 @@ class ExportAccount implements ShouldQueue
         $this->exportJob->start();
 
         $tempFileName = '';
-        switch ($this->exportJob->type) {
-            case ExportJob::JSON:
-                $handler = app(JsonExportAccount::class);
-                break;
-            default:
-                $handler = app(SqlExportAccount::class);
-                break;
-        }
+        $handler = $this->exportJob->type === ExportJob::JSON ?
+            app(JsonExportAccount::class) :
+            app(SqlExportAccount::class);
         try {
             $tempFileName = $handler->execute([
                 'account_id' => $this->exportJob->account_id,
