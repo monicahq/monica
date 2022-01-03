@@ -21,6 +21,7 @@ trait DispatchableService
     {
         /** @var QueuableService $service */
         $service = new self();
+
         return ServiceQueue::dispatch($service, ...$arguments);
     }
 
@@ -34,6 +35,7 @@ trait DispatchableService
     {
         /** @var QueuableService $service */
         $service = new self();
+
         return ServiceQueue::dispatchSync($service, ...$arguments);
     }
 
