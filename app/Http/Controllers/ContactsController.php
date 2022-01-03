@@ -478,7 +478,7 @@ class ContactsController extends Controller
             'contact_id' => $contact->id,
         ];
 
-        app(DestroyContact::class)->execute($data);
+        DestroyContact::dispatch($data);
 
         return redirect()->route('people.index')
             ->with('success', trans('people.people_delete_success'));

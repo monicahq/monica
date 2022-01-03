@@ -167,10 +167,10 @@ class ApiContactController extends ApiController
     public function destroy(Request $request, $contactId)
     {
         $data = [
-            'contact_id' => $contactId,
             'account_id' => auth()->user()->account_id,
+            'contact_id' => $contactId,
         ];
-        app(DestroyContact::class)->execute($data);
+        DestroyContact::dispatch($data);
 
         return $this->respondObjectDeleted($contactId);
     }
