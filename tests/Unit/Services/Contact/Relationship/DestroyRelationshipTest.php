@@ -151,6 +151,7 @@ class DestroyRelationshipTest extends TestCase
         ]);
         $this->assertDatabaseMissing('contacts', [
             'id' => $contactB->id,
+            'deleted_at' => null,
         ]);
     }
 

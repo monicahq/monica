@@ -29,6 +29,7 @@ class DestroyAccountTest extends TestCase
 
         $this->assertDatabaseMissing('contacts', [
             'account_id' => $user->account_id,
+            'deleted_at' => null,
         ]);
         $this->assertDatabaseMissing('accounts', [
             'id' => $user->account_id,

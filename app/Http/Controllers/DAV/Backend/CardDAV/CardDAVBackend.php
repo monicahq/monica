@@ -409,7 +409,10 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         $contact = $this->getObject($addressBookId, $cardUri);
 
         if ($contact) {
-            $contact->delete();
+            app(DestroyContact::class)->execute([
+                'account_id' => $contact->account_id,
+                'contact_id' => $contact->id,
+            ]);
 
             return true;
         }

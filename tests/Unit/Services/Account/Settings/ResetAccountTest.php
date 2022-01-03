@@ -49,6 +49,7 @@ class ResetAccountTest extends TestCase
 
         $this->assertDatabaseMissing('contacts', [
             'account_id' => $user->account_id,
+            'deleted_at' => null,
         ]);
         $this->assertDatabaseMissing('activities', [
             'account_id' => $user->account_id,

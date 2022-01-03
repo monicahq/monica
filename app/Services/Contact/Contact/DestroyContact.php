@@ -19,6 +19,7 @@ class DestroyContact extends BaseService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_id' => 'required|integer|exists:contacts,id',
+            'force_delete' => 'nullable|bool'
         ];
     }
 
@@ -40,7 +41,12 @@ class DestroyContact extends BaseService
         $this->destroyRelationships($data, $contact);
 
         $contact->deleteAvatars();
-        $contact->delete();
+
+        if ($data['force_delete'] === 'true') {
+             $contact->forceDelete();
+         } else {
+             $contact->delete();
+         }
 
         return true;
     }

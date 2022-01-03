@@ -35,12 +35,6 @@ class DestroyAllPhotos extends BaseService
             ->get();
 
         foreach ($photos as $photo) {
-            try {
-                Storage::delete($photo->new_filename);
-            } catch (FileNotFoundException $e) {
-                continue;
-            }
-
             $photo->delete();
         }
 

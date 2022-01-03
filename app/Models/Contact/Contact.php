@@ -1584,11 +1584,6 @@ class Contact extends Model
      */
     protected function pruning()
     {
-        try {
-            Storage::disk(config('filesystems.default'))
-                ->delete($this->avatar_default_url);
-        } catch (FileNotFoundException $e) {
-            // continue
-        }
+        $this->deleteAvatars();
     }
 }

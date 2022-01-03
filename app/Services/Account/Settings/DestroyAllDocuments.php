@@ -35,12 +35,6 @@ class DestroyAllDocuments extends BaseService
                                 ->get();
 
         foreach ($documents as $document) {
-            try {
-                Storage::delete($document->new_filename);
-            } catch (FileNotFoundException $e) {
-                continue;
-            }
-
             $document->delete();
         }
 
