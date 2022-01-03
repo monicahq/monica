@@ -480,6 +480,7 @@ class VCardContactTest extends ApiTestCase
         ]);
 
         $response = $this->call('DELETE', "/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf");
+        $response->dump();
 
         $response->assertStatus(204);
         $response->assertHeader('X-Sabre-Version');

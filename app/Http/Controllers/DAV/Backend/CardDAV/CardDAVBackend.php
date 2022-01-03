@@ -4,7 +4,6 @@ namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
 use Sabre\DAV;
 use App\Jobs\Dav\UpdateVCard;
-use App\Jobs\ServiceQueueJob;
 use App\Models\Contact\Contact;
 use App\Services\VCard\GetEtag;
 use App\Models\Account\AddressBook;
@@ -411,7 +410,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         $contact = $this->getObject($addressBookId, $cardUri);
 
         if ($contact) {
-            ServiceQueueJob::dispatch(DestroyContact::class, [
+            DestroyContact::dispatch([
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
             ]);
