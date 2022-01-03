@@ -4,8 +4,6 @@ namespace App\Services\Account\Settings;
 
 use App\Models\Account\Photo;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class DestroyAllPhotos extends BaseService
 {
