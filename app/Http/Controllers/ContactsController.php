@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use App\Helpers\GenderHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
-use App\Jobs\ServiceQueueJob;
 use App\Helpers\AccountHelper;
 use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;

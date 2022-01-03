@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
-use App\Jobs\ServiceQueueJob;
 use App\Models\Contact\Contact;
 use Illuminate\Http\JsonResponse;
 use App\Jobs\UpdateLastConsultedDate;
