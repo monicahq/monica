@@ -13,9 +13,11 @@ class ContactSoftDelete extends Migration
      */
     public function up()
     {
-        Schema::table('contacts', function (Blueprint $table) {
-            $table->softDeletes();
-        });
+        if (! Schema::hasColumn('contacts', 'deleted_at')) {
+            Schema::table('contacts', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
     }
 
     /**
