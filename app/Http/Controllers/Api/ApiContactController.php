@@ -18,6 +18,7 @@ use App\Services\Contact\Contact\DeleteMeContact;
 use App\Services\Contact\Contact\UpdateWorkInformation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
+use App\Jobs\ServiceQueueJob;
 use App\Services\Contact\Contact\UpdateContactIntroduction;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 
@@ -166,11 +167,10 @@ class ApiContactController extends ApiController
      */
     public function destroy(Request $request, $contactId)
     {
-        $data = [
-            'contact_id' => $contactId,
+        ServiceQueueJob::dispatch(DestroyContact::class, [
             'account_id' => auth()->user()->account_id,
-        ];
-        app(DestroyContact::class)->execute($data);
+            'contact_id' => $contactId,
+        ]);
 
         return $this->respondObjectDeleted($contactId);
     }

@@ -28,6 +28,7 @@ use App\Services\Contact\Contact\DestroyContact;
 use App\Services\Contact\Contact\UpdateWorkInformation;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactSearch as ContactResource;
+use App\Jobs\ServiceQueueJob;
 
 class ContactsController extends Controller
 {
@@ -473,12 +474,10 @@ class ContactsController extends Controller
             return redirect()->route('people.index');
         }
 
-        $data = [
+        ServiceQueueJob::dispatch(DestroyContact::class, [
             'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
-        ];
-
-        app(DestroyContact::class)->execute($data);
+        ]);
 
         return redirect()->route('people.index')
             ->with('success', trans('people.people_delete_success'));

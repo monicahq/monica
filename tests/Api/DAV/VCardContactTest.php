@@ -467,4 +467,28 @@ class VCardContactTest extends ApiTestCase
             '</d:response>'.
           '</d:multistatus>', false);
     }
+
+    /**
+     * @group dav
+     * @test
+     */
+    public function carddav_delete_one_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->call('DELETE', "/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf");
+
+        $response->assertStatus(204);
+        $response->assertHeader('X-Sabre-Version');
+        $response->assertHeaderMissing('ETag');
+
+        $this->assertDatabaseMissing('contacts', [
+            'account_id' => $user->account_id,
+            'id' => $contact->id,
+            'deleted_at' => null,
+        ]);
+    }
 }

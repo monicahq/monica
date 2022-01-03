@@ -21,6 +21,7 @@ use App\Services\Contact\Contact\DestroyContact;
 use App\Http\Controllers\DAV\Backend\IDAVBackend;
 use App\Http\Controllers\DAV\Backend\SyncDAVBackend;
 use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
+use App\Jobs\ServiceQueueJob;
 use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 
 class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
@@ -410,7 +411,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         $contact = $this->getObject($addressBookId, $cardUri);
 
         if ($contact) {
-            app(DestroyContact::class)->execute([
+            ServiceQueueJob::dispatch(DestroyContact::class, [
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
             ]);
