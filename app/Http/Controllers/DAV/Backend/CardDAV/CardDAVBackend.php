@@ -17,10 +17,10 @@ use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
 use App\Services\Contact\Contact\SetMeContact;
+use App\Services\Contact\Contact\DestroyContact;
 use App\Http\Controllers\DAV\Backend\IDAVBackend;
 use App\Http\Controllers\DAV\Backend\SyncDAVBackend;
 use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
-use App\Services\Contact\Contact\DestroyContact;
 use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 
 class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
