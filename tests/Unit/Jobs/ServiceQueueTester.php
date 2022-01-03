@@ -20,7 +20,7 @@ class ServiceQueueTester extends BaseService implements QueuableService
     /**
      * Initialize the service.
      *
-     * @param array $data
+     * @param  array  $data
      */
     public function __construct()
     {
