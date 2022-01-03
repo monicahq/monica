@@ -167,10 +167,11 @@ class ApiContactController extends ApiController
      */
     public function destroy(Request $request, $contactId)
     {
-        ServiceQueueJob::dispatch(DestroyContact::class, [
+        $data = [
             'account_id' => auth()->user()->account_id,
             'contact_id' => $contactId,
-        ]);
+        ];
+        DestroyContact::dispatch($data);
 
         return $this->respondObjectDeleted($contactId);
     }

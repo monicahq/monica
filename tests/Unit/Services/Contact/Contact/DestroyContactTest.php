@@ -24,7 +24,7 @@ class DestroyContactTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        app(DestroyContact::class)->execute($request);
+        app(DestroyContact::class)->handle($request);
 
         $this->assertDatabaseMissing('contacts', [
             'id' => $contact->id,
@@ -43,7 +43,7 @@ class DestroyContactTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        app(DestroyContact::class)->execute($request);
+        app(DestroyContact::class)->handle($request);
     }
 
     /** @test */
@@ -56,7 +56,7 @@ class DestroyContactTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        app(DestroyContact::class)->execute($request);
+        app(DestroyContact::class)->handle($request);
     }
 
     /** @test */
@@ -71,6 +71,6 @@ class DestroyContactTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        app(DestroyContact::class)->execute($request);
+        app(DestroyContact::class)->handle($request);
     }
 }
