@@ -1181,10 +1181,12 @@ class Contact extends Model
     /**
      * Delete avatars files.
      * This does not touch avatar_location or avatar_file_name properties of the contact.
+     *
+     * @param  bool  $force
      */
-    public function deleteAvatars()
+    public function deleteAvatars(bool $force = false)
     {
-        if (! $this->has_avatar || $this->avatar_location == 'external') {
+        if (! $force && (! $this->has_avatar || $this->avatar_location == 'external')) {
             return;
         }
 
@@ -1584,6 +1586,6 @@ class Contact extends Model
      */
     protected function pruning()
     {
-        $this->deleteAvatars();
+        $this->deleteAvatars(true);
     }
 }
