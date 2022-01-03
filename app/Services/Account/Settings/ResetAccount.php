@@ -169,7 +169,7 @@ class ResetAccount extends BaseService
             app(DestroyContact::class)->execute([
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
-                'force_delete' => 'true',
+                'force_delete' => true,
             ]);
         }
     }
