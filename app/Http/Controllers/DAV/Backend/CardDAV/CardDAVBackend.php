@@ -4,6 +4,7 @@ namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
 use Sabre\DAV;
 use App\Jobs\Dav\UpdateVCard;
+use App\Jobs\ServiceQueueJob;
 use App\Models\Contact\Contact;
 use App\Services\VCard\GetEtag;
 use App\Models\Account\AddressBook;
@@ -21,7 +22,6 @@ use App\Services\Contact\Contact\DestroyContact;
 use App\Http\Controllers\DAV\Backend\IDAVBackend;
 use App\Http\Controllers\DAV\Backend\SyncDAVBackend;
 use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
-use App\Jobs\ServiceQueueJob;
 use App\Services\DavClient\Utils\Model\ContactUpdateDto;
 
 class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
+use App\Jobs\ServiceQueueJob;
 use App\Models\Contact\Contact;
 use Illuminate\Http\JsonResponse;
 use App\Jobs\UpdateLastConsultedDate;
@@ -18,7 +19,6 @@ use App\Services\Contact\Contact\DeleteMeContact;
 use App\Services\Contact\Contact\UpdateWorkInformation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
-use App\Jobs\ServiceQueueJob;
 use App\Services\Contact\Contact\UpdateContactIntroduction;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 

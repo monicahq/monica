@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Helpers\GenderHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
+use App\Jobs\ServiceQueueJob;
 use App\Helpers\AccountHelper;
 use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
@@ -28,7 +29,6 @@ use App\Services\Contact\Contact\DestroyContact;
 use App\Services\Contact\Contact\UpdateWorkInformation;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactSearch as ContactResource;
-use App\Jobs\ServiceQueueJob;
 
 class ContactsController extends Controller
 {
