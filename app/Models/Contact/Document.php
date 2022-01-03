@@ -81,6 +81,7 @@ class Document extends Model
         } catch (FileNotFoundException $e) {
             // continue
         }
+
         return parent::delete();
     }
 }
