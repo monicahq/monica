@@ -31,7 +31,7 @@ trait DispatchableService
      * @param  mixed  ...$arguments
      * @return mixed
      */
-    public static function dispatchSync(...$arguments): mixed
+    public static function dispatchSync(...$arguments)
     {
         /** @var QueuableService $service */
         $service = new self();

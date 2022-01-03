@@ -11,7 +11,6 @@ class ServiceQueueTester extends BaseService implements QueuableService
 {
     use DispatchableService;
 
-    public ?array $data = null;
     public static bool $executed = false;
     public static bool $failed = false;
 
@@ -33,10 +32,9 @@ class ServiceQueueTester extends BaseService implements QueuableService
      */
     public function handle($data): void
     {
-        $this->data = $data;
         self::$executed = true;
 
-        if ($this->data && $this->data['throw'] === true) {
+        if ($data && $data['throw'] === true) {
             throw new \Exception();
         }
     }
