@@ -8,6 +8,7 @@ use App\Jobs\Dav\GetMultipleVCard;
 use Illuminate\Support\Collection;
 use App\Jobs\Dav\DeleteMultipleVCard;
 use App\Services\DavClient\Utils\Model\SyncDto;
+use App\Services\DavClient\Utils\Model\ContactDto;
 use App\Services\DavClient\Utils\Traits\WithSyncDto;
 use App\Services\DavClient\Utils\Traits\HasCapability;
 use App\Services\DavClient\Utils\Model\ContactDeleteDto;
@@ -70,7 +71,7 @@ class AddressBookContactsUpdater
             ->filter(function ($item): bool {
                 return ! ($item instanceof ContactDeleteDto);
             })
-            ->map(function ($contact): GetVCard {
+            ->map(function (ContactDto $contact): GetVCard {
                 return new GetVCard($this->sync->subscription, $contact);
             });
 
@@ -78,7 +79,7 @@ class AddressBookContactsUpdater
             ->filter(function ($item): bool {
                 return $item instanceof ContactDeleteDto;
             })
-            ->map(function (ContactDeleteDto $contact): DeleteVCard {
+            ->map(function (ContactDto $contact): DeleteVCard {
                 return new DeleteVCard($this->sync->subscription, $contact->uri);
             });
 
