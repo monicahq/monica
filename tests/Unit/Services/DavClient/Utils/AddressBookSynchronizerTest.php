@@ -143,7 +143,7 @@ class AddressBookSynchronizerTest extends TestCase
         $tester->assert();
 
         Bus::assertBatched(function (PendingBatch $batch) {
-            $this->assertCount(1, $batch->jobs);
+            $this->assertCount(2, $batch->jobs);
             $job = $batch->jobs[0];
             $this->assertInstanceOf(GetMultipleVCard::class, $job);
             $this->assertEquals(['https://test/dav/addressbooks/user@test.com/contacts/uuid'], $this->getPrivateValue($job, 'hrefs'));
@@ -256,7 +256,7 @@ class AddressBookSynchronizerTest extends TestCase
         $tester->assert();
 
         Bus::assertBatched(function (PendingBatch $batch) {
-            $this->assertCount(1, $batch->jobs);
+            $this->assertCount(2, $batch->jobs);
             $job = $batch->jobs[0];
             $this->assertInstanceOf(GetMultipleVCard::class, $job);
             $this->assertEquals(['https://test/dav/uuid1'], $this->getPrivateValue($job, 'hrefs'));

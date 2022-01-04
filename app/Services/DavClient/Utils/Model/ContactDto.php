@@ -20,7 +20,7 @@ class ContactDto
      * @param  string  $uri
      * @param  string|null  $etag
      */
-    public function __construct(string $uri, ?string $etag)
+    public function __construct(string $uri, ?string $etag = null)
     {
         $this->uri = $uri;
         $this->etag = $etag;
