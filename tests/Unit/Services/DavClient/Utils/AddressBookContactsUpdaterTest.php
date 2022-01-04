@@ -7,18 +7,18 @@ use App\Jobs\Dav\GetVCard;
 use Mockery\MockInterface;
 use Tests\Api\DAV\CardEtag;
 use Tests\Helpers\DavTester;
+use App\Jobs\Dav\DeleteVCard;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use App\Jobs\Dav\GetMultipleVCard;
+use App\Jobs\Dav\DeleteMultipleVCard;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
-use App\Jobs\Dav\DeleteMultipleVCard;
-use App\Jobs\Dav\DeleteVCard;
-use App\Services\DavClient\Utils\AddressBookContactsUpdater;
 use App\Services\DavClient\Utils\Model\ContactDeleteDto;
+use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
+use App\Services\DavClient\Utils\AddressBookContactsUpdater;
 
 class AddressBookContactsUpdaterTest extends TestCase
 {

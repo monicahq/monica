@@ -12,8 +12,6 @@ use App\Services\DavClient\Utils\Traits\WithSyncDto;
 use App\Services\DavClient\Utils\Traits\HasCapability;
 use App\Services\DavClient\Utils\Model\ContactDeleteDto;
 
-use function PHPSTORM_META\type;
-
 class AddressBookContactsUpdater
 {
     use HasCapability, WithSyncDto;

@@ -63,7 +63,7 @@ class DeleteMultipleVCard implements ShouldQueue
     {
         if (($batch = $this->batch()) !== null) {
             $batch->add([
-                new DeleteVCard($this->subscription,$href),
+                new DeleteVCard($this->subscription, $href),
             ]);
         }
     }
