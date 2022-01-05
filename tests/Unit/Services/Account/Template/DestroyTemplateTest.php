@@ -8,8 +8,8 @@ use App\Models\Account;
 use App\Models\Template;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use App\Services\Account\Template\DestroyTemplate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\Account\ManageTemplate\DestroyTemplate;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DestroyTemplateTest extends TestCase
@@ -67,7 +67,7 @@ class DestroyTemplateTest extends TestCase
             'template_id' => $template->id,
         ];
 
-        (new \App\Services\Account\Template\DestroyTemplate)->execute($request);
+        (new DestroyTemplate)->execute($request);
 
         $this->assertDatabaseMissing('templates', [
             'id' => $template->id,

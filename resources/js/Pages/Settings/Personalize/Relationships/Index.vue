@@ -1,9 +1,4 @@
 <style lang="scss" scoped>
-.section-head {
-  border-top-left-radius: 7px;
-  border-top-right-radius: 7px;
-}
-
 .item-list {
   &:hover:first-child {
     border-top-left-radius: 8px;

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Services\Account\Template\AssociateInformationToTemplate;
+use App\Services\Account\ManageTemplate\AssociateInformationToTemplate;
 
 class AssociateInformationToTemplateTest extends TestCase
 {

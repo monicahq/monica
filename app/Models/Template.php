@@ -17,7 +17,8 @@ class Template extends Model
      * @var array
      */
     protected $fillable = [
-        'account_id', 'name',
+        'account_id',
+        'name',
     ];
 
     /**
@@ -28,6 +29,16 @@ class Template extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the template page records associated with the template.
+     *
+     * @return HasMany
+     */
+    public function pages()
+    {
+        return $this->hasMany(TemplatePage::class);
     }
 
     /**

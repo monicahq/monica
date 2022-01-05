@@ -8,9 +8,9 @@ use App\Models\Account;
 use App\Models\Information;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use App\Services\Account\Template\DestroyInformation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Account\ManageTemplate\DestroyInformation;
 
 class DestroyInformationTest extends TestCase
 {

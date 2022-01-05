@@ -1,0 +1,48 @@
+<style lang="scss" scoped>
+.timeline-item {
+  margin-left: 16px;
+  padding: 28px 0;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: 2px;
+    content: "";
+    background-color: #d2d5da;
+  }
+
+  .icon {
+    width: 32px;
+    height: 32px;
+    margin-left: -15px;
+  }
+}
+</style>
+
+<template>
+  <div class="relative timeline-item flex items-center">
+    <div class="rounded-full bg-gray-200 icon mr-3 flex justify-center items-center z-10">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+      </svg>
+    </div>
+    <span class="text-sm mr-3">
+      You edited a contact.
+    </span>
+    <small-contact top="4px;" />
+  </div>
+</template>
+
+<script>
+import SmallContact from '@/Shared/SmallContact';
+
+export default {
+  components: {
+    SmallContact,
+  },
+};
+</script>

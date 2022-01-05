@@ -50,7 +50,7 @@ class VaultController extends Controller
     {
         $vault = Vault::find($vaultId);
 
-        return Inertia::render('Vault/Show', [
+        return Inertia::render('Vault/Dashboard/Index', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
             'data' => VaultCreateViewHelper::data(),
         ]);

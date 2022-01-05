@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Account\ManageTemplate\CreateInformation;
 
 class CreateInformationTest extends TestCase
 {
@@ -30,7 +31,7 @@ class CreateInformationTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new \App\Services\Account\Template\CreateInformation)->execute($request);
+        (new CreateInformation)->execute($request);
     }
 
     /** @test */
@@ -54,7 +55,7 @@ class CreateInformationTest extends TestCase
             'allows_multiple_entries' => true,
         ];
 
-        $information = (new \App\Services\Account\Template\CreateInformation)->execute($request);
+        $information = (new CreateInformation)->execute($request);
 
         $this->assertDatabaseHas('information', [
             'id' => $information->id,

@@ -14,6 +14,32 @@ class CreateAttributesTable extends Migration
         // necessary for SQLlite
         Schema::enableForeignKeyConstraints();
 
+        Schema::create('templates', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('account_id');
+            $table->string('name');
+            $table->timestamps();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+        });
+
+        Schema::create('template_pages', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('template_id');
+            $table->string('name');
+            $table->integer('position');
+            $table->timestamps();
+            $table->foreign('template_id')->references('id')->on('templates')->onDelete('cascade');
+        });
+
+        Schema::create('modules', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('account_id');
+            $table->string('name');
+            $table->boolean('can_be_deleted');
+            $table->timestamps();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+        });
+
         Schema::create('information', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('account_id');
@@ -43,14 +69,6 @@ class CreateAttributesTable extends Migration
             $table->foreign('attribute_id')->references('id')->on('attributes')->onDelete('cascade');
         });
 
-        Schema::create('templates', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('account_id');
-            $table->string('name');
-            $table->timestamps();
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
-        });
-
         Schema::create('information_template', function (Blueprint $table) {
             $table->unsignedBigInteger('template_id');
             $table->unsignedBigInteger('information_id');
@@ -66,9 +84,9 @@ class CreateAttributesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('templates');
         Schema::dropIfExists('attributes');
         Schema::dropIfExists('attribute_default_values');
-        Schema::dropIfExists('templates');
         Schema::dropIfExists('attribute_template');
     }
 }

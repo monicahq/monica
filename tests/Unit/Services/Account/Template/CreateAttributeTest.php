@@ -10,6 +10,7 @@ use App\Models\Information;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\Account\ManageTemplate\CreateAttribute;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateAttributeTest extends TestCase
@@ -34,7 +35,7 @@ class CreateAttributeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new \App\Services\Account\Template\CreateAttribute)->execute($request);
+        (new CreateAttribute)->execute($request);
     }
 
     /** @test */
@@ -73,7 +74,7 @@ class CreateAttributeTest extends TestCase
             'type' => 'text',
         ];
 
-        $attribute = (new \App\Services\Account\Template\CreateAttribute)->execute($request);
+        $attribute = (new CreateAttribute)->execute($request);
 
         $this->assertDatabaseHas('attributes', [
             'id' => $attribute->id,

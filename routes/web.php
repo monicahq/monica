@@ -13,6 +13,7 @@ use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
 use App\Http\Controllers\Settings\Personalize\Labels\PersonalizeLabelController;
 use App\Http\Controllers\Settings\Personalize\Genders\PersonalizeGenderController;
 use App\Http\Controllers\Settings\Personalize\Pronouns\PersonalizePronounController;
+use App\Http\Controllers\Settings\Personalize\Templates\PersonalizeTemplatesController;
 use App\Http\Controllers\Settings\Personalize\AddressTypes\PersonalizeAddressTypeController;
 use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipController;
 use App\Http\Controllers\Settings\Personalize\PetCategories\PersonalizePetCategoriesController;
@@ -115,6 +116,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::post('contactInformationType', [PersonalizeContatInformationTypesController::class, 'store'])->name('settings.personalize.contact_information_type.store');
                 Route::put('contactInformationType/{type}', [PersonalizeContatInformationTypesController::class, 'update'])->name('settings.personalize.contact_information_type.update');
                 Route::delete('contactInformationType/{type}', [PersonalizeContatInformationTypesController::class, 'destroy'])->name('settings.personalize.contact_information_type.destroy');
+
+                // templates
+                Route::get('templates', [PersonalizeTemplatesController::class, 'index'])->name('settings.personalize.template.index');
+                Route::post('templates', [PersonalizeTemplatesController::class, 'store'])->name('settings.personalize.template.store');
+                Route::put('templates/{template}', [PersonalizeTemplatesController::class, 'update'])->name('settings.personalize.template.update');
+                Route::delete('templates/{template}', [PersonalizeTemplatesController::class, 'destroy'])->name('settings.personalize.template.destroy');
             });
 
             // cancel

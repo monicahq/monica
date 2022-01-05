@@ -1,0 +1,31 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\Template;
+use App\Models\TemplatePage;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class TemplatePageFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = TemplatePage::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'template_id' => Template::factory(),
+            'name' => 'business',
+            'position' => 1,
+        ];
+    }
+}

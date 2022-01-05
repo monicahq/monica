@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Services\Account\Template;
+namespace App\Services\Account\ManageTemplate;
 
 use App\Models\Template;
 use App\Models\Information;
 use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
 
-class RemoveInformationFromTemplate extends BaseService implements ServiceInterface
+class AssociateInformationToTemplate extends BaseService implements ServiceInterface
 {
+    private array $data;
     private Template $template;
     private Information $information;
 
@@ -24,6 +25,7 @@ class RemoveInformationFromTemplate extends BaseService implements ServiceInterf
             'author_id' => 'required|integer|exists:users,id',
             'template_id' => 'required|integer|exists:templates,id',
             'information_id' => 'required|integer|exists:information,id',
+            'position' => 'required|integer',
         ];
     }
 
@@ -41,25 +43,31 @@ class RemoveInformationFromTemplate extends BaseService implements ServiceInterf
     }
 
     /**
-     * Remove an information from a template.
+     * Associate a template with an information.
      *
      * @param  array  $data
      * @return Template
      */
     public function execute(array $data): Template
     {
-        $this->validateRules($data);
+        $this->data = $data;
+        $this->validate();
 
-        $this->information = Information::where('account_id', $data['account_id'])
-            ->findOrFail($data['information_id']);
-
-        $this->template = Template::where('account_id', $data['account_id'])
-            ->findOrFail($data['template_id']);
-
-        $this->template->informations()->toggle([
-            $this->information->id,
+        $this->template->informations()->syncWithoutDetaching([
+            $this->information->id => ['position' => $data['position']],
         ]);
 
         return $this->template;
+    }
+
+    private function validate(): void
+    {
+        $this->validateRules($this->data);
+
+        $this->information = Information::where('account_id', $this->data['account_id'])
+            ->findOrFail($this->data['information_id']);
+
+        $this->template = Template::where('account_id', $this->data['account_id'])
+            ->findOrFail($this->data['template_id']);
     }
 }

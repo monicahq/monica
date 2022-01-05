@@ -8,19 +8,20 @@ use App\Models\Account;
 use App\Models\Template;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use App\Services\Account\ManageTemplate\CreateTemplate;
+use App\Services\Account\ManageTemplate\UpdateTemplate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class CreateTemplateTest extends TestCase
+class UpdateTemplateTest extends TestCase
 {
     use DatabaseTransactions;
 
     /** @test */
-    public function it_creates_a_template(): void
+    public function it_updates_a_template(): void
     {
         $ross = $this->createAdministrator();
-        $this->executeService($ross, $ross->account);
+        $template = $this->createTemplate($ross->account);
+        $this->executeService($ross, $ross->account, $template);
     }
 
     /** @test */
@@ -31,7 +32,7 @@ class CreateTemplateTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateTemplate)->execute($request);
+        (new UpdateTemplate)->execute($request);
     }
 
     /** @test */
@@ -41,30 +42,52 @@ class CreateTemplateTest extends TestCase
 
         $ross = $this->createAdministrator();
         $account = $this->createAccount();
-        $this->executeService($ross, $account);
+        $template = $this->createTemplate($ross->account);
+        $this->executeService($ross, $account, $template);
     }
 
-    private function executeService(User $author, Account $account): void
+    /** @test */
+    public function it_fails_if_template_doesnt_belong_to_account(): void
+    {
+        $this->expectException(ModelNotFoundException::class);
+
+        $ross = $this->createAdministrator();
+        $account = Account::factory()->create();
+        $template = $this->createTemplate($account);
+        $this->executeService($ross, $ross->account, $template);
+    }
+
+    private function executeService(User $author, Account $account, Template $template): void
     {
         Queue::fake();
 
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
-            'name' => 'Business',
+            'template_id' => $template->id,
+            'name' => 'name',
         ];
 
-        $template = (new CreateTemplate)->execute($request);
+        (new UpdateTemplate)->execute($request);
 
         $this->assertDatabaseHas('templates', [
             'id' => $template->id,
             'account_id' => $account->id,
-            'name' => 'Business',
+            'name' => 'name',
         ]);
 
         $this->assertInstanceOf(
             Template::class,
             $template
         );
+    }
+
+    private function createTemplate(Account $account): Template
+    {
+        $template = Template::factory()->create([
+            'account_id' => $account->id,
+        ]);
+
+        return $template;
     }
 }

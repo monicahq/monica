@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Services\Account\Template;
+namespace App\Services\Account\ManageTemplate;
 
+use App\Models\Attribute;
 use App\Models\Information;
 use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
 
-class CreateInformation extends BaseService implements ServiceInterface
+class DestroyAttribute extends BaseService implements ServiceInterface
 {
-    private Information $information;
+    private Attribute $attribute;
 
     /**
      * Get the validation rules that apply to the service.
@@ -20,8 +21,7 @@ class CreateInformation extends BaseService implements ServiceInterface
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'author_id' => 'required|integer|exists:users,id',
-            'name' => 'required|string|max:255',
-            'allows_multiple_entries' => 'nullable|boolean',
+            'attribute_id' => 'required|integer|exists:attributes,id',
         ];
     }
 
@@ -39,21 +39,19 @@ class CreateInformation extends BaseService implements ServiceInterface
     }
 
     /**
-     * Create an information.
+     * Destroy an attribute.
      *
      * @param  array  $data
-     * @return Information
      */
-    public function execute(array $data): Information
+    public function execute(array $data): void
     {
         $this->validateRules($data);
 
-        $this->information = Information::create([
-            'account_id' => $data['account_id'],
-            'name' => $data['name'],
-            'allows_multiple_entries' => $this->valueOrFalse($data, 'allows_multiple_entries'),
-        ]);
+        $this->attribute = Attribute::findOrFail($data['attribute_id']);
 
-        return $this->information;
+        Information::where('account_id', $data['account_id'])
+            ->findOrFail($this->attribute->information_id);
+
+        $this->attribute->delete();
     }
 }

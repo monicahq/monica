@@ -38,7 +38,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">Pronouns</li>
+            <li class="inline">Templates</li>
           </ul>
         </div>
       </div>
@@ -50,55 +50,67 @@
         <div class="sm:flex items-center justify-between mb-6 sm:mt-0 mt-8">
           <h3 class="mb-4 sm:mb-0">
             <span class="mr-1">
-              🚻
-            </span> All the pronouns
+              📐
+            </span> All the templates
           </h3>
-          <pretty-button v-if="!createPronounModalShown" :text="'Add a pronoun'" :icon="'plus'" @click="showPronounModal" />
+          <pretty-button v-if="!createTemplateModalShown" :text="'Add a new template'" :icon="'plus'" @click="showTemplateModal" />
         </div>
 
-        <!-- modal to create a new group type -->
-        <form v-if="createPronounModalShown" class="bg-white border border-gray-200 rounded-lg mb-6" @submit.prevent="submit()">
+        <!-- help text -->
+        <div class="px-3 py-2 border mb-6 flex rounded text-sm bg-slate-50">
+          <svg xmlns="http://www.w3.org/2000/svg" class="grow h-6 pr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+
+          <div>
+            <p class="mb-2">Templates let you customize what data should be displayed on your contacts. You can define as many templates as you want, and choose which template should be used on which contact.</p>
+            <p>You need at least one template for contacts to be displayed. Without a template, Monica won't know which information it should display.</p>
+          </div>
+        </div>
+
+        <!-- modal to create a new template -->
+        <form v-if="createTemplateModalShown" class="bg-white border border-gray-200 rounded-lg mb-6" @submit.prevent="submit()">
           <div class="p-5 border-b border-gray-200">
             <errors :errors="form.errors" />
 
-            <text-input :ref="'newPronoun'"
+            <text-input :ref="'newTemplate'"
                         v-model="form.name"
-                        :label="'Name'" :type="'text'"
+                        :label="'Name of the new template'" :type="'text'"
                         :autofocus="true"
                         :input-class="'block w-full'"
                         :required="true"
                         :autocomplete="false"
                         :maxlength="255"
-                        @esc-key-pressed="createPronounModalShown = false"
+                        @esc-key-pressed="createTemplateModalShown = false"
             />
           </div>
 
           <div class="p-5 flex justify-between">
-            <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="createPronounModalShown = false" />
-            <pretty-button :text="'Create pronoun'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+            <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="createTemplateModalShown = false" />
+            <pretty-button :text="'Create template'" :state="loadingState" :icon="'plus'" :classes="'save'" />
           </div>
         </form>
 
-        <!-- list of pronouns -->
-        <ul v-if="localPronouns.length > 0" class="bg-white border border-gray-200 rounded-lg mb-6">
-          <li v-for="pronoun in localPronouns" :key="pronoun.id" class="border-b border-gray-200 hover:bg-slate-50 item-list">
-            <!-- detail of the group type -->
-            <div v-if="renamePronounModalShownId != pronoun.id" class="flex justify-between items-center px-5 py-2">
-              <span class="text-base">{{ pronoun.name }}</span>
+        <!-- list of templates -->
+        <ul v-if="localTemplates.length > 0" class="bg-white border border-gray-200 rounded-lg mb-6">
+          <li v-for="template in localTemplates" :key="template.id" class="border-b border-gray-200 hover:bg-slate-50 item-list">
+            <!-- detail of the template -->
+            <div v-if="renameTemplateModalShownId != template.id" class="flex justify-between items-center px-5 py-2">
+              <span class="text-base">{{ template.name }}</span>
 
               <!-- actions -->
               <ul class="text-sm">
-                <li class="cursor-pointer inline mr-4 text-sky-500 hover:text-blue-900" @click="updatePronounModal(pronoun)">Rename</li>
-                <li class="cursor-pointer inline text-red-500 hover:text-red-900" @click="destroy(pronoun)">Delete</li>
+                <li class="cursor-pointer inline mr-4 text-sky-500 hover:text-blue-900" @click="updateTemplateModal(template)">Rename</li>
+                <li class="cursor-pointer inline text-red-500 hover:text-red-900" @click="destroy(template)">Delete</li>
               </ul>
             </div>
 
-            <!-- rename a pronoun modal -->
-            <form v-if="renamePronounModalShownId == pronoun.id" class="border-b border-gray-200 hover:bg-slate-50 item-list" @submit.prevent="update(pronoun)">
+            <!-- rename a template modal -->
+            <form v-if="renameTemplateModalShownId == template.id" class="border-b border-gray-200 hover:bg-slate-50 item-list" @submit.prevent="update(template)">
               <div class="p-5 border-b border-gray-200">
                 <errors :errors="form.errors" />
 
-                <text-input :ref="'rename' + pronoun.id"
+                <text-input :ref="'rename' + template.id"
                             v-model="form.name"
                             :label="'Name'" :type="'text'"
                             :autofocus="true"
@@ -106,12 +118,12 @@
                             :required="true"
                             :autocomplete="false"
                             :maxlength="255"
-                            @esc-key-pressed="renamePronounModalShownId = 0"
+                            @esc-key-pressed="renameTemplateModalShownId = 0"
                 />
               </div>
 
               <div class="p-5 flex justify-between">
-                <pretty-span :text="'Cancel'" :classes="'mr-3'" @click.prevent="renamePronounModalShownId = 0" />
+                <pretty-span :text="'Cancel'" :classes="'mr-3'" @click.prevent="renameTemplateModalShownId = 0" />
                 <pretty-button :text="'Rename'" :state="loadingState" :icon="'check'" :classes="'save'" />
               </div>
             </form>
@@ -119,8 +131,8 @@
         </ul>
 
         <!-- blank state -->
-        <div v-if="localPronouns.length == 0" class="bg-white border border-gray-200 rounded-lg mb-6">
-          <p class="p-5 text-center">Labels let you classify contacts using a system that matters to you.</p>
+        <div v-if="localTemplates.length == 0" class="bg-white border border-gray-200 rounded-lg mb-6">
+          <p class="p-5 text-center">Create at least one template to use Monica.</p>
         </div>
       </div>
     </main>
@@ -157,9 +169,9 @@ export default {
   data() {
     return {
       loadingState: '',
-      createPronounModalShown: false,
-      renamePronounModalShownId: 0,
-      localPronouns: [],
+      createTemplateModalShown: false,
+      renameTemplateModalShownId: 0,
+      localTemplates: [],
       form: {
         name: '',
         errors: [],
@@ -168,37 +180,37 @@ export default {
   },
 
   mounted() {
-    this.localPronouns = this.data.pronouns;
+    this.localTemplates = this.data.templates;
   },
 
   methods: {
-    showPronounModal() {
+    showTemplateModal() {
       this.form.name = '';
-      this.createPronounModalShown = true;
+      this.createTemplateModalShown = true;
 
       this.$nextTick(() => {
-        this.$refs.newPronoun.focus();
+        this.$refs.newTemplate.focus();
       });
     },
 
-    updatePronounModal(pronoun) {
-      this.form.name = pronoun.name;
-      this.renamePronounModalShownId = pronoun.id;
+    updateTemplateModal(template) {
+      this.form.name = template.name;
+      this.renameTemplateModalShownId = template.id;
 
       this.$nextTick(() => {
-        this.$refs[`rename${pronoun.id}`].focus();
+        this.$refs[`rename${template.id}`].focus();
       });
     },
 
     submit() {
       this.loadingState = 'loading';
 
-      axios.post(this.data.url.pronoun_store, this.form)
+      axios.post(this.data.url.template_store, this.form)
         .then(response => {
-          this.flash('The pronoun has been created', 'success');
-          this.localPronouns.unshift(response.data.data);
+          this.flash('The template has been created', 'success');
+          this.localTemplates.unshift(response.data.data);
           this.loadingState = null;
-          this.createPronounModalShown = false;
+          this.createTemplateModalShown = false;
         })
         .catch(error => {
           this.loadingState = null;
@@ -206,15 +218,15 @@ export default {
         });
     },
 
-    update(pronoun) {
+    update(template) {
       this.loadingState = 'loading';
 
-      axios.put(pronoun.url.update, this.form)
+      axios.put(template.url.update, this.form)
         .then(response => {
-          this.flash('The pronoun has been updated', 'success');
-          this.localPronouns[this.localPronouns.findIndex(x => x.id === pronoun.id)] = response.data.data;
+          this.flash('The template has been updated', 'success');
+          this.localTemplates[this.localTemplates.findIndex(x => x.id === template.id)] = response.data.data;
           this.loadingState = null;
-          this.renamePronounModalShownId = 0;
+          this.renameTemplateModalShownId = 0;
         })
         .catch(error => {
           this.loadingState = null;
@@ -222,14 +234,14 @@ export default {
         });
     },
 
-    destroy(pronoun) {
-      if(confirm('Are you sure? This will remove the pronouns from all contacts, but won\'t delete the contacts themselves.')) {
+    destroy(template) {
+      if(confirm('Are you sure? This will remove the templates from all contacts, but won\'t delete the contacts themselves.')) {
 
-        axios.delete(pronoun.url.destroy)
+        axios.delete(template.url.destroy)
           .then(response => {
-            this.flash('The pronoun has been deleted', 'success');
-            var id = this.localPronouns.findIndex(x => x.id === pronoun.id);
-            this.localPronouns.splice(id, 1);
+            this.flash('The template has been deleted', 'success');
+            var id = this.localTemplates.findIndex(x => x.id === template.id);
+            this.localTemplates.splice(id, 1);
           })
           .catch(error => {
             this.loadingState = null;

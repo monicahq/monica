@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Account\Template;
+namespace App\Services\Account\ManageTemplate;
 
 use App\Models\Attribute;
 use App\Models\Information;

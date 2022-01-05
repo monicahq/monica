@@ -19,6 +19,7 @@
         "@inertiajs/progress": "^0.2.6",
         "@tailwindcss/forms": "^0.4.0",
         "@vue/compiler-sfc": "^3.0.5",
+        "ant-design-vue": "^2.2.8",
         "autoprefixer": "^10.4.0",
         "axios": "^0.21",
         "eslint": "^7.11.0",

@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Services\Account\Template;
+namespace App\Services\Account\ManageTemplate;
 
 use App\Models\Template;
+use App\Models\Information;
 use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
 
-class CreateTemplate extends BaseService implements ServiceInterface
+class RemoveInformationFromTemplate extends BaseService implements ServiceInterface
 {
     private Template $template;
+    private Information $information;
 
     /**
      * Get the validation rules that apply to the service.
@@ -20,7 +22,8 @@ class CreateTemplate extends BaseService implements ServiceInterface
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'author_id' => 'required|integer|exists:users,id',
-            'name' => 'required|string|max:255',
+            'template_id' => 'required|integer|exists:templates,id',
+            'information_id' => 'required|integer|exists:information,id',
         ];
     }
 
@@ -38,7 +41,7 @@ class CreateTemplate extends BaseService implements ServiceInterface
     }
 
     /**
-     * Create a template.
+     * Remove an information from a template.
      *
      * @param  array  $data
      * @return Template
@@ -47,9 +50,14 @@ class CreateTemplate extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->template = Template::create([
-            'account_id' => $data['account_id'],
-            'name' => $data['name'],
+        $this->information = Information::where('account_id', $data['account_id'])
+            ->findOrFail($data['information_id']);
+
+        $this->template = Template::where('account_id', $data['account_id'])
+            ->findOrFail($data['template_id']);
+
+        $this->template->informations()->toggle([
+            $this->information->id,
         ]);
 
         return $this->template;

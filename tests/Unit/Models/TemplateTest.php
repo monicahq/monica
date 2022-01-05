@@ -5,6 +5,7 @@ namespace Tests\Unit\Models;
 use Tests\TestCase;
 use App\Models\Template;
 use App\Models\Information;
+use App\Models\TemplatePage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TemplateTest extends TestCase
@@ -17,6 +18,18 @@ class TemplateTest extends TestCase
         $template = Template::factory()->create();
 
         $this->assertTrue($template->account()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_template_pages()
+    {
+        $template = Template::factory()->create();
+
+        $page = TemplatePage::factory()->create([
+            'template_id' => $template->id,
+        ]);
+
+        $this->assertTrue($template->pages()->exists());
     }
 
     /** @test */
