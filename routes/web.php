@@ -15,6 +15,7 @@ use App\Http\Controllers\Settings\Personalize\Genders\PersonalizeGenderControlle
 use App\Http\Controllers\Settings\Personalize\Pronouns\PersonalizePronounController;
 use App\Http\Controllers\Settings\Personalize\AddressTypes\PersonalizeAddressTypeController;
 use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipController;
+use App\Http\Controllers\Settings\Personalize\PetCategories\PersonalizePetCategoriesController;
 use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipTypeController;
 
 Route::get('/', function () {
@@ -101,6 +102,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::post('addressTypes', [PersonalizeAddressTypeController::class, 'store'])->name('settings.personalize.address_type.store');
                 Route::put('addressTypes/{addressType}', [PersonalizeAddressTypeController::class, 'update'])->name('settings.personalize.address_type.update');
                 Route::delete('addressTypes/{addressType}', [PersonalizeAddressTypeController::class, 'destroy'])->name('settings.personalize.address_type.destroy');
+
+                // pet categories
+                Route::get('petCategories', [PersonalizePetCategoriesController::class, 'index'])->name('settings.personalize.pet_category.index');
+                Route::post('petCategories', [PersonalizePetCategoriesController::class, 'store'])->name('settings.personalize.pet_category.store');
+                Route::put('petCategories/{petCategory}', [PersonalizePetCategoriesController::class, 'update'])->name('settings.personalize.pet_category.update');
+                Route::delete('petCategories/{petCategory}', [PersonalizePetCategoriesController::class, 'destroy'])->name('settings.personalize.pet_category.destroy');
             });
 
             // cancel

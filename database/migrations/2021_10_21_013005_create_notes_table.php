@@ -11,6 +11,9 @@ class CreateNotesTable extends Migration
      */
     public function up()
     {
+        // necessary for SQLlite
+        Schema::enableForeignKeyConstraints();
+
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('contact_id');

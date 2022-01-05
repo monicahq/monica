@@ -12,6 +12,7 @@ use App\Models\Template;
 use App\Models\GroupType;
 use App\Models\AddressType;
 use App\Models\Information;
+use App\Models\PetCategory;
 use App\Models\RelationshipGroupType;
 use App\Models\ContactInformationType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -128,5 +129,16 @@ class AccountTest extends TestCase
         ]);
 
         $this->assertTrue($account->addressTypes()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_pet_categories()
+    {
+        $account = Account::factory()->create();
+        PetCategory::factory(2)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->petCategories()->exists());
     }
 }

@@ -11,6 +11,9 @@ class CreateContactFeedTable extends Migration
      */
     public function up()
     {
+        // necessary for SQLlite
+        Schema::enableForeignKeyConstraints();
+
         Schema::create('contact_feed_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('contact_id');

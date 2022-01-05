@@ -25,7 +25,7 @@ class CancelAccountController extends Controller
     public function destroy(Request $request)
     {
         if (! Hash::check($request->input('password'), Auth::user()->password)) {
-            throw new ModelNotFoundException('Passwords do not match.');
+            throw new ModelNotFoundException('The password is not valid.');
         }
 
         $data = [

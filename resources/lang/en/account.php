@@ -67,5 +67,18 @@ return [
     'relationship_type_protege' => 'protege',
     'relationship_type_ex_husband' => 'ex-spouse',
 
+    'pets_title' => 'Pets',
+    'pets_reptile' => 'Reptile',
+    'pets_bird' => 'Bird',
+    'pets_cat' => 'Cat',
+    'pets_dog' => 'Dog',
+    'pets_fish' => 'Fish',
+    'pets_hamster' => 'Hamster',
+    'pets_horse' => 'Horse',
+    'pets_rabbit' => 'Rabbit',
+    'pets_rat' => 'Rat',
+    'pets_small_animal' => 'Small animal',
+    'pets_other' => 'Other',
+
     'exception_remove_your_own_permission' => 'You cannot remove your own administrator privilege.',
 ];

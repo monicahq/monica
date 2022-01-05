@@ -113,4 +113,14 @@ class Account extends Model
     {
         return $this->hasMany(AddressType::class);
     }
+
+    /**
+     * Get the pet categories associated with the account.
+     *
+     * @return HasMany
+     */
+    public function petCategories()
+    {
+        return $this->hasMany(PetCategory::class);
+    }
 }

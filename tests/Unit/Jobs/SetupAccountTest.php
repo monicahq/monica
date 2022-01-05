@@ -308,5 +308,50 @@ class SetupAccountTest extends TestCase
             'account_id' => $regis->account_id,
             'name' => trans('account.address_type_chalet'),
         ]);
+
+        $this->assertDatabaseHas('pet_categories', [
+            'account_id' => $regis->account_id,
+            'name' => trans('account.pets_dog'),
+        ]);
+        $this->assertDatabaseHas('pet_categories', [
+            'account_id' => $regis->account_id,
+            'name' => trans('account.pets_cat'),
+        ]);
+        $this->assertDatabaseHas('pet_categories', [
+            'account_id' => $regis->account_id,
+            'name' => trans('account.pets_bird'),
+        ]);
+        $this->assertDatabaseHas('pet_categories', [
+            'account_id' => $regis->account_id,
+            'name' => trans('account.pets_fish'),
+        ]);
+        $this->assertDatabaseHas('pet_categories', [
+            'account_id' => $regis->account_id,
+            'name' => trans('account.pets_hamster'),
+        ]);
+        $this->assertDatabaseHas('pet_categories', [
+            'account_id' => $regis->account_id,
+            'name' => trans('account.pets_horse'),
+        ]);
+        $this->assertDatabaseHas('pet_categories', [
+            'account_id' => $regis->account_id,
+            'name' => trans('account.pets_rabbit'),
+        ]);
+        $this->assertDatabaseHas('pet_categories', [
+            'account_id' => $regis->account_id,
+            'name' => trans('account.pets_rat'),
+        ]);
+        $this->assertDatabaseHas('pet_categories', [
+            'account_id' => $regis->account_id,
+            'name' => trans('account.pets_reptile'),
+        ]);
+        $this->assertDatabaseHas('pet_categories', [
+            'account_id' => $regis->account_id,
+            'name' => trans('account.pets_small_animal'),
+        ]);
+        $this->assertDatabaseHas('pet_categories', [
+            'account_id' => $regis->account_id,
+            'name' => trans('account.pets_other'),
+        ]);
     }
 }
