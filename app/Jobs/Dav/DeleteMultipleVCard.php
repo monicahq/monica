@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Dav;
 
+use Illuminate\Bus\Batch;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -47,9 +48,11 @@ class DeleteMultipleVCard implements ShouldQueue
             return;
         }
 
+        $batch = $this->batch();
+
         collect($this->hrefs)
-            ->each(function ($href) {
-                $this->deleteVCard($href);
+            ->each(function ($href) use ($batch) {
+                $this->deleteVCard($href, $batch);
             });
     }
 
@@ -57,14 +60,13 @@ class DeleteMultipleVCard implements ShouldQueue
      * Delete the contact.
      *
      * @param  string  $href
+     * @param  \Illuminate\Bus\Batch  $batch
      * @return void
      */
-    private function deleteVCard($href): void
+    private function deleteVCard(string $href, Batch $batch): void
     {
-        if (($batch = $this->batch()) !== null) {
-            $batch->add([
-                new DeleteVCard($this->subscription, $href),
-            ]);
-        }
+        $batch->add([
+            new DeleteVCard($this->subscription, $href),
+        ]);
     }
 }

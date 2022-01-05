@@ -67,22 +67,13 @@ class AddressBookContactsUpdater
      */
     private function refreshSimpleGetContacts(Collection $refresh): Collection
     {
-        $updated = $refresh
-            ->filter(function ($item): bool {
-                return ! ($item instanceof ContactDeleteDto);
-            })
-            ->map(function (ContactDto $contact): GetVCard {
-                return new GetVCard($this->sync->subscription, $contact);
+        return $refresh
+            ->map(function (ContactDto $contact) {
+                if ($contact instanceof ContactDeleteDto) {
+                    return new DeleteVCard($this->sync->subscription, $contact->uri);
+                } else {
+                    return new GetVCard($this->sync->subscription, $contact);
+                }
             });
-
-        $deleted = $refresh
-            ->filter(function ($item): bool {
-                return $item instanceof ContactDeleteDto;
-            })
-            ->map(function (ContactDto $contact): DeleteVCard {
-                return new DeleteVCard($this->sync->subscription, $contact->uri);
-            });
-
-        return $updated->union($deleted);
     }
 }

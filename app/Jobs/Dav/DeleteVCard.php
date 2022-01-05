@@ -50,7 +50,7 @@ class DeleteVCard implements ShouldQueue
 
         Log::info(__CLASS__.' '.$this->uri);
 
-        $response = $this->subscription->getClient()
+        $this->subscription->getClient()
             ->request('DELETE', $this->uri);
     }
 }

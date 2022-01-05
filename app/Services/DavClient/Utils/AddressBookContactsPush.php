@@ -72,7 +72,7 @@ class AddressBookContactsPush
      */
     private function prepareDeletedContacts(array $contacts): Collection
     {
-        // All added contact must be pushed
+        // All removed contact must be deleted
         return collect($contacts)
             ->map(function (string $uri): DeleteVCard {
                 return new DeleteVCard($this->sync->subscription, $uri);
