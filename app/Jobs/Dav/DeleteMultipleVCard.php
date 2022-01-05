@@ -45,7 +45,7 @@ class DeleteMultipleVCard implements ShouldQueue
     public function handle(): void
     {
         if (! $this->batching()) {
-            return;
+            return; // @codeCoverageIgnore
         }
 
         $batch = $this->batch();

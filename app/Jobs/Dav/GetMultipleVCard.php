@@ -47,7 +47,7 @@ class GetMultipleVCard implements ShouldQueue
     public function handle(): void
     {
         if (! $this->batching()) {
-            return;
+            return; // @codeCoverageIgnore
         }
 
         $datas = $this->subscription->getClient()
