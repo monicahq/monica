@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services\DavClient\Utils;
 
-use App\Jobs\Dav\DeleteMultipleVCard;
 use Tests\TestCase;
 use Mockery\MockInterface;
 use Tests\Api\DAV\CardEtag;
@@ -13,6 +12,7 @@ use Illuminate\Bus\PendingBatch;
 use App\Jobs\Dav\GetMultipleVCard;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Http;
+use App\Jobs\Dav\DeleteMultipleVCard;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -167,7 +167,7 @@ class AddressBookSynchronizerTest extends TestCase
                 '<d:href>https://test/dav/addressbooks/user@test.com/contacts/uuid</d:href>'.
                 '<d:propstat>'.
                     '<d:prop>'.
-                        "<d:getetag/>".
+                        '<d:getetag/>'.
                         '<d:getcontenttype>text/vcard</d:getcontenttype>'.
                     '</d:prop>'.
                     '<d:status>HTTP/1.1 404 Not Found</d:status>'.
