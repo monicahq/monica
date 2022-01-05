@@ -72,7 +72,7 @@ class AddressBookContactsUpdaterMissedTest extends TestCase
                 'https://test/dav/uuid2' => new ContactDto('https://test/dav/uuid2', $etag),
             ]));
 
-        $this->assertCount(1, $batchs);
+        $this->assertCount(2, $batchs);
         $batch = $batchs->first();
         $this->assertInstanceOf(GetMultipleVCard::class, $batch);
         $hrefs = $this->getPrivateValue($batch, 'hrefs');

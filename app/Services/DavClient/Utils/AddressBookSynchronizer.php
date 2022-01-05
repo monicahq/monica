@@ -11,6 +11,7 @@ use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
 use App\Services\DavClient\Utils\Traits\WithSyncDto;
 use App\Services\DavClient\Utils\Traits\HasCapability;
+use App\Services\DavClient\Utils\Model\ContactDeleteDto;
 use App\Services\DavClient\UpdateSubscriptionLocalSyncToken;
 
 class AddressBookSynchronizer
@@ -113,13 +114,22 @@ class AddressBookSynchronizer
      */
     private function getDistantChanges(): Collection
     {
-        return collect($this->getDistantEtags())
-            ->filter(function ($contact, $href): bool {
-                return $this->filterDistantContacts($contact, $href);
-            })
+        $etags = collect($this->getDistantEtags());
+        $contacts = $etags->filter(function ($contact, $href): bool {
+            return $this->filterDistantContacts($contact, $href);
+        })
             ->map(function ($contact, $href): ContactDto {
                 return new ContactDto($href, Arr::get($contact, '200.{DAV:}getetag'));
             });
+
+        $deleted = $etags->filter(function ($contact): bool {
+            return isset($contact['404']);
+        })
+            ->map(function ($contact, $href): ContactDto {
+                return new ContactDeleteDto($href);
+            });
+
+        return $contacts->union($deleted);
     }
 
     /**
@@ -214,14 +224,22 @@ class AddressBookSynchronizer
             return collect();
         }
 
-        $datas = $this->sync->addressbookQuery('{DAV:}getetag');
+        $data = $this->sync->addressbookQuery('{DAV:}getetag');
+        $data = collect($data);
 
-        return collect($datas)
-            ->filter(function ($contact) {
-                return isset($contact[200]);
-            })
+        $updated = $data->filter(function ($contact): bool {
+            return isset($contact[200]);
+        })
             ->map(function ($contact, $href): ContactDto {
                 return new ContactDto($href, Arr::get($contact, '200.{DAV:}getetag'));
             });
+        $deleted = $data->filter(function ($contact): bool {
+            return isset($contact[404]);
+        })
+            ->map(function ($contact, $href): ContactDto {
+                return new ContactDeleteDto($href);
+            });
+
+        return $updated->union($deleted);
     }
 }

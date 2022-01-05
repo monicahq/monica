@@ -3,6 +3,7 @@
 namespace App\Services\DavClient\Utils;
 
 use App\Jobs\Dav\PushVCard;
+use App\Jobs\Dav\DeleteVCard;
 use Illuminate\Support\Collection;
 use IlluminateAgnostic\Collection\Support\Arr;
 use App\Services\DavClient\Utils\Model\SyncDto;
@@ -28,8 +29,11 @@ class AddressBookContactsPush
 
         $changes = $this->preparePushChangedContacts($changes, Arr::get($localChanges, 'modified', []));
         $added = $this->preparePushAddedContacts(Arr::get($localChanges, 'added', []));
+        $deleted = $this->prepareDeletedContacts(Arr::get($localChanges, 'deleted', []));
 
-        return $changes->union($added)
+        return $changes
+            ->union($added)
+            ->union($deleted)
             ->filter(function ($c) {
                 return $c !== null;
             });
@@ -57,6 +61,21 @@ class AddressBookContactsPush
                             $card['contact_id']
                         )
                     );
+            });
+    }
+
+    /**
+     * Get list of requests to delete contacts.
+     *
+     * @param  array  $contacts
+     * @return Collection
+     */
+    private function prepareDeletedContacts(array $contacts): Collection
+    {
+        // All removed contact must be deleted
+        return collect($contacts)
+            ->map(function (string $uri): DeleteVCard {
+                return new DeleteVCard($this->sync->subscription, $uri);
             });
     }
 
