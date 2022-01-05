@@ -42,12 +42,8 @@ class PersonalizeGenderIndexViewHelperTest extends TestCase
                 'id' => $gender->id,
                 'name' => $gender->name,
                 'url' => [
-                    'update' => route('settings.personalize.gender.update', [
-                        'gender' => $gender->id,
-                    ]),
-                    'destroy' => route('settings.personalize.gender.destroy', [
-                        'gender' => $gender->id,
-                    ]),
+                    'update' => env('APP_URL').'/settings/personalize/genders/'.$gender->id,
+                    'destroy' => env('APP_URL').'/settings/personalize/genders/'.$gender->id,
                 ],
             ],
             $array

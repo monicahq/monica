@@ -19,7 +19,7 @@ class ContactInformationType extends Model
         'account_id',
         'name',
         'protocol',
-        'type', // used to make sure phone and email fields can't be deleted
+        'type', // used to make sure phone and email fields can't be deleted, and also to find the email address of the contact quickly
     ];
 
     /**

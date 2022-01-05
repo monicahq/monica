@@ -42,12 +42,8 @@ class PersonalizeAddressTypeIndexViewHelperTest extends TestCase
                 'id' => $addressType->id,
                 'name' => $addressType->name,
                 'url' => [
-                    'update' => route('settings.personalize.address_type.update', [
-                        'addressType' => $addressType->id,
-                    ]),
-                    'destroy' => route('settings.personalize.address_type.destroy', [
-                        'addressType' => $addressType->id,
-                    ]),
+                    'update' => env('APP_URL').'/settings/personalize/addressTypes/'.$addressType->id,
+                    'destroy' => env('APP_URL').'/settings/personalize/addressTypes/'.$addressType->id,
                 ],
             ],
             $array

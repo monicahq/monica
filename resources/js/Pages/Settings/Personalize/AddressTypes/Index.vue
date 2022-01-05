@@ -53,7 +53,7 @@
               🏖
             </span> All the address types
           </h3>
-          <pretty-button v-if="!createAddressTypeModalShown" :text="'Add a label'" :icon="'plus'" @click="showAddressTypeModal" />
+          <pretty-button v-if="!createAddressTypeModalShown" :text="'Add an address type'" :icon="'plus'" @click="showAddressTypeModal" />
         </div>
 
         <!-- modal to create a new group type -->
@@ -75,7 +75,7 @@
 
           <div class="p-5 flex justify-between">
             <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="createAddressTypeModalShown = false" />
-            <pretty-button :text="'Create label'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+            <pretty-button :text="'Create address type'" :state="loadingState" :icon="'plus'" :classes="'save'" />
           </div>
         </form>
 

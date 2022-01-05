@@ -42,12 +42,8 @@ class PersonalizePronounIndexViewHelperTest extends TestCase
                 'id' => $pronoun->id,
                 'name' => $pronoun->name,
                 'url' => [
-                    'update' => route('settings.personalize.pronoun.update', [
-                        'pronoun' => $pronoun->id,
-                    ]),
-                    'destroy' => route('settings.personalize.pronoun.destroy', [
-                        'pronoun' => $pronoun->id,
-                    ]),
+                    'update' => env('APP_URL').'/settings/personalize/pronouns/'.$pronoun->id,
+                    'destroy' => env('APP_URL').'/settings/personalize/pronouns/'.$pronoun->id,
                 ],
             ],
             $array

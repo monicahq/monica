@@ -26,6 +26,7 @@ class PersonalizeIndexViewHelperTest extends TestCase
                     'manage_pronouns' => env('APP_URL').'/settings/personalize/pronouns',
                     'manage_address_types' => env('APP_URL').'/settings/personalize/addressTypes',
                     'manage_pet_categories' => env('APP_URL').'/settings/personalize/petCategories',
+                    'manage_contact_information_types' => env('APP_URL').'/settings/personalize/contactInformationType',
                 ],
             ],
             $array

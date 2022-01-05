@@ -75,7 +75,7 @@
 
           <div class="p-5 flex justify-between">
             <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="createPetCategoryModalShown = false" />
-            <pretty-button :text="'Create label'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+            <pretty-button :text="'Create pet category'" :state="loadingState" :icon="'plus'" :classes="'save'" />
           </div>
         </form>
 

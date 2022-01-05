@@ -39,6 +39,7 @@
             <li class="mb-2"><span class="mr-2">👩‍🔬</span> <inertia-link :href="data.url.manage_pronouns" class="text-sky-500 hover:text-blue-900">Manage pronouns</inertia-link></li>
             <li class="mb-2"><span class="mr-2">🚻</span> <inertia-link :href="data.url.manage_genders" class="text-sky-500 hover:text-blue-900">Manage genders</inertia-link></li>
             <li class="mb-2"><span class="mr-2">🏖</span> <inertia-link :href="data.url.manage_address_types" class="text-sky-500 hover:text-blue-900">Manage address types</inertia-link></li>
+            <li class="mb-2"><span class="mr-2">☎️</span> <inertia-link :href="data.url.manage_contact_information_types" class="text-sky-500 hover:text-blue-900">Manage contact information types</inertia-link></li>
             <li class=""><span class="mr-2">🐱</span> <inertia-link :href="data.url.manage_pet_categories" class="text-sky-500 hover:text-blue-900">Manage pet categories</inertia-link></li>
           </ul>
         </div>

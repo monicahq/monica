@@ -53,7 +53,7 @@
               🚻
             </span> All the pronouns
           </h3>
-          <pretty-button v-if="!createPronounModalShown" :text="'Add a label'" :icon="'plus'" @click="showPronounModal" />
+          <pretty-button v-if="!createPronounModalShown" :text="'Add a pronoun'" :icon="'plus'" @click="showPronounModal" />
         </div>
 
         <!-- modal to create a new group type -->
@@ -75,7 +75,7 @@
 
           <div class="p-5 flex justify-between">
             <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="createPronounModalShown = false" />
-            <pretty-button :text="'Create label'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+            <pretty-button :text="'Create pronoun'" :state="loadingState" :icon="'plus'" :classes="'save'" />
           </div>
         </form>
 

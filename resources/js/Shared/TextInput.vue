@@ -49,7 +49,7 @@
       </span>
     </div>
 
-    <p v-if="help" class="text-sm mb-3">
+    <p v-if="help" class="text-xs mb-3 mt-1">
       {{ help }}
     </p>
   </div>
