@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use Illuminate\Database\QueryException;
@@ -12,6 +13,7 @@ use App\Services\Contact\Reminder\UpdateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Reminder\Reminder as ReminderResource;
+use App\Http\Resources\Reminder\ReminderOutbox as ReminderOutboxResource;
 
 class ApiReminderController extends ApiController
 {
@@ -152,5 +154,29 @@ class ApiReminderController extends ApiController
                 ->paginate($this->getLimitPerPage());
 
         return ReminderResource::collection($reminders);
+    }
+
+    /**
+     * Get the reminders for the month given in parameter.
+     * - 0 means current month
+     * - 1 means month+1
+     * - 2 means month+2...
+     *
+     * @param  Request  $request
+     * @param  int  $month
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
+     */
+    public function upcoming(Request $request, int $month = 0)
+    {
+        try {
+            $reminders = AccountHelper::getUpcomingRemindersForMonth(
+                auth()->user()->account,
+                $month
+            );
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return ReminderOutboxResource::collection($reminders);
     }
 }
