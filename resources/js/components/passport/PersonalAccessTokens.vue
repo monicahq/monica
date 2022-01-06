@@ -66,7 +66,7 @@
                  :title="$t('settings.api_token_create')" @open="_focusInput"
     >
       <!-- Form Errors -->
-      <error :errors="form.errors" />
+      <errors :errors="form.errors" />
 
       <!-- Create Token Form -->
       <form ref="form" class="form-horizontal" role="form" @submit.prevent="store">
@@ -140,7 +140,7 @@
 </template>
 
 <script>
-import Error from '../partials/Error.vue';
+import Errors from '../partials/Error.vue';
 import { SweetModal } from 'sweet-modal-vue';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
@@ -149,7 +149,7 @@ export default {
 
   components: {
     SweetModal,
-    Error
+    Errors,
   },
 
   mixins: [validationMixin],
