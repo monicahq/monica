@@ -90,8 +90,9 @@ export default {
         if (email) {
           params.set('email', email);
         }
+        let p = params.toString();
 
-        window.location = 'people/add' + (params !== '' ? '?' + params : '');
+        window.location = 'people/add' + (p !== '' ? '?' + p : '');
       }
     },
 
