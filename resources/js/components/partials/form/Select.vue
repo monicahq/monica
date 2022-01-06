@@ -113,7 +113,7 @@ export default {
       return this.id + this._uid;
     },
     selectClass() {
-      var c = [this.iclass != '' ? this.iclass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0'];
+      var c = [this.iclass !== '' ? this.iclass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0'];
       if (this.validator) {
         c.push({ error: this.validator.$error });
       }
@@ -145,7 +145,7 @@ export default {
     filterExclude: function (options) {
       var me = this;
       return options.filter(function (option) {
-        return option.id != me.excludedId;
+        return option.id !== me.excludedId;
       });
     },
 

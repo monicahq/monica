@@ -12,9 +12,9 @@
 </style>
 
 <template>
-  <div v-if="hasRated != true" class="br3 ba b--gray-monica bg-white pa3 mb4">
+  <div v-if="hasRated !== true" class="br3 ba b--gray-monica bg-white pa3 mb4">
     <transition-group name="fade" mode="out-in">
-      <div v-if="hasRated == 'notYet' || hasRated == 'addComment'" :key="'rate'">
+      <div v-if="hasRated === 'notYet' || hasRated === 'addComment'" :key="'rate'">
         <!-- RATE BOX -->
         <div class="flex items-center">
           <div class="fl w-70 f3 pl2">
@@ -26,7 +26,7 @@
                 <!-- sad smiley monochrome -->
                 <svg v-if="!showSadSmileyColor" v-cy-name="'sad-reaction-button'" width="42px" height="41px" viewBox="0 0 42 41"
                      version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                     class="pointer" :class="{ selected: day.rate == 1 }"
+                     class="pointer" :class="{ selected: day.rate === 1 }"
                      @click="showComment(1)" @mouseover="showSadSmileyColor = true"
                 >
                   <defs />
@@ -46,7 +46,7 @@
                 <!-- sad smiley color -->
                 <svg v-if="showSadSmileyColor" v-cy-name="'sad-reaction-button'" width="42px" height="41px" viewBox="0 0 42 41"
                      version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                     class="pointer" :class="{ selected: day.rate == 1 }"
+                     class="pointer" :class="{ selected: day.rate === 1 }"
                      @click="showComment(1)" @mouseleave="showSadSmileyColor = false"
                 >
                   <defs />
@@ -67,7 +67,7 @@
                 <svg v-if="!showMediocreSmileyColor" v-cy-name="'medium-reaction-button'" width="42px" height="41px" viewBox="0 0 42 41"
                      version="1.1"
                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                     class="pointer" :class="{ selected: day.rate == 2 }" @click="showComment(2)" @mouseover="showMediocreSmileyColor = true"
+                     class="pointer" :class="{ selected: day.rate === 2 }" @click="showComment(2)" @mouseover="showMediocreSmileyColor = true"
                 >
                   <defs />
                   <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -86,7 +86,7 @@
                 <svg v-if="showMediocreSmileyColor" v-cy-name="'medium-reaction-button'" width="42px" height="41px" viewBox="0 0 42 41"
                      version="1.1"
                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                     class="pointer" :class="{ selected: day.rate == 2 }" @click="showComment(2)" @mouseleave="showMediocreSmileyColor = false"
+                     class="pointer" :class="{ selected: day.rate === 2 }" @click="showComment(2)" @mouseleave="showMediocreSmileyColor = false"
                 >
                   <defs />
                   <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -104,7 +104,7 @@
                 <!-- happy day monochrome -->
                 <svg v-if="!showHappySmileyColor" v-cy-name="'happy-reaction-button'" width="42px" height="42px" viewBox="0 0 42 42"
                      version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                     class="pointer" :class="{ selected: day.rate == 3 }"
+                     class="pointer" :class="{ selected: day.rate === 3 }"
                      @click="showComment(3)" @mouseover="showHappySmileyColor = true"
                 >
                   <defs />
@@ -125,7 +125,7 @@
                 <!-- happy day color -->
                 <svg v-if="showHappySmileyColor" v-cy-name="'happy-reaction-button'" width="42px" height="42px" viewBox="0 0 42 42"
                      version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                     class="pointer" :class="{ selected: day.rate == 3 }"
+                     class="pointer" :class="{ selected: day.rate === 3 }"
                      @click="showComment(3)" @mouseleave="showHappySmileyColor = false"
                 >
                   <defs />
@@ -148,7 +148,7 @@
         </div>
 
         <!-- COMMENT BOX -->
-        <div v-if="hasRated == 'addComment'" :key="'comment'" v-cy-name="'comment'" class="pt2">
+        <div v-if="hasRated === 'addComment'" :key="'comment'" v-cy-name="'comment'" class="pt2">
           <form-textarea
             :id="'comment'"
             v-model="day.comment"
@@ -175,7 +175,7 @@
       </div>
 
       <!-- COME BACK LATER BOX -->
-      <div v-if="hasRated == 'justNow'" :key="'comeback'" class="flex items-center">
+      <div v-if="hasRated === 'justNow'" :key="'comeback'" class="flex items-center">
         <div class="w-70 f3 pl2">
           {{ $t('journal.journal_come_back') }}
         </div>
@@ -203,7 +203,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     }
   },
 

@@ -141,13 +141,6 @@ export default {
     search(keyword, loading) {
       this.updateItems(keyword);
     },
-
-    blur(e) {
-      //this.items = this.defaultOptions;
-    },
-
-    focus(e) {
-    }
   }
 };
 </script>

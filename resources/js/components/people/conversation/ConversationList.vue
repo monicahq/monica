@@ -13,7 +13,7 @@
       @on-row-click="onRowClick"
     >
       <template slot="table-row" slot-scope="props">
-        <span v-if="props.column.field == 'message_count'">
+        <span v-if="props.column.field === 'message_count'">
           <span>
             {{ props.row.message_count }}
             <svg width="18" height="15" viewBox="0 0 18 15" fill="none" xmlns="http://www.w3.org/2000/svg">

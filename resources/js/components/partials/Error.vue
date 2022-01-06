@@ -12,7 +12,7 @@
       </p>
     </template>
     <template v-else>
-      <p v-if="errors[0] != 'The given data was invalid.'">
+      <p v-if="errors[0] !== 'The given data was invalid.'">
         {{ errors[0] }}
       </p>
       <template v-if="display(errors[1])">

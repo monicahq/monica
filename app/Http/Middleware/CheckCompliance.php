@@ -26,10 +26,8 @@ class CheckCompliance
             return $next($request);
         }
 
-        if (Auth::check()) {
-            if (! ComplianceHelper::isCompliantWithCurrentTerm(auth()->user())) {
-                return redirect()->route('compliance');
-            }
+        if (Auth::check() && ! ComplianceHelper::isCompliantWithCurrentTerm(auth()->user())) {
+            return redirect()->route('compliance');
         }
 
         return $next($request);

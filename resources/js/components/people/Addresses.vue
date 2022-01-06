@@ -17,7 +17,7 @@
     </div>
 
     <!-- EMPTY BOX - DISPLAY ADD BUTTON -->
-    <p v-if="contactAddresses.length == 0 && !addMode" class="mb0">
+    <p v-if="contactAddresses.length === 0 && !addMode" class="mb0">
       <a class="pointer" href="" @click.prevent="toggleAdd">
         {{ $t('app.add') }}
       </a>
@@ -289,7 +289,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     }
   },
 
@@ -361,7 +361,7 @@ export default {
 
     toggleEditExcept(contactAddressId) {
       _.forEach(_.filter(this.contactAddresses, function (a) {
-        return a.id != contactAddressId;}
+        return a.id !== contactAddressId;}
       ), function (a) {
         Vue.set(a, 'edit', false);
       });

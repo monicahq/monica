@@ -180,7 +180,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     }
   },
 
@@ -281,7 +281,7 @@ export default {
      */
     toggleScope(scope) {
       if (this.scopeIsAssigned(scope)) {
-        this.form.scopes = _.reject(this.form.scopes, s => s == scope);
+        this.form.scopes = _.reject(this.form.scopes, s => s === scope);
       } else {
         this.form.scopes.push(scope);
       }

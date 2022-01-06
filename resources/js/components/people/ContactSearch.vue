@@ -72,7 +72,7 @@ export default {
         names = names.split(' ').map(name => _.capitalize(name));
 
         let first_name, last_name;
-        if (this.formNameOrder == 'firstname') {
+        if (this.formNameOrder === 'firstname') {
           first_name = names[0];
           last_name = names.slice(1).join(' ');
         } else {
@@ -91,7 +91,7 @@ export default {
           params.set('email', email);
         }
 
-        window.location = 'people/add' + (params != '' ? '?' + params : '');
+        window.location = 'people/add' + (params !== '' ? '?' + params : '');
       }
     },
 

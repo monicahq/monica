@@ -164,7 +164,7 @@
           </span>
 
           <photo-upload
-            v-show="photos.length == 0"
+            v-show="photos.length === 0"
             ref="upload"
             :contact-id="contactId"
             @upload.stop="handlePhoto($event)"
@@ -315,7 +315,7 @@ export default {
     },
 
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     },
 
     displayMenu() {
@@ -323,7 +323,7 @@ export default {
         !this.displayUrl ||
         !this.displayAmount ||
         !this.displayDate ||
-        !(this.displayRecipient || this.familyContacts.length == 0) ||
+        !(this.displayRecipient || this.familyContacts.length === 0) ||
         !(this.displayUpload || this.reachLimit);
     }
   },
@@ -349,7 +349,7 @@ export default {
         this.newGift.amount = this.gift.amount;
         this.newGift.status = this.gift.status;
         this.newGift.recipient_id = this.gift.recipient ? this.gift.recipient.id : null;
-        this.hasRecipient = this.newGift.recipient_id != null;
+        this.hasRecipient = this.newGift.recipient_id !== null;
         this.newGift.date = this.gift.date;
         this.photos = this.gift.photos;
       } else {
@@ -365,7 +365,7 @@ export default {
       this.displayComment = this.gift ? this.gift.comment : false;
       this.displayDate = this.gift ? this.gift.date : false;
       this.displayUrl = this.gift ? this.gift.url : false;
-      this.displayAmount = this.gift ? this.gift.amount != '' : false;
+      this.displayAmount = this.gift ? this.gift.amount !== '' : false;
       this.displayRecipient = this.gift ? (this.gift.recipient ? this.gift.recipient.id !== 0 : false) : false;
       this.displayUpload= this.gift ? this.gift.photos.length > 0 : false;
 
@@ -445,7 +445,7 @@ export default {
       axios.delete(`people/${this.hash}/photos/${photo.id}`)
         .then(response => {
           this.photos.splice(this.photos.indexOf(photo), 1);
-          if (this.photos.length == 0) {
+          if (this.photos.length === 0) {
             this.$refs.upload.showUploadZone();
           }
         });

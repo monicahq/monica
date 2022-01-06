@@ -8,10 +8,10 @@
   <div class="form-group">
     <notifications group="webauthn" position="top middle" :duration="5000" width="400" />
 
-    <div v-if="method == 'register-modal'">
+    <div v-if="method === 'register-modal'">
       <h3>{{ $t('settings.webauthn_title') }}</h3>
 
-      <div v-if="currentkeys != null">
+      <div v-if="currentkeys !== null">
         <ul class="table">
           <li v-for="key in currentkeys"
               :key="key.id"
@@ -50,7 +50,7 @@
         overlay-theme="dark"
         :title="$t('settings.webauthn_title')"
       >
-        <div v-if="registerTab == '1'">
+        <div v-if="registerTab === '1'">
           <p>
             {{ $t('settings.webauthn_key_name_help') }}
           </p>
@@ -65,8 +65,8 @@
             @keyup.enter="showRegisterModalTab('2');startRegister();"
           />
         </div>
-        <div v-if="registerTab == '2'">
-          <div v-if="errorMessage != ''" class="form-error-message mb3">
+        <div v-if="registerTab === '2'">
+          <div v-if="errorMessage !== ''" class="form-error-message mb3">
             <div class="pa2">
               <p class="mb0">
                 {{ errorMessage }}
@@ -78,7 +78,7 @@
               </p>
             </div>
           </div>
-          <div v-if="infoMessage != ''" class="form-information-message mb3">
+          <div v-if="infoMessage !== ''" class="form-information-message mb3">
             <div class="pa2">
               <p class="mb0">
                 {{ infoMessage }}
@@ -86,13 +86,13 @@
             </div>
           </div>
 
-          <div v-if="errorMessage == ''" class="tc">
+          <div v-if="errorMessage === ''" class="tc">
             <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png"
                  :alt="$t('settings.webauthn_insertKey')"
             />
           </div>
 
-          <div v-if="errorMessage == ''" class="pa2">
+          <div v-if="errorMessage === ''" class="pa2">
             <p>
               {{ $t('settings.webauthn_insertKey') }}
             </p>
@@ -104,7 +104,7 @@
           </div>
         </div>
         <div slot="button">
-          <a v-if="registerTab == '1'" class="btn" href="" @click.prevent="showRegisterModalTab('2');startRegister();">
+          <a v-if="registerTab === '1'" class="btn" href="" @click.prevent="showRegisterModalTab('2');startRegister();">
             {{ $t('pagination.next') }}
           </a>
           <a v-else class="btn" href="" @click.prevent="showRegisterModalTab('1')">
@@ -117,7 +117,7 @@
       </sweet-modal>
     </div>
     <div v-else>
-      <div v-if="errorMessage != ''" class="form-error-message mb3">
+      <div v-if="errorMessage !== ''" class="form-error-message mb3">
         <div class="pa2">
           <p class="mb0">
             {{ errorMessage }}
@@ -129,7 +129,7 @@
           </p>
         </div>
       </div>
-      <div v-if="infoMessage != ''" class="form-information-message mb3">
+      <div v-if="infoMessage !== ''" class="form-information-message mb3">
         <div class="pa2">
           <p class="mb0">
             {{ infoMessage }}
@@ -298,7 +298,7 @@ export default {
       this.errorMessage = '';
       axios.get('webauthn/register')
         .then(response => {
-          if (self.registerTab == '2') {
+          if (self.registerTab === '2') {
             var data = response.data.publicKey;
             setTimeout(function () {
               self.webauthn.register(

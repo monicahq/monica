@@ -37,7 +37,7 @@
             :locale="locale"
             :validator="$v.selectedDate"
           />
-          <div v-show="selectedDate != ''" class="mt2">
+          <div v-show="selectedDate !== ''" class="mt2">
             <form-checkbox
               :name="'add_reminder_deceased'"
               :value="true"
@@ -99,7 +99,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     },
     locale() {
       return this.$root.locale;
@@ -118,7 +118,7 @@ export default {
 
   mounted() {
     this.deceased = this.value;
-    this.dateKnown = this.date != '';
+    this.dateKnown = this.date !== '';
     this.selectedDate = this.date;
   },
 

@@ -15,11 +15,11 @@
       <!-- Logs -->
       <div v-if="journalEntries.data" v-cy-name="'journal-entries-body'" v-cy-items="journalEntries.data.map(j => j.id)" :cy-object-items="journalEntries.data.map(j => j.object.id)">
         <div v-for="journalEntry in journalEntries.data" :key="journalEntry.id" v-cy-name="'entry-body-' + journalEntry.id" class="cf">
-          <journal-content-rate v-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Day'" :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
+          <journal-content-rate v-if="journalEntry.journalable_type === 'App\\Models\\Journal\\Day'" :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
 
-          <journal-content-activity v-else-if="journalEntry.journalable_type == 'App\\Models\\Account\\Activity'" :journal-entry="journalEntry" />
+          <journal-content-activity v-else-if="journalEntry.journalable_type === 'App\\Models\\Account\\Activity'" :journal-entry="journalEntry" />
 
-          <journal-content-entry v-else-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Entry'" :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
+          <journal-content-entry v-else-if="journalEntry.journalable_type === 'App\\Models\\Journal\\Entry'" :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
         </div>
       </div>
 
@@ -74,7 +74,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     },
     hasMorePage: function() {
       var total = this.journalEntries.per_page * this.journalEntries.current_page;
@@ -115,7 +115,7 @@ export default {
       // the user does all his actions on the same page without ever
       // reloading the page.
       this.journalEntries.data.filter(function(obj) {
-        return obj.id == $journalEntryId;
+        return obj.id === $journalEntryId;
       });
 
       // Filter out the array without the deleted Journal Entry

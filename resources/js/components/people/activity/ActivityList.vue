@@ -11,7 +11,7 @@
         🍿&#8199;{{ $t('people.activity_title') }}
 
         <span class="fr relative btn-title">
-          <a v-if="displayLogActivity == false" v-cy-name="'add-activity-button'" class="btn edit-information" @click="displayLogActivity = true">
+          <a v-if="displayLogActivity === false" v-cy-name="'add-activity-button'" class="btn edit-information" @click="displayLogActivity = true">
             {{ $t('people.activities_add_activity') }}
           </a>
           <a v-else class="btn edit-information" @click="displayLogActivity = false">
@@ -22,7 +22,7 @@
     </div>
 
     <!-- BLANK STATE -->
-    <div v-if="!displayLogActivity && activities.length == 0" class="w-100">
+    <div v-if="!displayLogActivity && activities.length === 0" class="w-100">
       <div v-cy-name="'activities-blank-state'" class="bg-near-white tc pa3 br2 ba b--light-gray">
         <p>{{ $t('people.activities_blank_title', { name: name }) }}</p>
         <a class="pointer" href="" @click.prevent="displayLogActivity = true">
@@ -75,7 +75,7 @@
                 </li>
 
                 <!-- EMOTIONS LIST -->
-                <li v-if="activity.emotions.length != 0" class="di">
+                <li v-if="activity.emotions.length !== 0" class="di">
                   <ul class="di list" :class="[ dirltr ? 'mr3' : 'ml3' ]">
                     <li class="di">
                       {{ $t('people.activities_list_emotions') }}
@@ -97,8 +97,8 @@
               <ul class="list">
                 <li class="di">
                   <a v-cy-name="'edit-activity-button-'+activity.id" href="" class="pointer" @click.prevent="$set(activity, 'edit', true)">{{ $t('app.edit') }}</a>
-                  <a v-show="destroyActivityId != activity.id" v-cy-name="'delete-activity-button-'+activity.id" href="" class="pointer" @click.prevent="showDestroyActivity(activity)">{{ $t('app.delete') }}</a>
-                  <ul v-show="destroyActivityId == activity.id" class="di">
+                  <a v-show="destroyActivityId !== activity.id" v-cy-name="'delete-activity-button-'+activity.id" href="" class="pointer" @click.prevent="showDestroyActivity(activity)">{{ $t('app.delete') }}</a>
+                  <ul v-show="destroyActivityId === activity.id" class="di">
                     <li class="di">
                       <a v-cy-name="'confirm-delete-activity'" class="pointer red" @click.prevent="destroyActivity(activity)">
                         {{ $t('app.delete_confirm') }}
@@ -180,7 +180,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     }
   },
 

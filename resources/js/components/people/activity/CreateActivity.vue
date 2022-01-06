@@ -191,7 +191,7 @@ export default {
     },
 
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     }
   },
 
@@ -238,7 +238,7 @@ export default {
         this.newActivity.activity_type_id = null;
         this.participants = [];
       }
-      this.displayDescription = this.newActivity.description ? this.newActivity.description != '' : false;
+      this.displayDescription = this.newActivity.description ? this.newActivity.description !== '' : false;
       this.displayEmotions = this.newActivity.emotions && this.newActivity.emotions.length > 0;
       this.displayCategory = this.newActivity.activity_type_id !== null;
       this.displayParticipants = this.participants.length > 0;

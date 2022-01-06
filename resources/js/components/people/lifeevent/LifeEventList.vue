@@ -496,7 +496,7 @@
     />
 
     <!-- LISTING OF LIFE EVENTS -->
-    <div v-if="lifeEvents.length != 0">
+    <div v-if="lifeEvents.length !== 0">
       <div class="bt b--gray-monica" style="margin-left: 20px;">
         <div v-for="lifeEvent in lifeEvents" :key="lifeEvent.id">
           <div :id="'lifeEvent' + lifeEvent.id" class="bl bb b--gray-monica bg-hover-monica relative pa3 life-event-list-content">
