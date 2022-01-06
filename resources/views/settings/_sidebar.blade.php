@@ -20,7 +20,7 @@
     @endcomponent
 
     @component('components.sidebar', [
-      'route' => 'settings.export',
+      'route' => 'settings.export.index',
       'icon' => 'fa fa-cloud-download',
       'title' => 'settings.sidebar_settings_export'])
     @endcomponent

@@ -287,12 +287,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Export limit
+    | Export size count
     |--------------------------------------------------------------------------
     |
-    | Maximum number of exports.
+    | Number of exports available. When the number of exports is reached, the
+    | oldest export will be deleted.
     |
     */
-    'export_limit' => 5,
+    'export_size' => (int) env('EXPORT_SIZE', 5),
 
 ];

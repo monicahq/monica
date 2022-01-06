@@ -47,7 +47,7 @@
             <h4>{{ trans('settings.export_title_sql') }}</h4>
             <p>{{ trans('settings.export_sql_explanation') }}</p>
             <p>{{ trans('settings.export_be_patient') }}</p>
-            <form action="{{ route('settings.sql') }}" method="POST">
+            <form action="{{ route('settings.export.store.sql') }}" method="POST">
               @csrf
               <p>
                 <button type="submit" class="btn">{{ trans('settings.export_sql_cta') }}</button>
@@ -61,7 +61,7 @@
               {{ trans('settings.export_json_beta') }}
               <a href="https://github.com/monicahq/monica/discussions/5824" target="_blank" rel="noopener noreferrer">https://github.com/monicahq/monica/discussions/5824</a>
             </div>
-            <form method="POST" action="{{ route('settings.json') }}">
+            <form method="POST" action="{{ route('settings.export.store.json') }}">
               @csrf
               <p><button type="submit" class="btn">{{ trans('settings.export_json_cta') }}</button></p>
             </form>
@@ -98,7 +98,7 @@
                   </div>
                   <div class="table-cell actions table-cell">
                     @if ($export['status'] === \App\Models\Account\ExportJob::EXPORT_DONE)
-                      <form method="POST" action="{{ route('settings.export.show', ['uuid' => $export['uuid']]) }}">
+                      <form method="POST" action="{{ route('settings.export.download', ['uuid' => $export['uuid']]) }}">
                         @csrf
                         <a href="#" onclick="this.parentNode.submit(); return false">
                           {{ trans('app.download') }}

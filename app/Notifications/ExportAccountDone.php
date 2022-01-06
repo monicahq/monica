@@ -60,6 +60,6 @@ class ExportAccountDone extends Notification implements ShouldQueue, MailNotific
             ->subject(trans('mail.export_title'))
             ->greeting(trans('mail.greetings', ['username' => $user->first_name]))
             ->line(trans('mail.export_description', ['date' => DateHelper::getShortDate($date)]))
-            ->action(trans('mail.export_download'), route('settings.export'));
+            ->action(trans('mail.export_download'), route('settings.export.index'));
     }
 }
