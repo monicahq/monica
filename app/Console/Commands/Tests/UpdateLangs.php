@@ -55,7 +55,7 @@ class UpdateLangs extends Command
                 foreach ($en as $key) {
                     $lang_orig[$key] = $lang_trans[$key];
                 }
-                File::put($orig_path, json_encode($lang_orig, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n");
+                File::put($orig_path, json_encode($lang_orig, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)."\n");
             }
         }
     }
