@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Account\ManagePetCategories\CreatePetCategory;
 
-class CreatePetCategoriesTest extends TestCase
+class CreatePetCategoryTest extends TestCase
 {
     use DatabaseTransactions;
 
