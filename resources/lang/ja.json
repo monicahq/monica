@@ -1,7 +1,7 @@
 {
-    "The :attribute must contain at least one uppercase and one lowercase letter.": "The :attribute must contain at least one uppercase and one lowercase letter.",
-    "The :attribute must contain at least one letter.": "The :attribute must contain at least one letter.",
-    "The :attribute must contain at least one symbol.": "The :attribute must contain at least one symbol.",
-    "The :attribute must contain at least one number.": "The :attribute must contain at least one number.",
-    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": "The given :attribute has appeared in a data leak. Please choose a different :attribute."
+    "The :attribute must contain at least one uppercase and one lowercase letter.": ":attributeは大文字と小文字をそれぞれ１文字以上含めなければなりません。",
+    "The :attribute must contain at least one letter.": ":attributeは文字を１文字以上含めなければなりません。",
+    "The :attribute must contain at least one symbol.": ":attributeは記号を１文字以上含めなければなりません。",
+    "The :attribute must contain at least one number.": ":attributeは数字を１文字以上含めなければなりません。",
+    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": ":attributeはデータ漏洩の対象だった可能性があります。別の:attributeを選んでください。"
 }
