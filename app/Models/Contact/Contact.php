@@ -1573,6 +1573,7 @@ class Contact extends Model
      * Get the prunable model query.
      *
      * @return \Illuminate\Database\Eloquent\Builder
+     * @codeCoverageIgnore
      */
     public function prunable()
     {
@@ -1583,6 +1584,7 @@ class Contact extends Model
      * Prepare the model for pruning.
      *
      * @return void
+     * @codeCoverageIgnore
      */
     protected function pruning()
     {
