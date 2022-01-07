@@ -9,7 +9,7 @@
     <div class="">
       <h3>
         📄 {{ $t('people.photo_list_title') }}
-        <span v-if="reachLimit == 'false'" class="fr relative" style="top: -7px;">
+        <span v-if="reachLimit === 'false'" class="fr relative" style="top: -7px;">
           <a v-if="!onUpload" class="btn" href=""
              @click.prevent="() => { onUpload = true; $refs.upload.showUploadZone(); }"
           >
@@ -24,12 +24,12 @@
       </h3>
     </div>
 
-    <p v-show="reachLimit == 'true'">
+    <p v-show="reachLimit === 'true'">
       {{ $t('settings.storage_upgrade_notice') }}
     </p>
 
     <!-- EMPTY STATE -->
-    <div v-if="!onUpload && photos.length == 0" class="ltr w-100 pt2">
+    <div v-if="!onUpload && photos.length === 0" class="ltr w-100 pt2">
       <div class="section-blank">
         <h3 class="mb4 mt3">
           {{ $t('people.photo_list_blank_desc') }}
@@ -56,20 +56,20 @@
             </div>
             <div class="pt2">
               <ul>
-                <li v-show="currentPhotoIdAsAvatar == photo.id">
+                <li v-show="currentPhotoIdAsAvatar === photo.id">
                   🤩 {{ $t('people.photo_current_profile_pic') }}
                 </li>
-                <li v-show="currentPhotoIdAsAvatar != photo.id">
+                <li v-show="currentPhotoIdAsAvatar !== photo.id">
                   <a class="pointer" @click.prevent="makeProfilePicture(photo)">
                     {{ $t('people.photo_make_profile_pic') }}
                   </a>
                 </li>
-                <li v-show="confirmDestroyPhotoId != photo.id">
+                <li v-show="confirmDestroyPhotoId !== photo.id">
                   <a class="pointer" href="" @click.prevent="confirmDestroyPhotoId = photo.id">
                     {{ $t('people.photo_delete') }}
                   </a>
                 </li>
-                <li v-show="confirmDestroyPhotoId == photo.id">
+                <li v-show="confirmDestroyPhotoId === photo.id">
                   <a class="pointer" href="" @click.prevent="confirmDestroyPhotoId = 0">
                     {{ $t('app.cancel') }}
                   </a> <a class="pointer" href="" @click.prevent="deletePhoto(photo)">
@@ -191,8 +191,6 @@ export default {
             text: '',
             type: 'success'
           });
-        })
-        .catch(error => {
         });
     },
 

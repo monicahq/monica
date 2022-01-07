@@ -18,16 +18,11 @@ $factory->define(App\Models\Settings\Currency::class, function (Faker\Generator 
 });
 
 $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator $faker) {
-    static $account_id;
-    static $stripe_plan;
-    static $name;
-    static $stripe_id;
-
     return [
-        'account_id' => $account_id,
-        'name' => $name ?: $faker->randomElement(['main']),
-        'stripe_id' => $stripe_id,
-        'stripe_plan' => $stripe_plan ?: $faker->randomElement(['plan-1', 'plan-2', 'plan-3']),
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'name' => $faker->word(),
+        'stripe_id' => $faker->word(),
+        'stripe_plan' => $faker->randomElement(['plan-1', 'plan-2', 'plan-3']),
         'quantity' => 1,
         'created_at' => now(),
     ];

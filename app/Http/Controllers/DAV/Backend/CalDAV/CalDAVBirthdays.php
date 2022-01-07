@@ -163,5 +163,6 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
 
     public function deleteCalendarObject($objectUri)
     {
+        // Not implemented
     }
 }

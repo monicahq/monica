@@ -145,7 +145,7 @@
             </div>
           </div>
 
-          <div v-if="errorMessage != ''" class="form-error-message mb3">
+          <div v-if="errorMessage !== ''" class="form-error-message mb3">
             <div class="pa2">
               <p class="mb0">
                 {{ errorMessage }}
@@ -217,7 +217,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     }
   },
 
@@ -227,7 +227,7 @@ export default {
 
   methods: {
     prepareComponent() {
-      if (this.contact.stay_in_touch_frequency == null) {
+      if (this.contact.stay_in_touch_frequency === null) {
         this.frequency = 0;
       } else {
         this.frequency = parseInt(this.contact.stay_in_touch_frequency);
@@ -241,7 +241,7 @@ export default {
       this.stateInput = this.isActive;
       this.frequencyInput = this.frequency;
     },
-    
+
     formatDate(dateAsString) {
       const moment = require('moment-timezone');
       moment.locale(this._i18n.locale);

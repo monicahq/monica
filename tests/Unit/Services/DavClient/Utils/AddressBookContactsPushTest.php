@@ -8,6 +8,7 @@ use App\Jobs\Dav\PushVCard;
 use Illuminate\Support\Str;
 use Tests\Api\DAV\CardEtag;
 use Tests\Helpers\DavTester;
+use App\Jobs\Dav\DeleteVCard;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use App\Models\Account\AddressBookSubscription;
@@ -147,5 +148,23 @@ class AddressBookContactsPushTest extends TestCase
         $this->assertInstanceOf(ContactPushDto::class, $dto);
         $this->assertEquals('uricontact2', $dto->uri);
         $this->assertEquals(1, $dto->mode);
+    }
+
+    /** @test */
+    public function it_delete_contacts_removed()
+    {
+        $subscription = AddressBookSubscription::factory()->create();
+        $client = (new DavTester())->fake()->client();
+
+        $batchs = (new AddressBookContactsPush())
+            ->execute(new SyncDto($subscription, $client), collect(), [
+                'deleted' => ['uricontact2'],
+            ]);
+
+        $this->assertCount(1, $batchs);
+        $batch = $batchs->first();
+        $this->assertInstanceOf(DeleteVCard::class, $batch);
+        $uri = $this->getPrivateValue($batch, 'uri');
+        $this->assertEquals('uricontact2', $uri);
     }
 }

@@ -77,8 +77,8 @@
       <h3>
         📄 {{ $t('people.document_list_title') }}
 
-        <span v-show="reachLimit == 'false'" class="fr relative" style="top: -7px;">
-          <a v-if="displayUploadZone == false && displayUploadError == false && displayUploadProgress == false" class="btn edit-information" html="" @click.prevent="displayUploadZone = true">
+        <span v-show="reachLimit === 'false'" class="fr relative" style="top: -7px;">
+          <a v-if="displayUploadZone === false && displayUploadError === false && displayUploadProgress === false" class="btn edit-information" html="" @click.prevent="displayUploadZone = true">
             {{ $t('people.document_list_cta') }}
           </a>
           <a v-if="displayUploadZone || displayUploadError || displayUploadProgress" class="btn edit-information" href="" @click.prevent="displayUploadZone = false; displayUploadError = false; displayUploadProgress = false">
@@ -88,12 +88,12 @@
       </h3>
     </div>
 
-    <p v-show="reachLimit == 'true'">
+    <p v-show="reachLimit === 'true'">
       {{ $t('settings.storage_upgrade_notice') }}
     </p>
 
     <!-- EMPTY STATE -->
-    <div v-if="displayUploadZone == false && displayUploadError == false && displayUploadProgress == false && documents.length == 0" class="ltr w-100 pt2">
+    <div v-if="displayUploadZone === false && displayUploadError === false && displayUploadProgress === false && documents.length === 0" class="ltr w-100 pt2">
       <div class="section-blank">
         <h3 class="mb0">
           {{ $t('people.document_list_blank_desc') }}
@@ -212,7 +212,7 @@
               <circle cx="18.5" cy="2.5" r="2.5" fill="#505473" fill-opacity="0.86" />
             </svg>
           </div>
-          <ul v-if="modalToDisplay == document.id" class="absolute bg-white z-max pv1 document-action-menu">
+          <ul v-if="modalToDisplay === document.id" class="absolute bg-white z-max pv1 document-action-menu">
             <li class="tc">
               <a class="pv2 pointer ph3 inline-flex items-center w-100 no-underline document-action-menu-item" :href="document.link" target="_blank" @click="downloadDocument(document)">
                 {{ $t('app.download') }}
@@ -278,7 +278,7 @@ export default {
     },
 
     toggleActionsModal(id) {
-      if (this.modalToDisplay == id) {
+      if (this.modalToDisplay === id) {
         this.modalToDisplay = null;
       } else {
         this.modalToDisplay = id;
@@ -338,8 +338,6 @@ export default {
       axios.delete( 'people/' + this.hash + '/documents/' + document.id)
         .then(response => {
           this.documents.splice(this.documents.indexOf(document), 1);
-        })
-        .catch(error => {
         });
     },
   }

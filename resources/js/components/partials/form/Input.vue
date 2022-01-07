@@ -109,7 +109,7 @@ export default {
       return this.id + this._uid;
     },
     inputClass() {
-      var c = [this.iclass != '' ? this.iclass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0'];
+      var c = [this.iclass !== '' ? this.iclass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0'];
       if (this.validator) {
         c.push({ error: this.validator.$error });
       }
@@ -136,7 +136,7 @@ export default {
         type = 'numeric';
         break;
       }
-      return this.$t('validation.vue.max.'.type, {
+      return this.$t(`validation.vue.max.${type}`, {
         field: this.field,
         max: this.validator ? this.validator.$params.maxLength.max : '',
       });

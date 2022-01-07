@@ -87,10 +87,10 @@ class UpdateVCard implements ShouldQueue
 
         $contact_id = null;
         if ($cardUri) {
-            $contact = $backend->getObject($addressBookId, $cardUri);
+            $contactObject = $backend->getObject($addressBookId, $cardUri);
 
-            if ($contact) {
-                $contact_id = $contact->id;
+            if ($contactObject) {
+                $contact_id = $contactObject->id;
             }
         }
 

@@ -5,7 +5,7 @@
       <h3>
         {{ $t('people.section_personal_tasks') }}
 
-        <span v-if="tasks.length != 0" class="f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]">
+        <span v-if="tasks.length !== 0" class="f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]">
           <a v-if="!editMode" v-cy-name="'task-toggle-edit-mode'" class="pointer" href="" @click.prevent="editMode = true">
             {{ $t('app.edit') }}
           </a>
@@ -18,7 +18,7 @@
 
     <div :class="[editMode ? 'bg-washed-yellow b--yellow ba pa2' : '']">
       <!-- EMPTY STATE -->
-      <div v-if="tasks.length == 0 && !addMode" v-cy-name="'task-blank-state'" class="tc bg-near-white b--moon-gray pa3">
+      <div v-if="tasks.length === 0 && !addMode" v-cy-name="'task-blank-state'" class="tc bg-near-white b--moon-gray pa3">
         <p>{{ $t('people.tasks_blank_title') }}</p>
         <p>
           <a v-cy-name="'add-task-button'" class="pointer" href="" @click.prevent="toggleAddMode">
@@ -81,7 +81,7 @@
       </ul>
 
       <!-- ADD TASK TO ENTER ADD MODE -->
-      <div v-if="!updateMode && !addMode && tasks.length != 0" class="bg-near-white pa2 br2 mt3 mb3">
+      <div v-if="!updateMode && !addMode && tasks.length !== 0" class="bg-near-white pa2 br2 mt3 mb3">
         <a class="pointer" href="" @click.prevent="toggleAddMode">
           {{ $t('people.tasks_add_task') }}
         </a>
@@ -177,7 +177,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     }
   },
 
