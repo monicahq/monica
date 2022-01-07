@@ -164,13 +164,11 @@ class AddressBookSynchronizerTest extends TestCase
         $tester->getSynctoken('"token"')
             ->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', Http::response(DavTester::multistatusHeader().
             '<d:response>'.
+                '<d:status>HTTP/1.1 404 Not Found</d:status>'.
                 '<d:href>https://test/dav/addressbooks/user@test.com/contacts/uuid</d:href>'.
                 '<d:propstat>'.
-                    '<d:prop>'.
-                        '<d:getetag/>'.
-                        '<d:getcontenttype>text/vcard</d:getcontenttype>'.
-                    '</d:prop>'.
-                    '<d:status>HTTP/1.1 404 Not Found</d:status>'.
+                    '<d:prop/>'.
+                    '<d:status>HTTP/1.1 418 I\'m a teapot</d:status>'.
                 '</d:propstat>'.
             '</d:response>'.
             '<d:sync-token>token</d:sync-token>'.
@@ -310,7 +308,7 @@ class AddressBookSynchronizerTest extends TestCase
     }
 
     /** @test */
-    public function it_forcesync_changes_removed_contact_batched()
+    public function it_forcesync_changes_deleted_contact_batched()
     {
         Bus::fake();
 
@@ -320,12 +318,11 @@ class AddressBookSynchronizerTest extends TestCase
         ->fake();
         $tester->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', Http::response(DavTester::multistatusHeader().
         '<d:response>'.
+            '<d:status>HTTP/1.1 404 Not Found</d:status>'.
             '<d:href>https://test/dav/uuid1</d:href>'.
             '<d:propstat>'.
-                '<d:prop>'.
-                    '<d:getetag />'.
-                '</d:prop>'.
-                '<d:status>HTTP/1.1 404 Not Found</d:status>'.
+                '<d:prop/>'.
+                '<d:status>HTTP/1.1 418 I\'m a teapot</d:status>'.
             '</d:propstat>'.
         '</d:response>'.
         '</d:multistatus>'), '<?xml version="1.0" encoding="UTF-8"?>'."\n".

@@ -177,6 +177,7 @@ trait SyncDAVBackend
         });
         $deleted = $this->getDeletedObjects($calendarId)
             ->filter(function ($obj) use ($timestamp) {
+                $d = $obj->deleted_at;
                 return is_null($timestamp) ||
                        $obj->deleted_at >= $timestamp;
             });

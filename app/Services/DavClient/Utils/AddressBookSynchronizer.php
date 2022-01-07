@@ -119,11 +119,11 @@ class AddressBookSynchronizer
             return $this->filterDistantContacts($contact, $href);
         })
             ->map(function ($contact, $href): ContactDto {
-                return new ContactDto($href, Arr::get($contact, '200.{DAV:}getetag'));
+                return new ContactDto($href, Arr::get($contact, 'properties.200.{DAV:}getetag'));
             });
 
         $deleted = $etags->filter(function ($contact): bool {
-            return isset($contact['404']);
+            return is_array($contact) && $contact['status'] === '404';
         })
             ->map(function ($contact, $href): ContactDto {
                 return new ContactDeleteDto($href);
@@ -142,14 +142,14 @@ class AddressBookSynchronizer
     private function filterDistantContacts($contact, $href): bool
     {
         // only return vcards
-        if (! is_array($contact) || ! Str::contains(Arr::get($contact, '200.{DAV:}getcontenttype'), 'text/vcard')) {
+        if (! is_array($contact) || ! Str::contains(Arr::get($contact, 'properties.200.{DAV:}getcontenttype'), 'text/vcard')) {
             return false;
         }
 
         // only new contact or contact with etag that match
         $card = $this->backend()->getCard($this->sync->addressBookName(), $href);
 
-        return $card === false || $card['etag'] !== Arr::get($contact, '200.{DAV:}getetag');
+        return $card === false || $card['etag'] !== Arr::get($contact, 'properties.200.{DAV:}getetag');
     }
 
     /**
@@ -228,13 +228,13 @@ class AddressBookSynchronizer
         $data = collect($data);
 
         $updated = $data->filter(function ($contact): bool {
-            return isset($contact[200]);
+            return is_array($contact) && $contact['status'] === '200';
         })
             ->map(function ($contact, $href): ContactDto {
-                return new ContactDto($href, Arr::get($contact, '200.{DAV:}getetag'));
+                return new ContactDto($href, Arr::get($contact, 'properties.200.{DAV:}getetag'));
             });
         $deleted = $data->filter(function ($contact): bool {
-            return isset($contact[404]);
+            return is_array($contact) && $contact['status'] === '404';
         })
             ->map(function ($contact, $href): ContactDto {
                 return new ContactDeleteDto($href);

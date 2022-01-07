@@ -527,14 +527,17 @@ class DavClient
      *
      * [
      *   'url/to/resource' => [
-     *     '200' => [
-     *        '{DAV:}property1' => 'value1',
-     *        '{DAV:}property2' => 'value2',
+     *     'properties' => [
+     *       '200' => [
+     *          '{DAV:}property1' => 'value1',
+     *          '{DAV:}property2' => 'value2',
+     *       ],
+     *       '404' => [
+     *          '{DAV:}property1' => null,
+     *          '{DAV:}property2' => null,
+     *       ],
      *     ],
-     *     '404' => [
-     *        '{DAV:}property1' => null,
-     *        '{DAV:}property2' => null,
-     *     ],
+     *     'status' => 200,
      *   ],
      *   'url/to/resource2' => [
      *      .. etc ..
@@ -554,7 +557,10 @@ class DavClient
         $result = [];
 
         foreach ($multistatus->getResponses() as $response) {
-            $result[$response->getHref()] = $response->getResponseProperties();
+            $result[$response->getHref()] = [
+                'properties' => $response->getResponseProperties(),
+                'status' => $response->getHttpStatus() ?? '200',
+            ];
         }
 
         $synctoken = $multistatus->getSyncToken();
