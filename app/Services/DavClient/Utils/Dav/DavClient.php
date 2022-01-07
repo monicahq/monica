@@ -192,11 +192,11 @@ class DavClient
             reset($result);
             $result = current($result);
 
-            return Arr::get($result, 200, []);
+            return Arr::get($result, 'properties.200', []);
         }
 
         return array_map(function ($statusList) {
-            return Arr::get($statusList, 200, []);
+            return Arr::get($statusList, 'properties.200', []);
         }, $result);
     }
 
@@ -454,7 +454,7 @@ class DavClient
 
             $errorProperties = [];
             foreach ($result as $statusList) {
-                foreach ($statusList as $status => $properties) {
+                foreach ($statusList['properties'] as $status => $properties) {
                     if ($status >= 400) {
                         foreach ($properties as $propName => $propValue) {
                             $errorProperties[] = $propName.' ('.$status.')';

@@ -254,10 +254,13 @@ class DavClientTest extends TestCase
         $tester->assert();
         $this->assertEquals([
             'href' => [
-                200 => [
-                    '{DAV:}getetag' => '"00001-abcd1"',
-                    '{DAV:}test' => 'value',
+                'properties' => [
+                    200 => [
+                        '{DAV:}getetag' => '"00001-abcd1"',
+                        '{DAV:}test' => 'value',
+                    ],
                 ],
+                'status' => '200',
             ],
             'synctoken' => '"00001-abcd1"',
         ], $result);
@@ -296,10 +299,13 @@ class DavClientTest extends TestCase
         $tester->assert();
         $this->assertEquals([
             'href' => [
-                200 => [
-                    '{DAV:}getetag' => '"00001-abcd1"',
-                    '{DAV:}test' => 'value',
+                'properties' => [
+                    200 => [
+                        '{DAV:}getetag' => '"00001-abcd1"',
+                        '{DAV:}test' => 'value',
+                    ],
                 ],
+                'status' => '200',
             ],
             'synctoken' => '"00001-abcd1"',
         ], $result);
@@ -335,10 +341,13 @@ class DavClientTest extends TestCase
 
         $this->assertEquals([
             'href' => [
-                200 => [
-                    '{DAV:}getetag' => '"00001-abcd1"',
-                    '{DAV:}test' => 'value',
+                'properties' => [
+                    200 => [
+                        '{DAV:}getetag' => '"00001-abcd1"',
+                        '{DAV:}test' => 'value',
+                    ],
                 ],
+                'status' => '200',
             ],
         ], $result);
 
@@ -375,10 +384,13 @@ class DavClientTest extends TestCase
         $tester->assert();
         $this->assertEquals([
             'href' => [
-                200 => [
-                    '{DAV:}getetag' => '"00001-abcd1"',
-                    '{DAV:}test' => 'value',
+                'properties' => [
+                    200 => [
+                        '{DAV:}getetag' => '"00001-abcd1"',
+                        '{DAV:}test' => 'value',
+                    ],
                 ],
+                'status' => '200',
             ],
         ], $result);
     }
