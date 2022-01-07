@@ -72,7 +72,7 @@
       </li>
 
       <!-- case of no tags -->
-      <li v-show="contactTags.length == 0 && !editMode" class="di">
+      <li v-show="contactTags.length === 0 && !editMode" class="di">
         <span class="i mr2">
           {{ $t('people.tag_no_tags') }}
         </span>
@@ -110,7 +110,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     }
   },
 
@@ -154,7 +154,7 @@ export default {
     },
 
     onEnter() {
-      if (this.search != '') {
+      if (this.search !== '') {
         this.contactTags.push({
           id: moment().format(), // we just need a random ID here
           name: this.search
@@ -197,7 +197,7 @@ export default {
       var me = this.contactTags;
       var search = _.toLower(this.search);
       this.results = this.allTags.filter(item => _.toLower(item.name).indexOf(search) > -1
-                                                  && _.findIndex(me, t => t.name == item.name) < 0);
+                                                  && _.findIndex(me, t => t.name === item.name) < 0);
     },
 
     filterAllTags() {

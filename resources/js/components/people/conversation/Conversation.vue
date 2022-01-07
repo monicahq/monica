@@ -34,7 +34,7 @@
         <div :class="message.author + ' absolute'"></div>
         <message
           v-model="message.content"
-          :class="{ 'mb3 ml5': message.author == 'me', 'mb3 mr5': message.author == 'other' }"
+          :class="{ 'mb3 ml5': message.author === 'me', 'mb3 mr5': message.author === 'other' }"
           :author="message.author"
           :uid="message.uid"
           :participant-name="participantName"

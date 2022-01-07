@@ -132,7 +132,7 @@
     <!-- Delete Life Event type  -->
     <sweet-modal ref="deleteTypeModal" overlay-theme="dark" :title="$t('settings.personalization_life_event_type_modal_delete')">
       <form>
-        <div v-if="errorMessage != ''" class="form-error-message mb3">
+        <div v-if="errorMessage !== ''" class="form-error-message mb3">
           <div class="pa2">
             <p class="mb0">
               {{ errorMessage }}
@@ -200,7 +200,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     }
   },
 

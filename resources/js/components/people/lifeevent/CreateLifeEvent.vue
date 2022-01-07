@@ -4,16 +4,16 @@
 
     <div class="mt4 mw7 center mb3">
       <!-- Breadcrumb -->
-      <ul v-if="view == 'types' || view == 'add'" class="ba b--gray-monica pa2 mb2">
+      <ul v-if="view === 'types' || view === 'add'" class="ba b--gray-monica pa2 mb2">
         <li class="di">
           <a class="pointer" href="" @click.prevent="view = 'categories'">
             {{ $t('people.life_event_create_category') }}
           </a>
         </li>
-        <li v-if="view == 'types'" class="di">
+        <li v-if="view === 'types'" class="di">
           > {{ $t('people.life_event_category_' + activeCategory.default_life_event_category_key) }}
         </li>
-        <template v-else-if="view == 'add'">
+        <template v-else-if="view === 'add'">
           <li class="di">
             &gt; <a class="pointer" href="" @click.prevent="view = 'types'">
               {{ $t('people.life_event_category_' + activeCategory.default_life_event_category_key) }}
@@ -26,8 +26,8 @@
       </ul>
 
       <!-- List of events -->
-      <ul v-if="view != 'add'" class="ba b--gray-monica br2">
-        <template v-if="view == 'categories'">
+      <ul v-if="view !== 'add'" class="ba b--gray-monica br2">
+        <template v-if="view === 'categories'">
           <!-- CATEGORIES -->
           <li v-for="category in categories" :key="category.id" class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" @click="getType(category)">
             <div class="dib mr2">
@@ -43,7 +43,7 @@
           </li>
         </template>
 
-        <template v-else-if="view == 'types'">
+        <template v-else-if="view === 'types'">
           <!-- TYPES -->
           <li v-for="type in types" :key="type.id" class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" @click="displayAddScreen(type)">
             <div class="dib mr2">
@@ -207,7 +207,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     }
   },
 
@@ -261,10 +261,10 @@ export default {
      * Same for the month.
      */
     updateDate() {
-      if (this.selectedDay == 0) {
+      if (this.selectedDay === 0) {
         this.newLifeEvent.happened_at_day_unknown = true;
         this.newLifeEvent.happened_at = this.selectedYear + '-' + this.selectedMonth + '-01';
-      } else if (this.selectedMonth == 0) {
+      } else if (this.selectedMonth === 0) {
         this.newLifeEvent.happened_at_month_unknown = true;
         this.newLifeEvent.happened_at_day_unknown = true;
         this.newLifeEvent.happened_at = this.selectedYear + '-01-01';

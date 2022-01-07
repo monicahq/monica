@@ -34,7 +34,7 @@
   <div>
     <div class="relative">
       <!-- CHOSEN EMOTIONS -->
-      <ul v-show="chosenEmotions.length != 0" class="mr2 di">
+      <ul v-show="chosenEmotions.length !== 0" class="mr2 di">
         <li v-for="chosenEmotion in chosenEmotions" :key="chosenEmotion.id" class="dib emotion br5 mr2">
           <span class="ph2 pv1 dib">
             {{ $t('app.emotion_' + chosenEmotion.name) }}
@@ -53,7 +53,7 @@
         <!-- MENU OF EMOTIONS -->
         <ul v-show="menu" class="absolute emotion-action-menu bg-white z-max pv1">
           <!-- PRIMARY -->
-          <li v-for="primaryEmotion in primaryEmotions" v-show="emotionsMenu == 'primary'" :key="'primary' + primaryEmotion.id" class="pa2 pointer relative emotion-list-line" @click.prevent="showSecondary(primaryEmotion)">
+          <li v-for="primaryEmotion in primaryEmotions" v-show="emotionsMenu === 'primary'" :key="'primary' + primaryEmotion.id" class="pa2 pointer relative emotion-list-line" @click.prevent="showSecondary(primaryEmotion)">
             {{ $t('app.emotion_primary_' + primaryEmotion.name) }}
 
             <svg class="absolute emotion-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none"
@@ -64,12 +64,12 @@
           </li>
 
           <!-- SECONDARY -->
-          <li v-show="emotionsMenu == 'secondary'" class="pa2 pointer bb b--gray-monica">
+          <li v-show="emotionsMenu === 'secondary'" class="pa2 pointer bb b--gray-monica">
             <a class="no-underline" @click.prevent="emotionsMenu = 'primary'">
               ← {{ $t('app.back') }}
             </a>
           </li>
-          <li v-for="secondaryEmotion in secondaryEmotions" v-show="emotionsMenu == 'secondary'" :key="'secondary' + secondaryEmotion.id" class="pa2 pointer relative emotion-list-line" @click.prevent="showEmotion(secondaryEmotion)">
+          <li v-for="secondaryEmotion in secondaryEmotions" v-show="emotionsMenu === 'secondary'" :key="'secondary' + secondaryEmotion.id" class="pa2 pointer relative emotion-list-line" @click.prevent="showEmotion(secondaryEmotion)">
             {{ $t('app.emotion_secondary_' + secondaryEmotion.name) }}
 
             <svg class="absolute emotion-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none"
@@ -80,12 +80,12 @@
           </li>
 
           <!-- EMOTION -->
-          <li v-show="emotionsMenu == 'emotions'" class="pa2 pointer bb b--gray-monica">
+          <li v-show="emotionsMenu === 'emotions'" class="pa2 pointer bb b--gray-monica">
             <a class="no-underline" @click.prevent="emotionsMenu = 'secondary'">
               ← {{ $t('app.back') }}
             </a>
           </li>
-          <li v-for="emotion in emotions" v-show="emotionsMenu == 'emotions'" :key="emotion.id" class="pa2 pointer emotion-list-line" @click.prevent="addEmotion(emotion)">
+          <li v-for="emotion in emotions" v-show="emotionsMenu === 'emotions'" :key="emotion.id" class="pa2 pointer emotion-list-line" @click.prevent="addEmotion(emotion)">
             {{ $t('app.emotion_' + emotion.name) }}
           </li>
         </ul>

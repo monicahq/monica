@@ -4,24 +4,24 @@
 
     <div class="pa3 bb b--gray-monica tc">
       <ul>
-        <li :class="[activeTab == 'calls' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']" @click.prevent="setActiveTab('calls')">
+        <li :class="[activeTab === 'calls' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']" @click.prevent="setActiveTab('calls')">
           {{ $t('dashboard.tab_recent_calls') }}
         </li>
-        <li :class="[activeTab == 'notes' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']" @click.prevent="setActiveTab('notes')">
+        <li :class="[activeTab === 'notes' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']" @click.prevent="setActiveTab('notes')">
           {{ $t('dashboard.tab_favorite_notes') }}
         </li>
-        <li :class="[activeTab == 'debts' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']" @click.prevent="setActiveTab('debts')">
+        <li :class="[activeTab === 'debts' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']" @click.prevent="setActiveTab('debts')">
           {{ $t('dashboard.tab_debts') }}
         </li>
-        <li :class="[activeTab == 'tasks' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']" @click.prevent="setActiveTab('tasks')">
+        <li :class="[activeTab === 'tasks' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']" @click.prevent="setActiveTab('tasks')">
           {{ $t('dashboard.tab_tasks') }}
         </li>
       </ul>
     </div>
     <div class="pa4">
       <!-- Calls -->
-      <div v-if="activeTab == 'calls'">
-        <ul v-if="calls.length != 0">
+      <div v-if="activeTab === 'calls'">
+        <ul v-if="calls.length !== 0">
           <li v-for="call in calls" :key="call.id" class="pb2">
             <svg id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
                  y="0px" viewBox="0 0 473.806 473.806" style="enable-background:new 0 0 473.806 473.806;" xml:space="preserve" width="15px"
@@ -54,8 +54,8 @@
       </div>
 
       <!-- Notes -->
-      <div v-else-if="activeTab == 'notes'">
-        <template v-if="notes.length != 0">
+      <div v-else-if="activeTab === 'notes'">
+        <template v-if="notes.length !== 0">
           <div v-for="note in notes" :key="note.id" class="pb3 cf">
             <div class="fl w-10">
               <avatar :contact="note.contact" :clickable="true" />
@@ -113,8 +113,8 @@
       </div>
 
       <!-- Debts -->
-      <div v-else-if="activeTab == 'debts'">
-        <ul v-if="debts.length != 0">
+      <div v-else-if="activeTab === 'debts'">
+        <ul v-if="debts.length !== 0">
           <li v-for="debt in debts" :key="debt.id" class="pb2">
             <span class="black-50 mr1 f6">
               {{ debt.created_at | formatDate }}
@@ -129,7 +129,7 @@
               •
             </span>
             {{ debt.amount_with_currency }}
-            <span v-if="debt.in_debt == 'yes'" class="black-50 f6">
+            <span v-if="debt.in_debt === 'yes'" class="black-50 f6">
               <span class="mr1 black-50">
                 •
               </span>
@@ -145,15 +145,15 @@
       </div>
 
       <!-- Tasks -->
-      <div v-if="activeTab == 'tasks'">
+      <div v-if="activeTab === 'tasks'">
         <ul class="tc mb3">
           <li class="di mr4">
-            <span :class="[contactRelatedTasksView == true ? 'b' : 'pointer']" @click.prevent="contactRelatedTasksView = true">
+            <span :class="[contactRelatedTasksView === true ? 'b' : 'pointer']" @click.prevent="contactRelatedTasksView = true">
               {{ $t('dashboard.tasks_tab_your_contacts') }} ({{ contactRelated(tasks).length }})
             </span>
           </li>
           <li class="di">
-            <span :class="[contactRelatedTasksView == true ? 'pointer' : 'b']" @click.prevent="contactRelatedTasksView = false">
+            <span :class="[contactRelatedTasksView === true ? 'pointer' : 'b']" @click.prevent="contactRelatedTasksView = false">
               {{ $t('dashboard.tasks_tab_your_tasks') }} ({{ customNotCompleted(tasks).length }})
             </span>
           </li>
@@ -176,7 +176,7 @@
         </div>
 
         <!-- Tasks: list of contact related tasks -->
-        <div v-if="contactRelated(tasks).length != 0 && contactRelatedTasksView">
+        <div v-if="contactRelated(tasks).length !== 0 && contactRelatedTasksView">
           <ul>
             <li v-for="task in contactRelated(tasks)" :key="task.id" class="pb0 mb2">
               <form-checkbox
@@ -199,7 +199,7 @@
         <!-- Tasks: list of non contact related tasks -->
         <div v-if="!contactRelatedTasksView">
           <!-- Your tasks: Blank state -->
-          <div v-if="customNotCompleted(tasks).length == 0" class="tc mt4 mb4">
+          <div v-if="customNotCompleted(tasks).length === 0" class="tc mt4 mb4">
             <p class="mb4">
               <a v-show="!taskAddMode" class="btn pointer" href="" @click.prevent="taskAddMode = true">
                 {{ $t('dashboard.task_add_cta') }}
@@ -209,14 +209,14 @@
           </div>
 
           <!-- Add a task -->
-          <p v-if="customNotCompleted(tasks).length != 0">
+          <p v-if="customNotCompleted(tasks).length !== 0">
             <a v-show="!taskAddMode" class="pointer" href="" @click.prevent="taskAddMode = true">
               {{ $t('dashboard.task_add_cta') }}
             </a>
           </p>
 
           <!-- Actual list -->
-          <ul v-if="customNotCompleted(tasks).length != 0">
+          <ul v-if="customNotCompleted(tasks).length !== 0">
             <li v-for="task in customNotCompleted(tasks)" :key="task.id" class="pb0 mb2" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
               <form-checkbox
                 v-model.lazy="task.completed"
@@ -226,10 +226,10 @@
               >
                 {{ task.title }}
               </form-checkbox>
-              <a v-show="showTaskAction == task.id" class="pointer mr1" href="" @click.prevent="confirmDestroyTask = task.id">
+              <a v-show="showTaskAction === task.id" class="pointer mr1" href="" @click.prevent="confirmDestroyTask = task.id">
                 {{ $t('app.delete') }}
               </a>
-              <ul v-show="confirmDestroyTask == task.id" class="di">
+              <ul v-show="confirmDestroyTask === task.id" class="di">
                 <li class="di">
                   <a class="pointer mr1" href="" @click.prevent="confirmDestroyTask = 0">
                     {{ $t('app.cancel') }}
@@ -244,7 +244,7 @@
             </li>
           </ul>
 
-          <ul v-if="customCompleted(tasks).length != 0 && !contactRelatedTasksView">
+          <ul v-if="customCompleted(tasks).length !== 0 && !contactRelatedTasksView">
             <li v-for="task in customCompleted(tasks)" :key="task.id" class="pb0 mb0 f6" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
               <form-checkbox
                 v-model.lazy="task.completed"
@@ -254,10 +254,10 @@
               >
                 {{ task.title }}
               </form-checkbox>
-              <a v-show="showTaskAction == task.id" class="pointer mr1" href="" @click.prevent="confirmDestroyTask = task.id">
+              <a v-show="showTaskAction === task.id" class="pointer mr1" href="" @click.prevent="confirmDestroyTask = task.id">
                 {{ $t('app.delete') }}
               </a>
-              <ul v-show="confirmDestroyTask == task.id" class="di">
+              <ul v-show="confirmDestroyTask === task.id" class="di">
                 <li class="di">
                   <a class="pointer mr1" href="" @click.prevent="confirmDestroyTask = 0">
                     {{ $t('app.cancel') }}
@@ -365,9 +365,7 @@ export default {
     },
 
     saveTab(view) {
-      axios.post('dashboard/setTab', {'tab':view})
-        .then(response => {
-        });
+      axios.post('dashboard/setTab', {'tab':view});
     },
 
     getCalls() {
@@ -415,7 +413,7 @@ export default {
     // All the contact related tasks
     contactRelated: function (tasks) {
       return tasks.filter(function (task) {
-        return task.contact != null && !task.completed;
+        return task.contact !== null && !task.completed;
       });
     },
 

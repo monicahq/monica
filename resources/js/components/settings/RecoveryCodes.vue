@@ -69,7 +69,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     },
     usedHelp() {
       return this.$t('settings.recovery_already_used_help');
