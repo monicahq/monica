@@ -17,9 +17,9 @@ jobs:
       uses: crowdin/github-action@1.4.4
       with:
         upload_sources: true
-        upload_sources_args: '--tree'
+        upload_sources_args: --tree
         upload_translations: true
-        upload_translations_args: '--tree'
+        upload_translations_args: --tree
         download_translations: false
         config: crowdin.yml
       env:
