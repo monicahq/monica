@@ -21,8 +21,7 @@ jobs:
         upload_translations: true
         upload_translations_args: '--tree'
         download_translations: false
-        config: 'crowdin.yml'
-        dryrun_action: true
+        config: crowdin.yml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
