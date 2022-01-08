@@ -26,3 +26,9 @@ files:
         zh-TW: zh-TW
   - source: /resources/lang/en.json
     translation: /resources/lang/%two_letters_code%.json
+    languages_mapping:
+      two_letters_code:
+        en-GB: en-GB
+        pt-BR: pt-BR
+        zh-CN: zh
+        zh-TW: zh-TW
