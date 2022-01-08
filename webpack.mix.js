@@ -18,7 +18,6 @@ mix.webpackConfig({
         'id',
         'it',
         'nl',
-        'no',
         'pt-BR',
         'ru',
         'sv',
