@@ -200,7 +200,7 @@ return [
 
     'relationship_type_stepchild' => 'stepchild',
     'relationship_type_stepchild_female' => 'stepdaughter',
-    'relationship_type_stepchild_female' => 'stepson',
+    'relationship_type_stepchild_male' => 'stepson',
     'relationship_type_stepchild_with_name' => ':name’s stepchild',
     'relationship_type_stepchild_female_with_name' => ':name’s stepdaughter',
     'relationship_type_stepchild_male_with_name' => ':name’s stepson',
