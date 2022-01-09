@@ -157,7 +157,7 @@ class SettingsController extends Controller
         $user = $request->user();
         $account = $user->account;
 
-        app(ResetAccount::class)->execute([
+        ResetAccount::dispatch([
             'account_id' => $account->id,
         ]);
 

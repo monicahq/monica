@@ -4,8 +4,6 @@ namespace App\Services\Account\Settings;
 
 use App\Services\BaseService;
 use App\Models\Contact\Document;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class DestroyAllDocuments extends BaseService
 {
@@ -35,12 +33,6 @@ class DestroyAllDocuments extends BaseService
                                 ->get();
 
         foreach ($documents as $document) {
-            try {
-                Storage::delete($document->new_filename);
-            } catch (FileNotFoundException $e) {
-                continue;
-            }
-
             $document->delete();
         }
 

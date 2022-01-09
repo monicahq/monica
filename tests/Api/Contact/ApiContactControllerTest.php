@@ -1381,6 +1381,7 @@ class ApiContactControllerTest extends ApiTestCase
         $this->assertDatabaseMissing('contacts', [
             'account_id' => $user->account_id,
             'id' => $contact->id,
+            'deleted_at' => null,
         ]);
     }
 

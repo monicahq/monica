@@ -25,7 +25,9 @@ use IlluminateAgnostic\Arr\Support\Arr;
 use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Prunable;
 use App\Models\ModelBindingHasher as Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -42,7 +44,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
  */
 class Contact extends Model
 {
-    use Searchable;
+    use Searchable, SoftDeletes, Prunable;
 
     /** @var array<string> */
     protected $dates = [
@@ -1179,10 +1181,12 @@ class Contact extends Model
     /**
      * Delete avatars files.
      * This does not touch avatar_location or avatar_file_name properties of the contact.
+     *
+     * @param  bool  $force
      */
-    public function deleteAvatars()
+    public function deleteAvatars(bool $force = false)
     {
-        if (! $this->has_avatar || $this->avatar_location == 'external') {
+        if (! $force && (! $this->has_avatar || $this->avatar_location == 'external')) {
             return;
         }
 
@@ -1563,5 +1567,27 @@ class Contact extends Model
                 trans('people.archived_contact_readonly'),
             ]);
         }
+    }
+
+    /**
+     * Get the prunable model query.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     * @codeCoverageIgnore
+     */
+    public function prunable()
+    {
+        return static::where('deleted_at', '<=', now()->subWeek());
+    }
+
+    /**
+     * Prepare the model for pruning.
+     *
+     * @return void
+     * @codeCoverageIgnore
+     */
+    protected function pruning()
+    {
+        $this->deleteAvatars(true);
     }
 }

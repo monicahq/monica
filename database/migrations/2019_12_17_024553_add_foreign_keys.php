@@ -634,7 +634,7 @@ class AddForeignKeys extends Migration
             try {
                 $this->accountExistOrFail($contact->account_id);
             } catch (ModelNotFoundException $e) {
-                $contact->delete();
+                $contact->forceDelete();
                 continue;
             }
         }

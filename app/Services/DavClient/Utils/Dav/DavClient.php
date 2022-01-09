@@ -192,11 +192,11 @@ class DavClient
             reset($result);
             $result = current($result);
 
-            return Arr::get($result, 200, []);
+            return Arr::get($result, 'properties.200', []);
         }
 
         return array_map(function ($statusList) {
-            return Arr::get($statusList, 200, []);
+            return Arr::get($statusList, 'properties.200', []);
         }, $result);
     }
 
@@ -454,7 +454,7 @@ class DavClient
 
             $errorProperties = [];
             foreach ($result as $statusList) {
-                foreach ($statusList as $status => $properties) {
+                foreach ($statusList['properties'] as $status => $properties) {
                     if ($status >= 400) {
                         foreach ($properties as $propName => $propValue) {
                             $errorProperties[] = $propName.' ('.$status.')';
@@ -527,14 +527,17 @@ class DavClient
      *
      * [
      *   'url/to/resource' => [
-     *     '200' => [
-     *        '{DAV:}property1' => 'value1',
-     *        '{DAV:}property2' => 'value2',
+     *     'properties' => [
+     *       '200' => [
+     *          '{DAV:}property1' => 'value1',
+     *          '{DAV:}property2' => 'value2',
+     *       ],
+     *       '404' => [
+     *          '{DAV:}property1' => null,
+     *          '{DAV:}property2' => null,
+     *       ],
      *     ],
-     *     '404' => [
-     *        '{DAV:}property1' => null,
-     *        '{DAV:}property2' => null,
-     *     ],
+     *     'status' => 200,
      *   ],
      *   'url/to/resource2' => [
      *      .. etc ..
@@ -554,7 +557,10 @@ class DavClient
         $result = [];
 
         foreach ($multistatus->getResponses() as $response) {
-            $result[$response->getHref()] = $response->getResponseProperties();
+            $result[$response->getHref()] = [
+                'properties' => $response->getResponseProperties(),
+                'status' => $response->getHttpStatus() ?? '200',
+            ];
         }
 
         $synctoken = $multistatus->getSyncToken();

@@ -38,6 +38,7 @@ class Kernel extends ConsoleKernel
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
+     * @codeCoverageIgnore
      */
     protected function schedule(Schedule $schedule)
     {
@@ -50,22 +51,25 @@ class Kernel extends ConsoleKernel
         $this->scheduleCommand($schedule, 'monica:clean', 'daily');
         $this->scheduleCommand($schedule, 'monica:updategravatars', 'weekly');
         if (config('trustedproxy.cloudflare')) {
-            $this->scheduleCommand($schedule, 'cloudflare:reload', 'daily'); // @codeCoverageIgnore
+            $this->scheduleCommand($schedule, 'cloudflare:reload', 'daily');
         }
+        $this->scheduleCommand($schedule, 'model:prune', 'daily');
     }
 
     /**
      * Define a new schedule command with a frequency.
+     *
+     * @codeCoverageIgnore
      */
     private function scheduleCommand(Schedule $schedule, string $command, $frequency)
     {
         $schedule->command($command)->when(function () use ($command, $frequency) {
-            $event = CronEvent::command($command); // @codeCoverageIgnore
-            if ($frequency) { // @codeCoverageIgnore
-                $event = $event->$frequency(); // @codeCoverageIgnore
+            $event = CronEvent::command($command);
+            if ($frequency) {
+                $event = $event->$frequency();
             }
 
-            return $event->isDue(); // @codeCoverageIgnore
+            return $event->isDue();
         });
     }
 }

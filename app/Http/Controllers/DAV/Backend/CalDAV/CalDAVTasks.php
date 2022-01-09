@@ -50,6 +50,17 @@ class CalDAVTasks extends AbstractCalDAVBackend
     }
 
     /**
+     * Returns the collection of deleted tasks.
+     *
+     * @param  string|null  $collectionId
+     * @return \Illuminate\Support\Collection
+     */
+    public function getDeletedObjects($collectionId)
+    {
+        return collect();
+    }
+
+    /**
      * Returns the contact for the specific uuid.
      *
      * @param  mixed|null  $collectionId

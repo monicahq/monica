@@ -87,4 +87,21 @@ class Photo extends Model
             return null;
         }
     }
+
+    /**
+     * Delete the model from the database.
+     *
+     * @return bool|null
+     */
+    public function delete()
+    {
+        try {
+            Storage::disk(config('filesystems.default'))
+                ->delete($this->new_filename);
+        } catch (FileNotFoundException $e) {
+            // continue
+        }
+
+        return parent::delete();
+    }
 }

@@ -23,6 +23,7 @@ class DestroyContact extends BaseService implements QueuableService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_id' => 'required|integer|exists:contacts,id',
+            'force_delete' => 'nullable|boolean',
         ];
     }
 
@@ -44,7 +45,12 @@ class DestroyContact extends BaseService implements QueuableService
         $this->destroyRelationships($data, $contact);
 
         $contact->deleteAvatars();
-        $contact->delete();
+
+        if ($this->valueOrFalse($data, 'force_delete') === true) {
+            $contact->forceDelete();
+        } else {
+            $contact->delete();
+        }
     }
 
     /**

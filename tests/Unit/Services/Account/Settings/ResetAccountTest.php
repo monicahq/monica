@@ -45,10 +45,11 @@ class ResetAccountTest extends TestCase
             'account_id' => $user->account_id,
         ];
 
-        app(ResetAccount::class)->execute($request);
+        app(ResetAccount::class)->handle($request);
 
         $this->assertDatabaseMissing('contacts', [
             'account_id' => $user->account_id,
+            'deleted_at' => null,
         ]);
         $this->assertDatabaseMissing('activities', [
             'account_id' => $user->account_id,
@@ -61,6 +62,6 @@ class ResetAccountTest extends TestCase
         $request = [];
 
         $this->expectException(ValidationException::class);
-        app(ResetAccount::class)->execute($request);
+        app(ResetAccount::class)->handle($request);
     }
 }
