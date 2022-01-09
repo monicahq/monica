@@ -27,8 +27,8 @@
 
     <!-- Contact has a frequency set -->
     <div v-else class="di">
-      <span v-tooltip.bottom="$t('people.stay_in_touch_next_date', { date: formatDate(next_trigger_date) })" class="bb dashed dib pointer nowrap-link">
-        {{ $tc('people.stay_in_touch_frequency', frequency, { count: frequency }) }}
+      <span v-tooltip.bottom="$t('people.stay_in_touch_next_date', { date: formatDate(nextTriggerDate) })" class="bb dashed dib pointer nowrap-link">
+        {{ $tc('people.stay_in_touch_frequency', frequencyInput, { count: frequencyInput }) }}
       </span>
       <a class="pointer" href="" @click.prevent="showUpdate">
         {{ $t('app.edit') }}
@@ -121,7 +121,7 @@
             </div>
           </div>
           <p class="mt3 b mb3" :class="[ dirltr ? 'tl' : 'tr' ]">
-            {{ $t('people.stay_in_touch_modal_desc', { firstname: contact.first_name }) }}
+            {{ $t('people.stay_in_touch_modal_desc', { firstname: firstName }) }}
           </p>
           <div class="mb2">
             <toggle-button class="mr2" :sync="true" :labels="true" :value="stateInput" @change="stateInput = !stateInput" />
@@ -188,8 +188,16 @@ export default {
       type: String,
       default: '',
     },
-    contact: {
-      type: Object,
+    firstName: {
+      type: String,
+      default: '',
+    },
+    frequency: {
+      type: Number,
+      default: 0,
+    },
+    triggerDate: {
+      type: String,
       default: null,
     },
     limited: {
@@ -207,10 +215,10 @@ export default {
 
   data() {
     return {
-      frequency: 0,
       isActive: false,
       errorMessage: '',
       frequencyInput: 0,
+      nextTriggerDate: null,
       stateInput: false,
     };
   },
@@ -227,19 +235,14 @@ export default {
 
   methods: {
     prepareComponent() {
-      if (this.contact.stay_in_touch_frequency === null) {
-        this.frequency = 0;
-      } else {
-        this.frequency = parseInt(this.contact.stay_in_touch_frequency);
-        this.next_trigger_date = this.contact.stay_in_touch_trigger_date;
-      }
       this.isActive = (this.frequency > 0);
 
       // record initial values when the component loads so we can
       // put those values back if user puts wrong values when updating
       // the counter
       this.stateInput = this.isActive;
-      this.frequencyInput = this.frequency;
+      this.frequencyInput = this.frequency ?? 0;
+      this.nextTriggerDate = this.triggerDate;
     },
 
     formatDate(dateAsString) {
@@ -278,8 +281,7 @@ export default {
         .then(response => {
           this.$refs.updateModal.close();
           this.isActive = this.stateInput;
-          this.frequency = this.frequencyInput;
-          this.next_trigger_date = response.data.trigger_date;
+          this.nextTriggerDate = response.data.trigger_date;
 
           this.$notify({
             group: 'main',

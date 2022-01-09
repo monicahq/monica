@@ -153,6 +153,12 @@ export default {
     };
   },
 
+  computed: {
+    dirltr() {
+      return this.$root.htmldir === 'ltr';
+    }
+  },
+
   mounted() {
     this.prepareComponent();
   },

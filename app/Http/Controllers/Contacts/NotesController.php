@@ -25,7 +25,7 @@ class NotesController extends Controller
                 'body' => $note->body,
                 'is_favorited' => $note->is_favorited,
                 'favorited_at' => $note->favorited_at,
-                'favorited_at_short' => DateHelper::getShortDate($note->favorited_at),
+                'favorited_at_short' => $note->favorited_at ? DateHelper::getShortDate($note->favorited_at) : null,
                 'created_at' => $note->created_at,
                 'created_at_short' => DateHelper::getShortDate($note->created_at),
                 'edit' => false,
