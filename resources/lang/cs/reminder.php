@@ -12,6 +12,5 @@ return [
     'type_lunch' => 'Oběd s',
     'type_hangout' => 'Setkání s',
     'type_email' => 'Email',
-    'type_birthday_kid' => 'Popřát k narozeninám dítěti od',
-
+    'type_birthday_kid' => 'Wish happy birthday to the child of',
 ];
