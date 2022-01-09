@@ -12,6 +12,5 @@ return [
     'type_lunch' => 'Öğle yemeği',
     'type_hangout' => 'Birlikte takıl',
     'type_email' => 'E-posta',
-    'type_birthday_kid' => 'Çocuğuna mutlu yıllar dile',
-
+    'type_birthday_kid' => 'Wish happy birthday to the child of',
 ];
