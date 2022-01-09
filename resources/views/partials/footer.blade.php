@@ -17,7 +17,9 @@
         <ul>
           <li class="di"><a href="https://monicahq.com/changelog" hreflang="en">{{ trans('app.footer_release') }}</a></li>
           <li class="di ml2"><a href="https://github.com/monicahq/monica">{{ trans('app.footer_source_code') }}</a></li>
-          <li class="di ml2">{{ trans('app.footer_version', ['version' => config('monica.app_version')]) }}</li>
+          @if (($version = config('monica.app_version')) !== '')
+            <li class="di ml2">{{ trans('app.footer_version', ['version' => $version]) }}</li>
+          @endif
 
           @include('partials.check')
         </ul>
