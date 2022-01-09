@@ -74,4 +74,6 @@ return [
     'group_type_club' => 'Club',
     'group_type_association' => 'Association',
     'group_type_roomates' => 'Roomates',
+
+    'module_notes' => 'Notes',
 ];

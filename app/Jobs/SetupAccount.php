@@ -13,6 +13,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Services\Account\ManageGenders\CreateGender;
+use App\Services\Account\ManageTemplate\CreateModule;
 use App\Services\Account\ManagePronouns\CreatePronoun;
 use App\Services\Account\ManageTemplate\CreateTemplate;
 use App\Services\Account\ManageTemplate\CreateAttribute;
@@ -67,6 +68,7 @@ class SetupAccount implements ShouldQueue
     {
         $this->addTemplate();
         $this->addTemplatePages();
+        $this->addModules();
         $this->addFirstInformation();
     }
 
@@ -97,6 +99,23 @@ class SetupAccount implements ShouldQueue
         ];
 
         (new CreateTemplatePage)->execute($request);
+    }
+
+    /**
+     * Add the default modules.
+     *
+     * @return void
+     */
+    private function addModules(): void
+    {
+        $request = [
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'name' => trans('app.module_notes'),
+            'can_be_deleted' => false,
+        ];
+
+        (new CreateModule)->execute($request);
     }
 
     /**

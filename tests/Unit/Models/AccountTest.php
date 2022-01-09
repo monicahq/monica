@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Label;
 use App\Models\Gender;
+use App\Models\Module;
 use App\Models\Account;
 use App\Models\Pronoun;
 use App\Models\Template;
@@ -41,6 +42,17 @@ class AccountTest extends TestCase
         ]);
 
         $this->assertTrue($account->templates()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_modules()
+    {
+        $account = Account::factory()->create();
+        Module::factory(2)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->modules()->exists());
     }
 
     /** @test */

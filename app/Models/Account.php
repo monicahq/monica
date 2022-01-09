@@ -31,6 +31,16 @@ class Account extends Model
     }
 
     /**
+     * Get the modules associated with the account.
+     *
+     * @return HasMany
+     */
+    public function modules()
+    {
+        return $this->hasMany(Module::class);
+    }
+
+    /**
      * Get the information associated with the account.
      *
      * Note to future reader of this code: i KNOW that information doesn't take

@@ -353,5 +353,10 @@ class SetupAccountTest extends TestCase
             'account_id' => $regis->account_id,
             'name' => trans('account.pets_other'),
         ]);
+
+        $this->assertDatabaseHas('modules', [
+            'account_id' => $regis->account_id,
+            'name' => trans('app.module_notes'),
+        ]);
     }
 }

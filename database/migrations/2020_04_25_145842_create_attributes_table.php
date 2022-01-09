@@ -85,6 +85,8 @@ class CreateAttributesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('templates');
+        Schema::dropIfExists('template_pages');
+        Schema::dropIfExists('modules');
         Schema::dropIfExists('attributes');
         Schema::dropIfExists('attribute_default_values');
         Schema::dropIfExists('attribute_template');
