@@ -12,6 +12,5 @@ return [
     'type_lunch' => 'Пообедать с',
     'type_hangout' => 'Тусоваться с',
     'type_email' => 'Адрес электронной почты',
-    'type_birthday_kid' => 'Поздравить его(её) ребёнка с днём рождения',
-
+    'type_birthday_kid' => 'Wish happy birthday to the child of',
 ];
