@@ -1,0 +1,7 @@
+{
+    "The :attribute must contain at least one uppercase and one lowercase letter.": ":attribute 必须至少包含一个大写字母和一个小写字母。",
+    "The :attribute must contain at least one letter.": ":attribute 必须包含至少一个字母。",
+    "The :attribute must contain at least one symbol.": ":attribute 必须至少包含一个符号。",
+    "The :attribute must contain at least one number.": ":attribute 必须至少包含一个数字。",
+    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": "The given :attribute has appeared in a data leak. Please choose a different :attribute."
+}

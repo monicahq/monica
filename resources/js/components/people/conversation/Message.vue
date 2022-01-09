@@ -36,7 +36,7 @@
       </span>
       <div class="di mr3">
         <input :id="'other_' + uid" v-model="updatedAuthor" class="pointer" type="radio" :name="'who_wrote_' + uid"
-               value="other" :checked="updatedAuthor == 'other'" @click="updateAuthor('other')"
+               value="other" :checked="updatedAuthor === 'other'" @click="updateAuthor('other')"
         />
         <label :for="'other_' + uid" class="pointer">
           {{ participantName }}
@@ -44,7 +44,7 @@
       </div>
       <div class="di">
         <input :id="'me_' + uid" v-model="updatedAuthor" class="pointer" type="radio" :name="'who_wrote_' + uid"
-               value="me" :checked="updatedAuthor == 'me'" @click="updateAuthor('me')"
+               value="me" :checked="updatedAuthor === 'me'" @click="updateAuthor('me')"
         />
         <label :for="'me_' + uid" class="pointer">
           {{ $t('people.conversation_add_you') }}
@@ -111,7 +111,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     }
   },
 

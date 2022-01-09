@@ -1,0 +1,7 @@
+{
+    "The :attribute must contain at least one uppercase and one lowercase letter.": "Поле :attribute должно содержать как минимум по одному символу в нижнем и верхнем регистрах.",
+    "The :attribute must contain at least one letter.": "Поле :attribute должно содержать минимум одну букву.",
+    "The :attribute must contain at least one symbol.": "Поле :attribute должно содержать минимум один спец символ.",
+    "The :attribute must contain at least one number.": "Поле :attribute должно содержать минимум одну цифру.",
+    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": "Значение поля :attribute обнаружено в утечке данных. Пожалуйста, укажите другое значение для :attribute."
+}

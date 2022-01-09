@@ -5,7 +5,7 @@
         ☎️&#8199;{{ $t('people.call_title') }}
 
         <span class="fr relative" style="top: -7px;">
-          <a v-if="displayLogCall == false" v-cy-name="'add-call-button'" class="btn edit-information" href="" @click.prevent="displayLogCall = true">
+          <a v-if="displayLogCall === false" v-cy-name="'add-call-button'" class="btn edit-information" href="" @click.prevent="displayLogCall = true">
             {{ $t('people.call_button') }}
           </a>
           <a v-if="displayLogCall" class="btn edit-information" href="" @click.prevent="displayLogCall = false">
@@ -16,7 +16,7 @@
     </div>
 
     <!-- BLANK STATE -->
-    <div v-if="!displayLogCall && calls.length == 0" v-cy-name="'calls-blank-state'" class="w-100">
+    <div v-if="!displayLogCall && calls.length === 0" v-cy-name="'calls-blank-state'" class="w-100">
       <div class="bg-near-white tc pa3 br2 ba b--light-gray">
         <p>{{ $t('people.call_blank_title', { name: name }) }}</p>
         <a class="pointer" href="" @click.prevent="displayLogCall = true">
@@ -120,7 +120,7 @@
     <!-- LIST OF CALLS -->
     <div v-cy-name="'calls-body'" v-cy-items="calls.map(c => c.id)">
       <div v-for="call in calls" :key="call.id" v-cy-name="'call-body-'+call.id" class="ba br2 b--black-10 br--top w-100 mb2">
-        <div v-show="editCallId != call.id" class="pa2">
+        <div v-show="editCallId !== call.id" class="pa2">
           <span v-if="!call.content">
             {{ $t('people.call_blank_desc', { name: call.contact.first_name }) }}
           </span>
@@ -128,7 +128,7 @@
         </div>
 
         <!-- INLINE UPDATE DIV -->
-        <div v-show="editCallId == call.id" class="pa2">
+        <div v-show="editCallId === call.id" class="pa2">
           <div>
             <form-textarea
               v-model="editCall.content"
@@ -216,7 +216,7 @@
             </span>
 
             <!-- EMOTION LIST -->
-            <span v-if="call.emotions.length != 0">
+            <span v-if="call.emotions.length !== 0">
               <span :class="[ dirltr ? 'mr2' : 'ml2' ]">
                 {{ $t('people.call_emotions') }}
               </span>
@@ -232,10 +232,10 @@
             <a :class="[ dirltr ? 'mr2' : 'ml2' ]" class="pointer " href="" @click.prevent="showEditBox(call)">
               {{ $t('app.update') }}
             </a>
-            <a v-show="destroyCallId != call.id" v-cy-name="'delete-call-button-'+call.id" class="pointer" href="" @click.prevent="showDestroyCall(call)">
+            <a v-show="destroyCallId !== call.id" v-cy-name="'delete-call-button-'+call.id" class="pointer" href="" @click.prevent="showDestroyCall(call)">
               {{ $t('app.delete') }}
             </a>
-            <ul v-show="destroyCallId == call.id" class="di">
+            <ul v-show="destroyCallId === call.id" class="di">
               <li class="di">
                 <a class="pointer mr1" href="" @click.prevent="destroyCallId = 0">
                   {{ $t('app.cancel') }}
@@ -304,7 +304,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     },
     locale() {
       return this.$root.locale;

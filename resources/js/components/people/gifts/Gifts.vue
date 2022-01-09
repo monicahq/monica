@@ -30,21 +30,21 @@
     <div>
       <ul class="mb3">
         <li class="di">
-          <p class="di pointer" :class="[activeTab == 'idea' ? 'b' : 'black-50', dirltr ? 'mr3' : 'ml3']"
+          <p class="di pointer" :class="[activeTab === 'idea' ? 'b' : 'black-50', dirltr ? 'mr3' : 'ml3']"
              @click.prevent="setActiveTab('idea')"
           >
             {{ $t('people.gifts_ideas') }} ({{ ideas.length }})
           </p>
         </li>
         <li class="di">
-          <p class="di pointer" :class="[activeTab == 'offered' ? 'b' : 'black-50', dirltr ? 'mr3' : 'ml3']"
+          <p class="di pointer" :class="[activeTab === 'offered' ? 'b' : 'black-50', dirltr ? 'mr3' : 'ml3']"
              @click.prevent="setActiveTab('offered')"
           >
             {{ $t('people.gifts_offered') }} ({{ offered.length }})
           </p>
         </li>
         <li class="di">
-          <p class="di pointer" :class="[activeTab == 'received' ? 'b' : 'black-50', dirltr ? 'mr3' : 'ml3']"
+          <p class="di pointer" :class="[activeTab === 'received' ? 'b' : 'black-50', dirltr ? 'mr3' : 'ml3']"
              @click.prevent="setActiveTab('received')"
           >
             {{ $t('people.gifts_received') }} ({{ received.length }})
@@ -58,10 +58,10 @@
               @update="($event) => { updateList($event) }"
         >
           <div :class="dirltr ? 'fl' : 'fr'">
-            <a v-if="gift.status == 'idea'" class="di" href="" @click.prevent="toggle(gift)">
+            <a v-if="gift.status === 'idea'" class="di" href="" @click.prevent="toggle(gift)">
               {{ $t('people.gifts_mark_offered') }}
             </a>
-            <a v-if="gift.status == 'offered'" class="di" href="" @click.prevent="toggle(gift)">
+            <a v-if="gift.status === 'offered'" class="di" href="" @click.prevent="toggle(gift)">
               {{ $t('people.gifts_offered_as_an_idea') }}
             </a>
           </div>
@@ -159,24 +159,24 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     },
 
     ideas() {
-      return this.gifts.filter(gift => gift.status == 'idea');
+      return this.gifts.filter(gift => gift.status === 'idea');
     },
 
     offered() {
-      return this.gifts.filter(gift => gift.status == 'offered');
+      return this.gifts.filter(gift => gift.status === 'offered');
     },
 
     received() {
-      return this.gifts.filter(gift => gift.status == 'received');
+      return this.gifts.filter(gift => gift.status === 'received');
     },
 
     filteredGifts() {
       const vm = this;
-      return this.gifts.filter(gift => gift.status == vm.activeTab);
+      return this.gifts.filter(gift => gift.status === vm.activeTab);
     },
   },
 
@@ -202,7 +202,7 @@ export default {
     },
 
     toggle(gift) {
-      if (gift.status == 'idea') {
+      if (gift.status === 'idea') {
         gift.status = 'offered';
         gift.date = moment().format('YYYY-MM-DD');
       } else {

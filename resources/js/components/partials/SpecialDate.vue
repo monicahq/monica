@@ -29,7 +29,7 @@
           <template slot="label">
             {{ $t('people.information_edit_probably') }}
           </template>
-          <div v-if="selectedOption == 'approximate'" slot="extra">
+          <div v-if="selectedOption === 'approximate'" slot="extra">
             <form-input
               :id="'age'"
               ref="age"
@@ -52,7 +52,7 @@
           <template slot="label">
             {{ $t('people.information_edit_not_year') }}
           </template>
-          <div v-if="selectedOption == 'almost'" slot="extra" class="mt2">
+          <div v-if="selectedOption === 'almost'" slot="extra" class="mt2">
             <div class="flex">
               <form-select
                 :id="'month'"
@@ -83,7 +83,7 @@
           <template slot="label">
             {{ $t('people.information_edit_exact') }}
           </template>
-          <div v-if="selectedOption == 'exact'" slot="extra" class="mt2">
+          <div v-if="selectedOption === 'exact'" slot="extra" class="mt2">
             <form-date
               :id="'birthdayDate'"
               ref="birthday"
@@ -99,7 +99,7 @@
       </div>
     </div>
 
-    <div v-if="selectedOption == 'exact' || selectedOption == 'almost'" class="pa4-ns ph3 pv2 bb b--gray-monica">
+    <div v-if="selectedOption === 'exact' || selectedOption === 'almost'" class="pa4-ns ph3 pv2 bb b--gray-monica">
       <div class="mb2 mb0-ns">
         <form-checkbox
           v-model.lazy="hasBirthdayReminder"
@@ -200,7 +200,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     },
     locale() {
       return this.$root.locale;
@@ -223,7 +223,7 @@ export default {
 
   mounted() {
     this.selectedDate = this.birthdate;
-    this.selectedOption = this.value != '' ? this.value : 'unknown';
+    this.selectedOption = this.value !== '' ? this.value : 'unknown';
     this.selectedOptionSave = this.selectedOption;
     this.selectedAge = this.age;
     this.selectedMonth = this.month;

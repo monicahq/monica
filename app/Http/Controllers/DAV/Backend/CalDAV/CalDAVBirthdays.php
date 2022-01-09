@@ -143,6 +143,17 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
     }
 
     /**
+     * Returns the collection of deleted birthdays.
+     *
+     * @param  string|null  $collectionId
+     * @return \Illuminate\Support\Collection
+     */
+    public function getDeletedObjects($collectionId)
+    {
+        return collect();
+    }
+
+    /**
      * @return string|null
      */
     public function updateOrCreateCalendarObject($calendarId, $objectUri, $calendarData): ?string
@@ -152,5 +163,6 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
 
     public function deleteCalendarObject($objectUri)
     {
+        // Not implemented
     }
 }

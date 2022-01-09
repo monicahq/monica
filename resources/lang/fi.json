@@ -1,0 +1,7 @@
+{
+    "The :attribute must contain at least one uppercase and one lowercase letter.": ":attribute n täytyy sisältää vähintään yksi iso kirjain ja yksi pieni kirjain.",
+    "The :attribute must contain at least one letter.": ":attribute n täytyy sisältää ainakin yksi kirjain.",
+    "The :attribute must contain at least one symbol.": ":attribute n täytyy sisältää ainakin yksi symboli.",
+    "The :attribute must contain at least one number.": ":attribute n täytyy sisältää ainakin yksi numero.",
+    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": ":attribute on esiintynyt tietovuodossa. Ole hyvä ja valitse toinen :attribute."
+}

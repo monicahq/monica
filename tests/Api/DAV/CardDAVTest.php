@@ -395,4 +395,61 @@ class CardDAVTest extends ApiTestCase
  <d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>
 </d:multistatus>", false);
     }
+
+    public function test_carddav_sync_collection_deleted_contact()
+    {
+        Carbon::setTestNow(Carbon::create(2019, 1, 1, 9, 0, 0));
+
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+            'deleted_at' => Carbon::create(2019, 3, 1, 9, 0, 0),
+        ]);
+
+        Carbon::setTestNow(Carbon::create(2019, 2, 1, 9, 0, 0));
+        $token = factory(SyncToken::class)->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'name' => 'contacts',
+            'timestamp' => now(),
+        ]);
+
+        Carbon::setTestNow(Carbon::create(2019, 4, 1, 9, 0, 0));
+
+        $response = $this->call('REPORT', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
+            [
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            "<sync-collection xmlns='DAV:'>
+                <sync-token>http://sabre.io/ns/sync/{$token->id}</sync-token>
+                <sync-level>1</sync-level>
+                <prop>
+                    <getetag />
+                </prop>
+            </sync-collection>"
+        );
+
+        $response->assertStatus(207);
+
+        $token = SyncToken::where([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'name' => 'contacts',
+        ])
+            ->orderBy('created_at')
+            ->get()
+            ->last();
+
+        $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\" xmlns:cal=\"urn:ietf:params:xml:ns:caldav\" xmlns:cs=\"http://calendarserver.org/ns/\">
+ <d:response>
+  <d:status>HTTP/1.1 404 Not Found</d:status>
+  <d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>
+  <d:propstat>
+   <d:prop/>
+   <d:status>HTTP/1.1 418 I'm a teapot</d:status>
+  </d:propstat>
+ </d:response>
+ <d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>
+</d:multistatus>", false);
+    }
 }

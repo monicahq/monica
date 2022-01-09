@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Carbon\Carbon;
 use function Safe\json_decode;
 use App\Models\Account\Account;
 use App\Models\Instance\Instance;
@@ -83,7 +84,7 @@ class InstanceHelper
             'id' => $plan->id,
             'price' => $plan->amount,
             'friendlyPrice' => $amount,
-            'nextBillingDate' => DateHelper::getFullDate($stripeSubscription->current_period_end),
+            'nextBillingDate' => DateHelper::getFullDate(Carbon::createFromTimestamp($stripeSubscription->current_period_end)),
         ];
     }
 

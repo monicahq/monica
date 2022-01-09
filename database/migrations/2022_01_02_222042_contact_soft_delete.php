@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RemoveDeletedAtFromContact extends Migration
+class ContactSoftDelete extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class RemoveDeletedAtFromContact extends Migration
      */
     public function up()
     {
-        Schema::table('contacts', function (Blueprint $table) {
-            $table->dropColumn(
-                'deleted_at'
-            );
-        });
+        if (! Schema::hasColumn('contacts', 'deleted_at')) {
+            Schema::table('contacts', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
     }
 
     /**
@@ -28,7 +28,7 @@ class RemoveDeletedAtFromContact extends Migration
     public function down()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->softDeletes();
+            $table->dropSoftDeletes();
         });
     }
 }

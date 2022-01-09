@@ -1,0 +1,7 @@
+{
+    "The :attribute must contain at least one uppercase and one lowercase letter.": ":attribute en az bir büyük harf ve bir küçük harf içermelidir.",
+    "The :attribute must contain at least one letter.": ":attribute en az bir harf içermelidir.",
+    "The :attribute must contain at least one symbol.": ":attribute en az bir sembol içermelidir.",
+    "The :attribute must contain at least one number.": ":attribute en az bir sayı içermelidir.",
+    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": "Girilen :attribute bir veri sızıntısında ortaya çıktı. Lütfen farklı bir :attribute seçin."
+}

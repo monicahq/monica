@@ -93,10 +93,10 @@ export default {
       return 'input';
     },
     inputClass() {
-      return this.fullClass != '' ? this.fullClass : [this.iclass, 'p-default', this.$options.input_iclass];
+      return this.fullClass !== '' ? this.fullClass : [this.iclass, 'p-default', this.$options.input_iclass];
     },
     inputColor() {
-      return this.color != '' ? this.color : 'primary-o';
+      return this.color !== '' ? this.color : 'primary-o';
     },
   },
 

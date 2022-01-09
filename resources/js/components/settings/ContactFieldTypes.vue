@@ -69,7 +69,7 @@
                  @open="_focusCreateInput"
     >
       <!-- Form Errors -->
-      <error :errors="createForm.errors" />
+      <errors :errors="createForm.errors" />
 
       <form class="form-horizontal" role="form" @submit.prevent="store">
         <div class="form-group">
@@ -216,13 +216,13 @@
 
 <script>
 import { SweetModal } from 'sweet-modal-vue';
-import Error from '../partials/Error.vue';
+import Errors from '../partials/Error.vue';
 
 export default {
 
   components: {
     SweetModal,
-    Error
+    Errors,
   },
 
   data() {
@@ -252,7 +252,7 @@ export default {
 
   computed: {
     dirltr() {
-      return this.$root.htmldir == 'ltr';
+      return this.$root.htmldir === 'ltr';
     }
   },
 

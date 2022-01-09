@@ -73,7 +73,7 @@ export default {
       return this.id + this._uid;
     },
     inputClass() {
-      return this.iclass != '' ? this.iclass : '';
+      return this.iclass !== '' ? this.iclass : '';
     },
   },
 

@@ -1,0 +1,7 @@
+{
+    "The :attribute must contain at least one uppercase and one lowercase letter.": ":attribute deve contenere almeno un carattere maiuscolo ed uno minuscolo.",
+    "The :attribute must contain at least one letter.": ":attribute deve contenere almeno una lettera.",
+    "The :attribute must contain at least one symbol.": ":attribute deve contenere almeno un carattere speciale.",
+    "The :attribute must contain at least one number.": ":attribute deve contenere almeno un numero.",
+    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": ":attribute sembra che faccia parte di un archivio con dati rubati. Per piacere, utilizza un valore differente."
+}

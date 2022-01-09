@@ -4,11 +4,15 @@ namespace App\Services\Contact\Contact;
 
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use App\Services\QueuableService;
+use App\Services\DispatchableService;
 use App\Models\Relationship\Relationship;
 use App\Services\Contact\Relationship\DestroyRelationship;
 
-class DestroyContact extends BaseService
+class DestroyContact extends BaseService implements QueuableService
 {
+    use DispatchableService;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -19,6 +23,7 @@ class DestroyContact extends BaseService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_id' => 'required|integer|exists:contacts,id',
+            'force_delete' => 'nullable|boolean',
         ];
     }
 
@@ -26,9 +31,9 @@ class DestroyContact extends BaseService
      * Destroy a contact.
      *
      * @param  array  $data
-     * @return bool
+     * @return void
      */
-    public function execute(array $data): bool
+    public function handle(array $data): void
     {
         $this->validate($data);
 
@@ -40,9 +45,12 @@ class DestroyContact extends BaseService
         $this->destroyRelationships($data, $contact);
 
         $contact->deleteAvatars();
-        $contact->delete();
 
-        return true;
+        if ($this->valueOrFalse($data, 'force_delete') === true) {
+            $contact->forceDelete();
+        } else {
+            $contact->delete();
+        }
     }
 
     /**

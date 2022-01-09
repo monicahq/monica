@@ -17,6 +17,7 @@ use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
 use App\Services\Contact\Contact\SetMeContact;
+use App\Services\Contact\Contact\DestroyContact;
 use App\Http\Controllers\DAV\Backend\IDAVBackend;
 use App\Http\Controllers\DAV\Backend\SyncDAVBackend;
 use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
@@ -268,6 +269,19 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     }
 
     /**
+     * Returns the collection of deleted contacts.
+     *
+     * @param  string|null  $collectionId
+     * @return \Illuminate\Support\Collection<array-key, Contact>
+     */
+    public function getDeletedObjects($collectionId)
+    {
+        return $this->user->account->contacts($collectionId)
+                    ->onlyTrashed()
+                    ->get();
+    }
+
+    /**
      * Returns all cards for a specific addressbook id.
      *
      * This method should return the following properties for each card:
@@ -393,6 +407,17 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      */
     public function deleteCard($addressBookId, $cardUri)
     {
+        $contact = $this->getObject($addressBookId, $cardUri);
+
+        if ($contact) {
+            DestroyContact::dispatch([
+                'account_id' => $contact->account_id,
+                'contact_id' => $contact->id,
+            ]);
+
+            return true;
+        }
+
         return false;
     }
 

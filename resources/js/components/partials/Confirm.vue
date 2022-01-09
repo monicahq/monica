@@ -53,7 +53,7 @@ export default {
 
   computed: {
     lclass() {
-      return this.linkClass == '' ? 'pointer' : this.linkClass;
+      return this.linkClass === '' ? 'pointer' : this.linkClass;
     }
   },
 

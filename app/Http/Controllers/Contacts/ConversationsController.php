@@ -214,9 +214,9 @@ class ConversationsController extends Controller
         // find out what the date is
         $chosenDate = $request->input('conversationDateRadio');
         if ($chosenDate == 'today') {
-            $date = DateHelper::getDate(now());
+            $date = DateHelper::getDate(now($request->user()->timezone));
         } elseif ($chosenDate == 'yesterday') {
-            $date = DateHelper::getDate(now()->subDay());
+            $date = DateHelper::getDate(now($request->user()->timezone)->subDay());
         } else {
             $date = $request->input('conversationDate');
         }
