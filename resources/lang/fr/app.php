@@ -144,8 +144,8 @@ return [
     'relationship_type_partner_female_with_name' => 'conjointe de :name',
 
     'relationship_type_spouse' => 'épouse',
-    'relationship_type_spouse_female' => 'wife',
-    'relationship_type_spouse_male' => 'husband',
+    'relationship_type_spouse_female' => 'femme',
+    'relationship_type_spouse_male' => 'mari',
     'relationship_type_spouse_with_name' => 'épouse de :name',
     'relationship_type_spouse_female_with_name' => ':name’s wife',
     'relationship_type_spouse_male_with_name' => ':name’s husband',
