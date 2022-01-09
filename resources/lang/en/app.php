@@ -193,7 +193,7 @@ return [
 
     'relationship_type_stepparent' => 'step-parent',
     'relationship_type_stepparent_female' => 'stepmother',
-    'relationship_type_stepparent_father' => 'stepfather',
+    'relationship_type_stepparent_male' => 'stepfather',
     'relationship_type_stepparent_with_name' => ':name’s step-parent',
     'relationship_type_stepparent_female_with_name' => ':name’s stepmother',
     'relationship_type_stepparent_male_with_name' => ':name’s stepfather',
