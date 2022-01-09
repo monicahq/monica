@@ -17,21 +17,23 @@ class CheckVersion
      */
     public function handle($request, Closure $next)
     {
-        $instance = Instance::first();
+        if (($version = config('monica.app_version')) !== '') {
+            $instance = Instance::first();
 
-        $appVersion = new Version(config('monica.app_version'));
-        $latestVersion = new Version($instance->latest_version ?? '0.0.0');
-        $currentVersion = new Version($instance->current_version ?? '0.0.0');
+            $appVersion = new Version($version);
+            $latestVersion = new Version($instance->latest_version ?? '0.0.0');
+            $currentVersion = new Version($instance->current_version ?? '0.0.0');
 
-        if ($latestVersion == $appVersion && $currentVersion != $latestVersion) {
+            if ($latestVersion == $appVersion && $currentVersion != $latestVersion) {
 
-            // The instance has been updated to the latest version. We reset
-            // the ping data.
+                // The instance has been updated to the latest version. We reset
+                // the ping data.
 
-            $instance->current_version = $instance->latest_version;
-            $instance->latest_release_notes = null;
-            $instance->number_of_versions_since_current_version = null;
-            $instance->save();
+                $instance->current_version = $instance->latest_version;
+                $instance->latest_release_notes = null;
+                $instance->number_of_versions_since_current_version = null;
+                $instance->save();
+            }
         }
 
         return $next($request);
