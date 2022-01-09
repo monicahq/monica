@@ -253,7 +253,7 @@ return [
     'relationship_type_godson_male' => 'filleul',
     'relationship_type_godson_with_name' => 'filleul⋅e de :name',
     'relationship_type_godson_female_with_name' => 'filleule de :name',
-    'relationship_type_godson_male_with_name' => ':name’s godson',
+    'relationship_type_godson_male_with_name' => 'filleul de :name',
 
     'relationship_type_friend' => 'ami',
     'relationship_type_friend_female' => 'amie',
@@ -286,16 +286,16 @@ return [
     'relationship_type_mentor_female_with_name' => 'mentore de :name',
 
     'relationship_type_protege' => 'protégé',
-    'relationship_type_protege_female' => 'protégé',
-    'relationship_type_protege_with_name' => ':name’s protégé',
-    'relationship_type_protege_female_with_name' => ':name’s protégé',
+    'relationship_type_protege_female' => 'protégée',
+    'relationship_type_protege_with_name' => 'protégé de :name',
+    'relationship_type_protege_female_with_name' => 'protégée de :name',
 
-    'relationship_type_ex_husband' => 'ex-spouse',
+    'relationship_type_ex_husband' => 'ex-épouse',
     'relationship_type_ex_husband_female' => 'ex-femme',
-    'relationship_type_ex_husband_male' => 'ex-husband',
-    'relationship_type_ex_husband_with_name' => ':name’s ex-spouse',
+    'relationship_type_ex_husband_male' => 'ex-mari',
+    'relationship_type_ex_husband_with_name' => 'ex-épouse de :name',
     'relationship_type_ex_husband_female_with_name' => 'ex-femme de :name',
-    'relationship_type_ex_husband_male_with_name' => ':name’s ex-husband',
+    'relationship_type_ex_husband_male_with_name' => 'ex-mari de :name',
 
     // emotions
     'emotion_primary_love' => 'Amour',
