@@ -67,7 +67,7 @@ return [
     'save' => 'Mettre à jour',
     'delete_title' => 'Supprimer votre compte',
     'delete_desc' => 'Voulez-vous supprimer votre compte ? La suppression est permanente et toutes vos données seront définitivement supprimées. Si vous avez un abonnement, il sera immédiatement annulé.',
-    'delete_other_desc' => 'Your data in the main database will be deleted immediately. As described in our privacy policy, we carry out securely encrypted backups of the database every day.  These backups are kept for 30 days after which they are completely deleted. We cannot delete specific data from the backups we hold any earlier than this.  All of your data will be completely deleted no later than 31 days after your account’s deletion.',
+    'delete_other_desc' => 'Vos données dans la base de données principale seront supprimées immédiatement. Comme décrit dans notre politique de confidentialité, nous faisons des sauvegardes quotidiennes et sécurisées de la base de données. Ces sauvegardes sont conservées pendant 30 jours, puis elles sont complètement supprimées. Nous ne pouvons pas supprimer des données spécifiques des sauvegardes que nous effectuons auparavant. Toutes vos données seront complètement supprimées dans les 31 jours suivant la suppression de votre compte.',
     'reset_desc' => 'Souhaitez-vous remettre à zéro votre compte ? Ceci effacera tous les contacts ainsi que les données associées. Votre compte ne sera pas effacé.',
     'reset_title' => 'Remettre à zéro votre compte',
     'reset_cta' => 'Remettre à zéro',
