@@ -42,6 +42,7 @@ class PersonalizeTemplateIndexViewHelperTest extends TestCase
                 'id' => $template->id,
                 'name' => $template->name,
                 'url' => [
+                    'show' => env('APP_URL').'/settings/personalize/templates/'.$template->id,
                     'update' => env('APP_URL').'/settings/personalize/templates/'.$template->id,
                     'destroy' => env('APP_URL').'/settings/personalize/templates/'.$template->id,
                 ],

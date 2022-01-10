@@ -30,4 +30,14 @@ class Module extends Model
     {
         return $this->belongsTo(Account::class);
     }
+
+    /**
+     * Get the template pages associated with the module.
+     *
+     * @return BelongsToMany
+     */
+    public function templatePages()
+    {
+        return $this->belongsToMany(TemplatePage::class, 'module_template_page')->withTimestamps();
+    }
 }

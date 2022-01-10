@@ -34,6 +34,9 @@ class PersonalizeTemplateIndexViewHelper
             'id' => $template->id,
             'name' => $template->name,
             'url' => [
+                'show' => route('settings.personalize.template.show', [
+                    'template' => $template->id,
+                ]),
                 'update' => route('settings.personalize.template.update', [
                     'template' => $template->id,
                 ]),

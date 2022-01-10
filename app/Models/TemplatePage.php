@@ -24,6 +24,15 @@ class TemplatePage extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'position' => 'integer',
+    ];
+
+    /**
      * Get the account associated with the template page.
      *
      * @return BelongsTo
@@ -31,5 +40,15 @@ class TemplatePage extends Model
     public function template()
     {
         return $this->belongsTo(Template::class);
+    }
+
+    /**
+     * Get the modules associated with the template page.
+     *
+     * @return BelongsToMany
+     */
+    public function modules()
+    {
+        return $this->belongsToMany(Module::class, 'module_template_page')->withTimestamps();
     }
 }

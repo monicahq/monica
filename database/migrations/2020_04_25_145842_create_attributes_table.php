@@ -40,6 +40,15 @@ class CreateAttributesTable extends Migration
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
 
+        Schema::create('module_template_page', function (Blueprint $table) {
+            $table->unsignedBigInteger('template_page_id');
+            $table->unsignedBigInteger('module_id');
+            $table->integer('position')->nullable();
+            $table->timestamps();
+            $table->foreign('template_page_id')->references('id')->on('template_pages')->onDelete('cascade');
+            $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
+        });
+
         Schema::create('information', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('account_id');
