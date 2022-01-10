@@ -223,8 +223,8 @@ return [
     'relationship_type_grandchild_female' => 'granddaughter',
     'relationship_type_grandchild_male' => 'grandson',
     'relationship_type_grandchild_with_name' => ':name’s grandchild',
-    'relationship_type_grandchild_female_with_name' => ':name’s grandson',
-    'relationship_type_grandchild_female_with_name' => ':name’s grandson',
+    'relationship_type_grandchild_female_with_name' => ':name’s granddauther',
+    'relationship_type_grandchild_male_with_name' => ':name’s grandson',
 
     'relationship_type_uncle' => 'uncle',
     'relationship_type_uncle_female' => 'aunt',
