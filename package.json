@@ -41,7 +41,8 @@
         "tailwindcss": "^3.0.0",
         "tiny-emitter": "^2.1.0",
         "vue": "^3.0.5",
-        "vue-loader": "^16.1.2"
+        "vue-loader": "^16.1.2",
+        "vuedraggable": "^4.1.0"
     },
     "lint-staged": {
         "linters": {

@@ -19,6 +19,7 @@ use App\Http\Controllers\Settings\Personalize\AddressTypes\PersonalizeAddressTyp
 use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipController;
 use App\Http\Controllers\Settings\Personalize\PetCategories\PersonalizePetCategoriesController;
 use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipTypeController;
+use App\Http\Controllers\Settings\Personalize\Templates\PersonalizeTemplatePagePositionController;
 use App\Http\Controllers\Settings\Personalize\ContactInformationTypes\PersonalizeContatInformationTypesController;
 
 Route::get('/', function () {
@@ -130,6 +131,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::post('{template}', [PersonalizeTemplatePagesController::class, 'store'])->name('template_page.store');
                     Route::put('{template}/template_pages/{page}', [PersonalizeTemplatePagesController::class, 'update'])->name('template_page.update');
                     Route::delete('{template}/template_pages/{page}', [PersonalizeTemplatePagesController::class, 'destroy'])->name('template_page.destroy');
+                    Route::post('{template}/template_pages/{page}/order', [PersonalizeTemplatePagePositionController::class, 'update'])->name('template_page.order.update');
                 });
             });
 

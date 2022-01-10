@@ -61,8 +61,10 @@ class PersonalizeTemplateShowViewHelperTest extends TestCase
             [
                 'id' => $templatePage->id,
                 'name' => $templatePage->name,
+                'position' => $templatePage->position,
                 'url' => [
                     'update' => env('APP_URL').'/settings/personalize/templates/'.$template->id.'/template_pages/'.$templatePage->id,
+                    'order' => env('APP_URL').'/settings/personalize/templates/'.$template->id.'/template_pages/'.$templatePage->id.'/order',
                     'destroy' => env('APP_URL').'/settings/personalize/templates/'.$template->id.'/template_pages/'.$templatePage->id,
                 ],
             ],

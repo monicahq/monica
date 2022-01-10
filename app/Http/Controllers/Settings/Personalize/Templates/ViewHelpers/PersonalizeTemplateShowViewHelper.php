@@ -40,8 +40,13 @@ class PersonalizeTemplateShowViewHelper
         return [
             'id' => $page->id,
             'name' => $page->name,
+            'position' => $page->position,
             'url' => [
                 'update' => route('settings.personalize.template.template_page.update', [
+                    'template' => $template->id,
+                    'page' => $page->id,
+                ]),
+                'order' => route('settings.personalize.template.template_page.order.update', [
                     'template' => $template->id,
                     'page' => $page->id,
                 ]),
