@@ -67,7 +67,7 @@ return [
     'save' => 'Einstellungen speichern',
     'delete_title' => 'Konto löschen',
     'delete_desc' => 'Möchtest du dein Konto löschen? Dies kann nicht rückgangig gemacht werden und alle deine Daten werden dauerhaft gelöscht. Wenn du ein Abonnement hast, wird es sofort storniert.',
-    'delete_other_desc' => 'Your data in the main database will be deleted immediately. As described in our privacy policy, we carry out securely encrypted backups of the database every day.  These backups are kept for 30 days after which they are completely deleted. We cannot delete specific data from the backups we hold any earlier than this.  All of your data will be completely deleted no later than 31 days after your account’s deletion.',
+    'delete_other_desc' => 'Deine Daten in der Hauptdatenbank werden umgehend gelöscht. Wie in unseren Datenschutzrichtlinien beschrieben, führen wir täglich verschlüsselte Sicherungen durch, welche 30 Tage lang aufbewahrt und danach vollständig gelöscht werden. Wir können keine einzelnen Daten vor diesem Zeitraum aus den Backups löschen. Alle deine Daten werden innerhalb von 31 Tagen nach Löschung deines Kontos vollständig gelöscht.',
     'reset_desc' => 'Möchtest du dein Konto zurücksetzen? Dies entfernt alle deine Kontakte und die zugehörigen Daten. Dein Konto bleibt erhalten.',
     'reset_title' => 'Konto zurücksetzen',
     'reset_cta' => 'Konto zurücksetzen',
