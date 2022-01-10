@@ -223,8 +223,8 @@ return [
     'relationship_type_grandchild_female' => 'petite-fille',
     'relationship_type_grandchild_male' => 'petit-fils',
     'relationship_type_grandchild_with_name' => 'petit-enfant de :name',
-    'relationship_type_grandchild_female_with_name' => 'petit-fils de :name',
-    'relationship_type_grandchild_female_with_name' => 'petit-fils de :name',
+    'relationship_type_grandchild_female_with_name' => ':name’s granddauther',
+    'relationship_type_grandchild_male_with_name' => ':name’s grandson',
 
     'relationship_type_uncle' => 'oncle',
     'relationship_type_uncle_female' => 'tante',
