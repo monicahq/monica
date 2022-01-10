@@ -200,6 +200,11 @@ $db = [
 
     ],
 
+    'dbal' => [
+        'types' => [
+            'timestamp' => TimestampType::class,
+        ],
+    ],
 ];
 
 /*
