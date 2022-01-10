@@ -223,8 +223,8 @@ return [
     'relationship_type_grandchild_female' => 'Enkelin',
     'relationship_type_grandchild_male' => 'Enkel',
     'relationship_type_grandchild_with_name' => ':name’s Enkelkind',
-    'relationship_type_grandchild_female_with_name' => ':name’s Enkel',
-    'relationship_type_grandchild_female_with_name' => ':name’s Enkel',
+    'relationship_type_grandchild_female_with_name' => ':name’s granddauther',
+    'relationship_type_grandchild_male_with_name' => ':name’s grandson',
 
     'relationship_type_uncle' => 'Onkel',
     'relationship_type_uncle_female' => 'Tante',
