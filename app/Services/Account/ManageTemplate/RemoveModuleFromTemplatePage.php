@@ -8,9 +8,8 @@ use App\Models\TemplatePage;
 use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
 
-class AssociateModuleToTemplatePage extends BaseService implements ServiceInterface
+class RemoveModuleFromTemplatePage extends BaseService implements ServiceInterface
 {
-    private array $data;
     private TemplatePage $templatePage;
     private Module $module;
 
@@ -44,36 +43,28 @@ class AssociateModuleToTemplatePage extends BaseService implements ServiceInterf
     }
 
     /**
-     * Associate a module with a template page.
+     * Remove a module from a template page.
      *
      * @param  array  $data
      * @return Module
      */
     public function execute(array $data): Module
     {
-        $this->data = $data;
-        $this->validate();
+        $this->validateRules($data);
 
-        $newPosition = $this->templatePage->modules()->max('position') + 1;
+        $this->module = Module::where('account_id', $data['account_id'])
+            ->findOrFail($data['module_id']);
 
-        $this->templatePage->modules()->syncWithoutDetaching([
-            $this->module->id => ['position' => $newPosition],
+        $this->template = Template::where('account_id', $data['account_id'])
+            ->findOrFail($data['template_id']);
+
+        $this->templatePage = TemplatePage::where('template_id', $data['template_id'])
+            ->findOrFail($data['template_page_id']);
+
+        $this->templatePage->modules()->toggle([
+            $this->module->id,
         ]);
 
         return $this->module;
-    }
-
-    private function validate(): void
-    {
-        $this->validateRules($this->data);
-
-        $this->module = Module::where('account_id', $this->data['account_id'])
-            ->findOrFail($this->data['module_id']);
-
-        $this->template = Template::where('account_id', $this->data['account_id'])
-            ->findOrFail($this->data['template_id']);
-
-        $this->templatePage = TemplatePage::where('template_id', $this->data['template_id'])
-            ->findOrFail($this->data['template_page_id']);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Settings\Personalize\Templates;
 
+use App\Models\Template;
+use App\Models\TemplatePage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -9,6 +11,7 @@ use App\Services\Account\ManageTemplate\CreateTemplatePage;
 use App\Services\Account\ManageTemplate\UpdateTemplatePage;
 use App\Services\Account\ManageTemplate\DestroyTemplatePage;
 use App\Http\Controllers\Settings\Personalize\Templates\ViewHelpers\PersonalizeTemplateShowViewHelper;
+use App\Http\Controllers\Settings\Personalize\Templates\ViewHelpers\PersonalizeTemplatePageShowViewHelper;
 
 class PersonalizeTemplatePagesController extends Controller
 {
@@ -58,6 +61,19 @@ class PersonalizeTemplatePagesController extends Controller
 
         return response()->json([
             'data' => true,
+        ], 200);
+    }
+
+    public function show(Request $request, int $templateId, int $templatePageId)
+    {
+        $template = Template::where('account_id', Auth::user()->account_id)
+            ->findOrFail($templateId);
+
+        $templatePage = TemplatePage::where('template_id', $template->id)
+            ->findOrFail($templatePageId);
+
+        return response()->json([
+            'data' => PersonalizeTemplatePageShowViewHelper::data($templatePage),
         ], 200);
     }
 }

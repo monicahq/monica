@@ -42,6 +42,10 @@ class PersonalizeTemplateShowViewHelper
             'name' => $page->name,
             'position' => $page->position,
             'url' => [
+                'show' => route('settings.personalize.template.template_page.show', [
+                    'template' => $template->id,
+                    'page' => $page->id,
+                ]),
                 'update' => route('settings.personalize.template.template_page.update', [
                     'template' => $template->id,
                     'page' => $page->id,

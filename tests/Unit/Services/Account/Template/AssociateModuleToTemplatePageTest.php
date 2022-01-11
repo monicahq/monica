@@ -122,20 +122,19 @@ class AssociateModuleToTemplatePageTest extends TestCase
             'module_id' => $module->id,
             'template_id' => $template->id,
             'template_page_id' => $templatePage->id,
-            'position' => 3,
         ];
 
-        $template = (new AssociateModuleToTemplatePage)->execute($request);
+        $module = (new AssociateModuleToTemplatePage)->execute($request);
 
         $this->assertDatabaseHas('module_template_page', [
             'module_id' => $module->id,
             'template_page_id' => $templatePage->id,
-            'position' => 3,
+            'position' => 1,
         ]);
 
         $this->assertInstanceOf(
-            TemplatePage::class,
-            $templatePage
+            Module::class,
+            $module
         );
     }
 }
