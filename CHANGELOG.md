@@ -1,3 +1,26 @@
+# [3.6.0](https://github.com/monicahq/monica/compare/v3.5.0...v3.6.0) (2022-01-11)
+
+
+### Features
+
+* activate Norwegian and Russian languages ([#5856](https://github.com/monicahq/monica/issues/5856)) ([8bdccbb](https://github.com/monicahq/monica/commit/8bdccbb7f9114600fc5eabecf334ede87a96b4eb))
+* add contact soft delete and prunable ([#5826](https://github.com/monicahq/monica/issues/5826)) ([6f887df](https://github.com/monicahq/monica/commit/6f887dfb7590ee62833a8d99617e0993eb1a83db))
+* add reminders/upcoming API ([#5783](https://github.com/monicahq/monica/issues/5783)) ([a3e9b79](https://github.com/monicahq/monica/commit/a3e9b79236b2e388a4823f0ffb061551de05e406))
+* export data as json format ([#4779](https://github.com/monicahq/monica/issues/4779)) ([8c627a2](https://github.com/monicahq/monica/commit/8c627a28cbc18599e1f56df1a4e943d18d558ec0))
+* implement laravel password strength ([#5821](https://github.com/monicahq/monica/issues/5821)) ([8295be3](https://github.com/monicahq/monica/commit/8295be3f5872302360370acf29df985088320c0f))
+* improve reliability of pingversion ([#5723](https://github.com/monicahq/monica/issues/5723)) ([0c791f6](https://github.com/monicahq/monica/commit/0c791f6c15e048a69b010f7c549220c4ef51d91c))
+* order introductions contact list by first and last name ([#5102](https://github.com/monicahq/monica/issues/5102)) ([6ff0738](https://github.com/monicahq/monica/commit/6ff0738a6e115783003744ef1d6045e1f9957cc4))
+* quick add with email ([#5182](https://github.com/monicahq/monica/issues/5182)) ([80001fc](https://github.com/monicahq/monica/commit/80001fc1dfa8989c4b53d494cb4d697e07668239))
+* re-activate adorable avatars with permanent solution ([#5872](https://github.com/monicahq/monica/issues/5872)) ([ccf6d4f](https://github.com/monicahq/monica/commit/ccf6d4fe2f3657677f7e0de74054f5414c2f6727))
+* sync carddav delete contact requests ([#5835](https://github.com/monicahq/monica/issues/5835)) ([30d97f9](https://github.com/monicahq/monica/commit/30d97f9321ffe82641e16599541bbb2498da56d1))
+
+
+### Bug Fixes
+
+* add link to reminders endpoint at api root ([#5801](https://github.com/monicahq/monica/issues/5801)) ([337367a](https://github.com/monicahq/monica/commit/337367a89ec94da758ad1f4d65588640f3c34088))
+* fix Date display with timezone ([#5825](https://github.com/monicahq/monica/issues/5825)) ([d73e3c4](https://github.com/monicahq/monica/commit/d73e3c41eab0c33aef03040d35f55d549c402880))
+* version display on heroku ([#5860](https://github.com/monicahq/monica/issues/5860)) ([0cf965f](https://github.com/monicahq/monica/commit/0cf965fd617664d34b404ba5cc168a70c2c83ee3))
+
 # [3.5.0](https://github.com/monicahq/monica/compare/v3.4.0...v3.5.0) (2021-11-19)
 
 
