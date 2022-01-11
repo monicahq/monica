@@ -47,8 +47,8 @@ Sie wollten alle :frequency Tage erinnert werden um in Kontakt zu bleiben mit :n
     'invitation_button' => 'Einladung annehmen',
     'invitation_expiration' => 'Dieser Link läuft in :count Tagen ab.',
 
-    'export_title' => 'Your export is ready',
-    'export_description' => 'You requested a data export on :date. It is now ready to download.',
-    'export_download' => 'Download export',
+    'export_title' => 'Ihr Export ist fertig',
+    'export_description' => 'Sie haben einen Datenexport am :date angefordert. Dieser ist nun zum Download bereit.',
+    'export_download' => 'Export herunterladen',
 
 ];
