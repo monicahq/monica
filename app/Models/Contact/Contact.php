@@ -27,6 +27,7 @@ use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Prunable;
 use App\Models\ModelBindingHasher as Model;
+use LaravelAdorable\Facades\LaravelAdorable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -36,7 +37,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use LaravelAdorable\Facades\LaravelAdorable;
 
 /**
  * @method static \Illuminate\Database\Eloquent\Builder search()

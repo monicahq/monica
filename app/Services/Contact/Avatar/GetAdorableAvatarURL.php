@@ -2,7 +2,6 @@
 
 namespace App\Services\Contact\Avatar;
 
-use Illuminate\Support\Str;
 use App\Services\BaseService;
 
 class GetAdorableAvatarURL extends BaseService
