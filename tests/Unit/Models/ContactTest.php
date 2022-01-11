@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use Carbon\Carbon;
 use App\Models\User\User;
+use Mockery\MockInterface;
 use Tests\FeatureTestCase;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Debt;
@@ -24,11 +25,10 @@ use App\Notifications\StayInTouchEmail;
 use App\Models\Relationship\Relationship;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use App\Models\Relationship\RelationshipType;
+use LaravelAdorable\Adorable\LaravelAdorable;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
-use LaravelAdorable\Adorable\LaravelAdorable;
-use Mockery\MockInterface;
 
 class ContactTest extends FeatureTestCase
 {
