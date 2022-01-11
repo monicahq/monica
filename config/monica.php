@@ -273,4 +273,15 @@ return [
     */
     'avatar_size' => 200,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Export size count
+    |--------------------------------------------------------------------------
+    |
+    | Number of exports available. When the number of exports is reached, the
+    | oldest export will be deleted.
+    |
+    */
+    'export_size' => (int) env('EXPORT_SIZE', 5),
+
 ];

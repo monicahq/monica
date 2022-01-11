@@ -22,6 +22,7 @@ class LifeEvent extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'lifeevent',
             'name' => $this->name,
             'note' => $this->note,

@@ -23,6 +23,7 @@ class Conversation extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'conversation',
             'happened_at' => DateHelper::getTimestamp($this->happened_at),
             'messages' => MessageResource::collection($this->messages),

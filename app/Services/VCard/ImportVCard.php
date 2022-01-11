@@ -595,7 +595,7 @@ class ImportVCard extends BaseService
     {
         $result = [
             'account_id' => $contact ? $contact->account_id : $this->accountId,
-            'uuid' => $contact ? (string) $contact->uuid : null,
+            'uuid' => $contact ? $contact->uuid : null,
             'address_book_id' => $this->addressBook ? $this->addressBook->id : null,
             'first_name' => $contact ? $contact->first_name : null,
             'middle_name' => $contact ? $contact->middle_name : null,

@@ -2,6 +2,7 @@
 
 namespace App\Models\Contact;
 
+use App\Traits\HasUuid;
 use App\Models\Account\Photo;
 use App\Models\Account\Account;
 use App\Traits\AmountFormatter;
@@ -25,7 +26,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Gift extends Model
 {
-    use AmountFormatter;
+    use AmountFormatter, HasUuid;
 
     /**
      * The attributes that aren't mass assignable.

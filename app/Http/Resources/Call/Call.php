@@ -22,6 +22,7 @@ class Call extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'call',
             'called_at' => DateHelper::getTimestamp($this->called_at),
             'content' => $this->content,

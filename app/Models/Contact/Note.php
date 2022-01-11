@@ -2,6 +2,7 @@
 
 namespace App\Models\Contact;
 
+use App\Traits\HasUuid;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Note extends Model
 {
+    use HasUuid;
+
     /**
      * The attributes that aren't mass assignable.
      *

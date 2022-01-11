@@ -2,6 +2,7 @@
 
 namespace App\Models\Contact;
 
+use App\Traits\HasUuid;
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LifeEventCategory extends Model
 {
+    use HasUuid;
+
     protected $table = 'life_event_categories';
 
     /**
@@ -20,6 +23,16 @@ class LifeEventCategory extends Model
         'name',
         'account_id',
         'default_life_event_category_key',
+        'core_monica_data',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'core_monica_data' => 'boolean',
     ];
 
     /**

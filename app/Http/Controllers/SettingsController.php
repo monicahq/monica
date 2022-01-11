@@ -8,10 +8,8 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\AccountHelper;
-use Illuminate\Support\Carbon;
 use App\Helpers\TimezoneHelper;
 use App\Models\Contact\Contact;
-use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
 use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
@@ -163,35 +161,6 @@ class SettingsController extends Controller
 
         return redirect()->route('settings.index')
                     ->with('status', trans('settings.reset_success'));
-    }
-
-    /**
-     * Display the export view.
-     *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
-     */
-    public function export()
-    {
-        return view('settings.export')
-            ->withAccountHasLimitations(AccountHelper::hasLimitations(auth()->user()->account));
-    }
-
-    /**
-     * Exports the data of the account in SQL format.
-     *
-     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response|null
-     */
-    public function exportToSql()
-    {
-        $path = ExportAccountAsSQL::dispatchSync();
-
-        $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
-
-        $exportdate = Carbon::now(DateHelper::getTimezone())->format('Y-m-d');
-
-        return response()
-            ->download($adapter->getPathPrefix().$path, "monica-export.$exportdate.sql")
-            ->deleteFileAfterSend(true);
     }
 
     /**

@@ -21,6 +21,7 @@ class Task extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'task',
             'title' => $this->title,
             'description' => $this->description,

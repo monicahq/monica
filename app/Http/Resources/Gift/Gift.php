@@ -22,6 +22,7 @@ class Gift extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'gift',
             'name' => $this->name,
             'comment' => $this->comment,

@@ -2,6 +2,7 @@
 
 namespace App\Models\Instance;
 
+use App\Traits\HasUuid;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Carbon;
 use App\Models\Account\Account;
@@ -26,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class SpecialDate extends Model
 {
+    use HasUuid;
+
     /**
      * The table associated with the model.
      *

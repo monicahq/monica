@@ -2,6 +2,7 @@
 
 namespace App\Models\Account;
 
+use App\Traits\HasUuid;
 use App\Models\User\User;
 use function safe\json_decode;
 use function safe\json_encode;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AddressBookSubscription extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuid;
 
     protected $table = 'addressbook_subscriptions';
 

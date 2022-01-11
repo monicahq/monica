@@ -22,6 +22,7 @@ class ContactShort extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'contact',
             'hash_id' => $this->getHashId(),
             'first_name' => $this->first_name,

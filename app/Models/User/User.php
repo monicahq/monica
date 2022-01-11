@@ -3,6 +3,7 @@
 namespace App\Models\User;
 
 use Carbon\Carbon;
+use App\Traits\HasUuid;
 use App\Helpers\FormHelper;
 use App\Jobs\SendVerifyEmail;
 use App\Models\Settings\Term;
@@ -22,7 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
 {
-    use Notifiable, HasApiTokens;
+    use Notifiable, HasApiTokens, HasUuid;
 
     /**
      * The attributes that are mass assignable.

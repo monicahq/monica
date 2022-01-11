@@ -21,11 +21,13 @@ class Photo extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'photo',
             'original_filename' => $this->original_filename,
             'new_filename' => $this->new_filename,
             'filesize' => $this->filesize,
             'mime_type' => $this->mime_type,
+            'dataUrl' => $this->dataUrl(),
             'link' => $this->url(),
             'account' => [
                 'id' => $this->account_id,

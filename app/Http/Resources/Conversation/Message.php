@@ -21,6 +21,7 @@ class Message extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'message',
             'content' => $this->content,
             'written_at' => DateHelper::getTimestamp($this->written_at),

@@ -6,12 +6,10 @@ use App\Helpers\DBHelper;
 use App\Models\User\User;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
-use App\Models\Account\Account;
-use App\Models\Contact\Document;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class ExportAccount extends BaseService
+class SqlExportAccount extends BaseService
 {
     /** @var string */
     protected $tempFileName;
@@ -83,7 +81,6 @@ SET FOREIGN_KEY_CHECKS=0;
         $this->exportContactFieldType($data);
         $this->exportContactField($data);
         $this->exportContactTag($data);
-        $this->exportContact($data);
         $this->exportConversation($data);
         $this->exportDays($data);
         $this->exportDebt($data);

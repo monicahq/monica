@@ -20,6 +20,7 @@ class Entry extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'entry',
             'title' => $this->title,
             'post' => $this->post,

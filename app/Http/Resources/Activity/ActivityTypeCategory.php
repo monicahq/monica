@@ -20,6 +20,7 @@ class ActivityTypeCategory extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'activityTypeCategory',
             'name' => $this->name,
             'account' => [

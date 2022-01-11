@@ -244,8 +244,11 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
             Route::apiResource('settings/personalization/lifeeventtypes', 'Account\\LifeEvent\\LifeEventTypesController', ['except' => ['index']]);
         });
 
-        Route::get('/settings/export', 'SettingsController@export')->name('export');
-        Route::post('/settings/exportToSql', 'SettingsController@exportToSQL')->name('sql');
+        Route::get('/settings/export', 'Settings\\ExportController@index')->name('export.index');
+        Route::post('/settings/exportToSql', 'Settings\\ExportController@storeSQL')->name('export.store.sql');
+        Route::post('/settings/exportToJson', 'Settings\\ExportController@storeJson')->name('export.store.json');
+        Route::post('/settings/export/{uuid}', 'Settings\\ExportController@download')->name('export.download');
+
         Route::get('/settings/import', 'SettingsController@import')->name('import');
         Route::get('/settings/import/report/{importjobid}', 'SettingsController@report')->name('report');
         Route::get('/settings/import/upload', 'SettingsController@upload')->name('upload');

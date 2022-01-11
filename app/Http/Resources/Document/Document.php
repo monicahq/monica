@@ -21,6 +21,7 @@ class Document extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'document',
             'original_filename' => $this->original_filename,
             'new_filename' => $this->new_filename,

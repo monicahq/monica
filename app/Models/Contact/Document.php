@@ -2,6 +2,8 @@
 
 namespace App\Models\Contact;
 
+use App\Traits\HasUuid;
+use function Safe\sprintf;
 use App\Helpers\StorageHelper;
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
@@ -11,6 +13,8 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class Document extends Model
 {
+    use HasUuid;
+
     /**
      * The table associated with the model.
      *
@@ -55,7 +59,7 @@ class Document extends Model
     }
 
     /**
-     * Get the downloadl link.
+     * Get the download link.
      *
      * @return string
      */
@@ -66,6 +70,26 @@ class Document extends Model
         }
 
         return route('storage', ['file' => $this->new_filename]);
+    }
+
+    /**
+     * Gets the data-url format of the document.
+     *
+     * @return string|null
+     */
+    public function dataUrl(): ?string
+    {
+        try {
+            $url = $this->new_filename;
+            $file = StorageHelper::disk(config('filesystems.default'))->get($url);
+
+            return sprintf('data:%s;base64,%s',
+                $this->mime_type,
+                base64_encode($file)
+            );
+        } catch (FileNotFoundException $e) {
+            return null;
+        }
     }
 
     /**

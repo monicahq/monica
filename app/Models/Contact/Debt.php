@@ -2,8 +2,10 @@
 
 namespace App\Models\Contact;
 
+use App\Traits\HasUuid;
 use App\Models\Account\Account;
 use App\Traits\AmountFormatter;
+use App\Models\Settings\Currency;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
@@ -19,7 +21,7 @@ use App\Models\ModelBindingHasherWithContact as Model;
  */
 class Debt extends Model
 {
-    use AmountFormatter;
+    use AmountFormatter, HasUuid;
 
     /**
      * The attributes that aren't mass assignable.
@@ -54,6 +56,16 @@ class Debt extends Model
     public function contact()
     {
         return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * Get the currency record associated with the debt.
+     *
+     * @return BelongsTo
+     */
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
     }
 
     /**

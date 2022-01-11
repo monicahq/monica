@@ -2,6 +2,7 @@
 
 namespace App\Models\Journal;
 
+use App\Traits\HasUuid;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Account\Account;
@@ -10,7 +11,7 @@ use App\Interfaces\IsJournalableInterface;
 
 class Day extends Model implements IsJournalableInterface
 {
-    use Journalable;
+    use Journalable, HasUuid;
 
     /**
      * The attributes that aren't mass assignable.
@@ -43,6 +44,7 @@ class Day extends Model implements IsJournalableInterface
             'id' => $this->id,
             'rate' => $this->rate,
             'comment' => $this->comment,
+            'date' => $this->date,
             'day' => $this->date->day,
             'day_name' => mb_convert_case(DateHelper::getShortDay($this->date), MB_CASE_TITLE, 'UTF-8'),
             'month' => $this->date->month,

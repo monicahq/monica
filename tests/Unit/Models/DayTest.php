@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use Tests\TestCase;
 use App\Models\Journal\Day;
+use Illuminate\Support\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DayTest extends TestCase
@@ -32,6 +33,7 @@ class DayTest extends TestCase
             'month_name' => 'JAN',
             'year' => 2017,
             'happens_today' => false,
+            'date' => Carbon::parse('2017-01-01 00:00:00'),
         ];
 
         $this->assertEquals(
@@ -64,6 +66,7 @@ class DayTest extends TestCase
             'month_name' => strtoupper($date->format('M')),
             'year' => $date->year,
             'happens_today' => true,
+            'date' => $date->addMicroseconds(-1 * $date->microsecond),
         ];
 
         $this->assertEquals(

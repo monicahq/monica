@@ -2,12 +2,15 @@
 
 namespace App\Models\Contact;
 
+use App\Traits\HasUuid;
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LifeEvent extends Model
 {
+    use HasUuid;
+
     protected $table = 'life_events';
 
     /**

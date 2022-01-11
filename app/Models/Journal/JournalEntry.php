@@ -5,6 +5,7 @@ namespace App\Models\Journal;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
+use Illuminate\Database\Eloquent\Builder;
 use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -111,5 +112,16 @@ class JournalEntry extends Model
         $correspondingObject = $this->journalable;
 
         return $correspondingObject->getInfoForJournalEntry();
+    }
+
+    /**
+     * Filter by real entry (day rate or journal entry).
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeEntry(Builder $query): Builder
+    {
+        return $query->where('journalable_type', '!=', 'App\Models\Account\Activity');
     }
 }

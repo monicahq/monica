@@ -21,6 +21,7 @@ class Debt extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'debt',
             'in_debt' => $this->in_debt,
             'status' => $this->status,

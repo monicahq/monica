@@ -21,6 +21,7 @@ class Note extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'object' => 'note',
             'body' => $this->body,
             'is_favorited' => (bool) $this->is_favorited,
