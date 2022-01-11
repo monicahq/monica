@@ -273,16 +273,4 @@ return [
     */
     'avatar_size' => 200,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default adorable api url
-    |--------------------------------------------------------------------------
-    |
-    | The default adorable api url.
-    |
-    | You can host your own version, see https://github.com/itsthatguy/avatars-api-middleware
-    | or https://hub.docker.com/r/aldrio/adorable-avatars.
-    */
-    'adorable_api' => env('ADORABLE_API', 'https://api.hello-avatar.com/adorables/'),
-
 ];
