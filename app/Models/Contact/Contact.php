@@ -1129,11 +1129,11 @@ class Contact extends Model
 
             $data = Str::of($url)->split('/\//');
 
-            if (! is_int($data[0]) || count($data) === 1) {
+            if (! ctype_digit($data[0]) || count($data) === 1) {
                 $size = config('monica.avatar_size');
                 $hash = $data[0];
             } else {
-                $size = $data[0];
+                $size = (int) $data[0];
                 $hash = $data[1];
             }
 
