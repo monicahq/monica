@@ -45,4 +45,9 @@ return [
     'invitation_link' => 'Để chấp nhận lời mời, bấm vào liên kết bên dưới:',
     'invitation_button' => 'Chấp nhận lời mời',
     'invitation_expiration' => 'Liên kết này sẽ hết hạn trong :count days.',
+
+    'export_title' => 'Your export is ready',
+    'export_description' => 'You requested a data export on :date. It is now ready to download.',
+    'export_download' => 'Download export',
+
 ];

@@ -119,7 +119,7 @@ return [
     'starts_with' => ':attribute må begynne med en av de følgende: :values.',
     'string' => ':attribute må være en tekst.',
     'timezone' => ':attribute må være en gyldig tidssone.',
-    'unique' => ':attribute er allerede opptatt.',
+    'unique' => ':attribute er allerede brukt.',
     'uploaded' => ':attribute opplasting feilet.',
     'url' => 'Formatet er ugyldig (:attribute).',
     'uuid' => ':attribute må være en gyldig UUID.',

@@ -45,4 +45,9 @@ return [
     'invitation_link' => 'Klik op de onderstaande link om de uitnodiging te accepteren:',
     'invitation_button' => 'Uitnodiging accepteren',
     'invitation_expiration' => 'Deze link verloopt over :count dagen.',
+
+    'export_title' => 'Your export is ready',
+    'export_description' => 'You requested a data export on :date. It is now ready to download.',
+    'export_download' => 'Download export',
+
 ];

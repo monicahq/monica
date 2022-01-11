@@ -45,4 +45,9 @@ return [
     'invitation_link' => 'Daveti kabul etmek için aşağıdaki linke tıklayın:',
     'invitation_button' => 'Daveti kabul et',
     'invitation_expiration' => 'Bu linkin süresi :count gün içinde dolacaktır.',
+
+    'export_title' => 'Your export is ready',
+    'export_description' => 'You requested a data export on :date. It is now ready to download.',
+    'export_download' => 'Download export',
+
 ];

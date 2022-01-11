@@ -45,4 +45,9 @@ return [
     'invitation_link' => 'Чтобы принять приглашение, нажмите на ссылку ниже:',
     'invitation_button' => 'Принять приглашение',
     'invitation_expiration' => 'Срок действия этой ссылки истекает через :count дней.',
+
+    'export_title' => 'Your export is ready',
+    'export_description' => 'You requested a data export on :date. It is now ready to download.',
+    'export_download' => 'Download export',
+
 ];

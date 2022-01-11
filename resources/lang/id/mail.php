@@ -45,4 +45,9 @@ return [
     'invitation_link' => 'Untuk menerima undangan, klik tautan di bawah ini:',
     'invitation_button' => 'Terima undangan',
     'invitation_expiration' => 'Tautan ini akan berakhir pada :count hari.',
+
+    'export_title' => 'Your export is ready',
+    'export_description' => 'You requested a data export on :date. It is now ready to download.',
+    'export_download' => 'Download export',
+
 ];

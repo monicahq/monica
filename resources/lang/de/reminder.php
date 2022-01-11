@@ -13,5 +13,4 @@ return [
     'type_hangout' => 'Treffen mit',
     'type_email' => 'E-Mail',
     'type_birthday_kid' => 'Gratuliere dem Kind von',
-
 ];

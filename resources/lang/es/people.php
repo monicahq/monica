@@ -37,7 +37,7 @@ return [
     'people_search_page' => 'Página',
     'people_search_all' => 'Todos',
     'people_add_new' => 'Añadir a una nueva persona',
-    'people_list_account_usage' => 'Es uso de tu cuenta: :current/:limit contactos',
+    'people_list_account_usage' => 'El uso de tu cuenta: :current/:limit contactos',
     'people_list_account_upgrade_title' => 'Actualiza tu cuenta para desbloquear todo su potencial.',
     'people_list_account_upgrade_cta' => 'Actualizar ahora',
     'people_list_untagged' => 'Ver contactos sin etiqueta',

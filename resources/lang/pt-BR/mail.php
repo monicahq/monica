@@ -45,4 +45,9 @@ return [
     'invitation_link' => 'Para aceitar o convite, clique no link abaixo:',
     'invitation_button' => 'Aceitar convite',
     'invitation_expiration' => 'Este link irá expirar em :count dias.',
+
+    'export_title' => 'Your export is ready',
+    'export_description' => 'You requested a data export on :date. It is now ready to download.',
+    'export_download' => 'Download export',
+
 ];

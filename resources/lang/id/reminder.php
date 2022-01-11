@@ -12,6 +12,5 @@ return [
     'type_lunch' => 'Makan siang dengan',
     'type_hangout' => 'Nongkrong dengan',
     'type_email' => 'Email',
-    'type_birthday_kid' => 'Ucapkan selamat ulang tahun kepada anak dari',
-
+    'type_birthday_kid' => 'Wish happy birthday to the child of',
 ];

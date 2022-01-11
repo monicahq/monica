@@ -45,4 +45,9 @@ return [
     'invitation_link' => 'כדי לקבל את ההזמנה, יש ללחוץ על הקישור להלן:',
     'invitation_button' => 'קבלת ההזמנה',
     'invitation_expiration' => 'הקישור יפוג תוך :count ימים.',
+
+    'export_title' => 'Your export is ready',
+    'export_description' => 'You requested a data export on :date. It is now ready to download.',
+    'export_download' => 'Download export',
+
 ];

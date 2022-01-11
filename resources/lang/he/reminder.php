@@ -12,6 +12,5 @@ return [
     'type_lunch' => 'ארוחת צהריים עם',
     'type_hangout' => 'בילוי משותף עם',
     'type_email' => 'דוא״ל',
-    'type_birthday_kid' => 'נא לאחל יום הולדת שמח לילד של',
-
+    'type_birthday_kid' => 'Wish happy birthday to the child of',
 ];

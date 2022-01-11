@@ -12,6 +12,5 @@ return [
     'type_lunch' => 'Lunch med',
     'type_hangout' => 'Umgås med',
     'type_email' => 'E-post',
-    'type_birthday_kid' => 'Önska en glad födelsedag till barn av',
-
+    'type_birthday_kid' => 'Wish happy birthday to the child of',
 ];

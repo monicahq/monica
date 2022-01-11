@@ -45,4 +45,9 @@ return [
     'invitation_link' => '要接受邀请，请点击下面的链接：',
     'invitation_button' => '接受邀请',
     'invitation_expiration' => '此链接将在 :count 天后过期',
+
+    'export_title' => 'Your export is ready',
+    'export_description' => 'You requested a data export on :date. It is now ready to download.',
+    'export_download' => 'Download export',
+
 ];
