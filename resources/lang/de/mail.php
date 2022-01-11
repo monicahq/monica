@@ -49,6 +49,6 @@ Sie wollten alle :frequency Tage erinnert werden um in Kontakt zu bleiben mit :n
 
     'export_title' => 'Your export is ready',
     'export_description' => 'You requested a data export on :date. It is now ready to download.',
-    'export_download' => 'Download report',
+    'export_download' => 'Download export',
 
 ];
