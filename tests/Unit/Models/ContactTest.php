@@ -27,6 +27,8 @@ use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
+use LaravelAdorable\Adorable\LaravelAdorable;
+use Mockery\MockInterface;
 
 class ContactTest extends FeatureTestCase
 {
@@ -515,7 +517,9 @@ class ContactTest extends FeatureTestCase
     /** @test */
     public function it_returns_the_url_of_the_avatar()
     {
-        config(['monica.adorable_api' => 'adorable_api']);
+        $this->mock(LaravelAdorable::class, function (MockInterface $mock) {
+            $mock->shouldReceive('get')->andReturn('adorableURL');
+        });
 
         // default
         $contact = factory(Contact::class)->create([
@@ -530,12 +534,12 @@ class ContactTest extends FeatureTestCase
 
         // adorable
         $contact = factory(Contact::class)->create([
-            'avatar_adorable_url' => 'adorable_api/adorableURL',
+            'avatar_adorable_url' => 'adorableURL',
             'avatar_source' => 'adorable',
         ]);
 
         $this->assertEquals(
-            'adorable_api/adorableURL',
+            'adorableURL',
             $contact->getAvatarURL()
         );
 

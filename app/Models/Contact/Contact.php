@@ -36,6 +36,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use LaravelAdorable\Facades\LaravelAdorable;
 
 /**
  * @method static \Illuminate\Database\Eloquent\Builder search()
@@ -1122,27 +1123,26 @@ class Contact extends Model
     public function getAvatarAdorableUrlAttribute(?string $value): ?string
     {
         if (isset($value) && $value !== '') {
-            return Str::of($value)
+            $url = Str::of($value)
                 ->after('https://api.adorable.io/avatars/')
-                ->ltrim('/')
-                ->start(Str::finish(config('monica.adorable_api'), '/'));
+                ->ltrim('/');
+
+            $data = Str::of($url)->split('/\//');
+
+            if (! is_int($data[0]) || count($data) === 1) {
+                $size = config('monica.avatar_size');
+                $hash = $data[0];
+            } else {
+                $size = $data[0];
+                $hash = $data[1];
+            }
+
+            $hash = Str::of($hash)->split('/\.png/')[0];
+
+            return LaravelAdorable::get($size, $hash);
         }
 
         return null;
-    }
-
-    /**
-     * Set the adorable avatar URL.
-     *
-     * @param  string|null  $value
-     * @return void
-     */
-    public function setAvatarAdorableUrlAttribute(?string $value)
-    {
-        if (isset($value) && $value !== '') {
-            $value = Str::of($value)->replace(Str::finish(config('monica.adorable_api'), '/'), '');
-        }
-        $this->attributes['avatar_adorable_url'] = $value;
     }
 
     /**

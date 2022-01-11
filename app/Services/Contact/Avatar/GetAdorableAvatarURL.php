@@ -33,7 +33,7 @@ class GetAdorableAvatarURL extends BaseService
 
         $size = $this->size($data);
 
-        return Str::finish(config('monica.adorable_api'), '/').$size.'/'.$data['uuid'].'.png';
+        return $size.'/'.$data['uuid'].'.png';
     }
 
     /**
