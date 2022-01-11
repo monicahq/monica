@@ -12,7 +12,8 @@ on:
 
 env:
   php-version: '8.0'
-  node-version: 16
+  build-node-version: 16
+  semantic-node-version: 16
 
 
 jobs:
@@ -34,6 +35,11 @@ jobs:
         with:
           fetch-depth: 0 # Get all tags
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.semantic-node-version }}
+
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
         id: semantic
@@ -41,9 +47,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN_RELEASE: ${{ secrets.GH_TOKEN_RELEASE }}
         with:
-          semantic_version: 17.3.7
+          semantic_version: 18
           extra_plugins: |
-            @semantic-release/changelog
+            @semantic-release/changelog@6
             semantic-release-github-pullrequest
 
       - name: New release published
@@ -98,7 +104,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ env.node-version }}
+          node-version: ${{ env.build-node-version }}
       - name: Get yarn cache directory path
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
