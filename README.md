@@ -7,11 +7,12 @@
 
 <div align="center">
 
-[![Build Status](https://github.com/monicahq/monica/actions/workflows/tests.yml/badge.svg)](https://github.com/monicahq/monica/actions)
+[![Build Status](https://img.shields.io/github/workflow/status/monicahq/monica/Build?style=flat-square&label=Build%20Status)](https://github.com/monicahq/monica/actions)
 [![Docker pulls](https://img.shields.io/docker/pulls/library/monica)](https://hub.docker.com/_/monica/)
 ![Lines of code](https://img.shields.io/tokei/lines/github/monicahq/monica)
-[![Code coverage](https://img.shields.io/sonar/coverage/monica?server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/project/activity?custom_metrics=coverage&amp;graph=custom&amp;id=monica)
+[![Code coverage](https://img.shields.io/sonar/coverage/monica?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&label=Coverage%20Status)](https://sonarcloud.io/project/activity?custom_metrics=coverage&amp;graph=custom&amp;id=monica)
 [![License](https://img.shields.io/github/license/monicahq/monica)](https://github.com/monicahq/monica/blob/master/LICENSE.md)
+
 
 </div>
 
@@ -306,6 +307,6 @@ Monica uses a lot of open source projects and we thank them with all our hearts.
 
 ## License
 
-Copyright © 2016–2021
+Copyright © 2016–2022
 
 Licensed under [the AGPL License](/LICENSE.md).
