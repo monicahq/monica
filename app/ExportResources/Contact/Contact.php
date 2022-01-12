@@ -46,7 +46,6 @@ class Contact extends ExportResource
                     'avatar_source' => $this->avatar_source,
                     'avatar_gravatar_url' => $this->avatar_gravatar_url,
                     'avatar_adorable_uuid' => $this->avatar_adorable_uuid,
-                    'avatar_adorable_url' => $this->avatar_adorable_url,
                     'avatar_default_url' => $this->avatar_default_url,
                     $this->mergeWhen($this->avatarPhoto !== null, function () {
                         return ['avatar_photo' => $this->avatarPhoto->uuid];

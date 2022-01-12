@@ -80,7 +80,7 @@
           <a :href="props.row.route">
             <template v-if="props.row.is_starred">
               <span :class="[dirltr === 'ltr' ? 'ml3' : 'mr3']">
-                {{ props.row.complete_name }}
+                {{ props.row.complete_name }}
               </span>
               <svg class="relative" style="top: 5px" width="23" height="22" viewBox="0 0 23 22"
                    fill="none"
@@ -92,7 +92,7 @@
               </svg>
             </template>
             <span v-else>
-              {{ props.row.complete_name }}
+              {{ props.row.complete_name }}
             </span>
           </a>
         </template>
