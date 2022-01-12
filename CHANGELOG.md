@@ -1,3 +1,11 @@
+## [3.6.1](https://github.com/monicahq/monica/compare/v3.6.0...v3.6.1) (2022-01-12)
+
+
+### Bug Fixes
+
+* fix contact search + adorable return data ([#5881](https://github.com/monicahq/monica/issues/5881)) ([3309785](https://github.com/monicahq/monica/commit/33097850af0fdefa50f06b8423ed40ce051812ff))
+* fix heroku deploy ([#5879](https://github.com/monicahq/monica/issues/5879)) ([2812ed3](https://github.com/monicahq/monica/commit/2812ed318a97120eff6d80f42bfa8eab053a6cc9))
+
 # [3.6.0](https://github.com/monicahq/monica/compare/v3.5.0...v3.6.0) (2022-01-11)
 
 
