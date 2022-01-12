@@ -19,7 +19,7 @@
         <contact-avatar
           :avatar="'{{ $contact->avatar_source }}'"
           :default-url="'{{ $contact->getAvatarDefaultURL() }}'"
-          :adorable-url="'{{ $contact->avatar_adorable_url }}'"
+          :adorable-url="'{{ $contact->avatar_adorable_data_url }}'"
           :gravatar-url="'{{ $contact->avatar_gravatar_url }}'"
           :photo-url="'{{ $contact->getAvatarURL() }}'"
           :has-reached-account-storage-limit="false"

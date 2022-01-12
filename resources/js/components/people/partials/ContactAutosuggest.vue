@@ -173,7 +173,7 @@ export default {
         needle: keyword
       }).then(function(response) {
         const data = [];
-        if (response.data.noResults === null) {
+        if (response.data.noResults === undefined || response.data.noResults === null) {
           response.data.data
             .forEach(function (contact) {
               contact.keyword = keyword;

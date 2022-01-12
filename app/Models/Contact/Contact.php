@@ -90,7 +90,7 @@ class Contact extends Model
         'is_partial',
         'is_starred',
         'avatar_source',
-        'avatar_adorable_url',
+        'avatar_adorable_uuid',
         'avatar_gravatar_url',
         'avatar_default_url',
         'avatar_photo_id',
@@ -1121,26 +1121,10 @@ class Contact extends Model
      * @param  string|null  $value
      * @return string|null
      */
-    public function getAvatarAdorableUrlAttribute(?string $value): ?string
+    public function getAvatarAdorableDataUrlAttribute(?string $value): ?string
     {
-        if (isset($value) && $value !== '') {
-            $url = Str::of($value)
-                ->after('https://api.adorable.io/avatars/')
-                ->ltrim('/');
-
-            $data = Str::of($url)->split('/\//');
-
-            if (! ctype_digit($data[0]) || count($data) === 1) {
-                $size = config('monica.avatar_size');
-                $hash = $data[0];
-            } else {
-                $size = (int) $data[0];
-                $hash = $data[1];
-            }
-
-            $hash = Str::of($hash)->split('/\.png/')[0];
-
-            return LaravelAdorable::get($size, $hash);
+        if (isset($this->avatar_adorable_uuid) && $this->avatar_adorable_uuid !== '') {
+            return LaravelAdorable::get(config('monica.avatar_size'), $this->avatar_adorable_uuid);
         }
 
         return null;
@@ -1162,7 +1146,7 @@ class Contact extends Model
 
         switch ($this->avatar_source) {
             case 'adorable':
-                $avatarURL = $this->avatar_adorable_url;
+                $avatarURL = $this->avatar_adorable_data_url;
                 break;
             case 'gravatar':
                 $avatarURL = $this->avatar_gravatar_url;
