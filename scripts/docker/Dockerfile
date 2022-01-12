@@ -164,7 +164,7 @@ RUN set -ex; \
 # Install node dependencies
 RUN set -ex; \
     \
-    curl -fsSL https://deb.nodesource.com/setup_14.x | bash -; \
+    curl -fsSL https://deb.nodesource.com/setup_16.x | bash -; \
     apt-get install -y nodejs; \
     npm install -g yarn; \
     yarn run inst; \
