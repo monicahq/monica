@@ -517,10 +517,6 @@ class ContactTest extends FeatureTestCase
     /** @test */
     public function it_returns_the_url_of_the_avatar()
     {
-        $this->mock(LaravelAdorable::class, function (MockInterface $mock) {
-            $mock->shouldReceive('get')->andReturn('adorableURL');
-        });
-
         // default
         $contact = factory(Contact::class)->create([
             'avatar_default_url' => 'defaultURL',
@@ -534,9 +530,13 @@ class ContactTest extends FeatureTestCase
 
         // adorable
         $contact = factory(Contact::class)->create([
-            'avatar_adorable_url' => 'adorableURL',
+            'avatar_adorable_uuid' => 'uuid',
             'avatar_source' => 'adorable',
         ]);
+
+        $this->mock(LaravelAdorable::class, function (MockInterface $mock) {
+            $mock->shouldReceive('get')->andReturn('adorableURL');
+        });
 
         $this->assertEquals(
             'adorableURL',
