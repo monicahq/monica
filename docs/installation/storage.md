@@ -1,5 +1,6 @@
 # External storage <!-- omit in toc -->
 
+- [Configure an external storage](#configure-an-external-storage)
 - [Add an external storage](#add-an-external-storage)
   - [1. Create AWS S3 storage](#1-create-aws-s3-storage)
   - [2. Create a user](#2-create-a-user)
@@ -15,13 +16,27 @@ This is useful in particular if you install Monica on a stateless volatile insta
 We currently only support AWS S3 driver as external storage.
 
 
+## Configure an external storage
+
+You need to define at least these environment variables:
+
+```
+DEFAULT_FILESYSTEM=s3
+AWS_BUCKET=
+AWS_DEFAULT_REGION=
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+```
+
+See below for more details about each environment variable.
+
+
 ## Add an external storage
 
 ### 1. Create AWS S3 storage
 
 1. Go to the S3 [console](https://s3.console.aws.amazon.com/s3/home)
 2. Add a new bucket
-   - Allow public access for the bucket. This is mandatory for now.
 3. Save the name and location of the bucket in `AWS_BUCKET` and `AWS_DEFAULT_REGION` variables
 
 ```
@@ -70,7 +85,7 @@ Then save `AccessKeyId` and `SecretAccessKey` in `AWS_ACCESS_KEY_ID` and `AWS_SE
 
 ### 3. Set environment variables
 
-Don't forget to set this variable to use S3 storage:
+Set the `DEFAULT_FILESYSTEM` variable to use S3 storage:
 ```
 DEFAULT_FILESYSTEM=s3
 ```
@@ -78,7 +93,7 @@ DEFAULT_FILESYSTEM=s3
 
 ### (Optional) Use another S3 provider
 
-*AWS_ENDPOINT* variable can be used to define a S3-compatible provider other than Amazon, like [Digitalocean](https://www.digitalocean.com/products/spaces/) or [Minio](https://min.io/).
+*AWS_ENDPOINT* variable can be used to define a S3-compatible provider other than Amazon, like [Digitalocean](https://www.digitalocean.com/products/spaces/), [Scaleway](https://www.scaleway.com) or [Minio](https://min.io/).
    example: `AWS_ENDPOINT=nyc3.digitaloceanspaces.com`
 
 
