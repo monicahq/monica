@@ -34,6 +34,10 @@
     "posttest": "vendor/bin/phpstan analyse && vendor/bin/psalm",
     "composer update": "COMPOSER_MEMORY_LIMIT=-1 composer update"
   },
+  "engines": {
+    "node": "16.x",
+    "yarn": "1.22.x"
+  },
   "devDependencies": {
     "cross-env": "^7.0",
     "cypress": "^7.2.0",

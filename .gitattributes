@@ -13,14 +13,11 @@
 .platform.app.yaml export-ignore
 .releaserc export-ignore
 .sass-lint.yml export-ignore
-.snyk export-ignore
 .styleci.yml export-ignore
-app.json export-ignore
 crowdin.yml export-ignore
 cypress.json export-ignore
 phpstan.neon export-ignore
 phpunit.xml export-ignore
-Procfile export-ignore
 psalm.yml export-ignore
 server.php export-ignore
 sonar-project.properties export-ignore
