@@ -17,7 +17,7 @@ return [
     'delete_confirm' => 'Tem certeza?',
     'delete' => 'Excluir',
     'edit' => 'Editar',
-    'upload' => 'Envio',
+    'upload' => 'Upload',
     'download' => 'Baixar',
     'save_close' => 'Salvar e fechar',
     'close' => 'Fechar',
@@ -292,7 +292,7 @@ return [
 
     'relationship_type_ex_husband' => 'ex-spouse',
     'relationship_type_ex_husband_female' => 'ex wife',
-    'relationship_type_ex_husband_male' => 'ex-marido',
+    'relationship_type_ex_husband_male' => 'ex-husband',
     'relationship_type_ex_husband_with_name' => ':name’s ex-spouse',
     'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
     'relationship_type_ex_husband_male_with_name' => ':name’s ex-husband',
