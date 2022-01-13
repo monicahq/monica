@@ -49,7 +49,7 @@ return [
     'people_add_missing' => 'Persona no encontrada - añade una nueva ahora',
     'people_add_firstname' => 'Nombre',
     'people_add_middlename' => 'Segundo Nombre (Opcional)',
-    'people_add_lastname' => 'Apellido (opcional)',
+    'people_add_lastname' => 'Apellidos (opcional)',
     'people_add_email' => 'Correo electrónico (opcional)',
     'people_add_nickname' => 'Apodo (opcional)',
     'people_add_cta' => 'Añadir',
@@ -95,7 +95,7 @@ return [
     'stay_in_touch_premium' => 'Necesitas actualizar tu cuenta para hacer uso de esta característica',
     'stay_in_touch_modal_title' => 'Mantenerse en contacto',
     'stay_in_touch_modal_desc' => 'Podemos recordarte que te mantengas en contacto con {firstname} regularmente por correo electrónico.',
-    'stay_in_touch_modal_label' => 'Send me an email every… {count} day|Send me an email every… {count} days',
+    'stay_in_touch_modal_label' => 'Envíame un correo electrónico cada… {count} día|Envíame un correo electrónico cada… {count} días',
 
     // Calls
     'modal_call_title' => 'Registrar una llamada',
