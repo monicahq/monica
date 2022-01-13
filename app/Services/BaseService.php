@@ -163,6 +163,22 @@ abstract class BaseService
     }
 
     /**
+     * Returns the value if it's defined, or true otherwise.
+     *
+     * @param  mixed  $data
+     * @param  mixed  $index
+     * @return mixed
+     */
+    public function valueOrTrue($data, $index)
+    {
+        if (empty($data[$index]) && $data[$index] !== false) {
+            return true;
+        }
+
+        return $data[$index];
+    }
+
+    /**
      * Checks if the value is empty or null.
      *
      * @param  mixed  $data

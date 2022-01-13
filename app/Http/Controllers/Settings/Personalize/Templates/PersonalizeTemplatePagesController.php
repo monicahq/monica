@@ -22,6 +22,7 @@ class PersonalizeTemplatePagesController extends Controller
             'author_id' => Auth::user()->id,
             'template_id' => $templateId,
             'name' => $request->input('name'),
+            'can_be_deleted' => true,
         ];
 
         $templatePage = (new CreateTemplatePage)->execute($data);

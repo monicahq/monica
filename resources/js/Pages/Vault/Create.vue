@@ -32,7 +32,7 @@
         <form class="bg-white border border-gray-200 rounded-lg mb-6" @submit.prevent="submit()">
           <div class="p-5 border-b border-gray-200 bg-blue-50 section-head">
             <h1 class="text-center text-2xl mb-1 font-medium">
-              Create a new vault
+              Create a vault
             </h1>
             <p class="text-center">Vaults contain all your contacts data.</p>
           </div>
@@ -45,7 +45,7 @@
 
           <div class="p-5 flex justify-between">
             <pretty-link :href="data.url.back" :text="'Cancel'" :classes="'mr-3'" />
-            <pretty-button :href="'data.url.vault.create'" :text="'Create a vault'" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-button :href="'data.url.vault.create'" :text="'Add'" :state="loadingState" :icon="'check'" :classes="'save'" />
           </div>
         </form>
       </div>

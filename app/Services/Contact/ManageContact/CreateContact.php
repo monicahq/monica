@@ -2,7 +2,9 @@
 
 namespace App\Services\Contact\ManageContact;
 
+use App\Models\Gender;
 use App\Models\Contact;
+use App\Models\Pronoun;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Jobs\CreateContactLog;
@@ -10,6 +12,8 @@ use App\Interfaces\ServiceInterface;
 
 class CreateContact extends BaseService implements ServiceInterface
 {
+    private array $data;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -24,8 +28,10 @@ class CreateContact extends BaseService implements ServiceInterface
             'first_name' => 'required|string|max:255',
             'last_name' => 'nullable|string|max:255',
             'middle_name' => 'nullable|string|max:255',
-            'surname' => 'nullable|string|max:255',
+            'nickname' => 'nullable|string|max:255',
             'maiden_name' => 'nullable|string|max:255',
+            'gender_id' => 'nullable|integer|exists:genders,id',
+            'pronoun_id' => 'nullable|integer|exists:pronouns,id',
         ];
     }
 
@@ -51,20 +57,42 @@ class CreateContact extends BaseService implements ServiceInterface
      */
     public function execute(array $data): Contact
     {
-        $this->validateRules($data);
+        $this->data = $data;
 
-        $this->contact = Contact::create([
-            'vault_id' => $data['vault_id'],
-            'first_name' => $data['first_name'],
-            'last_name' => $this->valueOrNull($data, 'last_name'),
-            'middle_name' => $this->valueOrNull($data, 'middle_name'),
-            'surname' => $this->valueOrNull($data, 'surname'),
-            'maiden_name' => $this->valueOrNull($data, 'maiden_name'),
-        ]);
-
+        $this->validate();
+        $this->create();
         $this->log();
 
         return $this->contact;
+    }
+
+    private function validate(): void
+    {
+        $this->validateRules($this->data);
+
+        if ($this->valueOrNull($this->data, 'gender_id')) {
+            Gender::where('account_id', $this->data['account_id'])
+                ->findOrFail($this->data['gender_id']);
+        }
+
+        if ($this->valueOrNull($this->data, 'pronoun_id')) {
+            Pronoun::where('account_id', $this->data['account_id'])
+                ->findOrFail($this->data['pronoun_id']);
+        }
+    }
+
+    private function create(): void
+    {
+        $this->contact = Contact::create([
+            'vault_id' => $this->data['vault_id'],
+            'first_name' => $this->data['first_name'],
+            'last_name' => $this->valueOrNull($this->data, 'last_name'),
+            'middle_name' => $this->valueOrNull($this->data, 'middle_name'),
+            'nickname' => $this->valueOrNull($this->data, 'nickname'),
+            'maiden_name' => $this->valueOrNull($this->data, 'maiden_name'),
+            'gender_id' => $this->valueOrNull($this->data, 'gender_id'),
+            'pronoun_id' => $this->valueOrNull($this->data, 'pronoun_id'),
+        ]);
     }
 
     private function log(): void

@@ -16,7 +16,7 @@ class PreferencesIndexViewHelperTest extends TestCase
     public function it_gets_the_data_needed_for_the_view(): void
     {
         $user = User::factory()->create([
-            'name_order' => '%first_name% %last_name% (%surname%)',
+            'name_order' => '%first_name% %last_name% (%nickname%)',
         ]);
         $array = PreferencesIndexViewHelper::data($user);
         $this->assertEquals(
@@ -36,13 +36,13 @@ class PreferencesIndexViewHelperTest extends TestCase
     public function it_gets_the_data_needed_for_name_order(): void
     {
         $user = User::factory()->create([
-            'name_order' => '%first_name% %last_name% (%surname%)',
+            'name_order' => '%first_name% %last_name% (%nickname%)',
         ]);
         $array = PreferencesIndexViewHelper::dtoNameOrder($user);
         $this->assertEquals(
             [
                 'name_example' => 'James Bond (007)',
-                'name_order' => '%first_name% %last_name% (%surname%)',
+                'name_order' => '%first_name% %last_name% (%nickname%)',
                 'url' => [
                     'store' => env('APP_URL').'/settings/preferences',
                 ],

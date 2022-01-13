@@ -25,6 +25,7 @@ class ModuleFactory extends Factory
         return [
             'account_id' => Account::factory(),
             'name' => 'business',
+            'type' => 'business',
             'can_be_deleted' => true,
         ];
     }

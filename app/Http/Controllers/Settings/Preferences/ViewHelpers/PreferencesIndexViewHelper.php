@@ -24,7 +24,7 @@ class PreferencesIndexViewHelper
         $contact = new Contact([
             'first_name' => 'James',
             'last_name' => 'Bond',
-            'surname' => '007',
+            'nickname' => '007',
             'middle_name' => 'W.',
             'maiden_name' => 'Muller',
         ]);

@@ -28,26 +28,19 @@
     </label>
 
     <div class="relative component">
-      <input
-        :id="id"
-        :ref="ref"
-        :class="localInputClasses"
-        :value="modelValue"
-        :type="type"
-        :name="name"
-        :maxlength="maxlength"
-        :required="required"
-        :autofocus="autofocus"
-        :autocomplete="autocomplete"
-        :disabled="disabled"
-        @input="$emit('update:modelValue', $event.target.value)"
-        @keydown.esc="sendEscKey"
-        @focus="showMaxLength"
-        @blur="displayMaxLength = false"
+      <select :id="id"
+              v-model="selectedId"
+              :autocomplete="country-name"
+              :class="localDropdownClasses"
+              :required="required"
+              :disabled="disabled"
+              :placeholder="placeholder"
+              @change="change"
       >
-      <span v-if="maxlength && displayMaxLength" class="length absolute text-xs rounded">
-        {{ charactersLeft }}
-      </span>
+        <option v-for="item in data" :key="item.id" :value="item.id">
+          {{ item.name }}
+        </option>
+      </select>
     </div>
 
     <p v-if="help" class="text-xs mb-3 mt-1">
@@ -58,13 +51,18 @@
 
 <script>
 export default {
-
   props: {
     id: {
       type: String,
-      default: 'text-input-',
+      default: 'dropdown-',
     },
-    inputClass: {
+    data: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    dropdownClass: {
       type: String,
       default: '',
     },
@@ -76,17 +74,9 @@ export default {
       type: [String, Number],
       default: '',
     },
-    type: {
-      type: String,
-      default: 'text',
-    },
     name: {
       type: String,
       default: 'input',
-    },
-    placeholder: {
-      type: String,
-      default: '',
     },
     help: {
       type: String,
@@ -104,17 +94,13 @@ export default {
       type: Boolean,
       default: false,
     },
-    autofocus: {
-      type: Boolean,
-      default: false,
-    },
     autocomplete: {
-      type: Boolean,
-      default: true,
+      type: String,
+      default: '',
     },
-    maxlength: {
-      type: Number,
-      default: null,
+    placeholder: {
+      type: String,
+      default: '',
     },
     ref: {
       type: String,
@@ -125,24 +111,13 @@ export default {
 
   data() {
     return {
-      localInputClasses: '',
-      displayMaxLength: false,
+      localDropdownClasses: '',
+      selectedId: 0,
     };
   },
 
-  computed: {
-    charactersLeft() {
-      var char = 0;
-      if (this.modelValue) {
-        char = this.modelValue.length;
-      }
-
-      return `${this.maxlength - char} / ${this.maxlength}`;
-    },
-  },
-
   created() {
-    this.localInputClasses = 'border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-slate-50 ' + this.inputClass;
+    this.localDropdownClasses = 'py-2 px-3 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-white rounded-md shadow-sm focus:outline-none sm:text-sm ' + this.dropdownClass;
   },
 
   methods: {
@@ -150,13 +125,13 @@ export default {
       this.$refs.input.focus();
     },
 
-    showMaxLength() {
-      this.displayMaxLength = true;
-    },
-
     sendEscKey() {
       this.$emit('esc-key-pressed');
     },
+
+    change() {
+      this.$emit('update:modelValue', this.selectedId);
+    }
   }
 };
 </script>

@@ -120,7 +120,7 @@
 
         <!-- blank state -->
         <div v-if="localPronouns.length == 0" class="bg-white border border-gray-200 rounded-lg mb-6">
-          <p class="p-5 text-center">Labels let you classify contacts using a system that matters to you.</p>
+          <p class="p-5 text-center">Pronouns are basically how we identify ourselves apart from our name. It's how someone refers to you in conversation.</p>
         </div>
       </div>
     </main>

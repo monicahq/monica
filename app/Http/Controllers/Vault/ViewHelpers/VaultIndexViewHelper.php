@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Vault\ViewHelpers;
 
-use function route;
 use App\Models\User;
 use App\Models\Vault;
-use function collect;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,6 +24,14 @@ class VaultIndexViewHelper
             'vault' => $vault ? [
                 'id' => $vault->id,
                 'name' => $vault->name,
+                'url' => [
+                    'dashboard' => route('vault.show', [
+                        'vault' => $vault->id,
+                    ]),
+                    'contacts' => route('contact.index', [
+                        'vault' => $vault->id,
+                    ]),
+                ],
             ] : null,
             'url' => [
                 'vaults' => route('vault.index'),

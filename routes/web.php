@@ -7,6 +7,7 @@ use App\Http\Controllers\Vault\VaultController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Settings\Users\UserController;
 use App\Http\Controllers\Auth\AcceptInvitationController;
+use App\Http\Controllers\Vault\Contact\ContactController;
 use App\Http\Controllers\Settings\Personalize\PersonalizeController;
 use App\Http\Controllers\Settings\Preferences\PreferencesController;
 use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
@@ -47,6 +48,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::middleware(['vault'])->prefix('{vault}')->group(function () {
             Route::get('', [VaultController::class, 'show'])->name('vault.show');
+
+            // contacts
+            Route::prefix('contacts')->group(function () {
+                Route::get('', [ContactController::class, 'index'])->name('contact.index');
+                Route::get('create', [ContactController::class, 'create'])->name('contact.create');
+                Route::post('', [ContactController::class, 'store'])->name('contact.store');
+
+                Route::middleware(['contact'])->prefix('{contact}')->group(function () {
+                    Route::get('', [ContactController::class, 'show'])->name('contact.show');
+
+                    Route::get('tab/{page}', [ContactPageController::class, 'show'])->name('contact.page.show');
+                });
+            });
         });
     });
 
@@ -141,6 +155,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::post('{template}/template_pages/{page}/modules/{module}/order', [PersonalizeTemplatePageModulesPositionController::class, 'update'])->name('template_page.module.order.update');
                     Route::delete('{template}/template_pages/{page}/modules/{module}', [PersonalizeTemplatePageModulesController::class, 'destroy'])->name('template_page.module.destroy');
                 });
+
+                // modules
+                Route::get('modules', [PersonalizeModulesController::class, 'index'])->name('module.index');
+                Route::post('modules', [PersonalizeModulesController::class, 'store'])->name('module.store');
+                Route::put('modules/{module}', [PersonalizeModulesController::class, 'update'])->name('module.update');
+                Route::delete('modules/{module}', [PersonalizeModulesController::class, 'destroy'])->name('module.destroy');
             });
 
             // cancel
@@ -149,10 +169,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
     });
 
-    Route::get('contacts', 'ContactController@index');
-
     Route::resource('settings/information', 'Settings\\InformationController');
-
-    // contacts
-    Route::get('vaults/{vault}/contacts/{contact}', 'HomeController@index')->name('contact.show');
 });

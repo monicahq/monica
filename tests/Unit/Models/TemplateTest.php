@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use Tests\TestCase;
+use App\Models\Contact;
 use App\Models\Template;
 use App\Models\Information;
 use App\Models\TemplatePage;
@@ -30,6 +31,18 @@ class TemplateTest extends TestCase
         ]);
 
         $this->assertTrue($template->pages()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_contacts()
+    {
+        $template = Template::factory()->create();
+
+        $contact = Contact::factory()->create([
+            'template_id' => $template->id,
+        ]);
+
+        $this->assertTrue($template->contacts()->exists());
     }
 
     /** @test */

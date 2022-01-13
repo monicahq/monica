@@ -70,6 +70,7 @@ class CreateTemplatePageTest extends TestCase
             'author_id' => $author->id,
             'template_id' => $template->id,
             'name' => 'Business',
+            'can_be_deleted' => true,
         ];
 
         $templatePage = (new CreateTemplatePage)->execute($request);
@@ -78,6 +79,7 @@ class CreateTemplatePageTest extends TestCase
             'id' => $templatePage->id,
             'template_id' => $template->id,
             'name' => 'Business',
+            'can_be_deleted' => true,
         ]);
 
         $this->assertInstanceOf(

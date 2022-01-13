@@ -19,16 +19,19 @@ class CreateContactsTable extends Migration
             $table->unsignedBigInteger('vault_id');
             $table->unsignedBigInteger('gender_id')->nullable();
             $table->unsignedBigInteger('pronoun_id')->nullable();
+            $table->unsignedBigInteger('template_id')->nullable();
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->string('surname')->nullable();
+            $table->string('nickname')->nullable();
             $table->string('maiden_name')->nullable();
             $table->boolean('can_be_deleted')->default(true);
+            $table->datetime('last_updated_at')->nullable();
             $table->timestamps();
             $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
             $table->foreign('gender_id')->references('id')->on('genders')->onDelete('set null');
             $table->foreign('pronoun_id')->references('id')->on('pronouns')->onDelete('set null');
+            $table->foreign('template_id')->references('id')->on('templates')->onDelete('set null');
         });
 
         Schema::create('user_vault', function (Blueprint $table) {

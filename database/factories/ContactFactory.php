@@ -27,7 +27,7 @@ class ContactFactory extends Factory
             'first_name' => $this->faker->firstName,
             'middle_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
-            'surname' => $this->faker->unique()->firstName,
+            'nickname' => $this->faker->unique()->firstName,
             'maiden_name' => $this->faker->unique()->name,
             'can_be_deleted' => true,
         ];

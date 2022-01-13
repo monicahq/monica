@@ -53,7 +53,7 @@
               🚻
             </span> All the genders
           </h3>
-          <pretty-button v-if="!createGenderModalShown" :text="'Add a label'" :icon="'plus'" @click="showGenderModal" />
+          <pretty-button v-if="!createGenderModalShown" :text="'Add a gender'" :icon="'plus'" @click="showGenderModal" />
         </div>
 
         <!-- modal to create a new group type -->
@@ -120,7 +120,7 @@
 
         <!-- blank state -->
         <div v-if="localGenders.length == 0" class="bg-white border border-gray-200 rounded-lg mb-6">
-          <p class="p-5 text-center">Labels let you classify contacts using a system that matters to you.</p>
+          <p class="p-5 text-center">Add genders to associate them to contacts.</p>
         </div>
       </div>
     </main>

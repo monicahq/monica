@@ -8,6 +8,7 @@ use App\Models\Label;
 use App\Models\Gender;
 use App\Models\Contact;
 use App\Models\Pronoun;
+use App\Models\Template;
 use App\Models\ContactLog;
 use App\Models\ContactAddress;
 use App\Models\RelationshipType;
@@ -44,6 +45,16 @@ class ContactTest extends TestCase
         ]);
 
         $this->assertTrue($ross->pronoun()->exists());
+    }
+
+    /** @test */
+    public function it_has_one_template()
+    {
+        $ross = Contact::factory()->create([
+            'template_id' => Template::factory()->create(),
+        ]);
+
+        $this->assertTrue($ross->template()->exists());
     }
 
     /** @test */

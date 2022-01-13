@@ -68,21 +68,21 @@ pre {
           </label>
         </div>
         <div class="flex items-center mb-2">
-          <input id="first_name_last_name_surname" v-model="form.nameOrder" value="%first_name% %last_name% (%surname%)" name="name-order" type="radio"
+          <input id="first_name_last_name_nickname" v-model="form.nameOrder" value="%first_name% %last_name% (%nickname%)" name="name-order" type="radio"
                  class="h-4 w-4 text-sky-500 border-gray-300"
           >
-          <label for="first_name_last_name_surname" class="ml-3 block text-sm font-medium text-gray-700 cursor-pointer">
-            First name Last name (Surname) <span class="text-gray-500 font-normal ml-4">
+          <label for="first_name_last_name_nickname" class="ml-3 block text-sm font-medium text-gray-700 cursor-pointer">
+            First name Last name (nickname) <span class="text-gray-500 font-normal ml-4">
               James Bond (007)
             </span>
           </label>
         </div>
         <div class="flex items-center mb-2">
-          <input id="surname" v-model="form.nameOrder" value="%surname%" name="name-order" type="radio"
+          <input id="nickname" v-model="form.nameOrder" value="%nickname%" name="name-order" type="radio"
                  class="h-4 w-4 text-sky-500 border-gray-300"
           >
-          <label for="surname" class="ml-3 block text-sm font-medium text-gray-700 cursor-pointer">
-            Surname <span class="text-gray-500 font-normal ml-4">
+          <label for="nickname" class="ml-3 block text-sm font-medium text-gray-700 cursor-pointer">
+            nickname <span class="text-gray-500 font-normal ml-4">
               007
             </span>
           </label>

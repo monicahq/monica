@@ -21,7 +21,7 @@ class NameHelperTest extends TestCase
         $contact = Contact::factory()->create([
             'first_name' => 'James',
             'last_name' => 'Bond',
-            'surname' => '007',
+            'nickname' => '007',
             'middle_name' => 'W.',
             'maiden_name' => 'Muller',
         ]);
@@ -49,7 +49,7 @@ class NameHelperTest extends TestCase
             NameHelper::formatContactName($user, $contact)
         );
 
-        $user->update(['name_order' => '%last_name% (%maiden_name%)  || (%surname%) || %first_name%']);
+        $user->update(['name_order' => '%last_name% (%maiden_name%)  || (%nickname%) || %first_name%']);
         $this->assertEquals(
             'Bond (Muller)  || (007) || James',
             NameHelper::formatContactName($user, $contact)

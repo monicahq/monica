@@ -26,6 +26,7 @@ class TemplatePageFactory extends Factory
             'template_id' => Template::factory(),
             'name' => 'business',
             'position' => 1,
+            'can_be_deleted' => true,
         ];
     }
 }

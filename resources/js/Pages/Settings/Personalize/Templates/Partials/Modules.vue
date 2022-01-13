@@ -85,7 +85,7 @@
 
     <!-- blank state -->
     <div v-if="localPageModules.length == 0 && moduleLoaded">
-      <p class="p-5 text-center bg-white border border-gray-200 rounded-lg">Create at least one page to display contact's data.</p>
+      <p class="p-5 text-center bg-white border border-gray-200 rounded-lg">Add at least one module.</p>
     </div>
 
     <!-- no page selected -->

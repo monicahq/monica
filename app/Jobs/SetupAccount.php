@@ -22,6 +22,7 @@ use App\Services\Account\ManageTemplate\CreateTemplatePage;
 use App\Services\Account\ManageAddressTypes\CreateAddressType;
 use App\Services\Account\ManagePetCategories\CreatePetCategory;
 use App\Services\Account\ManageTemplate\AddDefaultValueToAttribute;
+use App\Services\Account\ManageTemplate\AssociateModuleToTemplatePage;
 use App\Services\Account\ManageTemplate\AssociateInformationToTemplate;
 use App\Services\Account\ManageRelationshipTypes\CreateRelationshipGroupType;
 use App\Services\Account\ManageContactInformationTypes\CreateContactInformationType;
@@ -43,6 +44,13 @@ class SetupAccount implements ShouldQueue
      * @var Template
      */
     protected $template;
+
+    /**
+     * The template page instance about the contact.
+     *
+     * @var TemplatePage
+     */
+    protected $templatePageContact;
 
     /**
      * The position instance.
@@ -95,9 +103,19 @@ class SetupAccount implements ShouldQueue
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'template_id' => $this->template->id,
-            'name' => trans('app.default_template_page_social'),
+            'name' => trans('app.default_template_page_contact_information'),
+            'can_be_deleted' => false,
+            'type' => 'contact_information',
         ];
+        $this->templatePageContact = (new CreateTemplatePage)->execute($request);
 
+        $request = [
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'name' => trans('app.default_template_page_social'),
+            'can_be_deleted' => true,
+        ];
         (new CreateTemplatePage)->execute($request);
     }
 
@@ -108,14 +126,28 @@ class SetupAccount implements ShouldQueue
      */
     private function addModules(): void
     {
-        $request = [
+        $module = (new CreateModule)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'name' => trans('app.module_names'),
+            'type' => 'contact_names',
+            'can_be_deleted' => false,
+        ]);
+        (new AssociateModuleToTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $this->templatePageContact->id,
+            'module_id' => $module->id,
+        ]);
+
+        (new CreateModule)->execute([
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'name' => trans('app.module_notes'),
+            'type' => 'notes',
             'can_be_deleted' => false,
-        ];
-
-        (new CreateModule)->execute($request);
+        ]);
     }
 
     /**

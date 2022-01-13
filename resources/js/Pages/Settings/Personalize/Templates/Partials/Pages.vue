@@ -10,7 +10,21 @@
       <pretty-button v-if="!createPageModalShown" :text="'Add a page'" :icon="'plus'" @click="showPageModal" />
     </div>
 
-    <!-- list of pages -->
+    <!-- contact information page | can't be removed -->
+    <div :class="isSelectedId == data.template_page_contact_information.id ? 'border-2	bg-sky-100' : ''" class="bg-white border hover:bg-slate-50 border-gray-200 rounded-lg mb-2 px-5 py-2 flex items-center" @click="selectPage(data.template_page_contact_information)">
+      <!-- detail of a page -->
+      <div>
+        <div class="mb-0 block">
+          {{ data.template_page_contact_information.name }}
+        </div>
+
+        <ul class="text-xs text-gray-400">
+          <li class="inline">Can't be moved or deleted</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- list of pages that can be deleted -->
     <draggable
       :list="localPages"
       item-key="id"
@@ -150,6 +164,7 @@ export default {
 
   methods: {
     showPageModal() {
+      this.form.errors = [];
       this.form.name = '';
       this.createPageModalShown = true;
 

@@ -32,7 +32,8 @@ return [
     'hide_help' => 'Hide help',
 
     'default_template_name' => 'Default template',
-    'default_template_page_social' => 'social',
+    'default_template_page_contact_information' => 'Contact information',
+    'default_template_page_social' => 'Social',
     'default_description_information' => 'Description',
     'default_gender_information_name' => 'Gender',
     'default_birthdate_information' => 'Birthdate',
@@ -75,5 +76,6 @@ return [
     'group_type_association' => 'Association',
     'group_type_roomates' => 'Roomates',
 
+    'module_names' => 'Contact name',
     'module_notes' => 'Notes',
 ];

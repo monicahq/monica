@@ -18,6 +18,7 @@ class Module extends Model
     protected $fillable = [
         'account_id',
         'name',
+        'type',
         'can_be_deleted',
     ];
 
