@@ -3,7 +3,7 @@ name: Migration tests
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    branches-ignore: ['l10n_master*']
+    branches-ignore: ['l10n_main*']
   release:
     types: [created]
 
