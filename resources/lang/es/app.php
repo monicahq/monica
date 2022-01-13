@@ -145,7 +145,7 @@ return [
 
     'relationship_type_spouse' => 'esposa',
     'relationship_type_spouse_female' => 'esposa',
-    'relationship_type_spouse_male' => 'esposo | marido',
+    'relationship_type_spouse_male' => 'esposo/marido',
     'relationship_type_spouse_with_name' => 'la esposa de :name',
     'relationship_type_spouse_female_with_name' => 'Esposa de:name',
     'relationship_type_spouse_male_with_name' => 'Marido de:name',
