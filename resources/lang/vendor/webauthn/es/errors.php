@@ -8,8 +8,8 @@
 
 return [
     'user_unauthenticated' => 'Necesitas iniciar sesión antes de realizar una autenticación Webauthn',
-    'auth_data_not_found' => 'Authentication data not found',
-    'create_data_not_found' => 'Register data not found',
+    'auth_data_not_found' => 'Datos de autenticación no encontrados',
+    'create_data_not_found' => 'Datos de registro no encontrados',
     'object_not_found' => 'Objeto no encontrado',
 
 ];

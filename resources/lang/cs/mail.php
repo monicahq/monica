@@ -46,8 +46,8 @@ return [
     'invitation_button' => 'Accept invitation',
     'invitation_expiration' => 'This link will expire in :count days.',
 
-    'export_title' => 'Your export is ready',
-    'export_description' => 'You requested a data export on :date. It is now ready to download.',
-    'export_download' => 'Download export',
+    'export_title' => 'Váš export je připraven',
+    'export_description' => 'Žádali jste o export dat dne :date. Nyní je připraven ke stažení.',
+    'export_download' => 'Stáhnout export',
 
 ];

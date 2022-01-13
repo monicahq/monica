@@ -144,8 +144,8 @@ return [
     'relationship_type_partner_female_with_name' => ':name’s significant other',
 
     'relationship_type_spouse' => 'spouse',
-    'relationship_type_spouse_female' => 'wife',
-    'relationship_type_spouse_male' => 'husband',
+    'relationship_type_spouse_female' => 'manželka',
+    'relationship_type_spouse_male' => 'manžel',
     'relationship_type_spouse_with_name' => ':name’s spouse',
     'relationship_type_spouse_female_with_name' => ':name’s wife',
     'relationship_type_spouse_male_with_name' => ':name’s husband',
