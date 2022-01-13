@@ -1,8 +1,6 @@
 name: Migration tests
 
 on:
-  push:
-    branches: [master]
   pull_request:
     types: [opened, synchronize, reopened]
     branches-ignore: ['l10n_master*']

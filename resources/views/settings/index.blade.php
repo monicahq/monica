@@ -91,7 +91,7 @@
                       </option>
                     @endforeach
                   </select>
-                  <small class="form-text text-muted">{!! trans('settings.locale_help', ['url' => 'https://github.com/monicahq/monica/blob/master/docs/contribute/translate.md']) !!}</small>
+                  <small class="form-text text-muted">{!! trans('settings.locale_help', ['url' => 'https://github.com/monicahq/monica/blob/main/docs/contribute/translate.md']) !!}</small>
                 </div>
 
                 {{-- currency for user --}}

@@ -2,7 +2,7 @@
 
 Monica can be deployed on Heroku using the button below:
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/monicahq/monica/tree/master)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/monicahq/monica/tree/main)
 
 - [Installation](#installation)
   - [Configuration](#configuration)
@@ -35,7 +35,7 @@ Monica doesn't require a lot of power - it will run perfectly fine on the free p
 
 After deployment, the configuration of your app should look like this:
 
-![picture of configuration](https://raw.githubusercontent.com/monicahq/monica/master/docs/images/heroku_dashboard-resources.png)
+![picture of configuration](https://raw.githubusercontent.com/monicahq/monica/main/docs/images/heroku_dashboard-resources.png)
 
 Note that when you deploy with the "Deploy to Heroku" purple button, only 1 dyno ("web") is activated while the "queue" one is not. That is OK - the "queue" dyno is only helpful if you set `QUEUE_CONNECTION=database` (default is 'sync').
 
@@ -124,9 +124,9 @@ Client secret: zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq
 
 You can update your Monica instance to the latest version by cloning the repository and pushing it to Heroku git.
 
-Clone the Monica repository to your local environment by `git clone https://github.com/monicahq/monica`, and add heroku git repository by `heroku git:remote -a (heroku app name)`. Then, push to heroku by `git push heroku master`. Heroku will build and update the repository, automatically.
+Clone the Monica repository to your local environment by `git clone https://github.com/monicahq/monica`, and add heroku git repository by `heroku git:remote -a (heroku app name)`. Then, push to heroku by `git push heroku main:master`. Heroku will build and update the repository, automatically.
 
-See more information about updating Monica (including Heroku-specific things) [here](https://github.com/monicahq/monica/blob/master/docs/installation/update.md).
+See more information about updating Monica (including Heroku-specific things) [here](https://github.com/monicahq/monica/blob/main/docs/installation/update.md).
 
 
 ## Update from 2.x to 3.x

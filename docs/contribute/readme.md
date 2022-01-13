@@ -196,7 +196,7 @@ We follow [GitHub Flow](https://guides.github.com/introduction/flow/) to manage 
 
 We follow the [conventional commit message](https://conventionalcommits.org/) syntax for our commits. For instance, `feat: allow provided config object to extend other configs` or `feat(lang): added polish language`.
 
-Every feature branch that is squashed onto master must follow these rules.
+Every feature branch that is squashed onto main branch must follow these rules.
 
 The benefits are:
 * a standard way of writing commit messages for every contributor,
@@ -219,7 +219,7 @@ Moreover, every commit message needs to be written in lowercase.
 * ✅  feat(lang): added polish language
 * ❌  feat(lang): Added polish language
 
-All the commits in a pull request are squashed when merged into master. That means *only the commit message of the squashed branch needs to follow this commit message convention*. That also means that you don't need to follow this convention for commits within a branch, which will usually contains a lot of commits with a `wip` title.
+All the commits in a pull request are squashed when merged into main branch. That means *only the commit message of the squashed branch needs to follow this commit message convention*. That also means that you don't need to follow this convention for commits within a branch, which will usually contains a lot of commits with a `wip` title.
 
 <a id="markdown-backend" name="backend"></a>
 ## Backend

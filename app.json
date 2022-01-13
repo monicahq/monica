@@ -2,7 +2,7 @@
   "name": "Monica",
   "description": "Personal Relationship Manager - a new kind of CRM to manage your friends and family.",
   "repository": "https://github.com/monicahq/monica",
-  "logo": "https://raw.githubusercontent.com/monicahq/monica/master/public/img/monica_60.png",
+  "logo": "https://raw.githubusercontent.com/monicahq/monica/main/public/img/monica_60.png",
   "keywords": [
     "CRM",
     "family",

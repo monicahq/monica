@@ -26,7 +26,7 @@ info:
     # This field should be 1-3 sentences describing how the project is setup, assuming the reader already knows what
     # the application is.
     description: |
-       Monica is an open-source web application to organize the interactions with your loved ones. We call it a PRM, or Personal Relationship Management. Think of it as a CRM (a popular tool used by sales teams in the corporate world) for your friends or family. 
+       Monica is an open-source web application to organize the interactions with your loved ones. We call it a PRM, or Personal Relationship Management. Think of it as a CRM (a popular tool used by sales teams in the corporate world) for your friends or family.
     # A list of tags associated with the template.  These should be highly generic terms like "CMS", "Framework", and
     # the language in which the application is written.
     tags:
@@ -44,14 +44,14 @@ info:
           content: "PHP 7.4<br/>MariaDB 10.4<br/>Redis 5.0"
 
 
-# This key describes the initialization call made to the master environment at
+# This key describes the initialization call made to the main environment at
 # project creation time. This is part of the full v2 UI operation mode, which
 # places project schema/options selection early in the creation process, rather
 # than later as it exits now. To allow this schema to be backwards-compatible,
 # this key also gets mapped to the appropriate location in project.settings so
 # that the current UI can have its own workflow overridden as well.
 initialize:
-    repository: git@github.com:monicahq/monica.git@master
+    repository: git@github.com:monicahq/monica.git@main
     config: null
     files: []
     profile: PHP

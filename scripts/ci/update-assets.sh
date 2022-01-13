@@ -68,8 +68,8 @@ git config user.name $ASSETS_USERNAME
 git commit -m "chore(assets): Update assets"
 
 # Push
-if [ "$BRANCH" == "master" ] && [ "$PR_NUMBER" == "false" ]; then
-  echo -e "\033[0;31mmaster is not up to date, but we can't update it directly...\033[0;37m"
+if [ "$BRANCH" == "main" ] && [ "$PR_NUMBER" == "false" ]; then
+  echo -e "\033[0;31mmain branch is not up to date, but we can't update it directly...\033[0;37m"
   exit 0
 
 elif [ -n "${ASSETS_GITHUB_TOKEN:-}" ]; then

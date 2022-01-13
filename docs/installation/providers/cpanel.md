@@ -66,7 +66,7 @@ cd /public_html/[subdomain you wish to install monica on]
 git clone https://github.com/monicahq/monica.git
 ```
 
-You should check out a tagged version of Monica since `master` branch may not always be stable. Find the latest official version on the [release page](https://github.com/monicahq/monica/releases).
+You should check out a tagged version of Monica since `main` branch may not always be stable. Find the latest official version on the [release page](https://github.com/monicahq/monica/releases).
 
 ```sh
 cd /var/www/monica
@@ -108,7 +108,7 @@ As the configuration of the application is cached, any update on the `.env` file
 
 ### 4. Configure cron job
 
-Monica requires some background processes to continuously run. The list of things Monica does in the background is described [here](https://github.com/monicahq/monica/blob/master/app/Console/Kernel.php#L63).
+Monica requires some background processes to continuously run. The list of things Monica does in the background is described [here](https://github.com/monicahq/monica/blob/main/app/Console/Kernel.php#L63).
 Basically those crons are needed to send reminder emails and check if a new version is available.
 To do this, setup a cron that runs every minute that triggers the following command `php artisan schedule:run`.
 

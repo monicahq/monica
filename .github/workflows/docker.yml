@@ -3,7 +3,7 @@ name: Docker
 on:
   push:
     branches:
-      - master
+      - main
 
 env:
   php-version: '8.0'
@@ -12,7 +12,7 @@ env:
 jobs:
   docker-run:
     runs-on: ubuntu-latest
-    name: Docker build master
+    name: Docker build developpment
 
     strategy:
       fail-fast: false

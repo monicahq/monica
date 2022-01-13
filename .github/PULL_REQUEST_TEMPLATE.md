@@ -5,13 +5,13 @@ Please read the list below. Feel free to delete this text after but we need you 
 ### Checklist
 
 #### Before submitting the PR
-- [ ] Read the [CONTRIBUTING document](https://github.com/monicahq/monica/blob/master/CONTRIBUTING.md) before submitting your PR.
+- [ ] Read the [CONTRIBUTING document](https://github.com/monicahq/monica/blob/main/CONTRIBUTING.md) before submitting your PR.
 - [ ] If the PR is related to an issue or fix one, don't forget to indicate it.
 - [ ] Create your PR as draft if it is not final yet. Mark it as ready... when it’s ready. Otherwise the PR will be considered complete and rejected if it's not working.
 
 ### General checks
 - [ ] Make sure that the change you propose is the smallest possible.
-- [ ] The name of the PR should follow the [conventional commits guideline](https://github.com/monicahq/monica/blob/master/docs/contribute/readme.md#conventional-commits) that the project follows.
+- [ ] The name of the PR should follow the [conventional commits guideline](https://github.com/monicahq/monica/blob/main/docs/contribute/readme.md#conventional-commits) that the project follows.
 
 ### Front-end changes
 - [ ] If you change the UI, make sure to ask repositories administrators first about your changes by pinging djaiss or asbiin in this PR.
@@ -30,6 +30,6 @@ Please read the list below. Feel free to delete this text after but we need you 
 - [ ] Make sure account reset and deletion still work.
 
 #### Other tasks
-- [ ] [CONTRIBUTORS](https://github.com/monicahq/monica/blob/master/CONTRIBUTORS) entry added, if necessary.
-- [ ] If it's relevant and worth mentioning, create a changelog entry for this change. The changelog entry will appear inside the UI for all users to see. To know if your change is worth the creation of a changelog entry, [read the documentation](https://github.com/monicahq/monica/blob/master/docs/administrators/tips.md#when-is-it-relevant-to-create-a-changelog-entry).
+- [ ] [CONTRIBUTORS](https://github.com/monicahq/monica/blob/main/CONTRIBUTORS) entry added, if necessary.
+- [ ] If it's relevant and worth mentioning, create a changelog entry for this change. The changelog entry will appear inside the UI for all users to see. To know if your change is worth the creation of a changelog entry, [read the documentation](https://github.com/monicahq/monica/blob/main/docs/administrators/tips.md#when-is-it-relevant-to-create-a-changelog-entry).
 - [ ] Don't forget to [ask for a free account](mailto:regis@monicahq.com) on https://monicahq.com as anyone who contributes can request a free account.

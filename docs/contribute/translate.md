@@ -22,10 +22,10 @@ You can [open an issue](https://github.com/monicahq/monica/issues/new) to reques
 
 To enable a new language in Monica:
 * we have to configure it in Crowdin first. This is something we must do ourselves (we: members of the project). To do it, we need to go to Settings > Translations > Target Languages and add the new locale here.
-* add the name of the language in [the main English settings file](https://github.com/monicahq/monica/blob/master/resources/lang/en/settings.php).
-* update the [lang-detector.php file](https://github.com/monicahq/monica/blob/master/config/lang-detector.php) by adding the new locale abbreviation (please add it in alphabetic order).
-* add the locale in the [webpack.mix.js file](https://github.com/monicahq/monica/blob/master/webpack.mix.js) (please add it in alphabetic order).
-* (optional) when adding a country-specific language (like 'en-GB'), you may need to update the [crowdin.yml config file](https://github.com/monicahq/monica/blob/master/crowdin.yml).
+* add the name of the language in [the main English settings file](https://github.com/monicahq/monica/blob/main/resources/lang/en/settings.php).
+* update the [lang-detector.php file](https://github.com/monicahq/monica/blob/main/config/lang-detector.php) by adding the new locale abbreviation (please add it in alphabetic order).
+* add the locale in the [webpack.mix.js file](https://github.com/monicahq/monica/blob/main/webpack.mix.js) (please add it in alphabetic order).
+* (optional) when adding a country-specific language (like 'en-GB'), you may need to update the [crowdin.yml config file](https://github.com/monicahq/monica/blob/main/crowdin.yml).
 
 Then, submit your PR for review. A good example of adding a new locale can [be found here](https://github.com/monicahq/monica/pull/3356).
 
@@ -41,7 +41,7 @@ Translation appears in two types of files in the codebase: in Laravel (php) and 
   Example: `:name’s birthday` => `anniversaire de :name`
 - **plural forms**: see [laravel doc](https://laravel.com/docs/5.6/localization#pluralization) for documentation. It supports basic and occidental plural variations, each one being defined in [here](https://github.com/laravel/framework/blob/5.6/src/Illuminate/Translation/MessageSelector.php#L110).
   Example: `1 message|:count messages` => `:count message|:count messages`, or: `{1}:count message|[2,*]:count messages`
-- **format strings**: we use [Carbon](http://carbon.nesbot.com/docs/#api-commonformats) to handle dates. [format.php](https://github.com/monicahq/monica/blob/master/resources/lang/en/format.php) file contains format we use to export dates as strings in the right localized format. See [php doc](http://www.php.net/manual/en/function.date.php) to know which format you can use.
+- **format strings**: we use [Carbon](http://carbon.nesbot.com/docs/#api-commonformats) to handle dates. [format.php](https://github.com/monicahq/monica/blob/main/resources/lang/en/format.php) file contains format we use to export dates as strings in the right localized format. See [php doc](http://www.php.net/manual/en/function.date.php) to know which format you can use.
 
 ### With Vue.js
 
@@ -53,7 +53,7 @@ We use the [vue-i18n](https://www.npmjs.com/package/vue-i18n) package.
   - Example: `{name}’s birthday` => `anniversaire de {name}`
   - Other example: `{{ $t('people.stay_in_touch_frequency', { count: frequency }) }}`
 - **plural forms**: See [vue-i18n doc](http://kazupon.github.io/vue-i18n/en/pluralization.html).
-  Pluralization is customized in the [pluralization.js](https://github.com/monicahq/monica/blob/master/resources/js/pluralization.js) file. This should fit your language pluralization form. Messages must be separated by a pipe, but you cannot define the number of occurrences it applies to like with Laravel translation (no brackets or braces).
+  Pluralization is customized in the [pluralization.js](https://github.com/monicahq/monica/blob/main/resources/js/pluralization.js) file. This should fit your language pluralization form. Messages must be separated by a pipe, but you cannot define the number of occurrences it applies to like with Laravel translation (no brackets or braces).
     Example: `1 message|{count} messages` => `{count} message|{count} messages` in French, or: `{count}条消息` in Chinese (only 1 form)
 
 ## Rules for translation

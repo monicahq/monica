@@ -22,7 +22,7 @@ cd ~/monica
 ```
 3. Download the `Vagrantfile` script
 ```sh
-curl -sS https://raw.githubusercontent.com/monicahq/monica/master/scripts/vagrant/Vagrantfile -o Vagrantfile
+curl -sS https://raw.githubusercontent.com/monicahq/monica/main/scripts/vagrant/Vagrantfile -o Vagrantfile
 ```
 4. Edit Vagrantfile to set the appropriate host port number (default: 8080)
 ```
@@ -57,8 +57,8 @@ Once the process is complete you can either access the virtual machine by typing
 
 1. Download the `Vagrantfile` script
 ```sh
-curl -sS https://raw.githubusercontent.com/monicahq/monica/master/scripts/vagrant/build/Vagrantfile -o Vagrantfile
-curl -sS https://raw.githubusercontent.com/monicahq/monica/master/scripts/vagrant/build/install-monica.sh -o install-monica.sh
+curl -sS https://raw.githubusercontent.com/monicahq/monica/main/scripts/vagrant/build/Vagrantfile -o Vagrantfile
+curl -sS https://raw.githubusercontent.com/monicahq/monica/main/scripts/vagrant/build/install-monica.sh -o install-monica.sh
 ```
 2. Run the box by calling:
 ```sh

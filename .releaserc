@@ -29,7 +29,7 @@
     [
       "semantic-release-github-pullrequest",
       {
-        "baseRef": "master",
+        "baseRef": "main",
         "assets": ["CHANGELOG.md"],
         "labels": [
           "semantic-release",

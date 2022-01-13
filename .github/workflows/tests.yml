@@ -2,7 +2,7 @@ name: Unit tests
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
     types: [opened, synchronize, reopened]
     branches-ignore: ['l10n_master*']

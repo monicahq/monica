@@ -53,7 +53,7 @@
                 <button type="submit" class="btn">{{ trans('settings.export_sql_cta') }}</button>
               </p>
             </form>
-            <p>{!! trans('settings.export_sql_link_instructions', ['url' => 'https://github.com/monicahq/monica/blob/master/docs/installation/update.md#importing-sql-from-the-exporter-feature']) !!}</p>
+            <p>{!! trans('settings.export_sql_link_instructions', ['url' => 'https://github.com/monicahq/monica/blob/main/docs/installation/update.md#importing-sql-from-the-exporter-feature']) !!}</p>
 
             <h4>{{ trans('settings.export_title_json') }}</h4>
             <p>{{ trans('settings.export_json_explanation') }}</p>
