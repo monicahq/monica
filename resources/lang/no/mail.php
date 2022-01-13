@@ -46,8 +46,8 @@ return [
     'invitation_button' => 'Akseptert invitasjon',
     'invitation_expiration' => 'Lenken utløper om :count dager.',
 
-    'export_title' => 'Your export is ready',
+    'export_title' => 'Din eksport er klar',
     'export_description' => 'You requested a data export on :date. It is now ready to download.',
-    'export_download' => 'Download export',
+    'export_download' => 'Last ned eksport',
 
 ];
