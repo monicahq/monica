@@ -115,7 +115,7 @@ return [
     'call_emotions' => 'Emociones:',
 
     // Conversation
-    'conversation_blank' => 'Record conversations you have with :name on social media, SMS…',
+    'conversation_blank' => 'Registra conversaciones que has tenido con :name por redes sociales, SMS…',
     'conversation_delete_link' => 'Borrar conversación',
     'conversation_edit_title' => 'Editar conversación',
     'conversation_edit_delete' => '¿Estás seguro que quieres eliminar esta conversación? Esta acción es permanente.',
@@ -124,7 +124,7 @@ return [
     'conversation_delete_success' => 'La conversación ha sido eliminada exitosamente.',
     'conversation_add_title' => 'Registrar una nueva conversación',
     'conversation_add_when' => '¿Cuándo tuviste esta conversación?',
-    'conversation_add_who_wrote' => 'Who sent this message?',
+    'conversation_add_who_wrote' => '¿Quién envió este mensaje?',
     'conversation_add_how' => '¿Qué medio utilizaste para comunicarte?',
     'conversation_add_you' => 'Tu',
     'conversation_add_content' => 'Escribe lo que se dijo',
