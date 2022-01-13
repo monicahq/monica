@@ -90,7 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Mantenerse en contacto',
     'stay_in_touch_frequency' => 'Mantenerse en contacto cada día|Mantenerse en contacto cada {count} días',
-    'stay_in_touch_next_date' => 'Next due: {date}',
+    'stay_in_touch_next_date' => 'Siguiente vencido: {date}',
     'stay_in_touch_invalid' => 'La frecuencia debe ser un número mayor que 0.',
     'stay_in_touch_premium' => 'Necesitas actualizar tu cuenta para hacer uso de esta característica',
     'stay_in_touch_modal_title' => 'Mantenerse en contacto',
@@ -144,7 +144,7 @@ return [
 
     // Last called
     'last_called' => 'Última llamada: :date',
-    'last_talked_to' => 'Last called: {date}',
+    'last_talked_to' => 'Última llamada: {date}',
     'last_called_empty' => 'Última llamada: desconocido',
     'last_activity_date' => 'Última actividad juntos: :date',
     'last_activity_date_empty' => 'Última actividad juntos: desconocido',
@@ -155,11 +155,11 @@ return [
     'information_edit_max_size' => 'Máximo :size Kb.',
     'information_edit_max_size2' => 'Máximo {size} kB.',
     'information_edit_firstname' => 'Nombre',
-    'information_edit_lastname' => 'Last name (optional)',
-    'information_edit_description' => 'Description (optional)',
+    'information_edit_lastname' => 'Apellidos (opcional)',
+    'information_edit_description' => 'Descripción (opcional)',
     'information_edit_description_help' => 'Usado en la lista de contactos para agregar contexto, si fuera necesario.',
     'information_edit_unknown' => 'No sé la edad de esta persona',
-    'information_edit_probably' => 'This person is probably…',
+    'information_edit_probably' => 'Esta persona es probablemente…',
     'information_edit_not_year' => 'Sé el día y mes de la fecha de nacimiento de esta persona, pero no el año…',
     'information_edit_exact' => 'Se la fecha exacta del cumpleaños de esta persona…',
     'information_edit_birthdate_label' => 'Cumpleaños',
@@ -207,7 +207,7 @@ return [
     'reminders_delete_cta' => 'Eliminar',
     'reminders_next_expected_date' => 'en',
     'reminders_cta' => 'Agregar un recordatorio',
-    'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen. Reminders automatically added for birthdays can not be deleted. If you want to change those dates, edit the birthday of the contacts.',
+    'reminders_description' => 'Te enviaremos un correo electrónico por cada uno de los siguientes recordatorios. Los recordatorios son enviados la mañana del día que el evento ocurre. Recordatorios automáticamente añadidos para cumpleaños no pueden ser eliminados. Si quieres cambiar esa fecha, edita la fecha de cumpleaños de los contactos.',
     'reminders_one_time' => 'Una vez',
     'reminders_type_week' => 'semana',
     'reminders_type_month' => 'mes',
@@ -269,8 +269,8 @@ return [
     'activities_item_information' => ':Activity. Sucedió el :date',
     'activities_add_title' => '¿Qué hiciste con {name}?',
     'activities_summary' => 'Describe lo que hiciste',
-    'activities_add_pick_activity' => 'Would you like to categorize this activity? You don’t have to, but it will give you statistics later on (optional)',
-    'activities_add_date_occured' => 'The activity happened on…',
+    'activities_add_pick_activity' => '¿Te gustaría categorizar esta actividad? No tienes que hacerlo, pero esto te dará estadísticas en el futuro (Opcional)',
+    'activities_add_date_occured' => 'La actividad ocurrió el…',
     'activities_add_participants' => '¿Quién, aparte de {name}, participó en esta actividad? (opcional)',
     'activities_add_emotions_title' => '¿Deseas registrar cómo te sentiste durante esta llamada? (opcional)',
     'activities_blank_title' => 'Dale seguimiento a lo que has hecho con {name} en el pasado, y de que han hablado',
@@ -377,7 +377,7 @@ return [
     // Deceased
     'deceased_reminder_title' => 'Aniversario de la muerte de :name',
     'deceased_mark_person_deceased' => 'Marcar esta persona como fallecida',
-    'deceased_know_date' => 'I know the date that this person died',
+    'deceased_know_date' => 'Conozco la fecha en que esta persona murió',
     'deceased_add_reminder' => 'Añadir un recordatorio para esta fecha',
     'deceased_label' => 'Fallecido',
     'deceased_date_label' => 'Fecha de defunción',
@@ -423,7 +423,7 @@ return [
 
     // life events
     'life_event_list_tab_life_events' => 'Eventos cotidianos',
-    'life_event_list_tab_other' => 'Notes, reminders, …',
+    'life_event_list_tab_other' => 'Notas, recordatorios…',
     'life_event_list_title' => 'Eventos cotidianos',
     'life_event_blank' => 'Apunta los hechos de la vida de {name} Para tu futura referencia.',
     'life_event_list_cta' => 'Añade un evento notable',
@@ -431,7 +431,7 @@ return [
     'life_event_create_life_event' => 'Añade un evento notable',
     'life_event_create_default_title' => 'Título (opcional)',
     'life_event_create_default_story' => 'Historia (opcional)',
-    'life_event_create_date' => 'You do not need to indicate a month or a day – only the year is mandatory.',
+    'life_event_create_date' => 'No necesitas indicar un mes o un día - sólo el año es obligatorio.',
     'life_event_create_default_description' => 'Añadir información sobre lo que sabes',
     'life_event_create_add_yearly_reminder' => 'Añadir un recordatorio anual para este evento',
     'life_event_create_success' => 'El evento notable ha sido añadido',
@@ -493,7 +493,7 @@ return [
     'document_list_cta' => 'Subir documento',
     'document_list_blank_desc' => 'Aquí usted puede almacenar documentos relacionados con esta persona.',
     'document_upload_zone_cta' => 'Subir un fichero',
-    'document_upload_zone_progress' => 'Uploading the document…',
+    'document_upload_zone_progress' => 'Subiendo el documento…',
     'document_upload_zone_error' => 'Se produjo un error al subir el archivo. Por favor inténtelo de nuevo.',
 
     // Photos
