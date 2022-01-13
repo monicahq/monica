@@ -63,7 +63,7 @@ class JsonExportAccount extends BaseService
         $result['exported_by'] = $user->uuid;
         $result['account'] = $this->exportAccount($data);
 
-        $this->writeToTempFile(json_encode($result, JSON_PRETTY_PRINT));
+        $this->writeToTempFile(json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_IGNORE | JSON_UNESCAPED_SLASHES));
     }
 
     /**
