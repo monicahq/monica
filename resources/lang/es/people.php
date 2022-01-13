@@ -64,7 +64,7 @@ return [
     'people_add_import' => '¿Quieres <a href=":url">importar tus contactos</a>?',
     'people_edit_email_error' => 'Ya existe un contacto en tu cuenta con esta dirección de correo electrónico. Por favor, elije otro.',
     'people_export' => 'Exportar como vCard',
-    'people_add_reminder_for_birthday' => 'Create an annual birthday reminder',
+    'people_add_reminder_for_birthday' => 'Crear un recordatorio anual de cumpleaños',
 
     // show
     'section_contact_information' => 'Información de contacto',
@@ -83,7 +83,7 @@ return [
     'edit_contact_information' => 'Editar información de contacto',
     'contact_archive' => 'Archivar contacto',
     'contact_unarchive' => 'Des-archivar contacto',
-    'contact_archive_help' => 'Archived contacts are not be shown on the contact list, but still appear in search results.',
+    'contact_archive_help' => 'Los contactos archivados no se muestran en la lista de contactos, pero todavía aparecen en los resultados de búsqueda.',
     'call_button' => 'Registrar una llamada',
     'set_favorite' => 'Los contactos favoritos son colocados en la parte superior de la lista de contactos',
 
