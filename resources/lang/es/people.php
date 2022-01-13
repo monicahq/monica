@@ -160,8 +160,8 @@ return [
     'information_edit_description_help' => 'Usado en la lista de contactos para agregar contexto, si fuera necesario.',
     'information_edit_unknown' => 'No sé la edad de esta persona',
     'information_edit_probably' => 'This person is probably…',
-    'information_edit_not_year' => 'I know the day and month of this person’s birthday, but not the year…',
-    'information_edit_exact' => 'I know this person’s exact birthday…',
+    'information_edit_not_year' => 'Sé el día y mes de la fecha de nacimiento de esta persona, pero no el año…',
+    'information_edit_exact' => 'Se la fecha exacta del cumpleaños de esta persona…',
     'information_edit_birthdate_label' => 'Cumpleaños',
     'information_no_work_defined' => 'Información de trabajo no definida',
     'information_work_at' => 'en :company',
@@ -185,7 +185,7 @@ return [
     'reminders_blank_title' => '¿Hay algo en lo que quisieras ser recordado sobre :name?',
     'reminders_blank_add_activity' => 'Agregar un recordatorio',
     'reminders_add_title' => '¿Qué te gustaría que se te recordara sobre :name?',
-    'reminders_add_description' => 'Please remind me to…',
+    'reminders_add_description' => 'Por favor recuérdame…',
     'reminders_add_next_time' => '¿Cuándo es la próxima vez que te gustaría que te recordaramos sobre esto?',
     'reminders_add_once' => 'Recuerdame sobre esto solo una vez',
     'reminders_add_recurrent' => 'Recuerdame sobre esto cada',
@@ -218,7 +218,7 @@ return [
     // relationships
     'relationship_form_add' => 'Añadir una nueva relación',
     'relationship_form_edit' => 'Editar una relación existente',
-    'relationship_form_is_with' => 'This person is…',
+    'relationship_form_is_with' => 'Esta persona es…',
     'relationship_form_is_with_name' => ':name es…',
     'relationship_form_add_choice' => '¿Con quién es esta relación?',
     'relationship_form_create_contact' => 'Añade a una nueva persona',
@@ -376,7 +376,7 @@ return [
 
     // Deceased
     'deceased_reminder_title' => 'Aniversario de la muerte de :name',
-    'deceased_mark_person_deceased' => 'Mark this as deceased',
+    'deceased_mark_person_deceased' => 'Marcar esta persona como fallecida',
     'deceased_know_date' => 'I know the date that this person died',
     'deceased_add_reminder' => 'Añadir un recordatorio para esta fecha',
     'deceased_label' => 'Fallecido',
