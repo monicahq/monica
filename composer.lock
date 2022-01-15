@@ -4949,16 +4949,16 @@
         },
         {
             "name": "monicahq/laravel-cloudflare",
-            "version": "3.0.0",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-cloudflare.git",
-                "reference": "fd434012b83876a00ac1ad92d48560e59a9060e4"
+                "reference": "e63ba6764806e5532144ac98c0b50b57ccdb0120"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/fd434012b83876a00ac1ad92d48560e59a9060e4",
-                "reference": "fd434012b83876a00ac1ad92d48560e59a9060e4",
+                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/e63ba6764806e5532144ac98c0b50b57ccdb0120",
+                "reference": "e63ba6764806e5532144ac98c0b50b57ccdb0120",
                 "shasum": ""
             },
             "require": {
@@ -4979,10 +4979,10 @@
                 "phpstan/phpstan-strict-rules": "^1.0",
                 "phpunit/phpunit": "^8.0 || ^9.0",
                 "thecodingmachine/phpstan-safe-rule": "^1.0",
-                "vimeo/psalm": "^3.9 || ^4.0"
+                "vimeo/psalm": "^4.0"
             },
             "suggest": {
-                "guzzlehttp/guzzle": "Required to get cloudflares ip addresses (^6.5.5|^7.0.1)."
+                "guzzlehttp/guzzle": "Required to get cloudflares ip addresses (^6.5.5|^7.0)."
             },
             "type": "library",
             "extra": {
@@ -5024,7 +5024,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-01-14T22:27:03+00:00"
+            "time": "2022-01-15T20:02:49+00:00"
         },
         {
             "name": "monicahq/laravel-sabre",
