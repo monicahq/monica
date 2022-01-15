@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91aa0950ee4a8351f815f034f9572610",
+    "content-hash": "dbb8a40531e1c39b654747f9c0d61cce",
     "packages": [
         {
             "name": "asbiin/laravel-adorable",
@@ -2078,64 +2078,6 @@
                 "source": "https://github.com/fgrosse/PHPASN1/tree/v2.4.0"
             },
             "time": "2021-12-11T12:41:06+00:00"
-        },
-        {
-            "name": "fideloper/proxy",
-            "version": "4.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/fideloper/TrustedProxy.git",
-                "reference": "c073b2bd04d1c90e04dc1b787662b558dd65ade0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fideloper/TrustedProxy/zipball/c073b2bd04d1c90e04dc1b787662b558dd65ade0",
-                "reference": "c073b2bd04d1c90e04dc1b787662b558dd65ade0",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "^5.0|^6.0|^7.0|^8.0|^9.0",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "illuminate/http": "^5.0|^6.0|^7.0|^8.0|^9.0",
-                "mockery/mockery": "^1.0",
-                "phpunit/phpunit": "^6.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Fideloper\\Proxy\\TrustedProxyServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Fideloper\\Proxy\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Chris Fidao",
-                    "email": "fideloper@gmail.com"
-                }
-            ],
-            "description": "Set trusted proxies for Laravel",
-            "keywords": [
-                "load balancing",
-                "proxy",
-                "trusted proxy"
-            ],
-            "support": {
-                "issues": "https://github.com/fideloper/TrustedProxy/issues",
-                "source": "https://github.com/fideloper/TrustedProxy/tree/4.4.1"
-            },
-            "time": "2020-10-22T13:48:01+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -5007,38 +4949,40 @@
         },
         {
             "name": "monicahq/laravel-cloudflare",
-            "version": "1.8.0",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-cloudflare.git",
-                "reference": "3ccdec99a9431de638653af4f693efef12dbe5f0"
+                "reference": "e63ba6764806e5532144ac98c0b50b57ccdb0120"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/3ccdec99a9431de638653af4f693efef12dbe5f0",
-                "reference": "3ccdec99a9431de638653af4f693efef12dbe5f0",
+                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/e63ba6764806e5532144ac98c0b50b57ccdb0120",
+                "reference": "e63ba6764806e5532144ac98c0b50b57ccdb0120",
                 "shasum": ""
             },
             "require": {
-                "fideloper/proxy": "^4.4",
-                "guzzlehttp/guzzle": "^6.3 || ^7.0",
-                "illuminate/console": "^5.5 || ^6.0 || ^7.0 || ^8.0",
-                "illuminate/http": "^5.5 || ^6.0 || ^7.0 || ^8.0",
-                "illuminate/support": "^5.5 || ^6.0 || ^7.0 || ^8.0",
-                "php": "^7.2 || ^8.0"
+                "illuminate/console": "^8.0 || ^9.0",
+                "illuminate/http": "^8.0 || ^9.0",
+                "illuminate/support": "^8.0 || ^9.0",
+                "php": "^7.4 || ^8.0"
             },
             "require-dev": {
-                "laravel/framework": "^5.5 || ^6.0 || ^7.0 || ^8.0",
+                "guzzlehttp/guzzle": "^6.3 || ^7.0",
+                "laravel/framework": "^8.0 || ^9.0",
                 "mockery/mockery": "^1.4",
-                "nunomaduro/larastan": "^0",
+                "nunomaduro/larastan": "^1.0",
                 "ocramius/package-versions": "^1.5 || ^2.1",
-                "orchestra/testbench": "^3.5 || ^5.0 || ^6.0 || ^4.0",
-                "phpstan/phpstan-deprecation-rules": "^0",
-                "phpstan/phpstan-phpunit": "^0",
-                "phpstan/phpstan-strict-rules": "^0",
-                "phpunit/phpunit": "^6.0 || ^7.0 || ^8.0 || ^9.0",
+                "orchestra/testbench": "^6.0 || ^7.0",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.0",
+                "phpunit/phpunit": "^8.0 || ^9.0",
                 "thecodingmachine/phpstan-safe-rule": "^1.0",
-                "vimeo/psalm": "^3.9 || ^4.0"
+                "vimeo/psalm": "^4.0"
+            },
+            "suggest": {
+                "guzzlehttp/guzzle": "Required to get cloudflares ip addresses (^6.5.5|^7.0)."
             },
             "type": "library",
             "extra": {
@@ -5080,7 +5024,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-02-13T19:22:19+00:00"
+            "time": "2022-01-15T20:02:49+00:00"
         },
         {
             "name": "monicahq/laravel-sabre",
