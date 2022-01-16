@@ -37,8 +37,10 @@ class CreateUsersTable extends Migration
             $table->string('type');
             $table->string('name');
             $table->string('description')->nullable();
+            $table->unsignedBigInteger('default_template_id')->nullable();
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('default_template_id')->references('id')->on('templates')->onDelete('set null');
         });
     }
 

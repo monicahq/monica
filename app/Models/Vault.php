@@ -35,6 +35,7 @@ class Vault extends Model
         'type',
         'name',
         'description',
+        'default_template_id',
     ];
 
     /**
@@ -45,6 +46,16 @@ class Vault extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the template associated with the vault.
+     *
+     * @return BelongsTo
+     */
+    public function template()
+    {
+        return $this->belongsTo(Template::class, 'default_template_id');
     }
 
     /**

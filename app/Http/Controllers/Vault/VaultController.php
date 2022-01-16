@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Vault\ManageVault\CreateVault;
+use App\Services\Vault\ManageVault\DestroyVault;
 use App\Http\Controllers\Vault\ViewHelpers\VaultIndexViewHelper;
 use App\Http\Controllers\Vault\ViewHelpers\VaultCreateViewHelper;
 
@@ -54,5 +55,20 @@ class VaultController extends Controller
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
             'data' => VaultCreateViewHelper::data(),
         ]);
+    }
+
+    public function destroy(Request $request, int $vaultId)
+    {
+        $data = [
+            'account_id' => Auth::user()->account_id,
+            'author_id' => Auth::user()->id,
+            'vault_id' => $vaultId,
+        ];
+
+        (new DestroyVault)->execute($data);
+
+        return response()->json([
+            'data' => route('vault.index'),
+        ], 200);
     }
 }

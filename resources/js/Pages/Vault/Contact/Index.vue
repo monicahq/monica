@@ -31,7 +31,7 @@
               🥸
             </span> All contacts in the vault
           </h3>
-          <pretty-link :href="data.url.contact.create" :text="'Add a contact'" :icon="'plus'" />
+          <pretty-link v-if="layoutData.vault.permission.at_least_editor" :href="data.url.contact.create" :text="'Add a contact'" :icon="'plus'" />
         </div>
 
         <!-- contact list -->

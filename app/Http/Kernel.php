@@ -6,6 +6,8 @@ use App\Http\Middleware\CheckVaultAccess;
 use App\Http\Middleware\CheckContactAccess;
 use App\Http\Middleware\CheckAdministratorPrivilege;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use App\Http\Middleware\CheckVaultPermissionAtLeastEditor;
+use App\Http\Middleware\CheckVaultPermissionAtLeastManager;
 
 class Kernel extends HttpKernel
 {
@@ -70,5 +72,7 @@ class Kernel extends HttpKernel
         'vault' => CheckVaultAccess::class,
         'contact' => CheckContactAccess::class,
         'administrator' => CheckAdministratorPrivilege::class,
+        'atLeastVaultEditor' => CheckVaultPermissionAtLeastEditor::class,
+        'atLeastVaultManager' => CheckVaultPermissionAtLeastManager::class,
     ];
 }

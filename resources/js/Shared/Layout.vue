@@ -86,7 +86,7 @@ main {
                   Loans & debts center
                 </inertia-link>
 
-                <inertia-link href="" class="hover:bg-gray-700 hover:text-white px-2 py-1 rounded-md text-sm font-medium">
+                <inertia-link v-if="layoutData.vault.permission.at_least_editor" :href="layoutData.vault.url.settings" :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Settings') }" class="hover:bg-gray-700 hover:text-white px-2 py-1 rounded-md text-sm font-medium">
                   Vault settings
                 </inertia-link>
               </div>

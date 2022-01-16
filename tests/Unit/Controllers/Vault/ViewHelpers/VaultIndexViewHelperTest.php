@@ -18,6 +18,9 @@ class VaultIndexViewHelperTest extends TestCase
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create();
+        $user->vaults()->attach($vault->id, [
+            'permission' => Vault::PERMISSION_EDIT,
+        ]);
 
         $this->be($user);
 
@@ -30,9 +33,14 @@ class VaultIndexViewHelperTest extends TestCase
                 'vault' => [
                     'id' => $vault->id,
                     'name' => $vault->name,
+                    'permission' => [
+                        'at_least_editor' => true,
+                        'at_least_manager' => false,
+                    ],
                     'url' => [
                         'dashboard' => env('APP_URL').'/vaults/'.$vault->id,
                         'contacts' => env('APP_URL').'/vaults/'.$vault->id.'/contacts',
+                        'settings' => env('APP_URL').'/vaults/'.$vault->id.'/settings',
                     ],
                 ],
                 'url' => [

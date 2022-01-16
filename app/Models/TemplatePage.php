@@ -13,6 +13,11 @@ class TemplatePage extends Model
     protected $table = 'template_pages';
 
     /**
+     * Possible template page types.
+     */
+    const TYPE_CONTACT = 'contact_information';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

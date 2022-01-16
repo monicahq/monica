@@ -8,9 +8,11 @@ use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Settings\Users\UserController;
 use App\Http\Controllers\Auth\AcceptInvitationController;
 use App\Http\Controllers\Vault\Contact\ContactController;
+use App\Http\Controllers\Vault\Settings\VaultSettingsController;
 use App\Http\Controllers\Settings\Personalize\PersonalizeController;
 use App\Http\Controllers\Settings\Preferences\PreferencesController;
 use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
+use App\Http\Controllers\Vault\Settings\VaultSettingsTemplateController;
 use App\Http\Controllers\Settings\Personalize\Labels\PersonalizeLabelController;
 use App\Http\Controllers\Settings\Personalize\Genders\PersonalizeGenderController;
 use App\Http\Controllers\Settings\Personalize\Pronouns\PersonalizePronounController;
@@ -49,17 +51,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::middleware(['vault'])->prefix('{vault}')->group(function () {
             Route::get('', [VaultController::class, 'show'])->name('vault.show');
 
-            // contacts
+            // vault contacts
             Route::prefix('contacts')->group(function () {
                 Route::get('', [ContactController::class, 'index'])->name('contact.index');
-                Route::get('create', [ContactController::class, 'create'])->name('contact.create');
-                Route::post('', [ContactController::class, 'store'])->name('contact.store');
 
+                // create a contact
+                Route::middleware(['atLeastVaultEditor'])->get('create', [ContactController::class, 'create'])->name('contact.create');
+                Route::middleware(['atLeastVaultEditor'])->post('', [ContactController::class, 'store'])->name('contact.store');
+
+                // contact page
                 Route::middleware(['contact'])->prefix('{contact}')->group(function () {
                     Route::get('', [ContactController::class, 'show'])->name('contact.show');
 
                     Route::get('tab/{page}', [ContactPageController::class, 'show'])->name('contact.page.show');
                 });
+            });
+
+            // vault settings
+            Route::middleware(['atLeastVaultManager'])->group(function () {
+                Route::get('settings', [VaultSettingsController::class, 'index'])->name('vault.settings.index');
+                Route::put('settings', [VaultSettingsController::class, 'update'])->name('vault.settings.update');
+                Route::put('settings/template', [VaultSettingsTemplateController::class, 'update'])->name('vault.settings.template.update');
+                Route::delete('', [VaultController::class, 'destroy'])->name('vault.settings.destroy');
             });
         });
     });

@@ -2,7 +2,9 @@
 
 namespace App\Helpers;
 
+use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Support\Facades\DB;
 
 class VaultHelper
 {
@@ -33,5 +35,19 @@ class VaultHelper
         }
 
         return $friendlyType;
+    }
+
+    /**
+     * Get the permission for the given user in the given vault.
+     *
+     * @param  User  $user
+     * @param  Vault  $vault
+     * @return int
+     */
+    public static function getPermission(User $user, Vault $vault): int
+    {
+        return DB::table('user_vault')->where('vault_id', $vault->id)
+            ->where('user_id', $user->id)
+            ->select('permission')->first()->permission;
     }
 }

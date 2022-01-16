@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Template;
 use App\Models\Attribute;
 use App\Models\Information;
+use App\Models\TemplatePage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
@@ -105,7 +106,7 @@ class SetupAccount implements ShouldQueue
             'template_id' => $this->template->id,
             'name' => trans('app.default_template_page_contact_information'),
             'can_be_deleted' => false,
-            'type' => 'contact_information',
+            'type' => TemplatePage::TYPE_CONTACT,
         ];
         $this->templatePageContact = (new CreateTemplatePage)->execute($request);
 

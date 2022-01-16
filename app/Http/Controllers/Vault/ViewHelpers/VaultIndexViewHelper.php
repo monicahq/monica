@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Vault\ViewHelpers;
 
 use App\Models\User;
 use App\Models\Vault;
+use App\Helpers\VaultHelper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,11 +25,18 @@ class VaultIndexViewHelper
             'vault' => $vault ? [
                 'id' => $vault->id,
                 'name' => $vault->name,
+                'permission' => [
+                    'at_least_editor' => VaultHelper::getPermission(Auth::user(), $vault) <= Vault::PERMISSION_EDIT,
+                    'at_least_manager' => VaultHelper::getPermission(Auth::user(), $vault) <= Vault::PERMISSION_MANAGE,
+                ],
                 'url' => [
                     'dashboard' => route('vault.show', [
                         'vault' => $vault->id,
                     ]),
                     'contacts' => route('contact.index', [
+                        'vault' => $vault->id,
+                    ]),
+                    'settings' => route('vault.settings.index', [
                         'vault' => $vault->id,
                     ]),
                 ],

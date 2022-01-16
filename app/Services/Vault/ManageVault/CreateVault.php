@@ -23,6 +23,7 @@ class CreateVault extends BaseService implements ServiceInterface
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'author_id' => 'required|integer|exists:users,id',
+            'template_id' => 'nullable|integer|exists:templates,id',
             'type' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:255',

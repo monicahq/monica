@@ -24,6 +24,7 @@ class CreateTemplatePage extends BaseService implements ServiceInterface
             'author_id' => 'required|integer|exists:users,id',
             'template_id' => 'required|integer|exists:templates,id',
             'name' => 'required|string|max:255',
+            'type' => 'nullable|string|max:255',
             'can_be_deleted' => 'nullable|boolean',
         ];
     }
@@ -63,6 +64,7 @@ class CreateTemplatePage extends BaseService implements ServiceInterface
         $this->templatePage = TemplatePage::create([
             'template_id' => $data['template_id'],
             'name' => $data['name'],
+            'type' => $this->valueOrNull($data, 'type'),
             'position' => $newPosition,
             'can_be_deleted' => $this->valueOrTrue($data, 'can_be_deleted'),
         ]);
