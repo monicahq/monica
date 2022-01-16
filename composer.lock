@@ -4949,16 +4949,16 @@
         },
         {
             "name": "monicahq/laravel-cloudflare",
-            "version": "3.1.0",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-cloudflare.git",
-                "reference": "e63ba6764806e5532144ac98c0b50b57ccdb0120"
+                "reference": "207609b319f6356ecb0d6c8ded94054b5c6ce77a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/e63ba6764806e5532144ac98c0b50b57ccdb0120",
-                "reference": "e63ba6764806e5532144ac98c0b50b57ccdb0120",
+                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/207609b319f6356ecb0d6c8ded94054b5c6ce77a",
+                "reference": "207609b319f6356ecb0d6c8ded94054b5c6ce77a",
                 "shasum": ""
             },
             "require": {
@@ -5024,7 +5024,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-01-15T20:02:49+00:00"
+            "time": "2022-01-16T10:56:56+00:00"
         },
         {
             "name": "monicahq/laravel-sabre",
