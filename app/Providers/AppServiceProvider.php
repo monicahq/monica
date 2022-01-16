@@ -15,10 +15,12 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Validation\Rules\Password;
+use Monicahq\Cloudflare\LaravelCloudflare;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Werk365\EtagConditionals\EtagConditionals;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Monicahq\Cloudflare\Facades\CloudflareProxies;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -109,6 +111,10 @@ class AppServiceProvider extends ServiceProvider
             return Cache::rememberForever('etag.'.$url, function () use ($url) {
                 return sha1($url);
             });
+        });
+
+        LaravelCloudflare::getProxiesUsing(function (): array {
+            return config('monica.cloudflare') ? CloudflareProxies::load() : [];
         });
     }
 
