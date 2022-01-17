@@ -50,14 +50,17 @@ class ChangeVaultAccess extends BaseService implements ServiceInterface
      * Change the access type of the given user in the given vault.
      *
      * @param  array  $data
+     * @return User
      */
-    public function execute(array $data): void
+    public function execute(array $data): User
     {
         $this->data = $data;
         $this->validate();
         $this->change();
 
         $this->log();
+
+        return $this->user;
     }
 
     private function validate(): void

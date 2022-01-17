@@ -74,6 +74,11 @@
                       :placeholder="'Choose a value'" :dropdown-class="'block w-full'" :label="'Pronoun'"
             />
 
+            <!-- templates -->
+            <dropdown v-if="showTemplateField" v-model="form.template_id" :data="data.templates" :required="false" :div-outer-class="'mb-5'"
+                      :placeholder="'Choose a value'" :dropdown-class="'block w-full'" :label="'Use the following template for this contact'"
+            />
+
             <!-- other fields -->
             <div class="text-xs flex flex-wrap">
               <span v-if="!showMiddleNameField" class="border rounded-lg bg-slate-200 hover:bg-slate-300 px-1 py-1 mr-2 mb-2 flex flex-wrap cursor-pointer" @click="displayMiddleNameField">
@@ -90,6 +95,9 @@
               </span>
               <span v-if="data.pronouns.length > 0 && !showPronounField" class="border rounded-lg bg-slate-200 hover:bg-slate-300 px-1 py-1 mr-2 mb-2 flex flex-wrap cursor-pointer" @click="displayPronounField">
                 + pronoun
+              </span>
+              <span v-if="data.templates.length > 0 && !showTemplateField" class="border rounded-lg bg-slate-200 hover:bg-slate-300 px-1 py-1 mr-2 mb-2 flex flex-wrap cursor-pointer" @click="displayTemplateField">
+                + change template
               </span>
             </div>
           </div>
@@ -139,6 +147,7 @@ export default {
       showMaidenNameField: false,
       showGenderField: false,
       showPronounField: false,
+      showTemplateField: false,
       form: {
         first_name: '',
         last_name: '',
@@ -147,6 +156,7 @@ export default {
         maiden_name: '',
         gender_id: '',
         pronoun_id: '',
+        template_id: '',
         description: '',
       },
     };
@@ -171,6 +181,10 @@ export default {
 
     displayPronounField() {
       this.showPronounField = true;
+    },
+
+    displayTemplateField() {
+      this.showTemplateField = true;
     },
 
     submit() {

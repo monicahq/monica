@@ -97,13 +97,18 @@ class ChangeVaultAccessTest extends TestCase
             'permission' => Vault::PERMISSION_VIEW,
         ];
 
-        (new ChangeVaultAccess)->execute($request);
+        $user = (new ChangeVaultAccess)->execute($request);
 
         $this->assertDatabaseHas('user_vault', [
             'vault_id' => $vault->id,
             'user_id' => $anotherUser->id,
             'permission' => Vault::PERMISSION_VIEW,
         ]);
+
+        $this->assertInstanceOf(
+            User::class,
+            $user
+        );
 
         Queue::assertPushed(CreateAuditLog::class, function ($job) {
             return $job->auditLog['action_name'] === 'vault_access_permission_changed';

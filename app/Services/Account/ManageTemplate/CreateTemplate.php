@@ -3,6 +3,7 @@
 namespace App\Services\Account\ManageTemplate;
 
 use App\Models\Template;
+use App\Models\TemplatePage;
 use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
 
@@ -51,6 +52,17 @@ class CreateTemplate extends BaseService implements ServiceInterface
             'account_id' => $data['account_id'],
             'name' => $data['name'],
         ]);
+
+        // A template has at least one page: the Contact information page.
+        $request = [
+            'account_id' => $data['account_id'],
+            'author_id' => $data['author_id'],
+            'template_id' => $this->template->id,
+            'name' => trans('app.default_template_page_contact_information'),
+            'can_be_deleted' => false,
+            'type' => TemplatePage::TYPE_CONTACT,
+        ];
+        $this->templatePageContact = (new CreateTemplatePage)->execute($request);
 
         return $this->template;
     }

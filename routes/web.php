@@ -11,6 +11,7 @@ use App\Http\Controllers\Vault\Contact\ContactController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsController;
 use App\Http\Controllers\Settings\Personalize\PersonalizeController;
 use App\Http\Controllers\Settings\Preferences\PreferencesController;
+use App\Http\Controllers\Vault\Settings\VaultSettingsUserController;
 use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsTemplateController;
 use App\Http\Controllers\Settings\Personalize\Labels\PersonalizeLabelController;
@@ -72,6 +73,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::get('settings', [VaultSettingsController::class, 'index'])->name('vault.settings.index');
                 Route::put('settings', [VaultSettingsController::class, 'update'])->name('vault.settings.update');
                 Route::put('settings/template', [VaultSettingsTemplateController::class, 'update'])->name('vault.settings.template.update');
+                Route::post('settings/users', [VaultSettingsUserController::class, 'store'])->name('vault.settings.user.store');
+                Route::put('settings/users/{user}', [VaultSettingsUserController::class, 'update'])->name('vault.settings.user.update');
+                Route::delete('settings/users/{user}', [VaultSettingsUserController::class, 'destroy'])->name('vault.settings.user.destroy');
                 Route::delete('', [VaultController::class, 'destroy'])->name('vault.settings.destroy');
             });
         });

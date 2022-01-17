@@ -53,6 +53,7 @@ class ContactController extends Controller
             'maiden_name' => $request->input('maiden_name'),
             'gender_id' => $request->input('gender_id'),
             'pronoun_id' => $request->input('pronoun_id'),
+            'template_id' => $request->input('template_id'),
         ];
 
         $contact = (new CreateContact)->execute($data);

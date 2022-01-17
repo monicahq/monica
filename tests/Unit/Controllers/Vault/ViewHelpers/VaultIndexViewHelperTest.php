@@ -28,6 +28,7 @@ class VaultIndexViewHelperTest extends TestCase
         $this->assertEquals(
             [
                 'user' => [
+                    'id' => $user->id,
                     'name' => $user->name,
                 ],
                 'vault' => [
@@ -74,6 +75,7 @@ class VaultIndexViewHelperTest extends TestCase
                     'description' => $vault->description,
                     'url' => [
                         'show' => env('APP_URL').'/vaults/'.$vault->id,
+                        'settings' => env('APP_URL').'/vaults/'.$vault->id.'/settings',
                     ],
                 ],
             ],

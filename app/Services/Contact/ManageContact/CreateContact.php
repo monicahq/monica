@@ -5,6 +5,7 @@ namespace App\Services\Contact\ManageContact;
 use App\Models\Gender;
 use App\Models\Contact;
 use App\Models\Pronoun;
+use App\Models\Template;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Jobs\CreateContactLog;
@@ -32,6 +33,7 @@ class CreateContact extends BaseService implements ServiceInterface
             'maiden_name' => 'nullable|string|max:255',
             'gender_id' => 'nullable|integer|exists:genders,id',
             'pronoun_id' => 'nullable|integer|exists:pronouns,id',
+            'template_id' => 'nullable|integer|exists:templates,id',
         ];
     }
 
@@ -79,10 +81,22 @@ class CreateContact extends BaseService implements ServiceInterface
             Pronoun::where('account_id', $this->data['account_id'])
                 ->findOrFail($this->data['pronoun_id']);
         }
+
+        if ($this->valueOrNull($this->data, 'template_id')) {
+            Template::where('account_id', $this->data['account_id'])
+                ->findOrFail($this->data['template_id']);
+        }
     }
 
     private function create(): void
     {
+        // template - if no template is provided, we should use the default
+        // template that is in the vault - if it exists.
+        $templateId = $this->valueOrNull($this->data, 'template_id');
+        if (! $templateId) {
+            $templateId = $this->vault->default_template_id;
+        }
+
         $this->contact = Contact::create([
             'vault_id' => $this->data['vault_id'],
             'first_name' => $this->data['first_name'],
@@ -92,6 +106,7 @@ class CreateContact extends BaseService implements ServiceInterface
             'maiden_name' => $this->valueOrNull($this->data, 'maiden_name'),
             'gender_id' => $this->valueOrNull($this->data, 'gender_id'),
             'pronoun_id' => $this->valueOrNull($this->data, 'pronoun_id'),
+            'template_id' => $templateId,
         ]);
     }
 

@@ -28,6 +28,7 @@ class Contact extends Model
         'nickname',
         'maiden_name',
         'can_be_deleted',
+        'template_id',
         'last_updated_at',
     ];
 

@@ -36,7 +36,7 @@ button {
 </style>
 
 <template>
-  <button :class="classes" :disabled="state == 'loading'" class="relative text-sm" name="save" type="submit">
+  <button :class="classes" :disabled="state == 'loading' || state == 'disabled'" class="relative text-sm" name="save" type="submit">
     <span v-if="state == 'loading'">
       Loading…
     </span>

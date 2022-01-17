@@ -44,5 +44,12 @@ class VaultHelperTest extends TestCase
             Vault::PERMISSION_VIEW,
             VaultHelper::getPermission($user, $vault)
         );
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create();
+
+        $this->assertNull(
+            VaultHelper::getPermission($user, $vault)
+        );
     }
 }

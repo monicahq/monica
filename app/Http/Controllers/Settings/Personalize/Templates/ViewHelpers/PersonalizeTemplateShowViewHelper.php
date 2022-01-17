@@ -31,7 +31,7 @@ class PersonalizeTemplateShowViewHelper
                 'id' => $template->id,
                 'name' => $template->name,
             ],
-            'template_page_contact_information' => self::dtoTemplatePage($template, $contactInformationTemplatePage),
+            'template_page_contact_information' => $contactInformationTemplatePage ? self::dtoTemplatePage($template, $contactInformationTemplatePage) : null,
             'template_pages' => $collection,
             'url' => [
                 'settings' => route('settings.index'),

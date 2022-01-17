@@ -10,7 +10,6 @@ use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
 use App\Exceptions\SameUserException;
-use App\Exceptions\MaximumNumberOfUsersInVaultException;
 
 class GrantVaultAccessToUser extends BaseService implements ServiceInterface
 {
@@ -51,14 +50,17 @@ class GrantVaultAccessToUser extends BaseService implements ServiceInterface
      * Grant the access to the given vault to the given user.
      *
      * @param  array  $data
+     * @return User
      */
-    public function execute(array $data): void
+    public function execute(array $data): User
     {
         $this->data = $data;
         $this->validate();
         $this->grant();
 
         $this->log();
+
+        return $this->user;
     }
 
     private function validate(): void
@@ -71,18 +73,14 @@ class GrantVaultAccessToUser extends BaseService implements ServiceInterface
         if ($this->user->id === $this->author->id) {
             throw new SameUserException();
         }
-
-        if ($this->vault->type === Vault::TYPE_PERSONAL && $this->vault->users->count() > 1) {
-            throw new MaximumNumberOfUsersInVaultException();
-        }
     }
 
     private function grant(): void
     {
         $contact = Contact::create([
             'vault_id' => $this->vault->id,
-            'first_name' => $this->author->first_name,
-            'last_name' => $this->author->last_name,
+            'first_name' => $this->user->first_name,
+            'last_name' => $this->user->last_name,
             'can_be_deleted' => false,
         ]);
 

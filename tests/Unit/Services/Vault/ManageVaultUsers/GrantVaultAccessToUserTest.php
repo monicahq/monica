@@ -107,7 +107,7 @@ class GrantVaultAccessToUserTest extends TestCase
             'permission' => Vault::PERMISSION_VIEW,
         ];
 
-        (new GrantVaultAccessToUser)->execute($request);
+        $user = (new GrantVaultAccessToUser)->execute($request);
 
         $this->assertDatabaseCount('contacts', 1);
 
@@ -115,6 +115,15 @@ class GrantVaultAccessToUserTest extends TestCase
 
         $this->assertFalse(
             $contact->can_be_deleted
+        );
+        $this->assertEquals(
+            $anotherUser->name,
+            $contact->first_name.' '.$contact->last_name
+        );
+
+        $this->assertInstanceOf(
+            User::class,
+            $user
         );
 
         $this->assertDatabaseHas('user_vault', [
