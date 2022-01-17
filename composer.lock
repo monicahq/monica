@@ -1631,29 +1631,29 @@
         },
         {
             "name": "dragonmantank/cron-expression",
-            "version": "v3.2.4",
+            "version": "v3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dragonmantank/cron-expression.git",
-                "reference": "9545dea2a1d92b60c8b3d06f02025c83e999bde0"
+                "reference": "63f2a76a045bac6ec93cc2daf2b534b412aa0313"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dragonmantank/cron-expression/zipball/9545dea2a1d92b60c8b3d06f02025c83e999bde0",
-                "reference": "9545dea2a1d92b60c8b3d06f02025c83e999bde0",
+                "url": "https://api.github.com/repos/dragonmantank/cron-expression/zipball/63f2a76a045bac6ec93cc2daf2b534b412aa0313",
+                "reference": "63f2a76a045bac6ec93cc2daf2b534b412aa0313",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2|^8.0",
-                "webmozart/assert": "^1.7.0"
+                "webmozart/assert": "^1.0"
             },
             "replace": {
                 "mtdowling/cron-expression": "^1.0"
             },
             "require-dev": {
                 "phpstan/extension-installer": "^1.0",
-                "phpstan/phpstan": "^0.12",
-                "phpstan/phpstan-webmozart-assert": "^0.12.7",
+                "phpstan/phpstan": "^1.0",
+                "phpstan/phpstan-webmozart-assert": "^1.0",
                 "phpunit/phpunit": "^7.0|^8.0|^9.0"
             },
             "type": "library",
@@ -1680,7 +1680,7 @@
             ],
             "support": {
                 "issues": "https://github.com/dragonmantank/cron-expression/issues",
-                "source": "https://github.com/dragonmantank/cron-expression/tree/v3.2.4"
+                "source": "https://github.com/dragonmantank/cron-expression/tree/v3.3.0"
             },
             "funding": [
                 {
@@ -1688,7 +1688,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-01-13T04:09:37+00:00"
+            "time": "2022-01-14T16:02:05+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -5028,30 +5028,38 @@
         },
         {
             "name": "monicahq/laravel-sabre",
-            "version": "1.4.1",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-sabre.git",
-                "reference": "92b3cede35146ba7050a08dff4fc6975776b73f3"
+                "reference": "2149c915b1f22d297c2efca92efe976cb4c94573"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/92b3cede35146ba7050a08dff4fc6975776b73f3",
-                "reference": "92b3cede35146ba7050a08dff4fc6975776b73f3",
+                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/2149c915b1f22d297c2efca92efe976cb4c94573",
+                "reference": "2149c915b1f22d297c2efca92efe976cb4c94573",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "^5.6 || ^6.0 || ^7.0 || ^8.0",
+                "illuminate/contracts": "^5.6 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
+                "illuminate/http": "^5.6 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
+                "illuminate/routing": "^5.6 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
+                "illuminate/support": "^5.6 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
                 "sabre/dav": "^4.0",
                 "thecodingmachine/safe": "^1.0"
             },
             "require-dev": {
-                "nunomaduro/larastan": "^0.6",
+                "laravel/framework": "^5.6 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
+                "mockery/mockery": "^1.4",
+                "nunomaduro/larastan": "^0 || ^1.0",
                 "ocramius/package-versions": "^1.9 || ^2.0",
-                "orchestra/testbench": "^5.0 || ^6.0",
-                "phpunit/phpunit": "^9.0",
+                "orchestra/testbench": "^3.5 || ^5.0 || ^6.0 || ^7.0",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.0",
+                "phpunit/phpunit": "^6.0 || ^7.0 || ^8.0 || ^9.0",
                 "thecodingmachine/phpstan-safe-rule": "^1.0",
-                "vimeo/psalm": "^3.0"
+                "vimeo/psalm": "^3.0 || ^4.0"
             },
             "type": "library",
             "extra": {
@@ -5093,7 +5101,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-10T15:54:01+00:00"
+            "time": "2022-01-14T22:59:06+00:00"
         },
         {
             "name": "monolog/monolog",
