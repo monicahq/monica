@@ -8,33 +8,32 @@
     "packages": [
         {
             "name": "asbiin/laravel-adorable",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbiin/laravel-adorable.git",
-                "reference": "f286cdc6bc61a98d089a1d1c917c785a01b68ac3"
+                "reference": "b0dbd0c154fbd167857c5d6417f2c5d3443576a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/laravel-adorable/zipball/f286cdc6bc61a98d089a1d1c917c785a01b68ac3",
-                "reference": "f286cdc6bc61a98d089a1d1c917c785a01b68ac3",
+                "url": "https://api.github.com/repos/asbiin/laravel-adorable/zipball/b0dbd0c154fbd167857c5d6417f2c5d3443576a3",
+                "reference": "b0dbd0c154fbd167857c5d6417f2c5d3443576a3",
                 "shasum": ""
             },
             "require": {
-                "illuminate/console": "^8.78",
-                "illuminate/http": "^8.78",
-                "illuminate/support": "^8.78",
+                "illuminate/contracts": "^8.0 || ^9.0",
+                "illuminate/support": "^8.0 || ^9.0",
                 "intervention/image": "^2.7",
-                "php": "^7.4 || ^8.0 || ^8.1"
+                "php": "^7.4 || ^8.0"
             },
             "require-dev": {
-                "laravel/framework": "^8.78",
+                "laravel/framework": "^8.0 || ^9.0",
                 "mockery/mockery": "^1.4",
                 "nunomaduro/larastan": "^1.0",
-                "orchestra/testbench": "^6.23",
+                "orchestra/testbench": "^6.0 || ^7.0",
                 "phpstan/phpstan-strict-rules": "^1.1",
                 "phpunit/phpunit": "^9.5",
-                "vimeo/psalm": "^4.18"
+                "vimeo/psalm": "^4.0"
             },
             "type": "library",
             "extra": {
@@ -79,7 +78,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-01-11T18:43:57+00:00"
+            "time": "2022-01-14T22:32:13+00:00"
         },
         {
             "name": "asbiin/laravel-webauthn",
