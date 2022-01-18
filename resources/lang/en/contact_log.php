@@ -28,4 +28,6 @@ return [
     'note_created' => 'Wrote a note',
     'note_updated' => 'Updated a note',
     'note_destroyed' => 'Deleted a note',
+
+    'contact_template_updated' => 'Changed the template used to display the contact',
 ];

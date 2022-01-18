@@ -1446,4 +1446,40 @@ class AuditLogHelperTest extends TestCase
             $sentence
         );
     }
+
+    /** @test */
+    public function contact_template_updated(): void
+    {
+        $log = AuditLog::factory()->create([
+            'action_name' => 'contact_template_updated',
+            'objects' => json_encode([
+                'contact_id' => 123,
+                'contact_name' => 'Monica Geller',
+            ]),
+        ]);
+
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Updated the template used to display the contact Monica Geller (deleted)',
+            $sentence
+        );
+
+        $contact = Contact::factory()->create();
+        $log = AuditLog::factory()->create([
+            'action_name' => 'contact_template_updated',
+            'objects' => json_encode([
+                'contact_id' => $contact->id,
+                'contact_name' => $contact->getName($loggedUser),
+            ]),
+        ]);
+
+        $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Updated the template used to display the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
+            $sentence
+        );
+    }
 }

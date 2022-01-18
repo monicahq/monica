@@ -221,6 +221,10 @@ class AuditLogHelper
                 $sentence = AuditLogHelper::userInvited($log, $user);
                 break;
 
+            case 'contact_template_updated':
+                $sentence = AuditLogHelper::contactTemplateUpdated($log, $user);
+                break;
+
             default:
                 $sentence = 'No translation';
                 break;
@@ -969,6 +973,27 @@ class AuditLogHelper
         $sentence = trans('log.user_invited', [
             'user_email' => $log->object->{'user_email'},
         ]);
+
+        return $sentence;
+    }
+
+    private static function contactTemplateUpdated(AuditLog $log, User $user): string
+    {
+        $contact = Contact::find($log->object->{'contact_id'});
+
+        if ($contact) {
+            $sentence = trans('log.contact_template_updated', [
+                'contact_url' => route('contact.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+                'contact_name' => NameHelper::formatContactName($user, $contact),
+            ]);
+        } else {
+            $sentence = trans('log.contact_template_updated_object_deleted', [
+                'contact_name' => $log->object->{'contact_name'},
+            ]);
+        }
 
         return $sentence;
     }

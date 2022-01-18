@@ -82,6 +82,10 @@ class ContactLogHelper
                 $sentence = ContactLogHelper::noteDestroyed($log);
                 break;
 
+            case 'contact_template_updated':
+                $sentence = ContactLogHelper::templateUpdated($log);
+                break;
+
             default:
                 $sentence = 'No translation';
                 break;
@@ -262,6 +266,13 @@ class ContactLogHelper
     private static function noteDestroyed(ContactLog $log): string
     {
         $sentence = trans('contact_log.note_destroyed');
+
+        return $sentence;
+    }
+
+    private static function templateUpdated(ContactLog $log): string
+    {
+        $sentence = trans('contact_log.contact_template_updated');
 
         return $sentence;
     }

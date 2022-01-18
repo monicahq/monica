@@ -9,6 +9,7 @@ use App\Http\Controllers\Settings\Users\UserController;
 use App\Http\Controllers\Auth\AcceptInvitationController;
 use App\Http\Controllers\Vault\Contact\ContactController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsController;
+use App\Http\Controllers\Vault\Contact\ContactTemplateController;
 use App\Http\Controllers\Settings\Personalize\PersonalizeController;
 use App\Http\Controllers\Settings\Preferences\PreferencesController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsUserController;
@@ -63,6 +64,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 // contact page
                 Route::middleware(['contact'])->prefix('{contact}')->group(function () {
                     Route::get('', [ContactController::class, 'show'])->name('contact.show');
+                    Route::get('no-template', [ContactController::class, 'blank'])->name('contact.blank');
+                    Route::put('template', [ContactTemplateController::class, 'update'])->name('contact.template.update');
 
                     Route::get('tab/{page}', [ContactPageController::class, 'show'])->name('contact.page.show');
                 });

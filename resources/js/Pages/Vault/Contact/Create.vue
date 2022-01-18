@@ -36,6 +36,8 @@
             </h1>
           </div>
           <div class="p-5 border-b border-gray-200">
+            <errors :errors="form.errors" />
+
             <!-- first name -->
             <text-input v-model="form.first_name" :autofocus="true" :div-outer-class="'mb-5'" :input-class="'block w-full'" :required="true"
                         :maxlength="255" :label="'First name'"
@@ -118,6 +120,7 @@ import PrettyLink from '@/Shared/PrettyLink';
 import PrettyButton from '@/Shared/PrettyButton';
 import TextInput from '@/Shared/TextInput';
 import Dropdown from '@/Shared/Dropdown';
+import Errors from '@/Shared/Errors';
 
 export default {
   components: {
@@ -126,6 +129,7 @@ export default {
     PrettyButton,
     TextInput,
     Dropdown,
+    Errors,
   },
 
   props: {
@@ -158,6 +162,7 @@ export default {
         pronoun_id: '',
         template_id: '',
         description: '',
+        errors: [],
       },
     };
   },
@@ -196,6 +201,7 @@ export default {
           this.$inertia.visit(response.data.data);
         })
         .catch(error => {
+          this.form.errors = error.response.data;
           this.loadingState = null;
         });
     },

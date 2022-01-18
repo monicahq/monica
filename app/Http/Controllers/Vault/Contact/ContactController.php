@@ -13,6 +13,7 @@ use App\Http\Controllers\Vault\ViewHelpers\VaultIndexViewHelper;
 use App\Http\Controllers\Vault\Contact\ViewHelpers\ContactShowViewHelper;
 use App\Http\Controllers\Vault\Contact\ViewHelpers\ContactIndexViewHelper;
 use App\Http\Controllers\Vault\Contact\ViewHelpers\ContactCreateViewHelper;
+use App\Http\Controllers\Vault\Contact\ViewHelpers\ContactShowBlankViewHelper;
 
 class ContactController extends Controller
 {
@@ -71,9 +72,27 @@ class ContactController extends Controller
         $vault = Vault::findOrFail($vaultId);
         $contact = Contact::findOrFail($contactId);
 
+        if (! $contact->template_id) {
+            return redirect()->route('contact.blank', [
+                'vault' => $vaultId,
+                'contact' => $contactId,
+            ]);
+        }
+
         return Inertia::render('Vault/Contact/Show', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
             'data' => ContactShowViewHelper::data($contact),
+        ]);
+    }
+
+    public function blank(Request $request, int $vaultId, int $contactId)
+    {
+        $vault = Vault::findOrFail($vaultId);
+        $contact = Contact::findOrFail($contactId);
+
+        return Inertia::render('Vault/Contact/Blank', [
+            'layoutData' => VaultIndexViewHelper::layoutData($vault),
+            'data' => ContactShowBlankViewHelper::data($contact),
         ]);
     }
 }

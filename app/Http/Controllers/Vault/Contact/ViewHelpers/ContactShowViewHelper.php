@@ -11,11 +11,15 @@ class ContactShowViewHelper
 {
     public static function data(Contact $contact): array
     {
-        $templatePages = $contact->template->pages()->get();
+        $template = $contact->template;
+
+        if ($template) {
+            $templatePages = $template->pages()->orderBy('position', 'asc')->get();
+        }
 
         return [
-            'template_pages' => self::getTemplatePagesList($templatePages, $contact),
-            'contact_information' => self::getContactInformation($templatePages->first(), $contact),
+            'template_pages' => $template ? self::getTemplatePagesList($templatePages, $contact) : null,
+            'contact_information' => $template ? self::getContactInformation($templatePages->first(), $contact) : null,
             'url' => [
             ],
         ];

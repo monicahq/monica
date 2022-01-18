@@ -1,0 +1,121 @@
+<style lang="scss" scoped>
+.item-list {
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+</style>
+
+<template>
+  <layout :layout-data="layoutData" :inside-vault="true">
+    <!-- breadcrumb -->
+    <nav class="sm:mt-20 sm:border-b bg-white">
+      <div class="max-w-8xl mx-auto px-4 sm:px-6 py-2 hidden md:block">
+        <div class="flex items-baseline justify-between space-x-6">
+          <ul class="text-sm">
+            <li class="inline mr-2 text-gray-600">You are here:</li>
+            <li class="inline mr-2">
+              <inertia-link :href="layoutData.vault.url.contacts" class="text-sky-500 hover:text-blue-900">Contacts</inertia-link>
+            </li>
+            <li class="inline mr-2 relative">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline relative icon-breadcrumb" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </li>
+            <li class="inline">{{ data.contact.name }}</li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="sm:mt-24 relative">
+      <div class="max-w-3xl mx-auto px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+        <h2 class="text-lg text-center mb-6">
+          Profile page of {{ data.contact.name }}
+        </h2>
+        <div class="bg-white border border-gray-200 rounded mb-6">
+          <!-- help -->
+          <div class="px-3 py-2 rounded-t flex bg-slate-50 border-gray-200 border-b">
+            <svg xmlns="http://www.w3.org/2000/svg" class="grow h-6 pr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+
+            <div>
+              <p class="mb-2">This contact doesn't have an associated template. That means we don't know how to display this contact.</p>
+              <p v-if="data.templates.length > 0">Please choose one template below to tell Monica how a contact should be displayed.</p>
+              <p v-else>However, it seems that there are no templates in the account yet. Please add at least template to your account first, then associate this template with this contact.</p>
+            </div>
+          </div>
+
+          <ul v-if="data.templates.length > 0" class="bg-white rounded-b">
+            <li v-for="template in data.templates" :key="template.id" class="border-b border-gray-200 hover:bg-slate-50 item-list">
+              <div class="flex justify-between items-center px-5 py-2">
+                <span>{{ template.name }}</span>
+
+                <!-- actions -->
+                <ul class="text-sm">
+                  <li class="cursor-pointer inline text-sky-500 hover:text-blue-900" @click="submit(template)">Use</li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+  </layout>
+</template>
+
+<script>
+import Layout from '@/Shared/Layout';
+
+export default {
+  components: {
+    Layout,
+  },
+
+  props: {
+    layoutData: {
+      type: Object,
+      default: null,
+    },
+    data: {
+      type: Object,
+      default: null,
+    },
+  },
+
+  data() {
+    return {
+      form: {
+        templateId: '',
+        errors: [],
+      },
+    };
+  },
+
+  methods: {
+    submit(template) {
+      this.form.templateId = template.id;
+
+      axios.put(this.data.url.update, this.form)
+        .then(response => {
+          localStorage.success = 'The template has been set';
+          this.$inertia.visit(response.data.data);
+        })
+        .catch(error => {
+          this.form.errors = error.response.data;
+        });
+    },
+  },
+};
+</script>

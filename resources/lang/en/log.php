@@ -85,6 +85,8 @@ return [
     'note_updated_object_deleted' => 'Updated the note for the contact :contact_name (deleted)',
     'note_destroyed' => 'Deleted the note for the contact <a href=":contact_url">:contact_name</a>',
     'note_destroyed_object_deleted' => 'Deleted the note for the contact :contact_name (deleted)',
+    'contact_template_updated' => 'Updated the template used to display the contact <a href=":contact_url">:contact_name</a>',
+    'contact_template_updated_object_deleted' => 'Updated the template used to display the contact :contact_name (deleted)',
 
     // relationships
     'relationship_set' => 'Set the contact <a href=":contact_url">:contact_name</a> as :relationship_name of <a href=":other_contact_url">:other_contact_name</a>',

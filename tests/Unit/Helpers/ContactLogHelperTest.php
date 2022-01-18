@@ -363,4 +363,19 @@ class ContactLogHelperTest extends TestCase
             $sentence
         );
     }
+
+    /** @test */
+    public function contact_template_updated(): void
+    {
+        $log = ContactLog::factory()->create([
+            'action_name' => 'contact_template_updated',
+            'objects' => json_encode([]),
+        ]);
+
+        $sentence = ContactLogHelper::process($log);
+        $this->assertEquals(
+            'Changed the template used to display the contact',
+            $sentence
+        );
+    }
 }
