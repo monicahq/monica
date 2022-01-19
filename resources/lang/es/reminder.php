@@ -12,5 +12,5 @@ return [
     'type_lunch' => 'Comer con',
     'type_hangout' => 'Salir con',
     'type_email' => 'Email',
-    'type_birthday_kid' => 'Wish happy birthday to the child of',
+    'type_birthday_kid' => 'Desea feliz cumpleaños al hijo de',
 ];
