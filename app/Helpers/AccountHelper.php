@@ -138,7 +138,7 @@ class AccountHelper
             ->orderBy('planned_date', 'asc')
             ->get()
             ->filter(function ($reminderOutbox) {
-                return ! $reminderOutbox->reminder->contact->trashed();
+                return $reminderOutbox->reminder->contact !== null;
             });
     }
 

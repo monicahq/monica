@@ -60,7 +60,7 @@ class NotifyUserAboutReminder implements ShouldQueue
      */
     private function sendNotification(MailNotification $message): void
     {
-        if (! $this->reminderOutbox->contact->trashed()) {
+        if ($this->reminderOutbox->contact !== null) {
             $account = $this->reminderOutbox->user->account;
             $hasLimitations = AccountHelper::hasLimitations($account);
             if (! $hasLimitations) {
