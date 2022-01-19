@@ -3,7 +3,7 @@
     <ul class="mb4">
         @if(count($reminderOutboxes) > 0)
             @foreach($reminderOutboxes as $reminderOutbox)
-            @if (!is_object($reminderOutbox->reminder) || $reminderOutbox->reminder->contact === null)
+            @if (!is_object($reminderOutbox->reminder))
                 @continue;
             @endif
             <li class="pb2">
