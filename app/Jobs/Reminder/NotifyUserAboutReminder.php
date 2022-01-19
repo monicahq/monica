@@ -44,26 +44,47 @@ class NotifyUserAboutReminder implements ShouldQueue
         $message = $this->getMessage();
 
         if (! is_null($message)) {
-            // send the notification to this user
+            $this->sendNotification($message);
+            $this->scheduleNextReminder();
+        }
+
+        // delete the reminder outbox
+        $this->reminderOutbox->delete();
+    }
+
+    /**
+     * Send the notification to this user.
+     *
+     * @param  MailNotification  $message
+     * @return void
+     */
+    private function sendNotification(MailNotification $message): void
+    {
+        if ($this->reminderOutbox->reminder->contact !== null) {
             $account = $this->reminderOutbox->user->account;
             $hasLimitations = AccountHelper::hasLimitations($account);
             if (! $hasLimitations) {
                 Notification::send($this->reminderOutbox->user, $message);
             }
-
-            // schedule the next reminder for this user
-            /** @var \App\Models\Contact\Reminder */
-            $reminder = $this->reminderOutbox->reminder;
-            if ($reminder->frequency_type == 'one_time') {
-                $reminder->inactive = true;
-                $reminder->save();
-            } else {
-                $reminder->schedule($this->reminderOutbox->user);
-            }
         }
+    }
 
-        // delete the reminder outbox
-        $this->reminderOutbox->delete();
+    /**
+     * Schedule the next reminder for this user.
+     *
+     * @return void
+     */
+    private function scheduleNextReminder(): void
+    {
+        /** @var \App\Models\Contact\Reminder */
+        $reminder = $this->reminderOutbox->reminder;
+
+        if ($reminder->frequency_type == 'one_time') {
+            $reminder->inactive = true;
+            $reminder->save();
+        } else {
+            $reminder->schedule($this->reminderOutbox->user);
+        }
     }
 
     /**

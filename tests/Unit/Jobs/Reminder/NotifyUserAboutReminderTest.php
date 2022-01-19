@@ -149,6 +149,44 @@ class NotifyUserAboutReminderTest extends TestCase
     }
 
     /** @test */
+    public function it_doesnt_notify_a_user_if_contact_deleted()
+    {
+        Notification::fake();
+
+        Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
+
+        $account = factory(Account::class)->create([
+            'default_time_reminder_is_sent' => '07:00',
+        ]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $user = factory(User::class)->create(['account_id' => $account->id]);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'initial_date' => '2017-01-01',
+            'title' => 'fake text saying nothing',
+            'frequency_type' => 'year',
+            'frequency_number' => '1',
+        ]);
+        $reminderOutbox = factory(ReminderOutbox::class)->create([
+            'account_id' => $user->account_id,
+            'reminder_id' => $reminder->id,
+            'user_id' => $user->id,
+            'planned_date' => '2017-01-01',
+            'nature' => 'notification',
+        ]);
+
+        $contact->delete();
+
+        NotifyUserAboutReminder::dispatch($reminderOutbox);
+
+        Notification::assertNotSentTo(
+            $user,
+            UserReminded::class
+        );
+    }
+
+    /** @test */
     public function it_marks_the_one_time_reminder_has_inactive_once_it_is_sent()
     {
         Notification::fake();
