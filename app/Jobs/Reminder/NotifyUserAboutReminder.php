@@ -53,15 +53,14 @@ class NotifyUserAboutReminder implements ShouldQueue
     }
 
     /**
-     * Send the notification to this user
+     * Send the notification to this user.
      *
      * @param  MailNotification  $message
      * @return void
      */
     private function sendNotification(MailNotification $message): void
     {
-        if (! $this->reminderOutbox->contact->trashed())
-        {
+        if (! $this->reminderOutbox->contact->trashed()) {
             $account = $this->reminderOutbox->user->account;
             $hasLimitations = AccountHelper::hasLimitations($account);
             if (! $hasLimitations) {
@@ -71,7 +70,7 @@ class NotifyUserAboutReminder implements ShouldQueue
     }
 
     /**
-     * Schedule the next reminder for this user
+     * Schedule the next reminder for this user.
      *
      * @return void
      */
