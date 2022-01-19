@@ -8,18 +8,20 @@
             @endif
             <li class="pb2">
                 <span class="ttu f6 mr2 black-60">{{ \App\Helpers\DateHelper::getShortDateWithoutYear($reminderOutbox->planned_date) }}</span>
-                <span>
-                    @if ($reminderOutbox->reminder->contact->is_partial)
+                @if ($reminderOutbox->reminder->contact !== null)
+                  <span>
+                      @if ($reminderOutbox->reminder->contact->is_partial)
 
-                        @php($relatedRealContact = $reminderOutbox->reminder->contact->getRelatedRealContact())
-                        <a href="{{ route('people.show', $relatedRealContact) }}">{{ $relatedRealContact->getIncompleteName() }}</a>
+                          @php($relatedRealContact = $reminderOutbox->reminder->contact->getRelatedRealContact())
+                          <a href="{{ route('people.show', $relatedRealContact) }}">{{ $relatedRealContact->getIncompleteName() }}</a>
 
-                    @else
+                      @else
 
-                        <a href="{{ route('people.show', $reminderOutbox->reminder->contact) }}">{{ $reminderOutbox->reminder->contact->getIncompleteName() }}</a>
+                          <a href="{{ route('people.show', $reminderOutbox->reminder->contact) }}">{{ $reminderOutbox->reminder->contact->getIncompleteName() }}</a>
 
-                    @endif
-                </span>
+                      @endif
+                  </span>
+                @endif
                 {{ $reminderOutbox->reminder->title }}
             </li>
             @endforeach
