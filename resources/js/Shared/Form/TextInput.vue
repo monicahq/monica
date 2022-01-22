@@ -27,7 +27,7 @@
       </span>
     </label>
 
-    <div class="relative component">
+    <div class="relative">
       <input
         :id="id"
         :ref="ref"

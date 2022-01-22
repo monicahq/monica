@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import PrettyButton from '@/Shared/PrettyButton';
+import PrettyButton from '@/Shared/Form/PrettyButton';
 import draggable from 'vuedraggable';
 
 export default {

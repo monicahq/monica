@@ -3,6 +3,7 @@
 namespace App\Services\Account\ManageTemplate;
 
 use App\Models\Template;
+use Illuminate\Support\Str;
 use App\Models\TemplatePage;
 use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
@@ -64,6 +65,7 @@ class CreateTemplatePage extends BaseService implements ServiceInterface
         $this->templatePage = TemplatePage::create([
             'template_id' => $data['template_id'],
             'name' => $data['name'],
+            'slug' => Str::slug($data['name'], '-'),
             'type' => $this->valueOrNull($data, 'type'),
             'position' => $newPosition,
             'can_be_deleted' => $this->valueOrTrue($data, 'can_be_deleted'),

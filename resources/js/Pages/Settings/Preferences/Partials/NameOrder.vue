@@ -117,10 +117,10 @@ pre {
 </template>
 
 <script>
-import PrettyButton from '@/Shared/PrettyButton';
-import PrettyLink from '@/Shared/PrettyLink';
-import TextInput from '@/Shared/TextInput';
-import Errors from '@/Shared/Errors';
+import PrettyButton from '@/Shared/Form/PrettyButton';
+import PrettyLink from '@/Shared/Form/PrettyLink';
+import TextInput from '@/Shared/Form/TextInput';
+import Errors from '@/Shared/Form/Errors';
 
 export default {
   components: {

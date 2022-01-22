@@ -181,9 +181,9 @@
 </template>
 
 <script>
-import PrettySpan from '@/Shared/PrettySpan';
-import PrettyButton from '@/Shared/PrettyButton';
-import Errors from '@/Shared/Errors';
+import PrettySpan from '@/Shared/Form/PrettySpan';
+import PrettyButton from '@/Shared/Form/PrettyButton';
+import Errors from '@/Shared/Form/Errors';
 
 export default {
   components: {

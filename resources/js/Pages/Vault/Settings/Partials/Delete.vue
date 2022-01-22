@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import PrettyLink from '@/Shared/PrettyLink';
+import PrettyLink from '@/Shared/Form/PrettyLink';
 
 export default {
   components: {

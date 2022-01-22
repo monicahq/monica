@@ -69,7 +69,7 @@ class CreateTemplatePageTest extends TestCase
             'account_id' => $account->id,
             'author_id' => $author->id,
             'template_id' => $template->id,
-            'name' => 'Business',
+            'name' => 'Business awesome',
             'can_be_deleted' => true,
         ];
 
@@ -78,7 +78,8 @@ class CreateTemplatePageTest extends TestCase
         $this->assertDatabaseHas('template_pages', [
             'id' => $templatePage->id,
             'template_id' => $template->id,
-            'name' => 'Business',
+            'name' => 'Business awesome',
+            'slug' => 'business-awesome',
             'can_be_deleted' => true,
         ]);
 

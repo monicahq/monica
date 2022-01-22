@@ -25,6 +25,7 @@ class TemplatePageFactory extends Factory
         return [
             'template_id' => Template::factory(),
             'name' => 'business',
+            'slug' => 'business',
             'position' => 1,
             'can_be_deleted' => true,
         ];

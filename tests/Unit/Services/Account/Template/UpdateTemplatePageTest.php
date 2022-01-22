@@ -101,6 +101,7 @@ class UpdateTemplatePageTest extends TestCase
             'id' => $templatePage->id,
             'template_id' => $template->id,
             'name' => 'Business',
+            'slug' => 'business',
         ]);
 
         $this->assertInstanceOf(

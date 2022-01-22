@@ -55,10 +55,10 @@
 
 <script>
 import Layout from '@/Shared/Layout';
-import PrettyLink from '@/Shared/PrettyLink';
-import PrettyButton from '@/Shared/PrettyButton';
-import TextInput from '@/Shared/TextInput';
-import TextArea from '@/Shared/TextArea';
+import PrettyLink from '@/Shared/Form/PrettyLink';
+import PrettyButton from '@/Shared/Form/PrettyButton';
+import TextInput from '@/Shared/Form/TextInput';
+import TextArea from '@/Shared/Form/TextArea';
 
 export default {
   components: {

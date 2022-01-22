@@ -26,6 +26,7 @@ class CreateAttributesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('template_id');
             $table->string('name');
+            $table->string('slug');
             $table->integer('position')->nullable();
             $table->string('type')->nullable();
             $table->boolean('can_be_deleted')->default(true);

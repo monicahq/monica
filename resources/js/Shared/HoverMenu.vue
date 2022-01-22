@@ -1,4 +1,11 @@
 <style lang="scss" scoped>
+.ant-dropdown-menu {
+  padding: 0;
+}
+
+.ant-dropdown-menu-item:hover {
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity));
+}
 </style>
 
 <template>
@@ -14,11 +21,11 @@
     </a>
     <template #overlay>
       <a-menu>
-        <a-menu-item>
-          <a href="javascript:;">Edit</a>
+        <a-menu-item v-if="showEdit">
+          <a href="" @click.prevent="$emit('edit', $event.target.value)">Edit</a>
         </a-menu-item>
-        <a-menu-item>
-          <a href="javascript:;">Delete</a>
+        <a-menu-item v-if="showDelete">
+          <a href="" @click.prevent="$emit('delete', $event.target.value)">Delete</a>
         </a-menu-item>
       </a-menu>
     </template>
@@ -32,6 +39,14 @@ export default {
   },
 
   props: {
+    showEdit: {
+      type: Boolean,
+      default: false,
+    },
+    showDelete: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>

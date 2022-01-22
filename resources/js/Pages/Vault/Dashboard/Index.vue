@@ -160,7 +160,7 @@ import Entry from '@/Pages/Vault/Dashboard/Partials/Feed/Entry';
 import Goal from '@/Pages/Vault/Dashboard/Partials/Feed/Goal';
 import FeedItem from '@/Pages/Vault/Dashboard/Partials/Feed/FeedItem';
 import CreateLifeEvent from '@/Pages/Vault/Dashboard/Partials/Feed/CreateLifeEvent';
-import PrettyButton from '@/Shared/PrettyButton';
+import PrettyButton from '@/Shared/Form/PrettyButton';
 
 export default {
   components: {

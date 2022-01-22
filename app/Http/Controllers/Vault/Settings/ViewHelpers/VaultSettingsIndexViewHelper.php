@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Models\Vault;
 use App\Helpers\VaultHelper;
 
-// TODO
 class VaultSettingsIndexViewHelper
 {
     public static function data(Vault $vault): array

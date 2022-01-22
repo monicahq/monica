@@ -62,11 +62,16 @@ class CreateVault extends BaseService implements ServiceInterface
 
     private function createVault(): void
     {
+        // the vault default's template should be the first template in the
+        // account, if it exists
+        $template = $this->author->account->templates()->first();
+
         $this->vault = Vault::create([
             'account_id' => $this->data['account_id'],
             'type' => $this->data['type'],
             'name' => $this->data['name'],
             'description' => $this->valueOrNull($this->data, 'description'),
+            'default_template_id' => $template ? $template->id : null,
         ]);
     }
 
@@ -77,6 +82,7 @@ class CreateVault extends BaseService implements ServiceInterface
             'first_name' => $this->author->first_name,
             'last_name' => $this->author->last_name,
             'can_be_deleted' => false,
+            'template_id' => $this->vault->default_template_id,
         ]);
 
         $this->vault->users()->save($this->author, [

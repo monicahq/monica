@@ -11,6 +11,12 @@ class Module extends Model
     use HasFactory;
 
     /**
+     * Possible module types.
+     */
+    const TYPE_NOTES = 'notes';
+    const TYPE_CONTACT_NAMES = 'contact_names';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

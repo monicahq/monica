@@ -116,11 +116,11 @@
 
 <script>
 import Layout from '@/Shared/Layout';
-import PrettyLink from '@/Shared/PrettyLink';
-import PrettyButton from '@/Shared/PrettyButton';
-import TextInput from '@/Shared/TextInput';
-import Dropdown from '@/Shared/Dropdown';
-import Errors from '@/Shared/Errors';
+import PrettyLink from '@/Shared/Form/PrettyLink';
+import PrettyButton from '@/Shared/Form/PrettyButton';
+import TextInput from '@/Shared/Form/TextInput';
+import Dropdown from '@/Shared/Form/Dropdown';
+import Errors from '@/Shared/Form/Errors';
 
 export default {
   components: {

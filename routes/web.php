@@ -13,6 +13,7 @@ use App\Http\Controllers\Vault\Contact\ContactTemplateController;
 use App\Http\Controllers\Settings\Personalize\PersonalizeController;
 use App\Http\Controllers\Settings\Preferences\PreferencesController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsUserController;
+use App\Http\Controllers\Vault\Contact\Modules\ContactNoteController;
 use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsTemplateController;
 use App\Http\Controllers\Settings\Personalize\Labels\PersonalizeLabelController;
@@ -67,7 +68,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::get('no-template', [ContactController::class, 'blank'])->name('contact.blank');
                     Route::put('template', [ContactTemplateController::class, 'update'])->name('contact.template.update');
 
-                    Route::get('tab/{page}', [ContactPageController::class, 'show'])->name('contact.page.show');
+                    Route::get('tabs/{slug}', [ContactPageController::class, 'show'])->name('contact.page.show');
+
+                    // notes
+                    Route::get('notes', [ContactNoteController::class, 'index'])->name('contact.note.index');
+                    Route::post('notes', [ContactNoteController::class, 'store'])->name('contact.note.store');
+                    Route::put('notes/{note}', [ContactNoteController::class, 'update'])->name('contact.note.update');
+                    Route::delete('notes/{note}', [ContactNoteController::class, 'destroy'])->name('contact.note.destroy');
                 });
             });
 
