@@ -40,6 +40,9 @@ class VaultIndexViewHelper
                     'settings' => route('vault.settings.index', [
                         'vault' => $vault->id,
                     ]),
+                    'search' => route('vault.search.index', [
+                        'vault' => $vault->id,
+                    ]),
                 ],
             ] : null,
             'url' => [

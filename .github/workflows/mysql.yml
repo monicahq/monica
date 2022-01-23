@@ -11,6 +11,7 @@ jobs:
       DB_USERNAME: root
       DB_PASSWORD: password
       BROADCAST_DRIVER: log
+      SCOUT_DRIVER: collection
     services:
       mysql:
         image: mysql:5.7

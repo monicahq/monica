@@ -8,6 +8,7 @@ use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Settings\Users\UserController;
 use App\Http\Controllers\Auth\AcceptInvitationController;
 use App\Http\Controllers\Vault\Contact\ContactController;
+use App\Http\Controllers\Vault\Search\VaultSearchController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsController;
 use App\Http\Controllers\Vault\Contact\ContactTemplateController;
 use App\Http\Controllers\Settings\Personalize\PersonalizeController;
@@ -88,6 +89,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::delete('settings/users/{user}', [VaultSettingsUserController::class, 'destroy'])->name('vault.settings.user.destroy');
                 Route::delete('', [VaultController::class, 'destroy'])->name('vault.settings.destroy');
             });
+
+            // search
+            Route::get('search', [VaultSearchController::class, 'index'])->name('vault.search.index');
+            Route::post('search', [VaultSearchController::class, 'show'])->name('vault.search.show');
         });
     });
 

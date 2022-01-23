@@ -2,6 +2,11 @@
 main {
   color: #343a4b;
 }
+
+.icon-search {
+  left: 8px;
+  top: 8px;
+}
 </style>
 
 <template>
@@ -27,8 +32,11 @@ main {
           </div>
 
           <!-- search box -->
-          <div v-if="insideVault" class="flew-grow">
-            <input type="text" class="focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm rounded-md border border-gray-300 w-64 px-2 py-1" placeholder="Search a contact">
+          <div v-if="insideVault" class="flew-grow relative">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon-search text-gray-400 absolute h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" class="text-center focus:ring-indigo-500 hover:cursor-pointer focus:border-indigo-500 block sm:text-sm rounded-md border border-gray-300 w-64 px-2 py-1" placeholder="Search something" @focus="goToSearchPage">
           </div>
 
           <!-- icons -->
@@ -137,6 +145,10 @@ export default {
   methods: {
     logout() {
       window.open(this.user.url.logout);
+    },
+
+    goToSearchPage() {
+      this.$inertia.visit(this.layoutData.vault.url.search);
     },
   },
 };
