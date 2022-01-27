@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Vault\Contact\Modules\ViewHelpers;
+namespace App\Http\Controllers\Vault\Contact\Notes\ViewHelpers;
 
 use App\Models\Note;
 use App\Models\Contact;
 use App\Helpers\DateHelper;
+use Illuminate\Support\Str;
 
-class ModuleNotesViewHelper
+class NotesIndexViewHelper
 {
     public static function data(Contact $contact): array
     {
-        $notes = $contact->notes()->orderBy('created_at', 'desc')->take(3)->get();
+        $notes = $contact->notes()->orderBy('created_at', 'desc')->get();
         $notesCollection = $notes->map(function ($note) use ($contact) {
             return self::dto($contact, $note);
         });
@@ -26,6 +27,10 @@ class ModuleNotesViewHelper
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
                 ]),
+                'contact' => route('contact.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
             ],
         ];
     }
@@ -35,6 +40,8 @@ class ModuleNotesViewHelper
         return [
             'id' => $note->id,
             'body' => $note->body,
+            'body_excerpt' => Str::length($note->body) >= 200 ? Str::limit($note->body, 200) : null,
+            'show_full_content' => false,
             'title' => $note->title,
             'author' => $note->author ? $note->author->name : $note->author_name,
             'written_at' => DateHelper::formatDate($note->created_at),

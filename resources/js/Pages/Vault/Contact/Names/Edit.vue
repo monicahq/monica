@@ -14,14 +14,24 @@
           <ul class="text-sm">
             <li class="inline mr-2 text-gray-600">You are here:</li>
             <li class="inline mr-2">
-              <inertia-link :href="data.url.back" class="text-sky-500 hover:text-blue-900">Contacts</inertia-link>
+              <inertia-link :href="layoutData.vault.url.contacts" class="text-sky-500 hover:text-blue-900">Contacts</inertia-link>
             </li>
             <li class="inline mr-2 relative">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline relative icon-breadcrumb" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">Create a contact</li>
+            <li class="inline mr-2">
+              <inertia-link :href="data.url.show" class="text-sky-500 hover:text-blue-900">Profile of {{ data.contact.name }}</inertia-link>
+            </li>
+            <li class="inline mr-2 relative">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline relative icon-breadcrumb" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </li>
+            <li class="inline">
+              Edit names
+            </li>
           </ul>
         </div>
       </div>
@@ -32,7 +42,7 @@
         <form class="bg-white border border-gray-200 rounded-lg mb-6" @submit.prevent="submit()">
           <div class="p-5 border-b border-gray-200 bg-blue-50 section-head">
             <h1 class="text-center text-2xl font-medium">
-              Add a contact
+              Edit a contact
             </h1>
           </div>
           <div class="p-5 border-b border-gray-200">
@@ -49,64 +59,37 @@
             />
 
             <!-- middle name -->
-            <text-input v-if="showMiddleNameField" :id="'middle_name'" v-model="form.middle_name" :div-outer-class="'mb-5'" :input-class="'block w-full'"
+            <text-input :id="'middle_name'" v-model="form.middle_name" :div-outer-class="'mb-5'" :input-class="'block w-full'"
                         :required="false"
                         :maxlength="255" :label="'Middle name'"
             />
 
             <!-- nickname -->
-            <text-input v-if="showNicknameField" :id="'nickname'" v-model="form.nickname" :div-outer-class="'mb-5'" :input-class="'block w-full'"
+            <text-input :id="'nickname'" v-model="form.nickname" :div-outer-class="'mb-5'" :input-class="'block w-full'"
                         :required="false"
                         :maxlength="255" :label="'Nickname'"
             />
 
             <!-- nickname -->
-            <text-input v-if="showMaidenNameField" :id="'maiden_name'" v-model="form.maiden_name" :div-outer-class="'mb-5'" :input-class="'block w-full'"
+            <text-input :id="'maiden_name'" v-model="form.maiden_name" :div-outer-class="'mb-5'" :input-class="'block w-full'"
                         :required="false"
                         :maxlength="255" :label="'Maiden name'"
             />
 
             <!-- genders -->
-            <dropdown v-if="showGenderField" v-model="form.gender_id" :data="data.genders" :required="false" :div-outer-class="'mb-5'"
+            <dropdown v-model="form.gender_id" :data="data.genders" :required="false" :div-outer-class="'mb-5'"
                       :placeholder="'Choose a value'" :dropdown-class="'block w-full'" :label="'Gender'"
             />
 
             <!-- pronouns -->
-            <dropdown v-if="showPronounField" v-model="form.pronoun_id" :data="data.pronouns" :required="false" :div-outer-class="'mb-5'"
+            <dropdown v-model="form.pronoun_id" :data="data.pronouns" :required="false" :div-outer-class="'mb-5'"
                       :placeholder="'Choose a value'" :dropdown-class="'block w-full'" :label="'Pronoun'"
             />
-
-            <!-- templates -->
-            <dropdown v-if="showTemplateField" v-model="form.template_id" :data="data.templates" :required="false" :div-outer-class="'mb-5'"
-                      :placeholder="'Choose a value'" :dropdown-class="'block w-full'" :label="'Use the following template for this contact'"
-            />
-
-            <!-- other fields -->
-            <div class="text-xs flex flex-wrap">
-              <span v-if="!showMiddleNameField" class="border rounded-lg bg-slate-200 hover:bg-slate-300 px-1 py-1 mr-2 mb-2 flex flex-wrap cursor-pointer" @click="displayMiddleNameField">
-                + middle name
-              </span>
-              <span v-if="!showNicknameField" class="border rounded-lg bg-slate-200 hover:bg-slate-300 px-1 py-1 mr-2 mb-2 flex flex-wrap cursor-pointer" @click="displayNicknameField">
-                + nickname
-              </span>
-              <span v-if="!showMaidenNameField" class="border rounded-lg bg-slate-200 hover:bg-slate-300 px-1 py-1 mr-2 mb-2 flex flex-wrap cursor-pointer" @click="displayMaidenNameField">
-                + maiden name
-              </span>
-              <span v-if="data.genders.length > 0 && !showGenderField" class="border rounded-lg bg-slate-200 hover:bg-slate-300 px-1 py-1 mr-2 mb-2 flex flex-wrap cursor-pointer" @click="displayGenderField">
-                + gender
-              </span>
-              <span v-if="data.pronouns.length > 0 && !showPronounField" class="border rounded-lg bg-slate-200 hover:bg-slate-300 px-1 py-1 mr-2 mb-2 flex flex-wrap cursor-pointer" @click="displayPronounField">
-                + pronoun
-              </span>
-              <span v-if="data.templates.length > 0 && !showTemplateField" class="border rounded-lg bg-slate-200 hover:bg-slate-300 px-1 py-1 mr-2 mb-2 flex flex-wrap cursor-pointer" @click="displayTemplateField">
-                + change template
-              </span>
-            </div>
           </div>
 
           <div class="p-5 flex justify-between">
-            <pretty-link :href="data.url.back" :text="'Cancel'" :classes="'mr-3'" />
-            <pretty-button :href="'data.url.vault.create'" :text="'Add'" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-link :href="data.url.show" :text="'Cancel'" :classes="'mr-3'" />
+            <pretty-button :href="'data.url.vault.create'" :text="'Update'" :state="loadingState" :icon="'check'" :classes="'save'" />
           </div>
         </form>
       </div>
@@ -146,12 +129,6 @@ export default {
   data() {
     return {
       loadingState: '',
-      showMiddleNameField: false,
-      showNicknameField: false,
-      showMaidenNameField: false,
-      showGenderField: false,
-      showPronounField: false,
-      showTemplateField: false,
       form: {
         first_name: '',
         last_name: '',
@@ -160,43 +137,28 @@ export default {
         maiden_name: '',
         gender_id: '',
         pronoun_id: '',
-        template_id: '',
         errors: [],
       },
     };
   },
 
+  mounted() {
+    this.form.first_name = this.data.contact.first_name;
+    this.form.last_name = this.data.contact.last_name;
+    this.form.middle_name = this.data.contact.middle_name;
+    this.form.nickname = this.data.contact.nickname;
+    this.form.maiden_name = this.data.contact.maiden_name;
+    this.form.gender_id = this.data.contact.gender_id;
+    this.form.pronoun_id = this.data.contact.pronoun_id;
+  },
+
   methods: {
-    displayMiddleNameField() {
-      this.showMiddleNameField = true;
-    },
-
-    displayNicknameField() {
-      this.showNicknameField = true;
-    },
-
-    displayMaidenNameField() {
-      this.showMaidenNameField = true;
-    },
-
-    displayGenderField() {
-      this.showGenderField = true;
-    },
-
-    displayPronounField() {
-      this.showPronounField = true;
-    },
-
-    displayTemplateField() {
-      this.showTemplateField = true;
-    },
-
     submit() {
       this.loadingState = 'loading';
 
-      axios.post(this.data.url.store, this.form)
+      axios.post(this.data.url.update, this.form)
         .then(response => {
-          localStorage.success = 'The contact has been added';
+          localStorage.success = 'The contact has been edited';
           this.$inertia.visit(response.data.data);
         })
         .catch(error => {

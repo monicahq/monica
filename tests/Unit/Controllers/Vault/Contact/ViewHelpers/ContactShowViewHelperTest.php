@@ -4,6 +4,7 @@ namespace Tests\Unit\Controllers\Vault\Contact\ViewHelpers;
 
 use function env;
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Module;
 use App\Models\Contact;
 use App\Models\Template;
@@ -19,6 +20,7 @@ class ContactShowViewHelperTest extends TestCase
     public function it_gets_the_data_needed_for_the_view(): void
     {
         $contact = Contact::factory()->create();
+        $user = User::factory()->create();
         $template = Template::factory()->create();
         $templatePageContactInformation = TemplatePage::factory()->create([
             'template_id' => $template->id,
@@ -32,16 +34,18 @@ class ContactShowViewHelperTest extends TestCase
         $contact->template_id = $template->id;
         $contact->save();
 
-        $array = ContactShowViewHelper::data($contact);
+        $array = ContactShowViewHelper::data($contact, $user);
 
         $this->assertEquals(
-            3,
+            5,
             count($array)
         );
 
+        $this->assertArrayHasKey('contact_name', $array);
         $this->assertArrayHasKey('template_pages', $array);
         $this->assertArrayHasKey('contact_information', $array);
         $this->assertArrayHasKey('modules', $array);
+        $this->assertArrayHasKey('url', $array);
 
         $this->assertEquals(
             [
@@ -56,11 +60,11 @@ class ContactShowViewHelperTest extends TestCase
             ],
             $array['template_pages']->toArray()
         );
-
         $this->assertEquals(
             [
+                'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id,
             ],
-            $array['contact_information']
+            $array['url']
         );
     }
 

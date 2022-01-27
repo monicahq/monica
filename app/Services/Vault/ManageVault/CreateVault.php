@@ -4,6 +4,7 @@ namespace App\Services\Vault\ManageVault;
 
 use App\Models\Vault;
 use App\Models\Contact;
+use App\Models\Template;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;

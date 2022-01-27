@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers\Vault\Contact\ViewHelpers;
 
+use App\Models\User;
 use App\Models\Module;
 use App\Models\Contact;
 use App\Models\TemplatePage;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
-use App\Http\Controllers\Vault\Contact\Modules\ViewHelpers\ModuleNotesViewHelper;
+use App\Http\Controllers\Vault\Contact\Modules\Note\ViewHelpers\ModuleNotesViewHelper;
+use App\Http\Controllers\Vault\Contact\Modules\Avatar\ViewHelpers\ModuleAvatarViewHelper;
+use App\Http\Controllers\Vault\Contact\Modules\ContactName\ViewHelpers\ModuleContactNameViewHelper;
+use App\Http\Controllers\Vault\Contact\Modules\GenderPronoun\ViewHelpers\ModuleGenderPronounViewHelper;
 
 class ContactShowViewHelper
 {
-    public static function data(Contact $contact): array
+    public static function data(Contact $contact, User $user): array
     {
         $templatePages = $contact->template->pages()->orderBy('position', 'asc')->get();
 
@@ -21,9 +25,16 @@ class ContactShowViewHelper
         })->first();
 
         return [
+            'contact_name' => ModuleContactNameViewHelper::data($contact, $user),
             'template_pages' => self::getTemplatePagesList($templatePages, $contact),
-            'contact_information' => self::getContactInformation($templatePages, $contact),
+            'contact_information' => self::getContactInformation($templatePages, $contact, $user),
             'modules' => $firstPage ? self::modules($firstPage, $contact) : [],
+            'url' => [
+                'destroy' => route('contact.destroy', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+            ],
         ];
     }
 
@@ -56,12 +67,33 @@ class ContactShowViewHelper
         return $pagesCollection;
     }
 
-    private static function getContactInformation(EloquentCollection $templatePages, Contact $contact): array
+    private static function getContactInformation(EloquentCollection $templatePages, Contact $contact, User $user): Collection
     {
         $contactInformationPage = $templatePages->where('type', TemplatePage::TYPE_CONTACT)->first();
+        $modules = $contactInformationPage->modules()->orderBy('position', 'asc')->get();
 
-        return  [
-        ];
+        $modulesCollection = collect();
+        foreach ($modules as $module) {
+            if ($module->type == Module::TYPE_CONTACT_NAMES) {
+                $data = ModuleContactNameViewHelper::data($contact, $user);
+            }
+
+            if ($module->type == Module::TYPE_AVATAR) {
+                $data = ModuleAvatarViewHelper::data($contact);
+            }
+
+            if ($module->type == Module::TYPE_GENDER_PRONOUN) {
+                $data = ModuleGenderPronounViewHelper::data($contact);
+            }
+
+            $modulesCollection->push([
+                'id' => $module->id,
+                'type' => $module->type,
+                'data' => $data,
+            ]);
+        }
+
+        return $modulesCollection;
     }
 
     /**
@@ -74,6 +106,10 @@ class ContactShowViewHelper
         $modulesCollection = collect();
         foreach ($modules as $module) {
             if ($module->type == Module::TYPE_NOTES) {
+                $data = ModuleNotesViewHelper::data($contact);
+            }
+
+            if ($module->type == Module::TYPE_FEED) {
                 $data = ModuleNotesViewHelper::data($contact);
             }
 

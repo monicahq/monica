@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Vault\Contact\Modules;
+namespace App\Http\Controllers\Vault\Contact\Modules\Note;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Services\Contact\ManageNote\CreateNote;
 use App\Services\Contact\ManageNote\UpdateNote;
 use App\Services\Contact\ManageNote\DestroyNote;
-use App\Http\Controllers\Vault\Contact\Modules\ViewHelpers\ModuleNotesViewHelper;
+use App\Http\Controllers\Vault\Contact\Modules\Note\ViewHelpers\ModuleNotesViewHelper;
 
 class ContactNoteController extends Controller
 {

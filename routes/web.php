@@ -14,9 +14,9 @@ use App\Http\Controllers\Vault\Contact\ContactTemplateController;
 use App\Http\Controllers\Settings\Personalize\PersonalizeController;
 use App\Http\Controllers\Settings\Preferences\PreferencesController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsUserController;
-use App\Http\Controllers\Vault\Contact\Modules\ContactNoteController;
 use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsTemplateController;
+use App\Http\Controllers\Vault\Contact\Modules\Note\ContactNoteController;
 use App\Http\Controllers\Settings\Personalize\Labels\PersonalizeLabelController;
 use App\Http\Controllers\Settings\Personalize\Genders\PersonalizeGenderController;
 use App\Http\Controllers\Settings\Personalize\Pronouns\PersonalizePronounController;
@@ -66,6 +66,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 // contact page
                 Route::middleware(['contact'])->prefix('{contact}')->group(function () {
                     Route::get('', [ContactController::class, 'show'])->name('contact.show');
+                    Route::get('/edit', [ContactController::class, 'edit'])->name('contact.edit');
+                    Route::post('', [ContactController::class, 'update'])->name('contact.update');
+                    Route::delete('', [ContactController::class, 'destroy'])->name('contact.destroy');
                     Route::get('no-template', [ContactController::class, 'blank'])->name('contact.blank');
                     Route::put('template', [ContactTemplateController::class, 'update'])->name('contact.template.update');
 

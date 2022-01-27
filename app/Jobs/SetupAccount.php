@@ -48,13 +48,6 @@ class SetupAccount implements ShouldQueue
     protected $template;
 
     /**
-     * The template page instance about the contact.
-     *
-     * @var TemplatePage
-     */
-    protected $templatePageContact;
-
-    /**
      * The position instance.
      *
      * @var int
@@ -77,8 +70,9 @@ class SetupAccount implements ShouldQueue
     public function handle()
     {
         $this->addTemplate();
-        $this->addTemplatePages();
-        $this->addModules();
+        $this->addTemplatePageContactInformation();
+        $this->addTemplatePageFeed();
+        $this->addTemplatePageSocial();
         $this->addFirstInformation();
     }
 
@@ -96,38 +90,28 @@ class SetupAccount implements ShouldQueue
         $this->template = (new CreateTemplate)->execute($request);
     }
 
-    /**
-     * Add the template pages.
-     */
-    private function addTemplatePages(): void
+    private function addTemplatePageContactInformation(): void
     {
-        $request = [
+        // the contact information page is automatically created when we
+        // create the template
+        $templatePageContact = TemplatePage::where('template_id', $this->template->id)
+            ->where('type', TemplatePage::TYPE_CONTACT)
+            ->first();
+
+        $module = (new CreateModule)->execute([
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
-            'template_id' => $this->template->id,
-            'name' => trans('app.default_template_page_contact_information'),
+            'name' => trans('app.module_avatar'),
+            'type' => Module::TYPE_AVATAR,
             'can_be_deleted' => false,
-            'type' => TemplatePage::TYPE_CONTACT,
-        ];
-        $this->templatePageContact = (new CreateTemplatePage)->execute($request);
-
-        $request = [
+        ]);
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'template_id' => $this->template->id,
-            'name' => trans('app.default_template_page_social'),
-            'can_be_deleted' => true,
-        ];
-        (new CreateTemplatePage)->execute($request);
-    }
-
-    /**
-     * Add the default modules.
-     *
-     * @return void
-     */
-    private function addModules(): void
-    {
+            'template_page_id' => $templatePageContact->id,
+            'module_id' => $module->id,
+        ]);
         $module = (new CreateModule)->execute([
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
@@ -139,22 +123,76 @@ class SetupAccount implements ShouldQueue
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'template_id' => $this->template->id,
-            'template_page_id' => $this->templatePageContact->id,
+            'template_page_id' => $templatePageContact->id,
             'module_id' => $module->id,
         ]);
+        $module = (new CreateModule)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'name' => trans('app.module_gender_pronoun'),
+            'type' => Module::TYPE_GENDER_PRONOUN,
+            'can_be_deleted' => false,
+        ]);
+        (new AssociateModuleToTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageContact->id,
+            'module_id' => $module->id,
+        ]);
+    }
 
-        (new CreateModule)->execute([
+    private function addTemplatePageFeed(): void
+    {
+        $templatePageFeed = (new CreateTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'name' => trans('app.default_template_page_feed'),
+            'can_be_deleted' => true,
+        ]);
+        $module = (new CreateModule)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'name' => trans('app.module_feed'),
+            'type' => Module::TYPE_FEED,
+            'can_be_deleted' => false,
+        ]);
+        (new AssociateModuleToTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageFeed->id,
+            'module_id' => $module->id,
+        ]);
+    }
+
+    private function addTemplatePageSocial(): void
+    {
+        $templatePageSocial = (new CreateTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'name' => trans('app.default_template_page_social'),
+            'can_be_deleted' => true,
+        ]);
+
+        $module = (new CreateModule)->execute([
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'name' => trans('app.module_notes'),
             'type' => Module::TYPE_NOTES,
             'can_be_deleted' => false,
         ]);
+        (new AssociateModuleToTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageSocial->id,
+            'module_id' => $module->id,
+        ]);
     }
 
-    /**
-     * Add the first information in the account, like gender, birthdate,...
-     */
     private function addFirstInformation(): void
     {
         $this->addDescriptionField();

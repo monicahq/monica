@@ -31,9 +31,6 @@ return [
     'show_help' => 'Show help',
     'hide_help' => 'Hide help',
 
-    'default_template_name' => 'Default template',
-    'default_template_page_contact_information' => 'Contact information',
-    'default_template_page_social' => 'Social',
     'default_description_information' => 'Description',
     'default_gender_information_name' => 'Gender',
     'default_birthdate_information' => 'Birthdate',
@@ -76,6 +73,14 @@ return [
     'group_type_association' => 'Association',
     'group_type_roomates' => 'Roomates',
 
+    'default_template_name' => 'Default template',
+    'default_template_page_contact_information' => 'Contact information',
+    'default_template_page_social' => 'Social',
+    'default_template_page_feed' => 'Feed',
+
     'module_names' => 'Contact name',
+    'module_avatar' => 'Avatar',
     'module_notes' => 'Notes',
+    'module_feed' => 'Contact feed',
+    'module_gender_pronoun' => 'Gender and pronoun',
 ];

@@ -39,6 +39,25 @@ class Vault extends Model
     ];
 
     /**
+     * Used to delete related objects from Meilisearch/Algolia instance.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($model) {
+            if ($model->contacts) {
+                foreach ($model->contacts as $contact) {
+                    Note::where('contact_id', $contact->id)->unsearchable();
+                }
+                Contact::where('vault_id', $model->id)->unsearchable();
+            }
+        });
+    }
+
+    /**
      * Get the account associated with the vault.
      *
      * @return BelongsTo

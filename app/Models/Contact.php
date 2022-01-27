@@ -68,6 +68,20 @@ class Contact extends Model
     }
 
     /**
+     * Used to delete related objects from Meilisearch/Algolia instance.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($model) {
+            Note::where('contact_id', $model->id)->unsearchable();
+        });
+    }
+
+    /**
      * Get the vault associated with the contact.
      *
      * @return BelongsTo
