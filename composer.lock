@@ -5023,38 +5023,34 @@
         },
         {
             "name": "monicahq/laravel-sabre",
-            "version": "1.5.1",
+            "version": "1.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-sabre.git",
-                "reference": "2149c915b1f22d297c2efca92efe976cb4c94573"
+                "reference": "59074be6079d427dd65d88ab1322a8114ea8b9c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/2149c915b1f22d297c2efca92efe976cb4c94573",
-                "reference": "2149c915b1f22d297c2efca92efe976cb4c94573",
+                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/59074be6079d427dd65d88ab1322a8114ea8b9c5",
+                "reference": "59074be6079d427dd65d88ab1322a8114ea8b9c5",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^5.6 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
-                "illuminate/http": "^5.6 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
-                "illuminate/routing": "^5.6 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
-                "illuminate/support": "^5.6 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
+                "illuminate/support": "^7.0 || ^8.0 || ^9.0",
                 "sabre/dav": "^4.0",
                 "thecodingmachine/safe": "^1.0"
             },
             "require-dev": {
-                "laravel/framework": "^5.6 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
                 "mockery/mockery": "^1.4",
-                "nunomaduro/larastan": "^0 || ^1.0",
+                "nunomaduro/larastan": "^1.0",
                 "ocramius/package-versions": "^1.9 || ^2.0",
-                "orchestra/testbench": "^3.5 || ^5.0 || ^6.0 || ^7.0",
+                "orchestra/testbench": "^5.0 || ^6.0 || ^7.0",
                 "phpstan/phpstan-deprecation-rules": "^1.0",
                 "phpstan/phpstan-phpunit": "^1.0",
                 "phpstan/phpstan-strict-rules": "^1.0",
-                "phpunit/phpunit": "^6.0 || ^7.0 || ^8.0 || ^9.0",
+                "phpunit/phpunit": "^9.0",
                 "thecodingmachine/phpstan-safe-rule": "^1.0",
-                "vimeo/psalm": "^3.0 || ^4.0"
+                "vimeo/psalm": "^4.0"
             },
             "type": "library",
             "extra": {
@@ -5096,7 +5092,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-01-14T22:59:06+00:00"
+            "time": "2022-01-30T15:22:55+00:00"
         },
         {
             "name": "monolog/monolog",
