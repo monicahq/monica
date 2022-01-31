@@ -796,20 +796,20 @@
         },
         {
             "name": "creativeorange/gravatar",
-            "version": "v1.0.20",
+            "version": "v1.0.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/creativeorange/gravatar.git",
-                "reference": "8c2c1a3a59fdf05f50c9d9413dd9d2d50835e017"
+                "reference": "f5f25dda14aff8b296a52a92f375586114608cda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/8c2c1a3a59fdf05f50c9d9413dd9d2d50835e017",
-                "reference": "8c2c1a3a59fdf05f50c9d9413dd9d2d50835e017",
+                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/f5f25dda14aff8b296a52a92f375586114608cda",
+                "reference": "f5f25dda14aff8b296a52a92f375586114608cda",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^5|^6|^7|^8",
+                "illuminate/support": "^5|^6|^7|^8|^9",
                 "php": ">=5.4.0"
             },
             "require-dev": {
@@ -853,9 +853,9 @@
             ],
             "support": {
                 "issues": "https://github.com/creativeorange/gravatar/issues",
-                "source": "https://github.com/creativeorange/gravatar/tree/v1.0.20"
+                "source": "https://github.com/creativeorange/gravatar/tree/v1.0.21"
             },
-            "time": "2020-09-09T14:53:57+00:00"
+            "time": "2022-01-19T20:28:57+00:00"
         },
         {
             "name": "dasprid/enum",
