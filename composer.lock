@@ -13448,26 +13448,26 @@
         },
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v3.6.5",
+            "version": "v3.6.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "ccf109f8755dcc7e58779d1aeb1051b04e0b4bef"
+                "reference": "f92fe967b40b36ad1ee8ed2fd59c05ae67a1ebba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/ccf109f8755dcc7e58779d1aeb1051b04e0b4bef",
-                "reference": "ccf109f8755dcc7e58779d1aeb1051b04e0b4bef",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/f92fe967b40b36ad1ee8ed2fd59c05ae67a1ebba",
+                "reference": "f92fe967b40b36ad1ee8ed2fd59c05ae67a1ebba",
                 "shasum": ""
             },
             "require": {
-                "illuminate/routing": "^6|^7|^8",
-                "illuminate/session": "^6|^7|^8",
-                "illuminate/support": "^6|^7|^8",
+                "illuminate/routing": "^6|^7|^8|^9",
+                "illuminate/session": "^6|^7|^8|^9",
+                "illuminate/support": "^6|^7|^8|^9",
                 "maximebf/debugbar": "^1.17.2",
                 "php": ">=7.2",
-                "symfony/debug": "^4.3|^5",
-                "symfony/finder": "^4.3|^5"
+                "symfony/debug": "^4.3|^5|^6",
+                "symfony/finder": "^4.3|^5|^6"
             },
             "require-dev": {
                 "mockery/mockery": "^1.3.3",
@@ -13517,7 +13517,7 @@
             ],
             "support": {
                 "issues": "https://github.com/barryvdh/laravel-debugbar/issues",
-                "source": "https://github.com/barryvdh/laravel-debugbar/tree/v3.6.5"
+                "source": "https://github.com/barryvdh/laravel-debugbar/tree/v3.6.6"
             },
             "funding": [
                 {
@@ -13529,7 +13529,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-12-14T14:45:18+00:00"
+            "time": "2021-12-21T18:20:10+00:00"
         },
         {
             "name": "barryvdh/laravel-ide-helper",
