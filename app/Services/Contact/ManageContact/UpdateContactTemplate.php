@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\ManageContact;
 
+use Carbon\Carbon;
 use App\Models\Contact;
 use App\Models\Template;
 use App\Jobs\CreateAuditLog;
@@ -73,6 +74,7 @@ class UpdateContactTemplate extends BaseService implements ServiceInterface
     private function update(): void
     {
         $this->contact->template_id = $this->data['template_id'];
+        $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
     }
 

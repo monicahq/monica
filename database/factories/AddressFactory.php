@@ -2,17 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\Place;
+use App\Models\Address;
+use App\Models\Contact;
+use App\Models\AddressType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class PlaceFactory extends Factory
+class AddressFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Place::class;
+    protected $model = Address::class;
 
     /**
      * Define the model's default state.
@@ -22,6 +24,8 @@ class PlaceFactory extends Factory
     public function definition()
     {
         return [
+            'contact_id' => Contact::factory(),
+            'address_type_id' => AddressType::factory(),
             'street' => $this->faker->streetAddress(),
             'city' => $this->faker->city(),
             'province' => $this->faker->name(),

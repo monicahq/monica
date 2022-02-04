@@ -162,13 +162,13 @@ class Contact extends Model
     }
 
     /**
-     * Get the contact address records associated with the contact.
+     * Get the address records associated with the contact.
      *
      * @return HasMany
      */
-    public function contactAddresses()
+    public function addresses()
     {
-        return $this->hasMany(ContactAddress::class);
+        return $this->hasMany(Address::class);
     }
 
     /**

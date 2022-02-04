@@ -20,22 +20,21 @@
 
 <template>
   <div :class="divOuterClass">
-    <label v-if="label" class="block text-sm mb-2" :for="id">
+    <label v-if="label" class="mb-2 block text-sm" :for="id">
       {{ label }}
-      <span v-if="!required" class="optional-badge text-xs">
-        optional
-      </span>
+      <span v-if="!required" class="optional-badge text-xs"> optional </span>
     </label>
 
-    <div class="relative component">
-      <select :id="id"
-              v-model="selectedId"
-              :autocomplete="country-name"
-              :class="localDropdownClasses"
-              :required="required"
-              :disabled="disabled"
-              :placeholder="placeholder"
-              @change="change"
+    <div class="component relative">
+      <select
+        :id="id"
+        v-model="selectedId"
+        :autocomplete="country - name"
+        :class="localDropdownClasses"
+        :required="required"
+        :disabled="disabled"
+        :placeholder="placeholder"
+        @change="change"
       >
         <option v-for="item in data" :key="item.id" :value="item.id">
           {{ item.name }}
@@ -43,7 +42,7 @@
       </select>
     </div>
 
-    <p v-if="help" class="text-xs mb-3 mt-1">
+    <p v-if="help" class="mb-3 mt-1 text-xs">
       {{ help }}
     </p>
   </div>
@@ -117,9 +116,11 @@ export default {
   },
 
   created() {
-    this.localDropdownClasses = 'py-2 px-3 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-white rounded-md shadow-sm focus:outline-none sm:text-sm ' + this.dropdownClass;
+    this.localDropdownClasses =
+      'py-2 px-3 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-white rounded-md shadow-sm focus:outline-none sm:text-sm ' +
+      this.dropdownClass;
 
-    var element = this.data.find(x => x.selected == true);
+    var element = this.data.find((x) => x.selected == true);
     if (element) {
       this.selectedId = element.id;
     }
@@ -136,7 +137,7 @@ export default {
 
     change() {
       this.$emit('update:modelValue', this.selectedId);
-    }
-  }
+    },
+  },
 };
 </script>

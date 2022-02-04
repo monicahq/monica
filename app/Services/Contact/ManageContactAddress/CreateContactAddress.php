@@ -2,17 +2,16 @@
 
 namespace App\Services\Contact\ManageContactAddress;
 
-use App\Models\Place;
+use Carbon\Carbon;
+use App\Models\Address;
 use App\Models\AddressType;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Jobs\CreateContactLog;
-use App\Models\ContactAddress;
 use App\Interfaces\ServiceInterface;
 
 class CreateContactAddress extends BaseService implements ServiceInterface
 {
-    private ContactAddress $contactAddress;
     private AddressType $addressType;
 
     /**
@@ -27,7 +26,7 @@ class CreateContactAddress extends BaseService implements ServiceInterface
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
             'contact_id' => 'required|integer|exists:contacts,id',
-            'address_type_id' => 'required|integer|exists:address_types,id',
+            'address_type_id' => 'nullable|integer|exists:address_types,id',
             'street' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
             'province' => 'nullable|string|max:255',
@@ -35,6 +34,8 @@ class CreateContactAddress extends BaseService implements ServiceInterface
             'country' => 'nullable|string|max:3',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
+            'lived_from_at' => 'nullable|date_format:Y-m-d',
+            'lived_until_at' => 'nullable|date_format:Y-m-d',
         ];
     }
 
@@ -57,16 +58,20 @@ class CreateContactAddress extends BaseService implements ServiceInterface
      * Create a contact address.
      *
      * @param  array  $data
-     * @return ContactAddress
+     * @return Address
      */
-    public function execute(array $data): ContactAddress
+    public function execute(array $data): Address
     {
         $this->validateRules($data);
 
-        $this->addressType = AddressType::where('account_id', $data['account_id'])
-            ->findOrFail($data['address_type_id']);
+        if ($this->valueOrNull($data, 'address_type_id')) {
+            $this->addressType = AddressType::where('account_id', $data['account_id'])
+                ->findOrFail($data['address_type_id']);
+        }
 
-        $place = Place::create([
+        $address = Address::create([
+            'contact_id' => $data['contact_id'],
+            'address_type_id' => $this->valueOrNull($data, 'address_type_id'),
             'street' => $this->valueOrNull($data, 'street'),
             'city' => $this->valueOrNull($data, 'city'),
             'province' => $this->valueOrNull($data, 'province'),
@@ -74,18 +79,16 @@ class CreateContactAddress extends BaseService implements ServiceInterface
             'country' => $this->valueOrNull($data, 'country'),
             'latitude' => $this->valueOrNull($data, 'latitude'),
             'longitude' => $this->valueOrNull($data, 'longitude'),
+            'lived_from_at' => $this->valueOrNull($data, 'lived_from_at'),
+            'lived_until_at' => $this->valueOrNull($data, 'lived_until_at'),
         ]);
 
-        $this->contactAddress = ContactAddress::create([
-            'contact_id' => $this->contact->id,
-            'address_type_id' => $this->addressType->id,
-        ]);
-
-        $this->contactAddress->place()->save($place);
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
 
         $this->log();
 
-        return $this->contactAddress;
+        return $address;
     }
 
     private function log(): void
@@ -98,7 +101,7 @@ class CreateContactAddress extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'contact_id' => $this->contact->id,
                 'contact_name' => $this->contact->name,
-                'address_type_name' => $this->addressType->name,
+                'address_type_name' => isset($this->addressType) ? $this->addressType->name : null,
             ]),
         ]);
 
@@ -108,7 +111,7 @@ class CreateContactAddress extends BaseService implements ServiceInterface
             'author_name' => $this->author->name,
             'action_name' => 'contact_address_created',
             'objects' => json_encode([
-                'address_type_name' => $this->addressType->name,
+                'address_type_name' => isset($this->addressType) ? $this->addressType->name : null,
             ]),
         ]);
     }

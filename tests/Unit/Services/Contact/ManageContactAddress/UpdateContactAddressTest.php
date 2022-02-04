@@ -4,13 +4,12 @@ namespace Tests\Unit\Services\Contact\ManageContactAddress;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Place;
 use App\Models\Vault;
 use App\Models\Account;
+use App\Models\Address;
 use App\Models\Contact;
 use App\Models\AddressType;
 use App\Jobs\CreateAuditLog;
-use App\Models\ContactAddress;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\NotEnoughPermissionException;
@@ -30,13 +29,9 @@ class UpdateContactAddressTest extends TestCase
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
         $type = AddressType::factory()->create(['account_id' => $regis->account_id]);
-        $address = ContactAddress::factory()->create([
+        $address = Address::factory()->create([
             'address_type_id' => $type->id,
             'contact_id' => $contact->id,
-        ]);
-        Place::factory()->create([
-            'placeable_id' => $address->id,
-            'placeable_type' => 'App\Models\ContactAddress',
         ]);
 
         $this->executeService($regis, $regis->account, $vault, $contact, $type, $address);
@@ -64,7 +59,7 @@ class UpdateContactAddressTest extends TestCase
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
         $type = AddressType::factory()->create(['account_id' => $regis->account_id]);
-        $address = ContactAddress::factory()->create([
+        $address = Address::factory()->create([
             'address_type_id' => $type->id,
             'contact_id' => $contact->id,
         ]);
@@ -82,7 +77,7 @@ class UpdateContactAddressTest extends TestCase
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create();
         $type = AddressType::factory()->create(['account_id' => $regis->account_id]);
-        $address = ContactAddress::factory()->create([
+        $address = Address::factory()->create([
             'address_type_id' => $type->id,
             'contact_id' => $contact->id,
         ]);
@@ -100,7 +95,7 @@ class UpdateContactAddressTest extends TestCase
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_VIEW, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
         $type = AddressType::factory()->create(['account_id' => $regis->account_id]);
-        $address = ContactAddress::factory()->create([
+        $address = Address::factory()->create([
             'address_type_id' => $type->id,
             'contact_id' => $contact->id,
         ]);
@@ -118,7 +113,7 @@ class UpdateContactAddressTest extends TestCase
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
         $type = AddressType::factory()->create();
-        $address = ContactAddress::factory()->create([
+        $address = Address::factory()->create([
             'address_type_id' => $type->id,
             'contact_id' => $contact->id,
         ]);
@@ -135,13 +130,13 @@ class UpdateContactAddressTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $type = AddressType::factory()->create();
-        $address = ContactAddress::factory()->create();
+        $type = AddressType::factory()->create(['account_id' => $regis->account_id]);
+        $address = Address::factory()->create();
 
         $this->executeService($regis, $regis->account, $vault, $contact, $type, $address);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, AddressType $type, ContactAddress $address): void
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, AddressType $type, Address $address): void
     {
         Queue::fake();
 
@@ -151,7 +146,7 @@ class UpdateContactAddressTest extends TestCase
             'author_id' => $author->id,
             'contact_id' => $contact->id,
             'address_type_id' => $type->id,
-            'contact_address_id' => $address->id,
+            'address_id' => $address->id,
             'street' => '123 rue',
             'city' => 'paris',
             'province' => '67',
@@ -163,9 +158,9 @@ class UpdateContactAddressTest extends TestCase
 
         $address = (new UpdateContactAddress)->execute($request);
 
-        $this->assertDatabaseHas('places', [
-            'placeable_id' => $address->id,
-            'placeable_type' => 'App\Models\ContactAddress',
+        $this->assertDatabaseHas('addresses', [
+            'contact_id' => $contact->id,
+            'address_type_id' => $type->id,
             'street' => '123 rue',
             'city' => 'paris',
             'province' => '67',
@@ -175,10 +170,10 @@ class UpdateContactAddressTest extends TestCase
             'longitude' => 12345,
         ]);
 
-        $this->assertDatabaseHas('contact_addresses', [
-            'contact_id' => $contact->id,
-            'address_type_id' => $type->id,
-        ]);
+        $this->assertInstanceOf(
+            Address::class,
+            $address
+        );
 
         Queue::assertPushed(CreateAuditLog::class, function ($job) {
             return $job->auditLog['action_name'] === 'contact_address_updated';

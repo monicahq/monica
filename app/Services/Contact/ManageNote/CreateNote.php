@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\ManageNote;
 
+use Carbon\Carbon;
 use App\Models\Note;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
@@ -62,6 +63,9 @@ class CreateNote extends BaseService implements ServiceInterface
             'title' => $this->valueOrNull($data, 'title'),
             'body' => $data['body'],
         ]);
+
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
 
         $this->log();
 

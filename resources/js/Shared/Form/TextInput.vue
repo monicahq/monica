@@ -20,11 +20,9 @@
 
 <template>
   <div :class="divOuterClass">
-    <label v-if="label" class="block text-sm mb-2" :for="id">
+    <label v-if="label" class="mb-2 block text-sm" :for="id">
       {{ label }}
-      <span v-if="!required" class="optional-badge text-xs">
-        optional
-      </span>
+      <span v-if="!required" class="optional-badge text-xs"> optional </span>
     </label>
 
     <div class="relative">
@@ -40,17 +38,18 @@
         :autofocus="autofocus"
         :autocomplete="autocomplete"
         :disabled="disabled"
+        :placeholder="placeholder"
         @input="$emit('update:modelValue', $event.target.value)"
         @keydown.esc="sendEscKey"
         @focus="showMaxLength"
         @blur="displayMaxLength = false"
-      >
-      <span v-if="maxlength && displayMaxLength" class="length absolute text-xs rounded">
+      />
+      <span v-if="maxlength && displayMaxLength" class="length absolute rounded text-xs">
         {{ charactersLeft }}
       </span>
     </div>
 
-    <p v-if="help" class="text-xs mb-3 mt-1">
+    <p v-if="help" class="mb-3 mt-1 text-xs">
       {{ help }}
     </p>
   </div>
@@ -58,7 +57,6 @@
 
 <script>
 export default {
-
   props: {
     id: {
       type: String,
@@ -142,7 +140,9 @@ export default {
   },
 
   created() {
-    this.localInputClasses = 'border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-slate-50 ' + this.inputClass;
+    this.localInputClasses =
+      'border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-slate-50 ' +
+      this.inputClass;
   },
 
   methods: {
@@ -157,6 +157,6 @@ export default {
     sendEscKey() {
       this.$emit('esc-key-pressed');
     },
-  }
+  },
 };
 </script>

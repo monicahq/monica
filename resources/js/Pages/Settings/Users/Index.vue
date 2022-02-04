@@ -23,16 +23,24 @@
 <template>
   <layout title="Dashboard" :layout-data="layoutData">
     <!-- breadcrumb -->
-    <nav class="sm:border-b bg-white">
-      <div class="max-w-8xl mx-auto px-4 sm:px-6 py-2 hidden md:block">
+    <nav class="bg-white sm:border-b">
+      <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="inline mr-2 text-gray-600">You are here:</li>
-            <li class="inline mr-2">
-              <inertia-link :href="data.url.settings.index" class="text-sky-500 hover:text-blue-900">Settings</inertia-link>
+            <li class="mr-2 inline text-gray-600">You are here:</li>
+            <li class="mr-2 inline">
+              <inertia-link :href="data.url.settings.index" class="text-sky-500 hover:text-blue-900">
+                Settings
+              </inertia-link>
             </li>
-            <li class="inline mr-2 relative">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline relative icon-breadcrumb" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <li class="relative mr-2 inline">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon-breadcrumb relative inline h-3 w-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -42,28 +50,35 @@
       </div>
     </nav>
 
-    <main class="sm:mt-24 relative">
-      <div class="max-w-3xl mx-auto px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+    <main class="relative sm:mt-24">
+      <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <!-- title + cta -->
-        <div class="flex items-center justify-between mb-6">
-          <h3>
-            <span class="mr-1">
-              🥸
-            </span> All users in this account
-          </h3>
+        <div class="mb-6 flex items-center justify-between">
+          <h3><span class="mr-1"> 🥸 </span> All users in this account</h3>
           <pretty-link :href="data.url.users.create" :text="'Invite a new user'" :icon="'plus'" />
         </div>
 
         <!-- list of users -->
-        <ul class="bg-white border border-gray-200 rounded-lg mb-6 user-list">
-          <li v-for="user in data.users" :key="user.id" class="px-5 py-2 border-b border-gray-200 hover:bg-slate-50">
+        <ul class="user-list mb-6 rounded-lg border border-gray-200 bg-white">
+          <li v-for="user in data.users" :key="user.id" class="border-b border-gray-200 px-5 py-2 hover:bg-slate-50">
             <!-- case user has been invited -->
-            <div v-if="!user.name" class="flex justify-between items-center">
+            <div v-if="!user.name" class="flex items-center justify-between">
               <div>
                 <span class="block">{{ user.email }}</span>
-                <span class="text-gray-400 text-sm relative">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 icon-mail inline relative" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                <span class="relative text-sm text-gray-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon-mail relative inline h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
                   </svg>
 
                   Invitation sent
@@ -72,15 +87,15 @@
             </div>
 
             <!-- case normal user -->
-            <div v-if="user.name" class="flex justify-between items-center">
+            <div v-if="user.name" class="flex items-center justify-between">
               <div>
                 <span class="block">{{ user.name }}</span>
-                <span class="text-gray-400 text-sm">{{ user.email }}</span>
+                <span class="text-sm text-gray-400">{{ user.email }}</span>
               </div>
 
               <!-- actions -->
               <ul class="text-sm">
-                <li class="inline mr-4 text-sky-500 hover:text-blue-900">Change permission</li>
+                <li class="mr-4 inline text-sky-500 hover:text-blue-900">Change permission</li>
                 <li class="inline text-red-500 hover:text-red-900">Delete</li>
               </ul>
             </div>
@@ -113,11 +128,9 @@ export default {
   },
 
   data() {
-    return {
-    };
+    return {};
   },
 
-  methods: {
-  },
+  methods: {},
 };
 </script>

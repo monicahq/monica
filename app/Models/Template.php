@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Template extends Model
 {
@@ -50,15 +49,5 @@ class Template extends Model
     public function contacts()
     {
         return $this->hasMany(Contact::class);
-    }
-
-    /**
-     * Get the information values associated with the template.
-     *
-     * @return BelongsToMany
-     */
-    public function informations()
-    {
-        return $this->belongsToMany(Information::class);
     }
 }

@@ -19,52 +19,82 @@
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
     <!-- breadcrumb -->
-    <nav class="sm:mt-20 sm:border-b bg-white">
-      <div class="max-w-8xl mx-auto px-4 sm:px-6 py-2 hidden md:block">
+    <nav class="bg-white sm:mt-20 sm:border-b">
+      <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="inline mr-2 text-gray-600">You are here:</li>
-            <li class="inline mr-2">
-              <inertia-link :href="layoutData.vault.url.contacts" class="text-sky-500 hover:text-blue-900">Contacts</inertia-link>
+            <li class="mr-2 inline text-gray-600">You are here:</li>
+            <li class="mr-2 inline">
+              <inertia-link :href="layoutData.vault.url.contacts" class="text-sky-500 hover:text-blue-900">
+                Contacts
+              </inertia-link>
             </li>
-            <li class="inline mr-2 relative">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline relative icon-breadcrumb" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <li class="relative mr-2 inline">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon-breadcrumb relative inline h-3 w-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">{{ data.contact.name }}</li>
+            <li class="inline">
+              {{ data.contact.name }}
+            </li>
           </ul>
         </div>
       </div>
     </nav>
 
-    <main class="sm:mt-24 relative">
-      <div class="max-w-3xl mx-auto px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
-        <h2 class="text-lg text-center mb-6">
-          Profile page of {{ data.contact.name }}
-        </h2>
-        <div class="bg-white border border-gray-200 rounded mb-6">
+    <main class="relative sm:mt-24">
+      <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+        <h2 class="mb-6 text-center text-lg">Profile page of {{ data.contact.name }}</h2>
+        <div class="mb-6 rounded border border-gray-200 bg-white">
           <!-- help -->
-          <div class="px-3 py-2 rounded-t flex bg-slate-50 border-gray-200 border-b">
-            <svg xmlns="http://www.w3.org/2000/svg" class="grow h-6 pr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <div class="flex rounded-t border-b border-gray-200 bg-slate-50 px-3 py-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 grow pr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
 
             <div>
-              <p class="mb-2">This contact doesn't have an associated template. That means we don't know how to display this contact.</p>
-              <p v-if="data.templates.length > 0">Please choose one template below to tell Monica how a contact should be displayed.</p>
-              <p v-else>However, it seems that there are no templates in the account yet. Please add at least template to your account first, then associate this template with this contact.</p>
+              <p class="mb-2">
+                This contact doesn't have an associated template. That means we don't know how to display this contact.
+              </p>
+              <p v-if="data.templates.length > 0">
+                Please choose one template below to tell Monica how a contact should be displayed.
+              </p>
+              <p v-else>
+                However, it seems that there are no templates in the account yet. Please add at least template to your
+                account first, then associate this template with this contact.
+              </p>
             </div>
           </div>
 
-          <ul v-if="data.templates.length > 0" class="bg-white rounded-b">
-            <li v-for="template in data.templates" :key="template.id" class="border-b border-gray-200 hover:bg-slate-50 item-list">
-              <div class="flex justify-between items-center px-5 py-2">
+          <ul v-if="data.templates.length > 0" class="rounded-b bg-white">
+            <li
+              v-for="template in data.templates"
+              :key="template.id"
+              class="item-list border-b border-gray-200 hover:bg-slate-50"
+            >
+              <div class="flex items-center justify-between px-5 py-2">
                 <span>{{ template.name }}</span>
 
                 <!-- actions -->
                 <ul class="text-sm">
-                  <li class="cursor-pointer inline text-sky-500 hover:text-blue-900" @click="submit(template)">Use</li>
+                  <li class="inline cursor-pointer text-sky-500 hover:text-blue-900" @click="submit(template)">Use</li>
                 </ul>
               </div>
             </li>
@@ -107,12 +137,13 @@ export default {
     submit(template) {
       this.form.templateId = template.id;
 
-      axios.put(this.data.url.update, this.form)
-        .then(response => {
+      axios
+        .put(this.data.url.update, this.form)
+        .then((response) => {
           localStorage.success = 'The template has been set';
           this.$inertia.visit(response.data.data);
         })
-        .catch(error => {
+        .catch((error) => {
           this.form.errors = error.response.data;
         });
     },

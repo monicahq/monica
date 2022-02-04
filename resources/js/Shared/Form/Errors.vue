@@ -8,8 +8,8 @@
 
 <template>
   <div>
-    <div v-if="dataerror || exception" class="border-red border rounded p-3 mb-3" v-bind="$attrs">
-      <p class="text-sm mb-2">Oops! Something went wrong.</p>
+    <div v-if="dataerror || exception" class="border-red mb-3 rounded border p-3" v-bind="$attrs">
+      <p class="mb-2 text-sm">Oops! Something went wrong.</p>
       <template v-if="dataerror">
         <p v-if="flatten[0] != 'The given data was invalid.'" class="mb0">
           {{ flatten[0] }}
@@ -30,12 +30,10 @@
           <a href="" @click.prevent="toggle">More errors</a>
         </p>
         <p v-show="traces">
-          <span class="mb0">
-            Exception {{ errors.exception }}
-          </span>
-          <br>
+          <span class="mb0"> Exception {{ errors.exception }} </span>
+          <br />
           <span v-for="trace in errors.trace" :key="trace.id">
-            {{ trace.class }}{{ trace.type }}{{ trace.function }}<br>
+            {{ trace.class }}{{ trace.type }}{{ trace.function }}<br />
           </span>
         </p>
       </template>
@@ -51,7 +49,7 @@ export default {
     errors: {
       type: [Object, Array],
       default: null,
-    }
+    },
   },
 
   data() {
@@ -78,7 +76,7 @@ export default {
     },
     toggle() {
       this.traces = !this.traces;
-    }
-  }
+    },
+  },
 };
 </script>

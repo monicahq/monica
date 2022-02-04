@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ContactAddress extends Model
+class ModuleRow extends Model
 {
     use HasFactory;
 
-    protected $table = 'contact_addresses';
+    protected $table = 'module_rows';
 
     /**
      * The attributes that are mass assignable.
@@ -18,25 +18,27 @@ class ContactAddress extends Model
      * @var array
      */
     protected $fillable = [
-        'contact_id',
-        'address_type_id',
+        'module_id',
+        'position',
     ];
 
     /**
-     * Get the contact associated with the address.
+     * Get the module associated with the module.
      *
      * @return BelongsTo
      */
-    public function contact()
+    public function module()
     {
-        return $this->belongsTo(Contact::class);
+        return $this->belongsTo(Module::class);
     }
 
     /**
-     * Get the address's place.
+     * Get the module row fields associated with the module.
+     *
+     * @return HasMany
      */
-    public function place()
+    public function fields()
     {
-        return $this->morphOne(Place::class, 'placeable');
+        return $this->hasMany(ModuleRowField::class);
     }
 }

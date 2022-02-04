@@ -23,39 +23,56 @@
 
 <template>
   <div>
-    <div class="border-b mb-4 pb-3 sm:flex items-center justify-between sm:mt-0 mt-8">
-      <h3>
-        Modules in this page
-      </h3>
-      <pretty-button v-if="!addModuleModalShown && moduleLoaded" :text="'Add a module'" :icon="'plus'" @click="showModuleModal" />
+    <div class="mb-4 mt-8 items-center justify-between border-b pb-3 sm:mt-0 sm:flex">
+      <h3>Modules in this page</h3>
+      <pretty-button
+        v-if="!addModuleModalShown && moduleLoaded"
+        :text="'Add a module'"
+        :icon="'plus'"
+        @click="showModuleModal"
+      />
       <pretty-button v-if="addModuleModalShown && moduleLoaded" :text="'Cancel'" @click="addModuleModalShown = false" />
     </div>
 
     <!-- list of all the existing modules -->
-    <ul v-if="addModuleModalShown" class="bg-white border border-gray-200 rounded-lg mb-6">
-      <li class="text-sm border-b border-gray-200 bg-slate-50 pl-2 pr-5 py-2 item-list">Available modules:</li>
-      <li v-for="module in localAllModules" :key="module.id" class="border-b border-gray-200 hover:bg-slate-50 item-list flex items-center pl-2 pr-5 py-2 justify-between">
+    <ul v-if="addModuleModalShown" class="mb-6 rounded-lg border border-gray-200 bg-white">
+      <li class="item-list border-b border-gray-200 bg-slate-50 py-2 pl-2 pr-5 text-sm">Available modules:</li>
+      <li
+        v-for="module in localAllModules"
+        :key="module.id"
+        class="item-list flex items-center justify-between border-b border-gray-200 py-2 pl-2 pr-5 hover:bg-slate-50"
+      >
         <span>{{ module.name }}</span>
-        <span v-if="!module.already_used" class="cursor-pointer inline text-sky-500 hover:text-blue-900" @click="add(module)">Add</span>
+        <span
+          v-if="!module.already_used"
+          class="inline cursor-pointer text-sky-500 hover:text-blue-900"
+          @click="add(module)"
+          >Add</span
+        >
         <span v-if="module.already_used" class="text-xs"><span class="mr-1">✅</span> Already in use on this page</span>
       </li>
     </ul>
 
     <!-- list of modules -->
-    <ul v-if="localPageModules.length > 0" class="bg-white border border-gray-200 rounded-lg mb-6">
+    <ul v-if="localPageModules.length > 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
       <draggable
         :list="localPageModules"
         item-key="id"
-        :component-data="{name:'fade'}"
+        :component-data="{ name: 'fade' }"
         handle=".handle"
         @change="updatePosition"
       >
         <template #item="{ element }">
-          <div class="border-b border-gray-200 hover:bg-slate-50 item-list flex items-center pl-2 pr-5 py-2">
+          <div class="item-list flex items-center border-b border-gray-200 py-2 pl-2 pr-5 hover:bg-slate-50">
             <!-- anchor to move module -->
             <div class="mr-2">
-              <svg class="cursor-move handle" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                   xmlns="http://www.w3.org/2000/svg"
+              <svg
+                class="handle cursor-move"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path d="M7 7H9V9H7V7Z" fill="currentColor" />
                 <path d="M11 7H13V9H11V7Z" fill="currentColor" />
@@ -70,12 +87,12 @@
             </div>
 
             <!-- detail of the module -->
-            <div class="flex justify-between items-center w-full">
+            <div class="flex w-full items-center justify-between">
               <span>{{ element.name }}</span>
 
               <!-- actions -->
               <ul class="text-sm">
-                <li class="cursor-pointer inline text-red-500 hover:text-red-900" @click="remove(element)">Remove</li>
+                <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="remove(element)">Remove</li>
               </ul>
             </div>
           </div>
@@ -85,12 +102,14 @@
 
     <!-- blank state -->
     <div v-if="localPageModules.length == 0 && moduleLoaded">
-      <p class="p-5 text-center bg-white border border-gray-200 rounded-lg">Add at least one module.</p>
+      <p class="rounded-lg border border-gray-200 bg-white p-5 text-center">Add at least one module.</p>
     </div>
 
     <!-- no page selected -->
     <div v-if="!moduleLoaded">
-      <p class="p-5 text-center bg-white border border-gray-200 rounded-lg">Please select a page on the left to load modules.</p>
+      <p class="rounded-lg border border-gray-200 bg-white p-5 text-center">
+        Please select a page on the left to load modules.
+      </p>
     </div>
   </div>
 </template>
@@ -146,28 +165,30 @@ export default {
     add(module) {
       this.form.module_id = module.id;
 
-      axios.post(this.data.url.store, this.form)
-        .then(response => {
+      axios
+        .post(this.data.url.store, this.form)
+        .then((response) => {
           this.flash('The module has been added', 'success');
           this.localPageModules.unshift(response.data.data);
           this.addModuleModalShown = false;
-          this.localAllModules[this.localAllModules.findIndex(x => x.id === module.id)].already_used = true;
+          this.localAllModules[this.localAllModules.findIndex((x) => x.id === module.id)].already_used = true;
         })
-        .catch(error => {
+        .catch((error) => {
           this.form.errors = error.response.data;
         });
     },
 
     remove(module) {
-      axios.delete(module.url.destroy)
-        .then(response => {
+      axios
+        .delete(module.url.destroy)
+        .then((response) => {
           this.flash('The module has been added', 'success');
-          this.localAllModules[this.localAllModules.findIndex(x => x.id === module.id)].already_used = false;
+          this.localAllModules[this.localAllModules.findIndex((x) => x.id === module.id)].already_used = false;
 
-          var id = this.localPageModules.findIndex(x => x.id === module.id);
+          var id = this.localPageModules.findIndex((x) => x.id === module.id);
           this.localPageModules.splice(id, 1);
         })
-        .catch(error => {
+        .catch((error) => {
           this.form.errors = error.response.data;
         });
     },
@@ -176,11 +197,12 @@ export default {
       // the event object comes from the draggable component
       this.form.position = event.moved.newIndex + 1;
 
-      axios.post(event.moved.element.url.position, this.form)
-        .then(response => {
+      axios
+        .post(event.moved.element.url.position, this.form)
+        .then((response) => {
           this.flash('The order has been saved', 'success');
         })
-        .catch(error => {
+        .catch((error) => {
           this.loadingState = null;
           this.errors = error.response.data;
         });

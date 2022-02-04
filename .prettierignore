@@ -1,0 +1,6 @@
+public/js
+public/css
+storage
+vendor
+node_modules
+composer.lock

@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\ManageContact;
 
+use Carbon\Carbon;
 use App\Models\Gender;
 use App\Models\Contact;
 use App\Models\Pronoun;
@@ -79,6 +80,7 @@ class UpdateContact extends BaseService implements ServiceInterface
         } else {
             $this->contact->pronoun_id = null;
         }
+        $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
 
         $this->log();

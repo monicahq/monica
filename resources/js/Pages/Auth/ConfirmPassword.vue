@@ -9,12 +9,18 @@
     <form @submit.prevent="submit">
       <div>
         <breeze-label for="password" value="Password" />
-        <breeze-input id="password" v-model="form.password" type="password" class="mt-1 block w-full" required
-                      autocomplete="current-password" autofocus
+        <breeze-input
+          id="password"
+          v-model="form.password"
+          type="password"
+          class="mt-1 block w-full"
+          required
+          autocomplete="current-password"
+          autofocus
         />
       </div>
 
-      <div class="flex justify-end mt-4">
+      <div class="mt-4 flex justify-end">
         <breeze-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
           Confirm
         </breeze-button>
@@ -31,7 +37,6 @@ import BreezeLabel from '@/Components/Label.vue';
 import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
 
 export default {
-
   components: {
     BreezeButton,
     BreezeInput,
@@ -44,7 +49,7 @@ export default {
     return {
       form: this.$inertia.form({
         password: '',
-      })
+      }),
     };
   },
 
@@ -53,7 +58,7 @@ export default {
       this.form.post(this.route('password.confirm'), {
         onFinish: () => this.form.reset(),
       });
-    }
-  }
+    },
+  },
 };
 </script>

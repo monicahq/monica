@@ -23,24 +23,24 @@
 
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
-    <main class="sm:mt-24 relative">
-      <div class="max-w-4xl mx-auto px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
-        <form class="mb-8 bg-white border border-gray-200 rounded-lg" @submit.prevent="submit">
-          <div class="p-5 border-b border-gray-200 bg-blue-50 section-head">
-            <h1 class="text-center text-2xl font-medium">
-              Search something
-            </h1>
+    <main class="relative sm:mt-24">
+      <div class="mx-auto max-w-4xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+        <form class="mb-8 rounded-lg border border-gray-200 bg-white" @submit.prevent="submit">
+          <div class="section-head border-b border-gray-200 bg-blue-50 p-5">
+            <h1 class="text-center text-2xl font-medium">Search something</h1>
           </div>
           <div class="p-5">
-            <text-input ref="searchField"
-                        v-model="form.searchTerm"
-                        :type="'text'" :autofocus="true"
-                        :input-class="'block w-full'"
-                        :placeholder="'Type something'"
-                        :required="true"
-                        :autocomplete="false"
-                        :maxlength="255"
-                        @keyup="search"
+            <text-input
+              ref="searchField"
+              v-model="form.searchTerm"
+              :type="'text'"
+              :autofocus="true"
+              :input-class="'block w-full'"
+              :placeholder="'Type something'"
+              :required="true"
+              :autocomplete="false"
+              :maxlength="255"
+              @keyup="search"
             />
           </div>
         </form>
@@ -53,12 +53,18 @@
         </div>
 
         <!-- searching results -->
-        <div v-if="processingSearch" class="bg-white border border-gray-200 rounded-lg mb-6 p-6 text-center text-gray-500">
+        <div
+          v-if="processingSearch"
+          class="mb-6 rounded-lg border border-gray-200 bg-white p-6 text-center text-gray-500"
+        >
           <loading />
         </div>
 
         <!-- not enough characters -->
-        <div v-if="form.searchTerm.length < 3" class="bg-white border border-gray-200 rounded-lg mb-6 p-6 text-center text-gray-500">
+        <div
+          v-if="form.searchTerm.length < 3"
+          class="mb-6 rounded-lg border border-gray-200 bg-white p-6 text-center text-gray-500"
+        >
           <p>Please enter at least 3 characters to initiate a search.</p>
         </div>
       </div>
@@ -111,26 +117,25 @@ export default {
   },
 
   methods: {
-    search: _.debounce(
+    search: _.debounce(function () {
+      if (this.form.searchTerm != '' && this.form.searchTerm.length >= 3) {
+        this.processingSearch = true;
 
-      function () {
-        if (this.form.searchTerm != '' && this.form.searchTerm.length >= 3) {
-          this.processingSearch = true;
-
-          axios.post(this.data.url.search, this.form)
-            .then(response => {
-              this.results = response.data.data;
-              console.log(this.results.contacts.length);
-              this.processingSearch = false;
-            })
-            .catch(error => {
-              this.form.errors = error.response.data;
-              this.processingSearch = false;
-            });
-        } else {
-          this.results = [];
-        }
-      }, 300),
+        axios
+          .post(this.data.url.search, this.form)
+          .then((response) => {
+            this.results = response.data.data;
+            console.log(this.results.contacts.length);
+            this.processingSearch = false;
+          })
+          .catch((error) => {
+            this.form.errors = error.response.data;
+            this.processingSearch = false;
+          });
+      } else {
+        this.results = [];
+      }
+    }, 300),
   },
 };
 </script>

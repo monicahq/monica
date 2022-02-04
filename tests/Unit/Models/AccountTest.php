@@ -12,7 +12,6 @@ use App\Models\Pronoun;
 use App\Models\Template;
 use App\Models\GroupType;
 use App\Models\AddressType;
-use App\Models\Information;
 use App\Models\PetCategory;
 use App\Models\RelationshipGroupType;
 use App\Models\ContactInformationType;
@@ -53,17 +52,6 @@ class AccountTest extends TestCase
         ]);
 
         $this->assertTrue($account->modules()->exists());
-    }
-
-    /** @test */
-    public function it_has_many_informations()
-    {
-        $account = Account::factory()->create();
-        Information::factory(2)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $this->assertTrue($account->informations()->exists());
     }
 
     /** @test */

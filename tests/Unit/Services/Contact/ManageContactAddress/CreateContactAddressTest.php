@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\Account;
+use App\Models\Address;
 use App\Models\Contact;
 use App\Models\AddressType;
 use App\Jobs\CreateAuditLog;
@@ -122,9 +123,9 @@ class CreateContactAddressTest extends TestCase
 
         $address = (new CreateContactAddress)->execute($request);
 
-        $this->assertDatabaseHas('places', [
-            'placeable_id' => $address->id,
-            'placeable_type' => 'App\Models\ContactAddress',
+        $this->assertDatabaseHas('addresses', [
+            'contact_id' => $contact->id,
+            'address_type_id' => $type->id,
             'street' => '123 rue',
             'city' => 'paris',
             'province' => '67',
@@ -134,10 +135,10 @@ class CreateContactAddressTest extends TestCase
             'longitude' => 12345,
         ]);
 
-        $this->assertDatabaseHas('contact_addresses', [
-            'contact_id' => $contact->id,
-            'address_type_id' => $type->id,
-        ]);
+        $this->assertInstanceOf(
+            Address::class,
+            $address
+        );
 
         Queue::assertPushed(CreateAuditLog::class, function ($job) {
             return $job->auditLog['action_name'] === 'contact_address_created';

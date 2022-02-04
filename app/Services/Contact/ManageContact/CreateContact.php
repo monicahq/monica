@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\ManageContact;
 
+use Carbon\Carbon;
 use App\Models\Gender;
 use App\Models\Contact;
 use App\Models\Pronoun;
@@ -107,6 +108,7 @@ class CreateContact extends BaseService implements ServiceInterface
             'gender_id' => $this->valueOrNull($this->data, 'gender_id'),
             'pronoun_id' => $this->valueOrNull($this->data, 'pronoun_id'),
             'template_id' => $templateId,
+            'last_updated_at' => Carbon::now(),
         ]);
     }
 

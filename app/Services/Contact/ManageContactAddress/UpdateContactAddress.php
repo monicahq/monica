@@ -2,17 +2,19 @@
 
 namespace App\Services\Contact\ManageContactAddress;
 
+use Carbon\Carbon;
+use App\Models\Address;
 use App\Models\AddressType;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Jobs\CreateContactLog;
-use App\Models\ContactAddress;
 use App\Interfaces\ServiceInterface;
 
 class UpdateContactAddress extends BaseService implements ServiceInterface
 {
-    private ContactAddress $contactAddress;
-    private AddressType $addressType;
+    private Address $address;
+    private ?AddressType $addressType;
+    private array $data;
 
     /**
      * Get the validation rules that apply to the service.
@@ -26,8 +28,8 @@ class UpdateContactAddress extends BaseService implements ServiceInterface
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
             'contact_id' => 'required|integer|exists:contacts,id',
-            'address_type_id' => 'required|integer|exists:address_types,id',
-            'contact_address_id' => 'required|integer|exists:contact_addresses,id',
+            'address_id' => 'required|integer|exists:addresses,id',
+            'address_type_id' => 'nullable|integer|exists:address_types,id',
             'street' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
             'province' => 'nullable|string|max:255',
@@ -35,6 +37,8 @@ class UpdateContactAddress extends BaseService implements ServiceInterface
             'country' => 'nullable|string|max:3',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
+            'lived_from_at' => 'nullable|date_format:Y-m-d',
+            'lived_until_at' => 'nullable|date_format:Y-m-d',
         ];
     }
 
@@ -57,32 +61,47 @@ class UpdateContactAddress extends BaseService implements ServiceInterface
      * Update a contact address.
      *
      * @param  array  $data
-     * @return ContactAddress
+     * @return Address
      */
-    public function execute(array $data): ContactAddress
+    public function execute(array $data): Address
     {
-        $this->validateRules($data);
-
-        $this->addressType = AddressType::where('account_id', $data['account_id'])
-            ->findOrFail($data['address_type_id']);
-
-        $this->contactAddress = ContactAddress::where('contact_id', $this->contact->id)
-            ->where('address_type_id', $data['address_type_id'])
-            ->findOrFail($data['contact_address_id']);
-
-        $place = $this->contactAddress->place;
-        $place->street = $this->valueOrNull($data, 'street');
-        $place->city = $this->valueOrNull($data, 'city');
-        $place->province = $this->valueOrNull($data, 'province');
-        $place->postal_code = $this->valueOrNull($data, 'postal_code');
-        $place->country = $this->valueOrNull($data, 'country');
-        $place->latitude = $this->valueOrNull($data, 'latitude');
-        $place->longitude = $this->valueOrNull($data, 'longitude');
-        $place->save();
-
+        $this->data = $data;
+        $this->validate();
+        $this->update();
         $this->log();
 
-        return $this->contactAddress;
+        return $this->address;
+    }
+
+    private function validate(): void
+    {
+        $this->validateRules($this->data);
+
+        if ($this->valueOrNull($this->data, 'address_type_id')) {
+            $this->addressType = AddressType::where('account_id', $this->data['account_id'])
+                ->findOrFail($this->data['address_type_id']);
+        }
+
+        $this->address = Address::where('contact_id', $this->contact->id)
+            ->findOrFail($this->data['address_id']);
+    }
+
+    private function update(): void
+    {
+        $this->address->address_type_id = $this->valueOrNull($this->data, 'address_type_id');
+        $this->address->street = $this->valueOrNull($this->data, 'street');
+        $this->address->city = $this->valueOrNull($this->data, 'city');
+        $this->address->province = $this->valueOrNull($this->data, 'province');
+        $this->address->postal_code = $this->valueOrNull($this->data, 'postal_code');
+        $this->address->country = $this->valueOrNull($this->data, 'country');
+        $this->address->latitude = $this->valueOrNull($this->data, 'latitude');
+        $this->address->longitude = $this->valueOrNull($this->data, 'longitude');
+        $this->address->lived_from_at = $this->valueOrNull($this->data, 'lived_from_at');
+        $this->address->lived_until_at = $this->valueOrNull($this->data, 'lived_until_at');
+        $this->address->save();
+
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
     }
 
     private function log(): void
@@ -95,7 +114,7 @@ class UpdateContactAddress extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'contact_id' => $this->contact->id,
                 'contact_name' => $this->contact->name,
-                'address_type_name' => $this->addressType->name,
+                'address_type_name' => isset($this->addressType) ? $this->addressType->name : null,
             ]),
         ]);
 
@@ -105,7 +124,7 @@ class UpdateContactAddress extends BaseService implements ServiceInterface
             'author_name' => $this->author->name,
             'action_name' => 'contact_address_updated',
             'objects' => json_encode([
-                'address_type_name' => $this->addressType->name,
+                'address_type_name' => isset($this->addressType) ? $this->addressType->name : null,
             ]),
         ]);
     }

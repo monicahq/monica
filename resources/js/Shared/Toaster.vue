@@ -20,19 +20,13 @@
 </style>
 
 <template>
-  <div class="flash notification fixed" :class="[
-    levelClass, isOpen ? isVisibleClass : ''
-  ]"
-  >
-    <span class="mr-1">
-      👋
-    </span> {{ messageText }}
+  <div class="flash notification fixed" :class="[levelClass, isOpen ? isVisibleClass : '']">
+    <span class="mr-1"> 👋 </span> {{ messageText }}
   </div>
 </template>
 
 <script>
 export default {
-
   props: {
     level: {
       type: String,
@@ -50,7 +44,7 @@ export default {
       isVisibleClass: 'is-visible',
       closeAfter: 5000, // 10 seconds, you can change that
       levelClass: null,
-      messageText: null
+      messageText: null,
     };
   },
 
@@ -66,7 +60,7 @@ export default {
 
     const self = this;
 
-    this.$on('flash', data => self.show(data));
+    this.$on('flash', (data) => self.show(data));
   },
 
   methods: {
@@ -90,7 +84,7 @@ export default {
       setTimeout(() => {
         self.isOpen = action;
       }, timeout);
-    }
+    },
   },
 };
 </script>

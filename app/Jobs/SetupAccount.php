@@ -5,7 +5,6 @@ namespace App\Jobs;
 use App\Models\User;
 use App\Models\Module;
 use App\Models\Template;
-use App\Models\Attribute;
 use App\Models\Information;
 use App\Models\TemplatePage;
 use Illuminate\Bus\Queueable;
@@ -18,14 +17,10 @@ use App\Services\Account\ManageGenders\CreateGender;
 use App\Services\Account\ManageTemplate\CreateModule;
 use App\Services\Account\ManagePronouns\CreatePronoun;
 use App\Services\Account\ManageTemplate\CreateTemplate;
-use App\Services\Account\ManageTemplate\CreateAttribute;
-use App\Services\Account\ManageTemplate\CreateInformation;
 use App\Services\Account\ManageTemplate\CreateTemplatePage;
 use App\Services\Account\ManageAddressTypes\CreateAddressType;
 use App\Services\Account\ManagePetCategories\CreatePetCategory;
-use App\Services\Account\ManageTemplate\AddDefaultValueToAttribute;
 use App\Services\Account\ManageTemplate\AssociateModuleToTemplatePage;
-use App\Services\Account\ManageTemplate\AssociateInformationToTemplate;
 use App\Services\Account\ManageRelationshipTypes\CreateRelationshipGroupType;
 use App\Services\Account\ManageContactInformationTypes\CreateContactInformationType;
 
@@ -183,6 +178,7 @@ class SetupAccount implements ShouldQueue
             'name' => trans('app.module_notes'),
             'type' => Module::TYPE_NOTES,
             'can_be_deleted' => false,
+            'pagination' => 3,
         ]);
         (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->user->account_id,
@@ -195,14 +191,6 @@ class SetupAccount implements ShouldQueue
 
     private function addFirstInformation(): void
     {
-        $this->addDescriptionField();
-        $this->addGenderInformation();
-        $this->addBirthdateInformation();
-        $this->addAddressField();
-        $this->addPetField();
-        $this->addContactInformationField();
-        $this->addFoodPreferences();
-        $this->addHowWeMet();
         $this->addGenders();
         $this->addPronouns();
         $this->addGroupTypes();
@@ -210,305 +198,6 @@ class SetupAccount implements ShouldQueue
         $this->addAddressTypes();
         $this->addContactInformation();
         $this->addPetCategories();
-    }
-
-    /**
-     * Add the description information.
-     */
-    private function addDescriptionField(): void
-    {
-        $information = (new CreateInformation)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'name' => trans('app.default_description_information'),
-            'allows_multiple_entries' => false,
-        ]);
-
-        $this->associateToTemplate($information);
-
-        (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_description_information'),
-            'type' => 'text',
-        ]);
-    }
-
-    /**
-     * Add the gender information.
-     */
-    private function addGenderInformation(): void
-    {
-        $information = (new CreateInformation)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'name' => trans('app.default_gender_information_name'),
-            'allows_multiple_entries' => false,
-        ]);
-
-        $this->associateToTemplate($information);
-
-        $attribute = (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_gender_information_name'),
-            'type' => 'dropdown',
-            'has_default_value' => true,
-        ]);
-
-        $this->addDefaultValue($attribute, trans('app.default_gender_man'));
-        $this->addDefaultValue($attribute, trans('app.default_gender_woman'));
-        $this->addDefaultValue($attribute, trans('app.default_gender_other'));
-    }
-
-    /**
-     * Add the birthdate information.
-     */
-    private function addBirthdateInformation(): void
-    {
-        $information = (new CreateInformation)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'name' => trans('app.default_birthdate_information'),
-            'allows_multiple_entries' => false,
-        ]);
-
-        $this->associateToTemplate($information);
-
-        (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_birthdate_information'),
-            'type' => 'date',
-            'has_default_value' => false,
-        ]);
-    }
-
-    /**
-     * Add the address field information.
-     */
-    private function addAddressField(): void
-    {
-        $information = (new CreateInformation)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'name' => trans('app.default_address_information'),
-            'allows_multiple_entries' => true,
-        ]);
-
-        $this->associateToTemplate($information);
-
-        (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_address_label'),
-            'type' => 'text',
-        ]);
-
-        (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_address_city'),
-            'type' => 'text',
-        ]);
-
-        (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_address_province'),
-            'type' => 'text',
-        ]);
-
-        (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_address_postal_code'),
-            'type' => 'text',
-        ]);
-
-        (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_address_country'),
-            'type' => 'text',
-        ]);
-    }
-
-    /**
-     * Add the pet field information.
-     */
-    private function addPetField(): void
-    {
-        $information = (new CreateInformation)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'name' => trans('app.default_pet_information'),
-            'allows_multiple_entries' => true,
-        ]);
-
-        $this->associateToTemplate($information);
-
-        $attribute = (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_pet_type'),
-            'type' => 'dropdown',
-            'has_default_value' => true,
-        ]);
-
-        $this->addDefaultValue($attribute, trans('app.default_pet_type_dog'));
-        $this->addDefaultValue($attribute, trans('app.default_pet_type_cat'));
-
-        (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_pet_name'),
-            'type' => 'text',
-        ]);
-    }
-
-    /**
-     * Add the contact information panel.
-     */
-    private function addContactInformationField(): void
-    {
-        $information = (new CreateInformation)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'name' => trans('app.default_contact_information_information'),
-            'allows_multiple_entries' => true,
-        ]);
-
-        $this->associateToTemplate($information);
-
-        $attribute = (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_contact_information_type_attribute'),
-            'type' => 'dropdown',
-            'has_default_value' => true,
-        ]);
-
-        $this->addDefaultValue($attribute, trans('app.default_contact_information_facebook'));
-        $this->addDefaultValue($attribute, trans('app.default_contact_information_email'));
-        $this->addDefaultValue($attribute, trans('app.default_contact_information_twitter'));
-
-        (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_contact_information_value'),
-            'type' => 'text',
-        ]);
-    }
-
-    /**
-     * Add the food preferences panel.
-     */
-    private function addFoodPreferences(): void
-    {
-        $information = (new CreateInformation)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'name' => trans('app.default_food_preferences_information'),
-            'allows_multiple_entries' => false,
-        ]);
-
-        $this->associateToTemplate($information);
-
-        (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_food_preferences_information'),
-            'type' => 'textarea',
-        ]);
-    }
-
-    /**
-     * Add how you met panel.
-     */
-    private function addHowWeMet(): void
-    {
-        $information = (new CreateInformation)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'name' => trans('app.default_how_we_met_information'),
-            'allows_multiple_entries' => false,
-        ]);
-
-        $this->associateToTemplate($information);
-
-        (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_how_we_met_description'),
-            'type' => 'textarea',
-        ]);
-
-        (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_how_we_met_contact'),
-            'type' => 'contact',
-        ]);
-
-        (new CreateAttribute)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'information_id' => $information->id,
-            'name' => trans('app.default_how_we_met_date'),
-            'type' => 'date',
-        ]);
-    }
-
-    /**
-     * Add a default value to an attribute.
-     *
-     * @param  Attribute  $attribute
-     * @param  string  $name
-     */
-    private function addDefaultValue(Attribute $attribute, string $name): void
-    {
-        $request = [
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'attribute_id' => $attribute->id,
-            'value' => $name,
-        ];
-
-        (new AddDefaultValueToAttribute)->execute($request);
-    }
-
-    /**
-     * Associate the information to the template.
-     *
-     * @param  Information  $information
-     */
-    private function associateToTemplate(Information $information): void
-    {
-        (new AssociateInformationToTemplate)->execute([
-            'account_id' => $this->user->account_id,
-            'author_id' => $this->user->id,
-            'template_id' => $this->template->id,
-            'information_id' => $information->id,
-            'position' => $this->position,
-        ]);
-
-        $this->position++;
     }
 
     /**

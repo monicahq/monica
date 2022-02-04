@@ -6,11 +6,11 @@ use Tests\TestCase;
 use App\Models\Note;
 use App\Models\Label;
 use App\Models\Gender;
+use App\Models\Address;
 use App\Models\Contact;
 use App\Models\Pronoun;
 use App\Models\Template;
 use App\Models\ContactLog;
-use App\Models\ContactAddress;
 use App\Models\RelationshipType;
 use App\Models\ContactInformation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -103,14 +103,14 @@ class ContactTest extends TestCase
     }
 
     /** @test */
-    public function it_has_many_contact_addresses(): void
+    public function it_has_many_addresses(): void
     {
         $ross = Contact::factory()->create();
-        ContactAddress::factory()->count(2)->create([
+        Address::factory()->count(2)->create([
             'contact_id' => $ross->id,
         ]);
 
-        $this->assertTrue($ross->contactAddresses()->exists());
+        $this->assertTrue($ross->addresses()->exists());
     }
 
     /** @test */

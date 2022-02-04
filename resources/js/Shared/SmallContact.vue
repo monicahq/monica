@@ -1,12 +1,15 @@
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
 
 <template>
-  <div class="inline relative" :style="'top: ' + top">
+  <div class="relative inline" :style="'top: ' + top">
     <a-popover placement="bottomLeft">
       <template #content>
         <div class="flex">
-          <img class="rounded-full mr-2 inline" src="https://ucarecdn.com/2f86ee48-9258-4b5c-aaf5-82269edcf770/-/scale_crop/45x45/smart/" alt="">
+          <img
+            class="mr-2 inline rounded-full"
+            src="https://ucarecdn.com/2f86ee48-9258-4b5c-aaf5-82269edcf770/-/scale_crop/45x45/smart/"
+            alt=""
+          />
           <div>
             <p>Last talked to: Apr 20, 2012</p>
             <p>Last activity: Apr 20, 2012</p>
@@ -16,8 +19,12 @@
       <template #title>
         <span>Lorraine Del Giacco</span>
       </template>
-      <div class="inline-flex text-sm items-center">
-        <img class="rounded-full mr-2 inline" src="https://ucarecdn.com/2f86ee48-9258-4b5c-aaf5-82269edcf770/-/scale_crop/25x25/smart/" alt="">
+      <div class="inline-flex items-center text-sm">
+        <img
+          class="mr-2 inline rounded-full"
+          src="https://ucarecdn.com/2f86ee48-9258-4b5c-aaf5-82269edcf770/-/scale_crop/25x25/smart/"
+          alt=""
+        />
         <a class="colored-link" href="">Lorraine Del Giaccosldkfjalsdjkfs</a>
       </div>
     </a-popover>
@@ -25,10 +32,8 @@
 </template>
 
 <script>
-
 export default {
-  components: {
-  },
+  components: {},
 
   props: {
     top: {

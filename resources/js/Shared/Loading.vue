@@ -1,5 +1,6 @@
 <style lang="scss" scoped>
-.hollow-dots-spinner, .hollow-dots-spinner * {
+.hollow-dots-spinner,
+.hollow-dots-spinner * {
   box-sizing: border-box;
 }
 
@@ -29,7 +30,6 @@
 
 .hollow-dots-spinner .dot:nth-child(3) {
   animation-delay: calc(200ms * 3);
-
 }
 
 @keyframes hollow-dots-spinner-animation {
@@ -53,5 +53,4 @@
   </div>
 </template>
 
-<script>
-</script>
+<script></script>

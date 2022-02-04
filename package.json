@@ -1,59 +1,65 @@
 {
-    "private": true,
-    "scripts": {
-        "dev": "npm run development",
-        "development": "mix",
-        "watch": "mix watch",
-        "watch-poll": "mix watch -- --watch-options-poll=1000",
-        "hot": "mix watch --hot",
-        "lint": "eslint --ext .js,.vue *.js .*.js resources/js/",
-        "prod": "npm run production",
-        "production": "mix --production",
-        "pretest": "DB_CONNECTION=testing php artisan migrate:fresh && DB_CONNECTION=testing php artisan db:seed",
-        "posttest": "vendor/bin/phpstan analyse && vendor/bin/psalm",
-        "test": "vendor/bin/phpunit"
-    },
-    "devDependencies": {
-        "@inertiajs/inertia": "^0.10.0",
-        "@inertiajs/inertia-vue3": "^0.5.1",
-        "@inertiajs/progress": "^0.2.6",
-        "@tailwindcss/forms": "^0.4.0",
-        "@vue/compiler-sfc": "^3.0.5",
-        "ant-design-vue": "^2.2.8",
-        "autoprefixer": "^10.4.0",
-        "axios": "^0.21",
-        "eslint": "^7.11.0",
-        "eslint-config-standard": "^16.0.3",
-        "eslint-plugin-cypress": ">=2.11.2",
-        "eslint-plugin-import": ">=2.22.1",
-        "eslint-plugin-node": ">=11.1.0",
-        "eslint-plugin-promise": ">=4.2.1",
-        "eslint-plugin-standard": ">=4.0.0",
-        "eslint-plugin-vue": "^7.0.1",
-        "husky": "^4.3.0",
-        "laravel-mix": "^6.0.6",
-        "lint-staged": "^8.2.1",
-        "lodash": "^4.17.19",
-        "postcss": "^8.4.4",
-        "postcss-import": "^14.0.1",
-        "sass": "^1.15.2",
-        "sass-loader": "^7.1.0",
-        "tailwindcss": "^3.0.0",
-        "tiny-emitter": "^2.1.0",
-        "vue": "^3.0.5",
-        "vue-loader": "^16.1.2",
-        "vuedraggable": "^4.1.0"
-    },
-    "lint-staged": {
-        "linters": {
-            "*.js|.*.js|resources/js/**/*.{vue,js}": [
-                "yarn lint --fix"
-            ]
-        }
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
+  "private": true,
+  "scripts": {
+    "dev": "npm run development",
+    "development": "mix",
+    "watch": "mix watch",
+    "watch-poll": "mix watch -- --watch-options-poll=1000",
+    "hot": "mix watch --hot",
+    "lint": "eslint --ext .js,.vue *.js .*.js resources/js/",
+    "prod": "npm run production",
+    "production": "mix --production",
+    "pretest": "DB_CONNECTION=testing php artisan migrate:fresh && DB_CONNECTION=testing php artisan db:seed",
+    "posttest": "vendor/bin/phpstan analyse && vendor/bin/psalm",
+    "test": "vendor/bin/phpunit"
+  },
+  "devDependencies": {
+    "@inertiajs/inertia": "^0.10.0",
+    "@inertiajs/inertia-vue3": "^0.5.1",
+    "@inertiajs/progress": "^0.2.6",
+    "@tailwindcss/forms": "^0.4.0",
+    "@vue/compiler-sfc": "^3.0.5",
+    "ant-design-vue": "^2.2.8",
+    "autoprefixer": "^10.4.0",
+    "axios": "^0.21",
+    "eslint": "^7.11.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-cypress": ">=2.11.2",
+    "eslint-plugin-import": ">=2.22.1",
+    "eslint-plugin-node": ">=11.1.0",
+    "eslint-plugin-promise": ">=4.2.1",
+    "eslint-plugin-standard": ">=4.0.0",
+    "eslint-plugin-vue": "^7.0.1",
+    "husky": "^4.3.0",
+    "laravel-mix": "^6.0.6",
+    "lint-staged": "^8.2.1",
+    "lodash": "^4.17.19",
+    "postcss": "^8.4.4",
+    "postcss-import": "^14.0.1",
+    "prettier": "^2.5.1",
+    "prettier-plugin-tailwindcss": "^0.1.4",
+    "sass": "^1.15.2",
+    "sass-loader": "^7.1.0",
+    "tailwindcss": "^3.0.0",
+    "tiny-emitter": "^2.1.0",
+    "vue": "^3.0.5",
+    "vue-loader": "^16.1.2",
+    "vuedraggable": "^4.1.0"
+  },
+  "lint-staged": {
+    "linters": {
+      "*.js|.*.js|resources/js/**/*.{vue,js}": [
+        "prettier --write --ignore-unknown"
+      ],
+      "resources/**/*.{css,scss}": [
+        "prettier --write --ignore-unknown"
+      ]
     }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
 }

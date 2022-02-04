@@ -19,16 +19,22 @@
 <template>
   <layout :layout-data="layoutData">
     <!-- breadcrumb -->
-    <nav class="sm:border-b bg-white">
-      <div class="max-w-8xl mx-auto px-4 sm:px-6 py-2 hidden md:block">
+    <nav class="bg-white sm:border-b">
+      <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="inline mr-2 text-gray-600">You are here:</li>
-            <li class="inline mr-2">
-              <inertia-link :href="data.url.settings" class="text-sky-500 hover:text-blue-900">Settings</inertia-link>
+            <li class="mr-2 inline text-gray-600">You are here:</li>
+            <li class="mr-2 inline">
+              <inertia-link :href="data.url.settings" class="text-sky-500 hover:text-blue-900"> Settings </inertia-link>
             </li>
-            <li class="inline mr-2 relative">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline relative icon-breadcrumb" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <li class="relative mr-2 inline">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon-breadcrumb relative inline h-3 w-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -38,8 +44,8 @@
       </div>
     </nav>
 
-    <main class="sm:mt-20 relative">
-      <div class="max-w-3xl mx-auto px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+    <main class="relative sm:mt-20">
+      <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <name-order :data="data.name_order" />
       </div>
     </main>

@@ -5,41 +5,67 @@
     <form @submit.prevent="submit">
       <div>
         <breeze-label for="first_name" value="First name" />
-        <breeze-input id="first_name" v-model="form.first_name" type="text" class="mt-1 block w-full" required
-                      autofocus autocomplete="first_name"
+        <breeze-input
+          id="first_name"
+          v-model="form.first_name"
+          type="text"
+          class="mt-1 block w-full"
+          required
+          autofocus
+          autocomplete="first_name"
         />
       </div>
 
       <div class="mt-4">
         <breeze-label for="last_name" value="Last name" />
-        <breeze-input id="last_name" v-model="form.last_name" type="text" class="mt-1 block w-full" required
-                      autocomplete="last_name"
+        <breeze-input
+          id="last_name"
+          v-model="form.last_name"
+          type="text"
+          class="mt-1 block w-full"
+          required
+          autocomplete="last_name"
         />
       </div>
 
       <div class="mt-4">
         <breeze-label for="email" value="Email" />
-        <breeze-input id="email" v-model="form.email" type="email" class="mt-1 block w-full" required
-                      autocomplete="username"
+        <breeze-input
+          id="email"
+          v-model="form.email"
+          type="email"
+          class="mt-1 block w-full"
+          required
+          autocomplete="username"
         />
       </div>
 
       <div class="mt-4">
         <breeze-label for="password" value="Password" />
-        <breeze-input id="password" v-model="form.password" type="password" class="mt-1 block w-full" required
-                      autocomplete="new-password"
+        <breeze-input
+          id="password"
+          v-model="form.password"
+          type="password"
+          class="mt-1 block w-full"
+          required
+          autocomplete="new-password"
         />
       </div>
 
       <div class="mt-4">
         <breeze-label for="password_confirmation" value="Confirm Password" />
-        <breeze-input id="password_confirmation" v-model="form.password_confirmation" type="password" class="mt-1 block w-full" required
-                      autocomplete="new-password"
+        <breeze-input
+          id="password_confirmation"
+          v-model="form.password_confirmation"
+          type="password"
+          class="mt-1 block w-full"
+          required
+          autocomplete="new-password"
         />
       </div>
 
-      <div class="flex items-center justify-end mt-4">
-        <inertia-link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
+      <div class="mt-4 flex items-center justify-end">
+        <inertia-link :href="route('login')" class="text-sm text-gray-600 underline hover:text-gray-900">
           Already registered?
         </inertia-link>
 
@@ -59,7 +85,6 @@ import BreezeLabel from '@/Components/Label.vue';
 import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
 
 export default {
-
   components: {
     BreezeButton,
     BreezeInput,
@@ -77,7 +102,7 @@ export default {
         password: '',
         password_confirmation: '',
         terms: false,
-      })
+      }),
     };
   },
 
@@ -86,7 +111,7 @@ export default {
       this.form.post(this.route('register'), {
         onFinish: () => this.form.reset('password', 'password_confirmation'),
       });
-    }
-  }
+    },
+  },
 };
 </script>

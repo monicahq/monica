@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\AssignLabel;
 
+use Carbon\Carbon;
 use App\Models\Label;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
@@ -56,6 +57,9 @@ class AssignLabel extends BaseService implements ServiceInterface
             ->findOrFail($data['label_id']);
 
         $this->contact->labels()->syncWithoutDetaching($this->label);
+
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
 
         $this->log();
     }

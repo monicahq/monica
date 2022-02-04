@@ -39,7 +39,9 @@ class CreateAttributesTable extends Migration
             $table->unsignedBigInteger('account_id');
             $table->string('name');
             $table->string('type')->nullable();
-            $table->boolean('can_be_deleted');
+            $table->boolean('reserved_to_contact_information')->default(false);
+            $table->boolean('can_be_deleted')->default(true);
+            $table->integer('pagination')->nullable();
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
@@ -53,42 +55,23 @@ class CreateAttributesTable extends Migration
             $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
         });
 
-        Schema::create('information', function (Blueprint $table) {
+        Schema::create('module_rows', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('account_id');
-            $table->string('name');
-            $table->boolean('allows_multiple_entries')->default(false);
+            $table->unsignedBigInteger('module_id');
+            $table->integer('position')->nullable();
             $table->timestamps();
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
         });
 
-        Schema::create('attributes', function (Blueprint $table) {
+        Schema::create('module_row_fields', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('information_id');
-            $table->string('name');
-            $table->string('unit')->nullable();
-            $table->boolean('unit_placement_after')->default(true);
-            $table->string('type');
-            $table->boolean('has_default_value')->default(false);
+            $table->unsignedBigInteger('module_row_id');
+            $table->string('label');
+            $table->string('module_field_type');
+            $table->boolean('required')->default(false);
+            $table->integer('position')->nullable();
             $table->timestamps();
-            $table->foreign('information_id')->references('id')->on('information')->onDelete('cascade');
-        });
-
-        Schema::create('attribute_default_values', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('attribute_id');
-            $table->string('value');
-            $table->timestamps();
-            $table->foreign('attribute_id')->references('id')->on('attributes')->onDelete('cascade');
-        });
-
-        Schema::create('information_template', function (Blueprint $table) {
-            $table->unsignedBigInteger('template_id');
-            $table->unsignedBigInteger('information_id');
-            $table->integer('position');
-            $table->timestamps();
-            $table->foreign('information_id')->references('id')->on('information')->onDelete('cascade');
-            $table->foreign('template_id')->references('id')->on('templates')->onDelete('cascade');
+            $table->foreign('module_row_id')->references('id')->on('module_rows')->onDelete('cascade');
         });
     }
 
@@ -99,9 +82,9 @@ class CreateAttributesTable extends Migration
     {
         Schema::dropIfExists('templates');
         Schema::dropIfExists('template_pages');
+        Schema::dropIfExists('module_template_page');
         Schema::dropIfExists('modules');
-        Schema::dropIfExists('attributes');
-        Schema::dropIfExists('attribute_default_values');
-        Schema::dropIfExists('attribute_template');
+        Schema::dropIfExists('module_rows');
+        Schema::dropIfExists('module_row_fields');
     }
 }

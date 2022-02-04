@@ -43,20 +43,6 @@ class Account extends Model
     /**
      * Get the information associated with the account.
      *
-     * Note to future reader of this code: i KNOW that information doesn't take
-     * an "S" at the end, but I needed to indicate that there were many pieces
-     * of information in a simple word. Deal with it.
-     *
-     * @return HasMany
-     */
-    public function informations()
-    {
-        return $this->hasMany(Information::class);
-    }
-
-    /**
-     * Get the information associated with the account.
-     *
      * @return HasMany
      */
     public function groupTypes()

@@ -3,9 +3,9 @@
 @import 'tailwindcss/utilities';
 
 body {
-    color: #343a4b;
+  color: #343a4b;
 }
 
 .icon-breadcrumb {
-    top: -1px;
+  top: -1px;
 }

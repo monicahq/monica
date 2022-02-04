@@ -1298,7 +1298,7 @@ class AuditLogHelperTest extends TestCase
         $loggedUser = User::factory()->create();
         $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Deleted the contact address Home for the contact Monica Geller (deleted)',
+            'Deleted a contact address for the contact Monica Geller (deleted)',
             $sentence
         );
 
@@ -1316,7 +1316,7 @@ class AuditLogHelperTest extends TestCase
         $loggedUser = User::factory()->create();
         $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Deleted the contact address Home for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
+            'Deleted a contact address for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
             $sentence
         );
     }

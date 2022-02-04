@@ -2,16 +2,17 @@
 
 namespace App\Services\Contact\ManageContactAddress;
 
+use Carbon\Carbon;
+use App\Models\Address;
 use App\Models\AddressType;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Jobs\CreateContactLog;
-use App\Models\ContactAddress;
 use App\Interfaces\ServiceInterface;
 
 class DestroyContactAddress extends BaseService implements ServiceInterface
 {
-    private ContactAddress $contactAddress;
+    private Address $address;
     private AddressType $addressType;
 
     /**
@@ -26,8 +27,7 @@ class DestroyContactAddress extends BaseService implements ServiceInterface
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
             'contact_id' => 'required|integer|exists:contacts,id',
-            'address_type_id' => 'required|integer|exists:address_types,id',
-            'contact_address_id' => 'required|integer|exists:contact_addresses,id',
+            'address_id' => 'required|integer|exists:addresses,id',
         ];
     }
 
@@ -55,17 +55,13 @@ class DestroyContactAddress extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->addressType = AddressType::where('account_id', $data['account_id'])
-            ->findOrFail($data['address_type_id']);
+        $this->address = Address::where('contact_id', $this->contact->id)
+            ->findOrFail($data['address_id']);
 
-        $this->contactAddress = ContactAddress::where('contact_id', $this->contact->id)
-            ->where('address_type_id', $data['address_type_id'])
-            ->findOrFail($data['contact_address_id']);
+        $this->address->delete();
 
-        $place = $this->contactAddress->place;
-        $place->delete();
-
-        $this->contactAddress->delete();
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
 
         $this->log();
     }
@@ -80,7 +76,6 @@ class DestroyContactAddress extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'contact_id' => $this->contact->id,
                 'contact_name' => $this->contact->name,
-                'address_type_name' => $this->addressType->name,
             ]),
         ]);
 
@@ -90,7 +85,6 @@ class DestroyContactAddress extends BaseService implements ServiceInterface
             'author_name' => $this->author->name,
             'action_name' => 'contact_address_destroyed',
             'objects' => json_encode([
-                'address_type_name' => $this->addressType->name,
             ]),
         ]);
     }

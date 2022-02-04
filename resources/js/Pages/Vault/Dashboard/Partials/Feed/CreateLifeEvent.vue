@@ -14,19 +14,24 @@
 <template>
   <section class="relative">
     <!-- close button -->
-    <svg xmlns="http://www.w3.org/2000/svg" class="absolute close-button h-4 w-4 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-         @click="$emit('cancelled')"
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="close-button absolute h-4 w-4 cursor-pointer"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      @click="$emit('cancelled')"
     >
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
     </svg>
 
-    <h1 class="text-center text-xl mb-3">
+    <h1 class="mb-3 text-center text-xl">
       {{ $t('people.life_event_list_cta') }}
     </h1>
 
     <div v-if="!loading" class="mt4 mw7 center mb3">
       <!-- Breadcrumb -->
-      <ul v-if="view == 'types' || view == 'add'" class="border border-gray-200 p-2 mb-2 text-sm rounded-md">
+      <ul v-if="view == 'types' || view == 'add'" class="mb-2 rounded-md border border-gray-200 p-2 text-sm">
         <li class="inline">
           <a class="cursor-pointer" href="" @click.prevent="view = 'categories'">
             {{ $t('people.life_event_create_category') }}
@@ -37,42 +42,68 @@
         </li>
         <template v-else-if="view == 'add'">
           <li class="inline">
-            &gt; <a class="cursor-pointer" href="" @click.prevent="view = 'types'">
+            &gt;
+            <a class="cursor-pointer" href="" @click.prevent="view = 'types'">
               {{ $t('people.life_event_category_' + activeCategory.default_life_event_category_key) }}
             </a>
           </li>
-          <li class="inline">
-            &gt; {{ $t('people.life_event_create_life_event') }}
-          </li>
+          <li class="inline">&gt; {{ $t('people.life_event_create_life_event') }}</li>
         </template>
       </ul>
 
       <!-- List of event categories -->
-      <div v-if="view == 'categories'" class="border border-gray-200 rounded-sm bg-white">
+      <div v-if="view == 'categories'" class="rounded-sm border border-gray-200 bg-white">
         <ul>
-          <li v-for="category in categories" :key="category.id" class="relative cursor-pointer border-b border-gray-200 hover:bg-yellow-50 p-2 flex items-center justify-between type-list-item" @click="getType(category)">
+          <li
+            v-for="category in categories"
+            :key="category.id"
+            class="type-list-item relative flex cursor-pointer items-center justify-between border-b border-gray-200 p-2 hover:bg-yellow-50"
+            @click="getType(category)"
+          >
             <div>
-              <img class="inline mr-2" :src="'img/people/life-events/categories/' + category.default_life_event_category_key + '.svg'" :alt="category.default_life_event_category_key">
+              <img
+                class="mr-2 inline"
+                :src="'img/people/life-events/categories/' + category.default_life_event_category_key + '.svg'"
+                :alt="category.default_life_event_category_key"
+              />
               <span>{{ $t('people.life_event_category_' + category.default_life_event_category_key) }}</span>
             </div>
 
-            <svg class="life-event-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none"
-                 xmlns="http://www.w3.org/2000/svg"
+            <svg
+              class="life-event-add-arrow"
+              width="10"
+              height="13"
+              viewBox="0 0 10 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M8.75071 5.66783C9.34483 6.06361 9.34483 6.93653 8.75072 7.33231L1.80442 11.9598C1.13984 12.4025 0.25 11.9261 0.25 11.1275L0.25 1.87263C0.25 1.07409 1.13984 0.59767 1.80442 1.04039L8.75071 5.66783Z" fill="#C4C4C4" />
+              <path
+                d="M8.75071 5.66783C9.34483 6.06361 9.34483 6.93653 8.75072 7.33231L1.80442 11.9598C1.13984 12.4025 0.25 11.9261 0.25 11.1275L0.25 1.87263C0.25 1.07409 1.13984 0.59767 1.80442 1.04039L8.75071 5.66783Z"
+                fill="#C4C4C4"
+              />
             </svg>
           </li>
         </ul>
-        <div v-if="loadingCategories" class="text-center p-20">
+        <div v-if="loadingCategories" class="p-20 text-center">
           <loading />
         </div>
       </div>
 
-      <ul v-if="view == 'types'" class="border border-gray-200 rounded-sm bg-white">
+      <ul v-if="view == 'types'" class="rounded-sm border border-gray-200 bg-white">
         <!-- TYPES -->
-        <li v-for="type in types" :key="type.id" class="relative cursor-pointer border-b border-gray-200 hover:bg-yellow-50 p-2 flex items-center justify-between type-list-item" @click="displayAddScreen(type)">
+        <li
+          v-for="type in types"
+          :key="type.id"
+          class="type-list-item relative flex cursor-pointer items-center justify-between border-b border-gray-200 p-2 hover:bg-yellow-50"
+          @click="displayAddScreen(type)"
+        >
           <div>
-            <img class="inline mr-2" :src="'img/people/life-events/types/' + type.default_life_event_type_key + '.svg'" :alt="type.default_life_event_type_key" style="min-width: 12px;">
+            <img
+              class="mr-2 inline"
+              :src="'img/people/life-events/types/' + type.default_life_event_type_key + '.svg'"
+              :alt="type.default_life_event_type_key"
+              style="min-width: 12px"
+            />
             <span v-if="type.name">
               {{ type.name }}
             </span>
@@ -81,21 +112,33 @@
             </span>
           </div>
 
-          <svg class="life-event-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none"
-               xmlns="http://www.w3.org/2000/svg"
+          <svg
+            class="life-event-add-arrow"
+            width="10"
+            height="13"
+            viewBox="0 0 10 13"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <path d="M8.75071 5.66783C9.34483 6.06361 9.34483 6.93653 8.75072 7.33231L1.80442 11.9598C1.13984 12.4025 0.25 11.9261 0.25 11.1275L0.25 1.87263C0.25 1.07409 1.13984 0.59767 1.80442 1.04039L8.75071 5.66783Z" fill="#C4C4C4" />
+            <path
+              d="M8.75071 5.66783C9.34483 6.06361 9.34483 6.93653 8.75072 7.33231L1.80442 11.9598C1.13984 12.4025 0.25 11.9261 0.25 11.1275L0.25 1.87263C0.25 1.07409 1.13984 0.59767 1.80442 1.04039L8.75071 5.66783Z"
+              fill="#C4C4C4"
+            />
           </svg>
         </li>
-        <div v-if="loadingTypes" class="text-center p-20">
+        <div v-if="loadingTypes" class="p-20 text-center">
           <loading />
         </div>
       </ul>
 
       <!-- ADD SCREEN -->
-      <div v-if="add" class="border border-gray-200 br2 pt4">
+      <div v-if="add" class="br2 pt4 border border-gray-200">
         <div class="life-event-add-icon tc center">
-          <img :src="'img/people/life-events/types/' + activeType.default_life_event_type_key + '.svg'" :alt="activeType.default_life_event_type_key" style="min-width: 17px;">
+          <img
+            :src="'img/people/life-events/types/' + activeType.default_life_event_type_key + '.svg'"
+            :alt="activeType.default_life_event_type_key"
+            style="min-width: 17px"
+          />
         </div>
 
         <h3 class="pt3 ph4 f3 fw5 tc">
@@ -112,14 +155,15 @@
           <label for="year" class="mr-2">
             {{ $t('people.life_event_date_it_happened') }}
           </label>
-          <div class="flex mb3">
+          <div class="mb3 flex">
             <div class="mr-2">
               <form-select
                 :id="'year'"
                 v-model="selectedYear"
                 :options="years"
                 :title="''"
-                :class="[ dirltr ? 'mr-2' : '' ]" @input="updateDate"
+                :class="[dirltr ? 'mr-2' : '']"
+                @input="updateDate"
               />
             </div>
             <div class="mr-2">
@@ -128,7 +172,8 @@
                 v-model="selectedMonth"
                 :options="months"
                 :title="''"
-                :class="[ dirltr ? 'mr-2' : '' ]" @input="updateDate"
+                :class="[dirltr ? 'mr-2' : '']"
+                @input="updateDate"
               />
             </div>
             <div>
@@ -137,7 +182,8 @@
                 v-model="selectedDay"
                 :options="days"
                 :title="''"
-                :class="[ dirltr ? '' : 'mr-2' ]" @input="updateDate"
+                :class="[dirltr ? '' : 'mr-2']"
+                @input="updateDate"
               />
             </div>
           </div>
@@ -153,7 +199,7 @@
           <form-checkbox
             v-model.lazy="newLifeEvent.has_reminder"
             :name="'addReminder'"
-            :dclass="[ dirltr ? 'mr3' : 'ml3' ]"
+            :dclass="[dirltr ? 'mr3' : 'ml3']"
           >
             {{ $t('people.life_event_create_add_yearly_reminder') }}
           </form-checkbox>
@@ -163,12 +209,16 @@
         <div class="ph4-ns ph3 pv3 bb border-gray-200">
           <div class="flex-ns justify-between">
             <div>
-              <a class="btn btn-secondary tc w-auto-ns w-100 mb-2 pb0-ns" href="" @click.prevent="$emit('dismissModal')">
+              <a
+                class="btn btn-secondary tc w-auto-ns w-100 pb0-ns mb-2"
+                href=""
+                @click.prevent="$emit('dismissModal')"
+              >
                 {{ $t('app.cancel') }}
               </a>
             </div>
             <div>
-              <button class="btn btn-primary w-auto-ns w-100 mb-2 pb0-ns" @click="store()">
+              <button class="btn btn-primary w-auto-ns w-100 pb0-ns mb-2" @click="store()">
                 {{ $t('app.add') }}
               </button>
             </div>
@@ -178,7 +228,7 @@
     </div>
 
     <!-- loading indicator when grabbing all the categories -->
-    <div v-if="loading" class="text-center p-20">
+    <div v-if="loading" class="p-20 text-center">
       <loading />
     </div>
   </section>
@@ -189,7 +239,6 @@ import moment from 'moment';
 import Loading from '@/Shared/Loading';
 
 export default {
-
   components: {
     Loading,
   },
@@ -203,19 +252,19 @@ export default {
       type: Array,
       default: function () {
         return [];
-      }
+      },
     },
     months: {
       type: Array,
       default: function () {
         return [];
-      }
+      },
     },
     days: {
       type: Array,
       default: function () {
         return [];
-      }
+      },
     },
   },
   emits: ['cancelled'],
@@ -248,7 +297,7 @@ export default {
   computed: {
     dirltr() {
       return this.$root.htmldir == 'ltr';
-    }
+    },
   },
 
   mounted() {
@@ -272,21 +321,19 @@ export default {
     },
 
     getCategories() {
-      axios.get('lifeevents/categories')
-        .then(response => {
-          this.categories = response.data.data;
-          this.loadingCategories = false;
-        });
+      axios.get('lifeevents/categories').then((response) => {
+        this.categories = response.data.data;
+        this.loadingCategories = false;
+      });
     },
 
     getType(category) {
       this.loadingTypes = true;
 
-      axios.get('lifeevents/categories/' + category.id + '/types')
-        .then(response => {
-          this.types = response.data.data;
-          this.loadingTypes = false;
-        });
+      axios.get('lifeevents/categories/' + category.id + '/types').then((response) => {
+        this.types = response.data.data;
+        this.loadingTypes = false;
+      });
 
       this.view = 'types';
       this.activeCategory = category;
@@ -322,18 +369,17 @@ export default {
     },
 
     store() {
-      axios.post('people/' + this.hash + '/lifeevents', this.newLifeEvent)
-        .then(response => {
-          this.$emit('updateLifeEventTimeline', response.data);
+      axios.post('people/' + this.hash + '/lifeevents', this.newLifeEvent).then((response) => {
+        this.$emit('updateLifeEventTimeline', response.data);
 
-          this.$notify({
-            group: 'main',
-            title: this.$t('people.life_event_create_success'),
-            text: '',
-            type: 'success'
-          });
+        this.$notify({
+          group: 'main',
+          title: this.$t('people.life_event_create_success'),
+          text: '',
+          type: 'success',
         });
+      });
     },
-  }
+  },
 };
 </script>

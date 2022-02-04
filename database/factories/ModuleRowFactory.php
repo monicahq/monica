@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Attribute;
-use App\Models\Information;
+use App\Models\Module;
+use App\Models\ModuleRow;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class AttributeFactory extends Factory
+class ModuleRowFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Attribute::class;
+    protected $model = ModuleRow::class;
 
     /**
      * Define the model's default state.
@@ -23,9 +23,8 @@ class AttributeFactory extends Factory
     public function definition()
     {
         return [
-            'information_id' => Information::factory(),
-            'name' => 'Gender',
-            'type' => 'text',
+            'module_id' => Module::factory(),
+            'position' => 1,
         ];
     }
 }

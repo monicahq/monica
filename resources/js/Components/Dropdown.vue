@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <div @click="open = ! open">
+    <div @click="open = !open">
       <slot name="trigger" />
     </div>
 
@@ -15,11 +15,12 @@
       leave-from-class="transform opacity-100 scale-100"
       leave-to-class="transform opacity-0 scale-95"
     >
-      <div v-show="open"
-           class="absolute z-50 mt-2 rounded-md shadow-lg"
-           :class="[widthClass, alignmentClasses]"
-           style="display: none;"
-           @click="open = false"
+      <div
+        v-show="open"
+        class="absolute z-50 mt-2 rounded-md shadow-lg"
+        :class="[widthClass, alignmentClasses]"
+        style="display: none"
+        @click="open = false"
       >
         <div class="rounded-md ring-1 ring-black ring-opacity-5" :class="contentClasses">
           <slot name="content" />
@@ -36,16 +37,16 @@ export default {
   props: {
     align: {
       type: String,
-      default: 'right'
+      default: 'right',
     },
     width: {
       type: String,
-      default: '48'
+      default: '48',
     },
     contentClasses: {
       type: [String, Array],
-      default: () => ['py-1', 'bg-white']
-    }
+      default: () => ['py-1', 'bg-white'],
+    },
   },
 
   setup() {
@@ -68,7 +69,7 @@ export default {
   computed: {
     widthClass() {
       return {
-        '48': 'w-48',
+        48: 'w-48',
       }[this.width.toString()];
     },
 
@@ -81,6 +82,6 @@ export default {
         return 'origin-top';
       }
     },
-  }
+  },
 };
 </script>
