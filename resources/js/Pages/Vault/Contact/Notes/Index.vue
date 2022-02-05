@@ -1,14 +1,4 @@
-<style lang="scss" scoped>
-.grid {
-  grid-template-columns: 300px 1fr;
-}
-
-@media (max-width: 480px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
+<style lang="scss" scoped></style>
 
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
@@ -35,8 +25,8 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="layoutData.vault.url.contacts" class="text-sky-500 hover:text-blue-900">
-                Profile of {{ data.contact_name.name }}
+              <inertia-link :href="data.url.contact" class="text-sky-500 hover:text-blue-900">
+                Profile of {{ data.contact.name }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -58,49 +48,7 @@
 
     <main class="sm:mt-18 relative">
       <div class="mx-auto max-w-6xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
-          <!-- left -->
-          <div class="p-3 sm:p-3">
-            <div v-if="data.contact_information.length > 0" class="mb-8">
-              <div v-for="module in data.contact_information" :key="module.id">
-                <avatar v-if="module.type == 'avatar'" :data="avatar" />
-
-                <contact-name v-if="module.type == 'contact_names'" :data="contactName" />
-              </div>
-            </div>
-
-            <ul class="text-sm">
-              <li>
-                <span class="cursor-pointer text-sky-500 hover:text-blue-900" @click="destroy">Delete contact</span>
-              </li>
-            </ul>
-          </div>
-
-          <!-- right -->
-          <div class="p-3 sm:px-3 sm:py-0">
-            <!-- all the pages -->
-            <div class="mb-8 border-b border-gray-200">
-              <ul>
-                <li v-for="page in data.template_pages" :key="page.id" class="mr-2 inline">
-                  <inertia-link
-                    :href="page.url.show"
-                    :class="{ 'border-orange-500 hover:border-orange-500': page.selected }"
-                    class="inline-block border-b-2 border-transparent px-4 pb-2 hover:border-gray-200"
-                  >
-                    {{ page.name }}
-                  </inertia-link>
-                </li>
-              </ul>
-            </div>
-
-            <!-- all the modules -->
-            <div v-if="data.modules.length > 0">
-              <div v-for="module in data.modules" :key="module.id">
-                <notes v-if="module.type == 'notes'" :data="notes" />
-              </div>
-            </div>
-          </div>
-        </div>
+        <notes :data="data" :module-mode="false" :paginator="paginator" />
       </div>
     </main>
   </layout>
@@ -129,53 +77,14 @@ export default {
       type: Object,
       default: null,
     },
-  },
-
-  data() {
-    return {
-      avatar: [],
-      contactName: [],
-      notes: [],
-    };
-  },
-
-  created() {
-    // contact information page
-    if (this.data.contact_information.length > 0) {
-      if (this.data.contact_information.findIndex((x) => x.type == 'contact_names') > -1) {
-        this.contactName =
-          this.data.contact_information[this.data.contact_information.findIndex((x) => x.type == 'contact_names')].data;
-      }
-
-      if (this.data.contact_information.findIndex((x) => x.type == 'avatar') > -1) {
-        this.avatar =
-          this.data.contact_information[this.data.contact_information.findIndex((x) => x.type == 'avatar')].data;
-      }
-    }
-
-    // active page
-    if (this.data.modules.length > 0) {
-      if (this.data.modules.findIndex((x) => x.type == 'notes') > -1) {
-        this.notes = this.data.modules[this.data.modules.findIndex((x) => x.type == 'notes')].data;
-      }
-    }
-  },
-
-  methods: {
-    destroy() {
-      if (confirm('Are you sure? This will remove everything we know about this contact.')) {
-        axios
-          .delete(this.data.url.destroy)
-          .then((response) => {
-            localStorage.success = 'The contact has been deleted';
-            this.$inertia.visit(response.data.data);
-          })
-          .catch((error) => {
-            this.loadingState = null;
-            this.form.errors = error.response.data;
-          });
-      }
+    paginator: {
+      type: Object,
+      default: null,
     },
   },
+
+  data() {},
+
+  methods: {},
 };
 </script>

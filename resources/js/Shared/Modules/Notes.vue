@@ -76,7 +76,7 @@
           v-model="form.title"
           :label="'Title'"
           :type="'text'"
-          :input-class="'block w-full'"
+          :input-class="'block w-full mb-3'"
           :required="false"
           :autocomplete="false"
           :maxlength="255"
@@ -254,8 +254,23 @@
       </div>
 
       <!-- view all button -->
-      <div class="text-center">
+      <div v-if="moduleMode" class="text-center">
         <inertia-link :href="data.url.index" class="text-sky-500 hover:text-blue-900"> View all notes </inertia-link>
+      </div>
+
+      <!-- pagination -->
+      <div v-if="!moduleMode" class="flex justify-between text-center">
+        <inertia-link
+          v-show="paginator.previousPageUrl"
+          class="fl dib"
+          :href="paginator.previousPageUrl"
+          title="Previous"
+        >
+          &larr; Previous
+        </inertia-link>
+        <inertia-link v-show="paginator.nextPageUrl" class="fr dib" :href="paginator.nextPageUrl" title="Next">
+          Next &rarr;
+        </inertia-link>
       </div>
     </div>
 
@@ -288,6 +303,14 @@ export default {
     data: {
       type: Object,
       default: null,
+    },
+    paginator: {
+      type: Object,
+      default: null,
+    },
+    moduleMode: {
+      type: Boolean,
+      default: true,
     },
   },
 

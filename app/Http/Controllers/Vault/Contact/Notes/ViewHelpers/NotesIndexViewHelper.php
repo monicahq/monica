@@ -5,17 +5,17 @@ namespace App\Http\Controllers\Vault\Contact\Notes\ViewHelpers;
 use App\Models\Note;
 use App\Models\Contact;
 use App\Helpers\DateHelper;
+use App\Models\User;
 use Illuminate\Support\Str;
 
 class NotesIndexViewHelper
 {
-    public static function data(Contact $contact): array
+    public static function data(Contact $contact, $notes, User $user): array
     {
-        $notes = $contact->notes()->orderBy('created_at', 'desc')->get();
         $notesCollection = $notes->map(function ($note) use ($contact) {
             return self::dto($contact, $note);
         });
-        $emotions = $contact->account->emotions()->get();
+        $emotions = $contact->vault->account->emotions()->get();
         $emotionsCollection = $emotions->map(function ($emotion) {
             return [
                 'id' => $emotion->id,
@@ -25,14 +25,13 @@ class NotesIndexViewHelper
         });
 
         return [
+            'contact' => [
+                'name' => $contact->getName($user),
+            ],
             'notes' => $notesCollection,
             'emotions' => $emotionsCollection,
             'url' => [
                 'store' => route('contact.note.store', [
-                    'vault' => $contact->vault_id,
-                    'contact' => $contact->id,
-                ]),
-                'index' => route('contact.note.index', [
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
                 ]),
@@ -53,7 +52,10 @@ class NotesIndexViewHelper
             'show_full_content' => false,
             'title' => $note->title,
             'author' => $note->author ? $note->author->name : $note->author_name,
-            'emotion' => $note->emotion ? $note->emotion->name : null,
+            'emotion' => $note->emotion ? [
+                'id' => $note->emotion->id,
+                'name' => $note->emotion->name,
+            ] : null,
             'written_at' => DateHelper::formatDate($note->created_at),
             'url' => [
                 'update' => route('contact.note.update', [

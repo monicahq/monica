@@ -11,7 +11,7 @@ use App\Services\Contact\ManageNote\UpdateNote;
 use App\Services\Contact\ManageNote\DestroyNote;
 use App\Http\Controllers\Vault\Contact\Modules\Note\ViewHelpers\ModuleNotesViewHelper;
 
-class ContactNoteController extends Controller
+class ContactModuleNoteController extends Controller
 {
     public function store(Request $request, int $vaultId, int $contactId)
     {
