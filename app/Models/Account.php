@@ -119,4 +119,14 @@ class Account extends Model
     {
         return $this->hasMany(PetCategory::class);
     }
+
+    /**
+     * Get the emotions associated with the account.
+     *
+     * @return HasMany
+     */
+    public function emotions()
+    {
+        return $this->hasMany(Emotion::class);
+    }
 }

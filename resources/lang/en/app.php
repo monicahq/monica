@@ -85,4 +85,8 @@ return [
     'module_gender_pronoun' => 'Gender and pronoun',
 
     'module_option_default_number_of_items_to_display' => 'Default number of items to display',
+
+    'emotion_positive' => '😁 Positive',
+    'emotion_neutral' => '😶‍🌫️ Neutral',
+    'emotion_negative' => '😡 Negative',
 ];

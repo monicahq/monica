@@ -69,15 +69,6 @@
           :textarea-class="'block w-full mb-3'"
         />
 
-        <!-- cta to add a title -->
-        <span
-          v-if="!titleFieldShown"
-          class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
-          @click="showTitleField"
-        >
-          + add title
-        </span>
-
         <!-- title -->
         <text-input
           v-if="titleFieldShown"
@@ -91,6 +82,40 @@
           :maxlength="255"
           @esc-key-pressed="createNoteModalShown = false"
         />
+
+        <!-- emotion -->
+        <div v-if="emotionFieldShown" class="mt-2 block w-full">
+          <p class="mb-2">How did you feel?</p>
+          <div v-for="emotion in data.emotions" :key="emotion.id" class="mb-2 flex items-center">
+            <input
+              :value="emotion.id"
+              v-model="form.emotion"
+              :id="emotion.type"
+              name="emotion"
+              type="radio"
+              class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
+            />
+            <label :for="emotion.type" class="ml-2 block font-medium text-gray-700"> {{ emotion.name }} </label>
+          </div>
+        </div>
+
+        <!-- cta to add a title -->
+        <span
+          v-if="!titleFieldShown"
+          class="mr-2 inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
+          @click="showTitleField"
+        >
+          + add title
+        </span>
+
+        <!-- cta to add emotion -->
+        <span
+          v-if="!emotionFieldShown"
+          class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
+          @click="showEmotionField"
+        >
+          + add emotion
+        </span>
       </div>
 
       <div class="flex justify-between p-5">
@@ -123,6 +148,11 @@
             class="flex justify-between border-t border-gray-200 px-3 py-1 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50"
           >
             <div>
+              <!-- emotion -->
+              <div v-if="note.emotion" class="relative mr-3 inline">
+                {{ note.emotion.name }}
+              </div>
+
               <!-- date -->
               <div class="relative mr-3 inline">
                 <svg
@@ -173,11 +203,7 @@
         </div>
 
         <!-- edit modal form -->
-        <form
-          v-if="editedNoteId === note.id"
-          class="mb-6 rounded-lg border border-gray-200 bg-white"
-          @submit.prevent="update(note)"
-        >
+        <form v-if="editedNoteId === note.id" class="mb-6 bg-white" @submit.prevent="update(note)">
           <div class="border-b border-gray-200 p-5">
             <errors :errors="form.errors" />
 
@@ -202,6 +228,22 @@
               :maxlength="255"
               @esc-key-pressed="editedNoteId = 0"
             />
+
+            <!-- emotion -->
+            <div v-if="form.emotion" class="mt-2 block w-full">
+              <p class="mb-2">How did you feel?</p>
+              <div v-for="emotion in data.emotions" :key="emotion.id" class="mb-2 flex items-center">
+                <input
+                  :value="emotion.id"
+                  v-model="form.emotion"
+                  :id="emotion.type"
+                  name="emotion"
+                  type="radio"
+                  class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                />
+                <label :for="emotion.type" class="ml-2 block font-medium text-gray-700"> {{ emotion.name }} </label>
+              </div>
+            </div>
           </div>
 
           <div class="flex justify-between p-5">
@@ -253,12 +295,14 @@ export default {
     return {
       loadingState: '',
       titleFieldShown: false,
+      emotionFieldShown: false,
       createNoteModalShown: false,
       localNotes: [],
       editedNoteId: 0,
       form: {
         title: '',
         body: '',
+        emotion: '',
         errors: [],
       },
     };
@@ -270,15 +314,22 @@ export default {
 
   methods: {
     showCreateNoteModal() {
+      this.form.errors = [];
       this.form.title = '';
       this.form.body = '';
       this.createNoteModalShown = true;
+    },
+
+    showEmotionField() {
+      this.form.emotion = '';
+      this.emotionFieldShown = true;
     },
 
     showEditNoteModal(note) {
       this.editedNoteId = note.id;
       this.form.title = note.title;
       this.form.body = note.body;
+      this.form.emotion = note.emotion.id;
     },
 
     showTitleField() {

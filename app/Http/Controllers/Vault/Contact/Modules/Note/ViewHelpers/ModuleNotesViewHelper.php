@@ -15,9 +15,18 @@ class ModuleNotesViewHelper
         $notesCollection = $notes->map(function ($note) use ($contact) {
             return self::dto($contact, $note);
         });
+        $emotions = $contact->vault->account->emotions()->get();
+        $emotionsCollection = $emotions->map(function ($emotion) {
+            return [
+                'id' => $emotion->id,
+                'name' => $emotion->name,
+                'type' => $emotion->type,
+            ];
+        });
 
         return [
             'notes' => $notesCollection,
+            'emotions' => $emotionsCollection,
             'url' => [
                 'store' => route('contact.note.store', [
                     'vault' => $contact->vault_id,
@@ -39,6 +48,10 @@ class ModuleNotesViewHelper
             'body_excerpt' => Str::length($note->body) >= 200 ? Str::limit($note->body, 200) : null,
             'show_full_content' => false,
             'title' => $note->title,
+            'emotion' => $note->emotion ? [
+                'id' => $note->emotion->id,
+                'name' => $note->emotion->name,
+            ] : null,
             'author' => $note->author ? $note->author->name : $note->author_name,
             'written_at' => DateHelper::formatDate($note->created_at),
             'url' => [

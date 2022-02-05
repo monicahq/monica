@@ -22,6 +22,7 @@ class ContactNoteController extends Controller
             'contact_id' => $contactId,
             'title' => $request->input('title'),
             'body' => $request->input('body'),
+            'emotion_id' => $request->input('emotion'),
         ];
 
         $note = (new CreateNote)->execute($data);
@@ -43,6 +44,7 @@ class ContactNoteController extends Controller
             'note_id' => $noteId,
             'title' => $request->input('title'),
             'body' => $request->input('body'),
+            'emotion_id' => $request->input('emotion'),
         ];
 
         $note = (new UpdateNote)->execute($data);

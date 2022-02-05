@@ -19,6 +19,7 @@ class Note extends Model
     protected $fillable = [
         'contact_id',
         'author_id',
+        'emotion_id',
         'author_name',
         'title',
         'body',
@@ -60,6 +61,16 @@ class Note extends Model
     public function author()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the emotion associated with the note.
+     *
+     * @return BelongsTo
+     */
+    public function emotion()
+    {
+        return $this->belongsTo(Emotion::class);
     }
 
     /**

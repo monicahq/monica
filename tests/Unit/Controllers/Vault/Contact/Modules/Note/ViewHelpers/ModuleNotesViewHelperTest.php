@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Note;
 use App\Models\Contact;
+use App\Models\Emotion;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers\Vault\Contact\Modules\Note\ViewHelpers\ModuleNotesViewHelper;
 
@@ -21,16 +22,31 @@ class ModuleNotesViewHelperTest extends TestCase
         Note::factory()->create([
             'contact_id' => $contact->id,
         ]);
+        $emotion = Emotion::factory()->create([
+            'account_id' => $contact->vault->account_id,
+        ]);
 
         $array = ModuleNotesViewHelper::data($contact);
 
         $this->assertEquals(
-            2,
+            3,
             count($array)
         );
 
         $this->assertArrayHasKey('notes', $array);
+        $this->assertArrayHasKey('emotions', $array);
         $this->assertArrayHasKey('url', $array);
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'id' => $emotion->id,
+                    'name' => $emotion->name,
+                    'type' => $emotion->type,
+                ],
+            ],
+            $array['emotions']->toArray()
+        );
 
         $this->assertEquals(
             [
@@ -59,6 +75,7 @@ class ModuleNotesViewHelperTest extends TestCase
                 'body_excerpt' => null,
                 'show_full_content' => false,
                 'title' => $note->title,
+                'emotion' => null,
                 'author' => $note->author->name,
                 'written_at' => 'Jan 01, 2018',
                 'url' => [

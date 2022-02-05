@@ -4,6 +4,7 @@ namespace App\Services\Contact\ManageNote;
 
 use Carbon\Carbon;
 use App\Models\Note;
+use App\Models\Emotion;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Jobs\CreateContactLog;
@@ -26,6 +27,7 @@ class UpdateNote extends BaseService implements ServiceInterface
             'author_id' => 'required|integer|exists:users,id',
             'contact_id' => 'required|integer|exists:contacts,id',
             'note_id' => 'required|integer|exists:notes,id',
+            'emotion_id' => 'nullable|integer|exists:emotions,id',
             'title' => 'nullable|string|max:255',
             'body' => 'required|string|max:65535',
         ];
@@ -59,8 +61,15 @@ class UpdateNote extends BaseService implements ServiceInterface
         $this->note = Note::where('contact_id', $data['contact_id'])
             ->findOrFail($data['note_id']);
 
+        if ($this->valueOrNull($data, 'emotion_id')) {
+            Emotion::where('account_id', $data['account_id'])
+            ->where('id', $data['emotion_id'])
+            ->firstOrFail();
+        }
+
         $this->note->body = $data['body'];
         $this->note->title = $this->valueOrNull($data, 'title');
+        $this->note->emotion_id = $this->valueOrNull($data, 'emotion_id');
         $this->note->save();
 
         $this->contact->last_updated_at = Carbon::now();

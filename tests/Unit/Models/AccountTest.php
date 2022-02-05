@@ -8,6 +8,7 @@ use App\Models\Label;
 use App\Models\Gender;
 use App\Models\Module;
 use App\Models\Account;
+use App\Models\Emotion;
 use App\Models\Pronoun;
 use App\Models\Template;
 use App\Models\GroupType;
@@ -140,5 +141,16 @@ class AccountTest extends TestCase
         ]);
 
         $this->assertTrue($account->petCategories()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_emotions()
+    {
+        $account = Account::factory()->create();
+        Emotion::factory(2)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->emotions()->exists());
     }
 }

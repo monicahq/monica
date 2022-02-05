@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\User;
 use App\Models\Module;
+use App\Models\Emotion;
 use App\Models\Template;
 use App\Models\Information;
 use App\Models\TemplatePage;
@@ -198,6 +199,7 @@ class SetupAccount implements ShouldQueue
         $this->addAddressTypes();
         $this->addContactInformation();
         $this->addPetCategories();
+        $this->addEmotions();
     }
 
     /**
@@ -518,5 +520,26 @@ class SetupAccount implements ShouldQueue
                 'name' => $category,
             ]);
         }
+    }
+
+    private function addEmotions(): void
+    {
+        DB::table('emotions')->insert([
+            [
+                'account_id' => $this->user->account_id,
+                'name' => trans('app.emotion_negative'),
+                'type' => Emotion::TYPE_NEGATIVE,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'name' => trans('app.emotion_neutral'),
+                'type' => Emotion::TYPE_NEUTRAL,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'name' => trans('app.emotion_positive'),
+                'type' => Emotion::TYPE_POSITIVE,
+            ],
+        ]);
     }
 }

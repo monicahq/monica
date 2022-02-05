@@ -15,9 +15,18 @@ class NotesIndexViewHelper
         $notesCollection = $notes->map(function ($note) use ($contact) {
             return self::dto($contact, $note);
         });
+        $emotions = $contact->account->emotions()->get();
+        $emotionsCollection = $emotions->map(function ($emotion) {
+            return [
+                'id' => $emotion->id,
+                'name' => $emotion->name,
+                'type' => $emotion->type,
+            ];
+        });
 
         return [
             'notes' => $notesCollection,
+            'emotions' => $emotionsCollection,
             'url' => [
                 'store' => route('contact.note.store', [
                     'vault' => $contact->vault_id,
@@ -44,6 +53,7 @@ class NotesIndexViewHelper
             'show_full_content' => false,
             'title' => $note->title,
             'author' => $note->author ? $note->author->name : $note->author_name,
+            'emotion' => $note->emotion ? $note->emotion->name : null,
             'written_at' => DateHelper::formatDate($note->created_at),
             'url' => [
                 'update' => route('contact.note.update', [
