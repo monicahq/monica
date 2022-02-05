@@ -6,12 +6,12 @@ use function env;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Note;
+use App\Models\User;
 use App\Models\Contact;
 use App\Models\Emotion;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Http\Controllers\Vault\Contact\Modules\Note\ViewHelpers\ModuleNotesViewHelper;
 use App\Http\Controllers\Vault\Contact\Notes\ViewHelpers\NotesIndexViewHelper;
-use App\Models\User;
+use App\Http\Controllers\Vault\Contact\Modules\Note\ViewHelpers\ModuleNotesViewHelper;
 
 class NotesIndexViewHelperTest extends TestCase
 {

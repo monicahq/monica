@@ -8,9 +8,9 @@ use App\Models\Contact;
 use Illuminate\Http\Request;
 use App\Helpers\PaginatorHelper;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Vault\ViewHelpers\VaultIndexViewHelper;
 use App\Http\Controllers\Vault\Contact\Notes\ViewHelpers\NotesIndexViewHelper;
-use Illuminate\Support\Facades\Auth;
 
 class ContactNotesController extends Controller
 {
