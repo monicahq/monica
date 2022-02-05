@@ -114,7 +114,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         LaravelCloudflare::getProxiesUsing(function (): array {
-            return config('monica.cloudflare') ? CloudflareProxies::load() : [];
+            return config('app.cloudflare') ? CloudflareProxies::load() : [];
         });
     }
 

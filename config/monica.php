@@ -284,12 +284,4 @@ return [
     */
     'export_size' => (int) env('EXPORT_SIZE', 5),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Enable cloudflare trusted proxies
-    |--------------------------------------------------------------------------
-    |
-    */
-    'cloudflare' => (bool) env('APP_TRUSTED_CLOUDFLARE', false),
-
 ];
