@@ -7,10 +7,10 @@
  */
 
 return [
-    'message' => 'Thanks for signing up! Please check your emails to confirm your email address.',
-    'success' => 'You have successfully verified your account! You can now login.',
-    'again' => 'You must verify your email before you can access the site.
-                <br/>If you have not received the confirmation email check your spam folder.
-                <br/>To get a new confirmation email please <a href=":url" class="alert-link">click here</a>.',
-    'resend' => 'A confirmation message has been sent. Please check your mailbox.'
+    'message' => 'Дякуємо за реєстрацію! Перевірте вашу електронну пошту, щоб підтвердити свою адресу електронної пошти.',
+    'success' => 'Ви успішно підтвердили свій акаунт! Тепер ви можете увійти.',
+    'again' => 'Ви повинні підтвердити вашу електронну пошту, перш ніж ви зможете увійти на сайт.
+                <br/>Якщо ви не отримали електронного листа з підтвердженням, перевірте папку зі спамом.
+                <br/>Щоб отримати новий лист для підтвердження, будь ласка, <a href=":url" class="alert-link">натисніть тут</a>.',
+    'resend' => 'Підтверджувального листа було надіслано. Будь ласка, перевірте вашу поштову скриньку.'
 ];
