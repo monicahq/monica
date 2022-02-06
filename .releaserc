@@ -1,7 +1,15 @@
 {
+  "branches": [
+    "main",
+    "next",
+    "next-major",
+    {"name": "beta", "prerelease": true},
+    {"name": "alpha", "prerelease": true}
+  ],
   "plugins": [
     [
-      "@semantic-release/commit-analyzer", {
+      "@semantic-release/commit-analyzer",
+      {
         "preset": "angular",
         "releaseRules": [
           {"scope": "no-release", "release": false}
@@ -9,7 +17,8 @@
       }
     ],
     [
-      "@semantic-release/release-notes-generator", {
+      "@semantic-release/release-notes-generator",
+      {
         "preset": "angular",
         "parserOpts": {
           "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
@@ -21,7 +30,8 @@
       }
     ],
     [
-      "@semantic-release/changelog", {
+      "@semantic-release/changelog",
+      {
         "changelogFile": "CHANGELOG.md"
       }
     ],
@@ -29,12 +39,8 @@
     [
       "semantic-release-github-pullrequest",
       {
-        "baseRef": "main",
         "assets": ["CHANGELOG.md"],
-        "labels": [
-          "semantic-release",
-          "auto-squash"
-        ]
+        "labels": ["semantic-release", "auto-squash"]
       }
     ]
   ]
