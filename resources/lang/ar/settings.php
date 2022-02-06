@@ -55,7 +55,7 @@ return [
     'export_status_todo' => 'Submitted',
     'export_status_doing' => 'Doing',
     'export_status_done' => 'Done',
-    'export_status_faile' => 'Failed',
+    'export_status_failed' => 'Failed',
     'export_not_done' => 'Download impossible, this export is not done yet.',
 
     'firstname' => 'الاسم الأول',
