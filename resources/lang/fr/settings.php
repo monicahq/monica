@@ -55,7 +55,7 @@ return [
     'export_status_todo' => 'Soumis',
     'export_status_doing' => 'En cours',
     'export_status_done' => 'Terminé',
-    'export_status_faile' => 'Echoué',
+    'export_status_failed' => 'Echoué',
     'export_not_done' => 'Téléchargement impossible, cet export n’est pas encore terminé.',
 
     'firstname' => 'Prénom',

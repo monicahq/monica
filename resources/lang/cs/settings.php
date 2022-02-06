@@ -55,7 +55,7 @@ return [
     'export_status_todo' => 'Odesláno',
     'export_status_doing' => 'Probíhá',
     'export_status_done' => 'Hotovo',
-    'export_status_faile' => 'Selhalo',
+    'export_status_failed' => 'Selhalo',
     'export_not_done' => 'Stahovat nemožné, tento export ještě není proveden.',
 
     'firstname' => 'First name',

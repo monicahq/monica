@@ -55,7 +55,7 @@ return [
     'export_status_todo' => 'Übermittelt',
     'export_status_doing' => 'In Arbeit',
     'export_status_done' => 'Fertig',
-    'export_status_faile' => 'Fehlgeschlagen',
+    'export_status_failed' => 'Fehlgeschlagen',
     'export_not_done' => 'Download nicht möglich, dieser Export ist noch nicht abgeschlossen.',
 
     'firstname' => 'Vorname',
