@@ -32,7 +32,7 @@ return [
     'people_search_no_results' => 'Результатів не знайдено',
     'people_search_next' => 'Далі',
     'people_search_prev' => 'Previous',
-    'people_search_rows_per_page' => 'Rows per page',
+    'people_search_rows_per_page' => 'Рядків на сторінку',
     'people_search_of' => 'з',
     'people_search_page' => 'Сторінка',
     'people_search_all' => 'Усі',
@@ -46,7 +46,7 @@ return [
 
     // people add
     'people_add_title' => 'Додати нову особу',
-    'people_add_missing' => 'No person found – add a new one now',
+    'people_add_missing' => 'Не знайдено жодної людини – додайте нову зараз',
     'people_add_firstname' => 'Ім\'я',
     'people_add_middlename' => 'Middle name (optional)',
     'people_add_lastname' => 'Last name (optional)',
