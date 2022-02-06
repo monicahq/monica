@@ -46,7 +46,7 @@ return [
     'invitation_button' => 'קבלת ההזמנה',
     'invitation_expiration' => 'הקישור יפוג תוך :count ימים.',
 
-    'export_title' => 'Your export is ready',
+    'export_title' => 'הייצוא שלך מוכן',
     'export_description' => 'You requested a data export on :date. It is now ready to download.',
     'export_download' => 'Download export',
 
