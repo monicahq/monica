@@ -189,7 +189,7 @@ return [
     'reminders_add_next_time' => 'Коли ви хочете отримати наступне нагадування про це?',
     'reminders_add_once' => 'Нагадати один раз',
     'reminders_add_recurrent' => 'Нагадувати кожні',
-    'reminders_add_starting_from' => 'starting from the date specified above',
+    'reminders_add_starting_from' => 'від вказаної вище дати',
     'reminders_add_cta' => 'Додати нагадування',
     'reminders_edit_update_cta' => 'Змінити нагадування',
     'reminders_add_error_custom_text' => 'You need to indicate a text for this reminder',
