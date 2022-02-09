@@ -104,6 +104,7 @@ class Contact extends Model
         'last_name',
         'nickname',
         'gender_id',
+        'pronouns',
         'description',
         'account_id',
         'is_partial',

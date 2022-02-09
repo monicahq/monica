@@ -34,6 +34,7 @@ class CreateContact extends BaseService
             'nickname' => 'nullable|string|max:255',
             'email' => 'nullable|string|max:255',
             'gender_id' => 'nullable|integer|exists:genders,id',
+            'pronouns' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:255',
             'is_partial' => 'nullable|boolean',
             'is_birthdate_known' => 'required|boolean',
@@ -90,7 +91,6 @@ class CreateContact extends BaseService
                 'deceased_date_add_reminder',
             ]
         );
-
         $contact = Contact::create($dataOnly);
 
         $this->updateBirthDayInformation($data, $contact);
