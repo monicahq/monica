@@ -106,6 +106,15 @@
           </form-select>
         </div>
 
+        {{-- Pronouns --}}
+        <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
+          <form-input
+                  :required="false"
+                  :title="'{{ trans('people.people_add_pronouns') }}'"
+                  :id="'pronouns'">
+          </form-input>
+        </div>
+
         {{-- Birthdate --}}
         <form-specialdate
           :months="{{ $months }}"

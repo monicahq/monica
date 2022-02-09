@@ -34,6 +34,7 @@ class UpdateContact extends BaseService
             'last_name' => 'nullable|string|max:255',
             'nickname' => 'nullable|string|max:255',
             'gender_id' => 'nullable|integer|exists:genders,id',
+            'pronouns'   => 'nullable|string|max:255',
             'description' => 'nullable|string|max:255',
             'is_partial' => 'nullable|boolean',
             'is_birthdate_known' => 'required|boolean',

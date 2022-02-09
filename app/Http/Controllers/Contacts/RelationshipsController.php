@@ -177,6 +177,7 @@ class RelationshipsController extends Controller
             'first_name' => 'required|max:255',
             'last_name' => 'max:255',
             'gender_id' => 'nullable|integer',
+            'pronouns'   => 'nullable|max:255',
             'birthdayDate' => 'date_format:Y-m-d',
         ]);
 
@@ -203,6 +204,7 @@ class RelationshipsController extends Controller
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'gender_id' => $request->input('gender_id'),
+            'pronouns' => $request->input('pronouns'),
             'is_birthdate_known' => ! empty($request->input('birthdate')) && $request->input('birthdate') !== 'unknown',
             'birthdate_day' => $day,
             'birthdate_month' => $month,

@@ -32,6 +32,7 @@ class ContactShort extends JsonResource
             'initials' => $this->getInitials(),
             'gender' => is_null($this->gender) ? null : $this->gender->name,
             'gender_type' => is_null($this->gender) ? null : $this->gender->type,
+            'pronouns' => is_null($this->pronouns) ? null : $this->pronouns,
             'is_starred' => (bool) $this->is_starred,
             'is_partial' => (bool) $this->is_partial,
             'is_active' => (bool) $this->is_active,

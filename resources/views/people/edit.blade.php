@@ -114,6 +114,18 @@
           </div>
         </div>
 
+        {{-- Pronouns --}}
+        <div class="pa4-ns ph3 pv2 bb b--gray-monica">
+          <div class="mb3 mb0-ns">
+            <form-input
+                    value="{{ $contact->pronouns }}"
+                    :required="false"
+                    :title="'{{ trans('people.people_add_pronouns') }}'"
+                    :id="'pronouns'">
+            </form-input>
+          </div>
+        </div>
+
         {{-- Description --}}
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           <div class="mb3 mb0-ns">
