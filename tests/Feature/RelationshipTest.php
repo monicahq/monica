@@ -119,6 +119,7 @@ class RelationshipTest extends FeatureTestCase
             'first_name' => 'Arnold',
             'last_name' => 'Schwarzenegger',
             'gender_id' => $gender->id,
+            'pronouns'  => 'He/His',
             'birthdate' => 'unknown',
             'realContact' => false,
         ];
@@ -132,6 +133,7 @@ class RelationshipTest extends FeatureTestCase
             'first_name' => 'Arnold',
             'last_name' => 'Schwarzenegger',
             'gender_id' => $gender->id,
+            'pronouns'  => 'He/His',
             'is_partial' => true,
         ]);
         $this->assertDatabaseHas('relationships', [
@@ -274,6 +276,7 @@ class RelationshipTest extends FeatureTestCase
             'first_name' => 'Arnold',
             'last_name' => 'Schwarzenegger',
             'gender_id' => $partner->gender_id,
+            'pronouns'  => 'He/His',
             'birthdate' => 'exact',
             'birthdayDate' => '1947-07-30',
         ];
@@ -286,6 +289,7 @@ class RelationshipTest extends FeatureTestCase
             'account_id' => $user->account_id,
             'first_name' => 'Arnold',
             'last_name' => 'Schwarzenegger',
+            'pronouns'  => 'He/His',
             'is_partial' => true,
         ]);
         $this->assertDatabaseHas('special_dates', [

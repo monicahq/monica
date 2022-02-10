@@ -27,6 +27,7 @@ class UpdateContactTest extends TestCase
             'middle_name' => 'franck',
             'last_name' => 'doe',
             'gender_id' => $contact->gender_id,
+            'pronouns'  => 'He/His',
             'description' => 'this is a test',
             'is_partial' => false,
             'is_birthdate_known' => true,
@@ -50,6 +51,7 @@ class UpdateContactTest extends TestCase
             'id' => $contact->id,
             'account_id' => $contact->account_id,
             'first_name' => 'john',
+            'pronouns'  => 'He/His',
         ]);
 
         $this->assertInstanceOf(
@@ -72,6 +74,7 @@ class UpdateContactTest extends TestCase
             'middle_name' => 'franck',
             'last_name' => 'doe',
             'gender_id' => $contact->gender_id,
+            'pronouns'  => 'He/His',
             'description' => 'this is a test',
             'is_partial' => false,
             'is_birthdate_known' => true,
@@ -104,6 +107,7 @@ class UpdateContactTest extends TestCase
             'middle_name' => 'franck',
             'last_name' => 'doe',
             'gender_id' => $contact->gender_id,
+            'pronouns'  => 'He/His',
             'description' => 'this is a test',
             'is_partial' => false,
             'is_birthdate_known' => true,
@@ -139,6 +143,7 @@ class UpdateContactTest extends TestCase
             'middle_name' => 'franck',
             'last_name' => 'doe',
             'gender_id' => $contact->gender_id,
+            'pronouns'  => 'He/His',
             'description' => 'this is a test',
             'is_partial' => false,
             'is_birthdate_known' => true,
