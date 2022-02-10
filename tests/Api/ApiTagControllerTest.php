@@ -31,6 +31,7 @@ class ApiTagControllerTest extends ApiTestCase
         'last_name',
         'gender',
         'gender_type',
+        'pronouns',
         'is_starred',
         'is_partial',
         'is_dead',

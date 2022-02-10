@@ -9,6 +9,20 @@ describe('Contacts', function () {
     cy.get('h1').should('contain', 'John Doe');
   });
 
+  it('lets you add a contact with pronouns', function () {
+    cy.visit('/people');
+    cy.get('#button-add-contact').click();
+
+    cy.get('input[name=first_name]').type('John');
+    cy.get('input[name=last_name]').type('Doe');
+    cy.get('select[name=gender]').select('Man');
+    cy.get('input[name=pronouns').type('He/His');
+
+    cy.get('button[name=save]').click();
+
+    cy.get('h1').should('contain', 'John Doe');
+  });
+
   it('lets you add two contacts in a row', function () {
     cy.createContact('John', 'Doe', 'Man', 'save_and_add_another');
     cy.url().should('include', '/people/add');
@@ -41,6 +55,7 @@ describe('Contacts', function () {
     cy.get('input[name=firstname]').clear();
     cy.get('input[name=firstname]').type('Jane');
     cy.get('input[name=lastname]').clear();
+    cy.get('input[name=pronouns').type('She/Her');
     cy.get('button[name=save]').click();
 
     cy.url().should('include', '/people/h:');

@@ -13,6 +13,7 @@ $factory->define(App\Models\Contact\Contact::class, function (Faker\Generator $f
                 'account_id' => $data['account_id'],
             ])->id;
         },
+        'pronouns' => 'They/Their',
         'uuid' => Str::uuid(),
         'default_avatar_color' => '#ffffff',
         'avatar_default_url' => 'avatars/img.png',

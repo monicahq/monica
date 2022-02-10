@@ -573,6 +573,7 @@ class ContactTest extends FeatureTestCase
             'firstname' => $contact->first_name,
             'lastname' => $contact->last_name,
             'gender' => $contact->gender_id,
+            'pronouns' => $contact->pronouns,
             'birthdate' => 'unknown',
             'is_deceased' => 'true',
             'is_deceased_date_known' => 'true',
@@ -602,6 +603,7 @@ class ContactTest extends FeatureTestCase
             'firstname' => $contact->first_name,
             'lastname' => $contact->last_name,
             'gender' => $contact->gender_id,
+            'pronouns' => $contact->pronouns,
             'birthdate' => 'unknown',
             'is_deceased' => 'true',
             'is_deceased_date_known' => 'true',
@@ -632,6 +634,7 @@ class ContactTest extends FeatureTestCase
             'firstname' => $contact->first_name,
             'lastname' => $contact->last_name,
             'gender' => $contact->gender_id,
+            'pronouns' => $contact->pronouns,
             'birthdate' => 'unknown',
             'is_deceased' => 'true',
             'is_deceased_date_known' => 'true',
@@ -671,6 +674,7 @@ class ContactTest extends FeatureTestCase
             'last_name' => 'Doe',
             'middle_name' => 'Mike',
             'gender' => $gender->id,
+            'pronouns' => 'He/His',
         ];
 
         $response = $this->post('/people', $data);
@@ -682,6 +686,7 @@ class ContactTest extends FeatureTestCase
             'last_name' => 'Doe',
             'middle_name' => 'Mike',
             'gender_id' => $gender->id,
+            'pronouns' => 'He/His',
         ]);
     }
 

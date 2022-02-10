@@ -23,6 +23,7 @@ class ApiContactControllerTest extends ApiTestCase
         'nickname',
         'gender',
         'gender_type',
+        'pronouns',
         'is_starred',
         'is_partial',
         'is_dead',
@@ -85,6 +86,7 @@ class ApiContactControllerTest extends ApiTestCase
         'last_name',
         'gender',
         'gender_type',
+        'pronouns',
         'is_starred',
         'is_partial',
         'is_dead',
@@ -198,6 +200,7 @@ class ApiContactControllerTest extends ApiTestCase
         'nickname',
         'gender',
         'gender_type',
+        'pronouns',
         'is_partial',
         'is_dead',
         'information' => [

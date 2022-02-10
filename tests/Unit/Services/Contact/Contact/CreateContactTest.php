@@ -36,6 +36,7 @@ class CreateContactTest extends TestCase
             'middle_name' => 'franck',
             'last_name' => 'doe',
             'gender_id' => $gender->id,
+            'pronouns'  => 'He/His',
             'description' => 'this is a test',
             'is_partial' => false,
             'is_birthdate_known' => false,
@@ -49,6 +50,7 @@ class CreateContactTest extends TestCase
             'id' => $contact->id,
             'account_id' => $contact->account_id,
             'first_name' => 'john',
+            'pronouns'  => 'He/His',
         ]);
 
         // check that a default color has been set
@@ -124,6 +126,7 @@ class CreateContactTest extends TestCase
             'middle_name' => 'franck',
             'last_name' => 'doe',
             'gender_id' => $gender->id,
+            'pronouns'  => 'They/Their',
             'description' => 'this is a test',
             'is_partial' => false,
             'is_birthdate_known' => false,
@@ -146,7 +149,7 @@ class CreateContactTest extends TestCase
     }
 
     /** @test */
-    public function it_stores_a_contact_without_gender()
+    public function it_stores_a_contact_without_gender_and_pronouns()
     {
         $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create([
@@ -176,6 +179,7 @@ class CreateContactTest extends TestCase
             'account_id' => $contact->account_id,
             'first_name' => 'john',
             'gender_id' => null,
+            'pronouns' => null,
         ]);
 
         $this->assertInstanceOf(
