@@ -82,6 +82,16 @@ class ContactLogHelper
                 $sentence = ContactLogHelper::noteDestroyed($log);
                 break;
 
+            case 'contact_date_created':
+                $sentence = ContactLogHelper::contactDateCreated($log);
+                break;
+            case 'contact_date_updated':
+                $sentence = ContactLogHelper::contactDateUpdated($log);
+                break;
+            case 'contact_date_destroyed':
+                $sentence = ContactLogHelper::contactDateDestroyed($log);
+                break;
+
             case 'contact_template_updated':
                 $sentence = ContactLogHelper::templateUpdated($log);
                 break;
@@ -266,6 +276,27 @@ class ContactLogHelper
     private static function noteDestroyed(ContactLog $log): string
     {
         $sentence = trans('contact_log.note_destroyed');
+
+        return $sentence;
+    }
+
+    private static function contactDateCreated(ContactLog $log): string
+    {
+        $sentence = trans('contact_log.contact_date_created');
+
+        return $sentence;
+    }
+
+    private static function contactDateUpdated(ContactLog $log): string
+    {
+        $sentence = trans('contact_log.contact_date_updated');
+
+        return $sentence;
+    }
+
+    private static function contactDateDestroyed(ContactLog $log): string
+    {
+        $sentence = trans('contact_log.contact_date_destroyed');
 
         return $sentence;
     }

@@ -1482,4 +1482,116 @@ class AuditLogHelperTest extends TestCase
             $sentence
         );
     }
+
+    /** @test */
+    public function contact_date_created(): void
+    {
+        $log = AuditLog::factory()->create([
+            'action_name' => 'contact_date_created',
+            'objects' => json_encode([
+                'contact_id' => 123,
+                'contact_name' => 'Monica Geller',
+                'label' => 'birthdate',
+            ]),
+        ]);
+
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Added a date named birthdate for the contact Monica Geller (deleted)',
+            $sentence
+        );
+
+        $contact = Contact::factory()->create();
+        $log = AuditLog::factory()->create([
+            'action_name' => 'contact_date_created',
+            'objects' => json_encode([
+                'contact_id' => $contact->id,
+                'contact_name' => $contact->getName($loggedUser),
+                'label' => 'birthdate',
+            ]),
+        ]);
+
+        $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Added a date named birthdate for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
+            $sentence
+        );
+    }
+
+    /** @test */
+    public function contact_date_updated(): void
+    {
+        $log = AuditLog::factory()->create([
+            'action_name' => 'contact_date_updated',
+            'objects' => json_encode([
+                'contact_id' => 123,
+                'contact_name' => 'Monica Geller',
+                'label' => 'birthdate',
+            ]),
+        ]);
+
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Updated a date named birthdate for the contact Monica Geller (deleted)',
+            $sentence
+        );
+
+        $contact = Contact::factory()->create();
+        $log = AuditLog::factory()->create([
+            'action_name' => 'contact_date_updated',
+            'objects' => json_encode([
+                'contact_id' => $contact->id,
+                'contact_name' => $contact->getName($loggedUser),
+                'label' => 'birthdate',
+            ]),
+        ]);
+
+        $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Updated a date named birthdate for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
+            $sentence
+        );
+    }
+
+    /** @test */
+    public function contact_date_destroyed(): void
+    {
+        $log = AuditLog::factory()->create([
+            'action_name' => 'contact_date_destroyed',
+            'objects' => json_encode([
+                'contact_id' => 123,
+                'contact_name' => 'Monica Geller',
+            ]),
+        ]);
+
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Deleted a date for the contact Monica Geller (deleted)',
+            $sentence
+        );
+
+        $contact = Contact::factory()->create();
+        $log = AuditLog::factory()->create([
+            'action_name' => 'contact_date_destroyed',
+            'objects' => json_encode([
+                'contact_id' => $contact->id,
+                'contact_name' => $contact->getName($loggedUser),
+            ]),
+        ]);
+
+        $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Deleted a date for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
+            $sentence
+        );
+    }
 }

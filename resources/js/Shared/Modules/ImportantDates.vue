@@ -10,8 +10,8 @@
 
 <template>
   <div class="mb-4">
-    <div class="mb-1 items-center justify-between border-b border-gray-200 sm:flex">
-      <div class="mb-2 text-xs sm:mb-0">Name</div>
+    <div class="mb-3 items-center justify-between border-b border-gray-200 sm:flex">
+      <div class="mb-2 text-xs sm:mb-0">Important dates</div>
       <inertia-link :href="data.url.edit" class="relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -30,9 +30,14 @@
       </inertia-link>
     </div>
 
-    <h1 class="text-xl">
-      {{ data.name }}
-    </h1>
+    <ul v-for="date in data.dates" :key="date.id" class="">
+      <li class="flex justify-between">
+        <span class="font-semibold">{{ date.label }}</span>
+        <span
+          >{{ date.date }} <span v-if="date.age" class="text-gray-400">({{ date.age }})</span></span
+        >
+      </li>
+    </ul>
   </div>
 </template>
 

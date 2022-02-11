@@ -225,6 +225,18 @@ class AuditLogHelper
                 $sentence = AuditLogHelper::contactTemplateUpdated($log, $user);
                 break;
 
+            case 'contact_date_created':
+                $sentence = AuditLogHelper::contactDateCreated($log, $user);
+                break;
+
+            case 'contact_date_updated':
+                $sentence = AuditLogHelper::contactDateUpdated($log, $user);
+                break;
+
+            case 'contact_date_destroyed':
+                $sentence = AuditLogHelper::contactDateDestroyed($log, $user);
+                break;
+
             default:
                 $sentence = 'No translation';
                 break;
@@ -991,6 +1003,73 @@ class AuditLogHelper
             ]);
         } else {
             $sentence = trans('log.contact_template_updated_object_deleted', [
+                'contact_name' => $log->object->{'contact_name'},
+            ]);
+        }
+
+        return $sentence;
+    }
+
+    private static function contactDateCreated(AuditLog $log, User $user): string
+    {
+        $contact = Contact::find($log->object->{'contact_id'});
+
+        if ($contact) {
+            $sentence = trans('log.contact_date_created', [
+                'contact_url' => route('contact.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+                'contact_name' => NameHelper::formatContactName($user, $contact),
+                'label' => $log->object->{'label'},
+            ]);
+        } else {
+            $sentence = trans('log.contact_date_created_object_deleted', [
+                'contact_name' => $log->object->{'contact_name'},
+                'label' => $log->object->{'label'},
+            ]);
+        }
+
+        return $sentence;
+    }
+
+    private static function contactDateUpdated(AuditLog $log, User $user): string
+    {
+        $contact = Contact::find($log->object->{'contact_id'});
+
+        if ($contact) {
+            $sentence = trans('log.contact_date_updated', [
+                'contact_url' => route('contact.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+                'contact_name' => NameHelper::formatContactName($user, $contact),
+                'label' => $log->object->{'label'},
+            ]);
+        } else {
+            $sentence = trans('log.contact_date_updated_object_deleted', [
+                'contact_name' => $log->object->{'contact_name'},
+                'label' => $log->object->{'label'},
+            ]);
+        }
+
+        return $sentence;
+    }
+
+    private static function contactDateDestroyed(AuditLog $log, User $user): string
+    {
+        $contact = Contact::find($log->object->{'contact_id'});
+
+        if ($contact) {
+            $sentence = trans('log.contact_date_destroyed', [
+                'contact_url' => route('contact.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+                'contact_name' => NameHelper::formatContactName($user, $contact),
+            ]);
+        } else {
+            $sentence = trans('log.contact_date_destroyed_object_deleted', [
                 'contact_name' => $log->object->{'contact_name'},
             ]);
         }

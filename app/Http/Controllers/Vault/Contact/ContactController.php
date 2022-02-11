@@ -76,6 +76,7 @@ class ContactController extends Controller
         $contact = Contact::with('gender')
             ->with('pronoun')
             ->with('notes')
+            ->with('dates')
             ->findOrFail($contactId);
 
         if (! $contact->template_id) {

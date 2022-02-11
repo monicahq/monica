@@ -25,6 +25,8 @@ class CreateContactsTable extends Migration
             $table->string('last_name')->nullable();
             $table->string('nickname')->nullable();
             $table->string('maiden_name')->nullable();
+            $table->string('born_at')->nullable(); // I KNOW: it's a string, not a date. Age is complex in Monica. Take a look at AgeHelper.
+            $table->string('deceased_at')->nullable(); // I KNOW: it's a string, not a date. Age is complex in Monica. Take a look at AgeHelper.
             $table->boolean('can_be_deleted')->default(true);
             $table->datetime('last_updated_at')->nullable();
             $table->timestamps();

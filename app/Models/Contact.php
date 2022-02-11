@@ -182,6 +182,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the date records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function dates()
+    {
+        return $this->hasMany(ContactDate::class);
+    }
+
+    /**
      * Get the name of the contact, according to the user preference.
      *
      * @param  User  $user

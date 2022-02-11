@@ -125,6 +125,20 @@ class SetupAccount implements ShouldQueue
         $module = (new CreateModule)->execute([
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
+            'name' => trans('app.module_important_dates'),
+            'type' => Module::TYPE_IMPORTANT_DATES,
+            'can_be_deleted' => false,
+        ]);
+        (new AssociateModuleToTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageContact->id,
+            'module_id' => $module->id,
+        ]);
+        $module = (new CreateModule)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
             'name' => trans('app.module_gender_pronoun'),
             'type' => Module::TYPE_GENDER_PRONOUN,
             'can_be_deleted' => false,

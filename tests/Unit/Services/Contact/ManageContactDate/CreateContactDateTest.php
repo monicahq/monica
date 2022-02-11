@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\ManageContactAddress;
+namespace Tests\Unit\Services\Contact\ManageContactDate;
 
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\Account;
-use App\Models\Address;
 use App\Models\Contact;
+use App\Models\ContactDate;
 use App\Jobs\CreateAuditLog;
 use App\Jobs\CreateContactLog;
 use Illuminate\Support\Facades\Queue;
@@ -15,24 +15,21 @@ use Illuminate\Validation\ValidationException;
 use App\Exceptions\NotEnoughPermissionException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Services\Contact\ManageContactAddress\DestroyContactAddress;
+use App\Services\Contact\ManageContactDate\CreateContactDate;
 
-class DestroyContactAddressTest extends TestCase
+class CreateContactDateTest extends TestCase
 {
     use DatabaseTransactions;
 
     /** @test */
-    public function it_destroys_a_contact_address(): void
+    public function it_creates_a_contact_date(): void
     {
         $regis = $this->createUser();
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $address = Address::factory()->create([
-            'contact_id' => $contact->id,
-        ]);
 
-        $this->executeService($regis, $regis->account, $vault, $contact, $address);
+        $this->executeService($regis, $regis->account, $vault, $contact);
     }
 
     /** @test */
@@ -43,7 +40,7 @@ class DestroyContactAddressTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyContactAddress)->execute($request);
+        (new CreateContactDate)->execute($request);
     }
 
     /** @test */
@@ -56,11 +53,8 @@ class DestroyContactAddressTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $address = Address::factory()->create([
-            'contact_id' => $contact->id,
-        ]);
 
-        $this->executeService($regis, $account, $vault, $contact, $address);
+        $this->executeService($regis, $account, $vault, $contact);
     }
 
     /** @test */
@@ -72,11 +66,8 @@ class DestroyContactAddressTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create();
-        $address = Address::factory()->create([
-            'contact_id' => $contact->id,
-        ]);
 
-        $this->executeService($regis, $regis->account, $vault, $contact, $address);
+        $this->executeService($regis, $regis->account, $vault, $contact);
     }
 
     /** @test */
@@ -88,28 +79,11 @@ class DestroyContactAddressTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_VIEW, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $address = Address::factory()->create([
-            'contact_id' => $contact->id,
-        ]);
 
-        $this->executeService($regis, $regis->account, $vault, $contact, $address);
+        $this->executeService($regis, $regis->account, $vault, $contact);
     }
 
-    /** @test */
-    public function it_fails_if_address_does_not_exist(): void
-    {
-        $this->expectException(ModelNotFoundException::class);
-
-        $regis = $this->createUser();
-        $vault = $this->createVault($regis->account);
-        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $address = Address::factory()->create();
-
-        $this->executeService($regis, $regis->account, $vault, $contact, $address);
-    }
-
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, Address $address): void
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact): void
     {
         Queue::fake();
 
@@ -118,21 +92,31 @@ class DestroyContactAddressTest extends TestCase
             'vault_id' => $vault->id,
             'author_id' => $author->id,
             'contact_id' => $contact->id,
-            'address_id' => $address->id,
+            'label' => 'birthdate',
+            'date' => '1981-10-29',
+            'type' => ContactDate::TYPE_BIRTHDATE,
         ];
 
-        (new DestroyContactAddress)->execute($request);
+        $date = (new CreateContactDate)->execute($request);
 
-        $this->assertDatabaseMissing('addresses', [
-            'id' => $address->id,
+        $this->assertDatabaseHas('contact_dates', [
+            'contact_id' => $contact->id,
+            'label' => 'birthdate',
+            'date' => '1981-10-29',
+            'type' => 'birthdate',
         ]);
 
+        $this->assertInstanceOf(
+            ContactDate::class,
+            $date
+        );
+
         Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'contact_address_destroyed';
+            return $job->auditLog['action_name'] === 'contact_date_created';
         });
 
         Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'contact_address_destroyed';
+            return $job->contactLog['action_name'] === 'contact_date_created';
         });
     }
 }

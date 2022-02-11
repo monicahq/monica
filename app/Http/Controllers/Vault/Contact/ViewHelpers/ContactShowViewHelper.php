@@ -12,6 +12,7 @@ use App\Http\Controllers\Vault\Contact\Modules\Note\ViewHelpers\ModuleNotesViewH
 use App\Http\Controllers\Vault\Contact\Modules\Avatar\ViewHelpers\ModuleAvatarViewHelper;
 use App\Http\Controllers\Vault\Contact\Modules\ContactName\ViewHelpers\ModuleContactNameViewHelper;
 use App\Http\Controllers\Vault\Contact\Modules\GenderPronoun\ViewHelpers\ModuleGenderPronounViewHelper;
+use App\Http\Controllers\Vault\Contact\Modules\ImportantDates\ViewHelpers\ModuleImportantDatesViewHelper;
 
 class ContactShowViewHelper
 {
@@ -84,6 +85,10 @@ class ContactShowViewHelper
 
             if ($module->type == Module::TYPE_GENDER_PRONOUN) {
                 $data = ModuleGenderPronounViewHelper::data($contact);
+            }
+
+            if ($module->type == Module::TYPE_IMPORTANT_DATES) {
+                $data = ModuleImportantDatesViewHelper::data($contact);
             }
 
             $modulesCollection->push([
