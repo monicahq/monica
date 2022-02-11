@@ -192,7 +192,7 @@ return [
     'reminders_add_starting_from' => 'від вказаної вище дати',
     'reminders_add_cta' => 'Додати нагадування',
     'reminders_edit_update_cta' => 'Змінити нагадування',
-    'reminders_add_error_custom_text' => 'You need to indicate a text for this reminder',
+    'reminders_add_error_custom_text' => 'Необхідно вказати текст цього нагадування',
     'reminders_create_success' => 'The reminder has been added successfully',
     'reminders_delete_success' => 'The reminder has been deleted successfully',
     'reminders_update_success' => 'The reminder has been updated successfully',
