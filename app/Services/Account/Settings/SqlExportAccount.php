@@ -457,6 +457,7 @@ SET FOREIGN_KEY_CHECKS=0;
             'last_name',
             'nickname',
             'gender_id',
+            'pronouns',
             'description',
             'uuid',
             'is_starred',
