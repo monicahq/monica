@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Controllers\Vault\Contact\Modules\Note\ViewHelpers;
+namespace Tests\Unit\Controllers\Vault\Contact\Modules\ContactName\ViewHelpers;
 
 use Tests\TestCase;
 use App\Models\User;
