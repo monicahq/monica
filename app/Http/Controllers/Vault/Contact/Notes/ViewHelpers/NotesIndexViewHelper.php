@@ -12,8 +12,8 @@ class NotesIndexViewHelper
 {
     public static function data(Contact $contact, $notes, User $user): array
     {
-        $notesCollection = $notes->map(function ($note) use ($contact) {
-            return self::dto($contact, $note);
+        $notesCollection = $notes->map(function ($note) use ($contact, $user) {
+            return self::dto($contact, $note, $user);
         });
         $emotions = $contact->vault->account->emotions()->get();
         $emotionsCollection = $emotions->map(function ($emotion) {
@@ -43,7 +43,7 @@ class NotesIndexViewHelper
         ];
     }
 
-    public static function dto(Contact $contact, Note $note): array
+    public static function dto(Contact $contact, Note $note, User $user): array
     {
         return [
             'id' => $note->id,
@@ -56,7 +56,7 @@ class NotesIndexViewHelper
                 'id' => $note->emotion->id,
                 'name' => $note->emotion->name,
             ] : null,
-            'written_at' => DateHelper::formatDate($note->created_at),
+            'written_at' => DateHelper::format($note->created_at, $user),
             'url' => [
                 'update' => route('contact.note.update', [
                     'vault' => $contact->vault_id,

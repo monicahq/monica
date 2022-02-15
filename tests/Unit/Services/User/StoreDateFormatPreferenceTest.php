@@ -7,19 +7,19 @@ use App\Models\User;
 use App\Models\Account;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use App\Services\User\StoreNameOrderPreference;
+use App\Services\User\StoreDateFormatPreference;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class StoreNameOrderPreferenceTest extends TestCase
+class StoreDateFormatPreferenceTest extends TestCase
 {
     use DatabaseTransactions;
 
     /** @test */
-    public function it_stores_the_name_order_preference(): void
+    public function it_stores_the_date_format_preference(): void
     {
         $ross = $this->createUser();
-        $this->executeService($ross, '%name%', $ross->account);
+        $this->executeService($ross, $ross->account);
     }
 
     /** @test */
@@ -30,7 +30,7 @@ class StoreNameOrderPreferenceTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new StoreNameOrderPreference)->execute($request);
+        (new StoreDateFormatPreference)->execute($request);
     }
 
     /** @test */
@@ -40,41 +40,25 @@ class StoreNameOrderPreferenceTest extends TestCase
 
         $ross = $this->createAdministrator();
         $account = $this->createAccount();
-        $this->executeService($ross, '%user%', $account);
+        $this->executeService($ross, $account);
     }
 
-    public function it_fails_if_name_order_has_no_variable(): void
-    {
-        $this->expectException(ModelNotFoundException::class);
-
-        $ross = $this->createAdministrator();
-        $this->executeService($ross, '', $ross->account);
-    }
-
-    public function it_fails_if_name_order_has_no_closing_percent_symbol(): void
-    {
-        $this->expectException(ModelNotFoundException::class);
-
-        $ross = $this->createAdministrator();
-        $this->executeService($ross, '%', $ross->account);
-    }
-
-    private function executeService(User $author, string $nameOrder, Account $account): void
+    private function executeService(User $author, Account $account): void
     {
         Queue::fake();
 
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
-            'name_order' => $nameOrder,
+            'date_format' => 'Y',
         ];
 
-        $user = (new StoreNameOrderPreference)->execute($request);
+        $user = (new StoreDateFormatPreference)->execute($request);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
             'account_id' => $account->id,
-            'name_order' => $nameOrder,
+            'date_format' => 'Y',
         ]);
 
         $this->assertInstanceOf(

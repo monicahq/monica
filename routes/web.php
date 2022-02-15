@@ -17,6 +17,8 @@ use App\Http\Controllers\Vault\Contact\Notes\ContactNotesController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsUserController;
 use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsTemplateController;
+use App\Http\Controllers\Settings\Preferences\PreferencesNameOrderController;
+use App\Http\Controllers\Settings\Preferences\PreferencesDateFormatController;
 use App\Http\Controllers\Settings\Personalize\Labels\PersonalizeLabelController;
 use App\Http\Controllers\Vault\Contact\Modules\Note\ContactModuleNoteController;
 use App\Http\Controllers\Settings\Personalize\Genders\PersonalizeGenderController;
@@ -110,7 +112,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             // preferences
             Route::prefix('preferences')->name('preferences.')->group(function () {
                 Route::get('', [PreferencesController::class, 'index'])->name('index');
-                Route::post('', [PreferencesController::class, 'store'])->name('store');
+                Route::post('name', [PreferencesNameOrderController::class, 'store'])->name('name.store');
+                Route::post('date', [PreferencesDateFormatController::class, 'store'])->name('date.store');
             });
 
             // users

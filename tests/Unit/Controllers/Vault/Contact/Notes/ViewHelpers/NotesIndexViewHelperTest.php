@@ -76,11 +76,12 @@ class NotesIndexViewHelperTest extends TestCase
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1));
         $contact = Contact::factory()->create();
+        $user = User::factory()->create();
         $note = Note::factory()->create([
             'contact_id' => $contact->id,
         ]);
 
-        $collection = ModuleNotesViewHelper::dto($contact, $note);
+        $collection = ModuleNotesViewHelper::dto($contact, $note, $user);
 
         $this->assertEquals(
             [

@@ -25,6 +25,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'is_account_administrator' => false,
             'name_order' => '%first_name% %last_name%',
+            'date_format' => 'MMM DD, YYYY',
         ];
     }
 

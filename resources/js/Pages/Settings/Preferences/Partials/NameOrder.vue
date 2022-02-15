@@ -11,11 +11,11 @@ pre {
 </style>
 
 <template>
-  <div>
+  <div class="mb-16">
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 sm:mb-0"><span class="mr-1">👉</span> Customize how contacts should be displayed</h3>
-      <pretty-button :text="'Edit'" @click="enableEditMode" />
+      <pretty-button v-if="!editMode" :text="'Edit'" @click="enableEditMode" />
     </div>
 
     <!-- help text -->
@@ -47,7 +47,7 @@ pre {
     <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white">
       <p class="border-b border-gray-200 px-5 py-2">
         <span class="mb-2 block">Current way of displaying contact names:</span>
-        <span class="mb-2 block rounded px-5 py-2 text-sm">{{ localNameOrder }}</span>
+        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm">{{ localNameOrder }}</span>
       </p>
       <p class="example bg-orange-50 px-5 py-2 text-sm font-medium">
         <span class="font-light">Contacts will be shown as follow:</span> {{ localNameExample }}

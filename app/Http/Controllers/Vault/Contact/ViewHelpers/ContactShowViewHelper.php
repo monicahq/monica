@@ -29,7 +29,7 @@ class ContactShowViewHelper
             'contact_name' => ModuleContactNameViewHelper::data($contact, $user),
             'template_pages' => self::getTemplatePagesList($templatePages, $contact),
             'contact_information' => self::getContactInformation($templatePages, $contact, $user),
-            'modules' => $firstPage ? self::modules($firstPage, $contact) : [],
+            'modules' => $firstPage ? self::modules($firstPage, $contact, $user) : [],
             'url' => [
                 'destroy' => route('contact.destroy', [
                     'vault' => $contact->vault_id,
@@ -104,18 +104,18 @@ class ContactShowViewHelper
     /**
      * Get the modules list and data in the given page.
      */
-    public static function modules(TemplatePage $page, Contact $contact): Collection
+    public static function modules(TemplatePage $page, Contact $contact, User $user): Collection
     {
         $modules = $page->modules()->orderBy('position', 'asc')->get();
 
         $modulesCollection = collect();
         foreach ($modules as $module) {
             if ($module->type == Module::TYPE_NOTES) {
-                $data = ModuleNotesViewHelper::data($contact);
+                $data = ModuleNotesViewHelper::data($contact, $user);
             }
 
             if ($module->type == Module::TYPE_FEED) {
-                $data = ModuleNotesViewHelper::data($contact);
+                $data = ModuleNotesViewHelper::data($contact, $user);
             }
 
             $modulesCollection->push([

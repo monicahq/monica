@@ -47,6 +47,8 @@
     <main class="relative sm:mt-20">
       <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <name-order :data="data.name_order" />
+
+        <date-format :data="data.date_format" />
       </div>
     </main>
   </layout>
@@ -55,11 +57,13 @@
 <script>
 import Layout from '@/Shared/Layout';
 import NameOrder from '@/Pages/Settings/Preferences/Partials/NameOrder';
+import DateFormat from '@/Pages/Settings/Preferences/Partials/DateFormat';
 
 export default {
   components: {
     Layout,
     NameOrder,
+    DateFormat,
   },
 
   props: {

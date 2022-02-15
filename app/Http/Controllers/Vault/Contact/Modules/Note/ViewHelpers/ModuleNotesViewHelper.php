@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\Vault\Contact\Modules\Note\ViewHelpers;
 
 use App\Models\Note;
+use App\Models\User;
 use App\Models\Contact;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Str;
 
 class ModuleNotesViewHelper
 {
-    public static function data(Contact $contact): array
+    public static function data(Contact $contact, User $user): array
     {
         $notes = $contact->notes()->orderBy('created_at', 'desc')->take(3)->get();
-        $notesCollection = $notes->map(function ($note) use ($contact) {
-            return self::dto($contact, $note);
+        $notesCollection = $notes->map(function ($note) use ($contact, $user) {
+            return self::dto($contact, $note, $user);
         });
         $emotions = $contact->vault->account->emotions()->get();
         $emotionsCollection = $emotions->map(function ($emotion) {
@@ -40,7 +41,7 @@ class ModuleNotesViewHelper
         ];
     }
 
-    public static function dto(Contact $contact, Note $note): array
+    public static function dto(Contact $contact, Note $note, User $user): array
     {
         return [
             'id' => $note->id,
@@ -53,7 +54,7 @@ class ModuleNotesViewHelper
                 'name' => $note->emotion->name,
             ] : null,
             'author' => $note->author ? $note->author->name : $note->author_name,
-            'written_at' => DateHelper::formatDate($note->created_at),
+            'written_at' => DateHelper::format($note->created_at, $user),
             'url' => [
                 'update' => route('contact.note.update', [
                     'vault' => $contact->vault_id,

@@ -4,12 +4,27 @@ namespace Tests\Unit\Helpers;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\User;
 use App\Helpers\DateHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DateHelperTest extends TestCase
 {
     use DatabaseTransactions;
+
+    /** @test */
+    public function it_gets_the_date_formatted_according_to_user_preferences(): void
+    {
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', '1978-10-01 17:56:03');
+        $user = User::factory()->create([
+            'date_format' => 'MMM DD, YYYY',
+        ]);
+
+        $this->assertEquals(
+            'Oct 01, 1978',
+            DateHelper::format($date, $user)
+        );
+    }
 
     /** @test */
     public function it_gets_the_date_with_english_locale(): void

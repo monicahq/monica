@@ -22,7 +22,7 @@ class ContactShowViewHelperTest extends TestCase
         $contact = Contact::factory()->create();
         $user = User::factory()->create();
         $template = Template::factory()->create();
-        $templatePageContactInformation = TemplatePage::factory()->create([
+        TemplatePage::factory()->create([
             'template_id' => $template->id,
             'type' => TemplatePage::TYPE_CONTACT,
             'position' => 1,
@@ -72,6 +72,7 @@ class ContactShowViewHelperTest extends TestCase
     public function it_gets_the_modules_in_a_given_page(): void
     {
         $contact = Contact::factory()->create();
+        $user = User::factory()->create();
         $templatePage = TemplatePage::factory()->create([
             'position' => 2,
         ]);
@@ -80,7 +81,7 @@ class ContactShowViewHelperTest extends TestCase
         ]);
         $templatePage->modules()->syncWithoutDetaching($module);
 
-        $collection = ContactShowViewHelper::modules($templatePage, $contact);
+        $collection = ContactShowViewHelper::modules($templatePage, $contact, $user);
 
         $this->assertEquals(
             1,
