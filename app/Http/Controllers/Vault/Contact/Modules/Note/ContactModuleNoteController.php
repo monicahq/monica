@@ -30,7 +30,7 @@ class ContactModuleNoteController extends Controller
         $contact = Contact::find($contactId);
 
         return response()->json([
-            'data' => ModuleNotesViewHelper::dto($contact, $note),
+            'data' => ModuleNotesViewHelper::dto($contact, $note, Auth::user()),
         ], 201);
     }
 
@@ -52,7 +52,7 @@ class ContactModuleNoteController extends Controller
         $contact = Contact::find($contactId);
 
         return response()->json([
-            'data' => ModuleNotesViewHelper::dto($contact, $note),
+            'data' => ModuleNotesViewHelper::dto($contact, $note, Auth::user()),
         ], 200);
     }
 

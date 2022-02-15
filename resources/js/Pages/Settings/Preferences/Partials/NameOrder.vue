@@ -25,14 +25,12 @@ pre {
         class="h-6 grow pr-2"
         fill="none"
         viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
+        stroke="currentColor">
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-width="2"
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
+          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
 
       <div>
@@ -66,8 +64,7 @@ pre {
             value="%first_name% %last_name%"
             name="name-order"
             type="radio"
-            class="h-4 w-4 border-gray-300 text-sky-500"
-          />
+            class="h-4 w-4 border-gray-300 text-sky-500" />
           <label for="first_name_last_name" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
             First name Last name <span class="ml-4 font-normal text-gray-500"> James Bond </span>
           </label>
@@ -79,8 +76,7 @@ pre {
             value="%last_name% %first_name%"
             name="name-order"
             type="radio"
-            class="h-4 w-4 border-gray-300 text-sky-500"
-          />
+            class="h-4 w-4 border-gray-300 text-sky-500" />
           <label for="last_name_first_name" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
             Last name First name
 
@@ -94,12 +90,10 @@ pre {
             value="%first_name% %last_name% (%nickname%)"
             name="name-order"
             type="radio"
-            class="h-4 w-4 border-gray-300 text-sky-500"
-          />
+            class="h-4 w-4 border-gray-300 text-sky-500" />
           <label
             for="first_name_last_name_nickname"
-            class="ml-3 block cursor-pointer text-sm font-medium text-gray-700"
-          >
+            class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
             First name Last name (nickname) <span class="ml-4 font-normal text-gray-500"> James Bond (007) </span>
           </label>
         </div>
@@ -110,8 +104,7 @@ pre {
             value="%nickname%"
             name="name-order"
             type="radio"
-            class="h-4 w-4 border-gray-300 text-sky-500"
-          />
+            class="h-4 w-4 border-gray-300 text-sky-500" />
           <label for="nickname" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
             nickname <span class="ml-4 font-normal text-gray-500"> 007 </span>
           </label>
@@ -122,8 +115,7 @@ pre {
             name="name-order"
             type="radio"
             class="h-4 w-4 border-gray-300 text-sky-500"
-            @click="focusNameOrder"
-          />
+            @click="focusNameOrder" />
           <label for="custom" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
             Custom name order
           </label>
@@ -138,8 +130,7 @@ pre {
             :div-outer-class="'block mb-2'"
             :disabled="disableNameOrder"
             :autocomplete="false"
-            :maxlength="255"
-          />
+            :maxlength="255" />
 
           <p class="mb-4 text-sm">
             Please read

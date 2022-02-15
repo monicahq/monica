@@ -12,8 +12,7 @@
           class="mt-1 block w-full"
           required
           autofocus
-          autocomplete="username"
-        />
+          autocomplete="username" />
       </div>
 
       <div class="mt-4">
@@ -24,8 +23,7 @@
           type="password"
           class="mt-1 block w-full"
           required
-          autocomplete="new-password"
-        />
+          autocomplete="new-password" />
       </div>
 
       <div class="mt-4">
@@ -36,8 +34,7 @@
           type="password"
           class="mt-1 block w-full"
           required
-          autocomplete="new-password"
-        />
+          autocomplete="new-password" />
       </div>
 
       <div class="mt-4 flex items-center justify-end">

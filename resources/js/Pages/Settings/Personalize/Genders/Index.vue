@@ -33,8 +33,7 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -49,8 +48,7 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -69,16 +67,14 @@
             v-if="!createGenderModalShown"
             :text="'Add a gender'"
             :icon="'plus'"
-            @click="showGenderModal"
-          />
+            @click="showGenderModal" />
         </div>
 
         <!-- modal to create a new group type -->
         <form
           v-if="createGenderModalShown"
           class="mb-6 rounded-lg border border-gray-200 bg-white"
-          @submit.prevent="submit()"
-        >
+          @submit.prevent="submit()">
           <div class="border-b border-gray-200 p-5">
             <errors :errors="form.errors" />
 
@@ -92,8 +88,7 @@
               :required="true"
               :autocomplete="false"
               :maxlength="255"
-              @esc-key-pressed="createGenderModalShown = false"
-            />
+              @esc-key-pressed="createGenderModalShown = false" />
           </div>
 
           <div class="flex justify-between p-5">
@@ -107,8 +102,7 @@
           <li
             v-for="gender in localGenders"
             :key="gender.id"
-            class="item-list border-b border-gray-200 hover:bg-slate-50"
-          >
+            class="item-list border-b border-gray-200 hover:bg-slate-50">
             <!-- detail of the group type -->
             <div v-if="renameGenderModalShownId != gender.id" class="flex items-center justify-between px-5 py-2">
               <span class="text-base">{{ gender.name }}</span>
@@ -117,8 +111,7 @@
               <ul class="text-sm">
                 <li
                   class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900"
-                  @click="updateGenderModal(gender)"
-                >
+                  @click="updateGenderModal(gender)">
                   Rename
                 </li>
                 <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(gender)">Delete</li>
@@ -129,8 +122,7 @@
             <form
               v-if="renameGenderModalShownId == gender.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50"
-              @submit.prevent="update(gender)"
-            >
+              @submit.prevent="update(gender)">
               <div class="border-b border-gray-200 p-5">
                 <errors :errors="form.errors" />
 
@@ -144,8 +136,7 @@
                   :required="true"
                   :autocomplete="false"
                   :maxlength="255"
-                  @esc-key-pressed="renameGenderModalShownId = 0"
-                />
+                  @esc-key-pressed="renameGenderModalShownId = 0" />
               </div>
 
               <div class="flex justify-between p-5">

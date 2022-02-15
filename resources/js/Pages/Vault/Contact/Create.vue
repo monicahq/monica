@@ -22,8 +22,7 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -50,8 +49,7 @@
               :input-class="'block w-full'"
               :required="true"
               :maxlength="255"
-              :label="'First name'"
-            />
+              :label="'First name'" />
 
             <!-- last name -->
             <text-input
@@ -61,8 +59,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="'Last name'"
-            />
+              :label="'Last name'" />
 
             <!-- middle name -->
             <text-input
@@ -73,8 +70,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="'Middle name'"
-            />
+              :label="'Middle name'" />
 
             <!-- nickname -->
             <text-input
@@ -85,8 +81,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="'Nickname'"
-            />
+              :label="'Nickname'" />
 
             <!-- nickname -->
             <text-input
@@ -97,8 +92,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="'Maiden name'"
-            />
+              :label="'Maiden name'" />
 
             <!-- genders -->
             <dropdown
@@ -109,8 +103,7 @@
               :div-outer-class="'mb-5'"
               :placeholder="'Choose a value'"
               :dropdown-class="'block w-full'"
-              :label="'Gender'"
-            />
+              :label="'Gender'" />
 
             <!-- pronouns -->
             <dropdown
@@ -121,8 +114,7 @@
               :div-outer-class="'mb-5'"
               :placeholder="'Choose a value'"
               :dropdown-class="'block w-full'"
-              :label="'Pronoun'"
-            />
+              :label="'Pronoun'" />
 
             <!-- templates -->
             <dropdown
@@ -133,51 +125,44 @@
               :div-outer-class="'mb-5'"
               :placeholder="'Choose a value'"
               :dropdown-class="'block w-full'"
-              :label="'Use the following template for this contact'"
-            />
+              :label="'Use the following template for this contact'" />
 
             <!-- other fields -->
             <div class="flex flex-wrap text-xs">
               <span
                 v-if="!showMiddleNameField"
                 class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300"
-                @click="displayMiddleNameField"
-              >
+                @click="displayMiddleNameField">
                 + middle name
               </span>
               <span
                 v-if="!showNicknameField"
                 class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300"
-                @click="displayNicknameField"
-              >
+                @click="displayNicknameField">
                 + nickname
               </span>
               <span
                 v-if="!showMaidenNameField"
                 class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300"
-                @click="displayMaidenNameField"
-              >
+                @click="displayMaidenNameField">
                 + maiden name
               </span>
               <span
                 v-if="data.genders.length > 0 && !showGenderField"
                 class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300"
-                @click="displayGenderField"
-              >
+                @click="displayGenderField">
                 + gender
               </span>
               <span
                 v-if="data.pronouns.length > 0 && !showPronounField"
                 class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300"
-                @click="displayPronounField"
-              >
+                @click="displayPronounField">
                 + pronoun
               </span>
               <span
                 v-if="data.templates.length > 0 && !showTemplateField"
                 class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300"
-                @click="displayTemplateField"
-              >
+                @click="displayTemplateField">
                 + change template
               </span>
             </div>
@@ -191,8 +176,7 @@
               :text="'Add'"
               :state="loadingState"
               :icon="'check'"
-              :classes="'save'"
-            />
+              :classes="'save'" />
           </div>
         </form>
       </div>

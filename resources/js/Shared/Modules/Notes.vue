@@ -19,30 +19,24 @@
             class="icon-sidebar relative inline h-4 w-4"
             viewBox="0 0 24 24"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+            xmlns="http://www.w3.org/2000/svg">
             <path
               d="M6 6C6 5.44772 6.44772 5 7 5H17C17.5523 5 18 5.44772 18 6C18 6.55228 17.5523 7 17 7H7C6.44771 7 6 6.55228 6 6Z"
-              fill="currentColor"
-            />
+              fill="currentColor" />
             <path
               d="M6 10C6 9.44771 6.44772 9 7 9H17C17.5523 9 18 9.44771 18 10C18 10.5523 17.5523 11 17 11H7C6.44771 11 6 10.5523 6 10Z"
-              fill="currentColor"
-            />
+              fill="currentColor" />
             <path
               d="M7 13C6.44772 13 6 13.4477 6 14C6 14.5523 6.44771 15 7 15H17C17.5523 15 18 14.5523 18 14C18 13.4477 17.5523 13 17 13H7Z"
-              fill="currentColor"
-            />
+              fill="currentColor" />
             <path
               d="M6 18C6 17.4477 6.44772 17 7 17H11C11.5523 17 12 17.4477 12 18C12 18.5523 11.5523 19 11 19H7C6.44772 19 6 18.5523 6 18Z"
-              fill="currentColor"
-            />
+              fill="currentColor" />
             <path
               fill-rule="evenodd"
               clip-rule="evenodd"
               d="M2 4C2 2.34315 3.34315 1 5 1H19C20.6569 1 22 2.34315 22 4V20C22 21.6569 20.6569 23 19 23H5C3.34315 23 2 21.6569 2 20V4ZM5 3H19C19.5523 3 20 3.44771 20 4V20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V4C4 3.44772 4.44771 3 5 3Z"
-              fill="currentColor"
-            />
+              fill="currentColor" />
           </svg>
         </span>
 
@@ -55,8 +49,7 @@
     <form
       v-if="createNoteModalShown"
       class="mb-6 rounded-lg border border-gray-200 bg-white"
-      @submit.prevent="submit()"
-    >
+      @submit.prevent="submit()">
       <div class="border-b border-gray-200 p-5">
         <errors :errors="form.errors" />
 
@@ -66,8 +59,7 @@
           :rows="10"
           :required="true"
           :maxlength="65535"
-          :textarea-class="'block w-full mb-3'"
-        />
+          :textarea-class="'block w-full mb-3'" />
 
         <!-- title -->
         <text-input
@@ -80,8 +72,7 @@
           :required="false"
           :autocomplete="false"
           :maxlength="255"
-          @esc-key-pressed="createNoteModalShown = false"
-        />
+          @esc-key-pressed="createNoteModalShown = false" />
 
         <!-- emotion -->
         <div v-if="emotionFieldShown" class="mt-2 block w-full">
@@ -93,8 +84,7 @@
               :id="emotion.type"
               name="emotion"
               type="radio"
-              class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-            />
+              class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
             <label :for="emotion.type" class="ml-2 block font-medium text-gray-700"> {{ emotion.name }} </label>
           </div>
         </div>
@@ -103,8 +93,7 @@
         <span
           v-if="!titleFieldShown"
           class="mr-2 inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
-          @click="showTitleField"
-        >
+          @click="showTitleField">
           + add title
         </span>
 
@@ -112,8 +101,7 @@
         <span
           v-if="!emotionFieldShown"
           class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
-          @click="showEmotionField"
-        >
+          @click="showEmotionField">
           + add emotion
         </span>
       </div>
@@ -145,8 +133,7 @@
 
           <!-- details -->
           <div
-            class="flex justify-between border-t border-gray-200 px-3 py-1 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50"
-          >
+            class="flex justify-between border-t border-gray-200 px-3 py-1 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50">
             <div>
               <!-- emotion -->
               <div v-if="note.emotion" class="relative mr-3 inline">
@@ -160,14 +147,12 @@
                   class="icon-note relative inline h-4 w-4 text-gray-400"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
+                  stroke="currentColor">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 {{ note.written_at }}
               </div>
@@ -179,14 +164,12 @@
                   class="icon-note relative inline h-4 w-4 text-gray-400"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
+                  stroke="currentColor">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
+                    d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 {{ note.author }}
               </div>
@@ -196,8 +179,7 @@
                 :show-edit="true"
                 :show-delete="true"
                 @edit="showEditNoteModal(note)"
-                @delete="destroy(note)"
-              />
+                @delete="destroy(note)" />
             </div>
           </div>
         </div>
@@ -213,8 +195,7 @@
               :rows="10"
               :required="true"
               :maxlength="65535"
-              :textarea-class="'block w-full mb-3'"
-            />
+              :textarea-class="'block w-full mb-3'" />
 
             <!-- title -->
             <text-input
@@ -226,8 +207,7 @@
               :required="false"
               :autocomplete="false"
               :maxlength="255"
-              @esc-key-pressed="editedNoteId = 0"
-            />
+              @esc-key-pressed="editedNoteId = 0" />
 
             <!-- emotion -->
             <div v-if="form.emotion" class="mt-2 block w-full">
@@ -239,8 +219,7 @@
                   :id="emotion.type"
                   name="emotion"
                   type="radio"
-                  class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
+                  class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
                 <label :for="emotion.type" class="ml-2 block font-medium text-gray-700"> {{ emotion.name }} </label>
               </div>
             </div>
@@ -264,8 +243,7 @@
           v-show="paginator.previousPageUrl"
           class="fl dib"
           :href="paginator.previousPageUrl"
-          title="Previous"
-        >
+          title="Previous">
           &larr; Previous
         </inertia-link>
         <inertia-link v-show="paginator.nextPageUrl" class="fr dib" :href="paginator.nextPageUrl" title="Next">

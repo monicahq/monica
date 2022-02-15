@@ -1154,22 +1154,21 @@
         },
         {
             "name": "itsgoingd/clockwork",
-            "version": "v5.1.4",
+            "version": "v5.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/itsgoingd/clockwork.git",
-                "reference": "7252aa771b77ac8678b44290fd7ec7577435cce6"
+                "reference": "6a7b3942224fa53cf3704d9adba636e1f3dfeb9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/itsgoingd/clockwork/zipball/7252aa771b77ac8678b44290fd7ec7577435cce6",
-                "reference": "7252aa771b77ac8678b44290fd7ec7577435cce6",
+                "url": "https://api.github.com/repos/itsgoingd/clockwork/zipball/6a7b3942224fa53cf3704d9adba636e1f3dfeb9a",
+                "reference": "6a7b3942224fa53cf3704d9adba636e1f3dfeb9a",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": ">=5.6",
-                "psr/log": "1.* || ^2.0"
+                "php": ">=5.6"
             },
             "type": "library",
             "extra": {
@@ -1211,7 +1210,7 @@
             ],
             "support": {
                 "issues": "https://github.com/itsgoingd/clockwork/issues",
-                "source": "https://github.com/itsgoingd/clockwork/tree/v5.1.4"
+                "source": "https://github.com/itsgoingd/clockwork/tree/v5.1.5"
             },
             "funding": [
                 {
@@ -1219,7 +1218,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-01-30T12:36:18+00:00"
+            "time": "2022-02-13T22:57:42+00:00"
         },
         {
             "name": "laravel/framework",
@@ -1851,20 +1850,19 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.0.5",
+            "version": "3.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "0c82591fd8950d499612ada7104c5eba3191e200"
+                "reference": "6f60c44080ebcd62ee8bef25edba4ba58400c052"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/0c82591fd8950d499612ada7104c5eba3191e200",
-                "reference": "0c82591fd8950d499612ada7104c5eba3191e200",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/6f60c44080ebcd62ee8bef25edba4ba58400c052",
+                "reference": "6f60c44080ebcd62ee8bef25edba4ba58400c052",
                 "shasum": ""
             },
             "require": {
-                "ext-json": "*",
                 "league/mime-type-detection": "^1.0.0",
                 "php": "^8.0.2"
             },
@@ -1887,7 +1885,7 @@
                 "phpseclib/phpseclib": "^2.0",
                 "phpstan/phpstan": "^0.12.26",
                 "phpunit/phpunit": "^9.5.11",
-                "sabre/dav": "^4.1"
+                "sabre/dav": "^4.3.1"
             },
             "type": "library",
             "autoload": {
@@ -1921,7 +1919,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.0.5"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.0.7"
             },
             "funding": [
                 {
@@ -1937,7 +1935,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-02-12T19:38:15+00:00"
+            "time": "2022-02-14T20:25:21+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -3186,16 +3184,16 @@
         },
         {
             "name": "psr/log",
-            "version": "2.0.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "ef29f6d262798707a9edd554e2b82517ef3a9376"
+                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/ef29f6d262798707a9edd554e2b82517ef3a9376",
-                "reference": "ef29f6d262798707a9edd554e2b82517ef3a9376",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/fe5ea303b0887d5caefd3d431c3e61ad47037001",
+                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001",
                 "shasum": ""
             },
             "require": {
@@ -3204,7 +3202,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "3.x-dev"
                 }
             },
             "autoload": {
@@ -3230,9 +3228,9 @@
                 "psr-3"
             ],
             "support": {
-                "source": "https://github.com/php-fig/log/tree/2.0.0"
+                "source": "https://github.com/php-fig/log/tree/3.0.0"
             },
-            "time": "2021-07-14T16:41:46+00:00"
+            "time": "2021-07-14T16:46:02+00:00"
         },
         {
             "name": "psr/simple-cache",
@@ -8771,16 +8769,16 @@
         },
         {
             "name": "sebastian/global-state",
-            "version": "5.0.4",
+            "version": "5.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/global-state.git",
-                "reference": "19c519631c5a511b7ed0ad64a6713fdb3fd25fe4"
+                "reference": "0ca8db5a5fc9c8646244e629625ac486fa286bf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/19c519631c5a511b7ed0ad64a6713fdb3fd25fe4",
-                "reference": "19c519631c5a511b7ed0ad64a6713fdb3fd25fe4",
+                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/0ca8db5a5fc9c8646244e629625ac486fa286bf2",
+                "reference": "0ca8db5a5fc9c8646244e629625ac486fa286bf2",
                 "shasum": ""
             },
             "require": {
@@ -8823,7 +8821,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/global-state/issues",
-                "source": "https://github.com/sebastianbergmann/global-state/tree/5.0.4"
+                "source": "https://github.com/sebastianbergmann/global-state/tree/5.0.5"
             },
             "funding": [
                 {
@@ -8831,7 +8829,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-02-10T07:01:19+00:00"
+            "time": "2022-02-14T08:28:10+00:00"
         },
         {
             "name": "sebastian/lines-of-code",

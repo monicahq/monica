@@ -16,8 +16,7 @@
           class="mt-1 block w-full"
           required
           autofocus
-          autocomplete="username"
-        />
+          autocomplete="username" />
       </div>
 
       <div class="mt-4">
@@ -28,8 +27,7 @@
           type="password"
           class="mt-1 block w-full"
           required
-          autocomplete="current-password"
-        />
+          autocomplete="current-password" />
       </div>
 
       <div class="mt-4 block">
@@ -43,8 +41,7 @@
         <inertia-link
           v-if="canResetPassword"
           :href="route('password.request')"
-          class="text-sm text-gray-600 underline hover:text-gray-900"
-        >
+          class="text-sm text-gray-600 underline hover:text-gray-900">
           Forgot your password?
         </inertia-link>
 

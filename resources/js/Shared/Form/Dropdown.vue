@@ -34,8 +34,7 @@
         :required="required"
         :disabled="disabled"
         :placeholder="placeholder"
-        @change="change"
-      >
+        @change="change">
         <option v-for="item in data" :key="item.id" :value="item.id">
           {{ item.name }}
         </option>

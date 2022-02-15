@@ -8,8 +8,7 @@
           <img
             class="mr-2 inline rounded-full"
             src="https://ucarecdn.com/2f86ee48-9258-4b5c-aaf5-82269edcf770/-/scale_crop/45x45/smart/"
-            alt=""
-          />
+            alt="" />
           <div>
             <p>Last talked to: Apr 20, 2012</p>
             <p>Last activity: Apr 20, 2012</p>
@@ -23,8 +22,7 @@
         <img
           class="mr-2 inline rounded-full"
           src="https://ucarecdn.com/2f86ee48-9258-4b5c-aaf5-82269edcf770/-/scale_crop/25x25/smart/"
-          alt=""
-        />
+          alt="" />
         <a class="colored-link" href="">Lorraine Del Giaccosldkfjalsdjkfs</a>
       </div>
     </a-popover>

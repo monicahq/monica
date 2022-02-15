@@ -33,8 +33,7 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -49,8 +48,7 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -69,16 +67,14 @@
             v-if="!createPetCategoryModalShown"
             :text="'Add a pet category'"
             :icon="'plus'"
-            @click="showPetCategoryModal"
-          />
+            @click="showPetCategoryModal" />
         </div>
 
         <!-- modal to create a new group type -->
         <form
           v-if="createPetCategoryModalShown"
           class="mb-6 rounded-lg border border-gray-200 bg-white"
-          @submit.prevent="submit()"
-        >
+          @submit.prevent="submit()">
           <div class="border-b border-gray-200 p-5">
             <errors :errors="form.errors" />
 
@@ -92,8 +88,7 @@
               :required="true"
               :autocomplete="false"
               :maxlength="255"
-              @esc-key-pressed="createPetCategoryModalShown = false"
-            />
+              @esc-key-pressed="createPetCategoryModalShown = false" />
           </div>
 
           <div class="flex justify-between p-5">
@@ -107,21 +102,18 @@
           <li
             v-for="petCategory in localPetCategories"
             :key="petCategory.id"
-            class="item-list border-b border-gray-200 hover:bg-slate-50"
-          >
+            class="item-list border-b border-gray-200 hover:bg-slate-50">
             <!-- detail of the group type -->
             <div
               v-if="renamePetCategoryModalShownId != petCategory.id"
-              class="flex items-center justify-between px-5 py-2"
-            >
+              class="flex items-center justify-between px-5 py-2">
               <span class="text-base">{{ petCategory.name }}</span>
 
               <!-- actions -->
               <ul class="text-sm">
                 <li
                   class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900"
-                  @click="updatePetCategoryModal(petCategory)"
-                >
+                  @click="updatePetCategoryModal(petCategory)">
                   Rename
                 </li>
                 <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(petCategory)">
@@ -134,8 +126,7 @@
             <form
               v-if="renamePetCategoryModalShownId == petCategory.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50"
-              @submit.prevent="update(petCategory)"
-            >
+              @submit.prevent="update(petCategory)">
               <div class="border-b border-gray-200 p-5">
                 <errors :errors="form.errors" />
 
@@ -149,8 +140,7 @@
                   :required="true"
                   :autocomplete="false"
                   :maxlength="255"
-                  @esc-key-pressed="renamePetCategoryModalShownId = 0"
-                />
+                  @esc-key-pressed="renamePetCategoryModalShownId = 0" />
               </div>
 
               <div class="flex justify-between p-5">

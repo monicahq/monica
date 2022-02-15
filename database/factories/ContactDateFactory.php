@@ -26,6 +26,7 @@ class ContactDateFactory extends Factory
             'contact_id' => Contact::factory(),
             'label' => 'birthdate',
             'date' => '1981',
+            'type' => ContactDate::TYPE_BIRTHDATE,
         ];
     }
 }

@@ -31,8 +31,7 @@
             v-if="layoutData.vault.permission.at_least_editor"
             :href="data.url.contact.create"
             :text="'Add a contact'"
-            :icon="'plus'"
-          />
+            :icon="'plus'" />
         </div>
 
         <!-- contact list -->
@@ -40,8 +39,7 @@
           <li
             v-for="contact in data.contacts"
             :key="contact.id"
-            class="border-b border-gray-200 px-5 py-2 hover:bg-slate-50"
-          >
+            class="border-b border-gray-200 px-5 py-2 hover:bg-slate-50">
             <inertia-link :href="contact.url.show" class="text-sky-500 hover:text-blue-900">
               {{ contact.name }}
             </inertia-link>

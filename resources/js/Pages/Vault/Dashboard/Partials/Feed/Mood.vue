@@ -18,14 +18,12 @@
             class="icon-date relative inline h-4 w-4 text-gray-400"
             fill="none"
             viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
+            stroke="currentColor">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           Sept 12, 2020
         </div>

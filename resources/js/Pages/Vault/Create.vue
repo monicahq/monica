@@ -24,8 +24,7 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -50,14 +49,12 @@
               :input-class="'block w-full'"
               :required="true"
               :maxlength="255"
-              :label="'Vault name'"
-            />
+              :label="'Vault name'" />
             <text-area
               v-model="form.description"
               :label="'Description'"
               :maxlength="255"
-              :textarea-class="'block w-full'"
-            />
+              :textarea-class="'block w-full'" />
           </div>
 
           <div class="flex justify-between p-5">
@@ -67,8 +64,7 @@
               :text="'Add'"
               :state="loadingState"
               :icon="'check'"
-              :classes="'save'"
-            />
+              :classes="'save'" />
           </div>
         </form>
       </div>

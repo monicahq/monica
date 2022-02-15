@@ -29,8 +29,7 @@
         v-if="!addModuleModalShown && moduleLoaded"
         :text="'Add a module'"
         :icon="'plus'"
-        @click="showModuleModal"
-      />
+        @click="showModuleModal" />
       <pretty-button v-if="addModuleModalShown && moduleLoaded" :text="'Cancel'" @click="addModuleModalShown = false" />
     </div>
 
@@ -40,8 +39,7 @@
       <li
         v-for="module in localAllModules"
         :key="module.id"
-        class="item-list flex items-center justify-between border-b border-gray-200 py-2 pl-2 pr-5 hover:bg-slate-50"
-      >
+        class="item-list flex items-center justify-between border-b border-gray-200 py-2 pl-2 pr-5 hover:bg-slate-50">
         <span>{{ module.name }}</span>
         <span
           v-if="!module.already_used"
@@ -60,8 +58,7 @@
         item-key="id"
         :component-data="{ name: 'fade' }"
         handle=".handle"
-        @change="updatePosition"
-      >
+        @change="updatePosition">
         <template #item="{ element }">
           <div class="item-list flex items-center border-b border-gray-200 py-2 pl-2 pr-5 hover:bg-slate-50">
             <!-- anchor to move module -->
@@ -72,8 +69,7 @@
                 height="24"
                 viewBox="0 0 24 24"
                 fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+                xmlns="http://www.w3.org/2000/svg">
                 <path d="M7 7H9V9H7V7Z" fill="currentColor" />
                 <path d="M11 7H13V9H11V7Z" fill="currentColor" />
                 <path d="M17 7H15V9H17V7Z" fill="currentColor" />

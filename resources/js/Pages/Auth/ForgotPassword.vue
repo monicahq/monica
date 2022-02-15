@@ -21,8 +21,7 @@
           class="mt-1 block w-full"
           required
           autofocus
-          autocomplete="username"
-        />
+          autocomplete="username" />
       </div>
 
       <div class="mt-4 flex items-center justify-end">

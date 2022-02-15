@@ -38,8 +38,7 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -54,8 +53,7 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -79,14 +77,12 @@
             class="h-6 pr-2"
             fill="none"
             viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
+            stroke="currentColor">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
 
           <div>
@@ -110,8 +106,7 @@
             <div>
               <!-- search a module -->
               <div
-                class="module-list rounded-t-md border-t border-r border-l border-gray-200 px-3 py-2 hover:bg-slate-50"
-              >
+                class="module-list rounded-t-md border-t border-r border-l border-gray-200 px-3 py-2 hover:bg-slate-50">
                 <text-input
                   v-model="form.search"
                   :type="'text'"
@@ -120,8 +115,7 @@
                   :required="true"
                   :autocomplete="false"
                   :placeholder="'Filter'"
-                  :maxlength="255"
-                />
+                  :maxlength="255" />
               </div>
 
               <!-- list of modules -->
@@ -129,8 +123,7 @@
                 <li
                   v-for="module in data.modules"
                   :key="module.id"
-                  class="module-list border-b border-gray-200 px-5 py-2 hover:bg-slate-50"
-                >
+                  class="module-list border-b border-gray-200 px-5 py-2 hover:bg-slate-50">
                   <span class="">{{ module.name }}</span>
                 </li>
               </ul>
@@ -153,8 +146,7 @@
                 :input-class="'block w-full'"
                 :required="true"
                 :autocomplete="false"
-                :maxlength="255"
-              />
+                :maxlength="255" />
             </div>
 
             <!-- content of the module -->
@@ -173,18 +165,15 @@
                           class="mr-1 inline h-3 w-3"
                           viewBox="0 0 24 24"
                           fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                          xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M12 6C12.5523 6 13 6.44772 13 7V11H17C17.5523 11 18 11.4477 18 12C18 12.5523 17.5523 13 17 13H13V17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17V13H7C6.44772 13 6 12.5523 6 12C6 11.4477 6.44772 11 7 11H11V7C11 6.44772 11.4477 6 12 6Z"
-                            fill="currentColor"
-                          />
+                            fill="currentColor" />
                           <path
                             fill-rule="evenodd"
                             clip-rule="evenodd"
                             d="M5 22C3.34315 22 2 20.6569 2 19V5C2 3.34315 3.34315 2 5 2H19C20.6569 2 22 3.34315 22 5V19C22 20.6569 20.6569 22 19 22H5ZM4 19C4 19.5523 4.44772 20 5 20H19C19.5523 20 20 19.5523 20 19V5C20 4.44772 19.5523 4 19 4H5C4.44772 4 4 4.44772 4 5V19Z"
-                            fill="currentColor"
-                          />
+                            fill="currentColor" />
                         </svg>
                         <span>Add a field to the left</span>
                       </div>
@@ -194,18 +183,15 @@
                           class="mr-1 inline h-3 w-3"
                           viewBox="0 0 24 24"
                           fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                          xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M12 6C12.5523 6 13 6.44772 13 7V11H17C17.5523 11 18 11.4477 18 12C18 12.5523 17.5523 13 17 13H13V17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17V13H7C6.44772 13 6 12.5523 6 12C6 11.4477 6.44772 11 7 11H11V7C11 6.44772 11.4477 6 12 6Z"
-                            fill="currentColor"
-                          />
+                            fill="currentColor" />
                           <path
                             fill-rule="evenodd"
                             clip-rule="evenodd"
                             d="M5 22C3.34315 22 2 20.6569 2 19V5C2 3.34315 3.34315 2 5 2H19C20.6569 2 22 3.34315 22 5V19C22 20.6569 20.6569 22 19 22H5ZM4 19C4 19.5523 4.44772 20 5 20H19C19.5523 20 20 19.5523 20 19V5C20 4.44772 19.5523 4 19 4H5C4.44772 4 4 4.44772 4 5V19Z"
-                            fill="currentColor"
-                          />
+                            fill="currentColor" />
                         </svg>
                         <span>Add a field to the right</span>
                       </div>
@@ -216,18 +202,15 @@
                         class="mr-1 inline h-3 w-3"
                         viewBox="0 0 24 24"
                         fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
+                        xmlns="http://www.w3.org/2000/svg">
                         <path
                           d="M16.3956 7.75734C16.7862 8.14786 16.7862 8.78103 16.3956 9.17155L13.4142 12.153L16.0896 14.8284C16.4802 15.2189 16.4802 15.8521 16.0896 16.2426C15.6991 16.6331 15.0659 16.6331 14.6754 16.2426L12 13.5672L9.32458 16.2426C8.93405 16.6331 8.30089 16.6331 7.91036 16.2426C7.51984 15.8521 7.51984 15.2189 7.91036 14.8284L10.5858 12.153L7.60436 9.17155C7.21383 8.78103 7.21383 8.14786 7.60436 7.75734C7.99488 7.36681 8.62805 7.36681 9.01857 7.75734L12 10.7388L14.9814 7.75734C15.372 7.36681 16.0051 7.36681 16.3956 7.75734Z"
-                          fill="currentColor"
-                        />
+                          fill="currentColor" />
                         <path
                           fill-rule="evenodd"
                           clip-rule="evenodd"
                           d="M4 1C2.34315 1 1 2.34315 1 4V20C1 21.6569 2.34315 23 4 23H20C21.6569 23 23 21.6569 23 20V4C23 2.34315 21.6569 1 20 1H4ZM20 3H4C3.44772 3 3 3.44772 3 4V20C3 20.5523 3.44772 21 4 21H20C20.5523 21 21 20.5523 21 20V4C21 3.44772 20.5523 3 20 3Z"
-                          fill="currentColor"
-                        />
+                          fill="currentColor" />
                       </svg>
                       <span>Delete row</span>
                     </div>
@@ -244,18 +227,15 @@
                               class="mr-1 inline h-3 w-3"
                               viewBox="0 0 24 24"
                               fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
+                              xmlns="http://www.w3.org/2000/svg">
                               <path
                                 d="M12 6C12.5523 6 13 6.44772 13 7V11H17C17.5523 11 18 11.4477 18 12C18 12.5523 17.5523 13 17 13H13V17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17V13H7C6.44772 13 6 12.5523 6 12C6 11.4477 6.44772 11 7 11H11V7C11 6.44772 11.4477 6 12 6Z"
-                                fill="currentColor"
-                              />
+                                fill="currentColor" />
                               <path
                                 fill-rule="evenodd"
                                 clip-rule="evenodd"
                                 d="M5 22C3.34315 22 2 20.6569 2 19V5C2 3.34315 3.34315 2 5 2H19C20.6569 2 22 3.34315 22 5V19C22 20.6569 20.6569 22 19 22H5ZM4 19C4 19.5523 4.44772 20 5 20H19C19.5523 20 20 19.5523 20 19V5C20 4.44772 19.5523 4 19 4H5C4.44772 4 4 4.44772 4 5V19Z"
-                                fill="currentColor"
-                              />
+                                fill="currentColor" />
                             </svg>
                             <span>Change field type</span>
                           </div>
@@ -266,18 +246,15 @@
                             class="mr-1 inline h-3 w-3"
                             viewBox="0 0 24 24"
                             fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
+                            xmlns="http://www.w3.org/2000/svg">
                             <path
                               d="M16.3956 7.75734C16.7862 8.14786 16.7862 8.78103 16.3956 9.17155L13.4142 12.153L16.0896 14.8284C16.4802 15.2189 16.4802 15.8521 16.0896 16.2426C15.6991 16.6331 15.0659 16.6331 14.6754 16.2426L12 13.5672L9.32458 16.2426C8.93405 16.6331 8.30089 16.6331 7.91036 16.2426C7.51984 15.8521 7.51984 15.2189 7.91036 14.8284L10.5858 12.153L7.60436 9.17155C7.21383 8.78103 7.21383 8.14786 7.60436 7.75734C7.99488 7.36681 8.62805 7.36681 9.01857 7.75734L12 10.7388L14.9814 7.75734C15.372 7.36681 16.0051 7.36681 16.3956 7.75734Z"
-                              fill="currentColor"
-                            />
+                              fill="currentColor" />
                             <path
                               fill-rule="evenodd"
                               clip-rule="evenodd"
                               d="M4 1C2.34315 1 1 2.34315 1 4V20C1 21.6569 2.34315 23 4 23H20C21.6569 23 23 21.6569 23 20V4C23 2.34315 21.6569 1 20 1H4ZM20 3H4C3.44772 3 3 3.44772 3 4V20C3 20.5523 3.44772 21 4 21H20C20.5523 21 21 20.5523 21 20V4C21 3.44772 20.5523 3 20 3Z"
-                              fill="currentColor"
-                            />
+                              fill="currentColor" />
                           </svg>
                           <span>Delete field</span>
                         </div>
@@ -307,8 +284,7 @@
                 :text="'Add'"
                 :state="loadingState"
                 :icon="'check'"
-                :classes="'save'"
-              />
+                :classes="'save'" />
             </div>
 
             <!-- blank state -->

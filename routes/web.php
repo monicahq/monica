@@ -24,6 +24,7 @@ use App\Http\Controllers\Vault\Contact\Modules\Note\ContactModuleNoteController;
 use App\Http\Controllers\Settings\Personalize\Genders\PersonalizeGenderController;
 use App\Http\Controllers\Settings\Personalize\Modules\PersonalizeModulesController;
 use App\Http\Controllers\Settings\Personalize\Pronouns\PersonalizePronounController;
+use App\Http\Controllers\Vault\Contact\ImportantDates\ContactImportantDatesController;
 use App\Http\Controllers\Settings\Personalize\Templates\PersonalizeTemplatesController;
 use App\Http\Controllers\Settings\Personalize\Templates\PersonalizeTemplatePagesController;
 use App\Http\Controllers\Settings\Personalize\AddressTypes\PersonalizeAddressTypeController;
@@ -77,6 +78,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::put('template', [ContactTemplateController::class, 'update'])->name('contact.template.update');
 
                     Route::get('tabs/{slug}', [ContactPageController::class, 'show'])->name('contact.page.show');
+
+                    // important dates
+                    Route::get('dates', [ContactImportantDatesController::class, 'index'])->name('contact.date.index');
+                    Route::post('dates', [ContactImportantDatesController::class, 'store'])->name('contact.date.store');
+                    Route::put('dates/{date}', [ContactImportantDatesController::class, 'update'])->name('contact.date.update');
+                    Route::delete('dates/{date}', [ContactImportantDatesController::class, 'destroy'])->name('contact.date.destroy');
 
                     // notes
                     Route::get('notes', [ContactNotesController::class, 'index'])->name('contact.note.index');

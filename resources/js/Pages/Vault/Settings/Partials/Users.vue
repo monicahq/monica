@@ -30,16 +30,14 @@
       <pretty-span
         v-if="addUserModalShown && localUsersInAccount.length == 0"
         :text="'Cancel'"
-        @click="addUserModalShown = false"
-      />
+        @click="addUserModalShown = false" />
     </div>
 
     <!-- modal to add a new user -->
     <form
       v-if="addUserModalShown && localUsersInAccount.length > 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white"
-      @submit.prevent="store()"
-    >
+      @submit.prevent="store()">
       <div class="border-b border-gray-200 p-5">
         <errors :errors="form.errors" />
 
@@ -53,8 +51,7 @@
             :value="user.id"
             name="user"
             type="radio"
-            class="h-4 w-4 border-gray-300 text-sky-500"
-          />
+            class="h-4 w-4 border-gray-300 text-sky-500" />
           <label :for="'user' + user.id" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
             {{ user.name }}
           </label>
@@ -74,8 +71,7 @@
               value="300"
               name="permission"
               type="radio"
-              class="h-4 w-4 border-gray-300 text-sky-500"
-            />
+              class="h-4 w-4 border-gray-300 text-sky-500" />
             <label for="viewer" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
               Viewer <span class="ml-4 font-normal text-gray-500"> Can view data, but can't edit it. </span>
             </label>
@@ -89,8 +85,7 @@
               value="200"
               name="permission"
               type="radio"
-              class="h-4 w-4 border-gray-300 text-sky-500"
-            />
+              class="h-4 w-4 border-gray-300 text-sky-500" />
             <label for="editor" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
               Editor <span class="ml-4 font-normal text-gray-500"> Can edit data, but can't manage the vault. </span>
             </label>
@@ -104,8 +99,7 @@
               value="100"
               name="permission"
               type="radio"
-              class="h-4 w-4 border-gray-300 text-sky-500"
-            />
+              class="h-4 w-4 border-gray-300 text-sky-500" />
             <label for="manager" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
               Manager
               <span class="ml-4 font-normal text-gray-500">
@@ -125,9 +119,8 @@
     <!-- blank state -->
     <div
       v-if="addUserModalShown && localUsersInAccount.length == 0"
-      class="mb-6 rounded-lg border border-gray-200 bg-white p-5 text-center"
-    >
-      <p>There are no more users in this account.</p>
+      class="mb-6 rounded-lg border border-gray-200 bg-white p-5 text-center">
+      <p>There are no other users in this account.</p>
     </div>
 
     <!-- list of existing users -->
@@ -136,8 +129,7 @@
         <li
           v-for="user in localUsersInVault"
           :key="user.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50"
-        >
+          class="item-list border-b border-gray-200 hover:bg-slate-50">
           <div v-if="editedUser.id != user.id" class="flex items-center justify-between px-5 py-2">
             <span>{{ user.name }}</span>
 
@@ -145,8 +137,7 @@
             <ul v-if="user.id != layoutData.user.id" class="text-sm">
               <li
                 class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900"
-                @click="showChangePermissionModal(user)"
-              >
+                @click="showChangePermissionModal(user)">
                 Change permission
               </li>
               <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(user)">Remove</li>
@@ -168,8 +159,7 @@
                   value="300"
                   name="permission"
                   type="radio"
-                  class="h-4 w-4 border-gray-300 text-sky-500"
-                />
+                  class="h-4 w-4 border-gray-300 text-sky-500" />
                 <label for="viewer" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
                   Viewer <span class="ml-4 font-normal text-gray-500"> Can view data, but can't edit it. </span>
                 </label>
@@ -183,8 +173,7 @@
                   value="200"
                   name="permission"
                   type="radio"
-                  class="h-4 w-4 border-gray-300 text-sky-500"
-                />
+                  class="h-4 w-4 border-gray-300 text-sky-500" />
                 <label for="editor" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
                   Editor
                   <span class="ml-4 font-normal text-gray-500"> Can edit data, but can't manage the vault. </span>
@@ -199,8 +188,7 @@
                   value="100"
                   name="permission"
                   type="radio"
-                  class="h-4 w-4 border-gray-300 text-sky-500"
-                />
+                  class="h-4 w-4 border-gray-300 text-sky-500" />
                 <label for="manager" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
                   Manager
                   <span class="ml-4 font-normal text-gray-500">

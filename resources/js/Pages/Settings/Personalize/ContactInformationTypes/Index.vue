@@ -33,8 +33,7 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -49,8 +48,7 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -69,16 +67,14 @@
             v-if="!createContactInformationTypeModalShown"
             :text="'Add a type'"
             :icon="'plus'"
-            @click="showContactInformationTypeModal"
-          />
+            @click="showContactInformationTypeModal" />
         </div>
 
         <!-- modal to create a new contact information type -->
         <form
           v-if="createContactInformationTypeModalShown"
           class="mb-6 rounded-lg border border-gray-200 bg-white"
-          @submit.prevent="submit()"
-        >
+          @submit.prevent="submit()">
           <div class="border-b border-gray-200 p-5">
             <errors :errors="form.errors" />
 
@@ -92,8 +88,7 @@
               :required="true"
               :autocomplete="false"
               :maxlength="255"
-              @esc-key-pressed="createContactInformationTypeModalShown = false"
-            />
+              @esc-key-pressed="createContactInformationTypeModalShown = false" />
 
             <text-input
               v-model="form.protocol"
@@ -105,8 +100,7 @@
               :autocomplete="false"
               :maxlength="255"
               :help="'A contact information can be clickable. For instance, a phone number can be clickable and we will launch the default application in your computer associated with a phone number. If you do not know the protocol for the type you are adding, you can simply omit this field.'"
-              @esc-key-pressed="createContactInformationTypeModalShown = false"
-            />
+              @esc-key-pressed="createContactInformationTypeModalShown = false" />
           </div>
 
           <div class="flex justify-between p-5">
@@ -120,13 +114,11 @@
           <li
             v-for="contactInformationType in localContactInformationTypes"
             :key="contactInformationType.id"
-            class="item-list border-b border-gray-200 hover:bg-slate-50"
-          >
+            class="item-list border-b border-gray-200 hover:bg-slate-50">
             <!-- detail of the group type -->
             <div
               v-if="renameContactInformationTypeModalShownId != contactInformationType.id"
-              class="flex items-center justify-between px-5 py-2"
-            >
+              class="flex items-center justify-between px-5 py-2">
               <div>
                 <span class="text-base">{{ contactInformationType.name }}</span>
                 <code v-if="contactInformationType.protocol" class="code ml-3 text-xs"
@@ -138,15 +130,13 @@
               <ul class="text-sm">
                 <li
                   class="inline cursor-pointer text-sky-500 hover:text-blue-900"
-                  @click="updateAdressTypeModal(contactInformationType)"
-                >
+                  @click="updateAdressTypeModal(contactInformationType)">
                   Rename
                 </li>
                 <li
                   v-if="contactInformationType.can_be_deleted"
                   class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"
-                  @click="destroy(contactInformationType)"
-                >
+                  @click="destroy(contactInformationType)">
                   Delete
                 </li>
               </ul>
@@ -156,8 +146,7 @@
             <form
               v-if="renameContactInformationTypeModalShownId == contactInformationType.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50"
-              @submit.prevent="update(contactInformationType)"
-            >
+              @submit.prevent="update(contactInformationType)">
               <div class="border-b border-gray-200 p-5">
                 <errors :errors="form.errors" />
 
@@ -171,8 +160,7 @@
                   :required="true"
                   :autocomplete="false"
                   :maxlength="255"
-                  @esc-key-pressed="renameContactInformationTypeModalShownId = 0"
-                />
+                  @esc-key-pressed="renameContactInformationTypeModalShownId = 0" />
 
                 <text-input
                   v-model="form.protocol"
@@ -184,16 +172,14 @@
                   :autocomplete="false"
                   :maxlength="255"
                   :help="'A contact information can be clickable. For instance, a phone number can be clickable and we will launch the default application in your computer associated with a phone number. If you do not know the protocol for the type you are adding, you can simply omit this field.'"
-                  @esc-key-pressed="createContactInformationTypeModalShown = false"
-                />
+                  @esc-key-pressed="createContactInformationTypeModalShown = false" />
               </div>
 
               <div class="flex justify-between p-5">
                 <pretty-span
                   :text="'Cancel'"
                   :classes="'mr-3'"
-                  @click.prevent="renameContactInformationTypeModalShownId = 0"
-                />
+                  @click.prevent="renameContactInformationTypeModalShownId = 0" />
                 <pretty-button :text="'Rename'" :state="loadingState" :icon="'check'" :classes="'save'" />
               </div>
             </form>

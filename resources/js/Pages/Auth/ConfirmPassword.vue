@@ -16,8 +16,7 @@
           class="mt-1 block w-full"
           required
           autocomplete="current-password"
-          autofocus
-        />
+          autofocus />
       </div>
 
       <div class="mt-4 flex justify-end">

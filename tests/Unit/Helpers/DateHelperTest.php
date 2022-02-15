@@ -135,4 +135,199 @@ class DateHelperTest extends TestCase
             DateHelper::formatFullDate($date)
         );
     }
+
+    /** @test */
+    public function it_gets_a_collection_of_months(): void
+    {
+        $collection = DateHelper::getMonths();
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'id' => 1,
+                    'name' => 'January',
+                ],
+                1 => [
+                    'id' => 2,
+                    'name' => 'February',
+                ],
+                2 => [
+                    'id' => 3,
+                    'name' => 'March',
+                ],
+                3 => [
+                    'id' => 4,
+                    'name' => 'April',
+                ],
+                4 => [
+                    'id' =>5,
+                    'name' => 'May',
+                ],
+                5 => [
+                    'id' => 6,
+                    'name' => 'June',
+                ],
+                6 => [
+                    'id' => 7,
+                    'name' => 'July',
+                ],
+                7 => [
+                    'id' => 8,
+                    'name' => 'August',
+                ],
+                8 => [
+                    'id' => 9,
+                    'name' => 'September',
+                ],
+                9 => [
+                    'id' => 10,
+                    'name' => 'October',
+                ],
+                10 => [
+                    'id' => 11,
+                    'name' => 'November',
+                ],
+                11 => [
+                    'id' => 12,
+                    'name' => 'December',
+                ],
+            ],
+            $collection->toArray()
+        );
+    }
+
+    /** @test */
+    public function it_gets_a_collection_of_31_days(): void
+    {
+        $collection = DateHelper::getDays();
+        $this->assertEquals(
+            [
+                0 => [
+                    'id' => 1,
+                    'name' => 1,
+                ],
+                1 => [
+                    'id' => 2,
+                    'name' => 2,
+                ],
+                2 => [
+                    'id' => 3,
+                    'name' => 3,
+                ],
+                3 => [
+                    'id' => 4,
+                    'name' => 4,
+                ],
+                4 => [
+                    'id' => 5,
+                    'name' => 5,
+                ],
+                5 => [
+                    'id' => 6,
+                    'name' => 6,
+                ],
+                6 => [
+                    'id' => 7,
+                    'name' => 7,
+                ],
+                7 => [
+                    'id' => 8,
+                    'name' => 8,
+                ],
+                8 => [
+                    'id' => 9,
+                    'name' => 9,
+                ],
+                9 => [
+                    'id' => 10,
+                    'name' => 10,
+                ],
+                10 => [
+                    'id' => 11,
+                    'name' => 11,
+                ],
+                11 => [
+                    'id' => 12,
+                    'name' => 12,
+                ],
+                12 => [
+                    'id' => 13,
+                    'name' => 13,
+                ],
+                13 => [
+                    'id' => 14,
+                    'name' => 14,
+                ],
+                14 => [
+                    'id' => 15,
+                    'name' => 15,
+                ],
+                15 => [
+                    'id' => 16,
+                    'name' => 16,
+                ],
+                16 => [
+                    'id' => 17,
+                    'name' => 17,
+                ],
+                17 => [
+                    'id' => 18,
+                    'name' => 18,
+                ],
+                18 => [
+                    'id' => 19,
+                    'name' => 19,
+                ],
+                19 => [
+                    'id' => 20,
+                    'name' => 20,
+                ],
+                20 => [
+                    'id' => 21,
+                    'name' => 21,
+                ],
+                21 => [
+                    'id' => 22,
+                    'name' => 22,
+                ],
+                22 => [
+                    'id' => 23,
+                    'name' => 23,
+                ],
+                23 => [
+                    'id' => 24,
+                    'name' => 24,
+                ],
+                24 => [
+                    'id' => 25,
+                    'name' => 25,
+                ],
+                25 => [
+                    'id' => 26,
+                    'name' => 26,
+                ],
+                26 => [
+                    'id' => 27,
+                    'name' => 27,
+                ],
+                27 => [
+                    'id' => 28,
+                    'name' => 28,
+                ],
+                28 => [
+                    'id' => 29,
+                    'name' => 29,
+                ],
+                29 => [
+                    'id' => 30,
+                    'name' => 30,
+                ],
+                30 => [
+                    'id' => 31,
+                    'name' => 31,
+                ],
+            ],
+            $collection->toArray()
+        );
+    }
 }

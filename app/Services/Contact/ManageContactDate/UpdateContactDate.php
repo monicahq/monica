@@ -28,7 +28,7 @@ class UpdateContactDate extends BaseService implements ServiceInterface
             'contact_id' => 'required|integer|exists:contacts,id',
             'contact_date_id' => 'required|integer|exists:contact_dates,id',
             'label' => 'required|string|max:255',
-            'date' => 'required|nullable|date_format:Y-m-d',
+            'date' => 'required|string|max:255',
             'type' => 'nullable|string|max:255',
         ];
     }
@@ -74,10 +74,8 @@ class UpdateContactDate extends BaseService implements ServiceInterface
 
     private function update(): void
     {
-        $parsedDate = Carbon::parse($this->data['date'])->format('Y-m-d');
-
         $this->date->label = $this->data['label'];
-        $this->date->date = $parsedDate;
+        $this->date->date = $this->data['date'];
         $this->date->type = $this->valueOrNull($this->data, 'type');
         $this->date->save();
 

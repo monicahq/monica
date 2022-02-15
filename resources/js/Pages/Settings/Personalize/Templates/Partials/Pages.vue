@@ -11,8 +11,7 @@
     <div
       :class="isSelectedId == data.template_page_contact_information.id ? 'border-2	bg-sky-100' : ''"
       class="mb-2 flex items-center rounded-lg border border-gray-200 bg-white px-5 py-2 hover:bg-slate-50"
-      @click="selectPage(data.template_page_contact_information)"
-    >
+      @click="selectPage(data.template_page_contact_information)">
       <!-- detail of a page -->
       <div>
         <div class="mb-0 block">
@@ -31,15 +30,13 @@
       item-key="id"
       :component-data="{ name: 'fade' }"
       handle=".handle"
-      @change="updatePosition"
-    >
+      @change="updatePosition">
       <template #item="{ element }">
         <div
           v-if="renamePageModalShownId != element.id"
           :class="isSelectedId == element.id ? 'border-2	bg-sky-100' : ''"
           class="mb-2 flex items-center rounded-lg border border-gray-200 bg-white py-2 pl-2 pr-5 hover:bg-slate-50"
-          @click="selectPage(element)"
-        >
+          @click="selectPage(element)">
           <!-- icon to move position -->
           <div class="mr-2">
             <svg
@@ -48,8 +45,7 @@
               height="24"
               viewBox="0 0 24 24"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+              xmlns="http://www.w3.org/2000/svg">
               <path d="M7 7H9V9H7V7Z" fill="currentColor" />
               <path d="M11 7H13V9H11V7Z" fill="currentColor" />
               <path d="M17 7H15V9H17V7Z" fill="currentColor" />
@@ -81,8 +77,7 @@
         <form
           v-else
           class="item-list mb-2 rounded-lg border border-gray-200 bg-white hover:bg-slate-50"
-          @submit.prevent="update(element)"
-        >
+          @submit.prevent="update(element)">
           <div class="border-b border-gray-200 p-5">
             <errors :errors="form.errors" />
 
@@ -96,8 +91,7 @@
               :required="true"
               :autocomplete="false"
               :maxlength="255"
-              @esc-key-pressed="renamePageModalShownId = 0"
-            />
+              @esc-key-pressed="renamePageModalShownId = 0" />
           </div>
 
           <div class="flex justify-between p-5">
@@ -112,8 +106,7 @@
     <form
       v-if="createPageModalShown"
       class="mb-6 rounded-lg border border-gray-200 bg-white"
-      @submit.prevent="submit()"
-    >
+      @submit.prevent="submit()">
       <div class="border-b border-gray-200 p-5">
         <errors :errors="form.errors" />
 
@@ -127,8 +120,7 @@
           :required="true"
           :autocomplete="false"
           :maxlength="255"
-          @esc-key-pressed="createPageModalShown = false"
-        />
+          @esc-key-pressed="createPageModalShown = false" />
       </div>
 
       <div class="flex justify-between p-5">

@@ -29,8 +29,7 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -73,8 +72,7 @@
                   <inertia-link
                     :href="page.url.show"
                     :class="{ 'border-orange-500 hover:border-orange-500': page.selected }"
-                    class="inline-block border-b-2 border-transparent px-4 pb-2 hover:border-gray-200"
-                  >
+                    class="inline-block border-b-2 border-transparent px-4 pb-2 hover:border-gray-200">
                     {{ page.name }}
                   </inertia-link>
                 </li>

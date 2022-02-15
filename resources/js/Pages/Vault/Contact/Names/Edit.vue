@@ -24,8 +24,7 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -40,8 +39,7 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -68,8 +66,7 @@
               :input-class="'block w-full'"
               :required="true"
               :maxlength="255"
-              :label="'First name'"
-            />
+              :label="'First name'" />
 
             <!-- last name -->
             <text-input
@@ -79,8 +76,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="'Last name'"
-            />
+              :label="'Last name'" />
 
             <!-- middle name -->
             <text-input
@@ -90,8 +86,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="'Middle name'"
-            />
+              :label="'Middle name'" />
 
             <!-- nickname -->
             <text-input
@@ -101,8 +96,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="'Nickname'"
-            />
+              :label="'Nickname'" />
 
             <!-- nickname -->
             <text-input
@@ -112,8 +106,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="'Maiden name'"
-            />
+              :label="'Maiden name'" />
 
             <!-- genders -->
             <dropdown
@@ -123,8 +116,7 @@
               :div-outer-class="'mb-5'"
               :placeholder="'Choose a value'"
               :dropdown-class="'block w-full'"
-              :label="'Gender'"
-            />
+              :label="'Gender'" />
 
             <!-- pronouns -->
             <dropdown
@@ -134,8 +126,7 @@
               :div-outer-class="'mb-5'"
               :placeholder="'Choose a value'"
               :dropdown-class="'block w-full'"
-              :label="'Pronoun'"
-            />
+              :label="'Pronoun'" />
           </div>
 
           <div class="flex justify-between p-5">
@@ -145,8 +136,7 @@
               :text="'Update'"
               :state="loadingState"
               :icon="'check'"
-              :classes="'save'"
-            />
+              :classes="'save'" />
           </div>
         </form>
       </div>

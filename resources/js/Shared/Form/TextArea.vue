@@ -39,8 +39,7 @@
         @input="$emit('update:modelValue', $event.target.value)"
         @keydown.esc="sendEscKey"
         @focus="showMaxLength"
-        @blur="displayMaxLength = false"
-      />
+        @blur="displayMaxLength = false" />
       <span v-if="maxlength && displayMaxLength" class="length absolute rounded text-xs">
         {{ charactersLeft }}
       </span>

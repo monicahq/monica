@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 class DateHelper
 {
@@ -112,5 +113,42 @@ class DateHelper
     public static function formatFullDate(Carbon $date): string
     {
         return $date->isoFormat(trans('format.full_date'));
+    }
+
+    /**
+     * Return a collection of months.
+     *
+     * @return Collection
+     */
+    public static function getMonths(): Collection
+    {
+        $monthsCollection = collect();
+        $year = Carbon::now()->year;
+        for ($month = 1; $month <= 12; $month++) {
+            $monthsCollection->push([
+                'id' => $month,
+                'name' => Carbon::create($year, $month, 1)->isoFormat('MMMM'),
+            ]);
+        }
+
+        return $monthsCollection;
+    }
+
+    /**
+     * Return a collection of days.
+     *
+     * @return Collection
+     */
+    public static function getDays(): Collection
+    {
+        $daysCollection = collect();
+        for ($day = 1; $day <= 31; $day++) {
+            $daysCollection->push([
+                'id' => $day,
+                'name' => $day,
+            ]);
+        }
+
+        return $daysCollection;
     }
 }

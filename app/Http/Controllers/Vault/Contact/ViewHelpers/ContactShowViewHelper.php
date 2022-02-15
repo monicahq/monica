@@ -88,7 +88,7 @@ class ContactShowViewHelper
             }
 
             if ($module->type == Module::TYPE_IMPORTANT_DATES) {
-                $data = ModuleImportantDatesViewHelper::data($contact);
+                $data = ModuleImportantDatesViewHelper::data($contact, $user);
             }
 
             $modulesCollection->push([

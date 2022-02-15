@@ -33,8 +33,7 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -49,8 +48,7 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
@@ -69,8 +67,7 @@
             v-if="!createTemplateModalShown"
             :text="'Add a new template'"
             :icon="'plus'"
-            @click="showTemplateModal"
-          />
+            @click="showTemplateModal" />
         </div>
 
         <!-- help text -->
@@ -80,14 +77,12 @@
             class="h-6 grow pr-2"
             fill="none"
             viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
+            stroke="currentColor">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
 
           <div>
@@ -106,8 +101,7 @@
         <form
           v-if="createTemplateModalShown"
           class="mb-6 rounded-lg border border-gray-200 bg-white"
-          @submit.prevent="submit()"
-        >
+          @submit.prevent="submit()">
           <div class="border-b border-gray-200 p-5">
             <errors :errors="form.errors" />
 
@@ -121,8 +115,7 @@
               :required="true"
               :autocomplete="false"
               :maxlength="255"
-              @esc-key-pressed="createTemplateModalShown = false"
-            />
+              @esc-key-pressed="createTemplateModalShown = false" />
           </div>
 
           <div class="flex justify-between p-5">
@@ -136,8 +129,7 @@
           <li
             v-for="template in localTemplates"
             :key="template.id"
-            class="item-list border-b border-gray-200 hover:bg-slate-50"
-          >
+            class="item-list border-b border-gray-200 hover:bg-slate-50">
             <!-- detail of the template -->
             <div v-if="renameTemplateModalShownId != template.id" class="flex items-center justify-between px-5 py-2">
               <inertia-link :href="template.url.show" class="text-sky-500 hover:text-blue-900">
@@ -148,8 +140,7 @@
               <ul class="text-sm">
                 <li
                   class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900"
-                  @click="showUpdateTemplateModal(template)"
-                >
+                  @click="showUpdateTemplateModal(template)">
                   Rename
                 </li>
                 <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(template)">Delete</li>
@@ -160,8 +151,7 @@
             <form
               v-if="renameTemplateModalShownId == template.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50"
-              @submit.prevent="update(template)"
-            >
+              @submit.prevent="update(template)">
               <div class="border-b border-gray-200 p-5">
                 <errors :errors="form.errors" />
 
@@ -175,8 +165,7 @@
                   :required="true"
                   :autocomplete="false"
                   :maxlength="255"
-                  @esc-key-pressed="renameTemplateModalShownId = 0"
-                />
+                  @esc-key-pressed="renameTemplateModalShownId = 0" />
               </div>
 
               <div class="flex justify-between p-5">
