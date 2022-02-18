@@ -53,6 +53,8 @@
                 <gender-pronoun v-if="module.type == 'gender_pronoun'" :data="genderPronoun" />
 
                 <important-dates v-if="module.type == 'important_dates'" :data="importantDates" />
+
+                <labels v-if="module.type == 'labels'" :data="labels" />
               </div>
             </div>
 
@@ -99,6 +101,7 @@ import GenderPronoun from '@/Shared/Modules/GenderPronoun';
 import Avatar from '@/Shared/Modules/Avatar';
 import Notes from '@/Shared/Modules/Notes';
 import ImportantDates from '@/Shared/Modules/ImportantDates';
+import Labels from '@/Shared/Modules/Labels';
 
 export default {
   components: {
@@ -108,6 +111,7 @@ export default {
     Avatar,
     Notes,
     ImportantDates,
+    Labels,
   },
 
   props: {
@@ -127,6 +131,7 @@ export default {
       contactName: [],
       genderPronoun: [],
       importantDates: [],
+      labels: [],
       notes: [],
     };
   },
@@ -156,6 +161,11 @@ export default {
           this.data.contact_information[
             this.data.contact_information.findIndex((x) => x.type == 'important_dates')
           ].data;
+      }
+
+      if (this.data.contact_information.findIndex((x) => x.type == 'labels') > -1) {
+        this.labels =
+          this.data.contact_information[this.data.contact_information.findIndex((x) => x.type == 'labels')].data;
       }
     }
 

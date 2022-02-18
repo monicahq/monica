@@ -77,6 +77,7 @@ class ContactController extends Controller
             ->with('pronoun')
             ->with('notes')
             ->with('dates')
+            ->with('vault')
             ->findOrFail($contactId);
 
         if (! $contact->template_id) {

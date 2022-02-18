@@ -16,12 +16,14 @@ class CreateLabelsTable extends Migration
 
         Schema::create('labels', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('account_id');
+            $table->unsignedBigInteger('vault_id');
             $table->string('name');
             $table->string('slug');
             $table->text('description')->nullable();
+            $table->string('bg_color')->default('bg-zinc-200');
+            $table->string('text_color')->default('text-zinc-700');
             $table->timestamps();
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
         });
 
         Schema::create('contact_label', function (Blueprint $table) {

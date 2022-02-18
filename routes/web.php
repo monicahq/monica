@@ -15,13 +15,14 @@ use App\Http\Controllers\Settings\Personalize\PersonalizeController;
 use App\Http\Controllers\Settings\Preferences\PreferencesController;
 use App\Http\Controllers\Vault\Contact\Notes\ContactNotesController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsUserController;
+use App\Http\Controllers\Vault\Settings\VaultSettingsLabelController;
 use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsTemplateController;
 use App\Http\Controllers\Settings\Preferences\PreferencesNameOrderController;
 use App\Http\Controllers\Settings\Preferences\PreferencesDateFormatController;
-use App\Http\Controllers\Settings\Personalize\Labels\PersonalizeLabelController;
 use App\Http\Controllers\Vault\Contact\Modules\Note\ContactModuleNoteController;
 use App\Http\Controllers\Settings\Personalize\Genders\PersonalizeGenderController;
+use App\Http\Controllers\Vault\Contact\Modules\Label\ContactModuleLabelController;
 use App\Http\Controllers\Settings\Personalize\Modules\PersonalizeModulesController;
 use App\Http\Controllers\Settings\Personalize\Pronouns\PersonalizePronounController;
 use App\Http\Controllers\Vault\Contact\ImportantDates\ContactImportantDatesController;
@@ -90,6 +91,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::post('notes', [ContactModuleNoteController::class, 'store'])->name('contact.note.store');
                     Route::put('notes/{note}', [ContactModuleNoteController::class, 'update'])->name('contact.note.update');
                     Route::delete('notes/{note}', [ContactModuleNoteController::class, 'destroy'])->name('contact.note.destroy');
+
+                    // labels
+                    Route::post('labels', [ContactModuleLabelController::class, 'store'])->name('contact.label.store');
+                    Route::put('labels/{label}', [ContactModuleLabelController::class, 'update'])->name('contact.label.update');
+                    Route::delete('labels/{label}', [ContactModuleLabelController::class, 'destroy'])->name('contact.label.destroy');
                 });
             });
 
@@ -102,6 +108,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::put('settings/users/{user}', [VaultSettingsUserController::class, 'update'])->name('vault.settings.user.update');
                 Route::delete('settings/users/{user}', [VaultSettingsUserController::class, 'destroy'])->name('vault.settings.user.destroy');
                 Route::delete('', [VaultController::class, 'destroy'])->name('vault.settings.destroy');
+
+                // labels
+                Route::get('settings/labels', [VaultSettingsLabelController::class, 'index'])->name('vault.settings.label.index');
+                Route::post('settings/labels', [VaultSettingsLabelController::class, 'store'])->name('vault.settings.label.store');
+                Route::put('settings/labels/{label}', [VaultSettingsLabelController::class, 'update'])->name('vault.settings.label.update');
+                Route::delete('settings/labels/{label}', [VaultSettingsLabelController::class, 'destroy'])->name('vault.settings.label.destroy');
             });
 
             // search
@@ -145,12 +157,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::post('relationships/{groupType}/types', [PersonalizeRelationshipTypeController::class, 'store'])->name('relationship.type.store');
                 Route::put('relationships/{groupType}/types/{type}', [PersonalizeRelationshipTypeController::class, 'update'])->name('relationship.type.update');
                 Route::delete('relationships/{groupType}/types/{type}', [PersonalizeRelationshipTypeController::class, 'destroy'])->name('relationship.type.destroy');
-
-                // labels
-                Route::get('labels', [PersonalizeLabelController::class, 'index'])->name('label.index');
-                Route::post('labels', [PersonalizeLabelController::class, 'store'])->name('label.store');
-                Route::put('labels/{label}', [PersonalizeLabelController::class, 'update'])->name('label.update');
-                Route::delete('labels/{label}', [PersonalizeLabelController::class, 'destroy'])->name('label.destroy');
 
                 // genders
                 Route::get('genders', [PersonalizeGenderController::class, 'index'])->name('gender.index');

@@ -12,11 +12,11 @@ class LabelTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
-    public function it_has_one_account()
+    public function it_has_one_vault()
     {
         $label = Label::factory()->create();
 
-        $this->assertTrue($label->account()->exists());
+        $this->assertTrue($label->vault()->exists());
     }
 
     /** @test */

@@ -9,6 +9,7 @@ use App\Models\TemplatePage;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use App\Http\Controllers\Vault\Contact\Modules\Note\ViewHelpers\ModuleNotesViewHelper;
+use App\Http\Controllers\Vault\Contact\Modules\Label\ViewHelpers\ModuleLabelViewHelper;
 use App\Http\Controllers\Vault\Contact\Modules\Avatar\ViewHelpers\ModuleAvatarViewHelper;
 use App\Http\Controllers\Vault\Contact\Modules\ContactName\ViewHelpers\ModuleContactNameViewHelper;
 use App\Http\Controllers\Vault\Contact\Modules\GenderPronoun\ViewHelpers\ModuleGenderPronounViewHelper;
@@ -89,6 +90,10 @@ class ContactShowViewHelper
 
             if ($module->type == Module::TYPE_IMPORTANT_DATES) {
                 $data = ModuleImportantDatesViewHelper::data($contact, $user);
+            }
+
+            if ($module->type == Module::TYPE_LABELS) {
+                $data = ModuleLabelViewHelper::data($contact);
             }
 
             $modulesCollection->push([

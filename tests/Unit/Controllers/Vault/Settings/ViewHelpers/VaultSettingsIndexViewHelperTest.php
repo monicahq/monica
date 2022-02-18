@@ -5,6 +5,7 @@ namespace Tests\Unit\Controllers\Vault\Settings\ViewHelpers;
 use function env;
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Label;
 use App\Models\Vault;
 use App\Models\Template;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -31,13 +32,15 @@ class VaultSettingsIndexViewHelperTest extends TestCase
 
         $array = VaultSettingsIndexViewHelper::data($vault);
         $this->assertEquals(
-            4,
+            6,
             count($array)
         );
         $this->assertArrayHasKey('templates', $array);
         $this->assertArrayHasKey('users_in_vault', $array);
         $this->assertArrayHasKey('users_in_account', $array);
         $this->assertArrayHasKey('url', $array);
+        $this->assertArrayHasKey('labels', $array);
+        $this->assertArrayHasKey('label_colors', $array);
         $this->assertEquals(
             [
                 0 => [
@@ -80,10 +83,33 @@ class VaultSettingsIndexViewHelperTest extends TestCase
             [
                 'template_update' => env('APP_URL').'/vaults/'.$vault->id.'/settings/template',
                 'user_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/users',
+                'label_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/labels',
                 'update' => env('APP_URL').'/vaults/'.$vault->id.'/settings',
                 'destroy' => env('APP_URL').'/vaults/'.$vault->id,
             ],
             $array['url']
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_data_needed_for_the_data_transfer_object(): void
+    {
+        $label = Label::factory()->create();
+        $vault = Vault::factory()->create();
+        $array = VaultSettingsIndexViewHelper::dtoLabel($vault, $label);
+        $this->assertEquals(
+            [
+                'id' => $label->id,
+                'name' => $label->name,
+                'count' => null,
+                'bg_color' => $label->bg_color,
+                'text_color' => $label->text_color,
+                'url' => [
+                    'update' => env('APP_URL').'/vaults/'.$vault->id.'/settings/labels/'.$label->id,
+                    'destroy' => env('APP_URL').'/vaults/'.$vault->id.'/settings/labels/'.$label->id,
+                ],
+            ],
+            $array
         );
     }
 }

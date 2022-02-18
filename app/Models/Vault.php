@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -75,6 +76,16 @@ class Vault extends Model
     public function template()
     {
         return $this->belongsTo(Template::class, 'default_template_id');
+    }
+
+    /**
+     * Get the labels associated with the account.
+     *
+     * @return HasMany
+     */
+    public function labels()
+    {
+        return $this->hasMany(Label::class);
     }
 
     /**

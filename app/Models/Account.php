@@ -81,16 +81,6 @@ class Account extends Model
     }
 
     /**
-     * Get the labels associated with the account.
-     *
-     * @return HasMany
-     */
-    public function labels()
-    {
-        return $this->hasMany(Label::class);
-    }
-
-    /**
      * Get the contact information types associated with the account.
      *
      * @return HasMany

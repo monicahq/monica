@@ -56,12 +56,6 @@
               </inertia-link>
             </li>
             <li class="mb-2">
-              <span class="mr-2">🏷</span>
-              <inertia-link :href="data.url.manage_labels" class="text-sky-500 hover:text-blue-900">
-                Manage labels
-              </inertia-link>
-            </li>
-            <li class="mb-2">
               <span class="mr-2">👩‍🔬</span>
               <inertia-link :href="data.url.manage_pronouns" class="text-sky-500 hover:text-blue-900">
                 Manage pronouns

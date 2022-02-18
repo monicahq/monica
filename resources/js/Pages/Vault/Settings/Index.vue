@@ -13,6 +13,8 @@
 
         <default-template :data="data" />
 
+        <labels :data="data" />
+
         <delete :data="data" />
       </div>
     </main>
@@ -23,6 +25,7 @@
 import Layout from '@/Shared/Layout';
 import Delete from '@/Pages/Vault/Settings/Partials/Delete';
 import DefaultTemplate from '@/Pages/Vault/Settings/Partials/DefaultTemplate';
+import Labels from '@/Pages/Vault/Settings/Partials/Labels';
 import Users from '@/Pages/Vault/Settings/Partials/Users';
 
 export default {
@@ -30,6 +33,7 @@ export default {
     Layout,
     Delete,
     DefaultTemplate,
+    Labels,
     Users,
   },
 

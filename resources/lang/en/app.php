@@ -84,6 +84,7 @@ return [
     'module_feed' => 'Contact feed',
     'module_gender_pronoun' => 'Gender and pronoun',
     'module_important_dates' => 'Important dates',
+    'module_labels' => 'Labels',
 
     'module_option_default_number_of_items_to_display' => 'Default number of items to display',
 

@@ -1,16 +1,17 @@
 <?php
 
-namespace Tests\Unit\Services\Account\ManageLabels;
+namespace Tests\Unit\Services\Vault\ManageLabels;
 
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Label;
+use App\Models\Vault;
 use App\Models\Account;
 use App\Jobs\CreateAuditLog;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Services\Account\ManageLabels\CreateLabel;
+use App\Services\Vault\ManageLabels\CreateLabel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -19,10 +20,12 @@ class CreateLabelTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
-    public function it_creates_a_gender(): void
+    public function it_creates_a_label(): void
     {
         $ross = $this->createAdministrator();
-        $this->executeService($ross, $ross->account);
+        $vault = $this->createVault($ross->account);
+        $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_MANAGE, $vault);
+        $this->executeService($ross, $ross->account, $vault);
     }
 
     /** @test */
@@ -43,34 +46,54 @@ class CreateLabelTest extends TestCase
 
         $ross = $this->createAdministrator();
         $account = $this->createAccount();
-        $this->executeService($ross, $account);
+        $vault = $this->createVault($ross->account);
+        $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_MANAGE, $vault);
+        $this->executeService($ross, $account, $vault);
     }
 
     /** @test */
-    public function it_fails_if_user_is_not_administrator(): void
+    public function it_fails_if_user_is_not_editor(): void
     {
         $this->expectException(NotEnoughPermissionException::class);
 
         $ross = $this->createUser();
-        $this->executeService($ross, $ross->account);
+        $vault = $this->createVault($ross->account);
+        $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_VIEW, $vault);
+        $this->executeService($ross, $ross->account, $vault);
     }
 
-    private function executeService(User $author, Account $account): void
+    /** @test */
+    public function it_fails_if_vault_is_not_in_the_account(): void
+    {
+        $this->expectException(ModelNotFoundException::class);
+
+        $ross = $this->createAdministrator();
+        $vault = $this->createVault(Account::factory()->create());
+        $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_VIEW, $vault);
+        $this->executeService($ross, $ross->account, $vault);
+    }
+
+    private function executeService(User $author, Account $account, Vault $vault): void
     {
         Queue::fake();
 
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
+            'vault_id' => $vault->id,
             'name' => 'label name',
+            'bg_color' => 'bg-zinc-700',
+            'text_color' => 'bg-zinc-700',
         ];
 
         $label = (new CreateLabel)->execute($request);
 
         $this->assertDatabaseHas('labels', [
             'id' => $label->id,
-            'account_id' => $account->id,
+            'vault_id' => $vault->id,
             'name' => 'label name',
+            'bg_color' => 'bg-zinc-700',
+            'text_color' => 'bg-zinc-700',
         ]);
 
         $this->assertInstanceOf(

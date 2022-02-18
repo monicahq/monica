@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Account\ManageLabels;
+namespace App\Services\Vault\ManageLabels;
 
 use App\Models\Label;
 use Illuminate\Support\Str;
@@ -8,7 +8,7 @@ use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
 
-class UpdateLabel extends BaseService implements ServiceInterface
+class CreateLabel extends BaseService implements ServiceInterface
 {
     /**
      * Get the validation rules that apply to the service.
@@ -20,9 +20,11 @@ class UpdateLabel extends BaseService implements ServiceInterface
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'author_id' => 'required|integer|exists:users,id',
-            'label_id' => 'required|integer|exists:labels,id',
+            'vault_id' => 'required|integer|exists:vaults,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:65535',
+            'bg_color' => 'string|max:255',
+            'text_color' => 'string|max:255',
         ];
     }
 
@@ -35,12 +37,13 @@ class UpdateLabel extends BaseService implements ServiceInterface
     {
         return [
             'author_must_belong_to_account',
-            'author_must_be_account_administrator',
+            'author_must_be_vault_editor',
+            'vault_must_belong_to_account',
         ];
     }
 
     /**
-     * Update a label.
+     * Create a label.
      *
      * @param  array  $data
      * @return Label
@@ -49,19 +52,20 @@ class UpdateLabel extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $label = Label::where('account_id', $data['account_id'])
-            ->findOrFail($data['label_id']);
-
-        $label->name = $data['name'];
-        $label->description = $this->valueOrNull($data, 'description');
-        $label->slug = Str::slug($data['name'], '-');
-        $label->save();
+        $label = Label::create([
+            'vault_id' => $data['vault_id'],
+            'name' => $data['name'],
+            'description' => $this->valueOrNull($data, 'description'),
+            'slug' => Str::slug($data['name'], '-'),
+            'bg_color' => $data['bg_color'],
+            'text_color' => $data['text_color'],
+        ]);
 
         CreateAuditLog::dispatch([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'author_name' => $this->author->name,
-            'action_name' => 'label_updated',
+            'action_name' => 'label_created',
             'objects' => json_encode([
                 'label_name' => $label->name,
             ]),

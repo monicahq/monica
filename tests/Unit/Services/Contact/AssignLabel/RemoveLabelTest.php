@@ -28,7 +28,7 @@ class RemoveLabelTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $label = Label::factory()->create(['account_id' => $regis->account_id]);
+        $label = Label::factory()->create(['vault_id' => $vault->id]);
         $contact->labels()->syncWithoutDetaching($label);
 
         $this->executeService($regis, $regis->account, $vault, $contact, $label);
@@ -55,7 +55,7 @@ class RemoveLabelTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $label = Label::factory()->create(['account_id' => $regis->account_id]);
+        $label = Label::factory()->create(['vault_id' => $vault->id]);
         $contact->labels()->syncWithoutDetaching($label);
 
         $this->executeService($regis, $account, $vault, $contact, $label);
@@ -85,7 +85,7 @@ class RemoveLabelTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create();
-        $label = Label::factory()->create(['account_id' => $regis->account_id]);
+        $label = Label::factory()->create(['vault_id' => $vault->id]);
         $contact->labels()->syncWithoutDetaching($label);
 
         $this->executeService($regis, $regis->account, $vault, $contact, $label);
@@ -100,7 +100,7 @@ class RemoveLabelTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_VIEW, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $label = Label::factory()->create(['account_id' => $regis->account_id]);
+        $label = Label::factory()->create(['vault_id' => $vault->id]);
         $contact->labels()->syncWithoutDetaching($label);
 
         $this->executeService($regis, $regis->account, $vault, $contact, $label);

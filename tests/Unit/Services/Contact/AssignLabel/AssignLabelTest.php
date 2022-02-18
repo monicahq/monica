@@ -28,7 +28,7 @@ class AssignLabelTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $label = Label::factory()->create(['account_id' => $regis->account_id]);
+        $label = Label::factory()->create(['vault_id' => $vault->id]);
 
         $this->executeService($regis, $regis->account, $vault, $contact, $label);
     }
@@ -54,7 +54,7 @@ class AssignLabelTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $label = Label::factory()->create(['account_id' => $regis->account_id]);
+        $label = Label::factory()->create(['vault_id' => $vault->id]);
 
         $this->executeService($regis, $account, $vault, $contact, $label);
     }
@@ -82,7 +82,7 @@ class AssignLabelTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create();
-        $label = Label::factory()->create(['account_id' => $regis->account_id]);
+        $label = Label::factory()->create(['vault_id' => $vault->id]);
 
         $this->executeService($regis, $regis->account, $vault, $contact, $label);
     }
@@ -96,7 +96,7 @@ class AssignLabelTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_VIEW, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $label = Label::factory()->create(['account_id' => $regis->account_id]);
+        $label = Label::factory()->create(['vault_id' => $vault->id]);
 
         $this->executeService($regis, $regis->account, $vault, $contact, $label);
     }

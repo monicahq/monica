@@ -4,7 +4,6 @@ namespace Tests\Unit\Models;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Label;
 use App\Models\Gender;
 use App\Models\Module;
 use App\Models\Account;
@@ -97,17 +96,6 @@ class AccountTest extends TestCase
         ]);
 
         $this->assertTrue($account->pronouns()->exists());
-    }
-
-    /** @test */
-    public function it_has_many_labels()
-    {
-        $account = Account::factory()->create();
-        Label::factory(2)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $this->assertTrue($account->labels()->exists());
     }
 
     /** @test */

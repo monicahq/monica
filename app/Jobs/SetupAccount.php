@@ -94,6 +94,7 @@ class SetupAccount implements ShouldQueue
             ->where('type', TemplatePage::TYPE_CONTACT)
             ->first();
 
+        // avatar
         $module = (new CreateModule)->execute([
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
@@ -108,6 +109,8 @@ class SetupAccount implements ShouldQueue
             'template_page_id' => $templatePageContact->id,
             'module_id' => $module->id,
         ]);
+
+        // names
         $module = (new CreateModule)->execute([
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
@@ -122,6 +125,8 @@ class SetupAccount implements ShouldQueue
             'template_page_id' => $templatePageContact->id,
             'module_id' => $module->id,
         ]);
+
+        // important dates
         $module = (new CreateModule)->execute([
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
@@ -136,11 +141,29 @@ class SetupAccount implements ShouldQueue
             'template_page_id' => $templatePageContact->id,
             'module_id' => $module->id,
         ]);
+
+        // gender/pronouns
         $module = (new CreateModule)->execute([
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'name' => trans('app.module_gender_pronoun'),
             'type' => Module::TYPE_GENDER_PRONOUN,
+            'can_be_deleted' => false,
+        ]);
+        (new AssociateModuleToTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageContact->id,
+            'module_id' => $module->id,
+        ]);
+
+        // labels
+        $module = (new CreateModule)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'name' => trans('app.module_labels'),
+            'type' => Module::TYPE_LABELS,
             'can_be_deleted' => false,
         ]);
         (new AssociateModuleToTemplatePage)->execute([

@@ -20,6 +20,7 @@ class Module extends Model
     const TYPE_FEED = 'feed';
     const TYPE_GENDER_PRONOUN = 'gender_pronoun';
     const TYPE_IMPORTANT_DATES = 'important_dates';
+    const TYPE_LABELS = 'labels';
 
     /**
      * The attributes that are mass assignable.

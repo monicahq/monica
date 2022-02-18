@@ -17,24 +17,26 @@ class Label extends Model
      * @var array
      */
     protected $fillable = [
-        'account_id',
+        'vault_id',
         'name',
         'slug',
         'description',
+        'bg_color',
+        'text_color',
     ];
 
     /**
-     * Get the account associated with the gender.
+     * Get the vault associated with the label.
      *
      * @return BelongsTo
      */
-    public function account()
+    public function vault()
     {
-        return $this->belongsTo(Account::class);
+        return $this->belongsTo(Vault::class);
     }
 
     /**
-     * Get the contacts associated with the contact.
+     * Get the contacts associated with the label.
      *
      * @return BelongsToMany
      */
