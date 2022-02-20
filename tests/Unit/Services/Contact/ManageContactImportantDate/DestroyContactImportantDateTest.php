@@ -1,23 +1,23 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\ManageContactDate;
+namespace Tests\Unit\Services\Contact\ManageContactImportantDate;
 
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\Account;
 use App\Models\Contact;
-use App\Models\ContactDate;
 use App\Jobs\CreateAuditLog;
 use App\Jobs\CreateContactLog;
+use App\Models\ContactImportantDate;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\NotEnoughPermissionException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Services\Contact\ManageContactDate\DestroyContactDate;
+use App\Services\Contact\ManageContactImportantDate\DestroyContactImportantDate;
 
-class DestroyContactDateTest extends TestCase
+class DestroyContactImportantDateTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -28,7 +28,7 @@ class DestroyContactDateTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $date = ContactDate::factory()->create([
+        $date = ContactImportantDate::factory()->create([
             'contact_id' => $contact->id,
         ]);
 
@@ -43,7 +43,7 @@ class DestroyContactDateTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyContactDate)->execute($request);
+        (new DestroyContactImportantDate)->execute($request);
     }
 
     /** @test */
@@ -56,7 +56,7 @@ class DestroyContactDateTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $date = ContactDate::factory()->create([
+        $date = ContactImportantDate::factory()->create([
             'contact_id' => $contact->id,
         ]);
 
@@ -72,7 +72,7 @@ class DestroyContactDateTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create();
-        $date = ContactDate::factory()->create([
+        $date = ContactImportantDate::factory()->create([
             'contact_id' => $contact->id,
         ]);
 
@@ -88,7 +88,7 @@ class DestroyContactDateTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_VIEW, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $date = ContactDate::factory()->create([
+        $date = ContactImportantDate::factory()->create([
             'contact_id' => $contact->id,
         ]);
 
@@ -104,12 +104,12 @@ class DestroyContactDateTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $date = ContactDate::factory()->create();
+        $date = ContactImportantDate::factory()->create();
 
         $this->executeService($regis, $regis->account, $vault, $contact, $date);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, ContactDate $date): void
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, ContactImportantDate $date): void
     {
         Queue::fake();
 
@@ -118,12 +118,12 @@ class DestroyContactDateTest extends TestCase
             'vault_id' => $vault->id,
             'author_id' => $author->id,
             'contact_id' => $contact->id,
-            'contact_date_id' => $date->id,
+            'contact_important_date_id' => $date->id,
         ];
 
-        (new DestroyContactDate)->execute($request);
+        (new DestroyContactImportantDate)->execute($request);
 
-        $this->assertDatabaseMissing('contact_dates', [
+        $this->assertDatabaseMissing('contact_important_dates', [
             'id' => $date->id,
         ]);
 

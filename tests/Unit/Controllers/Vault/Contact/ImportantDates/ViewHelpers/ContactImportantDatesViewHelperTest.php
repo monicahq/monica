@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Contact;
-use App\Models\ContactDate;
+use App\Models\ContactImportantDate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers\Vault\Contact\ImportantDates\ViewHelpers\ContactImportantDatesViewHelper;
 
@@ -19,9 +19,11 @@ class ContactImportantDatesViewHelperTest extends TestCase
     {
         $contact = Contact::factory()->create();
         $user = User::factory()->create();
-        $date = ContactDate::factory()->create([
+        $date = ContactImportantDate::factory()->create([
             'contact_id' => $contact->id,
-            'date' => 1981,
+            'day' => 29,
+            'month' => 10,
+            'year' => 1981,
         ]);
 
         $array = ContactImportantDatesViewHelper::data($contact, $user);
@@ -59,9 +61,11 @@ class ContactImportantDatesViewHelperTest extends TestCase
         Carbon::setTestNow(Carbon::create(2022, 1, 1));
         $contact = Contact::factory()->create();
         $user = User::factory()->create();
-        $date = ContactDate::factory()->create([
+        $date = ContactImportantDate::factory()->create([
             'contact_id' => $contact->id,
-            'date' => 1981,
+            'day' => 29,
+            'month' => 10,
+            'year' => 1981,
         ]);
 
         $array = ContactImportantDatesViewHelper::dto($contact, $date, $user);
@@ -70,13 +74,13 @@ class ContactImportantDatesViewHelperTest extends TestCase
             [
                 'id' => $date->id,
                 'label' => $date->label,
-                'date' => '1981',
+                'date' => 'Oct 29, 1981',
                 'type' => 'birthdate',
-                'age' => '41',
-                'choice' => 'age',
-                'completeDate' => '',
-                'month' => '',
-                'day' => '',
+                'age' => '40',
+                'choice' => 'full_date',
+                'completeDate' => '1981-10-29',
+                'month' => 10,
+                'day' => 29,
                 'url' => [
                     'update' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/dates/'.$date->id,
                     'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/dates/'.$date->id,

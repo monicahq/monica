@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Services\Contact\ManageContactDate;
+namespace App\Services\Contact\ManageContactImportantDate;
 
 use Carbon\Carbon;
-use App\Models\ContactDate;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Jobs\CreateContactLog;
 use App\Interfaces\ServiceInterface;
+use App\Models\ContactImportantDate;
 
-class UpdateContactDate extends BaseService implements ServiceInterface
+class UpdateContactImportantDate extends BaseService implements ServiceInterface
 {
-    private ContactDate $date;
+    private ContactImportantDate $date;
     private array $data;
 
     /**
@@ -26,9 +26,11 @@ class UpdateContactDate extends BaseService implements ServiceInterface
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
             'contact_id' => 'required|integer|exists:contacts,id',
-            'contact_date_id' => 'required|integer|exists:contact_dates,id',
+            'contact_important_date_id' => 'required|integer|exists:contact_important_dates,id',
             'label' => 'required|string|max:255',
-            'date' => 'required|string|max:255',
+            'day' => 'nullable|integer',
+            'month' => 'nullable|integer',
+            'year' => 'nullable|integer',
             'type' => 'nullable|string|max:255',
         ];
     }
@@ -52,9 +54,9 @@ class UpdateContactDate extends BaseService implements ServiceInterface
      * Update a contact date.
      *
      * @param  array  $data
-     * @return ContactDate
+     * @return ContactImportantDate
      */
-    public function execute(array $data): ContactDate
+    public function execute(array $data): ContactImportantDate
     {
         $this->data = $data;
         $this->validate();
@@ -68,14 +70,16 @@ class UpdateContactDate extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->date = ContactDate::where('contact_id', $this->contact->id)
-            ->findOrFail($this->data['contact_date_id']);
+        $this->date = ContactImportantDate::where('contact_id', $this->contact->id)
+            ->findOrFail($this->data['contact_important_date_id']);
     }
 
     private function update(): void
     {
         $this->date->label = $this->data['label'];
-        $this->date->date = $this->data['date'];
+        $this->date->day = $this->valueOrNull($this->data, 'day');
+        $this->date->month = $this->valueOrNull($this->data, 'month');
+        $this->date->year = $this->valueOrNull($this->data, 'year');
         $this->date->type = $this->valueOrNull($this->data, 'type');
         $this->date->save();
 

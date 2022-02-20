@@ -6,14 +6,14 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\Contact;
-use App\Models\ContactDate;
 use Faker\Factory as Faker;
 use Illuminate\Console\Command;
+use App\Models\ContactImportantDate;
 use App\Services\Contact\ManageNote\CreateNote;
 use App\Services\Vault\ManageVault\CreateVault;
 use App\Services\Account\ManageAccount\CreateAccount;
 use App\Services\Contact\ManageContact\CreateContact;
-use App\Services\Contact\ManageContactDate\CreateContactDate;
+use App\Services\Contact\ManageContactImportantDate\CreateContactImportantDate;
 
 class SetupDummyAccount extends Command
 {
@@ -142,13 +142,7 @@ class SetupDummyAccount extends Command
         foreach (Vault::all() as $vault) {
             for ($i = 0; $i < rand(2, 13); $i++) {
                 $date = $this->faker->dateTimeThisCentury();
-                $date = Carbon::parse($date);
-
-                if (rand(1, 2) == 1) {
-                    $birthDate = $date->isoFormat('Y');
-                } else {
-                    $birthDate = $date->isoFormat('MM-DD');
-                }
+                $birthDate = Carbon::parse($date);
 
                 $contact = (new CreateContact)->execute([
                     'account_id' => $this->user->account_id,
@@ -161,14 +155,16 @@ class SetupDummyAccount extends Command
                     'maiden_name' => null,
                 ]);
 
-                (new CreateContactDate)->execute([
+                (new CreateContactImportantDate)->execute([
                     'account_id' => $this->user->account_id,
                     'author_id' => $this->user->id,
                     'vault_id' => $vault->id,
                     'contact_id' => $contact->id,
                     'label' => 'Birthdate',
-                    'date' => $birthDate,
-                    'type' => ContactDate::TYPE_BIRTHDATE,
+                    'day' => $birthDate->day,
+                    'month' => $birthDate->month,
+                    'year' => rand(1, 2) == 1 ? $birthDate->year : null,
+                    'type' => ContactImportantDate::TYPE_BIRTHDATE,
                 ]);
             }
         }

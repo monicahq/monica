@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContactDateTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateContactDateTable extends Migration
      */
     public function up()
     {
-        Schema::create('contact_dates', function (Blueprint $table) {
+        Schema::create('contact_important_dates', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('contact_id')->nullable();
             $table->string('label');
-            $table->string('date'); // I KNOW: it's a string, not a date. Age is complex in Monica. Take a look at AgeHelper.
+            $table->integer('day')->nullable();
+            $table->integer('month')->nullable();
+            $table->integer('year')->nullable();
             $table->string('type')->nullable();
             $table->timestamps();
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
@@ -31,6 +33,6 @@ class CreateContactDateTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contact_dates');
+        Schema::dropIfExists('contact_important_dates');
     }
-}
+};

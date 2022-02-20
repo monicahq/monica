@@ -188,7 +188,7 @@ class Contact extends Model
      */
     public function dates()
     {
-        return $this->hasMany(ContactDate::class);
+        return $this->hasMany(ContactImportantDate::class);
     }
 
     /**

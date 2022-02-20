@@ -5,10 +5,11 @@ namespace Tests\Unit\Helpers;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User;
-use App\Helpers\AgeHelper;
+use App\Helpers\ImportantDateHelper;
+use App\Models\ContactImportantDate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AgeHelperTest extends TestCase
+class ImportantDateHelperTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -16,9 +17,15 @@ class AgeHelperTest extends TestCase
     public function it_gets_the_age_based_on_a_complete_date(): void
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1));
+        $date = ContactImportantDate::factory()->create([
+            'day' => 29,
+            'month' => 10,
+            'year' => 1981,
+        ]);
+
         $this->assertEquals(
             36,
-            AgeHelper::getAge('1981-10-29')
+            ImportantDateHelper::getAge($date)
         );
     }
 
@@ -26,17 +33,30 @@ class AgeHelperTest extends TestCase
     public function it_gets_the_age_based_on_a_year(): void
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1));
+        $date = ContactImportantDate::factory()->create([
+            'day' => null,
+            'month' => null,
+            'year' => 1970,
+        ]);
+
         $this->assertEquals(
             48,
-            AgeHelper::getAge('1970')
+            ImportantDateHelper::getAge($date)
         );
     }
 
     /** @test */
     public function it_cant_get_the_age_based_on_a_month_or_day(): void
     {
+        Carbon::setTestNow(Carbon::create(2018, 1, 1));
+        $date = ContactImportantDate::factory()->create([
+            'day' => 29,
+            'month' => 10,
+            'year' => null,
+        ]);
+
         $this->assertNull(
-            AgeHelper::getAge('10-02')
+            ImportantDateHelper::getAge($date)
         );
     }
 
@@ -44,9 +64,14 @@ class AgeHelperTest extends TestCase
     public function it_cant_get_the_age_if_the_date_is_not_set(): void
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1));
+        $date = ContactImportantDate::factory()->create([
+            'day' => null,
+            'month' => null,
+            'year' => null,
+        ]);
 
         $this->assertNull(
-            AgeHelper::getAge('')
+            ImportantDateHelper::getAge($date)
         );
     }
 
@@ -55,9 +80,14 @@ class AgeHelperTest extends TestCase
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1));
         $user = User::factory()->create();
+        $date = ContactImportantDate::factory()->create([
+            'day' => 29,
+            'month' => 10,
+            'year' => 1981,
+        ]);
         $this->assertEquals(
             'Oct 29, 1981',
-            AgeHelper::formatDate('1981-10-29', $user)
+            ImportantDateHelper::formatDate($date, $user)
         );
     }
 
@@ -66,9 +96,14 @@ class AgeHelperTest extends TestCase
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1));
         $user = User::factory()->create();
+        $date = ContactImportantDate::factory()->create([
+            'day' => null,
+            'month' => null,
+            'year' => 1970,
+        ]);
         $this->assertEquals(
             '1970',
-            AgeHelper::formatDate('1970', $user)
+            ImportantDateHelper::formatDate($date, $user)
         );
     }
 
@@ -76,9 +111,14 @@ class AgeHelperTest extends TestCase
     public function it_gets_the_date_based_on_a_month_or_day(): void
     {
         $user = User::factory()->create();
+        $date = ContactImportantDate::factory()->create([
+            'day' => 29,
+            'month' => 10,
+            'year' => null,
+        ]);
         $this->assertEquals(
-            'Oct 02',
-            AgeHelper::formatDate('10-02', $user)
+            'Oct 29',
+            ImportantDateHelper::formatDate($date, $user)
         );
     }
 
@@ -87,8 +127,13 @@ class AgeHelperTest extends TestCase
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1));
         $user = User::factory()->create();
+        $date = ContactImportantDate::factory()->create([
+            'day' => null,
+            'month' => null,
+            'year' => null,
+        ]);
         $this->assertNull(
-            AgeHelper::formatDate('', $user)
+            ImportantDateHelper::formatDate($date, $user)
         );
     }
 }

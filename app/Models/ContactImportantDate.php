@@ -6,16 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ContactDate extends Model
+class ContactImportantDate extends Model
 {
     use HasFactory;
 
-    protected $table = 'contact_dates';
+    protected $table = 'contact_important_dates';
 
     /**
      * Possible type.
      */
     const TYPE_BIRTHDATE = 'birthdate';
+
+    /**
+     * Possible type of dates.
+     */
+    const TYPE_FULL_DATE = 'full_date';
+    const TYPE_MONTH_DAY = 'month_day';
+    const TYPE_YEAR = 'year';
 
     /**
      * The attributes that are mass assignable.
@@ -25,7 +32,9 @@ class ContactDate extends Model
     protected $fillable = [
         'contact_id',
         'label',
-        'date',
+        'day',
+        'month',
+        'year',
         'type',
     ];
 

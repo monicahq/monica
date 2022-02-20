@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Services\Contact\ManageContactDate;
+namespace App\Services\Contact\ManageContactImportantDate;
 
 use Carbon\Carbon;
 use App\Models\Address;
-use App\Models\ContactDate;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Jobs\CreateContactLog;
 use App\Interfaces\ServiceInterface;
+use App\Models\ContactImportantDate;
 
-class DestroyContactDate extends BaseService implements ServiceInterface
+class DestroyContactImportantDate extends BaseService implements ServiceInterface
 {
-    private ContactDate $date;
+    private ContactImportantDate $date;
 
     /**
      * Get the validation rules that apply to the service.
@@ -26,7 +26,7 @@ class DestroyContactDate extends BaseService implements ServiceInterface
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
             'contact_id' => 'required|integer|exists:contacts,id',
-            'contact_date_id' => 'required|integer|exists:contact_dates,id',
+            'contact_important_date_id' => 'required|integer|exists:contact_important_dates,id',
         ];
     }
 
@@ -54,8 +54,8 @@ class DestroyContactDate extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->date = ContactDate::where('contact_id', $this->contact->id)
-            ->findOrFail($data['contact_date_id']);
+        $this->date = ContactImportantDate::where('contact_id', $this->contact->id)
+            ->findOrFail($data['contact_important_date_id']);
 
         $this->date->delete();
 

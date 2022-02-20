@@ -113,34 +113,38 @@
               <!-- case: I know the exact date -->
               <div class="mb-2 flex items-center">
                 <input
-                  id="exactDate"
+                  id="full_date"
                   v-model="form.choice"
-                  value="exactDate"
-                  name="name-order"
+                  value="full_date"
+                  name="date"
                   type="radio"
                   class="h-4 w-4 border-gray-300 text-sky-500" />
-                <label for="exactDate" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+                <label for="full_date" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
                   I know the exact date, including the year
                 </label>
               </div>
-              <div v-if="form.choice == 'exactDate'" class="ml-6 mb-4">
-                <a-date-picker v-model:value="form.date" class="" />
+              <div v-if="form.choice == 'full_date'" class="ml-6 mb-4">
+                <v-date-picker class="inline-block h-full" v-model="form.date" :model-config="modelConfig">
+                  <template v-slot="{ inputValue, inputEvents }">
+                    <input class="rounded border bg-white px-2 py-1" :value="inputValue" v-on="inputEvents" />
+                  </template>
+                </v-date-picker>
               </div>
 
               <!-- case: date and month -->
               <div class="mb-2 flex items-center">
                 <input
-                  id="monthDay"
+                  id="month_day"
                   v-model="form.choice"
-                  value="monthDay"
-                  name="name-order"
+                  value="month_day"
+                  name="date"
                   type="radio"
                   class="h-4 w-4 border-gray-300 text-sky-500" />
-                <label for="monthDay" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+                <label for="month_day" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
                   I only know the date and month, not the year
                 </label>
               </div>
-              <div v-if="form.choice == 'monthDay'" class="ml-6 flex">
+              <div v-if="form.choice == 'month_day'" class="ml-6 flex">
                 <dropdown
                   v-model="form.month"
                   :data="data.months"
@@ -163,18 +167,18 @@
               <!-- case: I know the age -->
               <div class="mb-2 flex items-center">
                 <input
-                  id="age"
+                  id="year"
                   v-model="form.choice"
-                  @selected="showAge"
-                  value="age"
-                  name="name-order"
+                  @selected="showyear"
+                  value="year"
+                  name="date"
                   type="radio"
                   class="h-4 w-4 border-gray-300 text-sky-500" />
-                <label for="age" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+                <label for="year" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
                   I only know a number of years (an age, for example)
                 </label>
               </div>
-              <div v-if="form.choice == 'age'" class="ml-6">
+              <div v-if="form.choice == 'year'" class="ml-6">
                 <text-input
                   :ref="'age'"
                   v-model="form.age"
@@ -237,34 +241,42 @@
                   <!-- case: I know the exact date -->
                   <div class="mb-2 flex items-center">
                     <input
-                      id="exactDate"
+                      id="full_date"
                       v-model="form.choice"
-                      value="exactDate"
-                      name="name-order"
+                      value="full_date"
+                      name="date"
                       type="radio"
                       class="h-4 w-4 border-gray-300 text-sky-500" />
-                    <label for="exactDate" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+                    <label for="full_date" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
                       I know the exact date, including the year
                     </label>
                   </div>
-                  <div v-if="form.choice == 'exactDate'" class="ml-6 mb-4">
-                    <a-date-picker v-model:value="form.date" class="" />
+                  <div v-if="form.choice == 'full_date'" class="ml-6 mb-4">
+                    <v-date-picker
+                      class="inline-block h-full"
+                      v-model="form.date"
+                      :model-config="modelConfig"
+                      :update-on-input="false">
+                      <template v-slot="{ inputValue, inputEvents }">
+                        <input class="rounded border bg-white px-2 py-1" :value="inputValue" v-on="inputEvents" />
+                      </template>
+                    </v-date-picker>
                   </div>
 
                   <!-- case: date and month -->
                   <div class="mb-2 flex items-center">
                     <input
-                      id="monthDay"
+                      id="month_day"
                       v-model="form.choice"
-                      value="monthDay"
-                      name="name-order"
+                      value="month_day"
+                      name="date"
                       type="radio"
                       class="h-4 w-4 border-gray-300 text-sky-500" />
-                    <label for="monthDay" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+                    <label for="month_day" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
                       I only know the date and month, not the year
                     </label>
                   </div>
-                  <div v-if="form.choice == 'monthDay'" class="ml-6 flex">
+                  <div v-if="form.choice == 'month_day'" class="ml-6 flex">
                     <dropdown
                       v-model="form.month"
                       :data="data.months"
@@ -287,18 +299,18 @@
                   <!-- case: I know the age -->
                   <div class="mb-2 flex items-center">
                     <input
-                      id="age"
+                      id="year"
                       v-model="form.choice"
                       @selected="showAge"
-                      value="age"
-                      name="name-order"
+                      value="year"
+                      name="date"
                       type="radio"
                       class="h-4 w-4 border-gray-300 text-sky-500" />
-                    <label for="age" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+                    <label for="year" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
                       I only know a number of years (an age, for example)
                     </label>
                   </div>
-                  <div v-if="form.choice == 'age'" class="ml-6">
+                  <div v-if="form.choice == 'year'" class="ml-6">
                     <text-input
                       :ref="'age'"
                       v-model="form.age"
@@ -372,6 +384,10 @@ export default {
       editedDateId: 0,
       createDateModalShown: false,
       localDates: [],
+      modelConfig: {
+        type: 'string',
+        mask: 'YYYY-MM-DD',
+      },
       form: {
         choice: '',
         month: '',
@@ -391,7 +407,7 @@ export default {
   methods: {
     showCreateModal() {
       this.form.label = '';
-      this.form.choice = '';
+      this.form.choice = 'full_date';
       this.form.day = '';
       this.form.month = '';
       this.form.date = '';

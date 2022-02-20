@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Services\Contact\ManageContactDate;
+namespace App\Services\Contact\ManageContactImportantDate;
 
-use App\Models\ContactDate;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Jobs\CreateContactLog;
 use App\Interfaces\ServiceInterface;
+use App\Models\ContactImportantDate;
 
-class CreateContactDate extends BaseService implements ServiceInterface
+class CreateContactImportantDate extends BaseService implements ServiceInterface
 {
-    private ContactDate $date;
+    private ContactImportantDate $date;
 
     /**
      * Get the validation rules that apply to the service.
@@ -25,7 +25,9 @@ class CreateContactDate extends BaseService implements ServiceInterface
             'author_id' => 'required|integer|exists:users,id',
             'contact_id' => 'required|integer|exists:contacts,id',
             'label' => 'required|string|max:255',
-            'date' => 'required|string|max:255',
+            'day' => 'nullable|integer',
+            'month' => 'nullable|integer',
+            'year' => 'nullable|integer',
             'type' => 'nullable|string|max:255',
         ];
     }
@@ -49,16 +51,18 @@ class CreateContactDate extends BaseService implements ServiceInterface
      * Create a contact date.
      *
      * @param  array  $data
-     * @return ContactDate
+     * @return ContactImportantDate
      */
-    public function execute(array $data): ContactDate
+    public function execute(array $data): ContactImportantDate
     {
         $this->validateRules($data);
 
-        $this->date = ContactDate::create([
+        $this->date = ContactImportantDate::create([
             'contact_id' => $data['contact_id'],
             'label' => $data['label'],
-            'date' => $data['date'],
+            'day' => $data['day'],
+            'month' => $data['month'],
+            'year' => $data['year'],
             'type' => $this->valueOrNull($data, 'type'),
         ]);
 

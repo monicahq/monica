@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Vault\Contact\Modules\ImportantDates\ViewHelpers;
 
 use App\Models\User;
 use App\Models\Contact;
-use App\Helpers\AgeHelper;
+use App\Helpers\ImportantDateHelper;
 
 class ModuleImportantDatesViewHelper
 {
@@ -16,9 +16,9 @@ class ModuleImportantDatesViewHelper
             return [
                 'id' => $date->id,
                 'label' => $date->label,
-                'date' => AgeHelper::formatDate($date->date, $user),
+                'date' => ImportantDateHelper::formatDate($date, $user),
                 'type' => $date->type,
-                'age' => AgeHelper::getAge($date->date),
+                'age' => ImportantDateHelper::getAge($date),
             ];
         });
 
