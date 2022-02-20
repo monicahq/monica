@@ -149,10 +149,9 @@ export default {
       this.displayUploadProgress = true;
 
       const formData = new FormData();
-      formData.append('contact_id', this.contactId);
       formData.append('photo', this.file);
 
-      return axios.post('api/photos',
+      return axios.post(`people/${this.hash}/photos`,
         formData,
         {
           headers: {
