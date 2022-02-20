@@ -3565,21 +3565,21 @@
         },
         {
             "name": "laravolt/avatar",
-            "version": "4.1.5",
+            "version": "4.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravolt/avatar.git",
-                "reference": "9207253a1e76d6c8441325d6895b57f244aa3580"
+                "reference": "f9a3e612491bfed6fe144d37a58cf4a2c5be141f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravolt/avatar/zipball/9207253a1e76d6c8441325d6895b57f244aa3580",
-                "reference": "9207253a1e76d6c8441325d6895b57f244aa3580",
+                "url": "https://api.github.com/repos/laravolt/avatar/zipball/f9a3e612491bfed6fe144d37a58cf4a2c5be141f",
+                "reference": "f9a3e612491bfed6fe144d37a58cf4a2c5be141f",
                 "shasum": ""
             },
             "require": {
-                "illuminate/cache": "6.* | 7.*| 8.*",
-                "illuminate/support": "6.* | 7.* | 8.*",
+                "illuminate/cache": "^6.0|^7.0|^8.0|^9.0",
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0",
                 "intervention/image": "^2.5",
                 "php": ">=7.3"
             },
@@ -3629,7 +3629,7 @@
             ],
             "support": {
                 "issues": "https://github.com/laravolt/avatar/issues",
-                "source": "https://github.com/laravolt/avatar/tree/4.1.5"
+                "source": "https://github.com/laravolt/avatar/tree/4.1.6"
             },
             "funding": [
                 {
@@ -3645,7 +3645,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-09-29T08:57:57+00:00"
+            "time": "2022-02-09T23:23:09+00:00"
         },
         {
             "name": "lcobucci/clock",
