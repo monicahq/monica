@@ -152,7 +152,7 @@ class ActivitiesController extends Controller
      * Store the activity.
      *
      * @param  Request  $request
-     * @return \Illuminate\Http\Resources\Json\ResourceResponse
+     * @return \Illuminate\Contracts\Support\Responsable
      */
     public function store(Request $request)
     {
@@ -171,8 +171,8 @@ class ActivitiesController extends Controller
      * Update the activity.
      *
      * @param  Request  $request
-     * @param  int  $activityId
-     * @return \Illuminate\Http\Resources\Json\ResourceResponse
+     * @param  Activity  $activity
+     * @return \Illuminate\Contracts\Support\Responsable
      */
     public function update(Request $request, Activity $activity)
     {
@@ -192,6 +192,7 @@ class ActivitiesController extends Controller
      * Delete an activity.
      *
      * @param  Request  $request
+     * @param  Activity  $activity
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Activity $activity)
