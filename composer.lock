@@ -4606,27 +4606,27 @@
         },
         {
             "name": "mariuzzo/laravel-js-localization",
-            "version": "v1.8.0",
+            "version": "v1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rmariuzzo/Laravel-JS-Localization.git",
-                "reference": "c3904018c656a11150949aa2ed00dcfcb1dfa3fc"
+                "reference": "12531672e995296e280378251efb37f3d1285693"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rmariuzzo/Laravel-JS-Localization/zipball/c3904018c656a11150949aa2ed00dcfcb1dfa3fc",
-                "reference": "c3904018c656a11150949aa2ed00dcfcb1dfa3fc",
+                "url": "https://api.github.com/repos/rmariuzzo/Laravel-JS-Localization/zipball/12531672e995296e280378251efb37f3d1285693",
+                "reference": "12531672e995296e280378251efb37f3d1285693",
                 "shasum": ""
             },
             "require": {
-                "illuminate/config": "^4.2 || ^5.0 || ^6.0 || ^7.0 || ^8.0",
-                "illuminate/console": "^4.2 || ^5.0 || ^6.0 || ^7.0 || ^8.0",
-                "illuminate/filesystem": "^4.2 || ^5.0 || ^6.0 || ^7.0 || ^8.0",
+                "illuminate/config": "^4.2 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
+                "illuminate/console": "^4.2 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
+                "illuminate/filesystem": "^4.2 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
                 "php": "^5.4 || ^7.0 || ^8.0",
                 "tedivm/jshrink": "~1.0"
             },
             "require-dev": {
-                "orchestra/testbench": "^2.2 || ^3.0 || ^4.0 || ^5.0 || ^6.0",
+                "orchestra/testbench": "^2.2 || ^3.0 || ^4.0 || ^5.0 || ^6.0 || ^7.0",
                 "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0"
             },
             "type": "library",
@@ -4695,7 +4695,7 @@
                 "issues": "https://github.com/rmariuzzo/laravel-js-localization/issues",
                 "source": "https://github.com/rmariuzzo/laravel-js-localization"
             },
-            "time": "2021-03-06T18:25:22+00:00"
+            "time": "2022-02-09T09:35:03+00:00"
         },
         {
             "name": "matriphe/iso-639",
