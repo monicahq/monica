@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Helpers\AccountHelper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
+use App\Models\Account\Activity;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Models\Account\ActivityType;
 use App\Traits\JsonRespondController;
+use App\Services\Account\Activity\Activity\CreateActivity;
+use App\Services\Account\Activity\Activity\UpdateActivity;
+use App\Services\Account\Activity\Activity\DestroyActivity;
 use App\Services\Account\Activity\ActivityStatisticService;
 use App\Http\Resources\Activity\Activity as ActivityResource;
-use App\Models\Account\Activity;
-use App\Services\Account\Activity\Activity\CreateActivity;
-use App\Services\Account\Activity\Activity\DestroyActivity;
-use App\Services\Account\Activity\Activity\UpdateActivity;
 
 class ActivitiesController extends Controller
 {
@@ -147,7 +147,6 @@ class ActivitiesController extends Controller
             ->withYear($year)
             ->withContact($contact);
     }
-
 
     /**
      * Store the activity.

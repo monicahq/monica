@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
-use App\Services\Contact\Contact\DeleteMeContact;
-use App\Services\Contact\Contact\SetMeContact;
 use App\Traits\JsonRespondController;
+use App\Services\Contact\Contact\SetMeContact;
+use App\Services\Contact\Contact\DeleteMeContact;
 
 class MeController extends Controller
 {
