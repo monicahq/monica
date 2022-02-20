@@ -302,7 +302,7 @@ If you want to connect directly to Monica's MySQL instance read [_Connecting to 
     * Make sure to follow the current visual style and layout.
     * Make sure you do not introduce new colors in the UI.
     * Make sure the user experience is consistent with the rest of the application (ie buttons behave the same, modals are like other modals,...).
-    * Make sure you don't introduce new CSS classes, unless they are absolutely necessary. Use the classes provided by [Tachyons](tachyons.io) which is the functional CSS framework we currently use.
+    * Make sure you don't introduce new CSS classes, unless they are absolutely necessary. Use the classes provided by [Tachyons](https://tachyons.io) which is the functional CSS framework we currently use.
     * Do not use Jquery. When needed, use VueJS.
 
 The above comments can seem harsh and we apologize in advance. However you have to understand that we deeply care about providing the best user experience to our users. Features that are purely backend do not have the same impact as the ones that the user interacts with. Features that modify the front end will have a tremendous impact on how users perceive the software. Therefore we want to make sure that anything that touches the frontend is perfect and aligned with our vision.
