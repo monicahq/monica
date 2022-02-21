@@ -34,6 +34,8 @@ class UserIndexViewHelperTest extends TestCase
                     'is_logged_user' => true,
                     'url' => [
                         'show' => env('APP_URL').'/settings/users/'.$user->id,
+                        'update' => env('APP_URL').'/settings/users/'.$user->id,
+                        'destroy' => env('APP_URL').'/settings/users/'.$user->id,
                     ],
                 ],
             ],

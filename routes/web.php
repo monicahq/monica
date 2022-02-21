@@ -126,21 +126,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('', [SettingsController::class, 'index'])->name('index');
 
+        // preferences
+        Route::prefix('preferences')->name('preferences.')->group(function () {
+            Route::get('', [PreferencesController::class, 'index'])->name('index');
+            Route::post('name', [PreferencesNameOrderController::class, 'store'])->name('name.store');
+            Route::post('date', [PreferencesDateFormatController::class, 'store'])->name('date.store');
+        });
+
         // only for administrators
         Route::middleware(['administrator'])->group(function () {
-            // preferences
-            Route::prefix('preferences')->name('preferences.')->group(function () {
-                Route::get('', [PreferencesController::class, 'index'])->name('index');
-                Route::post('name', [PreferencesNameOrderController::class, 'store'])->name('name.store');
-                Route::post('date', [PreferencesDateFormatController::class, 'store'])->name('date.store');
-            });
-
             // users
             Route::prefix('users')->name('user.')->group(function () {
                 Route::get('', [UserController::class, 'index'])->name('index');
                 Route::get('create', [UserController::class, 'create'])->name('create');
                 Route::post('', [UserController::class, 'store'])->name('store');
                 Route::get('{user}', [UserController::class, 'show'])->name('show');
+                Route::put('{user}', [UserController::class, 'update'])->name('update');
+                Route::delete('{user}', [UserController::class, 'destroy'])->name('destroy');
             });
 
             // personalize

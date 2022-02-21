@@ -36,7 +36,7 @@
         :maxlength="maxlength"
         :required="required"
         :autofocus="autofocus"
-        :autocomplete="autocomplete"
+        :autocomplete="autocomplete ? '' : 'off'"
         :disabled="disabled"
         :min="min"
         :max="max"

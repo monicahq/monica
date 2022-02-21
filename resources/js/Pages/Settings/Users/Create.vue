@@ -52,8 +52,8 @@
           <div class="section-head border-b border-gray-200 bg-blue-50 p-5">
             <h1 class="mb-1 text-center text-2xl font-medium">Invite someone</h1>
             <p class="text-center">
-              This user will be part of your account, but won't get access to your vaults unless you give specific
-              access to them. This person will be able to create vaults as well.
+              This user will be part of your account, but won't get access to all the vaults in this account unless you
+              give specific access to them. This person will be able to create vaults as well.
             </p>
           </div>
 
@@ -70,6 +70,46 @@
               :required="true"
               :autocomplete="false"
               :maxlength="255" />
+          </div>
+
+          <!-- permissions -->
+          <div class="border-b border-gray-200 p-5">
+            <!-- role types -->
+            <div>
+              <p class="mb-2">What permission should the user have?</p>
+
+              <!-- view -->
+              <div class="mb-2 flex items-start">
+                <input
+                  id="viewer"
+                  v-model="form.administrator"
+                  value="false"
+                  name="permission"
+                  type="radio"
+                  class="h-4 w-4 border-gray-300 text-sky-500" />
+                <label for="viewer" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+                  Regular user
+                </label>
+              </div>
+
+              <!-- administrator -->
+              <div class="flex items-start">
+                <input
+                  id="manager"
+                  v-model="form.administrator"
+                  value="true"
+                  name="permission"
+                  type="radio"
+                  class="h-4 w-4 border-gray-300 text-sky-500" />
+                <label for="manager" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+                  Administrator
+                  <span class="ml-4 font-normal text-gray-500">
+                    Can do everything, including adding or removing other users, managing billing and closing the
+                    account.
+                  </span>
+                </label>
+              </div>
+            </div>
           </div>
 
           <div class="flex justify-between p-5">
@@ -114,9 +154,14 @@ export default {
       loadingState: '',
       form: {
         email: '',
+        administrator: Boolean,
         errors: [],
       },
     };
+  },
+
+  mounted() {
+    this.form.administrator = false;
   },
 
   methods: {

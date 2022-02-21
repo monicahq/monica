@@ -26,6 +26,7 @@ class InviteUser extends BaseService implements ServiceInterface
             'account_id' => 'required|integer|exists:accounts,id',
             'author_id' => 'required|integer|exists:users,id',
             'email' => 'required|unique:users|string|max:255',
+            'is_administrator' => 'required|boolean',
         ];
     }
 
@@ -66,7 +67,7 @@ class InviteUser extends BaseService implements ServiceInterface
             'account_id' => $this->data['account_id'],
             'email' => $this->data['email'],
             'invitation_code' => (string) Str::uuid(),
-            'is_account_administrator' => false,
+            'is_account_administrator' => $this->data['is_administrator'],
         ]);
     }
 

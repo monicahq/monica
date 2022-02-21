@@ -97,7 +97,7 @@ class RemoveAdministratorPrivilegeTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $anotherUser->id,
-            'is_account_administrator' => true,
+            'is_account_administrator' => false,
         ]);
 
         Queue::assertPushed(CreateAuditLog::class, function ($job) {

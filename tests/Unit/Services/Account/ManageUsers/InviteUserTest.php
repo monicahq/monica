@@ -75,6 +75,7 @@ class InviteUserTest extends TestCase
             'account_id' => $account->id,
             'author_id' => $author->id,
             'email' => 'admin@admin.com',
+            'is_administrator' => true,
         ];
 
         $newUser = (new InviteUser)->execute($request);
@@ -82,7 +83,7 @@ class InviteUserTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $newUser->id,
             'email' => $newUser->email,
-            'is_account_administrator' => false,
+            'is_account_administrator' => true,
         ]);
 
         Queue::assertPushed(CreateAuditLog::class, function ($job) {

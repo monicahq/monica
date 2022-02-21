@@ -58,6 +58,7 @@
         </div>
       </div>
 
+      <!-- permissions -->
       <div class="border-b border-gray-200 p-5">
         <!-- role types -->
         <div>

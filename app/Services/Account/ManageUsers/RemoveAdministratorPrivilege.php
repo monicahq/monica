@@ -53,7 +53,7 @@ class RemoveAdministratorPrivilege extends BaseService implements ServiceInterfa
             throw new \Exception(trans('account.exception_remove_your_own_permission'));
         }
 
-        $user->is_account_administrator = true;
+        $user->is_account_administrator = false;
         $user->save();
 
         CreateAuditLog::dispatch([

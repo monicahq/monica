@@ -6,7 +6,7 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li v-if="data.is_account_administrator" class="mr-2 inline">You are here:</li>
+            <li class="mr-2 inline">You are here:</li>
             <li class="inline">Settings</li>
           </ul>
         </div>
