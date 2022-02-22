@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\ManageNote;
+namespace Tests\Unit\Services\Contact\ManageReminder;
 
 use Tests\TestCase;
 use App\Models\User;
@@ -9,26 +9,30 @@ use App\Models\Account;
 use App\Models\Contact;
 use App\Jobs\CreateAuditLog;
 use App\Jobs\CreateContactLog;
+use App\Models\ContactReminder;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use App\Services\Contact\ManageNote\CreateNote;
 use App\Exceptions\NotEnoughPermissionException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\Contact\ManageReminder\DestroyReminder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class CreateNoteTest extends TestCase
+class DestroyReminderTest extends TestCase
 {
     use DatabaseTransactions;
 
     /** @test */
-    public function it_creates_a_note(): void
+    public function it_destroys_a_reminder(): void
     {
         $regis = $this->createUser();
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $reminder = ContactReminder::factory()->create([
+            'contact_id' => $contact->id,
+        ]);
 
-        $this->executeService($regis, $regis->account, $vault, $contact);
+        $this->executeService($regis, $regis->account, $vault, $contact, $reminder);
     }
 
     /** @test */
@@ -39,7 +43,7 @@ class CreateNoteTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateNote)->execute($request);
+        (new DestroyReminder)->execute($request);
     }
 
     /** @test */
@@ -52,8 +56,11 @@ class CreateNoteTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $reminder = ContactReminder::factory()->create([
+            'contact_id' => $contact->id,
+        ]);
 
-        $this->executeService($regis, $account, $vault, $contact);
+        $this->executeService($regis, $account, $vault, $contact, $reminder);
     }
 
     /** @test */
@@ -65,8 +72,11 @@ class CreateNoteTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create();
+        $reminder = ContactReminder::factory()->create([
+            'contact_id' => $contact->id,
+        ]);
 
-        $this->executeService($regis, $regis->account, $vault, $contact);
+        $this->executeService($regis, $regis->account, $vault, $contact, $reminder);
     }
 
     /** @test */
@@ -78,11 +88,28 @@ class CreateNoteTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_VIEW, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $reminder = ContactReminder::factory()->create([
+            'contact_id' => $contact->id,
+        ]);
 
-        $this->executeService($regis, $regis->account, $vault, $contact);
+        $this->executeService($regis, $regis->account, $vault, $contact, $reminder);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact): void
+    /** @test */
+    public function it_fails_if_reminder_does_not_exist(): void
+    {
+        $this->expectException(ModelNotFoundException::class);
+
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $reminder = ContactReminder::factory()->create();
+
+        $this->executeService($regis, $regis->account, $vault, $contact, $reminder);
+    }
+
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, ContactReminder $reminder): void
     {
         Queue::fake();
 
@@ -91,33 +118,21 @@ class CreateNoteTest extends TestCase
             'vault_id' => $vault->id,
             'author_id' => $author->id,
             'contact_id' => $contact->id,
-            'title' => 'super title',
-            'body' => 'super body',
+            'contact_reminder_id' => $reminder->id,
         ];
 
-        $note = (new CreateNote)->execute($request);
+        (new DestroyReminder)->execute($request);
 
-        $this->assertDatabaseHas('notes', [
-            'id' => $note->id,
-            'contact_id' => $contact->id,
-            'author_id' => $author->id,
-            'author_name' => $author->name,
-            'title' => 'super title',
-            'body' => 'super body',
-        ]);
-
-        $this->assertDatabaseHas('contact_feed_items', [
-            'contact_id' => $contact->id,
-            'feedable_id' => $note->id,
-            'feedable_type' => 'App\Models\Note',
+        $this->assertDatabaseMissing('contact_reminders', [
+            'id' => $reminder->id,
         ]);
 
         Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'note_created';
+            return $job->auditLog['action_name'] === 'contact_reminder_destroyed';
         });
 
         Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'note_created';
+            return $job->contactLog['action_name'] === 'contact_reminder_destroyed';
         });
     }
 }

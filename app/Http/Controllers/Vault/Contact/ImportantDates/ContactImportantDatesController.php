@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ContactImportantDate;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Contact\ManageReminder\CreateReminder;
 use App\Http\Controllers\Vault\ViewHelpers\VaultIndexViewHelper;
 use App\Services\Contact\ManageContactImportantDate\CreateContactImportantDate;
 use App\Services\Contact\ManageContactImportantDate\UpdateContactImportantDate;
@@ -49,7 +50,7 @@ class ContactImportantDatesController extends Controller
             $year = Carbon::now()->subYears($request->input('age'))->format('Y');
         }
 
-        $data = [
+        $date = (new CreateContactImportantDate)->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::user()->id,
             'vault_id' => $vaultId,
@@ -59,9 +60,22 @@ class ContactImportantDatesController extends Controller
             'month' => $month,
             'year' => $year,
             'type' => $request->input('type'),
-        ];
+        ]);
 
-        $date = (new CreateContactImportantDate)->execute($data);
+        if ($request->input('reminder')) {
+            (new CreateReminder)->execute([
+                'account_id' => Auth::user()->account_id,
+                'author_id' => Auth::user()->id,
+                'vault_id' => $vaultId,
+                'contact_id' => $contactId,
+                'label' => $request->input('label'),
+                'day' => $day,
+                'month' => $month,
+                'year' => $year,
+                'type' => $request->input('reminderChoice'),
+                'frequency_number' => 1,
+            ]);
+        }
 
         $contact = Contact::find($contactId);
 

@@ -80,5 +80,9 @@ return [
     'pets_small_animal' => 'Small animal',
     'pets_other' => 'Other',
 
+    'labels_work' => 'Work',
+    'labels_love' => 'Love interest',
+    'labels_money' => 'Money',
+
     'exception_remove_your_own_permission' => 'You cannot remove your own administrator privilege.',
 ];

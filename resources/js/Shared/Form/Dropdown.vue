@@ -16,6 +16,12 @@
 .counter {
   padding-right: 64px;
 }
+
+select {
+  padding-left: 8px;
+  padding-right: 20px;
+  background-position: right 3px center;
+}
 </style>
 
 <template>

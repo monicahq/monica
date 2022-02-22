@@ -93,6 +93,12 @@ return [
     'contact_date_destroyed_object_deleted' => 'Deleted a date for the contact :contact_name (deleted)',
     'contact_template_updated' => 'Updated the template used to display the contact <a href=":contact_url">:contact_name</a>',
     'contact_template_updated_object_deleted' => 'Updated the template used to display the contact :contact_name (deleted)',
+    'contact_reminder_created' => 'Created the reminder called :reminder_name for the contact <a href=":contact_url">:contact_name</a>',
+    'contact_reminder_created_object_deleted' => 'Created the reminder called :reminder_name for the contact :contact_name (deleted)',
+    'contact_reminder_updated' => 'Updated the reminder called :reminder_name for the contact <a href=":contact_url">:contact_name</a>',
+    'contact_reminder_updated_object_deleted' => 'Updated the reminder called :reminder_name for the contact :contact_name (deleted)',
+    'contact_reminder_destroyed' => 'Deleted a reminder for the contact <a href=":contact_url">:contact_name</a>',
+    'contact_reminder_destroyed_object_deleted' => 'Deleted a reminder for the contact :contact_name (deleted)',
 
     // relationships
     'relationship_set' => 'Set the contact <a href=":contact_url">:contact_name</a> as :relationship_name of <a href=":other_contact_url">:other_contact_name</a>',

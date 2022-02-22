@@ -11,6 +11,7 @@ use App\Models\Contact;
 use App\Models\Pronoun;
 use App\Models\Template;
 use App\Models\ContactLog;
+use App\Models\ContactReminder;
 use App\Models\RelationshipType;
 use App\Models\ContactInformation;
 use App\Models\ContactImportantDate;
@@ -134,5 +135,16 @@ class ContactTest extends TestCase
         ]);
 
         $this->assertTrue($ross->dates()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_reminders(): void
+    {
+        $ross = Contact::factory()->create();
+        ContactReminder::factory()->count(2)->create([
+            'contact_id' => $ross->id,
+        ]);
+
+        $this->assertTrue($ross->reminders()->exists());
     }
 }

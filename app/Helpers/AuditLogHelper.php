@@ -237,6 +237,18 @@ class AuditLogHelper
                 $sentence = AuditLogHelper::contactDateDestroyed($log, $user);
                 break;
 
+            case 'contact_reminder_created':
+                $sentence = AuditLogHelper::contactReminderCreated($log, $user);
+                break;
+
+            case 'contact_reminder_updated':
+                $sentence = AuditLogHelper::contactReminderUpdated($log, $user);
+                break;
+
+            case 'contact_reminder_destroyed':
+                $sentence = AuditLogHelper::contactReminderDestroyed($log, $user);
+                break;
+
             default:
                 $sentence = 'No translation';
                 break;
@@ -1070,6 +1082,73 @@ class AuditLogHelper
             ]);
         } else {
             $sentence = trans('log.contact_date_destroyed_object_deleted', [
+                'contact_name' => $log->object->{'contact_name'},
+            ]);
+        }
+
+        return $sentence;
+    }
+
+    private static function contactReminderCreated(AuditLog $log, User $user): string
+    {
+        $contact = Contact::find($log->object->{'contact_id'});
+
+        if ($contact) {
+            $sentence = trans('log.contact_reminder_created', [
+                'contact_url' => route('contact.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+                'contact_name' => NameHelper::formatContactName($user, $contact),
+                'reminder_name' => $log->object->{'reminder_name'},
+            ]);
+        } else {
+            $sentence = trans('log.contact_reminder_created_object_deleted', [
+                'contact_name' => $log->object->{'contact_name'},
+                'reminder_name' => $log->object->{'reminder_name'},
+            ]);
+        }
+
+        return $sentence;
+    }
+
+    private static function contactReminderUpdated(AuditLog $log, User $user): string
+    {
+        $contact = Contact::find($log->object->{'contact_id'});
+
+        if ($contact) {
+            $sentence = trans('log.contact_reminder_updated', [
+                'contact_url' => route('contact.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+                'contact_name' => NameHelper::formatContactName($user, $contact),
+                'reminder_name' => $log->object->{'reminder_name'},
+            ]);
+        } else {
+            $sentence = trans('log.contact_reminder_updated_object_deleted', [
+                'contact_name' => $log->object->{'contact_name'},
+                'reminder_name' => $log->object->{'reminder_name'},
+            ]);
+        }
+
+        return $sentence;
+    }
+
+    private static function contactReminderDestroyed(AuditLog $log, User $user): string
+    {
+        $contact = Contact::find($log->object->{'contact_id'});
+
+        if ($contact) {
+            $sentence = trans('log.contact_reminder_destroyed', [
+                'contact_url' => route('contact.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+                'contact_name' => NameHelper::formatContactName($user, $contact),
+            ]);
+        } else {
+            $sentence = trans('log.contact_reminder_destroyed_object_deleted', [
                 'contact_name' => $log->object->{'contact_name'},
             ]);
         }

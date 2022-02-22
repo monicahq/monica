@@ -27,6 +27,7 @@ use App\Http\Controllers\Settings\Personalize\Modules\PersonalizeModulesControll
 use App\Http\Controllers\Settings\Personalize\Pronouns\PersonalizePronounController;
 use App\Http\Controllers\Vault\Contact\ImportantDates\ContactImportantDatesController;
 use App\Http\Controllers\Settings\Personalize\Templates\PersonalizeTemplatesController;
+use App\Http\Controllers\Vault\Contact\Modules\Reminder\ContactModuleReminderController;
 use App\Http\Controllers\Settings\Personalize\Templates\PersonalizeTemplatePagesController;
 use App\Http\Controllers\Settings\Personalize\AddressTypes\PersonalizeAddressTypeController;
 use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipController;
@@ -96,6 +97,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::post('labels', [ContactModuleLabelController::class, 'store'])->name('contact.label.store');
                     Route::put('labels/{label}', [ContactModuleLabelController::class, 'update'])->name('contact.label.update');
                     Route::delete('labels/{label}', [ContactModuleLabelController::class, 'destroy'])->name('contact.label.destroy');
+
+                    // reminders
+                    Route::post('reminders', [ContactModuleReminderController::class, 'store'])->name('contact.reminder.store');
+                    Route::put('reminders/{reminder}', [ContactModuleReminderController::class, 'update'])->name('contact.reminder.update');
+                    Route::delete('reminders/{reminder}', [ContactModuleReminderController::class, 'destroy'])->name('contact.reminder.destroy');
                 });
             });
 

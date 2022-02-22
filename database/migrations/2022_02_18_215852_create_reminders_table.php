@@ -16,14 +16,15 @@ return new class extends Migration
         // necessary for SQLlite
         Schema::enableForeignKeyConstraints();
 
-        Schema::create('contact_important_dates', function (Blueprint $table) {
+        Schema::create('contact_reminders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('contact_id')->nullable();
             $table->string('label');
             $table->integer('day')->nullable();
             $table->integer('month')->nullable();
             $table->integer('year')->nullable();
-            $table->string('type')->nullable();
+            $table->string('type');
+            $table->integer('frequency_number')->nullable();
             $table->timestamps();
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
         });
@@ -36,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contact_important_dates');
+        Schema::dropIfExists('contact_reminders');
     }
 };

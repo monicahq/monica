@@ -13,6 +13,9 @@ class CreateEmotionsTable extends Migration
      */
     public function up()
     {
+        // necessary for SQLlite
+        Schema::enableForeignKeyConstraints();
+
         Schema::create('emotions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('account_id');

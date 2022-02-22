@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Services\Contact\ManageContactImportantDate;
+namespace App\Services\Contact\ManageReminder;
 
+use Carbon\Carbon;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Jobs\CreateContactLog;
+use App\Models\ContactReminder;
 use App\Interfaces\ServiceInterface;
-use App\Models\ContactImportantDate;
 
-class CreateContactImportantDate extends BaseService implements ServiceInterface
+class CreateReminder extends BaseService implements ServiceInterface
 {
-    private ContactImportantDate $date;
+    private ContactReminder $reminder;
 
     /**
      * Get the validation rules that apply to the service.
@@ -28,7 +29,8 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
             'day' => 'nullable|integer',
             'month' => 'nullable|integer',
             'year' => 'nullable|integer',
-            'type' => 'nullable|string|max:255',
+            'type' => 'required|string:255',
+            'frequency_number' => 'nullable|integer',
         ];
     }
 
@@ -48,27 +50,31 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
     }
 
     /**
-     * Create a contact date.
+     * Create a reminder.
      *
      * @param  array  $data
-     * @return ContactImportantDate
+     * @return ContactReminder
      */
-    public function execute(array $data): ContactImportantDate
+    public function execute(array $data): ContactReminder
     {
         $this->validateRules($data);
 
-        $this->date = ContactImportantDate::create([
+        $this->reminder = ContactReminder::create([
             'contact_id' => $data['contact_id'],
             'label' => $data['label'],
             'day' => $this->valueOrNull($data, 'day'),
             'month' => $this->valueOrNull($data, 'month'),
             'year' => $this->valueOrNull($data, 'year'),
-            'type' => $this->valueOrNull($data, 'type'),
+            'type' => $data['type'],
+            'frequency_number' => $this->valueOrNull($data, 'frequency_number'),
         ]);
+
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
 
         $this->log();
 
-        return $this->date;
+        return $this->reminder;
     }
 
     private function log(): void
@@ -77,11 +83,11 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'author_name' => $this->author->name,
-            'action_name' => 'contact_date_created',
+            'action_name' => 'contact_reminder_created',
             'objects' => json_encode([
                 'contact_id' => $this->contact->id,
                 'contact_name' => $this->contact->name,
-                'label' => $this->date->label,
+                'reminder_name' => $this->reminder->label,
             ]),
         ]);
 
@@ -89,9 +95,9 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
             'contact_id' => $this->contact->id,
             'author_id' => $this->author->id,
             'author_name' => $this->author->name,
-            'action_name' => 'contact_date_created',
+            'action_name' => 'contact_reminder_created',
             'objects' => json_encode([
-                'label' => $this->date->label,
+                'reminder_name' => $this->reminder->label,
             ]),
         ]);
     }

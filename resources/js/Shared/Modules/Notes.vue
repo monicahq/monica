@@ -14,7 +14,7 @@
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 sm:flex">
       <div class="mb-2 sm:mb-0">
-        <span class="relative">
+        <span class="relative mr-1">
           <svg
             class="icon-sidebar relative inline h-4 w-4"
             viewBox="0 0 24 24"
@@ -40,7 +40,7 @@
           </svg>
         </span>
 
-        Notes
+        <span class="font-semibold">Notes</span>
       </div>
       <pretty-button :text="'Add a note'" :icon="'plus'" :classes="'sm:w-fit w-full'" @click="showCreateNoteModal" />
     </div>

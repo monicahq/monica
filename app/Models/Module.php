@@ -21,6 +21,7 @@ class Module extends Model
     const TYPE_GENDER_PRONOUN = 'gender_pronoun';
     const TYPE_IMPORTANT_DATES = 'important_dates';
     const TYPE_LABELS = 'labels';
+    const TYPE_REMINDERS = 'reminders';
 
     /**
      * The attributes that are mass assignable.

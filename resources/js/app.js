@@ -6,6 +6,7 @@ import { InertiaProgress } from '@inertiajs/progress';
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/lib/popover/style/index.css';
 import 'ant-design-vue/lib/dropdown/style/index.css';
+import 'ant-design-vue/lib/tooltip/style/index.css';
 import 'v-calendar/dist/style.css';
 import VCalendar from 'v-calendar';
 

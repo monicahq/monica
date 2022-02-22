@@ -192,6 +192,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the contact reminders records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function reminders()
+    {
+        return $this->hasMany(ContactReminder::class);
+    }
+
+    /**
      * Get the name of the contact, according to the user preference.
      *
      * @param  User  $user

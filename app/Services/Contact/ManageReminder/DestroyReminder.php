@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Services\Contact\ManageContactImportantDate;
+namespace App\Services\Contact\ManageReminder;
 
+use Carbon\Carbon;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Jobs\CreateContactLog;
+use App\Models\ContactReminder;
 use App\Interfaces\ServiceInterface;
-use App\Models\ContactImportantDate;
 
-class CreateContactImportantDate extends BaseService implements ServiceInterface
+class DestroyReminder extends BaseService implements ServiceInterface
 {
-    private ContactImportantDate $date;
+    private ContactReminder $reminder;
 
     /**
      * Get the validation rules that apply to the service.
@@ -24,11 +25,7 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
             'contact_id' => 'required|integer|exists:contacts,id',
-            'label' => 'required|string|max:255',
-            'day' => 'nullable|integer',
-            'month' => 'nullable|integer',
-            'year' => 'nullable|integer',
-            'type' => 'nullable|string|max:255',
+            'contact_reminder_id' => 'required|integer|exists:contact_reminders,id',
         ];
     }
 
@@ -42,33 +39,29 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
         return [
             'author_must_belong_to_account',
             'vault_must_belong_to_account',
-            'author_must_be_vault_editor',
             'contact_must_belong_to_vault',
+            'author_must_be_vault_editor',
         ];
     }
 
     /**
-     * Create a contact date.
+     * Destroy a reminder.
      *
      * @param  array  $data
-     * @return ContactImportantDate
      */
-    public function execute(array $data): ContactImportantDate
+    public function execute(array $data): void
     {
         $this->validateRules($data);
 
-        $this->date = ContactImportantDate::create([
-            'contact_id' => $data['contact_id'],
-            'label' => $data['label'],
-            'day' => $this->valueOrNull($data, 'day'),
-            'month' => $this->valueOrNull($data, 'month'),
-            'year' => $this->valueOrNull($data, 'year'),
-            'type' => $this->valueOrNull($data, 'type'),
-        ]);
+        $this->reminder = ContactReminder::where('contact_id', $data['contact_id'])
+            ->findOrFail($data['contact_reminder_id']);
+
+        $this->reminder->delete();
+
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
 
         $this->log();
-
-        return $this->date;
     }
 
     private function log(): void
@@ -77,11 +70,10 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'author_name' => $this->author->name,
-            'action_name' => 'contact_date_created',
+            'action_name' => 'contact_reminder_destroyed',
             'objects' => json_encode([
                 'contact_id' => $this->contact->id,
                 'contact_name' => $this->contact->name,
-                'label' => $this->date->label,
             ]),
         ]);
 
@@ -89,10 +81,8 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
             'contact_id' => $this->contact->id,
             'author_id' => $this->author->id,
             'author_name' => $this->author->name,
-            'action_name' => 'contact_date_created',
-            'objects' => json_encode([
-                'label' => $this->date->label,
-            ]),
+            'action_name' => 'contact_reminder_destroyed',
+            'objects' => json_encode([]),
         ]);
     }
 }
