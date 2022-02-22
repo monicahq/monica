@@ -10,7 +10,6 @@ class MeTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
-
     /** @test */
     public function it_stores_me()
     {

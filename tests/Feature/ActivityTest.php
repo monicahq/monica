@@ -249,7 +249,7 @@ class ActivityTest extends FeatureTestCase
             'errors' => [
                 'summary' => ['The summary field is required.'],
                 'happened_at' => ['The happened at field is required.'],
-                'contacts' => ['The contacts field is required.']
+                'contacts' => ['The contacts field is required.'],
             ],
         ]);
     }
@@ -476,7 +476,7 @@ class ActivityTest extends FeatureTestCase
 
         $response->assertStatus(404);
         $response->assertJson([
-            'message' => "No query results for model [App\\Models\\Account\\Activity] 0",
+            'message' => 'No query results for model [App\\Models\\Account\\Activity] 0',
         ]);
     }
 
@@ -555,7 +555,7 @@ class ActivityTest extends FeatureTestCase
 
         $response->assertStatus(404);
         $response->assertJson([
-            'message' => "No query results for model [App\\Models\\Account\\Activity] 0",
+            'message' => 'No query results for model [App\\Models\\Account\\Activity] 0',
         ]);
     }
 
