@@ -20,8 +20,8 @@ Route::group(['middleware' => ['auth:api']], function () {
         // Contacts
         Route::apiResource('contacts', 'ApiContactController')
             ->names(['index' => 'contacts', 'show' => 'contact']);
-        Route::put('/me/contact/{contact}', 'ApiContactController@setMe');
-        Route::delete('/me/contact', 'ApiContactController@removeMe');
+        Route::post('/me/contact', 'ApiMeController@store');
+        Route::delete('/me/contact', 'ApiMeController@destroy');
 
         // Contacts properties
         Route::put('/contacts/{contact}/work', 'ApiContactController@updateWork');

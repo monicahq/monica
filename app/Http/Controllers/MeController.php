@@ -16,13 +16,16 @@ class MeController extends Controller
      * Set a contact as 'me'.
      *
      * @param  Request  $request
-     * @param  int  $contactId
      * @return string
      */
-    public function store(Request $request, int $contactId)
+    public function store(Request $request)
     {
+        $this->validate($request, [
+            'contact_id' => 'required|integer|exists:contacts,id',
+        ]);
+
         app(SetMeContact::class)->execute([
-            'contact_id' => $contactId,
+            'contact_id' => $request->input('contact_id'),
             'account_id' => $request->user()->account_id,
             'user_id' => $request->user()->id,
         ]);

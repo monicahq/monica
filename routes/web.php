@@ -57,7 +57,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
     Route::get('/emotions/primaries/{emotion}/secondaries', 'EmotionController@secondaries');
     Route::get('/emotions/primaries/{emotion}/secondaries/{secondaryEmotion}/emotions', 'EmotionController@emotions');
 
-    Route::post('/me/contact/{contactId}', 'MeController@store');
+    Route::post('/me/contact', 'MeController@store');
     Route::delete('/me/contact', 'MeController@destroy');
 
     Route::name('people.')->group(function () {

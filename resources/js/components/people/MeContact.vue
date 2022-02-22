@@ -106,7 +106,9 @@ export default {
 
   methods: {
     save() {
-      axios.post(`me/contact/${this.newContact.id}`)
+      axios.post('me/contact', {
+        contact_id: this.newContact.id
+      })
         .then(response => {
           this.$emit('change', this.newContact);
           this.meContact = this.newContact;
