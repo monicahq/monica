@@ -24,12 +24,13 @@ class PreferencesIndexViewHelperTest extends TestCase
         $array = PreferencesIndexViewHelper::data($user);
 
         $this->assertEquals(
-            3,
+            4,
             count($array)
         );
 
         $this->assertArrayHasKey('name_order', $array);
         $this->assertArrayHasKey('date_format', $array);
+        $this->assertArrayHasKey('timezone', $array);
         $this->assertArrayHasKey('url', $array);
 
         $this->assertEquals(
@@ -120,6 +121,24 @@ class PreferencesIndexViewHelperTest extends TestCase
                 ],
             ],
             $array['dates']->toArray()
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_data_needed_for_timezone(): void
+    {
+        $user = User::factory()->create([
+            'timezone' => 'UTC',
+        ]);
+        $array = PreferencesIndexViewHelper::dtoTimezone($user);
+        $this->assertEquals(
+            [
+                'timezone' => 'UTC',
+                'url' => [
+                    'store' => env('APP_URL').'/settings/preferences/timezone',
+                ],
+            ],
+            $array
         );
     }
 }

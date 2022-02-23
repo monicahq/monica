@@ -14,6 +14,7 @@ class PreferencesIndexViewHelper
         return [
             'name_order' => self::dtoNameOrder($user),
             'date_format' => self::dtoDateFormat($user),
+            'timezone' => self::dtoTimezone($user),
             'url' => [
                 'settings' => route('settings.index'),
                 'back' => route('settings.index'),
@@ -74,6 +75,16 @@ class PreferencesIndexViewHelper
             'human_date_format' => Carbon::now()->isoFormat($user->date_format),
             'url' => [
                 'store' => route('settings.preferences.date.store'),
+            ],
+        ];
+    }
+
+    public static function dtoTimezone(User $user): array
+    {
+        return [
+            'timezone' => $user->timezone,
+            'url' => [
+                'store' => route('settings.preferences.timezone.store'),
             ],
         ];
     }

@@ -56,6 +56,7 @@ class CreateAccountTest extends TestCase
             'last_name' => 'john',
             'email' => 'john@email.com',
             'is_account_administrator' => true,
+            'timezone' => 'UTC',
         ]);
 
         $this->assertInstanceOf(

@@ -18,6 +18,7 @@ use App\Http\Controllers\Vault\Settings\VaultSettingsUserController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsLabelController;
 use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsTemplateController;
+use App\Http\Controllers\Settings\Preferences\PreferencesTimezoneController;
 use App\Http\Controllers\Settings\Preferences\PreferencesNameOrderController;
 use App\Http\Controllers\Settings\Preferences\PreferencesDateFormatController;
 use App\Http\Controllers\Vault\Contact\Modules\Note\ContactModuleNoteController;
@@ -137,6 +138,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('', [PreferencesController::class, 'index'])->name('index');
             Route::post('name', [PreferencesNameOrderController::class, 'store'])->name('name.store');
             Route::post('date', [PreferencesDateFormatController::class, 'store'])->name('date.store');
+            Route::post('timezone', [PreferencesTimezoneController::class, 'store'])->name('timezone.store');
         });
 
         // only for administrators

@@ -60,6 +60,7 @@ class CreateAccount extends BaseService implements ServiceInterface
             'email' => $this->data['email'],
             'password' => Hash::make($this->data['password']),
             'is_account_administrator' => true,
+            'timezone' => 'UTC',
         ]);
     }
 
