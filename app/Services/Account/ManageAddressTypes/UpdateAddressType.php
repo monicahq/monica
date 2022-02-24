@@ -62,7 +62,7 @@ class UpdateAddressType extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'name' => $type->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         return $type;
     }

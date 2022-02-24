@@ -65,7 +65,7 @@ class CreateAccountTest extends TestCase
         );
 
         Queue::assertPushed(SetupAccount::class, function ($job) use ($user) {
-            return $job->user === $user;
+            return $job->user === $user && $job->onQueue('high');
         });
 
         Queue::assertPushed(CreateAuditLog::class, function ($job) {

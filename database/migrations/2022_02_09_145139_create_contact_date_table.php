@@ -18,7 +18,7 @@ return new class extends Migration
 
         Schema::create('contact_important_dates', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('contact_id')->nullable();
+            $table->unsignedBigInteger('contact_id');
             $table->string('label');
             $table->integer('day')->nullable();
             $table->integer('month')->nullable();

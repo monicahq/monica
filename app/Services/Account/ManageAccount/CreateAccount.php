@@ -46,7 +46,7 @@ class CreateAccount extends BaseService implements ServiceInterface
         $this->addFirstUser();
         $this->addLogs();
 
-        SetupAccount::dispatch($this->user);
+        SetupAccount::dispatch($this->user)->onQueue('high');
 
         return $this->user;
     }
@@ -72,6 +72,6 @@ class CreateAccount extends BaseService implements ServiceInterface
             'author_name' => $this->user->name,
             'action_name' => 'account_created',
             'objects' => json_encode([]),
-        ]);
+        ])->onQueue('low');
     }
 }

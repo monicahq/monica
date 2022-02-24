@@ -99,7 +99,7 @@ class UpdateContactImportantDate extends BaseService implements ServiceInterface
                 'contact_name' => $this->contact->name,
                 'label' => $this->date->label,
             ]),
-        ]);
+        ])->onQueue('low');
 
         CreateContactLog::dispatch([
             'contact_id' => $this->contact->id,
@@ -109,6 +109,6 @@ class UpdateContactImportantDate extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'label' => $this->date->label,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

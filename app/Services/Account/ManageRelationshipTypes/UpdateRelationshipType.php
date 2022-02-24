@@ -70,7 +70,7 @@ class UpdateRelationshipType extends BaseService implements ServiceInterface
                 'name' => $type->name,
                 'group_type_name' => $group->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         return $type;
     }

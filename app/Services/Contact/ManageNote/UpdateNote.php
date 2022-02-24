@@ -92,7 +92,7 @@ class UpdateNote extends BaseService implements ServiceInterface
                 'contact_name' => $this->contact->name,
                 'note_id' => $this->note->id,
             ]),
-        ]);
+        ])->onQueue('low');
 
         CreateContactLog::dispatch([
             'contact_id' => $this->contact->id,
@@ -102,6 +102,6 @@ class UpdateNote extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'note_id' => $this->note->id,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

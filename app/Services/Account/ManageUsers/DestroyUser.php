@@ -112,6 +112,6 @@ class DestroyUser extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'user_email' => $this->user->email,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

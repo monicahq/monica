@@ -102,7 +102,7 @@ class CopyContactToAnotherVault extends BaseService implements ServiceInterface
                 'contact_id' => $this->contact->id,
                 'contact_name' => $this->contact->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         CreateContactLog::dispatch([
             'contact_id' => $this->contact->id,
@@ -112,6 +112,6 @@ class CopyContactToAnotherVault extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'name' => $this->newVault->name,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

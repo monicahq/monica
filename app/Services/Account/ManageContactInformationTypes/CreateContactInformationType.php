@@ -62,7 +62,7 @@ class CreateContactInformationType extends BaseService implements ServiceInterfa
             'objects' => json_encode([
                 'name' => $type->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         return $type;
     }

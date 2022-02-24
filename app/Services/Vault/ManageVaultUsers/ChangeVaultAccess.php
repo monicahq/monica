@@ -95,6 +95,6 @@ class ChangeVaultAccess extends BaseService implements ServiceInterface
                 'vault_name' => $this->vault->name,
                 'permission_type' => VaultHelper::getPermissionFriendlyName($this->data['permission']),
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

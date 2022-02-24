@@ -61,7 +61,7 @@ class GiveAdministratorPrivilege extends BaseService implements ServiceInterface
                 'user_id' => $user->id,
                 'user_name' => $user->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         return $user;
     }

@@ -65,7 +65,7 @@ class RemoveAdministratorPrivilege extends BaseService implements ServiceInterfa
                 'user_id' => $user->id,
                 'user_name' => $user->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         return $user;
     }

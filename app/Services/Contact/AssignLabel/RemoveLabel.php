@@ -79,7 +79,7 @@ class RemoveLabel extends BaseService implements ServiceInterface
                 'contact_name' => $this->contact->name,
                 'label_name' => $this->label->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         CreateContactLog::dispatch([
             'contact_id' => $this->contact->id,
@@ -89,6 +89,6 @@ class RemoveLabel extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'label_name' => $this->label->name,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

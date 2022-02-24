@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Settings\Preferences;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Services\User\StoreNameOrderPreference;
+use App\Services\User\Preferences\StoreNameOrderPreference;
 use App\Http\Controllers\Settings\Preferences\ViewHelpers\PreferencesIndexViewHelper;
 
 class PreferencesNameOrderController extends Controller

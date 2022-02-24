@@ -84,21 +84,22 @@ main {
                 </inertia-link>
               </li>
               <li class="inline">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 sm:h-5 sm:w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  @click="logout()">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
+                <inertia-link @click="logout()" class="inline">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 sm:h-5 sm:w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
 
-                <span class="text-sm">Logout</span>
+                  <span class="text-sm">Logout</span>
+                </inertia-link>
               </li>
             </ul>
           </div>
@@ -194,7 +195,7 @@ export default {
 
   methods: {
     logout() {
-      window.open(this.user.url.logout);
+      this.$inertia.visit(this.layoutData.url.logout);
     },
 
     goToSearchPage() {

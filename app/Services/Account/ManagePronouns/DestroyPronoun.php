@@ -59,6 +59,6 @@ class DestroyPronoun extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'gender_name' => $pronoun->name,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

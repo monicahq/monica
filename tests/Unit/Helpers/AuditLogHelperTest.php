@@ -1706,4 +1706,80 @@ class AuditLogHelperTest extends TestCase
             $sentence
         );
     }
+
+    /** @test */
+    public function user_notification_channel_created(): void
+    {
+        $log = AuditLog::factory()->create([
+            'action_name' => 'user_notification_channel_created',
+            'objects' => json_encode([
+                'label' => 'mon email',
+                'type' => 'email',
+            ]),
+        ]);
+
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Added a new notification channel called mon email of the type email',
+            $sentence
+        );
+    }
+
+    /** @test */
+    public function user_notification_channel_toggled(): void
+    {
+        $log = AuditLog::factory()->create([
+            'action_name' => 'user_notification_channel_toggled',
+            'objects' => json_encode([
+                'label' => 'mon email',
+                'type' => 'email',
+            ]),
+        ]);
+
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Toggled the notification channel called mon email of the type email',
+            $sentence
+        );
+    }
+
+    /** @test */
+    public function user_notification_channel_verified(): void
+    {
+        $log = AuditLog::factory()->create([
+            'action_name' => 'user_notification_channel_verified',
+            'objects' => json_encode([
+                'label' => 'mon email',
+                'type' => 'email',
+            ]),
+        ]);
+
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Verified the notification channel called mon email of the type email',
+            $sentence
+        );
+    }
+
+    /** @test */
+    public function user_notification_channel_destroyed(): void
+    {
+        $log = AuditLog::factory()->create([
+            'action_name' => 'user_notification_channel_destroyed',
+            'objects' => json_encode([
+                'label' => 'mon email',
+                'type' => 'email',
+            ]),
+        ]);
+
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Deleted the notification channel called mon email of the type email',
+            $sentence
+        );
+    }
 }

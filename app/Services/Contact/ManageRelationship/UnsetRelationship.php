@@ -89,7 +89,7 @@ class UnsetRelationship extends BaseService implements ServiceInterface
                 'other_contact_id' => $otherContact->id,
                 'other_contact_name' => $otherContact->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         CreateContactLog::dispatch([
             'contact_id' => $this->contact->id,
@@ -101,6 +101,6 @@ class UnsetRelationship extends BaseService implements ServiceInterface
                 'contact_name' => $this->contact->name,
                 'relationship_name' => $this->relationshipType->name,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

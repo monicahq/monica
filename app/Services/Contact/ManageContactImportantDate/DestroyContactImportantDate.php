@@ -76,7 +76,7 @@ class DestroyContactImportantDate extends BaseService implements ServiceInterfac
                 'contact_id' => $this->contact->id,
                 'contact_name' => $this->contact->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         CreateContactLog::dispatch([
             'contact_id' => $this->contact->id,
@@ -85,6 +85,6 @@ class DestroyContactImportantDate extends BaseService implements ServiceInterfac
             'action_name' => 'contact_date_destroyed',
             'objects' => json_encode([
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

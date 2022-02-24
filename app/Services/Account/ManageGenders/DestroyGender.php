@@ -59,6 +59,6 @@ class DestroyGender extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'gender_name' => $gender->name,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

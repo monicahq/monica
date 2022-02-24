@@ -1,22 +1,22 @@
 <?php
 
-namespace Tests\Unit\Services\User;
+namespace Tests\Unit\Services\User\Preferences;
 
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Account;
-use App\Services\User\StoreTimezone;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\User\Preferences\StoreNameOrderPreference;
 
-class StoreTimezoneTest extends TestCase
+class StoreNameOrderPreferenceTest extends TestCase
 {
     use DatabaseTransactions;
 
     /** @test */
-    public function it_stores_the_timezone(): void
+    public function it_stores_the_name_order_preference(): void
     {
         $ross = $this->createUser();
         $this->executeService($ross, '%name%', $ross->account);
@@ -30,7 +30,7 @@ class StoreTimezoneTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new StoreTimezone)->execute($request);
+        (new StoreNameOrderPreference)->execute($request);
     }
 
     /** @test */
@@ -43,6 +43,22 @@ class StoreTimezoneTest extends TestCase
         $this->executeService($ross, '%user%', $account);
     }
 
+    public function it_fails_if_name_order_has_no_variable(): void
+    {
+        $this->expectException(ModelNotFoundException::class);
+
+        $ross = $this->createAdministrator();
+        $this->executeService($ross, '', $ross->account);
+    }
+
+    public function it_fails_if_name_order_has_no_closing_percent_symbol(): void
+    {
+        $this->expectException(ModelNotFoundException::class);
+
+        $ross = $this->createAdministrator();
+        $this->executeService($ross, '%', $ross->account);
+    }
+
     private function executeService(User $author, string $nameOrder, Account $account): void
     {
         Queue::fake();
@@ -50,15 +66,15 @@ class StoreTimezoneTest extends TestCase
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
-            'timezone' => 'UTC',
+            'name_order' => $nameOrder,
         ];
 
-        $user = (new StoreTimezone)->execute($request);
+        $user = (new StoreNameOrderPreference)->execute($request);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
             'account_id' => $account->id,
-            'timezone' => 'UTC',
+            'name_order' => $nameOrder,
         ]);
 
         $this->assertInstanceOf(

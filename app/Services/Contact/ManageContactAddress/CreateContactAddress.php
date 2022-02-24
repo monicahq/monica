@@ -103,7 +103,7 @@ class CreateContactAddress extends BaseService implements ServiceInterface
                 'contact_name' => $this->contact->name,
                 'address_type_name' => isset($this->addressType) ? $this->addressType->name : null,
             ]),
-        ]);
+        ])->onQueue('low');
 
         CreateContactLog::dispatch([
             'contact_id' => $this->contact->id,
@@ -113,6 +113,6 @@ class CreateContactAddress extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'address_type_name' => isset($this->addressType) ? $this->addressType->name : null,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

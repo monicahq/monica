@@ -55,6 +55,6 @@ class DestroyVault extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'vault_name' => $this->vault->name,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

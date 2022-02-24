@@ -62,7 +62,7 @@ class UpdateRelationshipGroupType extends BaseService implements ServiceInterfac
             'objects' => json_encode([
                 'name' => $type->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         return $type;
     }

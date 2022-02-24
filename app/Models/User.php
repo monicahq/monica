@@ -86,6 +86,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the notification channel records associated with the user.
+     *
+     * @return HasMany
+     */
+    public function notificationChannels()
+    {
+        return $this->hasMany(UserNotificationChannel::class, 'user_id');
+    }
+
+    /**
      * Get the name of the user.
      *
      * @param  mixed  $value

@@ -75,7 +75,7 @@ class SetPronoun extends BaseService implements ServiceInterface
                 'contact_name' => $this->contact->name,
                 'pronoun_name' => $this->pronoun->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         CreateContactLog::dispatch([
             'contact_id' => $this->contact->id,
@@ -85,6 +85,6 @@ class SetPronoun extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'pronoun_name' => $this->pronoun->name,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

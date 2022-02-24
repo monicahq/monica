@@ -92,4 +92,6 @@ return [
     'emotion_positive' => '😁 Positive',
     'emotion_neutral' => '😶‍🌫️ Neutral',
     'emotion_negative' => '😡 Negative',
+
+    'notification_channel_email' => 'My email',
 ];

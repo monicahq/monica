@@ -14,6 +14,9 @@ class SettingsIndexViewHelper
                 'preferences' => [
                     'index' => route('settings.preferences.index'),
                 ],
+                'notifications' => [
+                    'index' => route('settings.notifications.index'),
+                ],
                 'users' => [
                     'index' => route('settings.user.index'),
                 ],

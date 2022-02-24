@@ -103,6 +103,6 @@ class CreateVault extends BaseService implements ServiceInterface
                 'vault_id' => $this->vault->id,
                 'vault_name' => $this->vault->name,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

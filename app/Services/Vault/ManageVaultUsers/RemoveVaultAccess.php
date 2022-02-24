@@ -96,6 +96,6 @@ class RemoveVaultAccess extends BaseService implements ServiceInterface
                 'user_name' => $this->user->name,
                 'vault_name' => $this->vault->name,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

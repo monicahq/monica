@@ -123,7 +123,7 @@ class CreateContact extends BaseService implements ServiceInterface
                 'id' => $this->contact->id,
                 'name' => $this->contact->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         CreateContactLog::dispatch([
             'contact_id' => $this->contact->id,
@@ -131,6 +131,6 @@ class CreateContact extends BaseService implements ServiceInterface
             'author_name' => $this->author->name,
             'action_name' => 'contact_created',
             'objects' => json_encode([]),
-        ]);
+        ])->onQueue('low');
     }
 }

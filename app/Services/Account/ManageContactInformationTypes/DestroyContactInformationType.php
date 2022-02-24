@@ -59,6 +59,6 @@ class DestroyContactInformationType extends BaseService implements ServiceInterf
             'objects' => json_encode([
                 'name' => $type->name,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

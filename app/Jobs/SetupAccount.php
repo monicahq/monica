@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Module;
 use App\Models\Emotion;
@@ -11,6 +12,7 @@ use App\Models\TemplatePage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
+use App\Models\UserNotificationChannel;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -22,6 +24,7 @@ use App\Services\Account\ManageTemplate\CreateTemplatePage;
 use App\Services\Account\ManageAddressTypes\CreateAddressType;
 use App\Services\Account\ManagePetCategories\CreatePetCategory;
 use App\Services\Account\ManageTemplate\AssociateModuleToTemplatePage;
+use App\Services\User\NotificationChannels\CreateUserNotificationChannel;
 use App\Services\Account\ManageRelationshipTypes\CreateRelationshipGroupType;
 use App\Services\Account\ManageContactInformationTypes\CreateContactInformationType;
 
@@ -65,11 +68,33 @@ class SetupAccount implements ShouldQueue
      */
     public function handle()
     {
+        $this->addNotificationChannel();
         $this->addTemplate();
         $this->addTemplatePageContactInformation();
         $this->addTemplatePageFeed();
         $this->addTemplatePageSocial();
         $this->addFirstInformation();
+    }
+
+    /**
+     * Add the first notification channel based on the email address of the user.
+     *
+     * @return void
+     */
+    private function addNotificationChannel(): void
+    {
+        $channel = (new CreateUserNotificationChannel)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'label' => trans('app.notification_channel_email'),
+            'type' => UserNotificationChannel::TYPE_EMAIL,
+            'content' => $this->user->email,
+            'verify_email' => false,
+        ]);
+
+        $channel->verified_at = Carbon::now();
+        $channel->active = true;
+        $channel->save();
     }
 
     /**

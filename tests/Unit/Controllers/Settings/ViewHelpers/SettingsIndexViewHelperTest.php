@@ -26,6 +26,9 @@ class SettingsIndexViewHelperTest extends TestCase
                     'preferences' => [
                         'index' => env('APP_URL').'/settings/preferences',
                     ],
+                    'notifications' => [
+                        'index' => env('APP_URL').'/settings/notifications',
+                    ],
                     'users' => [
                         'index' => env('APP_URL').'/settings/users',
                     ],

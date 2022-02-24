@@ -89,7 +89,7 @@ class CreateReminder extends BaseService implements ServiceInterface
                 'contact_name' => $this->contact->name,
                 'reminder_name' => $this->reminder->label,
             ]),
-        ]);
+        ])->onQueue('low');
 
         CreateContactLog::dispatch([
             'contact_id' => $this->contact->id,
@@ -99,6 +99,6 @@ class CreateReminder extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'reminder_name' => $this->reminder->label,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

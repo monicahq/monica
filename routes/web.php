@@ -17,14 +17,18 @@ use App\Http\Controllers\Vault\Contact\Notes\ContactNotesController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsUserController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsLabelController;
 use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
+use App\Http\Controllers\Settings\Notifications\NotificationsController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsTemplateController;
+use App\Http\Controllers\Settings\Notifications\NotificationsTestController;
 use App\Http\Controllers\Settings\Preferences\PreferencesTimezoneController;
 use App\Http\Controllers\Settings\Preferences\PreferencesNameOrderController;
+use App\Http\Controllers\Settings\Notifications\NotificationsToggleController;
 use App\Http\Controllers\Settings\Preferences\PreferencesDateFormatController;
 use App\Http\Controllers\Vault\Contact\Modules\Note\ContactModuleNoteController;
 use App\Http\Controllers\Settings\Personalize\Genders\PersonalizeGenderController;
 use App\Http\Controllers\Vault\Contact\Modules\Label\ContactModuleLabelController;
 use App\Http\Controllers\Settings\Personalize\Modules\PersonalizeModulesController;
+use App\Http\Controllers\Settings\Notifications\NotificationsVerificationController;
 use App\Http\Controllers\Settings\Personalize\Pronouns\PersonalizePronounController;
 use App\Http\Controllers\Vault\Contact\ImportantDates\ContactImportantDatesController;
 use App\Http\Controllers\Settings\Personalize\Templates\PersonalizeTemplatesController;
@@ -139,6 +143,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('name', [PreferencesNameOrderController::class, 'store'])->name('name.store');
             Route::post('date', [PreferencesDateFormatController::class, 'store'])->name('date.store');
             Route::post('timezone', [PreferencesTimezoneController::class, 'store'])->name('timezone.store');
+        });
+
+        // notifications
+        Route::prefix('notifications')->name('notifications.')->group(function () {
+            Route::get('', [NotificationsController::class, 'index'])->name('index');
+            Route::post('', [NotificationsController::class, 'store'])->name('store');
+            Route::get('{notification}/verify/{uuid}', [NotificationsVerificationController::class, 'store'])->name('verification.store');
+            Route::post('{notification}/test', [NotificationsTestController::class, 'store'])->name('test.store');
+            Route::put('{notification}/toggle', [NotificationsToggleController::class, 'update'])->name('toggle.update');
+            Route::delete('{notification}', [NotificationsController::class, 'destroy'])->name('destroy');
         });
 
         // only for administrators

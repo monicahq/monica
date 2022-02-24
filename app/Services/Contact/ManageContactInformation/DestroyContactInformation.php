@@ -79,7 +79,7 @@ class DestroyContactInformation extends BaseService implements ServiceInterface
                 'contact_name' => $this->contact->name,
                 'contact_information_type_name' => $this->contactInformationType->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         CreateContactLog::dispatch([
             'contact_id' => $this->contact->id,
@@ -89,6 +89,6 @@ class DestroyContactInformation extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'contact_information_type_name' => $this->contactInformationType->name,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

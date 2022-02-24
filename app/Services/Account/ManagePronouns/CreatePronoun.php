@@ -60,7 +60,7 @@ class CreatePronoun extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'pronoun_name' => $pronoun->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         return $pronoun;
     }

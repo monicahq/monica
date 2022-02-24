@@ -71,7 +71,7 @@ class UpdateLabel extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'label_name' => $label->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         return $label;
     }

@@ -73,7 +73,7 @@ class RemovePronoun extends BaseService implements ServiceInterface
                 'contact_id' => $this->contact->id,
                 'contact_name' => $this->contact->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         CreateContactLog::dispatch([
             'contact_id' => $this->contact->id,
@@ -83,6 +83,6 @@ class RemovePronoun extends BaseService implements ServiceInterface
             'objects' => json_encode([
                 'pronoun_name' => $this->pronoun ? $this->pronoun->name : null,
             ]),
-        ]);
+        ])->onQueue('low');
     }
 }

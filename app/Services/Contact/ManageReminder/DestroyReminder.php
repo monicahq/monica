@@ -75,7 +75,7 @@ class DestroyReminder extends BaseService implements ServiceInterface
                 'contact_id' => $this->contact->id,
                 'contact_name' => $this->contact->name,
             ]),
-        ]);
+        ])->onQueue('low');
 
         CreateContactLog::dispatch([
             'contact_id' => $this->contact->id,
@@ -83,6 +83,6 @@ class DestroyReminder extends BaseService implements ServiceInterface
             'author_name' => $this->author->name,
             'action_name' => 'contact_reminder_destroyed',
             'objects' => json_encode([]),
-        ]);
+        ])->onQueue('low');
     }
 }
