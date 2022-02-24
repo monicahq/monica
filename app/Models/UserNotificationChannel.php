@@ -50,6 +50,7 @@ class UserNotificationChannel extends Model
      */
     protected $dates = [
         'verified_at',
+        'preferred_time',
     ];
 
     /**

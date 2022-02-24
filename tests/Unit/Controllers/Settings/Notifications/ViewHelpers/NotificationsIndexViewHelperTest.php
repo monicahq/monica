@@ -50,6 +50,7 @@ class NotificationsIndexViewHelperTest extends TestCase
             'type' => UserNotificationChannel::TYPE_EMAIL,
             'label' => 'super',
             'verified_at' => '2020-01-01 00:00:00',
+            'preferred_time' => '09:00:00',
         ]);
 
         $array = NotificationsIndexViewHelper::dtoEmail($channel, $user);
@@ -61,6 +62,7 @@ class NotificationsIndexViewHelperTest extends TestCase
                 'content' => 'admin@admin.com',
                 'active' => $channel->active,
                 'verified_at' => '2020-01-01 00:00:00',
+                'preferred_time' => '09:00',
                 'url' => [
                     'store' => env('APP_URL').'/settings/notifications',
                     'send_test' => env('APP_URL').'/settings/notifications/'.$channel->id.'/test',

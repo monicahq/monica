@@ -24,6 +24,8 @@ class NotificationsController extends Controller
 
     public function store(Request $request)
     {
+        $time = $request->input('hours').':'.$request->input('minutes');
+
         $data = [
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::user()->id,
@@ -31,6 +33,7 @@ class NotificationsController extends Controller
             'type' =>  UserNotificationChannel::TYPE_EMAIL,
             'content' =>  $request->input('content'),
             'verify_email' => true,
+            'preferred_time' => $time,
         ];
 
         $channel = (new CreateUserNotificationChannel)->execute($data);

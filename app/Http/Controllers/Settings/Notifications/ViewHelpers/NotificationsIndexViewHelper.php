@@ -38,6 +38,7 @@ class NotificationsIndexViewHelper
             'content' => $channel->content,
             'active' => $channel->active,
             'verified_at' => $channel->verified_at ? $channel->verified_at->format('Y-m-d H:i:s') : null,
+            'preferred_time' => $channel->preferred_time->format('H:i'),
             'url' => [
                 'store' => route('settings.notifications.store'),
                 'send_test' => route('settings.notifications.test.store', [

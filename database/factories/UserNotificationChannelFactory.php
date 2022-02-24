@@ -29,6 +29,7 @@ class UserNotificationChannelFactory extends Factory
             'content' => 'admin@admin.com',
             'active' => true,
             'verified_at' => null,
+            'preferred_time' => '09:00:00',
         ];
     }
 }

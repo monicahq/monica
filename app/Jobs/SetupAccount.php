@@ -90,6 +90,7 @@ class SetupAccount implements ShouldQueue
             'type' => UserNotificationChannel::TYPE_EMAIL,
             'content' => $this->user->email,
             'verify_email' => false,
+            'preferred_time' => '09:00',
         ]);
 
         $channel->verified_at = Carbon::now();

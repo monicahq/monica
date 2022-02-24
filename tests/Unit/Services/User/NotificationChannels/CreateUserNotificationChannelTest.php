@@ -80,6 +80,7 @@ class CreateUserNotificationChannelTest extends TestCase
             'type' => $channelType,
             'content' => 'admin@admin.com',
             'verify_email' => true,
+            'preferred_time' => '09:00',
         ];
 
         $channel = (new CreateUserNotificationChannel)->execute($request);

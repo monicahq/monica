@@ -14,6 +14,12 @@
     border-bottom-right-radius: 8px;
   }
 }
+
+select {
+  padding-left: 8px;
+  padding-right: 20px;
+  background-position: right 3px center;
+}
 </style>
 
 <template>
@@ -32,6 +38,7 @@
       <div class="border-b border-gray-200 p-5">
         <errors :errors="form.errors" />
 
+        <!-- content -->
         <text-input
           :ref="'content'"
           v-model="form.content"
@@ -45,16 +52,123 @@
           :maxlength="255"
           @esc-key-pressed="addEmailModalShown = false" />
 
+        <!-- label -->
         <text-input
           v-model="form.label"
           :label="'Give this email address a name'"
           :type="'text'"
           :autofocus="true"
           :input-class="'block w-full'"
+          :div-outer-class="'mb-4'"
           :required="true"
           :autocomplete="false"
           :maxlength="255"
           @esc-key-pressed="addEmailModalShown = false" />
+
+        <!-- preferred time -->
+        <p class="mb-2 block text-sm">At which time should we send the notification, when the reminder occurs?</p>
+        <div class="flex items-center text-sm font-medium text-gray-700">
+          <span class="mr-2">At</span>
+
+          <select
+            v-model="form.hours"
+            class="mr-1 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm"
+            :required="required">
+            <option value="00">00</option>
+            <option value="01">01</option>
+            <option value="02">02</option>
+            <option value="03">03</option>
+            <option value="04">04</option>
+            <option value="05">05</option>
+            <option value="06">06</option>
+            <option value="07">07</option>
+            <option value="08">08</option>
+            <option value="09">09</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="23">23</option>
+          </select>
+
+          <span class="mr-2">h:</span>
+
+          <select
+            v-model="form.minutes"
+            class="mr-1 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm"
+            :required="required">
+            <option value="00">00</option>
+            <option value="01">01</option>
+            <option value="02">02</option>
+            <option value="03">03</option>
+            <option value="04">04</option>
+            <option value="05">05</option>
+            <option value="06">06</option>
+            <option value="07">07</option>
+            <option value="08">08</option>
+            <option value="09">09</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+            <option value="32">32</option>
+            <option value="33">33</option>
+            <option value="34">34</option>
+            <option value="35">35</option>
+            <option value="36">36</option>
+            <option value="37">37</option>
+            <option value="38">38</option>
+            <option value="39">39</option>
+            <option value="40">40</option>
+            <option value="41">41</option>
+            <option value="42">42</option>
+            <option value="43">43</option>
+            <option value="44">44</option>
+            <option value="45">45</option>
+            <option value="46">46</option>
+            <option value="47">47</option>
+            <option value="48">48</option>
+            <option value="49">49</option>
+            <option value="50">50</option>
+            <option value="51">51</option>
+            <option value="52">52</option>
+            <option value="53">53</option>
+            <option value="54">54</option>
+            <option value="55">55</option>
+            <option value="56">56</option>
+            <option value="57">57</option>
+            <option value="57">58</option>
+            <option value="57">59</option>
+          </select>
+
+          <span>m</span>
+        </div>
       </div>
 
       <div class="border-b border-gray-200 p-5">
@@ -97,7 +211,7 @@
             <span class="mb-0 block">{{ email.content }}</span>
             <ul class="bulleted-list mr-2 text-sm text-gray-500">
               <li v-if="email.label" class="mr-1 inline">{{ email.label }}</li>
-              <li class="inline">Sent at 9:00pm</li>
+              <li class="inline">Sent at {{ email.preferred_time }}</li>
             </ul>
           </div>
         </div>
@@ -186,6 +300,8 @@ export default {
       form: {
         content: '',
         label: '',
+        minutes: '',
+        hours: '',
         errors: [],
       },
     };
@@ -193,6 +309,8 @@ export default {
 
   mounted() {
     this.localEmails = this.data.emails;
+    this.form.hours = '09';
+    this.form.minutes = '00';
   },
 
   methods: {
