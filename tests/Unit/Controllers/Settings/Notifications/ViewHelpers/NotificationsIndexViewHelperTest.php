@@ -65,6 +65,7 @@ class NotificationsIndexViewHelperTest extends TestCase
                     'store' => env('APP_URL').'/settings/notifications',
                     'send_test' => env('APP_URL').'/settings/notifications/'.$channel->id.'/test',
                     'toggle' => env('APP_URL').'/settings/notifications/'.$channel->id.'/toggle',
+                    'logs' => env('APP_URL').'/settings/notifications/'.$channel->id.'/logs',
                     'destroy' => env('APP_URL').'/settings/notifications/'.$channel->id,
                 ],
             ],

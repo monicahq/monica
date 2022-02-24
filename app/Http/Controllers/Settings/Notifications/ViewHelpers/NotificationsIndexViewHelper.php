@@ -46,6 +46,9 @@ class NotificationsIndexViewHelper
                 'toggle' => route('settings.notifications.toggle.update', [
                     'notification' => $channel->id,
                 ]),
+                'logs' => route('settings.notifications.log.index', [
+                    'notification' => $channel->id,
+                ]),
                 'destroy' => route('settings.notifications.destroy', [
                     'notification' => $channel->id,
                 ]),
