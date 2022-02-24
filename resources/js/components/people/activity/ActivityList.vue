@@ -207,7 +207,7 @@ export default {
 
     updateList(activity) {
       this.displayLogActivity = false;
-      let index = this.activities.indexOf(this.activities.find(item => item.id === activity.id));
+      const index = this.activities.indexOf(this.activities.find(item => item.id === activity.id));
       Vue.set(this.activities, index >= 0 ? index : this.activities.length, activity);
     },
 
