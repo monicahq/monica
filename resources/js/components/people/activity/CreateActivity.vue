@@ -252,7 +252,7 @@ export default {
 
     store() {
       const method = this.activity ? 'put' : 'post';
-      const url = this.activity ? 'api/activities/'+this.activity.id : 'api/activities';
+      const url = this.activity ? 'activities/'+this.activity.id : 'activities';
 
       if (! this.newActivity.contacts.includes(this.contactId)) {
         this.newActivity.contacts.push(this.contactId);

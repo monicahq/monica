@@ -57,6 +57,9 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
     Route::get('/emotions/primaries/{emotion}/secondaries', 'EmotionController@secondaries');
     Route::get('/emotions/primaries/{emotion}/secondaries/{secondaryEmotion}/emotions', 'EmotionController@emotions');
 
+    Route::post('/me/contact', 'MeController@store');
+    Route::delete('/me/contact', 'MeController@destroy');
+
     Route::name('people.')->group(function () {
         Route::get('/people/notfound', 'ContactsController@missing')->name('missing');
         Route::get('/people/archived', 'ContactsController@archived')->name('archived');
@@ -193,6 +196,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/people/{contact}/activities/contacts', 'Contacts\\ActivitiesController@contacts')->name('activities.contacts');
         Route::get('/people/{contact}/activities/summary', 'Contacts\\ActivitiesController@summary')->name('activities.summary');
         Route::get('/people/{contact}/activities/{year}', 'Contacts\\ActivitiesController@year')->name('activities.year');
+        Route::resource('activities', 'Contacts\\ActivitiesController')->only(['store', 'update', 'destroy']);
 
         // Audit logs
         Route::get('/people/{contact}/auditlogs', 'Contacts\\ContactAuditLogController@index')->name('auditlogs');

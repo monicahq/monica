@@ -166,6 +166,7 @@
           <photo-upload
             v-show="photos.length === 0"
             ref="upload"
+            :hash="hash"
             :contact-id="contactId"
             @upload.stop="handlePhoto($event)"
           />

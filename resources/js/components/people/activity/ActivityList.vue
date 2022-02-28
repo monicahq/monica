@@ -199,7 +199,7 @@ export default {
     },
 
     getActivities() {
-      axios.get('api/contacts/' + this.contactId + '/activities')
+      axios.get(`people/${this.hash}/activities`)
         .then(response => {
           this.activities = response.data.data;
         });
@@ -207,7 +207,8 @@ export default {
 
     updateList(activity) {
       this.displayLogActivity = false;
-      Vue.set(this.activities, this.activities.indexOf(this.activities.find(item => item.id === activity.id)), activity);
+      const index = this.activities.indexOf(this.activities.find(item => item.id === activity.id));
+      Vue.set(this.activities, index >= 0 ? index : this.activities.length, activity);
     },
 
     showDestroyActivity(activity) {
@@ -215,7 +216,7 @@ export default {
     },
 
     destroyActivity(activity) {
-      axios.delete('api/activities/' + activity.id)
+      axios.delete(`activities/${activity.id}`)
         .then(response => {
           this.activities.splice(this.activities.indexOf(activity), 1);
         });
