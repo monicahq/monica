@@ -3126,16 +3126,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.83.1",
+            "version": "v8.83.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "bddba117f8bce2f3c9875ca1ca375a96350d0f4d"
+                "reference": "b91b3b5b39fbbdc763746f5714e08d50a4dd7857"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/bddba117f8bce2f3c9875ca1ca375a96350d0f4d",
-                "reference": "bddba117f8bce2f3c9875ca1ca375a96350d0f4d",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/b91b3b5b39fbbdc763746f5714e08d50a4dd7857",
+                "reference": "b91b3b5b39fbbdc763746f5714e08d50a4dd7857",
                 "shasum": ""
             },
             "require": {
@@ -3295,7 +3295,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-02-15T15:05:20+00:00"
+            "time": "2022-02-22T15:10:17+00:00"
         },
         {
             "name": "laravel/passport",
@@ -3784,16 +3784,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.2.2",
+            "version": "2.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "13d7751377732637814f0cda0e3f6d3243f9f769"
+                "reference": "47b015bc4e50fd4438c1ffef6139a1fb65d2ab71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/13d7751377732637814f0cda0e3f6d3243f9f769",
-                "reference": "13d7751377732637814f0cda0e3f6d3243f9f769",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/47b015bc4e50fd4438c1ffef6139a1fb65d2ab71",
+                "reference": "47b015bc4e50fd4438c1ffef6139a1fb65d2ab71",
                 "shasum": ""
             },
             "require": {
@@ -3884,7 +3884,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-02-13T15:00:57+00:00"
+            "time": "2022-02-26T21:24:45+00:00"
         },
         {
             "name": "league/config",
@@ -5790,12 +5790,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Opis\\Closure\\": "src/"
-                },
                 "files": [
                     "functions.php"
-                ]
+                ],
+                "psr-4": {
+                    "Opis\\Closure\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -10233,12 +10233,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Ctype\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Ctype\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -11541,12 +11541,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\String\\": ""
-                },
                 "files": [
                     "Resources/functions.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Component\\String\\": ""
+                },
                 "exclude-from-classmap": [
                     "/Tests/"
                 ]
