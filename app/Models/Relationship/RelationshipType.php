@@ -79,7 +79,10 @@ class RelationshipType extends Model
         }
 
         $femaleVersion = trans('app.relationship_type_'.$this->name.'_female');
-        $maleVersion = trans('app.relationship_type_'.$this->name);
+        $maleVersion = trans('app.relationship_type_'.$this->name.'_male');
+        if ($maleVersion == 'app.relationship_type_'.$this->name.'_male') {
+            $maleVersion = trans('app.relationship_type_'.$this->name);
+        }
 
         if (! is_null($contact)) {
             $maleVersionWithName = trans('app.relationship_type_'.$this->name.'_with_name', ['name' => $contact->name]);
