@@ -74,7 +74,7 @@ rm -f composer-setup.php
 **Node.js:** Install node.js with package manager.
 
 ```sh
-curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 sudo apt install -y nodejs
 ```
 
