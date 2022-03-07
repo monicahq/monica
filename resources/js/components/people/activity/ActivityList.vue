@@ -126,7 +126,7 @@
                          @cancel="$set(activity, 'edit', false); displayLogActivity = false"
         />
       </div>
-      <a v-if="!isLastPage" @click.prevent="getActivities" class="pointer mr1" style="float: right">
+      <a v-if="!isLastPage" class="pointer mr1" style="float: right" @click.prevent="getActivities">
         {{ $t('app.load_more') }}
       </a>
     </div>
