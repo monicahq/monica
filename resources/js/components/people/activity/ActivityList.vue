@@ -188,7 +188,7 @@ export default {
       return this.$root.htmldir === 'ltr';
     },
     isLastPage () {
-      return this.lastPage === this.currentPage
+      return this.lastPage === this.currentPage;
     }
   },
 
