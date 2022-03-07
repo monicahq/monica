@@ -4,11 +4,16 @@ namespace App\Http\Controllers\Contacts;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Helpers\AccountHelper;
 use App\Models\Contact\Contact;
+use App\Models\Account\Activity;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Models\Account\ActivityType;
 use App\Traits\JsonRespondController;
+use App\Services\Account\Activity\Activity\CreateActivity;
+use App\Services\Account\Activity\Activity\UpdateActivity;
+use App\Services\Account\Activity\Activity\DestroyActivity;
 use App\Services\Account\Activity\ActivityStatisticService;
 use App\Http\Resources\Activity\Activity as ActivityResource;
 
@@ -30,7 +35,9 @@ class ActivitiesController extends Controller
                             ->limit(10)
                             ->get();
 
-        return ActivityResource::collection($activities);
+        return ActivityResource::collection($activities)->additional(['meta' => [
+            'statistics' => AccountHelper::getYearlyActivitiesStatistics($contact->account),
+        ]]);
     }
 
     /**
@@ -139,5 +146,62 @@ class ActivitiesController extends Controller
             ->withActivitiesPerMonthForYear($activitiesPerMonthForYear)
             ->withYear($year)
             ->withContact($contact);
+    }
+
+    /**
+     * Store the activity.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Contracts\Support\Responsable
+     */
+    public function store(Request $request)
+    {
+        $activity = app(CreateActivity::class)->execute(
+            $request->except(['account_id'])
+                +
+                [
+                    'account_id' => auth()->user()->account_id,
+                ]
+        );
+
+        return new ActivityResource($activity);
+    }
+
+    /**
+     * Update the activity.
+     *
+     * @param  Request  $request
+     * @param  Activity  $activity
+     * @return \Illuminate\Contracts\Support\Responsable
+     */
+    public function update(Request $request, Activity $activity)
+    {
+        $activity = app(UpdateActivity::class)->execute(
+            $request->except(['account_id', 'activity_id'])
+                +
+                [
+                    'account_id' => auth()->user()->account_id,
+                    'activity_id' => $activity->id,
+                ]
+        );
+
+        return new ActivityResource($activity);
+    }
+
+    /**
+     * Delete an activity.
+     *
+     * @param  Request  $request
+     * @param  Activity  $activity
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy(Request $request, Activity $activity)
+    {
+        app(DestroyActivity::class)->execute([
+            'account_id' => auth()->user()->account_id,
+            'activity_id' => $activity->id,
+        ]);
+
+        return $this->respondObjectDeleted($activity->id);
     }
 }

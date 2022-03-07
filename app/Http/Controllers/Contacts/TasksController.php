@@ -21,7 +21,7 @@ class TasksController extends Controller
                 'title' => $task->title,
                 'description' => $task->description,
                 'completed' => $task->completed,
-                'completed_at' => DateHelper::getShortDate($task->completed_at),
+                'completed_at' => ($task->completed_at) ? DateHelper::getShortDate($task->completed_at) : null,
                 'edit' => false,
             ];
             $tasks->push($data);

@@ -106,7 +106,9 @@ export default {
 
   methods: {
     save() {
-      axios.put('api/me/contact/'+this.newContact.id)
+      axios.post('me/contact', {
+        contact_id: this.newContact.id
+      })
         .then(response => {
           this.$emit('change', this.newContact);
           this.meContact = this.newContact;
@@ -116,7 +118,7 @@ export default {
 
     remove() {
       this.newContact = null;
-      axios.delete('api/me/contact')
+      axios.delete('me/contact')
         .then(response => {
           this.$emit('change', null);
           this.meContact = null;
