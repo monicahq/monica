@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Matriphe\ISO639\ISO639;
 use function Safe\preg_match;
 use function Safe\preg_split;
@@ -108,7 +109,6 @@ class LocaleHelper
      * @param  string  $lang
      * @param  string  $locale
      * @return string
-     * @psalm-return array|string
      */
     private static function getLocaleName($lang, $locale = null): string
     {
@@ -118,7 +118,7 @@ class LocaleHelper
             $name = $lang;
         }
 
-        return $name;
+        return (string) Str::of($name);
     }
 
     /**
