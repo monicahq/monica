@@ -126,6 +126,9 @@
                          @cancel="$set(activity, 'edit', false); displayLogActivity = false"
         />
       </div>
+      <a v-if="!isLastPage" class="pointer mr1" style="float: right" @click.prevent="getActivities">
+        {{ $t('app.load_more') }}
+      </a>
     </div>
 
     <p v-if="activities.length > 0" class="tc">
@@ -175,12 +178,17 @@ export default {
       displayParticipants: false,
       destroyActivityId: 0,
       errors: [],
+      currentPage: 0,
+      lastPage: null
     };
   },
 
   computed: {
     dirltr() {
       return this.$root.htmldir === 'ltr';
+    },
+    isLastPage () {
+      return this.lastPage === this.currentPage;
     }
   },
 
@@ -199,9 +207,12 @@ export default {
     },
 
     getActivities() {
-      axios.get(`people/${this.hash}/activities`)
+      this.currentPage++;
+      axios.get('api/contacts/' + this.contactId + '/activities?page=' + this.currentPage)
         .then(response => {
-          this.activities = response.data.data;
+          this.activities.push(...response.data.data);
+          this.currentPage = response.data.meta.current_page;
+          this.lastPage = response.data.meta.last_page;
         });
     },
 
