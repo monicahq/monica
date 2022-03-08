@@ -93,7 +93,7 @@ class Weather extends Model
             return null;
         }
 
-        return trans('app.weather_'.$summary_code);
+        return (string) Str::of(trans('app.weather_'.$summary_code));
     }
 
     /**
