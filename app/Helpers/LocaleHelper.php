@@ -108,6 +108,7 @@ class LocaleHelper
      * @param  string  $lang
      * @param  string  $locale
      * @return string
+     * @psalm-return array|string
      */
     private static function getLocaleName($lang, $locale = null): string
     {

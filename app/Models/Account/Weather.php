@@ -85,6 +85,7 @@ class Weather extends Model
      * Get the weather summary.
      *
      * @return string|null
+     * @psalm-return array|string|null
      */
     public function getSummaryAttribute(): ?string
     {

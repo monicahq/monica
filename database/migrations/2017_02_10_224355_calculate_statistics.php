@@ -14,6 +14,7 @@ class CalculateStatistics extends Migration
      * Run the migrations.
      *
      * @return void
+     * @psalm-suppress UndefinedMagicPropertyAssignment
      */
     public function up()
     {
