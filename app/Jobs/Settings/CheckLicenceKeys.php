@@ -2,16 +2,14 @@
 
 namespace App\Jobs\Settings;
 
-use App\Models\Account\Account;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use App\Models\Contact\Contact;
-use App\Services\Account\Subscription\ActivateLicenceKey;
+use App\Models\Account\Account;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Services\Contact\Avatar\GetAvatarsFromInternet as GetAvatarsFromInternetService;
-use Carbon\Carbon;
+use App\Services\Account\Subscription\ActivateLicenceKey;
 
 class CheckLicenceKeys implements ShouldQueue
 {
