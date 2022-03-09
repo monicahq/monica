@@ -261,10 +261,10 @@ export default {
      * Same for the month.
      */
     updateDate() {
-      if (this.selectedDay === 0) {
+      if (this.selectedDay === 0 || this.selectedDay === '0') {
         this.newLifeEvent.happened_at_day_unknown = true;
         this.newLifeEvent.happened_at = this.selectedYear + '-' + this.selectedMonth + '-01';
-      } else if (this.selectedMonth === 0) {
+      } else if (this.selectedMonth === 0 || this.selectedMonth === '0') {
         this.newLifeEvent.happened_at_month_unknown = true;
         this.newLifeEvent.happened_at_day_unknown = true;
         this.newLifeEvent.happened_at = this.selectedYear + '-01-01';
