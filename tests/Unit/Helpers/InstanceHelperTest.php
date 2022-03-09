@@ -81,62 +81,6 @@ class InstanceHelperTest extends TestCase
     }
 
     /** @test */
-    public function it_fetches_subscription_information()
-    {
-        $stripeSubscription = (object) [
-            'plan' => (object) [
-                'currency' => 'USD',
-                'amount' => 500,
-                'interval' => 'month',
-                'id' => 'monthly',
-            ],
-            'current_period_end' => 1629976560,
-        ];
-
-        $subscription = Mockery::mock('\Laravel\Cashier\Subscription');
-        $subscription->shouldReceive('asStripeSubscription')
-            ->andReturn($stripeSubscription);
-        $subscription->shouldReceive('getAttribute')
-            ->with('name')
-            ->andReturn('Monthly');
-
-        $this->assertEquals(
-            'monthly',
-            InstanceHelper::getPlanInformationFromSubscription($subscription)['type']
-        );
-
-        $this->assertEquals(
-            'Monthly',
-            InstanceHelper::getPlanInformationFromSubscription($subscription)['name']
-        );
-
-        $this->assertEquals(
-            'monthly',
-            InstanceHelper::getPlanInformationFromSubscription($subscription)['id']
-        );
-
-        $this->assertEquals(
-            500,
-            InstanceHelper::getPlanInformationFromSubscription($subscription)['price']
-        );
-
-        $this->assertEquals(
-            '$5.00',
-            InstanceHelper::getPlanInformationFromSubscription($subscription)['friendlyPrice']
-        );
-    }
-
-    /** @test */
-    public function it_returns_null_when_fetching_an_unknown_plan_information()
-    {
-        $account = new Account;
-
-        $this->assertNull(
-            InstanceHelper::getPlanInformationFromConfig('unknown_plan')
-        );
-    }
-
-    /** @test */
     public function it_gets_latest_changelog_entries()
     {
         $json = public_path('changelog.json');

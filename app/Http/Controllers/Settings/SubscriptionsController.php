@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Settings;
 
 use Exception;
 use Illuminate\View\View;
-use App\Traits\StripeCall;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Helpers\AccountHelper;
@@ -16,8 +15,6 @@ use App\Services\Account\Subscription\ActivateLicenceKey;
 
 class SubscriptionsController extends Controller
 {
-    use StripeCall;
-
     /**
      * Display a listing of the resource.
      *

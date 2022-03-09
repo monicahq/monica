@@ -38,8 +38,6 @@ class DestroyAccount extends BaseService
 
         $this->destroyPhotos($account);
 
-        $this->cancelStripe($account);
-
         $account->delete();
     }
 
@@ -67,20 +65,5 @@ class DestroyAccount extends BaseService
         app(DestroyAllPhotos::class)->execute([
             'account_id' => $account->id,
         ]);
-    }
-
-    /**
-     * Cancel Stripe subscription.
-     *
-     * @param  Account  $account
-     * @return void
-     *
-     * @throws StripeException
-     */
-    private function cancelStripe(Account $account)
-    {
-        if ($account->isSubscribed() && ! $account->has_access_to_paid_version_for_free) {
-            $account->subscriptionCancel();
-        }
     }
 }
