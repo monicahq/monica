@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Scheduling\CronEvent;
+use App\Jobs\Settings\CheckLicenceKeys;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -54,6 +55,8 @@ class Kernel extends ConsoleKernel
             $this->scheduleCommand($schedule, 'cloudflare:reload', 'daily');
         }
         $this->scheduleCommand($schedule, 'model:prune', 'daily');
+
+        $schedule->job(new CheckLicenceKeys)->everySixHours();
     }
 
     /**
