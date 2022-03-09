@@ -4,7 +4,6 @@ namespace App\Traits;
 
 trait Subscription
 {
-
     /**
      * Check if the account is currently subscribed to a plan.
      *

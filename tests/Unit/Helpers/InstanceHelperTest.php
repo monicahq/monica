@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Helpers;
 
-use Mockery;
 use Tests\TestCase;
 use function Safe\json_decode;
 use App\Helpers\InstanceHelper;
