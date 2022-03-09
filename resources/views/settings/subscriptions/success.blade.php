@@ -14,7 +14,7 @@
               <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li>
-              <a href="{{ route('settings.index') }}">{{ trans('app.breadcrumb_settings') }}</a>
+              <a href="{{ route('settings.subscriptions.index') }}">{{ trans('app.breadcrumb_settings') }}</a>
             </li>
             <li>
               {{ trans('app.breadcrumb_settings_subscriptions') }}

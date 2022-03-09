@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Exceptions\NoLicenceKeyEncryptionSetException;
 use Illuminate\View\View;
 use App\Traits\StripeCall;
 use App\Helpers\DateHelper;
@@ -11,6 +12,7 @@ use Laravel\Cashier\Payment;
 use App\Helpers\AccountHelper;
 use App\Helpers\InstanceHelper;
 use App\Exceptions\StripeException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -19,6 +21,8 @@ use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent as StripePaymentIntent;
 use Laravel\Cashier\Exceptions\IncompletePayment;
 use App\Services\Account\Settings\ArchiveAllContacts;
+use App\Services\Account\Subscription\ActivateLicenceKey;
+use Exception;
 
 class SubscriptionsController extends Controller
 {
@@ -37,34 +41,38 @@ class SubscriptionsController extends Controller
 
         $account = auth()->user()->account;
 
-        $subscription = $account->getSubscribedPlan();
-        if (! $account->isSubscribed() && (! $subscription || $subscription->ended())) {
+        if (! $account->isSubscribed()) {
             return view('settings.subscriptions.blank', [
-                'numberOfCustomers' => InstanceHelper::getNumberOfPaidSubscribers(),
+                'customerPortalUrl' => config('monica.customer_portal_url'),
             ]);
         }
 
-        $hasInvoices = $account->hasStripeId() && $account->hasInvoices();
-        $invoices = null;
-        if ($hasInvoices) {
-            $invoices = $account->invoices();
-        }
-
-        try {
-            $planInformation = $this->stripeCall(function () use ($subscription) {
-                return InstanceHelper::getPlanInformationFromSubscription($subscription);
-            });
-        } catch (StripeException $e) {
-            $planInformation = null;
-        }
-
         return view('settings.subscriptions.account', [
-            'planInformation' => $planInformation,
-            'subscription' => $subscription,
-            'hasInvoices' => $hasInvoices,
-            'invoices' => $invoices,
+            'planInformation' => trans('settings.subscriptions_licence_key_frequency_'.$account->frequency),
+            'nextBillingDate' => DateHelper::getFullDate($account->valid_until_at),
             'accountHasLimitations' => AccountHelper::hasLimitations($account),
+            'customerPortalUrl' => config('monica.customer_portal_url'),
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            app(ActivateLicenceKey::class)->execute([
+                'account_id' => auth()->user()->account_id,
+                'licence_key' => $request->input('licence_key'),
+            ]);
+        } catch (ValidationException $e) {
+            return back()
+                ->withInput()
+                ->withErrors($e->validator);
+        } catch (Exception $e) {
+            return back()
+                ->withInput()
+                ->withErrors($e->getMessage());
+        }
+
+        return view('settings.subscriptions.success');
     }
 
     /**
@@ -117,9 +125,7 @@ class SubscriptionsController extends Controller
 
         $subscription = $account->getSubscribedPlan();
         if (! $account->isSubscribed() && (! $subscription || $subscription->ended())) {
-            return view('settings.subscriptions.blank', [
-                'numberOfCustomers' => InstanceHelper::getNumberOfPaidSubscribers(),
-            ]);
+            return view('settings.subscriptions.blank');
         }
 
         $planInformation = InstanceHelper::getPlanInformationFromSubscription($subscription);
@@ -274,35 +280,6 @@ class SubscriptionsController extends Controller
             ->with('accountHasLimitations', AccountHelper::hasLimitations($account))
             ->with('hasReachedContactLimit', ! AccountHelper::isBelowContactLimit($account))
             ->with('canDowngrade', AccountHelper::canDowngrade($account));
-    }
-
-    /**
-     * Process the downgrade process.
-     *
-     * @return RedirectResponse
-     */
-    public function processDowngrade()
-    {
-        $account = auth()->user()->account;
-
-        if (! AccountHelper::canDowngrade($account)) {
-            return redirect()->route('settings.subscriptions.downgrade');
-        }
-
-        $subscription = $account->getSubscribedPlan();
-        if (! $account->isSubscribed() && ! $subscription) {
-            return redirect()->route('settings.index');
-        }
-
-        try {
-            $account->subscriptionCancel();
-        } catch (StripeException $e) {
-            return back()
-                ->withInput()
-                ->withErrors($e->getMessage());
-        }
-
-        return redirect()->route('settings.subscriptions.downgrade.success');
     }
 
     /**

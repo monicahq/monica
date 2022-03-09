@@ -28,13 +28,13 @@
   <div class="main-content">
     <div class="{{ Auth::user()->getFluidLayout() }}">
       <div class="row">
-        <div class="col-12 col-sm-8 offset-sm-2">
+        <div class="col-12 col-sm-6 offset-sm-3">
 
           <h2 class="tc mt4 fw4">{{ trans('settings.subscriptions_account_upgrade_title') }}</h2>
-          <p class="tc mb4">{{ trans('settings.subscriptions_account_upgrade_choice', ['customers' => $numberOfCustomers]) }}</p>
+          <p class="tc mb4">{{ trans('settings.subscriptions_account_upgrade_choice') }}</p>
 
           <div class="br3 ba b--gray-monica bg-white mb4">
-            <div class="pa4 bb b--gray-monica">
+            <div class="pa4">
 
               <h3 class="tc">{{ trans('settings.subscriptions_account_payment') }}</h3>
               <div class="cf mb4">
@@ -43,7 +43,7 @@
                     <img src="img/settings/subscription/best_value.png" class="absolute" style="top: -30px; left: -20px;">
                     <h3 class="tc mb3 pt3">{{ trans('settings.subscriptions_plan_year_title') }}</h3>
                     <p class="tc">
-                      <a href="{{ route('settings.subscriptions.upgrade') }}?plan=annual" class="btn btn-primary pv3">{{ trans('settings.subscriptions_plan_choose') }}</a>
+                      <a href="{{ $customerPortalUrl }}" target="_blank" class="btn btn-primary pv3">{{ trans('settings.subscriptions_plan_choose') }}</a>
                     </p>
                     <p class="tc mt2">
                       {{ trans('settings.subscriptions_plan_frequency_year', ['amount' => \App\Helpers\InstanceHelper::getPlanInformationFromConfig('annual')['friendlyPrice']]) }}
@@ -68,7 +68,7 @@
                   <div class="b--gray-monica ba pt3 br3 bw1">
                     <h3 class="tc mb3 pt3">{{ trans('settings.subscriptions_plan_month_title') }}</h3>
                     <p class="tc">
-                      <a href="{{ route('settings.subscriptions.upgrade') }}?plan=monthly" class="btn btn-primary pv3">{{ trans('settings.subscriptions_plan_choose') }}</a>
+                      <a href="{{ $customerPortalUrl }}" target="_blank" class="btn btn-primary pv3">{{ trans('settings.subscriptions_plan_choose') }}</a>
                     </p>
                     <p class="tc mt2">
                       {{ trans('settings.subscriptions_plan_frequency_month', ['amount' => \App\Helpers\InstanceHelper::getPlanInformationFromConfig('monthly')['friendlyPrice']]) }}
@@ -90,13 +90,36 @@
                   </div>
                 </div>
               </div>
-              <p class="mb1 tc">{{ trans('settings.subscriptions_plan_include1') }}</p>
+
+              <!-- perks -->
+              <p class="mb1 tc fw5">{{ trans('settings.subscriptions_plan_include1') }}</p>
               <p class="mb1 tc">{{ trans('settings.subscriptions_plan_include2') }}</p>
               <p class="mb1 tc">{{ trans('settings.subscriptions_plan_include3') }}</p>
             </div>
           </div>
 
+          <!-- licence key -->
+          <div class="br3 pa4 ba b--gray-monica bg-white mb4">
+
+            <h3 class="tc mb3">Do you have your licence key?</h3>
+
+            @include('partials.errors')
+
+            <form action="{{ route('settings.subscriptions.store') }}" method="POST">
+              @csrf
+
+              <div class="flex-ns items-end">
+                <form-input value="" :input-type="'text'" :id="'licence_key'" :required="true" :title="'Please paste your licence key here'">
+                </form-input>
+                <div><button name="save" type="submit" class="ml2 btn btn-primary w-auto-ns w-100 pb0-ns">Save</button></div>
+              </div>
+            </form>
+          </div>
+
           <h3 class="tc mb4 mt3">{{ trans('settings.subscriptions_help_title') }}</h3>
+          <h4>{{ trans('settings.subscriptions_help_licencekey_title') }}</h4>
+          <p class="mb4">{{ trans('settings.subscriptions_help_licencekey_desc') }}</p>
+
           <h4>{{ trans('settings.subscriptions_help_opensource_title') }}</h4>
           <p class="mb4">{{ trans('settings.subscriptions_help_opensource_desc') }}</p>
 

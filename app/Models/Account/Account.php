@@ -66,6 +66,9 @@ class Account extends Model
         'api_key',
         'default_time_reminder_is_sent',
         'default_gender_id',
+        'licence_key',
+        'valid_until_at',
+        'purchaser_email',
     ];
 
     /**
@@ -75,6 +78,15 @@ class Account extends Model
      */
     protected $casts = [
         'has_access_to_paid_version_for_free' => 'boolean',
+    ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'valid_until_at',
     ];
 
     /**

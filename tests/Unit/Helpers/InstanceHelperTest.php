@@ -15,19 +15,6 @@ class InstanceHelperTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
-    public function it_gets_the_number_of_paid_subscribers()
-    {
-        factory(Account::class)->create(['stripe_id' => 'id292839']);
-        factory(Account::class)->create();
-        factory(Account::class)->create(['stripe_id' => 'id2sdf92839']);
-
-        $this->assertEquals(
-            2,
-            InstanceHelper::getNumberOfPaidSubscribers()
-        );
-    }
-
-    /** @test */
     public function it_fetches_the_monthly_plan_information()
     {
         config(['monica.paid_plan_monthly_friendly_name' => 'Monthly']);

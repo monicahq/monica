@@ -13,16 +13,6 @@ use function Safe\file_get_contents;
 class InstanceHelper
 {
     /**
-     * Get the number of paid accounts in the instance.
-     *
-     * @return int
-     */
-    public static function getNumberOfPaidSubscribers()
-    {
-        return Account::where('stripe_id', '!=', null)->count();
-    }
-
-    /**
      * Get the plan information for the given time period.
      *
      * @param  string  $timePeriod  Accepted values: 'monthly', 'annual'

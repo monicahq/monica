@@ -77,7 +77,15 @@ trait Subscription
             return true;
         }
 
-        return $this->getSubscribedPlan() !== null;
+        if (! $this->licence_key) {
+            return false;
+        }
+
+        if ($this->valid_until_at->isPast()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

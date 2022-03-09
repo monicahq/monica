@@ -272,6 +272,8 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
 
         Route::name('subscriptions.')->group(function () {
             Route::get('/settings/subscriptions', 'Settings\\SubscriptionsController@index')->name('index');
+            Route::post('/settings/subscriptions', 'Settings\\SubscriptionsController@store')->name('store');
+
             Route::get('/settings/subscriptions/upgrade', 'Settings\\SubscriptionsController@upgrade')->name('upgrade');
             Route::get('/settings/subscriptions/upgrade/success', 'Settings\\SubscriptionsController@upgradeSuccess')->name('upgrade.success');
             Route::get('/settings/subscriptions/update', 'Settings\\SubscriptionsController@update')->name('update');

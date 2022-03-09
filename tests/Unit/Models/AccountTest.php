@@ -27,6 +27,7 @@ use App\Models\Contact\LifeEventCategory;
 use App\Models\Account\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AccountTest extends FeatureTestCase
@@ -277,6 +278,7 @@ class AccountTest extends FeatureTestCase
     {
         $account = factory(Account::class)->make([
             'has_access_to_paid_version_for_free' => false,
+            'licence_key' => null,
         ]);
 
         $this->assertEquals(
@@ -286,18 +288,13 @@ class AccountTest extends FeatureTestCase
     }
 
     /** @test */
-    public function user_is_subscribed_returns_true_if_monthly_plan_is_set()
+    public function user_is_subscribed_returns_true_if_there_is_a_valid_licence_key()
     {
-        $account = factory(Account::class)->create();
-
-        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
-            'account_id' => $account->id,
-            'stripe_plan' => 'chandler_5',
-            'stripe_id' => 'sub_C0R444pbxddhW7',
-            'name' => 'fakePlan',
+        Carbon::setTestNow(Carbon::create(2018, 1, 1));
+        $account = factory(Account::class)->create([
+            'licence_key' => '123',
+            'valid_until_at' => '2022-01-01',
         ]);
-
-        config(['monica.paid_plan_monthly_friendly_name' => 'fakePlan']);
 
         $this->assertEquals(
             true,
@@ -306,29 +303,13 @@ class AccountTest extends FeatureTestCase
     }
 
     /** @test */
-    public function user_is_subscribed_returns_true_if_annual_plan_is_set()
+    public function user_is_subscribed_returns_false_if_there_is_a_valid_key_but_expired()
     {
-        $account = factory(Account::class)->create();
-
-        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
-            'account_id' => $account->id,
-            'stripe_plan' => 'chandler_annual',
-            'stripe_id' => 'sub_C0R444pbxddhW7',
-            'name' => 'annualPlan',
+        Carbon::setTestNow(Carbon::create(2018, 1, 1));
+        $account = factory(Account::class)->create([
+            'licence_key' => '123',
+            'valid_until_at' => '1999-01-01',
         ]);
-
-        config(['monica.paid_plan_annual_friendly_name' => 'annualPlan']);
-
-        $this->assertEquals(
-            true,
-            $account->isSubscribed()
-        );
-    }
-
-    /** @test */
-    public function user_is_subscribed_returns_false_if_no_plan_is_set()
-    {
-        $account = factory(Account::class)->create();
 
         $this->assertEquals(
             false,
