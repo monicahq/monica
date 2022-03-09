@@ -35,9 +35,11 @@
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3">
 
-            <h3>{{ trans('settings.subscriptions_account_current_plan') }}</h3>
+            <h3 class="mb3">{{ trans('settings.subscriptions_account_current_plan') }}</h3>
 
             <p>{{ trans('settings.subscriptions_account_current_paid_plan', ['name' => $planInformation]) }}</p>
+
+            <p>{!! trans('settings.subscriptions_account_invoices', ['url' => $customerPortalUrl]) !!}</p>
 
             <div class="dt dt--fixed w-100 collapse br--top br--bottom">
               <div class="dt-row">

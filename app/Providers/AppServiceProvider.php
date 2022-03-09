@@ -126,12 +126,6 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         Passport::ignoreMigrations();
-        Cashier::ignoreMigrations();
-        Cashier::formatCurrencyUsing(function ($amount, $currency) {
-            $currency = \App\Models\Settings\Currency::where('iso', strtoupper($currency ?? config('cashier.currency')))->first();
-
-            return \App\Helpers\MoneyHelper::format($amount, $currency);
-        });
     }
 
     /**
@@ -238,5 +232,6 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Instance\AuditLog\LogAccountAction::class => \App\Services\Instance\AuditLog\LogAccountAction::class,
         \App\Services\User\UpdateViewPreference::class => \App\Services\User\UpdateViewPreference::class,
         \App\Services\User\AcceptPolicy::class => \App\Services\User\AcceptPolicy::class,
+        \App\Services\Account\Subscription\ActivateLicenceKey::class => \App\Services\Account\Subscription\ActivateLicenceKey::class,
     ];
 }

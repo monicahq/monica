@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dbb8a40531e1c39b654747f9c0d61cce",
+    "content-hash": "4f058cf63afafc4f544f177199cea565",
     "packages": [
         {
             "name": "asbiin/laravel-adorable",
@@ -219,16 +219,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.212.3",
+            "version": "3.212.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "1d3db6d276299136bcaa7896653be0dcd2aaa92a"
+                "reference": "4961e8b34fab8b92a459067f264b4dc66f969a57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1d3db6d276299136bcaa7896653be0dcd2aaa92a",
-                "reference": "1d3db6d276299136bcaa7896653be0dcd2aaa92a",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4961e8b34fab8b92a459067f264b4dc66f969a57",
+                "reference": "4961e8b34fab8b92a459067f264b4dc66f969a57",
                 "shasum": ""
             },
             "require": {
@@ -304,9 +304,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.212.3"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.212.4"
             },
-            "time": "2022-03-07T19:48:01+00:00"
+            "time": "2022-03-08T19:19:48+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1486,73 +1486,6 @@
                 }
             ],
             "time": "2022-02-28T11:07:21+00:00"
-        },
-        {
-            "name": "dompdf/dompdf",
-            "version": "v1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dompdf/dompdf.git",
-                "reference": "60b704331479a69e9bcdb3496da2315b5c4f94fd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/60b704331479a69e9bcdb3496da2315b5c4f94fd",
-                "reference": "60b704331479a69e9bcdb3496da2315b5c4f94fd",
-                "shasum": ""
-            },
-            "require": {
-                "ext-dom": "*",
-                "ext-mbstring": "*",
-                "phenx/php-font-lib": "^0.5.4",
-                "phenx/php-svg-lib": "^0.3.3 || ^0.4.0",
-                "php": "^7.1 || ^8.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.3",
-                "phpunit/phpunit": "^7.5 || ^8 || ^9",
-                "squizlabs/php_codesniffer": "^3.5"
-            },
-            "suggest": {
-                "ext-gd": "Needed to process images",
-                "ext-gmagick": "Improves image processing performance",
-                "ext-imagick": "Improves image processing performance",
-                "ext-zlib": "Needed for pdf stream compression"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Dompdf\\": "src/"
-                },
-                "classmap": [
-                    "lib/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-2.1"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Ménager",
-                    "email": "fabien.menager@gmail.com"
-                },
-                {
-                    "name": "Brian Sweeney",
-                    "email": "eclecticgeek@gmail.com"
-                },
-                {
-                    "name": "Gabriel Bull",
-                    "email": "me@gabrielbull.com"
-                }
-            ],
-            "description": "DOMPDF is a CSS 2.1 compliant HTML to PDF converter",
-            "homepage": "https://github.com/dompdf/dompdf",
-            "support": {
-                "issues": "https://github.com/dompdf/dompdf/issues",
-                "source": "https://github.com/dompdf/dompdf/tree/v1.2.0"
-            },
-            "time": "2022-02-07T13:02:10+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
@@ -2973,96 +2906,17 @@
             "time": "2021-10-08T21:21:46+00:00"
         },
         {
-            "name": "laravel/cashier",
-            "version": "v12.17.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laravel/cashier-stripe.git",
-                "reference": "da1a55e9b3e711669bdf7055b0af42cfd762af0e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier-stripe/zipball/da1a55e9b3e711669bdf7055b0af42cfd762af0e",
-                "reference": "da1a55e9b3e711669bdf7055b0af42cfd762af0e",
-                "shasum": ""
-            },
-            "require": {
-                "dompdf/dompdf": "^0.8.6|^1.0.1",
-                "ext-json": "*",
-                "illuminate/console": "^6.0|^7.0|^8.0|^9.0",
-                "illuminate/contracts": "^6.0|^7.0|^8.0|^9.0",
-                "illuminate/database": "^6.0|^7.0|^8.0|^9.0",
-                "illuminate/http": "^6.0|^7.0|^8.0|^9.0",
-                "illuminate/log": "^6.0|^7.0|^8.0|^9.0",
-                "illuminate/notifications": "^6.0|^7.0|^8.0|^9.0",
-                "illuminate/routing": "^6.0|^7.0|^8.0|^9.0",
-                "illuminate/support": "^6.0|^7.0|^8.0|^9.0",
-                "illuminate/view": "^6.0|^7.0|^8.0|^9.0",
-                "moneyphp/money": "^3.2",
-                "nesbot/carbon": "^2.0",
-                "php": "^7.2.5|^8.0",
-                "stripe/stripe-php": "^7.39",
-                "symfony/http-kernel": "^4.3|^5.0|^6.0",
-                "symfony/polyfill-intl-icu": "^1.22.1"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.0",
-                "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0",
-                "phpunit/phpunit": "^8.0|^9.0"
-            },
-            "suggest": {
-                "ext-intl": "Allows for more locales besides the default \"en\" when formatting money values."
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "12.x-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "Laravel\\Cashier\\CashierServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Laravel\\Cashier\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "Laravel Cashier provides an expressive, fluent interface to Stripe's subscription billing services.",
-            "keywords": [
-                "billing",
-                "laravel",
-                "stripe"
-            ],
-            "support": {
-                "issues": "https://github.com/laravel/cashier/issues",
-                "source": "https://github.com/laravel/cashier"
-            },
-            "time": "2022-01-25T19:18:52+00:00"
-        },
-        {
             "name": "laravel/framework",
-            "version": "v8.83.3",
+            "version": "v8.83.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "b4ed222a188cca74ca9062296e525d26ae54a0ce"
+                "reference": "97a549f1a83cfb32dab1eecab4c4d40a984a72b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/b4ed222a188cca74ca9062296e525d26ae54a0ce",
-                "reference": "b4ed222a188cca74ca9062296e525d26ae54a0ce",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/97a549f1a83cfb32dab1eecab4c4d40a984a72b5",
+                "reference": "97a549f1a83cfb32dab1eecab4c4d40a984a72b5",
                 "shasum": ""
             },
             "require": {
@@ -3222,34 +3076,34 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-03-03T15:14:29+00:00"
+            "time": "2022-03-08T16:12:54+00:00"
         },
         {
             "name": "laravel/passport",
-            "version": "v10.3.2",
+            "version": "v10.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "c56207e9a37c849da0164842a609a9f38747e95b"
+                "reference": "1039d8b4aa71c45dbea2f140b131cae8802237e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/c56207e9a37c849da0164842a609a9f38747e95b",
-                "reference": "c56207e9a37c849da0164842a609a9f38747e95b",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/1039d8b4aa71c45dbea2f140b131cae8802237e7",
+                "reference": "1039d8b4aa71c45dbea2f140b131cae8802237e7",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "firebase/php-jwt": "^5.0",
-                "illuminate/auth": "^8.2|^9.0",
-                "illuminate/console": "^8.2|^9.0",
-                "illuminate/container": "^8.2|^9.0",
-                "illuminate/contracts": "^8.2|^9.0",
-                "illuminate/cookie": "^8.2|^9.0",
-                "illuminate/database": "^8.2|^9.0",
-                "illuminate/encryption": "^8.2|^9.0",
-                "illuminate/http": "^8.2|^9.0",
-                "illuminate/support": "^8.2|^9.0",
+                "illuminate/auth": "^8.37|^9.0",
+                "illuminate/console": "^8.37|^9.0",
+                "illuminate/container": "^8.37|^9.0",
+                "illuminate/contracts": "^8.37|^9.0",
+                "illuminate/cookie": "^8.37|^9.0",
+                "illuminate/database": "^8.37|^9.0",
+                "illuminate/encryption": "^8.37|^9.0",
+                "illuminate/http": "^8.37|^9.0",
+                "illuminate/support": "^8.37|^9.0",
                 "lcobucci/jwt": "^3.4|^4.0",
                 "league/oauth2-server": "^8.2",
                 "nyholm/psr7": "^1.3",
@@ -3299,7 +3153,7 @@
                 "issues": "https://github.com/laravel/passport/issues",
                 "source": "https://github.com/laravel/passport"
             },
-            "time": "2022-02-15T21:44:15+00:00"
+            "time": "2022-02-23T15:04:04+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -5922,96 +5776,6 @@
             "time": "2022-02-21T01:04:05+00:00"
         },
         {
-            "name": "phenx/php-font-lib",
-            "version": "0.5.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dompdf/php-font-lib.git",
-                "reference": "dd448ad1ce34c63d09baccd05415e361300c35b4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dompdf/php-font-lib/zipball/dd448ad1ce34c63d09baccd05415e361300c35b4",
-                "reference": "dd448ad1ce34c63d09baccd05415e361300c35b4",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*"
-            },
-            "require-dev": {
-                "symfony/phpunit-bridge": "^3 || ^4 || ^5"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "FontLib\\": "src/FontLib"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Ménager",
-                    "email": "fabien.menager@gmail.com"
-                }
-            ],
-            "description": "A library to read, parse, export and make subsets of different types of font files.",
-            "homepage": "https://github.com/PhenX/php-font-lib",
-            "support": {
-                "issues": "https://github.com/dompdf/php-font-lib/issues",
-                "source": "https://github.com/dompdf/php-font-lib/tree/0.5.4"
-            },
-            "time": "2021-12-17T19:44:54+00:00"
-        },
-        {
-            "name": "phenx/php-svg-lib",
-            "version": "0.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dompdf/php-svg-lib.git",
-                "reference": "4498b5df7b08e8469f0f8279651ea5de9626ed02"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dompdf/php-svg-lib/zipball/4498b5df7b08e8469f0f8279651ea5de9626ed02",
-                "reference": "4498b5df7b08e8469f0f8279651ea5de9626ed02",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "php": "^7.1 || ^7.2 || ^7.3 || ^7.4 || ^8.0",
-                "sabberworm/php-css-parser": "^8.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Svg\\": "src/Svg"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Ménager",
-                    "email": "fabien.menager@gmail.com"
-                }
-            ],
-            "description": "A library to read, parse and export to PDF SVG files.",
-            "homepage": "https://github.com/PhenX/php-svg-lib",
-            "support": {
-                "issues": "https://github.com/dompdf/php-svg-lib/issues",
-                "source": "https://github.com/dompdf/php-svg-lib/tree/0.4.1"
-            },
-            "time": "2022-03-07T12:52:04+00:00"
-        },
-        {
             "name": "php-http/client-common",
             "version": "2.5.0",
             "source": {
@@ -7960,59 +7724,6 @@
             "time": "2021-09-25T23:10:38+00:00"
         },
         {
-            "name": "sabberworm/php-css-parser",
-            "version": "8.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sabberworm/PHP-CSS-Parser.git",
-                "reference": "e41d2140031d533348b2192a83f02d8dd8a71d30"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sabberworm/PHP-CSS-Parser/zipball/e41d2140031d533348b2192a83f02d8dd8a71d30",
-                "reference": "e41d2140031d533348b2192a83f02d8dd8a71d30",
-                "shasum": ""
-            },
-            "require": {
-                "ext-iconv": "*",
-                "php": ">=5.6.20"
-            },
-            "require-dev": {
-                "codacy/coverage": "^1.4",
-                "phpunit/phpunit": "^4.8.36"
-            },
-            "suggest": {
-                "ext-mbstring": "for parsing UTF-8 CSS"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Sabberworm\\CSS\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Raphael Schweikert"
-                }
-            ],
-            "description": "Parser for CSS Files written in PHP",
-            "homepage": "https://www.sabberworm.com/blog/2010/6/10/php-css-parser",
-            "keywords": [
-                "css",
-                "parser",
-                "stylesheet"
-            ],
-            "support": {
-                "issues": "https://github.com/sabberworm/PHP-CSS-Parser/issues",
-                "source": "https://github.com/sabberworm/PHP-CSS-Parser/tree/8.4.0"
-            },
-            "time": "2021-12-11T13:40:54+00:00"
-        },
-        {
             "name": "sabre/dav",
             "version": "4.3.1",
             "source": {
@@ -8970,66 +8681,6 @@
                 "source": "https://github.com/stevebauman/location/tree/v6.3.1"
             },
             "time": "2022-02-16T13:52:28+00:00"
-        },
-        {
-            "name": "stripe/stripe-php",
-            "version": "v7.116.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "7a39f594f213ed3f443a95adf769d1ecbc8393e7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/7a39f594f213ed3f443a95adf769d1ecbc8393e7",
-                "reference": "7a39f594f213ed3f443a95adf769d1ecbc8393e7",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "php": ">=5.6.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "3.5.0",
-                "phpstan/phpstan": "^1.2",
-                "phpunit/phpunit": "^5.7 || ^9.0",
-                "squizlabs/php_codesniffer": "^3.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Stripe\\": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Stripe and contributors",
-                    "homepage": "https://github.com/stripe/stripe-php/contributors"
-                }
-            ],
-            "description": "Stripe PHP Library",
-            "homepage": "https://stripe.com/",
-            "keywords": [
-                "api",
-                "payment processing",
-                "stripe"
-            ],
-            "support": {
-                "issues": "https://github.com/stripe/stripe-php/issues",
-                "source": "https://github.com/stripe/stripe-php/tree/v7.116.0"
-            },
-            "time": "2022-03-02T15:51:15+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -10376,93 +10027,6 @@
                 }
             ],
             "time": "2021-11-23T21:10:46+00:00"
-        },
-        {
-            "name": "symfony/polyfill-intl-icu",
-            "version": "v1.25.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-intl-icu.git",
-                "reference": "c023a439b8551e320cc3c8433b198e408a623af1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-icu/zipball/c023a439b8551e320cc3c8433b198e408a623af1",
-                "reference": "c023a439b8551e320cc3c8433b198e408a623af1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1"
-            },
-            "suggest": {
-                "ext-intl": "For best performance and support of other locales than \"en\""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "1.23-dev"
-                },
-                "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Icu\\": ""
-                },
-                "classmap": [
-                    "Resources/stubs"
-                ],
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill for intl's ICU-related data and classes",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "icu",
-                "intl",
-                "polyfill",
-                "portable",
-                "shim"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/polyfill-intl-icu/tree/v1.25.0"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-10-26T17:16:04+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
@@ -16778,12 +16342,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "6c48c3048166dc4142a1a5f28a325faed3a578a3"
+                "reference": "9461fa5df0b505bbe4404f20b1759884a27c7572"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/6c48c3048166dc4142a1a5f28a325faed3a578a3",
-                "reference": "6c48c3048166dc4142a1a5f28a325faed3a578a3",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/9461fa5df0b505bbe4404f20b1759884a27c7572",
+                "reference": "9461fa5df0b505bbe4404f20b1759884a27c7572",
                 "shasum": ""
             },
             "conflict": {
@@ -16867,7 +16431,7 @@
                 "ezsystems/ezplatform": "<=1.13.6|>=2,<=2.5.24",
                 "ezsystems/ezplatform-admin-ui": ">=1.3,<1.3.5|>=1.4,<1.4.6|>=1.5,<=1.5.25",
                 "ezsystems/ezplatform-admin-ui-assets": ">=4,<4.2.1|>=5,<5.0.1|>=5.1,<5.1.1",
-                "ezsystems/ezplatform-kernel": "<=1.2.5|>=1.3,<=1.3.1",
+                "ezsystems/ezplatform-kernel": "<=1.2.5|>=1.3,<1.3.12",
                 "ezsystems/ezplatform-rest": ">=1.2,<=1.2.2|>=1.3,<1.3.8",
                 "ezsystems/ezplatform-richtext": ">=2.3,<=2.3.7",
                 "ezsystems/ezplatform-user": ">=1,<1.0.1",
@@ -16955,6 +16519,7 @@
                 "magento/magento1ee": ">=1,<1.14.4.3",
                 "magento/product-community-edition": ">=2,<2.2.10|>=2.3,<2.3.2-p.2",
                 "marcwillmann/turn": "<0.3.3",
+                "matyhtf/framework": "<=3.0.5",
                 "mautic/core": "<4.2|= 2.13.1",
                 "mediawiki/core": ">=1.27,<1.27.6|>=1.29,<1.29.3|>=1.30,<1.30.2|>=1.31,<1.31.9|>=1.32,<1.32.6|>=1.32.99,<1.33.3|>=1.33.99,<1.34.3|>=1.34.99,<1.35",
                 "microweber/microweber": "<1.3",
@@ -17034,7 +16599,7 @@
                 "remdex/livehelperchat": "<3.93",
                 "rmccue/requests": ">=1.6,<1.8",
                 "robrichards/xmlseclibs": "<3.0.4",
-                "rudloff/alltube": "<3.0.2",
+                "rudloff/alltube": "<3.0.3",
                 "s-cart/s-cart": "<6.7.2",
                 "sabberworm/php-css-parser": ">=1,<1.0.1|>=2,<2.0.1|>=3,<3.0.1|>=4,<4.0.1|>=5,<5.0.9|>=5.1,<5.1.3|>=5.2,<5.2.1|>=6,<6.0.2|>=7,<7.0.4|>=8,<8.0.1|>=8.1,<8.1.1|>=8.2,<8.2.1|>=8.3,<8.3.1",
                 "sabre/dav": ">=1.6,<1.6.99|>=1.7,<1.7.11|>=1.8,<1.8.9",
@@ -17226,7 +16791,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-05T18:49:45+00:00"
+            "time": "2022-03-09T12:04:57+00:00"
         },
         {
             "name": "sebastian/cli-parser",

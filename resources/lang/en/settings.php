@@ -239,15 +239,6 @@ return [
     'subscriptions_downgrade_success' => 'You are back to the Free plan!',
     'subscriptions_downgrade_thanks' => 'Thanks so much for trying the paid plan. We keep adding new features on Monica all the time – so you might want to come back in the future to see if you might be interested in taking a subscription again.',
     'subscriptions_back' => 'Back to settings',
-    'subscriptions_upgrade_title' => 'Upgrade your account',
-    'subscriptions_upgrade_choose' => 'You picked the :plan plan.',
-    'subscriptions_upgrade_infos' => 'We couldn’t be happier. Enter your payment info below.',
-    'subscriptions_upgrade_name' => 'Name on card',
-    'subscriptions_upgrade_zip' => 'ZIP or postal code',
-    'subscriptions_upgrade_credit' => 'Credit or debit card',
-    'subscriptions_upgrade_submit' => 'Pay {amount}',
-    'subscriptions_upgrade_charge' => 'We’ll charge your card :price now. The next charge will be on :date. If you ever change your mind, you can cancel at any time, no questions asked.',
-    'subscriptions_upgrade_charge_handled' => 'The payment is handled by <a href=":url">Stripe</a>. No card information touches our server.',
     'subscriptions_upgrade_success' => 'Thank you! You are now subscribed.',
     'subscriptions_upgrade_thanks' => 'Welcome to the community of people who try to make the world a better place.',
 
@@ -287,6 +278,7 @@ return [
     'subscriptions_licence_key_problem' => 'There is a problem with the system.',
     'subscriptions_licence_key_frequency_monthly' => 'Monthly',
     'subscriptions_licence_key_frequency_annual' => 'Annual',
+    'subscriptions_account_invoices' => 'Your invoices are available on the <a href=":url">customer portal</a>.',
 
     'stripe_error_card' => 'Your card was declined. Decline message is: :message',
     'stripe_error_api_connection' => 'Network communication with Stripe failed. Try again later.',

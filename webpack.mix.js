@@ -44,10 +44,6 @@ mix.js('resources/js/app.js', 'public/js').vue()
   .sass('resources/sass/app-ltr.scss', 'public/css')
   .sass('resources/sass/app-rtl.scss', 'public/css')
 
-  // stripe
-  .js('resources/js/stripe.js', 'public/js')
-  .sass('resources/sass/stripe.scss', 'public/css')
-
   .alias({
     vue$: path.join(__dirname, 'node_modules/vue/dist/vue.esm.js'),
   })

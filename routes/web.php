@@ -273,22 +273,6 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::name('subscriptions.')->group(function () {
             Route::get('/settings/subscriptions', 'Settings\\SubscriptionsController@index')->name('index');
             Route::post('/settings/subscriptions', 'Settings\\SubscriptionsController@store')->name('store');
-
-            Route::get('/settings/subscriptions/upgrade', 'Settings\\SubscriptionsController@upgrade')->name('upgrade');
-            Route::get('/settings/subscriptions/upgrade/success', 'Settings\\SubscriptionsController@upgradeSuccess')->name('upgrade.success');
-            Route::get('/settings/subscriptions/update', 'Settings\\SubscriptionsController@update')->name('update');
-            Route::post('/settings/subscriptions/update', 'Settings\\SubscriptionsController@processUpdate');
-            Route::get('/settings/subscriptions/confirmPayment/{id}', 'Settings\\SubscriptionsController@confirmPayment')->name('confirm');
-            Route::post('/settings/subscriptions/processPayment', 'Settings\\SubscriptionsController@processPayment')->name('payment');
-            Route::get('/settings/subscriptions/invoice/{invoice}', 'Settings\\SubscriptionsController@downloadInvoice')->name('invoice');
-            Route::get('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@downgrade')->name('downgrade');
-            Route::post('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@processDowngrade');
-            Route::get('/settings/subscriptions/archive', 'Settings\\SubscriptionsController@archive')->name('archive');
-            Route::post('/settings/subscriptions/archive', 'Settings\\SubscriptionsController@processArchive');
-            Route::get('/settings/subscriptions/downgrade/success', 'Settings\\SubscriptionsController@downgradeSuccess')->name('downgrade.success');
-            if (! App::environment('production')) {
-                Route::get('/settings/subscriptions/forceCompletePaymentOnTesting', 'Settings\\SubscriptionsController@forceCompletePaymentOnTesting')->name('forceCompletePaymentOnTesting');
-            }
         });
 
         Route::get('/settings/auditlogs', 'Settings\\AuditLogController@index')->name('auditlog.index');

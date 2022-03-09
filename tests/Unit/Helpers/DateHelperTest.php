@@ -450,26 +450,6 @@ class DateHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_it_gets_date_one_month_from_now()
-    {
-        Carbon::setTestNow(Carbon::create(2017, 1, 1));
-
-        $this->assertEquals(
-            '2017-02-01',
-            DateHelper::getNextTheoriticalBillingDate('monthly')->toDateString()
-        );
-    }
-
-    public function test_it_gets_date_one_year_from_now()
-    {
-        Carbon::setTestNow(Carbon::create(2017, 1, 1));
-
-        $this->assertEquals(
-            '2018-01-01',
-            DateHelper::getNextTheoriticalBillingDate('yearly')->toDateString()
-        );
-    }
-
     public function test_it_returns_a_list_with_years()
     {
         $user = $this->signIn();

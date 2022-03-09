@@ -210,7 +210,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-        Laravel\Cashier\CashierServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Creativeorange\Gravatar\GravatarServiceProvider::class,
         App\Providers\DAVServiceProvider::class,
