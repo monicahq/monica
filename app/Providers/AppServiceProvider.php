@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Helpers\DBHelper;
-use Laravel\Cashier\Cashier;
 use Laravel\Passport\Passport;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;

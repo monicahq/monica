@@ -63,7 +63,7 @@ class ActivateLicenceKey extends BaseService
 
     private function makeRequestToCustomerPortal(): void
     {
-        $url = config('monica.customer_portal_url').'/' . config('monica.customer_portal_secret_key') . '/validate/'.$this->data['licence_key'];
+        $url = config('monica.customer_portal_url').'/'.config('monica.customer_portal_secret_key').'/validate/'.$this->data['licence_key'];
 
         // necessary for testing purposes
         if (App::environment('production')) {
