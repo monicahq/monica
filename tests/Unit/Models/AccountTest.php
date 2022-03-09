@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use Carbon\Carbon;
 use App\Models\User\User;
 use Tests\FeatureTestCase;
 use App\Models\User\Module;
@@ -27,7 +28,6 @@ use App\Models\Contact\LifeEventCategory;
 use App\Models\Account\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AccountTest extends FeatureTestCase

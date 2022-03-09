@@ -2,17 +2,15 @@
 
 namespace App\Services\Account\Subscription;
 
-use App\Exceptions\NoCustomerPortalSetException;
-use App\Exceptions\NoLicenceKeyEncryptionSetException;
-use App\Models\Account\Account;
-use App\Models\Account\Photo;
-use App\Services\BaseService;
 use Exception;
 use Illuminate\Support\Str;
+use App\Services\BaseService;
+use App\Models\Account\Account;
+use Illuminate\Support\Facades\App;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\App;
+use App\Exceptions\NoCustomerPortalSetException;
+use App\Exceptions\NoLicenceKeyEncryptionSetException;
 
 class ActivateLicenceKey extends BaseService
 {
@@ -54,7 +52,7 @@ class ActivateLicenceKey extends BaseService
 
     private function validateEnvVariables(): void
     {
-        if (!config('monica.licence_key_encryption_key')) {
+        if (! config('monica.licence_key_encryption_key')) {
             throw new NoLicenceKeyEncryptionSetException();
         }
 
@@ -65,7 +63,7 @@ class ActivateLicenceKey extends BaseService
 
     private function makeRequestToCustomerPortal(): void
     {
-        $url = config('monica.customer_portal_url') . '/validate/key/' . $this->data['licence_key'];
+        $url = config('monica.customer_portal_url').'/validate/key/'.$this->data['licence_key'];
 
         // necessary for testing purposes
         if (App::environment('production')) {

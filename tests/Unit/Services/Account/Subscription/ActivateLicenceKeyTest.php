@@ -2,16 +2,13 @@
 
 namespace Tests\Unit\Services\Account\Subscription;
 
-use App\Models\Account\Account;
-use Tests\TestCase;
-use App\Models\User\User;
-use App\Models\Contact\Contact;
-use App\Services\Account\Subscription\ActivateLicenceKey;
-use Illuminate\Validation\ValidationException;
-use App\Services\Account\Settings\DestroyAccount;
 use Exception;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
+use App\Models\Account\Account;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\Account\Subscription\ActivateLicenceKey;
 
 class ActivateLicenceKeyTest extends TestCase
 {

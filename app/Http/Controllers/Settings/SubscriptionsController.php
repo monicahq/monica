@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Exceptions\NoLicenceKeyEncryptionSetException;
+use Exception;
 use Illuminate\View\View;
 use App\Traits\StripeCall;
 use App\Helpers\DateHelper;
@@ -12,17 +12,16 @@ use Laravel\Cashier\Payment;
 use App\Helpers\AccountHelper;
 use App\Helpers\InstanceHelper;
 use App\Exceptions\StripeException;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
 use Stripe\Exception\ApiErrorException;
+use Illuminate\Validation\ValidationException;
 use Stripe\PaymentIntent as StripePaymentIntent;
 use Laravel\Cashier\Exceptions\IncompletePayment;
 use App\Services\Account\Settings\ArchiveAllContacts;
 use App\Services\Account\Subscription\ActivateLicenceKey;
-use Exception;
 
 class SubscriptionsController extends Controller
 {
