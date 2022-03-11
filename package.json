@@ -35,7 +35,7 @@
     "composer update": "COMPOSER_MEMORY_LIMIT=-1 composer update"
   },
   "engines": {
-    "node": "17.x",
+    "node": "16.x",
     "yarn": "1.22.x"
   },
   "devDependencies": {
