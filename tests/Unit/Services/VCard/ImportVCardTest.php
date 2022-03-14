@@ -1377,6 +1377,6 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
             'id' => $contact->id,
             'uuid' => '31fdc242-c974-436e-98de-6b21624d6e34',
         ]);
-        $this->assertEquals('31fdc242-c974-436e-98de-6b21624d6e34', $contact->uuid, );
+        $this->assertEquals('31fdc242-c974-436e-98de-6b21624d6e34', $contact->uuid);
     }
 }
