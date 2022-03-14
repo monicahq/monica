@@ -35,28 +35,30 @@
         </div>
 
         <!-- account settings -->
-        <h2 class="mb-6 text-center text-lg">Account settings</h2>
-        <div class="mb-6 rounded-lg border border-gray-200 bg-white p-5">
-          <ul>
-            <li v-if="data.is_account_administrator" class="mb-2">
-              <span class="mr-2">🥸</span>
-              <inertia-link :href="data.url.users.index" class="text-sky-500 hover:text-blue-900">
-                Manage users
-              </inertia-link>
-            </li>
-            <li v-if="data.is_account_administrator" class="mb-2">
-              <span class="mr-2">🎃</span>
-              <inertia-link :href="data.url.personalize.index" class="text-sky-500 hover:text-blue-900">
-                Personalize your contacts data
-              </inertia-link>
-            </li>
-            <li v-if="data.is_account_administrator">
-              <span class="mr-2">💩</span>
-              <inertia-link :href="data.url.cancel.index" class="text-sky-500 hover:text-blue-900">
-                Cancel your account
-              </inertia-link>
-            </li>
-          </ul>
+        <div v-if="data.is_account_administrator">
+          <h2 class="mb-6 text-center text-lg">Account settings</h2>
+          <div class="mb-6 rounded-lg border border-gray-200 bg-white p-5">
+            <ul>
+              <li class="mb-2">
+                <span class="mr-2">🥸</span>
+                <inertia-link :href="data.url.users.index" class="text-sky-500 hover:text-blue-900">
+                  Manage users
+                </inertia-link>
+              </li>
+              <li class="mb-2">
+                <span class="mr-2">🎃</span>
+                <inertia-link :href="data.url.personalize.index" class="text-sky-500 hover:text-blue-900">
+                  Personalize your contacts data
+                </inertia-link>
+              </li>
+              <li>
+                <span class="mr-2">💩</span>
+                <inertia-link :href="data.url.cancel.index" class="text-sky-500 hover:text-blue-900">
+                  Cancel your account
+                </inertia-link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </main>

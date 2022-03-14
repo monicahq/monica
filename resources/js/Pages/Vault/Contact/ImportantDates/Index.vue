@@ -193,7 +193,7 @@
             </div>
 
             <!-- reminders -->
-            <div v-if="form.choice != 'age'" class="border-t border-gray-200 p-5">
+            <div v-if="form.choice != 'year'" class="border-t border-gray-200 p-5">
               <div class="flex items-center">
                 <input
                   v-model="form.reminder"

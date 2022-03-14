@@ -82,5 +82,13 @@ class AcceptInvitationTest extends TestCase
             'invitation_accepted_at' => Carbon::now(),
             'email_verified_at' => Carbon::now(),
         ]);
+
+        $this->assertDatabaseHas('user_notification_channels', [
+            'user_id' => $user->id,
+            'label' => trans('app.notification_channel_email'),
+            'type' => 'email',
+            'content' => $user->email,
+            'active' => true,
+        ]);
     }
 }

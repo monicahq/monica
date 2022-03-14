@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
 use Illuminate\Support\Facades\Hash;
+use App\Models\UserNotificationChannel;
+use App\Services\User\NotificationChannels\CreateUserNotificationChannel;
 
 class AcceptInvitation extends BaseService implements ServiceInterface
 {
@@ -41,6 +43,7 @@ class AcceptInvitation extends BaseService implements ServiceInterface
         $this->validateRules($data);
         $this->findUserByInvitationCode();
         $this->updateUser();
+        $this->createNotificationChannel();
 
         return $this->user;
     }
@@ -60,6 +63,24 @@ class AcceptInvitation extends BaseService implements ServiceInterface
         $this->user->invitation_accepted_at = Carbon::now();
         $this->user->email_verified_at = Carbon::now();
         $this->user->password = Hash::make($this->data['password']);
+        $this->user->timezone = 'UTC';
         $this->user->save();
+    }
+
+    private function createNotificationChannel(): void
+    {
+        $channel = (new CreateUserNotificationChannel)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'label' => trans('app.notification_channel_email'),
+            'type' => UserNotificationChannel::TYPE_EMAIL,
+            'content' => $this->user->email,
+            'verify_email' => false,
+            'preferred_time' => '09:00',
+        ]);
+
+        $channel->verified_at = Carbon::now();
+        $channel->active = true;
+        $channel->save();
     }
 }

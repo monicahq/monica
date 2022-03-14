@@ -14,7 +14,7 @@ class SendVerificationEmailChannelTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
-    public function it_logs_a_contact_log(): void
+    public function it_sends_a_verification_email(): void
     {
         Mail::fake();
 

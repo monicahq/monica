@@ -19,8 +19,9 @@ class ScheduledContactReminder extends Model
      */
     protected $fillable = [
         'contact_reminder_id',
+        'user_notification_channel_id',
+        'scheduled_at',
         'triggered_at',
-        'triggered',
     ];
 
     /**
@@ -29,16 +30,8 @@ class ScheduledContactReminder extends Model
      * @var array
      */
     protected $dates = [
+        'scheduled_at',
         'triggered_at',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'triggered' => 'boolean',
     ];
 
     /**
@@ -52,12 +45,12 @@ class ScheduledContactReminder extends Model
     }
 
     /**
-     * Get the user associated with the scheduled contact reminder.
+     * Get the user notification channel associated with the scheduled contact reminder.
      *
      * @return BelongsTo
      */
-    public function user()
+    public function userNotificationChannel()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(UserNotificationChannel::class);
     }
 }

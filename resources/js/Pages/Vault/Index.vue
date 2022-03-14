@@ -46,12 +46,15 @@ input[type='checkbox'] {
 
       <div v-if="data.vaults.length > 0" class="mx-auto max-w-4xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <div class="mb-6 flex items-center justify-between">
-          <h3>All the vaults in the account</h3>
+          <h3 class="dark:text-slate-200">All the vaults in the account</h3>
           <pretty-link :href="data.url.vault.create" :text="'Create a vault'" :icon="'plus'" />
         </div>
 
         <div class="vault-list grid grid-cols-1 gap-6 sm:grid-cols-3">
-          <div v-for="vault in data.vaults" :key="vault.id" class="rounded-lg border border-gray-200 bg-white">
+          <div
+            v-for="vault in data.vaults"
+            :key="vault.id"
+            class="rounded-lg border border-gray-200 bg-white dark:bg-slate-700">
             <div class="vault-detail grid">
               <inertia-link :href="vault.url.show" class="border-b border-gray-200 px-3 py-1 text-lg font-medium">
                 {{ vault.name }}

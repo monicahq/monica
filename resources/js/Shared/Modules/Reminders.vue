@@ -261,7 +261,7 @@ select {
           </div>
 
           <!-- edit reminder modal -->
-          <form v-if="editedReminderId == reminder.id" class="mb-6 bg-white" @submit.prevent="update(reminder)">
+          <form v-if="editedReminderId == reminder.id" class="bg-white" @submit.prevent="update(reminder)">
             <div class="border-b border-gray-200">
               <div v-if="form.errors.length > 0" class="p-5">
                 <errors :errors="form.errors" />

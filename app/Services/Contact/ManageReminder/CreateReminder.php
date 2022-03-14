@@ -72,6 +72,10 @@ class CreateReminder extends BaseService implements ServiceInterface
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
 
+        (new ScheduleContactReminder)->execute([
+            'contact_reminder_id' => $this->reminder->id,
+        ]);
+
         $this->log();
 
         return $this->reminder;

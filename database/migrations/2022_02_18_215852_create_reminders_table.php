@@ -29,17 +29,6 @@ return new class extends Migration
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
         });
 
-        Schema::create('scheduled_contact_reminders', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('contact_reminder_id');
-            $table->unsignedBigInteger('user_id');
-            $table->datetime('triggered_at');
-            $table->boolean('triggered')->default(false);
-            $table->timestamps();
-            $table->foreign('contact_reminder_id')->references('id')->on('contact_reminders')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        });
-
         Schema::create('user_notification_channels', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
@@ -52,6 +41,17 @@ return new class extends Migration
             $table->string('email_verification_link')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        });
+
+        Schema::create('scheduled_contact_reminders', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('contact_reminder_id');
+            $table->unsignedBigInteger('user_notification_channel_id');
+            $table->datetime('scheduled_at');
+            $table->datetime('triggered_at')->nullable();
+            $table->timestamps();
+            $table->foreign('contact_reminder_id')->references('id')->on('contact_reminders')->onDelete('cascade');
+            $table->foreign('user_notification_channel_id')->references('id')->on('user_notification_channels')->onDelete('cascade');
         });
 
         Schema::create('user_notification_sent', function (Blueprint $table) {

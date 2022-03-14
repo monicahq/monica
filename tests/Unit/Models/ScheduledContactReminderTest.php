@@ -19,10 +19,10 @@ class ScheduledContactReminderTest extends TestCase
     }
 
     /** @test */
-    public function it_has_one_user()
+    public function it_has_one_user_notificaiton_channel()
     {
         $scheduledReminder = ScheduledContactReminder::factory()->create();
 
-        $this->assertTrue($scheduledReminder->user()->exists());
+        $this->assertTrue($scheduledReminder->userNotificationChannel()->exists());
     }
 }
