@@ -9,6 +9,7 @@ use App\Http\Controllers\Settings\Users\UserController;
 use App\Http\Controllers\Auth\AcceptInvitationController;
 use App\Http\Controllers\Vault\Contact\ContactController;
 use App\Http\Controllers\Vault\Search\VaultSearchController;
+use App\Http\Controllers\Vault\Contact\ContactPageController;
 use App\Http\Controllers\Vault\Settings\VaultSettingsController;
 use App\Http\Controllers\Vault\Contact\ContactTemplateController;
 use App\Http\Controllers\Settings\Personalize\PersonalizeController;

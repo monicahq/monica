@@ -41,7 +41,25 @@ class ContactShowViewHelper
         ];
     }
 
-    private static function getTemplatePagesList(EloquentCollection $templatePages, Contact $contact): Collection
+    public static function dataForTemplatePage(Contact $contact, User $user, TemplatePage $templatePage): array
+    {
+        $templatePages = $contact->template->pages()->orderBy('position', 'asc')->get();
+
+        return [
+            'contact_name' => ModuleContactNameViewHelper::data($contact, $user),
+            'template_pages' => self::getTemplatePagesList($templatePages, $contact, $templatePage),
+            'contact_information' => self::getContactInformation($templatePages, $contact, $user),
+            'modules' => self::modules($templatePage, $contact, $user),
+            'url' => [
+                'destroy' => route('contact.destroy', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+            ],
+        ];
+    }
+
+    private static function getTemplatePagesList(EloquentCollection $templatePages, Contact $contact, TemplatePage $currentTemplatePage = null): Collection
     {
         $templatePages = $templatePages->filter(function ($page) {
             return $page->type != TemplatePage::TYPE_CONTACT;
@@ -56,7 +74,7 @@ class ContactShowViewHelper
             $pagesCollection->push([
                 'id' => $page->id,
                 'name' => $page->name,
-                'selected' => $page->id === $templatePages->first()->id,
+                'selected' => $currentTemplatePage ? $page->id === $currentTemplatePage->id : null,
                 'url' => [
                     'show' => route('contact.page.show', [
                         'vault' => $contact->vault->id,
