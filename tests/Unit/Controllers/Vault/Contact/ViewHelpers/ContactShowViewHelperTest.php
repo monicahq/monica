@@ -52,7 +52,7 @@ class ContactShowViewHelperTest extends TestCase
                 0 => [
                     'id' => $templatePage->id,
                     'name' => $templatePage->name,
-                    'selected' => null,
+                    'selected' => true,
                     'url' => [
                         'show' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/tabs/'.$templatePage->slug,
                     ],

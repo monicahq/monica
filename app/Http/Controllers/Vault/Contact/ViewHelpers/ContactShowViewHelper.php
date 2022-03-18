@@ -27,9 +27,15 @@ class ContactShowViewHelper
             return $page->type != TemplatePage::TYPE_CONTACT;
         })->first();
 
+        if ($firstPage) {
+            $templatesPagesCollection = self::getTemplatePagesList($templatePages, $contact, $firstPage);
+        } else {
+            $templatesPagesCollection = self::getTemplatePagesList($templatePages, $contact);
+        }
+
         return [
             'contact_name' => ModuleContactNameViewHelper::data($contact, $user),
-            'template_pages' => self::getTemplatePagesList($templatePages, $contact),
+            'template_pages' => $templatesPagesCollection,
             'contact_information' => self::getContactInformation($templatePages, $contact, $user),
             'modules' => $firstPage ? self::modules($firstPage, $contact, $user) : [],
             'url' => [
