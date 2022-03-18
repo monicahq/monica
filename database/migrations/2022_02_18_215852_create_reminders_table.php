@@ -25,6 +25,8 @@ return new class extends Migration
             $table->integer('year')->nullable();
             $table->string('type');
             $table->integer('frequency_number')->nullable();
+            $table->datetime('last_triggered_at')->nullable();
+            $table->integer('number_times_triggered')->default(0);
             $table->timestamps();
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
         });
@@ -43,22 +45,23 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
-        Schema::create('scheduled_contact_reminders', function (Blueprint $table) {
+        Schema::create('contact_reminder_scheduled', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('contact_reminder_id');
             $table->unsignedBigInteger('user_notification_channel_id');
+            $table->unsignedBigInteger('contact_reminder_id');
             $table->datetime('scheduled_at');
             $table->datetime('triggered_at')->nullable();
             $table->timestamps();
-            $table->foreign('contact_reminder_id')->references('id')->on('contact_reminders')->onDelete('cascade');
             $table->foreign('user_notification_channel_id')->references('id')->on('user_notification_channels')->onDelete('cascade');
+            $table->foreign('contact_reminder_id')->references('id')->on('contact_reminders')->onDelete('cascade');
         });
 
         Schema::create('user_notification_sent', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_notification_channel_id')->nullable();
             $table->datetime('sent_at');
-            $table->text('subject_line');
+            $table->string('subject_line');
+            $table->text('payload')->nullable();
             $table->timestamps();
             $table->foreign('user_notification_channel_id')->references('id')->on('user_notification_channels')->onDelete('cascade');
         });
@@ -72,8 +75,8 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('contact_reminders');
-        Schema::dropIfExists('scheduled_contact_reminders');
         Schema::dropIfExists('user_notification_channels');
+        Schema::dropIfExists('contact_reminder_scheduled');
         Schema::dropIfExists('user_notification_sent');
     }
 };

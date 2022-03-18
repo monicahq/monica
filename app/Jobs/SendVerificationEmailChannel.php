@@ -11,6 +11,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Mail\UserNotificationChannelEmailCreated;
 
+/**
+ * Send a verification email when a User Notification Channel of the Email type
+ * is created, so that the user can verify the email address.
+ */
 class SendVerificationEmailChannel implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;

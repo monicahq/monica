@@ -3,11 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use App\Models\UserNotificationChannel;
-use App\Models\ScheduledContactReminder;
 use App\Jobs\Notifications\SendEmailNotification;
-use App\Services\Contact\ManageReminder\RescheduleContactReminder;
+use App\Services\Contact\ManageReminder\RescheduleContactReminderForChannel;
 
 class TestReminders extends Command
 {
@@ -36,17 +36,24 @@ class TestReminders extends Command
             exit;
         }
 
-        $scheduledReminders = ScheduledContactReminder::where('triggered_at', null)
-            ->with('userNotificationChannel')
+        $scheduledContactReminders = DB::table('contact_reminder_scheduled')
+            ->where('triggered_at', null)
             ->get();
 
-        foreach ($scheduledReminders as $scheduledReminder) {
-            if ($scheduledReminder->userNotificationChannel->type == UserNotificationChannel::TYPE_EMAIL) {
-                SendEmailNotification::dispatch($scheduledReminder)->onQueue('low');
+        foreach ($scheduledContactReminders as $scheduledReminder) {
+            $channel = UserNotificationChannel::findOrFail($scheduledReminder->user_notification_channel_id);
+
+            if ($channel->type == UserNotificationChannel::TYPE_EMAIL) {
+                SendEmailNotification::dispatch(
+                    $scheduledReminder->user_notification_channel_id,
+                    $scheduledReminder->contact_reminder_id
+                )->onQueue('low');
             }
 
-            (new RescheduleContactReminder)->execute([
-                'scheduled_contact_reminder_id' => $scheduledReminder->id,
+            (new RescheduleContactReminderForChannel)->execute([
+                'contact_reminder_id' => $scheduledReminder->contact_reminder_id,
+                'user_notification_channel_id' => $scheduledReminder->user_notification_channel_id,
+                'contact_reminder_scheduled_id' => $scheduledReminder->id,
             ]);
         }
     }

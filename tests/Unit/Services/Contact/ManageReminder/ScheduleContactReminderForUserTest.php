@@ -4,15 +4,16 @@ namespace Tests\Unit\Services\Contact\ManageReminder;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Vault;
 use App\Models\Contact;
 use App\Models\ContactReminder;
 use App\Models\UserNotificationChannel;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Services\Contact\ManageReminder\ScheduleContactReminder;
+use App\Services\Contact\ManageReminder\ScheduleContactReminderForUser;
 
-class ScheduleContactReminderTest extends TestCase
+class ScheduleContactReminderForUserTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -41,7 +42,7 @@ class ScheduleContactReminderTest extends TestCase
             'preferred_time' => '18:00',
         ]);
 
-        $this->executeService($contactReminder, $channel, '2018-10-02 18:00:00');
+        $this->executeService($regis, $contactReminder, $channel, '2018-10-02 18:00:00');
     }
 
     /** @test */
@@ -69,7 +70,7 @@ class ScheduleContactReminderTest extends TestCase
             'preferred_time' => '18:00',
         ]);
 
-        $this->executeService($contactReminder, $channel, '2018-10-02 22:00:00');
+        $this->executeService($regis, $contactReminder, $channel, '2018-10-02 22:00:00');
     }
 
     /** @test */
@@ -97,7 +98,7 @@ class ScheduleContactReminderTest extends TestCase
             'preferred_time' => '18:00',
         ]);
 
-        $this->executeService($contactReminder, $channel, '2018-10-02 07:00:00');
+        $this->executeService($regis, $contactReminder, $channel, '2018-10-02 07:00:00');
     }
 
     /** @test */
@@ -125,7 +126,7 @@ class ScheduleContactReminderTest extends TestCase
             'preferred_time' => '18:00',
         ]);
 
-        $this->executeService($contactReminder, $channel, '2200-10-02 07:00:00');
+        $this->executeService($regis, $contactReminder, $channel, '2200-10-02 07:00:00');
     }
 
     /** @test */
@@ -136,19 +137,21 @@ class ScheduleContactReminderTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new ScheduleContactReminder)->execute($request);
+        (new ScheduleContactReminderForUser)->execute($request);
     }
 
-    private function executeService(ContactReminder $reminder, UserNotificationChannel $channel, string $expectedDate): void
+    private function executeService(User $user, ContactReminder $reminder, UserNotificationChannel $channel, string $expectedDate): void
     {
         $request = [
             'contact_reminder_id' => $reminder->id,
+            'user_id' => $user->id,
         ];
 
-        (new ScheduleContactReminder)->execute($request);
+        (new ScheduleContactReminderForUser)->execute($request);
 
-        $this->assertDatabaseHas('scheduled_contact_reminders', [
+        $this->assertDatabaseHas('contact_reminder_scheduled', [
             'user_notification_channel_id' => $channel->id,
+            'contact_reminder_id' => $reminder->id,
             'scheduled_at' => $expectedDate,
         ]);
     }

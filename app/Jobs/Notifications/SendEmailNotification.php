@@ -5,10 +5,11 @@ namespace App\Jobs\Notifications;
 use Carbon\Carbon;
 use App\Mail\SendReminder;
 use Illuminate\Bus\Queueable;
+use App\Models\ContactReminder;
 use App\Models\UserNotificationSent;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
-use App\Models\ScheduledContactReminder;
+use App\Models\UserNotificationChannel;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -17,17 +18,20 @@ class SendEmailNotification implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public ScheduledContactReminder $scheduledReminder;
+    public UserNotificationChannel $userNotificationChannel;
+    public ContactReminder $contactReminder;
 
     /**
      * Create a new job instance.
      *
-     * @param  ScheduledContactReminder  $scheduledReminder
+     * @param  int  $userNotificationChannelId
+     * @param  int  $contactReminderId
      * @return void
      */
-    public function __construct(ScheduledContactReminder $scheduledReminder)
+    public function __construct(int $userNotificationChannelId, int $contactReminderId)
     {
-        $this->scheduledReminder = $scheduledReminder;
+        $this->userNotificationChannel = UserNotificationChannel::findOrFail($userNotificationChannelId);
+        $this->contactReminder = ContactReminder::findOrFail($contactReminderId);
     }
 
     /**
@@ -37,21 +41,18 @@ class SendEmailNotification implements ShouldQueue
      */
     public function handle()
     {
-        $emailAddress = $this->scheduledReminder->userNotificationChannel->content;
-        $user = $this->scheduledReminder->userNotificationChannel->user;
+        $emailAddress = $this->userNotificationChannel->content;
+        $user = $this->userNotificationChannel->user;
 
         Mail::to($emailAddress)
-            ->queue((new SendReminder($this->scheduledReminder, $user))
+            ->queue((new SendReminder($this->contactReminder, $user))
                 ->onQueue('low')
             );
 
-        $this->scheduledReminder->triggered_at = Carbon::now();
-        $this->scheduledReminder->save();
-
         UserNotificationSent::create([
-            'user_notification_channel_id' => $this->scheduledReminder->userNotificationChannel->id,
+            'user_notification_channel_id' => $this->userNotificationChannel->id,
             'sent_at' => Carbon::now(),
-            'subject_line' => $this->scheduledReminder->reminder->label,
+            'subject_line' => $this->contactReminder->label,
         ]);
     }
 }

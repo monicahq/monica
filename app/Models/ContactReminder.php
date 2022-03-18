@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ContactReminder extends Model
 {
@@ -34,6 +34,8 @@ class ContactReminder extends Model
         'year',
         'type',
         'frequency_number',
+        'last_triggered_at',
+        'number_times_triggered',
     ];
 
     /**
@@ -47,12 +49,12 @@ class ContactReminder extends Model
     }
 
     /**
-     * Get the scheduled reminders associated with the contact reminder.
+     * Get the user notification channel records associated with the contact reminder.
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
-    public function scheduledContactReminders()
+    public function userNotificationChannels()
     {
-        return $this->hasMany(ScheduledContactReminder::class);
+        return $this->belongsToMany(UserNotificationChannel::class, 'contact_reminder_scheduled')->withTimestamps()->withPivot('scheduled_at', 'triggered');
     }
 }

@@ -8,8 +8,10 @@ use App\Models\Contact;
 use App\Helpers\VaultHelper;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
+use App\Models\ContactReminder;
 use App\Interfaces\ServiceInterface;
 use App\Exceptions\SameUserException;
+use App\Services\Contact\ManageReminder\ScheduleContactReminderForUser;
 
 class GrantVaultAccessToUser extends BaseService implements ServiceInterface
 {
@@ -57,7 +59,7 @@ class GrantVaultAccessToUser extends BaseService implements ServiceInterface
         $this->data = $data;
         $this->validate();
         $this->grant();
-
+        $this->scheduleContactReminders();
         $this->log();
 
         return $this->user;
@@ -88,6 +90,32 @@ class GrantVaultAccessToUser extends BaseService implements ServiceInterface
             'permission' => $this->data['permission'],
             'contact_id' => $contact->id,
         ]);
+    }
+
+    /**
+     * When a user is granted access to a vault, we need to schedule all the
+     * contact reminders for all the contacts in the vault, for the user.
+     */
+    private function scheduleContactReminders(): void
+    {
+        $contactIds = $this->vault->contacts->pluck('id')->toArray();
+        $contactReminders = ContactReminder::whereIn('contact_id', $contactIds)->get();
+
+        foreach ($contactReminders as $contactReminder) {
+
+            // if the contact reminder is a one time reminder, we need to make
+            // sure the `number_times_triggered` is equal to 0, as otherwise,
+            // the reminder will be scheduled again, which we don't want.
+            if ($contactReminder->type === ContactReminder::TYPE_ONE_TIME &&
+                $contactReminder->number_times_triggered != 0) {
+                continue;
+            }
+
+            (new ScheduleContactReminderForUser)->execute([
+                'contact_reminder_id' => $contactReminder->id,
+                'user_id' => $this->user->id,
+            ]);
+        }
     }
 
     private function log(): void

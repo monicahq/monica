@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\ContactReminder;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Contact\ManageReminder\CreateReminder;
 use App\Services\Contact\ManageReminder\UpdateReminder;
 use App\Services\Contact\ManageReminder\DestroyReminder;
+use App\Services\Contact\ManageReminder\CreateContactReminder;
 use App\Http\Controllers\Vault\Contact\Modules\Reminder\ViewHelpers\ModuleRemindersViewHelper;
 
 class ContactModuleReminderController extends Controller
@@ -49,7 +49,7 @@ class ContactModuleReminderController extends Controller
             'frequency_number' => $frequencyNumber,
         ];
 
-        $reminder = (new CreateReminder)->execute($data);
+        $reminder = (new CreateContactReminder)->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([

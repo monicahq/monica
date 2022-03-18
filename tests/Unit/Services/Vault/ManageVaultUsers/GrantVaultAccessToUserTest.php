@@ -2,14 +2,17 @@
 
 namespace Tests\Unit\Services\Vault\ManageVaultUsers;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Jobs\CreateAuditLog;
+use App\Models\ContactReminder;
 use App\Exceptions\SameUserException;
 use Illuminate\Support\Facades\Queue;
+use App\Models\UserNotificationChannel;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\NotEnoughPermissionException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -23,13 +26,13 @@ class GrantVaultAccessToUserTest extends TestCase
     /** @test */
     public function it_gives_the_right_to_access_the_vault_to_another_user(): void
     {
-        $regis = $this->createAdministrator();
+        $user = $this->createAdministrator();
         $anotherUser = User::factory()->create([
-            'account_id' => $regis->account_id,
+            'account_id' => $user->account_id,
         ]);
-        $vault = $this->createVault($regis->account);
-        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_MANAGE, $vault);
-        $this->executeService($regis->account, $regis, $anotherUser, $vault);
+        $vault = $this->createVault($user->account);
+        $vault = $this->setPermissionInVault($user, Vault::PERMISSION_MANAGE, $vault);
+        $this->executeService($user->account, $user, $anotherUser, $vault);
     }
 
     /** @test */
@@ -37,14 +40,14 @@ class GrantVaultAccessToUserTest extends TestCase
     {
         $this->expectException(ModelNotFoundException::class);
 
-        $regis = $this->createAdministrator();
+        $user = $this->createAdministrator();
         $account = Account::factory()->create();
         $anotherUser = User::factory()->create([
-            'account_id' => $regis->account_id,
+            'account_id' => $user->account_id,
         ]);
-        $vault = $this->createVault($regis->account);
-        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_MANAGE, $vault);
-        $this->executeService($account, $regis, $anotherUser, $vault);
+        $vault = $this->createVault($user->account);
+        $vault = $this->setPermissionInVault($user, Vault::PERMISSION_MANAGE, $vault);
+        $this->executeService($account, $user, $anotherUser, $vault);
     }
 
     /** @test */
@@ -52,11 +55,11 @@ class GrantVaultAccessToUserTest extends TestCase
     {
         $this->expectException(ModelNotFoundException::class);
 
-        $regis = $this->createAdministrator();
+        $user = $this->createAdministrator();
         $anotherUser = User::factory()->create();
-        $vault = $this->createVault($regis->account);
-        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_MANAGE, $vault);
-        $this->executeService($regis->account, $regis, $anotherUser, $vault);
+        $vault = $this->createVault($user->account);
+        $vault = $this->setPermissionInVault($user, Vault::PERMISSION_MANAGE, $vault);
+        $this->executeService($user->account, $user, $anotherUser, $vault);
     }
 
     /** @test */
@@ -64,13 +67,13 @@ class GrantVaultAccessToUserTest extends TestCase
     {
         $this->expectException(NotEnoughPermissionException::class);
 
-        $regis = $this->createUser();
+        $user = $this->createUser();
         $anotherUser = User::factory()->create([
-            'account_id' => $regis->account_id,
+            'account_id' => $user->account_id,
         ]);
-        $vault = $this->createVault($regis->account);
-        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
-        $this->executeService($regis->account, $regis, $anotherUser, $vault);
+        $vault = $this->createVault($user->account);
+        $vault = $this->setPermissionInVault($user, Vault::PERMISSION_EDIT, $vault);
+        $this->executeService($user->account, $user, $anotherUser, $vault);
     }
 
     /** @test */
@@ -78,10 +81,10 @@ class GrantVaultAccessToUserTest extends TestCase
     {
         $this->expectException(SameUserException::class);
 
-        $regis = $this->createUser();
-        $vault = $this->createVault($regis->account);
-        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_MANAGE, $vault);
-        $this->executeService($regis->account, $regis, $regis, $vault);
+        $user = $this->createUser();
+        $vault = $this->createVault($user->account);
+        $vault = $this->setPermissionInVault($user, Vault::PERMISSION_MANAGE, $vault);
+        $this->executeService($user->account, $user, $user, $vault);
     }
 
     /** @test */
@@ -95,13 +98,32 @@ class GrantVaultAccessToUserTest extends TestCase
         (new GrantVaultAccessToUser)->execute($request);
     }
 
-    private function executeService(Account $account, User $regis, User $anotherUser, Vault $vault): void
+    private function executeService(Account $account, User $user, User $anotherUser, Vault $vault): void
     {
         Queue::fake();
+        Carbon::setTestNow(Carbon::create(2018, 1, 1));
+
+        // we'll create contact reminders so we can check that this new user
+        // has also contact reminders scheduled too
+        $channel = UserNotificationChannel::factory()->create([
+            'user_id' => $anotherUser->id,
+            'active' => false,
+        ]);
+        $otherContact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        $contactReminder = ContactReminder::factory()->create([
+            'contact_id' => $otherContact->id,
+            'type' => ContactReminder::TYPE_ONE_TIME,
+            'day' => 2,
+            'month' => 10,
+            'year' => 1090,
+            'number_times_triggered' => 0,
+        ]);
 
         $request = [
             'account_id' => $account->id,
-            'author_id' => $regis->id,
+            'author_id' => $user->id,
             'vault_id' => $vault->id,
             'user_id' => $anotherUser->id,
             'permission' => Vault::PERMISSION_VIEW,
@@ -109,9 +131,9 @@ class GrantVaultAccessToUserTest extends TestCase
 
         $user = (new GrantVaultAccessToUser)->execute($request);
 
-        $this->assertDatabaseCount('contacts', 1);
+        $this->assertDatabaseCount('contacts', 2);
 
-        $contact = Contact::first();
+        $contact = Contact::where('first_name', $anotherUser->first_name)->first();
 
         $this->assertFalse(
             $contact->can_be_deleted
@@ -130,6 +152,12 @@ class GrantVaultAccessToUserTest extends TestCase
             'vault_id' => $vault->id,
             'user_id' => $anotherUser->id,
             'contact_id' => $contact->id,
+        ]);
+
+        $this->assertDatabaseHas('contact_reminder_scheduled', [
+            'user_notification_channel_id' => $channel->id,
+            'contact_reminder_id' => $contactReminder->id,
+            'scheduled_at' => '2018-10-02 09:00:00',
         ]);
 
         Queue::assertPushed(CreateAuditLog::class, function ($job) {

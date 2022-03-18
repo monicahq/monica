@@ -79,7 +79,17 @@ class Vault extends Model
     }
 
     /**
-     * Get the labels associated with the account.
+     * Get the contact associated with the vault.
+     *
+     * @return HasMany
+     */
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    /**
+     * Get the labels associated with the vault.
      *
      * @return HasMany
      */

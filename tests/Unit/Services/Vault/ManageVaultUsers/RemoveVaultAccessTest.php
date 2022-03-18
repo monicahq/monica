@@ -2,13 +2,16 @@
 
 namespace Tests\Unit\Services\Vault\ManageVaultUsers;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Jobs\CreateAuditLog;
+use App\Models\ContactReminder;
 use Illuminate\Support\Facades\Queue;
+use App\Models\UserNotificationChannel;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\NotEnoughPermissionException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -107,6 +110,23 @@ class RemoveVaultAccessTest extends TestCase
     {
         Queue::fake();
 
+        // we'll create contact reminders so we can check that this new user
+        // has also contact reminders scheduled too
+        $channel = UserNotificationChannel::factory()->create([
+            'user_id' => $anotherUser->id,
+            'active' => false,
+        ]);
+        $otherContact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        $contactReminder = ContactReminder::factory()->create([
+            'contact_id' => $otherContact->id,
+            'type' => ContactReminder::TYPE_ONE_TIME,
+        ]);
+        $contactReminder->userNotificationChannels()->sync([$channel->id => [
+            'scheduled_at' => Carbon::now(),
+        ]]);
+
         $request = [
             'account_id' => $account->id,
             'author_id' => $regis->id,
@@ -124,6 +144,11 @@ class RemoveVaultAccessTest extends TestCase
 
         $this->assertDatabaseMissing('contacts', [
             'id' => $contact->id,
+        ]);
+
+        $this->assertDatabaseMissing('contact_reminder_scheduled', [
+            'user_notification_channel_id' => $channel->id,
+            'contact_reminder_id' => $contactReminder->id,
         ]);
 
         Queue::assertPushed(CreateAuditLog::class, function ($job) {

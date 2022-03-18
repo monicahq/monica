@@ -31,14 +31,14 @@ class ToggleUserNotificationChannelTest extends TestCase
         $vault = $this->createVault($ross->account);
         $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        ContactReminder::factory()->create([
+        $contactReminder = ContactReminder::factory()->create([
             'contact_id' => $contact->id,
             'type' => ContactReminder::TYPE_ONE_TIME,
             'day' => 2,
             'month' => 10,
             'year' => 2000,
         ]);
-        $this->executeService($ross, $channel);
+        $this->executeService($ross, $channel, $contactReminder);
     }
 
     /** @test */
@@ -64,7 +64,7 @@ class ToggleUserNotificationChannelTest extends TestCase
         $this->executeService($ross, $channel);
     }
 
-    private function executeService(User $author, UserNotificationChannel $channel): void
+    private function executeService(User $author, UserNotificationChannel $channel, ContactReminder $contactReminder = null): void
     {
         Queue::fake();
         Carbon::setTestNow(Carbon::create(2018, 1, 1));
@@ -88,7 +88,8 @@ class ToggleUserNotificationChannelTest extends TestCase
             $channel
         );
 
-        $this->assertDatabaseHas('scheduled_contact_reminders', [
+        $this->assertDatabaseHas('contact_reminder_scheduled', [
+            'contact_reminder_id' => $contactReminder->id,
             'user_notification_channel_id' => $channel->id,
             'scheduled_at' => '2018-10-02 09:00:00',
         ]);

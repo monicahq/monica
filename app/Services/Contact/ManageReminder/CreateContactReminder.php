@@ -9,9 +9,10 @@ use App\Jobs\CreateContactLog;
 use App\Models\ContactReminder;
 use App\Interfaces\ServiceInterface;
 
-class CreateReminder extends BaseService implements ServiceInterface
+class CreateContactReminder extends BaseService implements ServiceInterface
 {
     private ContactReminder $reminder;
+    private array $data;
 
     /**
      * Get the validation rules that apply to the service.
@@ -58,27 +59,45 @@ class CreateReminder extends BaseService implements ServiceInterface
     public function execute(array $data): ContactReminder
     {
         $this->validateRules($data);
+        $this->data = $data;
 
-        $this->reminder = ContactReminder::create([
-            'contact_id' => $data['contact_id'],
-            'label' => $data['label'],
-            'day' => $this->valueOrNull($data, 'day'),
-            'month' => $this->valueOrNull($data, 'month'),
-            'year' => $this->valueOrNull($data, 'year'),
-            'type' => $data['type'],
-            'frequency_number' => $this->valueOrNull($data, 'frequency_number'),
-        ]);
-
-        $this->contact->last_updated_at = Carbon::now();
-        $this->contact->save();
-
-        (new ScheduleContactReminder)->execute([
-            'contact_reminder_id' => $this->reminder->id,
-        ]);
-
+        $this->createContactReminer();
+        $this->updateLastEditedDate();
+        $this->scheduledReminderForAllUsersInVault();
         $this->log();
 
         return $this->reminder;
+    }
+
+    private function createContactReminer(): void
+    {
+        $this->reminder = ContactReminder::create([
+            'contact_id' => $this->data['contact_id'],
+            'label' => $this->data['label'],
+            'day' => $this->valueOrNull($this->data, 'day'),
+            'month' => $this->valueOrNull($this->data, 'month'),
+            'year' => $this->valueOrNull($this->data, 'year'),
+            'type' => $this->data['type'],
+            'frequency_number' => $this->valueOrNull($this->data, 'frequency_number'),
+        ]);
+    }
+
+    private function updateLastEditedDate(): void
+    {
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
+    }
+
+    private function scheduledReminderForAllUsersInVault(): void
+    {
+        $users = $this->vault->users()->get();
+
+        foreach ($users as $user) {
+            (new ScheduleContactReminderForUser)->execute([
+                'contact_reminder_id' => $this->reminder->id,
+                'user_id' => $user->id,
+            ]);
+        }
     }
 
     private function log(): void

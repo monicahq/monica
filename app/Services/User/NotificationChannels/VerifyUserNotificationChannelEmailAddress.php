@@ -52,6 +52,7 @@ class VerifyUserNotificationChannelEmailAddress extends BaseService implements S
         $this->data = $data;
         $this->validate();
         $this->verify();
+        $this->rescheduledReminders();
         $this->log();
 
         return $this->userNotificationChannel;
@@ -69,6 +70,15 @@ class VerifyUserNotificationChannelEmailAddress extends BaseService implements S
     {
         $this->userNotificationChannel->verified_at = Carbon::now();
         $this->userNotificationChannel->save();
+    }
+
+    private function rescheduledReminders(): void
+    {
+        (new ScheduleAllContactRemindersForNotificationChannel)->execute([
+            'account_id' => $this->data['account_id'],
+            'author_id' => $this->data['author_id'],
+            'user_notification_channel_id' => $this->userNotificationChannel->id,
+        ]);
     }
 
     private function log(): void

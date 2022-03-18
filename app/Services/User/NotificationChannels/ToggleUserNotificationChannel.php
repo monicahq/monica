@@ -89,7 +89,7 @@ class ToggleUserNotificationChannel extends BaseService implements ServiceInterf
 
     private function deleteScheduledReminders(): void
     {
-        DB::table('scheduled_contact_reminders')
+        DB::table('contact_reminder_scheduled')
             ->where('user_notification_channel_id', $this->userNotificationChannel->id)
             ->delete();
     }

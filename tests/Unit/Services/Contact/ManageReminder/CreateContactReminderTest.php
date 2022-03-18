@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Services\Contact\ManageReminder;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Vault;
@@ -11,13 +12,14 @@ use App\Jobs\CreateAuditLog;
 use App\Jobs\CreateContactLog;
 use App\Models\ContactReminder;
 use Illuminate\Support\Facades\Queue;
+use App\Models\UserNotificationChannel;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Services\Contact\ManageReminder\CreateReminder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Contact\ManageReminder\CreateContactReminder;
 
-class CreateReminderTest extends TestCase
+class CreateContactReminderTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -40,7 +42,7 @@ class CreateReminderTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateReminder)->execute($request);
+        (new CreateContactReminder)->execute($request);
     }
 
     /** @test */
@@ -85,7 +87,12 @@ class CreateReminderTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact): void
     {
+        Carbon::setTestNow(Carbon::create(2018, 1, 1));
         Queue::fake();
+
+        $userNotificationChannel = UserNotificationChannel::factory()->create([
+            'user_id' => $author->id,
+        ]);
 
         $request = [
             'account_id' => $account->id,
@@ -100,10 +107,10 @@ class CreateReminderTest extends TestCase
             'frequency_number' => null,
         ];
 
-        $reminder = (new CreateReminder)->execute($request);
+        $contactReminder = (new CreateContactReminder)->execute($request);
 
         $this->assertDatabaseHas('contact_reminders', [
-            'id' => $reminder->id,
+            'id' => $contactReminder->id,
             'contact_id' => $contact->id,
             'label' => 'birthdate',
             'day' => 29,
@@ -111,6 +118,12 @@ class CreateReminderTest extends TestCase
             'year' => 1981,
             'type' => ContactReminder::TYPE_ONE_TIME,
             'frequency_number' => null,
+        ]);
+
+        $this->assertDatabaseHas('contact_reminder_scheduled', [
+            'user_notification_channel_id' => $userNotificationChannel->id,
+            'contact_reminder_id' => $contactReminder->id,
+            'scheduled_at' => '2018-10-29 09:00:00',
         ]);
 
         Queue::assertPushed(CreateAuditLog::class, function ($job) {

@@ -21,6 +21,7 @@ class UserNotificationSent extends Model
         'user_notification_channel_id',
         'sent_at',
         'subject_line',
+        'payload',
     ];
 
     /**

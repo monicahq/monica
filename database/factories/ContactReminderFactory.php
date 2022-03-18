@@ -30,6 +30,8 @@ class ContactReminderFactory extends Factory
             'year' => 1981,
             'type' => ContactReminder::TYPE_ONE_TIME,
             'frequency_number' => 1,
+            'last_triggered_at' => null,
+            'number_times_triggered' => 0,
         ];
     }
 }

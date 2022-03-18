@@ -58,12 +58,12 @@ class ScheduleAllContactRemindersForNotificationChannelTest extends TestCase
             'user_notification_channel_id' => $channel->id,
         ]);
 
-        $this->assertDatabaseHas('scheduled_contact_reminders', [
+        $this->assertDatabaseHas('contact_reminder_scheduled', [
             'contact_reminder_id' => $contactReminderA->id,
             'user_notification_channel_id' => $channel->id,
             'scheduled_at' => '2018-10-02 18:00:00',
         ]);
-        $this->assertDatabaseHas('scheduled_contact_reminders', [
+        $this->assertDatabaseHas('contact_reminder_scheduled', [
             'contact_reminder_id' => $contactReminderB->id,
             'user_notification_channel_id' => $channel->id,
             'scheduled_at' => '2018-10-02 18:00:00',

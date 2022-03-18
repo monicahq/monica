@@ -10,7 +10,6 @@ use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 use App\Interfaces\ServiceInterface;
 use App\Models\UserNotificationChannel;
-use App\Models\ScheduledContactReminder;
 
 class ScheduleAllContactRemindersForNotificationChannel extends BaseService implements ServiceInterface
 {
@@ -100,9 +99,9 @@ class ScheduleAllContactRemindersForNotificationChannel extends BaseService impl
             $upcomingDate->hour = $this->userNotificationChannel->preferred_time->hour;
             $upcomingDate->minute = $this->userNotificationChannel->preferred_time->minute;
 
-            ScheduledContactReminder::create([
-                'contact_reminder_id' => $contactReminder->id,
+            DB::table('contact_reminder_scheduled')->insert([
                 'user_notification_channel_id' => $this->userNotificationChannel->id,
+                'contact_reminder_id' => $contactReminder->id,
                 'scheduled_at' => $upcomingDate->tz('UTC'),
             ]);
         }

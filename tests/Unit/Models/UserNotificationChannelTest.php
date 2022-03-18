@@ -2,7 +2,9 @@
 
 namespace Tests\Unit\Models;
 
+use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\ContactReminder;
 use App\Models\UserNotificationSent;
 use App\Models\UserNotificationChannel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -28,5 +30,15 @@ class UserNotificationChannelTest extends TestCase
         ]);
 
         $this->assertTrue($channel->userNotificationSent()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_contact_reminders(): void
+    {
+        $channel = UserNotificationChannel::factory()->create();
+        $contactReminder = ContactReminder::factory()->create();
+        $channel->contactReminders()->sync([$contactReminder->id => ['scheduled_at' => Carbon::now()]]);
+
+        $this->assertTrue($channel->contactReminders()->exists());
     }
 }

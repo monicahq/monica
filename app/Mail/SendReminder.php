@@ -6,14 +6,14 @@ use App\Models\User;
 use App\Helpers\NameHelper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use App\Models\ContactReminder;
 use Illuminate\Queue\SerializesModels;
-use App\Models\ScheduledContactReminder;
 
 class SendReminder extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public ScheduledContactReminder $scheduledContactReminder;
+    public ContactReminder $contactReminder;
     public User $user;
 
     /**
@@ -21,9 +21,9 @@ class SendReminder extends Mailable
      *
      * @return void
      */
-    public function __construct(ScheduledContactReminder $contactReminder, User $user)
+    public function __construct(ContactReminder $contactReminder, User $user)
     {
-        $this->scheduledContactReminder = $contactReminder;
+        $this->contactReminder = $contactReminder;
         $this->user = $user;
     }
 
@@ -34,10 +34,10 @@ class SendReminder extends Mailable
      */
     public function build()
     {
-        $contact = $this->scheduledContactReminder->reminder->contact;
+        $contact = $this->contactReminder->contact;
         $contactName = NameHelper::formatContactName($this->user, $contact);
 
-        $reason = $this->scheduledContactReminder->reminder->label;
+        $reason = $this->contactReminder->label;
 
         return $this->subject(trans('email.notification_reminder_email', ['name' => $contactName]))
             ->markdown('emails.notifications.reminder', [

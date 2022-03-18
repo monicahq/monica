@@ -54,6 +54,7 @@ class RemoveVaultAccess extends BaseService implements ServiceInterface
         $this->data = $data;
         $this->validate();
         $this->remove();
+        $this->removeAllRemindersForThisUserInThisVault();
 
         $this->log();
     }
@@ -83,6 +84,21 @@ class RemoveVaultAccess extends BaseService implements ServiceInterface
             ->select('contact_id')->first();
 
         Contact::find($contact->contact_id)->delete();
+    }
+
+    /**
+     * We need to remove all the contact reminders that were scheduled for this
+     * user in this vault.
+     *
+     * @return void
+     */
+    private function removeAllRemindersForThisUserInThisVault(): void
+    {
+        $userNotificationChannelIds = $this->user->notificationChannels()->pluck('id')->toArray();
+
+        DB::table('contact_reminder_scheduled')
+            ->whereIn('user_notification_channel_id', $userNotificationChannelIds)
+            ->delete();
     }
 
     private function log(): void
