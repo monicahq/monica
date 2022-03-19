@@ -17,6 +17,7 @@ class CreateContactFeedTable extends Migration
         Schema::create('contact_feed_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('contact_id');
+            $table->string('action');
             $table->unsignedBigInteger('feedable_id')->nullable();
             $table->string('feedable_type')->nullable();
             $table->timestamps();

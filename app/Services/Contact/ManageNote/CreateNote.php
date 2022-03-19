@@ -112,6 +112,7 @@ class CreateNote extends BaseService implements ServiceInterface
     {
         $feedItem = ContactFeedItem::create([
             'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_NOTE_CREATED,
         ]);
         $this->note->feedItem()->save($feedItem);
     }

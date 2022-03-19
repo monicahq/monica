@@ -14,12 +14,19 @@ class ContactFeedItem extends Model
     protected $table = 'contact_feed_items';
 
     /**
+     * Possible actions.
+     */
+    const ACTION_NOTE_CREATED = 'note_created';
+    const ACTION_NOTE_UPDATED = 'note_updated';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
         'contact_id',
+        'action',
         'feedable_id',
         'feedable_type',
     ];

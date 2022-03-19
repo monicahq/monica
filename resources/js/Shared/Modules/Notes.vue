@@ -144,7 +144,7 @@
               <div class="relative mr-3 inline">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="icon-note relative inline h-4 w-4 text-gray-400"
+                  class="icon-note relative inline h-3 w-3 text-gray-400"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor">
@@ -161,7 +161,7 @@
               <div class="relative mr-3 inline">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="icon-note relative inline h-4 w-4 text-gray-400"
+                  class="icon-note relative inline h-3 w-3 text-gray-400"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor">

@@ -24,6 +24,7 @@ class ContactFeedItemFactory extends Factory
     {
         return [
             'contact_id' => Contact::factory(),
+            'action' => ContactFeedItem::ACTION_NOTE_CREATED,
         ];
     }
 }

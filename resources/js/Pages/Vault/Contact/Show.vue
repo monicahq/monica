@@ -87,6 +87,8 @@
                 <notes v-if="module.type == 'notes'" :data="notes" />
 
                 <reminders v-if="module.type == 'reminders'" :data="reminders" />
+
+                <feed v-if="module.type == 'feed'" :data="feed" />
               </div>
             </div>
           </div>
@@ -105,6 +107,7 @@ import Notes from '@/Shared/Modules/Notes';
 import ImportantDates from '@/Shared/Modules/ImportantDates';
 import Labels from '@/Shared/Modules/Labels';
 import Reminders from '@/Shared/Modules/Reminders';
+import Feed from '@/Shared/Modules/Feed';
 
 export default {
   components: {
@@ -116,6 +119,7 @@ export default {
     ImportantDates,
     Labels,
     Reminders,
+    Feed,
   },
 
   props: {
@@ -135,6 +139,7 @@ export default {
       contactName: [],
       genderPronoun: [],
       importantDates: [],
+      feed: [],
       labels: [],
       notes: [],
       reminders: [],
@@ -181,6 +186,10 @@ export default {
 
       if (this.data.modules.findIndex((x) => x.type == 'reminders') > -1) {
         this.reminders = this.data.modules[this.data.modules.findIndex((x) => x.type == 'reminders')].data;
+      }
+
+      if (this.data.modules.findIndex((x) => x.type == 'feed') > -1) {
+        this.feed = this.data.modules[this.data.modules.findIndex((x) => x.type == 'feed')].data;
       }
     }
   },

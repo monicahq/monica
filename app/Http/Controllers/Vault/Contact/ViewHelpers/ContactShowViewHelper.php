@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\TemplatePage;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use App\Http\Controllers\Vault\Contact\Modules\Feed\ViewHelpers\ModuleFeedViewHelper;
 use App\Http\Controllers\Vault\Contact\Modules\Note\ViewHelpers\ModuleNotesViewHelper;
 use App\Http\Controllers\Vault\Contact\Modules\Label\ViewHelpers\ModuleLabelViewHelper;
 use App\Http\Controllers\Vault\Contact\Modules\Avatar\ViewHelpers\ModuleAvatarViewHelper;
@@ -145,7 +146,7 @@ class ContactShowViewHelper
             }
 
             if ($module->type == Module::TYPE_FEED) {
-                $data = ModuleNotesViewHelper::data($contact, $user);
+                $data = ModuleFeedViewHelper::data($contact, $user);
             }
 
             if ($module->type == Module::TYPE_REMINDERS) {
