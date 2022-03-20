@@ -7,6 +7,7 @@ use App\Models\Label;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Jobs\CreateContactLog;
+use App\Models\ContactFeedItem;
 use App\Interfaces\ServiceInterface;
 
 class AssignLabel extends BaseService implements ServiceInterface
@@ -90,5 +91,10 @@ class AssignLabel extends BaseService implements ServiceInterface
                 'label_name' => $this->label->name,
             ]),
         ])->onQueue('low');
+
+        ContactFeedItem::create([
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_LABEL_ADDED,
+        ]);
     }
 }

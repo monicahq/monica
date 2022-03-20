@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 use App\Jobs\CreateContactLog;
+use App\Models\ContactFeedItem;
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactImportantDate;
 
@@ -110,5 +111,10 @@ class UpdateContactImportantDate extends BaseService implements ServiceInterface
                 'label' => $this->date->label,
             ]),
         ])->onQueue('low');
+
+        ContactFeedItem::create([
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_IMPORTANT_DATE_UPDATED,
+        ]);
     }
 }

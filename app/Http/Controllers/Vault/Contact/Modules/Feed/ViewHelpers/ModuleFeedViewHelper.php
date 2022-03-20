@@ -20,6 +20,14 @@ class ModuleFeedViewHelper
                 $object = ModuleNotesViewHelper::dto($contact, $item->feedable, $user);
             }
 
+            if ($item->action == ContactFeedItem::ACTION_IMPORTANT_DATE_CREATED) {
+                $object = trans('feed.important_date_created');
+            }
+
+            if ($item->action == ContactFeedItem::ACTION_IMPORTANT_DATE_UPDATED) {
+                $object = trans('feed.important_date_updated');
+            }
+
             return [
                 'id' => $item->id,
                 'action' => $item->action,

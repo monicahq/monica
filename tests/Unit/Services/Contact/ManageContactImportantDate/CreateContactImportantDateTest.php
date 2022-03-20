@@ -110,6 +110,11 @@ class CreateContactImportantDateTest extends TestCase
             'type' => 'birthdate',
         ]);
 
+        $this->assertDatabaseHas('contact_feed_items', [
+            'contact_id' => $contact->id,
+            'action' => 'important_date_created',
+        ]);
+
         $this->assertInstanceOf(
             ContactImportantDate::class,
             $date

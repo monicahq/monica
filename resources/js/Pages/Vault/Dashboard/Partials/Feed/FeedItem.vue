@@ -1,7 +1,7 @@
 <style lang="scss" scoped>
 .timeline-item {
   margin-left: 16px;
-  padding: 28px 0;
+  padding: 18px 0;
 
   &::before {
     position: absolute;
@@ -25,7 +25,12 @@
 <template>
   <div class="timeline-item relative flex items-center">
     <div class="icon z-10 mr-3 flex items-center justify-center rounded-full bg-gray-200">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4 text-stone-500"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         <path
           stroke-linecap="round"
@@ -34,17 +39,17 @@
           d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
       </svg>
     </div>
-    <span class="mr-3 text-sm"> You edited a contact. </span>
-    <small-contact top="4px;" />
+    <span class="mr-3 text-sm"> {{ message }} </span>
   </div>
 </template>
 
 <script>
-import SmallContact from '@/Shared/SmallContact';
-
 export default {
-  components: {
-    SmallContact,
+  props: {
+    message: {
+      type: String,
+      default: null,
+    },
   },
 };
 </script>
