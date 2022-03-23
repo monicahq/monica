@@ -3,5 +3,5 @@
     "The :attribute must contain at least one letter.": "Heslo musí obsahovat alespoň jedno písmeno.",
     "The :attribute must contain at least one symbol.": "Heslo musí obsahovat alespoň jeden symbol.",
     "The :attribute must contain at least one number.": "Heslo musí obsahovat alespoň jedno číslo.",
-    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": "Uvedené heslo se objevilo v úniku dat. Zvolte prosím jiné heslo."
+    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": "Uvedené :attribute se objevilo v úniku dat. Zvolte prosím jiné :attribute."
 }
