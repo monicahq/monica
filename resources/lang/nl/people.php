@@ -90,7 +90,7 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Blijf in contact',
     'stay_in_touch_frequency' => 'Blijf elke dag in contact | Blijf elke {count} dagen in contact',
-    'stay_in_touch_next_date' => 'Next due: {date}',
+    'stay_in_touch_next_date' => 'Volgende keer: {date}',
     'stay_in_touch_invalid' => 'De frequentie moet groter zijn dan 0.',
     'stay_in_touch_premium' => 'Je moet je account upgraden om gebruik te maken van deze functie',
     'stay_in_touch_modal_title' => 'Blijf in contact',
@@ -144,7 +144,7 @@ return [
 
     // Last called
     'last_called' => 'Laatst gebeld op: :date',
-    'last_talked_to' => 'Last called: {date}',
+    'last_talked_to' => 'Laatst gebeld op: {date}',
     'last_called_empty' => 'Laatst gebeld op: onbekend',
     'last_activity_date' => 'Laatste activiteit samen: :date',
     'last_activity_date_empty' => 'Laatste activiteit samen: onbekend',
@@ -287,7 +287,7 @@ return [
     'activities_profile_year_summary_activity_types' => 'Hier is een overzicht van de soort activiteiten die jullie samen hebben gedaan in :year',
     'activities_profile_year_summary' => 'Dit is wat jullie samen hebben gedaan in :year',
     'activities_profile_number_occurences' => ':value activiteit|:value activiteiten',
-    'activities_list_participants' => 'Participants ({total}):',
+    'activities_list_participants' => 'Deelnemers ({total}):',
     'activities_list_emotions' => 'Gevoelde emoties:',
     'activities_list_date' => 'Vond plaats op',
     'activities_list_category' => 'Categorie:',
