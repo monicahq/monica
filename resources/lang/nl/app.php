@@ -144,7 +144,7 @@ return [
     'relationship_type_partner_female_with_name' => ':name’s partner',
 
     'relationship_type_spouse' => 'echtgenoot',
-    'relationship_type_spouse_female' => 'wife',
+    'relationship_type_spouse_female' => 'vrouw',
     'relationship_type_spouse_male' => 'husband',
     'relationship_type_spouse_with_name' => ':name’s van echtgeno(o)t(e)',
     'relationship_type_spouse_female_with_name' => ':name’s wife',
