@@ -67,7 +67,7 @@ wget -q -O - https://getcomposer.org/installer | sudo php -- --install-dir=/usr/
 **Node.js:** Install node.js with package manager.
 
 ```sh
-wget -q -O - https://deb.nodesource.com/setup_14.x | sudo bash -
+wget -q -O - https://deb.nodesource.com/setup_16.x | sudo bash -
 sudo apt install -y nodejs
 ```
 
