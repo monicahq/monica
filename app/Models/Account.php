@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Account extends Model
 {
@@ -118,5 +119,17 @@ class Account extends Model
     public function emotions()
     {
         return $this->hasMany(Emotion::class);
+    }
+
+    /**
+     * Get the currencies in the account.
+     *
+     * @return BelongsToMany
+     */
+    public function currencies()
+    {
+        return $this->belongsToMany(Currency::class, 'account_currencies', 'account_id', 'currency_id')
+            ->withPivot('active')
+            ->withTimestamps();
     }
 }

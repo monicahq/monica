@@ -79,10 +79,16 @@
                 Manage contact information types
               </inertia-link>
             </li>
-            <li class="">
+            <li class="mb-2">
               <span class="mr-2">🐱</span>
               <inertia-link :href="data.url.manage_pet_categories" class="text-sky-500 hover:text-blue-900">
                 Manage pet categories
+              </inertia-link>
+            </li>
+            <li class="">
+              <span class="mr-2">💵</span>
+              <inertia-link :href="data.url.manage_currencies" class="text-sky-500 hover:text-blue-900">
+                Manage currencies
               </inertia-link>
             </li>
           </ul>

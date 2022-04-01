@@ -3,6 +3,7 @@
 namespace Tests\Unit\Jobs;
 
 use Tests\TestCase;
+use App\Models\Currency;
 use App\Jobs\SetupAccount;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -18,6 +19,17 @@ class SetupAccountTest extends TestCase
         $regis = $this->createAdministrator();
 
         SetupAccount::dispatch($regis);
+
+        $currency = Currency::first();
+
+        $this->assertDatabaseHas('account_currencies', [
+            'currency_id' => $currency->id,
+            'account_id' => $regis->account_id,
+        ]);
+        $this->assertEquals(
+            164,
+            Currency::count()
+        );
 
         $this->assertDatabaseHas('user_notification_channels', [
             'user_id' => $regis->id,

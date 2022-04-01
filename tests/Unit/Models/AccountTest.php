@@ -9,6 +9,7 @@ use App\Models\Module;
 use App\Models\Account;
 use App\Models\Emotion;
 use App\Models\Pronoun;
+use App\Models\Currency;
 use App\Models\Template;
 use App\Models\GroupType;
 use App\Models\AddressType;
@@ -140,5 +141,16 @@ class AccountTest extends TestCase
         ]);
 
         $this->assertTrue($account->emotions()->exists());
+    }
+
+    /** @test */
+    public function it_belongs_to_many_currencies(): void
+    {
+        $account = Account::factory()->create();
+        $currency = Currency::factory()->create();
+
+        $account->currencies()->sync([$currency->id => ['active' => true]]);
+
+        $this->assertTrue($account->currencies()->exists());
     }
 }

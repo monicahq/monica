@@ -28,6 +28,7 @@ class PersonalizeIndexViewHelperTest extends TestCase
                     'manage_contact_information_types' => env('APP_URL').'/settings/personalize/contactInformationType',
                     'manage_templates' => env('APP_URL').'/settings/personalize/templates',
                     'manage_modules' => env('APP_URL').'/settings/personalize/modules',
+                    'manage_currencies' => env('APP_URL').'/settings/personalize/currencies',
                 ],
             ],
             $array

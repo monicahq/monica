@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Module;
 use App\Models\Emotion;
+use App\Models\Currency;
 use App\Models\Template;
 use App\Models\Information;
 use App\Models\TemplatePage;
@@ -68,12 +69,26 @@ class SetupAccount implements ShouldQueue
      */
     public function handle()
     {
+        $this->populateCurrencies();
         $this->addNotificationChannel();
         $this->addTemplate();
         $this->addTemplatePageContactInformation();
         $this->addTemplatePageFeed();
         $this->addTemplatePageSocial();
         $this->addFirstInformation();
+    }
+
+    /**
+     * Populate currencies in the account.
+     *
+     * @return void
+     */
+    private function populateCurrencies(): void
+    {
+        $currencies = Currency::get();
+        foreach ($currencies as $currency) {
+            $this->user->account->currencies()->attach($currency->id);
+        }
     }
 
     /**

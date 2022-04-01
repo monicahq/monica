@@ -18,6 +18,7 @@ class PersonalizeIndexViewHelper
                 'manage_contact_information_types' => route('settings.personalize.contact_information_type.index'),
                 'manage_templates' => route('settings.personalize.template.index'),
                 'manage_modules' => route('settings.personalize.module.index'),
+                'manage_currencies' => route('settings.personalize.currency.index'),
             ],
         ];
     }

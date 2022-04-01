@@ -33,6 +33,7 @@ use App\Http\Controllers\Settings\Personalize\Modules\PersonalizeModulesControll
 use App\Http\Controllers\Settings\Notifications\NotificationsVerificationController;
 use App\Http\Controllers\Settings\Personalize\Pronouns\PersonalizePronounController;
 use App\Http\Controllers\Vault\Contact\ImportantDates\ContactImportantDatesController;
+use App\Http\Controllers\Settings\Personalize\Currencies\PersonalizeCurrencyController;
 use App\Http\Controllers\Settings\Personalize\Templates\PersonalizeTemplatesController;
 use App\Http\Controllers\Vault\Contact\Modules\Reminder\ContactModuleReminderController;
 use App\Http\Controllers\Settings\Personalize\Templates\PersonalizeTemplatePagesController;
@@ -243,6 +244,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::post('modules', [PersonalizeModulesController::class, 'store'])->name('module.store');
                 Route::put('modules/{module}', [PersonalizeModulesController::class, 'update'])->name('module.update');
                 Route::delete('modules/{module}', [PersonalizeModulesController::class, 'destroy'])->name('module.destroy');
+
+                // currencies
+                Route::get('currencies', [PersonalizeCurrencyController::class, 'index'])->name('currency.index');
+                Route::put('currencies/{currency}', [PersonalizeCurrencyController::class, 'update'])->name('currency.update');
+                Route::post('currencies', [PersonalizeCurrencyController::class, 'store'])->name('currency.store');
+                Route::delete('currencies', [PersonalizeCurrencyController::class, 'destroy'])->name('currency.destroy');
             });
 
             // cancel
