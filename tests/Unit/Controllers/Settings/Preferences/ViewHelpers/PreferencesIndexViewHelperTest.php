@@ -24,7 +24,7 @@ class PreferencesIndexViewHelperTest extends TestCase
         $array = PreferencesIndexViewHelper::data($user);
 
         $this->assertEquals(
-            4,
+            5,
             count($array)
         );
 
@@ -32,6 +32,7 @@ class PreferencesIndexViewHelperTest extends TestCase
         $this->assertArrayHasKey('date_format', $array);
         $this->assertArrayHasKey('timezone', $array);
         $this->assertArrayHasKey('url', $array);
+        $this->assertArrayHasKey('number_format', $array);
 
         $this->assertEquals(
             [
@@ -139,6 +140,57 @@ class PreferencesIndexViewHelperTest extends TestCase
                 ],
             ],
             $array
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_data_needed_for_number_format(): void
+    {
+        Carbon::setTestNow(Carbon::create(2018, 1, 1));
+        $user = User::factory()->create([
+            'number_format' => User::NUMBER_FORMAT_TYPE_COMMA_THOUSANDS_DOT_DECIMAL,
+        ]);
+
+        $array = PreferencesIndexViewHelper::dtoNumberFormat($user);
+        $this->assertEquals(
+            3,
+            count($array)
+        );
+
+        $this->assertArrayHasKey('numbers', $array);
+        $this->assertArrayHasKey('url', $array);
+
+        $this->assertEquals(
+            [
+                'store' => env('APP_URL').'/settings/preferences/number',
+            ],
+            $array['url']
+        );
+
+        $this->assertEquals(
+            User::NUMBER_FORMAT_TYPE_COMMA_THOUSANDS_DOT_DECIMAL,
+            $array['number_format']
+        );
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'id' => 1,
+                    'format' => '1,234.56',
+                    'value' => User::NUMBER_FORMAT_TYPE_COMMA_THOUSANDS_DOT_DECIMAL,
+                ],
+                1 => [
+                    'id' => 2,
+                    'format' => '1 234,56',
+                    'value' => User::NUMBER_FORMAT_TYPE_SPACE_THOUSANDS_COMMA_DECIMAL,
+                ],
+                2 => [
+                    'id' => 3,
+                    'format' => '1234.56',
+                    'value' => User::NUMBER_FORMAT_TYPE_NO_SPACE_DOT_DECIMAL,
+                ],
+            ],
+            $array['numbers']->toArray()
         );
     }
 }

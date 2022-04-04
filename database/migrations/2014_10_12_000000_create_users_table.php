@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -21,13 +22,14 @@ class CreateUsersTable extends Migration
             $table->string('last_name')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('name_order')->default('%first_name% %last_name%');
+            $table->string('date_format')->default('MMM DD, YYYY');
+            $table->string('timezone')->nullable();
+            $table->string('number_format')->default(User::NUMBER_FORMAT_TYPE_COMMA_THOUSANDS_DOT_DECIMAL);
             $table->string('password')->nullable();
             $table->boolean('is_account_administrator')->default(false);
             $table->string('invitation_code')->nullable();
             $table->dateTime('invitation_accepted_at')->nullable();
-            $table->string('name_order')->default('%first_name% %last_name%');
-            $table->string('date_format')->default('MMM DD, YYYY');
-            $table->string('timezone')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');

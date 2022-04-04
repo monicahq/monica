@@ -16,6 +16,13 @@ class User extends Authenticatable implements MustVerifyEmail
     use Notifiable, HasFactory, HasApiTokens;
 
     /**
+     * Possible number format types.
+     */
+    const NUMBER_FORMAT_TYPE_COMMA_THOUSANDS_DOT_DECIMAL = '1,234.56';
+    const NUMBER_FORMAT_TYPE_SPACE_THOUSANDS_COMMA_DECIMAL = '1 234,56';
+    const NUMBER_FORMAT_TYPE_NO_SPACE_DOT_DECIMAL = '1234.56';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -32,6 +39,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'invitation_accepted_at',
         'name_order',
         'date_format',
+        'number_format',
         'timezone',
     ];
 

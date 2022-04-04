@@ -26,6 +26,7 @@ use App\Http\Controllers\Settings\Preferences\PreferencesTimezoneController;
 use App\Http\Controllers\Settings\Preferences\PreferencesNameOrderController;
 use App\Http\Controllers\Settings\Notifications\NotificationsToggleController;
 use App\Http\Controllers\Settings\Preferences\PreferencesDateFormatController;
+use App\Http\Controllers\Settings\Preferences\PreferencesNumberFormatController;
 use App\Http\Controllers\Vault\Contact\Modules\Note\ContactModuleNoteController;
 use App\Http\Controllers\Settings\Personalize\Genders\PersonalizeGenderController;
 use App\Http\Controllers\Vault\Contact\Modules\Label\ContactModuleLabelController;
@@ -146,6 +147,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('name', [PreferencesNameOrderController::class, 'store'])->name('name.store');
             Route::post('date', [PreferencesDateFormatController::class, 'store'])->name('date.store');
             Route::post('timezone', [PreferencesTimezoneController::class, 'store'])->name('timezone.store');
+            Route::post('number', [PreferencesNumberFormatController::class, 'store'])->name('number.store');
         });
 
         // notifications

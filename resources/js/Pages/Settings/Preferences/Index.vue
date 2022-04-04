@@ -49,6 +49,8 @@
 
         <date-format :data="data.date_format" />
 
+        <number-format :data="data.number_format" />
+
         <timezone :data="data.timezone" />
       </div>
     </main>
@@ -59,6 +61,7 @@
 import Layout from '@/Shared/Layout';
 import NameOrder from '@/Pages/Settings/Preferences/Partials/NameOrder';
 import DateFormat from '@/Pages/Settings/Preferences/Partials/DateFormat';
+import NumberFormat from '@/Pages/Settings/Preferences/Partials/NumberFormat';
 import Timezone from '@/Pages/Settings/Preferences/Partials/Timezone';
 
 export default {
@@ -67,6 +70,7 @@ export default {
     NameOrder,
     DateFormat,
     Timezone,
+    NumberFormat,
   },
 
   props: {

@@ -15,6 +15,7 @@ class PreferencesIndexViewHelper
             'name_order' => self::dtoNameOrder($user),
             'date_format' => self::dtoDateFormat($user),
             'timezone' => self::dtoTimezone($user),
+            'number_format' => self::dtoNumberFormat($user),
             'url' => [
                 'settings' => route('settings.index'),
                 'back' => route('settings.index'),
@@ -85,6 +86,34 @@ class PreferencesIndexViewHelper
             'timezone' => $user->timezone,
             'url' => [
                 'store' => route('settings.preferences.timezone.store'),
+            ],
+        ];
+    }
+
+    public static function dtoNumberFormat(User $user): array
+    {
+        $collection = collect();
+        $collection->push([
+            'id' => 1,
+            'format' => '1,234.56',
+            'value' => User::NUMBER_FORMAT_TYPE_COMMA_THOUSANDS_DOT_DECIMAL,
+        ]);
+        $collection->push([
+            'id' => 2,
+            'format' => '1 234,56',
+            'value' => User::NUMBER_FORMAT_TYPE_SPACE_THOUSANDS_COMMA_DECIMAL,
+        ]);
+        $collection->push([
+            'id' => 3,
+            'format' => '1234.56',
+            'value' => User::NUMBER_FORMAT_TYPE_NO_SPACE_DOT_DECIMAL,
+        ]);
+
+        return [
+            'numbers' => $collection,
+            'number_format' => $user->number_format,
+            'url' => [
+                'store' => route('settings.preferences.number.store'),
             ],
         ];
     }
