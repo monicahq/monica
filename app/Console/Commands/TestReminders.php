@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use App\Models\UserNotificationChannel;
 use App\Jobs\Notifications\SendEmailNotification;
-use App\Services\Contact\ManageReminder\RescheduleContactReminderForChannel;
+use App\Contact\ManageReminders\Services\RescheduleContactReminderForChannel;
 
 class TestReminders extends Command
 {

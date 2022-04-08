@@ -3,49 +3,50 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
-use App\Http\Controllers\Vault\VaultController;
-use App\Http\Controllers\Settings\SettingsController;
-use App\Http\Controllers\Settings\Users\UserController;
 use App\Http\Controllers\Auth\AcceptInvitationController;
-use App\Http\Controllers\Vault\Contact\ContactController;
-use App\Http\Controllers\Vault\Search\VaultSearchController;
-use App\Http\Controllers\Vault\Contact\ContactPageController;
-use App\Http\Controllers\Vault\Settings\VaultSettingsController;
-use App\Http\Controllers\Vault\Contact\ContactTemplateController;
-use App\Http\Controllers\Settings\Personalize\PersonalizeController;
-use App\Http\Controllers\Settings\Preferences\PreferencesController;
-use App\Http\Controllers\Vault\Contact\Notes\ContactNotesController;
-use App\Http\Controllers\Vault\Settings\VaultSettingsUserController;
-use App\Http\Controllers\Vault\Settings\VaultSettingsLabelController;
-use App\Http\Controllers\Settings\CancelAccount\CancelAccountController;
-use App\Http\Controllers\Settings\Notifications\NotificationsController;
-use App\Http\Controllers\Vault\Settings\VaultSettingsTemplateController;
-use App\Http\Controllers\Settings\Notifications\NotificationsLogController;
-use App\Http\Controllers\Settings\Notifications\NotificationsTestController;
-use App\Http\Controllers\Settings\Preferences\PreferencesTimezoneController;
-use App\Http\Controllers\Settings\Preferences\PreferencesNameOrderController;
-use App\Http\Controllers\Settings\Notifications\NotificationsToggleController;
-use App\Http\Controllers\Settings\Preferences\PreferencesDateFormatController;
-use App\Http\Controllers\Settings\Preferences\PreferencesNumberFormatController;
-use App\Http\Controllers\Vault\Contact\Modules\Note\ContactModuleNoteController;
-use App\Http\Controllers\Settings\Personalize\Genders\PersonalizeGenderController;
-use App\Http\Controllers\Vault\Contact\Modules\Label\ContactModuleLabelController;
+use App\Vault\ManageVault\Web\Controllers\VaultController;
+use App\Vault\Search\Web\Controllers\VaultSearchController;
+use App\Settings\ManageUsers\Web\Controllers\UserController;
+use App\Contact\ManageContact\Web\Controllers\ContactController;
+use App\Contact\ManageNotes\Web\Controllers\ContactNotesController;
+use App\Settings\CancelAccount\Controllers\CancelAccountController;
+use App\Settings\ManageSettings\Web\Controllers\SettingsController;
+use App\Contact\ManageContact\Web\Controllers\ContactPageController;
+use App\Settings\ManageGenders\Web\Controllers\ManageGenderController;
+use App\Contact\ManageContact\Web\Controllers\ContactTemplateController;
+use App\Contact\ManageNotes\Web\Controllers\ContactModuleNoteController;
+use App\Contact\ManageContact\Web\Controllers\ContactNoTemplateController;
+use App\Contact\ManageLabels\Web\Controllers\ContactModuleLabelController;
+use App\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsController;
+use App\Settings\ManagePersonalization\Web\Controllers\PersonalizeController;
+use App\Settings\ManagePronouns\Web\Controllers\PersonalizePronounController;
+use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesController;
+use App\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsUserController;
+use App\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsLabelController;
+use App\Contact\ManageReminders\Web\Controllers\ContactModuleReminderController;
+use App\Settings\ManageCurrencies\Web\Controllers\PersonalizeCurrencyController;
+use App\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatesController;
+use App\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsTemplateController;
 use App\Http\Controllers\Settings\Personalize\Modules\PersonalizeModulesController;
-use App\Http\Controllers\Settings\Notifications\NotificationsVerificationController;
-use App\Http\Controllers\Settings\Personalize\Pronouns\PersonalizePronounController;
-use App\Http\Controllers\Vault\Contact\ImportantDates\ContactImportantDatesController;
-use App\Http\Controllers\Settings\Personalize\Currencies\PersonalizeCurrencyController;
-use App\Http\Controllers\Settings\Personalize\Templates\PersonalizeTemplatesController;
-use App\Http\Controllers\Vault\Contact\Modules\Reminder\ContactModuleReminderController;
-use App\Http\Controllers\Settings\Personalize\Templates\PersonalizeTemplatePagesController;
-use App\Http\Controllers\Settings\Personalize\AddressTypes\PersonalizeAddressTypeController;
-use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipController;
-use App\Http\Controllers\Settings\Personalize\PetCategories\PersonalizePetCategoriesController;
-use App\Http\Controllers\Settings\Personalize\Templates\PersonalizeTemplatePageModulesController;
-use App\Http\Controllers\Settings\Personalize\Relationships\PersonalizeRelationshipTypeController;
-use App\Http\Controllers\Settings\Personalize\Templates\PersonalizeTemplatePagePositionController;
-use App\Http\Controllers\Settings\Personalize\Templates\PersonalizeTemplatePageModulesPositionController;
-use App\Http\Controllers\Settings\Personalize\ContactInformationTypes\PersonalizeContatInformationTypesController;
+use App\Settings\ManageNotificationChannels\Web\Controllers\NotificationsController;
+use App\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatePagesController;
+use App\Settings\ManageAddressTypes\Web\Controllers\PersonalizeAddressTypeController;
+use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesTimezoneController;
+use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesNameOrderController;
+use App\Settings\ManageNotificationChannels\Web\Controllers\NotificationsLogController;
+use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesDateFormatController;
+use App\Settings\ManageNotificationChannels\Web\Controllers\NotificationsTestController;
+use App\Settings\ManagePetCategories\Web\Controllers\PersonalizePetCategoriesController;
+use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesNumberFormatController;
+use App\Settings\ManageNotificationChannels\Web\Controllers\NotificationsToggleController;
+use App\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatePageModulesController;
+use App\Settings\ManageRelationshipTypes\Web\Controllers\PersonalizeRelationshipController;
+use App\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatePagePositionController;
+use App\Contact\ManageContactImportantDates\Web\Controllers\ContactImportantDatesController;
+use App\Settings\ManageRelationshipTypes\Web\Controllers\PersonalizeRelationshipTypeController;
+use App\Settings\ManageNotificationChannels\Web\Controllers\NotificationsVerificationController;
+use App\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatePageModulesPositionController;
+use App\Settings\ManageContactInformationTypes\Web\Controllers\PersonalizeContatInformationTypesController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -85,7 +86,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::get('/edit', [ContactController::class, 'edit'])->name('contact.edit');
                     Route::post('', [ContactController::class, 'update'])->name('contact.update');
                     Route::delete('', [ContactController::class, 'destroy'])->name('contact.destroy');
-                    Route::get('no-template', [ContactController::class, 'blank'])->name('contact.blank');
+                    Route::get('no-template', [ContactNoTemplateController::class, 'show'])->name('contact.blank');
                     Route::put('template', [ContactTemplateController::class, 'update'])->name('contact.template.update');
 
                     Route::get('tabs/{slug}', [ContactPageController::class, 'show'])->name('contact.page.show');
@@ -191,10 +192,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::delete('relationships/{groupType}/types/{type}', [PersonalizeRelationshipTypeController::class, 'destroy'])->name('relationship.type.destroy');
 
                 // genders
-                Route::get('genders', [PersonalizeGenderController::class, 'index'])->name('gender.index');
-                Route::post('genders', [PersonalizeGenderController::class, 'store'])->name('gender.store');
-                Route::put('genders/{gender}', [PersonalizeGenderController::class, 'update'])->name('gender.update');
-                Route::delete('genders/{gender}', [PersonalizeGenderController::class, 'destroy'])->name('gender.destroy');
+                Route::get('genders', [ManageGenderController::class, 'index'])->name('gender.index');
+                Route::post('genders', [ManageGenderController::class, 'store'])->name('gender.store');
+                Route::put('genders/{gender}', [ManageGenderController::class, 'update'])->name('gender.update');
+                Route::delete('genders/{gender}', [ManageGenderController::class, 'destroy'])->name('gender.destroy');
 
                 // pronouns
                 Route::get('pronouns', [PersonalizePronounController::class, 'index'])->name('pronoun.index');
@@ -259,6 +260,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('cancel', [CancelAccountController::class, 'destroy'])->name('cancel.destroy');
         });
     });
-
-    Route::resource('settings/information', 'Settings\\InformationController');
 });

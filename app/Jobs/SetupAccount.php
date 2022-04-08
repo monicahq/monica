@@ -17,17 +17,17 @@ use App\Models\UserNotificationChannel;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Services\Account\ManageGenders\CreateGender;
-use App\Services\Account\ManageTemplate\CreateModule;
-use App\Services\Account\ManagePronouns\CreatePronoun;
-use App\Services\Account\ManageTemplate\CreateTemplate;
-use App\Services\Account\ManageTemplate\CreateTemplatePage;
-use App\Services\Account\ManageAddressTypes\CreateAddressType;
-use App\Services\Account\ManagePetCategories\CreatePetCategory;
-use App\Services\Account\ManageTemplate\AssociateModuleToTemplatePage;
-use App\Services\User\NotificationChannels\CreateUserNotificationChannel;
-use App\Services\Account\ManageRelationshipTypes\CreateRelationshipGroupType;
-use App\Services\Account\ManageContactInformationTypes\CreateContactInformationType;
+use App\Settings\ManageGenders\Services\CreateGender;
+use App\Settings\ManagePronouns\Services\CreatePronoun;
+use App\Settings\ManageTemplates\Services\CreateModule;
+use App\Settings\ManageTemplates\Services\CreateTemplate;
+use App\Settings\ManageTemplates\Services\CreateTemplatePage;
+use App\Settings\ManageAddressTypes\Services\CreateAddressType;
+use App\Settings\ManagePetCategories\Services\CreatePetCategory;
+use App\Settings\ManageTemplates\Services\AssociateModuleToTemplatePage;
+use App\Settings\ManageRelationshipTypes\Services\CreateRelationshipGroupType;
+use App\Settings\ManageNotificationChannels\Services\CreateUserNotificationChannel;
+use App\Settings\ManageContactInformationTypes\Services\CreateContactInformationType;
 
 class SetupAccount implements ShouldQueue
 {

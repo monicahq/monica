@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
-use App\Services\Account\ManageAccount\CreateAccount;
+use App\Settings\CreateAccount\Services\CreateAccount;
 
 class RegisteredUserController extends Controller
 {

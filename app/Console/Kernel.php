@@ -3,8 +3,8 @@
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
-use App\Jobs\ProcessScheduledContactReminders;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Contact\ManageReminders\Jobs\ProcessScheduledContactReminders;
 
 class Kernel extends ConsoleKernel
 {

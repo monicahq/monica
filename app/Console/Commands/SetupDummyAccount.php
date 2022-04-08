@@ -9,11 +9,11 @@ use App\Models\Contact;
 use Faker\Factory as Faker;
 use Illuminate\Console\Command;
 use App\Models\ContactImportantDate;
-use App\Services\Contact\ManageNote\CreateNote;
-use App\Services\Vault\ManageVault\CreateVault;
-use App\Services\Account\ManageAccount\CreateAccount;
-use App\Services\Contact\ManageContact\CreateContact;
-use App\Services\Contact\ManageContactImportantDate\CreateContactImportantDate;
+use App\Vault\ManageVault\Services\CreateVault;
+use App\Contact\ManageNotes\Services\CreateNote;
+use App\Contact\ManageContact\Services\CreateContact;
+use App\Settings\CreateAccount\Services\CreateAccount;
+use App\Contact\ManageContactImportantDates\Services\CreateContactImportantDate;
 
 class SetupDummyAccount extends Command
 {

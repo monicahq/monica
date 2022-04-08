@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Account\ManageUsers\AcceptInvitation;
+use App\Settings\ManageUsers\Services\AcceptInvitation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Controllers\Auth\ViewHelpers\AcceptInvitationShowViewHelper;
 
