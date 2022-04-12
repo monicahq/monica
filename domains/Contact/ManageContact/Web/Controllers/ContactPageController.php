@@ -9,6 +9,7 @@ use App\Models\TemplatePage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Contact\ManageContact\Services\UpdateContactView;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Contact\ManageContact\Web\ViewHelpers\ContactShowViewHelper;
 
@@ -34,6 +35,13 @@ class ContactPageController extends Controller
         $templatePage = TemplatePage::where('slug', $slug)
             ->where('template_id', $contact->template_id)
             ->firstOrFail();
+
+        (new UpdateContactView)->execute([
+            'account_id' => Auth::user()->account_id,
+            'vault_id' => $vaultId,
+            'author_id' => Auth::user()->id,
+            'contact_id' => $contactId,
+        ]);
 
         return Inertia::render('Vault/Contact/Show', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),

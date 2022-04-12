@@ -1988,16 +1988,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.0.14",
+            "version": "3.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "46a5450352540e89cb8e7eb20c58b5b4aae481f6"
+                "reference": "dea729954c596bdb6cdaecba6f73df9f3e2c4255"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/46a5450352540e89cb8e7eb20c58b5b4aae481f6",
-                "reference": "46a5450352540e89cb8e7eb20c58b5b4aae481f6",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/dea729954c596bdb6cdaecba6f73df9f3e2c4255",
+                "reference": "dea729954c596bdb6cdaecba6f73df9f3e2c4255",
                 "shasum": ""
             },
             "require": {
@@ -2058,7 +2058,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.0.14"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.0.16"
             },
             "funding": [
                 {
@@ -2074,20 +2074,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-06T18:17:37+00:00"
+            "time": "2022-04-11T13:32:22+00:00"
         },
         {
             "name": "league/mime-type-detection",
-            "version": "1.9.0",
+            "version": "1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/mime-type-detection.git",
-                "reference": "aa70e813a6ad3d1558fc927863d47309b4c23e69"
+                "reference": "3e4a35d756eedc67096f30240a68a3149120dae7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/aa70e813a6ad3d1558fc927863d47309b4c23e69",
-                "reference": "aa70e813a6ad3d1558fc927863d47309b4c23e69",
+                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/3e4a35d756eedc67096f30240a68a3149120dae7",
+                "reference": "3e4a35d756eedc67096f30240a68a3149120dae7",
                 "shasum": ""
             },
             "require": {
@@ -2118,7 +2118,7 @@
             "description": "Mime-type detection for Flysystem",
             "support": {
                 "issues": "https://github.com/thephpleague/mime-type-detection/issues",
-                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.9.0"
+                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.10.0"
             },
             "funding": [
                 {
@@ -2130,7 +2130,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-21T11:48:40+00:00"
+            "time": "2022-04-11T12:49:04+00:00"
         },
         {
             "name": "meilisearch/meilisearch-php",
@@ -2201,16 +2201,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "2.4.0",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "d7fd7450628561ba697b7097d86db72662f54aef"
+                "reference": "4192345e260f1d51b365536199744b987e160edc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/d7fd7450628561ba697b7097d86db72662f54aef",
-                "reference": "d7fd7450628561ba697b7097d86db72662f54aef",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/4192345e260f1d51b365536199744b987e160edc",
+                "reference": "4192345e260f1d51b365536199744b987e160edc",
                 "shasum": ""
             },
             "require": {
@@ -2284,7 +2284,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/2.4.0"
+                "source": "https://github.com/Seldaek/monolog/tree/2.5.0"
             },
             "funding": [
                 {
@@ -2296,7 +2296,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-14T12:44:37+00:00"
+            "time": "2022-04-08T15:43:54+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -5875,16 +5875,16 @@
         },
         {
             "name": "tightenco/ziggy",
-            "version": "v1.4.5",
+            "version": "v1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tighten/ziggy.git",
-                "reference": "d3c74474f624ab80b7fb4e3e264e62bb4043eee2"
+                "reference": "a9e0e078ae6f0768836bc640a80f4cf99fa3d08f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tighten/ziggy/zipball/d3c74474f624ab80b7fb4e3e264e62bb4043eee2",
-                "reference": "d3c74474f624ab80b7fb4e3e264e62bb4043eee2",
+                "url": "https://api.github.com/repos/tighten/ziggy/zipball/a9e0e078ae6f0768836bc640a80f4cf99fa3d08f",
+                "reference": "a9e0e078ae6f0768836bc640a80f4cf99fa3d08f",
                 "shasum": ""
             },
             "require": {
@@ -5936,9 +5936,9 @@
             ],
             "support": {
                 "issues": "https://github.com/tighten/ziggy/issues",
-                "source": "https://github.com/tighten/ziggy/tree/v1.4.5"
+                "source": "https://github.com/tighten/ziggy/tree/v1.4.6"
             },
-            "time": "2022-03-25T22:36:59+00:00"
+            "time": "2022-04-08T15:12:23+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

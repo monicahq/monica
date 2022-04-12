@@ -108,7 +108,6 @@ export default {
   },
 
   setup(props) {
-    console.log(props.data);
     const localNotes = props.data;
 
     return {

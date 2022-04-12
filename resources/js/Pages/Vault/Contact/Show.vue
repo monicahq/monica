@@ -108,6 +108,7 @@ import ImportantDates from '@/Shared/Modules/ImportantDates';
 import Labels from '@/Shared/Modules/Labels';
 import Reminders from '@/Shared/Modules/Reminders';
 import Feed from '@/Shared/Modules/Feed';
+import ContactSelector from '@/Shared/Form/ContactSelector';
 
 export default {
   components: {
@@ -120,6 +121,7 @@ export default {
     Labels,
     Reminders,
     Feed,
+    ContactSelector,
   },
 
   props: {

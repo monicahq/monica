@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Contact\ManageContact\Services\CreateContact;
 use App\Contact\ManageContact\Services\UpdateContact;
 use App\Contact\ManageContact\Services\DestroyContact;
+use App\Contact\ManageContact\Services\UpdateContactView;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Contact\ManageContact\Web\ViewHelpers\ContactEditViewHelper;
 use App\Contact\ManageContact\Web\ViewHelpers\ContactShowViewHelper;
@@ -85,6 +86,13 @@ class ContactController extends Controller
                 'contact' => $contactId,
             ]);
         }
+
+        (new UpdateContactView)->execute([
+            'account_id' => Auth::user()->account_id,
+            'vault_id' => $vaultId,
+            'author_id' => Auth::user()->id,
+            'contact_id' => $contactId,
+        ]);
 
         return Inertia::render('Vault/Contact/Show', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),

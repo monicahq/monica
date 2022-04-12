@@ -42,6 +42,17 @@ class CreateContactsTable extends Migration
             $table->timestamps();
             $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('set null');
+        });
+
+        Schema::create('contact_vault_user', function (Blueprint $table) {
+            $table->unsignedBigInteger('contact_id');
+            $table->unsignedBigInteger('vault_id');
+            $table->unsignedBigInteger('user_id');
+            $table->integer('number_of_views');
+            $table->timestamps();
+            $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
         });
     }
@@ -53,5 +64,6 @@ class CreateContactsTable extends Migration
     {
         Schema::dropIfExists('contacts');
         Schema::dropIfExists('user_vault');
+        Schema::dropIfExists('contact_vault_user');
     }
 }

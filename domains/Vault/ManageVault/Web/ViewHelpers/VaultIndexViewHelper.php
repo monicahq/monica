@@ -43,6 +43,12 @@ class VaultIndexViewHelper
                     'search' => route('vault.search.index', [
                         'vault' => $vault->id,
                     ]),
+                    'get_most_consulted_contacts' => route('vault.user.search.mostconsulted', [
+                        'vault' => $vault->id,
+                    ]),
+                    'search_contacts_only' => route('vault.user.search.index', [
+                        'vault' => $vault->id,
+                    ]),
                 ],
             ] : null,
             'url' => [

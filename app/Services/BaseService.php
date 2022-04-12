@@ -76,6 +76,10 @@ abstract class BaseService
             $this->validateUserPermissionInVault(Vault::PERMISSION_EDIT);
         }
 
+        if (in_array('author_must_be_in_vault', $this->permissions())) {
+            $this->validateUserPermissionInVault(Vault::PERMISSION_VIEW);
+        }
+
         if (in_array('contact_must_belong_to_vault', $this->permissions())) {
             $this->validateContactBelongsToVault($data);
         }
