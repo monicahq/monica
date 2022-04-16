@@ -149,7 +149,7 @@ return [
     |
     */
 
-    'trust_proxies' => env('APP_TRUSTE_PROXIES'),
+    'trust_proxies' => env('APP_TRUSTED_PROXIES'),
 
     /*
     |--------------------------------------------------------------------------
