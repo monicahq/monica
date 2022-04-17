@@ -243,17 +243,17 @@ return [
 
     'relationship_type_godfather' => 'godparent',
     'relationship_type_godfather_female' => 'סנדקית',
-    'relationship_type_godfather_male' => 'godfather',
+    'relationship_type_godfather_male' => 'סנדק',
     'relationship_type_godfather_with_name' => ':name’s godparent',
     'relationship_type_godfather_female_with_name' => 'הסנדקית של :name',
-    'relationship_type_godfather_male_with_name' => ':name’s godfather',
+    'relationship_type_godfather_male_with_name' => 'הסנדק של :name',
 
     'relationship_type_godson' => 'godchild',
     'relationship_type_godson_female' => 'בת סנדקות',
     'relationship_type_godson_male' => 'בן סנדקות',
     'relationship_type_godson_with_name' => ':name’s godchild',
     'relationship_type_godson_female_with_name' => 'בת הסנדקות של :name',
-    'relationship_type_godson_male_with_name' => ':name’s godson',
+    'relationship_type_godson_male_with_name' => 'בן הסנדקות של :name',
 
     'relationship_type_friend' => 'חבר',
     'relationship_type_friend_female' => 'חברה',
@@ -286,9 +286,9 @@ return [
     'relationship_type_mentor_female_with_name' => 'חונך של :name',
 
     'relationship_type_protege' => 'protégé',
-    'relationship_type_protege_female' => 'protégé',
+    'relationship_type_protege_female' => 'חניכה',
     'relationship_type_protege_with_name' => ':name’s protégé',
-    'relationship_type_protege_female_with_name' => ':name’s protégé',
+    'relationship_type_protege_female_with_name' => 'חניכה של :name',
 
     'relationship_type_ex_husband' => 'ex-spouse',
     'relationship_type_ex_husband_female' => 'גרושה',
