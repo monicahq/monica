@@ -172,10 +172,10 @@ return [
 
     'relationship_type_ex' => 'ex-partner',
     'relationship_type_ex_female' => 'חברה לשעבר',
-    'relationship_type_ex_male' => 'ex-boyfriend',
+    'relationship_type_ex_male' => 'חבר לשעבר',
     'relationship_type_ex_with_name' => ':name’s ex-partner',
     'relationship_type_ex_female_with_name' => 'חברה לשעבר של :name',
-    'relationship_type_ex_male_with_name' => ':name’s ex-boyfriend',
+    'relationship_type_ex_male_with_name' => 'חבר לשעבר של :name',
 
     'relationship_type_parent' => 'הורה',
     'relationship_type_parent_female' => 'אימא',
@@ -216,15 +216,15 @@ return [
     'relationship_type_grandparent_female' => 'סבתא',
     'relationship_type_grandparent_male' => 'סבא',
     'relationship_type_grandparent_with_name' => ':name’s grandparent',
-    'relationship_type_grandparent_female_with_name' => ':name’s grandmother',
-    'relationship_type_grandparent_male_with_name' => ':name’s grandfather',
+    'relationship_type_grandparent_female_with_name' => 'סבתא של :name',
+    'relationship_type_grandparent_male_with_name' => 'סבא של :name',
 
     'relationship_type_grandchild' => 'נכד/ה',
     'relationship_type_grandchild_female' => 'נכדה',
     'relationship_type_grandchild_male' => 'נכד',
     'relationship_type_grandchild_with_name' => ':name’s grandchild',
-    'relationship_type_grandchild_female_with_name' => ':name’s granddauther',
-    'relationship_type_grandchild_male_with_name' => ':name’s grandson',
+    'relationship_type_grandchild_female_with_name' => 'נכדה של :name',
+    'relationship_type_grandchild_male_with_name' => 'נכד של :name',
 
     'relationship_type_uncle' => 'דוד',
     'relationship_type_uncle_female' => 'דודה',
@@ -250,7 +250,7 @@ return [
 
     'relationship_type_godson' => 'godchild',
     'relationship_type_godson_female' => 'בת סנדקות',
-    'relationship_type_godson_male' => 'godson',
+    'relationship_type_godson_male' => 'בן סנדקות',
     'relationship_type_godson_with_name' => ':name’s godchild',
     'relationship_type_godson_female_with_name' => 'בת הסנדקות של :name',
     'relationship_type_godson_male_with_name' => ':name’s godson',
@@ -292,10 +292,10 @@ return [
 
     'relationship_type_ex_husband' => 'ex-spouse',
     'relationship_type_ex_husband_female' => 'גרושה',
-    'relationship_type_ex_husband_male' => 'ex-husband',
+    'relationship_type_ex_husband_male' => 'גרוש',
     'relationship_type_ex_husband_with_name' => ':name’s ex-spouse',
     'relationship_type_ex_husband_female_with_name' => 'הגרושה של :name',
-    'relationship_type_ex_husband_male_with_name' => ':name’s ex-husband',
+    'relationship_type_ex_husband_male_with_name' => 'הגרוש של :name',
 
     // emotions
     'emotion_primary_love' => 'אהבה',
@@ -505,8 +505,8 @@ return [
     'weather_fog' => 'ערפל',
     'weather_freezing-fog' => 'Freezing fog',
     'weather_mist' => 'ערפל',
-    'weather_blizzard' => 'Blizzard',
-    'weather_overcast' => 'Overcast',
+    'weather_blizzard' => 'סופת שלג',
+    'weather_overcast' => 'קודר',
     'weather_cloudy' => 'מעונן',
     'weather_partly-cloudy-day' => 'מעונן חלקית',
     'weather_partly-cloudy-night' => 'מעונן חלקית',
