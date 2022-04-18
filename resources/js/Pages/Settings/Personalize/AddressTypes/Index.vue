@@ -70,7 +70,7 @@
             @click="showAddressTypeModal" />
         </div>
 
-        <!-- modal to create a new group type -->
+        <!-- modal to create a new address type -->
         <form
           v-if="createAddressTypeModalShown"
           class="mb-6 rounded-lg border border-gray-200 bg-white"
@@ -103,7 +103,7 @@
             v-for="addressType in localAddressTypes"
             :key="addressType.id"
             class="item-list border-b border-gray-200 hover:bg-slate-50">
-            <!-- detail of the group type -->
+            <!-- detail of the address type -->
             <div
               v-if="renameAddressTypeModalShownId != addressType.id"
               class="flex items-center justify-between px-5 py-2">

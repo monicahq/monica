@@ -16,6 +16,7 @@ class ContactImportantDate extends Model
      * Possible type.
      */
     const TYPE_BIRTHDATE = 'birthdate';
+    const TYPE_DECEASED_DATE = 'deceased_date';
 
     /**
      * Possible type of dates.

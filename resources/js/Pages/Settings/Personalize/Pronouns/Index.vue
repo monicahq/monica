@@ -70,7 +70,7 @@
             @click="showPronounModal" />
         </div>
 
-        <!-- modal to create a new group type -->
+        <!-- modal to create a pronoun -->
         <form
           v-if="createPronounModalShown"
           class="mb-6 rounded-lg border border-gray-200 bg-white"
@@ -103,7 +103,7 @@
             v-for="pronoun in localPronouns"
             :key="pronoun.id"
             class="item-list border-b border-gray-200 hover:bg-slate-50">
-            <!-- detail of the group type -->
+            <!-- detail of the pronoun -->
             <div v-if="renamePronounModalShownId != pronoun.id" class="flex items-center justify-between px-5 py-2">
               <span class="text-base">{{ pronoun.name }}</span>
 

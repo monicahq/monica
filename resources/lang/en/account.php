@@ -11,6 +11,9 @@ return [
     'vault_permission_edit' => 'Editor',
     'vault_permission_view' => 'Viewer',
 
+    'vault_contact_important_date_type_internal_type_birthdate' => 'Birthdate',
+    'vault_contact_important_date_type_internal_type_deceased_date' => 'Deceased date',
+
     'pronoun_he_him' => 'he/him',
     'pronoun_she_her' => 'she/her',
     'pronoun_they_them' => 'they/them',

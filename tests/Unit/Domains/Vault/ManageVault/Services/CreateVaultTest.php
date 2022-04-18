@@ -8,6 +8,7 @@ use App\Models\Vault;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Jobs\CreateAuditLog;
+use App\Models\ContactImportantDate;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use App\Vault\ManageVault\Services\CreateVault;
@@ -78,6 +79,19 @@ class CreateVaultTest extends TestCase
             'vault_id' => $vault->id,
             'user_id' => $author->id,
             'contact_id' => $contact->id,
+        ]);
+
+        $this->assertDatabaseHas('contact_important_date_types', [
+            'vault_id' => $vault->id,
+            'label' => 'Birthdate',
+            'internal_type' => ContactImportantDate::TYPE_BIRTHDATE,
+            'can_be_deleted' => false,
+        ]);
+        $this->assertDatabaseHas('contact_important_date_types', [
+            'vault_id' => $vault->id,
+            'label' => 'Deceased date',
+            'internal_type' => ContactImportantDate::TYPE_DECEASED_DATE,
+            'can_be_deleted' => false,
         ]);
 
         $this->assertInstanceOf(

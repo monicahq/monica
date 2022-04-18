@@ -115,7 +115,7 @@
             v-for="contactInformationType in localContactInformationTypes"
             :key="contactInformationType.id"
             class="item-list border-b border-gray-200 hover:bg-slate-50">
-            <!-- detail of the group type -->
+            <!-- detail of the contact information type -->
             <div
               v-if="renameContactInformationTypeModalShownId != contactInformationType.id"
               class="flex items-center justify-between px-5 py-2">

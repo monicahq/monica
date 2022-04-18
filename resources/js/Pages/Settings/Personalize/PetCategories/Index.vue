@@ -70,7 +70,7 @@
             @click="showPetCategoryModal" />
         </div>
 
-        <!-- modal to create a new group type -->
+        <!-- modal to create a new pet category -->
         <form
           v-if="createPetCategoryModalShown"
           class="mb-6 rounded-lg border border-gray-200 bg-white"
@@ -103,7 +103,7 @@
             v-for="petCategory in localPetCategories"
             :key="petCategory.id"
             class="item-list border-b border-gray-200 hover:bg-slate-50">
-            <!-- detail of the group type -->
+            <!-- detail of the pet category -->
             <div
               v-if="renamePetCategoryModalShownId != petCategory.id"
               class="flex items-center justify-between px-5 py-2">

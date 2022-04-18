@@ -24,7 +24,7 @@
       <pretty-button v-if="!createlabelModalShown" :text="'Add a label'" :icon="'plus'" @click="showLabelModal" />
     </div>
 
-    <!-- modal to create a new group type -->
+    <!-- modal to create a new label -->
     <form
       v-if="createlabelModalShown"
       class="mb-6 rounded-lg border border-gray-200 bg-white"
@@ -72,7 +72,7 @@
     <!-- list of label -->
     <ul v-if="localLabels.length > 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
       <li v-for="label in localLabels" :key="label.id" class="item-list border-b border-gray-200 hover:bg-slate-50">
-        <!-- detail of the group type -->
+        <!-- detail of the label -->
         <div v-if="editLabelModalShownId != label.id" class="flex items-center justify-between px-5 py-2">
           <span class="flex items-center text-base">
             <div class="mr-2 inline-block h-4 w-4 rounded-full" :class="label.bg_color"></div>

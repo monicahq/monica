@@ -48,6 +48,7 @@ use App\Contact\ManageContactImportantDates\Web\Controllers\ContactImportantDate
 use App\Settings\ManageRelationshipTypes\Web\Controllers\PersonalizeRelationshipTypeController;
 use App\Settings\ManageNotificationChannels\Web\Controllers\NotificationsVerificationController;
 use App\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatePageModulesPositionController;
+use App\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsContactImportantDateTypeController;
 use App\Settings\ManageContactInformationTypes\Web\Controllers\PersonalizeContatInformationTypesController;
 
 Route::get('/', function () {
@@ -132,6 +133,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::post('settings/labels', [VaultSettingsLabelController::class, 'store'])->name('vault.settings.label.store');
                 Route::put('settings/labels/{label}', [VaultSettingsLabelController::class, 'update'])->name('vault.settings.label.update');
                 Route::delete('settings/labels/{label}', [VaultSettingsLabelController::class, 'destroy'])->name('vault.settings.label.destroy');
+
+                // contact important date types
+                Route::post('settings/contactImportantDateTypes', [VaultSettingsContactImportantDateTypeController::class, 'store'])->name('vault.settings.important_date_type.store');
+                Route::put('settings/contactImportantDateTypes/{type}', [VaultSettingsContactImportantDateTypeController::class, 'update'])->name('vault.settings.important_date_type.update');
+                Route::delete('settings/contactImportantDateTypes/{type}', [VaultSettingsContactImportantDateTypeController::class, 'destroy'])->name('vault.settings.important_date_type.destroy');
             });
 
             // global search in the vault

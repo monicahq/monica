@@ -16,6 +16,16 @@ return new class extends Migration
         // necessary for SQLlite
         Schema::enableForeignKeyConstraints();
 
+        Schema::create('contact_important_date_types', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('vault_id');
+            $table->string('label');
+            $table->string('internal_type')->nullable();
+            $table->boolean('can_be_deleted')->default(true);
+            $table->timestamps();
+            $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
+        });
+
         Schema::create('contact_important_dates', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('contact_id');
@@ -36,6 +46,7 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('contact_important_date_types');
         Schema::dropIfExists('contact_important_dates');
     }
 };

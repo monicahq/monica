@@ -107,4 +107,14 @@ class Vault extends Model
     {
         return $this->belongsToMany(User::class)->withTimestamps()->withPivot('permission');
     }
+
+    /**
+     * Get the contact important date types associated with the vault.
+     *
+     * @return HasMany
+     */
+    public function contactImportantDateTypes()
+    {
+        return $this->hasMany(ContactImportantDateType::class);
+    }
 }

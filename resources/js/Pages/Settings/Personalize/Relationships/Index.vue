@@ -101,7 +101,7 @@
           </div>
         </div>
 
-        <!-- modal to create a new group type -->
+        <!-- modal to create a relationship -->
         <form
           v-if="createGroupTypeModalShown"
           class="mb-6 rounded-lg border border-gray-200 bg-white"
@@ -128,10 +128,10 @@
           </div>
         </form>
 
-        <!-- list of groups types -->
+        <!-- list of relationships -->
         <ul v-if="localGroupTypes.length > 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
           <li v-for="groupType in localGroupTypes" :key="groupType.id">
-            <!-- detail of the group type -->
+            <!-- detail of the relationship -->
             <div
               v-if="renameGroupTypeModalShownId != groupType.id"
               class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50">

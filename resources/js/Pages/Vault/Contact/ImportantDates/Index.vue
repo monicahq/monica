@@ -247,7 +247,7 @@
         <!-- list of dates -->
         <ul v-if="localDates.length > 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
           <li v-for="date in localDates" :key="date.id" class="item-list border-b border-gray-200 hover:bg-slate-50">
-            <!-- detail of the group type -->
+            <!-- detail of the important date -->
             <div v-if="editedDateId !== date.id" class="flex items-center justify-between px-5 py-2">
               <span class="text-base">
                 {{ date.label }}: <span class="font-medium">{{ date.date }}</span>

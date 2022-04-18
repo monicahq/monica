@@ -70,7 +70,7 @@
             @click="showGenderModal" />
         </div>
 
-        <!-- modal to create a new group type -->
+        <!-- modal to create a new gender -->
         <form
           v-if="createGenderModalShown"
           class="mb-6 rounded-lg border border-gray-200 bg-white"
@@ -103,7 +103,7 @@
             v-for="gender in localGenders"
             :key="gender.id"
             class="item-list border-b border-gray-200 hover:bg-slate-50">
-            <!-- detail of the group type -->
+            <!-- detail of the gender -->
             <div v-if="renameGenderModalShownId != gender.id" class="flex items-center justify-between px-5 py-2">
               <span class="text-base">{{ gender.name }}</span>
 

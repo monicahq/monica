@@ -15,6 +15,8 @@
 
         <labels :data="data" />
 
+        <contact-important-date-types :data="data" />
+
         <delete :data="data" />
       </div>
     </main>
@@ -27,6 +29,7 @@ import Delete from '@/Pages/Vault/Settings/Partials/Delete';
 import DefaultTemplate from '@/Pages/Vault/Settings/Partials/DefaultTemplate';
 import Labels from '@/Pages/Vault/Settings/Partials/Labels';
 import Users from '@/Pages/Vault/Settings/Partials/Users';
+import ContactImportantDateTypes from '@/Pages/Vault/Settings/Partials/ContactImportantDateTypes';
 
 export default {
   components: {
@@ -35,6 +38,7 @@ export default {
     DefaultTemplate,
     Labels,
     Users,
+    ContactImportantDateTypes,
   },
 
   props: {

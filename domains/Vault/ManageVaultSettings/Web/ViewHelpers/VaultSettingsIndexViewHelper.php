@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Label;
 use App\Models\Vault;
 use App\Helpers\VaultHelper;
+use App\Vault\ManageVaultImportantDateTypes\Web\ViewHelpers\VaultImportantDateTypesViewHelper;
 
 class VaultSettingsIndexViewHelper
 {
@@ -67,12 +68,16 @@ class VaultSettingsIndexViewHelper
             'text_color' => 'text-sky-600',
         ]);
 
+        // contact important date types
+        $dateTypesCollection = VaultImportantDateTypesViewHelper::data($vault);
+
         return [
             'templates' => $templatesCollection,
             'users_in_vault' => $usersInVaultCollection,
             'users_in_account' => $usersInAccountCollection,
             'labels' => $labelsCollection,
             'label_colors' => $labelColorsCollection,
+            'contact_important_date_types' => $dateTypesCollection,
             'url' => [
                 'template_update' => route('vault.settings.template.update', [
                     'vault' => $vault->id,
@@ -81,6 +86,9 @@ class VaultSettingsIndexViewHelper
                     'vault' => $vault->id,
                 ]),
                 'label_store' => route('vault.settings.label.store', [
+                    'vault' => $vault->id,
+                ]),
+                'contact_date_important_date_type_store' => route('vault.settings.important_date_type.store', [
                     'vault' => $vault->id,
                 ]),
                 'update' => route('vault.settings.update', [
