@@ -2,7 +2,6 @@
 <psalm
     name="Example Psalm config with recommended defaults"
     useDocblockTypes="true"
-    totallyTyped="false"
 >
     <projectFiles>
         <directory name="app"/>
@@ -12,9 +11,6 @@
         <directory name="routes"/>
         <ignoreFiles>
             <directory name="vendor"/>
-            <directory name="node_modules"/>
-            <file name="app/Services/Account/AssociateInformationToTemplate.php" />
-            <file name="app/Services/Account/RemoveInformationFromTemplate.php" />
         </ignoreFiles>
     </projectFiles>
 
@@ -116,4 +112,4 @@
         <UndefinedPropertyAssignment errorLevel="suppress"/>
 
     </issueHandlers>
-<plugins><pluginClass xmlns="https://getpsalm.org/schema/config" class="Psalm\LaravelPlugin\Plugin"/></plugins></psalm>
+</psalm>

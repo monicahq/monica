@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class TemplatePage extends Model
 {
@@ -47,7 +48,7 @@ class TemplatePage extends Model
      *
      * @return BelongsTo
      */
-    public function template()
+    public function template(): BelongsTo
     {
         return $this->belongsTo(Template::class);
     }
@@ -57,7 +58,7 @@ class TemplatePage extends Model
      *
      * @return BelongsToMany
      */
-    public function modules()
+    public function modules(): BelongsToMany
     {
         return $this->belongsToMany(Module::class, 'module_template_page')->withTimestamps();
     }

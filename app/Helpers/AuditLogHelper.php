@@ -26,115 +26,115 @@ class AuditLogHelper
                 break;
 
             case 'vault_created':
-                $sentence = AuditLogHelper::vaultCreated($log, $user);
+                $sentence = AuditLogHelper::vaultCreated($log);
                 break;
 
             case 'vault_updated':
-                $sentence = AuditLogHelper::vaultUpdated($log, $user);
+                $sentence = AuditLogHelper::vaultUpdated($log);
                 break;
 
             case 'vault_destroyed':
-                $sentence = AuditLogHelper::vaultDestroyed($log, $user);
+                $sentence = AuditLogHelper::vaultDestroyed($log);
                 break;
 
             case 'vault_access_permission_changed':
-                $sentence = AuditLogHelper::vaultAccessPermissionChanged($log, $user);
+                $sentence = AuditLogHelper::vaultAccessPermissionChanged($log);
                 break;
 
             case 'vault_access_grant':
-                $sentence = AuditLogHelper::vaultAccessGrant($log, $user);
+                $sentence = AuditLogHelper::vaultAccessGrant($log);
                 break;
 
             case 'gender_created':
-                $sentence = AuditLogHelper::genderCreated($log, $user);
+                $sentence = AuditLogHelper::genderCreated($log);
                 break;
 
             case 'gender_updated':
-                $sentence = AuditLogHelper::genderUpdated($log, $user);
+                $sentence = AuditLogHelper::genderUpdated($log);
                 break;
 
             case 'gender_destroyed':
-                $sentence = AuditLogHelper::genderDestroyed($log, $user);
+                $sentence = AuditLogHelper::genderDestroyed($log);
                 break;
 
             case 'label_created':
-                $sentence = AuditLogHelper::labelCreated($log, $user);
+                $sentence = AuditLogHelper::labelCreated($log);
                 break;
 
             case 'label_updated':
-                $sentence = AuditLogHelper::labelUpdated($log, $user);
+                $sentence = AuditLogHelper::labelUpdated($log);
                 break;
 
             case 'label_destroyed':
-                $sentence = AuditLogHelper::labelDestroyed($log, $user);
+                $sentence = AuditLogHelper::labelDestroyed($log);
                 break;
 
             case 'contact_information_type_created':
-                $sentence = AuditLogHelper::contactInformationTypeCreated($log, $user);
+                $sentence = AuditLogHelper::contactInformationTypeCreated($log);
                 break;
 
             case 'contact_information_type_updated':
-                $sentence = AuditLogHelper::contactInformationTypeUpdated($log, $user);
+                $sentence = AuditLogHelper::contactInformationTypeUpdated($log);
                 break;
 
             case 'contact_information_type_destroyed':
-                $sentence = AuditLogHelper::contactInformationTypeDestroyed($log, $user);
+                $sentence = AuditLogHelper::contactInformationTypeDestroyed($log);
                 break;
 
             case 'address_type_created':
-                $sentence = AuditLogHelper::contactAddressTypeCreated($log, $user);
+                $sentence = AuditLogHelper::contactAddressTypeCreated($log);
                 break;
 
             case 'address_type_updated':
-                $sentence = AuditLogHelper::contactAddressTypeUpdated($log, $user);
+                $sentence = AuditLogHelper::contactAddressTypeUpdated($log);
                 break;
 
             case 'address_type_destroyed':
-                $sentence = AuditLogHelper::contactAddressTypeDestroyed($log, $user);
+                $sentence = AuditLogHelper::contactAddressTypeDestroyed($log);
                 break;
 
             case 'pronoun_created':
-                $sentence = AuditLogHelper::pronounCreated($log, $user);
+                $sentence = AuditLogHelper::pronounCreated($log);
                 break;
 
             case 'pronoun_updated':
-                $sentence = AuditLogHelper::pronounUpdated($log, $user);
+                $sentence = AuditLogHelper::pronounUpdated($log);
                 break;
 
             case 'pronoun_destroyed':
-                $sentence = AuditLogHelper::pronounDestroyed($log, $user);
+                $sentence = AuditLogHelper::pronounDestroyed($log);
                 break;
 
             case 'relationship_group_type_created':
-                $sentence = AuditLogHelper::relationshipGroupTypeCreated($log, $user);
+                $sentence = AuditLogHelper::relationshipGroupTypeCreated($log);
                 break;
 
             case 'relationship_group_type_updated':
-                $sentence = AuditLogHelper::relationshipGroupTypeUpdated($log, $user);
+                $sentence = AuditLogHelper::relationshipGroupTypeUpdated($log);
                 break;
 
             case 'relationship_group_type_destroyed':
-                $sentence = AuditLogHelper::relationshipGroupTypeDestroyed($log, $user);
+                $sentence = AuditLogHelper::relationshipGroupTypeDestroyed($log);
                 break;
 
             case 'relationship_type_created':
-                $sentence = AuditLogHelper::relationshipTypeCreated($log, $user);
+                $sentence = AuditLogHelper::relationshipTypeCreated($log);
                 break;
 
             case 'relationship_type_updated':
-                $sentence = AuditLogHelper::relationshipTypeUpdated($log, $user);
+                $sentence = AuditLogHelper::relationshipTypeUpdated($log);
                 break;
 
             case 'relationship_type_destroyed':
-                $sentence = AuditLogHelper::relationshipTypeDestroyed($log, $user);
+                $sentence = AuditLogHelper::relationshipTypeDestroyed($log);
                 break;
 
             case 'administrator_privilege_given':
-                $sentence = AuditLogHelper::administratorPrivilegeGiven($log, $user);
+                $sentence = AuditLogHelper::administratorPrivilegeGiven($log);
                 break;
 
             case 'administrator_privilege_removed':
-                $sentence = AuditLogHelper::administratorPrivilegeRemoved($log, $user);
+                $sentence = AuditLogHelper::administratorPrivilegeRemoved($log);
                 break;
 
             case 'contact_created':
@@ -146,7 +146,7 @@ class AuditLogHelper
                 break;
 
             case 'contact_destroyed':
-                $sentence = AuditLogHelper::contactDestroyed($log, $user);
+                $sentence = AuditLogHelper::contactDestroyed($log);
                 break;
 
             case 'contact_copied_to_another_vault':
@@ -218,7 +218,7 @@ class AuditLogHelper
                 break;
 
             case 'user_invited':
-                $sentence = AuditLogHelper::userInvited($log, $user);
+                $sentence = AuditLogHelper::userInvited($log);
                 break;
 
             case 'contact_template_updated':
@@ -250,19 +250,19 @@ class AuditLogHelper
                 break;
 
             case 'user_notification_channel_created':
-                $sentence = AuditLogHelper::userNotificationChannelCreated($log, $user);
+                $sentence = AuditLogHelper::userNotificationChannelCreated($log);
                 break;
 
             case 'user_notification_channel_toggled':
-                $sentence = AuditLogHelper::userNotificationChannelToggled($log, $user);
+                $sentence = AuditLogHelper::userNotificationChannelToggled($log);
                 break;
 
             case 'user_notification_channel_verified':
-                $sentence = AuditLogHelper::userNotificationChannelVerified($log, $user);
+                $sentence = AuditLogHelper::userNotificationChannelVerified($log);
                 break;
 
             case 'user_notification_channel_destroyed':
-                $sentence = AuditLogHelper::userNotificationChannelDestroyed($log, $user);
+                $sentence = AuditLogHelper::userNotificationChannelDestroyed($log);
                 break;
 
             default:
@@ -273,7 +273,7 @@ class AuditLogHelper
         return $sentence;
     }
 
-    private static function vaultCreated(AuditLog $log, User $user): string
+    private static function vaultCreated(AuditLog $log): string
     {
         $vault = Vault::find($log->object->{'vault_id'});
 
@@ -293,7 +293,7 @@ class AuditLogHelper
         return $sentence;
     }
 
-    private static function vaultUpdated(AuditLog $log, User $user): string
+    private static function vaultUpdated(AuditLog $log): string
     {
         $vault = Vault::find($log->object->{'vault_id'});
 
@@ -313,14 +313,14 @@ class AuditLogHelper
         return $sentence;
     }
 
-    private static function vaultDestroyed(AuditLog $log, User $user): string
+    private static function vaultDestroyed(AuditLog $log): string
     {
         return trans('log.vault_destroyed', [
             'name' => $log->object->{'vault_name'},
         ]);
     }
 
-    private static function vaultAccessGrant(AuditLog $log, User $user): string
+    private static function vaultAccessGrant(AuditLog $log): string
     {
         return trans('log.vault_access_grant', [
             'user_name' => $log->object->{'user_name'},
@@ -329,7 +329,7 @@ class AuditLogHelper
         ]);
     }
 
-    private static function vaultAccessPermissionChanged(AuditLog $log, User $user): string
+    private static function vaultAccessPermissionChanged(AuditLog $log): string
     {
         return trans('log.vault_access_permission_changed', [
             'user_name' => $log->object->{'user_name'},
@@ -338,126 +338,126 @@ class AuditLogHelper
         ]);
     }
 
-    private static function genderCreated(AuditLog $log, User $user): string
+    private static function genderCreated(AuditLog $log): string
     {
         return trans('log.gender_created', [
             'name' => $log->object->{'gender_name'},
         ]);
     }
 
-    private static function genderUpdated(AuditLog $log, User $user): string
+    private static function genderUpdated(AuditLog $log): string
     {
         return trans('log.gender_updated', [
             'name' => $log->object->{'gender_name'},
         ]);
     }
 
-    private static function genderDestroyed(AuditLog $log, User $user): string
+    private static function genderDestroyed(AuditLog $log): string
     {
         return trans('log.gender_destroyed', [
             'name' => $log->object->{'gender_name'},
         ]);
     }
 
-    private static function labelCreated(AuditLog $log, User $user): string
+    private static function labelCreated(AuditLog $log): string
     {
         return trans('log.label_created', [
             'label_name' => $log->object->{'label_name'},
         ]);
     }
 
-    private static function labelUpdated(AuditLog $log, User $user): string
+    private static function labelUpdated(AuditLog $log): string
     {
         return trans('log.label_updated', [
             'label_name' => $log->object->{'label_name'},
         ]);
     }
 
-    private static function labelDestroyed(AuditLog $log, User $user): string
+    private static function labelDestroyed(AuditLog $log): string
     {
         return trans('log.label_destroyed', [
             'label_name' => $log->object->{'label_name'},
         ]);
     }
 
-    private static function contactInformationTypeCreated(AuditLog $log, User $user): string
+    private static function contactInformationTypeCreated(AuditLog $log): string
     {
         return trans('log.contact_information_type_created', [
             'name' => $log->object->{'name'},
         ]);
     }
 
-    private static function contactInformationTypeUpdated(AuditLog $log, User $user): string
+    private static function contactInformationTypeUpdated(AuditLog $log): string
     {
         return trans('log.contact_information_type_updated', [
             'name' => $log->object->{'name'},
         ]);
     }
 
-    private static function contactInformationTypeDestroyed(AuditLog $log, User $user): string
+    private static function contactInformationTypeDestroyed(AuditLog $log): string
     {
         return trans('log.contact_information_type_destroyed', [
             'name' => $log->object->{'name'},
         ]);
     }
 
-    private static function contactAddressTypeCreated(AuditLog $log, User $user): string
+    private static function contactAddressTypeCreated(AuditLog $log): string
     {
         return trans('log.address_type_created', [
             'name' => $log->object->{'name'},
         ]);
     }
 
-    private static function contactAddressTypeUpdated(AuditLog $log, User $user): string
+    private static function contactAddressTypeUpdated(AuditLog $log): string
     {
         return trans('log.address_type_updated', [
             'name' => $log->object->{'name'},
         ]);
     }
 
-    private static function contactAddressTypeDestroyed(AuditLog $log, User $user): string
+    private static function contactAddressTypeDestroyed(AuditLog $log): string
     {
         return trans('log.address_type_destroyed', [
             'name' => $log->object->{'name'},
         ]);
     }
 
-    private static function pronounCreated(AuditLog $log, User $user): string
+    private static function pronounCreated(AuditLog $log): string
     {
         return trans('log.pronoun_created', [
             'name' => $log->object->{'pronoun_name'},
         ]);
     }
 
-    private static function pronounUpdated(AuditLog $log, User $user): string
+    private static function pronounUpdated(AuditLog $log): string
     {
         return trans('log.pronoun_updated', [
             'name' => $log->object->{'pronoun_name'},
         ]);
     }
 
-    private static function pronounDestroyed(AuditLog $log, User $user): string
+    private static function pronounDestroyed(AuditLog $log): string
     {
         return trans('log.pronoun_destroyed', [
             'name' => $log->object->{'pronoun_name'},
         ]);
     }
 
-    private static function relationshipGroupTypeCreated(AuditLog $log, User $user): string
+    private static function relationshipGroupTypeCreated(AuditLog $log): string
     {
         return trans('log.relationship_group_type_created', [
             'name' => $log->object->{'name'},
         ]);
     }
 
-    private static function relationshipGroupTypeUpdated(AuditLog $log, User $user): string
+    private static function relationshipGroupTypeUpdated(AuditLog $log): string
     {
         return trans('log.relationship_group_type_updated', [
             'name' => $log->object->{'name'},
         ]);
     }
 
-    private static function relationshipTypeDestroyed(AuditLog $log, User $user): string
+    private static function relationshipTypeDestroyed(AuditLog $log): string
     {
         return trans('log.relationship_type_destroyed', [
             'name' => $log->object->{'name'},
@@ -465,7 +465,7 @@ class AuditLogHelper
         ]);
     }
 
-    private static function relationshipTypeCreated(AuditLog $log, User $user): string
+    private static function relationshipTypeCreated(AuditLog $log): string
     {
         return trans('log.relationship_type_created', [
             'name' => $log->object->{'name'},
@@ -473,7 +473,7 @@ class AuditLogHelper
         ]);
     }
 
-    private static function relationshipTypeUpdated(AuditLog $log, User $user): string
+    private static function relationshipTypeUpdated(AuditLog $log): string
     {
         return trans('log.relationship_type_updated', [
             'name' => $log->object->{'name'},
@@ -481,14 +481,14 @@ class AuditLogHelper
         ]);
     }
 
-    private static function relationshipGroupTypeDestroyed(AuditLog $log, User $user): string
+    private static function relationshipGroupTypeDestroyed(AuditLog $log): string
     {
         return trans('log.relationship_group_type_destroyed', [
             'name' => $log->object->{'name'},
         ]);
     }
 
-    private static function administratorPrivilegeGiven(AuditLog $log, User $user): string
+    private static function administratorPrivilegeGiven(AuditLog $log): string
     {
         $user = User::find($log->object->{'user_id'});
 
@@ -505,7 +505,7 @@ class AuditLogHelper
         return $sentence;
     }
 
-    private static function administratorPrivilegeRemoved(AuditLog $log, User $user): string
+    private static function administratorPrivilegeRemoved(AuditLog $log): string
     {
         $user = User::find($log->object->{'user_id'});
 
@@ -564,7 +564,7 @@ class AuditLogHelper
         return $sentence;
     }
 
-    private static function contactDestroyed(AuditLog $log, User $user): string
+    private static function contactDestroyed(AuditLog $log): string
     {
         return trans('log.contact_destroyed', [
             'name' => $log->object->{'name'},
@@ -1008,7 +1008,7 @@ class AuditLogHelper
         return $sentence;
     }
 
-    private static function userInvited(AuditLog $log, User $user): string
+    private static function userInvited(AuditLog $log): string
     {
         $sentence = trans('log.user_invited', [
             'user_email' => $log->object->{'user_email'},
@@ -1172,7 +1172,7 @@ class AuditLogHelper
         return $sentence;
     }
 
-    private static function userNotificationChannelCreated(AuditLog $log, User $user): string
+    private static function userNotificationChannelCreated(AuditLog $log): string
     {
         $sentence = trans('log.user_notification_channel_created', [
             'label' => $log->object->{'label'},
@@ -1182,7 +1182,7 @@ class AuditLogHelper
         return $sentence;
     }
 
-    private static function userNotificationChannelToggled(AuditLog $log, User $user): string
+    private static function userNotificationChannelToggled(AuditLog $log): string
     {
         $sentence = trans('log.user_notification_channel_toggled', [
             'label' => $log->object->{'label'},
@@ -1192,7 +1192,7 @@ class AuditLogHelper
         return $sentence;
     }
 
-    private static function userNotificationChannelVerified(AuditLog $log, User $user): string
+    private static function userNotificationChannelVerified(AuditLog $log): string
     {
         $sentence = trans('log.user_notification_channel_verified', [
             'label' => $log->object->{'label'},
@@ -1202,7 +1202,7 @@ class AuditLogHelper
         return $sentence;
     }
 
-    private static function userNotificationChannelDestroyed(AuditLog $log, User $user): string
+    private static function userNotificationChannelDestroyed(AuditLog $log): string
     {
         $sentence = trans('log.user_notification_channel_destroyed', [
             'label' => $log->object->{'label'},

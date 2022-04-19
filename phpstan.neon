@@ -1,0 +1,26 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+    paths:
+        - app
+        - tests
+    excludePaths:
+        - tests/ApiTestCase.php
+        - tests/TestCase.php
+        - app/Providers/RouteServiceProvider.php
+    inferPrivatePropertyTypeFromConstructor: true
+    checkMissingIterableValueType: false
+    reportUnmatchedIgnoredErrors: false
+    treatPhpDocTypesAsCertain: false
+    level: 5
+    ignoreErrors:
+        - '#Call to an undefined method Illuminate\\Support\\HigherOrder#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Collection#'
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Collection#'
+        - '#Parameter \##'
+        - '#is not covariant#'
+        - '#Access to an undefined property#'
+        - '#does not accept#'
+        - '#should return#'
+        - '#unsearchable#'

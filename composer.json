@@ -25,14 +25,16 @@
     "tightenco/ziggy": "^1.0"
   },
   "require-dev": {
+    "barryvdh/laravel-ide-helper": "^2.12",
     "brianium/paratest": "^6.4",
-    "spatie/laravel-ignition": "^1.0",
     "fakerphp/faker": "^1.9.1",
     "laravel/breeze": "^1.4",
     "laravel/sail": "^1.0.1",
     "mockery/mockery": "^1.4.4",
     "nunomaduro/collision": "^6.0",
+    "nunomaduro/larastan": "^2.0",
     "phpunit/phpunit": "^9.5.10",
+    "spatie/laravel-ignition": "^1.0",
     "vimeo/psalm": "^4.14"
   },
   "autoload": {
@@ -53,7 +55,10 @@
       "@php artisan package:discover --ansi"
     ],
     "post-update-cmd": [
-      "@php artisan vendor:publish --tag=laravel-assets --ansi"
+      "@php artisan vendor:publish --tag=laravel-assets --ansi",
+      "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+      "@php artisan ide-helper:generate",
+      "@php artisan ide-helper:meta"
     ],
     "post-root-package-install": [
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

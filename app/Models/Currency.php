@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Currency extends Model
 {
@@ -25,7 +26,7 @@ class Currency extends Model
      *
      * @return BelongsToMany
      */
-    public function accounts()
+    public function accounts(): BelongsToMany
     {
         return $this->belongsToMany(Account::class, 'account_currencies', 'currency_id', 'account_id')
             ->withPivot('active')

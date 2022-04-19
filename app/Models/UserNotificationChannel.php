@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class UserNotificationChannel extends Model
 {
@@ -58,7 +59,7 @@ class UserNotificationChannel extends Model
      *
      * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -69,7 +70,7 @@ class UserNotificationChannel extends Model
      *
      * @return HasMany
      */
-    public function userNotificationSent()
+    public function userNotificationSent(): HasMany
     {
         return $this->hasMany(UserNotificationSent::class);
     }
@@ -79,7 +80,7 @@ class UserNotificationChannel extends Model
      *
      * @return BelongsToMany
      */
-    public function contactReminders()
+    public function contactReminders(): BelongsToMany
     {
         return $this->belongsToMany(ContactReminder::class, 'contact_reminder_scheduled')->withTimestamps()->withPivot('scheduled_at', 'triggered');
     }

@@ -9,7 +9,7 @@ use App\Models\ContactReminder;
 class ContactReminderHelper
 {
     /**
-     * Get the date as a string, based on the prefered date format of the given
+     * Get the date as a string, based on the preferred date format of the given
      * user.
      *
      * @param  ContactReminder  $reminder
@@ -18,6 +18,8 @@ class ContactReminderHelper
      */
     public static function formatDate(ContactReminder $reminder, User $user): ?string
     {
+        $reminderAsString = '';
+
         if (! $reminder->day && ! $reminder->month && ! $reminder->year) {
             return null;
         }
@@ -29,27 +31,12 @@ class ContactReminderHelper
         if ($reminder->day && $reminder->month && ! $reminder->year) {
             $carbonDate = Carbon::parse('1900-'.$reminder->month.'-'.$reminder->day);
 
-            switch ($user->date_format) {
-                case 'MMM DD, YYYY':
-                    $reminderAsString = Carbon::parse($carbonDate)->isoFormat('MMM DD');
-                    break;
-
-                case 'DD MMM YYYY':
-                    $reminderAsString = Carbon::parse($carbonDate)->isoFormat('DD MMM');
-                    break;
-
-                case 'YYYY/MM/DD':
-                    $reminderAsString = Carbon::parse($carbonDate)->isoFormat('MM/DD');
-                    break;
-
-                case 'DD/MM/YYYY':
-                    $reminderAsString = Carbon::parse($carbonDate)->isoFormat('DD/MM');
-                    break;
-
-                default:
-                    $reminderAsString = Carbon::parse($carbonDate)->isoFormat('DD/MM');
-                    break;
-            }
+            $reminderAsString = match ($user->date_format) {
+                'MMM DD, YYYY' => Carbon::parse($carbonDate)->isoFormat('MMM DD'),
+                'DD MMM YYYY' => Carbon::parse($carbonDate)->isoFormat('DD MMM'),
+                'YYYY/MM/DD' => Carbon::parse($carbonDate)->isoFormat('MM/DD'),
+                default => Carbon::parse($carbonDate)->isoFormat('DD/MM'),
+            };
         }
 
         if ($reminder->day && $reminder->month && $reminder->year) {

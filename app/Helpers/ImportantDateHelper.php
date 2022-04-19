@@ -16,9 +16,7 @@ class ImportantDateHelper
      */
     public static function getAge(ContactImportantDate $date): ?int
     {
-        if (! $date) {
-            return null;
-        }
+        $age = 0;
 
         if (self::determineType($date) === ContactImportantDate::TYPE_FULL_DATE) {
             $age = Carbon::parse($date->year.'-'.$date->month.'-'.$date->day)->age;
@@ -51,9 +49,7 @@ class ImportantDateHelper
      */
     public static function formatDate(ContactImportantDate $date, User $user): ?string
     {
-        if (! $date) {
-            return null;
-        }
+        $dateAsString = '';
 
         if (self::determineType($date) === ContactImportantDate::TYPE_FULL_DATE) {
             $dateAsString = Carbon::parse($date->year.'-'.$date->month.'-'.$date->day)->isoFormat($user->date_format);
@@ -66,27 +62,12 @@ class ImportantDateHelper
         if (self::determineType($date) === ContactImportantDate::TYPE_MONTH_DAY) {
             $date = Carbon::parse('1900-'.$date->month.'-'.$date->day);
 
-            switch ($user->date_format) {
-                case 'MMM DD, YYYY':
-                    $dateAsString = Carbon::parse($date)->isoFormat('MMM DD');
-                    break;
-
-                case 'DD MMM YYYY':
-                    $dateAsString = Carbon::parse($date)->isoFormat('DD MMM');
-                    break;
-
-                case 'YYYY/MM/DD':
-                    $dateAsString = Carbon::parse($date)->isoFormat('MM/DD');
-                    break;
-
-                case 'DD/MM/YYYY':
-                    $dateAsString = Carbon::parse($date)->isoFormat('DD/MM');
-                    break;
-
-                default:
-                    $dateAsString = Carbon::parse($date)->isoFormat('DD/MM');
-                    break;
-            }
+            $dateAsString = match ($user->date_format) {
+                'MMM DD, YYYY' => Carbon::parse($date)->isoFormat('MMM DD'),
+                'DD MMM YYYY' => Carbon::parse($date)->isoFormat('DD MMM'),
+                'YYYY/MM/DD' => Carbon::parse($date)->isoFormat('MM/DD'),
+                default => Carbon::parse($date)->isoFormat('DD/MM'),
+            };
         }
 
         // case: date is empty. this shouldn't happen, but we'll cover the case
@@ -110,9 +91,7 @@ class ImportantDateHelper
      */
     public static function determineType(ContactImportantDate $date): ?string
     {
-        if (! $date) {
-            return null;
-        }
+        $type = '';
 
         // case: date is empty. this shouldn't happen, but we'll cover the case
         // nonetheless

@@ -38,7 +38,7 @@ class BaseServiceTest extends TestCase
         ];
 
         $stub = $this->getMockForAbstractClass(BaseService::class);
-        $stub->rules([$rules]);
+        $stub->rules();
 
         $this->assertTrue(
             $stub->validateRules([

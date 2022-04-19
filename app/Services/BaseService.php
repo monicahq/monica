@@ -101,7 +101,7 @@ abstract class BaseService
     /**
      * Validate that the author of the action is the account administrator.
      *
-     * @param  array  $data
+     * @throws NotEnoughPermissionException
      */
     private function validateAuthorIsAccountAdministrator(): void
     {

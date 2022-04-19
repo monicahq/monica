@@ -48,9 +48,9 @@ class Contact extends Model
      *
      * @return array
      */
-    public function toSearchableArray()
+    public function toSearchableArray(): array
     {
-        $array = [
+        return [
             'id' => $this->id,
             'vault_id' => $this->vault_id,
             'first_name' => $this->first_name,
@@ -63,8 +63,6 @@ class Contact extends Model
                 'contact' => $this->id,
             ]),
         ];
-
-        return $array;
     }
 
     /**
@@ -72,7 +70,7 @@ class Contact extends Model
      *
      * @return void
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
@@ -86,7 +84,7 @@ class Contact extends Model
      *
      * @return BelongsTo
      */
-    public function vault()
+    public function vault(): BelongsTo
     {
         return $this->belongsTo(Vault::class);
     }
@@ -96,7 +94,7 @@ class Contact extends Model
      *
      * @return BelongsTo
      */
-    public function gender()
+    public function gender(): BelongsTo
     {
         return $this->belongsTo(Gender::class);
     }
@@ -106,7 +104,7 @@ class Contact extends Model
      *
      * @return BelongsTo
      */
-    public function pronoun()
+    public function pronoun(): BelongsTo
     {
         return $this->belongsTo(Pronoun::class);
     }
@@ -116,7 +114,7 @@ class Contact extends Model
      *
      * @return BelongsTo
      */
-    public function template()
+    public function template(): BelongsTo
     {
         return $this->belongsTo(Template::class);
     }
@@ -126,7 +124,7 @@ class Contact extends Model
      *
      * @return HasMany
      */
-    public function contactLogs()
+    public function contactLogs(): HasMany
     {
         return $this->hasMany(ContactLog::class)->orderBy('created_at', 'desc');
     }
@@ -136,7 +134,7 @@ class Contact extends Model
      *
      * @return BelongsToMany
      */
-    public function relationships()
+    public function relationships(): BelongsToMany
     {
         return $this->belongsToMany(Contact::class, 'relationships', 'contact_id', 'related_contact_id');
     }
@@ -146,7 +144,7 @@ class Contact extends Model
      *
      * @return BelongsToMany
      */
-    public function labels()
+    public function labels(): BelongsToMany
     {
         return $this->belongsToMany(Label::class);
     }
@@ -156,7 +154,7 @@ class Contact extends Model
      *
      * @return HasMany
      */
-    public function contactInformation()
+    public function contactInformation(): HasMany
     {
         return $this->hasMany(ContactInformation::class);
     }
@@ -166,7 +164,7 @@ class Contact extends Model
      *
      * @return HasMany
      */
-    public function addresses()
+    public function addresses(): HasMany
     {
         return $this->hasMany(Address::class);
     }
@@ -176,7 +174,7 @@ class Contact extends Model
      *
      * @return HasMany
      */
-    public function notes()
+    public function notes(): HasMany
     {
         return $this->hasMany(Note::class);
     }
@@ -186,7 +184,7 @@ class Contact extends Model
      *
      * @return HasMany
      */
-    public function dates()
+    public function dates(): HasMany
     {
         return $this->hasMany(ContactImportantDate::class);
     }
@@ -196,7 +194,7 @@ class Contact extends Model
      *
      * @return HasMany
      */
-    public function reminders()
+    public function reminders(): HasMany
     {
         return $this->hasMany(ContactReminder::class);
     }

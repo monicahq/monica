@@ -18,3 +18,6 @@ yarn-error.log
 /tests/Features/screenshots/
 /tests/Features/videos/
 /data.ms
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php

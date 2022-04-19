@@ -31,9 +31,9 @@ class VaultSettingsIndexViewHelperTest extends TestCase
         $vault->users()->sync([$userInVault->id => ['permission' => 100]]);
 
         $array = VaultSettingsIndexViewHelper::data($vault);
-        $this->assertEquals(
+        $this->assertCount(
             7,
-            count($array)
+            $array
         );
         $this->assertArrayHasKey('templates', $array);
         $this->assertArrayHasKey('users_in_vault', $array);

@@ -55,6 +55,9 @@
       ],
       "resources/**/*.{css,scss}": [
         "prettier --write --ignore-unknown"
+      ],
+      "*.php": [
+        "php artisan ide-helper:models --nowrite"
       ]
     }
   },
