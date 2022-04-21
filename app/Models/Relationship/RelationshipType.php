@@ -92,20 +92,20 @@ class RelationshipType extends Model
                 // in some language, masculine and feminine version of a relationship type is the same.
                 // we need to keep just one version in that case.
                 if ($femaleVersion === $maleVersion) {
-                    // `Regis Freyd's significant other`
+                    // `Maazarin's significant other`
                     return $maleVersionWithName;
                 }
 
                 return $defaultGender === Gender::FEMALE ?
-                    // `Regis Freyd's aunt/uncle`
+                    // `Maazarin's aunt/uncle`
                     $femaleVersionWithName.'/'.$maleVersion :
-                    // `Regis Freyd's uncle/aunt`
+                    // `Maazarin's uncle/aunt`
                     $maleVersionWithName.'/'.$femaleVersion;
             } else {
                 return $gender === Gender::FEMALE ?
-                    // `Regis Freyd's aunt`
+                    // `Maazarin's aunt`
                     $femaleVersionWithName :
-                    // `Regis Freyd's uncle`
+                    // `Maazarin's uncle`
                     $maleVersionWithName;
             }
         }
