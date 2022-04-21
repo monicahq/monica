@@ -295,7 +295,7 @@ You can support the development of Monica [on Patreon](https://www.patreon.com/m
 
 Our team is made of two core members:
 
-- [Regis Freyd (djaiss)](https://github.com/djaiss)
+- [Maazarin (djaiss)](https://github.com/djaiss)
 
 - [Alexis Saettler (asbiin)](https://github.com/asbiin)
 
