@@ -233,7 +233,7 @@ return [
 
     'relationship_type_nephew' => 'neveu',
     'relationship_type_nephew_female' => 'nièce',
-    'relationship_type_nephew_with_name' => 'neuveu de :name',
+    'relationship_type_nephew_with_name' => 'neveu de :name',
     'relationship_type_nephew_female_with_name' => 'nièce de :name',
 
     'relationship_type_cousin' => 'cousin',
