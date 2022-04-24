@@ -6,11 +6,11 @@ use Tests\ApiTestCase;
 use Illuminate\Support\Str;
 use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
+use Illuminate\Http\UploadedFile;
 use Sabre\VObject\PHPUnitAssertions;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Http\UploadedFile;
 
 class VCardContactTest extends ApiTestCase
 {

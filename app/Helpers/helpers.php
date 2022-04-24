@@ -1,8 +1,6 @@
 <?php
 
 use App\Helpers\LocaleHelper;
-use Illuminate\Support\Facades\Storage;
-use League\Flysystem\Adapter\AbstractAdapter;
 
 if (! function_exists('htmldir')) {
     /**
