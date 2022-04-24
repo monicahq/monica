@@ -60,7 +60,7 @@ jobs:
 
       - name: Store changelog file
         if: steps.semantic.outputs.new_release_published == 'true'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: changelog
           path: CHANGELOG.md
@@ -141,13 +141,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Store package
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: package
           path: ${{ steps.package.outputs.package }}
 
       - name: Store assets
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: assets
           path: ${{ steps.package.outputs.assets }}
