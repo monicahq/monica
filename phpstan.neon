@@ -6,6 +6,7 @@ parameters:
     paths:
         - app
     inferPrivatePropertyTypeFromConstructor: true
+    checkMissingIterableValueType: false
     level: 5
     ignoreErrors:
         - '#Call to an undefined method Illuminate\\View\\View::with[a-zA-Z0-9\\_]+\(\)\.#'

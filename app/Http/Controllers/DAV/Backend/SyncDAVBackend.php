@@ -92,7 +92,8 @@ trait SyncDAVBackend
     public function getLastModified($collectionId)
     {
         return $this->getObjects($collectionId)
-                    ->max('updated_at');
+                    ->map(function ($object) {  return $object->updated_at; })
+                    ->max();
     }
 
     /**

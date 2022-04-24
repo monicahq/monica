@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use function Safe\exec;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Carbon;
@@ -618,7 +619,7 @@ class SetupTest extends Command
 
     public function populateConversations()
     {
-        if (rand(1, 1) == 1) {
+        if (rand(1, 3) == 1) {
             for ($j = 0; $j < rand(1, 20); $j++) {
                 $contactFieldType = ContactFieldType::where('account_id', $this->account->id)->orderBy(DB::raw('RAND()'))->firstOrFail();
 
@@ -645,7 +646,7 @@ class SetupTest extends Command
 
     public function populateLifeEvents()
     {
-        if (rand(1, 1) == 1) {
+        if (rand(1, 3) == 1) {
             for ($j = 0; $j < rand(1, 20); $j++) {
                 $lifeEventType = LifeEventType::where('account_id', $this->account->id)->orderBy(DB::raw('RAND()'))->firstOrFail();
 
