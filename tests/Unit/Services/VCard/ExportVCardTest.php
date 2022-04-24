@@ -312,6 +312,24 @@ class ExportVCardTest extends TestCase
     }
 
     /** @test */
+    public function vcard_add_birthday_with_unknown_year()
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $contact->setSpecialDate('birthdate', 0, 10, 5);
+        $vCard = new VCard();
+
+        $exportVCard = app(ExportVCard::class);
+        $this->invokePrivateMethod($exportVCard, 'exportBirthday', [$contact, $vCard]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+        $this->assertStringContainsString('BDAY:--1005', $vCard->serialize());
+    }
+
+    /** @test */
     public function vcard_add_contact_fields_empty()
     {
         $account = factory(Account::class)->create();
