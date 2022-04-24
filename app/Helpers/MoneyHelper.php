@@ -89,7 +89,7 @@ class MoneyHelper
         }
 
         $moneyParser = new DecimalMoneyParser(new ISOCurrencies());
-        $money = $moneyParser->parse((string) $exchange, $currency->iso);
+        $money = $moneyParser->parse((string) $exchange, new MoneyCurrency($currency->iso));
 
         return (int) $money->getAmount();
     }

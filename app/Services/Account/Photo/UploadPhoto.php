@@ -3,6 +3,8 @@
 namespace App\Services\Account\Photo;
 
 use function Safe\substr;
+
+use App\Helpers\StorageHelper;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Models\Account\Photo;
@@ -111,9 +113,9 @@ class UploadPhoto extends BaseService
         $tempfile = $this->storeImage('local', $image, 'temp/'.$filename);
 
         try {
-            $storagePath = disk_adapter('local')->getPathPrefix();
+            $storagePath = StorageHelper::disk('local')->path($tempfile);
             // This sets the basePath to get the filesize later
-            $image = $image->setFileInfoFromPath($storagePath.$tempfile);
+            $image = $image->setFileInfoFromPath($storagePath);
             $extension = (new \Mimey\MimeTypes)->getExtension($image->mime());
             if (empty($extension)) {
                 $extension = str_replace(' ', '', Arr::get($data, 'extension'));

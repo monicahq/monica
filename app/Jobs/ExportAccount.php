@@ -63,7 +63,7 @@ class ExportAccount implements ShouldQueue
             ]);
 
             // get the temp file that we just created
-            $tempFilePath = disk_adapter('local')->getPathPrefix().$tempFileName;
+            $tempFilePath = StorageHelper::disk('local')->path($tempFileName);
 
             // move the file to the public storage
             $file = StorageHelper::disk(config('filesystems.default'))

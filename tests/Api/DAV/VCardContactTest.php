@@ -10,6 +10,7 @@ use Sabre\VObject\PHPUnitAssertions;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\UploadedFile;
 
 class VCardContactTest extends ApiTestCase
 {
@@ -97,12 +98,11 @@ class VCardContactTest extends ApiTestCase
      */
     public function test_carddav_put_one_contact_with_photo_already_set()
     {
-        Storage::fake();
-
         $user = $this->signin();
         $photo = factory(Photo::class)->create([
             'account_id' => $user->account_id,
         ]);
+        UploadedFile::fake()->image('file.jpg')->storeAs('', 'file.jpg');
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
             'avatar_source' => 'photo',

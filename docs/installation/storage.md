@@ -21,7 +21,7 @@ We currently only support AWS S3 driver as external storage.
 You need to define at least these environment variables:
 
 ```
-DEFAULT_FILESYSTEM=s3
+FILESYSTEM_DISK=s3
 AWS_BUCKET=
 AWS_DEFAULT_REGION=
 AWS_ACCESS_KEY_ID=
@@ -85,9 +85,9 @@ Then save `AccessKeyId` and `SecretAccessKey` in `AWS_ACCESS_KEY_ID` and `AWS_SE
 
 ### 3. Set environment variables
 
-Set the `DEFAULT_FILESYSTEM` variable to use S3 storage:
+Set the `FILESYSTEM_DISK` variable to use S3 storage:
 ```
-DEFAULT_FILESYSTEM=s3
+FILESYSTEM_DISK=s3
 ```
 
 

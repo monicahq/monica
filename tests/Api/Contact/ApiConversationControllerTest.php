@@ -94,7 +94,7 @@ class ApiConversationControllerTest extends ApiTestCase
         $response->assertJsonFragment([
             'total' => 10,
             'current_page' => 1,
-            'per_page' => '1',
+            'per_page' => 1,
             'last_page' => 10,
         ]);
 
@@ -103,7 +103,7 @@ class ApiConversationControllerTest extends ApiTestCase
         $response->assertJsonFragment([
             'total' => 10,
             'current_page' => 1,
-            'per_page' => '2',
+            'per_page' => 2,
             'last_page' => 5,
         ]);
     }
