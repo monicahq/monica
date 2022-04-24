@@ -127,6 +127,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Passport::ignoreMigrations();
         Cashier::ignoreMigrations();
+        Cashier::useCustomerModel(\App\Models\User\User::class);
         Cashier::formatCurrencyUsing(function ($amount, $currency) {
             $currency = \App\Models\Settings\Currency::where('iso', strtoupper($currency ?? config('cashier.currency')))->first();
 
