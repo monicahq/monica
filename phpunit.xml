@@ -25,7 +25,7 @@
     </testsuite>
 
     <testsuite name="Feature">
-      <!-- <directory suffix="Test.php">./tests/Commands</directory> -->
+      <directory suffix="Test.php">./tests/Commands</directory>
       <directory suffix="Test.php">./tests/Feature</directory>
     </testsuite>
 
