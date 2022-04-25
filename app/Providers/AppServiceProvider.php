@@ -89,6 +89,8 @@ class AppServiceProvider extends ServiceProvider
             Schema::defaultStringLength(191);
         }
 
+        Cashier::useCustomerModel(\App\Models\Account\Account::class);
+
         VerifyEmail::toMailUsing(function ($user, $verificationUrl) {
             return EmailMessaging::verifyEmailMail($user, $verificationUrl);
         });
@@ -127,7 +129,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Passport::ignoreMigrations();
         Cashier::ignoreMigrations();
-        Cashier::useCustomerModel(\App\Models\Account\Account::class);
         Cashier::formatCurrencyUsing(function ($amount, $currency) {
             $currency = \App\Models\Settings\Currency::where('iso', strtoupper($currency ?? config('cashier.currency')))->first();
 

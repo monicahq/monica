@@ -292,7 +292,7 @@ class AccountTest extends FeatureTestCase
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
             'account_id' => $account->id,
-            'stripe_plan' => 'chandler_5',
+            'stripe_price' => 'chandler_5',
             'stripe_id' => 'sub_C0R444pbxddhW7',
             'name' => 'fakePlan',
         ]);
@@ -312,7 +312,7 @@ class AccountTest extends FeatureTestCase
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
             'account_id' => $account->id,
-            'stripe_plan' => 'chandler_annual',
+            'stripe_price' => 'chandler_annual',
             'stripe_id' => 'sub_C0R444pbxddhW7',
             'name' => 'annualPlan',
         ]);
@@ -343,7 +343,7 @@ class AccountTest extends FeatureTestCase
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
             'account_id' => $account->id,
-            'stripe_plan' => 'chandler_5',
+            'stripe_price' => 'chandler_5',
             'stripe_id' => 'sub_C0R444pbxddhW7',
             'name' => 'fakePlan',
         ]);
@@ -373,7 +373,7 @@ class AccountTest extends FeatureTestCase
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
             'account_id' => $account->id,
-            'stripe_plan' => 'chandler_5',
+            'stripe_price' => 'chandler_5',
             'stripe_id' => 'sub_C0R444pbxddhW7',
             'name' => 'fakePlan',
         ]);
@@ -398,7 +398,7 @@ class AccountTest extends FeatureTestCase
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
             'account_id' => $account->id,
-            'stripe_plan' => 'chandler_5',
+            'stripe_price' => 'chandler_5',
             'stripe_id' => 'sub_C0R444pbxddhW7',
             'name' => 'fakePlan',
         ]);

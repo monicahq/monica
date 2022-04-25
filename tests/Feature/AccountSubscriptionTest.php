@@ -148,7 +148,7 @@ class AccountSubscriptionTest extends FeatureTestCase
         factory(Subscription::class)->create([
             'account_id' => $user->account_id,
             'name' => 'Annual',
-            'stripe_plan' => 'annual',
+            'stripe_price' => 'annual',
             'stripe_id' => 'test',
             'quantity' => 1,
         ]);
@@ -163,7 +163,7 @@ class AccountSubscriptionTest extends FeatureTestCase
         factory(Subscription::class)->create([
             'account_id' => $user->account_id,
             'name' => 'Annual',
-            'stripe_plan' => 'annual',
+            'stripe_price' => 'annual',
             'stripe_id' => 'test',
             'quantity' => 1,
         ]);
@@ -179,7 +179,7 @@ class AccountSubscriptionTest extends FeatureTestCase
         factory(Subscription::class)->create([
             'account_id' => $user->account_id,
             'name' => 'Annual',
-            'stripe_plan' => 'annual',
+            'stripe_price' => 'annual',
             'stripe_id' => 'sub_X',
             'quantity' => 1,
         ]);
@@ -208,6 +208,7 @@ class AccountSubscriptionTest extends FeatureTestCase
             'payment_method' => 'pm_card_visa',
             'plan' => 'annual',
         ]);
+        $response->dump();
 
         $response->assertRedirect('/settings/subscriptions/upgrade/success');
     }

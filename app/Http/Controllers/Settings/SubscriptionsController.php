@@ -184,7 +184,7 @@ class SubscriptionsController extends Controller
     {
         try {
             $payment = $this->stripeCall(function () use ($id) {
-                return StripePaymentIntent::retrieve($id, Cashier::stripeOptions());
+                return StripePaymentIntent::retrieve($id, Cashier::stripe());
             });
         } catch (StripeException $e) {
             return back()->withErrors($e->getMessage());
