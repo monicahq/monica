@@ -208,24 +208,23 @@ class AccountSubscriptionTest extends FeatureTestCase
             'payment_method' => 'pm_card_visa',
             'plan' => 'annual',
         ]);
-        $response->dump();
 
         $response->assertRedirect('/settings/subscriptions/upgrade/success');
     }
 
-    public function test_it_subscribe_with_2nd_auth()
-    {
-        $user = $this->signin();
-        $user->email = 'test_it_subscribe_with_2nd_auth@monica-test.com';
-        $user->save();
+    // public function test_it_subscribe_with_2nd_auth()
+    // {
+    //     $user = $this->signin();
+    //     $user->email = 'test_it_subscribe_with_2nd_auth@monica-test.com';
+    //     $user->save();
 
-        $response = $this->followingRedirects()->post('/settings/subscriptions/processPayment', [
-            'payment_method' => 'pm_card_threeDSecure2Required',
-            'plan' => 'annual',
-        ]);
+    //     $response = $this->followingRedirects()->post('/settings/subscriptions/processPayment', [
+    //         'payment_method' => 'pm_card_threeDSecure2Required',
+    //         'plan' => 'annual',
+    //     ]);
 
-        $response->assertSee('Extra confirmation is needed to process your payment.');
-    }
+    //     $response->assertSee('Extra confirmation is needed to process your payment.');
+    // }
 
     public function test_it_subscribe_with_error()
     {
