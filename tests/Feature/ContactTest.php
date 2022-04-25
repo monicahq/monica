@@ -496,6 +496,7 @@ class ContactTest extends FeatureTestCase
         config(['monica.requires_subscription' => false]);
 
         $response = $this->get('/people/add');
+        $response->dump();
 
         $response->assertStatus(200);
     }
