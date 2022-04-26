@@ -496,7 +496,6 @@ class ContactTest extends FeatureTestCase
         config(['monica.requires_subscription' => false]);
 
         $response = $this->get('/people/add');
-        $response->dump();
 
         $response->assertStatus(200);
     }
@@ -509,10 +508,8 @@ class ContactTest extends FeatureTestCase
             'number_of_views' => 0,
         ]);
 
-        $response = $this->get('/people/'.$contact->hashID());
-        $response->dump();
-        $response = $this->get('/people/'.$contact->hashID());
-        $response->dump();
+        $this->get('/people/'.$contact->hashID());
+        $this->get('/people/'.$contact->hashID());
 
         $this->assertDatabaseHas('contacts', [
             'number_of_views' => 2,
