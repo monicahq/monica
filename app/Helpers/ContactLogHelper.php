@@ -96,6 +96,16 @@ class ContactLogHelper
                 $sentence = ContactLogHelper::templateUpdated($log);
                 break;
 
+            case 'loan_created':
+                $sentence = ContactLogHelper::loanCreated($log);
+                break;
+            case 'loan_updated':
+                $sentence = ContactLogHelper::loanUpdated($log);
+                break;
+            case 'loan_destroyed':
+                $sentence = ContactLogHelper::loanDestroyed($log);
+                break;
+
             default:
                 $sentence = 'No translation';
                 break;
@@ -304,6 +314,33 @@ class ContactLogHelper
     private static function templateUpdated(ContactLog $log): string
     {
         $sentence = trans('contact_log.contact_template_updated');
+
+        return $sentence;
+    }
+
+    private static function loanCreated(ContactLog $log): string
+    {
+        $sentence = trans('contact_log.loan_created', [
+            'loan_name' => $log->object->{'loan_name'},
+        ]);
+
+        return $sentence;
+    }
+
+    private static function loanUpdated(ContactLog $log): string
+    {
+        $sentence = trans('contact_log.loan_updated', [
+            'loan_name' => $log->object->{'loan_name'},
+        ]);
+
+        return $sentence;
+    }
+
+    private static function loanDestroyed(ContactLog $log): string
+    {
+        $sentence = trans('contact_log.loan_destroyed', [
+            'loan_name' => $log->object->{'loan_name'},
+        ]);
 
         return $sentence;
     }

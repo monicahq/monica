@@ -17,4 +17,12 @@ class ContactImportantDateTest extends TestCase
 
         $this->assertTrue($date->contact()->exists());
     }
+
+    /** @test */
+    public function it_has_one_important_date_type()
+    {
+        $date = ContactImportantDate::factory()->create();
+
+        $this->assertTrue($date->contactImportantDateType()->exists());
+    }
 }

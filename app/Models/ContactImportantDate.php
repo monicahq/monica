@@ -36,7 +36,6 @@ class ContactImportantDate extends Model
         'day',
         'month',
         'year',
-        'type',
     ];
 
     /**
@@ -47,5 +46,15 @@ class ContactImportantDate extends Model
     public function contact()
     {
         return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * Get the important date type associated with the contact date.
+     *
+     * @return BelongsTo
+     */
+    public function contactImportantDateType()
+    {
+        return $this->belongsTo(ContactImportantDateType::class);
     }
 }

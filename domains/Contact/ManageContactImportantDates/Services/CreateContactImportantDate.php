@@ -8,10 +8,12 @@ use App\Jobs\CreateContactLog;
 use App\Models\ContactFeedItem;
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactImportantDate;
+use App\Models\ContactImportantDateType;
 
 class CreateContactImportantDate extends BaseService implements ServiceInterface
 {
     private ContactImportantDate $date;
+    private array $data;
 
     /**
      * Get the validation rules that apply to the service.
@@ -25,11 +27,11 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
             'contact_id' => 'required|integer|exists:contacts,id',
+            'contact_important_date_type_id' => 'nullable|integer|exists:contact_important_date_types,id',
             'label' => 'required|string|max:255',
             'day' => 'nullable|integer',
             'month' => 'nullable|integer',
             'year' => 'nullable|integer',
-            'type' => 'nullable|string|max:255',
         ];
     }
 
@@ -56,20 +58,32 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
      */
     public function execute(array $data): ContactImportantDate
     {
-        $this->validateRules($data);
+        $this->data = $data;
+        $this->validate();
 
         $this->date = ContactImportantDate::create([
             'contact_id' => $data['contact_id'],
+            'contact_important_date_type_id' => $this->valueOrNull($data, 'contact_important_date_type_id'),
             'label' => $data['label'],
             'day' => $this->valueOrNull($data, 'day'),
             'month' => $this->valueOrNull($data, 'month'),
             'year' => $this->valueOrNull($data, 'year'),
-            'type' => $this->valueOrNull($data, 'type'),
         ]);
 
         $this->log();
 
         return $this->date;
+    }
+
+    private function validate(): void
+    {
+        $this->validateRules($this->data);
+
+        // make sure the vault matches
+        if ($this->valueOrNull($this->data, 'contact_important_date_type_id')) {
+            ContactImportantDateType::where('vault_id', $this->data['vault_id'])
+                ->findOrFail($this->data['contact_important_date_type_id']);
+        }
     }
 
     private function log(): void

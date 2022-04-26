@@ -33,7 +33,7 @@ select {
     <!-- add modal -->
     <form
       v-if="addEmailModalShown"
-      class="item-list mb-6 rounded-lg border border-b border-gray-200 bg-white hover:bg-slate-50"
+      class="item-list bg-form mb-6 rounded-lg border border-b border-gray-200 hover:bg-slate-50"
       @submit.prevent="store()">
       <div class="border-b border-gray-200 p-5">
         <errors :errors="form.errors" />

@@ -65,7 +65,7 @@ select {
     <!-- add a reminder modal -->
     <form
       v-if="addReminderModalShown"
-      class="mb-6 rounded-lg border border-gray-200 bg-white"
+      class="bg-form mb-6 rounded-lg border border-gray-200"
       @submit.prevent="submit()">
       <div class="border-b border-gray-200">
         <div v-if="form.errors.length > 0" class="p-5">
@@ -261,7 +261,7 @@ select {
           </div>
 
           <!-- edit reminder modal -->
-          <form v-if="editedReminderId == reminder.id" class="bg-white" @submit.prevent="update(reminder)">
+          <form v-if="editedReminderId == reminder.id" class="bg-form" @submit.prevent="update(reminder)">
             <div class="border-b border-gray-200">
               <div v-if="form.errors.length > 0" class="p-5">
                 <errors :errors="form.errors" />
@@ -449,10 +449,6 @@ export default {
     paginator: {
       type: Object,
       default: null,
-    },
-    moduleMode: {
-      type: Boolean,
-      default: true,
     },
   },
 

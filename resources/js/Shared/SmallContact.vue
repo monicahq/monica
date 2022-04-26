@@ -1,7 +1,7 @@
 <style lang="scss" scoped></style>
 
 <template>
-  <div class="relative inline" :style="'top: ' + top">
+  <div class="relative inline" :class="divOuterClass" :style="'top: ' + top">
     <a-popover placement="bottomLeft">
       <template #content>
         <div class="flex">
@@ -15,15 +15,22 @@
           </div>
         </div>
       </template>
-      <template #title>
-        <span>Lorraine Del Giacco</span>
+      <template v-if="showName" #title>
+        <span>FOU</span>
       </template>
       <div class="inline-flex items-center text-sm">
         <img
-          class="mr-2 inline rounded-full"
-          src="https://ucarecdn.com/2f86ee48-9258-4b5c-aaf5-82269edcf770/-/scale_crop/25x25/smart/"
+          class="inline rounded-full"
+          :class="showName ? 'mr-2' : ''"
+          :src="
+            'https://ucarecdn.com/2f86ee48-9258-4b5c-aaf5-82269edcf770/-/scale_crop/' +
+            previewContactSize +
+            'x' +
+            previewContactSize +
+            '/smart/'
+          "
           alt="" />
-        <a class="colored-link" href="">Lorraine Del Giaccosldkfjalsdjkfs</a>
+        <a v-if="showName" class="colored-link" href="">FOU</a>
       </div>
     </a-popover>
   </div>
@@ -37,6 +44,22 @@ export default {
     top: {
       type: String,
       default: '0px',
+    },
+    contactId: {
+      type: Number,
+      default: 0,
+    },
+    previewContactSize: {
+      type: Number,
+      default: 18,
+    },
+    showName: {
+      type: Boolean,
+      default: true,
+    },
+    divOuterClass: {
+      type: String,
+      default: '',
     },
   },
 };

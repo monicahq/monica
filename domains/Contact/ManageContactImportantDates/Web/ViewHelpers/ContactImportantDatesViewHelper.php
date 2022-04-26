@@ -49,7 +49,7 @@ class ContactImportantDatesViewHelper
             'id' => $date->id,
             'label' => $date->label,
             'date' => ImportantDateHelper::formatDate($date, $user),
-            'type' => $date->type,
+            'type' => $date->contactImportantDateType ? $date->contactImportantDateType->label : null,
             'age' => ImportantDateHelper::getAge($date),
             'choice' => ImportantDateHelper::determineType($date),
             'completeDate' => $completeDate,

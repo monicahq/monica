@@ -29,13 +29,14 @@ return new class extends Migration
         Schema::create('contact_important_dates', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('contact_id');
+            $table->unsignedBigInteger('contact_important_date_type_id')->nullable();
             $table->string('label');
             $table->integer('day')->nullable();
             $table->integer('month')->nullable();
             $table->integer('year')->nullable();
-            $table->string('type')->nullable();
             $table->timestamps();
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+            $table->foreign('contact_important_date_type_id')->references('id')->on('contact_important_date_types')->onDelete('set null');
         });
     }
 

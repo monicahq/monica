@@ -200,6 +200,30 @@ class Contact extends Model
     }
 
     /**
+     * Get the loans associated with the contact as the person who takes the
+     * loan.
+     * I know loaner is not a real word, but it's the best I could come up with.
+     *
+     * @return BelongsToMany
+     */
+    public function loansAsLoaner()
+    {
+        return $this->belongsToMany(Loan::class, 'contact_loan', 'loaner_id');
+    }
+
+    /**
+     * Get the loans associated with the contact as the person who takes the
+     * loan.
+     * I know loanee is not a real word, but it's the best I could come up with.
+     *
+     * @return BelongsToMany
+     */
+    public function loansAsLoanee()
+    {
+        return $this->belongsToMany(Loan::class, 'contact_loan', 'loanee_id');
+    }
+
+    /**
      * Get the name of the contact, according to the user preference.
      *
      * @param  User  $user

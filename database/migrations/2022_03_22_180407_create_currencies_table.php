@@ -23,13 +23,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('user_preferred_currency', function (Blueprint $table) {
-            $table->unsignedBigInteger('currency_id');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        });
-
         Schema::create('account_currencies', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('currency_id');
@@ -216,7 +209,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('currencies');
-        Schema::dropIfExists('user_preferred_currency');
         Schema::dropIfExists('account_currencies');
     }
 };

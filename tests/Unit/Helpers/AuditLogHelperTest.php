@@ -1782,4 +1782,118 @@ class AuditLogHelperTest extends TestCase
             $sentence
         );
     }
+
+    /** @test */
+    public function loan_created(): void
+    {
+        $log = AuditLog::factory()->create([
+            'action_name' => 'loan_created',
+            'objects' => json_encode([
+                'contact_id' => 123,
+                'contact_name' => 'Monica Geller',
+                'loan_name' => 'toy',
+            ]),
+        ]);
+
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Added a loan called toy for the contact Monica Geller (deleted)',
+            $sentence
+        );
+
+        $contact = Contact::factory()->create();
+        $log = AuditLog::factory()->create([
+            'action_name' => 'loan_created',
+            'objects' => json_encode([
+                'contact_id' => $contact->id,
+                'contact_name' => $contact->getName($loggedUser),
+                'loan_name' => 'toy',
+            ]),
+        ]);
+
+        $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Added a loan called toy for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
+            $sentence
+        );
+    }
+
+    /** @test */
+    public function loan_updated(): void
+    {
+        $log = AuditLog::factory()->create([
+            'action_name' => 'loan_updated',
+            'objects' => json_encode([
+                'contact_id' => 123,
+                'contact_name' => 'Monica Geller',
+                'loan_name' => 'toy',
+            ]),
+        ]);
+
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Updated the loan called toy for the contact Monica Geller (deleted)',
+            $sentence
+        );
+
+        $contact = Contact::factory()->create();
+        $log = AuditLog::factory()->create([
+            'action_name' => 'loan_updated',
+            'objects' => json_encode([
+                'contact_id' => $contact->id,
+                'contact_name' => $contact->getName($loggedUser),
+                'loan_name' => 'toy',
+            ]),
+        ]);
+
+        $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Updated the loan called toy for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
+            $sentence
+        );
+    }
+
+    /** @test */
+    public function loan_destroyed(): void
+    {
+        $log = AuditLog::factory()->create([
+            'action_name' => 'loan_destroyed',
+            'objects' => json_encode([
+                'contact_id' => 123,
+                'contact_name' => 'Monica Geller',
+                'loan_name' => 'toy',
+            ]),
+        ]);
+
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Deleted the loan called toy for the contact Monica Geller (deleted)',
+            $sentence
+        );
+
+        $contact = Contact::factory()->create();
+        $log = AuditLog::factory()->create([
+            'action_name' => 'loan_destroyed',
+            'objects' => json_encode([
+                'contact_id' => $contact->id,
+                'contact_name' => $contact->getName($loggedUser),
+                'loan_name' => 'toy',
+            ]),
+        ]);
+
+        $url = env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id;
+        $loggedUser = User::factory()->create();
+        $sentence = AuditLogHelper::process($log, $loggedUser);
+        $this->assertEquals(
+            'Deleted the loan called toy for the contact <a href="'.$url.'">'.$contact->getName($loggedUser).'</a>',
+            $sentence
+        );
+    }
 }

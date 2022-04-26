@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
+use App\Models\ContactImportantDateType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ContactImportantDateFactory extends Factory
@@ -28,7 +29,7 @@ class ContactImportantDateFactory extends Factory
             'day' => 29,
             'month' => 10,
             'year' => 1981,
-            'type' => ContactImportantDate::TYPE_BIRTHDATE,
+            'contact_important_date_type_id' => ContactImportantDateType::factory(),
         ];
     }
 }

@@ -75,6 +75,10 @@ class SetupAccountTest extends TestCase
             'account_id' => $regis->account_id,
             'name' => trans('app.module_reminders'),
         ]);
+        $this->assertDatabaseHas('modules', [
+            'account_id' => $regis->account_id,
+            'name' => trans('app.module_loans'),
+        ]);
 
         $this->assertDatabaseHas('relationship_group_types', [
             'name' => trans('account.relationship_type_love'),

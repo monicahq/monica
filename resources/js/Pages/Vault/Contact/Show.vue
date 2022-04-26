@@ -89,6 +89,8 @@
                 <reminders v-if="module.type == 'reminders'" :data="reminders" />
 
                 <feed v-if="module.type == 'feed'" :data="feed" />
+
+                <loans v-if="module.type == 'loans'" :data="loans" :layout-data="layoutData" />
               </div>
             </div>
           </div>
@@ -108,7 +110,7 @@ import ImportantDates from '@/Shared/Modules/ImportantDates';
 import Labels from '@/Shared/Modules/Labels';
 import Reminders from '@/Shared/Modules/Reminders';
 import Feed from '@/Shared/Modules/Feed';
-import ContactSelector from '@/Shared/Form/ContactSelector';
+import Loans from '@/Shared/Modules/Loans';
 
 export default {
   components: {
@@ -121,7 +123,7 @@ export default {
     Labels,
     Reminders,
     Feed,
-    ContactSelector,
+    Loans,
   },
 
   props: {
@@ -145,6 +147,7 @@ export default {
       labels: [],
       notes: [],
       reminders: [],
+      loans: [],
     };
   },
 
@@ -192,6 +195,10 @@ export default {
 
       if (this.data.modules.findIndex((x) => x.type == 'feed') > -1) {
         this.feed = this.data.modules[this.data.modules.findIndex((x) => x.type == 'feed')].data;
+      }
+
+      if (this.data.modules.findIndex((x) => x.type == 'loans') > -1) {
+        this.loans = this.data.modules[this.data.modules.findIndex((x) => x.type == 'loans')].data;
       }
     }
   },

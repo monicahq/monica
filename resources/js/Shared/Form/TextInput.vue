@@ -40,6 +40,7 @@
         :disabled="disabled"
         :min="min"
         :max="max"
+        :step="step"
         :placeholder="placeholder"
         @input="$emit('update:modelValue', $event.target.value)"
         @keydown.esc="sendEscKey"
@@ -126,6 +127,10 @@ export default {
     ref: {
       type: String,
       default: 'input',
+    },
+    step: {
+      type: String,
+      default: 'any',
     },
   },
   emits: ['update:modelValue'],

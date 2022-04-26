@@ -59,7 +59,6 @@ class ContactImportantDatesController extends Controller
             'day' => $day,
             'month' => $month,
             'year' => $year,
-            'type' => $request->input('type'),
         ]);
 
         if ($request->input('reminder')) {
@@ -114,7 +113,6 @@ class ContactImportantDatesController extends Controller
             'day' => $day,
             'month' => $month,
             'year' => $year,
-            'type' => $request->input('type'),
         ];
 
         $date = (new UpdateContactImportantDate)->execute($data);

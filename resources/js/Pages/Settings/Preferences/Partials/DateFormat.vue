@@ -47,7 +47,7 @@ pre {
     </div>
 
     <!-- edit mode -->
-    <form v-if="editMode" class="mb-6 rounded-lg border border-gray-200 bg-white" @submit.prevent="submit()">
+    <form v-if="editMode" class="bg-form mb-6 rounded-lg border border-gray-200" @submit.prevent="submit()">
       <div class="border-b border-gray-200 px-5 py-2">
         <errors :errors="form.errors" />
 

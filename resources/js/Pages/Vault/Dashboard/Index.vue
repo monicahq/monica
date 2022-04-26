@@ -46,10 +46,10 @@ input[type='checkbox'] {
               Favorites
             </h3>
             <div class="mb-2 flex items-center text-sm">
-              <small-contact />
+              <small-contact :show-name="false" />
             </div>
             <div class="mb-2 flex items-center text-sm">
-              <small-contact />
+              <small-contact :show-name="false" />
             </div>
           </div>
 

@@ -31,7 +31,7 @@
 <template>
   <div :class="divOuterClass">
     <!-- input -->
-    <div class="mb-2">
+    <div>
       <label v-if="label" class="mb-2 block text-sm" :for="id">
         {{ label }}
         <span v-if="!required" class="optional-badge text-xs"> optional </span>
@@ -57,14 +57,14 @@
       <p
         v-if="displayAddContactButton"
         @click="showAddContactMode"
-        class="mr-2 mb-3 inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300">
+        class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300">
         + Add a contact
       </p>
     </div>
 
     <!-- mode to add a contact -->
     <div v-if="addContactMode">
-      <div class="relative mb-2">
+      <div class="relative mb-3">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="icon-search absolute h-4 w-4 text-gray-400"
@@ -171,6 +171,10 @@ export default {
   },
 
   props: {
+    modelValue: {
+      type: [Array],
+      default: [],
+    },
     inputClass: {
       type: String,
       default: '',
@@ -213,6 +217,8 @@ export default {
     },
   },
 
+  emits: ['update:modelValue'],
+
   data() {
     return {
       addContactMode: false,
@@ -223,7 +229,7 @@ export default {
       searchResults: [],
       form: {
         searchTerm: '',
-        contactsId: [],
+        contactIds: [],
         errors: [],
       },
     };
@@ -236,6 +242,10 @@ export default {
 
     if (this.displayMostConsultedContacts) {
       this.lookupMostConsultedContacts();
+    }
+
+    if (this.modelValue) {
+      this.localContacts = this.modelValue;
     }
   },
 
@@ -277,9 +287,10 @@ export default {
 
       if (id == -1) {
         this.localContacts.push(contact);
-        this.form.contactsId.push(contact.id);
+        this.form.contactIds.push(contact);
         this.form.searchTerm = '';
         this.addContactMode = false;
+        this.$emit('update:modelValue', this.form.contactIds);
       }
     },
 
@@ -287,8 +298,10 @@ export default {
       var id = this.localContacts.findIndex((existingContact) => existingContact.id === contact.id);
       this.localContacts.splice(id, 1);
 
-      var id = this.form.contactsId.findIndex(contact.id);
-      this.form.contactsId.splice(id, 1);
+      var id = this.form.contactIds.findIndex((existingContact) => existingContact === contact.id);
+      this.form.contactIds.splice(id, 1);
+
+      this.$emit('update:modelValue', this.form.contactIds);
     },
 
     search: _.debounce(function () {

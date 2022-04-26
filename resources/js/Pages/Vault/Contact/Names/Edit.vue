@@ -51,7 +51,7 @@
 
     <main class="relative sm:mt-16">
       <div class="mx-auto max-w-lg px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
-        <form class="mb-6 rounded-lg border border-gray-200 bg-white" @submit.prevent="submit()">
+        <form class="bg-form mb-6 rounded-lg border border-gray-200" @submit.prevent="submit()">
           <div class="section-head border-b border-gray-200 bg-blue-50 p-5">
             <h1 class="text-center text-2xl font-medium">Edit a contact</h1>
           </div>

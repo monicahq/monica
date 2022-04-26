@@ -123,7 +123,6 @@ class UpdateContactImportantDateTest extends TestCase
             'day' => 29,
             'month' => 10,
             'year' => 1981,
-            'type' => ContactImportantDate::TYPE_BIRTHDATE,
         ];
 
         $date = (new UpdateContactImportantDate)->execute($request);
@@ -134,7 +133,6 @@ class UpdateContactImportantDateTest extends TestCase
             'day' => 29,
             'month' => 10,
             'year' => 1981,
-            'type' => 'birthdate',
         ]);
 
         $this->assertInstanceOf(

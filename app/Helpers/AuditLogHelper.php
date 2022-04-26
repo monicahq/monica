@@ -265,6 +265,18 @@ class AuditLogHelper
                 $sentence = AuditLogHelper::userNotificationChannelDestroyed($log);
                 break;
 
+            case 'loan_created':
+                $sentence = AuditLogHelper::loanCreated($log, $user);
+                break;
+
+            case 'loan_updated':
+                $sentence = AuditLogHelper::loanUpdated($log, $user);
+                break;
+
+            case 'loan_destroyed':
+                $sentence = AuditLogHelper::loanDestroyed($log, $user);
+                break;
+
             default:
                 $sentence = 'No translation';
                 break;
@@ -1208,6 +1220,75 @@ class AuditLogHelper
             'label' => $log->object->{'label'},
             'type' => $log->object->{'type'},
         ]);
+
+        return $sentence;
+    }
+
+    private static function loanCreated(AuditLog $log, User $user): string
+    {
+        $contact = Contact::find($log->object->{'contact_id'});
+
+        if ($contact) {
+            $sentence = trans('log.loan_created', [
+                'contact_url' => route('contact.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+                'contact_name' => NameHelper::formatContactName($user, $contact),
+                'loan_name' => $log->object->{'loan_name'},
+            ]);
+        } else {
+            $sentence = trans('log.loan_created_object_deleted', [
+                'contact_name' => $log->object->{'contact_name'},
+                'loan_name' => $log->object->{'loan_name'},
+            ]);
+        }
+
+        return $sentence;
+    }
+
+    private static function loanUpdated(AuditLog $log, User $user): string
+    {
+        $contact = Contact::find($log->object->{'contact_id'});
+
+        if ($contact) {
+            $sentence = trans('log.loan_updated', [
+                'contact_url' => route('contact.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+                'contact_name' => NameHelper::formatContactName($user, $contact),
+                'loan_name' => $log->object->{'loan_name'},
+            ]);
+        } else {
+            $sentence = trans('log.loan_updated_object_deleted', [
+                'contact_name' => $log->object->{'contact_name'},
+                'loan_name' => $log->object->{'loan_name'},
+            ]);
+        }
+
+        return $sentence;
+    }
+
+    private static function loanDestroyed(AuditLog $log, User $user): string
+    {
+        $contact = Contact::find($log->object->{'contact_id'});
+
+        if ($contact) {
+            $sentence = trans('log.loan_destroyed', [
+                'contact_url' => route('contact.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+                'contact_name' => NameHelper::formatContactName($user, $contact),
+                'loan_name' => $log->object->{'loan_name'},
+            ]);
+        } else {
+            $sentence = trans('log.loan_destroyed_object_deleted', [
+                'contact_name' => $log->object->{'contact_name'},
+                'loan_name' => $log->object->{'loan_name'},
+            ]);
+        }
 
         return $sentence;
     }

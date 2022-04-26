@@ -9,6 +9,7 @@ use App\Jobs\CreateContactLog;
 use App\Models\ContactFeedItem;
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactImportantDate;
+use App\Models\ContactImportantDateType;
 
 class UpdateContactImportantDate extends BaseService implements ServiceInterface
 {
@@ -28,11 +29,11 @@ class UpdateContactImportantDate extends BaseService implements ServiceInterface
             'author_id' => 'required|integer|exists:users,id',
             'contact_id' => 'required|integer|exists:contacts,id',
             'contact_important_date_id' => 'required|integer|exists:contact_important_dates,id',
+            'contact_important_date_type_id' => 'nullable|integer|exists:contact_important_date_types,id',
             'label' => 'required|string|max:255',
             'day' => 'nullable|integer',
             'month' => 'nullable|integer',
             'year' => 'nullable|integer',
-            'type' => 'nullable|string|max:255',
         ];
     }
 
@@ -73,15 +74,21 @@ class UpdateContactImportantDate extends BaseService implements ServiceInterface
 
         $this->date = ContactImportantDate::where('contact_id', $this->contact->id)
             ->findOrFail($this->data['contact_important_date_id']);
+
+        // make sure the vault matches
+        if ($this->valueOrNull($this->data, 'contact_important_date_type_id')) {
+            ContactImportantDateType::where('vault_id', $this->data['vault_id'])
+                ->findOrFail($this->data['contact_important_date_type_id']);
+        }
     }
 
     private function update(): void
     {
         $this->date->label = $this->data['label'];
+        $this->date->contact_important_date_type_id = $this->valueOrNull($this->data, 'contact_important_date_type_id');
         $this->date->day = $this->valueOrNull($this->data, 'day');
         $this->date->month = $this->valueOrNull($this->data, 'month');
         $this->date->year = $this->valueOrNull($this->data, 'year');
-        $this->date->type = $this->valueOrNull($this->data, 'type');
         $this->date->save();
 
         $this->contact->last_updated_at = Carbon::now();

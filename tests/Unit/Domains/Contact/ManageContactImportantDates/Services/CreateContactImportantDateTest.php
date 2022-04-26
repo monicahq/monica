@@ -96,7 +96,6 @@ class CreateContactImportantDateTest extends TestCase
             'day' => 29,
             'month' => 10,
             'year' => 1981,
-            'type' => ContactImportantDate::TYPE_BIRTHDATE,
         ];
 
         $date = (new CreateContactImportantDate)->execute($request);
@@ -107,7 +106,6 @@ class CreateContactImportantDateTest extends TestCase
             'day' => 29,
             'month' => 10,
             'year' => 1981,
-            'type' => 'birthdate',
         ]);
 
         $this->assertDatabaseHas('contact_feed_items', [

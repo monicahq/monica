@@ -22,6 +22,20 @@ class PersonalizeCurrencyController extends Controller
         ]);
     }
 
+    public function store(Request $request)
+    {
+        $data = [
+            'account_id' => Auth::user()->account_id,
+            'author_id' => Auth::user()->id,
+        ];
+
+        (new EnableAllCurrencies)->execute($data);
+
+        return response()->json([
+            'data' => true,
+        ], 201);
+    }
+
     public function update(Request $request, int $currencyId)
     {
         $data = [
@@ -37,20 +51,6 @@ class PersonalizeCurrencyController extends Controller
         ], 200);
     }
 
-    public function store(Request $request)
-    {
-        $data = [
-            'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
-        ];
-
-        (new EnableAllCurrencies)->execute($data);
-
-        return response()->json([
-            'data' => true,
-        ], 201);
-    }
-
     public function destroy(Request $request)
     {
         $data = [
@@ -62,6 +62,6 @@ class PersonalizeCurrencyController extends Controller
 
         return response()->json([
             'data' => true,
-        ], 201);
+        ], 200);
     }
 }

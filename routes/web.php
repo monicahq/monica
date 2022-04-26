@@ -12,9 +12,11 @@ use App\Vault\Search\Web\Controllers\VaultContactSearchController;
 use App\Contact\ManageNotes\Web\Controllers\ContactNotesController;
 use App\Settings\ManageSettings\Web\Controllers\SettingsController;
 use App\Contact\ManageContact\Web\Controllers\ContactPageController;
+use App\Settings\ManageCurrencies\Web\Controllers\CurrencyController;
 use App\Settings\ManageGenders\Web\Controllers\ManageGenderController;
 use App\Settings\CancelAccount\Web\Controllers\CancelAccountController;
 use App\Contact\ManageContact\Web\Controllers\ContactTemplateController;
+use App\Contact\ManageLoans\Web\Controllers\ContactModuleLoanController;
 use App\Contact\ManageNotes\Web\Controllers\ContactModuleNoteController;
 use App\Contact\ManageContact\Web\Controllers\ContactNoTemplateController;
 use App\Contact\ManageLabels\Web\Controllers\ContactModuleLabelController;
@@ -24,6 +26,7 @@ use App\Settings\ManageModules\Web\Controllers\PersonalizeModulesController;
 use App\Settings\ManagePersonalization\Web\Controllers\PersonalizeController;
 use App\Settings\ManagePronouns\Web\Controllers\PersonalizePronounController;
 use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesController;
+use App\Contact\ManageLoans\Web\Controllers\ContactModuleToggleLoanController;
 use App\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsUserController;
 use App\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsLabelController;
 use App\Contact\ManageReminders\Web\Controllers\ContactModuleReminderController;
@@ -115,6 +118,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::post('reminders', [ContactModuleReminderController::class, 'store'])->name('contact.reminder.store');
                     Route::put('reminders/{reminder}', [ContactModuleReminderController::class, 'update'])->name('contact.reminder.update');
                     Route::delete('reminders/{reminder}', [ContactModuleReminderController::class, 'destroy'])->name('contact.reminder.destroy');
+
+                    // loans
+                    Route::post('loans', [ContactModuleLoanController::class, 'store'])->name('contact.loan.store');
+                    Route::put('loans/{loan}', [ContactModuleLoanController::class, 'update'])->name('contact.loan.update');
+                    Route::put('loans/{loan}/toggle', [ContactModuleToggleLoanController::class, 'update'])->name('contact.loan.toggle');
+                    Route::delete('loans/{loan}', [ContactModuleLoanController::class, 'destroy'])->name('contact.loan.destroy');
                 });
             });
 
@@ -272,4 +281,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('cancel', [CancelAccountController::class, 'destroy'])->name('cancel.destroy');
         });
     });
+
+    // General stuff called by everyone/everywhere
+    Route::get('currencies', [CurrencyController::class, 'index'])->name('currencies.index');
 });

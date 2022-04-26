@@ -30,7 +30,7 @@ class Note extends Model
      *
      * @return array
      */
-    public function toSearchableArray()
+    public function toSearchableArray(): array
     {
         $array = [
             'id' => $this->id,

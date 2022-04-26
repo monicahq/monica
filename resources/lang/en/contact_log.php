@@ -34,4 +34,8 @@ return [
     'contact_date_destroyed' => 'Deleted a date',
 
     'contact_template_updated' => 'Changed the template used to display the contact',
+
+    'loan_created' => 'Added a loan called :loan_name',
+    'loan_updated' => 'Updated the loan called :loan_name',
+    'loan_destroyed' => 'Deleted the loan called :loan_name',
 ];

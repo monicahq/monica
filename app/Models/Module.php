@@ -23,6 +23,7 @@ class Module extends Model
     const TYPE_IMPORTANT_DATES = 'important_dates';
     const TYPE_LABELS = 'labels';
     const TYPE_REMINDERS = 'reminders';
+    const TYPE_LOANS = 'loans';
 
     /**
      * The attributes that are mass assignable.

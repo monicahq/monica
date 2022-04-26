@@ -86,6 +86,7 @@ return [
     'module_important_dates' => 'Important dates',
     'module_labels' => 'Labels',
     'module_reminders' => 'Reminders',
+    'module_loans' => 'Loans',
 
     'module_option_default_number_of_items_to_display' => 'Default number of items to display',
 

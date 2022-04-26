@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use Tests\TestCase;
+use App\Models\Loan;
 use App\Models\Note;
 use App\Models\Label;
 use App\Models\Gender;
@@ -146,5 +147,29 @@ class ContactTest extends TestCase
         ]);
 
         $this->assertTrue($ross->reminders()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_loans_as_loaner(): void
+    {
+        $ross = Contact::factory()->create([]);
+        $monica = Contact::factory()->create();
+        $loan = Loan::factory()->create();
+
+        $ross->loansAsLoaner()->sync([$loan->id => ['loanee_id' => $monica->id]]);
+
+        $this->assertTrue($ross->loansAsLoaner()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_loans_as_loanee(): void
+    {
+        $ross = Contact::factory()->create([]);
+        $monica = Contact::factory()->create();
+        $loan = Loan::factory()->create();
+
+        $ross->loansAsLoanee()->sync([$loan->id => ['loaner_id' => $monica->id]]);
+
+        $this->assertTrue($ross->loansAsLoanee()->exists());
     }
 }

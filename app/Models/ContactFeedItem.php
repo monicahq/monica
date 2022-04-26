@@ -21,6 +21,8 @@ class ContactFeedItem extends Model
     const ACTION_IMPORTANT_DATE_CREATED = 'important_date_created';
     const ACTION_IMPORTANT_DATE_UPDATED = 'important_date_updated';
     const ACTION_LABEL_ADDED = 'label_added';
+    const ACTION_LOAN_CREATED = 'loan_created';
+    const ACTION_LOAN_UPDATED = 'loan_updated';
 
     /**
      * The attributes that are mass assignable.

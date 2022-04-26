@@ -7,6 +7,7 @@ use App\Models\Module;
 use App\Models\Contact;
 use App\Models\TemplatePage;
 use Illuminate\Support\Collection;
+use App\Contact\ManageLoans\Web\ViewHelpers\ModuleLoanViewHelper;
 use App\Contact\ManageNotes\Web\ViewHelpers\ModuleNotesViewHelper;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use App\Contact\ManageLabels\Web\ViewHelpers\ModuleLabelViewHelper;
@@ -151,6 +152,10 @@ class ContactShowViewHelper
 
             if ($module->type == Module::TYPE_REMINDERS) {
                 $data = ModuleRemindersViewHelper::data($contact, $user);
+            }
+
+            if ($module->type == Module::TYPE_LOANS) {
+                $data = ModuleLoanViewHelper::data($contact, $user);
             }
 
             $modulesCollection->push([

@@ -378,4 +378,55 @@ class ContactLogHelperTest extends TestCase
             $sentence
         );
     }
+
+    /** @test */
+    public function loan_created(): void
+    {
+        $log = ContactLog::factory()->create([
+            'action_name' => 'loan_created',
+            'objects' => json_encode([
+                'loan_name' => 'Home',
+            ]),
+        ]);
+
+        $sentence = ContactLogHelper::process($log);
+        $this->assertEquals(
+            'Added a loan called Home',
+            $sentence
+        );
+    }
+
+    /** @test */
+    public function loan_updated(): void
+    {
+        $log = ContactLog::factory()->create([
+            'action_name' => 'loan_updated',
+            'objects' => json_encode([
+                'loan_name' => 'Home',
+            ]),
+        ]);
+
+        $sentence = ContactLogHelper::process($log);
+        $this->assertEquals(
+            'Updated the loan called Home',
+            $sentence
+        );
+    }
+
+    /** @test */
+    public function loan_destroyed(): void
+    {
+        $log = ContactLog::factory()->create([
+            'action_name' => 'loan_destroyed',
+            'objects' => json_encode([
+                'loan_name' => 'Home',
+            ]),
+        ]);
+
+        $sentence = ContactLogHelper::process($log);
+        $this->assertEquals(
+            'Deleted the loan called Home',
+            $sentence
+        );
+    }
 }
