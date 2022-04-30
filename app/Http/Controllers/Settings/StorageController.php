@@ -17,7 +17,7 @@ class StorageController extends Controller
     {
         $documents = Document::where('account_id', auth()->user()->account_id)->get();
         $photos = Photo::where('account_id', auth()->user()->account_id)->get();
-        $elements = $documents->concat($photos)->sortByDesc('created_at');
+        $elements = collect($documents)->concat($photos)->sortByDesc('created_at');
 
         // size is in bytes in the database
         $currentAccountSize = StorageHelper::getAccountStorageSize(auth()->user()->account);
