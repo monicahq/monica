@@ -264,6 +264,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     public function getObjects($collectionId)
     {
         return $this->user->account->contacts($collectionId)
+                    ->real()
                     ->active()
                     ->get();
     }
