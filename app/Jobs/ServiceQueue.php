@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use Throwable;
-use App\Services\BaseService;
 use Illuminate\Bus\Queueable;
 use App\Services\QueuableService;
 use Illuminate\Queue\SerializesModels;
