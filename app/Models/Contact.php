@@ -31,6 +31,8 @@ class Contact extends Model
         'can_be_deleted',
         'template_id',
         'last_updated_at',
+        'company_id',
+        'job_position',
     ];
 
     /**
@@ -221,6 +223,16 @@ class Contact extends Model
     public function loansAsLoanee()
     {
         return $this->belongsToMany(Loan::class, 'contact_loan', 'loanee_id');
+    }
+
+    /**
+     * Get the company associated with the contact.
+     *
+     * @return BelongsTo
+     */
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
     }
 
     /**

@@ -47,7 +47,7 @@
       <span
         v-if="editLabelModalShown"
         @click="editLabelModalShown = false"
-        class="cursor-pointer text-xs text-gray-300">
+        class="cursor-pointer text-xs text-gray-600">
         Close
       </span>
     </div>
@@ -59,10 +59,10 @@
         <errors :errors="form.errors" />
 
         <text-input
-          :ref="'newPage'"
+          :ref="'label'"
           v-model="form.search"
           :type="'text'"
-          :placeholder="'Filter list'"
+          :placeholder="'Filter list or create a new label'"
           :autofocus="true"
           :input-class="'block w-full'"
           :required="true"
@@ -127,15 +127,11 @@
 </template>
 
 <script>
-import PrettyButton from '@/Shared/Form/PrettyButton';
-import PrettySpan from '@/Shared/Form/PrettySpan';
 import TextInput from '@/Shared/Form/TextInput';
 import Errors from '@/Shared/Form/Errors';
 
 export default {
   components: {
-    PrettyButton,
-    PrettySpan,
     TextInput,
     Errors,
   },

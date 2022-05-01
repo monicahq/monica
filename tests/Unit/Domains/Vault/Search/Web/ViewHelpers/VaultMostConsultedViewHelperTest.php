@@ -18,11 +18,11 @@ class VaultMostConsultedViewHelperTest extends TestCase
     {
         $contact = Contact::factory()->create([
             'first_name' => 'regis',
-            'last_name' => 'freyd',
+            'last_name' => 'troyat',
         ]);
         $mostViewedContact = Contact::factory()->create([
             'first_name' => 'alexis',
-            'last_name' => 'saettler',
+            'last_name' => 'troyat',
             'vault_id' => $contact->vault_id,
         ]);
         $user = User::factory()->create();
@@ -45,12 +45,12 @@ class VaultMostConsultedViewHelperTest extends TestCase
             [
                 0 => [
                     'id' => $mostViewedContact->id,
-                    'name' => 'alexis saettler',
+                    'name' => 'alexis troyat',
                     'url' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$mostViewedContact->id,
                 ],
                 1 => [
                     'id' => $contact->id,
-                    'name' => 'regis freyd',
+                    'name' => 'regis troyat',
                     'url' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id,
                 ],
             ],

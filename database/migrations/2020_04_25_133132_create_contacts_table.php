@@ -20,11 +20,13 @@ class CreateContactsTable extends Migration
             $table->unsignedBigInteger('gender_id')->nullable();
             $table->unsignedBigInteger('pronoun_id')->nullable();
             $table->unsignedBigInteger('template_id')->nullable();
+            $table->unsignedBigInteger('company_id')->nullable();
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('nickname')->nullable();
             $table->string('maiden_name')->nullable();
+            $table->string('job_position')->nullable();
             $table->boolean('can_be_deleted')->default(true);
             $table->datetime('last_updated_at')->nullable();
             $table->timestamps();
@@ -32,6 +34,7 @@ class CreateContactsTable extends Migration
             $table->foreign('gender_id')->references('id')->on('genders')->onDelete('set null');
             $table->foreign('pronoun_id')->references('id')->on('pronouns')->onDelete('set null');
             $table->foreign('template_id')->references('id')->on('templates')->onDelete('set null');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('set null');
         });
 
         Schema::create('user_vault', function (Blueprint $table) {

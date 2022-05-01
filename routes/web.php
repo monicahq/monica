@@ -45,6 +45,7 @@ use App\Settings\ManagePetCategories\Web\Controllers\PersonalizePetCategoriesCon
 use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesNumberFormatController;
 use App\Settings\ManageNotificationChannels\Web\Controllers\NotificationsToggleController;
 use App\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatePageModulesController;
+use App\Contact\ManageJobInformation\Web\Controllers\ContactModuleJobInformationController;
 use App\Settings\ManageRelationshipTypes\Web\Controllers\PersonalizeRelationshipController;
 use App\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatePagePositionController;
 use App\Contact\ManageContactImportantDates\Web\Controllers\ContactImportantDatesController;
@@ -124,6 +125,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::put('loans/{loan}', [ContactModuleLoanController::class, 'update'])->name('contact.loan.update');
                     Route::put('loans/{loan}/toggle', [ContactModuleToggleLoanController::class, 'update'])->name('contact.loan.toggle');
                     Route::delete('loans/{loan}', [ContactModuleLoanController::class, 'destroy'])->name('contact.loan.destroy');
+
+                    // job information
+                    Route::get('companies/list', [ContactModuleJobInformationController::class, 'index'])->name('contact.companies.list.index');
+                    Route::put('jobInformation', [ContactModuleJobInformationController::class, 'update'])->name('contact.job_information.update');
                 });
             });
 

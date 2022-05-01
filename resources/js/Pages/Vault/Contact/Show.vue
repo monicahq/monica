@@ -55,6 +55,8 @@
                 <important-dates v-if="module.type == 'important_dates'" :data="importantDates" />
 
                 <labels v-if="module.type == 'labels'" :data="labels" />
+
+                <job-information v-if="module.type == 'company'" :data="jobInformation" />
               </div>
             </div>
 
@@ -111,6 +113,7 @@ import Labels from '@/Shared/Modules/Labels';
 import Reminders from '@/Shared/Modules/Reminders';
 import Feed from '@/Shared/Modules/Feed';
 import Loans from '@/Shared/Modules/Loans';
+import JobInformation from '@/Shared/Modules/JobInformation';
 
 export default {
   components: {
@@ -124,6 +127,7 @@ export default {
     Reminders,
     Feed,
     Loans,
+    JobInformation,
   },
 
   props: {
@@ -148,6 +152,7 @@ export default {
       notes: [],
       reminders: [],
       loans: [],
+      jobInformation: [],
     };
   },
 
@@ -180,6 +185,11 @@ export default {
       if (this.data.contact_information.findIndex((x) => x.type == 'labels') > -1) {
         this.labels =
           this.data.contact_information[this.data.contact_information.findIndex((x) => x.type == 'labels')].data;
+      }
+
+      if (this.data.contact_information.findIndex((x) => x.type == 'company') > -1) {
+        this.jobInformation =
+          this.data.contact_information[this.data.contact_information.findIndex((x) => x.type == 'company')].data;
       }
     }
 

@@ -128,7 +128,7 @@ class AuditLogHelperTest extends TestCase
         $log = AuditLog::factory()->create([
             'action_name' => 'vault_access_grant',
             'objects' => json_encode([
-                'user_name' => 'Regis Freyd',
+                'user_name' => 'Regis troyat',
                 'vault_name' => 'My Vault',
                 'permission_type' => 'Manager',
             ]),
@@ -137,7 +137,7 @@ class AuditLogHelperTest extends TestCase
         $loggedUser = User::factory()->create();
         $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Grant the Manager permission to Regis Freyd to the vault My Vault',
+            'Grant the Manager permission to Regis troyat to the vault My Vault',
             $sentence
         );
     }
@@ -148,7 +148,7 @@ class AuditLogHelperTest extends TestCase
         $log = AuditLog::factory()->create([
             'action_name' => 'vault_access_permission_changed',
             'objects' => json_encode([
-                'user_name' => 'Regis Freyd',
+                'user_name' => 'Regis troyat',
                 'vault_name' => 'My Vault',
                 'permission_type' => 'Manager',
             ]),
@@ -157,7 +157,7 @@ class AuditLogHelperTest extends TestCase
         $loggedUser = User::factory()->create();
         $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Changed the permission of Regis Freyd to Manager in the vault My Vault',
+            'Changed the permission of Regis troyat to Manager in the vault My Vault',
             $sentence
         );
     }
@@ -550,14 +550,14 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'administrator_privilege_given',
             'objects' => json_encode([
                 'user_id' => 321,
-                'user_name' => 'Regis Freyd',
+                'user_name' => 'Regis troyat',
             ]),
         ]);
 
         $loggedUser = User::factory()->create();
         $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Gave administrator privilege to Regis Freyd',
+            'Gave administrator privilege to Regis troyat',
             $sentence
         );
 
@@ -566,7 +566,7 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'administrator_privilege_given',
             'objects' => json_encode([
                 'user_id' => $user->id,
-                'user_name' => 'Alexis Saettler',
+                'user_name' => 'Alexis troyat',
             ]),
         ]);
 
@@ -585,14 +585,14 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'administrator_privilege_removed',
             'objects' => json_encode([
                 'user_id' => 321,
-                'user_name' => 'Regis Freyd',
+                'user_name' => 'Regis troyat',
             ]),
         ]);
 
         $loggedUser = User::factory()->create();
         $sentence = AuditLogHelper::process($log, $loggedUser);
         $this->assertEquals(
-            'Removed administrator privilege of Regis Freyd',
+            'Removed administrator privilege of Regis troyat',
             $sentence
         );
 
@@ -601,7 +601,7 @@ class AuditLogHelperTest extends TestCase
             'action_name' => 'administrator_privilege_removed',
             'objects' => json_encode([
                 'user_id' => $user->id,
-                'user_name' => 'Alexis Saettler',
+                'user_name' => 'Alexis troyat',
             ]),
         ]);
 

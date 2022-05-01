@@ -117,4 +117,14 @@ class Vault extends Model
     {
         return $this->hasMany(ContactImportantDateType::class);
     }
+
+    /**
+     * Get the companies associated with the vault.
+     *
+     * @return HasMany
+     */
+    public function companies()
+    {
+        return $this->hasMany(Company::class);
+    }
 }

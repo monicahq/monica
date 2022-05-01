@@ -8,6 +8,7 @@ use App\Models\Note;
 use App\Models\Label;
 use App\Models\Gender;
 use App\Models\Address;
+use App\Models\Company;
 use App\Models\Contact;
 use App\Models\Pronoun;
 use App\Models\Template;
@@ -171,5 +172,15 @@ class ContactTest extends TestCase
         $ross->loansAsLoanee()->sync([$loan->id => ['loaner_id' => $monica->id]]);
 
         $this->assertTrue($ross->loansAsLoanee()->exists());
+    }
+
+    /** @test */
+    public function it_has_one_company()
+    {
+        $ross = Contact::factory()->create([
+            'company_id' => Company::factory()->create(),
+        ]);
+
+        $this->assertTrue($ross->company()->exists());
     }
 }

@@ -35,7 +35,6 @@ select {
       <select
         :id="id"
         v-model="selectedId"
-        :autocomplete="country - name"
         :class="localDropdownClasses"
         :required="required"
         :disabled="disabled"
