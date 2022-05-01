@@ -77,7 +77,7 @@
                     :href="page.url.show"
                     :class="{ 'border-orange-500 hover:border-orange-500': page.selected }"
                     class="inline-block border-b-2 border-transparent px-4 pb-2 hover:border-gray-200">
-                    {{ page.name }}
+                    <span class="mb-0 block rounded-sm px-3 py-1 hover:bg-gray-100">{{ page.name }}</span>
                   </inertia-link>
                 </li>
               </ul>
