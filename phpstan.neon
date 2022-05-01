@@ -1,6 +1,6 @@
 includes:
     - ./vendor/nunomaduro/larastan/extension.neon
-#    - ./vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
+    - ./vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
 
 parameters:
     paths:

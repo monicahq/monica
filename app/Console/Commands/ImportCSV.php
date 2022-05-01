@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use function Safe\fopen;
 use App\Models\User\User;
 use function Safe\fclose;
-use function Safe\fgetcsv;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
@@ -92,7 +91,7 @@ class ImportCSV extends Command
         $imported = 0;
         $handle = fopen($file, 'r');
         try {
-            while (($data = fgetcsv($handle)) !== false) {
+            while (($data = fgetcsv($handle)) !== false) { /** @phpstan-ignore-line */
                 // don't import the columns
                 if ($first) {
                     $first = false;
