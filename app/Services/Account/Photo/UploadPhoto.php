@@ -2,7 +2,6 @@
 
 namespace App\Services\Account\Photo;
 
-use function Safe\substr;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Models\Account\Photo;

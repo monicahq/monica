@@ -5,7 +5,6 @@ namespace App\Services\VCard;
 use Ramsey\Uuid\Uuid;
 use App\Models\User\User;
 use App\Traits\DAVFormat;
-use function Safe\substr;
 use Sabre\VObject\Reader;
 use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;

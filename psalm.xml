@@ -7,7 +7,6 @@
 >
     <projectFiles>
         <directory name="database/seeds" />
-        <directory name="database/migrations" />
         <directory name="app" />
         <directory name="routes" />
         <ignoreFiles>
