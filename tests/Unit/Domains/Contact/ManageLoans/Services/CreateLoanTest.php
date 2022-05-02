@@ -161,17 +161,6 @@ class CreateLoanTest extends TestCase
             'loanee_id' => $loanee->id,
         ]);
 
-        $this->assertDatabaseHas('contact_feed_items', [
-            'contact_id' => $contact->id,
-            'feedable_id' => $loan->id,
-            'feedable_type' => 'App\Models\Loan',
-        ]);
-        $this->assertDatabaseHas('contact_feed_items', [
-            'contact_id' => $contact->id,
-            'feedable_id' => $loan->id,
-            'feedable_type' => 'App\Models\Loan',
-        ]);
-
         Queue::assertPushed(CreateAuditLog::class, function ($job) {
             return $job->auditLog['action_name'] === 'loan_created';
         });

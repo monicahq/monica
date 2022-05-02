@@ -55,8 +55,6 @@ class DestroyLoan extends BaseService implements ServiceInterface
 
         $this->loan = Loan::where('vault_id', $data['vault_id'])->findOrFail($data['loan_id']);
 
-        $this->removeContactFeedItem();
-
         $this->loan->delete();
 
         $this->contact->last_updated_at = Carbon::now();
@@ -85,10 +83,5 @@ class DestroyLoan extends BaseService implements ServiceInterface
             'action_name' => 'loan_destroyed',
             'objects' => json_encode([]),
         ])->onQueue('low');
-    }
-
-    private function removeContactFeedItem(): void
-    {
-        $this->loan->feedItem()->delete();
     }
 }

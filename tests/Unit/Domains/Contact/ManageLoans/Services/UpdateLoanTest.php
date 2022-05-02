@@ -182,12 +182,6 @@ class UpdateLoanTest extends TestCase
             'loaned_at' => '2020-01-01 00:00:00',
         ]);
 
-        $this->assertDatabaseHas('contact_feed_items', [
-            'contact_id' => $contact->id,
-            'feedable_id' => $loan->id,
-            'feedable_type' => 'App\Models\Loan',
-        ]);
-
         $this->assertDatabaseHas('contact_loan', [
             'loan_id' => $loan->id,
             'loaner_id' => $loaner->id,

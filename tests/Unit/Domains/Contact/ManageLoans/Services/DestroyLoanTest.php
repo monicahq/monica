@@ -117,11 +117,6 @@ class DestroyLoanTest extends TestCase
             'id' => $loan->id,
         ]);
 
-        $this->assertDatabaseMissing('contact_feed_items', [
-            'contact_id' => $contact->id,
-            'feedable_id' => $loan->id,
-        ]);
-
         Queue::assertPushed(CreateAuditLog::class, function ($job) {
             return $job->auditLog['action_name'] === 'loan_destroyed';
         });

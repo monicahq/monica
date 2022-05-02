@@ -6,6 +6,7 @@ use function env;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Vault;
+use App\Models\Avatar;
 use App\Models\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Contact\ManageContact\Web\ViewHelpers\ContactIndexViewHelper;
@@ -21,6 +22,12 @@ class ContactIndexViewHelperTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
         ]);
+        $avatar = Avatar::factory()->create([
+            'contact_id' => $contact->id,
+        ]);
+        $contact->avatar_id = $avatar->id;
+        $contact->save();
+
         $user = User::factory()->create();
         $contacts = Contact::all();
         $array = ContactIndexViewHelper::data($contacts, $user, $vault);
@@ -38,6 +45,7 @@ class ContactIndexViewHelperTest extends TestCase
                 0 => [
                     'id' => $contact->id,
                     'name' => $contact->getName($user),
+                    'avatar' => '123',
                     'url' => [
                         'show' => env('APP_URL').'/vaults/'.$vault->id.'/contacts/'.$contact->id,
                     ],
