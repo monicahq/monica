@@ -6,6 +6,7 @@ use App\Models\Vault;
 use App\Models\Contact;
 use App\Models\Template;
 use App\Jobs\CreateAuditLog;
+use App\Helpers\AvatarHelper;
 use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactImportantDate;
@@ -93,6 +94,11 @@ class CreateVault extends BaseService implements ServiceInterface
             'permission' => Vault::PERMISSION_MANAGE,
             'contact_id' => $contact->id,
         ]);
+
+        $avatar = AvatarHelper::generateRandomAvatar($contact);
+
+        $contact->avatar_id = $avatar->id;
+        $contact->save();
     }
 
     private function populateDefaultContactImportantDateTypes(): void

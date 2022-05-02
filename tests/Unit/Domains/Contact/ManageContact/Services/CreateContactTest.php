@@ -96,6 +96,8 @@ class CreateContactTest extends TestCase
             'first_name' => 'Ross',
         ]);
 
+        $this->assertNotNull($contact->avatar_id);
+
         $this->assertInstanceOf(
             Contact::class,
             $contact

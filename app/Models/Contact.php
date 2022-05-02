@@ -33,6 +33,7 @@ class Contact extends Model
         'last_updated_at',
         'company_id',
         'job_position',
+        'avatar_id',
     ];
 
     /**
@@ -233,6 +234,26 @@ class Contact extends Model
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
+    }
+
+    /**
+     * Get the current avatar associated with the contact.
+     *
+     * @return BelongsTo
+     */
+    public function avatar(): BelongsTo
+    {
+        return $this->belongsTo(Avatar::class);
+    }
+
+    /**
+     * Get the avatars associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function avatars()
+    {
+        return $this->hasMany(Avatar::class);
     }
 
     /**

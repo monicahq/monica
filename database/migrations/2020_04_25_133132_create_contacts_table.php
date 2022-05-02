@@ -21,7 +21,7 @@ class CreateContactsTable extends Migration
             $table->unsignedBigInteger('pronoun_id')->nullable();
             $table->unsignedBigInteger('template_id')->nullable();
             $table->unsignedBigInteger('company_id')->nullable();
-            $table->string('first_name');
+            $table->string('first_name')->nullable();
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('nickname')->nullable();
