@@ -51,7 +51,7 @@ class SubscriptionsController extends Controller
         }
 
         try {
-            $planInformation = $this->stripeCall(function () use ($subscription) {
+            $planInformation = $this->stripeCall(function () use ($subscription): ?array {
                 return InstanceHelper::getPlanInformationFromSubscription($subscription);
             });
         } catch (StripeException $e) {
@@ -183,8 +183,8 @@ class SubscriptionsController extends Controller
     public function confirmPayment($id)
     {
         try {
-            $payment = $this->stripeCall(function () use ($id) {
-                return StripePaymentIntent::retrieve($id, Cashier::stripe());
+            $payment = $this->stripeCall(function () use ($id): \Stripe\PaymentIntent {
+                return Cashier::stripe()->paymentIntents->retrieve($id);
             });
         } catch (StripeException $e) {
             return back()->withErrors($e->getMessage());

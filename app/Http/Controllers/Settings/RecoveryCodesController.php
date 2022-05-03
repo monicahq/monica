@@ -56,7 +56,7 @@ class RecoveryCodesController extends Controller
      * Format codes collection for response.
      *
      * @param  \Illuminate\Support\Collection<array-key, \App\Models\User\RecoveryCode>  $codes
-     * @return \Illuminate\Support\Collection<array-key, array>
+     * @return \Illuminate\Support\Collection<array-key, array{id: int, recovery: string, used: bool}>
      */
     private function response($codes)
     {

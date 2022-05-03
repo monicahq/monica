@@ -175,7 +175,7 @@ class UploadPhoto extends BaseService
      */
     private function isBinary(string $data): bool
     {
-        $mime = finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $data);
+        $mime = finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $data); // @phpstan-ignore-line
 
         return substr($mime, 0, 4) != 'text' && $mime != 'application/x-empty';
     }
