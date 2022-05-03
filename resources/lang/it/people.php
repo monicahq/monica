@@ -42,7 +42,7 @@ return [
     'people_list_account_upgrade_cta' => 'Effettua l\'upgrade ora',
     'people_list_untagged' => 'Mostra contatti senza etichette',
     'people_list_filter_untag' => 'Tutti i contatti senza etichette',
-    'archived_contact_readonly' => 'Il contatto archiviato non è modificabile, sei pregato di disarchiviarlo prima.',
+    'archived_contact_readonly' => 'Il contatto archiviato non è modificabile, sei pregato di de archiviarlo prima.',
 
     // people add
     'people_add_title' => 'Aggiungi una nuova persona',
@@ -144,7 +144,7 @@ return [
 
     // Last called
     'last_called' => 'Ultima chiamata: :date',
-    'last_talked_to' => 'Last called: {date}',
+    'last_talked_to' => 'Ultima chiamata: {date}',
     'last_called_empty' => 'Ultima chiamata: sconosciuta',
     'last_activity_date' => 'Ultima attività insieme: :date',
     'last_activity_date_empty' => 'Ultima attività insieme: sconosciuta',
