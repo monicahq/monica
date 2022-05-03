@@ -144,8 +144,8 @@ return [
     'relationship_type_partner_female_with_name' => 'partner di :name',
 
     'relationship_type_spouse' => 'marito',
-    'relationship_type_spouse_female' => 'wife',
-    'relationship_type_spouse_male' => 'husband',
+    'relationship_type_spouse_female' => 'moglie',
+    'relationship_type_spouse_male' => 'marito',
     'relationship_type_spouse_with_name' => 'marito di :name',
     'relationship_type_spouse_female_with_name' => ':name’s wife',
     'relationship_type_spouse_male_with_name' => ':name’s husband',
