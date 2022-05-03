@@ -59,7 +59,7 @@ class ActivitiesController extends Controller
             ->filter(function ($c) use ($contact) {
                 return $contact->id !== $c->id;
             })
-            ->map(function ($c) {
+            ->map(function (Contact $c): array {
                 return [
                     'id' => $c->id,
                     'name' => $c->name,

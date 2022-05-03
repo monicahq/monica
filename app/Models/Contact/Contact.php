@@ -1221,7 +1221,7 @@ class Contact extends Model
      */
     public function getTagsAsString()
     {
-        return $this->tags->map(function ($tag) {
+        return $this->tags->map(function (Tag $tag): string {
             return $tag->name;
         })->join(',');
     }

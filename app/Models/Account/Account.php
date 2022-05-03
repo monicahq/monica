@@ -57,6 +57,13 @@ class Account extends Model
     use Subscription, HasUuid;
 
     /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array<string>|bool
+     */
+    protected $guarded = ['id'];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<string>

@@ -18,7 +18,7 @@ class AuditLogHelper
     {
         $logsCollection = collect();
 
-        foreach ($logs as $key => $log) {
+        foreach ($logs as $log) {
             $object = null;
             $link = null;
 
