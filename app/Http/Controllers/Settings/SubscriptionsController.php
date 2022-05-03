@@ -16,7 +16,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
 use Stripe\Exception\ApiErrorException;
-use Stripe\PaymentIntent as StripePaymentIntent;
 use Laravel\Cashier\Exceptions\IncompletePayment;
 use App\Services\Account\Settings\ArchiveAllContacts;
 
