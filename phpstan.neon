@@ -16,8 +16,6 @@ parameters:
           path: */Helpers/CountriesHelper.php
         - message: '#Access to an undefined property Illuminate\\Support\\Fluent::\$[a-zA-Z0-9_]+\.#'
           path: */Http/Location/Drivers/CloudflareDriver.php
-        - message: '#Parameter \#2 \$configGroup of static method Creativeorange\\Gravatar\\Gravatar::get\(\) expects string, array<string, bool\|int\|string> given\.#'
-          path: */Services/Contact/Avatar/GetGravatarURL.php
         - message: '#Access to an undefined property App\\Interfaces\\IsJournalableInterface::\$account_id\.#'
           path: */app/Models/Journal/JournalEntry.php
         - message: '#Cannot assign offset ''VALUE'' to string\.#'
