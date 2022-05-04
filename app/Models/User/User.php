@@ -28,7 +28,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'first_name',
@@ -52,7 +52,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [
         'password', 'remember_token', 'google2fa_secret',
@@ -61,7 +61,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'profile_new_life_event_badge_seen' => 'boolean',

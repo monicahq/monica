@@ -176,7 +176,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
                     return $backend->prepareData($date);
                 })
                 ->filter(function ($event) {
-                    return ! is_null($event);
+                    return $event !== null;
                 })
                 ->toArray();
         }

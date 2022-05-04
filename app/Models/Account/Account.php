@@ -57,9 +57,16 @@ class Account extends Model
     use Subscription, HasUuid;
 
     /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array<string>|bool
+     */
+    protected $guarded = ['id'];
+
+    /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'number_of_invitations_sent',
@@ -71,7 +78,7 @@ class Account extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'has_access_to_paid_version_for_free' => 'boolean',
