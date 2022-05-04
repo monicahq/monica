@@ -724,16 +724,16 @@
         },
         {
             "name": "creativeorange/gravatar",
-            "version": "v1.0.21",
+            "version": "v1.0.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/creativeorange/gravatar.git",
-                "reference": "f5f25dda14aff8b296a52a92f375586114608cda"
+                "reference": "0eed243a16bcd01e618036f9b8021526ea26f64a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/f5f25dda14aff8b296a52a92f375586114608cda",
-                "reference": "f5f25dda14aff8b296a52a92f375586114608cda",
+                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/0eed243a16bcd01e618036f9b8021526ea26f64a",
+                "reference": "0eed243a16bcd01e618036f9b8021526ea26f64a",
                 "shasum": ""
             },
             "require": {
@@ -781,9 +781,9 @@
             ],
             "support": {
                 "issues": "https://github.com/creativeorange/gravatar/issues",
-                "source": "https://github.com/creativeorange/gravatar/tree/v1.0.21"
+                "source": "https://github.com/creativeorange/gravatar/tree/v1.0.22"
             },
-            "time": "2022-01-19T20:28:57+00:00"
+            "time": "2022-03-23T09:46:07+00:00"
         },
         {
             "name": "dasprid/enum",
