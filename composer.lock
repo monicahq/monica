@@ -3492,16 +3492,16 @@
         },
         {
             "name": "laravolt/avatar",
-            "version": "4.1.6",
+            "version": "4.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravolt/avatar.git",
-                "reference": "f9a3e612491bfed6fe144d37a58cf4a2c5be141f"
+                "reference": "2c11878524e19032793effa67f09df0682e5775b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravolt/avatar/zipball/f9a3e612491bfed6fe144d37a58cf4a2c5be141f",
-                "reference": "f9a3e612491bfed6fe144d37a58cf4a2c5be141f",
+                "url": "https://api.github.com/repos/laravolt/avatar/zipball/2c11878524e19032793effa67f09df0682e5775b",
+                "reference": "2c11878524e19032793effa67f09df0682e5775b",
                 "shasum": ""
             },
             "require": {
@@ -3556,7 +3556,7 @@
             ],
             "support": {
                 "issues": "https://github.com/laravolt/avatar/issues",
-                "source": "https://github.com/laravolt/avatar/tree/4.1.6"
+                "source": "https://github.com/laravolt/avatar/tree/4.1.7"
             },
             "funding": [
                 {
@@ -3572,7 +3572,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-02-09T23:23:09+00:00"
+            "time": "2022-03-07T23:07:16+00:00"
         },
         {
             "name": "lcobucci/clock",
