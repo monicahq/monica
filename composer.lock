@@ -4741,16 +4741,16 @@
         },
         {
             "name": "maxmind/web-service-common",
-            "version": "v0.8.1",
+            "version": "v0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maxmind/web-service-common-php.git",
-                "reference": "32f274051c543fc865e5a84d3a2c703913641ea8"
+                "reference": "4dc5a3e8df38aea4ca3b1096cee3a038094e9b53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maxmind/web-service-common-php/zipball/32f274051c543fc865e5a84d3a2c703913641ea8",
-                "reference": "32f274051c543fc865e5a84d3a2c703913641ea8",
+                "url": "https://api.github.com/repos/maxmind/web-service-common-php/zipball/4dc5a3e8df38aea4ca3b1096cee3a038094e9b53",
+                "reference": "4dc5a3e8df38aea4ca3b1096cee3a038094e9b53",
                 "shasum": ""
             },
             "require": {
@@ -4760,7 +4760,8 @@
                 "php": ">=7.2"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "2.*",
+                "friendsofphp/php-cs-fixer": "3.*",
+                "phpstan/phpstan": "*",
                 "phpunit/phpunit": "^8.0 || ^9.0",
                 "squizlabs/php_codesniffer": "3.*"
             },
@@ -4785,9 +4786,9 @@
             "homepage": "https://github.com/maxmind/web-service-common-php",
             "support": {
                 "issues": "https://github.com/maxmind/web-service-common-php/issues",
-                "source": "https://github.com/maxmind/web-service-common-php/tree/v0.8.1"
+                "source": "https://github.com/maxmind/web-service-common-php/tree/v0.9.0"
             },
-            "time": "2020-11-02T17:00:53+00:00"
+            "time": "2022-03-28T17:43:20+00:00"
         },
         {
             "name": "moneyphp/money",
@@ -8896,28 +8897,29 @@
         },
         {
             "name": "stevebauman/location",
-            "version": "v6.3.1",
+            "version": "v6.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stevebauman/location.git",
-                "reference": "e1fdd754b1937252527d77927cd545b1fc38e6e2"
+                "reference": "fd32bd6e8ffc1cd10c5fd788064b0052cb2687c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stevebauman/location/zipball/e1fdd754b1937252527d77927cd545b1fc38e6e2",
-                "reference": "e1fdd754b1937252527d77927cd545b1fc38e6e2",
+                "url": "https://api.github.com/repos/stevebauman/location/zipball/fd32bd6e8ffc1cd10c5fd788064b0052cb2687c1",
+                "reference": "fd32bd6e8ffc1cd10c5fd788064b0052cb2687c1",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
                 "geoip2/geoip2": "^2.0",
-                "illuminate/support": "~5.0|~6.0|~7.0|~8.0|^9.0",
-                "php": ">=7.0"
+                "illuminate/support": "^5.0|^6.0|^7.0|^8.0|^9.0",
+                "php": ">=7.3"
             },
             "require-dev": {
                 "mockery/mockery": "~0.9|^1.0",
-                "orchestra/testbench": "~3.2|~4.0|^6.0|^7.0"
+                "orchestra/testbench": "~3.2|~4.0|^6.0|^7.0",
+                "pestphp/pest": "^1.21"
             },
             "type": "library",
             "extra": {
@@ -8945,7 +8947,7 @@
                     "email": "steven_bauman@outlook.com"
                 }
             ],
-            "description": "Retrieve a users location by their IP Address",
+            "description": "Retrieve a user's location by their IP Address",
             "keywords": [
                 "IP",
                 "geo",
@@ -8957,9 +8959,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stevebauman/location/issues",
-                "source": "https://github.com/stevebauman/location/tree/v6.3.1"
+                "source": "https://github.com/stevebauman/location/tree/v6.4.0"
             },
-            "time": "2022-02-16T13:52:28+00:00"
+            "time": "2022-04-07T03:52:42+00:00"
         },
         {
             "name": "stripe/stripe-php",
