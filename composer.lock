@@ -16334,16 +16334,16 @@
         },
         {
             "name": "phpunit/phpcov",
-            "version": "8.2.0",
+            "version": "8.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpcov.git",
-                "reference": "742d0608238c7f045fe3115241d7ec3ec2587442"
+                "reference": "8ec45dde34a84914a0ace355fbd6d7af2242c9a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpcov/zipball/742d0608238c7f045fe3115241d7ec3ec2587442",
-                "reference": "742d0608238c7f045fe3115241d7ec3ec2587442",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpcov/zipball/8ec45dde34a84914a0ace355fbd6d7af2242c9a4",
+                "reference": "8ec45dde34a84914a0ace355fbd6d7af2242c9a4",
                 "shasum": ""
             },
             "require": {
@@ -16384,7 +16384,7 @@
             "homepage": "https://github.com/sebastianbergmann/phpcov",
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpcov/issues",
-                "source": "https://github.com/sebastianbergmann/phpcov/tree/8.2.0"
+                "source": "https://github.com/sebastianbergmann/phpcov/tree/8.2.1"
             },
             "funding": [
                 {
@@ -16392,7 +16392,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-10-02T03:40:10+00:00"
+            "time": "2022-03-24T12:07:05+00:00"
         },
         {
             "name": "phpunit/phpunit",
