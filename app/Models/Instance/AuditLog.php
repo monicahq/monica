@@ -32,7 +32,7 @@ class AuditLog extends Model
     /**
      * The attributes that should be mutated to dates.
      *
-     * @var array
+     * @var array<string>
      */
     protected $dates = [
         'audited_at',
@@ -81,7 +81,7 @@ class AuditLog extends Model
      * Get the JSON object.
      *
      * @param  mixed  $value
-     * @return array
+     * @return mixed
      */
     public function getObjectAttribute($value)
     {

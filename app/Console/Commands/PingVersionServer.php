@@ -39,7 +39,7 @@ class PingVersionServer extends Command
     public function handle()
     {
         if (! config('monica.check_version')) {
-            return false;
+            return;
         }
 
         if (! $this->confirmToProceed('Checking version deactivated', function () {
