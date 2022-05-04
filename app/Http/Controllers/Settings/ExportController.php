@@ -76,8 +76,10 @@ class ExportController extends Controller
         if ($exports->count() >= config('monica.export_size')) {
             $job = $exports->first();
             try {
-                StorageHelper::disk($job->location)
-                    ->delete($job->filename);
+                if ($job->filename !== null) {
+                    StorageHelper::disk($job->location)
+                        ->delete($job->filename);
+                }
             } finally {
                 $job->delete();
             }

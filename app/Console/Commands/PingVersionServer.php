@@ -38,8 +38,12 @@ class PingVersionServer extends Command
      */
     public function handle()
     {
+        if (! config('monica.check_version')) {
+            return;
+        }
+
         if (! $this->confirmToProceed('Checking version deactivated', function () {
-            return ! config('monica.check_version') && $this->getLaravel()->environment() == 'production';
+            return $this->getLaravel()->environment() == 'production';
         })) {
             return false;
         }
