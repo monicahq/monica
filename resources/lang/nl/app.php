@@ -135,13 +135,13 @@ return [
     'relationship_type_group_love' => 'Liefdesrelaties',
     'relationship_type_group_family' => 'Familierelaties',
     'relationship_type_group_friend' => 'Vriendschappen',
-    'relationship_type_group_work' => 'Collega\'s',
+    'relationship_type_group_work' => 'Collega’s',
     'relationship_type_group_other' => 'Andere relaties',
 
     'relationship_type_partner' => 'partner',
     'relationship_type_partner_female' => 'partner',
     'relationship_type_partner_male' => 'significant other',
-    'relationship_type_partner_with_name' => ':name\'s van partner',
+    'relationship_type_partner_with_name' => ':name’s van partner',
     'relationship_type_partner_female_with_name' => ':name’s partner',
     'relationship_type_partner_male_with_name' => ':name’s significant other',
 
@@ -156,7 +156,7 @@ return [
     'relationship_type_date_female' => 'date',
     'relationship_type_date_male' => 'date',
     'relationship_type_date_with_name' => ':name’s date',
-    'relationship_type_date_female_with_name' => ':name\'s date',
+    'relationship_type_date_female_with_name' => ':name’s date',
     'relationship_type_date_male_with_name' => ':name’s date',
 
     'relationship_type_lover' => 'geliefde',
@@ -261,14 +261,14 @@ return [
     'relationship_type_godfather_female' => 'peet moeder',
     'relationship_type_godfather_male' => 'peetoom',
     'relationship_type_godfather_with_name' => ':name’s peetoom',
-    'relationship_type_godfather_female_with_name' => ':name\'s peetmoeder',
+    'relationship_type_godfather_female_with_name' => ':name’s peetmoeder',
     'relationship_type_godfather_male_with_name' => ':name\'s peetoom',
 
     'relationship_type_godson' => 'petekind',
     'relationship_type_godson_female' => 'peetdochter',
     'relationship_type_godson_male' => 'peetzoon',
     'relationship_type_godson_with_name' => ':name’s petekind',
-    'relationship_type_godson_female_with_name' => ':name\'s schoondochter',
+    'relationship_type_godson_female_with_name' => ':name’s schoondochter',
     'relationship_type_godson_male_with_name' => ':name’s peetzoon',
 
     'relationship_type_friend' => 'vriend',
@@ -561,7 +561,7 @@ return [
     'dav_birthdays' => 'Verjaardagen',
     'dav_birthdays_description' => 'Verjaardagen van de contacten van :name',
     'dav_tasks' => 'Taken',
-    'dav_tasks_description' => 'Taken van :name',
+    'dav_tasks_description' => ':name’s taken',
 
     // contact list
     'contact_list_avatar' => 'Avatar',
