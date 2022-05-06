@@ -140,7 +140,7 @@ return [
 
     'relationship_type_partner' => 'significant other',
     'relationship_type_partner_female' => 'significant other',
-    'relationship_type_partner_male' => 'significant other',
+    'relationship_type_partner_male' => 'партнер',
     'relationship_type_partner_with_name' => ':name’s significant other',
     'relationship_type_partner_female_with_name' => ':name’s significant other',
     'relationship_type_partner_male_with_name' => ':name’s significant other',
@@ -154,7 +154,7 @@ return [
 
     'relationship_type_date' => 'date',
     'relationship_type_date_female' => 'date',
-    'relationship_type_date_male' => 'date',
+    'relationship_type_date_male' => 'хлопець',
     'relationship_type_date_with_name' => ':name’s date',
     'relationship_type_date_female_with_name' => ':name’s date',
     'relationship_type_date_male_with_name' => ':name’s date',
