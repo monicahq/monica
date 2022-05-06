@@ -161,10 +161,10 @@ return [
 
     'relationship_type_lover' => 'amant',
     'relationship_type_lover_female' => 'amante',
-    'relationship_type_lover_male' => 'lover',
+    'relationship_type_lover_male' => 'amoureux',
     'relationship_type_lover_with_name' => 'amant de :name',
     'relationship_type_lover_female_with_name' => 'amante de :name',
-    'relationship_type_lover_male_with_name' => ':name’s lover',
+    'relationship_type_lover_male_with_name' => ':nom de l\'amoureux',
 
     'relationship_type_inlovewith' => 'amoureux',
     'relationship_type_inlovewith_female' => 'amoureuse',
