@@ -88,7 +88,7 @@ class RelationshipType extends Model
             $maleVersionWithName = trans('app.relationship_type_'.$this->name.'_male_with_name', ['name' => $contact->name]);
             if ($maleVersionWithName === 'app.relationship_type_'.$this->name.'_male_with_name') {
                 $maleVersionWithName = trans('app.relationship_type_'.$this->name.'_with_name');
-            }    
+            }
             $femaleVersionWithName = trans('app.relationship_type_'.$this->name.'_female_with_name', ['name' => $contact->name]);
 
             // include the reverse of the relation in the string (masculine/feminine)
