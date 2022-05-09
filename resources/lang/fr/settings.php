@@ -42,7 +42,7 @@ return [
     'export_title_json' => 'Exporter en Json',
     'export_submitted' => 'Votre exportation a été envoyée, elle sera disponible dans quelques instants…',
     'export_json_explanation' => 'Exportation de vos données au format Json pour la sauvegarde.',
-    'export_json_beta' => 'L’exportation en Json est en mode aperçu. Dites-nous ce que vous en pensez :',
+    'export_json_beta' => 'L’exportation en Json est en phase de test. Dites-nous ce que vous en pensez :',
     'export_json_cta' => 'Exporter en Json',
     'export_header_type' => 'Type',
     'export_header_timestamp' => 'Date de création',
