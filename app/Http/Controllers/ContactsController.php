@@ -96,7 +96,7 @@ class ContactsController extends Controller
                 return in_array($tag->name, $tagsInput);
             });
 
-            $url = $tags->map(function ($tag) {
+            $url = $tags->map(function ($tag): string {
                 return 'tags[]='.urlencode($tag->name);
             })->join('&');
 

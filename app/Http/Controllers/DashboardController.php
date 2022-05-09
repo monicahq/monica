@@ -109,7 +109,7 @@ class DashboardController extends Controller
         $calls = auth()->user()->account->calls()
             ->get()
             ->reject(function ($call) {
-                return is_null($call->contact);
+                return $call->contact === null;
             })
             ->take(15);
 

@@ -16,6 +16,7 @@ class PingVersionServerTest extends TestCase
     {
         config(['monica.weekly_ping_server_url' => 'https://version.test/ping']);
         config(['monica.app_version' => '2.9.0']);
+        config(['monica.check_version' => true]);
 
         Instance::all()->each(function ($instance) {
             $instance->delete();

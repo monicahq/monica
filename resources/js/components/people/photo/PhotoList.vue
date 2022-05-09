@@ -40,6 +40,7 @@
 
     <photo-upload
       ref="upload"
+      :hash="hash"
       :contact-id="contactId"
       @newphoto="handleNewPhoto($event)"
     />

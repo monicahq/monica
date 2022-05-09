@@ -16,7 +16,7 @@ class GenderHelper
      */
     public static function getGendersInput()
     {
-        $genders = auth()->user()->account->genders->map(function ($gender) {
+        $genders = auth()->user()->account->genders->map(function (Gender $gender): array {
             return [
                 'id' => $gender->id,
                 'name' => $gender->name,

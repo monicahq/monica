@@ -1,3 +1,17 @@
+# [3.7.0](https://github.com/monicahq/monica/compare/v3.6.1...v3.7.0) (2022-02-06)
+
+
+### Bug Fixes
+
+* fix APP_TRUST_PROXIES ([#5955](https://github.com/monicahq/monica/issues/5955)) ([e930afb](https://github.com/monicahq/monica/commit/e930afb76d95199c131c7417367c7c973fa5868d))
+* fix month reminder view ([#5914](https://github.com/monicahq/monica/issues/5914)) ([503fb36](https://github.com/monicahq/monica/commit/503fb36c8b102e0a372a935bcb0435e907311cd1))
+* fix weather short date ([#5901](https://github.com/monicahq/monica/issues/5901)) ([defcf43](https://github.com/monicahq/monica/commit/defcf43e0a0e6dbe20ae3a1313d5afa1b7cf6a0c))
+
+
+### Features
+
+* update laravel-cloudflare ([#5904](https://github.com/monicahq/monica/issues/5904)) ([458642a](https://github.com/monicahq/monica/commit/458642a50be5fad8b0e921c1b427af045d909e93))
+
 ## [3.6.1](https://github.com/monicahq/monica/compare/v3.6.0...v3.6.1) (2022-01-12)
 
 

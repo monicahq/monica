@@ -62,7 +62,7 @@ class CreateAdditionalRemindersTable extends Migration
         // Only create notifications for reminders that are not weekly based
         $reminders = Reminder::where('frequency_type', '!=', 'week')->get();
         foreach ($reminders as $reminder) {
-            $reminder->scheduleNotifications();
+            $reminder->scheduleNotifications($reminder->calculateNextExpectedDate(), $reminder->account->users()->first());
         }
     }
 }

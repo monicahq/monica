@@ -46,7 +46,7 @@
     </div>
 
     <!-- Right sidebar -->
-    <div :class="[ dirltr ? 'fl' : 'fr' ]" class="w-30 pa2">
+    <div :class="[ dirltr ? 'fl' : 'fr' ]" class="w-30-ns w-100 pa2">
       <a v-cy-name="'add-entry-button'" href="journal/add" class="btn btn-primary w-100 mb4">
         {{ $t('journal.journal_add') }}
       </a>
