@@ -21,6 +21,14 @@ jobs:
           echo "::set-output name=version::$(git describe --abbrev=0 --tags | sed 's/^v//')"
           echo "::set-output name=release::$(git describe --abbrev=0 --tags --exact-match $GITHUB_SHA 2>/dev/null || git log --pretty="%h" -n1 $GITHUB_SHA)"
 
+      - name: Configure Git
+        run: |
+          git config user.email $GIT_EMAIL
+          git config user.name $GIT_USERNAME
+        env:
+          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+          GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+
       - name: Create release files
         run: |
           echo ${{ steps.version.outputs.version }} > config/.version
