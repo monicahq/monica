@@ -12,14 +12,19 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['8.0', '8.1']
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup PHP ${{ env.php-version }}
+      - name: Setup PHP ${{ matrix.php-version }}
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ env.php-version }}
+          php-version: ${{ matrix.php-version }}
           coverage: none
 
       - name: Get Composer Cache Directory
