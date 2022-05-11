@@ -49,9 +49,9 @@ class PingVersionServer extends Command
         }
 
         $instance = Instance::first();
-        $instance->current_version = (string) config('monica.app_version');
+        $instance->current_version = config('monica.app_version');
 
-        if ($instance->current_version === '') {
+        if ($instance->current_version == '') {
             Log::warning('Current instance version is not set, skipping version check.');
 
             return;
@@ -107,5 +107,6 @@ class PingVersionServer extends Command
         } catch (\Exception $e) {
             $this->error("Error parsing version '$version': ".$e->getMessage());
         }
+        return null;
     }
 }
