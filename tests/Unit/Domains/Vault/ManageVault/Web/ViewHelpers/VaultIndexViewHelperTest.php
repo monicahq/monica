@@ -25,35 +25,40 @@ class VaultIndexViewHelperTest extends TestCase
         $this->be($user);
 
         $array = VaultIndexViewHelper::layoutData($vault);
+        $this->assertCount(4, $array);
         $this->assertEquals(
             [
-                'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                ],
-                'vault' => [
-                    'id' => $vault->id,
-                    'name' => $vault->name,
-                    'permission' => [
-                        'at_least_editor' => true,
-                        'at_least_manager' => false,
-                    ],
-                    'url' => [
-                        'dashboard' => env('APP_URL').'/vaults/'.$vault->id,
-                        'contacts' => env('APP_URL').'/vaults/'.$vault->id.'/contacts',
-                        'settings' => env('APP_URL').'/vaults/'.$vault->id.'/settings',
-                        'search' => env('APP_URL').'/vaults/'.$vault->id.'/search',
-                        'get_most_consulted_contacts' => env('APP_URL').'/vaults/'.$vault->id.'/search/user/contact/mostConsulted',
-                        'search_contacts_only' => env('APP_URL').'/vaults/'.$vault->id.'/search/user/contacts',
-                    ],
+                'id' => $user->id,
+                'name' => $user->name,
+            ],
+            $array['user']
+        );
+        $this->assertEquals(
+            [
+                'id' => $vault->id,
+                'name' => $vault->name,
+                'permission' => [
+                    'at_least_editor' => true,
+                    'at_least_manager' => false,
                 ],
                 'url' => [
-                    'vaults' => env('APP_URL').'/vaults',
-                    'settings' => env('APP_URL').'/settings',
-                    'logout' => env('APP_URL').'/logout',
+                    'dashboard' => env('APP_URL').'/vaults/'.$vault->id,
+                    'contacts' => env('APP_URL').'/vaults/'.$vault->id.'/contacts',
+                    'settings' => env('APP_URL').'/vaults/'.$vault->id.'/settings',
+                    'search' => env('APP_URL').'/vaults/'.$vault->id.'/search',
+                    'get_most_consulted_contacts' => env('APP_URL').'/vaults/'.$vault->id.'/search/user/contact/mostConsulted',
+                    'search_contacts_only' => env('APP_URL').'/vaults/'.$vault->id.'/search/user/contacts',
                 ],
             ],
-            $array
+            $array['vault']
+        );
+        $this->assertEquals(
+            [
+                'vaults' => env('APP_URL').'/vaults',
+                'settings' => env('APP_URL').'/settings',
+                'logout' => env('APP_URL').'/logout',
+            ],
+            $array['url']
         );
     }
 

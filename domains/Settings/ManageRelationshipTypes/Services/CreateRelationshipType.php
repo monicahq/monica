@@ -24,6 +24,7 @@ class CreateRelationshipType extends BaseService implements ServiceInterface
             'relationship_group_type_id' => 'required|integer|exists:relationship_group_types,id',
             'name' => 'required|string|max:255',
             'name_reverse_relationship' => 'required|string|max:255',
+            'can_be_deleted' => 'required|boolean',
         ];
     }
 
@@ -57,6 +58,7 @@ class CreateRelationshipType extends BaseService implements ServiceInterface
             'relationship_group_type_id' => $group->id,
             'name' => $data['name'],
             'name_reverse_relationship' => $data['name_reverse_relationship'],
+            'can_be_deleted' => $data['can_be_deleted'],
         ]);
 
         CreateAuditLog::dispatch([

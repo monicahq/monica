@@ -28,6 +28,7 @@ class PersonalizeRelationshipController extends Controller
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::user()->id,
             'name' => $request->input('groupTypeName'),
+            'can_be_deleted' => true,
         ];
 
         $groupType = (new CreateRelationshipGroupType)->execute($data);

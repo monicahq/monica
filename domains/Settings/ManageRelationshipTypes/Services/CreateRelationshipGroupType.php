@@ -21,6 +21,8 @@ class CreateRelationshipGroupType extends BaseService implements ServiceInterfac
             'account_id' => 'required|integer|exists:accounts,id',
             'author_id' => 'required|integer|exists:users,id',
             'name' => 'required|string|max:255',
+            'type' => 'nullable|string|max:255',
+            'can_be_deleted' => 'required|boolean',
         ];
     }
 
@@ -50,6 +52,8 @@ class CreateRelationshipGroupType extends BaseService implements ServiceInterfac
         $type = RelationshipGroupType::create([
             'account_id' => $data['account_id'],
             'name' => $data['name'],
+            'type' => $this->valueOrNull($data, 'type'),
+            'can_be_deleted' => $data['can_be_deleted'],
         ]);
 
         CreateAuditLog::dispatch([

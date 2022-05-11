@@ -140,11 +140,14 @@
               <!-- actions -->
               <ul class="text-sm">
                 <li
-                  class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900"
+                  class="inline cursor-pointer text-sky-500 hover:text-blue-900"
                   @click="renameGroupTypeModal(groupType)">
                   Rename
                 </li>
-                <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroyGroupType(groupType)">
+                <li
+                  v-if="groupType.can_be_deleted"
+                  class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"
+                  @click="destroyGroupType(groupType)">
                   Delete
                 </li>
               </ul>
@@ -208,12 +211,13 @@
                 <!-- actions -->
                 <ul class="text-sm">
                   <li
-                    class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900"
+                    class="inline cursor-pointer text-sky-500 hover:text-blue-900"
                     @click="renameRelationTypeModal(type)">
                     Rename
                   </li>
                   <li
-                    class="inline cursor-pointer text-red-500 hover:text-red-900"
+                    v-if="type.can_be_deleted"
+                    class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"
                     @click="destroyRelationshipType(groupType, type)">
                     Delete
                   </li>

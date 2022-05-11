@@ -25,6 +25,7 @@ class ContactController extends Controller
         $vault = Vault::findOrFail($vaultId);
 
         $contacts = Contact::where('vault_id', $request->route()->parameter('vault'))
+            ->where('listed', true)
             ->orderBy('created_at', 'asc')
             ->paginate(10);
 
@@ -58,6 +59,7 @@ class ContactController extends Controller
             'gender_id' => $request->input('gender_id'),
             'pronoun_id' => $request->input('pronoun_id'),
             'template_id' => $request->input('template_id'),
+            'listed' => true,
         ];
 
         $contact = (new CreateContact)->execute($data);

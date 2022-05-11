@@ -35,6 +35,7 @@ class PersonalizeRelationshipIndexViewHelper
         return [
             'id' => $groupType->id,
             'name' => $groupType->name,
+            'can_be_deleted' => $groupType->can_be_deleted,
             'types' => $groupType->types->map(function ($type) use ($groupType) {
                 return self::dtoRelationshipType($groupType, $type);
             }),
@@ -58,6 +59,7 @@ class PersonalizeRelationshipIndexViewHelper
             'id' => $type->id,
             'name' => $type->name,
             'name_reverse_relationship' => $type->name_reverse_relationship,
+            'can_be_deleted' => $type->can_be_deleted,
             'url' => [
                 'update' => route('settings.personalize.relationship.type.update', [
                     'groupType' => $groupType->id,

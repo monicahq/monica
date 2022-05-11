@@ -17,6 +17,7 @@ use App\Contact\ManageReminders\Web\ViewHelpers\ModuleRemindersViewHelper;
 use App\Contact\ManageJobInformation\Web\ViewHelpers\ModuleCompanyViewHelper;
 use App\Contact\ManagePronouns\Web\ViewHelpers\ModuleGenderPronounViewHelper;
 use App\Contact\ManageContactName\Web\ViewHelpers\ModuleContactNameViewHelper;
+use App\Contact\ManageRelationships\Web\ViewHelpers\ModuleRelationshipViewHelper;
 use App\Contact\ManageContactImportantDates\Web\ViewHelpers\ModuleImportantDatesViewHelper;
 
 class ContactShowViewHelper
@@ -161,6 +162,10 @@ class ContactShowViewHelper
 
             if ($module->type == Module::TYPE_LOANS) {
                 $data = ModuleLoanViewHelper::data($contact, $user);
+            }
+
+            if ($module->type == Module::TYPE_RELATIONSHIPS) {
+                $data = ModuleRelationshipViewHelper::data($contact, $user);
             }
 
             $modulesCollection->push([

@@ -14,6 +14,12 @@ class RelationshipGroupType extends Model
     protected $table = 'relationship_group_types';
 
     /**
+     * Possible types.
+     */
+    const TYPE_FAMILY = 'family';
+    const TYPE_LOVE = 'love';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -21,6 +27,17 @@ class RelationshipGroupType extends Model
     protected $fillable = [
         'account_id',
         'name',
+        'type',
+        'can_be_deleted',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'can_be_deleted' => 'boolean',
     ];
 
     /**

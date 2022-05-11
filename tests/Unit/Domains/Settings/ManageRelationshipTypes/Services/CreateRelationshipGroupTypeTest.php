@@ -63,6 +63,7 @@ class CreateRelationshipGroupTypeTest extends TestCase
             'account_id' => $account->id,
             'author_id' => $author->id,
             'name' => 'type name',
+            'can_be_deleted' => true,
         ];
 
         $type = (new CreateRelationshipGroupType)->execute($request);
@@ -71,6 +72,7 @@ class CreateRelationshipGroupTypeTest extends TestCase
             'id' => $type->id,
             'account_id' => $account->id,
             'name' => 'type name',
+            'can_be_deleted' => true,
         ]);
 
         $this->assertInstanceOf(

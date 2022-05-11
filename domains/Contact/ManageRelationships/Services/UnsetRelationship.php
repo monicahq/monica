@@ -66,6 +66,14 @@ class UnsetRelationship extends BaseService implements ServiceInterface
         $this->unsetRelationship($this->contact, $otherContact);
         $this->unsetRelationship($otherContact, $this->contact);
 
+        if (! $this->contact->listed) {
+            $this->contact->delete();
+        }
+
+        if (! $otherContact->listed) {
+            $otherContact->delete();
+        }
+
         $this->log($otherContact);
     }
 

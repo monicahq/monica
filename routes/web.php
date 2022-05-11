@@ -33,6 +33,7 @@ use App\Contact\ManageReminders\Web\Controllers\ContactModuleReminderController;
 use App\Settings\ManageCurrencies\Web\Controllers\PersonalizeCurrencyController;
 use App\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatesController;
 use App\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsTemplateController;
+use App\Contact\ManageRelationships\Web\Controllers\ContactRelationshipsController;
 use App\Settings\ManageNotificationChannels\Web\Controllers\NotificationsController;
 use App\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatePagesController;
 use App\Settings\ManageAddressTypes\Web\Controllers\PersonalizeAddressTypeController;
@@ -129,6 +130,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     // job information
                     Route::get('companies/list', [ContactModuleJobInformationController::class, 'index'])->name('contact.companies.list.index');
                     Route::put('jobInformation', [ContactModuleJobInformationController::class, 'update'])->name('contact.job_information.update');
+
+                    // relationships
+                    Route::get('relationships/create', [ContactRelationshipsController::class, 'create'])->name('contact.relationships.create');
+                    Route::post('relationships', [ContactRelationshipsController::class, 'store'])->name('contact.relationships.store');
+                    Route::put('relationships/{relationship}', [ContactRelationshipsController::class, 'update'])->name('contact.relationships.update');
                 });
             });
 

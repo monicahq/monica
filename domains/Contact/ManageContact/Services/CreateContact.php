@@ -28,7 +28,7 @@ class CreateContact extends BaseService implements ServiceInterface
             'account_id' => 'required|integer|exists:accounts,id',
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
-            'first_name' => 'required|string|max:255',
+            'first_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'nickname' => 'nullable|string|max:255',
@@ -36,6 +36,7 @@ class CreateContact extends BaseService implements ServiceInterface
             'gender_id' => 'nullable|integer|exists:genders,id',
             'pronoun_id' => 'nullable|integer|exists:pronouns,id',
             'template_id' => 'nullable|integer|exists:templates,id',
+            'listed' => 'required|boolean',
         ];
     }
 
@@ -102,7 +103,7 @@ class CreateContact extends BaseService implements ServiceInterface
 
         $this->contact = Contact::create([
             'vault_id' => $this->data['vault_id'],
-            'first_name' => $this->data['first_name'],
+            'first_name' => $this->valueOrNull($this->data, 'first_name'),
             'last_name' => $this->valueOrNull($this->data, 'last_name'),
             'middle_name' => $this->valueOrNull($this->data, 'middle_name'),
             'nickname' => $this->valueOrNull($this->data, 'nickname'),
@@ -111,6 +112,7 @@ class CreateContact extends BaseService implements ServiceInterface
             'pronoun_id' => $this->valueOrNull($this->data, 'pronoun_id'),
             'template_id' => $templateId,
             'last_updated_at' => Carbon::now(),
+            'listed' => $this->valueOrTrue($this->data, 'listed'),
         ]);
     }
 

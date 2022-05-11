@@ -12,6 +12,7 @@ use App\Models\Information;
 use App\Models\TemplatePage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
+use App\Models\RelationshipGroupType;
 use Illuminate\Queue\SerializesModels;
 use App\Models\UserNotificationChannel;
 use Illuminate\Queue\InteractsWithQueue;
@@ -75,6 +76,7 @@ class SetupAccount implements ShouldQueue
         $this->addTemplatePageContactInformation();
         $this->addTemplatePageFeed();
         $this->addTemplatePageSocial();
+        $this->addTemplatePageInformation();
         $this->addFirstInformation();
     }
 
@@ -267,6 +269,34 @@ class SetupAccount implements ShouldQueue
             'can_be_deleted' => true,
         ]);
 
+        // Relationships
+        $module = (new CreateModule)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'name' => trans('app.module_relationships'),
+            'type' => Module::TYPE_RELATIONSHIPS,
+            'can_be_deleted' => false,
+            'pagination' => 3,
+        ]);
+        (new AssociateModuleToTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageSocial->id,
+            'module_id' => $module->id,
+        ]);
+    }
+
+    private function addTemplatePageInformation(): void
+    {
+        $templatePageInformation = (new CreateTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'name' => trans('app.default_template_page_information'),
+            'can_be_deleted' => true,
+        ]);
+
         // Notes
         $module = (new CreateModule)->execute([
             'account_id' => $this->user->account_id,
@@ -280,7 +310,7 @@ class SetupAccount implements ShouldQueue
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'template_id' => $this->template->id,
-            'template_page_id' => $templatePageSocial->id,
+            'template_page_id' => $templatePageInformation->id,
             'module_id' => $module->id,
         ]);
 
@@ -296,7 +326,7 @@ class SetupAccount implements ShouldQueue
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'template_id' => $this->template->id,
-            'template_page_id' => $templatePageSocial->id,
+            'template_page_id' => $templatePageInformation->id,
             'module_id' => $module->id,
         ]);
 
@@ -312,7 +342,7 @@ class SetupAccount implements ShouldQueue
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'template_id' => $this->template->id,
-            'template_page_id' => $templatePageSocial->id,
+            'template_page_id' => $templatePageInformation->id,
             'module_id' => $module->id,
         ]);
     }
@@ -391,6 +421,8 @@ class SetupAccount implements ShouldQueue
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'name' => trans('account.relationship_type_love'),
+            'can_be_deleted' => false,
+            'type' => RelationshipGroupType::TYPE_LOVE,
         ]);
 
         DB::table('relationship_types')->insert([
@@ -420,11 +452,6 @@ class SetupAccount implements ShouldQueue
                 'relationship_group_type_id' => $group->id,
             ],
             [
-                'name' => trans('account.relationship_type_lovedby'),
-                'name_reverse_relationship' => trans('account.relationship_type_inlovewith'),
-                'relationship_group_type_id' => $group->id,
-            ],
-            [
                 'name' => trans('account.relationship_type_ex'),
                 'name_reverse_relationship' => trans('account.relationship_type_ex'),
                 'relationship_group_type_id' => $group->id,
@@ -436,17 +463,14 @@ class SetupAccount implements ShouldQueue
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'name' => trans('account.relationship_type_family'),
+            'can_be_deleted' => false,
+            'type' => RelationshipGroupType::TYPE_FAMILY,
         ]);
 
         DB::table('relationship_types')->insert([
             [
                 'name' => trans('account.relationship_type_parent'),
                 'name_reverse_relationship' => trans('account.relationship_type_child'),
-                'relationship_group_type_id' => $group->id,
-            ],
-            [
-                'name' => trans('account.relationship_type_child'),
-                'name_reverse_relationship' => trans('account.relationship_type_parent'),
                 'relationship_group_type_id' => $group->id,
             ],
             [
@@ -460,18 +484,8 @@ class SetupAccount implements ShouldQueue
                 'relationship_group_type_id' => $group->id,
             ],
             [
-                'name' => trans('account.relationship_type_grandchild'),
-                'name_reverse_relationship' => trans('account.relationship_type_grandparent'),
-                'relationship_group_type_id' => $group->id,
-            ],
-            [
                 'name' => trans('account.relationship_type_uncle'),
                 'name_reverse_relationship' => trans('account.relationship_type_nephew'),
-                'relationship_group_type_id' => $group->id,
-            ],
-            [
-                'name' => trans('account.relationship_type_nephew'),
-                'name_reverse_relationship' => trans('account.relationship_type_uncle'),
                 'relationship_group_type_id' => $group->id,
             ],
             [
@@ -484,11 +498,6 @@ class SetupAccount implements ShouldQueue
                 'name_reverse_relationship' => trans('account.relationship_type_godson'),
                 'relationship_group_type_id' => $group->id,
             ],
-            [
-                'name' => trans('account.relationship_type_godson'),
-                'name_reverse_relationship' => trans('account.relationship_type_godfather'),
-                'relationship_group_type_id' => $group->id,
-            ],
         ]);
 
         // Friend
@@ -496,6 +505,7 @@ class SetupAccount implements ShouldQueue
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'name' => trans('account.relationship_type_friend_title'),
+            'can_be_deleted' => true,
         ]);
 
         DB::table('relationship_types')->insert([
@@ -516,17 +526,13 @@ class SetupAccount implements ShouldQueue
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'name' => trans('account.relationship_type_work'),
+            'can_be_deleted' => true,
         ]);
 
         DB::table('relationship_types')->insert([
             [
                 'name' => trans('account.relationship_type_colleague'),
                 'name_reverse_relationship' => trans('account.relationship_type_colleague'),
-                'relationship_group_type_id' => $group->id,
-            ],
-            [
-                'name' => trans('account.relationship_type_boss'),
-                'name_reverse_relationship' => trans('account.relationship_type_subordinate'),
                 'relationship_group_type_id' => $group->id,
             ],
             [
@@ -537,11 +543,6 @@ class SetupAccount implements ShouldQueue
             [
                 'name' => trans('account.relationship_type_mentor'),
                 'name_reverse_relationship' => trans('account.relationship_type_protege'),
-                'relationship_group_type_id' => $group->id,
-            ],
-            [
-                'name' => trans('account.relationship_type_protege'),
-                'name_reverse_relationship' => trans('account.relationship_type_mentor'),
                 'relationship_group_type_id' => $group->id,
             ],
         ]);

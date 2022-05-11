@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Settings\CancelAccount\Services\CancelAccount;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
-use App\Settings\CancelAccount\ViewHelpers\CancelAccountIndexViewHelper;
+use App\Settings\CancelAccount\Web\ViewHelpers\CancelAccountViewHelper;
 
 class CancelAccountController extends Controller
 {
@@ -18,7 +18,7 @@ class CancelAccountController extends Controller
     {
         return Inertia::render('Settings/CancelAccount/Index', [
             'layoutData' => VaultIndexViewHelper::layoutData(),
-            'data' => CancelAccountIndexViewHelper::data(),
+            'data' => CancelAccountViewHelper::data(),
         ]);
     }
 

@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\Currency;
 use App\Jobs\SetupAccount;
 use Illuminate\Support\Facades\Mail;
+use App\Models\RelationshipGroupType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SetupAccountTest extends TestCase
@@ -86,15 +87,21 @@ class SetupAccountTest extends TestCase
 
         $this->assertDatabaseHas('relationship_group_types', [
             'name' => trans('account.relationship_type_love'),
+            'can_be_deleted' => false,
+            'type' => RelationshipGroupType::TYPE_LOVE,
         ]);
         $this->assertDatabaseHas('relationship_group_types', [
             'name' => trans('account.relationship_type_family'),
+            'can_be_deleted' => false,
+            'type' => RelationshipGroupType::TYPE_FAMILY,
         ]);
         $this->assertDatabaseHas('relationship_group_types', [
             'name' => trans('account.relationship_type_work'),
+            'can_be_deleted' => true,
         ]);
         $this->assertDatabaseHas('relationship_group_types', [
             'name' => trans('account.relationship_type_friend_title'),
+            'can_be_deleted' => true,
         ]);
 
         $this->assertDatabaseHas('genders', [

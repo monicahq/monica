@@ -18,6 +18,8 @@ class CreateRelationshipTypesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('account_id');
             $table->string('name');
+            $table->string('type')->nullable();
+            $table->boolean('can_be_deleted')->default(true);
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
@@ -26,12 +28,15 @@ class CreateRelationshipTypesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('relationship_group_type_id');
             $table->string('name');
+            $table->string('type')->nullable();
             $table->string('name_reverse_relationship');
+            $table->boolean('can_be_deleted')->default(true);
             $table->timestamps();
             $table->foreign('relationship_group_type_id')->references('id')->on('relationship_group_types')->onDelete('cascade');
         });
 
         Schema::create('relationships', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('relationship_type_id');
             $table->unsignedBigInteger('contact_id');
             $table->unsignedBigInteger('related_contact_id');

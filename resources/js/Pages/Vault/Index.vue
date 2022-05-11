@@ -19,11 +19,6 @@
   color: #737e8d;
   top: -2px;
 }
-
-input[type='checkbox'] {
-  top: 3px;
-  width: 12px;
-}
 </style>
 
 <template>

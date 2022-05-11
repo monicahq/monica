@@ -43,6 +43,7 @@
           </div>
           <div class="border-b border-gray-200 p-5">
             <text-input
+              :ref="'name'"
               v-model="form.name"
               :autofocus="true"
               :div-outer-class="'mb-5'"
@@ -107,6 +108,12 @@ export default {
         description: '',
       },
     };
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      this.$refs.name.focus();
+    });
   },
 
   methods: {

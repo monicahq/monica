@@ -33,6 +33,7 @@ class Contact extends Model
         'last_updated_at',
         'company_id',
         'job_position',
+        'listed',
         'avatar_id',
     ];
 
@@ -43,6 +44,7 @@ class Contact extends Model
      */
     protected $casts = [
         'can_be_deleted' => 'boolean',
+        'listed' => 'boolean',
         'last_updated_at' => 'datetime',
     ];
 

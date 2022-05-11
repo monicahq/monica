@@ -153,6 +153,7 @@ class SetupDummyAccount extends Command
                     'middle_name' => rand(1, 2) == 1 ? $this->faker->lastName() : null,
                     'nickname' => null,
                     'maiden_name' => null,
+                    'listed' => true,
                 ]);
 
                 (new CreateContactImportantDate)->execute([

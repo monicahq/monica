@@ -75,6 +75,7 @@ class CreateRelationshipTypeTest extends TestCase
             'relationship_group_type_id' => $groupType->id,
             'name' => 'type name',
             'name_reverse_relationship' => 'reverse type name',
+            'can_be_deleted' => true,
         ];
 
         $type = (new CreateRelationshipType)->execute($request);
@@ -84,6 +85,7 @@ class CreateRelationshipTypeTest extends TestCase
             'relationship_group_type_id' => $groupType->id,
             'name' => 'type name',
             'name_reverse_relationship' => 'reverse type name',
+            'can_be_deleted' => true,
         ]);
 
         $this->assertInstanceOf(

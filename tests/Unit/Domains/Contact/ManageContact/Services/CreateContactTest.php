@@ -86,6 +86,7 @@ class CreateContactTest extends TestCase
             'vault_id' => $vault->id,
             'author_id' => $author->id,
             'first_name' => 'Ross',
+            'listed' => false,
         ];
 
         $contact = (new CreateContact)->execute($request);

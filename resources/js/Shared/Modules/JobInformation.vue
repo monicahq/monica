@@ -113,14 +113,14 @@
     </div>
 
     <!-- blank state -->
-    <p v-if="!data.job_position && !data.company" class="text-sm text-gray-600">Not set</p>
+    <p v-if="!form.job_position && !company_name" class="text-sm text-gray-600">Not set</p>
 
     <p v-else>
-      <span v-if="data.job_position">
+      <span v-if="form.job_position">
         {{ form.job_position }}
-        <span v-if="data.company" class="text-sm text-gray-600">at </span>
+        <span v-if="company_name" class="text-sm text-gray-600">at </span>
       </span>
-      <span v-if="data.company">{{ company_name }}</span>
+      <span v-if="company_name">{{ company_name }}</span>
     </p>
   </div>
 </template>

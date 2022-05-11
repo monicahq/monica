@@ -28,6 +28,7 @@ class CreateContactsTable extends Migration
             $table->string('maiden_name')->nullable();
             $table->string('job_position')->nullable();
             $table->boolean('can_be_deleted')->default(true);
+            $table->boolean('listed')->default(true);
             $table->datetime('last_updated_at')->nullable();
             $table->timestamps();
             $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');

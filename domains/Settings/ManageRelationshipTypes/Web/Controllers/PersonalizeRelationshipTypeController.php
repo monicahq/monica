@@ -20,6 +20,7 @@ class PersonalizeRelationshipTypeController extends Controller
             'relationship_group_type_id' => $groupTypeId,
             'name' => $request->input('name'),
             'name_reverse_relationship' => $request->input('nameReverseRelationship'),
+            'can_be_deleted' => true,
         ];
 
         $type = (new CreateRelationshipType)->execute($data);
