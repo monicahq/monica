@@ -15,6 +15,28 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v3
 
+      - name: Get version
+        id: version
+        run: |
+          echo "::set-output name=version::$(git describe --abbrev=0 --tags | sed 's/^v//')"
+          echo "::set-output name=release::$(git describe --abbrev=0 --tags --exact-match $GITHUB_SHA 2>/dev/null || git log --pretty="%h" -n1 $GITHUB_SHA)"
+
+      - name: Create release files
+        run: |
+          echo ${{ steps.version.outputs.version }} > config/.version
+          echo ${{ steps.version.outputs.release }} > config/.release
+          echo $GITHUB_SHA > config/.commit
+
+      - name: Update .htaccess
+        run: cp -f scripts/.htaccess_production public/.htaccess
+
+      - name: Commit everything
+        run: |
+          git add -A --force public config
+          git commit -m "Build $($CURRENT_DATE_TIME)"
+        env:
+          CURRENT_DATE_TIME: "date +%Y-%m-%d:%H-%M"
+
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
