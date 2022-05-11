@@ -107,6 +107,7 @@ class PingVersionServer extends Command
         } catch (\Exception $e) {
             $this->error("Error parsing version '$version': ".$e->getMessage());
         }
+
         return null;
     }
 }
