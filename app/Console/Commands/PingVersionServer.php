@@ -53,6 +53,7 @@ class PingVersionServer extends Command
 
         if ($instance->current_version === '') {
             Log::warning('Current instance version is not set, skipping version check.');
+
             return;
         }
 
