@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy to Heroku
 
+    environment: heroku
+
     steps:
       - name: Checkout sources
         uses: actions/checkout@v3
