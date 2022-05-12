@@ -2,24 +2,20 @@ name: Update release version in the footer
 
 on:
   push:
+    pull_request:
     branches:
       - main
-    pull_request:
 
 jobs:
   build:
     name: Build
 
-    runs-on: ubuntu-latest]
-
-    strategy:
-      fail-fast: false
-      matrix:
-        php-versions: ['8.0']
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+        ref: ${{ github.head_ref }}
 
       - name: Setup PHP ${{ matrix.php-version }}
         uses: shivammathur/setup-php@v2
