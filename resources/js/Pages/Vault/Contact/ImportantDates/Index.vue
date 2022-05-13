@@ -109,6 +109,18 @@
                 @esc-key-pressed="createDateModalShown = false" />
             </div>
 
+            <!-- type -->
+            <div class="border-b border-gray-200 p-5">
+              <dropdown
+                v-model="form.contact_important_date_type_id"
+                :data="data.date_types"
+                :required="false"
+                :placeholder="'Choose a value'"
+                :dropdown-class="'block w-full'"
+                :help="'Some dates have a special type that we will use in the software to calculate an age.'"
+                :label="'Date type'" />
+            </div>
+
             <div class="p-5">
               <!-- case: I know the exact date -->
               <div class="mb-2 flex items-center">
@@ -251,6 +263,12 @@
             <div v-if="editedDateId !== date.id" class="flex items-center justify-between px-5 py-2">
               <span class="text-base">
                 {{ date.label }}: <span class="font-medium">{{ date.date }}</span>
+
+                <span
+                  v-if="date.type"
+                  class="ml-2 inline-block rounded bg-neutral-200 py-0 px-1 text-xs text-neutral-500 last:mr-0">
+                  {{ date.type.label }}
+                </span>
               </span>
 
               <!-- actions -->
@@ -280,6 +298,18 @@
                     :autocomplete="false"
                     :maxlength="255"
                     @esc-key-pressed="createDateModalShown = false" />
+                </div>
+
+                <!-- type -->
+                <div class="border-b border-gray-200 p-5">
+                  <dropdown
+                    v-model="form.contact_important_date_type_id"
+                    :data="data.date_types"
+                    :required="false"
+                    :placeholder="'Choose a value'"
+                    :dropdown-class="'block w-full'"
+                    :help="'Some dates have a special type that we will use in the software to calculate an age.'"
+                    :label="'Date type'" />
                 </div>
 
                 <div class="p-5">
@@ -440,6 +470,7 @@ export default {
         label: '',
         date: '',
         age: '',
+        contact_important_date_type_id: 0,
         reminder: false,
         reminderChoice: '',
         errors: [],
@@ -473,6 +504,7 @@ export default {
       this.form.month = date.month;
       this.form.date = date.completeDate;
       this.form.age = date.age;
+      this.form.contact_important_date_type_id = date.type ? date.type.id : 0;
       this.editedDateId = date.id;
     },
 

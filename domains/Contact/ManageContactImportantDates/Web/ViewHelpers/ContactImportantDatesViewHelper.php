@@ -18,6 +18,15 @@ class ContactImportantDatesViewHelper
             return self::dto($contact, $date, $user);
         });
 
+        $dateTypesCollection = $contact->vault->contactImportantDateTypes()
+            ->get()
+            ->map(function ($type) {
+                return [
+                    'id' => $type->id,
+                    'name' => $type->label,
+                ];
+            });
+
         return [
             'contact' => [
                 'name' => $contact->getName($user),
@@ -25,6 +34,7 @@ class ContactImportantDatesViewHelper
             'dates' => $datesCollection,
             'months' => DateHelper::getMonths(),
             'days' => DateHelper::getDays(),
+            'date_types' => $dateTypesCollection,
             'url' => [
                 'store' => route('contact.date.store', [
                     'vault' => $contact->vault_id,
@@ -49,7 +59,10 @@ class ContactImportantDatesViewHelper
             'id' => $date->id,
             'label' => $date->label,
             'date' => ImportantDateHelper::formatDate($date, $user),
-            'type' => $date->contactImportantDateType ? $date->contactImportantDateType->label : null,
+            'type' => $date->contactImportantDateType ? [
+                'id' =>  $date->contactImportantDateType->id,
+                'label' =>  $date->contactImportantDateType->label,
+            ] : null,
             'age' => ImportantDateHelper::getAge($date),
             'choice' => ImportantDateHelper::determineType($date),
             'completeDate' => $completeDate,

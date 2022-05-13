@@ -29,7 +29,7 @@ class ContactImportantDatesViewHelperTest extends TestCase
         $array = ContactImportantDatesViewHelper::data($contact, $user);
 
         $this->assertEquals(
-            5,
+            6,
             count($array)
         );
 
@@ -37,6 +37,7 @@ class ContactImportantDatesViewHelperTest extends TestCase
         $this->assertArrayHasKey('dates', $array);
         $this->assertArrayHasKey('months', $array);
         $this->assertArrayHasKey('days', $array);
+        $this->assertArrayHasKey('date_types', $array);
         $this->assertArrayHasKey('url', $array);
 
         $this->assertEquals(
@@ -75,7 +76,10 @@ class ContactImportantDatesViewHelperTest extends TestCase
                 'id' => $date->id,
                 'label' => $date->label,
                 'date' => 'Oct 29, 1981',
-                'type' => 'birthdate',
+                'type' => [
+                    'id' => $date->contactImportantDateType->id,
+                    'label' => 'birthdate',
+                ],
                 'age' => '40',
                 'choice' => 'full_date',
                 'completeDate' => '1981-10-29',

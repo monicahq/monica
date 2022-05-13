@@ -58,7 +58,7 @@
             {{ type.label }}
             <span
               v-if="type.internal_type"
-              class="mr-2 inline-block rounded bg-neutral-200 py-1 px-2 text-xs font-semibold text-neutral-800 last:mr-0"
+              class="mr-2 inline-block rounded bg-neutral-200 py-1 px-2 text-xs font-semibold text-neutral-500 last:mr-0"
               >{{ type.internal_type }}</span
             >
           </span>

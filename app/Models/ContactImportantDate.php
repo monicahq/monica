@@ -36,6 +36,7 @@ class ContactImportantDate extends Model
         'day',
         'month',
         'year',
+        'contact_important_date_type_id',
     ];
 
     /**

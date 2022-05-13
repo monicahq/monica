@@ -46,7 +46,7 @@ select {
       </select>
     </div>
 
-    <p v-if="help" class="mb-3 mt-1 text-xs">
+    <p v-if="help" class="mt-1 text-xs">
       {{ help }}
     </p>
   </div>
