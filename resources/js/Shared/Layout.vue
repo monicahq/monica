@@ -171,7 +171,12 @@ main {
           <li class="mr-4 inline">Monica. Since 2017.</li>
           <li class="inline">
             Current version: {{ layoutData.version.date }}
-            <span class="sha ml-2 font-mono">{{ layoutData.version.sha }}</span>
+
+            <a-tooltip placement="topLeft" title="Click to see the code" arrow-point-at-center>
+              <a href="https://github.com/djaiss/butler/commits/main" target="_blank" class="sha ml-2 font-mono">{{
+                layoutData.version.sha
+              }}</a>
+            </a-tooltip>
           </li>
         </ul>
       </footer>
