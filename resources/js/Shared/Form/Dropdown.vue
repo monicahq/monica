@@ -34,7 +34,7 @@ select {
     <div class="component relative">
       <select
         :id="id"
-        v-model="selectedId"
+        :value="modelValue"
         :class="localDropdownClasses"
         :required="required"
         :disabled="disabled"
@@ -115,7 +115,6 @@ export default {
   data() {
     return {
       localDropdownClasses: '',
-      selectedId: 0,
     };
   },
 
@@ -123,11 +122,6 @@ export default {
     this.localDropdownClasses =
       'py-2 px-3 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-white rounded-md shadow-sm focus:outline-none sm:text-sm ' +
       this.dropdownClass;
-
-    var element = this.data.find((x) => x.selected == true);
-    if (element) {
-      this.selectedId = element.id;
-    }
   },
 
   methods: {
@@ -139,8 +133,8 @@ export default {
       this.$emit('esc-key-pressed');
     },
 
-    change() {
-      this.$emit('update:modelValue', this.selectedId);
+    change(event) {
+      this.$emit('update:modelValue', event.target.value);
     },
   },
 };

@@ -219,6 +219,7 @@ export default {
       axios
         .put(this.data.url.update, this.form)
         .then((response) => {
+          this.flash('The job information has been saved', 'success');
           this.editJobInformation = false;
           this.loadingState = '';
           this.company_name = response.data.data.company.name;
