@@ -80,7 +80,7 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
         $this->validateRules($this->data);
 
         // make sure the vault matches
-        if ($this->valueOrNull($this->data, 'contact_important_date_type_id')) {
+        if (! is_null($this->valueOrNull($this->data, 'contact_important_date_type_id'))) {
             ContactImportantDateType::where('vault_id', $this->data['vault_id'])
                 ->findOrFail($this->data['contact_important_date_type_id']);
         }
