@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Helpers\NameHelper;
 use Laravel\Scout\Searchable;
+use App\Helpers\ImportantDateHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -267,5 +268,33 @@ class Contact extends Model
     public function getName(User $user): string
     {
         return NameHelper::formatContactName($user, $this);
+    }
+
+    /**
+     * Get the age of the contact.
+     * The birthdate is stored in a ContactImportantDate object, of the
+     * TYPE_BIRTHDATE type. So we need to find if a date of this type exists.
+     *
+     * @return null|int
+     */
+    public function getAge(): ?int
+    {
+        $type = ContactImportantDateType::where('vault_id', $this->vault_id)
+            ->where('internal_type', ContactImportantDate::TYPE_BIRTHDATE)
+            ->first();
+
+        if (! $type) {
+            return null;
+        }
+
+        $birthdate = $this->dates()
+            ->where('contact_important_date_type_id', $type->id)
+            ->first();
+
+        if (! $birthdate) {
+            return null;
+        }
+
+        return ImportantDateHelper::getAge($birthdate);
     }
 }
