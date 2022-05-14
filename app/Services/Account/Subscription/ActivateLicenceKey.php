@@ -75,7 +75,7 @@ class ActivateLicenceKey extends BaseService
 
     private function checkResponseCode(): void
     {
-        if ($this->response->status() == 404) {
+        if ($this->response->status() === 404) {
             throw new Exception(trans('settings.subscriptions_licence_key_does_not_exist'));
         }
 
