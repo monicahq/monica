@@ -6,14 +6,18 @@ use Exception;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Account\Account;
+use App\Services\QueuableService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use App\Services\DispatchableService;
 use App\Exceptions\NoCustomerPortalSetException;
 use App\Exceptions\NoLicenceKeyEncryptionSetException;
 
-class ActivateLicenceKey extends BaseService
+class ActivateLicenceKey extends BaseService implements QueuableService
 {
+    use DispatchableService;
+
     private Account $account;
     private array $data;
     private Response $response;
