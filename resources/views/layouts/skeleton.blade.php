@@ -48,9 +48,6 @@
     @push('scripts')
       <script src="{{ asset(mix('js/manifest.js')) }}"></script>
       <script src="{{ asset(mix('js/vendor.js')) }}"></script>
-    @endpush
-
-    @push('scripts')
       <script src="{{ asset(mix('js/app.js')) }}"></script>
     @endpush
 

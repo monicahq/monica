@@ -225,6 +225,8 @@ return [
     'subscriptions_plan_include1' => 'Included with your upgrade:',
     'subscriptions_plan_include2' => 'Unlimited number of contacts • Unlimited number of users • Reminders by email • Import with vCard • Personalization of the contact sheet',
     'subscriptions_plan_include3' => '100% of the profits go the development of this great open source project.',
+    'subscriptions_plan_question' => 'Do you have your licence key?',
+    'subscriptions_key_paste' => 'Please paste your licence key here',
     'subscriptions_help_title' => 'Additional details you may be curious about',
     'subscriptions_help_licencekey_title' => 'What is a licence key?',
     'subscriptions_help_licencekey_desc' => 'A licence key is an unique identifier that you will get once you purchase a plan. It will be used to unlock all the paid features in your account. Licence keys are managed on https://customers.monicahq.com and you will need to create a new account on this site to get your licence key, that you will need to paste here.',

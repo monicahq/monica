@@ -101,7 +101,7 @@
           <!-- licence key -->
           <div class="br3 pa4 ba b--gray-monica bg-white mb4">
 
-            <h3 class="tc mb3">Do you have your licence key?</h3>
+            <h3 class="tc mb3">{{ trans('settings.subscriptions_plan_question')  }}</h3>
 
             @include('partials.errors')
 
@@ -109,9 +109,9 @@
               @csrf
 
               <div class="flex-ns items-end">
-                <form-input value="" :input-type="'text'" :id="'licence_key'" :required="true" :title="'Please paste your licence key here'">
+                <form-input value="" :input-type="'text'" :id="'licence_key'" :required="true" :title="$t('settings.subscriptions_key_paste')">
                 </form-input>
-                <div><button name="save" type="submit" class="ml2 btn btn-primary w-auto-ns w-100 pb0-ns">Save</button></div>
+                <div><button name="save" type="submit" class="ml2 btn btn-primary w-auto-ns w-100 pb0-ns">{{ trans('app.save')  }}</button></div>
               </div>
             </form>
           </div>

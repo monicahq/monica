@@ -14,10 +14,10 @@ class AddLicenceKeysToAccounts extends Migration
     public function up()
     {
         Schema::table('accounts', function (Blueprint $table) {
-            $table->string('licence_key')->after('uuid')->nullable();
+            $table->string('licence_key', 255)->after('uuid')->nullable();
             $table->datetime('valid_until_at')->after('licence_key')->nullable();
-            $table->string('purchaser_email')->after('valid_until_at')->nullable();
-            $table->string('frequency')->after('purchaser_email')->nullable();
+            $table->string('purchaser_email', 255)->after('valid_until_at')->nullable();
+            $table->string('frequency', 15)->after('purchaser_email')->nullable();
         });
     }
 
