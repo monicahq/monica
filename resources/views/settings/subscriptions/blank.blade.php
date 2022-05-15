@@ -68,7 +68,7 @@
                   <div class="b--gray-monica ba pt3 br3 bw1">
                     <h3 class="tc mb3 pt3">{{ trans('settings.subscriptions_plan_month_title') }}</h3>
                     <p class="tc">
-                      <a href="{{ $customerPortalUrl }}" target="_blank" class="btn btn-primary pv3">{{ trans('settings.subscriptions_plan_choose') }}</a>
+                      <a href="{{ $customerPortalUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary pv3">{{ trans('settings.subscriptions_plan_choose') }}</a>
                     </p>
                     <p class="tc mt2">
                       {{ trans('settings.subscriptions_plan_frequency_month', ['amount' => \App\Helpers\InstanceHelper::getPlanInformationFromConfig('monthly')['friendlyPrice']]) }}
