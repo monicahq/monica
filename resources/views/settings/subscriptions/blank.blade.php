@@ -43,7 +43,7 @@
                     <img src="img/settings/subscription/best_value.png" class="absolute" style="top: -30px; left: -20px;">
                     <h3 class="tc mb3 pt3">{{ trans('settings.subscriptions_plan_year_title') }}</h3>
                     <p class="tc">
-                      <a href="{{ $customerPortalUrl }}" target="_blank" class="btn btn-primary pv3">{{ trans('settings.subscriptions_plan_choose') }}</a>
+                      <a href="{{ $customerPortalUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary pv3">{{ trans('settings.subscriptions_plan_choose') }}</a>
                     </p>
                     <p class="tc mt2">
                       {{ trans('settings.subscriptions_plan_frequency_year', ['amount' => \App\Helpers\InstanceHelper::getPlanInformationFromConfig('annual')['friendlyPrice']]) }}
