@@ -79,7 +79,7 @@ class ActivateLicenceKey extends BaseService
             throw new Exception(trans('settings.subscriptions_licence_key_does_not_exist'));
         }
 
-        if ($this->response->status() == 900) {
+        if ($this->response->status() === 900) {
             throw new Exception(trans('settings.subscriptions_licence_key_invalid'));
         }
 
