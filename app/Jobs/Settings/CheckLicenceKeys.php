@@ -26,7 +26,7 @@ class CheckLicenceKeys implements ShouldQueue
             return;
         }
 
-        if (config('monica.customer_portal_url') == '') {
+        if (config('monica.customer_portal_url') === '') {
             return;
         }
 
