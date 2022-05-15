@@ -56,7 +56,7 @@ class ActivateLicenceKey extends BaseService
             throw new NoLicenceKeyEncryptionSetException();
         }
 
-        if (config('monica.customer_portal_url') == '') {
+        if (config('monica.customer_portal_url') === '') {
             throw new NoCustomerPortalSetException();
         }
     }
