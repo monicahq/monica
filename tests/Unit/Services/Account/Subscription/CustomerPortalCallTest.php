@@ -4,10 +4,10 @@ namespace Tests\Unit\Services\Account\Subscription;
 
 use Tests\TestCase;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Account\Subscription\CustomerPortalCall;
-use Illuminate\Support\Facades\Cache;
 
 class CustomerPortalCallTest extends TestCase
 {
@@ -41,6 +41,7 @@ class CustomerPortalCallTest extends TestCase
                 $this->assertEquals('https://fake.test/oauth/token', $request->url());
                 $this->assertEquals('grant_type=client_credentials&client_id=1&client_secret=1&scope=manage-key', $request->body());
                 $this->assertEquals('{"access_token":"123"}', $response->body());
+
                 return true;
             },
             function ($request, $response) {
@@ -49,6 +50,7 @@ class CustomerPortalCallTest extends TestCase
                 $this->assertEquals('{"licence_key":"key"}', $request->body());
                 $this->assertEquals(['Bearer 123'], $request->header('Authorization'));
                 $this->assertEquals(200, $response->status());
+
                 return true;
             },
         ]);
