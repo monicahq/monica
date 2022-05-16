@@ -2,16 +2,14 @@
 
 namespace Tests\Unit\Services\Account\Subscription;
 
-use App\Exceptions\NoLicenceKeyEncryptionSetException;
 use Exception;
 use Tests\TestCase;
+use Mockery\MockInterface;
 use App\Models\Account\Account;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Account\Subscription\ActivateLicenceKey;
 use App\Services\Account\Subscription\CustomerPortalCall;
-use Mockery\MockInterface;
 
 class ActivateLicenceKeyTest extends TestCase
 {

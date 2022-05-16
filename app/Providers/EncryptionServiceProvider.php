@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Exceptions\MissingPrivateKeyException;
-use Illuminate\Encryption\Encrypter;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use function Safe\base64_decode;
+use Illuminate\Encryption\Encrypter;
+use Illuminate\Support\ServiceProvider;
+use App\Exceptions\MissingPrivateKeyException;
 
 class EncryptionServiceProvider extends ServiceProvider
 {

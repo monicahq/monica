@@ -2,12 +2,12 @@
 
 namespace App\Services\Account\Subscription;
 
-use App\Exceptions\NoCustomerPortalSecretsException;
 use App\Services\BaseService;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
-use App\Exceptions\NoCustomerPortalSetException;
 use Illuminate\Support\Facades\Cache;
+use App\Exceptions\NoCustomerPortalSetException;
+use App\Exceptions\NoCustomerPortalSecretsException;
 
 class CustomerPortalCall extends BaseService
 {
@@ -71,7 +71,7 @@ class CustomerPortalCall extends BaseService
 
             $json = $response->json();
             if (! isset($json['access_token'])) {
-                throw new \Exception("No access_token");
+                throw new \Exception('No access_token');
             }
 
             return $json['access_token'];
@@ -85,7 +85,7 @@ class CustomerPortalCall extends BaseService
         return Http::withToken($accessToken)
             ->acceptJson()
             ->post($url, [
-                'licence_key' => $this->data['licence_key']
+                'licence_key' => $this->data['licence_key'],
             ]);
     }
 }

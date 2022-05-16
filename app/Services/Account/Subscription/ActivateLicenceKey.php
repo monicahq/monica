@@ -59,7 +59,7 @@ class ActivateLicenceKey extends BaseService implements QueuableService
     private function makeRequestToCustomerPortal(): void
     {
         $this->status = app(CustomerPortalCall::class)->execute([
-            'licence_key' => $this->data['licence_key']
+            'licence_key' => $this->data['licence_key'],
         ]);
     }
 
