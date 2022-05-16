@@ -16,7 +16,7 @@ class AuditLog extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'account_id',
@@ -32,7 +32,7 @@ class AuditLog extends Model
     /**
      * The attributes that should be mutated to dates.
      *
-     * @var array
+     * @var array<string>
      */
     protected $dates = [
         'audited_at',
@@ -41,7 +41,7 @@ class AuditLog extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'should_appear_on_dashboard' => 'boolean',
@@ -81,7 +81,7 @@ class AuditLog extends Model
      * Get the JSON object.
      *
      * @param  mixed  $value
-     * @return array
+     * @return mixed
      */
     public function getObjectAttribute($value)
     {

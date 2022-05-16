@@ -16,7 +16,7 @@ class Day extends Model implements IsJournalableInterface
     /**
      * The attributes that aren't mass assignable.
      *
-     * @var array
+     * @var array<string>|bool
      */
     protected $guarded = ['id'];
 

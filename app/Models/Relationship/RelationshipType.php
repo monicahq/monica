@@ -14,7 +14,7 @@ class RelationshipType extends Model
     /**
      * The attributes that aren't mass assignable.
      *
-     * @var array
+     * @var array<string>|bool
      */
     protected $guarded = ['id'];
 
@@ -23,7 +23,7 @@ class RelationshipType extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'delible' => 'boolean',
@@ -79,10 +79,16 @@ class RelationshipType extends Model
         }
 
         $femaleVersion = trans('app.relationship_type_'.$this->name.'_female');
-        $maleVersion = trans('app.relationship_type_'.$this->name);
+        $maleVersion = trans('app.relationship_type_'.$this->name.'_male');
+        if ($maleVersion === 'app.relationship_type_'.$this->name.'_male') {
+            $maleVersion = trans('app.relationship_type_'.$this->name);
+        }
 
         if (! is_null($contact)) {
-            $maleVersionWithName = trans('app.relationship_type_'.$this->name.'_with_name', ['name' => $contact->name]);
+            $maleVersionWithName = trans('app.relationship_type_'.$this->name.'_male_with_name', ['name' => $contact->name]);
+            if ($maleVersionWithName === 'app.relationship_type_'.$this->name.'_male_with_name') {
+                $maleVersionWithName = trans('app.relationship_type_'.$this->name.'_with_name');
+            }
             $femaleVersionWithName = trans('app.relationship_type_'.$this->name.'_female_with_name', ['name' => $contact->name]);
 
             // include the reverse of the relation in the string (masculine/feminine)
@@ -92,20 +98,20 @@ class RelationshipType extends Model
                 // in some language, masculine and feminine version of a relationship type is the same.
                 // we need to keep just one version in that case.
                 if ($femaleVersion === $maleVersion) {
-                    // `Regis Freyd's significant other`
+                    // `Maazarin's significant other`
                     return $maleVersionWithName;
                 }
 
                 return $defaultGender === Gender::FEMALE ?
-                    // `Regis Freyd's aunt/uncle`
+                    // `Maazarin's aunt/uncle`
                     $femaleVersionWithName.'/'.$maleVersion :
-                    // `Regis Freyd's uncle/aunt`
+                    // `Maazarin's uncle/aunt`
                     $maleVersionWithName.'/'.$femaleVersion;
             } else {
                 return $gender === Gender::FEMALE ?
-                    // `Regis Freyd's aunt`
+                    // `Maazarin's aunt`
                     $femaleVersionWithName :
-                    // `Regis Freyd's uncle`
+                    // `Maazarin's uncle`
                     $maleVersionWithName;
             }
         }

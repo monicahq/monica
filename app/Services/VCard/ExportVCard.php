@@ -196,6 +196,8 @@ class ExportVCard extends BaseService
     /**
      * @param  Contact  $contact
      * @param  VCard  $vcard
+     *
+     * @see https://datatracker.ietf.org/doc/html/rfc6350#section-6.2.5
      */
     private function exportBirthday(Contact $contact, VCard $vcard)
     {
@@ -203,7 +205,7 @@ class ExportVCard extends BaseService
 
         if (! is_null($contact->birthdate)) {
             if ($contact->birthdate->is_year_unknown) {
-                $date = $contact->birthdate->date->format('--m-d');
+                $date = $contact->birthdate->date->format('--md');
             } else {
                 $date = $contact->birthdate->date->format('Ymd');
             }
