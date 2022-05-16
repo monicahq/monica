@@ -2,17 +2,15 @@
 
 namespace Tests\Unit\Services\Account\Subscription;
 
-use App\Exceptions\CustomerPortalWrongCredentials;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\NoCustomerPortalSetException;
+use App\Exceptions\CustomerPortalWrongCredentials;
 use App\Exceptions\NoCustomerPortalSecretsException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Account\Subscription\CustomerPortalCall;
-use Exception;
-use Illuminate\Http\Client\RequestException;
 
 class CustomerPortalCallTest extends TestCase
 {

@@ -6,10 +6,9 @@ use App\Services\BaseService;
 use App\Models\Account\Account;
 use App\Services\QueuableService;
 use App\Services\DispatchableService;
-use App\Exceptions\ActivateLicenceKeyException;
-use App\Exceptions\LicenceKeyDontExistException;
 use App\Exceptions\LicenceKeyErrorException;
 use App\Exceptions\LicenceKeyInvalidException;
+use App\Exceptions\LicenceKeyDontExistException;
 use App\Exceptions\NoLicenceKeyEncryptionSetException;
 
 class ActivateLicenceKey extends BaseService implements QueuableService
