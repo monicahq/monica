@@ -58,7 +58,7 @@ class ActivateLicenceKeyTest extends TestCase
     }
 
     /** @test */
-    public function it_fails_if_the_licence_key_does_not_exist()
+    public function it_fails_if_the_licence_key_is_empty()
     {
         $this->expectException(ValidationException::class);
 
@@ -67,6 +67,24 @@ class ActivateLicenceKeyTest extends TestCase
         $request = [
             'account_id' => $account->id,
             'licence_key' => '',
+        ];
+
+        app(ActivateLicenceKey::class)->handle($request);
+    }
+
+
+    /** @test */
+    public function it_fails_if_the_private_key_is_not_set()
+    {
+        config(['monica.licence_private_key' => null]);
+
+        $this->expectException(NoLicenceKeyEncryptionSetException::class);
+
+        $account = factory(Account::class)->create([]);
+
+        $request = [
+            'account_id' => $account->id,
+            'licence_key' => 'test',
         ];
 
         app(ActivateLicenceKey::class)->handle($request);

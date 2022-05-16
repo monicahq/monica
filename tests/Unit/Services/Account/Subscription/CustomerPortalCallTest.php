@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Services\Account\Subscription;
 
+use App\Exceptions\NoCustomerPortalSecretsException;
+use App\Exceptions\NoCustomerPortalSetException;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
@@ -64,12 +66,60 @@ class CustomerPortalCallTest extends TestCase
     }
 
     /** @test */
-    public function it_fails_if_the_licence_key_does_not_exist()
+    public function it_fails_if_the_licence_key_is_empty()
     {
         $this->expectException(ValidationException::class);
 
         $request = [
             'licence_key' => '',
+        ];
+
+        app(CustomerPortalCall::class)->execute($request);
+    }
+
+    /** @test */
+    public function it_fails_if_the_customer_portal_is_not_set()
+    {
+        config(['monica.customer_portal_url' => '']);
+        config(['monica.customer_portal_client_id' => '1']);
+        config(['monica.customer_portal_client_secret' => '1']);
+
+        $this->expectException(NoCustomerPortalSetException::class);
+
+        $request = [
+            'licence_key' => 'test',
+        ];
+
+        app(CustomerPortalCall::class)->execute($request);
+    }
+
+    /** @test */
+    public function it_fails_if_the_client_id_is_not_set()
+    {
+        config(['monica.customer_portal_url' => 'https://fake.test']);
+        config(['monica.customer_portal_client_id' => null]);
+        config(['monica.customer_portal_client_secret' => '1']);
+
+        $this->expectException(NoCustomerPortalSecretsException::class);
+
+        $request = [
+            'licence_key' => 'test',
+        ];
+
+        app(CustomerPortalCall::class)->execute($request);
+    }
+
+    /** @test */
+    public function it_fails_if_the_client_secret_is_not_set()
+    {
+        config(['monica.customer_portal_url' => 'https://fake.test']);
+        config(['monica.customer_portal_client_id' => '1']);
+        config(['monica.customer_portal_client_secret' => null]);
+
+        $this->expectException(NoCustomerPortalSecretsException::class);
+
+        $request = [
+            'licence_key' => 'test',
         ];
 
         app(CustomerPortalCall::class)->execute($request);
