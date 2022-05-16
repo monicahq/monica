@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Services\Account\Subscription;
 
-use App\Exceptions\NoCustomerPortalSecretsException;
-use App\Exceptions\NoCustomerPortalSetException;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\ValidationException;
+use App\Exceptions\NoCustomerPortalSetException;
+use App\Exceptions\NoCustomerPortalSecretsException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Account\Subscription\CustomerPortalCall;
 

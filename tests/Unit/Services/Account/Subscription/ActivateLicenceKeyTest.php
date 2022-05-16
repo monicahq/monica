@@ -70,7 +70,6 @@ class ActivateLicenceKeyTest extends TestCase
         app(ActivateLicenceKey::class)->handle($request);
     }
 
-
     /** @test */
     public function it_fails_if_the_private_key_is_not_set()
     {
