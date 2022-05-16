@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use RuntimeException;
 
-class NoCustomerPortalSetException extends RuntimeException
+class CustomerPortalWrongCredentials extends RuntimeException
 {
     /**
      * Create a new exception instance.
@@ -12,7 +12,7 @@ class NoCustomerPortalSetException extends RuntimeException
      * @param  string  $message
      * @return void
      */
-    public function __construct($message = 'Customer portal url is not set.')
+    public function __construct($message = 'Wrong credentials for customer portal.')
     {
         parent::__construct($message);
     }

@@ -2,11 +2,14 @@
 
 namespace App\Services\Account\Subscription;
 
-use Exception;
 use App\Services\BaseService;
 use App\Models\Account\Account;
 use App\Services\QueuableService;
 use App\Services\DispatchableService;
+use App\Exceptions\ActivateLicenceKeyException;
+use App\Exceptions\LicenceKeyDontExistException;
+use App\Exceptions\LicenceKeyErrorException;
+use App\Exceptions\LicenceKeyInvalidException;
 use App\Exceptions\NoLicenceKeyEncryptionSetException;
 
 class ActivateLicenceKey extends BaseService implements QueuableService
@@ -66,15 +69,15 @@ class ActivateLicenceKey extends BaseService implements QueuableService
     private function checkResponseCode(): void
     {
         if ($this->status === 404) {
-            throw new Exception(trans('settings.subscriptions_licence_key_does_not_exist'));
+            throw new LicenceKeyDontExistException;
         }
 
         if ($this->status === 410) {
-            throw new Exception(trans('settings.subscriptions_licence_key_invalid'));
+            throw new LicenceKeyInvalidException;
         }
 
         if ($this->status !== 200) {
-            throw new Exception(trans('settings.subscriptions_licence_key_problem'));
+            throw new LicenceKeyErrorException;
         }
     }
 

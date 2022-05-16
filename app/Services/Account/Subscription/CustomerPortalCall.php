@@ -7,6 +7,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use App\Exceptions\NoCustomerPortalSetException;
+use App\Exceptions\CustomerPortalWrongCredentials;
 use App\Exceptions\NoCustomerPortalSecretsException;
 
 class CustomerPortalCall extends BaseService
@@ -58,7 +59,7 @@ class CustomerPortalCall extends BaseService
 
     private function getAccessToken(): string
     {
-        return Cache::remember('customer_portal_access_token', 604800, function () {
+        return Cache::remember('customer_portal.access_token', 31449600 /* 364 days */, function () {
             $url = config('monica.customer_portal_url').'/oauth/token';
 
             $response = Http::asForm()->post($url, [
@@ -67,11 +68,10 @@ class CustomerPortalCall extends BaseService
                 'client_secret' => config('monica.customer_portal_client_secret'),
                 'scope' => 'manage-key',
             ]);
-            $response->throw();
 
             $json = $response->json();
-            if (! isset($json['access_token'])) {
-                throw new \Exception('No access_token');
+            if ($response->failed() || ! isset($json['access_token'])) {
+                throw new CustomerPortalWrongCredentials();
             }
 
             return $json['access_token'];

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Services\Account\Subscription;
 
+use App\Exceptions\CustomerPortalWrongCredentials;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
@@ -10,6 +11,8 @@ use App\Exceptions\NoCustomerPortalSetException;
 use App\Exceptions\NoCustomerPortalSecretsException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Account\Subscription\CustomerPortalCall;
+use Exception;
+use Illuminate\Http\Client\RequestException;
 
 class CustomerPortalCallTest extends TestCase
 {
@@ -124,6 +127,78 @@ class CustomerPortalCallTest extends TestCase
             'licence_key' => 'test',
         ];
 
+        app(CustomerPortalCall::class)->execute($request);
+    }
+
+    /** @test */
+    public function it_stores_access_token_into_cache()
+    {
+        config(['monica.customer_portal_url' => 'https://fake.test']);
+        config(['monica.customer_portal_client_id' => '1']);
+        config(['monica.customer_portal_client_secret' => '1']);
+
+        Cache::flush();
+
+        $this->assertFalse(Cache::has('customer_portal.access_token'));
+
+        Http::fake([
+            'https://fake.test/oauth/token' => Http::response(['access_token' => '123']),
+            'https://fake.test/api/validate' => Http::response([], 200),
+        ]);
+
+        $request = [
+            'licence_key' => 'key',
+        ];
+
+        app(CustomerPortalCall::class)->execute($request);
+
+        $this->assertTrue(Cache::has('customer_portal.access_token'));
+    }
+
+    /** @test */
+    public function it_throw_an_exception_if_no_access_token()
+    {
+        config(['monica.customer_portal_url' => 'https://fake.test']);
+        config(['monica.customer_portal_client_id' => '1']);
+        config(['monica.customer_portal_client_secret' => '1']);
+
+        Cache::flush();
+
+        $this->assertFalse(Cache::has('customer_portal.access_token'));
+
+        Http::fake([
+            'https://fake.test/oauth/token' => Http::response([]),
+            'https://fake.test/api/validate' => Http::response([], 200),
+        ]);
+
+        $request = [
+            'licence_key' => 'key',
+        ];
+
+        $this->expectException(CustomerPortalWrongCredentials::class);
+        app(CustomerPortalCall::class)->execute($request);
+    }
+
+    /** @test */
+    public function it_throw_an_exception_if_oauth_token_send_bad_status()
+    {
+        config(['monica.customer_portal_url' => 'https://fake.test']);
+        config(['monica.customer_portal_client_id' => '1']);
+        config(['monica.customer_portal_client_secret' => '1']);
+
+        Cache::flush();
+
+        $this->assertFalse(Cache::has('customer_portal.access_token'));
+
+        Http::fake([
+            'https://fake.test/oauth/token' => Http::response([], 500),
+        ]);
+
+        $request = [
+            'licence_key' => 'key',
+        ];
+
+        $this->expectException(CustomerPortalWrongCredentials::class);
         app(CustomerPortalCall::class)->execute($request);
     }
 }
