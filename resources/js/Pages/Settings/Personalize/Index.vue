@@ -80,6 +80,12 @@
               </inertia-link>
             </li>
             <li class="mb-2">
+              <span class="mr-2">📲</span>
+              <inertia-link :href="data.url.manage_call_reasons" class="text-sky-500 hover:text-blue-900">
+                Manage call reasons
+              </inertia-link>
+            </li>
+            <li class="mb-2">
               <span class="mr-2">🐱</span>
               <inertia-link :href="data.url.manage_pet_categories" class="text-sky-500 hover:text-blue-900">
                 Manage pet categories

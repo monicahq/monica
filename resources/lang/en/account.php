@@ -88,4 +88,15 @@ return [
     'labels_money' => 'Money',
 
     'exception_remove_your_own_permission' => 'You cannot remove your own administrator privilege.',
+
+    'default_call_reason_types_personal' => 'Personal',
+    'default_call_reason_types_business' => 'Business',
+    'default_call_reason_personal_advice' => 'For advice',
+    'default_call_reason_personal_say_hello' => 'Just to say hello',
+    'default_call_reason_personal_need_anything' => 'To see if they need anything',
+    'default_call_reason_personal_respect' => 'Out of respect and appreciation',
+    'default_call_reason_personal_story' => 'To hear their story',
+    'default_call_reason_personal_love' => 'Show love',
+    'default_call_reason_business_purchases' => 'Discuss recent purchases',
+    'default_call_reason_business_partnership' => 'Discuss partnership',
 ];

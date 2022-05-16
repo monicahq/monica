@@ -29,6 +29,7 @@ class PersonalizeIndexViewHelperTest extends TestCase
                     'manage_templates' => env('APP_URL').'/settings/personalize/templates',
                     'manage_modules' => env('APP_URL').'/settings/personalize/modules',
                     'manage_currencies' => env('APP_URL').'/settings/personalize/currencies',
+                    'manage_call_reasons' => env('APP_URL').'/settings/personalize/callReasonTypes',
                 ],
             ],
             $array

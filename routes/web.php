@@ -17,6 +17,8 @@ use App\Contact\ManageTasks\Web\Controllers\ContactModuleTaskController;
 use App\Http\Controllers\Auth\AcceptInvitationController;
 use App\Settings\CancelAccount\Web\Controllers\CancelAccountController;
 use App\Settings\ManageAddressTypes\Web\Controllers\PersonalizeAddressTypeController;
+use App\Settings\ManageCallReasons\Web\Controllers\PersonalizeCallReasonsController;
+use App\Settings\ManageCallReasons\Web\Controllers\PersonalizeCallReasonTypesController;
 use App\Settings\ManageContactInformationTypes\Web\Controllers\PersonalizeContatInformationTypesController;
 use App\Settings\ManageCurrencies\Web\Controllers\CurrencyController;
 use App\Settings\ManageCurrencies\Web\Controllers\PersonalizeCurrencyController;
@@ -230,6 +232,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::post('relationships/{groupType}/types', [PersonalizeRelationshipTypeController::class, 'store'])->name('relationship.type.store');
                 Route::put('relationships/{groupType}/types/{type}', [PersonalizeRelationshipTypeController::class, 'update'])->name('relationship.type.update');
                 Route::delete('relationships/{groupType}/types/{type}', [PersonalizeRelationshipTypeController::class, 'destroy'])->name('relationship.type.destroy');
+
+                // call reason types
+                Route::get('callReasonTypes', [PersonalizeCallReasonTypesController::class, 'index'])->name('call_reasons.index');
+                Route::post('callReasonTypes', [PersonalizeCallReasonTypesController::class, 'store'])->name('call_reasons.type.store');
+                Route::put('callReasonTypes/{callReasonType}', [PersonalizeCallReasonTypesController::class, 'update'])->name('call_reasons.type.update');
+                Route::delete('callReasonTypes/{callReasonType}', [PersonalizeCallReasonTypesController::class, 'destroy'])->name('call_reasons.type.destroy');
+
+                // call reasons
+                Route::post('callReasonTypes/{callReasonType}/reasons', [PersonalizeCallReasonsController::class, 'store'])->name('call_reasons.store');
+                Route::put('callReasonTypes/{callReasonType}/reasons/{reason}', [PersonalizeCallReasonsController::class, 'update'])->name('call_reasons.update');
+                Route::delete('callReasonTypes/{callReasonType}/reasons/{reason}', [PersonalizeCallReasonsController::class, 'destroy'])->name('call_reasons.destroy');
 
                 // genders
                 Route::get('genders', [ManageGenderController::class, 'index'])->name('gender.index');

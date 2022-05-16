@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Domains\Settings\ManageRelationshipTypes\Web\ViewHelpers;
+namespace Tests\Unit\Domains\Settings\ManageCallReasons\Web\ViewHelpers;
 
 use App\Models\RelationshipGroupType;
 use App\Models\RelationshipType;

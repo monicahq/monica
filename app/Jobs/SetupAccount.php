@@ -12,6 +12,8 @@ use App\Models\TemplatePage;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
 use App\Settings\ManageAddressTypes\Services\CreateAddressType;
+use App\Settings\ManageCallReasons\Services\CreateCallReason;
+use App\Settings\ManageCallReasons\Services\CreateCallReasonType;
 use App\Settings\ManageContactInformationTypes\Services\CreateContactInformationType;
 use App\Settings\ManageGenders\Services\CreateGender;
 use App\Settings\ManageNotificationChannels\Services\CreateUserNotificationChannel;
@@ -370,6 +372,7 @@ class SetupAccount implements ShouldQueue
         $this->addGroupTypes();
         $this->addRelationshipTypes();
         $this->addAddressTypes();
+        $this->addCallReasonTypes();
         $this->addContactInformation();
         $this->addPetCategories();
         $this->addEmotions();
@@ -580,6 +583,70 @@ class SetupAccount implements ShouldQueue
                 'name' => $address,
             ]);
         }
+    }
+
+    private function addCallReasonTypes(): void
+    {
+        $type = (new CreateCallReasonType)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'label' => trans('account.default_call_reason_types_personal'),
+        ]);
+        (new CreateCallReason)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'call_reason_type_id' => $type->id,
+            'label' => trans('account.default_call_reason_personal_advice'),
+        ]);
+        (new CreateCallReason)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'call_reason_type_id' => $type->id,
+            'label' => trans('account.default_call_reason_personal_say_hello'),
+        ]);
+        (new CreateCallReason)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'call_reason_type_id' => $type->id,
+            'label' => trans('account.default_call_reason_personal_need_anything'),
+        ]);
+        (new CreateCallReason)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'call_reason_type_id' => $type->id,
+            'label' => trans('account.default_call_reason_personal_respect'),
+        ]);
+        (new CreateCallReason)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'call_reason_type_id' => $type->id,
+            'label' => trans('account.default_call_reason_personal_story'),
+        ]);
+        (new CreateCallReason)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'call_reason_type_id' => $type->id,
+            'label' => trans('account.default_call_reason_personal_love'),
+        ]);
+
+        // business
+        $type = (new CreateCallReasonType)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'label' => trans('account.default_call_reason_types_business'),
+        ]);
+        (new CreateCallReason)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'call_reason_type_id' => $type->id,
+            'label' => trans('account.default_call_reason_business_purchases'),
+        ]);
+        (new CreateCallReason)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'call_reason_type_id' => $type->id,
+            'label' => trans('account.default_call_reason_business_partnership'),
+        ]);
     }
 
     private function addContactInformation(): void

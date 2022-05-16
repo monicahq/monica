@@ -19,6 +19,7 @@ class PersonalizeIndexViewHelper
                 'manage_templates' => route('settings.personalize.template.index'),
                 'manage_modules' => route('settings.personalize.module.index'),
                 'manage_currencies' => route('settings.personalize.currency.index'),
+                'manage_call_reasons' => route('settings.personalize.call_reasons.index'),
             ],
         ];
     }

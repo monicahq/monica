@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Account;
 use App\Models\AddressType;
+use App\Models\CallReasonType;
 use App\Models\ContactInformationType;
 use App\Models\Currency;
 use App\Models\Emotion;
@@ -152,5 +153,16 @@ class AccountTest extends TestCase
         $account->currencies()->sync([$currency->id => ['active' => true]]);
 
         $this->assertTrue($account->currencies()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_call_reason_types()
+    {
+        $account = Account::factory()->create();
+        CallReasonType::factory(2)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->callReasonTypes()->exists());
     }
 }

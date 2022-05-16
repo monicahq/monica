@@ -132,4 +132,14 @@ class Account extends Model
             ->withPivot('active')
             ->withTimestamps();
     }
+
+    /**
+     * Get the call reason types associated with the account.
+     *
+     * @return HasMany
+     */
+    public function callReasonTypes()
+    {
+        return $this->hasMany(CallReasonType::class);
+    }
 }

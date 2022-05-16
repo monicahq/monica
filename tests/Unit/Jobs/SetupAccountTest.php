@@ -250,5 +250,38 @@ class SetupAccountTest extends TestCase
             'account_id' => $regis->account_id,
             'name' => trans('account.pets_other'),
         ]);
+
+        $this->assertDatabaseHas('call_reason_types', [
+            'account_id' => $regis->account_id,
+            'label' => trans('account.default_call_reason_types_personal'),
+        ]);
+        $this->assertDatabaseHas('call_reason_types', [
+            'account_id' => $regis->account_id,
+            'label' => trans('account.default_call_reason_types_business'),
+        ]);
+        $this->assertDatabaseHas('call_reasons', [
+            'label' => trans('account.default_call_reason_business_purchases'),
+        ]);
+        $this->assertDatabaseHas('call_reasons', [
+            'label' => trans('account.default_call_reason_business_partnership'),
+        ]);
+        $this->assertDatabaseHas('call_reasons', [
+            'label' => trans('account.default_call_reason_personal_advice'),
+        ]);
+        $this->assertDatabaseHas('call_reasons', [
+            'label' => trans('account.default_call_reason_personal_say_hello'),
+        ]);
+        $this->assertDatabaseHas('call_reasons', [
+            'label' => trans('account.default_call_reason_personal_need_anything'),
+        ]);
+        $this->assertDatabaseHas('call_reasons', [
+            'label' => trans('account.default_call_reason_personal_respect'),
+        ]);
+        $this->assertDatabaseHas('call_reasons', [
+            'label' => trans('account.default_call_reason_personal_story'),
+        ]);
+        $this->assertDatabaseHas('call_reasons', [
+            'label' => trans('account.default_call_reason_personal_love'),
+        ]);
     }
 }
