@@ -296,6 +296,10 @@ return [
     */
     'customer_portal_url' => env('CUSTOMER_PORTAL_URL', ''),
 
+    'customer_portal_client_id' => env('CUSTOMER_PORTAL_CLIENT_ID'),
+
+    'customer_portal_client_secret' => env('CUSTOMER_PORTAL_CLIENT_SECRET'),
+
     /*
     |--------------------------------------------------------------------------
     | Licence key encryption key
@@ -305,16 +309,8 @@ return [
     | the key is generated.
     |
     */
-    'licence_key_encryption_key' => env('LICENCE_KEY_ENCRYPTION_KEY', null),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Secret key to communicate with the customer portal
-    |--------------------------------------------------------------------------
-    |
-    | We need to communicate with the customer portal to check licence keys.
-    | This is done through an HTTP call that we need to secure.
-    |
-    */
-    'customer_portal_secret_key' => env('CUSTOMER_PORTAL_SECRET_KEY', null),
+    'licence_private_key' => env('LICENCE_PRIVATE_KEY'),
+
+    'licence_cipher' => 'AES-256-GCM',
 ];

@@ -204,6 +204,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
+        App\Providers\EncryptionServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\MacroServiceProvider::class,
         Vluzrmos\LanguageDetector\Providers\LanguageDetectorServiceProvider::class,

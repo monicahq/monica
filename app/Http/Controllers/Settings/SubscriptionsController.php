@@ -45,7 +45,7 @@ class SubscriptionsController extends Controller
     public function store(Request $request)
     {
         try {
-            app(ActivateLicenceKey::class)->execute([
+            ActivateLicenceKey::dispatchSync([
                 'account_id' => auth()->user()->account_id,
                 'licence_key' => $request->input('licence_key'),
             ]);

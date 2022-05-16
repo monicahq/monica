@@ -35,7 +35,7 @@ class CheckLicenceKeys implements ShouldQueue
             ->get();
 
         foreach ($accounts as $account) {
-            app(ActivateLicenceKey::class)->execute([
+            ActivateLicenceKey::dispatch([
                 'account_id' => $account->id,
                 'licence_key' => $account->licence_key,
             ]);
