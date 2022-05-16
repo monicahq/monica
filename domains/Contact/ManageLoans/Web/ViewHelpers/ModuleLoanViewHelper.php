@@ -2,11 +2,11 @@
 
 namespace App\Contact\ManageLoans\Web\ViewHelpers;
 
-use Carbon\Carbon;
+use App\Helpers\DateHelper;
+use App\Models\Contact;
 use App\Models\Loan;
 use App\Models\User;
-use App\Models\Contact;
-use App\Helpers\DateHelper;
+use Carbon\Carbon;
 
 class ModuleLoanViewHelper
 {

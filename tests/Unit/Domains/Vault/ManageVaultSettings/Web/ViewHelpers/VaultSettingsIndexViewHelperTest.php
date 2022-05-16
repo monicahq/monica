@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Domains\Vault\ManageVaultSettings\Web\ViewHelpers;
 
-use function env;
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Label;
-use App\Models\Vault;
 use App\Models\Template;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\User;
+use App\Models\Vault;
 use App\Vault\ManageVaultSettings\Web\ViewHelpers\VaultSettingsIndexViewHelper;
+use function env;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class VaultSettingsIndexViewHelperTest extends TestCase
 {

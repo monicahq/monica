@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
 use App\Models\ModuleRow;
 use App\Models\ModuleRowField;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ModuleRowTest extends TestCase
 {

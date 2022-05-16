@@ -2,13 +2,13 @@
 
 namespace App\Vault\ManageVault\Web\ViewHelpers;
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Vault;
 use App\Helpers\DateHelper;
 use App\Helpers\VaultHelper;
-use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use App\Models\Vault;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class VaultIndexViewHelper

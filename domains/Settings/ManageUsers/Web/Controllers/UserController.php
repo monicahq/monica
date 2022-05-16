@@ -2,17 +2,17 @@
 
 namespace App\Settings\ManageUsers\Web\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Settings\ManageUsers\Services\InviteUser;
 use App\Settings\ManageUsers\Services\DestroyUser;
-use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Settings\ManageUsers\Services\GiveAdministratorPrivilege;
-use App\Settings\ManageUsers\Web\ViewHelpers\UserIndexViewHelper;
-use App\Settings\ManageUsers\Web\ViewHelpers\UserCreateViewHelper;
+use App\Settings\ManageUsers\Services\InviteUser;
 use App\Settings\ManageUsers\Services\RemoveAdministratorPrivilege;
+use App\Settings\ManageUsers\Web\ViewHelpers\UserCreateViewHelper;
+use App\Settings\ManageUsers\Web\ViewHelpers\UserIndexViewHelper;
+use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {

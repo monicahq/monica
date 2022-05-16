@@ -2,16 +2,16 @@
 
 namespace Tests\Unit\Domains\Settings\ManagePetCategories\Services;
 
-use Tests\TestCase;
-use App\Models\User;
+use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\PetCategory;
+use App\Models\User;
+use App\Settings\ManagePetCategories\Services\CreatePetCategory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use App\Exceptions\NotEnoughPermissionException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Settings\ManagePetCategories\Services\CreatePetCategory;
+use Tests\TestCase;
 
 class CreatePetCategoryTest extends TestCase
 {

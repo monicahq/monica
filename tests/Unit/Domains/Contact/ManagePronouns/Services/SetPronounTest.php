@@ -2,20 +2,20 @@
 
 namespace Tests\Unit\Domains\Contact\ManagePronouns\Services;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Vault;
+use App\Contact\ManagePronouns\Services\SetPronoun;
+use App\Exceptions\NotEnoughPermissionException;
+use App\Jobs\CreateAuditLog;
+use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Pronoun;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
+use App\Models\User;
+use App\Models\Vault;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use App\Exceptions\NotEnoughPermissionException;
-use App\Contact\ManagePronouns\Services\SetPronoun;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Tests\TestCase;
 
 class SetPronounTest extends TestCase
 {

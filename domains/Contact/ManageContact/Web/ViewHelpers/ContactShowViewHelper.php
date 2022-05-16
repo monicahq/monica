@@ -2,23 +2,24 @@
 
 namespace App\Contact\ManageContact\Web\ViewHelpers;
 
-use App\Models\User;
-use App\Models\Module;
-use App\Models\Contact;
-use App\Models\TemplatePage;
-use Illuminate\Support\Collection;
-use App\Contact\ManageLoans\Web\ViewHelpers\ModuleLoanViewHelper;
-use App\Contact\ManageNotes\Web\ViewHelpers\ModuleNotesViewHelper;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
-use App\Contact\ManageLabels\Web\ViewHelpers\ModuleLabelViewHelper;
 use App\Contact\ManageAvatar\Web\ViewHelpers\ModuleAvatarViewHelper;
 use App\Contact\ManageContactFeed\Web\ViewHelpers\ModuleFeedViewHelper;
-use App\Contact\ManageReminders\Web\ViewHelpers\ModuleRemindersViewHelper;
-use App\Contact\ManageJobInformation\Web\ViewHelpers\ModuleCompanyViewHelper;
-use App\Contact\ManagePronouns\Web\ViewHelpers\ModuleGenderPronounViewHelper;
-use App\Contact\ManageContactName\Web\ViewHelpers\ModuleContactNameViewHelper;
-use App\Contact\ManageRelationships\Web\ViewHelpers\ModuleRelationshipViewHelper;
 use App\Contact\ManageContactImportantDates\Web\ViewHelpers\ModuleImportantDatesViewHelper;
+use App\Contact\ManageContactName\Web\ViewHelpers\ModuleContactNameViewHelper;
+use App\Contact\ManageJobInformation\Web\ViewHelpers\ModuleCompanyViewHelper;
+use App\Contact\ManageLabels\Web\ViewHelpers\ModuleLabelViewHelper;
+use App\Contact\ManageLoans\Web\ViewHelpers\ModuleLoanViewHelper;
+use App\Contact\ManageNotes\Web\ViewHelpers\ModuleNotesViewHelper;
+use App\Contact\ManagePronouns\Web\ViewHelpers\ModuleGenderPronounViewHelper;
+use App\Contact\ManageRelationships\Web\ViewHelpers\ModuleRelationshipViewHelper;
+use App\Contact\ManageReminders\Web\ViewHelpers\ModuleRemindersViewHelper;
+use App\Contact\ManageTasks\Web\ViewHelpers\ModuleContactTasksViewHelper;
+use App\Models\Contact;
+use App\Models\Module;
+use App\Models\TemplatePage;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Support\Collection;
 
 class ContactShowViewHelper
 {
@@ -166,6 +167,10 @@ class ContactShowViewHelper
 
             if ($module->type == Module::TYPE_RELATIONSHIPS) {
                 $data = ModuleRelationshipViewHelper::data($contact, $user);
+            }
+
+            if ($module->type == Module::TYPE_TASKS) {
+                $data = ModuleContactTasksViewHelper::data($contact, $user);
             }
 
             $modulesCollection->push([

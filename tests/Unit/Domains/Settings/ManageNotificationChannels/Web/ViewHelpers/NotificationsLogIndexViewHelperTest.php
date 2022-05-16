@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Domains\Settings\ManageNotificationChannels\Web\ViewHelpers;
 
-use function env;
-use Tests\TestCase;
 use App\Models\User;
-use App\Models\UserNotificationSent;
 use App\Models\UserNotificationChannel;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\UserNotificationSent;
 use App\Settings\ManageNotificationChannels\Web\ViewHelpers\NotificationsLogIndexViewHelper;
+use function env;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class NotificationsLogIndexViewHelperTest extends TestCase
 {

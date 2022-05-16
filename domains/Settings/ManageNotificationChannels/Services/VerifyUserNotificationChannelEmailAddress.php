@@ -2,12 +2,12 @@
 
 namespace App\Settings\ManageNotificationChannels\Services;
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Models\User;
 use App\Models\UserNotificationChannel;
+use App\Services\BaseService;
+use Carbon\Carbon;
 
 class VerifyUserNotificationChannelEmailAddress extends BaseService implements ServiceInterface
 {

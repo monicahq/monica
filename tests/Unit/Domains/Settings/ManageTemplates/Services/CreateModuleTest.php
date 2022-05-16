@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Domains\Settings\ManageTemplates\Services;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Module;
 use App\Models\Account;
+use App\Models\Module;
+use App\Models\User;
+use App\Settings\ManageTemplates\Services\CreateModule;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use App\Settings\ManageTemplates\Services\CreateModule;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Tests\TestCase;
 
 class CreateModuleTest extends TestCase
 {

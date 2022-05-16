@@ -2,11 +2,11 @@
 
 namespace App\Vault\ManageVaultSettings\Services;
 
-use App\Models\Label;
-use Illuminate\Support\Str;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Models\Label;
+use App\Services\BaseService;
+use Illuminate\Support\Str;
 
 class UpdateLabel extends BaseService implements ServiceInterface
 {

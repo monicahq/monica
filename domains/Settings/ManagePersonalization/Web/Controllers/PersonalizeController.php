@@ -2,10 +2,10 @@
 
 namespace App\Settings\ManagePersonalization\Web\Controllers;
 
-use Inertia\Inertia;
 use App\Http\Controllers\Controller;
-use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Settings\ManagePersonalization\Web\ViewHelpers\PersonalizeIndexViewHelper;
+use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use Inertia\Inertia;
 
 class PersonalizeController extends Controller
 {

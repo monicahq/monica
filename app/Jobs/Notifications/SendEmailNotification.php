@@ -2,17 +2,17 @@
 
 namespace App\Jobs\Notifications;
 
-use Carbon\Carbon;
 use App\Mail\SendReminder;
-use Illuminate\Bus\Queueable;
 use App\Models\ContactReminder;
-use App\Models\UserNotificationSent;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\SerializesModels;
 use App\Models\UserNotificationChannel;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Models\UserNotificationSent;
+use Carbon\Carbon;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
 class SendEmailNotification implements ShouldQueue
 {

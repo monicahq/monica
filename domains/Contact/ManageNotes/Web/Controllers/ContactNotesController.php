@@ -2,15 +2,15 @@
 
 namespace App\Contact\ManageNotes\Web\Controllers;
 
-use Inertia\Inertia;
-use App\Models\Vault;
-use App\Models\Contact;
-use Illuminate\Http\Request;
+use App\Contact\ManageNotes\Web\ViewHelpers\NotesIndexViewHelper;
 use App\Helpers\PaginatorHelper;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Contact;
+use App\Models\Vault;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
-use App\Contact\ManageNotes\Web\ViewHelpers\NotesIndexViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ContactNotesController extends Controller
 {

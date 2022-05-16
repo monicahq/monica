@@ -2,21 +2,21 @@
 
 namespace Tests\Unit\Domains\Vault\ManageVaultSettings\Services;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Vault;
+use App\Exceptions\NotEnoughPermissionException;
+use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\Contact;
-use App\Jobs\CreateAuditLog;
 use App\Models\ContactReminder;
-use Illuminate\Support\Facades\Queue;
+use App\Models\User;
 use App\Models\UserNotificationChannel;
-use Illuminate\Validation\ValidationException;
-use App\Exceptions\NotEnoughPermissionException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\Vault;
 use App\Vault\ManageVaultSettings\Services\RemoveVaultAccess;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class RemoveVaultAccessTest extends TestCase
 {

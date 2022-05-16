@@ -2,8 +2,8 @@
 
 namespace App\Contact\ManageAvatar\Web\ViewHelpers;
 
-use App\Models\Contact;
 use App\Helpers\AvatarHelper;
+use App\Models\Contact;
 
 class ModuleAvatarViewHelper
 {

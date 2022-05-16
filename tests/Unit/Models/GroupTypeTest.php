@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
 use App\Models\GroupType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class GroupTypeTest extends TestCase
 {

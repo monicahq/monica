@@ -2,9 +2,9 @@
 
 namespace App\Settings\ManageCurrencies\Services;
 
+use App\Interfaces\ServiceInterface;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
-use App\Interfaces\ServiceInterface;
 
 class ToggleCurrency extends BaseService implements ServiceInterface
 {

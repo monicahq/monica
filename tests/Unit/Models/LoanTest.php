@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
-use App\Models\Loan;
 use App\Models\Contact;
 use App\Models\Currency;
+use App\Models\Loan;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class LoanTest extends TestCase
 {

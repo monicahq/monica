@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Gender;
 use App\Models\Account;
+use App\Models\Gender;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class GenderFactory extends Factory

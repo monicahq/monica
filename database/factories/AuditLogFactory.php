@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use App\Models\Account;
 use App\Models\AuditLog;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AuditLogFactory extends Factory

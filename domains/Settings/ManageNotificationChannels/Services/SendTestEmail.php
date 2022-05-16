@@ -2,15 +2,15 @@
 
 namespace App\Settings\ManageNotificationChannels\Services;
 
-use Exception;
-use Carbon\Carbon;
-use App\Models\User;
-use App\Mail\TestEmailSent;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
-use App\Models\UserNotificationSent;
-use Illuminate\Support\Facades\Mail;
+use App\Mail\TestEmailSent;
+use App\Models\User;
 use App\Models\UserNotificationChannel;
+use App\Models\UserNotificationSent;
+use App\Services\BaseService;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Support\Facades\Mail;
 
 class SendTestEmail extends BaseService implements ServiceInterface
 {

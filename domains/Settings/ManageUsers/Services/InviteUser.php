@@ -2,13 +2,13 @@
 
 namespace App\Settings\ManageUsers\Services;
 
-use App\Models\User;
-use App\Mail\UserInvited;
-use Illuminate\Support\Str;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Mail\UserInvited;
+use App\Models\User;
+use App\Services\BaseService;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class InviteUser extends BaseService implements ServiceInterface
 {

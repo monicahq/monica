@@ -2,11 +2,11 @@
 
 namespace App\Settings\ManageUserPreferences\Web\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Settings\ManageUserPreferences\Services\StoreNumberFormatPreference;
 use App\Settings\ManageUserPreferences\Web\ViewHelpers\UserPreferencesIndexViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PreferencesNumberFormatController extends Controller
 {

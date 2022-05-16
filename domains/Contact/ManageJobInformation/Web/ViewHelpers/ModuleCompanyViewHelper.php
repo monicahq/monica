@@ -2,9 +2,9 @@
 
 namespace App\Contact\ManageJobInformation\Web\ViewHelpers;
 
-use App\Models\Vault;
 use App\Models\Company;
 use App\Models\Contact;
+use App\Models\Vault;
 use Illuminate\Support\Collection;
 
 class ModuleCompanyViewHelper

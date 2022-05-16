@@ -2,16 +2,16 @@
 
 namespace App\Settings\ManageTemplates\Web\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Template;
 use App\Models\TemplatePage;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Settings\ManageTemplates\Services\CreateTemplatePage;
-use App\Settings\ManageTemplates\Services\UpdateTemplatePage;
 use App\Settings\ManageTemplates\Services\DestroyTemplatePage;
-use App\Settings\ManageTemplates\Web\ViewHelpers\PersonalizeTemplateShowViewHelper;
+use App\Settings\ManageTemplates\Services\UpdateTemplatePage;
 use App\Settings\ManageTemplates\Web\ViewHelpers\PersonalizeTemplatePageShowViewHelper;
+use App\Settings\ManageTemplates\Web\ViewHelpers\PersonalizeTemplateShowViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PersonalizeTemplatePagesController extends Controller
 {

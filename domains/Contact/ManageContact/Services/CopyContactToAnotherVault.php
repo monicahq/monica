@@ -2,13 +2,13 @@
 
 namespace App\Contact\ManageContact\Services;
 
-use App\Models\Vault;
-use App\Models\Contact;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
-use App\Jobs\CreateContactLog;
-use App\Interfaces\ServiceInterface;
 use App\Exceptions\NotEnoughPermissionException;
+use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Jobs\CreateContactLog;
+use App\Models\Contact;
+use App\Models\Vault;
+use App\Services\BaseService;
 
 class CopyContactToAnotherVault extends BaseService implements ServiceInterface
 {

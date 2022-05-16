@@ -2,9 +2,9 @@
 
 namespace App\Settings\ManageUserPreferences\Services;
 
+use App\Interfaces\ServiceInterface;
 use App\Models\User;
 use App\Services\BaseService;
-use App\Interfaces\ServiceInterface;
 
 class StoreDateFormatPreference extends BaseService implements ServiceInterface
 {

@@ -2,15 +2,15 @@
 
 namespace App\Settings\ManageGenders\Web\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Settings\ManageGenders\Services\CreateGender;
-use App\Settings\ManageGenders\Services\UpdateGender;
 use App\Settings\ManageGenders\Services\DestroyGender;
-use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use App\Settings\ManageGenders\Services\UpdateGender;
 use App\Settings\ManageGenders\Web\ViewHelpers\ManageGenderIndexViewHelper;
+use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ManageGenderController extends Controller
 {

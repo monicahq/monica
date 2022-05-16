@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use MeiliSearch\Client;
 use Illuminate\Console\Command;
+use MeiliSearch\Client;
 
 class SetupApplication extends Command
 {

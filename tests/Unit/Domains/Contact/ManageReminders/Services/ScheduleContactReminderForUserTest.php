@@ -2,16 +2,16 @@
 
 namespace Tests\Unit\Domains\Contact\ManageReminders\Services;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Vault;
+use App\Contact\ManageReminders\Services\ScheduleContactReminderForUser;
 use App\Models\Contact;
 use App\Models\ContactReminder;
+use App\Models\User;
 use App\Models\UserNotificationChannel;
-use Illuminate\Validation\ValidationException;
+use App\Models\Vault;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Contact\ManageReminders\Services\ScheduleContactReminderForUser;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class ScheduleContactReminderForUserTest extends TestCase
 {

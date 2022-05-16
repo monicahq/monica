@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageAddressTypes\Web\ViewHelpers;
 
-use function env;
-use Tests\TestCase;
 use App\Models\AddressType;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Settings\ManageAddressTypes\Web\ViewHelpers\PersonalizeAddressTypeIndexViewHelper;
+use function env;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class PersonalizeAddressTypeIndexViewHelperTest extends TestCase
 {

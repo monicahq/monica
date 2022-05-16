@@ -2,10 +2,10 @@
 
 namespace App\Settings\ManageGenders\Services;
 
-use App\Models\Gender;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Models\Gender;
+use App\Services\BaseService;
 
 class DestroyGender extends BaseService implements ServiceInterface
 {

@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Domains\Settings\ManageUsers\Web\ViewHelpers;
 
-use function env;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Settings\ManageUsers\Web\ViewHelpers\UserCreateViewHelper;
+use function env;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class UserCreateViewHelperTest extends TestCase
 {

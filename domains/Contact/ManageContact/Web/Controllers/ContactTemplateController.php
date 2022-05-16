@@ -2,10 +2,10 @@
 
 namespace App\Contact\ManageContact\Web\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Contact\ManageContact\Services\UpdateContactTemplate;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContactTemplateController extends Controller
 {

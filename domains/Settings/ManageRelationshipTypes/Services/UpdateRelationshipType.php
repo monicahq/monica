@@ -2,12 +2,12 @@
 
 namespace App\Settings\ManageRelationshipTypes\Services;
 
-use App\Models\User;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
-use App\Models\RelationshipType;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
 use App\Models\RelationshipGroupType;
+use App\Models\RelationshipType;
+use App\Models\User;
+use App\Services\BaseService;
 
 class UpdateRelationshipType extends BaseService implements ServiceInterface
 {

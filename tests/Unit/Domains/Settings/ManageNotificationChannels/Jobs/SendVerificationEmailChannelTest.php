@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domains\Settings\ManageNotificationChannels\Jobs;
 
-use Tests\TestCase;
-use Illuminate\Support\Facades\Mail;
-use App\Models\UserNotificationChannel;
 use App\Mail\UserNotificationChannelEmailCreated;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\UserNotificationChannel;
 use App\Settings\ManageNotificationChannels\Jobs\SendVerificationEmailChannel;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Mail;
+use Tests\TestCase;
 
 class SendVerificationEmailChannelTest extends TestCase
 {

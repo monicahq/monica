@@ -2,8 +2,8 @@
 
 namespace App\Contact\ManageContactName\Web\ViewHelpers;
 
-use App\Models\User;
 use App\Models\Contact;
+use App\Models\User;
 
 class ModuleContactNameViewHelper
 {

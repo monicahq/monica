@@ -2,12 +2,12 @@
 
 namespace App\Settings\ManageTemplates\Services;
 
+use App\Interfaces\ServiceInterface;
 use App\Models\Module;
 use App\Models\Template;
 use App\Models\TemplatePage;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
-use App\Interfaces\ServiceInterface;
 
 class UpdateModulePosition extends BaseService implements ServiceInterface
 {

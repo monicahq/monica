@@ -2,13 +2,13 @@
 
 namespace App\Settings\ManageRelationshipTypes\Web\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Settings\ManageRelationshipTypes\Services\CreateRelationshipType;
-use App\Settings\ManageRelationshipTypes\Services\UpdateRelationshipType;
 use App\Settings\ManageRelationshipTypes\Services\DestroyRelationshipType;
+use App\Settings\ManageRelationshipTypes\Services\UpdateRelationshipType;
 use App\Settings\ManageRelationshipTypes\Web\ViewHelpers\PersonalizeRelationshipIndexViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PersonalizeRelationshipTypeController extends Controller
 {

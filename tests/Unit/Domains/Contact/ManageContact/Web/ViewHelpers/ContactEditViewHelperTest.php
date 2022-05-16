@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContact\Web\ViewHelpers;
 
-use function env;
-use Tests\TestCase;
+use App\Contact\ManageContact\Web\ViewHelpers\ContactEditViewHelper;
+use App\Models\Contact;
+use App\Models\Gender;
+use App\Models\Pronoun;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\Gender;
-use App\Models\Contact;
-use App\Models\Pronoun;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Contact\ManageContact\Web\ViewHelpers\ContactEditViewHelper;
+use Tests\TestCase;
 
 class ContactEditViewHelperTest extends TestCase
 {

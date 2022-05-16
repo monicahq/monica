@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Contact;
 use App\Helpers\NameHelper;
+use App\Models\Contact;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class NameHelperTest extends TestCase
 {

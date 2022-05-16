@@ -2,16 +2,16 @@
 
 namespace App\Contact\ManageReminders\Jobs;
 
+use App\Contact\ManageReminders\Services\RescheduleContactReminderForChannel;
+use App\Jobs\Notifications\SendEmailNotification;
+use App\Models\UserNotificationChannel;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Queue\SerializesModels;
-use App\Models\UserNotificationChannel;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Jobs\Notifications\SendEmailNotification;
-use App\Contact\ManageReminders\Services\RescheduleContactReminderForChannel;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 
 class ProcessScheduledContactReminders implements ShouldQueue
 {

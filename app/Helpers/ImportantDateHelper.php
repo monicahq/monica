@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
-use Carbon\Carbon;
-use App\Models\User;
 use App\Models\ContactImportantDate;
+use App\Models\User;
+use Carbon\Carbon;
 
 class ImportantDateHelper
 {

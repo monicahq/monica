@@ -2,12 +2,13 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
+use App\Models\ContactTask;
 use App\Models\Note;
 use App\Models\User;
-use App\Models\Vault;
 use App\Models\UserNotificationChannel;
+use App\Models\Vault;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {
@@ -54,6 +55,17 @@ class UserTest extends TestCase
         ]);
 
         $this->assertTrue($regis->notificationChannels()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_contact_tasks(): void
+    {
+        $regis = User::factory()->create();
+        ContactTask::factory()->count(2)->create([
+            'author_id' => $regis->id,
+        ]);
+
+        $this->assertTrue($regis->contactTasks()->exists());
     }
 
     /** @test */

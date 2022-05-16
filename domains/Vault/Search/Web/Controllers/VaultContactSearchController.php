@@ -2,10 +2,10 @@
 
 namespace App\Vault\Search\Web\Controllers;
 
-use App\Models\Vault;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Vault;
 use App\Vault\Search\Web\ViewHelpers\VaultContactSearchViewHelper;
+use Illuminate\Http\Request;
 
 /**
  * This method is used to search contacts in the modules like "Activity", or

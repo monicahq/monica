@@ -2,10 +2,10 @@
 
 namespace App\Contact\ManageContact\Services;
 
+use App\Exceptions\CantBeDeletedException;
+use App\Interfaces\ServiceInterface;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
-use App\Interfaces\ServiceInterface;
-use App\Exceptions\CantBeDeletedException;
 
 class DestroyContact extends BaseService implements ServiceInterface
 {

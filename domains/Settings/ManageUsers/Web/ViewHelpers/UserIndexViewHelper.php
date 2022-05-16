@@ -2,8 +2,8 @@
 
 namespace App\Settings\ManageUsers\Web\ViewHelpers;
 
-use App\Models\User;
 use App\Helpers\DateHelper;
+use App\Models\User;
 
 class UserIndexViewHelper
 {

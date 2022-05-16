@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageUsers\Web\ViewHelpers;
 
-use function env;
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Settings\ManageUsers\Web\ViewHelpers\UserIndexViewHelper;
+use function env;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class UserIndexViewHelperTest extends TestCase
 {

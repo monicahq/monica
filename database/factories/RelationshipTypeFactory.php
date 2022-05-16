@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\RelationshipType;
 use App\Models\RelationshipGroupType;
+use App\Models\RelationshipType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RelationshipTypeFactory extends Factory

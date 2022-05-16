@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
+use App\Helpers\AuditLogHelper;
+use App\Models\AuditLog;
+use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\Contact;
-use App\Models\AuditLog;
-use App\Helpers\AuditLogHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class AuditLogHelperTest extends TestCase
 {

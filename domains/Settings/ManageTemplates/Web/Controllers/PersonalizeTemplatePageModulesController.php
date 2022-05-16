@@ -2,13 +2,13 @@
 
 namespace App\Settings\ManageTemplates\Web\Controllers;
 
-use App\Models\TemplatePage;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Settings\ManageTemplates\Services\RemoveModuleFromTemplatePage;
+use App\Models\TemplatePage;
 use App\Settings\ManageTemplates\Services\AssociateModuleToTemplatePage;
+use App\Settings\ManageTemplates\Services\RemoveModuleFromTemplatePage;
 use App\Settings\ManageTemplates\Web\ViewHelpers\PersonalizeTemplatePageShowViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PersonalizeTemplatePageModulesController extends Controller
 {

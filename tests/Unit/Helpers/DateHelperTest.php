@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Helpers;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\User;
 use App\Helpers\DateHelper;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class DateHelperTest extends TestCase
 {

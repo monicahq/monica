@@ -2,16 +2,16 @@
 
 namespace App\Contact\ManageContact\Services;
 
-use Carbon\Carbon;
-use App\Models\Gender;
+use App\Helpers\AvatarHelper;
+use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Jobs\CreateContactLog;
 use App\Models\Contact;
+use App\Models\Gender;
 use App\Models\Pronoun;
 use App\Models\Template;
-use App\Jobs\CreateAuditLog;
-use App\Helpers\AvatarHelper;
 use App\Services\BaseService;
-use App\Jobs\CreateContactLog;
-use App\Interfaces\ServiceInterface;
+use Carbon\Carbon;
 
 class CreateContact extends BaseService implements ServiceInterface
 {

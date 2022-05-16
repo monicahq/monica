@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
+use App\Helpers\ContactLogHelper;
 use App\Models\Contact;
 use App\Models\ContactLog;
-use App\Helpers\ContactLogHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ContactLogHelperTest extends TestCase
 {

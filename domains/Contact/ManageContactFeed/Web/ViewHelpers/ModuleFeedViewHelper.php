@@ -2,10 +2,10 @@
 
 namespace App\Contact\ManageContactFeed\Web\ViewHelpers;
 
-use App\Models\User;
+use App\Contact\ManageNotes\Web\ViewHelpers\ModuleNotesViewHelper;
 use App\Models\Contact;
 use App\Models\ContactFeedItem;
-use App\Contact\ManageNotes\Web\ViewHelpers\ModuleNotesViewHelper;
+use App\Models\User;
 
 class ModuleFeedViewHelper
 {

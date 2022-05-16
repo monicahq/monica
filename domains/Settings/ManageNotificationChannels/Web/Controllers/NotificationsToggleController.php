@@ -2,11 +2,11 @@
 
 namespace App\Settings\ManageNotificationChannels\Web\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Settings\ManageNotificationChannels\Services\ToggleUserNotificationChannel;
 use App\Settings\ManageNotificationChannels\Web\ViewHelpers\NotificationsIndexViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationsToggleController extends Controller
 {

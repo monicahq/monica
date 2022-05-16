@@ -2,16 +2,16 @@
 
 namespace Tests\Unit\Domains\Contact\ManageRelationships\Web\ViewHelpers;
 
-use function env;
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Vault;
+use App\Contact\ManageRelationships\Web\ViewHelpers\ModuleRelationshipViewHelper;
 use App\Models\Avatar;
 use App\Models\Contact;
-use App\Models\RelationshipType;
 use App\Models\RelationshipGroupType;
+use App\Models\RelationshipType;
+use App\Models\User;
+use App\Models\Vault;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Contact\ManageRelationships\Web\ViewHelpers\ModuleRelationshipViewHelper;
+use Tests\TestCase;
 
 class ModuleRelationshipViewHelperTest extends TestCase
 {

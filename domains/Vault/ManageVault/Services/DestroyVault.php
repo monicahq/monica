@@ -2,9 +2,9 @@
 
 namespace App\Vault\ManageVault\Services;
 
+use App\Interfaces\ServiceInterface;
 use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
-use App\Interfaces\ServiceInterface;
 
 class DestroyVault extends BaseService implements ServiceInterface
 {

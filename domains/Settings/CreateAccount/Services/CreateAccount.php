@@ -2,12 +2,12 @@
 
 namespace App\Settings\CreateAccount\Services;
 
-use App\Models\User;
-use App\Models\Account;
-use App\Jobs\SetupAccount;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Jobs\SetupAccount;
+use App\Models\Account;
+use App\Models\User;
+use App\Services\BaseService;
 use Illuminate\Support\Facades\Hash;
 
 class CreateAccount extends BaseService implements ServiceInterface

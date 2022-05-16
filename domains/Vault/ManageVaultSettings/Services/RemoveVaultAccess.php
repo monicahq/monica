@@ -2,13 +2,13 @@
 
 namespace App\Vault\ManageVaultSettings\Services;
 
-use App\Models\User;
-use App\Models\Contact;
+use App\Exceptions\SameUserException;
+use App\Interfaces\ServiceInterface;
 use App\Jobs\CreateAuditLog;
+use App\Models\Contact;
+use App\Models\User;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
-use App\Interfaces\ServiceInterface;
-use App\Exceptions\SameUserException;
 
 class RemoveVaultAccess extends BaseService implements ServiceInterface
 {

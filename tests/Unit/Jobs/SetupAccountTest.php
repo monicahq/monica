@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Jobs;
 
-use Tests\TestCase;
-use App\Models\Currency;
 use App\Jobs\SetupAccount;
-use Illuminate\Support\Facades\Mail;
+use App\Models\Currency;
 use App\Models\RelationshipGroupType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Mail;
+use Tests\TestCase;
 
 class SetupAccountTest extends TestCase
 {
@@ -83,6 +83,10 @@ class SetupAccountTest extends TestCase
         $this->assertDatabaseHas('modules', [
             'account_id' => $regis->account_id,
             'name' => trans('app.module_companies'),
+        ]);
+        $this->assertDatabaseHas('modules', [
+            'account_id' => $regis->account_id,
+            'name' => trans('app.module_tasks'),
         ]);
 
         $this->assertDatabaseHas('relationship_group_types', [

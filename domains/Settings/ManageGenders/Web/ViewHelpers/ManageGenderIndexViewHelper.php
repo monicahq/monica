@@ -2,8 +2,8 @@
 
 namespace App\Settings\ManageGenders\Web\ViewHelpers;
 
-use App\Models\Gender;
 use App\Models\Account;
+use App\Models\Gender;
 
 class ManageGenderIndexViewHelper
 {

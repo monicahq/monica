@@ -2,17 +2,17 @@
 
 namespace Tests\Unit\Domains\Settings\ManageContactInformationTypes\Services;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Account;
-use App\Jobs\CreateAuditLog;
-use Illuminate\Support\Facades\Queue;
-use App\Models\ContactInformationType;
-use Illuminate\Validation\ValidationException;
 use App\Exceptions\NotEnoughPermissionException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Jobs\CreateAuditLog;
+use App\Models\Account;
+use App\Models\ContactInformationType;
+use App\Models\User;
 use App\Settings\ManageContactInformationTypes\Services\CreateContactInformationType;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class CreateContactInformationTypeTest extends TestCase
 {

@@ -2,15 +2,15 @@
 
 namespace App\Settings\ManageContactInformationTypes\Web\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Settings\ManageContactInformationTypes\Services\CreateContactInformationType;
-use App\Settings\ManageContactInformationTypes\Services\UpdateContactInformationType;
 use App\Settings\ManageContactInformationTypes\Services\DestroyContactInformationType;
+use App\Settings\ManageContactInformationTypes\Services\UpdateContactInformationType;
 use App\Settings\ManageContactInformationTypes\Web\ViewHelpers\PersonalizeContactInformationTypeIndexViewHelper;
+use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class PersonalizeContatInformationTypesController extends Controller
 {

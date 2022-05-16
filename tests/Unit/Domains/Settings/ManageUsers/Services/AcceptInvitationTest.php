@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Domains\Settings\ManageUsers\Services;
 
-use Carbon\Carbon;
-use Tests\TestCase;
 use App\Models\User;
+use App\Settings\ManageUsers\Services\AcceptInvitation;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use App\Settings\ManageUsers\Services\AcceptInvitation;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Tests\TestCase;
 
 class AcceptInvitationTest extends TestCase
 {

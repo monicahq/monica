@@ -2,14 +2,14 @@
 
 namespace App\Vault\ManageVaultSettings\Web\Controllers;
 
-use App\Models\Vault;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Vault;
 use App\Vault\ManageVaultSettings\Services\CreateLabel;
-use App\Vault\ManageVaultSettings\Services\UpdateLabel;
 use App\Vault\ManageVaultSettings\Services\DestroyLabel;
+use App\Vault\ManageVaultSettings\Services\UpdateLabel;
 use App\Vault\ManageVaultSettings\Web\ViewHelpers\VaultSettingsIndexViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VaultSettingsLabelController extends Controller
 {

@@ -1,10 +1,8 @@
 preset: laravel
 version: 8
 enabled:
-  - length_ordered_imports
   - fully_qualified_strict_types
 disabled:
-  - alpha_ordered_imports
   - no_useless_return
 finder:
   not-name:

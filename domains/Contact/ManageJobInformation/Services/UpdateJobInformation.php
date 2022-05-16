@@ -2,10 +2,10 @@
 
 namespace App\Contact\ManageJobInformation\Services;
 
+use App\Interfaces\ServiceInterface;
 use App\Models\Company;
 use App\Models\Contact;
 use App\Services\BaseService;
-use App\Interfaces\ServiceInterface;
 
 class UpdateJobInformation extends BaseService implements ServiceInterface
 {

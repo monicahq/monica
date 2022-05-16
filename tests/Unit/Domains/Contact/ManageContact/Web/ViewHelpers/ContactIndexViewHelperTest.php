@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContact\Web\ViewHelpers;
 
-use function env;
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Vault;
+use App\Contact\ManageContact\Web\ViewHelpers\ContactIndexViewHelper;
 use App\Models\Avatar;
 use App\Models\Contact;
+use App\Models\User;
+use App\Models\Vault;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Contact\ManageContact\Web\ViewHelpers\ContactIndexViewHelper;
+use Tests\TestCase;
 
 class ContactIndexViewHelperTest extends TestCase
 {

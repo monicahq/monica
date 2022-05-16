@@ -2,11 +2,11 @@
 
 namespace App\Vault\ManageVaultImportantDateTypes\Services;
 
-use App\Models\User;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
 use App\Models\ContactImportantDateType;
+use App\Models\User;
+use App\Services\BaseService;
 use Illuminate\Validation\ValidationException;
 
 class DestroyContactImportantDateType extends BaseService implements ServiceInterface

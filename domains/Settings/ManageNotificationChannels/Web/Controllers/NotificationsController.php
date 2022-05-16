@@ -2,15 +2,15 @@
 
 namespace App\Settings\ManageNotificationChannels\Web\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Models\UserNotificationChannel;
-use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Settings\ManageNotificationChannels\Services\CreateUserNotificationChannel;
 use App\Settings\ManageNotificationChannels\Services\DestroyUserNotificationChannel;
 use App\Settings\ManageNotificationChannels\Web\ViewHelpers\NotificationsIndexViewHelper;
+use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class NotificationsController extends Controller
 {

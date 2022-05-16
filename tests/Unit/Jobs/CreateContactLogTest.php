@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Jobs;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Contact;
 use App\Jobs\CreateContactLog;
+use App\Models\Contact;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class CreateContactLogTest extends TestCase
 {

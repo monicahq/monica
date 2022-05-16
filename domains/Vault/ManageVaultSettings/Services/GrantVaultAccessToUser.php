@@ -2,16 +2,16 @@
 
 namespace App\Vault\ManageVaultSettings\Services;
 
+use App\Contact\ManageReminders\Services\ScheduleContactReminderForUser;
+use App\Exceptions\SameUserException;
+use App\Helpers\VaultHelper;
+use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Models\Contact;
+use App\Models\ContactReminder;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\Contact;
-use App\Helpers\VaultHelper;
-use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
-use App\Models\ContactReminder;
-use App\Interfaces\ServiceInterface;
-use App\Exceptions\SameUserException;
-use App\Contact\ManageReminders\Services\ScheduleContactReminderForUser;
 
 class GrantVaultAccessToUser extends BaseService implements ServiceInterface
 {

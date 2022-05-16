@@ -2,10 +2,10 @@
 
 namespace App\Settings\ManageTemplates\Services;
 
+use App\Interfaces\ServiceInterface;
 use App\Models\Template;
 use App\Models\TemplatePage;
 use App\Services\BaseService;
-use App\Interfaces\ServiceInterface;
 
 class CreateTemplate extends BaseService implements ServiceInterface
 {

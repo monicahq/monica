@@ -2,20 +2,20 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContactAddresses\Services;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Vault;
+use App\Contact\ManageContactAddresses\Services\UpdateContactAddress;
+use App\Exceptions\NotEnoughPermissionException;
+use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\Address;
-use App\Models\Contact;
 use App\Models\AddressType;
-use App\Jobs\CreateAuditLog;
+use App\Models\Contact;
+use App\Models\User;
+use App\Models\Vault;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use App\Exceptions\NotEnoughPermissionException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Contact\ManageContactAddresses\Services\UpdateContactAddress;
+use Tests\TestCase;
 
 class UpdateContactAddressTest extends TestCase
 {

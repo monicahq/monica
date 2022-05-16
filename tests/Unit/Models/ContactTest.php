@@ -2,26 +2,27 @@
 
 namespace Tests\Unit\Models;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\Loan;
-use App\Models\Note;
-use App\Models\User;
-use App\Models\Label;
-use App\Models\Avatar;
-use App\Models\Gender;
 use App\Models\Address;
+use App\Models\Avatar;
 use App\Models\Company;
 use App\Models\Contact;
-use App\Models\Pronoun;
-use App\Models\Template;
-use App\Models\ContactLog;
-use App\Models\ContactReminder;
-use App\Models\RelationshipType;
-use App\Models\ContactInformation;
 use App\Models\ContactImportantDate;
 use App\Models\ContactImportantDateType;
+use App\Models\ContactInformation;
+use App\Models\ContactLog;
+use App\Models\ContactReminder;
+use App\Models\ContactTask;
+use App\Models\Gender;
+use App\Models\Label;
+use App\Models\Loan;
+use App\Models\Note;
+use App\Models\Pronoun;
+use App\Models\RelationshipType;
+use App\Models\Template;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ContactTest extends TestCase
 {
@@ -197,6 +198,17 @@ class ContactTest extends TestCase
         ]);
 
         $this->assertTrue($ross->avatars()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_tasks(): void
+    {
+        $ross = Contact::factory()->create();
+        ContactTask::factory()->count(2)->create([
+            'contact_id' => $ross->id,
+        ]);
+
+        $this->assertTrue($ross->tasks()->exists());
     }
 
     /** @test */

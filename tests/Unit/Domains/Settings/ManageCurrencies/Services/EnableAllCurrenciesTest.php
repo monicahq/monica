@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Domains\Settings\ManageCurrencies\Services;
 
-use Tests\TestCase;
-use App\Models\User;
+use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Currency;
-use Illuminate\Validation\ValidationException;
-use App\Exceptions\NotEnoughPermissionException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\User;
 use App\Settings\ManageCurrencies\Services\EnableAllCurrencies;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class EnableAllCurrenciesTest extends TestCase
 {

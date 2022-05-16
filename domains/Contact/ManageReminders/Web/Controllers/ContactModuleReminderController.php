@@ -2,16 +2,16 @@
 
 namespace App\Contact\ManageReminders\Web\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Contact;
-use Illuminate\Http\Request;
-use App\Models\ContactReminder;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Contact\ManageReminders\Services\UpdateReminder;
-use App\Contact\ManageReminders\Services\DestroyReminder;
 use App\Contact\ManageReminders\Services\CreateContactReminder;
+use App\Contact\ManageReminders\Services\DestroyReminder;
+use App\Contact\ManageReminders\Services\UpdateReminder;
 use App\Contact\ManageReminders\Web\ViewHelpers\ModuleRemindersViewHelper;
+use App\Http\Controllers\Controller;
+use App\Models\Contact;
+use App\Models\ContactReminder;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContactModuleReminderController extends Controller
 {

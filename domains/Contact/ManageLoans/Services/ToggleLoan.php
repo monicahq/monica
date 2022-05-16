@@ -2,10 +2,10 @@
 
 namespace App\Contact\ManageLoans\Services;
 
-use Carbon\Carbon;
+use App\Interfaces\ServiceInterface;
 use App\Models\Loan;
 use App\Services\BaseService;
-use App\Interfaces\ServiceInterface;
+use Carbon\Carbon;
 
 class ToggleLoan extends BaseService implements ServiceInterface
 {

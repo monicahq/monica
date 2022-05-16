@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Label;
-use App\Models\Vault;
 use App\Models\Company;
 use App\Models\Contact;
-use App\Models\Template;
 use App\Models\ContactImportantDateType;
+use App\Models\Label;
+use App\Models\Template;
+use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class VaultTest extends TestCase
 {

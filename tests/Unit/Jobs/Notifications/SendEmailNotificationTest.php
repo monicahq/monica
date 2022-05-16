@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Jobs\Notifications;
 
-use Tests\TestCase;
+use App\Jobs\Notifications\SendEmailNotification;
 use App\Mail\SendReminder;
 use App\Models\ContactReminder;
-use Illuminate\Support\Facades\Mail;
 use App\Models\UserNotificationChannel;
-use App\Jobs\Notifications\SendEmailNotification;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Mail;
+use Tests\TestCase;
 
 class SendEmailNotificationTest extends TestCase
 {

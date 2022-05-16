@@ -2,8 +2,8 @@
 
 namespace App\Settings\ManageNotificationChannels\Web\ViewHelpers;
 
-use App\Models\User;
 use App\Helpers\DateHelper;
+use App\Models\User;
 use App\Models\UserNotificationChannel;
 
 class NotificationsLogIndexViewHelper

@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domains\Contact\ManagePronouns\Web\ViewHelpers;
 
-use Tests\TestCase;
-use App\Models\Gender;
+use App\Contact\ManagePronouns\Web\ViewHelpers\ModuleGenderPronounViewHelper;
 use App\Models\Contact;
+use App\Models\Gender;
 use App\Models\Pronoun;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Contact\ManagePronouns\Web\ViewHelpers\ModuleGenderPronounViewHelper;
+use Tests\TestCase;
 
 class ModuleGenderPronounViewHelperTest extends TestCase
 {

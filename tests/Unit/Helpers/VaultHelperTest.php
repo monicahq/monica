@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
+use App\Helpers\VaultHelper;
 use App\Models\User;
 use App\Models\Vault;
-use App\Helpers\VaultHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class VaultHelperTest extends TestCase
 {

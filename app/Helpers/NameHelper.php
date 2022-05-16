@@ -2,8 +2,8 @@
 
 namespace App\Helpers;
 
-use App\Models\User;
 use App\Models\Contact;
+use App\Models\User;
 
 class NameHelper
 {

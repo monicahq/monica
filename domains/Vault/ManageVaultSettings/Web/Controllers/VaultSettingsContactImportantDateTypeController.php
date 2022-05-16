@@ -2,14 +2,14 @@
 
 namespace App\Vault\ManageVaultSettings\Web\Controllers;
 
-use App\Models\Vault;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Vault;
 use App\Vault\ManageVaultImportantDateTypes\Services\CreateContactImportantDateType;
-use App\Vault\ManageVaultImportantDateTypes\Services\UpdateContactImportantDateType;
 use App\Vault\ManageVaultImportantDateTypes\Services\DestroyContactImportantDateType;
+use App\Vault\ManageVaultImportantDateTypes\Services\UpdateContactImportantDateType;
 use App\Vault\ManageVaultImportantDateTypes\Web\ViewHelpers\VaultImportantDateTypesViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VaultSettingsContactImportantDateTypeController extends Controller
 {

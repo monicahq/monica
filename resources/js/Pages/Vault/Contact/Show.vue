@@ -95,6 +95,8 @@
                 <loans v-if="module.type == 'loans'" :data="loans" :layout-data="layoutData" />
 
                 <relationships v-if="module.type == 'relationships'" :data="relationships" />
+
+                <tasks v-if="module.type == 'tasks'" :data="tasks" />
               </div>
             </div>
           </div>
@@ -117,6 +119,7 @@ import Feed from '@/Shared/Modules/Feed';
 import Loans from '@/Shared/Modules/Loans';
 import JobInformation from '@/Shared/Modules/JobInformation';
 import Relationships from '@/Shared/Modules/Relationships';
+import Tasks from '@/Shared/Modules/Tasks';
 
 export default {
   components: {
@@ -132,6 +135,7 @@ export default {
     Loans,
     JobInformation,
     Relationships,
+    Tasks,
   },
 
   props: {
@@ -158,6 +162,7 @@ export default {
       loans: [],
       jobInformation: [],
       relationships: [],
+      tasks: [],
     };
   },
 
@@ -218,6 +223,10 @@ export default {
 
       if (this.data.modules.findIndex((x) => x.type == 'relationships') > -1) {
         this.relationships = this.data.modules[this.data.modules.findIndex((x) => x.type == 'relationships')].data;
+      }
+
+      if (this.data.modules.findIndex((x) => x.type == 'tasks') > -1) {
+        this.tasks = this.data.modules[this.data.modules.findIndex((x) => x.type == 'tasks')].data;
       }
     }
   },

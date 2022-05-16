@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
-use App\Models\Vault;
-use App\Models\Contact;
 use App\Helpers\PaginatorHelper;
+use App\Models\Contact;
+use App\Models\Vault;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class PaginatorHelperTest extends TestCase
 {

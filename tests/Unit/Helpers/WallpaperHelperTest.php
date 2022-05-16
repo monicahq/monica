@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
 use App\Helpers\WallpaperHelper;
+use Tests\TestCase;
 
 class WallpaperHelperTest extends TestCase
 {

@@ -2,11 +2,11 @@
 
 namespace App\Contact\ManagePronouns\Services;
 
-use App\Models\Pronoun;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
-use App\Jobs\CreateContactLog;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Jobs\CreateContactLog;
+use App\Models\Pronoun;
+use App\Services\BaseService;
 
 class RemovePronoun extends BaseService implements ServiceInterface
 {

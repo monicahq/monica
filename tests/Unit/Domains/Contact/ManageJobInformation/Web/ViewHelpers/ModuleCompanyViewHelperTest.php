@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domains\Contact\ManageJobInformation\Web\ViewHelpers;
 
-use Tests\TestCase;
-use App\Models\Vault;
+use App\Contact\ManageJobInformation\Web\ViewHelpers\ModuleCompanyViewHelper;
 use App\Models\Company;
 use App\Models\Contact;
+use App\Models\Vault;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Contact\ManageJobInformation\Web\ViewHelpers\ModuleCompanyViewHelper;
+use Tests\TestCase;
 
 class ModuleCompanyViewHelperTest extends TestCase
 {

@@ -2,11 +2,11 @@
 
 namespace App\Settings\ManageTemplates\Services;
 
+use App\Interfaces\ServiceInterface;
 use App\Models\Attribute;
 use App\Models\Information;
 use App\Services\BaseService;
 use Illuminate\Validation\Rule;
-use App\Interfaces\ServiceInterface;
 
 class CreateAttribute extends BaseService implements ServiceInterface
 {

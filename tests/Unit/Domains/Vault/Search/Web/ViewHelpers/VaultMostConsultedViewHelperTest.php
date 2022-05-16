@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domains\Vault\Search\Web\ViewHelpers;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Contact;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\User;
 use App\Vault\Search\Web\ViewHelpers\VaultMostConsultedViewHelper;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\DB;
+use Tests\TestCase;
 
 class VaultMostConsultedViewHelperTest extends TestCase
 {

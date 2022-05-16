@@ -2,16 +2,16 @@
 
 namespace App\Contact\ManageContact\Web\Controllers;
 
-use Inertia\Inertia;
-use App\Models\Vault;
+use App\Contact\ManageContact\Services\UpdateContactView;
+use App\Contact\ManageContact\Web\ViewHelpers\ContactShowViewHelper;
+use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\TemplatePage;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Contact\ManageContact\Services\UpdateContactView;
+use App\Models\Vault;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
-use App\Contact\ManageContact\Web\ViewHelpers\ContactShowViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ContactPageController extends Controller
 {

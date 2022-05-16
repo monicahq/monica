@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domains\Vault\ManageVaultImportantDateTypes\Web\ViewHelpers;
 
-use function env;
-use Tests\TestCase;
-use App\Models\Vault;
 use App\Models\ContactImportantDateType;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Vault;
 use App\Vault\ManageVaultImportantDateTypes\Web\ViewHelpers\VaultImportantDateTypesViewHelper;
+use function env;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class VaultImportantDateTypesViewHelperTest extends TestCase
 {

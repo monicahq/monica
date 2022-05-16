@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Inertia\Middleware;
 use Illuminate\Http\Request;
+use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {

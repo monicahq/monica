@@ -2,11 +2,11 @@
 
 namespace App\Settings\ManageModules\Web\Controllers;
 
-use Inertia\Inertia;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Settings\ManageModules\Web\ViewHelpers\PersonalizeModuleIndexViewHelper;
+use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class PersonalizeModulesController extends Controller
 {

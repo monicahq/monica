@@ -2,11 +2,11 @@
 
 namespace App\Settings\ManageSettings\Web\Controllers;
 
-use Inertia\Inertia;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Settings\ManageSettings\Web\ViewHelpers\SettingsIndexViewHelper;
+use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class SettingsController extends Controller
 {

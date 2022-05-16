@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Domains\Contact\ManageLoans\Web\ViewHelpers;
 
-use function env;
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\Loan;
-use App\Models\User;
+use App\Contact\ManageLoans\Web\ViewHelpers\ModuleLoanViewHelper;
 use App\Models\Contact;
 use App\Models\Currency;
+use App\Models\Loan;
+use App\Models\User;
+use Carbon\Carbon;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Contact\ManageLoans\Web\ViewHelpers\ModuleLoanViewHelper;
+use Tests\TestCase;
 
 class ModuleLoanViewHelperTest extends TestCase
 {

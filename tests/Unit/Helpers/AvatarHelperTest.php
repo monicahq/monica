@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
+use App\Helpers\AvatarHelper;
 use App\Models\Avatar;
 use App\Models\Contact;
-use App\Helpers\AvatarHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class AvatarHelperTest extends TestCase
 {

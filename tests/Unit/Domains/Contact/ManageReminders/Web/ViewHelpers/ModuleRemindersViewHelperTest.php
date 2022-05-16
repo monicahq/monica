@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Domains\Contact\ManageReminders\Web\ViewHelpers;
 
-use function env;
-use Tests\TestCase;
-use App\Models\User;
+use App\Contact\ManageReminders\Web\ViewHelpers\ModuleRemindersViewHelper;
 use App\Models\Contact;
 use App\Models\ContactReminder;
+use App\Models\User;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Contact\ManageReminders\Web\ViewHelpers\ModuleRemindersViewHelper;
+use Tests\TestCase;
 
 class ModuleRemindersViewHelperTest extends TestCase
 {

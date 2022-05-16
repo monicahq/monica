@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Helpers\NameHelper;
-use Laravel\Scout\Searchable;
 use App\Helpers\ImportantDateHelper;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Helpers\NameHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Searchable;
 
 class Contact extends Model
 {
@@ -257,6 +257,16 @@ class Contact extends Model
     public function avatars()
     {
         return $this->hasMany(Avatar::class);
+    }
+
+    /**
+     * Get the tasks associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function tasks()
+    {
+        return $this->hasMany(ContactTask::class);
     }
 
     /**

@@ -2,13 +2,13 @@
 
 namespace App\Contact\ManageNotes\Services;
 
-use Carbon\Carbon;
-use App\Models\Note;
-use App\Models\Emotion;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
-use App\Jobs\CreateContactLog;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Jobs\CreateContactLog;
+use App\Models\Emotion;
+use App\Models\Note;
+use App\Services\BaseService;
+use Carbon\Carbon;
 
 class UpdateNote extends BaseService implements ServiceInterface
 {

@@ -2,14 +2,14 @@
 
 namespace App\Contact\ManageContactImportantDates\Services;
 
-use Carbon\Carbon;
+use App\Interfaces\ServiceInterface;
 use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Jobs\CreateContactLog;
 use App\Models\ContactFeedItem;
-use App\Interfaces\ServiceInterface;
 use App\Models\ContactImportantDate;
 use App\Models\ContactImportantDateType;
+use App\Services\BaseService;
+use Carbon\Carbon;
 
 class UpdateContactImportantDate extends BaseService implements ServiceInterface
 {

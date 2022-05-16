@@ -2,10 +2,10 @@
 
 namespace App\Settings\ManageUsers\Services;
 
-use App\Models\User;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Models\User;
+use App\Services\BaseService;
 
 class RemoveAdministratorPrivilege extends BaseService implements ServiceInterface
 {

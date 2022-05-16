@@ -2,11 +2,11 @@
 
 namespace App\Settings\ManageAddressTypes\Services;
 
-use App\Models\User;
-use App\Models\AddressType;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Models\AddressType;
+use App\Models\User;
+use App\Services\BaseService;
 
 class DestroyAddressType extends BaseService implements ServiceInterface
 {

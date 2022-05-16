@@ -2,11 +2,11 @@
 
 namespace App\Vault\ManageVaultSettings\Services;
 
-use App\Models\Vault;
-use App\Models\Template;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Models\Template;
+use App\Models\Vault;
+use App\Services\BaseService;
 
 class UpdateVaultDefaultTemplate extends BaseService implements ServiceInterface
 {

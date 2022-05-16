@@ -2,18 +2,18 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
+use App\Contact\ManageContact\Services\CreateContact;
+use App\Contact\ManageContactImportantDates\Services\CreateContactImportantDate;
+use App\Contact\ManageNotes\Services\CreateNote;
+use App\Models\Contact;
+use App\Models\ContactImportantDate;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\Contact;
+use App\Settings\CreateAccount\Services\CreateAccount;
+use App\Vault\ManageVault\Services\CreateVault;
+use Carbon\Carbon;
 use Faker\Factory as Faker;
 use Illuminate\Console\Command;
-use App\Models\ContactImportantDate;
-use App\Vault\ManageVault\Services\CreateVault;
-use App\Contact\ManageNotes\Services\CreateNote;
-use App\Contact\ManageContact\Services\CreateContact;
-use App\Settings\CreateAccount\Services\CreateAccount;
-use App\Contact\ManageContactImportantDates\Services\CreateContactImportantDate;
 
 class SetupDummyAccount extends Command
 {

@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageGenders\Web\ViewHelpers;
 
-use function env;
-use Tests\TestCase;
 use App\Models\Gender;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Settings\ManageGenders\Web\ViewHelpers\ManageGenderIndexViewHelper;
+use function env;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ManageGenderIndexViewHelperTest extends TestCase
 {

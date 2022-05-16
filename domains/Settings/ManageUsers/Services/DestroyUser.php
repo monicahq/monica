@@ -2,13 +2,13 @@
 
 namespace App\Settings\ManageUsers\Services;
 
+use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
 use App\Models\User;
 use App\Models\Vault;
-use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
-use App\Interfaces\ServiceInterface;
 use Dotenv\Exception\ValidationException;
+use Illuminate\Support\Facades\DB;
 
 class DestroyUser extends BaseService implements ServiceInterface
 {

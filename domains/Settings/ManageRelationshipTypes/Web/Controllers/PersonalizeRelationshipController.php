@@ -2,15 +2,15 @@
 
 namespace App\Settings\ManageRelationshipTypes\Web\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Settings\ManageRelationshipTypes\Services\CreateRelationshipGroupType;
-use App\Settings\ManageRelationshipTypes\Services\UpdateRelationshipGroupType;
 use App\Settings\ManageRelationshipTypes\Services\DestroyRelationshipGroupType;
+use App\Settings\ManageRelationshipTypes\Services\UpdateRelationshipGroupType;
 use App\Settings\ManageRelationshipTypes\Web\ViewHelpers\PersonalizeRelationshipIndexViewHelper;
+use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class PersonalizeRelationshipController extends Controller
 {

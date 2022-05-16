@@ -2,11 +2,11 @@
 
 namespace App\Vault\Search\Web\Controllers;
 
-use App\Models\Vault;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Vault;
 use App\Vault\Search\Web\ViewHelpers\VaultMostConsultedViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VaultMostConsultedContactsController extends Controller
 {

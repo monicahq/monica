@@ -2,12 +2,12 @@
 
 namespace App\Vault\Search\Web\Controllers;
 
-use Inertia\Inertia;
-use App\Models\Vault;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Vault;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Vault\Search\Web\ViewHelpers\VaultSearchIndexViewHelper;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class VaultSearchController extends Controller
 {

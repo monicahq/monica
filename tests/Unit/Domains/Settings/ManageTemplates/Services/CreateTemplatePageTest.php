@@ -2,16 +2,16 @@
 
 namespace Tests\Unit\Domains\Settings\ManageTemplates\Services;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Account;
 use App\Models\Template;
 use App\Models\TemplatePage;
+use App\Models\User;
+use App\Settings\ManageTemplates\Services\CreateTemplatePage;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Settings\ManageTemplates\Services\CreateTemplatePage;
+use Tests\TestCase;
 
 class CreateTemplatePageTest extends TestCase
 {

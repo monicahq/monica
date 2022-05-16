@@ -2,9 +2,9 @@
 
 namespace App\Vault\ManageCompanies\Services;
 
+use App\Interfaces\ServiceInterface;
 use App\Models\Company;
 use App\Services\BaseService;
-use App\Interfaces\ServiceInterface;
 
 class CreateCompany extends BaseService implements ServiceInterface
 {

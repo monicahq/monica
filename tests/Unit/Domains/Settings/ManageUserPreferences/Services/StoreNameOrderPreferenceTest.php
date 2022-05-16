@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Domains\Settings\ManageUserPreferences\Services;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Account;
+use App\Models\User;
+use App\Settings\ManageUserPreferences\Services\StoreNameOrderPreference;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Settings\ManageUserPreferences\Services\StoreNameOrderPreference;
+use Tests\TestCase;
 
 class StoreNameOrderPreferenceTest extends TestCase
 {

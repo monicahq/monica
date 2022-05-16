@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Domains\Settings\CreateAccount\Services;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Jobs\SetupAccount;
 use App\Jobs\CreateAuditLog;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Validation\ValidationException;
+use App\Jobs\SetupAccount;
+use App\Models\User;
 use App\Settings\CreateAccount\Services\CreateAccount;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class CreateAccountTest extends TestCase
 {

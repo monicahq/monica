@@ -2,12 +2,12 @@
 
 namespace App\Vault\ManageVaultSettings\Web\Controllers;
 
-use Inertia\Inertia;
-use App\Models\Vault;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Vault;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Vault\ManageVaultSettings\Web\ViewHelpers\VaultSettingsIndexViewHelper;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class VaultSettingsController extends Controller
 {

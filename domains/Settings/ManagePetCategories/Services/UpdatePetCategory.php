@@ -2,9 +2,9 @@
 
 namespace App\Settings\ManagePetCategories\Services;
 
+use App\Interfaces\ServiceInterface;
 use App\Models\PetCategory;
 use App\Services\BaseService;
-use App\Interfaces\ServiceInterface;
 
 class UpdatePetCategory extends BaseService implements ServiceInterface
 {

@@ -2,14 +2,14 @@
 
 namespace App\Contact\ManageNotes\Web\Controllers;
 
+use App\Contact\ManageNotes\Services\CreateNote;
+use App\Contact\ManageNotes\Services\DestroyNote;
+use App\Contact\ManageNotes\Services\UpdateNote;
+use App\Contact\ManageNotes\Web\ViewHelpers\ModuleNotesViewHelper;
+use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Contact\ManageNotes\Services\CreateNote;
-use App\Contact\ManageNotes\Services\UpdateNote;
-use App\Contact\ManageNotes\Services\DestroyNote;
-use App\Contact\ManageNotes\Web\ViewHelpers\ModuleNotesViewHelper;
 
 class ContactModuleNoteController extends Controller
 {

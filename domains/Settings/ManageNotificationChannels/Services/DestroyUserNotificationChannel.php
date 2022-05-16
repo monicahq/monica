@@ -2,11 +2,11 @@
 
 namespace App\Settings\ManageNotificationChannels\Services;
 
-use App\Models\User;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Models\User;
 use App\Models\UserNotificationChannel;
+use App\Services\BaseService;
 
 class DestroyUserNotificationChannel extends BaseService implements ServiceInterface
 {

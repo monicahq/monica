@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Controllers\Auth\ViewHelpers;
 
-use function env;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Controllers\Auth\ViewHelpers\AcceptInvitationShowViewHelper;
+use function env;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class AcceptInvitationShowViewHelperTest extends TestCase
 {

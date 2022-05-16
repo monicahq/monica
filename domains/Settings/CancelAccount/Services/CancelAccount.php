@@ -2,10 +2,10 @@
 
 namespace App\Settings\CancelAccount\Services;
 
-use App\Models\User;
-use App\Models\Account;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Models\Account;
+use App\Models\User;
+use App\Services\BaseService;
 
 class CancelAccount extends BaseService implements ServiceInterface
 {

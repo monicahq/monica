@@ -2,10 +2,10 @@
 
 namespace App\Vault\ManageVault\Services;
 
-use App\Models\Vault;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Models\Vault;
+use App\Services\BaseService;
 
 class UpdateVault extends BaseService implements ServiceInterface
 {

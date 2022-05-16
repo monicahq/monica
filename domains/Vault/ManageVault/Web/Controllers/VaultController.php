@@ -2,15 +2,15 @@
 
 namespace App\Vault\ManageVault\Web\Controllers;
 
-use Inertia\Inertia;
-use App\Models\Vault;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Vault;
 use App\Vault\ManageVault\Services\CreateVault;
 use App\Vault\ManageVault\Services\DestroyVault;
-use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultCreateViewHelper;
+use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class VaultController extends Controller
 {

@@ -2,10 +2,10 @@
 
 namespace App\Settings\ManageTemplates\Services;
 
-use App\Models\Template;
-use App\Models\Information;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Models\Information;
+use App\Models\Template;
+use App\Services\BaseService;
 
 class AssociateInformationToTemplate extends BaseService implements ServiceInterface
 {

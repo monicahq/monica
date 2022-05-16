@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
-use Carbon\Carbon;
-use App\Models\User;
 use App\Models\ContactReminder;
+use App\Models\User;
+use Carbon\Carbon;
 
 class ContactReminderHelper
 {

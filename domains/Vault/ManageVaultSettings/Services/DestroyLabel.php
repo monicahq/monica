@@ -2,11 +2,11 @@
 
 namespace App\Vault\ManageVaultSettings\Services;
 
-use App\Models\User;
-use App\Models\Label;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Models\Label;
+use App\Models\User;
+use App\Services\BaseService;
 
 class DestroyLabel extends BaseService implements ServiceInterface
 {

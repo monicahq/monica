@@ -2,14 +2,14 @@
 
 namespace App\Contact\ManageContact\Services;
 
-use Carbon\Carbon;
-use App\Models\Gender;
-use App\Models\Contact;
-use App\Models\Pronoun;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
-use App\Jobs\CreateContactLog;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Jobs\CreateContactLog;
+use App\Models\Contact;
+use App\Models\Gender;
+use App\Models\Pronoun;
+use App\Services\BaseService;
+use Carbon\Carbon;
 
 class UpdateContact extends BaseService implements ServiceInterface
 {

@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -101,6 +101,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function notificationChannels()
     {
         return $this->hasMany(UserNotificationChannel::class, 'user_id');
+    }
+
+    /**
+     * Get the task records associated with the user.
+     *
+     * @return HasMany
+     */
+    public function contactTasks()
+    {
+        return $this->hasMany(ContactTask::class, 'author_id');
     }
 
     /**

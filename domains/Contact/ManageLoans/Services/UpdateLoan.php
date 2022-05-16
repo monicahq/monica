@@ -2,15 +2,15 @@
 
 namespace App\Contact\ManageLoans\Services;
 
-use Carbon\Carbon;
-use App\Models\Loan;
-use App\Models\Contact;
+use App\Interfaces\ServiceInterface;
 use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Jobs\CreateContactLog;
+use App\Models\Contact;
+use App\Models\Loan;
+use App\Services\BaseService;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use App\Interfaces\ServiceInterface;
 
 class UpdateLoan extends BaseService implements ServiceInterface
 {

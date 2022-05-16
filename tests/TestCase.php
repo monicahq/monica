@@ -2,9 +2,9 @@
 
 namespace Tests;
 
+use App\Models\Account;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\Account;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase

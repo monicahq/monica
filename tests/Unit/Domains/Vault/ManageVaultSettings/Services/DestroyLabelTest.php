@@ -2,18 +2,18 @@
 
 namespace Tests\Unit\Domains\Vault\ManageVaultSettings\Services;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Label;
-use App\Models\Vault;
-use App\Models\Account;
-use App\Jobs\CreateAuditLog;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Validation\ValidationException;
 use App\Exceptions\NotEnoughPermissionException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Jobs\CreateAuditLog;
+use App\Models\Account;
+use App\Models\Label;
+use App\Models\User;
+use App\Models\Vault;
 use App\Vault\ManageVaultSettings\Services\DestroyLabel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class DestroyLabelTest extends TestCase
 {

@@ -2,10 +2,10 @@
 
 namespace App\Settings\ManageContactInformationTypes\Services;
 
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
 use App\Models\ContactInformationType;
+use App\Services\BaseService;
 
 class DestroyContactInformationType extends BaseService implements ServiceInterface
 {

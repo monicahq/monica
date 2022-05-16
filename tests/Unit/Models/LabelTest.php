@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
-use App\Models\Label;
 use App\Models\Contact;
+use App\Models\Label;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class LabelTest extends TestCase
 {

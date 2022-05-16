@@ -2,10 +2,10 @@
 
 namespace App\Contact\ManageNotes\Web\ViewHelpers;
 
+use App\Helpers\DateHelper;
+use App\Models\Contact;
 use App\Models\Note;
 use App\Models\User;
-use App\Models\Contact;
-use App\Helpers\DateHelper;
 use Illuminate\Support\Str;
 
 class NotesIndexViewHelper

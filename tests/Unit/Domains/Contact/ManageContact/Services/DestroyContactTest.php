@@ -2,19 +2,19 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContact\Services;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Vault;
+use App\Contact\ManageContact\Services\DestroyContact;
+use App\Exceptions\CantBeDeletedException;
+use App\Exceptions\NotEnoughPermissionException;
+use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\Contact;
-use App\Jobs\CreateAuditLog;
-use Illuminate\Support\Facades\Queue;
-use App\Exceptions\CantBeDeletedException;
-use Illuminate\Validation\ValidationException;
-use App\Exceptions\NotEnoughPermissionException;
-use App\Contact\ManageContact\Services\DestroyContact;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class DestroyContactTest extends TestCase
 {

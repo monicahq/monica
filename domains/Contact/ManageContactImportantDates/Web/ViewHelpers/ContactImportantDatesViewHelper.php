@@ -2,11 +2,11 @@
 
 namespace App\Contact\ManageContactImportantDates\Web\ViewHelpers;
 
-use App\Models\User;
-use App\Models\Contact;
 use App\Helpers\DateHelper;
 use App\Helpers\ImportantDateHelper;
+use App\Models\Contact;
 use App\Models\ContactImportantDate;
+use App\Models\User;
 
 class ContactImportantDatesViewHelper
 {

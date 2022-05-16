@@ -2,8 +2,8 @@
 
 namespace App\Contact\ManageLabels\Web\ViewHelpers;
 
-use App\Models\Label;
 use App\Models\Contact;
+use App\Models\Label;
 
 class ModuleLabelViewHelper
 {

@@ -2,19 +2,19 @@
 
 namespace Tests\Unit\Domains\Settings\ManageNotificationChannels\Services;
 
-use Tests\TestCase;
-use App\Models\User;
+use App\Exceptions\EmailAlreadyExistException;
 use App\Models\Account;
+use App\Models\User;
+use App\Models\UserNotificationChannel;
+use App\Settings\ManageNotificationChannels\Jobs\SendVerificationEmailChannel;
+use App\Settings\ManageNotificationChannels\Services\CreateUserNotificationChannel;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
-use App\Models\UserNotificationChannel;
-use App\Exceptions\EmailAlreadyExistException;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Settings\ManageNotificationChannels\Jobs\SendVerificationEmailChannel;
-use App\Settings\ManageNotificationChannels\Services\CreateUserNotificationChannel;
+use Tests\TestCase;
 
 class CreateUserNotificationChannelTest extends TestCase
 {

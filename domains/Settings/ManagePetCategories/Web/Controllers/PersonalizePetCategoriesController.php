@@ -2,15 +2,15 @@
 
 namespace App\Settings\ManagePetCategories\Web\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Settings\ManagePetCategories\Services\CreatePetCategory;
-use App\Settings\ManagePetCategories\Services\UpdatePetCategory;
 use App\Settings\ManagePetCategories\Services\DestroyPetCategory;
+use App\Settings\ManagePetCategories\Services\UpdatePetCategory;
 use App\Settings\ManagePetCategories\Web\ViewHelpers\PersonalizePetCategoriesIndexViewHelper;
+use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class PersonalizePetCategoriesController extends Controller
 {

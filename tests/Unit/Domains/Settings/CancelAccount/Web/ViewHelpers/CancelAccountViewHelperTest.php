@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Domains\Settings\CancelAccount\Web\ViewHelpers;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Settings\CancelAccount\Web\ViewHelpers\CancelAccountViewHelper;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class CancelAccountViewHelperTest extends TestCase
 {

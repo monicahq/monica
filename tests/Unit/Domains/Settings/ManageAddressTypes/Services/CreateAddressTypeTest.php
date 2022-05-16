@@ -2,17 +2,17 @@
 
 namespace Tests\Unit\Domains\Settings\ManageAddressTypes\Services;
 
-use Tests\TestCase;
-use App\Models\User;
+use App\Exceptions\NotEnoughPermissionException;
+use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\AddressType;
-use App\Jobs\CreateAuditLog;
+use App\Models\User;
+use App\Settings\ManageAddressTypes\Services\CreateAddressType;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use App\Exceptions\NotEnoughPermissionException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Settings\ManageAddressTypes\Services\CreateAddressType;
+use Tests\TestCase;
 
 class CreateAddressTypeTest extends TestCase
 {

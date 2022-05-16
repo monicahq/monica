@@ -2,14 +2,14 @@
 
 namespace App\Contact\ManageLoans\Web\Controllers;
 
+use App\Contact\ManageLoans\Services\CreateLoan;
+use App\Contact\ManageLoans\Services\DestroyLoan;
+use App\Contact\ManageLoans\Services\UpdateLoan;
+use App\Contact\ManageLoans\Web\ViewHelpers\ModuleLoanViewHelper;
+use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Contact\ManageLoans\Services\CreateLoan;
-use App\Contact\ManageLoans\Services\UpdateLoan;
-use App\Contact\ManageLoans\Services\DestroyLoan;
-use App\Contact\ManageLoans\Web\ViewHelpers\ModuleLoanViewHelper;
 
 class ContactModuleLoanController extends Controller
 {

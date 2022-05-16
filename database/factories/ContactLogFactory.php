@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use App\Models\Contact;
 use App\Models\ContactLog;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ContactLogFactory extends Factory

@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Models;
 
-use Carbon\Carbon;
-use Tests\TestCase;
 use App\Models\ContactReminder;
-use App\Models\UserNotificationSent;
 use App\Models\UserNotificationChannel;
+use App\Models\UserNotificationSent;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class UserNotificationChannelTest extends TestCase
 {

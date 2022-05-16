@@ -2,8 +2,8 @@
 
 namespace App\Vault\ManageCompanies\Web\ViewHelpers;
 
-use App\Models\Vault;
 use App\Models\Company;
+use App\Models\Vault;
 
 class CompanyViewHelper
 {

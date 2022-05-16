@@ -2,11 +2,11 @@
 
 namespace App\Settings\ManagePronouns\Services;
 
-use App\Models\User;
-use App\Models\Pronoun;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Models\Pronoun;
+use App\Models\User;
+use App\Services\BaseService;
 
 class DestroyPronoun extends BaseService implements ServiceInterface
 {

@@ -2,11 +2,11 @@
 
 namespace App\Settings\ManageTemplates\Web\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Settings\ManageTemplates\Services\UpdateTemplatePagePosition;
 use App\Settings\ManageTemplates\Web\ViewHelpers\PersonalizeTemplateShowViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PersonalizeTemplatePagePositionController extends Controller
 {

@@ -2,10 +2,10 @@
 
 namespace App\Settings\ManageTemplates\Services;
 
+use App\Interfaces\ServiceInterface;
 use App\Models\Module;
 use App\Models\Template;
 use App\Services\BaseService;
-use App\Interfaces\ServiceInterface;
 
 class DestroyModule extends BaseService implements ServiceInterface
 {

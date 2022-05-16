@@ -2,12 +2,12 @@
 
 namespace App\Contact\ManageLoans\Web\Controllers;
 
-use App\Models\Contact;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Contact\ManageLoans\Services\ToggleLoan;
 use App\Contact\ManageLoans\Web\ViewHelpers\ModuleLoanViewHelper;
+use App\Http\Controllers\Controller;
+use App\Models\Contact;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContactModuleToggleLoanController extends Controller
 {

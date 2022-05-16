@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\App;
-use App\Models\UserNotificationChannel;
-use App\Jobs\Notifications\SendEmailNotification;
 use App\Contact\ManageReminders\Services\RescheduleContactReminderForChannel;
+use App\Jobs\Notifications\SendEmailNotification;
+use App\Models\UserNotificationChannel;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class TestReminders extends Command
 {

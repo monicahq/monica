@@ -2,17 +2,17 @@
 
 namespace Tests\Unit\Domains\Settings\ManageRelationshipTypes\Services;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Account;
+use App\Exceptions\NotEnoughPermissionException;
 use App\Jobs\CreateAuditLog;
+use App\Models\Account;
 use App\Models\RelationshipGroupType;
+use App\Models\User;
+use App\Settings\ManageRelationshipTypes\Services\DestroyRelationshipGroupType;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use App\Exceptions\NotEnoughPermissionException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Settings\ManageRelationshipTypes\Services\DestroyRelationshipGroupType;
+use Tests\TestCase;
 
 class DestroyRelationshipGroupTypeTest extends TestCase
 {

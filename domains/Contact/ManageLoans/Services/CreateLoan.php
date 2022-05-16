@@ -2,14 +2,14 @@
 
 namespace App\Contact\ManageLoans\Services;
 
-use Carbon\Carbon;
-use App\Models\Loan;
-use App\Models\Contact;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
-use App\Jobs\CreateContactLog;
-use Illuminate\Support\Collection;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Jobs\CreateContactLog;
+use App\Models\Contact;
+use App\Models\Loan;
+use App\Services\BaseService;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class CreateLoan extends BaseService implements ServiceInterface
 {

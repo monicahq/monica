@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domains\Settings\ManageUserPreferences\Web\ViewHelpers;
 
-use function env;
-use Carbon\Carbon;
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Settings\ManageUserPreferences\Web\ViewHelpers\UserPreferencesIndexViewHelper;
+use Carbon\Carbon;
+use function env;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class UserPreferencesIndexViewHelperTest extends TestCase
 {

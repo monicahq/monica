@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContactFeed\Web\ViewHelpers;
 
-use Tests\TestCase;
-use App\Models\Note;
-use App\Models\User;
+use App\Contact\ManageContactFeed\Web\ViewHelpers\ModuleFeedViewHelper;
 use App\Models\Contact;
 use App\Models\ContactFeedItem;
+use App\Models\Note;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Contact\ManageContactFeed\Web\ViewHelpers\ModuleFeedViewHelper;
+use Tests\TestCase;
 
 class ModuleFeedViewHelperTest extends TestCase
 {

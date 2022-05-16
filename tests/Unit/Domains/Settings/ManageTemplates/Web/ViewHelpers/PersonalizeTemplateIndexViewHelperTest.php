@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageTemplates\Web\ViewHelpers;
 
-use function env;
-use Tests\TestCase;
 use App\Models\Template;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Settings\ManageTemplates\Web\ViewHelpers\PersonalizeTemplateIndexViewHelper;
+use function env;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class PersonalizeTemplateIndexViewHelperTest extends TestCase
 {

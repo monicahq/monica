@@ -2,14 +2,14 @@
 
 namespace App\Settings\ManageNotificationChannels\Jobs;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\SerializesModels;
+use App\Mail\UserNotificationChannelEmailCreated;
 use App\Models\UserNotificationChannel;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Mail\UserNotificationChannelEmailCreated;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Send a verification email when a User Notification Channel of the Email type

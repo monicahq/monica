@@ -2,13 +2,13 @@
 
 namespace App\Settings\ManageUsers\Services;
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
-use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use App\Models\UserNotificationChannel;
+use App\Services\BaseService;
 use App\Settings\ManageNotificationChannels\Services\CreateUserNotificationChannel;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class AcceptInvitation extends BaseService implements ServiceInterface
 {

@@ -2,20 +2,20 @@
 
 namespace Tests\Unit\Domains\Contact\ManageLabels\Services;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Label;
-use App\Models\Vault;
-use App\Models\Account;
-use App\Models\Contact;
+use App\Contact\ManageLabels\Services\RemoveLabel;
+use App\Exceptions\NotEnoughPermissionException;
 use App\Jobs\CreateAuditLog;
 use App\Jobs\CreateContactLog;
+use App\Models\Account;
+use App\Models\Contact;
+use App\Models\Label;
+use App\Models\User;
+use App\Models\Vault;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use App\Exceptions\NotEnoughPermissionException;
-use App\Contact\ManageLabels\Services\RemoveLabel;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Tests\TestCase;
 
 class RemoveLabelTest extends TestCase
 {

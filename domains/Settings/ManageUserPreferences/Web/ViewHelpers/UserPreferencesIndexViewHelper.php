@@ -2,10 +2,10 @@
 
 namespace App\Settings\ManageUserPreferences\Web\ViewHelpers;
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Contact;
 use App\Helpers\NameHelper;
+use App\Models\Contact;
+use App\Models\User;
+use Carbon\Carbon;
 
 class UserPreferencesIndexViewHelper
 {

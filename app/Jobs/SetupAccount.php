@@ -2,33 +2,33 @@
 
 namespace App\Jobs;
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Module;
-use App\Models\Emotion;
 use App\Models\Currency;
-use App\Models\Template;
+use App\Models\Emotion;
 use App\Models\Information;
-use App\Models\TemplatePage;
-use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\DB;
+use App\Models\Module;
 use App\Models\RelationshipGroupType;
-use Illuminate\Queue\SerializesModels;
+use App\Models\Template;
+use App\Models\TemplatePage;
+use App\Models\User;
 use App\Models\UserNotificationChannel;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
+use App\Settings\ManageAddressTypes\Services\CreateAddressType;
+use App\Settings\ManageContactInformationTypes\Services\CreateContactInformationType;
 use App\Settings\ManageGenders\Services\CreateGender;
+use App\Settings\ManageNotificationChannels\Services\CreateUserNotificationChannel;
+use App\Settings\ManagePetCategories\Services\CreatePetCategory;
 use App\Settings\ManagePronouns\Services\CreatePronoun;
+use App\Settings\ManageRelationshipTypes\Services\CreateRelationshipGroupType;
+use App\Settings\ManageTemplates\Services\AssociateModuleToTemplatePage;
 use App\Settings\ManageTemplates\Services\CreateModule;
 use App\Settings\ManageTemplates\Services\CreateTemplate;
 use App\Settings\ManageTemplates\Services\CreateTemplatePage;
-use App\Settings\ManageAddressTypes\Services\CreateAddressType;
-use App\Settings\ManagePetCategories\Services\CreatePetCategory;
-use App\Settings\ManageTemplates\Services\AssociateModuleToTemplatePage;
-use App\Settings\ManageRelationshipTypes\Services\CreateRelationshipGroupType;
-use App\Settings\ManageNotificationChannels\Services\CreateUserNotificationChannel;
-use App\Settings\ManageContactInformationTypes\Services\CreateContactInformationType;
+use Carbon\Carbon;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 
 class SetupAccount implements ShouldQueue
 {
@@ -336,6 +336,22 @@ class SetupAccount implements ShouldQueue
             'author_id' => $this->user->id,
             'name' => trans('app.module_loans'),
             'type' => Module::TYPE_LOANS,
+            'can_be_deleted' => false,
+        ]);
+        (new AssociateModuleToTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageInformation->id,
+            'module_id' => $module->id,
+        ]);
+
+        // Tasks
+        $module = (new CreateModule)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'name' => trans('app.module_tasks'),
+            'type' => Module::TYPE_TASKS,
             'can_be_deleted' => false,
         ]);
         (new AssociateModuleToTemplatePage)->execute([

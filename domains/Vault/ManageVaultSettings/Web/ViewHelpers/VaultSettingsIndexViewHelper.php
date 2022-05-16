@@ -2,10 +2,10 @@
 
 namespace App\Vault\ManageVaultSettings\Web\ViewHelpers;
 
-use App\Models\User;
-use App\Models\Label;
-use App\Models\Vault;
 use App\Helpers\VaultHelper;
+use App\Models\Label;
+use App\Models\User;
+use App\Models\Vault;
 use App\Vault\ManageVaultImportantDateTypes\Web\ViewHelpers\VaultImportantDateTypesViewHelper;
 
 class VaultSettingsIndexViewHelper

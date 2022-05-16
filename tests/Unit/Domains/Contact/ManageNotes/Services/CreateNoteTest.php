@@ -2,19 +2,19 @@
 
 namespace Tests\Unit\Domains\Contact\ManageNotes\Services;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Vault;
-use App\Models\Account;
-use App\Models\Contact;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Validation\ValidationException;
 use App\Contact\ManageNotes\Services\CreateNote;
 use App\Exceptions\NotEnoughPermissionException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Jobs\CreateAuditLog;
+use App\Jobs\CreateContactLog;
+use App\Models\Account;
+use App\Models\Contact;
+use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class CreateNoteTest extends TestCase
 {

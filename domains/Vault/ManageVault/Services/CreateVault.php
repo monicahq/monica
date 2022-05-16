@@ -2,14 +2,14 @@
 
 namespace App\Vault\ManageVault\Services;
 
-use App\Models\Vault;
-use App\Models\Contact;
-use App\Models\Template;
-use App\Jobs\CreateAuditLog;
 use App\Helpers\AvatarHelper;
-use App\Services\BaseService;
 use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Models\Contact;
 use App\Models\ContactImportantDate;
+use App\Models\Template;
+use App\Models\Vault;
+use App\Services\BaseService;
 use App\Vault\ManageVaultImportantDateTypes\Services\CreateContactImportantDateType;
 
 class CreateVault extends BaseService implements ServiceInterface

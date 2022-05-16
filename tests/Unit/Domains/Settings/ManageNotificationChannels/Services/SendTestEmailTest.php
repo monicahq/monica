@@ -2,16 +2,16 @@
 
 namespace Tests\Unit\Domains\Settings\ManageNotificationChannels\Services;
 
-use Exception;
-use Tests\TestCase;
-use App\Models\User;
 use App\Mail\TestEmailSent;
-use Illuminate\Support\Facades\Mail;
+use App\Models\User;
 use App\Models\UserNotificationChannel;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Settings\ManageNotificationChannels\Services\SendTestEmail;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class SendTestEmailTest extends TestCase
 {

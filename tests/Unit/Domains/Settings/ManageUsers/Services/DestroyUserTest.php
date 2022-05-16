@@ -2,17 +2,17 @@
 
 namespace Tests\Unit\Domains\Settings\ManageUsers\Services;
 
-use Tests\TestCase;
+use App\Exceptions\NotEnoughPermissionException;
+use App\Jobs\CreateAuditLog;
+use App\Models\Account;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\Account;
-use App\Jobs\CreateAuditLog;
+use App\Settings\ManageUsers\Services\DestroyUser;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use App\Exceptions\NotEnoughPermissionException;
-use App\Settings\ManageUsers\Services\DestroyUser;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Tests\TestCase;
 
 class DestroyUserTest extends TestCase
 {

@@ -2,15 +2,15 @@
 
 namespace App\Settings\ManageCurrencies\Web\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Settings\ManageCurrencies\Services\ToggleCurrency;
-use App\Settings\ManageCurrencies\Services\EnableAllCurrencies;
-use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Settings\ManageCurrencies\Services\DisableAllCurrencies;
+use App\Settings\ManageCurrencies\Services\EnableAllCurrencies;
+use App\Settings\ManageCurrencies\Services\ToggleCurrency;
 use App\Settings\ManageCurrencies\Web\ViewHelpers\PersonalizeCurrencyIndexViewHelper;
+use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class PersonalizeCurrencyController extends Controller
 {

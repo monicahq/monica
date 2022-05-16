@@ -2,13 +2,13 @@
 
 namespace App\Contact\ManageReminders\Services;
 
-use Carbon\Carbon;
-use App\Services\BaseService;
-use App\Models\ContactReminder;
-use Illuminate\Support\Facades\DB;
 use App\Interfaces\ServiceInterface;
+use App\Models\ContactReminder;
 use App\Models\UserNotificationChannel;
+use App\Services\BaseService;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 class RescheduleContactReminderForChannel extends BaseService implements ServiceInterface
 {

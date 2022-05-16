@@ -2,13 +2,13 @@
 
 namespace App\Contact\ManageContact\Web\Controllers;
 
-use Inertia\Inertia;
-use App\Models\Vault;
-use App\Models\Contact;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Contact\ManageContact\Web\ViewHelpers\ContactShowBlankViewHelper;
+use App\Http\Controllers\Controller;
+use App\Models\Contact;
+use App\Models\Vault;
+use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ContactNoTemplateController extends Controller
 {

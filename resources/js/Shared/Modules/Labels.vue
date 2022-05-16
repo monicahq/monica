@@ -185,6 +185,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
+          this.flash('The label has been added', 'success');
           this.form.search = '';
           this.localLabelsInVault.push(response.data.data);
           this.localLabels.push(response.data.data);

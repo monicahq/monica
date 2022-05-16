@@ -2,14 +2,14 @@
 
 namespace App\Settings\ManageNotificationChannels\Services;
 
-use App\Models\User;
-use Illuminate\Support\Str;
-use App\Jobs\CreateAuditLog;
-use App\Services\BaseService;
-use App\Interfaces\ServiceInterface;
-use App\Models\UserNotificationChannel;
 use App\Exceptions\EmailAlreadyExistException;
+use App\Interfaces\ServiceInterface;
+use App\Jobs\CreateAuditLog;
+use App\Models\User;
+use App\Models\UserNotificationChannel;
+use App\Services\BaseService;
 use App\Settings\ManageNotificationChannels\Jobs\SendVerificationEmailChannel;
+use Illuminate\Support\Str;
 
 class CreateUserNotificationChannel extends BaseService implements ServiceInterface
 {

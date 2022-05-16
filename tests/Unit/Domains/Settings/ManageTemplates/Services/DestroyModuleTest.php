@@ -2,16 +2,16 @@
 
 namespace Tests\Unit\Domains\Settings\ManageTemplates\Services;
 
-use Exception;
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Module;
 use App\Models\Account;
+use App\Models\Module;
+use App\Models\User;
+use App\Settings\ManageTemplates\Services\DestroyModule;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Settings\ManageTemplates\Services\DestroyModule;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Tests\TestCase;
 
 class DestroyModuleTest extends TestCase
 {

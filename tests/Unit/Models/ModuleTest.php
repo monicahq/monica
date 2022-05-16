@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
 use App\Models\Module;
 use App\Models\ModuleRow;
 use App\Models\TemplatePage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ModuleTest extends TestCase
 {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7deaa5e501fe2f89a3be1fa05c891ee0",
+    "content-hash": "3bdedc5f1fa7a3d8cf6e3ea98dde605f",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1800,16 +1800,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.3.0",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "32a49eb2b38fe5e5c417ab748a45d0beaab97955"
+                "reference": "cb36fee279f7fca01d5d9399ddd1b37e48e2eca1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/32a49eb2b38fe5e5c417ab748a45d0beaab97955",
-                "reference": "32a49eb2b38fe5e5c417ab748a45d0beaab97955",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/cb36fee279f7fca01d5d9399ddd1b37e48e2eca1",
+                "reference": "cb36fee279f7fca01d5d9399ddd1b37e48e2eca1",
                 "shasum": ""
             },
             "require": {
@@ -1902,7 +1902,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-07T22:37:05+00:00"
+            "time": "2022-05-14T15:37:39+00:00"
         },
         {
             "name": "league/config",
@@ -2131,68 +2131,6 @@
                 }
             ],
             "time": "2022-04-17T13:12:02+00:00"
-        },
-        {
-            "name": "marksitko/laravel-unsplash",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/marksitko/laravel-unsplash.git",
-                "reference": "c68db3b985ae58bcb781eb81cb6b2c1300cde9ed"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/marksitko/laravel-unsplash/zipball/c68db3b985ae58bcb781eb81cb6b2c1300cde9ed",
-                "reference": "c68db3b985ae58bcb781eb81cb6b2c1300cde9ed",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^7.0",
-                "illuminate/support": "^8.0|^9.0",
-                "php": "^8.0"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^7.0",
-                "phpunit/phpunit": "^9.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "MarkSitko\\LaravelUnsplash\\UnsplashServiceProvider"
-                    ],
-                    "aliases": {
-                        "Unsplash": "MarkSitko\\LaravelUnsplash\\Facades\\Unsplash"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "MarkSitko\\LaravelUnsplash\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mark Sitko",
-                    "email": "hey@marksitko.de",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Provides a fluent Unsplash API for Laravel",
-            "homepage": "https://github.com/marksitko/laravel-unsplash",
-            "keywords": [
-                "laravel-unsplash",
-                "marksitko"
-            ],
-            "support": {
-                "issues": "https://github.com/marksitko/laravel-unsplash/issues",
-                "source": "https://github.com/marksitko/laravel-unsplash/tree/2.0.0"
-            },
-            "time": "2022-03-08T19:23:43+00:00"
         },
         {
             "name": "meilisearch/meilisearch-php",
@@ -10266,16 +10204,16 @@
         },
         {
             "name": "spatie/flare-client-php",
-            "version": "1.1.1",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/flare-client-php.git",
-                "reference": "1059fd8f229fa016b11063c6be9d1922d036adb7"
+                "reference": "86a380f5b1ce839af04a08f1c8f2697184cdf23f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/flare-client-php/zipball/1059fd8f229fa016b11063c6be9d1922d036adb7",
-                "reference": "1059fd8f229fa016b11063c6be9d1922d036adb7",
+                "url": "https://api.github.com/repos/spatie/flare-client-php/zipball/86a380f5b1ce839af04a08f1c8f2697184cdf23f",
+                "reference": "86a380f5b1ce839af04a08f1c8f2697184cdf23f",
                 "shasum": ""
             },
             "require": {
@@ -10323,7 +10261,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/flare-client-php/issues",
-                "source": "https://github.com/spatie/flare-client-php/tree/1.1.1"
+                "source": "https://github.com/spatie/flare-client-php/tree/1.2.0"
             },
             "funding": [
                 {
@@ -10331,20 +10269,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-05-11T09:43:07+00:00"
+            "time": "2022-05-16T12:13:39+00:00"
         },
         {
             "name": "spatie/ignition",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/ignition.git",
-                "reference": "6aa8f1c8c46aff30c9bd4c354dc865eeee2ed59f"
+                "reference": "997363fbcce809b1e55f571997d49017f9c623d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/ignition/zipball/6aa8f1c8c46aff30c9bd4c354dc865eeee2ed59f",
-                "reference": "6aa8f1c8c46aff30c9bd4c354dc865eeee2ed59f",
+                "url": "https://api.github.com/repos/spatie/ignition/zipball/997363fbcce809b1e55f571997d49017f9c623d9",
+                "reference": "997363fbcce809b1e55f571997d49017f9c623d9",
                 "shasum": ""
             },
             "require": {
@@ -10406,7 +10344,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-05-12T08:19:04+00:00"
+            "time": "2022-05-16T13:16:07+00:00"
         },
         {
             "name": "spatie/laravel-ignition",

@@ -2,13 +2,13 @@
 
 namespace App\Vault\ManageVaultSettings\Services;
 
-use App\Models\User;
+use App\Exceptions\SameUserException;
 use App\Helpers\VaultHelper;
+use App\Interfaces\ServiceInterface;
 use App\Jobs\CreateAuditLog;
+use App\Models\User;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
-use App\Interfaces\ServiceInterface;
-use App\Exceptions\SameUserException;
 
 class ChangeVaultAccess extends BaseService implements ServiceInterface
 {

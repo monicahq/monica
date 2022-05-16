@@ -2,14 +2,14 @@
 
 namespace App\Settings\ManageNotificationChannels\Services;
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Vault;
-use App\Models\Contact;
-use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 use App\Interfaces\ServiceInterface;
+use App\Models\Contact;
+use App\Models\User;
 use App\Models\UserNotificationChannel;
+use App\Models\Vault;
+use App\Services\BaseService;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ScheduleAllContactRemindersForNotificationChannel extends BaseService implements ServiceInterface
 {

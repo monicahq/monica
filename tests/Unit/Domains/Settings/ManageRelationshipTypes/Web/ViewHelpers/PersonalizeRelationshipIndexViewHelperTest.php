@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domains\Settings\ManageRelationshipTypes\Web\ViewHelpers;
 
-use function env;
-use Tests\TestCase;
-use App\Models\RelationshipType;
 use App\Models\RelationshipGroupType;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\RelationshipType;
 use App\Settings\ManageRelationshipTypes\Web\ViewHelpers\PersonalizeRelationshipIndexViewHelper;
+use function env;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class PersonalizeRelationshipIndexViewHelperTest extends TestCase
 {

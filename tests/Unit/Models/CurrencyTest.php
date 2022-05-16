@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
 use App\Models\Account;
 use App\Models\Currency;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class CurrencyTest extends TestCase
 {

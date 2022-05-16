@@ -2,9 +2,9 @@
 
 namespace App\Vault\ManageVaultImportantDateTypes\Web\ViewHelpers;
 
+use App\Models\ContactImportantDateType;
 use App\Models\Vault;
 use Illuminate\Support\Collection;
-use App\Models\ContactImportantDateType;
 
 class VaultImportantDateTypesViewHelper
 {

@@ -2,9 +2,9 @@
 
 namespace App\Contact\ManageRelationships\Web\ViewHelpers;
 
-use App\Models\User;
-use App\Models\Contact;
 use App\Helpers\AvatarHelper;
+use App\Models\Contact;
+use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 

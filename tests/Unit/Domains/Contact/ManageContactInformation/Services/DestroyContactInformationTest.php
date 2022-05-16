@@ -2,21 +2,21 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContactInformation\Services;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Vault;
-use App\Models\Account;
-use App\Models\Contact;
+use App\Contact\ManageContactInformation\Services\DestroyContactInformation;
+use App\Exceptions\NotEnoughPermissionException;
 use App\Jobs\CreateAuditLog;
 use App\Jobs\CreateContactLog;
+use App\Models\Account;
+use App\Models\Contact;
 use App\Models\ContactInformation;
-use Illuminate\Support\Facades\Queue;
 use App\Models\ContactInformationType;
-use Illuminate\Validation\ValidationException;
-use App\Exceptions\NotEnoughPermissionException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Contact\ManageContactInformation\Services\DestroyContactInformation;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class DestroyContactInformationTest extends TestCase
 {
