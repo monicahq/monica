@@ -4,10 +4,6 @@
   top: -2px;
 }
 
-.icon-note {
-  top: -1px;
-}
-
 .item-list {
   &:hover:first-child {
     border-top-left-radius: 8px;

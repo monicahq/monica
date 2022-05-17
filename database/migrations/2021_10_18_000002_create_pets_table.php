@@ -21,6 +21,16 @@ class CreatePetsTable extends Migration
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
+
+        Schema::create('pets', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('contact_id');
+            $table->unsignedBigInteger('pet_category_id');
+            $table->string('name')->nullable();
+            $table->timestamps();
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+            $table->foreign('pet_category_id')->references('id')->on('pet_categories')->onDelete('cascade');
+        });
     }
 
     /**
@@ -29,5 +39,6 @@ class CreatePetsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('pet_categories');
+        Schema::dropIfExists('pets');
     }
 }

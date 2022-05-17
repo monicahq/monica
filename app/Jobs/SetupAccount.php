@@ -278,7 +278,22 @@ class SetupAccount implements ShouldQueue
             'name' => trans('app.module_relationships'),
             'type' => Module::TYPE_RELATIONSHIPS,
             'can_be_deleted' => false,
-            'pagination' => 3,
+        ]);
+        (new AssociateModuleToTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageSocial->id,
+            'module_id' => $module->id,
+        ]);
+
+        // Pets
+        $module = (new CreateModule)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'name' => trans('app.module_pets'),
+            'type' => Module::TYPE_PETS,
+            'can_be_deleted' => false,
         ]);
         (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->user->account_id,

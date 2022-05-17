@@ -280,6 +280,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the pets associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function pets()
+    {
+        return $this->hasMany(Pet::class);
+    }
+
+    /**
      * Get the name of the contact, according to the user preference.
      *
      * @param  User  $user

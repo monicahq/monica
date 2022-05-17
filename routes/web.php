@@ -12,6 +12,7 @@ use App\Contact\ManageLoans\Web\Controllers\ContactModuleLoanController;
 use App\Contact\ManageLoans\Web\Controllers\ContactModuleToggleLoanController;
 use App\Contact\ManageNotes\Web\Controllers\ContactModuleNoteController;
 use App\Contact\ManageNotes\Web\Controllers\ContactNotesController;
+use App\Contact\ManagePets\Web\Controllers\ContactModulePetController;
 use App\Contact\ManageRelationships\Web\Controllers\ContactRelationshipsController;
 use App\Contact\ManageReminders\Web\Controllers\ContactModuleReminderController;
 use App\Contact\ManageTasks\Web\Controllers\ContactModuleTaskController;
@@ -139,6 +140,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::get('relationships/create', [ContactRelationshipsController::class, 'create'])->name('contact.relationships.create');
                     Route::post('relationships', [ContactRelationshipsController::class, 'store'])->name('contact.relationships.store');
                     Route::put('relationships/{relationship}', [ContactRelationshipsController::class, 'update'])->name('contact.relationships.update');
+
+                    // pets
+                    Route::post('pets', [ContactModulePetController::class, 'store'])->name('contact.pet.store');
+                    Route::put('pets/{pet}', [ContactModulePetController::class, 'update'])->name('contact.pet.update');
+                    Route::delete('pets/{pet}', [ContactModulePetController::class, 'destroy'])->name('contact.pet.destroy');
 
                     // tasks
                     Route::get('tasks/completed', [ContactModuleTaskController::class, 'index'])->name('contact.task.index');

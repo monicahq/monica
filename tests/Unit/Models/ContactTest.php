@@ -17,6 +17,7 @@ use App\Models\Gender;
 use App\Models\Label;
 use App\Models\Loan;
 use App\Models\Note;
+use App\Models\Pet;
 use App\Models\Pronoun;
 use App\Models\RelationshipType;
 use App\Models\Template;
@@ -221,6 +222,17 @@ class ContactTest extends TestCase
         ]);
 
         $this->assertTrue($ross->calls()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_pets(): void
+    {
+        $ross = Contact::factory()->create();
+        Pet::factory()->count(2)->create([
+            'contact_id' => $ross->id,
+        ]);
+
+        $this->assertTrue($ross->pets()->exists());
     }
 
     /** @test */

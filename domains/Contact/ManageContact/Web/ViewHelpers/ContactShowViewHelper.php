@@ -11,6 +11,7 @@ use App\Contact\ManageJobInformation\Web\ViewHelpers\ModuleCompanyViewHelper;
 use App\Contact\ManageLabels\Web\ViewHelpers\ModuleLabelViewHelper;
 use App\Contact\ManageLoans\Web\ViewHelpers\ModuleLoanViewHelper;
 use App\Contact\ManageNotes\Web\ViewHelpers\ModuleNotesViewHelper;
+use App\Contact\ManagePets\Web\ViewHelpers\ModulePetsViewHelper;
 use App\Contact\ManagePronouns\Web\ViewHelpers\ModuleGenderPronounViewHelper;
 use App\Contact\ManageRelationships\Web\ViewHelpers\ModuleRelationshipViewHelper;
 use App\Contact\ManageReminders\Web\ViewHelpers\ModuleRemindersViewHelper;
@@ -176,6 +177,10 @@ class ContactShowViewHelper
 
             if ($module->type == Module::TYPE_CALLS) {
                 $data = ModuleCallsViewHelper::data($contact, $user);
+            }
+
+            if ($module->type == Module::TYPE_PETS) {
+                $data = ModulePetsViewHelper::data($contact, $user);
             }
 
             $modulesCollection->push([
