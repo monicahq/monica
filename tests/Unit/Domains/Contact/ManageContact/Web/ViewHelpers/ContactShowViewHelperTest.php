@@ -8,6 +8,7 @@ use App\Models\Module;
 use App\Models\Template;
 use App\Models\TemplatePage;
 use App\Models\User;
+use App\Models\Vault;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -21,6 +22,16 @@ class ContactShowViewHelperTest extends TestCase
     {
         $contact = Contact::factory()->create();
         $user = User::factory()->create();
+        $vault = Vault::factory()->create([
+            'account_id' => $user->account_id,
+        ]);
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        $vault->users()->save($user, [
+            'permission' => 1,
+            'contact_id' => $contact->id,
+        ]);
         $template = Template::factory()->create();
         TemplatePage::factory()->create([
             'template_id' => $template->id,
@@ -37,7 +48,7 @@ class ContactShowViewHelperTest extends TestCase
         $array = ContactShowViewHelper::data($contact, $user);
 
         $this->assertEquals(
-            5,
+            6,
             count($array)
         );
 
@@ -45,6 +56,7 @@ class ContactShowViewHelperTest extends TestCase
         $this->assertArrayHasKey('template_pages', $array);
         $this->assertArrayHasKey('contact_information', $array);
         $this->assertArrayHasKey('modules', $array);
+        $this->assertArrayHasKey('options', $array);
         $this->assertArrayHasKey('url', $array);
 
         $this->assertEquals(
@@ -62,6 +74,7 @@ class ContactShowViewHelperTest extends TestCase
         );
         $this->assertEquals(
             [
+                'update_template' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/update-template',
                 'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id,
             ],
             $array['url']

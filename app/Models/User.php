@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -126,5 +127,21 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         return $this->first_name.' '.$this->last_name;
+    }
+
+    /**
+     * Get the contact of the user in the given vault.
+     * All users have a contact in the vaults.
+     *
+     * @param  Vault  $vault
+     * @return Contact
+     */
+    public function getContactInVault(Vault $vault): Contact
+    {
+        $contact = DB::table('user_vault')->where('vault_id', $vault->id)
+            ->where('user_id', $this->id)
+            ->first();
+
+        return Contact::findOrFail($contact->contact_id);
     }
 }

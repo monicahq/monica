@@ -45,7 +45,14 @@ class ContactShowViewHelper
             'template_pages' => $templatesPagesCollection,
             'contact_information' => self::getContactInformation($templatePages, $contact, $user),
             'modules' => $firstPage ? self::modules($firstPage, $contact, $user) : [],
+            'options' => [
+                'can_be_deleted' => $user->getContactInVault($contact->vault)->id !== $contact->id,
+            ],
             'url' => [
+                'update_template' => route('contact.blank', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
                 'destroy' => route('contact.destroy', [
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
@@ -63,7 +70,14 @@ class ContactShowViewHelper
             'template_pages' => self::getTemplatePagesList($templatePages, $contact, $templatePage),
             'contact_information' => self::getContactInformation($templatePages, $contact, $user),
             'modules' => self::modules($templatePage, $contact, $user),
+            'options' => [
+                'can_be_deleted' => $user->getContactInVault($contact->vault)->id !== $contact->id,
+            ],
             'url' => [
+                'update_template' => route('contact.blank', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
                 'destroy' => route('contact.destroy', [
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
