@@ -112,6 +112,7 @@
               :input-class="'w-full'"
               :required="false"
               :min="0"
+              :max="10000000"
               :autocomplete="false"
               @esc-key-pressed="createLoanModalShown = false" />
 
@@ -329,7 +330,7 @@
                 :input-class="'w-full'"
                 :required="false"
                 :min="0"
-                :max="1000000"
+                :max="10000000"
                 :autocomplete="false"
                 @esc-key-pressed="createLoanModalShown = false" />
 
@@ -502,7 +503,7 @@ export default {
       this.form.name = loan.name;
       this.form.description = loan.description;
       this.form.loaned_at = loan.loaned_at;
-      this.form.amount_lent = loan.amount_lent;
+      this.form.amount_lent = loan.amount_lent_int;
       this.form.currency_id = loan.currency_id;
       this.form.loaners = loan.loaners;
       this.form.loanees = loan.loanees;
