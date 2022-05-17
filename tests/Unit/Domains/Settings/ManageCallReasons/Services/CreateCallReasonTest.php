@@ -76,7 +76,7 @@ class CreateCallReasonTest extends TestCase
 
         $this->assertDatabaseHas('call_reasons', [
             'id' => $reason->id,
-            'call_reason_type_id' => $reason->id,
+            'call_reason_type_id' => $type->id,
             'label' => 'type name',
         ]);
 

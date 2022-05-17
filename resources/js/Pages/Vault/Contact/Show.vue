@@ -97,6 +97,8 @@
                 <relationships v-if="module.type == 'relationships'" :data="relationships" />
 
                 <tasks v-if="module.type == 'tasks'" :data="tasks" />
+
+                <calls v-if="module.type == 'calls'" :data="calls" />
               </div>
             </div>
           </div>
@@ -120,6 +122,7 @@ import Loans from '@/Shared/Modules/Loans';
 import JobInformation from '@/Shared/Modules/JobInformation';
 import Relationships from '@/Shared/Modules/Relationships';
 import Tasks from '@/Shared/Modules/Tasks';
+import Calls from '@/Shared/Modules/Calls';
 
 export default {
   components: {
@@ -136,6 +139,7 @@ export default {
     JobInformation,
     Relationships,
     Tasks,
+    Calls,
   },
 
   props: {
@@ -163,6 +167,7 @@ export default {
       jobInformation: [],
       relationships: [],
       tasks: [],
+      calls: [],
     };
   },
 
@@ -227,6 +232,10 @@ export default {
 
       if (this.data.modules.findIndex((x) => x.type == 'tasks') > -1) {
         this.tasks = this.data.modules[this.data.modules.findIndex((x) => x.type == 'tasks')].data;
+      }
+
+      if (this.data.modules.findIndex((x) => x.type == 'calls') > -1) {
+        this.calls = this.data.modules[this.data.modules.findIndex((x) => x.type == 'calls')].data;
       }
     }
   },

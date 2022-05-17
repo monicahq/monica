@@ -1,5 +1,6 @@
 <?php
 
+use App\Contact\ManageCalls\Web\Controllers\ContactModuleCallController;
 use App\Contact\ManageContact\Web\Controllers\ContactController;
 use App\Contact\ManageContact\Web\Controllers\ContactNoTemplateController;
 use App\Contact\ManageContact\Web\Controllers\ContactPageController;
@@ -145,6 +146,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::put('tasks/{task}', [ContactModuleTaskController::class, 'update'])->name('contact.task.update');
                     Route::put('tasks/{task}/toggle', [ContactModuleTaskController::class, 'toggle'])->name('contact.task.toggle');
                     Route::delete('tasks/{task}', [ContactModuleTaskController::class, 'destroy'])->name('contact.task.destroy');
+
+                    // calls
+                    Route::post('calls', [ContactModuleCallController::class, 'store'])->name('contact.call.store');
+                    Route::put('calls/{call}', [ContactModuleCallController::class, 'update'])->name('contact.call.update');
+                    Route::delete('calls/{call}', [ContactModuleCallController::class, 'destroy'])->name('contact.call.destroy');
                 });
             });
 

@@ -270,6 +270,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the calls associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function calls()
+    {
+        return $this->hasMany(Call::class);
+    }
+
+    /**
      * Get the name of the contact, according to the user preference.
      *
      * @param  User  $user

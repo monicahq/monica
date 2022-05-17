@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Contact\ManageContact\Services\CreateContact;
 use App\Contact\ManageContactImportantDates\Services\CreateContactImportantDate;
 use App\Contact\ManageNotes\Services\CreateNote;
+use App\Contact\ManageTasks\Services\CreateContactTask;
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
 use App\Models\User;
@@ -57,6 +58,7 @@ class SetupDummyAccount extends Command
         $this->createVaults();
         $this->createContacts();
         $this->createNotes();
+        $this->createTasks();
         $this->stop();
     }
 
@@ -184,6 +186,24 @@ class SetupDummyAccount extends Command
                     'contact_id' => $contact->id,
                     'title' => rand(1, 2) == 1 ? $this->faker->sentence(rand(3, 6)) : null,
                     'body' => $this->faker->paragraph(),
+                ]);
+            }
+        }
+    }
+
+    private function createTasks(): void
+    {
+        $this->info('☐ Create tasks');
+
+        foreach (Contact::all() as $contact) {
+            for ($i = 0; $i < 4; $i++) {
+                (new CreateContactTask)->execute([
+                    'account_id' => $this->user->account_id,
+                    'author_id' => $this->user->id,
+                    'vault_id' => $contact->vault_id,
+                    'contact_id' => $contact->id,
+                    'label' => $this->faker->sentence(rand(3, 6)),
+                    'description' => null,
                 ]);
             }
         }

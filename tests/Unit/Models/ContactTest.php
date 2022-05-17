@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Address;
 use App\Models\Avatar;
+use App\Models\Call;
 use App\Models\Company;
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
@@ -209,6 +210,17 @@ class ContactTest extends TestCase
         ]);
 
         $this->assertTrue($ross->tasks()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_calls(): void
+    {
+        $ross = Contact::factory()->create();
+        Call::factory()->count(2)->create([
+            'contact_id' => $ross->id,
+        ]);
+
+        $this->assertTrue($ross->calls()->exists());
     }
 
     /** @test */

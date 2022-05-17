@@ -91,6 +91,7 @@ return [
     'module_loans' => 'Loans',
     'module_companies' => 'Job information',
     'module_tasks' => 'Tasks',
+    'module_calls' => 'Calls',
 
     'module_option_default_number_of_items_to_display' => 'Default number of items to display',
 
