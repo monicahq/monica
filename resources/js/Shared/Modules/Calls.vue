@@ -187,6 +187,23 @@
           </select>
         </div>
 
+        <!-- emotion -->
+        <div v-if="emotionFieldShown" class="border-b border-gray-200 p-5">
+          <p class="mb-2">How did you feel?</p>
+          <div v-for="emotion in data.emotions" :key="emotion.id" class="mb-2 flex items-center">
+            <input
+              :value="emotion.id"
+              v-model="form.emotion_id"
+              :id="emotion.type"
+              name="emotion"
+              type="radio"
+              class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+            <label :for="emotion.type" class="ml-2 block cursor-pointer font-medium text-gray-700">
+              {{ emotion.name }}
+            </label>
+          </div>
+        </div>
+
         <!-- options -->
         <div class="border-b border-gray-200 p-5">
           <!-- cta to add a description -->
@@ -274,6 +291,11 @@
 
             <!-- reason, if defined -->
             <span v-if="call.reason">{{ call.reason.label }}</span>
+
+            <!-- emotion -->
+            <div v-if="call.emotion" class="text-xs text-gray-600">
+              {{ call.emotion.name }}
+            </div>
           </div>
 
           <hover-menu :show-edit="true" :show-delete="true" @edit="showUpdateCallModal(call)" @delete="destroy(call)" />
@@ -418,6 +440,23 @@
               </select>
             </div>
 
+            <!-- emotion -->
+            <div v-if="emotionFieldShown" class="border-b border-gray-200 p-5">
+              <p class="mb-2">How did you feel?</p>
+              <div v-for="emotion in data.emotions" :key="emotion.id" class="mb-2 flex items-center">
+                <input
+                  :value="emotion.id"
+                  v-model="form.emotion_id"
+                  :id="emotion.type"
+                  name="emotion"
+                  type="radio"
+                  class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                <label :for="emotion.type" class="ml-2 block cursor-pointer font-medium text-gray-700">
+                  {{ emotion.name }}
+                </label>
+              </div>
+            </div>
+
             <!-- options -->
             <div class="border-b border-gray-200 p-5">
               <!-- cta to add a description -->
@@ -494,10 +533,12 @@ export default {
       editedCallId: 0,
       descriptionFieldShown: false,
       reasonFieldShown: false,
+      emotionFieldShown: false,
       form: {
         called_at: '',
         call_reason_id: 0,
         description: '',
+        emotion_id: 0,
         type: '',
         errors: [],
       },
@@ -519,6 +560,11 @@ export default {
     showReasonField() {
       this.reasonFieldShown = true;
       this.form.call_reason_id = '';
+    },
+
+    showEmotionField() {
+      this.emotionFieldShown = true;
+      this.form.emotion_id = 1;
     },
 
     showCreateCallModal() {
@@ -558,6 +604,15 @@ export default {
         this.form.call_reason_id = 0;
         this.reasonFieldShown = false;
       }
+
+      if (call.emotion) {
+        this.form.emotion_id = call.emotion.id;
+        this.emotionFieldShown = true;
+      } else {
+        this.form.emotion_id = 0;
+        this.emotionFieldShown = false;
+      }
+
       this.form.called_at = call.called_at;
       this.editedCallId = call.id;
     },

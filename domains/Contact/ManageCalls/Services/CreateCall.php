@@ -5,6 +5,7 @@ namespace App\Contact\ManageCalls\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\Call;
 use App\Models\CallReason;
+use App\Models\Emotion;
 use App\Services\BaseService;
 use Carbon\Carbon;
 
@@ -71,6 +72,12 @@ class CreateCall extends BaseService implements ServiceInterface
     private function validate(): void
     {
         $this->validateRules($this->data);
+
+        if ($this->valueOrNull($this->data, 'emotion_id')) {
+            Emotion::where('account_id', $this->data['account_id'])
+                ->where('id', $this->data['emotion_id'])
+                ->firstOrFail();
+        }
     }
 
     private function createCall(): void
@@ -82,6 +89,7 @@ class CreateCall extends BaseService implements ServiceInterface
             'called_at' => $this->data['called_at'],
             'duration' => $this->valueOrNull($this->data, 'duration'),
             'call_reason_id' => $this->valueOrNull($this->data, 'call_reason_id'),
+            'emotion_id' => $this->valueOrNull($this->data, 'emotion_id'),
             'description' => $this->valueOrNull($this->data, 'description'),
             'type' => $this->data['type'],
             'answered' => $this->valueOrTrue($this->data, 'answered'),

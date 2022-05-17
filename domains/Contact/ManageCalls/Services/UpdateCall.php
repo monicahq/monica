@@ -4,6 +4,7 @@ namespace App\Contact\ManageCalls\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Call;
+use App\Models\Emotion;
 use App\Services\BaseService;
 use Carbon\Carbon;
 
@@ -65,6 +66,7 @@ class UpdateCall extends BaseService implements ServiceInterface
         $call->called_at = $data['called_at'];
         $call->duration = $this->valueOrNull($data, 'duration');
         $call->call_reason_id = $this->valueOrNull($data, 'call_reason_id');
+        $call->emotion_id = $this->valueOrNull($data, 'emotion_id');
         $call->type = $data['type'];
         $call->answered = $this->valueOrTrue($data, 'answered');
         $call->who_initiated = $data['who_initiated'];
@@ -79,5 +81,11 @@ class UpdateCall extends BaseService implements ServiceInterface
     private function validate(): void
     {
         $this->validateRules($this->data);
+
+        if ($this->valueOrNull($this->data, 'emotion_id')) {
+            Emotion::where('account_id', $this->data['account_id'])
+                ->where('id', $this->data['emotion_id'])
+                ->firstOrFail();
+        }
     }
 }

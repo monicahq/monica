@@ -41,9 +41,19 @@ class ModuleCallsViewHelper
             ]);
         }
 
+        $emotions = $contact->vault->account->emotions()->get();
+        $emotionsCollection = $emotions->map(function ($emotion) {
+            return [
+                'id' => $emotion->id,
+                'name' => $emotion->name,
+                'type' => $emotion->type,
+            ];
+        });
+
         return [
             'contact_name' => $contact->getName($user),
             'calls' => $callsCollection,
+            'emotions' => $emotionsCollection,
             'call_reason_types' => $callReasonTypesCollection,
             'url' => [
                 'store' => route('contact.call.store', [
@@ -64,6 +74,11 @@ class ModuleCallsViewHelper
             'who_initiated' => $call->who_initiated,
             'type' => $call->type,
             'answered' => $call->answered,
+            'emotion' => $call->emotion ? [
+                'id' => $call->emotion->id,
+                'name' => $call->emotion->name,
+                'type' => $call->emotion->type,
+            ] : null,
             'reason' => $call->callReason ? [
                 'id' => $call->callReason->id,
                 'label' => $call->callReason->label,

@@ -29,6 +29,7 @@ class Call extends Model
         'contact_id',
         'call_reason_id',
         'author_id',
+        'emotion_id',
         'author_name',
         'called_at',
         'duration',
@@ -84,5 +85,15 @@ class Call extends Model
     public function callReason()
     {
         return $this->belongsTo(CallReason::class, 'call_reason_id');
+    }
+
+    /**
+     * Get the emotion associated with the call.
+     *
+     * @return BelongsTo
+     */
+    public function emotion()
+    {
+        return $this->belongsTo(Emotion::class);
     }
 }

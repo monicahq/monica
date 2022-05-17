@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('contact_id');
             $table->unsignedBigInteger('call_reason_id')->nullable();
             $table->unsignedBigInteger('author_id')->nullable();
+            $table->unsignedBigInteger('emotion_id')->nullable();
             $table->string('author_name');
             $table->datetime('called_at');
             $table->integer('duration')->nullable();
@@ -32,6 +33,7 @@ return new class extends Migration
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
             $table->foreign('call_reason_id')->references('id')->on('call_reasons')->onDelete('cascade');
             $table->foreign('author_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('emotion_id')->references('id')->on('emotions')->onDelete('set null');
         });
     }
 

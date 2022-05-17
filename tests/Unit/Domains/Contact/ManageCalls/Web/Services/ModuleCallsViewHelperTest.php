@@ -5,6 +5,7 @@ namespace Tests\Unit\Domains\Contact\ManageCalls\Web\ViewHelpers;
 use App\Contact\ManageCalls\Web\ViewHelpers\ModuleCallsViewHelper;
 use App\Models\Call;
 use App\Models\Contact;
+use App\Models\Emotion;
 use App\Models\User;
 use Carbon\Carbon;
 use function env;
@@ -24,18 +25,33 @@ class ModuleCallsViewHelperTest extends TestCase
         $call = Call::factory()->create([
             'contact_id' => $contact->id,
         ]);
+        $emotion = Emotion::factory()->create([
+            'account_id' => $contact->vault->account_id,
+        ]);
 
         $array = ModuleCallsViewHelper::data($contact, $user);
 
         $this->assertEquals(
-            4,
+            5,
             count($array)
         );
 
         $this->assertArrayHasKey('contact_name', $array);
+        $this->assertArrayHasKey('emotions', $array);
         $this->assertArrayHasKey('calls', $array);
         $this->assertArrayHasKey('call_reason_types', $array);
         $this->assertArrayHasKey('url', $array);
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'id' => $emotion->id,
+                    'name' => $emotion->name,
+                    'type' => $emotion->type,
+                ],
+            ],
+            $array['emotions']->toArray()
+        );
 
         $this->assertEquals(
             $contact->getName($user),
@@ -73,6 +89,7 @@ class ModuleCallsViewHelperTest extends TestCase
                 'who_initiated' => 'me',
                 'type' => 'audio',
                 'answered' => true,
+                'emotion' => null,
                 'reason' => [
                     'id' => $call->callReason->id,
                     'label' => $call->callReason->label,
