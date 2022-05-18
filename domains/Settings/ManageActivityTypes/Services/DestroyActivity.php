@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Settings\ManageCallReasons\Services;
+namespace App\Settings\ManageActivityTypes\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\CallReason;
-use App\Models\CallReasonType;
+use App\Models\Activity;
+use App\Models\ActivityType;
 use App\Models\User;
 use App\Services\BaseService;
 
-class CreateCallReason extends BaseService implements ServiceInterface
+class DestroyActivity extends BaseService implements ServiceInterface
 {
     /**
      * Get the validation rules that apply to the service.
@@ -20,8 +20,8 @@ class CreateCallReason extends BaseService implements ServiceInterface
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'author_id' => 'required|integer|exists:users,id',
-            'call_reason_type_id' => 'required|integer|exists:call_reason_types,id',
-            'label' => 'required|string|max:255',
+            'activity_type_id' => 'required|integer|exists:activity_types,id',
+            'activity_id' => 'required|integer|exists:activities,id',
         ];
     }
 
@@ -39,23 +39,20 @@ class CreateCallReason extends BaseService implements ServiceInterface
     }
 
     /**
-     * Create a call reason.
+     * Destroy an activity.
      *
      * @param  array  $data
-     * @return CallReason
      */
-    public function execute(array $data): CallReason
+    public function execute(array $data): void
     {
         $this->validateRules($data);
 
-        $type = CallReasonType::where('account_id', $data['account_id'])
-            ->findOrFail($data['call_reason_type_id']);
+        ActivityType::where('account_id', $data['account_id'])
+            ->findOrFail($data['activity_type_id']);
 
-        $callReason = CallReason::create([
-            'call_reason_type_id' => $type->id,
-            'label' => $data['label'],
-        ]);
+        $activity = Activity::where('activity_type_id', $data['activity_type_id'])
+            ->findOrFail($data['activity_id']);
 
-        return $callReason;
+        $activity->delete();
     }
 }

@@ -1,20 +1,19 @@
 <?php
 
-namespace Tests\Unit\Domains\Settings\ManageRelationshipTypes\Services;
+namespace Tests\Unit\Domains\Settings\ManageActivityTypes\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
-use App\Models\RelationshipGroupType;
+use App\Models\Activity;
+use App\Models\ActivityType;
 use App\Models\User;
-use App\Settings\ManageRelationshipTypes\Services\DestroyRelationshipGroupType;
+use App\Settings\ManageActivityTypes\Services\DestroyActivity;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
-class DestroyRelationshipGroupTypeTest extends TestCase
+class DestroyActivityTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -22,10 +21,13 @@ class DestroyRelationshipGroupTypeTest extends TestCase
     public function it_destroys_a_type(): void
     {
         $ross = $this->createAdministrator();
-        $type = RelationshipGroupType::factory()->create([
+        $type = ActivityType::factory()->create([
             'account_id' => $ross->account_id,
         ]);
-        $this->executeService($ross, $ross->account, $type);
+        $activity = Activity::factory()->create([
+            'activity_type_id' => $type->id,
+        ]);
+        $this->executeService($ross, $ross->account, $type, $activity);
     }
 
     /** @test */
@@ -36,7 +38,7 @@ class DestroyRelationshipGroupTypeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyRelationshipGroupType)->execute($request);
+        (new DestroyActivity)->execute($request);
     }
 
     /** @test */
@@ -46,10 +48,13 @@ class DestroyRelationshipGroupTypeTest extends TestCase
 
         $ross = $this->createAdministrator();
         $account = Account::factory()->create();
-        $type = RelationshipGroupType::factory()->create([
+        $type = ActivityType::factory()->create([
             'account_id' => $ross->account_id,
         ]);
-        $this->executeService($ross, $account, $type);
+        $activity = Activity::factory()->create([
+            'activity_type_id' => $type->id,
+        ]);
+        $this->executeService($ross, $account, $type, $activity);
     }
 
     /** @test */
@@ -58,8 +63,11 @@ class DestroyRelationshipGroupTypeTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         $ross = $this->createAdministrator();
-        $type = RelationshipGroupType::factory()->create();
-        $this->executeService($ross, $ross->account, $type);
+        $type = ActivityType::factory()->create();
+        $activity = Activity::factory()->create([
+            'activity_type_id' => $type->id,
+        ]);
+        $this->executeService($ross, $ross->account, $type, $activity);
     }
 
     /** @test */
@@ -68,30 +76,28 @@ class DestroyRelationshipGroupTypeTest extends TestCase
         $this->expectException(NotEnoughPermissionException::class);
 
         $ross = $this->createUser();
-        $type = RelationshipGroupType::factory()->create([
+        $type = ActivityType::factory()->create([
             'account_id' => $ross->account_id,
         ]);
-        $this->executeService($ross, $ross->account, $type);
+        $activity = Activity::factory()->create([
+            'activity_type_id' => $type->id,
+        ]);
+        $this->executeService($ross, $ross->account, $type, $activity);
     }
 
-    private function executeService(User $author, Account $account, RelationshipGroupType $type): void
+    private function executeService(User $author, Account $account, ActivityType $type, Activity $activity): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
-            'relationship_group_type_id' => $type->id,
+            'activity_type_id' => $type->id,
+            'activity_id' => $activity->id,
         ];
 
-        (new DestroyRelationshipGroupType)->execute($request);
+        (new DestroyActivity)->execute($request);
 
-        $this->assertDatabaseMissing('relationship_group_types', [
-            'id' => $type->id,
+        $this->assertDatabaseMissing('activities', [
+            'id' => $activity->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'relationship_group_type_destroyed';
-        });
     }
 }

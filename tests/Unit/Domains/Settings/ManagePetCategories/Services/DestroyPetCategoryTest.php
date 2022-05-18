@@ -22,7 +22,7 @@ class DestroyPetCategoryTest extends TestCase
     {
         $ross = $this->createAdministrator();
         $petCategory = PetCategory::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $ross->account, $petCategory);
     }
@@ -68,7 +68,7 @@ class DestroyPetCategoryTest extends TestCase
 
         $ross = $this->createUser();
         $petCategory = PetCategory::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $ross->account, $petCategory);
     }

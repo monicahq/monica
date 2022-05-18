@@ -1,30 +1,29 @@
 <?php
 
-namespace Tests\Unit\Domains\Settings\ManagePetCategories\Services;
+namespace Tests\Unit\Domains\Settings\ManageActivityTypes\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
-use App\Models\PetCategory;
+use App\Models\ActivityType;
 use App\Models\User;
-use App\Settings\ManagePetCategories\Services\UpdatePetCategory;
+use App\Settings\ManageActivityTypes\Services\UpdateActivityType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
-class UpdatePetCategoryTest extends TestCase
+class UpdateActivityTypeTest extends TestCase
 {
     use DatabaseTransactions;
 
     /** @test */
-    public function it_updates_a_pet_category(): void
+    public function it_updates_a_type(): void
     {
         $ross = $this->createAdministrator();
-        $petCategory = PetCategory::factory()->create([
+        $type = ActivityType::factory()->create([
             'account_id' => $ross->account_id,
         ]);
-        $this->executeService($ross, $ross->account, $petCategory);
+        $this->executeService($ross, $ross->account, $type);
     }
 
     /** @test */
@@ -35,7 +34,7 @@ class UpdatePetCategoryTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdatePetCategory)->execute($request);
+        (new UpdateActivityType)->execute($request);
     }
 
     /** @test */
@@ -45,20 +44,20 @@ class UpdatePetCategoryTest extends TestCase
 
         $ross = $this->createAdministrator();
         $account = Account::factory()->create();
-        $petCategory = PetCategory::factory()->create([
+        $type = ActivityType::factory()->create([
             'account_id' => $ross->account_id,
         ]);
-        $this->executeService($ross, $account, $petCategory);
+        $this->executeService($ross, $account, $type);
     }
 
     /** @test */
-    public function it_fails_if_gender_doesnt_belong_to_account(): void
+    public function it_fails_if_type_doesnt_belong_to_account(): void
     {
         $this->expectException(ModelNotFoundException::class);
 
         $ross = $this->createAdministrator();
-        $petCategory = PetCategory::factory()->create();
-        $this->executeService($ross, $ross->account, $petCategory);
+        $type = ActivityType::factory()->create();
+        $this->executeService($ross, $ross->account, $type);
     }
 
     /** @test */
@@ -67,29 +66,27 @@ class UpdatePetCategoryTest extends TestCase
         $this->expectException(NotEnoughPermissionException::class);
 
         $ross = $this->createUser();
-        $petCategory = PetCategory::factory()->create([
+        $type = ActivityType::factory()->create([
             'account_id' => $ross->account_id,
         ]);
-        $this->executeService($ross, $ross->account, $petCategory);
+        $this->executeService($ross, $ross->account, $type);
     }
 
-    private function executeService(User $author, Account $account, PetCategory $petCategory): void
+    private function executeService(User $author, Account $account, ActivityType $type): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
-            'pet_category_id' => $petCategory->id,
-            'name' => 'gender name',
+            'activity_type_id' => $type->id,
+            'label' => 'type name',
         ];
 
-        $petCategory = (new UpdatePetCategory)->execute($request);
+        $type = (new UpdateActivityType)->execute($request);
 
-        $this->assertDatabaseHas('pet_categories', [
-            'id' => $petCategory->id,
+        $this->assertDatabaseHas('activity_types', [
+            'id' => $type->id,
             'account_id' => $account->id,
-            'name' => 'gender name',
+            'label' => 'type name',
         ]);
     }
 }

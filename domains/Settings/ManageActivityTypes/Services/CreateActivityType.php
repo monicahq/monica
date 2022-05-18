@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Settings\ManageCallReasons\Services;
+namespace App\Settings\ManageActivityTypes\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\CallReason;
-use App\Models\CallReasonType;
+use App\Models\ActivityType;
 use App\Models\User;
 use App\Services\BaseService;
 
-class CreateCallReason extends BaseService implements ServiceInterface
+class CreateActivityType extends BaseService implements ServiceInterface
 {
     /**
      * Get the validation rules that apply to the service.
@@ -20,7 +19,6 @@ class CreateCallReason extends BaseService implements ServiceInterface
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'author_id' => 'required|integer|exists:users,id',
-            'call_reason_type_id' => 'required|integer|exists:call_reason_types,id',
             'label' => 'required|string|max:255',
         ];
     }
@@ -39,23 +37,20 @@ class CreateCallReason extends BaseService implements ServiceInterface
     }
 
     /**
-     * Create a call reason.
+     * Create an activity type.
      *
      * @param  array  $data
-     * @return CallReason
+     * @return ActivityType
      */
-    public function execute(array $data): CallReason
+    public function execute(array $data): ActivityType
     {
         $this->validateRules($data);
 
-        $type = CallReasonType::where('account_id', $data['account_id'])
-            ->findOrFail($data['call_reason_type_id']);
-
-        $callReason = CallReason::create([
-            'call_reason_type_id' => $type->id,
+        $type = ActivityType::create([
+            'account_id' => $data['account_id'],
             'label' => $data['label'],
         ]);
 
-        return $callReason;
+        return $type;
     }
 }

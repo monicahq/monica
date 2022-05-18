@@ -23,7 +23,7 @@ class UpdateContactInformationTypeTest extends TestCase
     {
         $ross = $this->createAdministrator();
         $type = ContactInformationType::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $ross->account, $type);
     }
@@ -47,7 +47,7 @@ class UpdateContactInformationTypeTest extends TestCase
         $ross = $this->createAdministrator();
         $account = Account::factory()->create();
         $type = ContactInformationType::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $account, $type);
     }
@@ -69,7 +69,7 @@ class UpdateContactInformationTypeTest extends TestCase
 
         $ross = $this->createUser();
         $type = ContactInformationType::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $ross->account, $type);
     }

@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Account;
+use App\Models\ActivityType;
 use App\Models\AddressType;
 use App\Models\CallReasonType;
 use App\Models\ContactInformationType;
@@ -164,5 +165,16 @@ class AccountTest extends TestCase
         ]);
 
         $this->assertTrue($account->callReasonTypes()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_activity_types()
+    {
+        $account = Account::factory()->create();
+        ActivityType::factory(2)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->activityTypes()->exists());
     }
 }

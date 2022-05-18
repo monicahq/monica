@@ -142,4 +142,14 @@ class Account extends Model
     {
         return $this->hasMany(CallReasonType::class);
     }
+
+    /**
+     * Get the activity types associated with the account.
+     *
+     * @return HasMany
+     */
+    public function activityTypes()
+    {
+        return $this->hasMany(ActivityType::class);
+    }
 }

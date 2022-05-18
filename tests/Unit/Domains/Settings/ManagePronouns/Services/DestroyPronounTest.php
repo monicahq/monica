@@ -23,7 +23,7 @@ class DestroyPronounTest extends TestCase
     {
         $ross = $this->createAdministrator();
         $pronoun = Pronoun::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $ross->account, $pronoun);
     }
@@ -69,7 +69,7 @@ class DestroyPronounTest extends TestCase
 
         $ross = $this->createUser();
         $pronoun = Pronoun::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $ross->account, $pronoun);
     }

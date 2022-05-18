@@ -11,6 +11,7 @@ use App\Models\Template;
 use App\Models\TemplatePage;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
+use App\Settings\ManageActivityTypes\Services\CreateActivityType;
 use App\Settings\ManageAddressTypes\Services\CreateAddressType;
 use App\Settings\ManageCallReasons\Services\CreateCallReason;
 use App\Settings\ManageCallReasons\Services\CreateCallReasonType;
@@ -407,6 +408,7 @@ class SetupAccount implements ShouldQueue
         $this->addContactInformation();
         $this->addPetCategories();
         $this->addEmotions();
+        $this->addActivityTypes();
     }
 
     /**
@@ -781,6 +783,97 @@ class SetupAccount implements ShouldQueue
                 'account_id' => $this->user->account_id,
                 'name' => trans('app.emotion_positive'),
                 'type' => Emotion::TYPE_POSITIVE,
+            ],
+        ]);
+    }
+
+    private function addActivityTypes(): void
+    {
+        $type = (new CreateActivityType)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'label' => trans('account.activity_type_category_simple_activities'),
+        ]);
+
+        DB::table('activities')->insert([
+            [
+                'activity_type_id' => $type->id,
+                'label' => trans('account.activity_type_just_hung_out'),
+            ],
+            [
+                'activity_type_id' => $type->id,
+                'label' => trans('account.activity_type_watched_movie_at_home'),
+            ],
+            [
+                'activity_type_id' => $type->id,
+                'label' => trans('account.activity_type_talked_at_home'),
+            ],
+        ]);
+
+        $type = (new CreateActivityType)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'label' => trans('account.activity_type_category_sport'),
+        ]);
+
+        DB::table('activities')->insert([
+            [
+                'activity_type_id' => $type->id,
+                'label' => trans('account.activity_type_did_sport_activities_together'),
+            ],
+        ]);
+
+        $type = (new CreateActivityType)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'label' => trans('account.activity_type_category_food'),
+        ]);
+
+        DB::table('activities')->insert([
+            [
+                'activity_type_id' => $type->id,
+                'label' => trans('account.activity_type_ate_at_his_place'),
+            ],
+            [
+                'activity_type_id' => $type->id,
+                'label' => trans('account.activity_type_went_bar'),
+            ],
+            [
+                'activity_type_id' => $type->id,
+                'label' => trans('account.activity_type_ate_at_home'),
+            ],
+            [
+                'activity_type_id' => $type->id,
+                'label' => trans('account.activity_type_picnicked'),
+            ],
+            [
+                'activity_type_id' => $type->id,
+                'label' => trans('account.activity_type_ate_restaurant'),
+            ],
+        ]);
+
+        $type = (new CreateActivityType)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'label' => trans('account.activity_type_category_cultural_activities'),
+        ]);
+
+        DB::table('activities')->insert([
+            [
+                'activity_type_id' => $type->id,
+                'label' => trans('account.activity_type_went_theater'),
+            ],
+            [
+                'activity_type_id' => $type->id,
+                'label' => trans('account.activity_type_went_concert'),
+            ],
+            [
+                'activity_type_id' => $type->id,
+                'label' => trans('account.activity_type_went_play'),
+            ],
+            [
+                'activity_type_id' => $type->id,
+                'label' => trans('account.activity_type_went_museum'),
             ],
         ]);
     }

@@ -18,6 +18,8 @@ use App\Contact\ManageReminders\Web\Controllers\ContactModuleReminderController;
 use App\Contact\ManageTasks\Web\Controllers\ContactModuleTaskController;
 use App\Http\Controllers\Auth\AcceptInvitationController;
 use App\Settings\CancelAccount\Web\Controllers\CancelAccountController;
+use App\Settings\ManageActivityTypes\Web\Controllers\PersonalizeActivitiesController;
+use App\Settings\ManageActivityTypes\Web\Controllers\PersonalizeActivityTypesController;
 use App\Settings\ManageAddressTypes\Web\Controllers\PersonalizeAddressTypeController;
 use App\Settings\ManageCallReasons\Web\Controllers\PersonalizeCallReasonsController;
 use App\Settings\ManageCallReasons\Web\Controllers\PersonalizeCallReasonTypesController;
@@ -255,6 +257,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::post('callReasonTypes/{callReasonType}/reasons', [PersonalizeCallReasonsController::class, 'store'])->name('call_reasons.store');
                 Route::put('callReasonTypes/{callReasonType}/reasons/{reason}', [PersonalizeCallReasonsController::class, 'update'])->name('call_reasons.update');
                 Route::delete('callReasonTypes/{callReasonType}/reasons/{reason}', [PersonalizeCallReasonsController::class, 'destroy'])->name('call_reasons.destroy');
+
+                // activity types
+                Route::get('activityTypes', [PersonalizeActivityTypesController::class, 'index'])->name('activity.index');
+                Route::post('activityTypes', [PersonalizeActivityTypesController::class, 'store'])->name('activity.type.store');
+                Route::put('activityTypes/{activityType}', [PersonalizeActivityTypesController::class, 'update'])->name('activity.type.update');
+                Route::delete('activityTypes/{activityType}', [PersonalizeActivityTypesController::class, 'destroy'])->name('activity.type.destroy');
+
+                // activities
+                Route::post('activityTypes/{activityType}/activities', [PersonalizeActivitiesController::class, 'store'])->name('activity.store');
+                Route::put('activityTypes/{activityType}/activities/{activity}', [PersonalizeActivitiesController::class, 'update'])->name('activity.update');
+                Route::delete('activityTypes/{activityType}/activities/{activity}', [PersonalizeActivitiesController::class, 'destroy'])->name('activity.destroy');
 
                 // genders
                 Route::get('genders', [ManageGenderController::class, 'index'])->name('gender.index');

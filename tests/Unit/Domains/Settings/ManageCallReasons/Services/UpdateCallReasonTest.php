@@ -22,7 +22,7 @@ class UpdateCallReasonTest extends TestCase
     {
         $ross = $this->createAdministrator();
         $type = CallReasonType::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $reason = CallReason::factory()->create([
             'call_reason_type_id' => $type->id,
@@ -49,7 +49,7 @@ class UpdateCallReasonTest extends TestCase
         $ross = $this->createAdministrator();
         $account = Account::factory()->create();
         $type = CallReasonType::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $reason = CallReason::factory()->create([
             'call_reason_type_id' => $type->id,
@@ -77,7 +77,7 @@ class UpdateCallReasonTest extends TestCase
 
         $ross = $this->createUser();
         $type = CallReasonType::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $reason = CallReason::factory()->create([
             'call_reason_type_id' => $type->id,

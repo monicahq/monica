@@ -1,27 +1,27 @@
 <?php
 
-namespace Tests\Unit\Domains\Settings\ManageCallReasons\Services;
+namespace Tests\Unit\Domains\Settings\ManageActivityTypes\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
-use App\Models\CallReason;
-use App\Models\CallReasonType;
+use App\Models\Activity;
+use App\Models\ActivityType;
 use App\Models\User;
-use App\Settings\ManageCallReasons\Services\CreateCallReason;
+use App\Settings\ManageActivityTypes\Services\CreateActivity;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
-class CreateCallReasonTest extends TestCase
+class CreateActivityTest extends TestCase
 {
     use DatabaseTransactions;
 
     /** @test */
-    public function it_creates_a_call_reason(): void
+    public function it_creates_an_activity(): void
     {
         $ross = $this->createAdministrator();
-        $type = CallReasonType::factory()->create([
+        $type = ActivityType::factory()->create([
             'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $ross->account, $type);
@@ -35,7 +35,7 @@ class CreateCallReasonTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateCallReason)->execute($request);
+        (new CreateActivity)->execute($request);
     }
 
     /** @test */
@@ -45,7 +45,7 @@ class CreateCallReasonTest extends TestCase
 
         $ross = $this->createAdministrator();
         $account = $this->createAccount();
-        $type = CallReasonType::factory()->create([
+        $type = ActivityType::factory()->create([
             'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $account, $type);
@@ -57,32 +57,32 @@ class CreateCallReasonTest extends TestCase
         $this->expectException(NotEnoughPermissionException::class);
 
         $ross = $this->createUser();
-        $type = CallReasonType::factory()->create([
+        $type = ActivityType::factory()->create([
             'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $ross->account, $type);
     }
 
-    private function executeService(User $author, Account $account, CallReasonType $type): void
+    private function executeService(User $author, Account $account, ActivityType $type): void
     {
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
-            'call_reason_type_id' => $type->id,
+            'activity_type_id' => $type->id,
             'label' => 'type name',
         ];
 
-        $reason = (new CreateCallReason)->execute($request);
+        $activity = (new CreateActivity)->execute($request);
 
-        $this->assertDatabaseHas('call_reasons', [
-            'id' => $reason->id,
-            'call_reason_type_id' => $type->id,
+        $this->assertDatabaseHas('activities', [
+            'id' => $activity->id,
+            'activity_type_id' => $type->id,
             'label' => 'type name',
         ]);
 
         $this->assertInstanceOf(
-            CallReason::class,
-            $reason
+            Activity::class,
+            $activity
         );
     }
 }

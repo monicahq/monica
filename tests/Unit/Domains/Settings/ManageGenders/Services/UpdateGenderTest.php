@@ -23,7 +23,7 @@ class UpdateGenderTest extends TestCase
     {
         $ross = $this->createAdministrator();
         $gender = Gender::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $ross->account, $gender);
     }
@@ -47,7 +47,7 @@ class UpdateGenderTest extends TestCase
         $ross = $this->createAdministrator();
         $account = Account::factory()->create();
         $gender = Gender::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $account, $gender);
     }
@@ -69,7 +69,7 @@ class UpdateGenderTest extends TestCase
 
         $ross = $this->createUser();
         $gender = Gender::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $ross->account, $gender);
     }

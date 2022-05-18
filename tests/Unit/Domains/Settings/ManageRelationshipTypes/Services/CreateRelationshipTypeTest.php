@@ -24,7 +24,7 @@ class CreateRelationshipTypeTest extends TestCase
     {
         $ross = $this->createAdministrator();
         $group = RelationshipGroupType::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $ross->account, $group);
     }
@@ -48,7 +48,7 @@ class CreateRelationshipTypeTest extends TestCase
         $ross = $this->createAdministrator();
         $account = $this->createAccount();
         $group = RelationshipGroupType::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $account, $group);
     }
@@ -60,7 +60,7 @@ class CreateRelationshipTypeTest extends TestCase
 
         $ross = $this->createUser();
         $group = RelationshipGroupType::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $ross->account, $group);
     }

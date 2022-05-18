@@ -23,7 +23,7 @@ class UpdateRelationshipGroupTypeTest extends TestCase
     {
         $ross = $this->createAdministrator();
         $type = RelationshipGroupType::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $ross->account, $type);
     }
@@ -47,7 +47,7 @@ class UpdateRelationshipGroupTypeTest extends TestCase
         $ross = $this->createAdministrator();
         $account = Account::factory()->create();
         $type = RelationshipGroupType::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $account, $type);
     }
@@ -69,7 +69,7 @@ class UpdateRelationshipGroupTypeTest extends TestCase
 
         $ross = $this->createUser();
         $type = RelationshipGroupType::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $this->executeService($ross, $ross->account, $type);
     }

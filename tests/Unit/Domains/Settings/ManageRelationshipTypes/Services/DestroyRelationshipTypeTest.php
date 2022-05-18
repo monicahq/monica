@@ -24,7 +24,7 @@ class DestroyRelationshipTypeTest extends TestCase
     {
         $ross = $this->createAdministrator();
         $group = RelationshipGroupType::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $type = RelationshipType::factory()->create([
             'relationship_group_type_id' => $group->id,
@@ -79,7 +79,7 @@ class DestroyRelationshipTypeTest extends TestCase
 
         $ross = $this->createUser();
         $group = RelationshipGroupType::factory()->create([
-            'account_id' => $ross->account->id,
+            'account_id' => $ross->account_id,
         ]);
         $type = RelationshipType::factory()->create([
             'relationship_group_type_id' => $group->id,
