@@ -46,16 +46,18 @@
                 </div>
 
                 <div class="form-group">
-                  <contact-select
-                    :id="'metThrough'"
-                    :required="false"
-                    :title="'{{ trans('people.introductions_edit_met_through') }}'"
-                    :name="'metThroughId'"
-                    :placeholder="'{{ trans('people.relationship_form_associate_dropdown_placeholder') }}'"
-                    :default-options="{{ \Safe\json_encode($contacts) }}"
-                    :user-contact-id="{{ $contact->id }}"
-                    :value="{{ $introducer !== null ? \Safe\json_encode($introducer) : 'null' }}">
-                  </contact-select>
+                      <select class="form-control" name="metThroughId" id="metThroughId"> 
+                          <option value="">{{ trans('people.introductions_no_met_through') }}</option> 
+                          @foreach (auth()->user()->account->contacts()->real()->active()->get() as $metThroughContact) 
+                          
+                            @if ($metThroughContact->id != $contact->id) 
+                            <option value="{{ $metThroughContact->id }}" {{ (is_null($contact->first_met_through_contact_id)) ? '' : (($metThroughContact->id == $contact->first_met_through_contact_id) ? 'selected' : '') }}> 
+                              {{ $metThroughContact->name }} 
+                            </option> 
+                            @endif 
+                          
+                          @endforeach 
+                    </select> 
                 </div>
 
                 <label>{{ trans('people.introductions_first_met_date') }}</label>
