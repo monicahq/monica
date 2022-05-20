@@ -44,7 +44,7 @@
     "tailwindcss": "^3.0.0",
     "tiny-emitter": "^2.1.0",
     "v-calendar": "^3.0.0-alpha.8",
-    "vue": "^3.0.5",
+    "vue": "^3.2.34",
     "vue-loader": "^16.1.2",
     "vuedraggable": "^4.1.0"
   },
