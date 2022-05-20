@@ -34,10 +34,10 @@
       </div>
     </nav>
 
-    <main class="relative sm:mt-24">
+    <main class="relative mt-16 sm:mt-24">
       <div class="mx-auto max-w-lg px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <form class="mb-6 rounded-lg border border-gray-200 bg-white" @submit.prevent="submit()">
-          <div class="section-head border-b border-gray-200 bg-blue-50 p-5">
+          <div class="section-head border-b border-gray-200 bg-blue-50 p-3 sm:p-5">
             <h1 class="mb-1 text-center text-2xl font-medium">Create a vault</h1>
             <p class="text-center">Vaults contain all your contacts data.</p>
           </div>

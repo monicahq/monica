@@ -168,8 +168,8 @@ main {
 
       <footer class="mb-10 text-center text-xs">
         <ul>
-          <li class="mr-4 inline">Monica. Since 2017.</li>
-          <li class="inline">
+          <li class="mr-4 mb-2 sm:mb-0 sm:inline">Monica, since 2017.</li>
+          <li class="sm:inline">
             Current version: {{ layoutData.version.date }}
 
             <a-tooltip placement="topLeft" title="Click to see the code" arrow-point-at-center>
