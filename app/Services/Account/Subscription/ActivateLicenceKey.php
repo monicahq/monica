@@ -48,7 +48,7 @@ class ActivateLicenceKey extends BaseService implements QueuableService
         $this->validateEnvVariables();
         $this->makeRequestToCustomerPortal();
         $this->checkResponseCode();
-        $this->decodeAndStoreKey();
+        $this->store();
     }
 
     private function validateEnvVariables(): void
@@ -80,15 +80,20 @@ class ActivateLicenceKey extends BaseService implements QueuableService
         }
     }
 
-    private function decodeAndStoreKey(): void
+    private function store(): void
     {
-        $encrypter = app('license.encrypter');
-        $licenceKey = $encrypter->decrypt($this->data['licence_key']);
+        $licenceKey = $this->decodeKey();
 
         $this->account->licence_key = $this->data['licence_key'];
         $this->account->valid_until_at = $licenceKey['next_check_at'];
         $this->account->purchaser_email = $licenceKey['purchaser_email'];
         $this->account->frequency = $licenceKey['frequency'];
         $this->account->save();
+    }
+
+    private function decodeKey(): array
+    {
+        $encrypter = app('license.encrypter');
+        return $encrypter->decrypt($this->data['licence_key']);
     }
 }
