@@ -94,6 +94,7 @@ class ActivateLicenceKey extends BaseService implements QueuableService
     private function decodeKey(): array
     {
         $encrypter = app('license.encrypter');
+
         return $encrypter->decrypt($this->data['licence_key']);
     }
 }
