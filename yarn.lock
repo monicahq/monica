@@ -980,10 +980,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@inertiajs/inertia-vue3@^0.5.1":
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/@inertiajs/inertia-vue3/-/inertia-vue3-0.5.2.tgz#0853296142bd60440bdc283836ea09718eb2f799"
-  integrity sha512-X9TiXTP4oVQ3bs4/yZz6O3vTTJ1f4W5EimhU9U/uUUfyU3IeWFk6yjNzkCb4D3FllMfKfX+inKIugQV1vb8asA==
+"@inertiajs/inertia-vue3@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@inertiajs/inertia-vue3/-/inertia-vue3-0.6.0.tgz#faabe590e5d7091ae6c54fc30da6c65ea3937222"
+  integrity sha512-qhPBtd/G0VS7vVVbYw1rrqKB6JqRusxqt+5ec2GLmK6t7fTlBBnZ3KsakmGZLSM1m1OGkNcfn4ifmCk3zfA8RQ==
   dependencies:
     lodash.clonedeep "^4.5.0"
     lodash.isequal "^4.5.0"
