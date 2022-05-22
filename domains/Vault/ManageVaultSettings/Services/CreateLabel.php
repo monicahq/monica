@@ -10,6 +10,9 @@ use Illuminate\Support\Str;
 
 class CreateLabel extends BaseService implements ServiceInterface
 {
+    private array $data;
+    private Label $label;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -52,7 +55,7 @@ class CreateLabel extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $label = Label::create([
+        $this->label = Label::create([
             'vault_id' => $data['vault_id'],
             'name' => $data['name'],
             'description' => $this->valueOrNull($data, 'description'),
@@ -61,16 +64,21 @@ class CreateLabel extends BaseService implements ServiceInterface
             'text_color' => $data['text_color'],
         ]);
 
+        $this->log();
+
+        return $this->label;
+    }
+
+    private function log(): void
+    {
         CreateAuditLog::dispatch([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'author_name' => $this->author->name,
             'action_name' => 'label_created',
             'objects' => json_encode([
-                'label_name' => $label->name,
+                'label_name' => $this->label->name,
             ]),
         ])->onQueue('low');
-
-        return $label;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Contact\ManageJobInformation\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\Company;
 use App\Models\Contact;
+use App\Models\ContactFeedItem;
 use App\Services\BaseService;
 
 class UpdateJobInformation extends BaseService implements ServiceInterface
@@ -61,6 +62,12 @@ class UpdateJobInformation extends BaseService implements ServiceInterface
         $this->contact->company_id = $data['company_id'] ? $this->company->id : null;
         $this->contact->job_position = $this->valueOrNull($data, 'job_position');
         $this->contact->save();
+
+        ContactFeedItem::create([
+            'author_id' => $this->author->id,
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_JOB_INFORMATION_UPDATED,
+        ]);
 
         return $this->contact;
     }

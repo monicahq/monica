@@ -11,6 +11,14 @@ class ContactFeedItemTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
+    public function it_has_one_user()
+    {
+        $feedItem = ContactFeedItem::factory()->create();
+
+        $this->assertTrue($feedItem->author()->exists());
+    }
+
+    /** @test */
     public function it_has_one_contact()
     {
         $feedItem = ContactFeedItem::factory()->create();

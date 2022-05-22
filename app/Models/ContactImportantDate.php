@@ -58,4 +58,12 @@ class ContactImportantDate extends Model
     {
         return $this->belongsTo(ContactImportantDateType::class);
     }
+
+    /**
+     * Get the important date's feed item.
+     */
+    public function feedItem()
+    {
+        return $this->morphOne(ContactFeedItem::class, 'feedable');
+    }
 }

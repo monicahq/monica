@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -134,14 +135,24 @@ class User extends Authenticatable implements MustVerifyEmail
      * All users have a contact in the vaults.
      *
      * @param  Vault  $vault
-     * @return Contact
+     * @return null|Contact
      */
-    public function getContactInVault(Vault $vault): Contact
+    public function getContactInVault(Vault $vault): ?Contact
     {
         $contact = DB::table('user_vault')->where('vault_id', $vault->id)
             ->where('user_id', $this->id)
             ->first();
 
-        return Contact::findOrFail($contact->contact_id);
+        if (! $contact) {
+            return null;
+        }
+
+        try {
+            $contact = Contact::findOrFail($contact->contact_id);
+        } catch (ModelNotFoundException) {
+            return null;
+        }
+
+        return $contact;
     }
 }

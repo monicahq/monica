@@ -1,21 +1,36 @@
 <style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
-.icon-note {
+.icon-avatar {
   top: -1px;
+  left: -12px;
 }
 </style>
 
 <template>
   <div class="mb-4">
-    <div v-for="item in data.items" :key="item.id">
-      <note v-if="item.action == 'note_created'" :note="item.object" />
+    <div class="ml-4 border-l border-gray-200">
+      <div v-for="feedItem in data.items" :key="feedItem.id" class="mb-8">
+        <!-- action & user -->
+        <div class="mb-3 flex">
+          <div class="relative w-6">
+            <div v-html="feedItem.author.avatar" class="icon-avatar relative h-6 w-6"></div>
+          </div>
 
-      <feed-item v-if="item.action == 'important_date_created'" :message="item.object" />
-      <feed-item v-if="item.action == 'important_date_updated'" :message="item.object" />
+          <div>
+            <p class="mr-2 inline text-gray-400">
+              <span class="font-medium text-gray-800">{{ feedItem.author.name }}</span> {{ feedItem.sentence }}
+            </p>
+            <p class="mr-2 inline">•</p>
+            <p class="inline text-sm text-gray-400">{{ feedItem.created_at }}</p>
+          </div>
+        </div>
+
+        <!-- details -->
+        <div v-if="feedItem.description" class="ml-6">
+          <div class="rounded-lg border border-gray-300 px-3 py-2">
+            <span class="text-sm">{{ feedItem.description }}</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- blank state -->

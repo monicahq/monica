@@ -26,7 +26,6 @@ class NoteFactory extends Factory
         return [
             'contact_id' => Contact::factory(),
             'author_id' => User::factory(),
-            'author_name' => $this->faker->name(),
             'title' => $this->faker->title(),
             'body' => $this->faker->sentence(),
         ];

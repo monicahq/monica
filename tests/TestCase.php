@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\Account;
+use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -63,7 +64,10 @@ abstract class TestCase extends BaseTestCase
      */
     public function setPermissionInVault(User $user, int $permission, Vault $vault): Vault
     {
-        $vault->users()->sync([$user->id => ['permission' => $permission]]);
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        $vault->users()->sync([$user->id => ['permission' => $permission, 'contact_id' => $contact->id]]);
 
         return $vault;
     }

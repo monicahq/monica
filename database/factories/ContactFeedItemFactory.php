@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Contact;
 use App\Models\ContactFeedItem;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ContactFeedItemFactory extends Factory
@@ -23,8 +24,10 @@ class ContactFeedItemFactory extends Factory
     public function definition()
     {
         return [
+            'author_id' => User::factory(),
             'contact_id' => Contact::factory(),
             'action' => ContactFeedItem::ACTION_NOTE_CREATED,
+            'description' => $this->faker->word(),
         ];
     }
 }

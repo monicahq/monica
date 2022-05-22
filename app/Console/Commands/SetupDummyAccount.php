@@ -19,7 +19,8 @@ use Illuminate\Console\Command;
 class SetupDummyAccount extends Command
 {
     protected ?\Faker\Generator $faker;
-    protected User $user;
+    protected User $firstUser;
+    protected User $secondUser;
 
     /**
      * The name and signature of the console command.
@@ -54,7 +55,7 @@ class SetupDummyAccount extends Command
     {
         $this->start();
         $this->wipeAndMigrateDB();
-        $this->createFirstUser();
+        $this->createFirstUsers();
         $this->createVaults();
         $this->createContacts();
         $this->createNotes();
@@ -91,7 +92,11 @@ class SetupDummyAccount extends Command
         $this->line('-----------------------------');
         $this->info('| You can now sign in with one of these two accounts:');
         $this->line('| An account with a lot of data:');
+        $this->line('| First user >>>>>>>>>>>>>>>>>:');
         $this->line('| username: admin@admin.com');
+        $this->line('| password: admin123');
+        $this->line('| Second user >>>>>>>>>>>>>>>>>:');
+        $this->line('| username: regis@regis.com');
         $this->line('| password: admin123');
         $this->line('|------------------------–––-');
         $this->line('|A blank account:');
@@ -104,20 +109,32 @@ class SetupDummyAccount extends Command
         $this->info('Setup is done. Have fun.');
     }
 
-    private function createFirstUser(): void
+    private function createFirstUsers(): void
     {
         $this->info('☐ Create first user of the account');
 
-        $this->user = (new CreateAccount)->execute([
+        $this->firstUser = (new CreateAccount)->execute([
             'email' => 'admin@admin.com',
             'password' => 'admin123',
             'first_name' => 'Michael',
             'last_name' => 'Scott',
         ]);
+        $this->firstUser->email_verified_at = Carbon::now();
+        $this->firstUser->save();
 
-        $this->user = User::first();
-        $this->user->email_verified_at = Carbon::now();
-        $this->user->save();
+        sleep(5);
+
+        $this->info('☐ Create second user of the account');
+
+        $this->secondUser = (new CreateAccount)->execute([
+            'email' => 'regis@regis.com',
+            'password' => 'admin123',
+            'first_name' => 'Dwight',
+            'last_name' => 'Schrutt',
+        ]);
+        $this->secondUser->account_id = $this->firstUser->account_id;
+        $this->secondUser->email_verified_at = Carbon::now();
+        $this->secondUser->save();
 
         sleep(5);
     }
@@ -128,8 +145,8 @@ class SetupDummyAccount extends Command
 
         for ($i = 0; $i < rand(3, 5); $i++) {
             (new CreateVault)->execute([
-                'account_id' => $this->user->account_id,
-                'author_id' => $this->user->id,
+                'account_id' => $this->firstUser->account_id,
+                'author_id' => $this->firstUser->id,
                 'type' => Vault::TYPE_PERSONAL,
                 'name' => $this->faker->firstName,
                 'description' => rand(1, 2) == 1 ? $this->faker->sentence() : null,
@@ -147,8 +164,8 @@ class SetupDummyAccount extends Command
                 $birthDate = Carbon::parse($date);
 
                 $contact = (new CreateContact)->execute([
-                    'account_id' => $this->user->account_id,
-                    'author_id' => $this->user->id,
+                    'account_id' => $this->firstUser->account_id,
+                    'author_id' => $this->firstUser->id,
                     'vault_id' => $vault->id,
                     'first_name' => $this->faker->firstName(),
                     'last_name' => $this->faker->lastName(),
@@ -159,8 +176,8 @@ class SetupDummyAccount extends Command
                 ]);
 
                 (new CreateContactImportantDate)->execute([
-                    'account_id' => $this->user->account_id,
-                    'author_id' => $this->user->id,
+                    'account_id' => $this->firstUser->account_id,
+                    'author_id' => $this->firstUser->id,
                     'vault_id' => $vault->id,
                     'contact_id' => $contact->id,
                     'label' => 'Birthdate',
@@ -180,8 +197,8 @@ class SetupDummyAccount extends Command
         foreach (Contact::all() as $contact) {
             for ($i = 0; $i < 4; $i++) {
                 (new CreateNote)->execute([
-                    'account_id' => $this->user->account_id,
-                    'author_id' => $this->user->id,
+                    'account_id' => $this->firstUser->account_id,
+                    'author_id' => $this->firstUser->id,
                     'vault_id' => $contact->vault_id,
                     'contact_id' => $contact->id,
                     'title' => rand(1, 2) == 1 ? $this->faker->sentence(rand(3, 6)) : null,
@@ -198,8 +215,8 @@ class SetupDummyAccount extends Command
         foreach (Contact::all() as $contact) {
             for ($i = 0; $i < 4; $i++) {
                 (new CreateContactTask)->execute([
-                    'account_id' => $this->user->account_id,
-                    'author_id' => $this->user->id,
+                    'account_id' => $this->firstUser->account_id,
+                    'author_id' => $this->firstUser->id,
                     'vault_id' => $contact->vault_id,
                     'contact_id' => $contact->id,
                     'label' => $this->faker->sentence(rand(3, 6)),

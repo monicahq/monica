@@ -5,6 +5,7 @@ namespace Tests\Unit\Domains\Vault\ManageVaultSettings\Services;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Jobs\CreateAuditLog;
 use App\Models\Account;
+use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
 use App\Vault\ManageVaultSettings\Services\ChangeVaultAccess;
@@ -29,6 +30,7 @@ class ChangeVaultAccessTest extends TestCase
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_MANAGE, $vault);
         $vault->users()->save($anotherUser, [
             'permission' => Vault::PERMISSION_MANAGE,
+            'contact_id' => Contact::factory()->create()->id,
         ]);
         $this->executeService($regis->account, $regis, $anotherUser, $vault);
     }

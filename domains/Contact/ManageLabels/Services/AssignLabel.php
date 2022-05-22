@@ -5,6 +5,7 @@ namespace App\Contact\ManageLabels\Services;
 use App\Interfaces\ServiceInterface;
 use App\Jobs\CreateAuditLog;
 use App\Jobs\CreateContactLog;
+use App\Models\ContactFeedItem;
 use App\Models\Label;
 use App\Services\BaseService;
 use Carbon\Carbon;
@@ -63,6 +64,7 @@ class AssignLabel extends BaseService implements ServiceInterface
         $this->contact->save();
 
         $this->log();
+        $this->createFeedItem();
 
         return $this->label;
     }
@@ -90,5 +92,15 @@ class AssignLabel extends BaseService implements ServiceInterface
                 'label_name' => $this->label->name,
             ]),
         ])->onQueue('low');
+    }
+
+    private function createFeedItem(): void
+    {
+        ContactFeedItem::create([
+            'author_id' => $this->author->id,
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_LABEL_ASSIGNED,
+            'description' => $this->label->name,
+        ]);
     }
 }

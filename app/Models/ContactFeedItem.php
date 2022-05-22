@@ -16,11 +16,16 @@ class ContactFeedItem extends Model
     /**
      * Possible actions.
      */
+    const ACTION_CONTACT_INFORMATION_UPDATED = 'contact_information_updated';
+    const ACTION_JOB_INFORMATION_UPDATED = 'job_information_updated';
     const ACTION_NOTE_CREATED = 'note_created';
     const ACTION_NOTE_UPDATED = 'note_updated';
+    const ACTION_NOTE_DESTROYED = 'note_destroyed';
     const ACTION_IMPORTANT_DATE_CREATED = 'important_date_created';
     const ACTION_IMPORTANT_DATE_UPDATED = 'important_date_updated';
-    const ACTION_LABEL_ADDED = 'label_added';
+    const ACTION_IMPORTANT_DATE_DESTROYED = 'important_date_destroyed';
+    const ACTION_LABEL_ASSIGNED = 'label_assigned';
+    const ACTION_LABEL_REMOVED = 'label_removed';
     const ACTION_LOAN_CREATED = 'loan_created';
     const ACTION_LOAN_UPDATED = 'loan_updated';
 
@@ -30,11 +35,23 @@ class ContactFeedItem extends Model
      * @var array
      */
     protected $fillable = [
+        'author_id',
         'contact_id',
         'action',
+        'description',
         'feedable_id',
         'feedable_type',
     ];
+
+    /**
+     * Get the user associated with the contact feed item.
+     *
+     * @return BelongsTo
+     */
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'author_id');
+    }
 
     /**
      * Get the contact associated with the contact feed item.

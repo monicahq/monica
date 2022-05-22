@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Domains\Vault\ManageVault\Web\ViewHelpers;
 
+use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
@@ -20,6 +21,7 @@ class VaultIndexViewHelperTest extends TestCase
         $vault = Vault::factory()->create();
         $user->vaults()->attach($vault->id, [
             'permission' => Vault::PERMISSION_EDIT,
+            'contact_id' => Contact::factory()->create()->id,
         ]);
 
         $this->be($user);
@@ -69,7 +71,10 @@ class VaultIndexViewHelperTest extends TestCase
         $vault = Vault::factory()->create([
             'account_id' => $user->account_id,
         ]);
-        $user->vaults()->sync([$vault->id => ['permission' => Vault::PERMISSION_MANAGE]]);
+        $user->vaults()->sync([$vault->id => [
+            'permission' => Vault::PERMISSION_MANAGE,
+            'contact_id' => Contact::factory()->create()->id,
+        ]]);
 
         $array = VaultIndexViewHelper::data($user);
 

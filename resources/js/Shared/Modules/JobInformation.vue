@@ -3,10 +3,6 @@
   top: -2px;
 }
 
-.icon-note {
-  top: -1px;
-}
-
 .label-list {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;

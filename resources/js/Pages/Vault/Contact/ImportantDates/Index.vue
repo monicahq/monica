@@ -470,7 +470,7 @@ export default {
         label: '',
         date: '',
         age: '',
-        contact_important_date_type_id: 0,
+        contact_important_date_type_id: null,
         reminder: false,
         reminderChoice: '',
         errors: [],

@@ -110,7 +110,7 @@ class ContactImportantDatesController extends Controller
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'contact_important_date_id' => $dateId,
-            'contact_important_date_type_id' => $request->input('contact_important_date_type_id'),
+            'contact_important_date_type_id' => $request->input('contact_important_date_type_id') == 0 ? null : $request->input('contact_important_date_type_id'),
             'label' => $request->input('label'),
             'day' => $day,
             'month' => $month,

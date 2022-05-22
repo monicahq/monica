@@ -3,6 +3,7 @@
 namespace App\Contact\ManageNotes\Web\ViewHelpers;
 
 use App\Helpers\DateHelper;
+use App\Helpers\UserHelper;
 use App\Models\Contact;
 use App\Models\Note;
 use App\Models\User;
@@ -53,7 +54,7 @@ class ModuleNotesViewHelper
                 'id' => $note->emotion->id,
                 'name' => $note->emotion->name,
             ] : null,
-            'author' => $note->author ? $note->author->name : $note->author_name,
+            'author' => $note->author ? UserHelper::getInformationAboutContact($note->author, $contact->vault) : null,
             'written_at' => DateHelper::format($note->created_at, $user),
             'url' => [
                 'update' => route('contact.note.update', [

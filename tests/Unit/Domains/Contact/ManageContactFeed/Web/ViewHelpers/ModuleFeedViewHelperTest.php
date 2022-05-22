@@ -37,6 +37,6 @@ class ModuleFeedViewHelperTest extends TestCase
         $this->assertArrayHasKey('items', $array);
         $this->assertArrayHasKey('id', $array['items']->toArray()[0]);
         $this->assertArrayHasKey('action', $array['items']->toArray()[0]);
-        $this->assertArrayHasKey('object', $array['items']->toArray()[0]);
+        $this->assertArrayHasKey('description', $array['items']->toArray()[0]);
     }
 }

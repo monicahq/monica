@@ -5,6 +5,7 @@ namespace Tests\Unit\Domains\Settings\ManageUsers\Services;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Jobs\CreateAuditLog;
 use App\Models\Account;
+use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
 use App\Settings\ManageUsers\Services\DestroyUser;
@@ -35,24 +36,29 @@ class DestroyUserTest extends TestCase
         ]);
         $vaultManager->users()->save($user, [
             'permission' => Vault::PERMISSION_MANAGE,
+            'contact_id' => Contact::factory()->create()->id,
         ]);
         $vaultEditor = Vault::factory()->create([
             'account_id' => $author->account_id,
         ]);
         $vaultEditor->users()->save($user, [
             'permission' => Vault::PERMISSION_EDIT,
+            'contact_id' => Contact::factory()->create()->id,
         ]);
         $vaultEditor->users()->save(User::factory()->create(), [
             'permission' => Vault::PERMISSION_MANAGE,
+            'contact_id' => Contact::factory()->create()->id,
         ]);
         $vaultViewer = Vault::factory()->create([
             'account_id' => $author->account_id,
         ]);
         $vaultViewer->users()->save($user, [
             'permission' => Vault::PERMISSION_VIEW,
+            'contact_id' => Contact::factory()->create()->id,
         ]);
         $vaultViewer->users()->save(User::factory()->create(), [
             'permission' => Vault::PERMISSION_MANAGE,
+            'contact_id' => Contact::factory()->create()->id,
         ]);
 
         $this->executeService($author->account, $author, $user, $vaultManager, $vaultEditor, $vaultViewer);

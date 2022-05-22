@@ -49,7 +49,7 @@ button {
     <svg
       v-if="icon === 'plus' && state != 'loading'"
       xmlns="http://www.w3.org/2000/svg"
-      class="icon relative inline h-5 w-5"
+      class="icon relative mr-1 inline h-5 w-5"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor">
@@ -60,7 +60,7 @@ button {
     <svg
       v-if="icon === 'check' && state != 'loading'"
       xmlns="http://www.w3.org/2000/svg"
-      class="icon relative inline h-5 w-5"
+      class="icon relative mr-1 inline h-5 w-5"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor">
@@ -75,7 +75,7 @@ button {
     <svg
       v-if="icon === 'arrow' && state != 'loading'"
       xmlns="http://www.w3.org/2000/svg"
-      class="icon relative ml-1 inline h-5 w-5"
+      class="icon relative ml-1 mr-1 inline h-5 w-5"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor">

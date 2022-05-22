@@ -133,11 +133,6 @@ class DestroyNoteTest extends TestCase
             'id' => $note->id,
         ]);
 
-        $this->assertDatabaseMissing('contact_feed_items', [
-            'contact_id' => $contact->id,
-            'feedable_id' => $note->id,
-        ]);
-
         Queue::assertPushed(CreateAuditLog::class, function ($job) {
             return $job->auditLog['action_name'] === 'note_destroyed';
         });

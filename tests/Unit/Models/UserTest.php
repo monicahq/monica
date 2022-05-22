@@ -31,7 +31,10 @@ class UserTest extends TestCase
             'account_id' => $regis->account_id,
         ]);
 
-        $regis->vaults()->sync([$vault->id => ['permission' => Vault::PERMISSION_MANAGE]]);
+        $regis->vaults()->sync([$vault->id => [
+            'permission' => Vault::PERMISSION_MANAGE,
+            'contact_id' => Contact::factory()->create()->id,
+        ]]);
 
         $this->assertTrue($regis->vaults()->exists());
     }
@@ -104,6 +107,11 @@ class UserTest extends TestCase
         $this->assertEquals(
             $contact->id,
             $rachel->getContactInVault($vault)->id,
+        );
+
+        $robert = User::factory()->create();
+        $this->assertNull(
+            $robert->getContactInVault($vault),
         );
     }
 }

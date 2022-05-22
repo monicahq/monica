@@ -5,9 +5,11 @@ namespace App\Contact\ManageNotes\Services;
 use App\Interfaces\ServiceInterface;
 use App\Jobs\CreateAuditLog;
 use App\Jobs\CreateContactLog;
+use App\Models\ContactFeedItem;
 use App\Models\Note;
 use App\Services\BaseService;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class DestroyNote extends BaseService implements ServiceInterface
 {
@@ -56,8 +58,7 @@ class DestroyNote extends BaseService implements ServiceInterface
         $this->note = Note::where('contact_id', $data['contact_id'])
             ->findOrFail($data['note_id']);
 
-        $this->removeContactFeedItem();
-
+        $this->createFeedItem();
         $this->note->delete();
 
         $this->contact->last_updated_at = Carbon::now();
@@ -88,8 +89,13 @@ class DestroyNote extends BaseService implements ServiceInterface
         ])->onQueue('low');
     }
 
-    private function removeContactFeedItem(): void
+    private function createFeedItem(): void
     {
-        $this->note->feedItem->delete();
+        ContactFeedItem::create([
+            'author_id' => $this->author->id,
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_NOTE_DESTROYED,
+            'description' => Str::words($this->note->body, 10, '…'),
+        ]);
     }
 }

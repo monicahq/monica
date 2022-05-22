@@ -6,6 +6,7 @@ use App\Interfaces\ServiceInterface;
 use App\Jobs\CreateAuditLog;
 use App\Jobs\CreateContactLog;
 use App\Models\Contact;
+use App\Models\ContactFeedItem;
 use App\Models\Gender;
 use App\Models\Pronoun;
 use App\Services\BaseService;
@@ -84,6 +85,7 @@ class UpdateContact extends BaseService implements ServiceInterface
         $this->contact->save();
 
         $this->log();
+        $this->createFeedItem();
 
         return $this->contact;
     }
@@ -123,5 +125,14 @@ class UpdateContact extends BaseService implements ServiceInterface
             'action_name' => 'contact_updated',
             'objects' => json_encode([]),
         ])->onQueue('low');
+    }
+
+    private function createFeedItem(): void
+    {
+        ContactFeedItem::create([
+            'author_id' => $this->author->id,
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_CONTACT_INFORMATION_UPDATED,
+        ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\Unit\Helpers;
 
 use App\Helpers\VaultHelper;
+use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -38,6 +39,7 @@ class VaultHelperTest extends TestCase
         $vault = Vault::factory()->create();
         $user->vaults()->attach($vault->id, [
             'permission' => Vault::PERMISSION_VIEW,
+            'contact_id' => Contact::factory()->create()->id,
         ]);
 
         $this->assertEquals(

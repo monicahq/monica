@@ -19,7 +19,6 @@ class CreateNotesTable extends Migration
             $table->unsignedBigInteger('contact_id');
             $table->unsignedBigInteger('author_id')->nullable();
             $table->unsignedBigInteger('emotion_id')->nullable();
-            $table->string('author_name');
             $table->string('title')->nullable();
             $table->text('body');
             $table->timestamps();

@@ -4,6 +4,7 @@ namespace App\Vault\ManageVaultSettings\Services;
 
 use App\Contact\ManageReminders\Services\ScheduleContactReminderForUser;
 use App\Exceptions\SameUserException;
+use App\Helpers\AvatarHelper;
 use App\Helpers\VaultHelper;
 use App\Interfaces\ServiceInterface;
 use App\Jobs\CreateAuditLog;
@@ -84,12 +85,18 @@ class GrantVaultAccessToUser extends BaseService implements ServiceInterface
             'first_name' => $this->user->first_name,
             'last_name' => $this->user->last_name,
             'can_be_deleted' => false,
+            'template_id' => $this->vault->default_template_id,
         ]);
 
         $this->vault->users()->save($this->user, [
             'permission' => $this->data['permission'],
             'contact_id' => $contact->id,
         ]);
+
+        $avatar = AvatarHelper::generateRandomAvatar($contact);
+
+        $contact->avatar_id = $avatar->id;
+        $contact->save();
     }
 
     /**

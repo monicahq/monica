@@ -91,7 +91,7 @@ class NotesIndexViewHelperTest extends TestCase
                 'show_full_content' => false,
                 'title' => $note->title,
                 'emotion' => null,
-                'author' => $note->author->name,
+                'author' => null,
                 'written_at' => 'Jan 01, 2018',
                 'url' => [
                     'update' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/notes/'.$note->id,

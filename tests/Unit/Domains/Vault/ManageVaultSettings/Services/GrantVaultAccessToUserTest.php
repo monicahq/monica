@@ -131,7 +131,7 @@ class GrantVaultAccessToUserTest extends TestCase
 
         $user = (new GrantVaultAccessToUser)->execute($request);
 
-        $this->assertDatabaseCount('contacts', 2);
+        $this->assertDatabaseCount('contacts', 3);
 
         $contact = Contact::where('first_name', $anotherUser->first_name)->first();
 

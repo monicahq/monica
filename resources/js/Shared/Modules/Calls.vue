@@ -43,7 +43,7 @@
 
         <span class="font-semibold">Calls</span>
       </div>
-      <pretty-span @click="showCreateCallModal()" :text="'Log a call'" :icon="'plus'" :classes="'sm:w-fit w-full'" />
+      <pretty-button @click="showCreateCallModal()" :text="'Log a call'" :icon="'plus'" :classes="'sm:w-fit w-full'" />
     </div>
 
     <!-- add a call modal -->
@@ -234,7 +234,7 @@
 
       <div class="flex justify-between p-5">
         <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="createCallModalShown = false" />
-        <pretty-button :text="'Add date'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-button :text="'Save'" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 

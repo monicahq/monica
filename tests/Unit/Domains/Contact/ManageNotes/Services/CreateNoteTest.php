@@ -101,7 +101,6 @@ class CreateNoteTest extends TestCase
             'id' => $note->id,
             'contact_id' => $contact->id,
             'author_id' => $author->id,
-            'author_name' => $author->name,
             'title' => 'super title',
             'body' => 'super body',
         ]);

@@ -10,6 +10,7 @@ use App\Models\Emotion;
 use App\Models\Note;
 use App\Services\BaseService;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class CreateNote extends BaseService implements ServiceInterface
 {
@@ -67,7 +68,6 @@ class CreateNote extends BaseService implements ServiceInterface
         $this->note = Note::create([
             'contact_id' => $this->contact->id,
             'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
             'title' => $this->valueOrNull($data, 'title'),
             'body' => $data['body'],
             'emotion_id' => $this->valueOrNull($data, 'emotion_id'),
@@ -77,7 +77,6 @@ class CreateNote extends BaseService implements ServiceInterface
         $this->contact->save();
 
         $this->log();
-
         $this->createFeedItem();
 
         return $this->note;
@@ -111,8 +110,10 @@ class CreateNote extends BaseService implements ServiceInterface
     private function createFeedItem(): void
     {
         $feedItem = ContactFeedItem::create([
+            'author_id' => $this->author->id,
             'contact_id' => $this->contact->id,
             'action' => ContactFeedItem::ACTION_NOTE_CREATED,
+            'description' => Str::words($this->note->body, 10, '…'),
         ]);
         $this->note->feedItem()->save($feedItem);
     }

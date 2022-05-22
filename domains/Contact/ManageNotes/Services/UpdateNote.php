@@ -5,10 +5,12 @@ namespace App\Contact\ManageNotes\Services;
 use App\Interfaces\ServiceInterface;
 use App\Jobs\CreateAuditLog;
 use App\Jobs\CreateContactLog;
+use App\Models\ContactFeedItem;
 use App\Models\Emotion;
 use App\Models\Note;
 use App\Services\BaseService;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class UpdateNote extends BaseService implements ServiceInterface
 {
@@ -76,6 +78,7 @@ class UpdateNote extends BaseService implements ServiceInterface
         $this->contact->save();
 
         $this->log();
+        $this->createFeedItem();
 
         return $this->note;
     }
@@ -103,5 +106,16 @@ class UpdateNote extends BaseService implements ServiceInterface
                 'note_id' => $this->note->id,
             ]),
         ])->onQueue('low');
+    }
+
+    private function createFeedItem(): void
+    {
+        $feedItem = ContactFeedItem::create([
+            'author_id' => $this->author->id,
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_NOTE_UPDATED,
+            'description' => Str::words($this->note->body, 10, '…'),
+        ]);
+        $this->note->feedItem()->save($feedItem);
     }
 }

@@ -20,7 +20,6 @@ class Note extends Model
         'contact_id',
         'author_id',
         'emotion_id',
-        'author_name',
         'title',
         'body',
     ];
