@@ -21,7 +21,7 @@
     "@vue/compiler-sfc": "^3.0.5",
     "ant-design-vue": "^3.2.3",
     "autoprefixer": "^10.4.0",
-    "axios": "^0.21",
+    "axios": "^0.27.2",
     "eslint": "^7.11.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^17.0.0",
