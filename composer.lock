@@ -3053,16 +3053,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.83.12",
+            "version": "v8.83.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "2af2314989845db68dfbb65a54b8748ffaf26204"
+                "reference": "1eed68ec70c98d1a7a6f0fcedbea10cb6dd69a20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/2af2314989845db68dfbb65a54b8748ffaf26204",
-                "reference": "2af2314989845db68dfbb65a54b8748ffaf26204",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/1eed68ec70c98d1a7a6f0fcedbea10cb6dd69a20",
+                "reference": "1eed68ec70c98d1a7a6f0fcedbea10cb6dd69a20",
                 "shasum": ""
             },
             "require": {
@@ -3222,7 +3222,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-05-10T13:57:07+00:00"
+            "time": "2022-05-17T14:08:01+00:00"
         },
         {
             "name": "laravel/passport",
@@ -3303,16 +3303,16 @@
         },
         {
             "name": "laravel/serializable-closure",
-            "version": "v1.1.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/serializable-closure.git",
-                "reference": "9e4b005daa20b0c161f3845040046dc9ddc1d74e"
+                "reference": "09f0e9fb61829f628205b7c94906c28740ff9540"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/9e4b005daa20b0c161f3845040046dc9ddc1d74e",
-                "reference": "9e4b005daa20b0c161f3845040046dc9ddc1d74e",
+                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/09f0e9fb61829f628205b7c94906c28740ff9540",
+                "reference": "09f0e9fb61829f628205b7c94906c28740ff9540",
                 "shasum": ""
             },
             "require": {
@@ -3358,7 +3358,7 @@
                 "issues": "https://github.com/laravel/serializable-closure/issues",
                 "source": "https://github.com/laravel/serializable-closure"
             },
-            "time": "2022-02-11T19:23:53+00:00"
+            "time": "2022-05-16T17:09:47+00:00"
         },
         {
             "name": "laravel/socialite",
