@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\Account\Account;
 use Illuminate\Console\Command;
-use Illuminate\Console\ConfirmableTrait;
 
 class ImportAccounts extends Command
 {
@@ -75,31 +74,36 @@ class ImportAccounts extends Command
         }
 
         $ldap_conn = ldap_connect($ldap_uri);
-        if(!$ldap_conn) {
+        if (! $ldap_conn) {
             $this->error('Could not connect to LDAP URI');
+
             return;
         }
-        if(!ldap_set_option($ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3)) {
+        if (! ldap_set_option($ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3)) {
             $this->error('Could not set LDAP protocol v3');
+
             return false;
         }
 
         try {
             $bind = ldap_bind($ldap_conn, $ldap_user, $ldap_pass);
-            if (!$bind) {
-  	            $this->error('Could not bind with given LDAP credentials');
+            if (! $bind) {
+                $this->error('Could not bind with given LDAP credentials');
+
                 return;
             }
-        } catch (\ErrorException $e) {
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
+
             return;
         }
 
         $ldap_res = [];
         try {
             $ldap_res = ldap_search($ldap_conn, $ldap_base, $ldap_filter, [$ldap_attr_mail, $ldap_attr_firstname, $ldap_attr_lastname]);
-        } catch (\ErrorException $e) {
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
+
             return;
         }
 
@@ -119,11 +123,11 @@ class ImportAccounts extends Command
             if (isset($ldap_data[$i][$ldap_attr_lastname]) && $ldap_data[$i][$ldap_attr_lastname]['count'] > 0) {
                 $user_lastname = $ldap_data[$i][$ldap_attr_lastname][0];
             }
-            $this->info('Importing user "' . $user_mail .'"');
+            $this->info('Importing user "'.$user_mail.'"');
             try {
                 Account::createDefault($user_firstname, $user_lastname, $user_mail, $user_password);
-            } catch(\Exception $import_error){
-                $this->warn('Could not import user "' . $user_mail . '": ' . $import_error->getMessage());
+            } catch (\Exception $import_error) {
+                $this->warn('Could not import user "'.$user_mail.'": '.$import_error->getMessage());
             }
         }
     }
