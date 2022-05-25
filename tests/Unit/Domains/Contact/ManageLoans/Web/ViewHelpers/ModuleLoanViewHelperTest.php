@@ -126,7 +126,7 @@ class ModuleLoanViewHelperTest extends TestCase
             [
                 0 => [
                     'id' => $contact->id,
-                    'name' => $contact->getName($user),
+                    'name' => $contact->name,
                 ],
             ],
             $array['loaners']->toArray()
@@ -135,7 +135,7 @@ class ModuleLoanViewHelperTest extends TestCase
             [
                 0 => [
                     'id' => $otherContact->id,
-                    'name' => $otherContact->getName($user),
+                    'name' => $otherContact->name,
                 ],
             ],
             $array['loanees']->toArray()

@@ -26,7 +26,7 @@ class NotesIndexViewHelper
 
         return [
             'contact' => [
-                'name' => $contact->getName($user),
+                'name' => $contact->name,
             ],
             'notes' => $notesCollection,
             'emotions' => $emotionsCollection,

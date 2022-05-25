@@ -54,7 +54,7 @@ class ModuleCallsViewHelperTest extends TestCase
         );
 
         $this->assertEquals(
-            $contact->getName($user),
+            $contact->name,
             $array['contact_name']
         );
 

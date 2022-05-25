@@ -3,7 +3,6 @@
 namespace App\Contact\ManageContact\Web\ViewHelpers;
 
 use App\Models\Contact;
-use Illuminate\Support\Facades\Auth;
 
 class ContactShowBlankViewHelper
 {
@@ -21,7 +20,7 @@ class ContactShowBlankViewHelper
         return [
             'templates' => $templatesCollection,
             'contact' => [
-                'name' => $contact->getName(Auth::user()),
+                'name' => $contact->name,
             ],
             'url' => [
                 'update' => route('contact.template.update', [

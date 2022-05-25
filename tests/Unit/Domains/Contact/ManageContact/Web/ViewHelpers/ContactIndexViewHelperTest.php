@@ -44,7 +44,7 @@ class ContactIndexViewHelperTest extends TestCase
             [
                 0 => [
                     'id' => $contact->id,
-                    'name' => $contact->getName($user),
+                    'name' => $contact->name,
                     'avatar' => '123',
                     'url' => [
                         'show' => env('APP_URL').'/vaults/'.$vault->id.'/contacts/'.$contact->id,

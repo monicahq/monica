@@ -42,7 +42,7 @@ class ContactImportantDatesViewHelperTest extends TestCase
 
         $this->assertEquals(
             [
-                'name' => $contact->getName($user),
+                'name' => $contact->name,
             ],
             $array['contact']
         );

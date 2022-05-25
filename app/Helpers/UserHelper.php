@@ -23,7 +23,7 @@ class UserHelper
 
         return [
             'id' => $contact->id,
-            'name' => $contact->getName($user),
+            'name' => $contact->name,
             'avatar' => AvatarHelper::getSVG($contact),
         ];
     }

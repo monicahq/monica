@@ -49,17 +49,15 @@
     "vuedraggable": "^4.1.0"
   },
   "lint-staged": {
-    "linters": {
-      "*.js|.*.js|resources/js/**/*.{vue,js}": [
-        "prettier --write --ignore-unknown"
-      ],
-      "resources/**/*.{css,scss}": [
-        "prettier --write --ignore-unknown"
-      ],
-      "*.php": [
-        "php artisan ide-helper:models --nowrite"
-      ]
-    }
+    "*.js|.*.js|resources/js/**/*.{vue,js}": [
+      "prettier --write --ignore-unknown"
+    ],
+    "resources/**/*.{css,scss}": [
+      "prettier --write --ignore-unknown"
+    ],
+    "*.php": [
+      "php artisan ide-helper:models --nowrite"
+    ]
   },
   "husky": {
     "hooks": {

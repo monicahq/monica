@@ -39,16 +39,16 @@ class ModuleLoanViewHelper
     {
         $loaners = $loan->loaners->unique('id');
         $loanees = $loan->loanees->unique('id');
-        $loanersCollection = $loaners->map(function ($loaner) use ($user) {
+        $loanersCollection = $loaners->map(function ($loaner) {
             return [
                 'id' => $loaner->id,
-                'name' => $loaner->getName($user),
+                'name' => $loaner->name,
             ];
         });
-        $loaneesCollection = $loanees->map(function ($loanee) use ($user) {
+        $loaneesCollection = $loanees->map(function ($loanee) {
             return [
                 'id' => $loanee->id,
-                'name' => $loanee->getName($user),
+                'name' => $loanee->name,
             ];
         });
 

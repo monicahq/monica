@@ -4,11 +4,13 @@ namespace App\Models;
 
 use App\Helpers\ImportantDateHelper;
 use App\Helpers\NameHelper;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Scout\Searchable;
 
 class Contact extends Model
@@ -292,12 +294,19 @@ class Contact extends Model
     /**
      * Get the name of the contact, according to the user preference.
      *
-     * @param  User  $user
-     * @return string
+     * @return Attribute
      */
-    public function getName(User $user): string
+    protected function name(): Attribute
     {
-        return NameHelper::formatContactName($user, $this);
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                if (Auth::check()) {
+                    return NameHelper::formatContactName(Auth::user(), $this);
+                }
+
+                return $attributes['first_name'].' '.$attributes['last_name'];
+            }
+        );
     }
 
     /**

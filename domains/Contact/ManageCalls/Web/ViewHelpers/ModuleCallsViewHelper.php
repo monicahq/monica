@@ -51,7 +51,7 @@ class ModuleCallsViewHelper
         });
 
         return [
-            'contact_name' => $contact->getName($user),
+            'contact_name' => $contact->name,
             'calls' => $callsCollection,
             'emotions' => $emotionsCollection,
             'call_reason_types' => $callReasonTypesCollection,

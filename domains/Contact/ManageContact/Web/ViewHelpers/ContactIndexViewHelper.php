@@ -14,7 +14,7 @@ class ContactIndexViewHelper
         foreach ($contacts as $contact) {
             $contactCollection->push([
                 'id' => $contact->id,
-                'name' => $contact->getName($user),
+                'name' => $contact->name,
                 'avatar' => AvatarHelper::getSVG($contact),
                 'url' => [
                     'show' => route('contact.show', [

@@ -46,7 +46,7 @@ class ContactEditViewHelperTest extends TestCase
         $this->assertEquals(
             [
                 'id' => $contact->id,
-                'name' => $contact->getName($user),
+                'name' => $contact->name,
                 'first_name' => $contact->first_name,
                 'last_name' => $contact->last_name,
                 'middle_name' => $contact->middle_name,

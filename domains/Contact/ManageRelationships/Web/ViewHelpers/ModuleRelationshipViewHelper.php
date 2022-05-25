@@ -95,7 +95,7 @@ class ModuleRelationshipViewHelper
     {
         return [
             'id' => $contact->id,
-            'name' => $contact->getName($user),
+            'name' => $contact->name,
             'avatar' => AvatarHelper::getSVG($contact),
             'age' => $contact->getAge(),
             'url' => [

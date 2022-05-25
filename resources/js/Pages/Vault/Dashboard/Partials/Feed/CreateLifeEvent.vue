@@ -220,7 +220,6 @@
 </template>
 
 <script>
-import moment from 'moment';
 import Loading from '@/Shared/Loading';
 
 export default {
@@ -293,10 +292,6 @@ export default {
   methods: {
     prepareComponent() {
       this.getCategories();
-      this.newLifeEvent.happened_at = moment().format('YYYY-MM-DD');
-      this.selectedYear = moment().year();
-      this.selectedMonth = moment().month() + 1; // month is zero indexed (O_o) in moments.js
-      this.selectedDay = moment().date();
     },
 
     displayAddScreen(type) {

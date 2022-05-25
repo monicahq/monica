@@ -29,7 +29,7 @@ class ContactImportantDatesViewHelper
 
         return [
             'contact' => [
-                'name' => $contact->getName($user),
+                'name' => $contact->name,
             ],
             'dates' => $datesCollection,
             'months' => DateHelper::getMonths(),

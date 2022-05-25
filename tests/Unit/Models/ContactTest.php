@@ -241,6 +241,7 @@ class ContactTest extends TestCase
         $user = User::factory()->create([
             'name_order' => '%first_name%',
         ]);
+        $this->be($user);
         $contact = Contact::factory()->create([
             'first_name' => 'James',
             'last_name' => 'Bond',
@@ -251,31 +252,31 @@ class ContactTest extends TestCase
 
         $this->assertEquals(
             'James',
-            $contact->getName($user)
+            $contact->name
         );
 
         $user->update(['name_order' => '%last_name%']);
         $this->assertEquals(
             'Bond',
-            $contact->getName($user)
+            $contact->name
         );
 
         $user->update(['name_order' => '%first_name% %last_name%']);
         $this->assertEquals(
             'James Bond',
-            $contact->getName($user)
+            $contact->name
         );
 
         $user->update(['name_order' => '%first_name% (%maiden_name%) %last_name%']);
         $this->assertEquals(
             'James (Muller) Bond',
-            $contact->getName($user)
+            $contact->name
         );
 
         $user->update(['name_order' => '%last_name% (%maiden_name%)  || (%nickname%) || %first_name%']);
         $this->assertEquals(
             'Bond (Muller)  || (007) || James',
-            $contact->getName($user)
+            $contact->name
         );
     }
 

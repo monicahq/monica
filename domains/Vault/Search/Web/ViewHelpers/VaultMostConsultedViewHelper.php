@@ -27,7 +27,7 @@ class VaultMostConsultedViewHelper
 
             $contactsCollection->push([
                 'id' => $contact->id,
-                'name' => $contact->getName($user),
+                'name' => $contact->name,
                 'url' => route('contact.show', [
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
