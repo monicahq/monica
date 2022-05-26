@@ -78,10 +78,8 @@ class CreateActivityTest extends TestCase
         ]);
         $emotion = factory(Emotion::class)->create([]);
         $emotion2 = factory(Emotion::class)->create([]);
-
-        $emotionArray = [];
-        array_push($emotionArray, $emotion->id);
-        array_push($emotionArray, $emotion2->id);
+        
+        $emotionIds = [$emotion->id, $emotion2->id];
 
         $activityType = factory(ActivityType::class)->create([
             'account_id' => $account->id,
@@ -93,7 +91,7 @@ class CreateActivityTest extends TestCase
             'summary' => 'we went to central perk',
             'description' => 'it was awesome',
             'happened_at' => '2009-09-09',
-            'emotions' => $emotionArray,
+            'emotions' => $emotionIds,
             'contacts' => [$contact->id],
         ];
 
