@@ -81,18 +81,24 @@ class VaultIndexViewHelperTest extends TestCase
         $this->assertEquals(2, count($array));
 
         $this->assertEquals(
-            [
-                0 => [
-                    'id' => $vault->id,
-                    'name' => $vault->name,
-                    'description' => $vault->description,
-                    'url' => [
-                        'show' => env('APP_URL').'/vaults/'.$vault->id,
-                        'settings' => env('APP_URL').'/vaults/'.$vault->id.'/settings',
-                    ],
-                ],
-            ],
-            $array['vaults']->toArray()
+            $vault->id,
+            $array['vaults']->toArray()[0]['id']
+        );
+        $this->assertEquals(
+            $vault->name,
+            $array['vaults']->toArray()[0]['name']
+        );
+        $this->assertEquals(
+            $vault->description,
+            $array['vaults']->toArray()[0]['description']
+        );
+        $this->assertEquals(
+            $vault->description,
+            $array['vaults']->toArray()[0]['description']
+        );
+        $this->assertEquals(
+            0,
+            $array['vaults']->toArray()[0]['remaining_contacts']
         );
 
         $this->assertEquals(

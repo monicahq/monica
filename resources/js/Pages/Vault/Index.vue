@@ -9,6 +9,11 @@
   grid-template-rows: auto 1fr auto;
 }
 
+.remaining-contact {
+  top: -1px;
+  left: -5px;
+}
+
 @media (max-width: 480px) {
   .vault-list {
     grid-template-columns: 1fr;
@@ -61,13 +66,25 @@
               </inertia-link>
 
               <!-- description -->
-              <p v-if="vault.description" class="border-b border-gray-200 p-3">
-                {{ vault.description }}
-              </p>
-              <p v-else class="border-b border-gray-200 p-3">No description yet.</p>
+              <div>
+                <div v-if="vault.contacts.length > 0" class="relative flex -space-x-2 overflow-hidden p-3">
+                  <div v-for="contact in vault.contacts" :key="contact.id" class="inline-block">
+                    <div v-html="contact.avatar" class="h-8 w-8 rounded-full ring-2 ring-white"></div>
+                  </div>
+                  <div
+                    v-if="vault.remaining_contacts != 0"
+                    class="remaining-contact relative flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-gray-700 text-xs font-medium text-white hover:bg-gray-600 dark:border-gray-800">
+                    + {{ vault.remaining_contacts }}
+                  </div>
+                </div>
+                <p v-if="vault.description" class="p-3">
+                  {{ vault.description }}
+                </p>
+                <p v-else class="p-3 text-gray-500">No description yet.</p>
+              </div>
 
               <!-- actions -->
-              <div class="flex items-center justify-between px-3 py-2">
+              <div class="flex items-center justify-between border-t border-gray-200 px-3 py-2">
                 <inertia-link :href="vault.url.settings">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

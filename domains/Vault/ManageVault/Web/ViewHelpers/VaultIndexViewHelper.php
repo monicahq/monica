@@ -2,11 +2,13 @@
 
 namespace App\Vault\ManageVault\Web\ViewHelpers;
 
+use App\Helpers\AvatarHelper;
 use App\Helpers\DateHelper;
 use App\Helpers\VaultHelper;
 use App\Models\User;
 use App\Models\Vault;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -80,15 +82,21 @@ class VaultIndexViewHelper
 
         $vaults = Vault::where('account_id', $user->account->id)
             ->whereIn('id', $vaultIds)
+            ->with('contacts')
             ->orderBy('name', 'asc')
             ->get();
 
         $vaultCollection = collect();
         foreach ($vaults as $vault) {
+            $randomContactsCollection = self::getContacts($vault);
+            $totalContactNumber = $vault->contacts->count();
+
             $vaultCollection->push([
                 'id' => $vault->id,
                 'name' => $vault->name,
                 'description' => $vault->description,
+                'contacts' => $randomContactsCollection,
+                'remaining_contacts' => $totalContactNumber - $randomContactsCollection->count(),
                 'url' => [
                     'show' => route('vault.show', [
                         'vault' => $vault,
@@ -108,5 +116,22 @@ class VaultIndexViewHelper
                 ],
             ],
         ];
+    }
+
+    private static function getContacts(Vault $vault): Collection
+    {
+        $contacts = $vault->contacts()
+            ->inRandomOrder()
+            ->take(5)
+            ->get()
+            ->map(function ($contact) {
+                return [
+                    'id' => $contact->id,
+                    'name' => $contact->name,
+                    'avatar' => AvatarHelper::getSVG($contact),
+                ];
+            });
+
+        return $contacts;
     }
 }
