@@ -61,7 +61,9 @@
             :key="vault.id"
             class="rounded-lg border border-gray-200 bg-white dark:bg-slate-700">
             <div class="vault-detail grid">
-              <inertia-link :href="vault.url.show" class="border-b border-gray-200 px-3 py-1 text-lg font-medium">
+              <inertia-link
+                :href="vault.url.show"
+                class="border-b border-gray-200 px-3 py-1 text-lg font-medium dark:text-gray-300">
                 {{ vault.name }}
               </inertia-link>
 
@@ -77,7 +79,7 @@
                     + {{ vault.remaining_contacts }}
                   </div>
                 </div>
-                <p v-if="vault.description" class="p-3">
+                <p v-if="vault.description" class="p-3 dark:text-gray-300">
                   {{ vault.description }}
                 </p>
                 <p v-else class="p-3 text-gray-500">No description yet.</p>
@@ -88,7 +90,7 @@
                 <inertia-link :href="vault.url.settings">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="pointer h-5 w-5 text-gray-400 hover:text-gray-900"
+                    class="pointer h-5 w-5 text-gray-400 hover:text-gray-900 dark:hover:text-gray-600"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor">

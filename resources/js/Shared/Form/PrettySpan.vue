@@ -23,6 +23,12 @@ span {
     transform: translate(2px, 2px);
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  a {
+    --tw-shadow: 2px 2px 0 #575a5d !important;
+  }
+}
 </style>
 
 <template>

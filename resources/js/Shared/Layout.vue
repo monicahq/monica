@@ -10,8 +10,6 @@ main {
 
 .sha {
   padding: 0.2em 0.4em;
-  background-color: #f6f8fa;
-  border-color: #d9dee3;
 }
 </style>
 
@@ -21,9 +19,9 @@ main {
       <div class="fixed top-0 z-10 w-full">
         <!-- main nav -->
         <nav
-          class="max-w-8xl mx-auto flex h-10 items-center justify-between border-b bg-gray-50 px-3 dark:border-slate-300/10 dark:bg-slate-900 dark:text-slate-200 sm:px-6">
+          class="max-w-8xl mx-auto flex h-10 items-center justify-between border-b bg-gray-50 px-3 dark:border-slate-600 dark:bg-gray-700 dark:text-slate-200 sm:px-6">
           <div
-            class="dark:highlight-white/5 items-center rounded-lg border border-gray-200 bg-white px-2 py-1 text-sm dark:border-0 dark:bg-sky-400/20 sm:flex">
+            class="dark:highlight-white/5 items-center rounded-lg border border-gray-200 bg-white px-2 py-1 text-sm dark:border-0 dark:bg-gray-400/20 sm:flex">
             <inertia-link :href="layoutData.url.vaults" class="flex-shrink-0 dark:text-sky-400">
               {{ layoutData.user.name }}
             </inertia-link>
@@ -72,7 +70,7 @@ main {
                 <inertia-link :href="layoutData.url.settings" class="inline">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 sm:h-4 sm:w-4"
+                    class="mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-300 sm:h-4 sm:w-4"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -95,7 +93,7 @@ main {
                 <inertia-link @click="logout()" class="inline">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 sm:h-4 sm:w-4"
+                    class="mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-300 sm:h-4 sm:w-4"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -114,7 +112,7 @@ main {
         </nav>
 
         <!-- vault sub menu -->
-        <nav v-if="insideVault" class="bg-white dark:border-slate-300/10 dark:bg-slate-900 sm:border-b">
+        <nav v-if="insideVault" class="bg-white dark:border-slate-300/10 dark:bg-gray-700 sm:border-b">
           <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
             <div class="flex items-baseline justify-between space-x-6">
               <div>
@@ -167,15 +165,18 @@ main {
       </main>
 
       <footer class="mb-10 text-center text-xs">
-        <ul>
+        <ul class="dark:text-gray-300">
           <li class="mr-4 mb-2 sm:mb-0 sm:inline">Monica, since 2017.</li>
           <li class="sm:inline">
             Current version: {{ layoutData.version.date }}
 
             <a-tooltip placement="topLeft" title="Click to see the code" arrow-point-at-center>
-              <a href="https://github.com/djaiss/butler/commits/main" target="_blank" class="sha ml-2 font-mono">{{
-                layoutData.version.sha
-              }}</a>
+              <a
+                href="https://github.com/djaiss/butler/commits/main"
+                target="_blank"
+                class="sha ml-2 rounded font-mono dark:bg-gray-500"
+                >{{ layoutData.version.sha }}</a
+              >
             </a-tooltip>
           </li>
         </ul>

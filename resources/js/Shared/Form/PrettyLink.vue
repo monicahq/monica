@@ -4,7 +4,7 @@
 }
 
 a {
-  --tw-shadow: 2px 2px 0 #191a1b !important;
+  --tw-shadow: 2px 2px 0 #575a5d !important;
   border-radius: 0.25rem !important;
   border-color: #191a1b;
   border-width: 1px !important;
@@ -26,10 +26,16 @@ a {
     transform: translate(2px, 2px);
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  a {
+    --tw-shadow: 2px 2px 0 #575a5d !important;
+  }
+}
 </style>
 
 <template>
-  <inertia-link :class="classes" class="relative text-sm" :href="href">
+  <inertia-link :class="classes" class="dark:box-s relative text-sm dark:bg-gray-700 dark:text-gray-300" :href="href">
     <!-- + icon -->
     <svg
       v-if="icon === 'plus' && state != 'loading'"

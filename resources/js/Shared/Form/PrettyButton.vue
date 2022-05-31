@@ -34,13 +34,19 @@ button {
     transform: translate(0, 0);
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  a {
+    --tw-shadow: 2px 2px 0 #575a5d !important;
+  }
+}
 </style>
 
 <template>
   <button
     :class="classes"
     :disabled="state == 'loading' || state == 'disabled'"
-    class="relative text-sm"
+    class="relative text-sm dark:bg-gray-700"
     name="save"
     type="submit">
     <span v-if="state == 'loading'"> Loading… </span>
