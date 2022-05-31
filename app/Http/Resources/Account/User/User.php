@@ -26,6 +26,7 @@ class User extends JsonResource
             'object' => 'user',
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
+            'name' => $this->name,
             'email' => $this->email,
             'me_contact' => new ContactShortResource($this->me),
             'timezone' => $this->timezone,
