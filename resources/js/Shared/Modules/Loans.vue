@@ -240,15 +240,15 @@
               <li
                 v-if="!loan.settled"
                 @click="toggle(loan)"
-                class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900">
+                class="mr-4 inline cursor-pointer text-blue-500 hover:underline">
                 Settle
               </li>
-              <li v-else @click="toggle(loan)" class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900">
+              <li v-else @click="toggle(loan)" class="mr-4 inline cursor-pointer text-blue-500 hover:underline">
                 Revert
               </li>
 
               <!-- edit -->
-              <li @click="showEditLoanModal(loan)" class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900">
+              <li @click="showEditLoanModal(loan)" class="mr-4 inline cursor-pointer text-blue-500 hover:underline">
                 Edit
               </li>
 

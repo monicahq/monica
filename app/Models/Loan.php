@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Laravel\Scout\Searchable;
 
 class Loan extends Model
@@ -58,7 +60,7 @@ class Loan extends Model
      *
      * @return BelongsTo
      */
-    public function vault()
+    public function vault(): BelongsTo
     {
         return $this->belongsTo(Vault::class);
     }
@@ -68,7 +70,7 @@ class Loan extends Model
      *
      * @return BelongsTo
      */
-    public function currency()
+    public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
     }
@@ -76,9 +78,9 @@ class Loan extends Model
     /**
      * Get the contact that did the loan.
      *
-     * @return BelongsTo
+     * @return BelongsToMany
      */
-    public function loaners()
+    public function loaners(): BelongsToMany
     {
         return $this->belongsToMany(Contact::class, 'contact_loan', 'loan_id', 'loaner_id');
     }
@@ -86,9 +88,9 @@ class Loan extends Model
     /**
      * Get the contact records the loan was made to.
      *
-     * @return BelongsTo
+     * @return BelongsToMany
      */
-    public function loanees()
+    public function loanees(): BelongsToMany
     {
         return $this->belongsToMany(Contact::class, 'contact_loan', 'loan_id', 'loanee_id');
     }
@@ -96,7 +98,7 @@ class Loan extends Model
     /**
      * Get the loan's feed item.
      */
-    public function feedItem()
+    public function feedItem(): MorphOne
     {
         return $this->morphOne(ContactFeedItem::class, 'feedable');
     }

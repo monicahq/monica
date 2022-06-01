@@ -41,7 +41,7 @@
             :key="contact.id"
             class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50">
             <div v-html="contact.avatar" class="mr-2 h-5 w-5"></div>
-            <inertia-link :href="contact.url.show" class="text-sky-500 hover:text-blue-900">
+            <inertia-link :href="contact.url.show" class="text-blue-500 hover:underline">
               {{ contact.name }}
             </inertia-link>
           </li>

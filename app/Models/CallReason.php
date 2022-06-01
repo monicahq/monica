@@ -27,7 +27,7 @@ class CallReason extends Model
      *
      * @return BelongsTo
      */
-    public function callReasonType()
+    public function callReasonType(): BelongsTo
     {
         return $this->belongsTo(CallReasonType::class);
     }

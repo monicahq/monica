@@ -9,7 +9,7 @@
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600">You are here:</li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.settings" class="text-sky-500 hover:text-blue-900"> Settings </inertia-link>
+              <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">Settings</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg

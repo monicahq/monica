@@ -30,7 +30,7 @@ class Label extends Model
      *
      * @return BelongsTo
      */
-    public function vault()
+    public function vault(): BelongsTo
     {
         return $this->belongsTo(Vault::class);
     }
@@ -40,7 +40,7 @@ class Label extends Model
      *
      * @return BelongsToMany
      */
-    public function contacts()
+    public function contacts(): BelongsToMany
     {
         return $this->belongsToMany(Contact::class);
     }

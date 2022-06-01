@@ -63,7 +63,7 @@ class Vault extends Model
      *
      * @return BelongsTo
      */
-    public function account()
+    public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
     }
@@ -73,7 +73,7 @@ class Vault extends Model
      *
      * @return BelongsTo
      */
-    public function template()
+    public function template(): BelongsTo
     {
         return $this->belongsTo(Template::class, 'default_template_id');
     }
@@ -83,7 +83,7 @@ class Vault extends Model
      *
      * @return HasMany
      */
-    public function contacts()
+    public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class);
     }
@@ -93,7 +93,7 @@ class Vault extends Model
      *
      * @return HasMany
      */
-    public function labels()
+    public function labels(): HasMany
     {
         return $this->hasMany(Label::class);
     }
@@ -103,7 +103,7 @@ class Vault extends Model
      *
      * @return BelongsToMany
      */
-    public function users()
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class)->withTimestamps()->withPivot('permission');
     }
@@ -113,7 +113,7 @@ class Vault extends Model
      *
      * @return HasMany
      */
-    public function contactImportantDateTypes()
+    public function contactImportantDateTypes(): HasMany
     {
         return $this->hasMany(ContactImportantDateType::class);
     }
@@ -123,7 +123,7 @@ class Vault extends Model
      *
      * @return HasMany
      */
-    public function companies()
+    public function companies(): HasMany
     {
         return $this->hasMany(Company::class);
     }

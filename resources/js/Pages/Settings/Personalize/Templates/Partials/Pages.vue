@@ -65,7 +65,7 @@
             </div>
 
             <ul class="text-xs">
-              <li class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900" @click="renamePageModal(element)">
+              <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="renamePageModal(element)">
                 Rename
               </li>
               <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(element)">Delete</li>

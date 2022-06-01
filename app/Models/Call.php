@@ -62,7 +62,7 @@ class Call extends Model
      *
      * @return BelongsTo
      */
-    public function contact()
+    public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);
     }
@@ -72,7 +72,7 @@ class Call extends Model
      *
      * @return BelongsTo
      */
-    public function author()
+    public function author(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -82,7 +82,7 @@ class Call extends Model
      *
      * @return BelongsTo
      */
-    public function callReason()
+    public function callReason(): BelongsTo
     {
         return $this->belongsTo(CallReason::class, 'call_reason_id');
     }
@@ -92,7 +92,7 @@ class Call extends Model
      *
      * @return BelongsTo
      */
-    public function emotion()
+    public function emotion(): BelongsTo
     {
         return $this->belongsTo(Emotion::class);
     }

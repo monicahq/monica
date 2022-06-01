@@ -14,9 +14,7 @@
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-slate-200">You are here:</li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.back" class="text-sky-500 hover:text-blue-900">
-                All the vaults
-              </inertia-link>
+              <inertia-link :href="data.url.back" class="text-blue-500 hover:underline"> All the vaults </inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg

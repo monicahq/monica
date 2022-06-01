@@ -60,7 +60,7 @@
             <!-- actions -->
             <ul class="text-sm">
               <li v-if="template.is_default">Current default</li>
-              <li v-else class="inline cursor-pointer text-sky-500 hover:text-blue-900" @click="update(template)">
+              <li v-else class="inline cursor-pointer text-blue-500 hover:underline" @click="update(template)">
                 Set as default
               </li>
             </ul>

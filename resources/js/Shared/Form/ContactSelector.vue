@@ -49,7 +49,7 @@
 
           <!-- actions -->
           <ul class="text-sm">
-            <li class="inline cursor-pointer text-sky-500 hover:text-blue-900" @click="remove(contact)">Remove</li>
+            <li class="inline cursor-pointer text-blue-500 hover:underline" @click="remove(contact)">Remove</li>
           </ul>
         </li>
       </ul>
@@ -108,10 +108,10 @@
             v-for="contact in mostConsultedContacts"
             :key="contact.id"
             class="item-list flex items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50">
-            <inertia-link :href="contact.url" class="text-sky-500 hover:text-blue-900">{{ contact.name }}</inertia-link>
+            <inertia-link :href="contact.url" class="text-blue-500 hover:underline">{{ contact.name }}</inertia-link>
             <!-- actions -->
             <ul class="text-sm">
-              <li class="inline cursor-pointer text-sky-500 hover:text-blue-900" @click="add(contact)">Add</li>
+              <li class="inline cursor-pointer text-blue-500 hover:underline" @click="add(contact)">Add</li>
             </ul>
           </li>
         </ul>
@@ -146,7 +146,7 @@
 
             <!-- actions -->
             <ul class="text-sm">
-              <li class="inline cursor-pointer text-sky-500 hover:text-blue-900" @click="add(contact)">Add</li>
+              <li class="inline cursor-pointer text-blue-500 hover:underline" @click="add(contact)">Add</li>
             </ul>
           </li>
         </ul>

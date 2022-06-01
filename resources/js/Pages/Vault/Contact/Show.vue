@@ -19,7 +19,7 @@
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600">You are here:</li>
             <li class="mr-2 inline">
-              <inertia-link :href="layoutData.vault.url.contacts" class="text-sky-500 hover:text-blue-900">
+              <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 Contacts
               </inertia-link>
             </li>
@@ -62,12 +62,12 @@
 
             <ul class="text-xs">
               <li class="mb-2">
-                <inertia-link :href="data.url.update_template" class="cursor-pointer text-sky-500 hover:text-blue-900"
+                <inertia-link :href="data.url.update_template" class="cursor-pointer text-blue-500 hover:underline"
                   >Change template</inertia-link
                 >
               </li>
               <li v-if="data.options.can_be_deleted">
-                <span class="cursor-pointer text-sky-500 hover:text-blue-900" @click="destroy">Delete contact</span>
+                <span class="cursor-pointer text-blue-500 hover:underline" @click="destroy">Delete contact</span>
               </li>
             </ul>
           </div>

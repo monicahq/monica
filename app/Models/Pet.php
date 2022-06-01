@@ -28,7 +28,7 @@ class Pet extends Model
      *
      * @return BelongsTo
      */
-    public function petCategory()
+    public function petCategory(): BelongsTo
     {
         return $this->belongsTo(PetCategory::class);
     }
@@ -38,7 +38,7 @@ class Pet extends Model
      *
      * @return BelongsTo
      */
-    public function contact()
+    public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);
     }

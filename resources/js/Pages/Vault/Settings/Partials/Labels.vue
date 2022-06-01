@@ -82,7 +82,7 @@
 
           <!-- actions -->
           <ul class="text-sm">
-            <li class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900" @click="updateLabelModal(label)">
+            <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="updateLabelModal(label)">
               Edit
             </li>
             <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(label)">Delete</li>

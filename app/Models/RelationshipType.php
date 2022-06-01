@@ -45,7 +45,7 @@ class RelationshipType extends Model
      *
      * @return BelongsTo
      */
-    public function groupType()
+    public function groupType(): BelongsTo
     {
         return $this->belongsTo(RelationshipGroupType::class, 'relationship_group_type_id');
     }

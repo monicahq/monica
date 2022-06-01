@@ -44,7 +44,7 @@ class ModuleRowField extends Model
      *
      * @return BelongsTo
      */
-    public function row()
+    public function row(): BelongsTo
     {
         return $this->belongsTo(ModuleRow::class, 'module_row_id');
     }

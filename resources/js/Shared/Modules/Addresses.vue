@@ -105,7 +105,7 @@
           <!-- excerpt, if it exists -->
           <div v-if="!note.show_full_content && note.body_excerpt" class="p-3">
             {{ note.body_excerpt }}
-            <span class="cursor-pointer text-sky-500 hover:text-blue-900" @click="showFullBody(note)"> View all </span>
+            <span class="cursor-pointer text-blue-500 hover:underline" @click="showFullBody(note)"> View all </span>
           </div>
           <!-- full body -->
           <div v-else class="p-3">
@@ -198,7 +198,7 @@
 
       <!-- view all button -->
       <div class="text-center">
-        <inertia-link :href="data.url.index" class="text-sky-500 hover:text-blue-900"> View all notes </inertia-link>
+        <inertia-link :href="data.url.index" class="text-blue-500 hover:underline"> View all notes </inertia-link>
       </div>
     </div>
 

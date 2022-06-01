@@ -29,7 +29,7 @@
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600">You are here:</li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.settings.index" class="text-sky-500 hover:text-blue-900">
+              <inertia-link :href="data.url.settings.index" class="text-blue-500 hover:underline">
                 Settings
               </inertia-link>
             </li>
@@ -113,7 +113,7 @@
 
               <!-- actions -->
               <ul v-if="!user.is_logged_user" class="text-sm">
-                <li @click="showEditModal(user)" class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900">
+                <li @click="showEditModal(user)" class="mr-4 inline cursor-pointer text-blue-500 hover:underline">
                   Edit
                 </li>
                 <li @click="destroy(user)" class="inline cursor-pointer text-red-500 hover:text-red-900">Delete</li>

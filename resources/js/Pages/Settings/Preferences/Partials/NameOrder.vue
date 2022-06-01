@@ -137,7 +137,7 @@ pre {
             <a
               href="https://www.notion.so/monicahq/Customize-your-account-8e015b7488c143abab9eb8a6e2fbca77#b3fd57def37445f4a9cf234e373c52ca"
               target="_blank"
-              class="text-sky-500 hover:text-blue-900"
+              class="text-blue-500 hover:underline"
               >our documentation</a
             >
             to know more about this feature, and which variables you have access to.

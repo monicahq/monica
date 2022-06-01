@@ -70,7 +70,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return BelongsTo
      */
-    public function account()
+    public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
     }
@@ -80,7 +80,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return BelongsToMany
      */
-    public function vaults()
+    public function vaults(): BelongsToMany
     {
         return $this->belongsToMany(Vault::class)->withTimestamps()->withPivot('permission');
     }
@@ -90,7 +90,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return HasMany
      */
-    public function notes()
+    public function notes(): HasMany
     {
         return $this->hasMany(Note::class, 'author_id');
     }
@@ -100,7 +100,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return HasMany
      */
-    public function notificationChannels()
+    public function notificationChannels(): HasMany
     {
         return $this->hasMany(UserNotificationChannel::class, 'user_id');
     }
@@ -110,7 +110,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return HasMany
      */
-    public function contactTasks()
+    public function contactTasks(): HasMany
     {
         return $this->hasMany(ContactTask::class, 'author_id');
     }

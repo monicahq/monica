@@ -46,7 +46,7 @@ class Address extends Model
      *
      * @return BelongsTo
      */
-    public function contact()
+    public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);
     }
@@ -56,7 +56,7 @@ class Address extends Model
      *
      * @return BelongsTo
      */
-    public function addressType()
+    public function addressType(): BelongsTo
     {
         return $this->belongsTo(AddressType::class);
     }

@@ -38,7 +38,7 @@ class PersonalizeActivityTypesIndexViewHelperTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_the_dto_for_reason_type(): void
+    public function it_gets_the_dto_for_activity_type(): void
     {
         $type = ActivityType::factory()->create();
 
@@ -63,7 +63,7 @@ class PersonalizeActivityTypesIndexViewHelperTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_the_dto_for_reason(): void
+    public function it_gets_the_dto_for_the_activity(): void
     {
         $type = ActivityType::factory()->create();
         $activity = Activity::factory()->create([

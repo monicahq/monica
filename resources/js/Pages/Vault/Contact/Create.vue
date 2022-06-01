@@ -14,7 +14,7 @@
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600">You are here:</li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.back" class="text-sky-500 hover:text-blue-900"> Contacts </inertia-link>
+              <inertia-link :href="data.url.back" class="text-blue-500 hover:underline"> Contacts </inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg

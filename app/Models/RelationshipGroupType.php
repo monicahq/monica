@@ -45,7 +45,7 @@ class RelationshipGroupType extends Model
      *
      * @return BelongsTo
      */
-    public function account()
+    public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
     }
@@ -55,7 +55,7 @@ class RelationshipGroupType extends Model
      *
      * @return HasMany
      */
-    public function types()
+    public function types(): HasMany
     {
         return $this->hasMany(RelationshipType::class);
     }

@@ -11,6 +11,10 @@ main {
 .sha {
   padding: 0.2em 0.4em;
 }
+
+.icon-cog {
+  top: -1px;
+}
 </style>
 
 <template>
@@ -67,10 +71,10 @@ main {
           <div class="flew-grow">
             <ul>
               <li class="mr-4 inline">
-                <inertia-link :href="layoutData.url.settings" class="inline">
+                <inertia-link :href="layoutData.url.settings" class="relative inline">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-300 sm:h-4 sm:w-4"
+                    class="icon-cog relative mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-300 sm:h-4 sm:w-4"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor">

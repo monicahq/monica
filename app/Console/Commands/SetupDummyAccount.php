@@ -92,11 +92,7 @@ class SetupDummyAccount extends Command
         $this->line('-----------------------------');
         $this->info('| You can now sign in with one of these two accounts:');
         $this->line('| An account with a lot of data:');
-        $this->line('| First user >>>>>>>>>>>>>>>>>:');
         $this->line('| username: admin@admin.com');
-        $this->line('| password: admin123');
-        $this->line('| Second user >>>>>>>>>>>>>>>>>:');
-        $this->line('| username: regis@regis.com');
         $this->line('| password: admin123');
         $this->line('|------------------------–––-');
         $this->line('|A blank account:');
@@ -121,21 +117,6 @@ class SetupDummyAccount extends Command
         ]);
         $this->firstUser->email_verified_at = Carbon::now();
         $this->firstUser->save();
-
-        sleep(5);
-
-        $this->info('☐ Create second user of the account');
-
-        $this->secondUser = (new CreateAccount)->execute([
-            'email' => 'regis@regis.com',
-            'password' => 'admin123',
-            'first_name' => 'Dwight',
-            'last_name' => 'Schrutt',
-        ]);
-        $this->secondUser->account_id = $this->firstUser->account_id;
-        $this->secondUser->email_verified_at = Carbon::now();
-        $this->secondUser->save();
-
         sleep(5);
     }
 

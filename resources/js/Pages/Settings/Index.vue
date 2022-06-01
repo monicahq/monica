@@ -21,15 +21,15 @@
           <ul>
             <li class="mb-2">
               <span class="mr-2">🥳</span>
-              <inertia-link :href="data.url.preferences.index" class="text-sky-500 hover:text-blue-900">
-                User preferences
-              </inertia-link>
+              <inertia-link :href="data.url.preferences.index" class="text-blue-500 hover:underline"
+                >User preferences</inertia-link
+              >
             </li>
             <li>
               <span class="mr-2">📡</span>
-              <inertia-link :href="data.url.notifications.index" class="text-sky-500 hover:text-blue-900">
-                Notification channels
-              </inertia-link>
+              <inertia-link :href="data.url.notifications.index" class="text-blue-500 hover:underline"
+                >Notification channels</inertia-link
+              >
             </li>
           </ul>
         </div>
@@ -41,21 +41,21 @@
             <ul>
               <li class="mb-2">
                 <span class="mr-2">🥸</span>
-                <inertia-link :href="data.url.users.index" class="text-sky-500 hover:text-blue-900">
-                  Manage users
-                </inertia-link>
+                <inertia-link :href="data.url.users.index" class="text-blue-500 hover:underline"
+                  >Manage users</inertia-link
+                >
               </li>
               <li class="mb-2">
                 <span class="mr-2">🎃</span>
-                <inertia-link :href="data.url.personalize.index" class="text-sky-500 hover:text-blue-900">
-                  Personalize your contacts data
-                </inertia-link>
+                <inertia-link :href="data.url.personalize.index" class="text-blue-500 hover:underline"
+                  >Personalize your contacts data</inertia-link
+                >
               </li>
               <li>
                 <span class="mr-2">💩</span>
-                <inertia-link :href="data.url.cancel.index" class="text-sky-500 hover:text-blue-900">
-                  Cancel your account
-                </inertia-link>
+                <inertia-link :href="data.url.cancel.index" class="text-blue-500 hover:underline"
+                  >Cancel your account</inertia-link
+                >
               </li>
             </ul>
           </div>

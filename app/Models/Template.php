@@ -26,7 +26,7 @@ class Template extends Model
      *
      * @return BelongsTo
      */
-    public function account()
+    public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
     }
@@ -36,7 +36,7 @@ class Template extends Model
      *
      * @return HasMany
      */
-    public function pages()
+    public function pages(): HasMany
     {
         return $this->hasMany(TemplatePage::class);
     }
@@ -46,7 +46,7 @@ class Template extends Model
      *
      * @return HasMany
      */
-    public function contacts()
+    public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class);
     }

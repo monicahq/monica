@@ -106,7 +106,7 @@ select {
 
             <!-- actions -->
             <ul class="text-sm">
-              <li class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900" @click="showEditPetModal(pet)">
+              <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="showEditPetModal(pet)">
                 Edit
               </li>
               <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(pet)">Delete</li>

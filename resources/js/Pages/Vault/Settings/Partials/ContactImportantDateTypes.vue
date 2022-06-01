@@ -65,7 +65,7 @@
 
           <!-- actions -->
           <ul class="text-sm">
-            <li class="inline cursor-pointer text-sky-500 hover:text-blue-900" @click="edit(type)">Edit</li>
+            <li class="inline cursor-pointer text-blue-500 hover:underline" @click="edit(type)">Edit</li>
             <li
               v-if="type.can_be_deleted"
               class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"

@@ -60,60 +60,67 @@
 
     <div class="mt-6 flex w-full overflow-hidden bg-white shadow-md sm:max-w-4xl sm:rounded-lg">
       <img :src="this.wallpaperUrl" class="w-10/12 sm:invisible md:visible" />
-      <div class="w-full px-6 py-14">
-        <h1 class="mb-6 text-center text-xl"><span class="mr-2">👋</span> Hi friend</h1>
+      <div class="w-full">
+        <div class="border-b border-gray-200 px-6 pt-14 pb-10">
+          <h1 class="mb-6 text-center text-xl"><span class="mr-2">👋</span> Hi friend</h1>
 
-        <breeze-validation-errors class="mb-4" />
+          <breeze-validation-errors class="mb-4" />
 
-        <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
-          {{ status }}
+          <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
+            {{ status }}
+          </div>
+
+          <form @submit.prevent="submit">
+            <div class="mb-4">
+              <text-input
+                v-model="form.email"
+                :label="'Email'"
+                :type="'email'"
+                :autofocus="true"
+                :input-class="'block w-full'"
+                :required="true"
+                :autocomplete="false"
+                :maxlength="255" />
+            </div>
+
+            <div class="mb-4">
+              <text-input
+                v-model="form.password"
+                :label="'Password'"
+                :type="'password'"
+                :autofocus="true"
+                :input-class="'block w-full'"
+                :required="true"
+                :autocomplete="false"
+                :maxlength="255" />
+            </div>
+
+            <div class="mb-4 block">
+              <label class="flex items-center">
+                <breeze-checkbox v-model:checked="form.remember" name="remember" />
+                <span class="ml-2 text-sm text-gray-600"> Remember me </span>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-end">
+              <inertia-link
+                v-if="canResetPassword"
+                :href="route('password.request')"
+                class="text-sm text-blue-500 hover:underline">
+                Forgot password?
+              </inertia-link>
+
+              <pretty-button :text="'Log in'" :state="loadingState" :classes="'save ml-4'" />
+            </div>
+          </form>
         </div>
 
-        <form @submit.prevent="submit">
-          <div>
-            <text-input
-              v-model="form.email"
-              :label="'Email'"
-              :type="'email'"
-              :autofocus="true"
-              :input-class="'block w-full'"
-              :required="true"
-              :autocomplete="false"
-              :maxlength="255" />
-          </div>
-
-          <div class="mt-4">
-            <text-input
-              v-model="form.password"
-              :label="'Password'"
-              :type="'password'"
-              :autofocus="true"
-              :input-class="'block w-full'"
-              :required="true"
-              :autocomplete="false"
-              :maxlength="255" />
-          </div>
-
-          <div class="mt-4 block">
-            <label class="flex items-center">
-              <breeze-checkbox v-model:checked="form.remember" name="remember" />
-              <span class="ml-2 text-sm text-gray-600"> Remember me </span>
-            </label>
-          </div>
-
-          <div class="mt-4 flex items-center justify-end">
-            <inertia-link
-              v-if="canResetPassword"
-              :href="route('password.request')"
-              class="text-sm text-gray-600 underline hover:text-gray-900">
-              Forgot your password?
-            </inertia-link>
-
-            <breeze-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-              Log in
-            </breeze-button>
-          </div>
-        </form>
+        <div class="px-6 py-6 text-sm">
+          New to Monica?
+          <inertia-link :href="route('password.request')" class="text-blue-500 hover:underline">
+            Create an account
+          </inertia-link>
+        </div>
       </div>
     </div>
   </div>
@@ -126,10 +133,12 @@ import BreezeCheckbox from '@/Components/Checkbox.vue';
 import BreezeInput from '@/Components/Input.vue';
 import BreezeLabel from '@/Components/Label.vue';
 import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
+import PrettyButton from '@/Shared/Form/PrettyButton';
 
 export default {
   components: {
     TextInput,
+    PrettyButton,
     BreezeButton,
     BreezeCheckbox,
     BreezeInput,

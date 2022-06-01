@@ -24,7 +24,7 @@ select {
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600">You are here:</li>
             <li class="mr-2 inline">
-              <inertia-link :href="layoutData.vault.url.contacts" class="text-sky-500 hover:text-blue-900">
+              <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 Contacts
               </inertia-link>
             </li>
@@ -39,7 +39,7 @@ select {
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.contact" class="text-sky-500 hover:text-blue-900">
+              <inertia-link :href="data.url.contact" class="text-blue-500 hover:underline">
                 Profile of {{ data.contact.name }}
               </inertia-link>
             </li>

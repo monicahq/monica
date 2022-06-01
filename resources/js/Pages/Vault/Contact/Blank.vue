@@ -25,7 +25,7 @@
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600">You are here:</li>
             <li class="mr-2 inline">
-              <inertia-link :href="layoutData.vault.url.contacts" class="text-sky-500 hover:text-blue-900">
+              <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 Contacts
               </inertia-link>
             </li>
@@ -88,7 +88,7 @@
 
                 <!-- actions -->
                 <ul class="text-sm">
-                  <li class="inline cursor-pointer text-sky-500 hover:text-blue-900" @click="submit(template)">Use</li>
+                  <li class="inline cursor-pointer text-blue-500 hover:underline" @click="submit(template)">Use</li>
                 </ul>
               </div>
             </li>

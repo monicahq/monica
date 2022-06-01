@@ -123,7 +123,7 @@ input[type='checkbox'] {
     <p
       v-if="data.completed_tasks_count > 0 && !showCompletedTasks"
       @click="getCompleted()"
-      class="mx-4 mb-6 cursor-pointer text-xs text-sky-500 hover:text-blue-900">
+      class="mx-4 mb-6 cursor-pointer text-xs text-blue-500 hover:underline">
       Show completed tasks ({{ data.completed_tasks_count }})
     </p>
 

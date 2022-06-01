@@ -52,7 +52,7 @@ class ContactReminder extends Model
      *
      * @return BelongsTo
      */
-    public function contact()
+    public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);
     }
@@ -62,7 +62,7 @@ class ContactReminder extends Model
      *
      * @return BelongsToMany
      */
-    public function userNotificationChannels()
+    public function userNotificationChannels(): BelongsToMany
     {
         return $this->belongsToMany(UserNotificationChannel::class, 'contact_reminder_scheduled')->withTimestamps()->withPivot('scheduled_at', 'triggered');
     }

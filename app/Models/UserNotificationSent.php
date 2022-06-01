@@ -38,7 +38,7 @@ class UserNotificationSent extends Model
      *
      * @return BelongsTo
      */
-    public function notificationChannel()
+    public function notificationChannel(): BelongsTo
     {
         return $this->belongsTo(UserNotificationChannel::class, 'user_notification_channel_id');
     }

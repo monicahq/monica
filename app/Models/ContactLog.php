@@ -30,7 +30,7 @@ class ContactLog extends Model
      *
      * @return BelongsTo
      */
-    public function contact()
+    public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);
     }
@@ -40,7 +40,7 @@ class ContactLog extends Model
      *
      * @return BelongsTo
      */
-    public function author()
+    public function author(): BelongsTo
     {
         return $this->BelongsTo(User::class);
     }
@@ -51,7 +51,7 @@ class ContactLog extends Model
      * @param  mixed  $value
      * @return mixed
      */
-    public function getObjectAttribute($value)
+    public function getObjectAttribute($value): mixed
     {
         return json_decode($this->objects);
     }

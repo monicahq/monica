@@ -38,7 +38,7 @@ class ContactImportantDateType extends Model
      *
      * @return BelongsTo
      */
-    public function vault()
+    public function vault(): BelongsTo
     {
         return $this->belongsTo(Vault::class);
     }

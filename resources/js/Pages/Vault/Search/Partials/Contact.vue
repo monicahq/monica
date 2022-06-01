@@ -43,7 +43,7 @@
     </div>
     <ul v-if="data.length > 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
       <li v-for="contact in data" :key="contact.id" class="item-list border-b border-gray-200 p-3 hover:bg-slate-50">
-        <inertia-link :href="contact.url" class="text-sky-500 hover:text-blue-900">
+        <inertia-link :href="contact.url" class="text-blue-500 hover:underline">
           {{ contact.name }}
         </inertia-link>
       </li>

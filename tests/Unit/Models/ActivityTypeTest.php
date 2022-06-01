@@ -19,7 +19,7 @@ class ActivityTypeTest extends TestCase
     }
 
     /** @test */
-    public function it_has_many_call_reasons()
+    public function it_has_many_call_activities()
     {
         $activityType = ActivityType::factory()->create();
         Activity::factory(2)->create([

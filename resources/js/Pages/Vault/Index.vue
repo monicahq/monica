@@ -63,7 +63,7 @@
             <div class="vault-detail grid">
               <inertia-link
                 :href="vault.url.show"
-                class="border-b border-gray-200 px-3 py-1 text-lg font-medium dark:text-gray-300">
+                class="border-b border-gray-200 px-3 py-1 text-lg font-medium hover:rounded-t-lg hover:bg-slate-50 dark:text-gray-300">
                 {{ vault.name }}
               </inertia-link>
 

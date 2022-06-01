@@ -28,7 +28,7 @@ class ActivityType extends Model
      *
      * @return BelongsTo
      */
-    public function account()
+    public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
     }
@@ -38,7 +38,7 @@ class ActivityType extends Model
      *
      * @return HasMany
      */
-    public function activities()
+    public function activities(): HasMany
     {
         return $this->hasMany(Activity::class, 'activity_type_id');
     }

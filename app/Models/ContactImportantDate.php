@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class ContactImportantDate extends Model
 {
@@ -44,7 +45,7 @@ class ContactImportantDate extends Model
      *
      * @return BelongsTo
      */
-    public function contact()
+    public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);
     }
@@ -54,15 +55,17 @@ class ContactImportantDate extends Model
      *
      * @return BelongsTo
      */
-    public function contactImportantDateType()
+    public function contactImportantDateType(): BelongsTo
     {
         return $this->belongsTo(ContactImportantDateType::class);
     }
 
     /**
      * Get the important date's feed item.
+     *
+     * @return MorphOne
      */
-    public function feedItem()
+    public function feedItem(): MorphOne
     {
         return $this->morphOne(ContactFeedItem::class, 'feedable');
     }

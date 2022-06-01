@@ -137,7 +137,7 @@
             <!-- actions -->
             <ul v-if="user.id != layoutData.user.id" class="text-sm">
               <li
-                class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900"
+                class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
                 @click="showChangePermissionModal(user)">
                 Change permission
               </li>

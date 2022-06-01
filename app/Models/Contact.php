@@ -256,7 +256,7 @@ class Contact extends Model
      *
      * @return HasMany
      */
-    public function avatars()
+    public function avatars(): HasMany
     {
         return $this->hasMany(Avatar::class);
     }
@@ -266,7 +266,7 @@ class Contact extends Model
      *
      * @return HasMany
      */
-    public function tasks()
+    public function tasks(): HasMany
     {
         return $this->hasMany(ContactTask::class);
     }
@@ -276,7 +276,7 @@ class Contact extends Model
      *
      * @return HasMany
      */
-    public function calls()
+    public function calls(): HasMany
     {
         return $this->hasMany(Call::class);
     }
@@ -286,7 +286,7 @@ class Contact extends Model
      *
      * @return HasMany
      */
-    public function pets()
+    public function pets(): HasMany
     {
         return $this->hasMany(Pet::class);
     }
@@ -339,33 +339,5 @@ class Contact extends Model
                 return ImportantDateHelper::getAge($birthdate);
             }
         );
-    }
-
-    /**
-     * Get the age of the contact.
-     * The birthdate is stored in a ContactImportantDate object, of the
-     * TYPE_BIRTHDATE type. So we need to find if a date of this type exists.
-     *
-     * @return null|int
-     */
-    public function getAge(): ?int
-    {
-        $type = ContactImportantDateType::where('vault_id', $this->vault_id)
-            ->where('internal_type', ContactImportantDate::TYPE_BIRTHDATE)
-            ->first();
-
-        if (! $type) {
-            return null;
-        }
-
-        $birthdate = $this->dates()
-            ->where('contact_important_date_type_id', $type->id)
-            ->first();
-
-        if (! $birthdate) {
-            return null;
-        }
-
-        return ImportantDateHelper::getAge($birthdate);
     }
 }

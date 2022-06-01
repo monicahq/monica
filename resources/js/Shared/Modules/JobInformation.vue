@@ -65,7 +65,7 @@
           <p
             @click="showCreateCompany()"
             v-if="showCreateCompanyLink"
-            class="cursor-pointer text-sm text-sky-500 hover:text-blue-900">
+            class="cursor-pointer text-sm text-blue-500 hover:underline">
             Or create a new one
           </p>
 

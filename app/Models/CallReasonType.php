@@ -28,7 +28,7 @@ class CallReasonType extends Model
      *
      * @return BelongsTo
      */
-    public function account()
+    public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
     }
@@ -38,7 +38,7 @@ class CallReasonType extends Model
      *
      * @return HasMany
      */
-    public function callReasons()
+    public function callReasons(): HasMany
     {
         return $this->hasMany(CallReason::class);
     }

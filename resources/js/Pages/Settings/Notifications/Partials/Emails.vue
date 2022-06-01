@@ -173,13 +173,13 @@ select {
           <!-- activate/deactivate -->
           <li
             v-if="email.active"
-            class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900"
+            class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
             @click="toggle(email)">
             Deactivate
           </li>
           <li
             v-if="!email.active"
-            class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900"
+            class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
             @click="toggle(email)">
             Activate
           </li>
@@ -187,7 +187,7 @@ select {
           <!-- link to send a test email, if not already sent -->
           <li
             v-if="testEmailSentId != email.id"
-            class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900"
+            class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
             @click="sendTest(email)">
             Send test
           </li>
@@ -196,8 +196,8 @@ select {
           <li v-if="testEmailSentId == email.id" class="mr-4 inline">Test email sent!</li>
 
           <!-- view log -->
-          <li class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900">
-            <inertia-link :href="email.url.logs" class="text-sky-500 hover:text-blue-900"> View log </inertia-link>
+          <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline">
+            <inertia-link :href="email.url.logs" class="text-blue-500 hover:underline">View log</inertia-link>
           </li>
 
           <!-- delete email -->

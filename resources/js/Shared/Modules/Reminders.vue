@@ -248,7 +248,7 @@ select {
             <!-- actions -->
             <ul class="text-sm">
               <li
-                class="mr-4 inline cursor-pointer text-sky-500 hover:text-blue-900"
+                class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
                 @click="showEditReminderModal(reminder)">
                 Edit
               </li>

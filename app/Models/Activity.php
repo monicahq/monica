@@ -27,7 +27,7 @@ class Activity extends Model
      *
      * @return BelongsTo
      */
-    public function activityType()
+    public function activityType(): BelongsTo
     {
         return $this->belongsTo(ActivityType::class);
     }
