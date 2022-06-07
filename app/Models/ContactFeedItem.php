@@ -21,6 +21,7 @@ class ContactFeedItem extends Model
     const ACTION_NOTE_CREATED = 'note_created';
     const ACTION_NOTE_UPDATED = 'note_updated';
     const ACTION_NOTE_DESTROYED = 'note_destroyed';
+    const ACTION_GOAL_CREATED = 'goal_created';
     const ACTION_IMPORTANT_DATE_CREATED = 'important_date_created';
     const ACTION_IMPORTANT_DATE_UPDATED = 'important_date_updated';
     const ACTION_IMPORTANT_DATE_DESTROYED = 'important_date_destroyed';

@@ -42,7 +42,7 @@
     </div>
     <ul v-if="localNotes.length > 0">
       <li v-for="note in localNotes" :key="note.id" class="mb-4 rounded border border-gray-200 last:mb-0">
-        <div v-if="note.title" class="font-semibol mb-1 border-b border-gray-200 p-3 text-xs text-gray-600">
+        <div v-if="note.title" class="mb-1 border-b border-gray-200 p-3 text-xs font-semibold text-gray-600">
           {{ note.title }}
         </div>
         <div v-if="!note.show_full_content" class="p-3">

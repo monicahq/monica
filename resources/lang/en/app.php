@@ -78,6 +78,7 @@ return [
     'default_template_page_social' => 'Social',
     'default_template_page_feed' => 'Feed',
     'default_template_page_information' => 'Information',
+    'default_template_page_life_events' => 'Life events & goals',
 
     'module_names' => 'Contact name',
     'module_avatar' => 'Avatar',
@@ -93,6 +94,7 @@ return [
     'module_tasks' => 'Tasks',
     'module_calls' => 'Calls',
     'module_pets' => 'Pets',
+    'module_goals' => 'Goals',
 
     'module_option_default_number_of_items_to_display' => 'Default number of items to display',
 

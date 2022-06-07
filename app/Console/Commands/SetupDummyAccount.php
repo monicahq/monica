@@ -4,8 +4,11 @@ namespace App\Console\Commands;
 
 use App\Contact\ManageContact\Services\CreateContact;
 use App\Contact\ManageContactImportantDates\Services\CreateContactImportantDate;
+use App\Contact\ManageGoals\Services\CreateGoal;
+use App\Contact\ManageGoals\Services\ToggleStreak;
 use App\Contact\ManageNotes\Services\CreateNote;
 use App\Contact\ManageTasks\Services\CreateContactTask;
+use App\Exceptions\EntryAlreadyExistException;
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
 use App\Models\User;
@@ -60,6 +63,7 @@ class SetupDummyAccount extends Command
         $this->createContacts();
         $this->createNotes();
         $this->createTasks();
+        $this->createGoals();
         $this->stop();
     }
 
@@ -203,6 +207,50 @@ class SetupDummyAccount extends Command
                     'label' => $this->faker->sentence(rand(3, 6)),
                     'description' => null,
                 ]);
+            }
+        }
+    }
+
+    private function createGoals(): void
+    {
+        $this->info('☐ Create goals');
+
+        $goals = collect([
+            'Lose 5 kgs',
+            'Practice sport every day',
+            'Develop Monica every day',
+            'Kiss my wife',
+        ]);
+
+        foreach (Contact::all() as $contact) {
+            foreach ($goals->take(rand(1, 4)) as $goal) {
+                $goal = (new CreateGoal)->execute([
+                    'account_id' => $this->firstUser->account_id,
+                    'author_id' => $this->firstUser->id,
+                    'vault_id' => $contact->vault_id,
+                    'contact_id' => $contact->id,
+                    'name' => $goal,
+                ]);
+
+                for ($i = 0; $i < 4; $i++) {
+                    $date = Carbon::now()->subYears(2);
+                    for ($j = 0; $j < rand(1, 340); $j++) {
+                        $date = $date->addDays(rand(1, 3));
+
+                        try {
+                            (new ToggleStreak)->execute([
+                                'account_id' => $this->firstUser->account_id,
+                                'author_id' => $this->firstUser->id,
+                                'vault_id' => $contact->vault_id,
+                                'contact_id' => $contact->id,
+                                'goal_id' => $goal->id,
+                                'happened_at' => $date->format('Y-m-d'),
+                            ]);
+                        } catch (EntryAlreadyExistException) {
+                            continue;
+                        }
+                    }
+                }
             }
         }
     }

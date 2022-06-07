@@ -48,6 +48,10 @@ class SetupAccountTest extends TestCase
             'name' => trans('app.default_template_page_contact_information'),
             'can_be_deleted' => false,
         ]);
+        $this->assertDatabaseHas('template_pages', [
+            'name' => trans('app.default_template_page_life_events'),
+            'can_be_deleted' => true,
+        ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $regis->account_id,
             'name' => trans('app.module_notes'),
@@ -95,6 +99,10 @@ class SetupAccountTest extends TestCase
         $this->assertDatabaseHas('modules', [
             'account_id' => $regis->account_id,
             'name' => trans('app.module_pets'),
+        ]);
+        $this->assertDatabaseHas('modules', [
+            'account_id' => $regis->account_id,
+            'name' => trans('app.module_goals'),
         ]);
 
         $this->assertDatabaseHas('relationship_group_types', [

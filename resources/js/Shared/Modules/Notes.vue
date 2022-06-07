@@ -118,7 +118,7 @@
       <div v-for="note in localNotes" :key="note.id" class="mb-4 rounded border border-gray-200 last:mb-0">
         <!-- body of the note, if not being edited -->
         <div v-if="editedNoteId !== note.id">
-          <div v-if="note.title" class="font-semibol mb-1 border-b border-gray-200 p-3 text-xs text-gray-600">
+          <div v-if="note.title" class="border-b border-gray-200 p-3 text-xs font-semibold text-gray-600">
             {{ note.title }}
           </div>
 

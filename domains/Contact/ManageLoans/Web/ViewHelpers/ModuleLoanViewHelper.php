@@ -57,7 +57,7 @@ class ModuleLoanViewHelper
             'type' => $loan->type,
             'name' => $loan->name,
             'description' => $loan->description,
-            'amount_lent' => MonetaryNumberHelper::format($user, $loan->amount_lent),
+            'amount_lent' => $loan->amount_lent ? MonetaryNumberHelper::format($user, $loan->amount_lent) : null,
             'amount_lent_int' => $loan->amount_lent / 100,
             'currency_id' => $loan->currency_id,
             'currency_name' => $loan->currency ? $loan->currency->code : null,

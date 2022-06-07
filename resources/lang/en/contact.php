@@ -12,4 +12,5 @@ return [
     'feed_item_note_updated' => 'edited a note',
     'feed_item_note_destroyed' => 'deleted a note',
     'feed_item_job_information_updated' => 'updated the job information',
+    'feed_item_goal_created' => 'created a goal',
 ];

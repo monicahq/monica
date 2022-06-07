@@ -81,6 +81,7 @@ class SetupAccount implements ShouldQueue
         $this->addTemplatePageContactInformation();
         $this->addTemplatePageFeed();
         $this->addTemplatePageSocial();
+        $this->addTemplatePageLifeEvents();
         $this->addTemplatePageInformation();
         $this->addFirstInformation();
     }
@@ -296,6 +297,33 @@ class SetupAccount implements ShouldQueue
             'author_id' => $this->user->id,
             'name' => trans('app.module_pets'),
             'type' => Module::TYPE_PETS,
+            'can_be_deleted' => false,
+        ]);
+        (new AssociateModuleToTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageSocial->id,
+            'module_id' => $module->id,
+        ]);
+    }
+
+    private function addTemplatePageLifeEvents(): void
+    {
+        $templatePageSocial = (new CreateTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'name' => trans('app.default_template_page_life_events'),
+            'can_be_deleted' => true,
+        ]);
+
+        // goals
+        $module = (new CreateModule)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'name' => trans('app.module_goals'),
+            'type' => Module::TYPE_GOALS,
             'can_be_deleted' => false,
         ]);
         (new AssociateModuleToTemplatePage)->execute([

@@ -292,6 +292,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the goals associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function goals(): HasMany
+    {
+        return $this->hasMany(Goal::class);
+    }
+
+    /**
      * Get the name of the contact, according to the user preference.
      *
      * @return Attribute

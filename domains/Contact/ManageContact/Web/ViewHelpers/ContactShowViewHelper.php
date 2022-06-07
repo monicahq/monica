@@ -7,6 +7,7 @@ use App\Contact\ManageCalls\Web\ViewHelpers\ModuleCallsViewHelper;
 use App\Contact\ManageContactFeed\Web\ViewHelpers\ModuleFeedViewHelper;
 use App\Contact\ManageContactImportantDates\Web\ViewHelpers\ModuleImportantDatesViewHelper;
 use App\Contact\ManageContactName\Web\ViewHelpers\ModuleContactNameViewHelper;
+use App\Contact\ManageGoals\Web\ViewHelpers\ModuleGoalsViewHelper;
 use App\Contact\ManageJobInformation\Web\ViewHelpers\ModuleCompanyViewHelper;
 use App\Contact\ManageLabels\Web\ViewHelpers\ModuleLabelViewHelper;
 use App\Contact\ManageLoans\Web\ViewHelpers\ModuleLoanViewHelper;
@@ -195,6 +196,10 @@ class ContactShowViewHelper
 
             if ($module->type == Module::TYPE_PETS) {
                 $data = ModulePetsViewHelper::data($contact, $user);
+            }
+
+            if ($module->type == Module::TYPE_GOALS) {
+                $data = ModuleGoalsViewHelper::data($contact, $user);
             }
 
             $modulesCollection->push([

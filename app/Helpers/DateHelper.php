@@ -89,6 +89,17 @@ class DateHelper
     }
 
     /**
+     * Return the day in a format like "Mon".
+     *
+     * @param  Carbon  $date
+     * @return string
+     */
+    public static function formatShortDay(Carbon $date): string
+    {
+        return $date->isoFormat(trans('format.short_day'));
+    }
+
+    /**
      * Return the day and the month in a format like "Monday (July 29th)".
      *
      * @param  Carbon  $date

@@ -31,6 +31,8 @@ return [
     'full_date' => 'dddd, MMM Do YYYY',
     /* day as a string like "Wednesday" - see https://carbon.nesbot.com/docs/#iso-format-available-replacements */
     'day' => 'dddd',
+    /* day as a string like "Wed" - see https://carbon.nesbot.com/docs/#iso-format-available-replacements */
+    'short_day' => 'ddd',
     /* day as a string like "Jul. 29th" - see https://carbon.nesbot.com/docs/#iso-format-available-replacements */
     'day_short_month' => 'MMM Do',
 ];
