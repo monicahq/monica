@@ -47,6 +47,7 @@ class DestroyRelationshipGroupType extends BaseService implements ServiceInterfa
         $this->validateRules($data);
 
         $type = RelationshipGroupType::where('account_id', $data['account_id'])
+            ->where('can_be_deleted', true)
             ->findOrFail($data['relationship_group_type_id']);
 
         CreateAuditLog::dispatch([

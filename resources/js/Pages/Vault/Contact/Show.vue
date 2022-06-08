@@ -19,9 +19,9 @@
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600">You are here:</li>
             <li class="mr-2 inline">
-              <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
-                Contacts
-              </inertia-link>
+              <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline"
+                >Contacts</inertia-link
+              >
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -49,6 +49,8 @@
                 <avatar v-if="module.type == 'avatar'" :data="avatar" />
 
                 <contact-name v-if="module.type == 'contact_names'" :data="contactName" />
+
+                <family-summary v-if="module.type == 'family_summary'" :data="familySummary" />
 
                 <gender-pronoun v-if="module.type == 'gender_pronoun'" :data="genderPronoun" />
 
@@ -122,6 +124,7 @@ import Layout from '@/Shared/Layout';
 import ContactName from '@/Shared/Modules/ContactName';
 import GenderPronoun from '@/Shared/Modules/GenderPronoun';
 import Avatar from '@/Shared/Modules/Avatar';
+import FamilySummary from '@/Shared/Modules/FamilySummary';
 import Notes from '@/Shared/Modules/Notes';
 import ImportantDates from '@/Shared/Modules/ImportantDates';
 import Labels from '@/Shared/Modules/Labels';
@@ -141,6 +144,7 @@ export default {
     ContactName,
     GenderPronoun,
     Avatar,
+    FamilySummary,
     Notes,
     ImportantDates,
     Labels,
@@ -170,6 +174,7 @@ export default {
     return {
       avatar: [],
       contactName: [],
+      familySummary: [],
       genderPronoun: [],
       importantDates: [],
       feed: [],
@@ -220,6 +225,13 @@ export default {
       if (this.data.contact_information.findIndex((x) => x.type == 'company') > -1) {
         this.jobInformation =
           this.data.contact_information[this.data.contact_information.findIndex((x) => x.type == 'company')].data;
+      }
+
+      if (this.data.contact_information.findIndex((x) => x.type == 'family_summary') > -1) {
+        this.familySummary =
+          this.data.contact_information[
+            this.data.contact_information.findIndex((x) => x.type == 'family_summary')
+          ].data;
       }
     }
 

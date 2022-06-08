@@ -14,6 +14,7 @@ use App\Contact\ManageLoans\Web\ViewHelpers\ModuleLoanViewHelper;
 use App\Contact\ManageNotes\Web\ViewHelpers\ModuleNotesViewHelper;
 use App\Contact\ManagePets\Web\ViewHelpers\ModulePetsViewHelper;
 use App\Contact\ManagePronouns\Web\ViewHelpers\ModuleGenderPronounViewHelper;
+use App\Contact\ManageRelationships\Web\ViewHelpers\ModuleFamilySummaryViewHelper;
 use App\Contact\ManageRelationships\Web\ViewHelpers\ModuleRelationshipViewHelper;
 use App\Contact\ManageReminders\Web\ViewHelpers\ModuleRemindersViewHelper;
 use App\Contact\ManageTasks\Web\ViewHelpers\ModuleContactTasksViewHelper;
@@ -145,6 +146,10 @@ class ContactShowViewHelper
 
             if ($module->type == Module::TYPE_COMPANY) {
                 $data = ModuleCompanyViewHelper::data($contact);
+            }
+
+            if ($module->type == Module::TYPE_FAMILY_SUMMARY) {
+                $data = ModuleFamilySummaryViewHelper::data($contact, $user);
             }
 
             $modulesCollection->push([

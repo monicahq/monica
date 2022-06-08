@@ -16,8 +16,8 @@ class RelationshipType extends Model
     /**
      * Possible types.
      */
-    const TYPE_FAMILY = 'family';
-    const TYPE_LOVE = 'love';
+    const TYPE_LOVE = 'family';
+    const TYPE_CHILD = 'child';
 
     /**
      * The attributes that are mass assignable.
@@ -29,6 +29,7 @@ class RelationshipType extends Model
         'name',
         'name_reverse_relationship',
         'can_be_deleted',
+        'type',
     ];
 
     /**

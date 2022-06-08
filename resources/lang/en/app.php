@@ -83,6 +83,7 @@ return [
     'module_names' => 'Contact name',
     'module_avatar' => 'Avatar',
     'module_notes' => 'Notes',
+    'module_family_summary' => 'Family summary',
     'module_feed' => 'Contact feed',
     'module_relationships' => 'Relationships',
     'module_gender_pronoun' => 'Gender and pronoun',

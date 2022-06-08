@@ -9,6 +9,7 @@ use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
 use App\Models\Module;
 use App\Models\RelationshipGroupType;
+use App\Models\RelationshipType;
 use App\Models\Template;
 use App\Models\TemplatePage;
 use App\Models\User;
@@ -165,6 +166,22 @@ class SetupAccount implements ShouldQueue
             'author_id' => $this->user->id,
             'name' => trans('app.module_names'),
             'type' => Module::TYPE_CONTACT_NAMES,
+            'can_be_deleted' => false,
+        ]);
+        (new AssociateModuleToTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageContact->id,
+            'module_id' => $module->id,
+        ]);
+
+        // family summary
+        $module = (new CreateModule)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'name' => trans('app.module_family_summary'),
+            'type' => Module::TYPE_FAMILY_SUMMARY,
             'can_be_deleted' => false,
         ]);
         (new AssociateModuleToTemplatePage)->execute([
@@ -513,31 +530,43 @@ class SetupAccount implements ShouldQueue
                 'name' => trans('account.relationship_type_partner'),
                 'name_reverse_relationship' => trans('account.relationship_type_partner'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => false,
+                'type' => RelationshipType::TYPE_LOVE,
             ],
             [
                 'name' => trans('account.relationship_type_spouse'),
                 'name_reverse_relationship' => trans('account.relationship_type_spouse'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => false,
+                'type' => RelationshipType::TYPE_LOVE,
             ],
             [
                 'name' => trans('account.relationship_type_date'),
                 'name_reverse_relationship' => trans('account.relationship_type_date'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => true,
+                'type' => null,
             ],
             [
                 'name' => trans('account.relationship_type_lover'),
                 'name_reverse_relationship' => trans('account.relationship_type_lover'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => true,
+                'type' => null,
             ],
             [
                 'name' => trans('account.relationship_type_inlovewith'),
                 'name_reverse_relationship' => trans('account.relationship_type_lovedby'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => true,
+                'type' => null,
             ],
             [
                 'name' => trans('account.relationship_type_ex'),
                 'name_reverse_relationship' => trans('account.relationship_type_ex'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => true,
+                'type' => null,
             ],
         ]);
 
@@ -555,31 +584,43 @@ class SetupAccount implements ShouldQueue
                 'name' => trans('account.relationship_type_parent'),
                 'name_reverse_relationship' => trans('account.relationship_type_child'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => false,
+                'type' => RelationshipType::TYPE_CHILD,
             ],
             [
                 'name' => trans('account.relationship_type_sibling'),
                 'name_reverse_relationship' => trans('account.relationship_type_sibling'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => true,
+                'type' => null,
             ],
             [
                 'name' => trans('account.relationship_type_grandparent'),
                 'name_reverse_relationship' => trans('account.relationship_type_grandchild'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => true,
+                'type' => null,
             ],
             [
                 'name' => trans('account.relationship_type_uncle'),
                 'name_reverse_relationship' => trans('account.relationship_type_nephew'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => true,
+                'type' => null,
             ],
             [
                 'name' => trans('account.relationship_type_cousin'),
                 'name_reverse_relationship' => trans('account.relationship_type_cousin'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => true,
+                'type' => null,
             ],
             [
                 'name' => trans('account.relationship_type_godfather'),
                 'name_reverse_relationship' => trans('account.relationship_type_godson'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => true,
+                'type' => null,
             ],
         ]);
 
@@ -596,11 +637,15 @@ class SetupAccount implements ShouldQueue
                 'name' => trans('account.relationship_type_friend'),
                 'name_reverse_relationship' => trans('account.relationship_type_friend'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => true,
+                'type' => null,
             ],
             [
                 'name' => trans('account.relationship_type_bestfriend'),
                 'name_reverse_relationship' => trans('account.relationship_type_bestfriend'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => true,
+                'type' => null,
             ],
         ]);
 
@@ -617,16 +662,22 @@ class SetupAccount implements ShouldQueue
                 'name' => trans('account.relationship_type_colleague'),
                 'name_reverse_relationship' => trans('account.relationship_type_colleague'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => true,
+                'type' => null,
             ],
             [
                 'name' => trans('account.relationship_type_subordinate'),
                 'name_reverse_relationship' => trans('account.relationship_type_boss'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => true,
+                'type' => null,
             ],
             [
                 'name' => trans('account.relationship_type_mentor'),
                 'name_reverse_relationship' => trans('account.relationship_type_protege'),
                 'relationship_group_type_id' => $group->id,
+                'can_be_deleted' => true,
+                'type' => null,
             ],
         ]);
     }

@@ -52,6 +52,7 @@ class DestroyRelationshipType extends BaseService implements ServiceInterface
             ->findOrFail($data['relationship_group_type_id']);
 
         $type = RelationshipType::where('relationship_group_type_id', $data['relationship_group_type_id'])
+            ->where('can_be_deleted', true)
             ->findOrFail($data['relationship_type_id']);
 
         CreateAuditLog::dispatch([

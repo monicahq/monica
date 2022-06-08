@@ -25,6 +25,7 @@ class CreateRelationshipType extends BaseService implements ServiceInterface
             'name' => 'required|string|max:255',
             'name_reverse_relationship' => 'required|string|max:255',
             'can_be_deleted' => 'required|boolean',
+            'type' => 'nullable|string|max:255',
         ];
     }
 
@@ -59,6 +60,7 @@ class CreateRelationshipType extends BaseService implements ServiceInterface
             'name' => $data['name'],
             'name_reverse_relationship' => $data['name_reverse_relationship'],
             'can_be_deleted' => $data['can_be_deleted'],
+            'type' => $this->valueOrNull($data, 'type'),
         ]);
 
         CreateAuditLog::dispatch([

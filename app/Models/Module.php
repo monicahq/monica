@@ -18,6 +18,7 @@ class Module extends Model
     const TYPE_NOTES = 'notes';
     const TYPE_CONTACT_NAMES = 'contact_names';
     const TYPE_AVATAR = 'avatar';
+    const TYPE_FAMILY_SUMMARY = 'family_summary';
     const TYPE_COMPANY = 'company';
     const TYPE_FEED = 'feed';
     const TYPE_GENDER_PRONOUN = 'gender_pronoun';
