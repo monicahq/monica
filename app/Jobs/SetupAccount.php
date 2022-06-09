@@ -473,6 +473,7 @@ class SetupAccount implements ShouldQueue
         $this->addEmotions();
         $this->addActivityTypes();
         $this->addLifeEventCategories();
+        $this->addGiftOccasions();
     }
 
     /**
@@ -1340,6 +1341,37 @@ class SetupAccount implements ShouldQueue
                 'can_be_deleted' => false,
                 'type' => LifeEventType::TYPE_DENTIST,
                 'position' => 9,
+            ],
+        ]);
+    }
+
+    private function addGiftOccasions(): void
+    {
+        DB::table('gift_occasions')->insert([
+            [
+                'account_id' => $this->user->account_id,
+                'label' => trans('account.gift_occasion_birthday'),
+                'position' => 1,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'label' => trans('account.gift_occasion_anniversary'),
+                'position' => 2,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'label' => trans('account.gift_occasion_christmas'),
+                'position' => 3,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'label' => trans('account.gift_occasion_just_because'),
+                'position' => 4,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'label' => trans('account.gift_occasion_wedding'),
+                'position' => 5,
             ],
         ]);
     }

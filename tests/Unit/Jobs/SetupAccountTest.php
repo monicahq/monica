@@ -505,5 +505,26 @@ class SetupAccountTest extends TestCase
             'label_translation_key' => 'account.default_life_event_type_first_kiss',
             'can_be_deleted' => false,
         ]);
+
+        $this->assertDatabaseHas('gift_occasions', [
+            'label' => 'Birthday',
+            'position' => 1,
+        ]);
+        $this->assertDatabaseHas('gift_occasions', [
+            'label' => 'Anniversary',
+            'position' => 2,
+        ]);
+        $this->assertDatabaseHas('gift_occasions', [
+            'label' => 'Christmas',
+            'position' => 3,
+        ]);
+        $this->assertDatabaseHas('gift_occasions', [
+            'label' => 'Just because',
+            'position' => 4,
+        ]);
+        $this->assertDatabaseHas('gift_occasions', [
+            'label' => 'Wedding',
+            'position' => 5,
+        ]);
     }
 }

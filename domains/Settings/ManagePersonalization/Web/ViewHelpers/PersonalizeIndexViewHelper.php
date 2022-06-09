@@ -22,6 +22,7 @@ class PersonalizeIndexViewHelper
                 'manage_call_reasons' => route('settings.personalize.call_reasons.index'),
                 'manage_activity_types' => route('settings.personalize.activity.index'),
                 'manage_life_event_categories' => route('settings.personalize.life_event_categories.index'),
+                'manage_gift_occasions' => route('settings.personalize.gift_occasions.index'),
             ],
         ];
     }

@@ -30,6 +30,8 @@ use App\Settings\ManageContactInformationTypes\Web\Controllers\PersonalizeContat
 use App\Settings\ManageCurrencies\Web\Controllers\CurrencyController;
 use App\Settings\ManageCurrencies\Web\Controllers\PersonalizeCurrencyController;
 use App\Settings\ManageGenders\Web\Controllers\ManageGenderController;
+use App\Settings\ManageGiftOccasions\Web\Controllers\PersonalizeGiftOccasionController;
+use App\Settings\ManageGiftOccasions\Web\Controllers\PersonalizeGiftOccasionsPositionController;
 use App\Settings\ManageLifeEventCategories\Web\Controllers\PersonalizeLifeEventCategoriesController;
 use App\Settings\ManageLifeEventCategories\Web\Controllers\PersonalizeLifeEventTypesController;
 use App\Settings\ManageLifeEventCategories\Web\Controllers\PersonalizeLifeEventTypesPositionController;
@@ -300,6 +302,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::put('lifeEventCategories/{lifeEventCategory}/lifeEventTypes/{lifeEventType}', [PersonalizeLifeEventTypesController::class, 'update'])->name('life_event_types.update');
                 Route::delete('lifeEventCategories/{lifeEventCategory}/lifeEventTypes/{lifeEventType}', [PersonalizeLifeEventTypesController::class, 'destroy'])->name('life_event_types.destroy');
                 Route::post('lifeEventCategories/{lifeEventCategory}/lifeEventTypes/{lifeEventType}/order', [PersonalizeLifeEventTypesPositionController::class, 'update'])->name('life_event_types.order.update');
+
+                // gift occasions
+                Route::get('giftOccasions', [PersonalizeGiftOccasionController::class, 'index'])->name('gift_occasions.index');
+                Route::post('giftOccasions', [PersonalizeGiftOccasionController::class, 'store'])->name('gift_occasions.store');
+                Route::put('giftOccasions/{giftOccasion}', [PersonalizeGiftOccasionController::class, 'update'])->name('gift_occasions.update');
+                Route::delete('giftOccasions/{giftOccasion}', [PersonalizeGiftOccasionController::class, 'destroy'])->name('gift_occasions.destroy');
+                Route::post('giftOccasions/{giftOccasion}/position', [PersonalizeGiftOccasionsPositionController::class, 'update'])->name('gift_occasions.order.update');
 
                 // genders
                 Route::get('genders', [ManageGenderController::class, 'index'])->name('gender.index');

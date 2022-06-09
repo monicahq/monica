@@ -25,7 +25,7 @@ jobs:
       - name: Setup PHP ${{ matrix.php-version }}
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0
+          php-version: 8.1
           coverage: none
 
       - name: Get Composer Cache Directory

@@ -103,6 +103,12 @@
                 >Manage pet categories</inertia-link
               >
             </li>
+            <li class="mb-2">
+              <span class="mr-2">🎁</span>
+              <inertia-link :href="data.url.manage_gift_occasions" class="text-blue-500 hover:underline"
+                >Manage gift occasions</inertia-link
+              >
+            </li>
             <li class="">
               <span class="mr-2">💵</span>
               <inertia-link :href="data.url.manage_currencies" class="text-blue-500 hover:underline"

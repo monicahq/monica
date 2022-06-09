@@ -47,6 +47,12 @@ return [
     'relationship_type_work' => 'Work',
     'relationship_type_friend_title' => 'Friend',
 
+    'gift_occasion_birthday' => 'Birthday',
+    'gift_occasion_anniversary' => 'Anniversary',
+    'gift_occasion_christmas' => 'Christmas',
+    'gift_occasion_just_because' => 'Just because',
+    'gift_occasion_wedding' => 'Wedding',
+
     'relationship_type_partner' => 'significant other',
     'relationship_type_spouse' => 'spouse',
     'relationship_type_date' => 'date',
