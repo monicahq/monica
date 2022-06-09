@@ -29,6 +29,7 @@ class Address extends Model
         'longitude',
         'lived_from_at',
         'lived_until_at',
+        'is_past_address',
     ];
 
     /**
@@ -39,6 +40,15 @@ class Address extends Model
     protected $dates = [
         'lived_from_at',
         'lived_until_at',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_past_address' => 'boolean',
     ];
 
     /**

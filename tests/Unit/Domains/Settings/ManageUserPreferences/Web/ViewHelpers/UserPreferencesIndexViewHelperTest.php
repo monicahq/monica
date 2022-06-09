@@ -24,7 +24,7 @@ class UserPreferencesIndexViewHelperTest extends TestCase
         $array = UserPreferencesIndexViewHelper::data($user);
 
         $this->assertEquals(
-            5,
+            6,
             count($array)
         );
 
@@ -33,6 +33,7 @@ class UserPreferencesIndexViewHelperTest extends TestCase
         $this->assertArrayHasKey('timezone', $array);
         $this->assertArrayHasKey('url', $array);
         $this->assertArrayHasKey('number_format', $array);
+        $this->assertArrayHasKey('maps', $array);
 
         $this->assertEquals(
             [
@@ -191,6 +192,56 @@ class UserPreferencesIndexViewHelperTest extends TestCase
                 ],
             ],
             $array['numbers']->toArray()
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_data_needed_for_maps(): void
+    {
+        Carbon::setTestNow(Carbon::create(2018, 1, 1));
+        $user = User::factory()->create([
+            'default_map_site' => User::MAPS_SITE_GOOGLE_MAPS,
+        ]);
+
+        $array = UserPreferencesIndexViewHelper::dtoMapsPreferences($user);
+        $this->assertEquals(
+            4,
+            count($array)
+        );
+
+        $this->assertArrayHasKey('types', $array);
+        $this->assertArrayHasKey('default_map_site', $array);
+        $this->assertArrayHasKey('default_map_site_i18n', $array);
+        $this->assertArrayHasKey('url', $array);
+
+        $this->assertEquals(
+            [
+                'store' => env('APP_URL').'/settings/preferences/maps',
+            ],
+            $array['url']
+        );
+
+        $this->assertEquals(
+            User::MAPS_SITE_GOOGLE_MAPS,
+            $array['default_map_site']
+        );
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'id' => 1,
+                    'type' => trans('account.maps_site_google_maps'),
+                    'description' => trans('account.maps_site_google_maps_description'),
+                    'value' => User::MAPS_SITE_GOOGLE_MAPS,
+                ],
+                1 => [
+                    'id' => 2,
+                    'type' => trans('account.maps_site_open_street_maps'),
+                    'description' => trans('account.maps_site_open_street_maps_description'),
+                    'value' => User::MAPS_SITE_OPEN_STREET_MAPS,
+                ],
+            ],
+            $array['types']->toArray()
         );
     }
 }

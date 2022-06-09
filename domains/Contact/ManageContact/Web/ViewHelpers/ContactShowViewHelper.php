@@ -4,6 +4,7 @@ namespace App\Contact\ManageContact\Web\ViewHelpers;
 
 use App\Contact\ManageAvatar\Web\ViewHelpers\ModuleAvatarViewHelper;
 use App\Contact\ManageCalls\Web\ViewHelpers\ModuleCallsViewHelper;
+use App\Contact\ManageContactAddresses\Web\ViewHelpers\ModuleContactAddressesViewHelper;
 use App\Contact\ManageContactFeed\Web\ViewHelpers\ModuleFeedViewHelper;
 use App\Contact\ManageContactImportantDates\Web\ViewHelpers\ModuleImportantDatesViewHelper;
 use App\Contact\ManageContactName\Web\ViewHelpers\ModuleContactNameViewHelper;
@@ -205,6 +206,10 @@ class ContactShowViewHelper
 
             if ($module->type == Module::TYPE_GOALS) {
                 $data = ModuleGoalsViewHelper::data($contact, $user);
+            }
+
+            if ($module->type == Module::TYPE_ADDRESSES) {
+                $data = ModuleContactAddressesViewHelper::data($contact, $user);
             }
 
             $modulesCollection->push([

@@ -31,6 +31,7 @@ class Module extends Model
     const TYPE_CALLS = 'calls';
     const TYPE_PETS = 'pets';
     const TYPE_GOALS = 'goals';
+    const TYPE_ADDRESSES = 'addresses';
 
     /**
      * The attributes that are mass assignable.

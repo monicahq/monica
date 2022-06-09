@@ -362,6 +362,22 @@ class SetupAccount implements ShouldQueue
             'can_be_deleted' => true,
         ]);
 
+        // Addresses
+        $module = (new CreateModule)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'name' => trans('app.module_addresses'),
+            'type' => Module::TYPE_ADDRESSES,
+            'can_be_deleted' => false,
+        ]);
+        (new AssociateModuleToTemplatePage)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageInformation->id,
+            'module_id' => $module->id,
+        ]);
+
         // Notes
         $module = (new CreateModule)->execute([
             'account_id' => $this->user->account_id,

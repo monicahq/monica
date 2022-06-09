@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Account;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -26,6 +27,7 @@ class UserFactory extends Factory
             'is_account_administrator' => false,
             'name_order' => '%first_name% %last_name%',
             'date_format' => 'MMM DD, YYYY',
+            'default_map_site' => User::MAPS_SITE_GOOGLE_MAPS,
         ];
     }
 

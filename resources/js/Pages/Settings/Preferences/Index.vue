@@ -52,6 +52,8 @@
         <number-format :data="data.number_format" />
 
         <timezone :data="data.timezone" />
+
+        <maps :data="data.maps" />
       </div>
     </main>
   </layout>
@@ -63,6 +65,7 @@ import NameOrder from '@/Pages/Settings/Preferences/Partials/NameOrder';
 import DateFormat from '@/Pages/Settings/Preferences/Partials/DateFormat';
 import NumberFormat from '@/Pages/Settings/Preferences/Partials/NumberFormat';
 import Timezone from '@/Pages/Settings/Preferences/Partials/Timezone';
+import Maps from '@/Pages/Settings/Preferences/Partials/Maps';
 
 export default {
   components: {
@@ -71,6 +74,7 @@ export default {
     DateFormat,
     Timezone,
     NumberFormat,
+    Maps,
   },
 
   props: {

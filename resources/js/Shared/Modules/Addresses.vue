@@ -4,8 +4,20 @@
   top: -2px;
 }
 
-.icon-note {
-  top: -1px;
+.item-list {
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
 }
 </style>
 
@@ -14,197 +26,415 @@
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 sm:flex">
       <div class="mb-2 sm:mb-0">
-        <span class="relative">
+        <span class="relative mr-1">
           <svg
+            xmlns="http://www.w3.org/2000/svg"
             class="icon-sidebar relative inline h-4 w-4"
-            viewBox="0 0 24 24"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg">
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2">
             <path
-              d="M6 6C6 5.44772 6.44772 5 7 5H17C17.5523 5 18 5.44772 18 6C18 6.55228 17.5523 7 17 7H7C6.44771 7 6 6.55228 6 6Z"
-              fill="currentColor" />
-            <path
-              d="M6 10C6 9.44771 6.44772 9 7 9H17C17.5523 9 18 9.44771 18 10C18 10.5523 17.5523 11 17 11H7C6.44771 11 6 10.5523 6 10Z"
-              fill="currentColor" />
-            <path
-              d="M7 13C6.44772 13 6 13.4477 6 14C6 14.5523 6.44771 15 7 15H17C17.5523 15 18 14.5523 18 14C18 13.4477 17.5523 13 17 13H7Z"
-              fill="currentColor" />
-            <path
-              d="M6 18C6 17.4477 6.44772 17 7 17H11C11.5523 17 12 17.4477 12 18C12 18.5523 11.5523 19 11 19H7C6.44772 19 6 18.5523 6 18Z"
-              fill="currentColor" />
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M2 4C2 2.34315 3.34315 1 5 1H19C20.6569 1 22 2.34315 22 4V20C22 21.6569 20.6569 23 19 23H5C3.34315 23 2 21.6569 2 20V4ZM5 3H19C19.5523 3 20 3.44771 20 4V20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V4C4 3.44772 4.44771 3 5 3Z"
-              fill="currentColor" />
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </span>
 
-        Addresses
+        <span class="font-semibold">Addresses</span>
       </div>
       <pretty-button
         :text="'Add an address'"
         :icon="'plus'"
         :classes="'sm:w-fit w-full'"
-        @click="showCreateNoteModal" />
+        @click="showCreateAddressModal" />
     </div>
 
-    <!-- add a note modal -->
-    <form
-      v-if="createNoteModalShown"
-      class="mb-6 rounded-lg border border-gray-200 bg-white"
-      @submit.prevent="submit()">
-      <div class="border-b border-gray-200 p-5">
-        <errors :errors="form.errors" />
-
-        <text-area
-          v-model="form.body"
-          :label="'Body'"
-          :rows="10"
-          :required="true"
-          :maxlength="65535"
-          :textarea-class="'block w-full mb-3'" />
-
-        <!-- cta to add a title -->
-        <span
-          v-if="!titleFieldShown"
-          class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
-          @click="showTitleField">
-          + add title
-        </span>
-
-        <!-- title -->
-        <text-input
-          v-if="titleFieldShown"
-          :ref="'newTitle'"
-          v-model="form.title"
-          :label="'Title'"
-          :type="'text'"
-          :input-class="'block w-full'"
-          :required="false"
-          :autocomplete="false"
-          :maxlength="255"
-          @esc-key-pressed="createNoteModalShown = false" />
-      </div>
-
-      <div class="flex justify-between p-5">
-        <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="createNoteModalShown = false" />
-        <pretty-button :text="'Save'" :state="loadingState" :icon="'check'" :classes="'save'" />
-      </div>
-    </form>
-
-    <!-- notes -->
-    <div v-if="localNotes.length > 0">
-      <div v-for="note in localNotes" :key="note.id" class="mb-4 rounded border border-gray-200 last:mb-0">
-        <!-- body of the note, if not being edited -->
-        <div v-if="editedNoteId !== note.id">
-          <div v-if="note.title" class="font-semibol mb-1 border-b border-gray-200 p-3 text-xs text-gray-600">
-            {{ note.title }}
-          </div>
-
-          <!-- excerpt, if it exists -->
-          <div v-if="!note.show_full_content && note.body_excerpt" class="p-3">
-            {{ note.body_excerpt }}
-            <span class="cursor-pointer text-blue-500 hover:underline" @click="showFullBody(note)"> View all </span>
-          </div>
-          <!-- full body -->
-          <div v-else class="p-3">
-            {{ note.body }}
-          </div>
-
-          <!-- details -->
-          <div
-            class="flex justify-between border-t border-gray-200 px-3 py-1 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50">
-            <div>
-              <!-- date -->
-              <div class="relative mr-3 inline">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="icon-note relative inline h-4 w-4 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                {{ note.written_at }}
-              </div>
-
-              <!-- author -->
-              <div class="relative mr-3 inline">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="icon-note relative inline h-4 w-4 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                {{ note.author }}
-              </div>
-            </div>
-            <div>
-              <hover-menu
-                :show-edit="true"
-                :show-delete="true"
-                @edit="showEditNoteModal(note)"
-                @delete="destroy(note)" />
-            </div>
-          </div>
-        </div>
-
-        <!-- edit modal form -->
-        <form
-          v-if="editedNoteId === note.id"
-          class="mb-6 rounded-lg border border-gray-200 bg-white"
-          @submit.prevent="update(note)">
-          <div class="border-b border-gray-200 p-5">
+    <div>
+      <!-- add an address modal -->
+      <form
+        v-if="createAddressModalShown"
+        class="bg-form mb-6 rounded-lg border border-gray-200"
+        @submit.prevent="submit()">
+        <div class="border-b border-gray-200">
+          <div v-if="form.errors.length > 0" class="p-5">
             <errors :errors="form.errors" />
+          </div>
 
-            <text-area
-              v-model="form.body"
-              :label="'Body'"
-              :rows="10"
-              :required="true"
-              :maxlength="65535"
-              :textarea-class="'block w-full mb-3'" />
+          <div class="grid grid-cols-2 gap-4 border-b border-gray-200 p-5">
+            <dropdown
+              v-model="form.address_type_id"
+              :data="data.address_types"
+              :required="false"
+              :placeholder="'Choose a value'"
+              :dropdown-class="'block w-full'"
+              :label="'Address type'" />
+          </div>
 
-            <!-- title -->
+          <!-- street + city -->
+          <div class="grid grid-cols-2 gap-4 border-b border-gray-200 p-5">
             <text-input
-              :ref="'newTitle'"
-              v-model="form.title"
-              :label="'Title'"
+              :ref="'street'"
+              v-model="form.street"
+              :label="'Street'"
               :type="'text'"
-              :input-class="'block w-full'"
+              :autofocus="true"
+              :input-class="'w-full mr-2'"
               :required="false"
               :autocomplete="false"
               :maxlength="255"
-              @esc-key-pressed="editedNoteId = 0" />
+              @esc-key-pressed="createAddressModalShown = false" />
+
+            <text-input
+              v-model="form.city"
+              :label="'City'"
+              :type="'text'"
+              :autofocus="true"
+              :input-class="'w-full'"
+              :required="false"
+              :autocomplete="false"
+              :maxlength="255"
+              @esc-key-pressed="createAddressModalShown = false" />
           </div>
 
-          <div class="flex justify-between p-5">
-            <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="editedNoteId = 0" />
-            <pretty-button :text="'Update'" :state="loadingState" :icon="'check'" :classes="'save'" />
+          <!-- province + postal code + country -->
+          <div class="grid grid-cols-3 gap-4 border-b border-gray-200 p-5">
+            <text-input
+              v-model="form.province"
+              :label="'Province'"
+              :type="'text'"
+              :autofocus="true"
+              :input-class="'w-full mr-2'"
+              :required="false"
+              :autocomplete="false"
+              :maxlength="255"
+              @esc-key-pressed="createAddressModalShown = false" />
+
+            <text-input
+              v-model="form.postal_code"
+              :label="'Postal code'"
+              :type="'text'"
+              :autofocus="true"
+              :input-class="'w-full'"
+              :required="false"
+              :autocomplete="false"
+              :maxlength="255"
+              @esc-key-pressed="createAddressModalShown = false" />
+
+            <text-input
+              v-model="form.country"
+              :label="'Country'"
+              :type="'text'"
+              :autofocus="true"
+              :input-class="'w-full'"
+              :required="false"
+              :autocomplete="false"
+              :maxlength="255"
+              @esc-key-pressed="createAddressModalShown = false" />
           </div>
-        </form>
+
+          <!-- past address -->
+          <div class="p-5">
+            <input
+              :id="form.is_past_address"
+              :name="form.is_past_address"
+              v-model="form.is_past_address"
+              type="checkbox"
+              class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
+            <label :for="form.is_past_address" class="ml-2 cursor-pointer text-gray-900">
+              This address is not active anymore
+            </label>
+          </div>
+        </div>
+
+        <div class="flex justify-between p-5">
+          <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="createAddressModalShown = false" />
+          <pretty-button :text="'Save'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        </div>
+      </form>
+
+      <!-- list of addresses -->
+      <div v-if="localActiveAddresses.length > 0" class="mb-2 rounded-lg border border-gray-200 bg-white">
+        <div
+          v-for="address in localActiveAddresses"
+          :key="address.id"
+          class="item-list border-b border-gray-200 hover:bg-slate-50">
+          <div v-if="address.id != editedAddressId" class="flex items-center justify-between p-3">
+            <!-- address detail -->
+            <div>
+              <p v-if="address.type" class="mb-2 text-sm font-semibold">{{ address.type.name }}</p>
+              <div>
+                <p v-if="address.street">{{ address.street }}</p>
+                <p v-if="address.postal_code || address.city">{{ address.postal_code }} {{ address.city }}</p>
+                <p v-if="address.country">{{ address.country }}</p>
+              </div>
+            </div>
+
+            <!-- actions -->
+            <ul class="text-sm">
+              <li class="mr-2 inline">
+                <a :href="address.url.show" target="_blank" class="mr-2 text-sm text-blue-500 hover:underline"
+                  >View on map</a
+                >
+              </li>
+              <li class="inline cursor-pointer text-blue-500 hover:underline" @click="showEditAddressModal(address)">
+                Edit
+              </li>
+              <li class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(address)">
+                Delete
+              </li>
+            </ul>
+          </div>
+
+          <!-- edit address -->
+          <form v-if="address.id === editedAddressId" class="bg-form" @submit.prevent="update(address)">
+            <div class="border-b border-gray-200">
+              <div v-if="form.errors.length > 0" class="p-5">
+                <errors :errors="form.errors" />
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 border-b border-gray-200 p-5">
+                <dropdown
+                  v-model="form.address_type_id"
+                  :data="data.address_types"
+                  :required="false"
+                  :placeholder="'Choose a value'"
+                  :dropdown-class="'block w-full'"
+                  :label="'Address type'" />
+              </div>
+
+              <!-- street + city -->
+              <div class="grid grid-cols-2 gap-4 border-b border-gray-200 p-5">
+                <text-input
+                  :ref="'street'"
+                  v-model="form.street"
+                  :label="'Street'"
+                  :type="'text'"
+                  :autofocus="true"
+                  :input-class="'w-full mr-2'"
+                  :required="false"
+                  :autocomplete="false"
+                  :maxlength="255"
+                  @esc-key-pressed="createAddressModalShown = false" />
+
+                <text-input
+                  v-model="form.city"
+                  :label="'City'"
+                  :type="'text'"
+                  :autofocus="true"
+                  :input-class="'w-full'"
+                  :required="false"
+                  :autocomplete="false"
+                  :maxlength="255"
+                  @esc-key-pressed="createAddressModalShown = false" />
+              </div>
+
+              <!-- province + postal code + country -->
+              <div class="grid grid-cols-3 gap-4 border-b border-gray-200 p-5">
+                <text-input
+                  v-model="form.province"
+                  :label="'Province'"
+                  :type="'text'"
+                  :autofocus="true"
+                  :input-class="'w-full mr-2'"
+                  :required="false"
+                  :autocomplete="false"
+                  :maxlength="255"
+                  @esc-key-pressed="createAddressModalShown = false" />
+
+                <text-input
+                  v-model="form.postal_code"
+                  :label="'Postal code'"
+                  :type="'text'"
+                  :autofocus="true"
+                  :input-class="'w-full'"
+                  :required="false"
+                  :autocomplete="false"
+                  :maxlength="255"
+                  @esc-key-pressed="createAddressModalShown = false" />
+
+                <text-input
+                  v-model="form.country"
+                  :label="'Country'"
+                  :type="'text'"
+                  :autofocus="true"
+                  :input-class="'w-full'"
+                  :required="false"
+                  :autocomplete="false"
+                  :maxlength="255"
+                  @esc-key-pressed="createAddressModalShown = false" />
+              </div>
+
+              <!-- past address -->
+              <div class="p-5">
+                <input
+                  :id="form.is_past_address"
+                  :name="form.is_past_address"
+                  v-model="form.is_past_address"
+                  type="checkbox"
+                  class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
+                <label :for="form.is_past_address" class="ml-2 cursor-pointer text-gray-900">
+                  This address is not active anymore
+                </label>
+              </div>
+            </div>
+
+            <div class="flex justify-between p-5">
+              <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="editedAddressId = 0" />
+              <pretty-button :text="'Save'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+            </div>
+          </form>
+        </div>
       </div>
 
-      <!-- view all button -->
-      <div class="text-center">
-        <inertia-link :href="data.url.index" class="text-blue-500 hover:underline"> View all notes </inertia-link>
+      <!-- blank state -->
+      <div v-if="localActiveAddresses.length == 0" class="mb-2 rounded-lg border border-gray-200 bg-white">
+        <p class="p-5 text-center">There are no active addresses yet.</p>
       </div>
-    </div>
 
-    <!-- blank state -->
-    <div v-if="localNotes.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
-      <p class="p-5 text-center">There are no notes yet.</p>
+      <!-- view past addresses link -->
+      <p
+        v-if="localInactiveAddresses.length > 0"
+        @click="toggleInactiveAdresses"
+        class="mx-4 mb-2 cursor-pointer text-xs text-blue-500 hover:underline">
+        Previous addresses ({{ localInactiveAddresses.length }})
+      </p>
+
+      <!-- list of previous addresses -->
+      <div
+        v-if="localInactiveAddresses.length > 0 && inactiveAddressesShown"
+        class="mx-4 mb-4 rounded-lg border border-gray-200 bg-white">
+        <div
+          v-for="address in localInactiveAddresses"
+          :key="address.id"
+          class="item-list border-b border-gray-200 hover:bg-slate-50">
+          <div v-if="address.id != editedAddressId" class="flex items-center justify-between p-3">
+            <!-- address detail -->
+            <div>
+              <p v-if="address.type" class="mb-2 text-sm font-semibold">{{ address.type.name }}</p>
+              <div>
+                <p v-if="address.street">{{ address.street }}</p>
+                <p v-if="address.postal_code || address.city">{{ address.postal_code }} {{ address.city }}</p>
+                <p v-if="address.country">{{ address.country }}</p>
+              </div>
+            </div>
+
+            <!-- actions -->
+            <ul class="text-sm">
+              <li class="mr-2 inline">
+                <a :href="address.url.show" target="_blank" class="mr-2 text-sm text-blue-500 hover:underline"
+                  >View on map</a
+                >
+              </li>
+              <li class="inline cursor-pointer text-blue-500 hover:underline" @click="showEditAddressModal(address)">
+                Edit
+              </li>
+              <li class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(address)">
+                Delete
+              </li>
+            </ul>
+          </div>
+
+          <!-- edit address -->
+          <form v-if="address.id === editedAddressId" class="bg-form" @submit.prevent="update(address)">
+            <div class="border-b border-gray-200">
+              <div v-if="form.errors.length > 0" class="p-5">
+                <errors :errors="form.errors" />
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 border-b border-gray-200 p-5">
+                <dropdown
+                  v-model="form.address_type_id"
+                  :data="data.address_types"
+                  :required="false"
+                  :placeholder="'Choose a value'"
+                  :dropdown-class="'block w-full'"
+                  :label="'Address type'" />
+              </div>
+
+              <!-- street + city -->
+              <div class="grid grid-cols-2 gap-4 border-b border-gray-200 p-5">
+                <text-input
+                  :ref="'street'"
+                  v-model="form.street"
+                  :label="'Street'"
+                  :type="'text'"
+                  :autofocus="true"
+                  :input-class="'w-full mr-2'"
+                  :required="false"
+                  :autocomplete="false"
+                  :maxlength="255"
+                  @esc-key-pressed="createAddressModalShown = false" />
+
+                <text-input
+                  v-model="form.city"
+                  :label="'City'"
+                  :type="'text'"
+                  :autofocus="true"
+                  :input-class="'w-full'"
+                  :required="false"
+                  :autocomplete="false"
+                  :maxlength="255"
+                  @esc-key-pressed="createAddressModalShown = false" />
+              </div>
+
+              <!-- province + postal code + country -->
+              <div class="grid grid-cols-3 gap-4 border-b border-gray-200 p-5">
+                <text-input
+                  v-model="form.province"
+                  :label="'Province'"
+                  :type="'text'"
+                  :autofocus="true"
+                  :input-class="'w-full mr-2'"
+                  :required="false"
+                  :autocomplete="false"
+                  :maxlength="255"
+                  @esc-key-pressed="createAddressModalShown = false" />
+
+                <text-input
+                  v-model="form.postal_code"
+                  :label="'Postal code'"
+                  :type="'text'"
+                  :autofocus="true"
+                  :input-class="'w-full'"
+                  :required="false"
+                  :autocomplete="false"
+                  :maxlength="255"
+                  @esc-key-pressed="createAddressModalShown = false" />
+
+                <text-input
+                  v-model="form.country"
+                  :label="'Country'"
+                  :type="'text'"
+                  :autofocus="true"
+                  :input-class="'w-full'"
+                  :required="false"
+                  :autocomplete="false"
+                  :maxlength="255"
+                  @esc-key-pressed="createAddressModalShown = false" />
+              </div>
+
+              <!-- past address -->
+              <div class="p-5">
+                <input
+                  id="is_past_address"
+                  name="is_past_address"
+                  v-model="form.is_past_address"
+                  type="checkbox"
+                  class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
+                <label for="is_past_address" class="ml-2 cursor-pointer text-gray-900">
+                  This address is not active anymore
+                </label>
+              </div>
+            </div>
+
+            <div class="flex justify-between p-5">
+              <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="editedAddressId = 0" />
+              <pretty-button :text="'Save'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -216,6 +446,7 @@ import PrettySpan from '@/Shared/Form/PrettySpan';
 import TextInput from '@/Shared/Form/TextInput';
 import TextArea from '@/Shared/Form/TextArea';
 import Errors from '@/Shared/Form/Errors';
+import Dropdown from '@/Shared/Form/Dropdown';
 
 export default {
   components: {
@@ -225,9 +456,14 @@ export default {
     TextInput,
     TextArea,
     Errors,
+    Dropdown,
   },
 
   props: {
+    layoutData: {
+      type: Object,
+      default: null,
+    },
     data: {
       type: Object,
       default: null,
@@ -237,46 +473,63 @@ export default {
   data() {
     return {
       loadingState: '',
-      titleFieldShown: false,
-      createNoteModalShown: false,
-      localNotes: [],
-      editedNoteId: 0,
+      createAddressModalShown: false,
+      inactiveAddressesShown: false,
+      localActiveAddresses: [],
+      localInactiveAddresses: [],
+      editedAddressId: 0,
+      warning: '',
       form: {
-        title: '',
-        body: '',
+        type: '',
+        address_type_id: 0,
+        is_past_address: false,
+        street: '',
+        city: '',
+        province: '',
+        postal_code: '',
+        country: '',
         errors: [],
       },
     };
   },
 
   created() {
-    this.localNotes = this.data.notes;
+    this.localActiveAddresses = this.data.active_addresses;
+    this.localInactiveAddresses = this.data.inactive_addresses;
   },
 
   methods: {
-    showCreateNoteModal() {
-      this.form.title = '';
-      this.form.body = '';
-      this.createNoteModalShown = true;
-    },
+    showCreateAddressModal() {
+      this.form.errors = [];
 
-    showEditNoteModal(note) {
-      this.editedNoteId = note.id;
-      this.form.title = note.title;
-      this.form.body = note.body;
-    },
-
-    showTitleField() {
-      this.titleFieldShown = true;
-      this.form.title = '';
+      this.form.is_past_address = false;
+      this.form.address_type_id = 0;
+      this.form.street = '';
+      this.form.city = '';
+      this.form.province = '';
+      this.form.postal_code = '';
+      this.form.country = '';
+      this.createAddressModalShown = true;
 
       this.$nextTick(() => {
-        this.$refs.newTitle.focus();
+        this.$refs.street.focus();
       });
     },
 
-    showFullBody(note) {
-      this.localNotes[this.localNotes.findIndex((x) => x.id === note.id)].show_full_content = true;
+    toggleInactiveAdresses() {
+      this.inactiveAddressesShown = !this.inactiveAddressesShown;
+    },
+
+    showEditAddressModal(address) {
+      this.editedAddressId = address.id;
+      this.form.errors = [];
+      this.form.is_past_address = address.is_past_address;
+      this.form.address_type_id = address.type ? address.type.id : 0;
+      this.form.street = address.street;
+      this.form.city = address.city;
+      this.form.province = address.province;
+      this.form.postal_code = address.postal_code;
+      this.form.country = address.country;
     },
 
     submit() {
@@ -285,10 +538,16 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash('The note has been created', 'success');
-          this.localNotes.unshift(response.data.data);
+          this.flash('The address has been created', 'success');
+
+          if (this.form.is_past_address) {
+            this.localInactiveAddresses.unshift(response.data.data);
+          } else {
+            this.localActiveAddresses.unshift(response.data.data);
+          }
+
           this.loadingState = '';
-          this.createNoteModalShown = false;
+          this.createAddressModalShown = false;
         })
         .catch((error) => {
           this.loadingState = '';
@@ -296,16 +555,23 @@ export default {
         });
     },
 
-    update(note) {
+    update(address) {
       this.loadingState = 'loading';
 
       axios
-        .put(note.url.update, this.form)
+        .put(address.url.update, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash('The note has been edited', 'success');
-          this.localNotes[this.localNotes.findIndex((x) => x.id === note.id)] = response.data.data;
-          this.editedNoteId = 0;
+          this.flash('The address has been edited', 'success');
+
+          if (this.form.is_past_address) {
+            this.localInactiveAddresses[this.localInactiveAddresses.findIndex((x) => x.id === address.id)] =
+              response.data.data;
+          } else {
+            this.localActiveAddresses[this.localActiveAddresses.findIndex((x) => x.id === address.id)] =
+              response.data.data;
+          }
+          this.editedAddressId = 0;
         })
         .catch((error) => {
           this.loadingState = '';
@@ -313,14 +579,21 @@ export default {
         });
     },
 
-    destroy(note) {
-      if (confirm('Are you sure? This will delete the note permanently.')) {
+    destroy(address) {
+      if (confirm('Are you sure? This will delete the address permanently.')) {
         axios
-          .delete(note.url.destroy)
+          .delete(address.url.destroy)
           .then((response) => {
-            this.flash('The note has been deleted', 'success');
-            var id = this.localNotes.findIndex((x) => x.id === note.id);
-            this.localNotes.splice(id, 1);
+            this.flash('The address has been deleted', 'success');
+            var id = this.localActiveAddresses.findIndex((x) => x.id === address.id);
+
+            if (address.is_past_address) {
+              var id = this.localInactiveAddresses.findIndex((x) => x.id === address.id);
+              this.localInactiveAddresses.splice(id, 1);
+            } else {
+              var id = this.localActiveAddresses.findIndex((x) => x.id === address.id);
+              this.localActiveAddresses.splice(id, 1);
+            }
           })
           .catch((error) => {
             this.loadingState = null;

@@ -25,6 +25,12 @@ class User extends Authenticatable implements MustVerifyEmail
     const NUMBER_FORMAT_TYPE_NO_SPACE_DOT_DECIMAL = '1234.56';
 
     /**
+     * Possible maps site.
+     */
+    const MAPS_SITE_GOOGLE_MAPS = 'google_maps';
+    const MAPS_SITE_OPEN_STREET_MAPS = 'open_street_maps';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -43,6 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'date_format',
         'number_format',
         'timezone',
+        'default_map_site',
     ];
 
     /**

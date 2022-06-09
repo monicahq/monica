@@ -31,11 +31,12 @@ class CreateContactAddress extends BaseService implements ServiceInterface
             'city' => 'nullable|string|max:255',
             'province' => 'nullable|string|max:255',
             'postal_code' => 'nullable|string|max:255',
-            'country' => 'nullable|string|max:3',
+            'country' => 'nullable|string|max:255',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'lived_from_at' => 'nullable|date_format:Y-m-d',
             'lived_until_at' => 'nullable|date_format:Y-m-d',
+            'is_past_address' => 'nullable|boolean',
         ];
     }
 
@@ -81,6 +82,7 @@ class CreateContactAddress extends BaseService implements ServiceInterface
             'longitude' => $this->valueOrNull($data, 'longitude'),
             'lived_from_at' => $this->valueOrNull($data, 'lived_from_at'),
             'lived_until_at' => $this->valueOrNull($data, 'lived_until_at'),
+            'is_past_address' => $this->valueOrFalse($data, 'is_past_address'),
         ]);
 
         $this->contact->last_updated_at = Carbon::now();

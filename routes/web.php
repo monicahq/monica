@@ -5,6 +5,7 @@ use App\Contact\ManageContact\Web\Controllers\ContactController;
 use App\Contact\ManageContact\Web\Controllers\ContactNoTemplateController;
 use App\Contact\ManageContact\Web\Controllers\ContactPageController;
 use App\Contact\ManageContact\Web\Controllers\ContactTemplateController;
+use App\Contact\ManageContactAddresses\Web\Controllers\ContactModuleAddressController;
 use App\Contact\ManageContactImportantDates\Web\Controllers\ContactImportantDatesController;
 use App\Contact\ManageGoals\Web\Controllers\ContactModuleGoalController;
 use App\Contact\ManageGoals\Web\Controllers\ContactModuleStreakController;
@@ -51,6 +52,7 @@ use App\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatePagesControl
 use App\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatesController;
 use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesController;
 use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesDateFormatController;
+use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesMapsPreferenceController;
 use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesNameOrderController;
 use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesNumberFormatController;
 use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesTimezoneController;
@@ -140,6 +142,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::put('reminders/{reminder}', [ContactModuleReminderController::class, 'update'])->name('contact.reminder.update');
                     Route::delete('reminders/{reminder}', [ContactModuleReminderController::class, 'destroy'])->name('contact.reminder.destroy');
 
+                    // addresses
+                    Route::post('addresses', [ContactModuleAddressController::class, 'store'])->name('contact.address.store');
+                    Route::put('addresses/{address}', [ContactModuleAddressController::class, 'update'])->name('contact.address.update');
+                    Route::delete('addresses/{address}', [ContactModuleAddressController::class, 'destroy'])->name('contact.address.destroy');
+
                     // loans
                     Route::post('loans', [ContactModuleLoanController::class, 'store'])->name('contact.loan.store');
                     Route::put('loans/{loan}', [ContactModuleLoanController::class, 'update'])->name('contact.loan.update');
@@ -217,6 +224,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('date', [PreferencesDateFormatController::class, 'store'])->name('date.store');
             Route::post('timezone', [PreferencesTimezoneController::class, 'store'])->name('timezone.store');
             Route::post('number', [PreferencesNumberFormatController::class, 'store'])->name('number.store');
+            Route::post('maps', [PreferencesMapsPreferenceController::class, 'store'])->name('maps.store');
         });
 
         // notifications
