@@ -12,7 +12,7 @@
   "require": {
     "php": "^8.1",
     "fruitcake/laravel-cors": "^2.0",
-    "guzzlehttp/guzzle": "^7.0.1",
+    "guzzlehttp/guzzle": "^7.4.4",
     "http-interop/http-factory-guzzle": "^1.2",
     "inertiajs/inertia-laravel": "^0.6.2",
     "itsgoingd/clockwork": "^5.1",
