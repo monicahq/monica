@@ -31,7 +31,7 @@ class ContactController extends Controller
 
         return Inertia::render('Vault/Contact/Index', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
-            'data' => ContactIndexViewHelper::data($contacts, Auth::user(), $vault),
+            'data' => ContactIndexViewHelper::data($contacts, $vault),
         ]);
     }
 

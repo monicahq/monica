@@ -5,7 +5,7 @@ namespace Tests\Unit\Domains\Contact\ManageContact\Web\ViewHelpers;
 use App\Contact\ManageContact\Web\ViewHelpers\ContactIndexViewHelper;
 use App\Models\Avatar;
 use App\Models\Contact;
-use App\Models\User;
+use App\Models\Label;
 use App\Models\Vault;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -27,17 +27,27 @@ class ContactIndexViewHelperTest extends TestCase
         ]);
         $contact->avatar_id = $avatar->id;
         $contact->save();
+        $label = Label::factory()->create([
+            'vault_id' => $vault->id,
+            'name' => 'assigned label',
+        ]);
+        Label::factory()->create([
+            'vault_id' => $vault->id,
+            'name' => 'unassigned label',
+        ]);
+        $contact->labels()->attach($label);
 
-        $user = User::factory()->create();
         $contacts = Contact::all();
-        $array = ContactIndexViewHelper::data($contacts, $user, $vault);
+        $array = ContactIndexViewHelper::data($contacts, $vault);
 
         $this->assertEquals(
-            2,
+            4,
             count($array)
         );
 
         $this->assertArrayHasKey('contacts', $array);
+        $this->assertArrayHasKey('labels', $array);
+        $this->assertArrayHasKey('current_label', $array);
         $this->assertArrayHasKey('url', $array);
 
         $this->assertEquals(
@@ -56,7 +66,22 @@ class ContactIndexViewHelperTest extends TestCase
 
         $this->assertEquals(
             [
+                0 => [
+                    'id' => $label->id,
+                    'name' => 'assigned label',
+                    'count' => 1,
+                    'url' => [
+                        'show' => env('APP_URL').'/vaults/'.$vault->id.'/contacts/labels/'.$label->id,
+                    ],
+                ],
+            ],
+            $array['labels']->toArray()
+        );
+
+        $this->assertEquals(
+            [
                 'contact' => [
+                    'index' => env('APP_URL').'/vaults/'.$vault->id.'/contacts',
                     'create' => env('APP_URL').'/vaults/'.$vault->id.'/contacts/create',
                 ],
             ],

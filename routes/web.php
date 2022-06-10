@@ -2,6 +2,7 @@
 
 use App\Contact\ManageCalls\Web\Controllers\ContactModuleCallController;
 use App\Contact\ManageContact\Web\Controllers\ContactController;
+use App\Contact\ManageContact\Web\Controllers\ContactLabelController;
 use App\Contact\ManageContact\Web\Controllers\ContactNoTemplateController;
 use App\Contact\ManageContact\Web\Controllers\ContactPageController;
 use App\Contact\ManageContact\Web\Controllers\ContactTemplateController;
@@ -101,6 +102,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             // vault contacts
             Route::prefix('contacts')->group(function () {
                 Route::get('', [ContactController::class, 'index'])->name('contact.index');
+                Route::get('labels/{label}', [ContactLabelController::class, 'index'])->name('contact.label.index');
 
                 // create a contact
                 Route::middleware(['atLeastVaultEditor'])->get('create', [ContactController::class, 'create'])->name('contact.create');
