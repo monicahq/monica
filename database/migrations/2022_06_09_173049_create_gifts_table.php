@@ -25,6 +25,15 @@ return new class extends Migration
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
 
+        Schema::create('gift_states', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('account_id');
+            $table->string('label');
+            $table->integer('position')->nullable();
+            $table->timestamps();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+        });
+
         Schema::create('gifts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('contact_id');

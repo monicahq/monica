@@ -53,6 +53,12 @@ return [
     'gift_occasion_just_because' => 'Just because',
     'gift_occasion_wedding' => 'Wedding',
 
+    'gift_state_idea' => 'Idea',
+    'gift_state_searched' => 'Searched',
+    'gift_state_found' => 'Found',
+    'gift_state_bought' => 'Bought',
+    'gift_state_offered' => 'Offered',
+
     'relationship_type_partner' => 'significant other',
     'relationship_type_spouse' => 'spouse',
     'relationship_type_date' => 'date',

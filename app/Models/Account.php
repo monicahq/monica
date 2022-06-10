@@ -172,4 +172,14 @@ class Account extends Model
     {
         return $this->hasMany(GiftOccasion::class);
     }
+
+    /**
+     * Get the gift stages associated with the account.
+     *
+     * @return HasMany
+     */
+    public function giftStates(): HasMany
+    {
+        return $this->hasMany(GiftState::class);
+    }
 }

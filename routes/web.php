@@ -32,6 +32,8 @@ use App\Settings\ManageCurrencies\Web\Controllers\PersonalizeCurrencyController;
 use App\Settings\ManageGenders\Web\Controllers\ManageGenderController;
 use App\Settings\ManageGiftOccasions\Web\Controllers\PersonalizeGiftOccasionController;
 use App\Settings\ManageGiftOccasions\Web\Controllers\PersonalizeGiftOccasionsPositionController;
+use App\Settings\ManageGiftStates\Web\Controllers\PersonalizeGiftStateController;
+use App\Settings\ManageGiftStates\Web\Controllers\PersonalizeGiftStatesPositionController;
 use App\Settings\ManageLifeEventCategories\Web\Controllers\PersonalizeLifeEventCategoriesController;
 use App\Settings\ManageLifeEventCategories\Web\Controllers\PersonalizeLifeEventTypesController;
 use App\Settings\ManageLifeEventCategories\Web\Controllers\PersonalizeLifeEventTypesPositionController;
@@ -309,6 +311,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::put('giftOccasions/{giftOccasion}', [PersonalizeGiftOccasionController::class, 'update'])->name('gift_occasions.update');
                 Route::delete('giftOccasions/{giftOccasion}', [PersonalizeGiftOccasionController::class, 'destroy'])->name('gift_occasions.destroy');
                 Route::post('giftOccasions/{giftOccasion}/position', [PersonalizeGiftOccasionsPositionController::class, 'update'])->name('gift_occasions.order.update');
+
+                // gift stages
+                Route::get('giftStates', [PersonalizeGiftStateController::class, 'index'])->name('gift_states.index');
+                Route::post('giftStates', [PersonalizeGiftStateController::class, 'store'])->name('gift_states.store');
+                Route::put('giftStates/{giftState}', [PersonalizeGiftStateController::class, 'update'])->name('gift_states.update');
+                Route::delete('giftStates/{giftState}', [PersonalizeGiftStateController::class, 'destroy'])->name('gift_states.destroy');
+                Route::post('giftStates/{giftState}/position', [PersonalizeGiftStatesPositionController::class, 'update'])->name('gift_states.order.update');
 
                 // genders
                 Route::get('genders', [ManageGenderController::class, 'index'])->name('gender.index');

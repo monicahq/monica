@@ -526,5 +526,26 @@ class SetupAccountTest extends TestCase
             'label' => 'Wedding',
             'position' => 5,
         ]);
+
+        $this->assertDatabaseHas('gift_states', [
+            'label' => trans('account.gift_state_idea'),
+            'position' => 1,
+        ]);
+        $this->assertDatabaseHas('gift_states', [
+            'label' => trans('account.gift_state_searched'),
+            'position' => 2,
+        ]);
+        $this->assertDatabaseHas('gift_states', [
+            'label' => trans('account.gift_state_found'),
+            'position' => 3,
+        ]);
+        $this->assertDatabaseHas('gift_states', [
+            'label' => trans('account.gift_state_bought'),
+            'position' => 4,
+        ]);
+        $this->assertDatabaseHas('gift_states', [
+            'label' => trans('account.gift_state_offered'),
+            'position' => 5,
+        ]);
     }
 }

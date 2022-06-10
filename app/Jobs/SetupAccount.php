@@ -474,6 +474,7 @@ class SetupAccount implements ShouldQueue
         $this->addActivityTypes();
         $this->addLifeEventCategories();
         $this->addGiftOccasions();
+        $this->addGiftStates();
     }
 
     /**
@@ -1371,6 +1372,37 @@ class SetupAccount implements ShouldQueue
             [
                 'account_id' => $this->user->account_id,
                 'label' => trans('account.gift_occasion_wedding'),
+                'position' => 5,
+            ],
+        ]);
+    }
+
+    private function addGiftStates(): void
+    {
+        DB::table('gift_states')->insert([
+            [
+                'account_id' => $this->user->account_id,
+                'label' => trans('account.gift_state_idea'),
+                'position' => 1,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'label' => trans('account.gift_state_searched'),
+                'position' => 2,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'label' => trans('account.gift_state_found'),
+                'position' => 3,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'label' => trans('account.gift_state_bought'),
+                'position' => 4,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'label' => trans('account.gift_state_offered'),
                 'position' => 5,
             ],
         ]);
