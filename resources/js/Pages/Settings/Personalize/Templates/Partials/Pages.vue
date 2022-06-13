@@ -1,4 +1,11 @@
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.flip-list-move {
+  transition: transform 0.5s;
+}
+.no-move {
+  transition: transform 0s;
+}
+</style>
 
 <template>
   <div>
@@ -26,10 +33,17 @@
 
     <!-- list of pages that can be deleted -->
     <draggable
-      :list="localPages"
+      v-model="localPages"
+      class="list-group"
       item-key="id"
-      :component-data="{ name: 'fade' }"
-      handle=".handle"
+      v-bind="dragOptions"
+      :component-data="{
+        tag: 'div',
+        type: 'transition-group',
+        name: !drag ? 'flip-list' : null,
+      }"
+      @start="drag = true"
+      @end="drag = false"
       @change="updatePosition">
       <template #item="{ element }">
         <div
@@ -163,6 +177,7 @@ export default {
 
   data() {
     return {
+      drag: false,
       loadingState: '',
       createPageModalShown: false,
       renamePageModalShownId: 0,
@@ -175,6 +190,17 @@ export default {
         errors: [],
       },
     };
+  },
+
+  computed: {
+    dragOptions() {
+      return {
+        animation: 200,
+        group: 'description',
+        disabled: false,
+        ghostClass: 'ghost',
+      };
+    },
   },
 
   mounted() {
@@ -255,7 +281,8 @@ export default {
 
     updatePosition(event) {
       // the event object comes from the draggable component
-      this.form.position = event.moved.newIndex + 1;
+      // no idea why we need to +2 but otherwise it doesn't work
+      this.form.position = event.moved.newIndex + 2;
 
       axios
         .post(event.moved.element.url.order, this.form)
