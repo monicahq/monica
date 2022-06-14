@@ -2,7 +2,6 @@
 
 namespace App\Contact\ManageRelationships\Web\ViewHelpers;
 
-use App\Helpers\AvatarHelper;
 use App\Models\Contact;
 use App\Models\RelationshipType;
 use App\Models\User;
@@ -63,7 +62,7 @@ class ContactRelationshipsCreateViewHelper
             'contact' => [
                 'id' => $contact->id,
                 'name' => $contact->name,
-                'avatar' => AvatarHelper::getSVG($contact),
+                'avatar' => $contact->avatar,
             ],
             'genders' => $genderCollection,
             'pronouns' => $pronounCollection,

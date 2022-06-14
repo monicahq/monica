@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\AvatarHelper;
 use App\Helpers\ImportantDateHelper;
 use App\Helpers\NameHelper;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -246,9 +247,9 @@ class Contact extends Model
      *
      * @return BelongsTo
      */
-    public function avatar(): BelongsTo
+    public function currentAvatar(): BelongsTo
     {
-        return $this->belongsTo(Avatar::class);
+        return $this->belongsTo(Avatar::class, 'avatar_id');
     }
 
     /**
@@ -347,6 +348,20 @@ class Contact extends Model
                 }
 
                 return ImportantDateHelper::getAge($birthdate);
+            }
+        );
+    }
+
+    /**
+     * Get the avatar of the contact.
+     *
+     * @return Attribute
+     */
+    protected function avatar(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+                return AvatarHelper::getSVG($this);
             }
         );
     }

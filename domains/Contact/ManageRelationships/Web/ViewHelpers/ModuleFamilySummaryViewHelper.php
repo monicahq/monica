@@ -2,7 +2,6 @@
 
 namespace App\Contact\ManageRelationships\Web\ViewHelpers;
 
-use App\Helpers\AvatarHelper;
 use App\Models\Contact;
 use App\Models\RelationshipGroupType;
 use App\Models\RelationshipType;
@@ -93,7 +92,7 @@ class ModuleFamilySummaryViewHelper
         return [
             'id' => $contact->id,
             'name' => $contact->name,
-            'avatar' => AvatarHelper::getSVG($contact),
+            'avatar' => $contact->avatar,
             'age' => $contact->age,
             'url' => [
                 'show' => $contact->listed ? route('contact.show', [

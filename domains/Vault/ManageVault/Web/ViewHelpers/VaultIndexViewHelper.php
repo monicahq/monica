@@ -2,7 +2,6 @@
 
 namespace App\Vault\ManageVault\Web\ViewHelpers;
 
-use App\Helpers\AvatarHelper;
 use App\Helpers\DateHelper;
 use App\Helpers\VaultHelper;
 use App\Models\User;
@@ -128,7 +127,7 @@ class VaultIndexViewHelper
                 return [
                     'id' => $contact->id,
                     'name' => $contact->name,
-                    'avatar' => AvatarHelper::getSVG($contact),
+                    'avatar' => $contact->avatar,
                 ];
             });
 

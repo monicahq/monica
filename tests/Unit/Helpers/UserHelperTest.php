@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Helpers;
 
-use App\Helpers\AvatarHelper;
 use App\Helpers\UserHelper;
 use App\Models\Avatar;
 use App\Models\Contact;
@@ -41,7 +40,7 @@ class UserHelperTest extends TestCase
             [
                 'id' => $contact->id,
                 'name' => 'Keanu Reeves',
-                'avatar' => AvatarHelper::getSVG($contact),
+                'avatar' => $contact->avatar,
             ],
             UserHelper::getInformationAboutContact($rachel, $vault)
         );

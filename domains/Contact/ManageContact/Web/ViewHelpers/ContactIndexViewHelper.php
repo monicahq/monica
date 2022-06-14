@@ -2,7 +2,6 @@
 
 namespace App\Contact\ManageContact\Web\ViewHelpers;
 
-use App\Helpers\AvatarHelper;
 use App\Models\Vault;
 
 class ContactIndexViewHelper
@@ -14,7 +13,7 @@ class ContactIndexViewHelper
             $contactCollection->push([
                 'id' => $contact->id,
                 'name' => $contact->name,
-                'avatar' => AvatarHelper::getSVG($contact),
+                'avatar' => $contact->avatar,
                 'url' => [
                     'show' => route('contact.show', [
                         'vault' => $vault->id,

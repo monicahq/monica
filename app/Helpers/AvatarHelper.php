@@ -49,7 +49,7 @@ class AvatarHelper
      */
     public static function getSVG(Contact $contact): string
     {
-        $avatar = $contact->avatar;
+        $avatar = $contact->currentAvatar;
 
         return $avatar->svg;
     }
