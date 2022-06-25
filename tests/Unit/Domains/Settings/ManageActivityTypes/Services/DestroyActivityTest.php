@@ -38,7 +38,7 @@ class DestroyActivityTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyActivity)->execute($request);
+        (new DestroyActivity())->execute($request);
     }
 
     /** @test */
@@ -94,7 +94,7 @@ class DestroyActivityTest extends TestCase
             'activity_id' => $activity->id,
         ];
 
-        (new DestroyActivity)->execute($request);
+        (new DestroyActivity())->execute($request);
 
         $this->assertDatabaseMissing('activities', [
             'id' => $activity->id,

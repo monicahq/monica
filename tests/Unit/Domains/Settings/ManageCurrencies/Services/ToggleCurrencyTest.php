@@ -31,7 +31,7 @@ class ToggleCurrencyTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new ToggleCurrency)->execute($request);
+        (new ToggleCurrency())->execute($request);
     }
 
     /** @test */
@@ -65,7 +65,7 @@ class ToggleCurrencyTest extends TestCase
             'currency_id' => $currency->id,
         ];
 
-        (new ToggleCurrency)->execute($request);
+        (new ToggleCurrency())->execute($request);
 
         $this->assertDatabaseHas('account_currencies', [
             'account_id' => $account->id,

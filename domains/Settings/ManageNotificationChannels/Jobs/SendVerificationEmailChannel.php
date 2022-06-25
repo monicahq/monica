@@ -17,7 +17,10 @@ use Illuminate\Support\Facades\Mail;
  */
 class SendVerificationEmailChannel implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     protected UserNotificationChannel $channel;
 
@@ -44,7 +47,8 @@ class SendVerificationEmailChannel implements ShouldQueue
         }
 
         Mail::to($this->channel->content)
-            ->send(new UserNotificationChannelEmailCreated($this->channel)
-        );
+            ->send(
+                new UserNotificationChannelEmailCreated($this->channel)
+            );
     }
 }

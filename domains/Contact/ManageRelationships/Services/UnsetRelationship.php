@@ -60,7 +60,7 @@ class UnsetRelationship extends BaseService implements ServiceInterface
 
         $this->relationshipType = RelationshipType::findOrFail($data['relationship_type_id']);
         if ($this->relationshipType->groupType->account_id != $data['account_id']) {
-            throw new ModelNotFoundException;
+            throw new ModelNotFoundException();
         }
 
         $this->unsetRelationship($this->contact, $otherContact);

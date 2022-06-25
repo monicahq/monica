@@ -33,7 +33,7 @@ class DestroyModuleTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyModule)->execute($request);
+        (new DestroyModule())->execute($request);
     }
 
     /** @test */
@@ -80,7 +80,7 @@ class DestroyModuleTest extends TestCase
             'module_id' => $module->id,
         ];
 
-        (new DestroyModule)->execute($request);
+        (new DestroyModule())->execute($request);
 
         $this->assertDatabaseMissing('modules', [
             'id' => $module->id,

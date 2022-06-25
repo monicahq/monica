@@ -31,7 +31,7 @@ class CreateTemplateTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateTemplate)->execute($request);
+        (new CreateTemplate())->execute($request);
     }
 
     /** @test */
@@ -54,7 +54,7 @@ class CreateTemplateTest extends TestCase
             'name' => 'Business',
         ];
 
-        $template = (new CreateTemplate)->execute($request);
+        $template = (new CreateTemplate())->execute($request);
 
         $this->assertDatabaseHas('templates', [
             'id' => $template->id,

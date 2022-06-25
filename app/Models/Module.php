@@ -15,23 +15,23 @@ class Module extends Model
     /**
      * Possible module types.
      */
-    const TYPE_NOTES = 'notes';
-    const TYPE_CONTACT_NAMES = 'contact_names';
-    const TYPE_AVATAR = 'avatar';
-    const TYPE_FAMILY_SUMMARY = 'family_summary';
-    const TYPE_COMPANY = 'company';
-    const TYPE_FEED = 'feed';
-    const TYPE_GENDER_PRONOUN = 'gender_pronoun';
-    const TYPE_IMPORTANT_DATES = 'important_dates';
-    const TYPE_LABELS = 'labels';
-    const TYPE_REMINDERS = 'reminders';
-    const TYPE_LOANS = 'loans';
-    const TYPE_RELATIONSHIPS = 'relationships';
-    const TYPE_TASKS = 'tasks';
-    const TYPE_CALLS = 'calls';
-    const TYPE_PETS = 'pets';
-    const TYPE_GOALS = 'goals';
-    const TYPE_ADDRESSES = 'addresses';
+    public const TYPE_NOTES = 'notes';
+    public const TYPE_CONTACT_NAMES = 'contact_names';
+    public const TYPE_AVATAR = 'avatar';
+    public const TYPE_FAMILY_SUMMARY = 'family_summary';
+    public const TYPE_COMPANY = 'company';
+    public const TYPE_FEED = 'feed';
+    public const TYPE_GENDER_PRONOUN = 'gender_pronoun';
+    public const TYPE_IMPORTANT_DATES = 'important_dates';
+    public const TYPE_LABELS = 'labels';
+    public const TYPE_REMINDERS = 'reminders';
+    public const TYPE_LOANS = 'loans';
+    public const TYPE_RELATIONSHIPS = 'relationships';
+    public const TYPE_TASKS = 'tasks';
+    public const TYPE_CALLS = 'calls';
+    public const TYPE_PETS = 'pets';
+    public const TYPE_GOALS = 'goals';
+    public const TYPE_ADDRESSES = 'addresses';
 
     /**
      * The attributes that are mass assignable.

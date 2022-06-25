@@ -19,7 +19,7 @@ class PersonalizeGiftOccasionsPositionController extends Controller
             'new_position' => $request->input('position'),
         ];
 
-        $giftOccasion = (new UpdateGiftOccasionPosition)->execute($data);
+        $giftOccasion = (new UpdateGiftOccasionPosition())->execute($data);
 
         return response()->json([
             'data' => PersonalizeGiftOccasionViewHelper::dto($giftOccasion),

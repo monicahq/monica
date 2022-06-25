@@ -35,7 +35,7 @@ class CreateCompanyTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateCompany)->execute($request);
+        (new CreateCompany())->execute($request);
     }
 
     /** @test */
@@ -84,7 +84,7 @@ class CreateCompanyTest extends TestCase
             'type' => Company::TYPE_ASSOCIATION,
         ];
 
-        $company = (new CreateCompany)->execute($request);
+        $company = (new CreateCompany())->execute($request);
 
         $this->assertDatabaseHas('companies', [
             'id' => $company->id,

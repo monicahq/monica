@@ -21,7 +21,7 @@ class NotificationsVerificationController extends Controller
             'uuid' => $uuid,
         ];
 
-        (new VerifyUserNotificationChannelEmailAddress)->execute($data);
+        (new VerifyUserNotificationChannelEmailAddress())->execute($data);
 
         return Inertia::render('Settings/Notifications/Index', [
             'layoutData' => VaultIndexViewHelper::layoutData(),

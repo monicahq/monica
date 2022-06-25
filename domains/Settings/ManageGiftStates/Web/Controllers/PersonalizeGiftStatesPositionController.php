@@ -19,7 +19,7 @@ class PersonalizeGiftStatesPositionController extends Controller
             'new_position' => $request->input('position'),
         ];
 
-        $giftState = (new UpdateGiftStatePosition)->execute($data);
+        $giftState = (new UpdateGiftStatePosition())->execute($data);
 
         return response()->json([
             'data' => PersonalizeGiftStateViewHelper::dto($giftState),

@@ -40,7 +40,7 @@ class DestroyRelationshipTypeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyRelationshipType)->execute($request);
+        (new DestroyRelationshipType())->execute($request);
     }
 
     /** @test */
@@ -98,7 +98,7 @@ class DestroyRelationshipTypeTest extends TestCase
             'relationship_type_id' => $type->id,
         ];
 
-        (new DestroyRelationshipType)->execute($request);
+        (new DestroyRelationshipType())->execute($request);
 
         $this->assertDatabaseMissing('relationship_types', [
             'id' => $type->id,

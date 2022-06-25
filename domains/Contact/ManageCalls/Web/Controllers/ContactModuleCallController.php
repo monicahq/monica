@@ -55,7 +55,7 @@ class ContactModuleCallController extends Controller
             'who_initiated' => $whoInitiated,
         ];
 
-        $call = (new CreateCall)->execute($data);
+        $call = (new CreateCall())->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([

@@ -16,25 +16,25 @@ class ContactFeedItem extends Model
     /**
      * Possible actions.
      */
-    const ACTION_CONTACT_INFORMATION_UPDATED = 'contact_information_updated';
-    const ACTION_JOB_INFORMATION_UPDATED = 'job_information_updated';
-    const ACTION_NOTE_CREATED = 'note_created';
-    const ACTION_NOTE_UPDATED = 'note_updated';
-    const ACTION_NOTE_DESTROYED = 'note_destroyed';
-    const ACTION_GOAL_CREATED = 'goal_created';
-    const ACTION_IMPORTANT_DATE_CREATED = 'important_date_created';
-    const ACTION_IMPORTANT_DATE_UPDATED = 'important_date_updated';
-    const ACTION_IMPORTANT_DATE_DESTROYED = 'important_date_destroyed';
-    const ACTION_LABEL_ASSIGNED = 'label_assigned';
-    const ACTION_LABEL_REMOVED = 'label_removed';
-    const ACTION_CONTACT_EVENT_CREATED = 'added an event';
-    const ACTION_CONTACT_EVENT_UPDATED = 'updated an event';
-    const ACTION_CONTACT_EVENT_DESTROYED = 'deleted an event';
-    const ACTION_CONTACT_ACTIVITY_CREATED = 'added an activity';
-    const ACTION_CONTACT_ACTIVITY_UPDATED = 'updated an activity';
-    const ACTION_CONTACT_ACTIVITY_DESTROYED = 'deleted an activity';
-    const ACTION_LOAN_CREATED = 'loan_created';
-    const ACTION_LOAN_UPDATED = 'loan_updated';
+    public const ACTION_CONTACT_INFORMATION_UPDATED = 'contact_information_updated';
+    public const ACTION_JOB_INFORMATION_UPDATED = 'job_information_updated';
+    public const ACTION_NOTE_CREATED = 'note_created';
+    public const ACTION_NOTE_UPDATED = 'note_updated';
+    public const ACTION_NOTE_DESTROYED = 'note_destroyed';
+    public const ACTION_GOAL_CREATED = 'goal_created';
+    public const ACTION_IMPORTANT_DATE_CREATED = 'important_date_created';
+    public const ACTION_IMPORTANT_DATE_UPDATED = 'important_date_updated';
+    public const ACTION_IMPORTANT_DATE_DESTROYED = 'important_date_destroyed';
+    public const ACTION_LABEL_ASSIGNED = 'label_assigned';
+    public const ACTION_LABEL_REMOVED = 'label_removed';
+    public const ACTION_CONTACT_EVENT_CREATED = 'added an event';
+    public const ACTION_CONTACT_EVENT_UPDATED = 'updated an event';
+    public const ACTION_CONTACT_EVENT_DESTROYED = 'deleted an event';
+    public const ACTION_CONTACT_ACTIVITY_CREATED = 'added an activity';
+    public const ACTION_CONTACT_ACTIVITY_UPDATED = 'updated an activity';
+    public const ACTION_CONTACT_ACTIVITY_DESTROYED = 'deleted an activity';
+    public const ACTION_LOAN_CREATED = 'loan_created';
+    public const ACTION_LOAN_UPDATED = 'loan_updated';
 
     /**
      * The attributes that are mass assignable.

@@ -45,7 +45,7 @@ class UpdateLoanTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateLoan)->execute($request);
+        (new UpdateLoan())->execute($request);
     }
 
     /** @test */
@@ -170,7 +170,7 @@ class UpdateLoanTest extends TestCase
             'loaned_at' => '2020-01-01',
         ];
 
-        $loan = (new UpdateLoan)->execute($request);
+        $loan = (new UpdateLoan())->execute($request);
 
         $this->assertDatabaseHas('loans', [
             'id' => $loan->id,

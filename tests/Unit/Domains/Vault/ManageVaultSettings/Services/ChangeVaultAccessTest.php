@@ -84,7 +84,7 @@ class ChangeVaultAccessTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new ChangeVaultAccess)->execute($request);
+        (new ChangeVaultAccess())->execute($request);
     }
 
     private function executeService(Account $account, User $regis, User $anotherUser, Vault $vault): void
@@ -99,7 +99,7 @@ class ChangeVaultAccessTest extends TestCase
             'permission' => Vault::PERMISSION_VIEW,
         ];
 
-        $user = (new ChangeVaultAccess)->execute($request);
+        $user = (new ChangeVaultAccess())->execute($request);
 
         $this->assertDatabaseHas('user_vault', [
             'vault_id' => $vault->id,

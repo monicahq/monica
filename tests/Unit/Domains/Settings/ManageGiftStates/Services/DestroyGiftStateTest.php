@@ -34,7 +34,7 @@ class DestroyGiftStateTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyGiftState)->execute($request);
+        (new DestroyGiftState())->execute($request);
     }
 
     /** @test */
@@ -80,7 +80,7 @@ class DestroyGiftStateTest extends TestCase
             'gift_state_id' => $giftState->id,
         ];
 
-        (new DestroyGiftState)->execute($request);
+        (new DestroyGiftState())->execute($request);
 
         $this->assertDatabaseMissing('gift_states', [
             'id' => $giftState->id,

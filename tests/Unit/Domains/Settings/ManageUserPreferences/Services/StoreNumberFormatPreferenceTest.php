@@ -30,7 +30,7 @@ class StoreNumberFormatPreferenceTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new StoreNumberFormatPreference)->execute($request);
+        (new StoreNumberFormatPreference())->execute($request);
     }
 
     /** @test */
@@ -53,7 +53,7 @@ class StoreNumberFormatPreferenceTest extends TestCase
             'number_format' => 'Y',
         ];
 
-        $user = (new StoreNumberFormatPreference)->execute($request);
+        $user = (new StoreNumberFormatPreference())->execute($request);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,

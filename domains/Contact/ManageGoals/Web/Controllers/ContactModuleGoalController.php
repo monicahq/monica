@@ -23,7 +23,7 @@ class ContactModuleGoalController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $goal = (new CreateGoal)->execute($data);
+        $goal = (new CreateGoal())->execute($data);
 
         $contact = Contact::find($contactId);
 
@@ -43,7 +43,7 @@ class ContactModuleGoalController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $goal = (new UpdateGoal)->execute($data);
+        $goal = (new UpdateGoal())->execute($data);
 
         $contact = Contact::find($contactId);
 
@@ -62,7 +62,7 @@ class ContactModuleGoalController extends Controller
             'goal_id' => $goalId,
         ];
 
-        (new DestroyGoal)->execute($data);
+        (new DestroyGoal())->execute($data);
 
         return response()->json([
             'data' => true,

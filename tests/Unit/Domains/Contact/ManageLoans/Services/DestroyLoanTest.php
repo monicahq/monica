@@ -49,7 +49,7 @@ class DestroyLoanTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyLoan)->execute($request);
+        (new DestroyLoan())->execute($request);
     }
 
     /** @test */
@@ -111,7 +111,7 @@ class DestroyLoanTest extends TestCase
             'loan_id' => $loan->id,
         ];
 
-        (new DestroyLoan)->execute($request);
+        (new DestroyLoan())->execute($request);
 
         $this->assertDatabaseMissing('loans', [
             'id' => $loan->id,

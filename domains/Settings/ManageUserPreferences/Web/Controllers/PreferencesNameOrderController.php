@@ -18,7 +18,7 @@ class PreferencesNameOrderController extends Controller
             'name_order' => $request->input('nameOrder'),
         ];
 
-        $user = (new StoreNameOrderPreference)->execute($data);
+        $user = (new StoreNameOrderPreference())->execute($data);
 
         return response()->json([
             'data' => UserPreferencesIndexViewHelper::dtoNameOrder($user),

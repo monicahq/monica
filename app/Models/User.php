@@ -15,20 +15,22 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, HasFactory, HasApiTokens;
+    use Notifiable;
+    use HasFactory;
+    use HasApiTokens;
 
     /**
      * Possible number format types.
      */
-    const NUMBER_FORMAT_TYPE_COMMA_THOUSANDS_DOT_DECIMAL = '1,234.56';
-    const NUMBER_FORMAT_TYPE_SPACE_THOUSANDS_COMMA_DECIMAL = '1 234,56';
-    const NUMBER_FORMAT_TYPE_NO_SPACE_DOT_DECIMAL = '1234.56';
+    public const NUMBER_FORMAT_TYPE_COMMA_THOUSANDS_DOT_DECIMAL = '1,234.56';
+    public const NUMBER_FORMAT_TYPE_SPACE_THOUSANDS_COMMA_DECIMAL = '1 234,56';
+    public const NUMBER_FORMAT_TYPE_NO_SPACE_DOT_DECIMAL = '1234.56';
 
     /**
      * Possible maps site.
      */
-    const MAPS_SITE_GOOGLE_MAPS = 'google_maps';
-    const MAPS_SITE_OPEN_STREET_MAPS = 'open_street_maps';
+    public const MAPS_SITE_GOOGLE_MAPS = 'google_maps';
+    public const MAPS_SITE_OPEN_STREET_MAPS = 'open_street_maps';
 
     /**
      * The attributes that are mass assignable.

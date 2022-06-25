@@ -20,7 +20,7 @@ class PersonalizeTemplatePagePositionController extends Controller
             'new_position' => $request->input('position'),
         ];
 
-        $templatePage = (new UpdateTemplatePagePosition)->execute($data);
+        $templatePage = (new UpdateTemplatePagePosition())->execute($data);
 
         return response()->json([
             'data' => PersonalizeTemplateShowViewHelper::dtoTemplatePage($templatePage->template, $templatePage),

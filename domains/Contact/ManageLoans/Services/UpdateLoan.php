@@ -83,14 +83,16 @@ class UpdateLoan extends BaseService implements ServiceInterface
 
         $this->loanersCollection = collect();
         foreach ($this->data['loaner_ids'] as $loanerId) {
-            $this->loanersCollection->push(Contact::where('vault_id', $this->data['vault_id'])
+            $this->loanersCollection->push(
+                Contact::where('vault_id', $this->data['vault_id'])
                 ->findOrFail($loanerId)
             );
         }
 
         $this->loaneesCollection = collect();
         foreach ($this->data['loanee_ids'] as $loaneeId) {
-            $this->loaneesCollection->push(Contact::where('vault_id', $this->data['vault_id'])
+            $this->loaneesCollection->push(
+                Contact::where('vault_id', $this->data['vault_id'])
                 ->findOrFail($loaneeId)
             );
         }

@@ -36,7 +36,7 @@ class CreateLabelTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateLabel)->execute($request);
+        (new CreateLabel())->execute($request);
     }
 
     /** @test */
@@ -86,7 +86,7 @@ class CreateLabelTest extends TestCase
             'text_color' => 'bg-zinc-700',
         ];
 
-        $label = (new CreateLabel)->execute($request);
+        $label = (new CreateLabel())->execute($request);
 
         $this->assertDatabaseHas('labels', [
             'id' => $label->id,

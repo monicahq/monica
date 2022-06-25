@@ -53,7 +53,7 @@ class AcceptInvitationTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new AcceptInvitation)->execute($request);
+        (new AcceptInvitation())->execute($request);
     }
 
     private function executeService(User $user): void
@@ -67,7 +67,7 @@ class AcceptInvitationTest extends TestCase
             'password' => 'password',
         ];
 
-        $user = (new AcceptInvitation)->execute($request);
+        $user = (new AcceptInvitation())->execute($request);
 
         $this->assertInstanceOf(
             User::class,

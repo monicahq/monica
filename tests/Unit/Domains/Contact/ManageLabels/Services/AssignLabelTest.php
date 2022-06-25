@@ -41,7 +41,7 @@ class AssignLabelTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new AssignLabel)->execute($request);
+        (new AssignLabel())->execute($request);
     }
 
     /** @test */
@@ -113,7 +113,7 @@ class AssignLabelTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        (new AssignLabel)->execute($request);
+        (new AssignLabel())->execute($request);
 
         $this->assertDatabaseHas('contact_label', [
             'contact_id' => $contact->id,

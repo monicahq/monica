@@ -32,7 +32,7 @@ class UpdateTemplateTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateTemplate)->execute($request);
+        (new UpdateTemplate())->execute($request);
     }
 
     /** @test */
@@ -68,7 +68,7 @@ class UpdateTemplateTest extends TestCase
             'name' => 'name',
         ];
 
-        (new UpdateTemplate)->execute($request);
+        (new UpdateTemplate())->execute($request);
 
         $this->assertDatabaseHas('templates', [
             'id' => $template->id,

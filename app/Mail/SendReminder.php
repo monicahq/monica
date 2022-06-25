@@ -11,7 +11,8 @@ use Illuminate\Queue\SerializesModels;
 
 class SendReminder extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public ContactReminder $contactReminder;
     public User $user;

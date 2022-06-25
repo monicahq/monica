@@ -38,7 +38,7 @@ class DestroyLifeEventTypeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyLifeEventType)->execute($request);
+        (new DestroyLifeEventType())->execute($request);
     }
 
     /** @test */
@@ -107,7 +107,7 @@ class DestroyLifeEventTypeTest extends TestCase
             'life_event_type_id' => $type->id,
         ];
 
-        (new DestroyLifeEventType)->execute($request);
+        (new DestroyLifeEventType())->execute($request);
 
         $this->assertDatabaseMissing('life_event_types', [
             'id' => $type->id,

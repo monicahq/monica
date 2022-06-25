@@ -15,7 +15,7 @@ class ModuleRowField extends Model
     /**
      * Possible module field types.
      */
-    const TYPE_INPUT_TEXT = 'input_text';
+    public const TYPE_INPUT_TEXT = 'input_text';
 
     /**
      * The attributes that are mass assignable.

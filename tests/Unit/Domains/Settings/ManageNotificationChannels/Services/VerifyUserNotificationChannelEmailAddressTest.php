@@ -35,7 +35,7 @@ class VerifyUserNotificationChannelEmailAddressTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new VerifyUserNotificationChannelEmailAddress)->execute($request);
+        (new VerifyUserNotificationChannelEmailAddress())->execute($request);
     }
 
     /** @test */
@@ -59,7 +59,7 @@ class VerifyUserNotificationChannelEmailAddressTest extends TestCase
             'uuid' => '21f74a1a-a157-11ec-b909-0242ac120002',
         ];
 
-        $channel = (new VerifyUserNotificationChannelEmailAddress)->execute($request);
+        $channel = (new VerifyUserNotificationChannelEmailAddress())->execute($request);
 
         $this->assertInstanceOf(
             UserNotificationChannel::class,

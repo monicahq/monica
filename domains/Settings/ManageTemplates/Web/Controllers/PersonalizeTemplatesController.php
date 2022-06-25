@@ -33,7 +33,7 @@ class PersonalizeTemplatesController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $template = (new CreateTemplate)->execute($data);
+        $template = (new CreateTemplate())->execute($data);
 
         return response()->json([
             'data' => PersonalizeTemplateIndexViewHelper::dtoTemplate($template),
@@ -49,7 +49,7 @@ class PersonalizeTemplatesController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $template = (new UpdateTemplate)->execute($data);
+        $template = (new UpdateTemplate())->execute($data);
 
         return response()->json([
             'data' => PersonalizeTemplateIndexViewHelper::dtoTemplate($template),
@@ -64,7 +64,7 @@ class PersonalizeTemplatesController extends Controller
             'template_id' => $templateId,
         ];
 
-        (new DestroyTemplate)->execute($data);
+        (new DestroyTemplate())->execute($data);
 
         return response()->json([
             'data' => true,

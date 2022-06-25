@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\Mail;
 
 class SendEmailNotification implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public UserNotificationChannel $userNotificationChannel;
     public ContactReminder $contactReminder;
@@ -45,7 +48,8 @@ class SendEmailNotification implements ShouldQueue
         $user = $this->userNotificationChannel->user;
 
         Mail::to($emailAddress)
-            ->queue((new SendReminder($this->contactReminder, $user))
+            ->queue(
+                (new SendReminder($this->contactReminder, $user))
                 ->onQueue('low')
             );
 

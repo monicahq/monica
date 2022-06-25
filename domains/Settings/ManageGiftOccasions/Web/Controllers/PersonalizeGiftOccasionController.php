@@ -30,7 +30,7 @@ class PersonalizeGiftOccasionController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $giftOccasion = (new CreateGiftOccasion)->execute($data);
+        $giftOccasion = (new CreateGiftOccasion())->execute($data);
 
         return response()->json([
             'data' => PersonalizeGiftOccasionViewHelper::dto($giftOccasion),
@@ -46,7 +46,7 @@ class PersonalizeGiftOccasionController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $giftOccasion = (new UpdateGiftOccasion)->execute($data);
+        $giftOccasion = (new UpdateGiftOccasion())->execute($data);
 
         return response()->json([
             'data' => PersonalizeGiftOccasionViewHelper::dto($giftOccasion),
@@ -61,7 +61,7 @@ class PersonalizeGiftOccasionController extends Controller
             'gift_occasion_id' => $giftOccasionId,
         ];
 
-        (new DestroyGiftOccasion)->execute($data);
+        (new DestroyGiftOccasion())->execute($data);
 
         return response()->json([
             'data' => true,

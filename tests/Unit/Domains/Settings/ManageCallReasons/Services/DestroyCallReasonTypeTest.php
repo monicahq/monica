@@ -34,7 +34,7 @@ class DestroyCallReasonTypeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyCallReasonType)->execute($request);
+        (new DestroyCallReasonType())->execute($request);
     }
 
     /** @test */
@@ -80,7 +80,7 @@ class DestroyCallReasonTypeTest extends TestCase
             'call_reason_type_id' => $type->id,
         ];
 
-        (new DestroyCallReasonType)->execute($request);
+        (new DestroyCallReasonType())->execute($request);
 
         $this->assertDatabaseMissing('call_reason_types', [
             'id' => $type->id,

@@ -80,7 +80,7 @@ class RemoveAdministratorPrivilegeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new RemoveAdministratorPrivilege)->execute($request);
+        (new RemoveAdministratorPrivilege())->execute($request);
     }
 
     private function executeService(Account $account, User $author, User $anotherUser): void
@@ -93,7 +93,7 @@ class RemoveAdministratorPrivilegeTest extends TestCase
             'user_id' => $anotherUser->id,
         ];
 
-        (new RemoveAdministratorPrivilege)->execute($request);
+        (new RemoveAdministratorPrivilege())->execute($request);
 
         $this->assertDatabaseHas('users', [
             'id' => $anotherUser->id,

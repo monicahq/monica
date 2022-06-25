@@ -18,7 +18,7 @@ class PreferencesDateFormatController extends Controller
             'date_format' => $request->input('dateFormat'),
         ];
 
-        $user = (new StoreDateFormatPreference)->execute($data);
+        $user = (new StoreDateFormatPreference())->execute($data);
 
         return response()->json([
             'data' => UserPreferencesIndexViewHelper::dtoDateFormat($user),

@@ -31,7 +31,7 @@ class PersonalizeContatInformationTypesController extends Controller
             'protocol' => $request->input('protocol'),
         ];
 
-        $contactInformationType = (new CreateContactInformationType)->execute($data);
+        $contactInformationType = (new CreateContactInformationType())->execute($data);
 
         return response()->json([
             'data' => PersonalizeContactInformationTypeIndexViewHelper::dtoContactInformationType($contactInformationType),
@@ -48,7 +48,7 @@ class PersonalizeContatInformationTypesController extends Controller
             'protocol' => $request->input('protocol'),
         ];
 
-        $contactInformationType = (new UpdateContactInformationType)->execute($data);
+        $contactInformationType = (new UpdateContactInformationType())->execute($data);
 
         return response()->json([
             'data' => PersonalizeContactInformationTypeIndexViewHelper::dtoContactInformationType($contactInformationType),
@@ -63,7 +63,7 @@ class PersonalizeContatInformationTypesController extends Controller
             'contact_information_type_id' => $contactInformationTypeId,
         ];
 
-        (new DestroyContactInformationType)->execute($data);
+        (new DestroyContactInformationType())->execute($data);
 
         return response()->json([
             'data' => true,

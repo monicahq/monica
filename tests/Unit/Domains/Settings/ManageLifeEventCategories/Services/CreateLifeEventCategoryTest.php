@@ -31,7 +31,7 @@ class CreateLifeEventCategoryTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateLifeEventCategory)->execute($request);
+        (new CreateLifeEventCategory())->execute($request);
     }
 
     /** @test */
@@ -63,7 +63,7 @@ class CreateLifeEventCategoryTest extends TestCase
             'type' => null,
         ];
 
-        $type = (new CreateLifeEventCategory)->execute($request);
+        $type = (new CreateLifeEventCategory())->execute($request);
 
         $this->assertDatabaseHas('life_event_categories', [
             'id' => $type->id,

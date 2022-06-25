@@ -37,7 +37,7 @@ class RescheduleContactReminderForChannelTest extends TestCase
             'scheduled_at' => '2018-01-01 00:00:00',
         ]);
 
-        (new RescheduleContactReminderForChannel)->execute([
+        (new RescheduleContactReminderForChannel())->execute([
             'contact_reminder_id' => $contactReminder->id,
             'user_notification_channel_id' => $channel->id,
             'contact_reminder_scheduled_id' => $id,
@@ -72,7 +72,7 @@ class RescheduleContactReminderForChannelTest extends TestCase
             'scheduled_at' => '2018-01-01 00:00:00',
         ]);
 
-        (new RescheduleContactReminderForChannel)->execute([
+        (new RescheduleContactReminderForChannel())->execute([
             'contact_reminder_id' => $contactReminder->id,
             'user_notification_channel_id' => $channel->id,
             'contact_reminder_scheduled_id' => $id,
@@ -107,7 +107,7 @@ class RescheduleContactReminderForChannelTest extends TestCase
             'scheduled_at' => '2018-01-01 00:00:00',
         ]);
 
-        (new RescheduleContactReminderForChannel)->execute([
+        (new RescheduleContactReminderForChannel())->execute([
             'contact_reminder_id' => $contactReminder->id,
             'user_notification_channel_id' => $channel->id,
             'contact_reminder_scheduled_id' => $id,
@@ -142,7 +142,7 @@ class RescheduleContactReminderForChannelTest extends TestCase
             'scheduled_at' => '2018-01-01 00:00:00',
         ]);
 
-        (new RescheduleContactReminderForChannel)->execute([
+        (new RescheduleContactReminderForChannel())->execute([
             'contact_reminder_id' => $contactReminder->id,
             'user_notification_channel_id' => $channel->id,
             'contact_reminder_scheduled_id' => $id,
@@ -180,7 +180,7 @@ class RescheduleContactReminderForChannelTest extends TestCase
             'scheduled_at' => '2018-01-01 00:00:00',
         ]);
 
-        (new RescheduleContactReminderForChannel)->execute([
+        (new RescheduleContactReminderForChannel())->execute([
             'contact_reminder_id' => $contactReminder->id,
             'user_notification_channel_id' => $channel->id,
             'contact_reminder_scheduled_id' => $id,

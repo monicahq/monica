@@ -39,7 +39,7 @@ class DestroyLabelTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyLabel)->execute($request);
+        (new DestroyLabel())->execute($request);
     }
 
     /** @test */
@@ -107,7 +107,7 @@ class DestroyLabelTest extends TestCase
             'vault_id' => $vault->id,
         ];
 
-        (new DestroyLabel)->execute($request);
+        (new DestroyLabel())->execute($request);
 
         $this->assertDatabaseMissing('labels', [
             'id' => $label->id,

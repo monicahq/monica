@@ -32,7 +32,7 @@ class PersonalizeLifeEventCategoriesController extends Controller
             'type' => null,
         ];
 
-        $lifeEventCategory = (new CreateLifeEventCategory)->execute($data);
+        $lifeEventCategory = (new CreateLifeEventCategory())->execute($data);
 
         return response()->json([
             'data' => PersonalizeLifeEventCategoriesViewHelper::dtoLifeEventCategory($lifeEventCategory),
@@ -50,7 +50,7 @@ class PersonalizeLifeEventCategoriesController extends Controller
             'type' => $request->input('type'),
         ];
 
-        $lifeEventCategory = (new UpdateLifeEventCategory)->execute($data);
+        $lifeEventCategory = (new UpdateLifeEventCategory())->execute($data);
 
         return response()->json([
             'data' => PersonalizeLifeEventCategoriesViewHelper::dtoLifeEventCategory($lifeEventCategory),
@@ -65,7 +65,7 @@ class PersonalizeLifeEventCategoriesController extends Controller
             'life_event_category_id' => $lifeEventCategoryId,
         ];
 
-        (new DestroyLifeEventCategory)->execute($data);
+        (new DestroyLifeEventCategory())->execute($data);
 
         return response()->json([
             'data' => true,

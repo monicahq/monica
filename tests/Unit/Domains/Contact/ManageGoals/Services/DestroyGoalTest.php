@@ -40,7 +40,7 @@ class DestroyGoalTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyGoal)->execute($request);
+        (new DestroyGoal())->execute($request);
     }
 
     /** @test */
@@ -116,7 +116,7 @@ class DestroyGoalTest extends TestCase
             'goal_id' => $goal->id,
         ];
 
-        (new DestroyGoal)->execute($request);
+        (new DestroyGoal())->execute($request);
 
         $this->assertDatabaseMissing('goals', [
             'id' => $goal->id,

@@ -45,7 +45,7 @@ class AcceptInvitationController extends Controller
             'password' => $request->input('password'),
         ];
 
-        $user = (new AcceptInvitation)->execute($data);
+        $user = (new AcceptInvitation())->execute($data);
 
         Auth::login($user);
 

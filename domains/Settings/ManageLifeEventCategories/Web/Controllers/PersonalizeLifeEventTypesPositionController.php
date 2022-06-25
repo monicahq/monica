@@ -20,7 +20,7 @@ class PersonalizeLifeEventTypesPositionController extends Controller
             'new_position' => $request->input('position'),
         ];
 
-        $lifeEventType = (new UpdateLifeEventTypePosition)->execute($data);
+        $lifeEventType = (new UpdateLifeEventTypePosition())->execute($data);
 
         return response()->json([
             'data' => PersonalizeLifeEventCategoriesViewHelper::dtoType($lifeEventType->lifeEventCategory, $lifeEventType),

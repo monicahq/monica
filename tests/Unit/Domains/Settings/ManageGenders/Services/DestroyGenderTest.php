@@ -36,7 +36,7 @@ class DestroyGenderTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyGender)->execute($request);
+        (new DestroyGender())->execute($request);
     }
 
     /** @test */
@@ -84,7 +84,7 @@ class DestroyGenderTest extends TestCase
             'gender_id' => $gender->id,
         ];
 
-        (new DestroyGender)->execute($request);
+        (new DestroyGender())->execute($request);
 
         $this->assertDatabaseMissing('genders', [
             'id' => $gender->id,

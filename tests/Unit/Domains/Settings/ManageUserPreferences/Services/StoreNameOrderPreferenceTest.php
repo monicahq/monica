@@ -30,7 +30,7 @@ class StoreNameOrderPreferenceTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new StoreNameOrderPreference)->execute($request);
+        (new StoreNameOrderPreference())->execute($request);
     }
 
     /** @test */
@@ -69,7 +69,7 @@ class StoreNameOrderPreferenceTest extends TestCase
             'name_order' => $nameOrder,
         ];
 
-        $user = (new StoreNameOrderPreference)->execute($request);
+        $user = (new StoreNameOrderPreference())->execute($request);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,

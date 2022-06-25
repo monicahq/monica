@@ -31,7 +31,7 @@ class PersonalizeRelationshipController extends Controller
             'can_be_deleted' => true,
         ];
 
-        $groupType = (new CreateRelationshipGroupType)->execute($data);
+        $groupType = (new CreateRelationshipGroupType())->execute($data);
 
         return response()->json([
             'data' => PersonalizeRelationshipIndexViewHelper::dtoGroupType($groupType),
@@ -47,7 +47,7 @@ class PersonalizeRelationshipController extends Controller
             'name' => $request->input('groupTypeName'),
         ];
 
-        $groupType = (new UpdateRelationshipGroupType)->execute($data);
+        $groupType = (new UpdateRelationshipGroupType())->execute($data);
 
         return response()->json([
             'data' => PersonalizeRelationshipIndexViewHelper::dtoGroupType($groupType),
@@ -62,7 +62,7 @@ class PersonalizeRelationshipController extends Controller
             'relationship_group_type_id' => $groupTypeId,
         ];
 
-        (new DestroyRelationshipGroupType)->execute($data);
+        (new DestroyRelationshipGroupType())->execute($data);
 
         return response()->json([
             'data' => true,

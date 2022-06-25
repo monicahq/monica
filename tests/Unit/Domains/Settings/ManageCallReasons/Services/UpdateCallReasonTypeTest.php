@@ -34,7 +34,7 @@ class UpdateCallReasonTypeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateCallReasonType)->execute($request);
+        (new UpdateCallReasonType())->execute($request);
     }
 
     /** @test */
@@ -81,7 +81,7 @@ class UpdateCallReasonTypeTest extends TestCase
             'label' => 'type name',
         ];
 
-        $type = (new UpdateCallReasonType)->execute($request);
+        $type = (new UpdateCallReasonType())->execute($request);
 
         $this->assertDatabaseHas('call_reason_types', [
             'id' => $type->id,

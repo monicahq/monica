@@ -137,7 +137,7 @@ class ScheduleContactReminderForUserTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new ScheduleContactReminderForUser)->execute($request);
+        (new ScheduleContactReminderForUser())->execute($request);
     }
 
     private function executeService(User $user, ContactReminder $reminder, UserNotificationChannel $channel, string $expectedDate): void
@@ -147,7 +147,7 @@ class ScheduleContactReminderForUserTest extends TestCase
             'user_id' => $user->id,
         ];
 
-        (new ScheduleContactReminderForUser)->execute($request);
+        (new ScheduleContactReminderForUser())->execute($request);
 
         $this->assertDatabaseHas('contact_reminder_scheduled', [
             'user_notification_channel_id' => $channel->id,

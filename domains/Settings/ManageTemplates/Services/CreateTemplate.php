@@ -62,7 +62,7 @@ class CreateTemplate extends BaseService implements ServiceInterface
             'can_be_deleted' => false,
             'type' => TemplatePage::TYPE_CONTACT,
         ];
-        $this->templatePageContact = (new CreateTemplatePage)->execute($request);
+        $this->templatePageContact = (new CreateTemplatePage())->execute($request);
 
         return $this->template;
     }

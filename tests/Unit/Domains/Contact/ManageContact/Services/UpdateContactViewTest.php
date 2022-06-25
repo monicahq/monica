@@ -37,7 +37,7 @@ class UpdateContactViewTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateContactView)->execute($request);
+        (new UpdateContactView())->execute($request);
     }
 
     /** @test */
@@ -90,7 +90,7 @@ class UpdateContactViewTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        (new UpdateContactView)->execute($request);
+        (new UpdateContactView())->execute($request);
 
         $this->assertDatabaseHas('contact_vault_user', [
             'contact_id' => $contact->id,

@@ -42,7 +42,7 @@ class ToggleContactTaskTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new ToggleContactTask)->execute($request);
+        (new ToggleContactTask())->execute($request);
     }
 
     /** @test */
@@ -121,7 +121,7 @@ class ToggleContactTaskTest extends TestCase
             'contact_task_id' => $task->id,
         ];
 
-        $task = (new ToggleContactTask)->execute($request);
+        $task = (new ToggleContactTask())->execute($request);
 
         $this->assertDatabaseHas('contact_tasks', [
             'id' => $task->id,

@@ -49,7 +49,7 @@ class ToggleUserNotificationChannelTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new ToggleUserNotificationChannel)->execute($request);
+        (new ToggleUserNotificationChannel())->execute($request);
     }
 
     /** @test */
@@ -75,7 +75,7 @@ class ToggleUserNotificationChannelTest extends TestCase
             'user_notification_channel_id' => $channel->id,
         ];
 
-        $channel = (new ToggleUserNotificationChannel)->execute($request);
+        $channel = (new ToggleUserNotificationChannel())->execute($request);
 
         $this->assertDatabaseHas('user_notification_channels', [
             'id' => $channel->id,

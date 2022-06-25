@@ -34,7 +34,7 @@ class DestroyGiftOccasionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyGiftOccasion)->execute($request);
+        (new DestroyGiftOccasion())->execute($request);
     }
 
     /** @test */
@@ -80,7 +80,7 @@ class DestroyGiftOccasionTest extends TestCase
             'gift_occasion_id' => $giftOccasion->id,
         ];
 
-        (new DestroyGiftOccasion)->execute($request);
+        (new DestroyGiftOccasion())->execute($request);
 
         $this->assertDatabaseMissing('gift_occasions', [
             'id' => $giftOccasion->id,

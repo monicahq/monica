@@ -41,7 +41,7 @@ class DestroyCallTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyCall)->execute($request);
+        (new DestroyCall())->execute($request);
     }
 
     /** @test */
@@ -119,7 +119,7 @@ class DestroyCallTest extends TestCase
             'call_id' => $call->id,
         ];
 
-        (new DestroyCall)->execute($request);
+        (new DestroyCall())->execute($request);
 
         $this->assertDatabaseMissing('calls', [
             'id' => $call->id,

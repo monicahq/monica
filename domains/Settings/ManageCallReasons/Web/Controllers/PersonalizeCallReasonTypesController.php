@@ -30,7 +30,7 @@ class PersonalizeCallReasonTypesController extends Controller
             'label' => $request->input('callReasonTypeName'),
         ];
 
-        $callReasonType = (new CreateCallReasonType)->execute($data);
+        $callReasonType = (new CreateCallReasonType())->execute($data);
 
         return response()->json([
             'data' => PersonalizeCallReasonsIndexViewHelper::dtoReasonType($callReasonType),
@@ -46,7 +46,7 @@ class PersonalizeCallReasonTypesController extends Controller
             'label' => $request->input('callReasonTypeName'),
         ];
 
-        $callReasonType = (new UpdateCallReasonType)->execute($data);
+        $callReasonType = (new UpdateCallReasonType())->execute($data);
 
         return response()->json([
             'data' => PersonalizeCallReasonsIndexViewHelper::dtoReasonType($callReasonType),
@@ -61,7 +61,7 @@ class PersonalizeCallReasonTypesController extends Controller
             'call_reason_type_id' => $callReasonTypeId,
         ];
 
-        (new DestroyCallReasonType)->execute($data);
+        (new DestroyCallReasonType())->execute($data);
 
         return response()->json([
             'data' => true,

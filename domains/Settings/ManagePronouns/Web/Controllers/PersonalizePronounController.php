@@ -30,7 +30,7 @@ class PersonalizePronounController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $pronoun = (new CreatePronoun)->execute($data);
+        $pronoun = (new CreatePronoun())->execute($data);
 
         return response()->json([
             'data' => PersonalizePronounIndexViewHelper::dtoPronoun($pronoun),
@@ -46,7 +46,7 @@ class PersonalizePronounController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $pronoun = (new UpdatePronoun)->execute($data);
+        $pronoun = (new UpdatePronoun())->execute($data);
 
         return response()->json([
             'data' => PersonalizePronounIndexViewHelper::dtoPronoun($pronoun),
@@ -61,7 +61,7 @@ class PersonalizePronounController extends Controller
             'pronoun_id' => $pronounId,
         ];
 
-        (new DestroyPronoun)->execute($data);
+        (new DestroyPronoun())->execute($data);
 
         return response()->json([
             'data' => true,

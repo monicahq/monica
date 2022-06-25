@@ -38,7 +38,7 @@ class UpdateJobInformationTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateJobInformation)->execute($request);
+        (new UpdateJobInformation())->execute($request);
     }
 
     /** @test */
@@ -109,7 +109,7 @@ class UpdateJobInformationTest extends TestCase
             'job_position' => $jobPosition,
         ];
 
-        $contact = (new UpdateJobInformation)->execute($request);
+        $contact = (new UpdateJobInformation())->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,

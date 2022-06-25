@@ -16,10 +16,10 @@ class ContactReminder extends Model
     /**
      * Possible type.
      */
-    const TYPE_ONE_TIME = 'one_time';
-    const TYPE_RECURRING_DAY = 'recurring_day';
-    const TYPE_RECURRING_MONTH = 'recurring_month';
-    const TYPE_RECURRING_YEAR = 'recurring_year';
+    public const TYPE_ONE_TIME = 'one_time';
+    public const TYPE_RECURRING_DAY = 'recurring_day';
+    public const TYPE_RECURRING_MONTH = 'recurring_month';
+    public const TYPE_RECURRING_YEAR = 'recurring_year';
 
     /**
      * The attributes that are mass assignable.

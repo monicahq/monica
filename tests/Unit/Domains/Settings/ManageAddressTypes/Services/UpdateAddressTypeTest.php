@@ -36,7 +36,7 @@ class UpdateAddressTypeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateAddressType)->execute($request);
+        (new UpdateAddressType())->execute($request);
     }
 
     /** @test */
@@ -85,7 +85,7 @@ class UpdateAddressTypeTest extends TestCase
             'name' => 'type name',
         ];
 
-        $type = (new UpdateAddressType)->execute($request);
+        $type = (new UpdateAddressType())->execute($request);
 
         $this->assertDatabaseHas('address_types', [
             'id' => $type->id,

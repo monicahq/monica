@@ -43,7 +43,7 @@ class DestroyContactImportantDateTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyContactImportantDate)->execute($request);
+        (new DestroyContactImportantDate())->execute($request);
     }
 
     /** @test */
@@ -121,7 +121,7 @@ class DestroyContactImportantDateTest extends TestCase
             'contact_important_date_id' => $date->id,
         ];
 
-        (new DestroyContactImportantDate)->execute($request);
+        (new DestroyContactImportantDate())->execute($request);
 
         $this->assertDatabaseMissing('contact_important_dates', [
             'id' => $date->id,

@@ -17,11 +17,11 @@ class ContactLifeEventActivity extends Model
     /**
      * Possible type.
      */
-    const TYPE_PERIOD_FULL_DAY = 'full day';
-    const TYPE_PERIOD_MORNING = 'morning';
-    const TYPE_PERIOD_AFTERNOON = 'afternoon';
-    const TYPE_PERIOD_EVENING = 'evening';
-    const TYPE_PERIOD_NIGHT = 'all night';
+    public const TYPE_PERIOD_FULL_DAY = 'full day';
+    public const TYPE_PERIOD_MORNING = 'morning';
+    public const TYPE_PERIOD_AFTERNOON = 'afternoon';
+    public const TYPE_PERIOD_EVENING = 'evening';
+    public const TYPE_PERIOD_NIGHT = 'all night';
 
     /**
      * The attributes that are mass assignable.

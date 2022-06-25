@@ -93,7 +93,7 @@ class CreateContactReminder extends BaseService implements ServiceInterface
         $users = $this->vault->users()->get();
 
         foreach ($users as $user) {
-            (new ScheduleContactReminderForUser)->execute([
+            (new ScheduleContactReminderForUser())->execute([
                 'contact_reminder_id' => $this->reminder->id,
                 'user_id' => $user->id,
             ]);

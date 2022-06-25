@@ -74,7 +74,7 @@ class VerifyUserNotificationChannelEmailAddress extends BaseService implements S
 
     private function rescheduledReminders(): void
     {
-        (new ScheduleAllContactRemindersForNotificationChannel)->execute([
+        (new ScheduleAllContactRemindersForNotificationChannel())->execute([
             'account_id' => $this->data['account_id'],
             'author_id' => $this->data['author_id'],
             'user_notification_channel_id' => $this->userNotificationChannel->id,

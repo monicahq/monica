@@ -16,8 +16,8 @@ class RelationshipGroupType extends Model
     /**
      * Possible types.
      */
-    const TYPE_FAMILY = 'family';
-    const TYPE_LOVE = 'love';
+    public const TYPE_FAMILY = 'family';
+    public const TYPE_LOVE = 'love';
 
     /**
      * The attributes that are mass assignable.

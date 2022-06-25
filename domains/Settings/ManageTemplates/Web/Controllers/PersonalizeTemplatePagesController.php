@@ -25,7 +25,7 @@ class PersonalizeTemplatePagesController extends Controller
             'can_be_deleted' => true,
         ];
 
-        $templatePage = (new CreateTemplatePage)->execute($data);
+        $templatePage = (new CreateTemplatePage())->execute($data);
 
         return response()->json([
             'data' => PersonalizeTemplateShowViewHelper::dtoTemplatePage($templatePage->template, $templatePage),
@@ -42,7 +42,7 @@ class PersonalizeTemplatePagesController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $templatePage = (new UpdateTemplatePage)->execute($data);
+        $templatePage = (new UpdateTemplatePage())->execute($data);
 
         return response()->json([
             'data' => PersonalizeTemplateShowViewHelper::dtoTemplatePage($templatePage->template, $templatePage),
@@ -58,7 +58,7 @@ class PersonalizeTemplatePagesController extends Controller
             'template_page_id' => $templatePageId,
         ];
 
-        (new DestroyTemplatePage)->execute($data);
+        (new DestroyTemplatePage())->execute($data);
 
         return response()->json([
             'data' => true,

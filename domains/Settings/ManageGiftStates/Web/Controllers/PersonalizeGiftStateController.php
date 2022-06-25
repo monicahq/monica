@@ -30,7 +30,7 @@ class PersonalizeGiftStateController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $giftState = (new CreateGiftState)->execute($data);
+        $giftState = (new CreateGiftState())->execute($data);
 
         return response()->json([
             'data' => PersonalizeGiftStateViewHelper::dto($giftState),
@@ -46,7 +46,7 @@ class PersonalizeGiftStateController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $giftState = (new UpdateGiftState)->execute($data);
+        $giftState = (new UpdateGiftState())->execute($data);
 
         return response()->json([
             'data' => PersonalizeGiftStateViewHelper::dto($giftState),
@@ -61,7 +61,7 @@ class PersonalizeGiftStateController extends Controller
             'gift_state_id' => $giftStateId,
         ];
 
-        (new DestroyGiftState)->execute($data);
+        (new DestroyGiftState())->execute($data);
 
         return response()->json([
             'data' => true,

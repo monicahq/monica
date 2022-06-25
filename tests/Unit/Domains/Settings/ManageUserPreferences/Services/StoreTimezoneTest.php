@@ -30,7 +30,7 @@ class StoreTimezoneTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new StoreTimezone)->execute($request);
+        (new StoreTimezone())->execute($request);
     }
 
     /** @test */
@@ -53,7 +53,7 @@ class StoreTimezoneTest extends TestCase
             'timezone' => 'UTC',
         ];
 
-        $user = (new StoreTimezone)->execute($request);
+        $user = (new StoreTimezone())->execute($request);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,

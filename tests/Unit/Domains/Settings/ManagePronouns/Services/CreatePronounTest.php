@@ -33,7 +33,7 @@ class CreatePronounTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreatePronoun)->execute($request);
+        (new CreatePronoun())->execute($request);
     }
 
     /** @test */
@@ -65,7 +65,7 @@ class CreatePronounTest extends TestCase
             'name' => 'pronoun name',
         ];
 
-        $pronoun = (new CreatePronoun)->execute($request);
+        $pronoun = (new CreatePronoun())->execute($request);
 
         $this->assertDatabaseHas('pronouns', [
             'id' => $pronoun->id,

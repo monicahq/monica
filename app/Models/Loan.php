@@ -11,13 +11,14 @@ use Laravel\Scout\Searchable;
 
 class Loan extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory;
+    use Searchable;
 
     /**
      * Possible types.
      */
-    const TYPE_DEBT = 'debt';
-    const TYPE_LOAN = 'loan';
+    public const TYPE_DEBT = 'debt';
+    public const TYPE_LOAN = 'loan';
 
     /**
      * The attributes that are mass assignable.

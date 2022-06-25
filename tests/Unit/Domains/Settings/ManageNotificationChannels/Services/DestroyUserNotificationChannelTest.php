@@ -36,7 +36,7 @@ class DestroyUserNotificationChannelTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateUserNotificationChannel)->execute($request);
+        (new CreateUserNotificationChannel())->execute($request);
     }
 
     /** @test */
@@ -72,7 +72,7 @@ class DestroyUserNotificationChannelTest extends TestCase
             'user_notification_channel_id' => $channel->id,
         ];
 
-        (new DestroyUserNotificationChannel)->execute($request);
+        (new DestroyUserNotificationChannel())->execute($request);
 
         $this->assertDatabaseMissing('user_notification_channels', [
             'id' => $channel->id,

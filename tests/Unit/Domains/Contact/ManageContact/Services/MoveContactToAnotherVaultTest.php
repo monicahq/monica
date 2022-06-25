@@ -41,7 +41,7 @@ class MoveContactToAnotherVaultTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new MoveContactToAnotherVault)->execute($request);
+        (new MoveContactToAnotherVault())->execute($request);
     }
 
     /** @test */
@@ -117,7 +117,7 @@ class MoveContactToAnotherVaultTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $contact = (new MoveContactToAnotherVault)->execute($request);
+        $contact = (new MoveContactToAnotherVault())->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,

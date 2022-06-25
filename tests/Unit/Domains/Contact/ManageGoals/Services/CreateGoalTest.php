@@ -36,7 +36,7 @@ class CreateGoalTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateGoal)->execute($request);
+        (new CreateGoal())->execute($request);
     }
 
     /** @test */
@@ -89,7 +89,7 @@ class CreateGoalTest extends TestCase
             'name' => 'super title',
         ];
 
-        $goal = (new CreateGoal)->execute($request);
+        $goal = (new CreateGoal())->execute($request);
 
         $this->assertDatabaseHas('goals', [
             'id' => $goal->id,

@@ -18,7 +18,7 @@ class VaultSettingsTemplateController extends Controller
             'template_id' => $request->input('template_id'),
         ];
 
-        (new UpdateVaultDefaultTemplate)->execute($data);
+        (new UpdateVaultDefaultTemplate())->execute($data);
 
         return response()->json([
             'data' => true,

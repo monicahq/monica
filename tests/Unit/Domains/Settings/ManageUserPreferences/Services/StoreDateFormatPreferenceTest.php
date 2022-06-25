@@ -30,7 +30,7 @@ class StoreDateFormatPreferenceTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new StoreDateFormatPreference)->execute($request);
+        (new StoreDateFormatPreference())->execute($request);
     }
 
     /** @test */
@@ -53,7 +53,7 @@ class StoreDateFormatPreferenceTest extends TestCase
             'date_format' => 'Y',
         ];
 
-        $user = (new StoreDateFormatPreference)->execute($request);
+        $user = (new StoreDateFormatPreference())->execute($request);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,

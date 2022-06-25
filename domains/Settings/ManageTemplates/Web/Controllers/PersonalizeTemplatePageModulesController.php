@@ -24,7 +24,7 @@ class PersonalizeTemplatePageModulesController extends Controller
 
         $templatePage = TemplatePage::findOrFail($templatePageId);
 
-        $module = (new AssociateModuleToTemplatePage)->execute($data);
+        $module = (new AssociateModuleToTemplatePage())->execute($data);
 
         return response()->json([
             'data' => PersonalizeTemplatePageShowViewHelper::dtoModule($templatePage, $module),
@@ -43,7 +43,7 @@ class PersonalizeTemplatePageModulesController extends Controller
 
         $templatePage = TemplatePage::findOrFail($templatePageId);
 
-        $module = (new RemoveModuleFromTemplatePage)->execute($data);
+        $module = (new RemoveModuleFromTemplatePage())->execute($data);
 
         return response()->json([
             'data' => PersonalizeTemplatePageShowViewHelper::dtoModule($templatePage, $module),

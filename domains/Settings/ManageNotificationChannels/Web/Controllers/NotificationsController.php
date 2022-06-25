@@ -36,7 +36,7 @@ class NotificationsController extends Controller
             'preferred_time' => $time,
         ];
 
-        $channel = (new CreateUserNotificationChannel)->execute($data);
+        $channel = (new CreateUserNotificationChannel())->execute($data);
 
         return response()->json([
             'data' => NotificationsIndexViewHelper::dtoEmail($channel, Auth::user()),
@@ -51,7 +51,7 @@ class NotificationsController extends Controller
             'user_notification_channel_id' => $channelId,
         ];
 
-        (new DestroyUserNotificationChannel)->execute($data);
+        (new DestroyUserNotificationChannel())->execute($data);
 
         return response()->json([
             'data' => true,

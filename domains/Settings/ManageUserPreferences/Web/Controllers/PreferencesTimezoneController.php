@@ -18,7 +18,7 @@ class PreferencesTimezoneController extends Controller
             'timezone' => $request->input('timezone'),
         ];
 
-        $user = (new StoreTimezone)->execute($data);
+        $user = (new StoreTimezone())->execute($data);
 
         return response()->json([
             'data' => UserPreferencesIndexViewHelper::dtoTimezone($user),

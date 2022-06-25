@@ -38,7 +38,7 @@ class UpdateTemplatePageTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateTemplatePage)->execute($request);
+        (new UpdateTemplatePage())->execute($request);
     }
 
     /** @test */
@@ -95,7 +95,7 @@ class UpdateTemplatePageTest extends TestCase
             'name' => 'Business',
         ];
 
-        $templatePage = (new UpdateTemplatePage)->execute($request);
+        $templatePage = (new UpdateTemplatePage())->execute($request);
 
         $this->assertDatabaseHas('template_pages', [
             'id' => $templatePage->id,

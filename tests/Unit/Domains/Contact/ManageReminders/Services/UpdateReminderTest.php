@@ -44,7 +44,7 @@ class UpdateReminderTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateReminder)->execute($request);
+        (new UpdateReminder())->execute($request);
     }
 
     /** @test */
@@ -129,7 +129,7 @@ class UpdateReminderTest extends TestCase
             'frequency_number' => null,
         ];
 
-        $reminder = (new UpdateReminder)->execute($request);
+        $reminder = (new UpdateReminder())->execute($request);
 
         $this->assertDatabaseHas('contact_reminders', [
             'id' => $reminder->id,

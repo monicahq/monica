@@ -45,7 +45,7 @@ class CreateCallTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateCall)->execute($request);
+        (new CreateCall())->execute($request);
     }
 
     /** @test */
@@ -123,7 +123,7 @@ class CreateCallTest extends TestCase
             'who_initiated' => 'contact',
         ];
 
-        $call = (new CreateCall)->execute($request);
+        $call = (new CreateCall())->execute($request);
 
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,

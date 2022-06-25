@@ -49,7 +49,7 @@ class DestroyNoteTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyNote)->execute($request);
+        (new DestroyNote())->execute($request);
     }
 
     /** @test */
@@ -127,7 +127,7 @@ class DestroyNoteTest extends TestCase
             'note_id' => $note->id,
         ];
 
-        (new DestroyNote)->execute($request);
+        (new DestroyNote())->execute($request);
 
         $this->assertDatabaseMissing('notes', [
             'id' => $note->id,

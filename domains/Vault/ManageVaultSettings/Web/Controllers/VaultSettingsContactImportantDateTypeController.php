@@ -24,7 +24,7 @@ class VaultSettingsContactImportantDateTypeController extends Controller
             'can_be_deleted' => $request->input('can_be_deleted'),
         ];
 
-        $type = (new CreateContactImportantDateType)->execute($data);
+        $type = (new CreateContactImportantDateType())->execute($data);
         $vault = Vault::findOrFail($vaultId);
 
         return response()->json([
@@ -44,7 +44,7 @@ class VaultSettingsContactImportantDateTypeController extends Controller
             'can_be_deleted' => $request->input('can_be_deleted'),
         ];
 
-        $type = (new UpdateContactImportantDateType)->execute($data);
+        $type = (new UpdateContactImportantDateType())->execute($data);
         $vault = Vault::findOrFail($vaultId);
 
         return response()->json([
@@ -61,7 +61,7 @@ class VaultSettingsContactImportantDateTypeController extends Controller
             'contact_important_date_type_id' => $typeId,
         ];
 
-        (new DestroyContactImportantDateType)->execute($data);
+        (new DestroyContactImportantDateType())->execute($data);
 
         return response()->json([
             'data' => true,

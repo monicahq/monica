@@ -42,7 +42,7 @@ class AssociateModuleToTemplatePageTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new AssociateModuleToTemplatePage)->execute($request);
+        (new AssociateModuleToTemplatePage())->execute($request);
     }
 
     /** @test */
@@ -124,7 +124,7 @@ class AssociateModuleToTemplatePageTest extends TestCase
             'template_page_id' => $templatePage->id,
         ];
 
-        $module = (new AssociateModuleToTemplatePage)->execute($request);
+        $module = (new AssociateModuleToTemplatePage())->execute($request);
 
         $this->assertDatabaseHas('module_template_page', [
             'module_id' => $module->id,

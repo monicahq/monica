@@ -34,7 +34,7 @@ class UpdateGiftOccasionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateGiftOccasion)->execute($request);
+        (new UpdateGiftOccasion())->execute($request);
     }
 
     /** @test */
@@ -81,7 +81,7 @@ class UpdateGiftOccasionTest extends TestCase
             'label' => 'type label',
         ];
 
-        $giftOccasion = (new UpdateGiftOccasion)->execute($request);
+        $giftOccasion = (new UpdateGiftOccasion())->execute($request);
 
         $this->assertDatabaseHas('gift_occasions', [
             'id' => $giftOccasion->id,

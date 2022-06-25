@@ -60,7 +60,7 @@ class SetRelationship extends BaseService implements ServiceInterface
 
         $relationshipType = RelationshipType::findOrFail($data['relationship_type_id']);
         if ($relationshipType->groupType->account_id != $data['account_id']) {
-            throw new ModelNotFoundException;
+            throw new ModelNotFoundException();
         }
 
         // create the relationships

@@ -34,7 +34,7 @@ class DestroyVaultTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyVault)->execute($request);
+        (new DestroyVault())->execute($request);
     }
 
     /** @test */
@@ -81,7 +81,7 @@ class DestroyVaultTest extends TestCase
             'vault_id' => $vault->id,
         ];
 
-        (new DestroyVault)->execute($request);
+        (new DestroyVault())->execute($request);
 
         $this->assertDatabaseMissing('vaults', [
             'id' => $vault->id,

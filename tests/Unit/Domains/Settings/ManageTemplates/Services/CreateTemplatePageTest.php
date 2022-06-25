@@ -35,7 +35,7 @@ class CreateTemplatePageTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateTemplatePage)->execute($request);
+        (new CreateTemplatePage())->execute($request);
     }
 
     /** @test */
@@ -73,7 +73,7 @@ class CreateTemplatePageTest extends TestCase
             'can_be_deleted' => true,
         ];
 
-        $templatePage = (new CreateTemplatePage)->execute($request);
+        $templatePage = (new CreateTemplatePage())->execute($request);
 
         $this->assertDatabaseHas('template_pages', [
             'id' => $templatePage->id,

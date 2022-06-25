@@ -41,7 +41,7 @@ class UserController extends Controller
             'is_administrator' => $request->input('administrator') === 'true' ? true : false,
         ];
 
-        (new InviteUser)->execute($data);
+        (new InviteUser())->execute($data);
 
         return response()->json([
             'data' => route('settings.user.index'),
@@ -57,9 +57,9 @@ class UserController extends Controller
         ];
 
         if ($request->input('administrator') === 'true') {
-            $user = (new GiveAdministratorPrivilege)->execute($data);
+            $user = (new GiveAdministratorPrivilege())->execute($data);
         } else {
-            $user = (new RemoveAdministratorPrivilege)->execute($data);
+            $user = (new RemoveAdministratorPrivilege())->execute($data);
         }
 
         return response()->json([
@@ -75,7 +75,7 @@ class UserController extends Controller
             'user_id' => $userId,
         ];
 
-        (new DestroyUser)->execute($data);
+        (new DestroyUser())->execute($data);
 
         return response()->json([
             'data' => true,

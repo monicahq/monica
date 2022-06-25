@@ -30,7 +30,7 @@ class PersonalizeAddressTypeController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $addressType = (new CreateAddressType)->execute($data);
+        $addressType = (new CreateAddressType())->execute($data);
 
         return response()->json([
             'data' => PersonalizeAddressTypeIndexViewHelper::dtoAddressType($addressType),
@@ -46,7 +46,7 @@ class PersonalizeAddressTypeController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $addressType = (new UpdateAddressType)->execute($data);
+        $addressType = (new UpdateAddressType())->execute($data);
 
         return response()->json([
             'data' => PersonalizeAddressTypeIndexViewHelper::dtoAddressType($addressType),
@@ -61,7 +61,7 @@ class PersonalizeAddressTypeController extends Controller
             'address_type_id' => $addressTypeId,
         ];
 
-        (new DestroyPronoun)->execute($data);
+        (new DestroyPronoun())->execute($data);
 
         return response()->json([
             'data' => true,

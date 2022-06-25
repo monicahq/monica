@@ -31,7 +31,7 @@ class DisableAllCurrenciesTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DisableAllCurrencies)->execute($request);
+        (new DisableAllCurrencies())->execute($request);
     }
 
     /** @test */
@@ -63,7 +63,7 @@ class DisableAllCurrenciesTest extends TestCase
             'author_id' => $author->id,
         ];
 
-        (new DisableAllCurrencies)->execute($request);
+        (new DisableAllCurrencies())->execute($request);
 
         $this->assertDatabaseHas('account_currencies', [
             'account_id' => $account->id,

@@ -11,7 +11,10 @@ use Illuminate\Queue\SerializesModels;
 
 class CreateAuditLog implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * The audit log instance.

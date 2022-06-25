@@ -29,7 +29,7 @@ class StoreMapsPreferenceTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new StoreMapsPreference)->execute($request);
+        (new StoreMapsPreference())->execute($request);
     }
 
     /** @test */
@@ -50,7 +50,7 @@ class StoreMapsPreferenceTest extends TestCase
             'maps_site' => $mapsSite,
         ];
 
-        $user = (new StoreMapsPreference)->execute($request);
+        $user = (new StoreMapsPreference())->execute($request);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,

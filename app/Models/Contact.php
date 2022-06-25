@@ -16,7 +16,8 @@ use Laravel\Scout\Searchable;
 
 class Contact extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory;
+    use Searchable;
 
     /**
      * The attributes that are mass assignable.

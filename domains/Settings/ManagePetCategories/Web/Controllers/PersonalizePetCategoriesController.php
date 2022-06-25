@@ -30,7 +30,7 @@ class PersonalizePetCategoriesController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $petCategory = (new CreatePetCategory)->execute($data);
+        $petCategory = (new CreatePetCategory())->execute($data);
 
         return response()->json([
             'data' => PersonalizePetCategoriesIndexViewHelper::dtoPetCategory($petCategory),
@@ -46,7 +46,7 @@ class PersonalizePetCategoriesController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $petCategory = (new UpdatePetCategory)->execute($data);
+        $petCategory = (new UpdatePetCategory())->execute($data);
 
         return response()->json([
             'data' => PersonalizePetCategoriesIndexViewHelper::dtoPetCategory($petCategory),
@@ -61,7 +61,7 @@ class PersonalizePetCategoriesController extends Controller
             'pet_category_id' => $petCategoryId,
         ];
 
-        (new DestroyPetCategory)->execute($data);
+        (new DestroyPetCategory())->execute($data);
 
         return response()->json([
             'data' => true,

@@ -21,7 +21,7 @@ class PersonalizeCallReasonsController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $reason = (new CreateCallReason)->execute($data);
+        $reason = (new CreateCallReason())->execute($data);
 
         return response()->json([
             'data' => PersonalizeCallReasonsIndexViewHelper::dtoReason($reason->callReasonType, $reason),
@@ -38,7 +38,7 @@ class PersonalizeCallReasonsController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $reason = (new UpdateCallReason)->execute($data);
+        $reason = (new UpdateCallReason())->execute($data);
 
         return response()->json([
             'data' => PersonalizeCallReasonsIndexViewHelper::dtoReason($reason->callReasonType, $reason),
@@ -54,7 +54,7 @@ class PersonalizeCallReasonsController extends Controller
             'call_reason_id' => $reasonId,
         ];
 
-        (new DestroyCallReason)->execute($data);
+        (new DestroyCallReason())->execute($data);
 
         return response()->json([
             'data' => true,

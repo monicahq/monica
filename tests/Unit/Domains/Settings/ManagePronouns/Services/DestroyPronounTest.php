@@ -36,7 +36,7 @@ class DestroyPronounTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyPronoun)->execute($request);
+        (new DestroyPronoun())->execute($request);
     }
 
     /** @test */
@@ -84,7 +84,7 @@ class DestroyPronounTest extends TestCase
             'pronoun_id' => $pronoun->id,
         ];
 
-        (new DestroyPronoun)->execute($request);
+        (new DestroyPronoun())->execute($request);
 
         $this->assertDatabaseMissing('pronouns', [
             'id' => $pronoun->id,

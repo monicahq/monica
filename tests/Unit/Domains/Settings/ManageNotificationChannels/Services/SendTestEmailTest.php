@@ -37,7 +37,7 @@ class SendTestEmailTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new SendTestEmail)->execute($request);
+        (new SendTestEmail())->execute($request);
     }
 
     /** @test */
@@ -74,7 +74,7 @@ class SendTestEmailTest extends TestCase
             'user_notification_channel_id' => $channel->id,
         ];
 
-        $channel = (new SendTestEmail)->execute($request);
+        $channel = (new SendTestEmail())->execute($request);
 
         $this->assertInstanceOf(
             UserNotificationChannel::class,

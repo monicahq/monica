@@ -25,7 +25,7 @@ class ContactModuleLabelController extends Controller
             'text_color' => 'text-neutral-800',
         ];
 
-        $label = (new CreateLabel)->execute($data);
+        $label = (new CreateLabel())->execute($data);
 
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -35,7 +35,7 @@ class ContactModuleLabelController extends Controller
             'label_id' => $label->id,
         ];
 
-        $label = (new AssignLabel)->execute($data);
+        $label = (new AssignLabel())->execute($data);
 
         $contact = Contact::find($contactId);
 
@@ -54,7 +54,7 @@ class ContactModuleLabelController extends Controller
             'label_id' => $labelId,
         ];
 
-        $label = (new AssignLabel)->execute($data);
+        $label = (new AssignLabel())->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -72,7 +72,7 @@ class ContactModuleLabelController extends Controller
             'label_id' => $labelId,
         ];
 
-        $label = (new RemoveLabel)->execute($data);
+        $label = (new RemoveLabel())->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([

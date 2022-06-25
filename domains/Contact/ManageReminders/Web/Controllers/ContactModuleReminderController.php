@@ -49,7 +49,7 @@ class ContactModuleReminderController extends Controller
             'frequency_number' => $frequencyNumber,
         ];
 
-        $reminder = (new CreateContactReminder)->execute($data);
+        $reminder = (new CreateContactReminder())->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -92,7 +92,7 @@ class ContactModuleReminderController extends Controller
             'frequency_number' => $frequencyNumber,
         ];
 
-        $reminder = (new UpdateReminder)->execute($data);
+        $reminder = (new UpdateReminder())->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -110,7 +110,7 @@ class ContactModuleReminderController extends Controller
             'contact_reminder_id' => $reminderId,
         ];
 
-        (new DestroyReminder)->execute($data);
+        (new DestroyReminder())->execute($data);
 
         return response()->json([
             'data' => true,

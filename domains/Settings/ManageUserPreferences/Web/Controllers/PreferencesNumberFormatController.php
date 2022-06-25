@@ -18,7 +18,7 @@ class PreferencesNumberFormatController extends Controller
             'number_format' => $request->input('numberFormat'),
         ];
 
-        $user = (new StoreNumberFormatPreference)->execute($data);
+        $user = (new StoreNumberFormatPreference())->execute($data);
 
         return response()->json([
             'data' => UserPreferencesIndexViewHelper::dtoNumberFormat($user),

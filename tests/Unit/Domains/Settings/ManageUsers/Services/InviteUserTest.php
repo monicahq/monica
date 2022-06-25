@@ -63,7 +63,7 @@ class InviteUserTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new InviteUser)->execute($request);
+        (new InviteUser())->execute($request);
     }
 
     private function executeService(Account $account, User $author): void
@@ -78,7 +78,7 @@ class InviteUserTest extends TestCase
             'is_administrator' => true,
         ];
 
-        $newUser = (new InviteUser)->execute($request);
+        $newUser = (new InviteUser())->execute($request);
 
         $this->assertDatabaseHas('users', [
             'id' => $newUser->id,

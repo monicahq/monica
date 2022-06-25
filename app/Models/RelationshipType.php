@@ -16,8 +16,8 @@ class RelationshipType extends Model
     /**
      * Possible types.
      */
-    const TYPE_LOVE = 'family';
-    const TYPE_CHILD = 'child';
+    public const TYPE_LOVE = 'family';
+    public const TYPE_CHILD = 'child';
 
     /**
      * The attributes that are mass assignable.

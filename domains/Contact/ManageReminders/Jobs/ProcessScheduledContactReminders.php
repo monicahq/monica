@@ -15,7 +15,10 @@ use Illuminate\Support\Facades\DB;
 
 class ProcessScheduledContactReminders implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new job instance.
@@ -57,7 +60,7 @@ class ProcessScheduledContactReminders implements ShouldQueue
             $this->updateScheduledContactReminderTriggeredAt($scheduledReminder->id);
             $this->updateNumberOfTimesTriggered($scheduledReminder->contact_reminder_id);
 
-            (new RescheduleContactReminderForChannel)->execute([
+            (new RescheduleContactReminderForChannel())->execute([
                 'contact_reminder_id' => $scheduledReminder->contact_reminder_id,
                 'user_notification_channel_id' => $scheduledReminder->user_notification_channel_id,
                 'contact_reminder_scheduled_id' => $scheduledReminder->id,

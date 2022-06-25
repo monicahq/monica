@@ -45,7 +45,7 @@ class ContactRelationshipsController extends Controller
 
         // first, let's create a contact if there is no contact selected
         if ($request->input('choice') != 'contact') {
-            $otherContact = (new CreateContact)->execute([
+            $otherContact = (new CreateContact())->execute([
                 'account_id' => Auth::user()->account_id,
                 'author_id' => Auth::user()->id,
                 'vault_id' => $vaultId,
@@ -66,7 +66,7 @@ class ContactRelationshipsController extends Controller
             $otherContactId = collect($request->input('other_contact_id'))->pluck('id')->first();
         }
 
-        (new SetRelationship)->execute([
+        (new SetRelationship())->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::user()->id,
             'vault_id' => $vaultId,
@@ -87,7 +87,7 @@ class ContactRelationshipsController extends Controller
     {
         $relationship = DB::table('relationships')->where('id', $relationshipId)->first();
 
-        (new UnsetRelationship)->execute([
+        (new UnsetRelationship())->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::user()->id,
             'vault_id' => $vaultId,

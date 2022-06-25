@@ -36,7 +36,7 @@ class ContactPageController extends Controller
             ->where('template_id', $contact->template_id)
             ->firstOrFail();
 
-        (new UpdateContactView)->execute([
+        (new UpdateContactView())->execute([
             'account_id' => Auth::user()->account_id,
             'vault_id' => $vaultId,
             'author_id' => Auth::user()->id,

@@ -50,7 +50,7 @@ class CancelAccountTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CancelAccount)->execute($request);
+        (new CancelAccount())->execute($request);
     }
 
     private function executeService(Account $account, User $user): void
@@ -62,7 +62,7 @@ class CancelAccountTest extends TestCase
             'author_id' => $user->id,
         ];
 
-        (new CancelAccount)->execute($request);
+        (new CancelAccount())->execute($request);
 
         $this->assertDatabaseMissing('accounts', [
             'id' => $account->id,

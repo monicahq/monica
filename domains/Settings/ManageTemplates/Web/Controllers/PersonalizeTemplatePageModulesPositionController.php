@@ -23,7 +23,7 @@ class PersonalizeTemplatePageModulesPositionController extends Controller
         ];
 
         $templatePage = TemplatePage::findOrFail($templatePageId);
-        $module = (new UpdateModulePosition)->execute($data);
+        $module = (new UpdateModulePosition())->execute($data);
 
         return response()->json([
             'data' => PersonalizeTemplatePageShowViewHelper::dtoModule($templatePage, $module),

@@ -33,7 +33,7 @@ class UpdateGiftStatePositionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateGiftStatePosition)->execute($request);
+        (new UpdateGiftStatePosition())->execute($request);
     }
 
     /** @test */
@@ -81,7 +81,7 @@ class UpdateGiftStatePositionTest extends TestCase
             'new_position' => 3,
         ];
 
-        $giftState = (new UpdateGiftStatePosition)->execute($request);
+        $giftState = (new UpdateGiftStatePosition())->execute($request);
 
         $this->assertDatabaseHas('gift_states', [
             'id' => $giftState1->id,

@@ -25,7 +25,7 @@ class VaultSettingsLabelController extends Controller
             'text_color' => $request->input('text_color'),
         ];
 
-        $label = (new CreateLabel)->execute($data);
+        $label = (new CreateLabel())->execute($data);
         $vault = Vault::findOrFail($vaultId);
 
         return response()->json([
@@ -46,7 +46,7 @@ class VaultSettingsLabelController extends Controller
             'text_color' => $request->input('text_color'),
         ];
 
-        $label = (new UpdateLabel)->execute($data);
+        $label = (new UpdateLabel())->execute($data);
         $vault = Vault::findOrFail($vaultId);
 
         return response()->json([
@@ -63,7 +63,7 @@ class VaultSettingsLabelController extends Controller
             'label_id' => $labelId,
         ];
 
-        (new DestroyLabel)->execute($data);
+        (new DestroyLabel())->execute($data);
 
         return response()->json([
             'data' => true,

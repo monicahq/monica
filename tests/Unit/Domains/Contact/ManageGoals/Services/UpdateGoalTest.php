@@ -41,7 +41,7 @@ class UpdateGoalTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateGoal)->execute($request);
+        (new UpdateGoal())->execute($request);
     }
 
     /** @test */
@@ -120,7 +120,7 @@ class UpdateGoalTest extends TestCase
             'name' => 'super title',
         ];
 
-        $goal = (new UpdateGoal)->execute($request);
+        $goal = (new UpdateGoal())->execute($request);
 
         $this->assertDatabaseHas('goals', [
             'id' => $goal->id,

@@ -69,7 +69,7 @@ class AcceptInvitation extends BaseService implements ServiceInterface
 
     private function createNotificationChannel(): void
     {
-        $channel = (new CreateUserNotificationChannel)->execute([
+        $channel = (new CreateUserNotificationChannel())->execute([
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'label' => trans('app.notification_channel_email'),

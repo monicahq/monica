@@ -25,7 +25,7 @@ class ContactModuleNoteController extends Controller
             'emotion_id' => $request->input('emotion'),
         ];
 
-        $note = (new CreateNote)->execute($data);
+        $note = (new CreateNote())->execute($data);
 
         $contact = Contact::find($contactId);
 
@@ -47,7 +47,7 @@ class ContactModuleNoteController extends Controller
             'emotion_id' => $request->input('emotion'),
         ];
 
-        $note = (new UpdateNote)->execute($data);
+        $note = (new UpdateNote())->execute($data);
 
         $contact = Contact::find($contactId);
 
@@ -66,7 +66,7 @@ class ContactModuleNoteController extends Controller
             'note_id' => $noteId,
         ];
 
-        (new DestroyNote)->execute($data);
+        (new DestroyNote())->execute($data);
 
         return response()->json([
             'data' => true,

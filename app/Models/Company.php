@@ -15,9 +15,9 @@ class Company extends Model
     /**
      * Possible module types.
      */
-    const TYPE_COMPANY = 'company';
-    const TYPE_ORGANIZATION = 'organization';
-    const TYPE_ASSOCIATION = 'association';
+    public const TYPE_COMPANY = 'company';
+    public const TYPE_ORGANIZATION = 'organization';
+    public const TYPE_ASSOCIATION = 'association';
 
     /**
      * The attributes that are mass assignable.

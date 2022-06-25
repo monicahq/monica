@@ -23,7 +23,7 @@ class PersonalizeRelationshipTypeController extends Controller
             'can_be_deleted' => true,
         ];
 
-        $type = (new CreateRelationshipType)->execute($data);
+        $type = (new CreateRelationshipType())->execute($data);
 
         return response()->json([
             'data' => PersonalizeRelationshipIndexViewHelper::dtoRelationshipType($type->groupType, $type),
@@ -41,7 +41,7 @@ class PersonalizeRelationshipTypeController extends Controller
             'name_reverse_relationship' => $request->input('nameReverseRelationship'),
         ];
 
-        $type = (new UpdateRelationshipType)->execute($data);
+        $type = (new UpdateRelationshipType())->execute($data);
 
         return response()->json([
             'data' => PersonalizeRelationshipIndexViewHelper::dtoRelationshipType($type->groupType, $type),
@@ -57,7 +57,7 @@ class PersonalizeRelationshipTypeController extends Controller
             'relationship_type_id' => $typeId,
         ];
 
-        (new DestroyRelationshipType)->execute($data);
+        (new DestroyRelationshipType())->execute($data);
 
         return response()->json([
             'data' => true,

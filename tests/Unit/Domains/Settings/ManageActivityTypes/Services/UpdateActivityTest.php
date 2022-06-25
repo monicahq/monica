@@ -38,7 +38,7 @@ class UpdateActivityTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateActivity)->execute($request);
+        (new UpdateActivity())->execute($request);
     }
 
     /** @test */
@@ -95,7 +95,7 @@ class UpdateActivityTest extends TestCase
             'label' => 'type name',
         ];
 
-        $activity = (new UpdateActivity)->execute($request);
+        $activity = (new UpdateActivity())->execute($request);
 
         $this->assertDatabaseHas('activities', [
             'id' => $activity->id,

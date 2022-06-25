@@ -36,7 +36,7 @@ class UpdateRelationshipGroupTypeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateRelationshipGroupType)->execute($request);
+        (new UpdateRelationshipGroupType())->execute($request);
     }
 
     /** @test */
@@ -85,7 +85,7 @@ class UpdateRelationshipGroupTypeTest extends TestCase
             'name' => 'type name',
         ];
 
-        $type = (new UpdateRelationshipGroupType)->execute($request);
+        $type = (new UpdateRelationshipGroupType())->execute($request);
 
         $this->assertDatabaseHas('relationship_group_types', [
             'id' => $type->id,

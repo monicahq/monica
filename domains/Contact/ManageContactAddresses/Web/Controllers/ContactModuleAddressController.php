@@ -33,7 +33,7 @@ class ContactModuleAddressController extends Controller
             'lived_until_at' => null,
         ];
 
-        $address = (new CreateContactAddress)->execute($data);
+        $address = (new CreateContactAddress())->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -62,7 +62,7 @@ class ContactModuleAddressController extends Controller
             'lived_until_at' => null,
         ];
 
-        $address = (new UpdateContactAddress)->execute($data);
+        $address = (new UpdateContactAddress())->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -80,7 +80,7 @@ class ContactModuleAddressController extends Controller
             'address_id' => $addressId,
         ];
 
-        (new DestroyContactAddress)->execute($data);
+        (new DestroyContactAddress())->execute($data);
 
         return response()->json([
             'data' => true,

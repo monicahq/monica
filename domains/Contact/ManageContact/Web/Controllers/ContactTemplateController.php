@@ -19,7 +19,7 @@ class ContactTemplateController extends Controller
             'template_id' => $request->input('templateId'),
         ];
 
-        (new UpdateContactTemplate)->execute($data);
+        (new UpdateContactTemplate())->execute($data);
 
         return response()->json([
             'data' => route('contact.show', [

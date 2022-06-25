@@ -53,7 +53,7 @@ class UnsetRelationshipTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UnsetRelationship)->execute($request);
+        (new UnsetRelationship())->execute($request);
     }
 
     /** @test */
@@ -202,7 +202,7 @@ class UnsetRelationshipTest extends TestCase
             'other_contact_id' => $otherContact->id,
         ];
 
-        (new UnsetRelationship)->execute($request);
+        (new UnsetRelationship())->execute($request);
 
         $this->assertDatabaseMissing('relationships', [
             'relationship_type_id' => $type->id,

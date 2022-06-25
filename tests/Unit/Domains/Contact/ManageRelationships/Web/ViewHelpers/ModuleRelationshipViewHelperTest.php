@@ -41,7 +41,7 @@ class ModuleRelationshipViewHelperTest extends TestCase
 
         $array = ModuleRelationshipViewHelper::data($contact, $user);
         $this->assertEquals(
-        3,
+            3,
             count($array)
         );
 

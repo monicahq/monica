@@ -52,7 +52,7 @@ class ScheduleAllContactRemindersForNotificationChannelTest extends TestCase
             'preferred_time' => '18:00',
         ]);
 
-        (new ScheduleAllContactRemindersForNotificationChannel)->execute([
+        (new ScheduleAllContactRemindersForNotificationChannel())->execute([
             'account_id' => $regis->account_id,
             'author_id' => $regis->id,
             'user_notification_channel_id' => $channel->id,

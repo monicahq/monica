@@ -23,7 +23,7 @@ class VaultSettingsUserController extends Controller
             'permission' => $request->input('permission'),
         ];
 
-        $user = (new GrantVaultAccessToUser)->execute($data);
+        $user = (new GrantVaultAccessToUser())->execute($data);
 
         $vault = Vault::findOrFail($vaultId);
 
@@ -42,7 +42,7 @@ class VaultSettingsUserController extends Controller
             'permission' => $request->input('permission'),
         ];
 
-        $user = (new ChangeVaultAccess)->execute($data);
+        $user = (new ChangeVaultAccess())->execute($data);
 
         $vault = Vault::findOrFail($vaultId);
 
@@ -60,7 +60,7 @@ class VaultSettingsUserController extends Controller
             'user_id' => $userId,
         ];
 
-        (new RemoveVaultAccess)->execute($data);
+        (new RemoveVaultAccess())->execute($data);
 
         return response()->json([
             'data' => true,

@@ -32,7 +32,7 @@ class CreatePetCategoryTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreatePetCategory)->execute($request);
+        (new CreatePetCategory())->execute($request);
     }
 
     /** @test */
@@ -64,7 +64,7 @@ class CreatePetCategoryTest extends TestCase
             'name' => 'gender name',
         ];
 
-        $petCategory = (new CreatePetCategory)->execute($request);
+        $petCategory = (new CreatePetCategory())->execute($request);
 
         $this->assertDatabaseHas('pet_categories', [
             'id' => $petCategory->id,

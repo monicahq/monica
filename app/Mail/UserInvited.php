@@ -10,7 +10,8 @@ use Illuminate\Queue\SerializesModels;
 
 class UserInvited extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * @var User

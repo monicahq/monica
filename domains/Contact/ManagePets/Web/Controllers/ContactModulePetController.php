@@ -24,7 +24,7 @@ class ContactModulePetController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $pet = (new CreatePet)->execute($data);
+        $pet = (new CreatePet())->execute($data);
 
         $contact = Contact::find($contactId);
 
@@ -45,7 +45,7 @@ class ContactModulePetController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $pet = (new UpdatePet)->execute($data);
+        $pet = (new UpdatePet())->execute($data);
 
         $contact = Contact::find($contactId);
 
@@ -64,7 +64,7 @@ class ContactModulePetController extends Controller
             'pet_id' => $petId,
         ];
 
-        (new DestroyPet)->execute($data);
+        (new DestroyPet())->execute($data);
 
         return response()->json([
             'data' => true,

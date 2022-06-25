@@ -31,7 +31,7 @@ class CreateModuleTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateModule)->execute($request);
+        (new CreateModule())->execute($request);
     }
 
     /** @test */
@@ -55,7 +55,7 @@ class CreateModuleTest extends TestCase
             'can_be_deleted' => false,
         ];
 
-        $module = (new CreateModule)->execute($request);
+        $module = (new CreateModule())->execute($request);
 
         $this->assertDatabaseHas('modules', [
             'id' => $module->id,

@@ -18,7 +18,7 @@ class PreferencesMapsPreferenceController extends Controller
             'maps_site' => $request->input('value'),
         ];
 
-        $user = (new StoreMapsPreference)->execute($data);
+        $user = (new StoreMapsPreference())->execute($data);
 
         return response()->json([
             'data' => UserPreferencesIndexViewHelper::dtoMapsPreferences($user),

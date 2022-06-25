@@ -41,10 +41,10 @@ class ContactModuleJobInformationController extends Controller
                 'type' => Company::TYPE_COMPANY,
             ];
 
-            $company = (new CreateCompany)->execute($data);
+            $company = (new CreateCompany())->execute($data);
         }
 
-        (new UpdateJobInformation)->execute([
+        (new UpdateJobInformation())->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::user()->id,
             'vault_id' => $vaultId,

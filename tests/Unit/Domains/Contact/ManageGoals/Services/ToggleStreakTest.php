@@ -41,7 +41,7 @@ class ToggleStreakTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new ToggleStreak)->execute($request);
+        (new ToggleStreak())->execute($request);
     }
 
     /** @test */
@@ -120,14 +120,14 @@ class ToggleStreakTest extends TestCase
             'happened_at' => '1900-01-01',
         ];
 
-        (new ToggleStreak)->execute($request);
+        (new ToggleStreak())->execute($request);
 
         $this->assertDatabaseHas('streaks', [
             'goal_id' => $goal->id,
             'happened_at' => '1900-01-01 00:00:00',
         ]);
 
-        (new ToggleStreak)->execute($request);
+        (new ToggleStreak())->execute($request);
 
         $this->assertDatabaseMissing('streaks', [
             'goal_id' => $goal->id,

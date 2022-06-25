@@ -16,15 +16,15 @@ class ContactImportantDate extends Model
     /**
      * Possible type.
      */
-    const TYPE_BIRTHDATE = 'birthdate';
-    const TYPE_DECEASED_DATE = 'deceased_date';
+    public const TYPE_BIRTHDATE = 'birthdate';
+    public const TYPE_DECEASED_DATE = 'deceased_date';
 
     /**
      * Possible type of dates.
      */
-    const TYPE_FULL_DATE = 'full_date';
-    const TYPE_MONTH_DAY = 'month_day';
-    const TYPE_YEAR = 'year';
+    public const TYPE_FULL_DATE = 'full_date';
+    public const TYPE_MONTH_DAY = 'month_day';
+    public const TYPE_YEAR = 'year';
 
     /**
      * The attributes that are mass assignable.

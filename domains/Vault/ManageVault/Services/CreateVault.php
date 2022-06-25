@@ -103,7 +103,7 @@ class CreateVault extends BaseService implements ServiceInterface
 
     private function populateDefaultContactImportantDateTypes(): void
     {
-        (new CreateContactImportantDateType)->execute([
+        (new CreateContactImportantDateType())->execute([
             'account_id' => $this->data['account_id'],
             'author_id' => $this->author->id,
             'vault_id' => $this->vault->id,
@@ -112,7 +112,7 @@ class CreateVault extends BaseService implements ServiceInterface
             'can_be_deleted' => false,
         ]);
 
-        (new CreateContactImportantDateType)->execute([
+        (new CreateContactImportantDateType())->execute([
             'account_id' => $this->data['account_id'],
             'author_id' => $this->author->id,
             'vault_id' => $this->vault->id,

@@ -18,7 +18,7 @@ class NotificationsToggleController extends Controller
             'user_notification_channel_id' => $userNotificationChannelId,
         ];
 
-        $channel = (new ToggleUserNotificationChannel)->execute($data);
+        $channel = (new ToggleUserNotificationChannel())->execute($data);
 
         return response()->json([
             'data' => NotificationsIndexViewHelper::dtoEmail($channel, Auth::user()),

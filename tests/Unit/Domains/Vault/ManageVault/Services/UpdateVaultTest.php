@@ -35,7 +35,7 @@ class UpdateVaultTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateVault)->execute($request);
+        (new UpdateVault())->execute($request);
     }
 
     /** @test */
@@ -83,7 +83,7 @@ class UpdateVaultTest extends TestCase
             'name' => 'vault name',
         ];
 
-        $vault = (new UpdateVault)->execute($request);
+        $vault = (new UpdateVault())->execute($request);
 
         $this->assertDatabaseHas('vaults', [
             'id' => $vault->id,

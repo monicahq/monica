@@ -23,7 +23,7 @@ class ContactModuleStreakController extends Controller
             'happened_at' => $request->input('happened_at'),
         ];
 
-        (new ToggleStreak)->execute($data);
+        (new ToggleStreak())->execute($data);
 
         $contact = Contact::find($contactId);
         $goal = Goal::find($goalId);

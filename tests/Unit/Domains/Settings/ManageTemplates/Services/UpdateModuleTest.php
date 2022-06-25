@@ -32,7 +32,7 @@ class UpdateModuleTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateModule)->execute($request);
+        (new UpdateModule())->execute($request);
     }
 
     /** @test */
@@ -68,7 +68,7 @@ class UpdateModuleTest extends TestCase
             'name' => 'name',
         ];
 
-        (new UpdateModule)->execute($request);
+        (new UpdateModule())->execute($request);
 
         $this->assertDatabaseHas('modules', [
             'id' => $module->id,

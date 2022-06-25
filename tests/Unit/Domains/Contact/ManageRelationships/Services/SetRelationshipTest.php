@@ -48,7 +48,7 @@ class SetRelationshipTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new SetRelationship)->execute($request);
+        (new SetRelationship())->execute($request);
     }
 
     /** @test */
@@ -172,7 +172,7 @@ class SetRelationshipTest extends TestCase
             'other_contact_id' => $otherContact->id,
         ];
 
-        (new SetRelationship)->execute($request);
+        (new SetRelationship())->execute($request);
 
         $this->assertDatabaseHas('relationships', [
             'relationship_type_id' => $type->id,

@@ -29,7 +29,7 @@ class CreateAccountTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateAccount)->execute($request);
+        (new CreateAccount())->execute($request);
     }
 
     private function executeService(): void
@@ -43,7 +43,7 @@ class CreateAccountTest extends TestCase
             'password' => 'john',
         ];
 
-        $user = (new CreateAccount)->execute($request);
+        $user = (new CreateAccount())->execute($request);
 
         $this->assertDatabaseHas('accounts', [
             'id' => $user->account->id,

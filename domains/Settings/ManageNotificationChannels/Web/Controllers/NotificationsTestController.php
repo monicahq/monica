@@ -17,7 +17,7 @@ class NotificationsTestController extends Controller
             'user_notification_channel_id' => $userNotificationChannelId,
         ];
 
-        (new SendTestEmail)->execute($data);
+        (new SendTestEmail())->execute($data);
 
         return response()->json([
             'data' => true,

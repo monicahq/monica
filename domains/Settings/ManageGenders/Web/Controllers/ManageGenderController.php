@@ -30,7 +30,7 @@ class ManageGenderController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $gender = (new CreateGender)->execute($data);
+        $gender = (new CreateGender())->execute($data);
 
         return response()->json([
             'data' => ManageGenderIndexViewHelper::dtoGender($gender),
@@ -46,7 +46,7 @@ class ManageGenderController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $gender = (new UpdateGender)->execute($data);
+        $gender = (new UpdateGender())->execute($data);
 
         return response()->json([
             'data' => ManageGenderIndexViewHelper::dtoGender($gender),
@@ -61,7 +61,7 @@ class ManageGenderController extends Controller
             'gender_id' => $genderId,
         ];
 
-        (new DestroyGender)->execute($data);
+        (new DestroyGender())->execute($data);
 
         return response()->json([
             'data' => true,

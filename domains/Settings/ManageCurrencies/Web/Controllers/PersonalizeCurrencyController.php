@@ -29,7 +29,7 @@ class PersonalizeCurrencyController extends Controller
             'author_id' => Auth::user()->id,
         ];
 
-        (new EnableAllCurrencies)->execute($data);
+        (new EnableAllCurrencies())->execute($data);
 
         return response()->json([
             'data' => true,
@@ -44,7 +44,7 @@ class PersonalizeCurrencyController extends Controller
             'currency_id' => $currencyId,
         ];
 
-        (new ToggleCurrency)->execute($data);
+        (new ToggleCurrency())->execute($data);
 
         return response()->json([
             'data' => true,
@@ -58,7 +58,7 @@ class PersonalizeCurrencyController extends Controller
             'author_id' => Auth::user()->id,
         ];
 
-        (new DisableAllCurrencies)->execute($data);
+        (new DisableAllCurrencies())->execute($data);
 
         return response()->json([
             'data' => true,

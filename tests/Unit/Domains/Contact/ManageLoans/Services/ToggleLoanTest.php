@@ -42,7 +42,7 @@ class ToggleLoanTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new ToggleLoan)->execute($request);
+        (new ToggleLoan())->execute($request);
     }
 
     /** @test */
@@ -121,7 +121,7 @@ class ToggleLoanTest extends TestCase
             'loan_id' => $loan->id,
         ];
 
-        $loan = (new ToggleLoan)->execute($request);
+        $loan = (new ToggleLoan())->execute($request);
 
         $this->assertDatabaseHas('loans', [
             'id' => $loan->id,

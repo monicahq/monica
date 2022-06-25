@@ -39,7 +39,7 @@ class UpdateVaultDefaultTemplateTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateVaultDefaultTemplate)->execute($request);
+        (new UpdateVaultDefaultTemplate())->execute($request);
     }
 
     /** @test */
@@ -108,7 +108,7 @@ class UpdateVaultDefaultTemplateTest extends TestCase
             'template_id' => $template->id,
         ];
 
-        (new UpdateVaultDefaultTemplate)->execute($request);
+        (new UpdateVaultDefaultTemplate())->execute($request);
 
         $this->assertDatabaseHas('vaults', [
             'id' => $vault->id,

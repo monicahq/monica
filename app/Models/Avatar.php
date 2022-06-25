@@ -15,7 +15,7 @@ class Avatar extends Model
     /**
      * Possible type.
      */
-    const TYPE_GENERATED = 'generated';
+    public const TYPE_GENERATED = 'generated';
 
     /**
      * The attributes that are mass assignable.

@@ -31,7 +31,7 @@ class CreateActivityTypeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateActivityType)->execute($request);
+        (new CreateActivityType())->execute($request);
     }
 
     /** @test */
@@ -61,7 +61,7 @@ class CreateActivityTypeTest extends TestCase
             'label' => 'type name',
         ];
 
-        $type = (new CreateActivityType)->execute($request);
+        $type = (new CreateActivityType())->execute($request);
 
         $this->assertDatabaseHas('activity_types', [
             'id' => $type->id,

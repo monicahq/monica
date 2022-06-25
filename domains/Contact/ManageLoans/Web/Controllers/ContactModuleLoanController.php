@@ -37,7 +37,7 @@ class ContactModuleLoanController extends Controller
             'loaned_at' => $request->input('loaned_at'),
         ];
 
-        $loan = (new CreateLoan)->execute($data);
+        $loan = (new CreateLoan())->execute($data);
 
         $contact = Contact::find($contactId);
 
@@ -71,7 +71,7 @@ class ContactModuleLoanController extends Controller
             'loaned_at' => $request->input('loaned_at'),
         ];
 
-        $loan = (new UpdateLoan)->execute($data);
+        $loan = (new UpdateLoan())->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -89,7 +89,7 @@ class ContactModuleLoanController extends Controller
             'loan_id' => $loanId,
         ];
 
-        (new DestroyLoan)->execute($data);
+        (new DestroyLoan())->execute($data);
 
         return response()->json([
             'data' => true,

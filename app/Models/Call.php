@@ -15,10 +15,10 @@ class Call extends Model
     /**
      * Possible type.
      */
-    const TYPE_AUDIO = 'audio';
-    const TYPE_VIDEO = 'video';
-    const INITIATOR_ME = 'me';
-    const INITIATOR_CONTACT = 'contact';
+    public const TYPE_AUDIO = 'audio';
+    public const TYPE_VIDEO = 'video';
+    public const INITIATOR_ME = 'me';
+    public const INITIATOR_CONTACT = 'contact';
 
     /**
      * The attributes that are mass assignable.

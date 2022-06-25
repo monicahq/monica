@@ -31,7 +31,7 @@ class CreateGiftStateTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateGiftState)->execute($request);
+        (new CreateGiftState())->execute($request);
     }
 
     /** @test */
@@ -61,7 +61,7 @@ class CreateGiftStateTest extends TestCase
             'label' => 'type name',
         ];
 
-        $stage = (new CreateGiftState)->execute($request);
+        $stage = (new CreateGiftState())->execute($request);
 
         $this->assertDatabaseHas('gift_states', [
             'id' => $stage->id,

@@ -95,7 +95,7 @@ class GrantVaultAccessToUserTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new GrantVaultAccessToUser)->execute($request);
+        (new GrantVaultAccessToUser())->execute($request);
     }
 
     private function executeService(Account $account, User $user, User $anotherUser, Vault $vault): void
@@ -129,7 +129,7 @@ class GrantVaultAccessToUserTest extends TestCase
             'permission' => Vault::PERMISSION_VIEW,
         ];
 
-        $user = (new GrantVaultAccessToUser)->execute($request);
+        $user = (new GrantVaultAccessToUser())->execute($request);
 
         $this->assertDatabaseCount('contacts', 3);
 

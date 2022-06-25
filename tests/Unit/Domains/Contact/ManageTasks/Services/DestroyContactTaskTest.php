@@ -41,7 +41,7 @@ class DestroyContactTaskTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyContactTask)->execute($request);
+        (new DestroyContactTask())->execute($request);
     }
 
     /** @test */
@@ -119,7 +119,7 @@ class DestroyContactTaskTest extends TestCase
             'contact_task_id' => $task->id,
         ];
 
-        (new DestroyContactTask)->execute($request);
+        (new DestroyContactTask())->execute($request);
 
         $this->assertDatabaseMissing('contact_tasks', [
             'id' => $task->id,

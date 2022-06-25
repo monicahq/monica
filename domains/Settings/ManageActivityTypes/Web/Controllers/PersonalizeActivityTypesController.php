@@ -30,7 +30,7 @@ class PersonalizeActivityTypesController extends Controller
             'label' => $request->input('activityTypeName'),
         ];
 
-        $activityType = (new CreateActivityType)->execute($data);
+        $activityType = (new CreateActivityType())->execute($data);
 
         return response()->json([
             'data' => PersonalizeActivityTypesIndexViewHelper::dtoActivityType($activityType),
@@ -46,7 +46,7 @@ class PersonalizeActivityTypesController extends Controller
             'label' => $request->input('activityTypeName'),
         ];
 
-        $activityType = (new UpdateActivityType)->execute($data);
+        $activityType = (new UpdateActivityType())->execute($data);
 
         return response()->json([
             'data' => PersonalizeActivityTypesIndexViewHelper::dtoActivityType($activityType),
@@ -61,7 +61,7 @@ class PersonalizeActivityTypesController extends Controller
             'activity_type_id' => $activityTypeId,
         ];
 
-        (new DestroyActivityType)->execute($data);
+        (new DestroyActivityType())->execute($data);
 
         return response()->json([
             'data' => true,

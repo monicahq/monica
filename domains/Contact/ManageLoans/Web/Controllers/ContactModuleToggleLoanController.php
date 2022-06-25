@@ -21,7 +21,7 @@ class ContactModuleToggleLoanController extends Controller
             'loan_id' => $loanId,
         ];
 
-        $loan = (new ToggleLoan)->execute($data);
+        $loan = (new ToggleLoan())->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([

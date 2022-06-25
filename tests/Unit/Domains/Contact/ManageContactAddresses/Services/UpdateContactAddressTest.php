@@ -45,7 +45,7 @@ class UpdateContactAddressTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateContactAddress)->execute($request);
+        (new UpdateContactAddress())->execute($request);
     }
 
     /** @test */
@@ -156,7 +156,7 @@ class UpdateContactAddressTest extends TestCase
             'longitude' => 12345,
         ];
 
-        $address = (new UpdateContactAddress)->execute($request);
+        $address = (new UpdateContactAddress())->execute($request);
 
         $this->assertDatabaseHas('addresses', [
             'contact_id' => $contact->id,
