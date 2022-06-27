@@ -81,6 +81,7 @@ class SetupDummyAccount extends Command
     {
         shell_exec('curl -X DELETE "'.config('scout.meilisearch.host').'/indexes/notes"');
         shell_exec('curl -X DELETE "'.config('scout.meilisearch.host').'/indexes/contacts"');
+        shell_exec('curl -X DELETE "'.config('scout.meilisearch.host').'/indexes/groups"');
         $this->artisan('☐ Reset search engine', 'monica:setup');
         $this->artisan('☐ Migration of the database', 'migrate:fresh');
         $this->artisan('☐ Symlink the storage folder', 'storage:link');

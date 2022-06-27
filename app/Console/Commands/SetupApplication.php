@@ -59,6 +59,11 @@ class SetupApplication extends Command
             'vault_id',
             'contact_id',
         ]);
+        $index = $client->index('groups');
+        $index->updateFilterableAttributes([
+            'id',
+            'vault_id',
+        ]);
 
         $this->line('✓ Indexes created');
     }

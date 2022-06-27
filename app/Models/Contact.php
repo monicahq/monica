@@ -76,6 +76,16 @@ class Contact extends Model
     }
 
     /**
+     * Determine if the model should be searchable.
+     *
+     * @return bool
+     */
+    public function shouldBeSearchable()
+    {
+        return $this->listed;
+    }
+
+    /**
      * Used to delete related objects from Meilisearch/Algolia instance.
      *
      * @return void

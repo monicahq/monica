@@ -4,6 +4,7 @@ namespace App\Vault\Search\Web\ViewHelpers;
 
 use App\Helpers\DateHelper;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\Note;
 use App\Models\Vault;
 use Illuminate\Support\Collection;
@@ -16,6 +17,7 @@ class VaultSearchIndexViewHelper
         return [
             'contacts' => $term ? self::contacts($vault, $term) : [],
             'notes' => $term ? self::notes($vault, $term) : [],
+            'groups' => $term ? self::groups($vault, $term) : [],
             'url' => [
                 'search' => route('vault.search.show', [
                     'vault' => $vault->id,
@@ -70,5 +72,21 @@ class VaultSearchIndexViewHelper
         });
 
         return $notesCollection;
+    }
+
+    private static function groups(Vault $vault, string $term): Collection
+    {
+        $groups = Group::search($term)
+            ->where('vault_id', $vault->id)
+            ->get();
+
+        $groupsCollection = $groups->map(function (Group $group) {
+            return [
+                'id' => $group->id,
+                'name' => $group->name,
+            ];
+        });
+
+        return $groupsCollection;
     }
 }
