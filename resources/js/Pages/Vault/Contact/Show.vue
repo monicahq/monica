@@ -8,6 +8,10 @@
     grid-template-columns: 1fr;
   }
 }
+
+.group-list-item:not(:last-child):after {
+  content: ',';
+}
 </style>
 
 <template>
@@ -76,6 +80,22 @@
 
           <!-- right -->
           <div class="p-3 sm:px-3 sm:py-0">
+            <!-- family summary -->
+            <div v-if="data.group_summary_information.length > 0">
+              <div class="mb-6 flex rounded border border-gray-200 p-3">
+                <img src="/img/group.svg" class="mr-2 h-6 w-6" />
+                <ul>
+                  <li class="mr-2 inline">Part of</li>
+                  <li
+                    v-for="group in data.group_summary_information"
+                    :key="group.id"
+                    class="group-list-item mr-2 inline">
+                    <inertia-link class="text-blue-500 hover:underline">{{ group.name }}</inertia-link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
             <!-- all the pages -->
             <div class="mb-8 border-b border-gray-200">
               <ul>
@@ -112,6 +132,8 @@
                 <goals v-if="module.type == 'goals'" :data="goals" />
 
                 <addresses v-if="module.type == 'addresses'" :data="addresses" />
+
+                <groups v-if="module.type == 'groups'" :data="groups" />
               </div>
             </div>
           </div>
@@ -140,6 +162,7 @@ import Calls from '@/Shared/Modules/Calls';
 import Pets from '@/Shared/Modules/Pets';
 import Goals from '@/Shared/Modules/Goals';
 import Addresses from '@/Shared/Modules/Addresses';
+import Groups from '@/Shared/Modules/Groups';
 
 export default {
   components: {
@@ -161,6 +184,7 @@ export default {
     Pets,
     Goals,
     Addresses,
+    Groups,
   },
 
   props: {
@@ -193,6 +217,7 @@ export default {
       pets: [],
       goals: [],
       addresses: [],
+      groups: [],
     };
   },
 
@@ -280,6 +305,10 @@ export default {
 
       if (this.data.modules.findIndex((x) => x.type == 'addresses') > -1) {
         this.addresses = this.data.modules[this.data.modules.findIndex((x) => x.type == 'addresses')].data;
+      }
+
+      if (this.data.modules.findIndex((x) => x.type == 'groups') > -1) {
+        this.groups = this.data.modules[this.data.modules.findIndex((x) => x.type == 'groups')].data;
       }
     }
   },

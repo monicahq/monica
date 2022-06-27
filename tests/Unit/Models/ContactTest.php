@@ -15,6 +15,7 @@ use App\Models\ContactReminder;
 use App\Models\ContactTask;
 use App\Models\Gender;
 use App\Models\Goal;
+use App\Models\Group;
 use App\Models\Label;
 use App\Models\Loan;
 use App\Models\Note;
@@ -245,6 +246,16 @@ class ContactTest extends TestCase
         ]);
 
         $this->assertTrue($ross->goals()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_groups(): void
+    {
+        $ross = Contact::factory()->create();
+        $group = Group::factory()->create();
+        $ross->groups()->sync([$group->id]);
+
+        $this->assertTrue($ross->groups()->exists());
     }
 
     /** @test */

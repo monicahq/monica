@@ -304,6 +304,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the groups associated with the contact.
+     *
+     * @return BelongsToMany
+     */
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class, 'contact_group');
+    }
+
+    /**
      * Get the name of the contact, according to the user preference.
      *
      * @return Attribute

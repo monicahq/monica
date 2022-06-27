@@ -104,7 +104,6 @@
 </template>
 
 <script>
-import HoverMenu from '@/Shared/HoverMenu';
 import PrettyButton from '@/Shared/Form/PrettyButton';
 import PrettySpan from '@/Shared/Form/PrettySpan';
 import PrettyLink from '@/Shared/Form/PrettyLink';
@@ -114,7 +113,6 @@ import Errors from '@/Shared/Form/Errors';
 
 export default {
   components: {
-    HoverMenu,
     PrettyButton,
     PrettySpan,
     PrettyLink,
@@ -127,14 +125,6 @@ export default {
     data: {
       type: Object,
       default: null,
-    },
-    paginator: {
-      type: Object,
-      default: null,
-    },
-    moduleMode: {
-      type: Boolean,
-      default: true,
     },
   },
 

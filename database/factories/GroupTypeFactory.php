@@ -24,7 +24,8 @@ class GroupTypeFactory extends Factory
     {
         return [
             'account_id' => Account::factory(),
-            'name' => $this->faker->name,
+            'label' => $this->faker->name,
+            'position' => 1,
         ];
     }
 }

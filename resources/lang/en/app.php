@@ -97,6 +97,7 @@ return [
     'module_pets' => 'Pets',
     'module_goals' => 'Goals',
     'module_addresses' => 'Addresses',
+    'module_groups' => 'Groups',
 
     'module_option_default_number_of_items_to_display' => 'Default number of items to display',
 

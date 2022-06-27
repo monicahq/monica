@@ -102,7 +102,7 @@
             handle=".handle"
             @change="updatePosition">
             <template #item="{ element }">
-              <div v-if="editGiftOccasionId != element.id" class="">
+              <div v-if="editGiftStateId != element.id" class="">
                 <div
                   class="item-list mb-2 flex items-center justify-between rounded-lg border border-gray-200 bg-white py-2 pl-4 pr-5 hover:bg-slate-50">
                   <!-- icon to move position -->
@@ -132,7 +132,7 @@
                   <ul class="text-sm">
                     <li
                       class="inline cursor-pointer text-blue-500 hover:underline"
-                      @click="renameGiftOccasionModal(element)">
+                      @click="renameGiftStateModal(element)">
                       Rename
                     </li>
                     <li class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(element)">
@@ -154,18 +154,18 @@
                   <text-input
                     :ref="'rename' + element.id"
                     v-model="form.label"
-                    :label="'Name of gift occasion'"
+                    :label="'Name'"
                     :type="'text'"
                     :autofocus="true"
                     :input-class="'block w-full'"
                     :required="true"
                     :autocomplete="false"
                     :maxlength="255"
-                    @esc-key-pressed="editGiftOccasionId = 0" />
+                    @esc-key-pressed="editGiftStateId = 0" />
                 </div>
 
                 <div class="flex justify-between p-5">
-                  <pretty-span :text="'Cancel'" :classes="'mr-3'" @click.prevent="editGiftOccasionId = 0" />
+                  <pretty-span :text="'Cancel'" :classes="'mr-3'" @click.prevent="editGiftStateId = 0" />
                   <pretty-button :text="'Rename'" :state="loadingState" :icon="'check'" :classes="'save'" />
                 </div>
               </form>
@@ -215,7 +215,7 @@ export default {
     return {
       loadingState: '',
       createGiftStateModalShown: false,
-      editGiftOccasionId: 0,
+      editGiftStateId: 0,
       localGiftStates: [],
       form: {
         label: '',
@@ -240,9 +240,9 @@ export default {
       });
     },
 
-    renameGiftOccasionModal(giftOccasion) {
-      this.form.label = giftOccasion.label;
-      this.editGiftOccasionId = giftOccasion.id;
+    renameGiftStateModal(giftState) {
+      this.form.label = giftState.label;
+      this.editGiftStateId = giftState.id;
     },
 
     submit() {
@@ -262,17 +262,16 @@ export default {
         });
     },
 
-    update(lifeEventCategory) {
+    update(giftState) {
       this.loadingState = 'loading';
 
       axios
-        .put(lifeEventCategory.url.update, this.form)
+        .put(giftState.url.update, this.form)
         .then((response) => {
           this.flash('The gift state has been updated', 'success');
-          this.localGiftStates[this.localGiftStates.findIndex((x) => x.id === lifeEventCategory.id)] =
-            response.data.data;
+          this.localGiftStates[this.localGiftStates.findIndex((x) => x.id === giftState.id)] = response.data.data;
           this.loadingState = null;
-          this.editGiftOccasionId = 0;
+          this.editGiftStateId = 0;
         })
         .catch((error) => {
           this.loadingState = null;
@@ -280,13 +279,13 @@ export default {
         });
     },
 
-    destroy(lifeEventCategory) {
+    destroy(giftState) {
       if (confirm('Are you sure? This can not be undone.')) {
         axios
-          .delete(lifeEventCategory.url.destroy)
+          .delete(giftState.url.destroy)
           .then((response) => {
             this.flash('The gift state has been deleted', 'success');
-            var id = this.localGiftStates.findIndex((x) => x.id === lifeEventCategory.id);
+            var id = this.localGiftStates.findIndex((x) => x.id === giftState.id);
             this.localGiftStates.splice(id, 1);
           })
           .catch((error) => {

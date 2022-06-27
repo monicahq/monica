@@ -34,6 +34,7 @@ class PersonalizeIndexViewHelperTest extends TestCase
                     'manage_life_event_categories' => env('APP_URL').'/settings/personalize/lifeEventCategories',
                     'manage_gift_occasions' => env('APP_URL').'/settings/personalize/giftOccasions',
                     'manage_gift_states' => env('APP_URL').'/settings/personalize/giftStates',
+                    'manage_group_types' => env('APP_URL').'/settings/personalize/groupTypes',
                 ],
             ],
             $array

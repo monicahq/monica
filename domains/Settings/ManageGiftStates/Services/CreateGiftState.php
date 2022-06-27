@@ -40,7 +40,7 @@ class CreateGiftState extends BaseService implements ServiceInterface
     }
 
     /**
-     * Create a gift stage.
+     * Create a gift state.
      *
      * @param  array  $data
      * @return GiftState

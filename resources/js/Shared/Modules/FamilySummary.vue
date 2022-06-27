@@ -5,9 +5,9 @@
 </style>
 
 <template>
-  <div class="mb-4">
+  <div class="mb-4" v-if="data.love_relationships.length != 0 || data.family_relationships.length != 0">
     <div class="mb-3 items-center justify-between border-b border-gray-200 sm:flex">
-      <div class="mb-2 text-xs sm:mb-0">Family summary</div>
+      <div class="mb-1 text-xs">Family summary</div>
     </div>
 
     <!-- love relationships -->

@@ -2,10 +2,6 @@
 .icon-sidebar {
   top: -2px;
 }
-
-.icon-note {
-  top: -1px;
-}
 </style>
 
 <template>

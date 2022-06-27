@@ -20,6 +20,8 @@ use App\Settings\ManageCallReasons\Services\CreateCallReason;
 use App\Settings\ManageCallReasons\Services\CreateCallReasonType;
 use App\Settings\ManageContactInformationTypes\Services\CreateContactInformationType;
 use App\Settings\ManageGenders\Services\CreateGender;
+use App\Settings\ManageGroupTypes\Services\CreateGroupType;
+use App\Settings\ManageGroupTypes\Services\CreateGroupTypeRole;
 use App\Settings\ManageNotificationChannels\Services\CreateUserNotificationChannel;
 use App\Settings\ManagePetCategories\Services\CreatePetCategory;
 use App\Settings\ManagePronouns\Services\CreatePronoun;
@@ -326,6 +328,22 @@ class SetupAccount implements ShouldQueue
             'template_page_id' => $templatePageSocial->id,
             'module_id' => $module->id,
         ]);
+
+        // Groups
+        $module = (new CreateModule())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'name' => trans('app.module_groups'),
+            'type' => Module::TYPE_GROUPS,
+            'can_be_deleted' => false,
+        ]);
+        (new AssociateModuleToTemplatePage())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageSocial->id,
+            'module_id' => $module->id,
+        ]);
     }
 
     private function addTemplatePageLifeEvents(): void
@@ -533,6 +551,35 @@ class SetupAccount implements ShouldQueue
      */
     private function addGroupTypes(): void
     {
+        $groupType = (new CreateGroupType())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'label' => trans('account.group_type_family'),
+        ]);
+        (new CreateGroupTypeRole())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'group_type_id' => $groupType->id,
+            'label' => trans('account.group_type_family_role_parent'),
+        ]);
+        (new CreateGroupTypeRole())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'group_type_id' => $groupType->id,
+            'label' => trans('account.group_type_family_role_child'),
+        ]);
+
+        $groupType = (new CreateGroupType())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'label' => trans('account.group_type_couple_without_children'),
+        ]);
+        (new CreateGroupTypeRole())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'group_type_id' => $groupType->id,
+            'label' => trans('account.group_type_couple_role'),
+        ]);
     }
 
     private function addRelationshipTypes(): void

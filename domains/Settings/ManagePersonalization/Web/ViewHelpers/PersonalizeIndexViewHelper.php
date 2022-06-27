@@ -24,6 +24,7 @@ class PersonalizeIndexViewHelper
                 'manage_life_event_categories' => route('settings.personalize.life_event_categories.index'),
                 'manage_gift_occasions' => route('settings.personalize.gift_occasions.index'),
                 'manage_gift_states' => route('settings.personalize.gift_states.index'),
+                'manage_group_types' => route('settings.personalize.group_types.index'),
             ],
         ];
     }

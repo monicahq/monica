@@ -62,6 +62,12 @@
               >
             </li>
             <li class="mb-2">
+              <span class="mr-2">👥</span>
+              <inertia-link :href="data.url.manage_group_types" class="text-blue-500 hover:underline"
+                >Manage group types</inertia-link
+              >
+            </li>
+            <li class="mb-2">
               <span class="mr-2">🚲</span>
               <inertia-link :href="data.url.manage_activity_types" class="text-blue-500 hover:underline"
                 >Manage activity types</inertia-link

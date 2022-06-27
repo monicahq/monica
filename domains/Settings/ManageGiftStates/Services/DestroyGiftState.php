@@ -40,7 +40,7 @@ class DestroyGiftState extends BaseService implements ServiceInterface
     }
 
     /**
-     * Destroy a gift occasion.
+     * Destroy a gift state.
      *
      * @param  array  $data
      */

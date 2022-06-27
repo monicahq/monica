@@ -3,14 +3,6 @@
   color: #737e8d;
   top: -2px;
 }
-
-.icon-note {
-  top: -1px;
-}
-
-.icon-avatar {
-  top: 2px;
-}
 </style>
 
 <template>
@@ -175,7 +167,6 @@
 </template>
 
 <script>
-import HoverMenu from '@/Shared/HoverMenu';
 import PrettyButton from '@/Shared/Form/PrettyButton';
 import PrettySpan from '@/Shared/Form/PrettySpan';
 import TextInput from '@/Shared/Form/TextInput';
@@ -184,7 +175,6 @@ import Errors from '@/Shared/Form/Errors';
 
 export default {
   components: {
-    HoverMenu,
     PrettyButton,
     PrettySpan,
     TextInput,

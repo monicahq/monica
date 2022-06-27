@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class GroupType extends Model
 {
@@ -19,7 +20,8 @@ class GroupType extends Model
      */
     protected $fillable = [
         'account_id',
-        'name',
+        'label',
+        'position',
     ];
 
     /**
@@ -30,5 +32,15 @@ class GroupType extends Model
     public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the group type roles associated with the group type.
+     *
+     * @return HasMany
+     */
+    public function groupTypeRoles(): HasMany
+    {
+        return $this->hasMany(GroupTypeRole::class);
     }
 }

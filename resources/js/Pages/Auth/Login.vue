@@ -117,7 +117,7 @@
 
         <div class="px-6 py-6 text-sm">
           New to Monica?
-          <inertia-link :href="route('password.request')" class="text-blue-500 hover:underline">
+          <inertia-link :href="route('register')" class="text-blue-500 hover:underline">
             Create an account
           </inertia-link>
         </div>

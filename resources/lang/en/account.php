@@ -59,6 +59,12 @@ return [
     'gift_state_bought' => 'Bought',
     'gift_state_offered' => 'Offered',
 
+    'group_type_family' => 'Family',
+    'group_type_family_role_parent' => 'Parent',
+    'group_type_family_role_child' => 'Children',
+    'group_type_couple_without_children' => 'Couple',
+    'group_type_couple_role' => 'Partner',
+
     'relationship_type_partner' => 'significant other',
     'relationship_type_spouse' => 'spouse',
     'relationship_type_date' => 'date',

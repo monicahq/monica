@@ -127,4 +127,14 @@ class Vault extends Model
     {
         return $this->hasMany(Company::class);
     }
+
+    /**
+     * Get the groups associated with the vault.
+     *
+     * @return HasMany
+     */
+    public function groups()
+    {
+        return $this->hasMany(Group::class);
+    }
 }

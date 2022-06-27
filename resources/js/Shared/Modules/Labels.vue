@@ -3,10 +3,6 @@
   top: -2px;
 }
 
-.icon-note {
-  top: -1px;
-}
-
 .label-list {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
@@ -158,6 +154,9 @@ export default {
 
   created() {
     this.localLabels = this.data.labels_in_contact;
+
+    // TODO: this should not be loaded up front. we should do a async call once
+    // the edit mode is active to load all the labels from the backend instead..
     this.localLabelsInVault = this.data.labels_in_vault;
   },
 

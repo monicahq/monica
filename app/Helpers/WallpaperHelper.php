@@ -7,6 +7,8 @@ class WallpaperHelper
     /**
      * Get a random wallpaper for the login page.
      *
+     * The images come from Unsplash.com, and are all MIT licensed.
+     *
      * @return string
      */
     public static function getRandomWallpaper(): string
@@ -28,6 +30,10 @@ class WallpaperHelper
             'image14.png',
             'image15.png',
             'image16.png',
+            'image17.png',
+            'image18.png',
+            'image19.png',
+            'image20.png',
         ];
 
         shuffle($photos);

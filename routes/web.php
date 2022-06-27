@@ -10,6 +10,7 @@ use App\Contact\ManageContactAddresses\Web\Controllers\ContactModuleAddressContr
 use App\Contact\ManageContactImportantDates\Web\Controllers\ContactImportantDatesController;
 use App\Contact\ManageGoals\Web\Controllers\ContactModuleGoalController;
 use App\Contact\ManageGoals\Web\Controllers\ContactModuleStreakController;
+use App\Contact\ManageGroups\Web\Controllers\ContactModuleGroupController;
 use App\Contact\ManageJobInformation\Web\Controllers\ContactModuleJobInformationController;
 use App\Contact\ManageLabels\Web\Controllers\ContactModuleLabelController;
 use App\Contact\ManageLoans\Web\Controllers\ContactModuleLoanController;
@@ -35,6 +36,10 @@ use App\Settings\ManageGiftOccasions\Web\Controllers\PersonalizeGiftOccasionCont
 use App\Settings\ManageGiftOccasions\Web\Controllers\PersonalizeGiftOccasionsPositionController;
 use App\Settings\ManageGiftStates\Web\Controllers\PersonalizeGiftStateController;
 use App\Settings\ManageGiftStates\Web\Controllers\PersonalizeGiftStatesPositionController;
+use App\Settings\ManageGroupTypes\Web\Controllers\PersonalizeGroupTypeController;
+use App\Settings\ManageGroupTypes\Web\Controllers\PersonalizeGroupTypePositionController;
+use App\Settings\ManageGroupTypes\Web\Controllers\PersonalizeGroupTypeRoleController;
+use App\Settings\ManageGroupTypes\Web\Controllers\PersonalizeGroupTypeRolePositionController;
 use App\Settings\ManageLifeEventCategories\Web\Controllers\PersonalizeLifeEventCategoriesController;
 use App\Settings\ManageLifeEventCategories\Web\Controllers\PersonalizeLifeEventTypesController;
 use App\Settings\ManageLifeEventCategories\Web\Controllers\PersonalizeLifeEventTypesPositionController;
@@ -184,6 +189,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::post('calls', [ContactModuleCallController::class, 'store'])->name('contact.call.store');
                     Route::put('calls/{call}', [ContactModuleCallController::class, 'update'])->name('contact.call.update');
                     Route::delete('calls/{call}', [ContactModuleCallController::class, 'destroy'])->name('contact.call.destroy');
+
+                    // groups
+                    Route::get('groups', [ContactModuleGroupController::class, 'index'])->name('contact.group.index');
+                    Route::post('groups', [ContactModuleGroupController::class, 'store'])->name('contact.group.store');
+                    Route::delete('groups/{group}', [ContactModuleGroupController::class, 'destroy'])->name('contact.group.destroy');
                 });
             });
 
@@ -320,6 +330,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::put('giftStates/{giftState}', [PersonalizeGiftStateController::class, 'update'])->name('gift_states.update');
                 Route::delete('giftStates/{giftState}', [PersonalizeGiftStateController::class, 'destroy'])->name('gift_states.destroy');
                 Route::post('giftStates/{giftState}/position', [PersonalizeGiftStatesPositionController::class, 'update'])->name('gift_states.order.update');
+
+                // group types
+                Route::get('groupTypes', [PersonalizeGroupTypeController::class, 'index'])->name('group_types.index');
+                Route::post('groupTypes', [PersonalizeGroupTypeController::class, 'store'])->name('group_types.store');
+                Route::put('groupTypes/{type}', [PersonalizeGroupTypeController::class, 'update'])->name('group_types.update');
+                Route::delete('groupTypes/{type}', [PersonalizeGroupTypeController::class, 'destroy'])->name('group_types.destroy');
+                Route::post('groupTypes/{type}/position', [PersonalizeGroupTypePositionController::class, 'update'])->name('group_types.order.update');
+
+                // group type roles
+                Route::post('groupTypes/{type}/groupTypeRoles', [PersonalizeGroupTypeRoleController::class, 'store'])->name('group_types.roles.store');
+                Route::put('groupTypes/{type}/groupTypeRoles/{role}', [PersonalizeGroupTypeRoleController::class, 'update'])->name('group_types.roles.update');
+                Route::delete('groupTypes/{type}/groupTypeRoles/{role}', [PersonalizeGroupTypeRoleController::class, 'destroy'])->name('group_types.roles.destroy');
+                Route::post('groupTypes/{type}/groupTypeRoles/{role}/position', [PersonalizeGroupTypeRolePositionController::class, 'update'])->name('group_types.roles.order.update');
 
                 // genders
                 Route::get('genders', [ManageGenderController::class, 'index'])->name('gender.index');

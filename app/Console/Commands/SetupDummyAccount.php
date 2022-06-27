@@ -234,7 +234,7 @@ class SetupDummyAccount extends Command
 
                 for ($i = 0; $i < 4; $i++) {
                     $date = Carbon::now()->subYears(2);
-                    for ($j = 0; $j < rand(1, 340); $j++) {
+                    for ($j = 0; $j < rand(1, 20); $j++) {
                         $date = $date->addDays(rand(1, 3));
 
                         try {
