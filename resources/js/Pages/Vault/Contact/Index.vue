@@ -58,7 +58,7 @@
                 </li>
               </ul>
 
-              <p v-else>No labels yet.</p>
+              <p v-else class="text-sm text-gray-500">No labels yet.</p>
             </div>
           </div>
 

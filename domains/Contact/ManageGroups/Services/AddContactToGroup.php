@@ -4,6 +4,7 @@ namespace App\Contact\ManageGroups\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Contact;
+use App\Models\ContactFeedItem;
 use App\Models\Group;
 use App\Models\GroupType;
 use App\Models\GroupTypeRole;
@@ -67,6 +68,8 @@ class AddContactToGroup extends BaseService implements ServiceInterface
             ]);
         }
 
+        $this->createFeedItem();
+
         return $this->group;
     }
 
@@ -83,5 +86,16 @@ class AddContactToGroup extends BaseService implements ServiceInterface
             GroupType::where('account_id', $this->data['account_id'])
                 ->findOrFail($role->group_type_id);
         }
+    }
+
+    private function createFeedItem(): void
+    {
+        $feedItem = ContactFeedItem::create([
+            'author_id' => $this->author->id,
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_ADDED_TO_GROUP,
+            'description' => $this->group->name,
+        ]);
+        $this->group->feedItem()->save($feedItem);
     }
 }

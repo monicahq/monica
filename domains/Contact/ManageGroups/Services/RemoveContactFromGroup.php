@@ -4,6 +4,7 @@ namespace App\Contact\ManageGroups\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Contact;
+use App\Models\ContactFeedItem;
 use App\Models\Group;
 use App\Services\BaseService;
 
@@ -58,6 +59,8 @@ class RemoveContactFromGroup extends BaseService implements ServiceInterface
             $this->contact->id,
         ]);
 
+        $this->createFeedItem();
+
         return $this->group;
     }
 
@@ -67,5 +70,16 @@ class RemoveContactFromGroup extends BaseService implements ServiceInterface
 
         $this->group = Group::where('vault_id', $this->data['vault_id'])
             ->findOrFail($this->data['group_id']);
+    }
+
+    private function createFeedItem(): void
+    {
+        $feedItem = ContactFeedItem::create([
+            'author_id' => $this->author->id,
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_REMOVED_FROM_GROUP,
+            'description' => $this->group->name,
+        ]);
+        $this->group->feedItem()->save($feedItem);
     }
 }

@@ -13,6 +13,8 @@ return [
     'feed_item_note_destroyed' => 'deleted a note',
     'feed_item_job_information_updated' => 'updated the job information',
     'feed_item_goal_created' => 'created a goal',
+    'feed_item_added_to_group' => 'added the contact to a group',
+    'feed_item_removed_from_group' => 'removed the contact from a group',
 
     'group_create' => '+ Create a new group',
 ];
