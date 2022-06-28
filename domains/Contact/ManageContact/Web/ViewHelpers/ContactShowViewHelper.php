@@ -47,6 +47,7 @@ class ContactShowViewHelper
 
         return [
             'contact_name' => ModuleContactNameViewHelper::data($contact, $user),
+            'listed' => $contact->listed,
             'template_pages' => $templatesPagesCollection,
             'contact_information' => self::getContactInformation($templatePages, $contact, $user),
             'group_summary_information' => GroupsViewHelper::summary($contact),
@@ -55,6 +56,10 @@ class ContactShowViewHelper
                 'can_be_deleted' => $user->getContactInVault($contact->vault)->id !== $contact->id,
             ],
             'url' => [
+                'toggle_archive' => route('contact.archive.update', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
                 'update_template' => route('contact.blank', [
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
@@ -73,6 +78,7 @@ class ContactShowViewHelper
 
         return [
             'contact_name' => ModuleContactNameViewHelper::data($contact, $user),
+            'listed' => $contact->listed,
             'template_pages' => self::getTemplatePagesList($templatePages, $contact, $templatePage),
             'contact_information' => self::getContactInformation($templatePages, $contact, $user),
             'group_summary_information' => GroupsViewHelper::summary($contact),

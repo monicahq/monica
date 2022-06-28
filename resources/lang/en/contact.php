@@ -15,6 +15,8 @@ return [
     'feed_item_goal_created' => 'created a goal',
     'feed_item_added_to_group' => 'added the contact to a group',
     'feed_item_removed_from_group' => 'removed the contact from a group',
+    'feed_item_archived' => 'archived the contact',
+    'feed_item_unarchived' => 'unarchived the contact',
 
     'group_create' => '+ Create a new group',
 ];

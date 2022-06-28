@@ -48,11 +48,12 @@ class ContactShowViewHelperTest extends TestCase
         $array = ContactShowViewHelper::data($contact, $user);
 
         $this->assertEquals(
-            7,
+            8,
             count($array)
         );
 
         $this->assertArrayHasKey('contact_name', $array);
+        $this->assertArrayHasKey('listed', $array);
         $this->assertArrayHasKey('template_pages', $array);
         $this->assertArrayHasKey('contact_information', $array);
         $this->assertArrayHasKey('group_summary_information', $array);
@@ -74,7 +75,12 @@ class ContactShowViewHelperTest extends TestCase
             $array['template_pages']->toArray()
         );
         $this->assertEquals(
+            $contact->listed,
+            $array['listed']
+        );
+        $this->assertEquals(
             [
+                'toggle_archive' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/toggle',
                 'update_template' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/update-template',
                 'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id,
             ],

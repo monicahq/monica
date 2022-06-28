@@ -1,6 +1,7 @@
 <?php
 
 use App\Contact\ManageCalls\Web\Controllers\ContactModuleCallController;
+use App\Contact\ManageContact\Web\Controllers\ContactArchiveController;
 use App\Contact\ManageContact\Web\Controllers\ContactController;
 use App\Contact\ManageContact\Web\Controllers\ContactLabelController;
 use App\Contact\ManageContact\Web\Controllers\ContactNoTemplateController;
@@ -119,6 +120,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::get('/edit', [ContactController::class, 'edit'])->name('contact.edit');
                     Route::post('', [ContactController::class, 'update'])->name('contact.update');
                     Route::delete('', [ContactController::class, 'destroy'])->name('contact.destroy');
+                    Route::put('/toggle', [ContactArchiveController::class, 'update'])->name('contact.archive.update');
                     Route::get('update-template', [ContactNoTemplateController::class, 'show'])->name('contact.blank');
                     Route::put('template', [ContactTemplateController::class, 'update'])->name('contact.template.update');
 

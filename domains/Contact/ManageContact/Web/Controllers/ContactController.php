@@ -10,6 +10,7 @@ use App\Contact\ManageContact\Web\ViewHelpers\ContactCreateViewHelper;
 use App\Contact\ManageContact\Web\ViewHelpers\ContactEditViewHelper;
 use App\Contact\ManageContact\Web\ViewHelpers\ContactIndexViewHelper;
 use App\Contact\ManageContact\Web\ViewHelpers\ContactShowViewHelper;
+use App\Helpers\PaginatorHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\Vault;
@@ -27,11 +28,12 @@ class ContactController extends Controller
         $contacts = Contact::where('vault_id', $request->route()->parameter('vault'))
             ->where('listed', true)
             ->orderBy('created_at', 'asc')
-            ->paginate(10);
+            ->paginate(25);
 
         return Inertia::render('Vault/Contact/Index', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
             'data' => ContactIndexViewHelper::data($contacts, $vault),
+            'paginator' => PaginatorHelper::getData($contacts),
         ]);
     }
 

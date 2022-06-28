@@ -48,9 +48,9 @@
         <div v-if="!processingSearch && Object.keys(results).length !== 0">
           <contact :data="results.contacts" />
 
-          <note :data="results.notes" />
-
           <group :data="results.groups" />
+
+          <note :data="results.notes" />
         </div>
 
         <!-- searching results -->

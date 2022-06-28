@@ -45,6 +45,12 @@
 
     <main class="sm:mt-18 relative">
       <div class="mx-auto max-w-6xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+        <!-- banner if contact is archived -->
+        <!-- this is based on the `listed` boolean on the contact object -->
+        <div v-if="!data.listed" class="mb-8 rounded-lg border border-gray-300 px-3 py-2 text-center">
+          <span class="mr-4">🕸️</span> The contact is archived <span class="ml-4">🕷️</span>
+        </div>
+
         <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">
           <!-- left -->
           <div class="p-3 sm:p-3">
@@ -67,6 +73,16 @@
             </div>
 
             <ul class="text-xs">
+              <li v-if="data.listed" class="mb-2">
+                <inertia-link @click.prevent="toggleArchive()" class="cursor-pointer text-blue-500 hover:underline"
+                  >Archive contact</inertia-link
+                >
+              </li>
+              <li v-if="!data.listed" class="mb-2">
+                <inertia-link @click.prevent="toggleArchive()" class="cursor-pointer text-blue-500 hover:underline"
+                  >Unarchive contact</inertia-link
+                >
+              </li>
               <li class="mb-2">
                 <inertia-link :href="data.url.update_template" class="cursor-pointer text-blue-500 hover:underline"
                   >Change template</inertia-link
@@ -323,7 +339,20 @@ export default {
             this.$inertia.visit(response.data.data);
           })
           .catch((error) => {
-            this.loadingState = null;
+            this.form.errors = error.response.data;
+          });
+      }
+    },
+
+    toggleArchive() {
+      if (confirm('Are you sure?')) {
+        axios
+          .put(this.data.url.toggle_archive)
+          .then((response) => {
+            localStorage.success = 'Changes saved';
+            this.$inertia.visit(response.data.data);
+          })
+          .catch((error) => {
             this.form.errors = error.response.data;
           });
       }
