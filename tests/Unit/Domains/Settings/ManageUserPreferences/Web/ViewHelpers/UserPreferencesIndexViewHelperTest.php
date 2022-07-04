@@ -24,7 +24,7 @@ class UserPreferencesIndexViewHelperTest extends TestCase
         $array = UserPreferencesIndexViewHelper::data($user);
 
         $this->assertEquals(
-            6,
+            7,
             count($array)
         );
 
@@ -34,6 +34,7 @@ class UserPreferencesIndexViewHelperTest extends TestCase
         $this->assertArrayHasKey('url', $array);
         $this->assertArrayHasKey('number_format', $array);
         $this->assertArrayHasKey('maps', $array);
+        $this->assertArrayHasKey('locale', $array);
 
         $this->assertEquals(
             [
@@ -242,6 +243,25 @@ class UserPreferencesIndexViewHelperTest extends TestCase
                 ],
             ],
             $array['types']->toArray()
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_data_needed_for_locale(): void
+    {
+        $user = User::factory()->create([
+            'locale' => 'fr',
+        ]);
+        $array = UserPreferencesIndexViewHelper::dtoLocale($user);
+        $this->assertEquals(
+            [
+                'locale' => 'fr',
+                'locale_i18n' => 'French',
+                'url' => [
+                    'store' => env('APP_URL').'/settings/preferences/locale',
+                ],
+            ],
+            $array
         );
     }
 }

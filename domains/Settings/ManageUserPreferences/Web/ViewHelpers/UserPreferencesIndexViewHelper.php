@@ -17,6 +17,7 @@ class UserPreferencesIndexViewHelper
             'timezone' => self::dtoTimezone($user),
             'number_format' => self::dtoNumberFormat($user),
             'maps' => self::dtoMapsPreferences($user),
+            'locale' => self::dtoLocale($user),
             'url' => [
                 'settings' => route('settings.index'),
                 'back' => route('settings.index'),
@@ -141,6 +142,17 @@ class UserPreferencesIndexViewHelper
             'default_map_site_i18n' => trans('account.maps_site_'.$user->default_map_site),
             'url' => [
                 'store' => route('settings.preferences.maps.store'),
+            ],
+        ];
+    }
+
+    public static function dtoLocale(User $user): array
+    {
+        return [
+            'locale' => $user->locale,
+            'locale_i18n' => trans('settings.user_preferences_locale_'.$user->locale),
+            'url' => [
+                'store' => route('settings.preferences.locale.store'),
             ],
         ];
     }

@@ -30,7 +30,10 @@
         :text="'Add a module'"
         :icon="'plus'"
         @click="showModuleModal" />
-      <pretty-button v-if="addModuleModalShown && moduleLoaded" :text="'Cancel'" @click="addModuleModalShown = false" />
+      <pretty-button
+        v-if="addModuleModalShown && moduleLoaded"
+        :text="$t('app.cancel')"
+        @click="addModuleModalShown = false" />
     </div>
 
     <!-- list of all the existing modules -->

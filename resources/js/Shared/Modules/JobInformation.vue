@@ -97,10 +97,10 @@
         </div>
 
         <div class="flex justify-between p-2">
-          <pretty-span @click="editJobInformation = false" :text="'Cancel'" :classes="'mr-3'" />
+          <pretty-span @click="editJobInformation = false" :text="$t('app.cancel')" :classes="'mr-3'" />
           <pretty-button
             :href="'data.url.vault.create'"
-            :text="'Save'"
+            :text="$t('app.save')"
             :state="loadingState"
             :icon="'check'"
             :classes="'save'" />

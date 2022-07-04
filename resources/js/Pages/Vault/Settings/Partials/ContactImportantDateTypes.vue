@@ -44,7 +44,7 @@
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="createTypeModalShown = false" />
+        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createTypeModalShown = false" />
         <pretty-button :text="'Create date type'" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
@@ -98,7 +98,7 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="'Cancel'" :classes="'mr-3'" @click.prevent="editTypeModalShownId = 0" />
+            <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click.prevent="editTypeModalShownId = 0" />
             <pretty-button :text="'Rename'" :state="loadingState" :icon="'check'" :classes="'save'" />
           </div>
         </form>

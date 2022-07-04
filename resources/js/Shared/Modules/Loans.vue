@@ -173,7 +173,7 @@
         <div v-if="warning != ''" class="border-b p-3">⚠️ {{ warning }}</div>
 
         <div class="flex justify-between p-5">
-          <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="createLoanModalShown = false" />
+          <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createLoanModalShown = false" />
           <pretty-button :text="'Add loan'" :state="loadingState" :icon="'plus'" :classes="'save'" />
         </div>
       </form>
@@ -391,8 +391,8 @@
           <div v-if="warning != ''" class="border-b p-3">⚠️ {{ warning }}</div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="editedLoanId = 0" />
-            <pretty-button :text="'Save'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+            <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedLoanId = 0" />
+            <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
           </div>
         </form>
       </div>

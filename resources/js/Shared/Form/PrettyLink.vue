@@ -35,7 +35,10 @@ a {
 </style>
 
 <template>
-  <inertia-link :class="classes" class="dark:box-s relative text-sm dark:bg-gray-700 dark:text-gray-300" :href="href">
+  <inertia-link
+    :class="classes"
+    class="dark:box-s relative bg-white text-sm dark:bg-gray-700 dark:text-gray-300"
+    :href="href">
     <!-- + icon -->
     <svg
       v-if="icon === 'plus' && state != 'loading'"

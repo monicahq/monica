@@ -15,7 +15,7 @@ pre {
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 sm:mb-0"><span class="mr-1">🗓</span> How should we display dates</h3>
-      <pretty-button v-if="!editMode" :text="'Edit'" @click="enableEditMode" />
+      <pretty-button v-if="!editMode" :text="$t('app.edit')" @click="enableEditMode" />
     </div>
 
     <!-- help text -->
@@ -67,8 +67,8 @@ pre {
 
       <!-- actions -->
       <div class="flex justify-between p-5">
-        <pretty-link :text="'Cancel'" :classes="'mr-3'" @click="editMode = false" />
-        <pretty-button :text="'Save'" :state="loadingState" :icon="'check'" :classes="'save'" />
+        <pretty-link :text="$t('app.cancel')" :classes="'mr-3'" @click="editMode = false" />
+        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'check'" :classes="'save'" />
       </div>
     </form>
   </div>
@@ -123,7 +123,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash('Changes saved', 'success');
+          this.flash(this.$t('app.notification_flash_changes_saved'), 'success');
           this.localDateFormat = this.form.dateFormat;
           this.localHumanDateFormat = response.data.data.human_date_format;
           this.editMode = false;

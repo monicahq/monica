@@ -131,7 +131,7 @@ select {
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="'Cancel'" :classes="'mr-3'" @click.prevent="addEmailModalShown = false" />
+        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click.prevent="addEmailModalShown = false" />
         <pretty-button :text="'Add'" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>

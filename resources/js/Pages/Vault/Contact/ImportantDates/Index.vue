@@ -41,7 +41,7 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600">You are here:</li>
+            <li class="mr-2 inline text-gray-600">{{ $t('app.breadcrumb_location') }}</li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 Contacts
@@ -251,7 +251,7 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="createDateModalShown = false" />
+            <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createDateModalShown = false" />
             <pretty-button :text="'Add date'" :state="loadingState" :icon="'plus'" :classes="'save'" />
           </div>
         </form>
@@ -401,8 +401,8 @@
               </div>
 
               <div class="flex justify-between p-5">
-                <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="editedDateId = 0" />
-                <pretty-button :text="'Save'" :state="loadingState" :icon="'check'" :classes="'save'" />
+                <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedDateId = 0" />
+                <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'check'" :classes="'save'" />
               </div>
             </form>
           </li>

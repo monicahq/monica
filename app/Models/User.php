@@ -52,6 +52,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'number_format',
         'timezone',
         'default_map_site',
+        'locale',
     ];
 
     /**

@@ -104,8 +104,8 @@
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="addGroupMode = false" />
-        <pretty-button :text="'Save'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="addGroupMode = false" />
+        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 

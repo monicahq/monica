@@ -1,12 +1,8 @@
 <style lang="scss" scoped>
-pre {
-  background-color: #1f2937;
-  color: #c9ef78;
-}
-
-.example {
-  border-bottom-left-radius: 9px;
-  border-bottom-right-radius: 9px;
+select {
+  padding-left: 8px;
+  padding-right: 20px;
+  background-position: right 3px center;
 }
 </style>
 
@@ -14,15 +10,15 @@ pre {
   <div class="mb-16">
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
-      <h3 class="mb-4 sm:mb-0"><span class="mr-1">💵</span> How should we display monetary values</h3>
+      <h3 class="mb-4 sm:mb-0"><span class="mr-1">🗓</span> {{ $t('settings.user_preferences_locale_title') }}</h3>
       <pretty-button v-if="!editMode" :text="$t('app.edit')" @click="enableEditMode" />
     </div>
 
     <!-- normal mode -->
     <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white">
       <p class="px-5 py-2">
-        <span class="mb-2 block">Current way of displaying numbers:</span>
-        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm">{{ localNumberFormat }}</span>
+        <span class="mb-2 block">{{ $t('settings.user_preferences_locale_current_language') }}</span>
+        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm">{{ localLocaleI18n }}</span>
       </p>
     </div>
 
@@ -31,18 +27,13 @@ pre {
       <div class="border-b border-gray-200 px-5 py-2">
         <errors :errors="form.errors" />
 
-        <div v-for="numberFormat in data.numbers" :key="numberFormat.id" class="mb-2 flex items-center">
-          <input
-            :id="'input' + numberFormat.id"
-            v-model="form.numberFormat"
-            :value="numberFormat.format"
-            name="date-format"
-            type="radio"
-            class="h-4 w-4 border-gray-300 text-sky-500" />
-          <label :for="'input' + numberFormat.id" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
-            {{ numberFormat.value }}
-          </label>
-        </div>
+        <select
+          name="locale"
+          v-model="form.locale"
+          class="rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm">
+          <option value="en">{{ $t('settings.user_preferences_locale_en') }}</option>
+          <option value="fr">{{ $t('settings.user_preferences_locale_fr') }}</option>
+        </select>
       </div>
 
       <!-- actions -->
@@ -58,6 +49,7 @@ pre {
 import PrettyButton from '@/Shared/Form/PrettyButton';
 import PrettyLink from '@/Shared/Form/PrettyLink';
 import Errors from '@/Shared/Form/Errors';
+import { loadLanguageAsync, getActiveLanguage } from 'laravel-vue-i18n';
 
 export default {
   components: {
@@ -77,17 +69,19 @@ export default {
     return {
       loadingState: '',
       editMode: false,
-      localNumberFormat: '',
+      localLocale: '',
+      localLocaleI18n: '',
       form: {
-        numberFormat: '',
+        locale: '',
         errors: [],
       },
     };
   },
 
   mounted() {
-    this.localNumberFormat = this.data.number_format;
-    this.form.numberFormat = this.data.number_format;
+    this.localLocale = this.data.locale;
+    this.localLocaleI18n = this.data.locale_i18n;
+    this.form.locale = this.data.locale;
   },
 
   methods: {
@@ -102,9 +96,14 @@ export default {
         .post(this.data.url.store, this.form)
         .then((response) => {
           this.flash(this.$t('app.notification_flash_changes_saved'), 'success');
-          this.localNumberFormat = this.form.numberFormat;
+          this.localLocale = response.data.data.locale;
+          this.localLocaleI18n = response.data.data.locale_i18n;
           this.editMode = false;
           this.loadingState = null;
+
+          if (getActiveLanguage() !== this.form.locale) {
+            loadLanguageAsync(response.data.data.locale);
+          }
         })
         .catch((error) => {
           this.loadingState = null;

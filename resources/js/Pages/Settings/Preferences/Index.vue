@@ -23,9 +23,11 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600">You are here:</li>
+            <li class="mr-2 inline text-gray-600">{{ $t('app.breadcrumb_location') }}</li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">Settings</inertia-link>
+              <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">{{
+                $t('app.breadcrumb_settings')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -37,7 +39,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">Preferences</li>
+            <li class="inline">{{ $t('app.breadcrumb_settings_preferences') }}</li>
           </ul>
         </div>
       </div>
@@ -45,6 +47,8 @@
 
     <main class="relative sm:mt-20">
       <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+        <locale :data="data.locale" />
+
         <name-order :data="data.name_order" />
 
         <date-format :data="data.date_format" />
@@ -66,6 +70,7 @@ import DateFormat from '@/Pages/Settings/Preferences/Partials/DateFormat';
 import NumberFormat from '@/Pages/Settings/Preferences/Partials/NumberFormat';
 import Timezone from '@/Pages/Settings/Preferences/Partials/Timezone';
 import Maps from '@/Pages/Settings/Preferences/Partials/Maps';
+import Locale from '@/Pages/Settings/Preferences/Partials/Locale';
 
 export default {
   components: {
@@ -75,6 +80,7 @@ export default {
     Timezone,
     NumberFormat,
     Maps,
+    Locale,
   },
 
   props: {

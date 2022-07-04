@@ -29,7 +29,7 @@
       <pretty-span v-if="!addUserModalShown" :text="'Add a user'" :icon="'plus'" @click="showAddUserModal" />
       <pretty-span
         v-if="addUserModalShown && localUsersInAccount.length == 0"
-        :text="'Cancel'"
+        :text="$t('app.cancel')"
         @click="addUserModalShown = false" />
     </div>
 
@@ -112,7 +112,7 @@
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="'Cancel'" @click="addUserModalShown = false" />
+        <pretty-span :text="$t('app.cancel')" @click="addUserModalShown = false" />
         <pretty-button :text="'Add user'" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
@@ -200,7 +200,7 @@
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="'Cancel'" @click="editedUser = []" />
+              <pretty-span :text="$t('app.cancel')" @click="editedUser = []" />
               <pretty-button :text="'Change permission'" :state="loadingState" :icon="'check'" :classes="'save'" />
             </div>
           </form>

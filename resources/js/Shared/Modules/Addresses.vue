@@ -148,8 +148,8 @@
         </div>
 
         <div class="flex justify-between p-5">
-          <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="createAddressModalShown = false" />
-          <pretty-button :text="'Save'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+          <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createAddressModalShown = false" />
+          <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
         </div>
       </form>
 
@@ -280,8 +280,8 @@
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="editedAddressId = 0" />
-              <pretty-button :text="'Save'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+              <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedAddressId = 0" />
+              <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
             </div>
           </form>
         </div>
@@ -429,8 +429,8 @@
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="editedAddressId = 0" />
-              <pretty-button :text="'Save'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+              <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedAddressId = 0" />
+              <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
             </div>
           </form>
         </div>

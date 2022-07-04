@@ -63,7 +63,7 @@ main {
             <input
               type="text"
               class="dark:highlight-white/5 block w-64 rounded-md border border-gray-300 px-2 py-1 text-center hover:cursor-pointer focus:border-indigo-500 focus:ring-indigo-500 dark:border-0 dark:bg-slate-800 dark:hover:bg-slate-700 sm:text-sm"
-              placeholder="Search something"
+              :placeholder="$t('app.layout_menu_search')"
               @focus="goToSearchPage" />
           </div>
 
@@ -90,7 +90,7 @@ main {
                       d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
 
-                  <span class="text-sm dark:text-sky-400">Settings</span>
+                  <span class="text-sm dark:text-sky-400">{{ $t('app.layout_menu_settings') }}</span>
                 </inertia-link>
               </li>
               <li class="inline">
@@ -108,7 +108,7 @@ main {
                       d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                   </svg>
 
-                  <span class="text-sm dark:text-sky-400">Logout</span>
+                  <span class="text-sm dark:text-sky-400">{{ $t('app.layout_menu_logout') }}</span>
                 </inertia-link>
               </li>
             </ul>
@@ -124,32 +124,32 @@ main {
                   :href="layoutData.vault.url.dashboard"
                   :class="{ 'bg-blue-700 text-white dark:text-white': $page.component.startsWith('Vault/Dashboard') }"
                   class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
-                  Dashboard
+                  {{ $t('app.layout_menu_dashboard') }}
                 </inertia-link>
 
                 <inertia-link
                   href=""
                   class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
-                  Reports
+                  {{ $t('app.layout_menu_reports') }}
                 </inertia-link>
 
                 <inertia-link
                   :href="layoutData.vault.url.contacts"
                   :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Contact') }"
                   class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
-                  Contacts
+                  {{ $t('app.layout_menu_contacts') }}
                 </inertia-link>
 
                 <inertia-link
                   href=""
                   class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
-                  Gift center
+                  {{ $t('app.layout_menu_gift_center') }}
                 </inertia-link>
 
                 <inertia-link
                   href=""
                   class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
-                  Loans & debts center
+                  {{ $t('app.layout_menu_loans') }}
                 </inertia-link>
 
                 <inertia-link
@@ -157,7 +157,7 @@ main {
                   :href="layoutData.vault.url.settings"
                   :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Settings') }"
                   class="rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white">
-                  Vault settings
+                  {{ $t('app.layout_menu_vault_settings') }}
                 </inertia-link>
               </div>
             </div>
@@ -170,11 +170,11 @@ main {
 
       <footer class="mb-10 text-center text-xs">
         <ul class="dark:text-gray-300">
-          <li class="mr-4 mb-2 sm:mb-0 sm:inline">Monica, since 2017.</li>
+          <li class="mr-4 mb-2 sm:mb-0 sm:inline">{{ $t('app.layout_footer_monica') }}</li>
           <li class="sm:inline">
-            Current version: {{ layoutData.version.date }}
+            {{ $t('app.layout_footer_version', { version: layoutData.version.date }) }}
 
-            <a-tooltip placement="topLeft" title="Click to see the code" arrow-point-at-center>
+            <a-tooltip placement="topLeft" :title="$t('app.layout_footer_click_to_see_code')" arrow-point-at-center>
               <a
                 href="https://github.com/djaiss/butler/commits/main"
                 target="_blank"

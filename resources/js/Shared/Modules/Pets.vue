@@ -88,7 +88,7 @@ select {
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="addPetModalShown = false" />
+        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="addPetModalShown = false" />
         <pretty-button :text="'Add pet'" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
@@ -148,8 +148,8 @@ select {
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="'Cancel'" :classes="'mr-3'" @click="editedPetId = 0" />
-              <pretty-button :text="'Save'" :state="loadingState" :icon="'check'" :classes="'save'" />
+              <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedPetId = 0" />
+              <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'check'" :classes="'save'" />
             </div>
           </form>
         </li>
