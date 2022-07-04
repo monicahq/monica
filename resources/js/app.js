@@ -9,6 +9,7 @@ import 'ant-design-vue/lib/dropdown/style/index.css';
 import 'ant-design-vue/lib/tooltip/style/index.css';
 import 'v-calendar/dist/style.css';
 import VCalendar from 'v-calendar';
+import { i18nVue } from 'laravel-vue-i18n';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
@@ -18,6 +19,9 @@ createInertiaApp({
   setup({ el, app, props, plugin }) {
     return createApp({ render: () => h(app, props) })
       .use(plugin)
+      .use(i18nVue, {
+        resolve: (lang) => import(`../../lang/${lang}.json`),
+      })
       .use(Antd)
       .use(VCalendar)
       .mixin({ methods: _.assign({ route }, require('./methods').default) })

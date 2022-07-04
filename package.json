@@ -33,6 +33,7 @@
     "husky": "^4.3.0",
     "eslint-plugin-vue": "^9.1.0",
     "laravel-mix": "^6.0.44",
+    "laravel-vue-i18n": "^1.4.3",
     "lint-staged": "^12.5.0",
     "lodash": "^4.17.19",
     "postcss": "^8.4.14",
