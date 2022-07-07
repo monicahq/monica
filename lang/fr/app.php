@@ -23,6 +23,8 @@ return [
     'breadcrumb_settings_preferences' => 'Préférences de l’utilisateur',
     'breadcrumb_settings_notification_channels' => 'Chaînes de notification',
     'breadcrumb_settings_notification_channels_log_details' => 'Détails des logs',
+    'breadcrumb_settings_users' => 'Utilisateurs',
+    'breadcrumb_settings_users_new_cta' => 'Inviter un utilisateur',
 
     'notification_flash_changes_saved' => 'Changements effectués',
 

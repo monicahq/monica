@@ -23,6 +23,8 @@ return [
     'breadcrumb_settings_preferences' => 'User preferences',
     'breadcrumb_settings_notification_channels' => 'Notification channels',
     'breadcrumb_settings_notification_channels_log_details' => 'Log details',
+    'breadcrumb_settings_users' => 'Users',
+    'breadcrumb_settings_users_new_cta' => 'Invite a new user',
 
     'notification_flash_changes_saved' => 'Changes saved',
 

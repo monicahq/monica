@@ -77,4 +77,26 @@ return [
     'notification_channels_log_label' => 'Libellé :',
     'notification_channels_log_help' => 'Cette page montre toutes les notifications qui ont été envoyés via ce canal par le passé. Cela sert principalement comme une façon de déboguer dans le cas où vous ne recevez pas les notifications que vous avez programmées.',
     'notification_channels_log_blank' => 'Vous n’avez pas encore reçu de notifications dans ce canal.',
+
+    /***************************************************************
+     * USER MANAGEMENT
+     **************************************************************/
+
+    'users_management_title' => 'Tous les utilisateurs dans ce compte',
+    'users_management_cta' => 'Inviter un utilisateur',
+    'users_management_administrator' => 'administrateur',
+    'users_management_regular_user' => 'Utilisateur régulier',
+    'users_management_administrator_role' => 'Administrateur',
+    'users_management_invitation_sent' => 'Invitation envoyée',
+    'users_management_permission' => 'Quelle permission devrait avoir :name ?',
+    'users_management_administrator_role_help' => 'Peut tout faire, y compris ajouter ou supprimer d’autres utilisateurs, gérer la souscription et fermer le compte.',
+    'users_management_update_success' => 'L’utilisateur a été mis à jour',
+    'users_management_delete_confirmation' => 'Êtes-vous sûr ? On ne peut pas revenir en arrière.',
+    'users_management_delete_success' => 'L’utilisateur a été supprimé',
+    'users_management_new_title' => 'Inviter quelqu’un',
+    'users_management_new_description' => 'Cet utilisateur fera parti du compte, mais n’aura pas accès à toutes les voûtes dans ce compte, sauf s’il a le droit d’y accéder. Cette personne pourra également créer des voûtes.',
+    'users_management_new_email' => 'Adresse courriel à qui envoyer l’invitation',
+    'users_management_new_permission' => 'Quelle permission devrait avoir l’utilisateur ?',
+    'users_management_new_cta' => 'Envoyer l’invitation',
+    'users_management_new_success' => 'Invitation envoyée',
 ];

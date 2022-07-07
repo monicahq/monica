@@ -77,4 +77,26 @@ return [
     'notification_channels_log_label' => 'Label:',
     'notification_channels_log_help' => 'This page shows all the notifications that have been sent in this channel in the past. It primeraly serves as a way to debug in case you don’t receive the notification you’ve set up.',
     'notification_channels_log_blank' => 'You haven’t received a notification in this channel yet.',
+
+    /***************************************************************
+     * USER MANAGEMENT
+     **************************************************************/
+
+    'users_management_title' => 'All users in this account',
+    'users_management_cta' => 'Invite a new user',
+    'users_management_administrator' => 'administrator',
+    'users_management_regular_user' => 'Regular user',
+    'users_management_administrator_role' => 'Administrator',
+    'users_management_invitation_sent' => 'Invitation sent',
+    'users_management_permission' => 'What permission should :name have?',
+    'users_management_administrator_role_help' => 'Can do everything, including adding or removing other users, managing billing and closing the account.',
+    'users_management_update_success' => 'The user has been updated',
+    'users_management_delete_confirmation' => 'Are you sure? This can’t be recovered.',
+    'users_management_delete_success' => 'The user has been deleted',
+    'users_management_new_title' => 'Invite someone',
+    'users_management_new_description' => 'This user will be part of your account, but won’t get access to all the vaults in this account unless you give specific access to them. This person will be able to create vaults as well.',
+    'users_management_new_email' => 'Email address to send the invitation to',
+    'users_management_new_permission' => 'What permission should the user have?',
+    'users_management_new_cta' => 'Send invitation',
+    'users_management_new_success' => 'Invitation sent',
 ];

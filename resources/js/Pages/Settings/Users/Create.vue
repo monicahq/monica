@@ -1,3 +1,4 @@
+k
 <style lang="scss" scoped>
 .section-head {
   border-top-left-radius: 7px;
@@ -29,7 +30,9 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.back" class="text-blue-500 hover:underline"> Users </inertia-link>
+              <inertia-link :href="data.url.back" class="text-blue-500 hover:underline">{{
+                $t('app.breadcrumb_settings_users')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -41,7 +44,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">Invite a new user</li>
+            <li class="inline">{{ $t('app.breadcrumb_settings_users_new_cta') }}</li>
           </ul>
         </div>
       </div>
@@ -52,10 +55,9 @@
         <form class="mb-6 rounded-lg border border-gray-200 bg-white" @submit.prevent="submit()">
           <!-- title -->
           <div class="section-head border-b border-gray-200 bg-blue-50 p-5">
-            <h1 class="mb-1 text-center text-2xl font-medium">Invite someone</h1>
+            <h1 class="mb-1 text-center text-2xl font-medium">{{ $t('settings.users_management_new_title') }}</h1>
             <p class="text-center">
-              This user will be part of your account, but won't get access to all the vaults in this account unless you
-              give specific access to them. This person will be able to create vaults as well.
+              {{ $t('settings.users_management_new_description') }}
             </p>
           </div>
 
@@ -65,7 +67,7 @@
 
             <text-input
               v-model="form.email"
-              :label="'Email address to send the invitation to'"
+              :label="$t('settings.users_management_new_email')"
               :type="'email'"
               :autofocus="true"
               :input-class="'block w-full'"
@@ -78,7 +80,7 @@
           <div class="border-b border-gray-200 p-5">
             <!-- role types -->
             <div>
-              <p class="mb-2">What permission should the user have?</p>
+              <p class="mb-2">{{ $t('settings.users_management_new_permission') }}</p>
 
               <!-- view -->
               <div class="mb-2 flex items-start">
@@ -90,7 +92,7 @@
                   type="radio"
                   class="h-4 w-4 border-gray-300 text-sky-500" />
                 <label for="viewer" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
-                  Regular user
+                  {{ $t('settings.users_management_regular_user') }}
                 </label>
               </div>
 
@@ -104,10 +106,9 @@
                   type="radio"
                   class="h-4 w-4 border-gray-300 text-sky-500" />
                 <label for="manager" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
-                  Administrator
+                  {{ $t('settings.users_management_administrator_role') }}
                   <span class="ml-4 font-normal text-gray-500">
-                    Can do everything, including adding or removing other users, managing billing and closing the
-                    account.
+                    {{ $t('settings.users_management_administrator_role_help') }}
                   </span>
                 </label>
               </div>
@@ -116,7 +117,11 @@
 
           <div class="flex justify-between p-5">
             <pretty-link :href="data.url.back" :text="$t('app.cancel')" :classes="'mr-3'" />
-            <pretty-button :text="'Send invitation'" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-button
+              :text="$t('settings.users_management_new_cta')"
+              :state="loadingState"
+              :icon="'check'"
+              :classes="'save'" />
           </div>
         </form>
       </div>
@@ -173,7 +178,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          localStorage.success = 'Invitation sent';
+          localStorage.success = this.$t('settings.users_management_new_success');
           this.$inertia.visit(response.data.data);
         })
         .catch((error) => {
