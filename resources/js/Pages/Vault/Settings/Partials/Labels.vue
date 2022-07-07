@@ -20,8 +20,12 @@
   <div class="mb-12">
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
-      <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 🏷 </span> All the labels used in the vault</h3>
-      <pretty-button v-if="!createlabelModalShown" :text="'Add a label'" :icon="'plus'" @click="showLabelModal" />
+      <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 🏷 </span> {{ $t('vault.settings_labels_title') }}</h3>
+      <pretty-button
+        v-if="!createlabelModalShown"
+        :text="$t('vault.settings_labels_cta')"
+        :icon="'plus'"
+        @click="showLabelModal" />
     </div>
 
     <!-- modal to create a new label -->
@@ -35,7 +39,7 @@
         <text-input
           :ref="'newLabel'"
           v-model="form.name"
-          :label="'Name'"
+          :label="$t('vault.settings_labels_create_name')"
           :type="'text'"
           :autofocus="true"
           :input-class="'block w-full'"
@@ -45,7 +49,7 @@
           :div-outer-class="'mb-4'"
           @esc-key-pressed="createlabelModalShown = false" />
 
-        <p class="mb-2 block text-sm">Choose a color</p>
+        <p class="mb-2 block text-sm">{{ $t('vault.settings_labels_create_color') }}</p>
         <div class="grid grid-cols-8 gap-4">
           <div v-for="color in data.label_colors" :key="color.bg_color" class="flex items-center">
             <input
@@ -65,7 +69,11 @@
 
       <div class="flex justify-between p-5">
         <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createlabelModalShown = false" />
-        <pretty-button :text="'Create label'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-button
+          :text="$t('vault.settings_labels_create_cta')"
+          :state="loadingState"
+          :icon="'plus'"
+          :classes="'save'" />
       </div>
     </form>
 
@@ -77,15 +85,19 @@
           <span class="flex items-center text-base">
             <div class="mr-2 inline-block h-4 w-4 rounded-full" :class="label.bg_color"></div>
             <span class="mr-2">{{ label.name }}</span>
-            <span v-if="label.count > 0" class="text-xs text-gray-500">({{ label.count }} contacts)</span>
+            <span v-if="label.count > 0" class="text-xs text-gray-500"
+              >({{ $t('vault.settings_labels_count', { count: label.count }) }})</span
+            >
           </span>
 
           <!-- actions -->
           <ul class="text-sm">
             <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="updateLabelModal(label)">
-              Edit
+              {{ $t('app.edit') }}
             </li>
-            <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(label)">Delete</li>
+            <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(label)">
+              {{ $t('app.delete') }}
+            </li>
           </ul>
         </div>
 
@@ -100,7 +112,7 @@
             <text-input
               :ref="'rename' + label.id"
               v-model="form.name"
-              :label="'Name'"
+              :label="$t('vault.settings_labels_create_name')"
               :type="'text'"
               :autofocus="true"
               :input-class="'block w-full'"
@@ -110,7 +122,7 @@
               :div-outer-class="'mb-4'"
               @esc-key-pressed="editLabelModalShownId = 0" />
 
-            <p class="mb-2 block text-sm">Choose a color</p>
+            <p class="mb-2 block text-sm">{{ $t('vault.settings_labels_create_color') }}</p>
             <div class="grid grid-cols-8 gap-4">
               <div v-for="color in data.label_colors" :key="color.bg_color" class="flex items-center">
                 <input
@@ -130,7 +142,7 @@
 
           <div class="flex justify-between p-5">
             <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click.prevent="editLabelModalShownId = 0" />
-            <pretty-button :text="'Rename'" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-button :text="$t('app.rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
           </div>
         </form>
       </li>
@@ -138,7 +150,7 @@
 
     <!-- blank state -->
     <div v-if="localLabels.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
-      <p class="p-5 text-center">Labels let you classify contacts using a system that matters to you.</p>
+      <p class="p-5 text-center">{{ $t('vault.settings_labels_blank') }}</p>
     </div>
   </div>
 </template>
@@ -213,7 +225,7 @@ export default {
       axios
         .post(this.data.url.label_store, this.form)
         .then((response) => {
-          this.flash('The label has been created', 'success');
+          this.flash(this.$t('vault.settings_labels_create_success'), 'success');
           this.localLabels.unshift(response.data.data);
           this.loadingState = null;
           this.createlabelModalShown = false;
@@ -230,7 +242,7 @@ export default {
       axios
         .put(label.url.update, this.form)
         .then((response) => {
-          this.flash('The label has been updated', 'success');
+          this.flash(this.$t('vault.settings_labels_update_success'), 'success');
           this.localLabels[this.localLabels.findIndex((x) => x.id === label.id)] = response.data.data;
           this.loadingState = null;
           this.editLabelModalShownId = 0;
@@ -242,15 +254,11 @@ export default {
     },
 
     destroy(label) {
-      if (
-        confirm(
-          "Are you sure? This will remove the labels from all contacts, but won't delete the contacts themselves.",
-        )
-      ) {
+      if (confirm(this.$t('vault.settings_labels_destroy_confirmation'))) {
         axios
           .delete(label.url.destroy)
           .then((response) => {
-            this.flash('The label has been deleted', 'success');
+            this.flash(this.$t('vault.settings_labels_destroy_success'), 'success');
             var id = this.localLabels.findIndex((x) => x.id === label.id);
             this.localLabels.splice(id, 1);
           })

@@ -20,7 +20,7 @@
   <div class="mb-12">
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
-      <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 📐 </span> Default template to display contacts</h3>
+      <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 📐 </span> {{ $t('vault.settings_default_template_title') }}</h3>
     </div>
 
     <!-- help text -->
@@ -41,9 +41,7 @@
 
         <div>
           <p>
-            A template defines how contacts should be displayed. You can have as many templates as you want - they are
-            defined in your Account settings. However, you might want to define a default template so all your contacts
-            in this vault have this template by default.
+            {{ $t('vault.settings_default_template_help') }}
           </p>
         </div>
       </div>
@@ -59,9 +57,9 @@
 
             <!-- actions -->
             <ul class="text-sm">
-              <li v-if="template.is_default">Current default</li>
+              <li v-if="template.is_default">{{ $t('vault.settings_default_template_current_default_status') }}</li>
               <li v-else class="inline cursor-pointer text-blue-500 hover:underline" @click="update(template)">
-                Set as default
+                {{ $t('vault.settings_default_template_cta') }}
               </li>
             </ul>
           </div>
@@ -70,7 +68,7 @@
 
       <!-- blank state -->
       <div v-if="localTemplates.length == 0">
-        <p class="p-5 text-center">There are no templates in the account. Go to the account settings to create one.</p>
+        <p class="p-5 text-center">{{ $t('vault.settings_default_template_blank') }}</p>
       </div>
     </div>
   </div>
@@ -106,7 +104,7 @@ export default {
       axios
         .put(this.data.url.template_update, this.form)
         .then((response) => {
-          this.flash('The vault have been updated', 'success');
+          this.flash(this.$t('vault.settings_default_template_success'), 'success');
 
           // mark the previous default template as not default
           this.localTemplates.forEach((row) => {

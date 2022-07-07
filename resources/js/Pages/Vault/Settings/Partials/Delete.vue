@@ -4,7 +4,7 @@
   <div>
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
-      <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 🗑 </span> Delete the vault</h3>
+      <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 🗑 </span> {{ $t('vault.settings_delete_title') }}</h3>
     </div>
 
     <!-- help text -->
@@ -25,14 +25,16 @@
 
         <div>
           <p>
-            Deleting the vault means deleting all the data inside this vault, forever. There is no turning back. Please
-            be certain.
+            {{ $t('vault.settings_delete_description') }}
           </p>
         </div>
       </div>
 
       <p class="mb-1 px-5 py-2 text-center">
-        <pretty-link :text="'Delete the vault'" :classes="'mr-3 text-red-600 border-red-600'" @click="destroy" />
+        <pretty-link
+          :text="$t('vault.settings_delete_cta')"
+          :classes="'mr-3 text-red-600 border-red-600'"
+          @click="destroy" />
       </p>
     </div>
   </div>
@@ -63,11 +65,11 @@ export default {
 
   methods: {
     destroy() {
-      if (confirm('Are you sure? This will delete all the data inside this vault.')) {
+      if (confirm(this.$t('vault.settings_delete_cta_confirmation'))) {
         axios
           .delete(this.data.url.destroy)
           .then((response) => {
-            localStorage.success = 'The vault has been deleted';
+            localStorage.success = this.$t('vault.settings_delete_destroy_success');
             this.$inertia.visit(response.data.data);
           })
           .catch((error) => {

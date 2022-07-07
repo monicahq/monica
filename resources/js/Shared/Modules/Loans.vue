@@ -117,7 +117,7 @@
               :data="localCurrencies"
               :required="false"
               :div-outer-class="'ml-3 mb-5'"
-              :placeholder="'Choose a value'"
+              :placeholder="$t('app.choose_value')"
               :dropdown-class="'block'"
               :label="'Currency'" />
           </div>
@@ -335,7 +335,7 @@
                 :data="localCurrencies"
                 :required="false"
                 :div-outer-class="'ml-3 mb-5'"
-                :placeholder="'Choose a value'"
+                :placeholder="$t('app.choose_value')"
                 :dropdown-class="'block'"
                 :label="'Currency'" />
             </div>

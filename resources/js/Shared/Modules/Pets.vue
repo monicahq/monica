@@ -81,7 +81,7 @@ select {
             v-model="form.pet_category_id"
             :data="data.pet_categories"
             :required="true"
-            :placeholder="'Choose a value'"
+            :placeholder="$t('app.choose_value')"
             :dropdown-class="'block w-full'"
             :label="'Pet category'" />
         </div>
@@ -141,7 +141,7 @@ select {
                   v-model="form.pet_category_id"
                   :data="data.pet_categories"
                   :required="true"
-                  :placeholder="'Choose a value'"
+                  :placeholder="$t('app.choose_value')"
                   :dropdown-class="'block w-full'"
                   :label="'Pet category'" />
               </div>

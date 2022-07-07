@@ -23,7 +23,7 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600">{{ $t('app.breadcrumb_location') }}</li>
+            <li class="mr-2 inline text-gray-600 dark:text-slate-200">{{ $t('app.breadcrumb_location') }}</li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">{{
                 $t('app.breadcrumb_settings')
@@ -141,7 +141,7 @@
 
               <div class="flex justify-between p-5">
                 <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click.prevent="renameGenderModalShownId = 0" />
-                <pretty-button :text="'Rename'" :state="loadingState" :icon="'check'" :classes="'save'" />
+                <pretty-button :text="$t('app.rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
               </div>
             </form>
           </li>

@@ -124,7 +124,7 @@ select {
               :data="data.months"
               :required="true"
               :div-outer-class="'mb-5 mr-2'"
-              :placeholder="'Choose a value'"
+              :placeholder="$t('app.choose_value')"
               :dropdown-class="'block w-full'"
               :label="'Month'" />
 
@@ -133,7 +133,7 @@ select {
               :data="data.days"
               :required="true"
               :div-outer-class="'mb-5'"
-              :placeholder="'Choose a value'"
+              :placeholder="$t('app.choose_value')"
               :dropdown-class="'block w-full'"
               :label="'Day'" />
           </div>
@@ -319,7 +319,7 @@ select {
                     :data="data.months"
                     :required="true"
                     :div-outer-class="'mr-2'"
-                    :placeholder="'Choose a value'"
+                    :placeholder="$t('app.choose_value')"
                     :dropdown-class="'block w-full'"
                     :label="'Month'" />
 
@@ -327,7 +327,7 @@ select {
                     v-model="form.day"
                     :data="data.days"
                     :required="true"
-                    :placeholder="'Choose a value'"
+                    :placeholder="$t('app.choose_value')"
                     :dropdown-class="'block w-full'"
                     :label="'Day'" />
                 </div>

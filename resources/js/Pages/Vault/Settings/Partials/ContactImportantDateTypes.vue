@@ -20,8 +20,12 @@
   <div class="mb-12">
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
-      <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 📁 </span> All the important date types used in the vault</h3>
-      <pretty-button v-if="!createTypeModalShown" :text="'Add a type'" :icon="'plus'" @click="showTypeModal" />
+      <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 📁 </span> {{ $t('vault.settings_important_dates_title') }}</h3>
+      <pretty-button
+        v-if="!createTypeModalShown"
+        :text="$t('vault.settings_important_dates_cta')"
+        :icon="'plus'"
+        @click="showTypeModal" />
     </div>
 
     <!-- modal to create a type -->
@@ -32,7 +36,7 @@
         <text-input
           :ref="'newtype'"
           v-model="form.label"
-          :label="'Name'"
+          :label="$t('vault.settings_important_dates_name')"
           :type="'text'"
           :autofocus="true"
           :input-class="'block w-full'"
@@ -45,7 +49,7 @@
 
       <div class="flex justify-between p-5">
         <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createTypeModalShown = false" />
-        <pretty-button :text="'Create date type'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-button :text="$t('app.add')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
@@ -65,12 +69,14 @@
 
           <!-- actions -->
           <ul class="text-sm">
-            <li class="inline cursor-pointer text-blue-500 hover:underline" @click="edit(type)">Edit</li>
+            <li class="inline cursor-pointer text-blue-500 hover:underline" @click="edit(type)">
+              {{ $t('app.edit') }}
+            </li>
             <li
               v-if="type.can_be_deleted"
               class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"
               @click="destroy(type)">
-              Delete
+              {{ $t('app.delete') }}
             </li>
           </ul>
         </div>
@@ -86,7 +92,7 @@
             <text-input
               :ref="'rename' + type.id"
               v-model="form.label"
-              :label="'Name'"
+              :label="$t('vault.settings_important_dates_name')"
               :type="'text'"
               :autofocus="true"
               :input-class="'block w-full'"
@@ -99,7 +105,7 @@
 
           <div class="flex justify-between p-5">
             <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click.prevent="editTypeModalShownId = 0" />
-            <pretty-button :text="'Rename'" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-button :text="$t('app.rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
           </div>
         </form>
       </li>
@@ -108,7 +114,7 @@
     <!-- blank state -->
     <div v-if="localTypes.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
       <p class="p-5 text-center">
-        Date types are essential as they let you categorize dates that you add to a contact.
+        {{ $t('vault.settings_important_dates_blank') }}
       </p>
     </div>
   </div>
@@ -181,7 +187,7 @@ export default {
       axios
         .post(this.data.url.contact_date_important_date_type_store, this.form)
         .then((response) => {
-          this.flash('The type has been created', 'success');
+          this.flash(this.$t('vault.settings_important_dates_create_success'), 'success');
           this.localTypes.unshift(response.data.data);
           this.loadingState = null;
           this.createTypeModalShown = false;
@@ -198,7 +204,7 @@ export default {
       axios
         .put(type.url.update, this.form)
         .then((response) => {
-          this.flash('The type has been updated', 'success');
+          this.flash(this.$t('vault.settings_important_dates_update_success'), 'success');
           this.localTypes[this.localTypes.findIndex((x) => x.id === type.id)] = response.data.data;
           this.loadingState = null;
           this.editTypeModalShownId = 0;
@@ -210,13 +216,11 @@ export default {
     },
 
     destroy(type) {
-      if (
-        confirm("Are you sure? This will remove the types from all contacts, but won't delete the contacts themselves.")
-      ) {
+      if (confirm(this.$t('vault.settings_important_dates_destroy_confirmation'))) {
         axios
           .delete(type.url.destroy)
           .then((response) => {
-            this.flash('The type has been deleted', 'success');
+            this.flash(this.$t('vault.settings_important_dates_destroy_success'), 'success');
             var id = this.localTypes.findIndex((x) => x.id === type.id);
             this.localTypes.splice(id, 1);
           })

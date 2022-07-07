@@ -19,11 +19,6 @@
     grid-template-columns: 1fr;
   }
 }
-
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
 </style>
 
 <template>
@@ -33,26 +28,33 @@
       <div v-if="data.vaults.length == 0" class="mx-auto mb-6 max-w-md px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <div class="rounded-t-lg border-t border-l border-r border-gray-200 bg-white p-5">
           <p class="text-center">👋</p>
-          <h2 class="mb-6 text-center text-lg">Thanks for giving Monica a try</h2>
-          <p class="mb-3">Monica was made to help you document your life and your social interactions.</p>
-          <p class="mb-3">To start, you need to create a vault.</p>
+          <h2 class="mb-6 text-center text-lg">{{ $t('vault.index_blank_title') }}</h2>
+          <p class="mb-3">{{ $t('vault.index_blank_sentence_1') }}</p>
+          <p class="mb-3">{{ $t('vault.index_blank_sentence_2') }}</p>
           <div class="mb-3 text-center">
-            <pretty-link :href="data.url.vault.create" :text="'Create a vault'" :icon="'plus'" />
+            <pretty-link :href="data.url.vault.create" :text="$t('vault.index_cta')" :icon="'plus'" />
           </div>
         </div>
         <div class="rounded-b-lg border border-gray-200 p-5">
-          <p class="mb-3">Monica is open source, made by hundreds of people from all around the world.</p>
-          <p class="mb-3">We hope you will like what we've done.</p>
-          <p class="mb-3">All the best,</p>
-          <p>Régis & Alexis</p>
+          <p class="mb-3">{{ $t('vault.index_blank_sentence_3') }}</p>
+          <p class="mb-3">{{ $t('vault.index_blank_sentence_4') }}</p>
+          <p class="mb-3">{{ $t('vault.index_blank_sentence_5') }}</p>
+          <p>
+            <a href="https://twitter.com/maazarin" class="text-blue-500 hover:underline">Régis</a> &
+            <a href="https://twitter.com/asbin" class="text-blue-500 hover:underline">Alexis</a>
+          </p>
         </div>
       </div>
 
       <!-- list of existing vaults -->
       <div v-if="data.vaults.length > 0" class="mx-auto max-w-4xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <div class="mb-10 items-center justify-between sm:mb-6 sm:flex">
-          <h3 class="mb-3 dark:text-slate-200 sm:mb-0">All the vaults in the account</h3>
-          <pretty-link :href="data.url.vault.create" :text="'Create a vault'" :icon="'plus'" class="w-full md:w-auto" />
+          <h3 class="mb-3 dark:text-slate-200 sm:mb-0">{{ $t('vault.index_title') }}</h3>
+          <pretty-link
+            :href="data.url.vault.create"
+            :text="$t('vault.index_cta')"
+            :icon="'plus'"
+            class="w-full md:w-auto" />
         </div>
 
         <div class="vault-list grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -82,7 +84,7 @@
                 <p v-if="vault.description" class="p-3 dark:text-gray-300">
                   {{ vault.description }}
                 </p>
-                <p v-else class="p-3 text-gray-500">No description yet.</p>
+                <p v-else class="p-3 text-gray-500">{{ $t('vault.index_description_blank') }}</p>
               </div>
 
               <!-- actions -->

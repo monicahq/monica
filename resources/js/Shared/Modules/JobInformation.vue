@@ -58,7 +58,7 @@
             :data="localCompanies"
             :required="false"
             :div-outer-class="'mb-2'"
-            :placeholder="'Choose a value'"
+            :placeholder="$t('app.choose_value')"
             :dropdown-class="'block w-full'"
             :label="'Existing company'" />
 

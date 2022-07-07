@@ -35,15 +35,17 @@
           <div>
             <!-- labels -->
             <div>
-              <div class="mb-3 border-b border-gray-200"><span class="mr-1">🏷️</span> Labels</div>
+              <div class="mb-3 border-b border-gray-200">
+                <span class="mr-1">🏷️</span> {{ $t('vault.show_contacts_labels') }}
+              </div>
               <ul v-if="data.labels.length > 0">
                 <li class="mb-1">
                   <div v-if="data.current_label">
-                    <inertia-link :href="data.url.contact.index" class="text-blue-500 hover:underline"
-                      >View all</inertia-link
-                    >
+                    <inertia-link :href="data.url.contact.index" class="text-blue-500 hover:underline">{{
+                      $t('app.view_all')
+                    }}</inertia-link>
                   </div>
-                  <div v-if="!data.current_label">View all</div>
+                  <div v-if="!data.current_label">{{ $t('app.view_all') }}</div>
                 </li>
                 <li v-for="label in data.labels" :key="label.id" class="mb-1">
                   <div v-if="label.id !== data.current_label">
@@ -58,7 +60,7 @@
                 </li>
               </ul>
 
-              <p v-else class="text-sm text-gray-500">No labels yet.</p>
+              <p v-else class="text-sm text-gray-500">{{ $t('vault.show_contacts_labels_blank') }}</p>
             </div>
           </div>
 
@@ -66,11 +68,11 @@
           <div class="p-3 sm:px-3 sm:py-0">
             <!-- title + cta -->
             <div class="mb-6 flex items-center justify-between">
-              <h3><span class="mr-1"> 🥸 </span> All contacts in the vault</h3>
+              <h3><span class="mr-1"> 🥸 </span> {{ $t('vault.show_contacts_index') }}</h3>
               <pretty-link
                 v-if="layoutData.vault.permission.at_least_editor"
                 :href="data.url.contact.create"
-                :text="'Add a contact'"
+                :text="$t('vault.show_contacts_cta')"
                 :icon="'plus'" />
             </div>
 
@@ -94,10 +96,10 @@
                 class="fl dib"
                 :href="paginator.previousPageUrl"
                 title="Previous">
-                &larr; Previous
+                &larr; {{ $t('app.previous') }}
               </inertia-link>
               <inertia-link v-show="paginator.nextPageUrl" class="fr dib" :href="paginator.nextPageUrl" title="Next">
-                Next &rarr;
+                {{ $t('app.next') }} &rarr;
               </inertia-link>
             </div>
           </div>

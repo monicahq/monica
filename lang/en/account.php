@@ -1,8 +1,6 @@
 <?php
 
 return [
-    'default_vault_name' => 'My little vault',
-
     'gender_male' => 'Male',
     'gender_female' => 'Female',
     'gender_other' => 'Other',
@@ -62,8 +60,13 @@ return [
     'group_type_family' => 'Family',
     'group_type_family_role_parent' => 'Parent',
     'group_type_family_role_child' => 'Children',
+
     'group_type_couple_without_children' => 'Couple',
     'group_type_couple_role' => 'Partner',
+
+    'group_type_club' => 'Club',
+    'group_type_association' => 'Association',
+    'group_type_roomates' => 'Roomates',
 
     'relationship_type_partner' => 'significant other',
     'relationship_type_spouse' => 'spouse',

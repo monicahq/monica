@@ -1,10 +1,6 @@
 name: PHP linting (Pint)
 
-on:
-  workflow_dispatch:
-  push:
-    branches-ignore:
-      - 'dependabot/npm_and_yarn/*'
+on: [push]
 
 jobs:
   phplint:

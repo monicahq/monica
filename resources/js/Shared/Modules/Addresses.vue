@@ -66,7 +66,7 @@
               v-model="form.address_type_id"
               :data="data.address_types"
               :required="false"
-              :placeholder="'Choose a value'"
+              :placeholder="$t('app.choose_value')"
               :dropdown-class="'block w-full'"
               :label="'Address type'" />
           </div>
@@ -198,7 +198,7 @@
                   v-model="form.address_type_id"
                   :data="data.address_types"
                   :required="false"
-                  :placeholder="'Choose a value'"
+                  :placeholder="$t('app.choose_value')"
                   :dropdown-class="'block w-full'"
                   :label="'Address type'" />
               </div>
@@ -347,7 +347,7 @@
                   v-model="form.address_type_id"
                   :data="data.address_types"
                   :required="false"
-                  :placeholder="'Choose a value'"
+                  :placeholder="$t('app.choose_value')"
                   :dropdown-class="'block w-full'"
                   :label="'Address type'" />
               </div>

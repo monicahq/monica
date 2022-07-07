@@ -22,7 +22,7 @@
   <div :class="divOuterClass">
     <label v-if="label" class="mb-2 block text-sm" :for="id">
       {{ label }}
-      <span v-if="!required" class="optional-badge text-xs"> optional </span>
+      <span v-if="!required" class="optional-badge text-xs"> {{ $t('app.optional') }} </span>
     </label>
 
     <div class="relative">

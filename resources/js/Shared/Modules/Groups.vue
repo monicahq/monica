@@ -58,7 +58,7 @@
             v-model="form.group_id"
             :data="localAvailableGroups"
             :required="true"
-            :placeholder="'Choose a value'"
+            :placeholder="$t('app.choose_value')"
             :dropdown-class="'block w-full'"
             @change="toggleCreateGroup()"
             :label="'Select a group or create a new one'" />
@@ -85,7 +85,7 @@
             v-model="form.group_type_id"
             :data="data.group_types"
             :required="true"
-            :placeholder="'Choose a value'"
+            :placeholder="$t('app.choose_value')"
             :dropdown-class="'block w-full'"
             :label="'Group type'"
             @change="loadGroupTypeRoles()" />
@@ -97,7 +97,7 @@
             v-model="form.group_type_role_id"
             :data="localGroupTypeRoles"
             :required="false"
-            :placeholder="'Choose a value'"
+            :placeholder="$t('app.choose_value')"
             :dropdown-class="'block w-full'"
             :label="'Role'" />
         </div>

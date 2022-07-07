@@ -580,6 +580,24 @@ class SetupAccount implements ShouldQueue
             'group_type_id' => $groupType->id,
             'label' => trans('account.group_type_couple_role'),
         ]);
+
+        $groupType = (new CreateGroupType())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'label' => trans('account.group_type_club'),
+        ]);
+
+        $groupType = (new CreateGroupType())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'label' => trans('account.group_type_association'),
+        ]);
+
+        $groupType = (new CreateGroupType())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'label' => trans('account.group_type_roomates'),
+        ]);
     }
 
     private function addRelationshipTypes(): void

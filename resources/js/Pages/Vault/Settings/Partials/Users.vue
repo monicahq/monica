@@ -25,8 +25,12 @@
   <div class="mb-12">
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
-      <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 🐱 </span> Users</h3>
-      <pretty-span v-if="!addUserModalShown" :text="'Add a user'" :icon="'plus'" @click="showAddUserModal" />
+      <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 🐱 </span> {{ $t('vault.settings_users_title') }}</h3>
+      <pretty-span
+        v-if="!addUserModalShown"
+        :text="$t('vault.settings_users_cta')"
+        :icon="'plus'"
+        @click="showAddUserModal" />
       <pretty-span
         v-if="addUserModalShown && localUsersInAccount.length == 0"
         :text="$t('app.cancel')"
@@ -42,7 +46,7 @@
         <errors :errors="form.errors" />
 
         <!-- list of potential new users -->
-        <p class="mb-2">Who should we invite in this vault?</p>
+        <p class="mb-2">{{ $t('vault.settings_users_invite_name') }}</p>
 
         <div v-for="user in localUsersInAccount" :key="user.id" class="dropdown-list mb-2 flex items-center">
           <input
@@ -62,7 +66,7 @@
       <div class="border-b border-gray-200 p-5">
         <!-- role types -->
         <div>
-          <p class="mb-2">What permission should the user have?</p>
+          <p class="mb-2">{{ $t('vault.settings_users_invite_permission') }}</p>
 
           <!-- view -->
           <div class="mb-2 flex items-center">
@@ -74,7 +78,10 @@
               type="radio"
               class="h-4 w-4 border-gray-300 text-sky-500" />
             <label for="viewer" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
-              Viewer <span class="ml-4 font-normal text-gray-500"> Can view data, but can't edit it. </span>
+              {{ $t('vault.settings_users_invite_permission_viewer') }}
+              <span class="ml-4 font-normal text-gray-500">
+                {{ $t('vault.settings_users_invite_permission_viewer_description') }}
+              </span>
             </label>
           </div>
 
@@ -88,7 +95,10 @@
               type="radio"
               class="h-4 w-4 border-gray-300 text-sky-500" />
             <label for="editor" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
-              Editor <span class="ml-4 font-normal text-gray-500"> Can edit data, but can't manage the vault. </span>
+              {{ $t('vault.settings_users_invite_permission_editor') }}
+              <span class="ml-4 font-normal text-gray-500">
+                {{ $t('vault.settings_users_invite_permission_editor_description') }}
+              </span>
             </label>
           </div>
 
@@ -102,9 +112,9 @@
               type="radio"
               class="h-4 w-4 border-gray-300 text-sky-500" />
             <label for="manager" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
-              Manager
+              {{ $t('vault.settings_users_invite_permission_manager') }}
               <span class="ml-4 font-normal text-gray-500">
-                Can do everything, including adding or removing other users.
+                {{ $t('vault.settings_users_invite_permission_manager_description') }}
               </span>
             </label>
           </div>
@@ -113,7 +123,7 @@
 
       <div class="flex justify-between p-5">
         <pretty-span :text="$t('app.cancel')" @click="addUserModalShown = false" />
-        <pretty-button :text="'Add user'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-button :text="$t('app.add')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
@@ -121,7 +131,7 @@
     <div
       v-if="addUserModalShown && localUsersInAccount.length == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white p-5 text-center">
-      <p>There are no other users in this account.</p>
+      <p>{{ $t('vault.settings_users_invite_blank') }}</p>
     </div>
 
     <!-- list of existing users -->
@@ -139,9 +149,11 @@
               <li
                 class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
                 @click="showChangePermissionModal(user)">
-                Change permission
+                {{ $t('vault.settings_users_change_permission') }}
               </li>
-              <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(user)">Remove</li>
+              <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(user)">
+                {{ $t('app.remove') }}
+              </li>
             </ul>
           </div>
 
@@ -150,7 +162,7 @@
             <div class="border-b border-gray-200 p-5">
               <errors :errors="form.errors" />
 
-              <p class="mb-2">Permission for {{ user.name }}</p>
+              <p class="mb-2">{{ $t('vault.settings_users_edit_permission', { name: user.name }) }}</p>
 
               <!-- view -->
               <div class="mb-2 flex items-center">
@@ -161,9 +173,10 @@
                   name="permission"
                   type="radio"
                   class="h-4 w-4 border-gray-300 text-sky-500" />
-                <label for="viewer" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
-                  Viewer <span class="ml-4 font-normal text-gray-500"> Can view data, but can't edit it. </span>
-                </label>
+                {{ $t('vault.settings_users_invite_permission_viewer') }}
+                <span class="ml-4 font-normal text-gray-500">
+                  {{ $t('vault.settings_users_invite_permission_viewer_description') }}
+                </span>
               </div>
 
               <!-- editor -->
@@ -176,8 +189,10 @@
                   type="radio"
                   class="h-4 w-4 border-gray-300 text-sky-500" />
                 <label for="editor" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
-                  Editor
-                  <span class="ml-4 font-normal text-gray-500"> Can edit data, but can't manage the vault. </span>
+                  {{ $t('vault.settings_users_invite_permission_editor') }}
+                  <span class="ml-4 font-normal text-gray-500">
+                    {{ $t('vault.settings_users_invite_permission_editor_description') }}
+                  </span>
                 </label>
               </div>
 
@@ -191,9 +206,9 @@
                   type="radio"
                   class="h-4 w-4 border-gray-300 text-sky-500" />
                 <label for="manager" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
-                  Manager
+                  {{ $t('vault.settings_users_invite_permission_manager') }}
                   <span class="ml-4 font-normal text-gray-500">
-                    Can do everything, including adding or removing other users.
+                    {{ $t('vault.settings_users_invite_permission_manager_description') }}
                   </span>
                 </label>
               </div>
@@ -201,7 +216,11 @@
 
             <div class="flex justify-between p-5">
               <pretty-span :text="$t('app.cancel')" @click="editedUser = []" />
-              <pretty-button :text="'Change permission'" :state="loadingState" :icon="'check'" :classes="'save'" />
+              <pretty-button
+                :text="$t('vault.settings_users_edit_permission_cta')"
+                :state="loadingState"
+                :icon="'check'"
+                :classes="'save'" />
             </div>
           </form>
         </li>
@@ -209,7 +228,7 @@
 
       <!-- blank state -->
       <div v-if="localUsersInVault.length == 0">
-        <p class="p-5 text-center">There are no templates in the account. Go to the account settings to create one.</p>
+        <p class="p-5 text-center">{{ $t('vault.settings_users_edit_permission_blank') }}</p>
       </div>
     </div>
   </div>
@@ -278,7 +297,7 @@ export default {
       axios
         .post(this.data.url.user_store, this.form)
         .then((response) => {
-          this.flash('The user has been added', 'success');
+          this.flash(this.$t('vault.settings_users_store_success'), 'success');
           this.loadingState = '';
 
           // add user in the list of users in the vault
@@ -302,7 +321,7 @@ export default {
       axios
         .put(user.url.update, this.form)
         .then((response) => {
-          this.flash('The user has been updated', 'success');
+          this.flash(this.$t('vault.settings_users_update_success'), 'success');
           var id = this.localUsersInVault.findIndex((x) => x.id === user.id);
           this.localUsersInVault[id] = response.data.data;
           this.loadingState = '';
@@ -318,7 +337,7 @@ export default {
       axios
         .delete(user.url.destroy)
         .then((response) => {
-          this.flash('The user has been removed', 'success');
+          this.flash(this.$t('vault.settings_users_destroy_success'), 'success');
 
           // remove the user from the list of users in the vault
           var id = this.localUsersInVault.findIndex((x) => x.id === user.id);
