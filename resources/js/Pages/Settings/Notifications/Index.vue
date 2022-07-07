@@ -23,7 +23,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">Notification channels</li>
+            <li class="inline">{{ $t('app.breadcrumb_settings_notification_channels') }}</li>
           </ul>
         </div>
       </div>
@@ -33,7 +33,7 @@
       <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <!-- title + cta -->
         <div class="mb-3 mt-8 sm:mt-0">
-          <h3 class="mb-4 sm:mb-0"><span class="mr-1">🛰️</span> Configure how we should notify you</h3>
+          <h3 class="mb-4 sm:mb-0"><span class="mr-1">🛰️</span> {{ $t('settings.notification_channels_title') }}</h3>
         </div>
 
         <!-- help text -->
@@ -52,7 +52,7 @@
           </svg>
 
           <div>
-            <p>You can be notified through different channels: emails, a Telegram message, on Facebook. You decide.</p>
+            <p>{{ $t('settings.notification_channels_description') }}</p>
           </div>
         </div>
 

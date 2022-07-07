@@ -1,6 +1,10 @@
 <?php
 
 return [
+    /***************************************************************
+     * LIST OF VAULTS
+     **************************************************************/
+
     'index_blank_title' => 'Merci d’essayer Monica',
     'index_blank_sentence_1' => 'Monica a été créée pour vous permettre de documenter votre vie et vos interactions sociales.',
     'index_blank_sentence_2' => 'Pour commencer, vous devez créer une voûte.',
@@ -11,16 +15,28 @@ return [
     'index_description_blank' => 'Pas de description.',
     'index_cta' => 'Créer une voûte',
 
+    /***************************************************************
+     * CREATE A VAULT
+     **************************************************************/
+
     'create_title' => 'Créer une voûte',
     'create_description' => 'Les voûtes contiennent toutes les données sur vos contacts.',
     'create_vault_name' => 'Nom de la voûte',
     'create_vault_description' => 'Description',
     'create_success' => 'La voûte a été créée',
 
+    /***************************************************************
+     * VAULT - CONTACT LIST
+     **************************************************************/
+
     'show_contacts_index' => 'Tous les contacts dans la voûte',
     'show_contacts_labels' => 'Étiquettes',
     'show_contacts_labels_blank' => 'Aucune étiquette définie.',
     'show_contacts_cta' => 'Ajouter un contact',
+
+    /***************************************************************
+     * VAULT - ADD A CONTACT
+     **************************************************************/
 
     'create_contact_title' => 'Ajouter un contact',
     'create_contact_first_name' => 'Prénom',
@@ -38,6 +54,10 @@ return [
     'create_contact_add_pronoun' => '+ pronom',
     'create_contact_add_change_template' => '+ changer le modèle',
     'create_contact_success' => 'Le contact a été ajouté',
+
+    /***************************************************************
+     * VAULT SETTINGS
+     **************************************************************/
 
     'settings_users_title' => 'Utilisateurs',
     'settings_users_cta' => 'Ajouter un utilisateur',

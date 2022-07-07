@@ -9,6 +9,10 @@ return [
     'personalize_your_contacts_data' => 'Personalize your contacts data',
     'cancel_your_account' => 'Cancel your account',
 
+    /***************************************************************
+     * USER PREFERENCES
+     **************************************************************/
+
     'user_preferences_locale_title' => 'Language of the application',
     'user_preferences_locale_current_language' => 'Current language:',
     'user_preferences_locale_en' => 'English',
@@ -41,4 +45,36 @@ return [
     'user_preferences_map_site_google_maps_description' => 'Google Maps offers the best accuracy and details, but it is not ideal from a privacy standpoint.',
     'user_preferences_map_site_open_street_maps' => 'Open Street Maps',
     'user_preferences_map_site_open_street_maps_description' => 'Open Street Maps is a great privacy alternative, but offers less details.',
+
+    /***************************************************************
+     * NOTIFICATION CHANNELS
+     **************************************************************/
+
+    'notification_channels_title' => 'Configure how we should notify you',
+    'notification_channels_description' => 'You can be notified through different channels: emails, a Telegram message, on Facebook. You decide.',
+    'notification_channels_email_title' => 'Via email',
+    'notification_channels_email_cta' => 'Add an email',
+    'notification_channels_email_field' => 'Which email address should we send the notification to?',
+    'notification_channels_email_name' => 'Give this email address a name',
+    'notification_channels_email_at' => 'At which time should we send the notification, when the reminder occurs?',
+    'notification_channels_email_at_word' => 'At',
+    'notification_channels_email_help' => 'We’ll send an email to this email address that you will need to confirm before we can send notifications to this address.',
+    'notification_channels_email_sent_at' => 'Sent at :time',
+    'notification_channels_email_deactivate' => 'Deactivate',
+    'notification_channels_email_activate' => 'Activate',
+    'notification_channels_email_send_test' => 'Send test',
+    'notification_channels_email_send_success' => 'Test email sent!',
+    'notification_channels_email_log' => 'View log',
+    'notification_channels_verif_email_sent' => 'Verification email sent',
+    'notification_channels_blank' => 'Add an email to be notified when a reminder occurs.',
+    'notification_channels_success_email' => 'The test email has been sent',
+    'notification_channels_success_channel' => 'The channel has been updated',
+    'notification_channels_email_added' => 'The email has been added',
+    'notification_channels_email_destroy_confirm' => 'Are you sure? You can always add the email back later on if you want.',
+    'notification_channels_email_destroy_success' => 'The email address has been deleted',
+    'notification_channels_log_title' => 'History of the notification sent',
+    'notification_channels_log_type' => 'Type:',
+    'notification_channels_log_label' => 'Label:',
+    'notification_channels_log_help' => 'This page shows all the notifications that have been sent in this channel in the past. It primeraly serves as a way to debug in case you don’t receive the notification you’ve set up.',
+    'notification_channels_log_blank' => 'You haven’t received a notification in this channel yet.',
 ];

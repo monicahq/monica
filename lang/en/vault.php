@@ -1,6 +1,10 @@
 <?php
 
 return [
+    /***************************************************************
+     * LIST OF VAULTS
+     **************************************************************/
+
     'index_blank_title' => 'Thanks for giving Monica a try',
     'index_blank_sentence_1' => 'Monica was made to help you document your life and your social interactions.',
     'index_blank_sentence_2' => 'To start, you need to create a vault.',
@@ -11,16 +15,28 @@ return [
     'index_description_blank' => 'No description yet.',
     'index_cta' => 'Create a vault',
 
+    /***************************************************************
+     * CREATE A VAULT
+     **************************************************************/
+
     'create_title' => 'Create a vault',
     'create_description' => 'Vaults contain all your contacts data.',
     'create_vault_name' => 'Vault name',
     'create_vault_description' => 'Description',
     'create_success' => 'The vault has been created',
 
+    /***************************************************************
+     * VAULT - CONTACT LIST
+     **************************************************************/
+
     'show_contacts_index' => 'All contacts in the vault',
     'show_contacts_labels' => 'Labels',
     'show_contacts_labels_blank' => 'No labels yet.',
     'show_contacts_cta' => 'Add a contact',
+
+    /***************************************************************
+     * VAULT - ADD A CONTACT
+     **************************************************************/
 
     'create_contact_title' => 'Add a contact',
     'create_contact_first_name' => 'First name',
@@ -38,6 +54,10 @@ return [
     'create_contact_add_pronoun' => '+ pronoun',
     'create_contact_add_change_template' => '+ change template',
     'create_contact_success' => 'The contact has been added',
+
+    /***************************************************************
+     * VAULT SETTINGS
+     **************************************************************/
 
     'settings_users_title' => 'Users',
     'settings_users_cta' => 'Add a user',
