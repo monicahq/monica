@@ -5,9 +5,9 @@ namespace Tests\Unit\Domains\Settings\ManageLifeEventCategories\Web\ViewHelpers;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
 use App\Settings\ManageLifeEventCategories\Web\ViewHelpers\PersonalizeLifeEventCategoriesViewHelper;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use function env;
 
 class PersonalizeLifeEventCategoriesViewHelperTest extends TestCase
 {

@@ -8,14 +8,14 @@ input[type='radio'] {
   <div class="mb-16">
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
-      <h3 class="mb-4 sm:mb-0"><span class="mr-1">🗺️</span> What should we use to display maps?</h3>
+      <h3 class="mb-4 sm:mb-0"><span class="mr-1">🗺️</span> {{ $t('settings.user_preferences_map_title') }}</h3>
       <pretty-button v-if="!editMode" :text="$t('app.edit')" @click="enableEditMode" />
     </div>
 
     <!-- normal mode -->
     <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white">
       <p class="px-5 py-2">
-        <span class="mb-2 block">Current site used to display maps:</span>
+        <span class="mb-2 block">{{ $t('settings.user_preferences_map_current') }}</span>
         <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm">{{ currentMap }}</span>
       </p>
     </div>
@@ -37,7 +37,7 @@ input[type='radio'] {
             <label :for="'input' + mapType.id" class="block cursor-pointer font-medium text-gray-700">
               {{ mapType.type }}
             </label>
-            <p class="text-gray-700">{{ mapType.description }}</p>
+            <p class="text-sm text-gray-700">{{ mapType.description }}</p>
           </div>
         </div>
       </div>

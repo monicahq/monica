@@ -20,11 +20,6 @@ return [
     'pronoun_xe_xem' => 'xe/xem',
     'pronoun_ze_hir' => 'ze/hir',
 
-    'maps_site_google_maps' => 'Google Maps',
-    'maps_site_google_maps_description' => 'Google Maps offers the best accuracy and details, but it is not ideal from a privacy standpoint.',
-    'maps_site_open_street_maps' => 'Open Street Maps',
-    'maps_site_open_street_maps_description' => 'Open Street Maps is a great privacy alternative, but offers less details.',
-
     'contact_information_type_email' => 'Email',
     'contact_information_type_phone' => 'Phone',
     'contact_information_type_facebook' => 'Facebook',

@@ -6,9 +6,9 @@ use App\Contact\ManageReminders\Web\ViewHelpers\ModuleRemindersViewHelper;
 use App\Models\Contact;
 use App\Models\ContactReminder;
 use App\Models\User;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use function env;
 
 class ModuleRemindersViewHelperTest extends TestCase
 {

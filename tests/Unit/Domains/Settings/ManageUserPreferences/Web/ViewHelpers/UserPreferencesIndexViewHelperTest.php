@@ -5,9 +5,9 @@ namespace Tests\Unit\Domains\Settings\ManageUserPreferences\Web\ViewHelpers;
 use App\Models\User;
 use App\Settings\ManageUserPreferences\Web\ViewHelpers\UserPreferencesIndexViewHelper;
 use Carbon\Carbon;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use function env;
 
 class UserPreferencesIndexViewHelperTest extends TestCase
 {
@@ -231,14 +231,14 @@ class UserPreferencesIndexViewHelperTest extends TestCase
             [
                 0 => [
                     'id' => 1,
-                    'type' => trans('account.maps_site_google_maps'),
-                    'description' => trans('account.maps_site_google_maps_description'),
+                    'type' => trans('settings.user_preferences_map_site_google_maps'),
+                    'description' => trans('settings.user_preferences_map_site_google_maps_description'),
                     'value' => User::MAPS_SITE_GOOGLE_MAPS,
                 ],
                 1 => [
                     'id' => 2,
-                    'type' => trans('account.maps_site_open_street_maps'),
-                    'description' => trans('account.maps_site_open_street_maps_description'),
+                    'type' => trans('settings.user_preferences_map_site_open_street_maps'),
+                    'description' => trans('settings.user_preferences_map_site_open_street_maps_description'),
                     'value' => User::MAPS_SITE_OPEN_STREET_MAPS,
                 ],
             ],

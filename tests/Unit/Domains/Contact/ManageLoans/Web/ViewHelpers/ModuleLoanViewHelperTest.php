@@ -8,9 +8,9 @@ use App\Models\Currency;
 use App\Models\Loan;
 use App\Models\User;
 use Carbon\Carbon;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use function env;
 
 class ModuleLoanViewHelperTest extends TestCase
 {

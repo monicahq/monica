@@ -4,9 +4,9 @@ namespace Tests\Unit\Domains\Settings\ManageAddressTypes\Web\ViewHelpers;
 
 use App\Models\AddressType;
 use App\Settings\ManageAddressTypes\Web\ViewHelpers\PersonalizeAddressTypeIndexViewHelper;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use function env;
 
 class PersonalizeAddressTypeIndexViewHelperTest extends TestCase
 {

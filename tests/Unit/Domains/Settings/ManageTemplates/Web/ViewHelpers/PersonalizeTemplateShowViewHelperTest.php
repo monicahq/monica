@@ -5,9 +5,9 @@ namespace Tests\Unit\Domains\Settings\ManageTemplates\Web\ViewHelpers;
 use App\Models\Template;
 use App\Models\TemplatePage;
 use App\Settings\ManageTemplates\Web\ViewHelpers\PersonalizeTemplateShowViewHelper;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use function env;
 
 class PersonalizeTemplateShowViewHelperTest extends TestCase
 {

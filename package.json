@@ -57,7 +57,8 @@
       "prettier --write --ignore-unknown"
     ],
     "*.php": [
-      "php artisan ide-helper:models --nowrite"
+      "php artisan ide-helper:models --nowrite",
+      "./vendor/bin/pint"
     ]
   },
   "husky": {

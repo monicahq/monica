@@ -14,7 +14,7 @@ pre {
   <div class="mb-16">
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
-      <h3 class="mb-4 sm:mb-0"><span class="mr-1">🗓</span> How should we display dates</h3>
+      <h3 class="mb-4 sm:mb-0"><span class="mr-1">🗓</span> {{ $t('settings.user_preferences_date_title') }}</h3>
       <pretty-button v-if="!editMode" :text="$t('app.edit')" @click="enableEditMode" />
     </div>
 
@@ -34,14 +34,14 @@ pre {
       </svg>
 
       <div>
-        <p>You can choose how you want Monica to display dates in the application.</p>
+        <p>{{ $t('settings.user_preferences_date_description') }}</p>
       </div>
     </div>
 
     <!-- normal mode -->
     <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white">
       <p class="px-5 py-2">
-        <span class="mb-2 block">Current way of displaying dates:</span>
+        <span class="mb-2 block">{{ $t('settings.user_preferences_date_name') }}</span>
         <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm">{{ localHumanDateFormat }}</span>
       </p>
     </div>
