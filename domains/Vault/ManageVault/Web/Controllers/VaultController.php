@@ -8,6 +8,7 @@ use App\Vault\ManageVault\Services\CreateVault;
 use App\Vault\ManageVault\Services\DestroyVault;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultCreateViewHelper;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use App\Vault\ManageVault\Web\ViewHelpers\VaultShowViewHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -53,7 +54,7 @@ class VaultController extends Controller
 
         return Inertia::render('Vault/Dashboard/Index', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
-            'data' => VaultCreateViewHelper::data(),
+            'lastUpdatedContacts' => VaultShowViewHelper::lastUpdatedContacts($vault),
         ]);
     }
 

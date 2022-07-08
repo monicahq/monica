@@ -53,6 +53,7 @@ class ContactShowViewHelper
             'group_summary_information' => GroupsViewHelper::summary($contact),
             'modules' => $firstPage ? self::modules($firstPage, $contact, $user) : [],
             'options' => [
+                'can_be_archived' => $user->getContactInVault($contact->vault)->id !== $contact->id,
                 'can_be_deleted' => $user->getContactInVault($contact->vault)->id !== $contact->id,
             ],
             'url' => [

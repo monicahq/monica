@@ -73,7 +73,7 @@
             </div>
 
             <ul class="text-xs">
-              <li v-if="data.listed" class="mb-2">
+              <li v-if="data.listed && data.options.can_be_archived" class="mb-2">
                 <inertia-link @click.prevent="toggleArchive()" class="cursor-pointer text-blue-500 hover:underline"
                   >Archive contact</inertia-link
                 >
