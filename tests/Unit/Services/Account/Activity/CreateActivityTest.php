@@ -80,8 +80,8 @@ class CreateActivityTest extends TestCase
         $emotion2 = factory(Emotion::class)->create([]);
 
         $emotionArray = [];
-        array_push($emotionArray, $emotion->id);
-        array_push($emotionArray, $emotion2->id);
+        $emotionArray[] = $emotion->id;
+        $emotionArray[] = $emotion2->id;
 
         $activityType = factory(ActivityType::class)->create([
             'account_id' => $account->id,

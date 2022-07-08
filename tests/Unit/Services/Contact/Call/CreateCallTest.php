@@ -76,8 +76,8 @@ class CreateCallTest extends TestCase
         $emotion2 = factory(Emotion::class)->create([]);
 
         $emotionArray = [];
-        array_push($emotionArray, $emotion->id);
-        array_push($emotionArray, $emotion2->id);
+        $emotionArray[] = $emotion->id;
+        $emotionArray[] = $emotion2->id;
 
         $request = [
             'contact_id' => $contact->id,
@@ -118,7 +118,7 @@ class CreateCallTest extends TestCase
     {
         $contact = factory(Contact::class)->create([]);
         $emotionArray = [];
-        array_push($emotionArray, 1111111);
+        $emotionArray[] = 1111111;
 
         $request = [
             'contact_id' => $contact->id,
