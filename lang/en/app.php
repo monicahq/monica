@@ -16,7 +16,7 @@ return [
 
     'breadcrumb_location' => 'You are here:',
     'breadcrumb_vault_index' => 'All the vaults',
-    'breadcrumb_vault_create' => 'Add a new vault',
+    'breadcrumb_vault_create' => 'add a vault',
     'breadcrumb_contact_index' => 'Contacts',
     'breadcrumb_contact_create' => 'Create a contact',
     'breadcrumb_settings' => 'Settings',
@@ -25,6 +25,8 @@ return [
     'breadcrumb_settings_notification_channels_log_details' => 'Log details',
     'breadcrumb_settings_users' => 'Users',
     'breadcrumb_settings_users_new_cta' => 'Invite a new user',
+    'breadcrumb_settings_personalize' => 'Personalize your account',
+    'breadcrumb_settings_personalize_templates' => 'Templates',
 
     'notification_flash_changes_saved' => 'Changes saved',
 

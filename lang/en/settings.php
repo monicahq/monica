@@ -99,4 +99,58 @@ return [
     'users_management_new_permission' => 'What permission should the user have?',
     'users_management_new_cta' => 'Send invitation',
     'users_management_new_success' => 'Invitation sent',
+
+    /***************************************************************
+     * PERSONNALIZE
+     **************************************************************/
+
+     'personalize_title' => 'Personalize your account',
+     'personalize_title_manage_template' => 'Manage templates',
+     'personalize_title_manage_module' => 'Manage modules',
+     'personalize_title_manage_rel_types' => 'Manage relationship types',
+     'personalize_title_manage_life_event_categories' => 'Manage life event categories',
+     'personalize_title_manage_group_types' => 'Manage group types',
+     'personalize_title_manage_activity_types' => 'Manage activity types',
+     'personalize_title_manage_pronouns' => 'Manage pronouns',
+     'personalize_title_manage_genders' => 'Manage genders',
+     'personalize_title_manage_adress_types' => 'Manage address types',
+     'personalize_title_manage_contact_information_types' => 'Manage contact information types',
+     'personalize_title_manage_call_reasons' => 'Manage call reasons',
+     'personalize_title_manage_pet_categories' => 'Manage pet categories',
+     'personalize_title_manage_gift_occasions' => 'Manage gift occasions',
+     'personalize_title_manage_gift_states' => 'Manage gift states',
+     'personalize_title_manage_currencies' => 'Manage currencies',
+
+    /***************************************************************
+     * PERSONNALIZE TEMPLATES
+     **************************************************************/
+
+    'personalize_templates_title' => 'All the templates',
+    'personalize_templates_cta' => 'Add a template',
+    'personalize_templates_help' => 'Templates let you customize what data should be displayed on your contacts. You can define as many templates as you want, and choose which template should be used on which contact.',
+    'personalize_templates_help_2' => 'You need at least one template for contacts to be displayed. Without a template, Monica won’t know which information it should display.',
+    'personalize_templates_new_name' => 'Name of the new template',
+    'personalize_templates_edit_name' => 'Name',
+    'personalize_templates_blank' => 'Create at least one template to use Monica.',
+    'personalize_templates_new_success' => 'The template has been created',
+    'personalize_templates_update_success' => 'The template has been updated',
+    'personalize_templates_destroy_confirmation' => 'Are you sure? This will remove the template from all contacts, but won’t delete the contacts themselves.',
+    'personalize_templates_destroy_success' => 'The template has been deleted',
+    'personalize_template_show_title' => 'This template will define what information are displayed on a contact page.',
+    'personalize_template_show_description' => 'A template is made of pages, and in each page, there are modules. How data is displayed is entirely up to you.',
+    'personalize_template_show_description_2' => 'Note that removing a module from a page will not delete the actual data on your contact pages. It will simply hide it.',
+    'personalize_template_show_page_title' => 'Pages',
+    'personalize_template_show_page_cant_moved' => 'Can’t be moved or deleted',
+    'personalize_template_show_page_cta' => 'Add a page',
+    'personalize_template_show_page_new_name' => 'Name',
+    'personalize_template_show_page_blank' => 'Create at least one page to display contact’s data.',
+    'personalize_template_show_module_title' => 'Modules in this page',
+    'personalize_template_show_module_cta' => 'Add a module',
+    'personalize_template_show_module_available_modules' => 'Available modules:',
+    'personalize_template_show_module_already_used' => 'Already used on this page',
+    'personalize_template_show_module_add_module' => 'Add at least one module.',
+    'personalize_template_show_module_select' => 'Please select a page on the left to load modules.',
+    'personalize_template_show_module_add_success' => 'The module has been added',
+    'personalize_template_show_module_remove_success' => 'The module has been removed',
+    'personalize_template_show_module_order_success' => 'The order has been saved',
 ];

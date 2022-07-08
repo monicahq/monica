@@ -25,6 +25,8 @@ return [
     'breadcrumb_settings_notification_channels_log_details' => 'Détails des logs',
     'breadcrumb_settings_users' => 'Utilisateurs',
     'breadcrumb_settings_users_new_cta' => 'Inviter un utilisateur',
+    'breadcrumb_settings_personalize' => 'Personalisation du compte',
+    'breadcrumb_settings_personalize_templates' => 'Modèles',
 
     'notification_flash_changes_saved' => 'Changements effectués',
 

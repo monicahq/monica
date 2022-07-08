@@ -253,7 +253,9 @@
               </li>
 
               <!-- delete -->
-              <li @click="destroy(loan)" class="inline cursor-pointer text-red-500 hover:text-red-900">Delete</li>
+              <li @click="destroy(loan)" class="inline cursor-pointer text-red-500 hover:text-red-900">
+                {{ $t('app.delete') }}
+              </li>
             </ul>
           </div>
         </div>

@@ -40,9 +40,9 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline"
-                >Personalize your account</inertia-link
-              >
+              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">{{
+                $t('app.breadcrumb_settings_personalize')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -67,7 +67,7 @@
           <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 🥸 </span> All the relationship types</h3>
           <pretty-button
             v-if="!createGroupTypeModalShown"
-            :text="'Add a new group type'"
+            :text="'add a group type'"
             :icon="'plus'"
             @click="showGroupTypeModal" />
         </div>
@@ -281,7 +281,7 @@
               <span
                 class="cursor-pointer text-sm text-blue-500 hover:underline"
                 @click="showRelationshipTypeModal(groupType)"
-                >Add a new relationship type</span
+                >add a relationship type</span
               >
             </div>
 

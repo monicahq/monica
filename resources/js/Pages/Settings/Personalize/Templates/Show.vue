@@ -34,9 +34,9 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline"
-                >Personalize your account</inertia-link
-              >
+              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">{{
+                $t('app.breadcrumb_settings_personalize')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -49,7 +49,9 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.templates" class="text-blue-500 hover:underline">Templates</inertia-link>
+              <inertia-link :href="data.url.templates" class="text-blue-500 hover:underline">{{
+                $t('app.breadcrumb_settings_personalize_templates')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -94,14 +96,12 @@
           </svg>
 
           <div>
-            <p class="mb-1">This template will define what information are displayed on a contact page.</p>
+            <p class="mb-1">{{ $t('settings.personalize_template_show_title') }}</p>
             <p class="mb-1">
-              A template is made of pages, and in each page, there are modules. How data is displayed is entirely up to
-              you.
+              {{ $t('settings.personalize_template_show_description') }}
             </p>
             <p>
-              Note that removing a module from a page will not delete the actual data on your contact pages. It will
-              simply hide it.
+              {{ $t('settings.personalize_template_show_description_2') }}
             </p>
           </div>
         </div>

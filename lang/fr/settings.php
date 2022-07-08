@@ -99,4 +99,58 @@ return [
     'users_management_new_permission' => 'Quelle permission devrait avoir l’utilisateur ?',
     'users_management_new_cta' => 'Envoyer l’invitation',
     'users_management_new_success' => 'Invitation envoyée',
+
+    /***************************************************************
+     * PERSONNALIZE
+     **************************************************************/
+
+    'personalize_title' => 'Personnaliser votre compte',
+    'personalize_title_manage_template' => 'Gérer les modèles',
+    'personalize_title_manage_module' => 'Gérer les modules',
+    'personalize_title_manage_rel_types' => 'Gérer les types de relation',
+    'personalize_title_manage_life_event_categories' => 'Gérer les catégories des évènements de vie',
+    'personalize_title_manage_group_types' => 'Gérer les types de groupes',
+    'personalize_title_manage_activity_types' => 'Gérer les types d’activités',
+    'personalize_title_manage_pronouns' => 'Gérer les pronoms',
+    'personalize_title_manage_genders' => 'Gérer les genres',
+    'personalize_title_manage_adress_types' => 'Gérer les types d’adresses',
+    'personalize_title_manage_contact_information_types' => 'Gérer les types d’informations de contact',
+    'personalize_title_manage_call_reasons' => 'Gérer les raisons d’appels',
+    'personalize_title_manage_pet_categories' => 'Gérer les catégories d’animaux',
+    'personalize_title_manage_gift_occasions' => 'Gérer les occasions de cadeaux',
+    'personalize_title_manage_gift_states' => 'Gérer les états de cadeaux',
+    'personalize_title_manage_currencies' => 'Gérer les devises',
+
+    /***************************************************************
+     * PERSONNALIZE TEMPLATES
+     **************************************************************/
+
+    'personalize_templates_title' => 'Tous les modèles',
+    'personalize_templates_cta' => 'Ajouter un modèle',
+    'personalize_templates_help' => 'Les modèles vous permettent d’indiquer quelles données doivent être affichées quand vous consultez vos contacts. Vous pouvez définir autant de modèles que vous le voulez, et choisir quel modèle doit être utilisé sur quel contact.',
+    'personalize_templates_help_2' => 'Vous avez besoin d’au moins un modèle pour que vos contacts soient affichés. Sans un modèle, Monica ne saura pas quelle information on doit afficher.',
+    'personalize_templates_new_name' => 'Nom du nouveau modèle',
+    'personalize_templates_edit_name' => 'Nom',
+    'personalize_templates_blank' => 'Créez au moins un template pour utiliser Monica.',
+    'personalize_templates_new_success' => 'Le modèle a été crée',
+    'personalize_templates_update_success' => 'Le modèle a été mis à jour',
+    'personalize_templates_destroy_confirmation' => 'Êtes-vous sûr ? Cela dissociera le modèle des contacts, mais n’effacera pas les contacts eux-mêmes.',
+    'personalize_templates_destroy_success' => 'Le modèle a été supprimé',
+    'personalize_template_show_title' => 'Ce modèle définit quelles informations sont affichées sur la page d’un contact.',
+    'personalize_template_show_description' => 'Un modèle est composé de pages, et sur chaque page, il y a des modules. Vous êtes en plein de contrôle de quelles données il faut afficher.',
+    'personalize_template_show_description_2' => 'Prenez note qu’enlever un module d’une page ne va pas effacer les données de ce module. Le module sera simplement caché.',
+    'personalize_template_show_page_title' => 'Pages',
+    'personalize_template_show_page_cant_moved' => 'Ne peut être déplacé ou supprimé',
+    'personalize_template_show_page_cta' => 'Ajouter une page',
+    'personalize_template_show_page_new_name' => 'Nom',
+    'personalize_template_show_page_blank' => 'Créez au moins une page pour afficher les données de vos contacts.',
+    'personalize_template_show_module_title' => 'Modules sur cette page',
+    'personalize_template_show_module_cta' => 'Ajouter un module',
+    'personalize_template_show_module_available_modules' => 'Modules disponibles :',
+    'personalize_template_show_module_already_used' => 'Déjà utilisé sur cette page',
+    'personalize_template_show_module_add_module' => 'Ajouter au moins un module.',
+    'personalize_template_show_module_select' => 'Merci de choisir la page sur la gauche pour charger les modules.',
+    'personalize_template_show_module_add_success' => 'Le module a été ajouté',
+    'personalize_template_show_module_remove_success' => 'Le module a été enlevé',
+    'personalize_template_show_module_order_success' => 'L’ordre a été enregistré',
 ];

@@ -109,7 +109,9 @@ select {
               <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="showEditPetModal(pet)">
                 Edit
               </li>
-              <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(pet)">Delete</li>
+              <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(pet)">
+                {{ $t('app.delete') }}
+              </li>
             </ul>
           </div>
 

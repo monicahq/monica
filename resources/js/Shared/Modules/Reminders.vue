@@ -252,7 +252,9 @@ select {
                 @click="showEditReminderModal(reminder)">
                 Edit
               </li>
-              <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(reminder)">Delete</li>
+              <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(reminder)">
+                {{ $t('app.delete') }}
+              </li>
             </ul>
           </div>
 

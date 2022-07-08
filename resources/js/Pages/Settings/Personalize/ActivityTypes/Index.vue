@@ -40,9 +40,9 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline"
-                >Personalize your account</inertia-link
-              >
+              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">{{
+                $t('app.breadcrumb_settings_personalize')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -67,7 +67,7 @@
           <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 🚲 </span> All the activity types</h3>
           <pretty-button
             v-if="!createActivityTypeModalShown"
-            :text="'Add a new activity type'"
+            :text="'add a activity type'"
             :icon="'plus'"
             @click="showActivityTypeModal" />
         </div>
@@ -213,7 +213,7 @@
               <span
                 class="cursor-pointer text-sm text-blue-500 hover:underline"
                 @click="showActivityModal(activityType)"
-                >Add a new activity</span
+                >add a activity</span
               >
             </div>
 

@@ -40,9 +40,9 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline"
-                >Personalize your account</inertia-link
-              >
+              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">{{
+                $t('app.breadcrumb_settings_personalize')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -67,7 +67,7 @@
           <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 👩‍🍼 </span> All the life event categories</h3>
           <pretty-button
             v-if="!createLifeEventCategoryModalShown"
-            :text="'Add a new life event category'"
+            :text="'add a life event category'"
             :icon="'plus'"
             @click="showLifeEventCategoryModal" />
         </div>
@@ -269,7 +269,7 @@
               <span
                 class="cursor-pointer text-sm text-blue-500 hover:underline"
                 @click="showLifeEventTypeModal(lifeEventCategory)"
-                >Add a new life event type</span
+                >add a life event type</span
               >
             </div>
 

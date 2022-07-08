@@ -37,7 +37,7 @@
         @click="addUserModalShown = false" />
     </div>
 
-    <!-- modal to add a new user -->
+    <!-- modal to add a user -->
     <form
       v-if="addUserModalShown && localUsersInAccount.length > 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white"

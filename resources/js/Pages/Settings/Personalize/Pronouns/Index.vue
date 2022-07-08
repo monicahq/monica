@@ -40,9 +40,9 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline"
-                >Personalize your account</inertia-link
-              >
+              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">{{
+                $t('app.breadcrumb_settings_personalize')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -116,7 +116,9 @@
                   @click="updatePronounModal(pronoun)">
                   Rename
                 </li>
-                <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(pronoun)">Delete</li>
+                <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(pronoun)">
+                  {{ $t('app.delete') }}
+                </li>
               </ul>
             </div>
 

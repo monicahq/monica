@@ -36,9 +36,9 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline"
-                >Personalize your account</inertia-link
-              >
+              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">{{
+                $t('app.breadcrumb_settings_personalize')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -254,14 +254,14 @@
                       </template>
                     </draggable>
 
-                    <!-- add a new role -->
+                    <!-- add a role -->
                     <span
                       @click="showCreateRoleModal(element)"
                       v-if="
                         element.group_type_roles.length != 0 && !createRoleModalShown && roleGroupTypeId != element.id
                       "
                       class="inline cursor-pointer text-sm text-blue-500 hover:underline"
-                      >Add a new role</span
+                      >add a role</span
                     >
 
                     <!-- form: create new role -->
@@ -302,7 +302,7 @@
                         <span
                           @click="showCreateRoleModal(element)"
                           class="block cursor-pointer text-sm text-blue-500 hover:underline"
-                          >Add a new role</span
+                          >add a role</span
                         >
                       </p>
                     </div>

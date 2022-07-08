@@ -10,8 +10,12 @@
 <template>
   <div>
     <div class="mb-4 mt-8 items-center justify-between border-b pb-3 sm:mt-0 sm:flex">
-      <h3>Pages</h3>
-      <pretty-button v-if="!createPageModalShown" :text="'Add a page'" :icon="'plus'" @click="showPageModal" />
+      <h3>{{ $t('settings.personalize_template_show_page_title') }}</h3>
+      <pretty-button
+        v-if="!createPageModalShown"
+        :text="$t('settings.personalize_template_show_page_cta')"
+        :icon="'plus'"
+        @click="showPageModal" />
     </div>
 
     <!-- contact information page | can't be removed -->
@@ -26,7 +30,7 @@
         </div>
 
         <ul class="text-xs text-gray-400">
-          <li class="inline">Can't be moved or deleted</li>
+          <li class="inline">{{ $t('settings.personalize_template_show_page_cant_moved') }}</li>
         </ul>
       </div>
     </div>
@@ -80,9 +84,11 @@
 
             <ul class="text-xs">
               <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="renamePageModal(element)">
-                Rename
+                {{ $t('app.rename') }}
               </li>
-              <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(element)">Delete</li>
+              <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(element)">
+                {{ $t('app.delete') }}
+              </li>
             </ul>
           </div>
         </div>
@@ -98,7 +104,7 @@
             <text-input
               :ref="'rename' + element.id"
               v-model="form.name"
-              :label="'Name'"
+              :label="$t('settings.personalize_template_show_page_new_name')"
               :type="'text'"
               :autofocus="true"
               :input-class="'block w-full'"
@@ -127,7 +133,7 @@
         <text-input
           :ref="'newPage'"
           v-model="form.name"
-          :label="'Name of the page'"
+          :label="$t('settings.personalize_template_show_page_new_name')"
           :type="'text'"
           :autofocus="true"
           :input-class="'block w-full'"
@@ -139,14 +145,14 @@
 
       <div class="flex justify-between p-5">
         <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createPageModalShown = false" />
-        <pretty-button :text="'Add page'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-button :text="$t('app.add')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
     <!-- blank state -->
     <div v-if="localPages.length == 0">
       <p class="rounded-lg border border-gray-200 bg-white p-5 text-center">
-        Create at least one page to display contact's data.
+        {{ $t('settings.personalize_template_show_page_blank') }}
       </p>
     </div>
   </div>

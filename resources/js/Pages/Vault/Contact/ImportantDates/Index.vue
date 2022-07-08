@@ -276,7 +276,9 @@
                 <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="updateDateModal(date)">
                   Edit
                 </li>
-                <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(date)">Delete</li>
+                <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(date)">
+                  {{ $t('app.delete') }}
+                </li>
               </ul>
             </div>
 

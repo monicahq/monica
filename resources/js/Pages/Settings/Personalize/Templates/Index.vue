@@ -40,9 +40,9 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline"
-                >Personalize your account</inertia-link
-              >
+              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">{{
+                $t('app.breadcrumb_settings_personalize')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -54,7 +54,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">Templates</li>
+            <li class="inline">{{ $t('app.breadcrumb_settings_personalize_templates') }}</li>
           </ul>
         </div>
       </div>
@@ -64,10 +64,10 @@
       <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <!-- title + cta -->
         <div class="mb-6 mt-8 items-center justify-between sm:mt-0 sm:flex">
-          <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 📐 </span> All the templates</h3>
+          <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 📐 </span> {{ $t('settings.personalize_templates_title') }}</h3>
           <pretty-button
             v-if="!createTemplateModalShown"
-            :text="'Add a new template'"
+            :text="$t('settings.personalize_templates_cta')"
             :icon="'plus'"
             @click="showTemplateModal" />
         </div>
@@ -89,12 +89,10 @@
 
           <div>
             <p class="mb-2">
-              Templates let you customize what data should be displayed on your contacts. You can define as many
-              templates as you want, and choose which template should be used on which contact.
+              {{ $t('settings.personalize_templates_help') }}
             </p>
             <p>
-              You need at least one template for contacts to be displayed. Without a template, Monica won't know which
-              information it should display.
+              {{ $t('settings.personalize_templates_help_2') }}
             </p>
           </div>
         </div>
@@ -110,7 +108,7 @@
             <text-input
               :ref="'newTemplate'"
               v-model="form.name"
-              :label="'Name of the new template'"
+              :label="$t('settings.personalize_templates_new_name')"
               :type="'text'"
               :autofocus="true"
               :input-class="'block w-full'"
@@ -122,7 +120,7 @@
 
           <div class="flex justify-between p-5">
             <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createTemplateModalShown = false" />
-            <pretty-button :text="'Create template'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+            <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
           </div>
         </form>
 
@@ -143,9 +141,11 @@
                 <li
                   class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
                   @click="showUpdateTemplateModal(template)">
-                  Rename
+                  {{ $t('app.rename') }}
                 </li>
-                <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(template)">Delete</li>
+                <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(template)">
+                  {{ $t('app.delete') }}
+                </li>
               </ul>
             </div>
 
@@ -160,7 +160,7 @@
                 <text-input
                   :ref="'rename' + template.id"
                   v-model="form.name"
-                  :label="'Name'"
+                  :label="$t('settings.personalize_templates_edit_name')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'block w-full'"
@@ -183,7 +183,7 @@
 
         <!-- blank state -->
         <div v-if="localTemplates.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
-          <p class="p-5 text-center">Create at least one template to use Monica.</p>
+          <p class="p-5 text-center">{{ $t('settings.personalize_templates_blank') }}</p>
         </div>
       </div>
     </main>
@@ -259,7 +259,7 @@ export default {
       axios
         .post(this.data.url.template_store, this.form)
         .then((response) => {
-          this.flash('The template has been created', 'success');
+          this.flash(this.$t('settings.personalize_templates_new_success'), 'success');
           this.localTemplates.unshift(response.data.data);
           this.loadingState = null;
           this.createTemplateModalShown = false;
@@ -276,7 +276,7 @@ export default {
       axios
         .put(template.url.update, this.form)
         .then((response) => {
-          this.flash('The template has been updated', 'success');
+          this.flash(this.$t('settings.personalize_templates_update_success'), 'success');
           this.localTemplates[this.localTemplates.findIndex((x) => x.id === template.id)] = response.data.data;
           this.loadingState = null;
           this.renameTemplateModalShownId = 0;
@@ -288,15 +288,11 @@ export default {
     },
 
     destroy(template) {
-      if (
-        confirm(
-          "Are you sure? This will remove the templates from all contacts, but won't delete the contacts themselves.",
-        )
-      ) {
+      if (confirm(this.$t('settings.personalize_templates_destroy_confirmation'))) {
         axios
           .delete(template.url.destroy)
           .then((response) => {
-            this.flash('The template has been deleted', 'success');
+            this.flash(this.$t('settings.personalize_templates_destroy_success'), 'success');
             var id = this.localTemplates.findIndex((x) => x.id === template.id);
             this.localTemplates.splice(id, 1);
           })
