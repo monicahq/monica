@@ -22,7 +22,7 @@ class Google2FATest extends TestCase
 
         $result = $google2fa->verifyGoogle2FA($secret, 'aaaaaa');
 
-        $this->assertEquals(false, $result);
+        $this->assertFalse($result);
     }
 
     /** @test */
@@ -35,7 +35,7 @@ class Google2FATest extends TestCase
 
         $result = $google2fa->verifyGoogle2FA($secret, $one_time_password);
 
-        $this->assertEquals(true, $result);
+        $this->assertTrue($result);
     }
 
     /** @test */
@@ -57,12 +57,12 @@ class Google2FATest extends TestCase
 
         $authenticator = new \PragmaRX\Google2FALaravel\Support\Authenticator($request);
 
-        $this->assertEquals(false, $authenticator->isAuthenticated());
+        $this->assertFalse($authenticator->isAuthenticated());
 
-        $this->assertEquals(true, $google2fa->isActivated());
+        $this->assertTrue($google2fa->isActivated());
 
         $google2fa->login();
 
-        $this->assertEquals(true, $authenticator->isAuthenticated());
+        $this->assertTrue($authenticator->isAuthenticated());
     }
 }

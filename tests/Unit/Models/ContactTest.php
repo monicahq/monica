@@ -496,8 +496,7 @@ class ContactTest extends FeatureTestCase
         $contact->account_id = 1;
         $contact->id = 1;
 
-        $this->assertEquals(
-            null,
+        $this->assertNull(
             $contact->getLastActivityDate()
         );
     }
