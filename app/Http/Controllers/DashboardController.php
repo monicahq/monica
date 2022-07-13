@@ -46,6 +46,7 @@ class DashboardController extends Controller
             ->limit(10)
             ->get();
         foreach ($lastUpdatedContacts as $contact) {
+
             $data = [
                 'id' => $contact->hashID(),
                 'has_avatar' => $contact->has_avatar,
