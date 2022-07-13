@@ -1153,7 +1153,7 @@ class Contact extends Model
                 break;
             case 'photo':
                 if ($this->avatarPhoto) {
-                    $avatarURL = $this->avatarPhoto()->getUrl();
+                    $avatarURL = $this->avatarPhoto()->first()->url();
                 } else {
                     $avatarURL = $this->getAvatarDefaultURL();
                 }
