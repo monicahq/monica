@@ -3,15 +3,16 @@
 namespace App\Settings\ManageNotificationChannels\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Mail\TestEmailSent;
 use App\Models\UserNotificationChannel;
-use App\Models\UserNotificationSent;
+use App\Notifications\ReminderTriggered;
 use App\Services\BaseService;
-use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 
-class SendTestEmail extends BaseService implements ServiceInterface
+/**
+ * Inspired by https://abstractentropy.com/laravel-notifications-telegram-bot/
+ */
+class SendTestTelegramNotification extends BaseService implements ServiceInterface
 {
     private array $data;
     private UserNotificationChannel $userNotificationChannel;
@@ -43,7 +44,7 @@ class SendTestEmail extends BaseService implements ServiceInterface
     }
 
     /**
-     * Send a test email.
+     * Send a test notification to Telegram.
      *
      * @param  array  $data
      * @return UserNotificationChannel
@@ -53,7 +54,6 @@ class SendTestEmail extends BaseService implements ServiceInterface
         $this->data = $data;
         $this->validate();
         $this->send();
-        $this->log();
 
         return $this->userNotificationChannel;
     }
@@ -65,24 +65,16 @@ class SendTestEmail extends BaseService implements ServiceInterface
         $this->userNotificationChannel = UserNotificationChannel::where('user_id', $this->data['author_id'])
             ->findOrFail($this->data['user_notification_channel_id']);
 
-        if ($this->userNotificationChannel->type !== UserNotificationChannel::TYPE_EMAIL) {
-            throw new Exception('Only email can be sent.');
+        if ($this->userNotificationChannel->type !== UserNotificationChannel::TYPE_TELEGRAM) {
+            throw new Exception('Only telegram messages can be sent.');
         }
     }
 
     private function send(): void
     {
-        Mail::to($this->userNotificationChannel->content)->send(
-            new TestEmailSent($this->userNotificationChannel)
-        );
-    }
+        $content = trans('settings.notification_channels_telegram_test_notification', ['name' => $this->author->name]);
 
-    private function log(): void
-    {
-        UserNotificationSent::create([
-            'user_notification_channel_id' => $this->userNotificationChannel->id,
-            'sent_at' => Carbon::now(),
-            'subject_line' => trans('email.notification_test_email'),
-        ]);
+        Notification::route('telegram', $this->userNotificationChannel->content)
+            ->notify(new ReminderTriggered($this->userNotificationChannel, $content, 'Test'));
     }
 }

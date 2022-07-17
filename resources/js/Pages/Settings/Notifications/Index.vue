@@ -58,6 +58,9 @@
 
         <!-- Email notifications -->
         <emails :data="data" />
+
+        <!-- Telegram notifications -->
+        <telegram :data="data" />
       </div>
     </main>
   </layout>
@@ -70,6 +73,7 @@ import PrettySpan from '@/Shared/Form/PrettySpan';
 import TextInput from '@/Shared/Form/TextInput';
 import Errors from '@/Shared/Form/Errors';
 import Emails from '@/Pages/Settings/Notifications/Partials/Emails';
+import Telegram from '@/Pages/Settings/Notifications/Partials/Telegram';
 
 export default {
   components: {
@@ -79,6 +83,7 @@ export default {
     TextInput,
     Errors,
     Emails,
+    Telegram,
   },
 
   props: {

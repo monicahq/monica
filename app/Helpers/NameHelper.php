@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Str;
 use App\Models\Contact;
 use App\Models\User;
 
@@ -47,6 +48,12 @@ class NameHelper
                 $completeName = $completeName.$char;
             }
         }
+
+        // in some cases, the user will add parenthesis to add, for instance,
+        // the nickname, but if the nickname is not set, we need to remove them
+        // from being displayed
+        $completeName = str_replace('()', '', $completeName);
+        $completeName = Str::of($completeName)->rtrim();
 
         return $completeName;
     }

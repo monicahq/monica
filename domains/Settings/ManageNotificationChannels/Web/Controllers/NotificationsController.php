@@ -39,7 +39,7 @@ class NotificationsController extends Controller
         $channel = (new CreateUserNotificationChannel())->execute($data);
 
         return response()->json([
-            'data' => NotificationsIndexViewHelper::dtoEmail($channel, Auth::user()),
+            'data' => NotificationsIndexViewHelper::dtoEmail($channel),
         ], 200);
     }
 

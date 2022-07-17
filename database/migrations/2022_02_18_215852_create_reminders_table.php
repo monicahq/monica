@@ -34,12 +34,12 @@ return new class () extends Migration {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('type');
-            $table->string('label');
+            $table->string('label')->nullable();
             $table->text('content');
             $table->time('preferred_time')->nullable();
             $table->boolean('active')->default(false);
             $table->datetime('verified_at')->nullable();
-            $table->string('email_verification_link')->nullable();
+            $table->string('verification_token')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

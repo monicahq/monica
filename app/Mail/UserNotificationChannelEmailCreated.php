@@ -33,7 +33,10 @@ class UserNotificationChannelEmailCreated extends Mailable
     {
         return $this->subject('Please validate your email address')
             ->markdown('emails.notifications.validate-email', [
-                'url' => $this->channel->email_verification_link,
+                'url' => route('settings.notifications.verification.store', [
+                    'notification' => $this->channel->id,
+                    'uuid' => $this->channel->verification_token,
+                ]),
             ]);
     }
 }

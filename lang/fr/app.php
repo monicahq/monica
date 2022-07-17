@@ -93,5 +93,4 @@ return [
     'emotion_negative' => '😡 Négatif',
 
     'notification_channel_email' => 'Mon courriel',
-    'notification_channel_type_email' => 'Courriel',
 ];

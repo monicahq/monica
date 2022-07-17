@@ -3,8 +3,11 @@
 namespace App\Contact\ManageReminders\Jobs;
 
 use App\Contact\ManageReminders\Services\RescheduleContactReminderForChannel;
-use App\Jobs\Notifications\SendEmailNotification;
+use App\Helpers\NameHelper;
+use App\Models\ContactReminder;
 use App\Models\UserNotificationChannel;
+use App\Models\UserNotificationSent;
+use App\Notifications\ReminderTriggered;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,6 +15,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class ProcessScheduledContactReminders implements ShouldQueue
 {
@@ -51,10 +55,18 @@ class ProcessScheduledContactReminders implements ShouldQueue
             $channel = UserNotificationChannel::findOrFail($scheduledReminder->user_notification_channel_id);
 
             if ($channel->type == UserNotificationChannel::TYPE_EMAIL) {
-                SendEmailNotification::dispatch(
-                    $scheduledReminder->user_notification_channel_id,
-                    $scheduledReminder->contact_reminder_id
-                )->onQueue('low');
+                $contactReminder = ContactReminder::find($scheduledReminder->contact_reminder_id);
+                $contact = $contactReminder->contact;
+                $contactName = NameHelper::formatContactName($channel->user, $contact);
+
+                Notification::route('mail', $channel->content)
+                    ->notify(new ReminderTriggered($channel, $contactReminder->label, $contactName));
+
+                UserNotificationSent::create([
+                    'user_notification_channel_id' => $channel->id,
+                    'sent_at' => Carbon::now(),
+                    'subject_line' => $contactReminder->label,
+                ]);
             }
 
             $this->updateScheduledContactReminderTriggeredAt($scheduledReminder->id);

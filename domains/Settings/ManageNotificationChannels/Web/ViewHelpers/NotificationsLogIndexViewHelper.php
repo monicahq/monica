@@ -23,7 +23,7 @@ class NotificationsLogIndexViewHelper
         return [
             'channel' => [
                 'id' => $channel->id,
-                'type' => trans('app.notification_channel_type_'.$channel->type),
+                'type' => trans('settings.notification_channel_type_'.$channel->type),
                 'label' => $channel->label,
             ],
             'notifications' => $notificationsCollection,

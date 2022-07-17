@@ -54,7 +54,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">{{ $t('settings.breadcrumb_settings_notification_channels_log_details') }}</li>
+            <li class="inline">{{ $t('app.breadcrumb_settings_notification_channels_log_details') }}</li>
           </ul>
         </div>
       </div>

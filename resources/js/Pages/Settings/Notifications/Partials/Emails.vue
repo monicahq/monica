@@ -23,9 +23,9 @@ select {
 </style>
 
 <template>
-  <div>
+  <div class="mb-8">
     <div class="mb-3 flex items-center justify-between">
-      <span>{{ $t('settings.notification_channels_email_title') }}</span>
+      <span class="dark:text-gray-200">{{ $t('settings.notification_channels_email_title') }}</span>
 
       <pretty-button
         v-if="!addEmailModalShown"
@@ -128,7 +128,7 @@ select {
       </div>
 
       <div class="border-b border-gray-200 p-5">
-        <p><span class="mr-1">⚠️</span> {{ $t('settings.notification_channels_email_help') }}</p>
+        <p class="flex"><span class="mr-2">⚠️</span> {{ $t('settings.notification_channels_email_help') }}</p>
       </div>
 
       <div class="flex justify-between p-5">
@@ -215,7 +215,6 @@ select {
 
         <!-- actions when the email has NOT been verified -->
         <ul v-else class="text-sm">
-          <!-- view log -->
           <li class="mr-4 inline">{{ $t('settings.notification_channels_verif_email_sent') }}</li>
 
           <!-- delete email -->

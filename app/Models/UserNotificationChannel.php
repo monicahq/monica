@@ -18,6 +18,7 @@ class UserNotificationChannel extends Model
      * Possible type.
      */
     public const TYPE_EMAIL = 'email';
+    public const TYPE_TELEGRAM = 'telegram';
 
     /**
      * The attributes that are mass assignable.
@@ -32,7 +33,7 @@ class UserNotificationChannel extends Model
         'active',
         'verified_at',
         'preferred_time',
-        'email_verification_link',
+        'verification_token',
     ];
 
     /**

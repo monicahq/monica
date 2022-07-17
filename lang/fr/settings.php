@@ -50,6 +50,8 @@ return [
      * NOTIFICATION CHANNELS
      **************************************************************/
 
+    'notification_channel_type_email' => 'Courriel',
+    'notification_channel_type_telegram' => 'Telegram',
     'notification_channels_title' => 'Configurer comment nous devons vous notifier',
     'notification_channels_description' => 'Vous pouvez être notifié à travers plusieurs canaux : courriels, Telegram, Facebook. Vous décidez.',
     'notification_channels_email_title' => 'Par courriel',
@@ -77,6 +79,17 @@ return [
     'notification_channels_log_label' => 'Libellé :',
     'notification_channels_log_help' => 'Cette page montre toutes les notifications qui ont été envoyés via ce canal par le passé. Cela sert principalement comme une façon de déboguer dans le cas où vous ne recevez pas les notifications que vous avez programmées.',
     'notification_channels_log_blank' => 'Vous n’avez pas encore reçu de notifications dans ce canal.',
+    'notification_channels_telegram_title' => 'Par Telegram',
+    'notification_channels_telegram_cta' => 'Configurer Telegram',
+    'notification_channels_telegram_blank' => 'Vous n’avez pas encore configuré Telegram.',
+    'notification_channels_telegram_delete_confirm' => 'Êtes-vous sûr ? Vous pourrez toujours rajouter Telegram plus tard si vous le voulez.',
+    'notification_channels_telegram_not_set' => 'Vous n’avez pas encore configuré Telegram dans vos variables d’environnement.',
+    'notification_channels_telegram_test_notification' => 'Ceci est une notification de test pour :name',
+    'notification_channels_telegram_test_notification_sent' => 'Notification envoyée',
+    'notification_channels_telegram_destroy_success' => 'Le canal Telegram a été supprimé',
+    'notification_channels_telegram_added' => 'Le canal Telegram a été ajouté',
+    'notification_channels_telegram_linked' => 'Votre compte est lié',
+    'notification_channels_test_success_telegram' => 'La notification a été envoyée',
 
     /***************************************************************
      * USER MANAGEMENT

@@ -50,6 +50,8 @@ use App\Settings\ManageNotificationChannels\Web\Controllers\NotificationsLogCont
 use App\Settings\ManageNotificationChannels\Web\Controllers\NotificationsTestController;
 use App\Settings\ManageNotificationChannels\Web\Controllers\NotificationsToggleController;
 use App\Settings\ManageNotificationChannels\Web\Controllers\NotificationsVerificationController;
+use App\Settings\ManageNotificationChannels\Web\Controllers\TelegramNotificationsController;
+use App\Settings\ManageNotificationChannels\Web\Controllers\TelegramWebhookController;
 use App\Settings\ManagePersonalization\Web\Controllers\PersonalizeController;
 use App\Settings\ManagePetCategories\Web\Controllers\PersonalizePetCategoriesController;
 use App\Settings\ManagePronouns\Web\Controllers\PersonalizePronounController;
@@ -95,6 +97,11 @@ require __DIR__.'/auth.php';
 
 Route::get('invitation/{code}', [AcceptInvitationController::class, 'show'])->name('invitation.show');
 Route::post('invitation', [AcceptInvitationController::class, 'store'])->name('invitation.store');
+
+Route::post(
+    '/telegram/webhook/'.config('services.telegram-bot-api.webhook'),
+    [TelegramWebhookController::class, 'store']
+);
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // vaults
@@ -251,6 +258,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::prefix('notifications')->name('notifications.')->group(function () {
             Route::get('', [NotificationsController::class, 'index'])->name('index');
             Route::post('', [NotificationsController::class, 'store'])->name('store');
+            Route::post('telegram', [TelegramNotificationsController::class, 'store'])->name('telegram.store');
             Route::get('{notification}/verify/{uuid}', [NotificationsVerificationController::class, 'store'])->name('verification.store');
             Route::post('{notification}/test', [NotificationsTestController::class, 'store'])->name('test.store');
             Route::put('{notification}/toggle', [NotificationsToggleController::class, 'update'])->name('toggle.update');
