@@ -93,7 +93,7 @@ Monica allows people to keep track of everything that’s important about their 
 
 This project is **for people who have difficulty remembering details about other people’s lives** – especially those they care about. Yes, you can still use Facebook to achieve this, but you will only be able to see what people do and post, and not add your own notes about them.
 
-We’ve also received lots of positive feedback from users who suffer from Asperger syndrome, Alzheimer’s disease, or simply introverts who use this application on a daily basis.
+We’ve also received lots of positive feedback from users who have social disorders like autism, are affected by Alzheimer’s disease, or simply introverts who use this application on a daily basis.
 
 ### What Monica isn’t
 
