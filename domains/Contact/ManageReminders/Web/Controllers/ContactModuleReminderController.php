@@ -4,7 +4,7 @@ namespace App\Contact\ManageReminders\Web\Controllers;
 
 use App\Contact\ManageReminders\Services\CreateContactReminder;
 use App\Contact\ManageReminders\Services\DestroyReminder;
-use App\Contact\ManageReminders\Services\UpdateReminder;
+use App\Contact\ManageReminders\Services\UpdateContactReminder;
 use App\Contact\ManageReminders\Web\ViewHelpers\ModuleRemindersViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
@@ -92,7 +92,7 @@ class ContactModuleReminderController extends Controller
             'frequency_number' => $frequencyNumber,
         ];
 
-        $reminder = (new UpdateReminder())->execute($data);
+        $reminder = (new UpdateContactReminder())->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([

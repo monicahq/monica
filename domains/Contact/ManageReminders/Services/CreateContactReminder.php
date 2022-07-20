@@ -61,15 +61,15 @@ class CreateContactReminder extends BaseService implements ServiceInterface
         $this->validateRules($data);
         $this->data = $data;
 
-        $this->createContactReminer();
-        $this->updateLastEditedDate();
+        $this->createContactReminder();
+        $this->updateLastUpdatedDate();
         $this->scheduledReminderForAllUsersInVault();
         $this->log();
 
         return $this->reminder;
     }
 
-    private function createContactReminer(): void
+    private function createContactReminder(): void
     {
         $this->reminder = ContactReminder::create([
             'contact_id' => $this->data['contact_id'],
@@ -82,7 +82,7 @@ class CreateContactReminder extends BaseService implements ServiceInterface
         ]);
     }
 
-    private function updateLastEditedDate(): void
+    private function updateLastUpdatedDate(): void
     {
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
