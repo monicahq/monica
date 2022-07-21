@@ -18,7 +18,9 @@ return [
     'breadcrumb_vault_index' => 'All the vaults',
     'breadcrumb_vault_create' => 'add a vault',
     'breadcrumb_contact_index' => 'Contacts',
+    'breadcrumb_contact_show' => 'Profile of :name',
     'breadcrumb_contact_create' => 'Create a contact',
+    'breadcrumb_contact_note_index' => 'All the notes',
     'breadcrumb_settings' => 'Settings',
     'breadcrumb_settings_preferences' => 'User preferences',
     'breadcrumb_settings_notification_channels' => 'Notification channels',
@@ -52,6 +54,7 @@ return [
     'view_all' => 'View all',
     'previous' => 'Previous',
     'next' => 'Next',
+    'view_all' => 'View all',
 
     'error_title' => '👇 Oops. An error occured.',
 

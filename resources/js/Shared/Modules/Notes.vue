@@ -226,7 +226,11 @@
 
       <!-- view all button -->
       <div v-if="moduleMode" class="text-center">
-        <inertia-link :href="data.url.index" class="text-blue-500 hover:underline"> View all notes </inertia-link>
+        <inertia-link
+          :href="data.url.index"
+          class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500">
+          {{ $t('app.view_all') }}
+        </inertia-link>
       </div>
 
       <!-- pagination -->
