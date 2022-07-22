@@ -34,7 +34,7 @@ class VaultShowViewHelper
             });
     }
 
-    public static function upcomingReminders(Vault $vault, User $user): Collection
+    public static function upcomingReminders(Vault $vault, User $user): array
     {
         // this query is a bit long and tough to do, and it could surely
         // be optimized if I knew how to properly join queries
@@ -85,6 +85,13 @@ class VaultShowViewHelper
             ]);
         }
 
-        return $remindersCollection;
+        return [
+            'reminders' => $remindersCollection,
+            'url' => [
+                'index' => route('vault.reminder.index', [
+                    'vault' => $vault->id,
+                ]),
+            ],
+        ];
     }
 }

@@ -48,7 +48,7 @@
         <!-- banner if contact is archived -->
         <!-- this is based on the `listed` boolean on the contact object -->
         <div v-if="!data.listed" class="mb-8 rounded-lg border border-gray-300 px-3 py-2 text-center">
-          <span class="mr-4">🕸️</span> The contact is archived <span class="ml-4">🕷️</span>
+          <span class="mr-4">🕸️</span> {{ $t('contact.contact_archived') }} <span class="ml-4">🕷️</span>
         </div>
 
         <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -74,22 +74,24 @@
 
             <ul class="text-xs">
               <li v-if="data.listed && data.options.can_be_archived" class="mb-2">
-                <inertia-link @click.prevent="toggleArchive()" class="cursor-pointer text-blue-500 hover:underline"
-                  >Archive contact</inertia-link
-                >
+                <inertia-link @click.prevent="toggleArchive()" class="cursor-pointer text-blue-500 hover:underline">{{
+                  $t('contact.contact_archive_cta')
+                }}</inertia-link>
               </li>
               <li v-if="!data.listed" class="mb-2">
-                <inertia-link @click.prevent="toggleArchive()" class="cursor-pointer text-blue-500 hover:underline"
-                  >Unarchive contact</inertia-link
-                >
+                <inertia-link @click.prevent="toggleArchive()" class="cursor-pointer text-blue-500 hover:underline">{{
+                  $t('contact.contact_unarchive_cta')
+                }}</inertia-link>
               </li>
               <li class="mb-2">
-                <inertia-link :href="data.url.update_template" class="cursor-pointer text-blue-500 hover:underline"
-                  >Change template</inertia-link
-                >
+                <inertia-link :href="data.url.update_template" class="cursor-pointer text-blue-500 hover:underline">{{
+                  $t('contact.contact_change_template_cta')
+                }}</inertia-link>
               </li>
               <li v-if="data.options.can_be_deleted">
-                <span class="cursor-pointer text-blue-500 hover:underline" @click="destroy">Delete contact</span>
+                <span class="cursor-pointer text-blue-500 hover:underline" @click="destroy">{{
+                  $t('contact.contact_delete_cta')
+                }}</span>
               </li>
             </ul>
           </div>
@@ -331,11 +333,11 @@ export default {
 
   methods: {
     destroy() {
-      if (confirm('Are you sure? This will remove everything we know about this contact.')) {
+      if (confirm(this.$t('contact.contact_delete_confirm'))) {
         axios
           .delete(this.data.url.destroy)
           .then((response) => {
-            localStorage.success = 'The contact has been deleted';
+            localStorage.success = this.$t('contact.contact_delete_success');
             this.$inertia.visit(response.data.data);
           })
           .catch((error) => {
@@ -345,11 +347,11 @@ export default {
     },
 
     toggleArchive() {
-      if (confirm('Are you sure?')) {
+      if (confirm(this.$t('contact.contact_toggle_confirm'))) {
         axios
           .put(this.data.url.toggle_archive)
           .then((response) => {
-            localStorage.success = 'Changes saved';
+            localStorage.success = this.$t('app.notification_flash_changes_saved');
             this.$inertia.visit(response.data.data);
           })
           .catch((error) => {

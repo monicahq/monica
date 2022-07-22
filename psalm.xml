@@ -110,6 +110,7 @@
         </UnsafeInstantiation>
 
         <UndefinedPropertyAssignment errorLevel="suppress"/>
+        <PossiblyInvalidArrayOffset errorLevel="suppress"/>
 
     </issueHandlers>
 </psalm>

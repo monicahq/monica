@@ -64,6 +64,13 @@ return [
     'dashboard_reminders_blank' => 'Aucun rappel planifié.',
 
     /***************************************************************
+     * VAULT DASHBOARD REMINDERS
+     **************************************************************/
+
+    'reminders_title' => 'Rappels planifiés dans les 12 prochains mois',
+    'reminders_blank' => 'Pas de rappels pour ce mois',
+
+    /***************************************************************
      * VAULT SETTINGS
      **************************************************************/
 

@@ -8,66 +8,19 @@ use App\Models\ContactReminder;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
 use App\Models\Vault;
-use App\Vault\ManageVault\Web\ViewHelpers\VaultShowViewHelper;
+use App\Vault\ManageVault\Web\ViewHelpers\VaultReminderIndexViewHelper;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use function env;
 
-class VaultShowViewHelperTest extends TestCase
+class VaultReminderIndexViewHelperTest extends TestCase
 {
     use DatabaseTransactions;
 
     /** @test */
-    public function it_gets_the_latest_updated_contacts(): void
-    {
-        $vault = Vault::factory()->create();
-        $mitchell = Contact::factory()->create([
-            'vault_id' => $vault->id,
-            'last_updated_at' => Carbon::now()->subDays(1),
-        ]);
-        $avatar = Avatar::factory()->create([
-            'contact_id' => $mitchell->id,
-        ]);
-        $mitchell->avatar_id = $avatar->id;
-        $mitchell->save();
-        $john = Contact::factory()->create([
-            'vault_id' => $vault->id,
-            'last_updated_at' => Carbon::now()->subDays(2),
-        ]);
-        $avatar = Avatar::factory()->create([
-            'contact_id' => $john->id,
-        ]);
-        $john->avatar_id = $avatar->id;
-        $john->save();
-
-        $collection = VaultShowViewHelper::lastUpdatedContacts($vault);
-        $this->assertEquals(
-            [
-                0 => [
-                    'id' => $mitchell->id,
-                    'name' => $mitchell->name,
-                    'avatar' => '123',
-                    'url' => [
-                        'show' => env('APP_URL') . '/vaults/' . $vault->id . '/contacts/' . $mitchell->id,
-                    ],
-                ],
-                1 => [
-                    'id' => $john->id,
-                    'name' => $john->name,
-                    'avatar' => '123',
-                    'url' => [
-                        'show' => env('APP_URL') . '/vaults/' . $vault->id . '/contacts/' . $john->id,
-                    ],
-                ],
-            ],
-            $collection->toArray()
-        );
-    }
-
-    /** @test */
-    public function it_gets_the_latest_reminders(): void
+    public function it_gets_the_upcoming_reminders_in_the_next_year(): void
     {
         Carbon::setTestNow(Carbon::create(2022, 1, 1));
         $user = User::factory()->create();
@@ -116,17 +69,16 @@ class VaultShowViewHelperTest extends TestCase
             'triggered_at' => null,
         ]);
 
-        $array = VaultShowViewHelper::upcomingReminders($vault, $user);
+        $collection = VaultReminderIndexViewHelper::data($vault, $user);
 
-        $this->assertCount(2, $array);
-        $this->assertArrayHasKey('reminders', $array);
-        $this->assertArrayHasKey('url', $array);
-
+        $this->assertCount(12, $collection->toArray());
         $this->assertEquals(
-            [
-                'index' => env('APP_URL') . '/vaults/' . $vault->id . '/reminders',
-            ],
-            $array['url']
+            0,
+            $collection->toArray()[0]['id']
+        );
+        $this->assertEquals(
+            'Jan 2022',
+            $collection->toArray()[0]['month']
         );
         $this->assertEquals(
             [
@@ -144,7 +96,7 @@ class VaultShowViewHelperTest extends TestCase
                     ],
                 ],
             ],
-            $array['reminders']->toArray()
+            $collection->toArray()[0]['reminders']->toArray()
         );
     }
 }

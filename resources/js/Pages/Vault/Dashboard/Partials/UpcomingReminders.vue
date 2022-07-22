@@ -43,7 +43,7 @@
     </h3>
 
     <!-- list of reminders -->
-    <div v-if="data.length > 0">
+    <div v-if="data.reminders.length > 0">
       <ul class="mb-4 rounded-lg border border-gray-200 bg-white">
         <li
           v-for="reminder in data"
@@ -65,13 +65,13 @@
     </div>
 
     <!-- blank state -->
-    <div v-if="data.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div v-if="data.reminders.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
       <p class="p-5 text-center">{{ $t('vault.dashboard_reminders_blank') }}</p>
     </div>
 
     <div class="text-center">
       <inertia-link
-        href=""
+        :href="data.url.index"
         class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500">
         {{ $t('app.view_all') }}
       </inertia-link>

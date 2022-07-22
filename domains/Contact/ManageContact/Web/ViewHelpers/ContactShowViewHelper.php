@@ -85,9 +85,14 @@ class ContactShowViewHelper
             'group_summary_information' => GroupsViewHelper::summary($contact),
             'modules' => self::modules($templatePage, $contact, $user),
             'options' => [
+                'can_be_archived' => $user->getContactInVault($contact->vault)->id !== $contact->id,
                 'can_be_deleted' => $user->getContactInVault($contact->vault)->id !== $contact->id,
             ],
             'url' => [
+                'toggle_archive' => route('contact.archive.update', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
                 'update_template' => route('contact.blank', [
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,

@@ -63,6 +63,13 @@ return [
      'dashboard_reminders_title' => 'Reminders for the next 30 days',
      'dashboard_reminders_blank' => 'No planned reminders.',
 
+     /***************************************************************
+     * VAULT DASHBOARD REMINDERS
+     **************************************************************/
+
+     'reminders_title' => 'Reminders planned in the next 12 months',
+     'reminders_blank' => 'No entries for this month',
+
     /***************************************************************
      * VAULT SETTINGS
      **************************************************************/
