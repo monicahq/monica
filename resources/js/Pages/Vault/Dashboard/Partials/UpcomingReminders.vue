@@ -46,7 +46,7 @@
     <div v-if="data.reminders.length > 0">
       <ul class="mb-4 rounded-lg border border-gray-200 bg-white">
         <li
-          v-for="reminder in data"
+          v-for="reminder in data.reminders"
           :key="reminder.id"
           class="item-list border-b border-gray-200 px-3 py-2 hover:bg-slate-50">
           <div class="flex items-center">
