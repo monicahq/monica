@@ -31,6 +31,7 @@ return [
     'breadcrumb_settings_users_new_cta' => 'Invite a new user',
     'breadcrumb_settings_personalize' => 'Personalize your account',
     'breadcrumb_settings_personalize_templates' => 'Templates',
+    'breadcrumb_settings_personalize_relationship_types' => 'Relationship types',
 
     'notification_flash_changes_saved' => 'Changes saved',
 

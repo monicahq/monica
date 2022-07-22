@@ -166,4 +166,27 @@ return [
     'personalize_template_show_module_add_success' => 'Le module a été ajouté',
     'personalize_template_show_module_remove_success' => 'Le module a été enlevé',
     'personalize_template_show_module_order_success' => 'L’ordre a été enregistré',
+
+    /***************************************************************
+     * PERSONNALIZE RELATIONSHIP TYPES
+     **************************************************************/
+
+    'personalize_relationship_types_title' => 'Tous les types de relation',
+    'personalize_relationship_types_cta' => 'Ajouter un type de relation',
+    'personalize_relationship_types_help_1' => 'Quand vous définissez une relation entre deux contacts, par exemple une relation fils-père, Monica crée deux relations, un pour chaque contact :',
+    'personalize_relationship_types_help_2' => 'une relation père-fils, affichée sur la page du père,',
+    'personalize_relationship_types_help_3' => 'une relation fils-père, affichée sur la page du fils.',
+    'personalize_relationship_types_help_4' => 'On les appelle une relation, et une relation inversée. Pour chaque relation, vous devez définir sa relation inverse.',
+    'personalize_relationship_types_new_name' => 'Nom du type de groupe',
+    'personalize_relationship_types_new_relationship_name' => 'Nom de la relation',
+    'personalize_relationship_types_new_relationship_reverse_name' => 'Nom de la relation inversée',
+    'personalize_relationship_types_add_relationship' => 'Ajouter un type de relation',
+    'personalize_relationship_types_blank' => 'Les types de relation vous permet de lier des contacts et de documenter comment ils sont connectés.',
+    'personalize_relationship_types_group_update_success' => 'Le type de groupe a été mis à jour',
+    'personalize_relationship_types_group_destroy_confirm' => 'Êtes-vous sûr ? Cela va supprimer toutes les relations de ce type pour tous les contacts qui l’utilisaient.',
+    'personalize_relationship_types_group_destroy_success' => 'Le type de groupe a été supprimé',
+    'personalize_relationship_types_new_success' => 'Le type de relation a été crée',
+    'personalize_relationship_types_update_success' => 'Le type de relation a été mis à jour',
+    'personalize_relationship_types_destroy_confirm' => 'Êtes-vous sûr ? Cela va supprimer toutes les relations de ce type pour tous les contacts qui l’utilisaient.',
+    'personalize_relationship_types_destroy_success' => 'Le type de relation a été supprimé',
 ];

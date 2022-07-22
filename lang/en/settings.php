@@ -166,4 +166,27 @@ return [
     'personalize_template_show_module_add_success' => 'The module has been added',
     'personalize_template_show_module_remove_success' => 'The module has been removed',
     'personalize_template_show_module_order_success' => 'The order has been saved',
+
+    /***************************************************************
+     * PERSONNALIZE RELATIONSHIP TYPES
+     **************************************************************/
+
+    'personalize_relationship_types_title' => 'All the relationship types',
+    'personalize_relationship_types_cta' => 'Add a relationship type',
+    'personalize_relationship_types_help_1' => 'When you define a relationship between two contacts, for instance a father-son relationship, Monica creates two relations, one for each contact:',
+    'personalize_relationship_types_help_2' => 'a father-son relation—shown on the father page,',
+    'personalize_relationship_types_help_3' => 'a son-father relation—shown on the son page.',
+    'personalize_relationship_types_help_4' => 'We call them a relation, and its reverse relation. For each relation you define, you need to define its counterpart.',
+    'personalize_relationship_types_new_name' =>'Name of the group type',
+    'personalize_relationship_types_new_relationship_name' => 'Name of the relationship',
+    'personalize_relationship_types_new_relationship_reverse_name' => 'Name of the reverse relationship',
+    'personalize_relationship_types_add_relationship' => 'Add a relationship type',
+    'personalize_relationship_types_blank' => 'Relationship types let you link contacts and document how they are connected.',
+    'personalize_relationship_types_group_update_success' => 'The group type has been updated',
+    'personalize_relationship_types_group_destroy_confirm' => 'Are you sure? This will delete all the relationships of this type for all the contacts that were using it.',
+    'personalize_relationship_types_group_destroy_success' => 'The group type has been deleted',
+    'personalize_relationship_types_new_success' =>'The relationship type has been created',
+    'personalize_relationship_types_update_success' =>'The relationship type has been updated',
+    'personalize_relationship_types_destroy_confirm' => 'Are you sure? This will delete all the relationships of this type for all the contacts that were using it.',
+    'personalize_relationship_types_destroy_success' =>'The relationship type has been deleted',
 ];

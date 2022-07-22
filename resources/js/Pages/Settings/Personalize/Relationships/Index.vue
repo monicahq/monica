@@ -54,7 +54,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">Relationship types</li>
+            <li class="inline">{{ $t('app.breadcrumb_settings_personalize_relationship_types') }}</li>
           </ul>
         </div>
       </div>
@@ -64,10 +64,12 @@
       <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <!-- title + cta -->
         <div class="mb-6 mt-8 items-center justify-between sm:mt-0 sm:flex">
-          <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 🥸 </span> All the relationship types</h3>
+          <h3 class="mb-4 sm:mb-0">
+            <span class="mr-1"> 🥸 </span> {{ $t('settings.personalize_relationship_types_title') }}
+          </h3>
           <pretty-button
             v-if="!createGroupTypeModalShown"
-            :text="'add a group type'"
+            :text="$t('settings.personalize_relationship_types_cta')"
             :icon="'plus'"
             @click="showGroupTypeModal" />
         </div>
@@ -89,16 +91,14 @@
 
           <div>
             <p class="mb-2">
-              When you define a relationship between two contacts, for instance a father-son relationship, Monica
-              creates two relations, one for each contact:
+              {{ $t('settings.personalize_relationship_types_help_1') }}
             </p>
             <ul class="mb-2 list-disc pl-4">
-              <li>a father-son relation—shown on the father page,</li>
-              <li>a son-father relation—shown on the son page.</li>
+              <li>{{ $t('settings.personalize_relationship_types_help_2') }}</li>
+              <li>{{ $t('settings.personalize_relationship_types_help_3') }}</li>
             </ul>
             <p class="mb-2">
-              We call them a relation, and its reverse relation. For each relation you define, you need to define its
-              counterpart.
+              {{ $t('settings.personalize_relationship_types_help_4') }}
             </p>
           </div>
         </div>
@@ -114,7 +114,7 @@
             <text-input
               :ref="'newGroupType'"
               v-model="form.groupTypeName"
-              :label="'Name of the new group type'"
+              :label="$t('settings.personalize_relationship_types_new_name')"
               :type="'text'"
               :autofocus="true"
               :input-class="'block w-full'"
@@ -126,7 +126,7 @@
 
           <div class="flex justify-between p-5">
             <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createGroupTypeModalShown = false" />
-            <pretty-button :text="'Create group type'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+            <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
           </div>
         </form>
 
@@ -144,13 +144,13 @@
                 <li
                   class="inline cursor-pointer text-blue-500 hover:underline"
                   @click="renameGroupTypeModal(groupType)">
-                  Rename
+                  {{ $t('app.rename') }}
                 </li>
                 <li
                   v-if="groupType.can_be_deleted"
                   class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"
                   @click="destroyGroupType(groupType)">
-                  Delete
+                  {{ $t('app.delete') }}
                 </li>
               </ul>
             </div>
@@ -166,7 +166,7 @@
                 <text-input
                   :ref="'rename' + groupType.id"
                   v-model="form.groupTypeName"
-                  :label="'Name of the new group type'"
+                  :label="$t('settings.personalize_relationship_types_new_name')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'block w-full'"
@@ -218,13 +218,13 @@
                   <li
                     class="inline cursor-pointer text-blue-500 hover:underline"
                     @click="renameRelationTypeModal(type)">
-                    Rename
+                    {{ $t('app.rename') }}
                   </li>
                   <li
                     v-if="type.can_be_deleted"
                     class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"
                     @click="destroyRelationshipType(groupType, type)">
-                    Delete
+                    {{ $t('app.delete') }}
                   </li>
                 </ul>
               </div>
@@ -240,7 +240,7 @@
                   <text-input
                     :ref="'rename' + type.id"
                     v-model="form.name"
-                    :label="'Name of the relationship'"
+                    :label="$t('settings.personalize_relationship_types_new_relationship_name')"
                     :type="'text'"
                     :autofocus="true"
                     :input-class="'block w-full'"
@@ -253,7 +253,7 @@
 
                   <text-input
                     v-model="form.nameReverseRelationship"
-                    :label="'Name of the reverse relationship'"
+                    :label="$t('settings.personalize_relationship_types_new_relationship_reverse_name')"
                     :type="'text'"
                     :autofocus="true"
                     :input-class="'block w-full'"
@@ -281,7 +281,7 @@
               <span
                 class="cursor-pointer text-sm text-blue-500 hover:underline"
                 @click="showRelationshipTypeModal(groupType)"
-                >add a relationship type</span
+                >{{ $t('settings.personalize_relationship_types_add_relationship') }}</span
               >
             </div>
 
@@ -296,7 +296,7 @@
                 <text-input
                   :ref="'newRelationshipType'"
                   v-model="form.name"
-                  :label="'Name of the relationship'"
+                  :label="$t('settings.personalize_relationship_types_new_relationship_name')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'block w-full'"
@@ -309,7 +309,7 @@
 
                 <text-input
                   v-model="form.nameReverseRelationship"
-                  :label="'Name of the reverse relationship'"
+                  :label="$t('settings.personalize_relationship_types_new_relationship_reverse_name')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'block w-full'"
@@ -333,7 +333,7 @@
 
         <!-- blank state -->
         <div v-if="localGroupTypes.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
-          <p class="p-5 text-center">Relationship types let you link contacts and document how they are connected.</p>
+          <p class="p-5 text-center">{{ $t('settings.personalize_relationship_types_blank') }}</p>
         </div>
       </div>
     </main>
@@ -450,7 +450,7 @@ export default {
       axios
         .put(groupType.url.update, this.form)
         .then((response) => {
-          this.flash('The group type has been updated', 'success');
+          this.flash(this.$t('settings.personalize_relationship_types_group_update_success'), 'success');
           this.localGroupTypes[this.localGroupTypes.findIndex((x) => x.id === groupType.id)] = response.data.data;
           this.loadingState = null;
           this.renameGroupTypeModalShownId = 0;
@@ -462,15 +462,11 @@ export default {
     },
 
     destroyGroupType(groupType) {
-      if (
-        confirm(
-          'Are you sure? This will delete all the relationships of this type for all the contacts that were using it.',
-        )
-      ) {
+      if (confirm(this.$t('settings.personalize_relationship_types_group_destroy_confirm'))) {
         axios
           .delete(groupType.url.destroy)
           .then((response) => {
-            this.flash('The group type has been deleted', 'success');
+            this.flash(this.$t('settings.personalize_relationship_types_group_destroy_success'), 'success');
             var id = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
             this.localGroupTypes.splice(id, 1);
           })
@@ -487,7 +483,7 @@ export default {
       axios
         .post(groupType.url.store, this.form)
         .then((response) => {
-          this.flash('The relationship type has been created', 'success');
+          this.flash(this.$t('settings.personalize_relationship_types_new_success'), 'success');
           this.loadingState = null;
           this.createRelationshipTypeModalId = 0;
           var id = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
@@ -505,7 +501,7 @@ export default {
       axios
         .put(type.url.update, this.form)
         .then((response) => {
-          this.flash('The relationship type has been updated', 'success');
+          this.flash(this.$t('settings.personalize_relationship_types_update_success'), 'success');
           this.loadingState = null;
           this.renameRelationshipTypeModalId = 0;
           var groupTypeId = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
@@ -519,15 +515,11 @@ export default {
     },
 
     destroyRelationshipType(groupType, type) {
-      if (
-        confirm(
-          'Are you sure? This will delete all the relationships of this type for all the contacts that were using it.',
-        )
-      ) {
+      if (confirm(this.$t('settings.personalize_relationship_types_destroy_confirm'))) {
         axios
           .delete(type.url.destroy)
           .then((response) => {
-            this.flash('The relationship type has been deleted', 'success');
+            this.flash(this.$t('settings.personalize_relationship_types_destroy_success'), 'success');
             var groupTypeId = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
             var typeId = this.localGroupTypes[groupTypeId].types.findIndex((x) => x.id === type.id);
             this.localGroupTypes[groupTypeId].types.splice(typeId, 1);
