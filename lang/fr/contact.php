@@ -34,6 +34,8 @@ return [
     'feed_item_removed_from_group' => 'a supprimé le contact à un groupe',
     'feed_item_archived' => 'a archivé le contact',
     'feed_item_unarchived' => 'a désarchivé le contact',
+    'feed_item_favorited' => 'a ajouté le contact aux favoris',
+    'feed_item_unfavorited' => 'a supprimé le contact des favoris',
 
     /***************************************************************
      * MODULE: GROUP

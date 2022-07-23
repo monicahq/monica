@@ -39,6 +39,8 @@ class ContactFeedItem extends Model
     public const ACTION_REMOVED_FROM_GROUP = 'removed_from_group';
     public const ACTION_ARCHIVED_CONTACT = 'archived';
     public const ACTION_UNARCHIVED_CONTACT = 'unarchived';
+    public const ACTION_FAVORITED_CONTACT = 'favorited';
+    public const ACTION_UNFAVORITED_CONTACT = 'unfavorited';
 
     /**
      * The attributes that are mass assignable.

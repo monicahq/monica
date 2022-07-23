@@ -21,17 +21,21 @@ class ModuleContactNameViewHelperTest extends TestCase
         $array = ModuleContactNameViewHelper::data($contact, $user);
 
         $this->assertEquals(
-            2,
+            3,
             count($array)
         );
 
         $this->assertArrayHasKey('name', $array);
+        $this->assertArrayHasKey('is_favorite', $array);
+        $this->assertArrayHasKey('url', $array);
 
         $this->assertEquals(
             [
                 'name' => $contact->name,
+                'is_favorite' => false,
                 'url' => [
                     'edit' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/edit',
+                    'toggle_favorite' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id. '/toggle-favorite',
                 ],
             ],
             $array

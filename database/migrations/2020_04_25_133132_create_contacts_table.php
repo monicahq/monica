@@ -54,6 +54,7 @@ class CreateContactsTable extends Migration
             $table->unsignedBigInteger('vault_id');
             $table->unsignedBigInteger('user_id');
             $table->integer('number_of_views');
+            $table->boolean('is_favorite')->default(false);
             $table->timestamps();
             $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

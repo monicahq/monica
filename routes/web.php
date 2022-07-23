@@ -3,6 +3,7 @@
 use App\Contact\ManageCalls\Web\Controllers\ContactModuleCallController;
 use App\Contact\ManageContact\Web\Controllers\ContactArchiveController;
 use App\Contact\ManageContact\Web\Controllers\ContactController;
+use App\Contact\ManageContact\Web\Controllers\ContactFavoriteController;
 use App\Contact\ManageContact\Web\Controllers\ContactLabelController;
 use App\Contact\ManageContact\Web\Controllers\ContactNoTemplateController;
 use App\Contact\ManageContact\Web\Controllers\ContactPageController;
@@ -132,6 +133,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::post('', [ContactController::class, 'update'])->name('contact.update');
                     Route::delete('', [ContactController::class, 'destroy'])->name('contact.destroy');
                     Route::put('/toggle', [ContactArchiveController::class, 'update'])->name('contact.archive.update');
+                    Route::put('/toggle-favorite', [ContactFavoriteController::class, 'update'])->name('contact.favorite.update');
                     Route::get('update-template', [ContactNoTemplateController::class, 'show'])->name('contact.blank');
                     Route::put('template', [ContactTemplateController::class, 'update'])->name('contact.template.update');
 
