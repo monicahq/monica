@@ -58,6 +58,7 @@ class UpdateContactTemplate extends BaseService implements ServiceInterface
 
         $this->validate();
         $this->update();
+        $this->updateLastEditedDate();
         $this->log();
 
         return $this->contact;
@@ -74,6 +75,12 @@ class UpdateContactTemplate extends BaseService implements ServiceInterface
     private function update(): void
     {
         $this->contact->template_id = $this->data['template_id'];
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
+    }
+
+    private function updateLastEditedDate(): void
+    {
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
     }

@@ -59,6 +59,7 @@ class CreateContactLifeEvent extends BaseService implements ServiceInterface
     {
         $this->data = $data;
         $this->validate();
+        $this->updateLastEditedDate();
         $this->store();
 
         return $this->contactLifeEvent;
@@ -72,6 +73,12 @@ class CreateContactLifeEvent extends BaseService implements ServiceInterface
 
         LifeEventCategory::where('account_id', $this->data['account_id'])
             ->findOrFail($lifeEventType->lifeEventCategory->id);
+    }
+
+    private function updateLastEditedDate(): void
+    {
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
     }
 
     private function store(): void

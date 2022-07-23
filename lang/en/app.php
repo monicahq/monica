@@ -32,6 +32,7 @@ return [
     'breadcrumb_settings_personalize' => 'Personalize your account',
     'breadcrumb_settings_personalize_templates' => 'Templates',
     'breadcrumb_settings_personalize_relationship_types' => 'Relationship types',
+    'breadcrumb_settings_personalize_contact_information_types' => 'Contact information types',
 
     'notification_flash_changes_saved' => 'Changes saved',
 
@@ -58,6 +59,7 @@ return [
     'previous' => 'Previous',
     'next' => 'Next',
     'view_all' => 'View all',
+    'view_map' => 'View on map',
 
     'error_title' => '👇 Oops. An error occured.',
 
@@ -72,6 +74,7 @@ return [
     'default_template_page_feed' => 'Feed',
     'default_template_page_information' => 'Information',
     'default_template_page_life_events' => 'Life events & goals',
+    'default_template_page_contact' => 'Ways to connect',
 
     'module_names' => 'Contact name',
     'module_avatar' => 'Avatar',
@@ -91,6 +94,7 @@ return [
     'module_goals' => 'Goals',
     'module_addresses' => 'Addresses',
     'module_groups' => 'Groups',
+    'module_contact_information' => 'Contact information',
 
     'module_option_default_number_of_items_to_display' => 'Default number of items to display',
 

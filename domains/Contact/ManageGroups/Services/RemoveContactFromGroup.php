@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\ContactFeedItem;
 use App\Models\Group;
 use App\Services\BaseService;
+use Carbon\Carbon;
 
 class RemoveContactFromGroup extends BaseService implements ServiceInterface
 {
@@ -59,6 +60,7 @@ class RemoveContactFromGroup extends BaseService implements ServiceInterface
             $this->contact->id,
         ]);
 
+        $this->updateLastEditedDate();
         $this->createFeedItem();
 
         return $this->group;
@@ -70,6 +72,12 @@ class RemoveContactFromGroup extends BaseService implements ServiceInterface
 
         $this->group = Group::where('vault_id', $this->data['vault_id'])
             ->findOrFail($this->data['group_id']);
+    }
+
+    private function updateLastEditedDate(): void
+    {
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
     }
 
     private function createFeedItem(): void

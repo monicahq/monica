@@ -8,6 +8,7 @@ use App\Jobs\CreateContactLog;
 use App\Models\Contact;
 use App\Models\RelationshipType;
 use App\Services\BaseService;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UnsetRelationship extends BaseService implements ServiceInterface
@@ -75,6 +76,13 @@ class UnsetRelationship extends BaseService implements ServiceInterface
         }
 
         $this->log($otherContact);
+        $this->updateLastEditedDate();
+    }
+
+    private function updateLastEditedDate(): void
+    {
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
     }
 
     private function unsetRelationship(Contact $contact, Contact $otherContact): void

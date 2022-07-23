@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\Contact;
 use App\Models\ContactFeedItem;
 use App\Services\BaseService;
+use Carbon\Carbon;
 
 class UpdateJobInformation extends BaseService implements ServiceInterface
 {
@@ -63,6 +64,8 @@ class UpdateJobInformation extends BaseService implements ServiceInterface
         $this->contact->job_position = $this->valueOrNull($data, 'job_position');
         $this->contact->save();
 
+        $this->updateLastEditedDate();
+
         ContactFeedItem::create([
             'author_id' => $this->author->id,
             'contact_id' => $this->contact->id,
@@ -70,5 +73,11 @@ class UpdateJobInformation extends BaseService implements ServiceInterface
         ]);
 
         return $this->contact;
+    }
+
+    private function updateLastEditedDate(): void
+    {
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
     }
 }

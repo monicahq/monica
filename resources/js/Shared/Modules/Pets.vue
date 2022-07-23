@@ -242,15 +242,15 @@ export default {
         });
     },
 
-    update(reminder) {
+    update(pet) {
       this.loadingState = 'loading';
 
       axios
-        .put(reminder.url.update, this.form)
+        .put(pet.url.update, this.form)
         .then((response) => {
           this.loadingState = '';
           this.flash('The pet has been edited', 'success');
-          this.localPets[this.localPets.findIndex((x) => x.id === reminder.id)] = response.data.data;
+          this.localPets[this.localPets.findIndex((x) => x.id === pet.id)] = response.data.data;
           this.editedPetId = 0;
         })
         .catch((error) => {
@@ -259,13 +259,13 @@ export default {
         });
     },
 
-    destroy(reminder) {
+    destroy(pet) {
       if (confirm('Are you sure? This will delete the pet permanently.')) {
         axios
-          .delete(reminder.url.destroy)
+          .delete(pet.url.destroy)
           .then((response) => {
             this.flash('The pet has been deleted', 'success');
-            var id = this.localPets.findIndex((x) => x.id === reminder.id);
+            var id = this.localPets.findIndex((x) => x.id === pet.id);
             this.localPets.splice(id, 1);
           })
           .catch((error) => {

@@ -115,17 +115,17 @@
             </div>
 
             <!-- all the pages -->
-            <div class="mb-8 border-b border-gray-200">
-              <ul>
-                <li v-for="page in data.template_pages" :key="page.id" class="mr-2 inline">
+            <div class="mb-8 w-full border-b border-gray-200">
+              <div class="flex overflow-x-auto">
+                <div v-for="page in data.template_pages" :key="page.id" class="mr-2 flex-none">
                   <inertia-link
                     :href="page.url.show"
                     :class="{ 'border-orange-500 hover:border-orange-500': page.selected }"
-                    class="inline-block border-b-2 border-transparent px-4 pb-2 hover:border-gray-200">
+                    class="inline-block border-b-2 border-transparent px-2 pb-2 hover:border-gray-200">
                     <span class="mb-0 block rounded-sm px-3 py-1 hover:bg-gray-100">{{ page.name }}</span>
                   </inertia-link>
-                </li>
-              </ul>
+                </div>
+              </div>
             </div>
 
             <!-- all the modules -->
@@ -152,6 +152,8 @@
                 <addresses v-if="module.type == 'addresses'" :data="addresses" />
 
                 <groups v-if="module.type == 'groups'" :data="groups" />
+
+                <contact-information v-if="module.type == 'contact_information'" :data="contactInformation" />
               </div>
             </div>
           </div>
@@ -181,6 +183,7 @@ import Pets from '@/Shared/Modules/Pets';
 import Goals from '@/Shared/Modules/Goals';
 import Addresses from '@/Shared/Modules/Addresses';
 import Groups from '@/Shared/Modules/Groups';
+import ContactInformation from '@/Shared/Modules/ContactInformation';
 
 export default {
   components: {
@@ -203,6 +206,7 @@ export default {
     Goals,
     Addresses,
     Groups,
+    ContactInformation,
   },
 
   props: {
@@ -236,6 +240,7 @@ export default {
       goals: [],
       addresses: [],
       groups: [],
+      contactInformation: [],
     };
   },
 
@@ -327,6 +332,11 @@ export default {
 
       if (this.data.modules.findIndex((x) => x.type == 'groups') > -1) {
         this.groups = this.data.modules[this.data.modules.findIndex((x) => x.type == 'groups')].data;
+      }
+
+      if (this.data.modules.findIndex((x) => x.type == 'contact_information') > -1) {
+        this.contactInformation =
+          this.data.modules[this.data.modules.findIndex((x) => x.type == 'contact_information')].data;
       }
     }
   },

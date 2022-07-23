@@ -37,14 +37,15 @@
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
-              d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
         </span>
 
-        <span class="font-semibold">Addresses</span>
+        <span class="font-semibold">{{ $t('contact.addresses_title') }}</span>
       </div>
       <pretty-button
-        :text="'Add an address'"
+        :text="$t('contact.addresses_cta')"
         :icon="'plus'"
         :classes="'sm:w-fit w-full'"
         @click="showCreateAddressModal" />
@@ -68,7 +69,7 @@
               :required="false"
               :placeholder="$t('app.choose_value')"
               :dropdown-class="'block w-full'"
-              :label="'Address type'" />
+              :label="$t('contact.addresses_address_type')" />
           </div>
 
           <!-- street + city -->
@@ -76,7 +77,7 @@
             <text-input
               :ref="'street'"
               v-model="form.street"
-              :label="'Street'"
+              :label="$t('contact.addresses_street')"
               :type="'text'"
               :autofocus="true"
               :input-class="'w-full mr-2'"
@@ -87,7 +88,7 @@
 
             <text-input
               v-model="form.city"
-              :label="'City'"
+              :label="$t('contact.addresses_city')"
               :type="'text'"
               :autofocus="true"
               :input-class="'w-full'"
@@ -101,7 +102,7 @@
           <div class="grid grid-cols-3 gap-4 border-b border-gray-200 p-5">
             <text-input
               v-model="form.province"
-              :label="'Province'"
+              :label="$t('contact.addresses_province')"
               :type="'text'"
               :autofocus="true"
               :input-class="'w-full mr-2'"
@@ -112,7 +113,7 @@
 
             <text-input
               v-model="form.postal_code"
-              :label="'Postal code'"
+              :label="$t('contact.addresses_postal_code')"
               :type="'text'"
               :autofocus="true"
               :input-class="'w-full'"
@@ -123,7 +124,7 @@
 
             <text-input
               v-model="form.country"
-              :label="'Country'"
+              :label="$t('contact.addresses_country')"
               :type="'text'"
               :autofocus="true"
               :input-class="'w-full'"
@@ -142,7 +143,7 @@
               type="checkbox"
               class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
             <label :for="form.is_past_address" class="ml-2 cursor-pointer text-gray-900">
-              This address is not active anymore
+              {{ $t('contact.addresses_inactive') }}
             </label>
           </div>
         </div>
@@ -173,15 +174,15 @@
             <!-- actions -->
             <ul class="text-sm">
               <li class="mr-2 inline">
-                <a :href="address.url.show" target="_blank" class="mr-2 text-sm text-blue-500 hover:underline"
-                  >View on map</a
-                >
+                <a :href="address.url.show" target="_blank" class="mr-2 text-sm text-blue-500 hover:underline">{{
+                  $t('app.view_map')
+                }}</a>
               </li>
               <li class="inline cursor-pointer text-blue-500 hover:underline" @click="showEditAddressModal(address)">
-                Edit
+                {{ $t('app.edit') }}
               </li>
               <li class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(address)">
-                Delete
+                {{ $t('app.delete') }}
               </li>
             </ul>
           </div>
@@ -200,7 +201,7 @@
                   :required="false"
                   :placeholder="$t('app.choose_value')"
                   :dropdown-class="'block w-full'"
-                  :label="'Address type'" />
+                  :label="$t('contact.addresses_address_type')" />
               </div>
 
               <!-- street + city -->
@@ -208,7 +209,7 @@
                 <text-input
                   :ref="'street'"
                   v-model="form.street"
-                  :label="'Street'"
+                  :label="$t('contact.addresses_street')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full mr-2'"
@@ -219,7 +220,7 @@
 
                 <text-input
                   v-model="form.city"
-                  :label="'City'"
+                  :label="$t('contact.addresses_city')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full'"
@@ -233,7 +234,7 @@
               <div class="grid grid-cols-3 gap-4 border-b border-gray-200 p-5">
                 <text-input
                   v-model="form.province"
-                  :label="'Province'"
+                  :label="$t('contact.addresses_province')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full mr-2'"
@@ -244,7 +245,7 @@
 
                 <text-input
                   v-model="form.postal_code"
-                  :label="'Postal code'"
+                  :label="$t('contact.addresses_postal_code')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full'"
@@ -255,7 +256,7 @@
 
                 <text-input
                   v-model="form.country"
-                  :label="'Country'"
+                  :label="$t('contact.addresses_country')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full'"
@@ -274,7 +275,7 @@
                   type="checkbox"
                   class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
                 <label :for="form.is_past_address" class="ml-2 cursor-pointer text-gray-900">
-                  This address is not active anymore
+                  {{ $t('contact.addresses_inactive') }}
                 </label>
               </div>
             </div>
@@ -289,7 +290,7 @@
 
       <!-- blank state -->
       <div v-if="localActiveAddresses.length == 0" class="mb-2 rounded-lg border border-gray-200 bg-white">
-        <p class="p-5 text-center">There are no active addresses yet.</p>
+        <p class="p-5 text-center">{{ $t('contact.addresses_blank') }}</p>
       </div>
 
       <!-- view past addresses link -->
@@ -297,7 +298,7 @@
         v-if="localInactiveAddresses.length > 0"
         @click="toggleInactiveAdresses"
         class="mx-4 mb-2 cursor-pointer text-xs text-blue-500 hover:underline">
-        Previous addresses ({{ localInactiveAddresses.length }})
+        {{ $t('contact.addresses_previous') }} ({{ localInactiveAddresses.length }})
       </p>
 
       <!-- list of previous addresses -->
@@ -322,15 +323,15 @@
             <!-- actions -->
             <ul class="text-sm">
               <li class="mr-2 inline">
-                <a :href="address.url.show" target="_blank" class="mr-2 text-sm text-blue-500 hover:underline"
-                  >View on map</a
-                >
+                <a :href="address.url.show" target="_blank" class="mr-2 text-sm text-blue-500 hover:underline">{{
+                  $t('app.view_map')
+                }}</a>
               </li>
               <li class="inline cursor-pointer text-blue-500 hover:underline" @click="showEditAddressModal(address)">
-                Edit
+                {{ $t('app.edit') }}
               </li>
               <li class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(address)">
-                Delete
+                {{ $t('app.delete') }}
               </li>
             </ul>
           </div>
@@ -349,7 +350,7 @@
                   :required="false"
                   :placeholder="$t('app.choose_value')"
                   :dropdown-class="'block w-full'"
-                  :label="'Address type'" />
+                  :label="$t('contact.addresses_address_type')" />
               </div>
 
               <!-- street + city -->
@@ -357,7 +358,7 @@
                 <text-input
                   :ref="'street'"
                   v-model="form.street"
-                  :label="'Street'"
+                  :label="$t('contact.addresses_street')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full mr-2'"
@@ -368,7 +369,7 @@
 
                 <text-input
                   v-model="form.city"
-                  :label="'City'"
+                  :label="$t('contact.addresses_city')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full'"
@@ -382,7 +383,7 @@
               <div class="grid grid-cols-3 gap-4 border-b border-gray-200 p-5">
                 <text-input
                   v-model="form.province"
-                  :label="'Province'"
+                  :label="$t('contact.addresses_province')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full mr-2'"
@@ -393,7 +394,7 @@
 
                 <text-input
                   v-model="form.postal_code"
-                  :label="'Postal code'"
+                  :label="$t('contact.addresses_postal_code')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full'"
@@ -404,7 +405,7 @@
 
                 <text-input
                   v-model="form.country"
-                  :label="'Country'"
+                  :label="$t('contact.addresses_country')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full'"
@@ -423,7 +424,7 @@
                   type="checkbox"
                   class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
                 <label for="is_past_address" class="ml-2 cursor-pointer text-gray-900">
-                  This address is not active anymore
+                  {{ $t('contact.addresses_inactive') }}
                 </label>
               </div>
             </div>
@@ -536,7 +537,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash('The address has been created', 'success');
+          this.flash(this.$t('contact.addresses_new_success'), 'success');
 
           if (this.form.is_past_address) {
             this.localInactiveAddresses.unshift(response.data.data);
@@ -560,7 +561,7 @@ export default {
         .put(address.url.update, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash('The address has been edited', 'success');
+          this.flash(this.$t('contact.addresses_edit_success'), 'success');
 
           if (this.form.is_past_address) {
             this.localInactiveAddresses[this.localInactiveAddresses.findIndex((x) => x.id === address.id)] =
@@ -578,11 +579,11 @@ export default {
     },
 
     destroy(address) {
-      if (confirm('Are you sure? This will delete the address permanently.')) {
+      if (confirm(this.$t('contact.addresses_delete_confirm'))) {
         axios
           .delete(address.url.destroy)
           .then((response) => {
-            this.flash('The address has been deleted', 'success');
+            this.flash(this.$t('contact.addresses_delete_success'), 'success');
             var id = this.localActiveAddresses.findIndex((x) => x.id === address.id);
 
             if (address.is_past_address) {

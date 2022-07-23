@@ -189,4 +189,20 @@ return [
     'personalize_relationship_types_update_success' =>'The relationship type has been updated',
     'personalize_relationship_types_destroy_confirm' => 'Are you sure? This will delete all the relationships of this type for all the contacts that were using it.',
     'personalize_relationship_types_destroy_success' =>'The relationship type has been deleted',
+
+    /***************************************************************
+     * PERSONNALIZE CONTACT TYPE INFORMATION
+     **************************************************************/
+
+    'personalize_contact_information_types_title' => 'All the contact information types',
+    'personalize_contact_information_types_cta' => 'Add a type',
+    'personalize_contact_information_types_new_name' => 'Name',
+    'personalize_contact_information_types_new_protocol' => 'Protocol',
+    'personalize_contact_information_types_new_protocol_help' => 'A contact information can be clickable. For instance, a phone number can be clickable and launch the default application in your computer. If you do not know the protocol for the type you are adding, you can simply omit this field.',
+    'personalize_contact_information_types_protocol' => 'Protocol: :name',
+    'personalize_contact_information_types_blank' => 'Contact information types let you define how you can contact all your contacts (phone, email, …).',
+    'personalize_contact_information_types_new_success' => 'The contact information type has been created',
+    'personalize_contact_information_types_edit_success' => 'The contact information type has been updated',
+    'personalize_contact_information_types_delete_success' => 'The contact information type has been deleted',
+    'personalize_contact_information_types_blank' => 'Are you sure? This will remove the contact information types from all contacts, but won’t delete the contacts themselves.',
 ];

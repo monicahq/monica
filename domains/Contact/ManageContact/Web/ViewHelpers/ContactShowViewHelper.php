@@ -7,6 +7,7 @@ use App\Contact\ManageCalls\Web\ViewHelpers\ModuleCallsViewHelper;
 use App\Contact\ManageContactAddresses\Web\ViewHelpers\ModuleContactAddressesViewHelper;
 use App\Contact\ManageContactFeed\Web\ViewHelpers\ModuleFeedViewHelper;
 use App\Contact\ManageContactImportantDates\Web\ViewHelpers\ModuleImportantDatesViewHelper;
+use App\Contact\ManageContactInformation\Web\ViewHelpers\ModuleContactInformationViewHelper;
 use App\Contact\ManageContactName\Web\ViewHelpers\ModuleContactNameViewHelper;
 use App\Contact\ManageGoals\Web\ViewHelpers\ModuleGoalsViewHelper;
 use App\Contact\ManageGroups\Web\ViewHelpers\GroupsViewHelper;
@@ -230,6 +231,10 @@ class ContactShowViewHelper
 
             if ($module->type == Module::TYPE_GROUPS) {
                 $data = ModuleGroupsViewHelper::data($contact);
+            }
+
+            if ($module->type == Module::TYPE_CONTACT_INFORMATION) {
+                $data = ModuleContactInformationViewHelper::data($contact, $user);
             }
 
             $modulesCollection->push([

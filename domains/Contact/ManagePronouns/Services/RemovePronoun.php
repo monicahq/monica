@@ -7,6 +7,7 @@ use App\Jobs\CreateAuditLog;
 use App\Jobs\CreateContactLog;
 use App\Models\Pronoun;
 use App\Services\BaseService;
+use Carbon\Carbon;
 
 class RemovePronoun extends BaseService implements ServiceInterface
 {
@@ -58,8 +59,15 @@ class RemovePronoun extends BaseService implements ServiceInterface
 
         $this->contact->pronoun_id = null;
         $this->contact->save();
+        $this->updateLastEditedDate();
 
         $this->log();
+    }
+
+    private function updateLastEditedDate(): void
+    {
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
     }
 
     private function log(): void

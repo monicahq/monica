@@ -67,6 +67,7 @@ class CreateContact extends BaseService implements ServiceInterface
         $this->validate();
         $this->createContact();
         $this->generateAvatar();
+        $this->updateLastEditedDate();
         $this->log();
 
         return $this->contact;
@@ -121,6 +122,12 @@ class CreateContact extends BaseService implements ServiceInterface
         $avatar = AvatarHelper::generateRandomAvatar($this->contact);
 
         $this->contact->avatar_id = $avatar->id;
+        $this->contact->save();
+    }
+
+    private function updateLastEditedDate(): void
+    {
+        $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
     }
 

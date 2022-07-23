@@ -9,6 +9,7 @@ use App\Jobs\CreateContactLog;
 use App\Models\Contact;
 use App\Models\Vault;
 use App\Services\BaseService;
+use Carbon\Carbon;
 
 class MoveContactToAnotherVault extends BaseService implements ServiceInterface
 {
@@ -57,6 +58,7 @@ class MoveContactToAnotherVault extends BaseService implements ServiceInterface
         $this->data = $data;
         $this->validate();
         $this->move();
+        $this->updateLastEditedDate();
         $this->log();
 
         return $this->contact;
@@ -82,6 +84,12 @@ class MoveContactToAnotherVault extends BaseService implements ServiceInterface
     private function move(): void
     {
         $this->contact->vault_id = $this->newVault->id;
+        $this->contact->save();
+    }
+
+    private function updateLastEditedDate(): void
+    {
+        $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
     }
 

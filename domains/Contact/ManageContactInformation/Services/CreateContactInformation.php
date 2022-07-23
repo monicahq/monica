@@ -8,11 +8,13 @@ use App\Jobs\CreateContactLog;
 use App\Models\ContactInformation;
 use App\Models\ContactInformationType;
 use App\Services\BaseService;
+use Carbon\Carbon;
 
 class CreateContactInformation extends BaseService implements ServiceInterface
 {
     private ContactInformation $contactInformation;
     private ContactInformationType $contactInformationType;
+    private array $data;
 
     /**
      * Get the validation rules that apply to the service.
@@ -54,20 +56,36 @@ class CreateContactInformation extends BaseService implements ServiceInterface
      */
     public function execute(array $data): ContactInformation
     {
-        $this->validateRules($data);
-
-        $this->contactInformationType = ContactInformationType::where('account_id', $data['account_id'])
-            ->findOrFail($data['contact_information_type_id']);
-
-        $this->contactInformation = ContactInformation::create([
-            'contact_id' => $this->contact->id,
-            'type_id' => $this->contactInformationType->id,
-            'data' => $data['data'],
-        ]);
-
+        $this->data = $data;
+        $this->validate();
+        $this->create();
+        $this->updateLastEditedDate();
         $this->log();
 
         return $this->contactInformation;
+    }
+
+    private function validate(): void
+    {
+        $this->validateRules($this->data);
+
+        $this->contactInformationType = ContactInformationType::where('account_id', $this->data['account_id'])
+            ->findOrFail($this->data['contact_information_type_id']);
+    }
+
+    private function create(): void
+    {
+        $this->contactInformation = ContactInformation::create([
+            'contact_id' => $this->contact->id,
+            'type_id' => $this->contactInformationType->id,
+            'data' => $this->data['data'],
+        ]);
+    }
+
+    private function updateLastEditedDate(): void
+    {
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
     }
 
     private function log(): void

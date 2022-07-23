@@ -9,6 +9,7 @@ use App\Contact\ManageContact\Web\Controllers\ContactPageController;
 use App\Contact\ManageContact\Web\Controllers\ContactTemplateController;
 use App\Contact\ManageContactAddresses\Web\Controllers\ContactModuleAddressController;
 use App\Contact\ManageContactImportantDates\Web\Controllers\ContactImportantDatesController;
+use App\Contact\ManageContactInformation\Web\Controllers\ContactInformationController;
 use App\Contact\ManageGoals\Web\Controllers\ContactModuleGoalController;
 use App\Contact\ManageGoals\Web\Controllers\ContactModuleStreakController;
 use App\Contact\ManageGroups\Web\Controllers\ContactModuleGroupController;
@@ -169,6 +170,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::post('addresses', [ContactModuleAddressController::class, 'store'])->name('contact.address.store');
                     Route::put('addresses/{address}', [ContactModuleAddressController::class, 'update'])->name('contact.address.update');
                     Route::delete('addresses/{address}', [ContactModuleAddressController::class, 'destroy'])->name('contact.address.destroy');
+
+                    // contact information
+                    Route::post('contactInformation', [ContactInformationController::class, 'store'])->name('contact.contact_information.store');
+                    Route::put('contactInformation/{info}', [ContactInformationController::class, 'update'])->name('contact.contact_information.update');
+                    Route::delete('contactInformation/{info}', [ContactInformationController::class, 'destroy'])->name('contact.contact_information.destroy');
 
                     // loans
                     Route::post('loans', [ContactModuleLoanController::class, 'store'])->name('contact.loan.store');

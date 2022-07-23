@@ -8,6 +8,7 @@ use App\Jobs\CreateContactLog;
 use App\Models\ContactInformation;
 use App\Models\ContactInformationType;
 use App\Services\BaseService;
+use Carbon\Carbon;
 
 class UpdateContactInformation extends BaseService implements ServiceInterface
 {
@@ -55,21 +56,37 @@ class UpdateContactInformation extends BaseService implements ServiceInterface
      */
     public function execute(array $data): ContactInformation
     {
-        $this->validateRules($data);
-
-        $this->contactInformationType = ContactInformationType::where('account_id', $data['account_id'])
-            ->findOrFail($data['contact_information_type_id']);
-
-        $this->contactInformation = ContactInformation::where('contact_id', $this->contact->id)
-            ->where('type_id', $data['contact_information_type_id'])
-            ->findOrFail($data['contact_information_id']);
-
-        $this->contactInformation->data = $data['data'];
-        $this->contactInformation->save();
-
+        $this->data = $data;
+        $this->validate();
+        $this->update();
+        $this->updateLastEditedDate();
         $this->log();
 
         return $this->contactInformation;
+    }
+
+    private function validate(): void
+    {
+        $this->validateRules($this->data);
+
+        $this->contactInformationType = ContactInformationType::where('account_id', $this->data['account_id'])
+            ->findOrFail($this->data['contact_information_type_id']);
+
+        $this->contactInformation = ContactInformation::where('contact_id', $this->contact->id)
+            ->findOrFail($this->data['contact_information_id']);
+    }
+
+    private function update(): void
+    {
+        $this->contactInformation->data = $this->data['data'];
+        $this->contactInformation->type_id = $this->data['contact_information_type_id'];
+        $this->contactInformation->save();
+    }
+
+    private function updateLastEditedDate(): void
+    {
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
     }
 
     private function log(): void

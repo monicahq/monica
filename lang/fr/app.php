@@ -32,6 +32,7 @@ return [
     'breadcrumb_settings_personalize' => 'Personalisation du compte',
     'breadcrumb_settings_personalize_templates' => 'Modèles',
     'breadcrumb_settings_personalize_relationship_types' => 'Types de relation',
+    'breadcrumb_settings_personalize_contact_information_types' => 'Types d’information de contact',
 
     'notification_flash_changes_saved' => 'Changements effectués',
 
@@ -58,6 +59,7 @@ return [
     'previous' => 'Précédent',
     'next' => 'Suivant',
     'view_all' => 'Tout voir',
+    'view_map' => 'Voir sur la carte',
 
     'error_title' => '👇 Oops. Une erreur est survenue.',
 
@@ -72,6 +74,7 @@ return [
     'default_template_page_feed' => 'Flux',
     'default_template_page_information' => 'Information',
     'default_template_page_life_events' => 'Évènements de vie et objectifs',
+    'default_template_page_contact' => 'Connecter',
 
     'module_names' => 'Nom du contact',
     'module_avatar' => 'Avatar',
@@ -91,6 +94,7 @@ return [
     'module_goals' => 'Objectifs',
     'module_addresses' => 'Adresses',
     'module_groups' => 'Groupes',
+    'module_contact_information' => 'Information de contact',
 
     'module_option_default_number_of_items_to_display' => 'Nombre par défaut d’éléments à afficher',
 

@@ -9,6 +9,7 @@ use App\Models\Group;
 use App\Models\GroupType;
 use App\Models\GroupTypeRole;
 use App\Services\BaseService;
+use Carbon\Carbon;
 
 class AddContactToGroup extends BaseService implements ServiceInterface
 {
@@ -69,6 +70,7 @@ class AddContactToGroup extends BaseService implements ServiceInterface
         }
 
         $this->createFeedItem();
+        $this->updateLastEditedDate();
 
         return $this->group;
     }
@@ -86,6 +88,12 @@ class AddContactToGroup extends BaseService implements ServiceInterface
             GroupType::where('account_id', $this->data['account_id'])
                 ->findOrFail($role->group_type_id);
         }
+    }
+
+    private function updateLastEditedDate(): void
+    {
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
     }
 
     private function createFeedItem(): void

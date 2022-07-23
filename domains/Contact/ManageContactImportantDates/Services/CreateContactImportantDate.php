@@ -10,6 +10,7 @@ use App\Models\ContactFeedItem;
 use App\Models\ContactImportantDate;
 use App\Models\ContactImportantDateType;
 use App\Services\BaseService;
+use Carbon\Carbon;
 
 class CreateContactImportantDate extends BaseService implements ServiceInterface
 {
@@ -71,6 +72,7 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
             'year' => $this->valueOrNull($data, 'year'),
         ]);
 
+        $this->updateLastEditedDate();
         $this->log();
         $this->createFeedItem();
 
@@ -86,6 +88,12 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
             ContactImportantDateType::where('vault_id', $this->data['vault_id'])
                 ->findOrFail($this->data['contact_important_date_type_id']);
         }
+    }
+
+    private function updateLastEditedDate(): void
+    {
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
     }
 
     private function log(): void
