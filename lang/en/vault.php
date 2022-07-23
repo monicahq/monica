@@ -62,6 +62,7 @@ return [
      'dashboard_last_updated_contacts_title' => 'Last updated',
      'dashboard_reminders_title' => 'Reminders for the next 30 days',
      'dashboard_reminders_blank' => 'No planned reminders.',
+    'dashboard_favorites_title' => 'Favorites',
 
      /***************************************************************
      * VAULT DASHBOARD REMINDERS

@@ -3,6 +3,7 @@
 namespace App\Vault\ManageVault\Web\ViewHelpers;
 
 use App\Helpers\DateHelper;
+use App\Models\Contact;
 use App\Models\ContactReminder;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
@@ -97,5 +98,32 @@ class VaultShowViewHelper
                 ]),
             ],
         ];
+    }
+
+    public static function favorites(Vault $vault, User $user): Collection
+    {
+        $favorites = DB::table('contact_vault_user')
+            ->where('vault_id', $vault->id)
+            ->where('user_id', $user->id)
+            ->where('is_favorite', true)
+            ->get()
+            ->pluck('contact_id')
+            ->toArray();
+
+        return Contact::whereIn('id', $favorites)
+            ->get()
+            ->map(function ($contact) {
+                return [
+                    'id' => $contact->id,
+                    'name' => $contact->name,
+                    'avatar' => $contact->avatar,
+                    'url' => [
+                        'show' => route('contact.show', [
+                            'vault' => $contact->vault_id,
+                            'contact' => $contact->id,
+                        ]),
+                    ],
+                ];
+            });
     }
 }
