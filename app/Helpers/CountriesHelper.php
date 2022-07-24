@@ -2,10 +2,10 @@
 
 namespace App\Helpers;
 
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\App;
 use Rinvex\Country\Country;
 use Rinvex\Country\CountryLoader;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 
 class CountriesHelper
 {
@@ -73,7 +73,7 @@ class CountriesHelper
         $locale = App::getLocale();
         $lang = LocaleHelper::getLocaleAlpha($locale);
 
-        return $country->getTranslation($lang)["common"];
+        return $country->getTranslation($lang)['common'];
     }
 
     /**
