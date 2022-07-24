@@ -14,7 +14,7 @@ class RequestHelper
     /**
      * Get client ip.
      *
-     * @return array|string
+     * @return array|string|null
      */
     public static function ip()
     {
