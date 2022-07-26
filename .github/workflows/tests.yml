@@ -14,7 +14,7 @@ on:
     types: [completed]
 
 env:
-  default-php-version: '8.1'
+  default-php-version: '8.0'
   node-version: 16
 
 
