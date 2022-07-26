@@ -45,7 +45,8 @@ sudo apt install -y git
 If you are using Debian 10 or lower, PHP 8.0 is not available from the Debian project directly.  Instead use the [deb.sury.org](https://deb.sury.org/) package repository from Ondřej Surý, maintainer of the mainline Debian packages.
 
 ```sh
-sudo wget -q https://packages.sury.org/php/apt.gpg -O /etc/apt/trusted.gpg.d/php-sury.gpg
+sudo apt install -y software-properties-common
+curl -sSL https://packages.sury.org/php/apt.gpg | sudo tee /etc/apt/trusted.gpg.d/php-sury.gpg
 echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php-sury.list
 sudo apt update
 ```
@@ -73,13 +74,13 @@ Install PHP 8.0 or 8.1 with these extensions:
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager.
 
 ```sh
-wget -q -O - https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin/ --filename=composer
+curl -sSL https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin/ --filename=composer
 ```
 
 **Node.js:** Install node.js with package manager.
 
 ```sh
-wget -q -O - https://deb.nodesource.com/setup_16.x | sudo bash -
+curl -sSL https://deb.nodesource.com/setup_16.x | sudo bash -
 sudo apt install -y nodejs
 ```
 
