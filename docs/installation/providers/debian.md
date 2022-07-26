@@ -19,7 +19,7 @@ Monica depends on the following:
 
 -   A Web server, like [Apache httpd webserver](https://httpd.apache.org/)
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
--   PHP 7.4+
+-   PHP 8.0+
 -   [Composer](https://getcomposer.org/)
 -   [Node.js](https://nodejs.org)
 -   [Yarn](https://yarnpkg.com)
@@ -42,7 +42,7 @@ sudo apt install -y git
 
 **PHP:**
 
-If you are using Debian 10 or lower, PHP 7.4 is not available from the Debian project directly.  Instead use the [deb.sury.org](https://deb.sury.org/) package repository from Ondřej Surý, maintainer of the mainline Debian packages.
+If you are using Debian 10 or lower, PHP 8.0 is not available from the Debian project directly.  Instead use the [deb.sury.org](https://deb.sury.org/) package repository from Ondřej Surý, maintainer of the mainline Debian packages.
 
 ```sh
 sudo wget -q https://packages.sury.org/php/apt.gpg -O /etc/apt/trusted.gpg.d/php-sury.gpg
@@ -51,12 +51,24 @@ sudo apt update
 ```
 
 
-Install PHP 7.4 with these extensions:
+Install PHP 8.0 or 8.1 with these extensions:
 
-```sh
-sudo apt install -y php7.4 php7.4-bcmath php7.4-curl php7.4-gd php7.4-gmp \
-    php7.4-intl php7.4-mbstring php7.4-mysql php7.4-redis php7.4-xml php7.4-zip
-```
+-   bcmath
+-   curl
+-   dom
+-   gd
+-   gmp
+-   iconv
+-   intl
+-   json
+-   mbstring
+-   mysqli
+-   opcache
+-   pdo_mysql
+-   redis
+-   sodium
+-   xml
+-   zip
 
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager.
 
