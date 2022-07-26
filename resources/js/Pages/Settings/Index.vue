@@ -51,6 +51,12 @@
                   $t('settings.personalize_your_contacts_data')
                 }}</inertia-link>
               </li>
+              <li class="mb-2 flex justify-start">
+                <span class="mr-2">📸</span>
+                <inertia-link :href="data.url.storage.index" class="text-blue-500 hover:underline">{{
+                  $t('settings.manage_storage')
+                }}</inertia-link>
+              </li>
               <li class="flex justify-start">
                 <span class="mr-2">💩</span>
                 <inertia-link :href="data.url.cancel.index" class="text-blue-500 hover:underline">{{

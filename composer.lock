@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7b49550f8e7a6f67670354298f2dfbfb",
+    "content-hash": "98888cc84726bec6f201d5cbe7d711c6",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1989,16 +1989,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.1.1",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "1a941703dfb649f9b821e7bc425e782f576a805e"
+                "reference": "ed0ecc7f9b5c2f4a9872185846974a808a3b052a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/1a941703dfb649f9b821e7bc425e782f576a805e",
-                "reference": "1a941703dfb649f9b821e7bc425e782f576a805e",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/ed0ecc7f9b5c2f4a9872185846974a808a3b052a",
+                "reference": "ed0ecc7f9b5c2f4a9872185846974a808a3b052a",
                 "shasum": ""
             },
             "require": {
@@ -2059,7 +2059,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.1.1"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.2.0"
             },
             "funding": [
                 {
@@ -2075,7 +2075,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-07-18T09:59:40+00:00"
+            "time": "2022-07-26T07:26:36+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -2202,16 +2202,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "2.7.0",
+            "version": "2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "5579edf28aee1190a798bfa5be8bc16c563bd524"
+                "reference": "720488632c590286b88b80e62aa3d3d551ad4a50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/5579edf28aee1190a798bfa5be8bc16c563bd524",
-                "reference": "5579edf28aee1190a798bfa5be8bc16c563bd524",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/720488632c590286b88b80e62aa3d3d551ad4a50",
+                "reference": "720488632c590286b88b80e62aa3d3d551ad4a50",
                 "shasum": ""
             },
             "require": {
@@ -2231,11 +2231,10 @@
                 "guzzlehttp/psr7": "^2.2",
                 "mongodb/mongodb": "^1.8",
                 "php-amqplib/php-amqplib": "~2.4 || ^3",
-                "php-console/php-console": "^3.1.3",
                 "phpspec/prophecy": "^1.15",
                 "phpstan/phpstan": "^0.12.91",
                 "phpunit/phpunit": "^8.5.14",
-                "predis/predis": "^1.1",
+                "predis/predis": "^1.1 || ^2.0",
                 "rollbar/rollbar": "^1.3 || ^2 || ^3",
                 "ruflin/elastica": "^7",
                 "swiftmailer/swiftmailer": "^5.3|^6.0",
@@ -2255,7 +2254,6 @@
                 "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
                 "mongodb/mongodb": "Allow sending log messages to a MongoDB server (via library)",
                 "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
-                "php-console/php-console": "Allow sending log messages to Google Chrome",
                 "rollbar/rollbar": "Allow sending log messages to Rollbar",
                 "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
             },
@@ -2290,7 +2288,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/2.7.0"
+                "source": "https://github.com/Seldaek/monolog/tree/2.8.0"
             },
             "funding": [
                 {
@@ -2302,7 +2300,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-09T08:59:12+00:00"
+            "time": "2022-07-24T11:55:47+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -5397,6 +5395,88 @@
             "time": "2022-05-24T11:49:31+00:00"
         },
         {
+            "name": "symfony/polyfill-uuid",
+            "version": "v1.26.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-uuid.git",
+                "reference": "a41886c1c81dc075a09c71fe6db5b9d68c79de23"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-uuid/zipball/a41886c1c81dc075a09c71fe6db5b9d68c79de23",
+                "reference": "a41886c1c81dc075a09c71fe6db5b9d68c79de23",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "provide": {
+                "ext-uuid": "*"
+            },
+            "suggest": {
+                "ext-uuid": "For best performance"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.26-dev"
+                },
+                "thanks": {
+                    "name": "symfony/polyfill",
+                    "url": "https://github.com/symfony/polyfill"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Uuid\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Grégoire Pineau",
+                    "email": "lyrixx@lyrixx.info"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill for uuid functions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "polyfill",
+                "portable",
+                "uuid"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/polyfill-uuid/tree/v1.26.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-05-24T11:49:31+00:00"
+        },
+        {
             "name": "symfony/process",
             "version": "v6.1.0",
             "source": {
@@ -6099,6 +6179,69 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/2.2.4"
             },
             "time": "2021-12-08T09:12:39+00:00"
+        },
+        {
+            "name": "uploadcare/uploadcare-php",
+            "version": "v3.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/uploadcare/uploadcare-php.git",
+                "reference": "24a275ed8b13d85f84c75da3d9af7b36d9ad44c5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/uploadcare/uploadcare-php/zipball/24a275ed8b13d85f84c75da3d9af7b36d9ad44c5",
+                "reference": "24a275ed8b13d85f84c75da3d9af7b36d9ad44c5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^6.5||^7",
+                "guzzlehttp/psr7": "^1.6||^2",
+                "php": ">=7.1 || >=8.0",
+                "symfony/polyfill-uuid": "^1.17"
+            },
+            "require-dev": {
+                "fakerphp/faker": "^1.9",
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "phpunit/phpunit": "^5.7||^7||^9",
+                "symfony/dotenv": "^3.4",
+                "symfony/var-dumper": "^3.4||^5",
+                "vimeo/psalm": "^4.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Uploadcare\\": "./src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Uploadcare, Inc",
+                    "email": "hello@uploadcare.com"
+                }
+            ],
+            "description": "Uploadcare PHP integration handles uploads and further operations with files by wrapping Upload and REST APIs.",
+            "homepage": "https://uploadcare.com",
+            "keywords": [
+                "cdn",
+                "cloud",
+                "files",
+                "image management",
+                "upload",
+                "uploadcare"
+            ],
+            "support": {
+                "email": "help@uploadcare.com",
+                "issues": "https://github.com/uploadcare/uploadcare-php/issues",
+                "source": "https://github.com/uploadcare/uploadcare-php/tree/v3.2.4"
+            },
+            "time": "2022-07-22T10:47:48+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

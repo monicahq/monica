@@ -6,6 +6,7 @@ return [
     'notification_channels' => 'Canaux de notifications',
     'account_settings' => 'Paramètres du compte',
     'manage_users' => 'Gestion des utilisateurs',
+    'manage_storage' => 'Gestion du stockage',
     'personalize_your_contacts_data' => 'Personnalisation des données de contacts',
     'cancel_your_account' => 'Annulation du compte',
 
@@ -205,4 +206,15 @@ return [
     'personalize_contact_information_types_edit_success' => 'Le type d’information de contact a été mis à jour',
     'personalize_contact_information_types_delete_success' => 'Le type d’information de contact a été supprimé',
     'personalize_contact_information_types_blank' => 'Êtes-vous sûr ? Cela va supprimer toutes les informations de contact de ce type pour tous les contacts qui l’utilisaient, sans supprimer les contacts eux mêmes.',
+
+    /***************************************************************
+     * STORAGE
+     **************************************************************/
+
+    'storage_title' => 'Stockage',
+    'storage_account_limit' => 'La limite de votre compte',
+    'storage_account_current_usage' => 'Votre utilisation courante',
+    'storage_type_document' => 'Documents',
+    'storage_type_avatar' => 'Avatars',
+    'storage_type_photo' => 'Photos',
 ];

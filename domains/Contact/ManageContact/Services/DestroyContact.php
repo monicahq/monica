@@ -54,7 +54,17 @@ class DestroyContact extends BaseService implements ServiceInterface
             throw new CantBeDeletedException();
         }
 
+        $this->destroyFiles();
+
         $this->contact->delete();
+    }
+
+    private function destroyFiles(): void
+    {
+        $files = $this->contact->files;
+        foreach ($files as $file) {
+            $file->delete();
+        }
     }
 
     private function log(): void

@@ -23,6 +23,9 @@ class SettingsIndexViewHelper
                 'personalize' => [
                     'index' => route('settings.personalize.index'),
                 ],
+                'storage' => [
+                    'index' => route('settings.storage.index'),
+                ],
                 'cancel' => [
                     'index' => route('settings.cancel.index'),
                 ],

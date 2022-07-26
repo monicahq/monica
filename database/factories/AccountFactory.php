@@ -21,6 +21,8 @@ class AccountFactory extends Factory
      */
     public function definition()
     {
-        return [];
+        return [
+            'storage_limit_in_mb' => 10,
+        ];
     }
 }

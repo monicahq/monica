@@ -23,6 +23,7 @@
     "laravel/tinker": "^2.5",
     "meilisearch/meilisearch-php": "^0.23.2",
     "tightenco/ziggy": "^1.0",
+    "uploadcare/uploadcare-php": "^3.0",
     "vluzrmos/language-detector": "^2.3"
   },
   "require-dev": {

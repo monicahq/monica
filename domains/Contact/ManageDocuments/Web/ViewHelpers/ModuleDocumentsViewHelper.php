@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Contact\ManageDocuments\Web\ViewHelpers;
+
+use App\Helpers\FileHelper;
+use App\Helpers\StorageHelper;
+use App\Models\Contact;
+use App\Models\File;
+
+class ModuleDocumentsViewHelper
+{
+    public static function data(Contact $contact): array
+    {
+        $documentsCollection = $contact->files()
+            ->where('type', File::TYPE_DOCUMENT)
+            ->get()
+            ->map(function (File $file) use ($contact) {
+                return self::dto($file, $contact);
+            });
+
+        return [
+            'documents' => $documentsCollection,
+            'uploadcarePublicKey' => config('services.uploadcare.public_key'),
+            'canUploadFile' => StorageHelper::canUploadFile($contact->vault->account),
+            'url' => [
+                'store' => route('contact.document.store', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+            ],
+        ];
+    }
+
+    public static function dto(File $file, Contact $contact): array
+    {
+        return [
+            'id' => $file->id,
+            'download_url' => $file->cdn_url,
+            'name' => $file->name,
+            'mime_type' => $file->mime_type,
+            'size' => FileHelper::formatFileSize($file->size),
+            'url' => [
+                'destroy' => route('contact.document.destroy', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                    'document' => $file->id,
+                ]),
+            ],
+        ];
+    }
+}

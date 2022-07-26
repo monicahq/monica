@@ -16,6 +16,7 @@ class CreateAccountsTable extends Migration
 
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
+            $table->integer('storage_limit_in_mb')->default(0);
             $table->timestamps();
         });
     }

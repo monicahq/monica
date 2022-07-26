@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Contact\ManageDocuments\Events\FileDeleted;
+use App\Contact\ManageDocuments\Listeners\DeleteFileInStorage;
 use App\Listeners\LocaleUpdatedListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         LocaleUpdated::class => [
             LocaleUpdatedListener::class,
+        ],
+        FileDeleted::class => [
+            DeleteFileInStorage::class,
         ],
     ];
 

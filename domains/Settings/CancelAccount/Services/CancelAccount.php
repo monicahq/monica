@@ -4,11 +4,15 @@ namespace App\Settings\CancelAccount\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Account;
+use App\Models\Contact;
+use App\Models\File;
 use App\Models\User;
 use App\Services\BaseService;
 
 class CancelAccount extends BaseService implements ServiceInterface
 {
+    private Account $account;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -44,7 +48,21 @@ class CancelAccount extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $account = Account::findOrFail($data['account_id']);
-        $account->delete();
+        $this->account = Account::findOrFail($data['account_id']);
+        $this->destroyAllFiles();
+
+        $this->account->delete();
+    }
+
+    private function destroyAllFiles(): void
+    {
+        $vaultIds = $this->account->vaults()->select('id')->get()->pluck('id')->toArray();
+        $contactIds = Contact::whereIn('vault_id', $vaultIds)->select('id')->get()->pluck('id')->toArray();
+
+        File::whereIn('contact_id', $contactIds)->chunk(100, function ($files) {
+            $files->each(function ($file) {
+                $file->delete();
+            });
+        });
     }
 }

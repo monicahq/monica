@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\Currency;
 use App\Models\Emotion;
-use App\Models\Information;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
 use App\Models\Module;
@@ -425,6 +424,22 @@ class SetupAccount implements ShouldQueue
             'template_id' => $this->template->id,
             'name' => trans('app.default_template_page_information'),
             'can_be_deleted' => true,
+        ]);
+
+        // Documents
+        $module = (new CreateModule())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'name' => trans('app.module_documents'),
+            'type' => Module::TYPE_DOCUMENTS,
+            'can_be_deleted' => false,
+        ]);
+        (new AssociateModuleToTemplatePage())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageInformation->id,
+            'module_id' => $module->id,
         ]);
 
         // Notes

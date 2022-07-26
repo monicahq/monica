@@ -9,6 +9,7 @@ use App\Contact\ManageContactFeed\Web\ViewHelpers\ModuleFeedViewHelper;
 use App\Contact\ManageContactImportantDates\Web\ViewHelpers\ModuleImportantDatesViewHelper;
 use App\Contact\ManageContactInformation\Web\ViewHelpers\ModuleContactInformationViewHelper;
 use App\Contact\ManageContactName\Web\ViewHelpers\ModuleContactNameViewHelper;
+use App\Contact\ManageDocuments\Web\ViewHelpers\ModuleDocumentsViewHelper;
 use App\Contact\ManageGoals\Web\ViewHelpers\ModuleGoalsViewHelper;
 use App\Contact\ManageGroups\Web\ViewHelpers\GroupsViewHelper;
 use App\Contact\ManageGroups\Web\ViewHelpers\ModuleGroupsViewHelper;
@@ -235,6 +236,10 @@ class ContactShowViewHelper
 
             if ($module->type == Module::TYPE_CONTACT_INFORMATION) {
                 $data = ModuleContactInformationViewHelper::data($contact, $user);
+            }
+
+            if ($module->type == Module::TYPE_DOCUMENTS) {
+                $data = ModuleDocumentsViewHelper::data($contact);
             }
 
             $modulesCollection->push([

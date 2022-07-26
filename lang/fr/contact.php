@@ -76,4 +76,16 @@ return [
     'contact_information_edit_success' => 'L’information de contact a été mise à jour',
     'contact_information_delete_confirm' => 'Êtes vous sûr ? Cela va supprimer l’information de contact de façon permanente.',
     'contact_information_delete_success' => 'L’information de contact a été supprimée',
+
+    /***************************************************************
+     * MODULE: DOCUMENTS
+     **************************************************************/
+
+    'documents_title' => 'Documents',
+    'documents_cta' => 'Ajouter un document',
+    'documents_blank' => 'Il n’y a pas encore d’information de documents.',
+    'documents_key_missing' => 'Les clés pour gérer les uploads n’ont pas été définies sur cette instance de Monica.',
+    'documents_new_success' => 'Le document a été ajouté',
+    'documents_delete_confirm' => 'Êtes vous sûr ? Cela va supprimer le document de contact de façon permanente.',
+    'documents_delete_success' => 'Le document a été supprimé',
 ];

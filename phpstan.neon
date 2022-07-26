@@ -9,6 +9,7 @@ parameters:
         - tests/ApiTestCase.php
         - tests/TestCase.php
         - app/Providers/RouteServiceProvider.php
+        - app/Helpers/StorageHelper.php
     inferPrivatePropertyTypeFromConstructor: true
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false

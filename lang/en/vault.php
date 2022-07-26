@@ -59,17 +59,29 @@ return [
      * VAULT DASHBOARD
      **************************************************************/
 
-     'dashboard_last_updated_contacts_title' => 'Last updated',
-     'dashboard_reminders_title' => 'Reminders for the next 30 days',
-     'dashboard_reminders_blank' => 'No planned reminders.',
+    'dashboard_last_updated_contacts_title' => 'Last updated',
+    'dashboard_reminders_title' => 'Reminders for the next 30 days',
+    'dashboard_reminders_blank' => 'No planned reminders.',
     'dashboard_favorites_title' => 'Favorites',
 
      /***************************************************************
      * VAULT DASHBOARD REMINDERS
      **************************************************************/
 
-     'reminders_title' => 'Reminders planned in the next 12 months',
-     'reminders_blank' => 'No entries for this month',
+    'reminders_title' => 'Reminders planned in the next 12 months',
+    'reminders_blank' => 'No entries for this month',
+
+    /***************************************************************
+     * VAULT FILES
+     **************************************************************/
+
+    'files_filter_title' => 'All the files',
+    'files_filter_all' => 'All files',
+    'files_filter_or' => 'Or filter by type',
+    'files_filter_documents' => 'Documents',
+    'files_filter_photos' => 'Photos',
+    'files_filter_avatars' => 'Avatars',
+    'files_filter_blank' => 'There are no files yet.',
 
     /***************************************************************
      * VAULT SETTINGS

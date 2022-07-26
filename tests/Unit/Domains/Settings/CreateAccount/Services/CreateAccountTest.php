@@ -35,6 +35,7 @@ class CreateAccountTest extends TestCase
     private function executeService(): void
     {
         Queue::fake();
+        config(['monica.default_storage_limit_in_mb' => 120]);
 
         $request = [
             'first_name' => 'john',
@@ -47,6 +48,7 @@ class CreateAccountTest extends TestCase
 
         $this->assertDatabaseHas('accounts', [
             'id' => $user->account->id,
+            'storage_limit_in_mb' => 120,
         ]);
 
         $this->assertDatabaseHas('users', [

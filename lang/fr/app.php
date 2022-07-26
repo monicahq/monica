@@ -7,8 +7,9 @@ return [
     'layout_menu_dashboard' => 'Tableau de bord',
     'layout_menu_reports' => 'Rapports',
     'layout_menu_contacts' => 'Contacts',
-    'layout_menu_gift_center' => 'Centre de cadeaux',
-    'layout_menu_loans' => 'Centre des prêts et dettes',
+    'layout_menu_gift_center' => 'Cadeaux',
+    'layout_menu_loans' => 'Prêts et dettes',
+    'layout_menu_files' => 'Fichiers',
     'layout_menu_vault_settings' => 'Paramètres de la voûte',
     'layout_footer_monica' => 'Monica, depuis 2017.',
     'layout_footer_version' => 'Version courante: :version',
@@ -33,6 +34,7 @@ return [
     'breadcrumb_settings_personalize_templates' => 'Modèles',
     'breadcrumb_settings_personalize_relationship_types' => 'Types de relation',
     'breadcrumb_settings_personalize_contact_information_types' => 'Types d’information de contact',
+    'breadcrumb_settings_storage' => 'Stockage',
 
     'notification_flash_changes_saved' => 'Changements effectués',
 
@@ -60,6 +62,7 @@ return [
     'next' => 'Suivant',
     'view_all' => 'Tout voir',
     'view_map' => 'Voir sur la carte',
+    'download' => 'Télécharger',
 
     'error_title' => '👇 Oops. Une erreur est survenue.',
 
@@ -95,6 +98,7 @@ return [
     'module_addresses' => 'Adresses',
     'module_groups' => 'Groupes',
     'module_contact_information' => 'Information de contact',
+    'module_documents' => 'Documents',
 
     'module_option_default_number_of_items_to_display' => 'Nombre par défaut d’éléments à afficher',
 

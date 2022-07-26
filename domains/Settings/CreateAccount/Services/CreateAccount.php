@@ -42,7 +42,9 @@ class CreateAccount extends BaseService implements ServiceInterface
         $this->data = $data;
         $this->validateRules($this->data);
 
-        $this->account = Account::create();
+        $this->account = Account::create([
+            'storage_limit_in_mb' => config('monica.default_storage_limit_in_mb'),
+        ]);
         $this->addFirstUser();
         $this->addLogs();
 

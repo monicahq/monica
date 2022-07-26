@@ -154,6 +154,8 @@
                 <groups v-if="module.type == 'groups'" :data="groups" />
 
                 <contact-information v-if="module.type == 'contact_information'" :data="contactInformation" />
+
+                <documents v-if="module.type == 'documents'" :data="documents" />
               </div>
             </div>
           </div>
@@ -184,6 +186,7 @@ import Goals from '@/Shared/Modules/Goals';
 import Addresses from '@/Shared/Modules/Addresses';
 import Groups from '@/Shared/Modules/Groups';
 import ContactInformation from '@/Shared/Modules/ContactInformation';
+import Documents from '@/Shared/Modules/Documents';
 
 export default {
   components: {
@@ -207,6 +210,7 @@ export default {
     Addresses,
     Groups,
     ContactInformation,
+    Documents,
   },
 
   props: {
@@ -241,6 +245,7 @@ export default {
       addresses: [],
       groups: [],
       contactInformation: [],
+      documents: [],
     };
   },
 
@@ -337,6 +342,10 @@ export default {
       if (this.data.modules.findIndex((x) => x.type == 'contact_information') > -1) {
         this.contactInformation =
           this.data.modules[this.data.modules.findIndex((x) => x.type == 'contact_information')].data;
+      }
+
+      if (this.data.modules.findIndex((x) => x.type == 'documents') > -1) {
+        this.documents = this.data.modules[this.data.modules.findIndex((x) => x.type == 'documents')].data;
       }
     }
   },

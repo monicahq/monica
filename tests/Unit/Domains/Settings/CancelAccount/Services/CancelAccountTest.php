@@ -3,10 +3,13 @@
 namespace Tests\Unit\Domains\Settings\CancelAccount\Services;
 
 use App\Models\Account;
+use App\Models\Contact;
 use App\Models\User;
+use App\Models\File;
 use App\Settings\CancelAccount\Services\CancelAccount;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
@@ -19,7 +22,13 @@ class CancelAccountTest extends TestCase
     public function it_destroys_an_account(): void
     {
         $user = $this->createAdministrator();
-        $this->executeService($user->account, $user);
+        $vault = $this->createVault($user->account);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $file = File::factory()->create([
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->executeService($user->account, $user, $file);
     }
 
     /** @test */
@@ -53,9 +62,10 @@ class CancelAccountTest extends TestCase
         (new CancelAccount())->execute($request);
     }
 
-    private function executeService(Account $account, User $user): void
+    private function executeService(Account $account, User $user, File $file = null): void
     {
         Queue::fake();
+        Event::fake();
 
         $request = [
             'account_id' => $account->id,
@@ -66,6 +76,10 @@ class CancelAccountTest extends TestCase
 
         $this->assertDatabaseMissing('accounts', [
             'id' => $account->id,
+        ]);
+
+        $this->assertDatabaseMissing('files', [
+            'id' => $file->id,
         ]);
     }
 }

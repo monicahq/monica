@@ -314,6 +314,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the files associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function files(): HasMany
+    {
+        return $this->hasMany(File::class);
+    }
+
+    /**
      * Get the groups associated with the contact.
      *
      * @return BelongsToMany

@@ -76,4 +76,17 @@ return [
     'contact_information_edit_success' => 'The contact information has been edited',
     'contact_information_delete_confirm' => 'Are you sure? This will delete the contact information permanently.',
     'contact_information_delete_success' => 'The contact information has been deleted',
+
+    /***************************************************************
+     * MODULE: DOCUMENTS
+     **************************************************************/
+
+    'documents_title' => 'Documents',
+    'documents_cta' => 'Add a document',
+    'documents_blank' => 'There are no documents yet.',
+    'documents_not_enough_storage' => 'You don’t have enough space left in your account.',
+    'documents_key_missing' => 'The keys to manage uploads have not been set in this Monica instance.',
+    'documents_new_success' => 'The document has been added',
+    'documents_delete_confirm' => 'Are you sure? This will delete the document permanently.',
+    'documents_delete_success' => 'The document has been deleted',
 ];

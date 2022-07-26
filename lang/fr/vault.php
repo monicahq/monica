@@ -72,6 +72,18 @@ return [
     'reminders_blank' => 'Pas de rappels pour ce mois',
 
     /***************************************************************
+     * VAULT FILES
+     **************************************************************/
+
+    'files_filter_title' => 'Tous les fichiers',
+    'files_filter_all' => 'Tous les fichiers',
+    'files_filter_or' => 'Ou filtrer par type',
+    'files_filter_documents' => 'Documents',
+    'files_filter_photos' => 'Photos',
+    'files_filter_avatars' => 'Avatars',
+    'files_filter_blank' => 'Il n’y a pas encore de fichiers.',
+
+    /***************************************************************
      * VAULT SETTINGS
      **************************************************************/
 

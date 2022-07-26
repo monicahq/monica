@@ -7,8 +7,9 @@ return [
     'layout_menu_dashboard' => 'Dashboard',
     'layout_menu_reports' => 'Reports',
     'layout_menu_contacts' => 'Contacts',
-    'layout_menu_gift_center' => 'Gift center',
-    'layout_menu_loans' => 'Loans & debts center',
+    'layout_menu_gift_center' => 'Gifts',
+    'layout_menu_loans' => 'Loans & debts',
+    'layout_menu_files' => 'Files',
     'layout_menu_vault_settings' => 'Vault settings',
     'layout_footer_monica' => 'Monica, since 2017.',
     'layout_footer_version' => 'Current version: :version',
@@ -33,6 +34,7 @@ return [
     'breadcrumb_settings_personalize_templates' => 'Templates',
     'breadcrumb_settings_personalize_relationship_types' => 'Relationship types',
     'breadcrumb_settings_personalize_contact_information_types' => 'Contact information types',
+    'breadcrumb_settings_storage' => 'Storage',
 
     'notification_flash_changes_saved' => 'Changes saved',
 
@@ -60,6 +62,7 @@ return [
     'next' => 'Next',
     'view_all' => 'View all',
     'view_map' => 'View on map',
+    'download' => 'Download',
 
     'error_title' => '👇 Oops. An error occured.',
 
@@ -95,6 +98,7 @@ return [
     'module_addresses' => 'Addresses',
     'module_groups' => 'Groups',
     'module_contact_information' => 'Contact information',
+    'module_documents' => 'Documents',
 
     'module_option_default_number_of_items_to_display' => 'Default number of items to display',
 

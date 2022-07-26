@@ -3136,7 +3136,7 @@ escalade@^3.1.1:
   resolved "https://registry.yarnpkg.com/escalade/-/escalade-3.1.1.tgz#d8cfdc7000965c5a0174b4a82eaa5c0552742e40"
   integrity sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==
 
-escape-html@~1.0.3:
+escape-html@^1.0.3, escape-html@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
   integrity sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg=
@@ -4328,6 +4328,11 @@ jest-worker@^27.4.5:
     "@types/node" "*"
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
+
+jquery@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.6.0.tgz#c72a09f15c1bdce142f49dbf1170bdf8adac2470"
+  integrity sha512-JVzAR/AjBvVt2BmYhxRCSYysDsPcssdmTFnzyLEts9qNwmjmu4JTAMYubEfwVOSwpQ1I1sKKFcxhZCI2buerfw==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
@@ -6723,6 +6728,21 @@ unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/unpipe/-/unpipe-1.0.0.tgz#b2bf4ee8514aae6165b4817829d21b2ef49904ec"
   integrity sha1-sr9O6FFKrmFltIF4KdIbLvSZBOw=
+
+uploadcare-vue@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/uploadcare-vue/-/uploadcare-vue-1.0.0.tgz#f0b914994741e3a9599ca17bf3e7950b058e51f2"
+  integrity sha512-SpoNTsCSKpMXVQyF5y+phk62nhkR2WZ1ZUdnk6aiNif6woVVIodqJK806BMuVHOmqGnx6u0A3mpD4Phoe5UuSg==
+  dependencies:
+    uploadcare-widget "^3.3.0"
+
+uploadcare-widget@^3.3.0:
+  version "3.17.2"
+  resolved "https://registry.yarnpkg.com/uploadcare-widget/-/uploadcare-widget-3.17.2.tgz#5e09d8c0000eb3653afd9a7ff1d502fb874bbcf7"
+  integrity sha512-A9fDKCguevWcFaMCrHROtYzwnMZbOozER6Dru+4zrZH1pP0S7zI/g+7wLv+5U4XZTc5m+4ZrwHrZJzkIRnWeMQ==
+  dependencies:
+    escape-html "^1.0.3"
+    jquery "^3.6.0"
 
 uri-js@^4.2.2:
   version "4.4.1"

@@ -24,6 +24,7 @@ use App\Models\Pronoun;
 use App\Models\RelationshipType;
 use App\Models\Template;
 use App\Models\User;
+use App\Models\File;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -246,6 +247,17 @@ class ContactTest extends TestCase
         ]);
 
         $this->assertTrue($ross->goals()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_files(): void
+    {
+        $ross = Contact::factory()->create();
+        File::factory()->count(2)->create([
+            'contact_id' => $ross->id,
+        ]);
+
+        $this->assertTrue($ross->files()->exists());
     }
 
     /** @test */

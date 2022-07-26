@@ -35,6 +35,9 @@ class SettingsIndexViewHelperTest extends TestCase
                     'personalize' => [
                         'index' => env('APP_URL').'/settings/personalize',
                     ],
+                    'storage' => [
+                        'index' => env('APP_URL').'/settings/storage',
+                    ],
                     'cancel' => [
                         'index' => env('APP_URL').'/settings/cancel',
                     ],

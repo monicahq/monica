@@ -8,10 +8,12 @@ use App\Exceptions\NotEnoughPermissionException;
 use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\File;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
@@ -27,6 +29,11 @@ class DestroyContactTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+
+        File::factory()->create([
+            'contact_id' => $contact->id,
+        ]);
+
         $this->executeService($regis, $regis->account, $vault, $contact);
     }
 
@@ -100,6 +107,7 @@ class DestroyContactTest extends TestCase
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact): void
     {
         Queue::fake();
+        Event::fake();
 
         $request = [
             'account_id' => $account->id,
@@ -112,6 +120,10 @@ class DestroyContactTest extends TestCase
 
         $this->assertDatabaseMissing('contacts', [
             'id' => $contact->id,
+        ]);
+
+        $this->assertDatabaseMissing('files', [
+            'contact_id' => $contact->id,
         ]);
 
         Queue::assertPushed(CreateAuditLog::class, function ($job) {

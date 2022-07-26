@@ -12,6 +12,15 @@ class Account extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'storage_limit_in_mb',
+    ];
+
+    /**
      * Get the users associated with the account.
      *
      * @return HasMany
@@ -181,5 +190,15 @@ class Account extends Model
     public function giftStates(): HasMany
     {
         return $this->hasMany(GiftState::class);
+    }
+
+    /**
+     * Get the vaults associated with the account.
+     *
+     * @return HasMany
+     */
+    public function vaults(): HasMany
+    {
+        return $this->hasMany(Vault::class);
     }
 }

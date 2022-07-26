@@ -4,11 +4,14 @@ namespace Tests\Unit\Domains\Vault\ManageVault\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
+use App\Models\Contact;
+use App\Models\File;
 use App\Models\User;
 use App\Models\Vault;
 use App\Vault\ManageVault\Services\DestroyVault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
@@ -23,7 +26,13 @@ class DestroyVaultTest extends TestCase
         $ross = $this->createUser();
         $vault = $this->createVault($ross->account);
         $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_MANAGE, $vault);
-        $this->executeService($ross, $ross->account, $vault);
+
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $file = File::factory()->create([
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->executeService($ross, $ross->account, $vault, $file);
     }
 
     /** @test */
@@ -71,9 +80,10 @@ class DestroyVaultTest extends TestCase
         $this->executeService($ross, $ross->account, $vault);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault): void
+    private function executeService(User $author, Account $account, Vault $vault, File $file = null): void
     {
         Queue::fake();
+        Event::fake();
 
         $request = [
             'account_id' => $account->id,
@@ -85,6 +95,10 @@ class DestroyVaultTest extends TestCase
 
         $this->assertDatabaseMissing('vaults', [
             'id' => $vault->id,
+        ]);
+
+        $this->assertDatabaseMissing('files', [
+            'id' => $file->id,
         ]);
     }
 }
