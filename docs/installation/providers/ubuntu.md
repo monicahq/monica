@@ -47,7 +47,7 @@ sudo apt install -y apache2
 First add this PPA repository:
 
 ```sh
-sudo apt-get install -y software-properties-common
+sudo apt install -y software-properties-common
 sudo add-apt-repository ppa:ondrej/php
 ```
 
