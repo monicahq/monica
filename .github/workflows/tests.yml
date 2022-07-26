@@ -32,6 +32,9 @@ jobs:
         php-version: ['8.0', '8.1']
         connection: [mysql]
         testsuite: [Api, Feature, Unit-Models, Unit-Services]
+        exclude:
+          - php-version: '8.1'
+            testsuite: Feature
 
     steps:
       - name: Checkout sources
